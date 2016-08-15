@@ -1,0 +1,221 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * MeetingParticipant.
+ *
+ * @ORM\Table(name="meeting_participant")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\MeetingParticipantRepository")
+ */
+class MeetingParticipant
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var Meeting
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="meetingParticipants")
+     * @ORM\JoinColumn(name="meeting_id")
+     */
+    private $meeting;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id")
+     */
+    private $user;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="remark", type="string", length=255, nullable=true)
+     */
+    private $remark;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_present", type="boolean", nullable=false, options={"default"=0})
+     */
+    private $isPresent = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_excused", type="boolean", nullable=false, options={"default"=0})
+     */
+    private $isExcused = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="in_distribution_list", type="boolean", nullable=false, options={"default"=0})
+     */
+    private $inDistributionList = false;
+
+    /**
+     * Get id.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set remark.
+     *
+     * @param string $remark
+     *
+     * @return MeetingParticipant
+     */
+    public function setRemark($remark)
+    {
+        $this->remark = $remark;
+
+        return $this;
+    }
+
+    /**
+     * Get remark.
+     *
+     * @return string
+     */
+    public function getRemark()
+    {
+        return $this->remark;
+    }
+
+    /**
+     * Set isPresent.
+     *
+     * @param bool $isPresent
+     *
+     * @return MeetingParticipant
+     */
+    public function setIsPresent($isPresent)
+    {
+        $this->isPresent = $isPresent;
+
+        return $this;
+    }
+
+    /**
+     * Get isPresent.
+     *
+     * @return bool
+     */
+    public function getIsPresent()
+    {
+        return $this->isPresent;
+    }
+
+    /**
+     * Set isExcused.
+     *
+     * @param bool $isExcused
+     *
+     * @return MeetingParticipant
+     */
+    public function setIsExcused($isExcused)
+    {
+        $this->isExcused = $isExcused;
+
+        return $this;
+    }
+
+    /**
+     * Get isExcused.
+     *
+     * @return bool
+     */
+    public function getIsExcused()
+    {
+        return $this->isExcused;
+    }
+
+    /**
+     * Set inDistributionList.
+     *
+     * @param bool $inDistributionList
+     *
+     * @return MeetingParticipant
+     */
+    public function setInDistributionList($inDistributionList)
+    {
+        $this->inDistributionList = $inDistributionList;
+
+        return $this;
+    }
+
+    /**
+     * Get inDistributionList.
+     *
+     * @return bool
+     */
+    public function getInDistributionList()
+    {
+        return $this->inDistributionList;
+    }
+
+    /**
+     * Set meeting.
+     *
+     * @param \AppBundle\Entity\Meeting $meeting
+     *
+     * @return MeetingParticipant
+     */
+    public function setMeeting(\AppBundle\Entity\Meeting $meeting = null)
+    {
+        $this->meeting = $meeting;
+
+        return $this;
+    }
+
+    /**
+     * Get meeting.
+     *
+     * @return \AppBundle\Entity\Meeting
+     */
+    public function getMeeting()
+    {
+        return $this->meeting;
+    }
+
+    /**
+     * Set user.
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return MeetingParticipant
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user.
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+}
