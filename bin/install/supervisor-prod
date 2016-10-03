@@ -1,0 +1,16 @@
+#!/bin/bash
+sudo apt-get update -y
+sudo apt-get -y install python-pip
+sudo pip install supervisor --pre
+
+dir_conf="/var/www/pmtool.com/current/app/config/supervisor"
+
+sudo mkdir /etc/supervisor
+sudo mkdir /etc/supervisor/conf.d
+sudo mkdir /var/log/supervisor
+
+sudo ln -s $dir_conf/supervisord.conf /etc/supervisor/supervisord.conf
+sudo ln -s $dir_conf/initscript /etc/init.d/supervisor
+sudo ln -s $dir_conf/prod.conf /etc/supervisor/conf.d/prod.conf
+sudo update-rc.d supervisor defaults
+sudo service supervisor start

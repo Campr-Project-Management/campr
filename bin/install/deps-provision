@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+CURRENTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ENV=$1
+
+if [ ! -e "`which npm`" ];
+then
+    curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+fi
+
+if [ ! -e "`which bower`" ];
+then
+   sudo npm install -g bower
+fi
+
+if [ ! -e "`which java`" ];
+then
+    sudo apt-get install -y default-jre
+fi
+
+sudo apt-get install -y php7.0-gd
+
+if [ ! -e "`which zip`" ];
+then
+    sudo apt-get install -y zip
+fi
+
+$CURRENTDIR/supervisor-$ENV
