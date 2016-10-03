@@ -17,3 +17,15 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    #redis
+    #redis_dsn: 172.19.0.2
+    redis_dsn: localhost
+
+    #jwt
+    jwt_private_key_path: %kernel.root_dir%/var/jwt/private.pem
+    jwt_public_key_path: %kernel.root_dir%/var/jwt/public.pem
+    jwt_key_pass_phrase: '0000'
+    jwt_token_ttl: 86400
+    jwt_token_refresh_ttl: 2592000
+    jwt_token_refresh_ttl_update: true
