@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# Redirect output to stderr.
+exec 1>&2
+
+# check that cs fixer is installed, otherwise dissalow commits
+if [ ! -e vendor/bin/php-cs-fixer ]
+then
+    echo "Unable to make commits without checking the code for errors!"
+    echo "php-cs-fixer must be installed in vendor/bin"
+    echo "in order to install it, run \"composer install --dev\""
+    exit 1
+fi
+
+# check that phpunit is installed, otherwise dissalow commits
+if [ ! -e vendor/bin/phpunit ]
+then
+    echo "Unable to make commits without checking the code for errors!"
+    echo "phpunit must be installed in vendor/bin"
+    echo "in order to install it, run \"composer install --dev\""
+    exit 1
+fi
+
+# if phpunit does not exist, copy the default dist file
+if [ ! -e phpunit.xml ]
+then
+    cp phpunit.xml.dist phpunit.xml
+fi
+
+# run phpunit test
+CS_TEST=`vendor/bin/phpunit -c . src/TSS/CoreBundle/Tests/CodingStandardsTest.php`
+if [ $? != 0 ]
+then
+    echo "There are coding standard errors!"
+    echo "Please fix them in order to be able to make commits!"
+    echo ""
+    echo $CS_TEST
+    exit 1
+fi

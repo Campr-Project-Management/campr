@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+#run as sudo
+
+cd /usr/share
+wget https://files.phpmyadmin.net/phpMyAdmin/4.5.4.1/phpMyAdmin-4.5.4.1-all-languages.zip
+apt-get install unzip
+unzip phpMyAdmin-4.5.4.1-all-languages.zip
+mv phpMyAdmin-4.5.4.1-all-languages phpmyadmin
+chmod -R 0755 phpmyadmin
+apt-get install php7.0-mbstring
+service apache2 restart

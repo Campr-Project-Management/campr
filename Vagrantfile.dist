@@ -1,0 +1,26 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+#for Vagrant >1.2.x
+Vagrant.configure("2") do |config|
+    config.vm.provision :shell, :inline => "echo Welcome to PMTool VM"
+
+    config.vm.define :dev do |_config|
+        _config.vm.box = "radutopala/symfony20160526"
+
+        _config.vm.hostname = "pmtool"
+
+        #use :nfs => true only if on mac/linux; use :nfs => false on win
+        _config.vm.synced_folder ".", "/var/www", :nfs => true
+
+        _config.vm.provision "file", source: "~/.ssh/id_rsa", destination: "~/.ssh/id_rsa"
+        _config.vm.provision :shell, path: "bin/vagrant-provision"
+
+        _config.vm.provider :virtualbox do |vb, override|
+            vb.customize ["modifyvm", :id, "--memory", 4096]
+            vb.customize ["modifyvm", :id, "--cpus", "4"]
+            override.vm.box_url = "https://www.trisoft.ro/symfony20160526.box"
+            override.vm.network :private_network, ip: "192.168.33.147"
+        end
+    end
+end
