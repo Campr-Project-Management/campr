@@ -16,6 +16,23 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
+
+             //additional
+            new Snc\RedisBundle\SncRedisBundle(),
+            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
+            new Gregwar\CaptchaBundle\GregwarCaptchaBundle(),
+            new Liip\ImagineBundle\LiipImagineBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
+            new Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle(),
+            new Spraed\PDFGeneratorBundle\SpraedPDFGeneratorBundle(),
+            new Vich\UploaderBundle\VichUploaderBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+
+            //internals
+            new TSS\AutomailerBundle\TSSAutomailerBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
