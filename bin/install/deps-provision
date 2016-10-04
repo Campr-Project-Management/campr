@@ -131,6 +131,8 @@ fi
 # mysql
 if [ ! -e "`which mysql`" ];
 then
+    sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password campr'
+    sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password campr'
     sudo apt-get install -y mysql-server
 fi
 
