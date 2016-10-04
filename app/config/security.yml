@@ -42,6 +42,14 @@ security:
         main:
             anonymous: ~
             pattern: ^/
+            form_login:
+                username_parameter: "email"
+                password_parameter: "password"
+                login_path: app_login
+                check_path: app_login
+            logout:
+                path: app_logout
+                target: app_homepage
             provider: our_db_provider
     role_hierarchy:
         ROLE_ADMIN:
@@ -51,3 +59,5 @@ security:
     access_control:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, roles: ['ROLE_SUPER_ADMIN'] }
