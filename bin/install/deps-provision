@@ -128,6 +128,12 @@ then
     sudo apt-get install -y mysql-server
 fi
 
+# redis
+if [ ! -e "`which redis-cli`" ];
+then
+    sudo apt-get install -y redis-server
+fi
+
 # supervisor
 sudo apt-get -y install python-pip
 sudo pip install supervisor --pre
@@ -138,4 +144,3 @@ sudo ln -s $CURRENTDIR/app/config/supervisor/supervisord.conf /etc/supervisor/su
 sudo ln -s $CURRENTDIR/app/config/supervisor/initscript /etc/init.d/supervisor
 sudo ln -s $CURRENTDIR/app/config/supervisor/$ENV.conf /etc/supervisor/conf.d/$ENV.conf
 sudo update-rc.d supervisor defaults
-sudo service supervisor start
