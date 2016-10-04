@@ -7,8 +7,18 @@ imports:
 #    serializer:
 #        cache: serializer.mapping.cache.doctrine.apc
 
+framework:
+    router:
+        resource: "%kernel.root_dir%/config/routing_dev.yml"
+        strict_requirements: true
+    profiler: { only_exceptions: false }
+
 parameters:
     database_password: campr
+
+web_profiler:
+    toolbar: true
+    intercept_redirects: false
 
 doctrine:
     orm:
