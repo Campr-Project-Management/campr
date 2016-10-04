@@ -14,4 +14,9 @@ services:
                 - "@mailer"
                 - "@twig"
                 - "%emails%"
-
+    redis.client:
+        class: Predis\Client
+    session.handler.redis:
+        class: Snc\RedisBundle\Session\Storage\Handler\RedisSessionHandler
+        arguments:
+            - '@redis.client'
