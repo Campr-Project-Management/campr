@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+sudo cp -RL /etc/letsencrypt/live/*campr.biz app/config/ssl/
