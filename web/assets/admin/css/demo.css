@@ -1,0 +1,178 @@
+/*-------------------------------------
+    Animation
+--------------------------------------*/
+.animation-demo .row {
+    margin: 25px -6px 0;
+    margin-bottom: -10px;
+}
+
+.animation-demo .card-body img {
+    width: 100%;
+    z-index: 1;
+    position: relative;
+}
+
+.animation-demo .col-xs-6 {
+    padding: 0 6px;
+    margin-bottom: 12px;
+}
+
+.animation-demo .btn {
+    width: 100%;
+    text-transform: none;
+}
+
+
+/*-------------------------------------
+    Box Shadow
+--------------------------------------*/
+.bs-item {
+    background: #fff;
+    margin-bottom: 30px;
+    height: 100px;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 2px;
+}
+
+
+/*-------------------------------------
+    Icons
+--------------------------------------*/
+.icons-demo .card-body .zmdi {
+    font-size: 23px;
+    vertical-align: middle;
+    margin-right: 10px;
+    width: 25px;
+    color: #333;
+}
+
+.icons-demo .card-body .col-sm-4 p {
+    padding: 0 7px;
+}
+
+.icons-demo .card-body .col-sm-4 p {
+    padding: 8px;
+    border-radius: 2px;
+    margin-bottom: 0;
+    color: #5e5e5e;
+    display: block;
+}
+
+.icons-demo .card-body .col-sm-4 p:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+
+/*-------------------------------------
+    Buttons
+--------------------------------------*/
+.btn-colors > .btn {
+    min-width: 112px;
+}
+
+.btn-demo > .btn, .btn-group-demo > .btn-group {
+    margin: 0 5px 10px 0;
+}
+
+
+/*-------------------------------------
+    Colors
+--------------------------------------*/
+.color-block {
+    height: 100px;
+    color: rgba(255,255,255,0.9);
+    text-align: center;
+    padding: 15px 0;
+    border-radius: 2px;
+    margin-bottom: 25px;
+}
+
+.color-block span {
+    display: block;
+}
+
+.color-block .color {
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.color-block .code {
+    margin: 5px 0;
+}
+
+.color-block .less {
+    font-size: 11px;
+}
+
+
+/*-------------------------------------
+    Components
+--------------------------------------*/
+.dropdown-basic-demo {
+    display: inline-block;
+    margin: 0 15px 20px 0;
+}
+
+.dropdown-basic-demo .dropdown-menu {
+    display: block;
+    position: relative;
+    transform: scale(1);
+    opacity: 1;
+    filter: alpha(opacity=1);
+    z-index: 0;
+}
+
+.dropdown-btn-demo .dropdown, .dropdown-btn-demo {
+    display: inline-block;
+    margin: 0 5px 7px 0;
+}
+
+.modal-preview-demo .modal {
+    position: relative;
+    display: block;
+    z-index: 0;
+    background: rgba(0,0,0,0.1);
+}
+
+.margin-bottom > *{
+    margin-bottom: 20px;
+}
+
+.popover-demo .popover {
+    position: relative;
+    display: inline-block;
+    opacity: 1;
+    margin: 0 10px 30px;
+    z-index: 0;
+}
+
+
+/*-------------------------------------
+    Toggle Switch
+--------------------------------------*/
+.toggle-switch-demo .ts-label {
+    min-width: 130px;
+}
+
+
+/*-------------------------------------
+    Notifications
+--------------------------------------*/
+.notification-demo .btn {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+
+/*-------------------------------------
+    Other Components
+--------------------------------------*/
+.media-demo .media {
+    margin-bottom: 25px;
+}
+
+.media-demo .media .media {
+    margin-top: 25px;
+}
