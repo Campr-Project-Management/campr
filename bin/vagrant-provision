@@ -3,4 +3,4 @@
 sudo chown -R vagrant:www-data /var/www/var/cache/ /var/www/var/logs/
 sudo chmod -R 0777 /var/www/var/cache/
 sudo chmod -R 0777 /var/www/var/logs/
-/var/www/bin/install/deps-provision dev
+/var/www/bin/install/deps-provision dev /var/www
