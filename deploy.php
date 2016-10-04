@@ -117,9 +117,9 @@ task('database:migrate', function () {
     run('{{symfony_console}} doctrine:migrations:migrate --allow-no-migration {{symfony_console_options}}');
 });
 task('server:provision', function () {
-    if (input()->getOption('provision')) {
+    if (input()->getFirstArgument() == 'server:provision' || input()->getOption('provision')) {
         upload('bin/install/deps-provision', '/tmp/deps-provision');
-        run('chmod +x /tmp/deps-provision && /tmp/deps-provision {{env}} {{deploy_path}}/current');
+        run('chmod +x /tmp/deps-provision && /tmp/deps-provision {{env}} {{deploy_path}}/current && rm -f /tmp/deps-provision');
     } else {
         writeln('<info>Skipping...</info>');
     }
