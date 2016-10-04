@@ -115,7 +115,8 @@ task('database:cleanup', function () {
 });
 task('server:provision', function () {
     if (input()->getOption('provision')) {
-        run('{{release_path}}/bin/install/deps-provision {{env}}');
+        upload('bin/install/deps-provision', '/tmp/deps-provision');
+        run('chmod +x /tmp/deps-provision && /tmp/deps-provision {{env}} {{deploy_path}}/current');
     } else {
         writeln('<info>Skipping...</info>');
     }
@@ -150,7 +151,7 @@ before('hivebot:deploy-success', 'deploy:end-time');
 before('hivebot:deploy-start', 'hivebot:deploy-whois');
 before('deploy:prepare', 'hivebot:deploy-start');
 after('success', 'hivebot:deploy-success');
-after('deploy:update_code', 'server:provision');
+after('deploy:prepare', 'server:provision');
 after('deploy:vendors', 'project:copy-parameters');
 before('deploy:vendors', 'project:ln-console-env');
 before('database:migrate', 'database:cleanup');

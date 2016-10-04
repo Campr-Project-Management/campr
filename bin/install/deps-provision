@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+ENV=$1
+CURRENTDIR=$2
+
 sudo apt-get update -y
 
 # git
@@ -15,9 +18,6 @@ then
 fi
 
 # node
-CURRENTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ENV=$1
-
 if [ ! -e "`which npm`" ];
 then
     curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
@@ -129,4 +129,13 @@ then
 fi
 
 # supervisor
-$CURRENTDIR/supervisor-$ENV
+sudo apt-get -y install python-pip
+sudo pip install supervisor --pre
+sudo mkdir /etc/supervisor
+sudo mkdir /etc/supervisor/conf.d
+sudo mkdir /var/log/supervisor
+sudo ln -s $CURRENTDIR/app/config/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+sudo ln -s $CURRENTDIR/app/config/supervisor/initscript /etc/init.d/supervisor
+sudo ln -s $CURRENTDIR/app/config/supervisor/$ENV.conf /etc/supervisor/conf.d/$ENV.conf
+sudo update-rc.d supervisor defaults
+sudo service supervisor start
