@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+sudo apt-get update -y
+
+# node
 CURRENTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ENV=$1
 
@@ -9,21 +12,109 @@ then
     sudo apt-get install -y nodejs
 fi
 
+# bower
 if [ ! -e "`which bower`" ];
 then
    sudo npm install -g bower
 fi
 
+# java
 if [ ! -e "`which java`" ];
 then
     sudo apt-get install -y default-jre
 fi
 
-sudo apt-get install -y php7.0-gd
-
+# zip
 if [ ! -e "`which zip`" ];
 then
     sudo apt-get install -y zip
 fi
 
+# php
+if [ ! -e "`which add-apt-repository`" ];
+then
+    sudo apt-get install -y python-software-properties
+    sudo apt-get install -y software-properties-common
+fi
+
+if [ ! -e "`which php`" ] || [ ! "`php -v | grep 'PHP 7'`" ];
+then
+    LC_ALL=C.UTF-8 sudo add-apt-repository -y ppa:ondrej/php
+    sudo apt-get update -y
+    sudo apt-get install -y php7.0 php7.0-cli php7.0-common
+fi
+
+if [ ! "`php -m | grep '^apc$'`" ];
+then
+    sudo apt-get install -y php7.0-apcu-bc
+fi
+
+if [ ! "`php -m | grep '^apcu$'`" ];
+then
+    sudo apt-get install -y php-apcu
+fi
+
+if [ ! "`php -m | grep '^redis$'`" ];
+then
+    sudo apt-get install -y php-redis
+fi
+
+if [ ! "`php -m | grep '$pdo_mysql^'`" ];
+then
+    sudo apt-get install -y php7.0-mysql
+fi
+
+if [ ! "`php -m | grep '$gd^'`" ];
+then
+    sudo apt-get install -y php7.0-gd
+fi
+
+if [ ! "`php -m | grep '$xml^'`" ];
+then
+    sudo apt-get install -y php7.0-xml
+fi
+
+if [ ! "`php -m | grep '$intl^'`" ];
+then
+    sudo apt-get install -y php7.0-intl
+fi
+
+if [ ! "`php -m | grep '$json^'`" ];
+then
+    sudo apt-get install -y php7.0-json
+fi
+
+# apache2
+if [ ! -e "`which apache2ctl`" ];
+then
+    sudo apt-get install -y apache2
+fi
+
+if [ ! "`a2query -m | grep php7.0`" ];
+then
+    sudo apt-get install -y libapache2-mod-php7.0
+fi
+
+if [ ! "`a2query -m | grep ssl`" ];
+then
+    sudo a2enmod ssl
+fi
+
+if [ ! "`a2query -m | grep rewrite`" ];
+then
+    sudo a2enmod rewrite
+fi
+
+if [ ! "`a2query -m | grep headers`" ];
+then
+    sudo a2enmod headers
+fi
+
+# mysql
+if [ ! -e "`which mysql`" ];
+then
+    sudo apt-get install -y mysql-server
+fi
+
+# supervisor
 $CURRENTDIR/supervisor-$ENV
