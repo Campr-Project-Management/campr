@@ -141,7 +141,10 @@ then
 fi
 
 # supervisor
-sudo apt-get -y install python-pip
+if [ ! -e "`which pip`" ];
+then
+    sudo apt-get -y install python-pip
+fi
 sudo pip install supervisor --pre
 sudo mkdir /etc/supervisor
 sudo mkdir /etc/supervisor/conf.d
