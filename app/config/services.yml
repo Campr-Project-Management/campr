@@ -1,9 +1,17 @@
-# Learn more about services, parameters and containers at
-# http://symfony.com/doc/current/book/service_container.html
 parameters:
-#    parameter_name: value
+    emails:
+        from_email:
+            info: "info@campr.biz"
+            no-reply: "no-reply@campr.biz"
+        from_name:
+            info: "Info Campr"
+            no-reply: "No Reply"
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    app.service.mailer:
+            class: AppBundle\Services\MailerService
+            arguments:
+                - "@mailer"
+                - "@twig"
+                - "%emails%"
+
