@@ -77,27 +77,27 @@ then
     sudo apt-get install -y php-redis
 fi
 
-if [ ! "`php -m | grep '$pdo_mysql^'`" ];
+if [ ! "`php -m | grep '^pdo_mysql$'`" ];
 then
     sudo apt-get install -y php7.0-mysql
 fi
 
-if [ ! "`php -m | grep '$gd^'`" ];
+if [ ! "`php -m | grep '^gd$'`" ];
 then
     sudo apt-get install -y php7.0-gd
 fi
 
-if [ ! "`php -m | grep '$xml^'`" ];
+if [ ! "`php -m | grep '^xml$'`" ];
 then
     sudo apt-get install -y php7.0-xml
 fi
 
-if [ ! "`php -m | grep '$intl^'`" ];
+if [ ! "`php -m | grep '^intl$'`" ];
 then
     sudo apt-get install -y php7.0-intl
 fi
 
-if [ ! "`php -m | grep '$json^'`" ];
+if [ ! "`php -m | grep '^json$'`" ];
 then
     sudo apt-get install -y php7.0-json
 fi
