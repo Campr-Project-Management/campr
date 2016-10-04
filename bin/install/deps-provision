@@ -17,6 +17,12 @@ then
     sudo apt-get install -y htop
 fi
 
+# nano
+if [ ! -e "`which nano`" ];
+then
+    sudo apt-get install -y nano
+fi
+
 # node
 if [ ! -e "`which npm`" ];
 then
