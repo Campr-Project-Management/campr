@@ -82,7 +82,7 @@ task('deploy:assetic:dump', function () {
     run('{{symfony_console}} assetic:dump {{symfony_console_options}}');
 })->desc('Dump assets');
 task('project:supervisor:restart', function () {
-    run('sudo service supervisor stop; sudo service supervisor start');
+    run('sudo /etc/init.d/supervisor stop; sudo /etc/init.d/supervisor start');
 });
 task('project:apache:restart', function () {
     run('sudo service apache2 restart');
@@ -112,6 +112,9 @@ task('database:cleanup', function () {
     } else {
         writeln('<info>Skipping...</info>');
     }
+});
+task('database:migrate', function () {
+    run('{{symfony_console}} doctrine:migrations:migrate --allow-no-migration {{symfony_console_options}}');
 });
 task('server:provision', function () {
     if (input()->getOption('provision')) {
