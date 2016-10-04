@@ -25,26 +25,24 @@ framework:
     trusted_hosts:   ~
     trusted_proxies: ~
     session:
-        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
-        handler_id:  session.handler.native_file
-        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+        handler_id: session.handler.redis
     fragments:       ~
     http_method_override: true
     assets: ~
 
 # Twig Configuration
 twig:
-    debug:            "%kernel.debug%"
+    debug: "%kernel.debug%"
     strict_variables: "%kernel.debug%"
 
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   pdo_mysql
-        host:     "%database_host%"
-        port:     "%database_port%"
-        dbname:   "%database_name%"
-        user:     "%database_user%"
+        driver: pdo_mysql
+        host: "%database_host%"
+        port: "%database_port%"
+        dbname: "%database_name%"
+        user: "%database_user%"
         password: "%database_password%"
         charset:  UTF8
         # if using pdo_sqlite as your database driver:
@@ -62,10 +60,10 @@ doctrine:
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
-    host:      "%mailer_host%"
-    username:  "%mailer_user%"
-    password:  "%mailer_password%"
-    spool:     { type: automailer }
+    host: "%mailer_host%"
+    username: "%mailer_user%"
+    password: "%mailer_password%"
+    spool: { type: automailer }
 
 # SNC Redis
 snc_redis:
@@ -85,9 +83,9 @@ snc_redis:
 # Lexik JWT Authentication Configuration
 lexik_jwt_authentication:
     private_key_path: "%jwt_private_key_path%"
-    public_key_path:  "%jwt_public_key_path%"
-    pass_phrase:      "%jwt_key_pass_phrase%"
-    token_ttl:        "%jwt_token_ttl%"
+    public_key_path: "%jwt_public_key_path%"
+    pass_phrase: "%jwt_key_pass_phrase%"
+    token_ttl: "%jwt_token_ttl%"
     user_identity_field: email
 
 # VichUploaderBundle
