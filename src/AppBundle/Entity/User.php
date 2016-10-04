@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * @ORM\Table(name="user", uniqueConstraints={
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * })
  * @ORM\Entity
  */
-class User
+class User implements AdvancedUserInterface, \Serializable
 {
     /**
      * @var int
@@ -130,6 +131,16 @@ class User
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->salt = md5(uniqid('', true));
+        $this->roles = array();
+        $this->createdAt = new \DateTime();
+    }
 
     /**
      * Get id.
@@ -515,6 +526,38 @@ class User
         return $this;
     }
 
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->email,
+            $this->password,
+        ]);
+    }
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->email,
+            $this->password
+        ) = unserialize($serialized);
+    }
+
+    public function eraseCredentials()
+    {
+        $this->setPassword(null);
+    }
+
+    /**
+     * Is enabled.
+     *
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return $this->isEnabled;
+    }
+
     /**
      * Get updatedAt.
      *
@@ -523,5 +566,29 @@ class User
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCredentialsNonExpired()
+    {
+        return true;
     }
 }
