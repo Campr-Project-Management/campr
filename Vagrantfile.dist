@@ -3,12 +3,12 @@
 
 #for Vagrant >1.2.x
 Vagrant.configure("2") do |config|
-    config.vm.provision :shell, :inline => "echo Welcome to PMTool VM"
+    config.vm.provision :shell, :inline => "echo Welcome to Campr VM"
 
     config.vm.define :dev do |_config|
         _config.vm.box = "radutopala/symfony20160526"
 
-        _config.vm.hostname = "pmtool"
+        _config.vm.hostname = "campr"
 
         #use :nfs => true only if on mac/linux; use :nfs => false on win
         _config.vm.synced_folder ".", "/var/www", :nfs => true
