@@ -54,7 +54,7 @@ env('bin/mysql', function () {
 });
 
 // Configure servers
-server('prod1', '138.201.152.69')
+server('prod1', '138.201.187.161')
     ->user('root')
     ->stage('prod')
     ->pemFile(__DIR__.'/app/config/deploy/prod.key')
@@ -65,7 +65,7 @@ server('prod1', '138.201.152.69')
     ->env('mysql_password', 'campr')
     ->env('mysql_database', 'campr')
 ;
-server('qa1', '138.201.152.69')
+server('qa1', '138.201.187.161')
     ->user('root')
     ->stage('qa')
     ->pemFile(__DIR__.'/app/config/deploy/qa.key')
