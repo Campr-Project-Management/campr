@@ -1,0 +1,20 @@
+{% trans_default_domain 'admin' %}
+
+<a href="{{ path(show_path, {'id': id}) }}">
+    <button class="btn btn-xs bgm-blue">
+        <i class="zmdi zmdi-zoom-in"></i>
+        {{ 'admin.general.form.button.view'|trans }}
+    </button>
+</a>
+<a href="{{ path(edit_path, {'id': id}) }}">
+    <button class="btn btn-xs bgm-blue">
+        <i class="zmdi zmdi-edit"></i>
+        {{ 'admin.general.form.button.edit'|trans }}
+    </button>
+</a>
+<a href="{{ path(delete_path, {'id': id}) }}">
+    <button class="btn btn-xs bgm-red">
+        <i class="zmdi zmdi-delete"></i>
+        {{ 'admin.general.form.button.delete'|trans }}
+    </button>
+</a>

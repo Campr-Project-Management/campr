@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -10,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="project")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRepository")
+ * @UniqueEntity(fields="number", message="validation.constraints.project.number.unique")
  */
 class Project
 {
@@ -138,9 +140,9 @@ class Project
     private $statusUpdatedAt;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
      *
-     * @ORM\Column(name="approved_at", type="datetime")
+     * @ORM\Column(name="approved_at", type="datetime", nullable=true)
      */
     private $approvedAt;
 
@@ -157,11 +159,16 @@ class Project
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
-
+    
     public function __construct()
     {
+<<<<<<< 8ba981b86c3c7e9637582b221cabdac157653a4f
         $this->calendars = new ArrayCollection();
         $this->workPackages = new ArrayCollection();
+=======
+        $this->createdAt = new \DateTime();
+        $this->calendars = new ArrayCollection();
+>>>>>>> Admin CRUDs for Project entities
     }
 
     /**

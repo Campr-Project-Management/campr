@@ -1,0 +1,79 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ 'admin.project_team.list.title'|trans }}<small>{{ 'admin.project_team.list.subtitle'|trans }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_project_team_create') }}">{{ 'admin.project_team.list.add'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {% for flash_message in app.session.flashBag.get('success') %}
+                        <div class="alert alert-success m-t-15">
+                            <strong>{{ flash_message }}</strong>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'admin.project_team.list.table.id'|trans }}</th>
+                                    <th>{{ 'admin.project_team.list.table.name'|trans }}</th>
+                                    <th>{{ 'admin.project_team.list.table.created_at'|trans }}</th>
+                                    <th>{{ 'admin.project_team.list.table.updated_at'|trans }}</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for project_team in project_teams %}
+                                <tr>
+                                    <td class="f-500 c-cyan">{{ project_team.id }}</td>
+                                    <td>{{ project_team.name }}</td>
+                                    <td>
+                                        {% if project_team.createdAt %}
+                                            {{ project_team.createdAt|date('d/m/Y') }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if project_team.updatedAt %}
+                                            {{ project_team.updatedAt|date('d/m/Y') }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% include '@App/Admin/Layout/Partials/form_list_buttons.html.twig'
+                                            with {
+                                                'show_path': 'app_admin_project_team_show',
+                                                'edit_path': 'app_admin_project_team_edit',
+                                                'delete_path': 'app_admin_project_team_delete',
+                                                'id': project_team.id,
+                                            }
+                                        %}
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="f-500 c-cyan">{{ 'admin.project_team.list.not_found'|trans }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

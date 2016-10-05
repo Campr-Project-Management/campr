@@ -1,0 +1,73 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ 'admin.project_status.list.title'|trans }}<small>{{ project_status.name }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_project_status_create') }}">{{ 'admin.project_status.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_project_status_edit', {'id': project_status.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_project_status_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th>{{ 'admin.project_status.list.table.name'|trans }}</th>
+                                    <td>{{ project_status.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_status.list.table.project'|trans }}</th>
+                                    <td>
+                                        {% if project_status.project %}
+                                            {{ project_status.project.name }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_status.list.table.sequence'|trans }}</th>
+                                    <td>{{ project_status.sequence }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_status.list.table.created_at'|trans }}</th>
+                                    <td>
+                                        {% if project_status.createdAt %}
+                                            {{ project_status.createdAt|date('d/m/Y') }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_status.list.table.updated_at'|trans }}</th>
+                                    <td>
+                                        {% if project_status.updatedAt %}
+                                            {{ project_status.updatedAt|date('d/m/Y') }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
