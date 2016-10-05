@@ -6,6 +6,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\User\LoginType;
+use AppBundle\Form\User\RegisterType;
+use AppBundle\Form\User\ResetPasswordType;
 
 class DefaultController extends Controller
 {
@@ -33,13 +35,18 @@ class DefaultController extends Controller
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
         $form = $this->createForm(LoginType::class);
+        $formRegister = $this->createForm(RegisterType::class);
+        $formReset = $this->createForm(ResetPasswordType::class);
 
         return $this->render(
             'AppBundle:Default:login.html.twig',
             [
                 'last_username' => $lastUsername,
+                'login' => true,
                 'error' => $error,
                 'form' => $form->createView(),
+                'form_register' => $formRegister->createView(),
+                'form_reset' => $formReset->createView(),
                 'route' => 'app_login',
             ]
         );
