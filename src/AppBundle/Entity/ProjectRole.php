@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="project_role")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRoleRepository")
+ * @UniqueEntity(fields="name", message="validation.constraints.general_field.name.unique")
  */
 class ProjectRole
 {
@@ -31,9 +33,9 @@ class ProjectRole
     /**
      * @var int
      *
-     * @ORM\Column(name="sequence", type="integer")
+     * @ORM\Column(name="sequence", type="integer", nullable=false, options={"default"=0})
      */
-    private $sequence;
+    private $sequence = 0;
 
     /**
      * @var bool
@@ -55,6 +57,11 @@ class ProjectRole
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+    
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     /**
      * Get id.

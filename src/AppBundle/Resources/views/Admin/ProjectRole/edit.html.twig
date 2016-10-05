@@ -1,0 +1,93 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ 'admin.project_role.edit.title'|trans }}</h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_project_role_create') }}">{{ 'admin.project_role.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_project_role_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body card-padding">
+                    {{ form_start(
+                        form,
+                        {
+                            'method': 'POST',
+                            'action': path('app_admin_project_role_edit', {'id': project_role.id}),
+                            'attr': {
+                                'class': 'form-horizontal',
+                                'novalidate': 'novalidate',
+                            },
+                        }
+                    ) }}
+                        {% if form.vars.valid == false %}
+                            <div class="alert alert-danger">
+                                {% for field in form.children %}
+                                    {{ form_errors(field) }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {{ form_widget(
+                            form.name,
+                            {
+                                'attr': {
+                                    'class': 'form-control input-sm',
+                                    'placeholder': 'admin.general.placeholder.name'|trans,
+                                },
+                                'label': 'admin.project_role.create.name'|trans,
+                        }
+                        ) }}
+                        {{ form_widget(
+                            form.sequence,
+                            {
+                                'attr': {
+                                    'class': 'form-control input-sm',
+                                    'placeholder': 'admin.general.placeholder.sequence'|trans,
+                                },
+                                'label': 'admin.project_role.create.sequence'|trans,
+                            }
+                        ) }}
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                {{ form_widget(
+                                    form.isLead,
+                                    {
+                                        'attr': {'class': 'form-control'},
+                                        'label': 'admin.project_role.create.lead'|trans,
+                                    }
+                                ) }}
+                            </div>
+                        </div>
+
+                        {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
+                            with {
+                                'delete_path': 'app_admin_project_role_delete',
+                                'id': project_role.id,
+                            }
+                        %}
+
+                        <span class="hidden">{{ form_row(form._token) }}</span>
+                    {{ form_end(form, {'render_rest': false}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

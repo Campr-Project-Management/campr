@@ -1,0 +1,139 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ 'admin.project_user.list.title'|trans }}
+                        {% if project_user.user %}
+                            <small>{{ project_user.user.username }}</small>
+                        {% endif %}
+                    </h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_project_user_create') }}">{{ 'admin.project_user.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_project_user_edit', {'id': project_user.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_project_user_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th>{{ 'admin.project_user.list.table.user'|trans }}</th>
+                                    <td>
+                                        {% if project_user.user %}
+                                            {{ project_user.user.username }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_module.list.table.project'|trans }}</th>
+                                    <td>
+                                        {% if project_user.project %}
+                                            {{ project_user.project.name }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_user.list.table.project_category'|trans }}</th>
+                                    <td>
+                                        {% if project_user.projectCategory %}
+                                            {{ project_user.projectCategory.name }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_user.list.table.project_role'|trans }}</th>
+                                    <td>
+                                        {% if project_user.projectRole %}
+                                            {{ project_user.projectRole.name }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_user.list.table.project_department'|trans }}</th>
+                                    <td>
+                                        {% if project_user.projectDepartment %}
+                                            {{ project_user.projectDepartment.name }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_user.list.table.project_team'|trans }}</th>
+                                    <td>
+                                        {% if project_user.projectTeam %}
+                                            {{ project_user.projectTeam.name }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_user.list.table.show_in_resources'|trans }}</th>
+                                    <td>
+                                        {% if project_user.showInResources %}
+                                            {{ 'admin.general.form.checkbox.checked'|trans }}
+                                        {% else %}
+                                            {{ 'admin.general.form.checkbox.unchecked'|trans }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_user.list.table.show_in_raci'|trans }}</th>
+                                    <td>
+                                        {% if project_user.showInRaci %}
+                                            {{ 'admin.general.form.checkbox.checked'|trans }}
+                                        {% else %}
+                                            {{ 'admin.general.form.checkbox.unchecked'|trans }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_user.list.table.show_in_org'|trans }}</th>
+                                    <td>
+                                        {% if project_user.showInOrg %}
+                                            {{ 'admin.general.form.checkbox.checked'|trans }}
+                                        {% else %}
+                                            {{ 'admin.general.form.checkbox.unchecked'|trans }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_user.list.table.created_at'|trans }}</th>
+                                    <td>
+                                        {% if project_user.createdAt %}
+                                            {{ project_user.createdAt|date('d/m/Y') }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_user.list.table.updated_at'|trans }}</th>
+                                    <td>
+                                        {% if project_user.updatedAt %}
+                                            {{ project_user.updatedAt|date('d/m/Y') }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ 'admin.project.list.title'|trans }}<small>{{ project.name }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_project_create') }}">{{ 'admin.project.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_project_edit', {'id': project.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_project_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <th>{{ 'admin.project.list.table.name'|trans }}</th>
+                                <td>{{ project.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.project.list.table.number'|trans }}</th>
+                                <td>{{ project.number }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.project.list.table.sponsor'|trans }}</th>
+                                <td>
+                                    {% if project.sponsor %}
+                                        {{ project.sponsor.username }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.project.list.table.manager'|trans }}</th>
+                                <td>
+                                    {% if project.manager %}
+                                        {{ project.manager.username }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.project.list.table.project_complexity'|trans }}</th>
+                                <td>
+                                    {% if project.projectComplexity %}
+                                        {{ project.projectComplexity.name }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.project.list.table.project_category'|trans }}</th>
+                                <td>
+                                    {% if project.projectCategory %}
+                                        {{ project.projectCategory.name }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.project.list.table.project_scope'|trans }}</th>
+                                <td>
+                                    {% if project.projectScope %}
+                                        {{ project.projectScope.name }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.project.list.table.status'|trans }}</th>
+                                <td>
+                                    {% if project.status %}
+                                        {{ project.status.name }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.project.list.table.portfolio'|trans }}</th>
+                                <td>
+                                    {% if project.portfolio %}
+                                        {{ project.portfolio.name }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.project.list.table.approved_at'|trans }}</th>
+                                <td>
+                                    {% if project.approvedAt %}
+                                        {{ project.approvedAt|date('d/m/Y') }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.project.list.table.status_updated_at'|trans }}</th>
+                                <td>
+                                    {% if project.statusUpdatedAt %}
+                                        {{ project.statusUpdatedAt|date('d/m/Y') }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.project.list.table.created_at'|trans }}</th>
+                                <td>
+                                    {% if project.createdAt %}
+                                        {{ project.createdAt|date('d/m/Y') }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.project.list.table.updated_at'|trans }}</th>
+                                <td>
+                                    {% if project.updatedAt %}
+                                        {{ project.updatedAt|date('d/m/Y') }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
