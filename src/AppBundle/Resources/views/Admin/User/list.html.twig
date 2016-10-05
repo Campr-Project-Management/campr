@@ -1,9 +1,103 @@
-{% extends 'base.html.twig' %}
-
- {% block body %}
-    {% for user in users %}
-        <p>{{ user.username }}</p>
-    {% else %}
-        <p>No users</p>
-    {% endfor %}
+{% extends 'AppBundle:Admin:base.html.twig' %}
+{% trans_default_domain 'admin' %}
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ 'admin.user.list.title'|trans }}<small>{{ 'admin.user.list.subtitle'|trans }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_user_create') }}">{{ 'admin.user.list.add'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {% for flash_message in app.session.flashBag.get('success') %}
+                        <div class="alert alert-success">
+                            <strong>{{ flash_message }}</strong>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="card-body m-t-0">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'admin.user.list.table.id'|trans }}</th>
+                                    <th>{{ 'admin.user.list.table.username'|trans }}</th>
+                                    <th>{{ 'admin.user.list.table.email'|trans }}</th>
+                                    <th>{{ 'admin.user.list.table.first_name'|trans }}</th>
+                                    <th>{{ 'admin.user.list.table.last_name'|trans }}</th>
+                                    <th>{{ 'admin.user.list.table.phone'|trans }}</th>
+                                    <th>{{ 'admin.user.list.table.enabled'|trans }}</th>
+                                    <th>{{ 'admin.user.list.table.suspended'|trans }}</th>
+                                    <th>{{ 'admin.user.list.table.roles'|trans }}</th>
+                                    <th>{{ 'admin.user.list.table.actions'|trans }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in pagination.items %}
+                                    <tr>
+                                        <td class="f-500 c-cyan">{{ user.id }}</td>
+                                        <td>{{ user.username }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.firstName }}</td>
+                                        <td>{{ user.lastName }}</td>
+                                        <td>{{ user.phone }}</td>
+                                        <td>
+                                            {% if user.isEnabled %}
+                                                <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                            {% else %}
+                                                <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if user.isSuspended %}
+                                                <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                            {% else %}
+                                                <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% for role in user.roles %}
+                                                {{ role }}
+                                            {% endfor %}
+                                        </td>
+                                        <td>
+                                            <a href="{{ path('app_admin_user_edit', {'id': user.id}) }}">
+                                                <div class="col-sm-offset-2 col-sm-10">
+                                                    <button class="btn btn-primary btn-sm">{{ 'admin.user.list.edit'|trans }}</button>
+                                                </div>
+                                            </a>
+                                            <a href="{{ path('app_admin_user_delete', {'id': user.id}) }}">
+                                                <div class="col-sm-offset-2 col-sm-10">
+                                                    <button class="btn btn-danger btn-sm">{{ 'admin.user.list.delete'|trans }}</button>
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td class="f-500 c-cyan">{{ 'admin.user.list.no-users'|trans }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-12">
+                        <div align="center">
+                            {{ knp_pagination_render(pagination, 'AppBundle:Default:pagination.html.twig') }}
+                        </div>
+                    </div>
+                </div>
+                <div id="recent-items-chart" class="flot-chart"></div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

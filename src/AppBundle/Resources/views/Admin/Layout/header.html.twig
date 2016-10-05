@@ -1,3 +1,4 @@
+{% trans_default_domain 'admin' %}
 <header id="header" class="clearfix" data-ma-theme="blue">
     <ul class="h-inner">
         <li class="hi-trigger ma-trigger" data-ma-action="sidebar-open" data-ma-target="#sidebar">
@@ -9,7 +10,7 @@
         </li>
 
         <li class="hi-logo hidden-xs">
-            <a href="index.html">Material Admin</a>
+            <a href="index.html">{{ 'admin.title'|trans }}</a>
         </li>
 
         <li class="pull-right">

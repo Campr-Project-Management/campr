@@ -1,0 +1,103 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+{% trans_default_domain 'admin' %}
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ 'admin.user.edit.title'|trans }}</h2>
+                </div>
+                <div class="card-body m-t-0 card-padding">
+                    {{ form_start(
+                        form,
+                        {
+                            'method': 'POST',
+                            'action': path('app_admin_user_edit', {'id': id}),
+                            'attr': {
+                                'class': 'form-horizontal',
+                                'novalidate': 'novalidate',
+                            },
+                        }
+                    ) }}
+                    {% if form.vars.valid == false %}
+                        <div class="alert alert-danger">
+                            {% for field in form.children %}
+                                {{ form_errors(field) }}
+                                {% if field.children %}
+                                    {% for child in field.children %}
+                                        {{ form_errors(child) }}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                        <div class="form-group">
+                            <label for="firstname" class="col-sm-3 control-label">{{ 'admin.user.create.first_name'|trans }}:</label>
+                            <div class="col-sm-8">
+                                <div class="fg-line">
+                                    {{ form_widget(form.firstName, {'attr': {'id': 'firstname', 'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname" class="col-sm-3 control-label">{{ 'admin.user.create.last_name'|trans }}:</label>
+                            <div class="col-sm-8">
+                                <div class="fg-line">
+                                    {{ form_widget(form.lastName, {'attr': {'id': 'lastname', 'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="col-sm-3 control-label">{{ 'admin.user.create.phone'|trans }}:</label>
+                            <div class="col-sm-8">
+                                <div class="fg-line">
+                                    {{ form_widget(form.phone, {'attr': {'id': 'phone', 'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <label for="roles" class="col-sm-2 control-label"> {{ 'admin.user.create.roles'|trans }}:</label>
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    {% for roleChild in form.roles.children %}
+                                        <div class="checkbox">
+                                            <label>
+                                                {{ form_widget(roleChild) }}
+                                                <i class="input-helper"></i>
+                                                {{ form_label(roleChild) }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="toggle-switch toggle-switch-demo">
+                                    <label for="enabled" class="ts-label">{{ 'admin.user.edit.enabled'|trans }}:</label>
+                                    {{ form_widget(form.isEnabled, {'attr': {'id': 'enabled'}}) }}
+                                    <label for="ts1" class="ts-helper"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="toggle-switch toggle-switch-demo">
+                                    <label for="suspended" class="ts-label">{{ 'admin.user.edit.suspended'|trans }}:</label>
+                                    {{ form_widget(form.isSuspended, {'attr': {'id': 'enabled'}}) }}
+                                    <label for="ts1" class="ts-helper"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div align="center" class="form-group">
+                            <button class="btn btn-primary btn-sm" type="submit">{{ 'admin.user.list.edit'|trans }}</button>
+                            <a class="btn btn-danger btn-sm" href="{{ path('app_admin_user_delete', {'id': id}) }}">
+                                {{ 'admin.user.list.delete'|trans }}
+                            </a>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
