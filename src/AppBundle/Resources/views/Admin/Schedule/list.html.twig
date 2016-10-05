@@ -1,0 +1,62 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+{% trans_default_domain 'admin' %}
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ 'admin.schedule.list.title'|trans }}<small>{{ 'admin.schedule.list.subtitle'|trans }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_schedule_create') }}">{{ 'admin.schedule.list.add'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {% for flash_message in app.session.flashBag.get('success') %}
+                        <div class="alert alert-success">
+                            <strong>{{ flash_message }}</strong>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="card-body m-t-0">
+                    <table class="table table-inner table-vmiddle">
+                        <thead>
+                            <tr>
+                                <th>{{ 'admin.schedule.list.table.id'|trans }}</th>
+                                <th>{{ 'admin.schedule.list.table.name'|trans }}</th>
+                                <th>{{ 'admin.schedule.list.table.actions'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for schedule in schedules %}
+                                <tr>
+                                    <td class="f-500 c-cyan">{{ schedule.id }}</td>
+                                    <td>{{ schedule.name }}</td>
+                                    <td>
+                                        <a href="{{ path('app_admin_schedule_edit', {'id': schedule.id}) }}">
+                                            <button class="btn btn-default">{{ 'admin.schedule.list.edit'|trans }}</button>
+                                        </a>
+                                        <a href="{{ path('app_admin_schedule_delete', {'id': schedule.id}) }}">
+                                            <button class="btn btn-default">{{ 'admin.schedule.list.delete'|trans }}</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td class="f-500 c-cyan">{{ 'admin.schedule.list.no-schedules'|trans }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="recent-items-chart" class="flot-chart"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

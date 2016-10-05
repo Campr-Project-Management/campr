@@ -1,0 +1,76 @@
+admin:
+    general:
+        yes: Yes
+        no: No
+    user:
+        list:
+            title: Users
+            subtitle: List of users
+            table:
+                id: Id
+                username: Username
+                email: Email
+                first_name: First name
+                last_name: Last name
+                phone: Phone
+                enabled: Enabled
+                actions: Actions
+            no-users: No users found!
+            add: Add new user
+            edit: Edit
+            delete: Delete
+        create:
+            username: Username
+            email: Email
+            password:
+                first: Password
+                repeat: Repeat password
+            first_name: First name
+            last_name: Last name
+            phone: Phone
+            create: Create
+            success: User successfully created!
+        edit:
+            success: User successfully edited!
+        delete:
+            success: User successfully deleted!
+    status:
+        list:
+            title: Status
+            subtitle: Status list
+            add: Add new status
+            table:
+                id: Id
+                name: Name
+                actions: Actions
+            edit: Edit
+            delete: Delete
+            no-status: Status list empty
+        create:
+            name: Status name
+            create: Create
+            success: Status successfully added!
+        edit:
+            success: Status successfully edited!
+        delete:
+            success: Status successfully deleted!
+    schedule:
+        list:
+            title: Schedules
+            subtitle: List of schedules
+            add: Add new schedule
+            table:
+                id: Id
+                name: Name
+                actions: Actions
+            edit: Edit
+            delete: Delete
+            no-schedules: No schedules found!
+        create:
+            name: Schedule name
+            create: Create
+            success: Schedule successfully added!
+        edit:
+            success: Schedule successfully edited!
+        delete:
+            success: Schedule successfully deleted!
