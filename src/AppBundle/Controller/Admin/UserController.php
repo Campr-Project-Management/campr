@@ -7,14 +7,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
+use AppBundle\Form\User\CreateType;
+use AppBundle\Form\User\EditType;
 
 /**
- * @Route("/admin/users")
+ * @Route("/admin/user")
  */
 class UserController extends Controller
 {
     /**
-     * @Route("/list", name="app_admin_users_list")
+     * @Route("/list", name="app_admin_user_list")
      * @Method({"GET"})
      *
      * @param Request $request
@@ -27,23 +29,121 @@ class UserController extends Controller
             ->findAll()
         ;
 
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $users,
+            $request->get('page', 1),
+            $this->getParameter('admin.per_page')
+        );
+
         return $this->render(
-            'AppBundle:Admin\User:list.html.twig',
+            'AppBundle:Admin/User:list.html.twig',
             [
-                'users' => $users,
+                'pagination' => $pagination,
+            ]
+        );
+    }
+    /**
+     * @Route("/create", name="app_admin_user_create")
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     */
+    public function createAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(CreateType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();
+            $em->persist($user);
+            $em->flush();
+
+            $this
+                ->get('session')
+                ->getFlashBag()
+                ->set(
+                    'success',
+                    $this
+                        ->get('translator')
+                        ->trans('admin.user.create.success', [], 'admin')
+                )
+            ;
+
+            return $this->redirectToRoute('app_admin_user_list');
+        }
+
+        return $this->render(
+            'AppBundle:Admin/User:create.html.twig',
+            [
+                'form' => $form->createView(),
             ]
         );
     }
 
-    public function createAction()
+    /**
+     * @Route("/edit/{id}", name="app_admin_user_edit")
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     */
+    public function editAction(User $user, Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(EditType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($user);
+            $em->flush();
+
+            $this
+                ->get('session')
+                ->getFlashBag()
+                ->set(
+                    'success',
+                    $this
+                        ->get('translator')
+                        ->trans('admin.user.edit.success', [], 'admin')
+                )
+            ;
+
+            return $this->redirectToRoute('app_admin_user_list');
+        }
+
+        return $this->render(
+            'AppBundle:Admin/User:edit.html.twig',
+            [
+                'id' => $user->getId(),
+                'form' => $form->createView(),
+            ]
+        );
     }
 
-    public function editAction()
+    /**
+     * @Route("/delete/{id}", name="app_admin_user_delete")
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     */
+    public function deleteAction(User $user)
     {
-    }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($user);
+        $em->flush();
 
-    public function deleteAction()
-    {
+        $this
+            ->get('session')
+            ->getFlashBag()
+            ->set(
+                'success',
+                $this
+                    ->get('translator')
+                    ->trans('admin.user.delete.success', [], 'admin')
+            )
+        ;
+
+        return $this->redirectToRoute('app_admin_user_list');
     }
 }

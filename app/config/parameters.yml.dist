@@ -29,3 +29,10 @@ parameters:
     jwt_token_ttl: 86400
     jwt_token_refresh_ttl: 2592000
     jwt_token_refresh_ttl_update: true
+
+    #paginator
+    admin.per_page: 10
+
+    #misc
+    activation_token_expiration: P1D  // in days
+    reset_token_expiration: P1D       // in days
