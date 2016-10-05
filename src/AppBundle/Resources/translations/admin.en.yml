@@ -2,6 +2,14 @@ admin:
     general:
         yes: Yes
         no: No
+    title: Campr Administration
+    general:
+        yes: Yes
+        no: No
+    sidebar:
+        menu:
+            home: Home
+            users: Users
     user:
         list:
             title: Users
@@ -14,12 +22,15 @@ admin:
                 last_name: Last name
                 phone: Phone
                 enabled: Enabled
+                suspended: Suspended
+                roles: Roles
                 actions: Actions
             no-users: No users found!
             add: Add new user
             edit: Edit
             delete: Delete
         create:
+            title: Create new user
             username: Username
             email: Email
             password:
@@ -28,9 +39,17 @@ admin:
             first_name: First name
             last_name: Last name
             phone: Phone
+            roles: Roles
             create: Create
             success: User successfully created!
         edit:
+            title: Edit user
+            enabled: Enabled
+            suspended: Suspended
+            role:
+                user: ROLE_USER
+                admin: ROLE_ADMIN
+                superadmin: ROLE_SUPER_ADMIN
             success: User successfully edited!
         delete:
             success: User successfully deleted!
