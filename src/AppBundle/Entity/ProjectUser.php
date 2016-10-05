@@ -22,6 +22,16 @@ class ProjectUser
     private $id;
 
     /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * })
+     */
+    private $user;
+
+    /**
      * @var Project
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project")
@@ -32,14 +42,14 @@ class ProjectUser
     private $project;
 
     /**
-     * @var User
+     * @var ProjectCategory
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectCategory")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="project_category_id", referencedColumnName="id")
      * })
      */
-    private $user;
+    private $projectCategory;
 
     /**
      * @var ProjectRole|null
@@ -76,7 +86,7 @@ class ProjectUser
      *
      * @ORM\Column(name="show_in_resources", type="boolean", nullable=false, options={"default": 1})
      */
-    private $showInResources = 1;
+    private $showInResources = true;
 
     /**
      * @var bool
@@ -105,6 +115,11 @@ class ProjectUser
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+    
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     /**
      * Get id.
@@ -237,37 +252,13 @@ class ProjectUser
     }
 
     /**
-     * Set project.
-     *
-     * @param \AppBundle\Entity\Project $project
-     *
-     * @return ProjectUser
-     */
-    public function setProject(\AppBundle\Entity\Project $project = null)
-    {
-        $this->project = $project;
-
-        return $this;
-    }
-
-    /**
-     * Get project.
-     *
-     * @return \AppBundle\Entity\Project
-     */
-    public function getProject()
-    {
-        return $this->project;
-    }
-
-    /**
      * Set user.
      *
-     * @param \AppBundle\Entity\ProjectCategory $user
+     * @param User $user
      *
-     * @return ProjectUser
+     * @return User
      */
-    public function setUser(\AppBundle\Entity\ProjectCategory $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -277,7 +268,7 @@ class ProjectUser
     /**
      * Get user.
      *
-     * @return \AppBundle\Entity\ProjectCategory
+     * @return User
      */
     public function getUser()
     {
@@ -285,13 +276,61 @@ class ProjectUser
     }
 
     /**
-     * Set projectRole.
+     * Set project.
      *
-     * @param \AppBundle\Entity\ProjectRole $projectRole
+     * @param Project $project
      *
      * @return ProjectUser
      */
-    public function setProjectRole(\AppBundle\Entity\ProjectRole $projectRole = null)
+    public function setProject(Project $project = null)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get project.
+     *
+     * @return Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * Set projectCategory.
+     *
+     * @param ProjectCategory $projectCategory
+     *
+     * @return ProjectCategory
+     */
+    public function setProjectCategory(ProjectCategory $projectCategory = null)
+    {
+        $this->projectCategory = $projectCategory;
+
+        return $this;
+    }
+
+    /**
+     * Get projectCategory.
+     *
+     * @return ProjectCategory
+     */
+    public function getProjectCategory()
+    {
+        return $this->projectCategory;
+    }
+
+    /**
+     * Set projectRole.
+     *
+     * @param ProjectRole $projectRole
+     *
+     * @return ProjectUser
+     */
+    public function setProjectRole(ProjectRole $projectRole = null)
     {
         $this->projectRole = $projectRole;
 
@@ -301,7 +340,7 @@ class ProjectUser
     /**
      * Get projectRole.
      *
-     * @return \AppBundle\Entity\ProjectRole
+     * @return ProjectRole
      */
     public function getProjectRole()
     {
@@ -311,11 +350,11 @@ class ProjectUser
     /**
      * Set projectDepartment.
      *
-     * @param \AppBundle\Entity\ProjectDepartment $projectDepartment
+     * @param ProjectDepartment $projectDepartment
      *
      * @return ProjectUser
      */
-    public function setProjectDepartment(\AppBundle\Entity\ProjectDepartment $projectDepartment = null)
+    public function setProjectDepartment(ProjectDepartment $projectDepartment = null)
     {
         $this->projectDepartment = $projectDepartment;
 
@@ -325,7 +364,7 @@ class ProjectUser
     /**
      * Get projectDepartment.
      *
-     * @return \AppBundle\Entity\ProjectDepartment
+     * @return ProjectDepartment
      */
     public function getProjectDepartment()
     {
@@ -335,11 +374,11 @@ class ProjectUser
     /**
      * Set projectTeam.
      *
-     * @param \AppBundle\Entity\ProjectTeam $projectTeam
+     * @param ProjectTeam $projectTeam
      *
      * @return ProjectUser
      */
-    public function setProjectTeam(\AppBundle\Entity\ProjectTeam $projectTeam = null)
+    public function setProjectTeam(ProjectTeam $projectTeam = null)
     {
         $this->projectTeam = $projectTeam;
 
@@ -349,7 +388,7 @@ class ProjectUser
     /**
      * Get projectTeam.
      *
-     * @return \AppBundle\Entity\ProjectTeam
+     * @return ProjectTeam
      */
     public function getProjectTeam()
     {

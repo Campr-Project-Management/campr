@@ -1,0 +1,101 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ 'admin.project_user.list.title'|trans }}<small>{{ 'admin.project_user.list.subtitle'|trans }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_project_user_create') }}">{{ 'admin.project_user.list.add'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {% for flash_message in app.session.flashBag.get('success') %}
+                        <div class="alert alert-success m-t-15">
+                            <strong>{{ flash_message }}</strong>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'admin.project_user.list.table.id'|trans }}</th>
+                                    <th>{{ 'admin.project_user.list.table.user'|trans }}</th>
+                                    <th>{{ 'admin.project_user.list.table.project'|trans }}</th>
+                                    <th>{{ 'admin.project_user.list.table.project_category'|trans }}</th>
+                                    <th>{{ 'admin.project_user.list.table.project_role'|trans }}</th>
+                                    <th>{{ 'admin.project_user.list.table.project_department'|trans }}</th>
+                                    <th>{{ 'admin.project_user.list.table.project_team'|trans }}</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for project_user in project_users %}
+                                <tr>
+                                    <td class="f-500 c-cyan">{{ project_user.id }}</td>
+                                    <td>
+                                        {% if project_user.user %}
+                                            {{ project_user.user.username }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if project_user.project %}
+                                            {{ project_user.project.name }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if project_user.projectCategory %}
+                                            {{ project_user.projectCategory.name }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if project_user.projectRole %}
+                                            {{ project_user.projectRole.name }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if project_user.projectDepartment %}
+                                            {{ project_user.projectDepartment.name }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if project_user.projectTeam %}
+                                            {{ project_user.projectTeam.name }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% include '@App/Admin/Layout/Partials/form_list_buttons.html.twig'
+                                            with {
+                                                'show_path': 'app_admin_project_user_show',
+                                                'edit_path': 'app_admin_project_user_edit',
+                                                'delete_path': 'app_admin_project_user_delete',
+                                                'id': project_user.id,
+                                            }
+                                        %}
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="8" class="f-500 c-cyan">{{ 'admin.project_user.list.not_found'|trans }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
