@@ -110,5 +110,20 @@
                 {{ 'admin.impact.list.title'|trans }}
             </a>
         </li>
+        <li class="sub-menu">
+            <a href="{{ path('app_admin_risk_list') }}" data-ma-action="submenu-toggle"><i class="zmdi zmdi-folder-outline"></i>{{ 'admin.risk.list.title'|trans }}
+            </a>
+            <ul>
+                <li><a href="{{ path('app_admin_risk_list') }}">{{ 'admin.risk.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_risk_category_list') }}">{{ 'admin.risk_category.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_risk_strategy_list') }}">{{ 'admin.risk_strategy.list.title'|trans }}</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="{{ path('app_admin_status_list') }}">
+                <i class="zmdi zmdi-power-input"></i>
+                {{ 'admin.status.list.title'|trans }}
+            </a>
+        </li>
     </ul>
 </aside>
