@@ -6,38 +6,38 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Status;
-use AppBundle\Form\Status\CreateType;
+use AppBundle\Entity\Raci;
+use AppBundle\Form\Raci\CreateType;
 
 /**
- * @Route("/admin/status")
+ * @Route("/admin/raci")
  */
-class StatusController extends Controller
+class RaciController extends Controller
 {
     /**
-     * @Route("/list", name="app_admin_status_list")
+     * @Route("/list", name="app_admin_raci_list")
      * @Method({"GET"})
      *
      * @param Request $request
      */
     public function listAction(Request $request)
     {
-        $statuses = $this
+        $raci = $this
             ->getDoctrine()
-            ->getRepository(Status::class)
+            ->getRepository(Raci::class)
             ->findAll()
         ;
 
         return $this->render(
-            'AppBundle:Admin/Status:list.html.twig',
+            'AppBundle:Admin/Raci:list.html.twig',
             [
-                'statuses' => $statuses,
+                'raci' => $raci,
             ]
         );
     }
 
     /**
-     * @Route("/create", name="app_admin_status_create")
+     * @Route("/create", name="app_admin_raci_create")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -59,15 +59,15 @@ class StatusController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.status.create.success', [], 'admin')
+                        ->trans('admin.raci.create.success', [], 'admin')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_status_list');
+            return $this->redirectToRoute('app_admin_raci_list');
         }
 
         return $this->render(
-            'AppBundle:Admin/Status:create.html.twig',
+            'AppBundle:Admin/Raci:create.html.twig',
             [
                 'form' => $form->createView(),
             ]
@@ -75,19 +75,19 @@ class StatusController extends Controller
     }
 
     /**
-     * @Route("/edit/{id}", name="app_admin_status_edit")
+     * @Route("/edit/{id}", name="app_admin_raci_edit")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
      */
-    public function editAction(Status $status, Request $request)
+    public function editAction(Raci $raci, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(CreateType::class, $status);
+        $form = $this->createForm(CreateType::class, $raci);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($status);
+            $em->persist($raci);
             $em->flush();
 
             $this
@@ -97,32 +97,32 @@ class StatusController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.status.edit.success', [], 'admin')
+                        ->trans('admin.raci.edit.success', [], 'admin')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_status_list');
+            return $this->redirectToRoute('app_admin_raci_list');
         }
 
         return $this->render(
-            'AppBundle:Admin/Status:edit.html.twig',
+            'AppBundle:Admin/Raci:edit.html.twig',
             [
-                'id' => $status->getId(),
+                'id' => $raci->getId(),
                 'form' => $form->createView(),
             ]
         );
     }
 
     /**
-     * @Route("/delete/{id}", name="app_admin_status_delete")
+     * @Route("/delete/{id}", name="app_admin_raci_delete")
      * @Method({"GET"})
      *
      * @param Request $request
      */
-    public function deleteAction(Status $status)
+    public function deleteAction(Raci $raci)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($status);
+        $em->remove($raci);
         $em->flush();
 
         $this
@@ -132,10 +132,10 @@ class StatusController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.status.delete.success', [], 'admin')
+                    ->trans('admin.raci.delete.success', [], 'admin')
             )
         ;
 
-        return $this->redirectToRoute('app_admin_status_list');
+        return $this->redirectToRoute('app_admin_raci_list');
     }
 }

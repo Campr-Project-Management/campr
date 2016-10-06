@@ -47,10 +47,12 @@ admin:
             delete: Delete
             no-status: Status list empty
         create:
+            title: Create new status
             name: Status name
             create: Create
             success: Status successfully added!
         edit:
+            title: Edit status
             success: Status successfully edited!
         delete:
             success: Status successfully deleted!
@@ -67,10 +69,72 @@ admin:
             delete: Delete
             no-schedules: No schedules found!
         create:
+            title: Create new schedule
             name: Schedule name
             create: Create
             success: Schedule successfully added!
         edit:
+            title: Edit schedule
             success: Schedule successfully edited!
         delete:
             success: Schedule successfully deleted!
+    raci:
+        list:
+            title: Raci
+            subtitle: List of raci
+            add: Add new raci
+            table:
+                id: Id
+                workpackage: WorkPackage
+                user: User
+                data: Data
+                actions: Actions
+            edit: Edit
+            delete: Delete
+            no-raci: No raci found!
+        create:
+            title: Create RACI
+            workpackage: WorkPackage
+            user: User
+            create: Create
+            data: Data
+            success: Raci successfully added!
+        edit:
+            title: Edit RACI
+            success: Raci successfully edited!
+        delete:
+            success: Raci successfully deleted!
+    workpackage:
+        list:
+            title: WorkPackage
+            subtitle: List of workpackages
+            add: Add new workpackage
+            table:
+                id: Id
+                puid: Puid
+                name: Name
+                responsible: Responsible
+                schedule_start: Schedule Start
+                schedule_finish: Schedule Finish
+                actions: Actions
+            edit: Edit
+            delete: Delete
+            no-workpackages: No workpackages found!
+        create:
+            title: Create new workpackage
+            name: Name
+            puid: Puid
+            parent: Parent
+            color: Color Status
+            responsible: Responsible
+            schedule_start: Scheduled Start At
+            schedule_finish: Scheduled Finish At
+            content: Content
+            create: Create
+            data: Data
+            success: WorkPackage successfully added!
+        edit:
+            title: WorkPackage edit
+            success: WorkPackage successfully edited!
+        delete:
+            success: WorkPackage successfully deleted!
