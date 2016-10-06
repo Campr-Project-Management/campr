@@ -7,6 +7,7 @@
             'method': 'POST',
             'action': path('app_admin_schedule_create'),
             'attr': {
+                'class': 'form-horizontal',
                 'novalidate': 'novalidate',
             },
         }
@@ -18,12 +19,27 @@
             {% endfor %}
         </div>
     {% endif %}
-    <div class="form-group">
-        <label for="name">{{ 'admin.schedule.create.name'|trans }}:</label>
-        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ 'admin.schedule.create.title'|trans }}</h2>
+                </div>
+                <div class="card-body m-t-0 card-padding">
+                    <div class="form-group">
+                        <label for="name" class="col-sm-2 control-label">{{ 'admin.schedule.create.name'|trans }}:</label>
+                        <div class="col-sm-8">
+                            <div class="fg-line">
+                                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div align="center" class="form-group">
+                        <button class="btn btn-primary btn-sm" type="submit">{{ 'admin.schedule.create.create'|trans }}</button>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <button class="btn btn-default" type="submit">{{ 'admin.schedule.create.create'|trans }}</button>
-    </div>
-    {{ form_end(form) }}
 {% endblock %}

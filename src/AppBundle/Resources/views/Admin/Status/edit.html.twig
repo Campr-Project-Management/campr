@@ -7,6 +7,7 @@
             'method': 'POST',
             'action': path('app_admin_status_edit', {'id': id}),
             'attr': {
+                'class': 'form-horizontal',
                 'novalidate': 'novalidate',
             },
         }
@@ -18,15 +19,30 @@
             {% endfor %}
         </div>
     {% endif %}
-    <div class="form-group">
-        <label for="name">{{ 'admin.status.create.name'|trans }}:</label>
-        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
-    </div>
-    <div class="form-group">
-        <button class="btn btn-default" type="submit">{{ 'admin.status.list.edit'|trans }}</button>
-        <a class="btn btn-default" href="{{ path('app_admin_status_delete', {'id': id}) }}">
-            {{ 'admin.status.list.delete'|trans }}
-        </a>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ 'admin.status.edit.title'|trans }}</h2>
+                </div>
+                <div class="card-body m-t-0 card-padding">
+                    <div class="form-group">
+                        <label for="name" class="col-sm-2 control-label">{{ 'admin.status.create.name'|trans }}:</label>
+                        <div class="col-sm-8">
+                            <div class="fg-line">
+                                {{ form_widget(form.name, {'attr': {'id': 'name', 'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div align="center" class="form-group">
+                        <button class="btn btn-primary btn-sm" type="submit">{{ 'admin.status.list.edit'|trans }}</button>
+                        <a class="btn btn-danger btn-sm" href="{{ path('app_admin_status_delete', {'id': id}) }}">
+                            {{ 'admin.status.list.delete'|trans }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     {{ form_end(form) }}
 {% endblock %}

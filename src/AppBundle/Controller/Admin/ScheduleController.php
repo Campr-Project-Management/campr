@@ -10,7 +10,7 @@ use AppBundle\Entity\Schedule;
 use AppBundle\Form\Schedule\CreateType;
 
 /**
- * @Route("/admin/schedules")
+ * @Route("/admin/schedule")
  */
 class ScheduleController extends Controller
 {
@@ -29,7 +29,7 @@ class ScheduleController extends Controller
         ;
 
         return $this->render(
-            'AppBundle:Admin\Schedule:list.html.twig',
+            'AppBundle:Admin/Schedule:list.html.twig',
             [
                 'schedules' => $schedules,
             ]
@@ -67,7 +67,7 @@ class ScheduleController extends Controller
         }
 
         return $this->render(
-            'AppBundle:Admin\Schedule:create.html.twig',
+            'AppBundle:Admin/Schedule:create.html.twig',
             [
                 'form' => $form->createView(),
             ]
@@ -105,7 +105,7 @@ class ScheduleController extends Controller
         }
 
         return $this->render(
-            'AppBundle:Admin\Schedule:edit.html.twig',
+            'AppBundle:Admin/Schedule:edit.html.twig',
             [
                 'id' => $schedule->getId(),
                 'form' => $form->createView(),

@@ -19,7 +19,7 @@
     "autosize": "^3.0.15",
     "bootstrap-select": "^1.10.0",
     "bower": "*",
-    "eonasdan-bootstrap-datetimepicker": "^4.17.37",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.43",
     "farbtastic": "^2.0.0-alpha.1",
     "flot-orderBars": "emmerich/flot-orderBars",
     "flot.curvedlines": "MichaelZinsmaier/CurvedLines#~1.1.1",
