@@ -6,38 +6,38 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Status;
-use AppBundle\Form\Status\CreateType;
+use AppBundle\Entity\WorkPackage;
+use AppBundle\Form\WorkPackage\CreateType;
 
 /**
- * @Route("/admin/status")
+ * @Route("/admin/workpackage")
  */
-class StatusController extends Controller
+class WorkPackageController extends Controller
 {
     /**
-     * @Route("/list", name="app_admin_status_list")
+     * @Route("/list", name="app_admin_workpackage_list")
      * @Method({"GET"})
      *
      * @param Request $request
      */
     public function listAction(Request $request)
     {
-        $statuses = $this
+        $workPackages = $this
             ->getDoctrine()
-            ->getRepository(Status::class)
+            ->getRepository(WorkPackage::class)
             ->findAll()
         ;
 
         return $this->render(
-            'AppBundle:Admin/Status:list.html.twig',
+            'AppBundle:Admin/WorkPackage:list.html.twig',
             [
-                'statuses' => $statuses,
+                'workPackages' => $workPackages,
             ]
         );
     }
 
     /**
-     * @Route("/create", name="app_admin_status_create")
+     * @Route("/create", name="app_admin_workpackage_create")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -59,15 +59,15 @@ class StatusController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.status.create.success', [], 'admin')
+                        ->trans('admin.workpackage.create.success', [], 'admin')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_status_list');
+            return $this->redirectToRoute('app_admin_workpackage_list');
         }
 
         return $this->render(
-            'AppBundle:Admin/Status:create.html.twig',
+            'AppBundle:Admin/WorkPackage:create.html.twig',
             [
                 'form' => $form->createView(),
             ]
@@ -75,19 +75,20 @@ class StatusController extends Controller
     }
 
     /**
-     * @Route("/edit/{id}", name="app_admin_status_edit")
+     * @Route("/edit/{id}", name="app_admin_workpackage_edit")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
      */
-    public function editAction(Status $status, Request $request)
+    public function editAction(WorkPackage $workPackage, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(CreateType::class, $status);
+        $form = $this->createForm(CreateType::class, $workPackage);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($status);
+            $workPackage->setUpdatedAt(new \DateTime());
+            $em->persist($workPackage);
             $em->flush();
 
             $this
@@ -97,32 +98,32 @@ class StatusController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.status.edit.success', [], 'admin')
+                        ->trans('admin.workpackage.edit.success', [], 'admin')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_status_list');
+            return $this->redirectToRoute('app_admin_workpackage_list');
         }
 
         return $this->render(
-            'AppBundle:Admin/Status:edit.html.twig',
+            'AppBundle:Admin/WorkPackage:edit.html.twig',
             [
-                'id' => $status->getId(),
+                'id' => $workPackage->getId(),
                 'form' => $form->createView(),
             ]
         );
     }
 
     /**
-     * @Route("/delete/{id}", name="app_admin_status_delete")
+     * @Route("/delete/{id}", name="app_admin_workpackage_delete")
      * @Method({"GET"})
      *
      * @param Request $request
      */
-    public function deleteAction(Status $status)
+    public function deleteAction(WorkPackage $workPackage)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($status);
+        $em->remove($workPackage);
         $em->flush();
 
         $this
@@ -132,10 +133,10 @@ class StatusController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.status.delete.success', [], 'admin')
+                    ->trans('admin.workpackage.delete.success', [], 'admin')
             )
         ;
 
-        return $this->redirectToRoute('app_admin_status_list');
+        return $this->redirectToRoute('app_admin_workpackage_list');
     }
 }

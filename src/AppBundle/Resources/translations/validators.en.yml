@@ -23,3 +23,12 @@ validation:
         schedule:
             name:
                 not_blank: The name should not be blank
+        raci:
+            data:
+                not_blank: The data field should not be blank
+        workpackage:
+            puid:
+                not_blank: PUID should not be blank
+            puid:
+                not_blank: The name should not be blank
+
