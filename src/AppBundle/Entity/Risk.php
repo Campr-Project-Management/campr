@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Risk.
@@ -74,6 +75,8 @@ class Risk
     /**
      * @var RiskStrategy|null
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\RiskStrategy")
      * @ORM\JoinColumn(name="risk_strategy_id")
      */
@@ -89,6 +92,8 @@ class Risk
     /**
      * @var RiskCategory|null
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\RiskCategory")
      * @ORM\JoinColumn(name="risk_category_id")
      */
@@ -96,6 +101,8 @@ class Risk
 
     /**
      * @var User|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id")
@@ -105,12 +112,16 @@ class Risk
     /**
      * @var \DateTime|null
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="due_date", type="date", nullable=true)
      */
     private $dueDate;
 
     /**
      * @var Status|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Status")
      * @ORM\JoinColumn(name="status_id")
@@ -130,6 +141,14 @@ class Risk
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     /**
      * Get id.
@@ -334,6 +353,17 @@ class Risk
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("dueDate")
+     *
+     * @return string
+     */
+    public function getDueDateFormatted()
+    {
+        return $this->dueDate ? $this->dueDate->format('d/m/Y') : null;
+    }
+
+    /**
      * Set createdAt.
      *
      * @param \DateTime $createdAt
@@ -430,6 +460,17 @@ class Risk
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("riskStrategy")
+     *
+     * @return string
+     */
+    public function getRiskStrategyName()
+    {
+        return $this->riskStrategy ? $this->riskStrategy->getName() : null;
+    }
+
+    /**
      * Set riskCategory.
      *
      * @param RiskCategory $riskCategory
@@ -451,6 +492,17 @@ class Risk
     public function getRiskCategory()
     {
         return $this->riskCategory;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("riskCategory")
+     *
+     * @return string
+     */
+    public function getRiskCategoryName()
+    {
+        return $this->riskCategory ? $this->riskCategory->getName() : null;
     }
 
     /**
@@ -478,6 +530,17 @@ class Risk
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibility")
+     *
+     * @return string
+     */
+    public function getResponsibilityName()
+    {
+        return $this->responsibility ? $this->responsibility->getUsername() : null;
+    }
+
+    /**
      * Set status.
      *
      * @param Status $status
@@ -499,5 +562,16 @@ class Risk
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("status")
+     *
+     * @return string
+     */
+    public function getStatusName()
+    {
+        return $this->status ? $this->status->getName() : null;
     }
 }
