@@ -1,0 +1,124 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.wppcwct.list.title'|trans }}<small>{{ workProjectTypes.name }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_wppcwct_create') }}">{{ 'admin.wppcwct.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_wppcwct_edit', {'id': workProjectTypes.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_wppcwct_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body m-t-10 card-padding">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <th>{{ 'admin.wppcwct.list.table.id'|trans }}</th>
+                                <td>{{ workProjectTypes.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.wppcwct.list.table.name'|trans }}</th>
+                                <td>{{ workProjectTypes.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.wppcwct.list.table.workpackage'|trans }}</th>
+                                <td>{{ workProjectTypes.workPackage.name|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.wppcwct.list.table.projectworkcosttype'|trans }}</th>
+                                <td>{{ workprojecttype.projectWorkCostType.name|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.wppcwct.list.table.base'|trans }}</th>
+                                <td>{{ workProjectTypes.base|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.wppcwct.list.table.change'|trans }}</th>
+                                <td>{{ workProjectTypes.change|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.wppcwct.list.table.actual'|trans }}</th>
+                                <td>{{ workProjectTypes.actual|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.wppcwct.list.table.remaining'|trans }}</th>
+                                <td>{{ workProjectTypes.remaining|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.wppcwct.list.table.forecast'|trans }}</th>
+                                <td>{{ workProjectTypes.forecast|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.wppcwct.list.table.is_generic'|trans }}</th>
+                                {% if workProjectTypes.isGeneric %}
+                                    <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                {% else %}
+                                    <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                {% endif %}
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.wppcwct.list.table.is_inactive'|trans }}</th>
+                                {% if workProjectTypes.isInactive %}
+                                    <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                {% else %}
+                                    <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                {% endif %}
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.wppcwct.list.table.is_enterprise'|trans }}</th>
+                                {% if workProjectTypes.isEnterprise %}
+                                    <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                {% else %}
+                                    <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                {% endif %}
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.wppcwct.list.table.is_cost_resource'|trans }}</th>
+                                {% if workProjectTypes.isCostResource %}
+                                    <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                {% else %}
+                                    <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                {% endif %}
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.wppcwct.list.table.is_budget'|trans }}</th>
+                                {% if workProjectTypes.isBudget %}
+                                    <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                {% else %}
+                                    <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                {% endif %}                            </tr>
+                            <tr>
+                                <th>{{ 'admin.workpackage.list.table.created_at'|trans }}</th>
+                                <td>{{ workProjectTypes.createdAt|date('d/m/Y') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.wppcwct.list.table.updated_at'|trans }}</th>
+                                <td>{{ workProjectTypes.updatedAt|date('d/m/Y')  }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
