@@ -1,0 +1,236 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
+/**
+ * Calendar.
+ *
+ * @ORM\Table(name="calendar")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CalendarRepository")
+ */
+class Calendar
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_based", type="boolean", nullable=false, options={"default"= 1})
+     */
+    private $isBased = true;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_baseline", type="boolean", nullable=false)
+     */
+    private $isBaseline;
+
+    /**
+     * @var Calendar
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar")
+     * @ORM\JoinColumn(name="parent_id")
+     */
+    private $parent;
+
+    /**
+     * @var ArrayCollection|Day[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Day", mappedBy="calendar")
+     */
+    private $days;
+
+    /**
+     * @var Calendar|null
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project")
+     * @ORM\JoinColumn(name="project_id")
+     */
+    private $project;
+
+    public function __construct()
+    {
+        $days = new ArrayCollection();
+    }
+
+    /**
+     * Get id.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name.
+     *
+     * @param string $name
+     *
+     * @return Calendar
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set isBased.
+     *
+     * @param bool $isBased
+     *
+     * @return Calendar
+     */
+    public function setIsBased($isBased)
+    {
+        $this->isBased = $isBased;
+
+        return $this;
+    }
+
+    /**
+     * Get isBased.
+     *
+     * @return bool
+     */
+    public function getIsBased()
+    {
+        return $this->isBased;
+    }
+
+    /**
+     * Set isBaseline.
+     *
+     * @param bool $isBaseline
+     *
+     * @return Calendar
+     */
+    public function setIsBaseline($isBaseline)
+    {
+        $this->isBaseline = $isBaseline;
+
+        return $this;
+    }
+
+    /**
+     * Get isBaseline.
+     *
+     * @return bool
+     */
+    public function getIsBaseline()
+    {
+        return $this->isBaseline;
+    }
+
+    /**
+     * Set parent.
+     *
+     * @param Calendar $parent
+     *
+     * @return Calendar
+     */
+    public function setParent(Calendar $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent.
+     *
+     * @return Calendar
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Add day.
+     *
+     * @param Day $day
+     *
+     * @return Calendar
+     */
+    public function addDay(Day $day)
+    {
+        $this->days[] = $day;
+
+        return $this;
+    }
+
+    /**
+     * Remove day.
+     *
+     * @param Day $day
+     */
+    public function removeDay(Day $day)
+    {
+        $this->days->removeElement($day);
+    }
+
+    /**
+     * Get days.
+     *
+     * @return ArrayCollection
+     */
+    public function getDays()
+    {
+        return $this->days;
+    }
+
+    /**
+     * Set project.
+     *
+     * @param Project $project
+     *
+     * @return Calendar
+     */
+    public function setProject(Project $project = null)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get project.
+     *
+     * @return Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+}
