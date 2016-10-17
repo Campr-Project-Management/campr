@@ -79,16 +79,16 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_enabled", type="boolean", nullable=false)
+     * @ORM\Column(name="is_enabled", type="boolean", nullable=false, options={"default"=0})
      */
-    private $isEnabled = '0';
+    private $isEnabled = false;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_suspended", type="boolean", nullable=false)
+     * @ORM\Column(name="is_suspended", type="boolean", nullable=false, options={"default"=0})
      */
-    private $isSuspended = '0';
+    private $isSuspended = false;
 
     /**
      * @var string

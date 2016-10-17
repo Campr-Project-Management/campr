@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Project.
@@ -116,6 +117,13 @@ class Project
     private $portfolio;
 
     /**
+     * @var ArrayCollection|Calendar[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Calendar", mappedBy="project")
+     */
+    private $calendars;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="status_updated_at", type="datetime", nullable=true)
@@ -142,6 +150,11 @@ class Project
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    public function __construct()
+    {
+        $calendars = new ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -300,11 +313,11 @@ class Project
     /**
      * Set sponsor.
      *
-     * @param \AppBundle\Entity\User $sponsor
+     * @param User $sponsor
      *
      * @return Project
      */
-    public function setSponsor(\AppBundle\Entity\User $sponsor = null)
+    public function setSponsor(User $sponsor = null)
     {
         $this->sponsor = $sponsor;
 
@@ -314,7 +327,7 @@ class Project
     /**
      * Get sponsor.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getSponsor()
     {
@@ -324,11 +337,11 @@ class Project
     /**
      * Set manager.
      *
-     * @param \AppBundle\Entity\User $manager
+     * @param User $manager
      *
      * @return Project
      */
-    public function setManager(\AppBundle\Entity\User $manager = null)
+    public function setManager(User $manager = null)
     {
         $this->manager = $manager;
 
@@ -338,7 +351,7 @@ class Project
     /**
      * Get manager.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getManager()
     {
@@ -348,11 +361,11 @@ class Project
     /**
      * Set company.
      *
-     * @param \AppBundle\Entity\Company $company
+     * @param Company $company
      *
      * @return Project
      */
-    public function setCompany(\AppBundle\Entity\Company $company = null)
+    public function setCompany(Company $company = null)
     {
         $this->company = $company;
 
@@ -362,7 +375,7 @@ class Project
     /**
      * Get company.
      *
-     * @return \AppBundle\Entity\Company
+     * @return Company
      */
     public function getCompany()
     {
@@ -372,11 +385,11 @@ class Project
     /**
      * Set projectComplexity.
      *
-     * @param \AppBundle\Entity\ProjectComplexity $projectComplexity
+     * @param ProjectComplexity $projectComplexity
      *
      * @return Project
      */
-    public function setProjectComplexity(\AppBundle\Entity\ProjectComplexity $projectComplexity = null)
+    public function setProjectComplexity(ProjectComplexity $projectComplexity = null)
     {
         $this->projectComplexity = $projectComplexity;
 
@@ -386,7 +399,7 @@ class Project
     /**
      * Get projectComplexity.
      *
-     * @return \AppBundle\Entity\ProjectComplexity
+     * @return ProjectComplexity
      */
     public function getProjectComplexity()
     {
@@ -396,11 +409,11 @@ class Project
     /**
      * Set projectCategory.
      *
-     * @param \AppBundle\Entity\ProjectCategory $projectCategory
+     * @param ProjectCategory $projectCategory
      *
      * @return Project
      */
-    public function setProjectCategory(\AppBundle\Entity\ProjectCategory $projectCategory = null)
+    public function setProjectCategory(ProjectCategory $projectCategory = null)
     {
         $this->projectCategory = $projectCategory;
 
@@ -410,7 +423,7 @@ class Project
     /**
      * Get projectCategory.
      *
-     * @return \AppBundle\Entity\ProjectCategory
+     * @return ProjectCategory
      */
     public function getProjectCategory()
     {
@@ -420,11 +433,11 @@ class Project
     /**
      * Set projectScope.
      *
-     * @param \AppBundle\Entity\ProjectScope $projectScope
+     * @param ProjectScope $projectScope
      *
      * @return Project
      */
-    public function setProjectScope(\AppBundle\Entity\ProjectScope $projectScope = null)
+    public function setProjectScope(ProjectScope $projectScope = null)
     {
         $this->projectScope = $projectScope;
 
@@ -434,7 +447,7 @@ class Project
     /**
      * Get projectScope.
      *
-     * @return \AppBundle\Entity\ProjectScope
+     * @return ProjectScope
      */
     public function getProjectScope()
     {
@@ -444,11 +457,11 @@ class Project
     /**
      * Set status.
      *
-     * @param \AppBundle\Entity\ProjectStatus $status
+     * @param ProjectStatus $status
      *
      * @return Project
      */
-    public function setStatus(\AppBundle\Entity\ProjectStatus $status = null)
+    public function setStatus(ProjectStatus $status = null)
     {
         $this->status = $status;
 
@@ -458,7 +471,7 @@ class Project
     /**
      * Get status.
      *
-     * @return \AppBundle\Entity\ProjectStatus
+     * @return ProjectStatus
      */
     public function getStatus()
     {
@@ -468,11 +481,11 @@ class Project
     /**
      * Set portfolio.
      *
-     * @param \AppBundle\Entity\Portfolio $portfolio
+     * @param Portfolio $portfolio
      *
      * @return Project
      */
-    public function setPortfolio(\AppBundle\Entity\Portfolio $portfolio = null)
+    public function setPortfolio(Portfolio $portfolio = null)
     {
         $this->portfolio = $portfolio;
 
@@ -482,10 +495,44 @@ class Project
     /**
      * Get portfolio.
      *
-     * @return \AppBundle\Entity\Portfolio
+     * @return Portfolio
      */
     public function getPortfolio()
     {
         return $this->portfolio;
+    }
+
+    /**
+     * Add calendar.
+     *
+     * @param Calendar $calendar
+     *
+     * @return Project
+     */
+    public function addCalendar(Calendar $calendar)
+    {
+        $this->calendars[] = $calendar;
+
+        return $this;
+    }
+
+    /**
+     * Remove calendar.
+     *
+     * @param Calendar $calendar
+     */
+    public function removeCalendar(Calendar $calendar)
+    {
+        $this->calendars->removeElement($calendar);
+    }
+
+    /**
+     * Get calendars.
+     *
+     * @return ArrayCollection
+     */
+    public function getCalendars()
+    {
+        return $this->calendars;
     }
 }
