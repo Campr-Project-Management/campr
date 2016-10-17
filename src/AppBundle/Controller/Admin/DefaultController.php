@@ -10,7 +10,7 @@ class DefaultController extends Controller
 {
     /**
      * @Route("/admin/index", name="app_admin_index")
-     * 
+     *
      * @return Response
      */
     public function indexAction()
