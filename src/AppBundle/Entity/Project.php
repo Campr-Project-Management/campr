@@ -124,6 +124,13 @@ class Project
     private $calendars;
 
     /**
+     * @var ArrayCollection|WorkPackage[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="project")
+     */
+    private $workPackages;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="status_updated_at", type="datetime", nullable=true)
@@ -153,7 +160,8 @@ class Project
 
     public function __construct()
     {
-        $calendars = new ArrayCollection();
+        $this->calendars = new ArrayCollection();
+        $this->workPackages = new ArrayCollection();
     }
 
     /**
@@ -524,6 +532,8 @@ class Project
     public function removeCalendar(Calendar $calendar)
     {
         $this->calendars->removeElement($calendar);
+
+        return $this;
     }
 
     /**
@@ -534,5 +544,41 @@ class Project
     public function getCalendars()
     {
         return $this->calendars;
+    }
+
+    /**
+     * Add workPackage.
+     *
+     * @param WorkPackage $workPackage
+     *
+     * @return Project
+     */
+    public function addWorkPackage(WorkPackage $workPackage)
+    {
+        $this->workPackages[] = $workPackage;
+
+        return $this;
+    }
+
+    /**
+     * Remove workPackage.
+     *
+     * @param WorkPackage $workPackage
+     */
+    public function removeWorkPackage(WorkPackage $workPackage)
+    {
+        $this->workPackages->removeElement($workPackage);
+
+        return $this;
+    }
+
+    /**
+     * Get workPackages.
+     *
+     * @return ArrayCollection
+     */
+    public function getWorkPackages()
+    {
+        return $this->workPackages;
     }
 }
