@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * WorkPackageProjectWorkCostType.
@@ -20,6 +21,13 @@ class WorkPackageProjectWorkCostType
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     */
+    private $name;
 
     /**
      * @var WorkPackage
@@ -73,6 +81,56 @@ class WorkPackageProjectWorkCostType
     private $forecast;
 
     /**
+     * @var Calendar
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar")
+     * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id")
+     */
+    private $calendar;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_generic", type="boolean", nullable=false, options={"default"=0})
+     */
+    private $isGeneric = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_inactive", type="boolean", nullable=false, options={"default"=0})
+     */
+    private $isInactive = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_enterprise", type="boolean", nullable=false, options={"default"=0})
+     */
+    private $isEnterprise = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_cost_resource", type="boolean", nullable=false, options={"default"=0})
+     */
+    private $isCostResource = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_budget", type="boolean", nullable=false, options={"default"=0})
+     */
+    private $isBudget = false;
+
+    /**
+     * @var ArrayCollection|Assignment[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Assignment", mappedBy="workPackageProjectWorkCostType")
+     */
+    private $assignments;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
@@ -85,6 +143,12 @@ class WorkPackageProjectWorkCostType
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->assignments = new ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -223,7 +287,7 @@ class WorkPackageProjectWorkCostType
      *
      * @return WorkPackageProjectWorkCostType
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt = null)
     {
         $this->createdAt = $createdAt;
 
@@ -247,7 +311,7 @@ class WorkPackageProjectWorkCostType
      *
      * @return WorkPackageProjectWorkCostType
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
@@ -267,11 +331,11 @@ class WorkPackageProjectWorkCostType
     /**
      * Set workPackage.
      *
-     * @param \AppBundle\Entity\WorkPackage $workPackage
+     * @param WorkPackage $workPackage
      *
      * @return WorkPackageProjectWorkCostType
      */
-    public function setWorkPackage(\AppBundle\Entity\WorkPackage $workPackage)
+    public function setWorkPackage(WorkPackage $workPackage)
     {
         $this->workPackage = $workPackage;
 
@@ -281,7 +345,7 @@ class WorkPackageProjectWorkCostType
     /**
      * Get workPackage.
      *
-     * @return \AppBundle\Entity\WorkPackage
+     * @return WorkPackage
      */
     public function getWorkPackage()
     {
@@ -291,11 +355,11 @@ class WorkPackageProjectWorkCostType
     /**
      * Set projectWorkCostType.
      *
-     * @param \AppBundle\Entity\ProjectWorkCostType $projectWorkCostType
+     * @param ProjectWorkCostType $projectWorkCostType
      *
      * @return WorkPackageProjectWorkCostType
      */
-    public function setProjectWorkCostType(\AppBundle\Entity\ProjectWorkCostType $projectWorkCostType)
+    public function setProjectWorkCostType(ProjectWorkCostType $projectWorkCostType)
     {
         $this->projectWorkCostType = $projectWorkCostType;
 
@@ -305,10 +369,214 @@ class WorkPackageProjectWorkCostType
     /**
      * Get projectWorkCostType.
      *
-     * @return \AppBundle\Entity\ProjectWorkCostType
+     * @return ProjectWorkCostType
      */
     public function getProjectWorkCostType()
     {
         return $this->projectWorkCostType;
+    }
+
+    /**
+     * Set name.
+     *
+     * @param string $name
+     *
+     * @return WorkPackageProjectWorkCostType
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set isGeneric.
+     *
+     * @param bool $isGeneric
+     *
+     * @return WorkPackageProjectWorkCostType
+     */
+    public function setIsGeneric($isGeneric)
+    {
+        $this->isGeneric = $isGeneric;
+
+        return $this;
+    }
+
+    /**
+     * Get isGeneric.
+     *
+     * @return bool
+     */
+    public function getIsGeneric()
+    {
+        return $this->isGeneric;
+    }
+
+    /**
+     * Set isInactive.
+     *
+     * @param bool $isInactive
+     *
+     * @return WorkPackageProjectWorkCostType
+     */
+    public function setIsInactive($isInactive)
+    {
+        $this->isInactive = $isInactive;
+
+        return $this;
+    }
+
+    /**
+     * Get isInactive.
+     *
+     * @return bool
+     */
+    public function getIsInactive()
+    {
+        return $this->isInactive;
+    }
+
+    /**
+     * Set isEnterprise.
+     *
+     * @param bool $isEnterprise
+     *
+     * @return WorkPackageProjectWorkCostType
+     */
+    public function setIsEnterprise($isEnterprise)
+    {
+        $this->isEnterprise = $isEnterprise;
+
+        return $this;
+    }
+
+    /**
+     * Get isEnterprise.
+     *
+     * @return bool
+     */
+    public function getIsEnterprise()
+    {
+        return $this->isEnterprise;
+    }
+
+    /**
+     * Set isCostResource.
+     *
+     * @param bool $isCostResource
+     *
+     * @return WorkPackageProjectWorkCostType
+     */
+    public function setIsCostResource($isCostResource)
+    {
+        $this->isCostResource = $isCostResource;
+
+        return $this;
+    }
+
+    /**
+     * Get isCostResource.
+     *
+     * @return bool
+     */
+    public function getIsCostResource()
+    {
+        return $this->isCostResource;
+    }
+
+    /**
+     * Set isBudget.
+     *
+     * @param bool $isBudget
+     *
+     * @return WorkPackageProjectWorkCostType
+     */
+    public function setIsBudget($isBudget)
+    {
+        $this->isBudget = $isBudget;
+
+        return $this;
+    }
+
+    /**
+     * Get isBudget.
+     *
+     * @return bool
+     */
+    public function getIsBudget()
+    {
+        return $this->isBudget;
+    }
+
+    /**
+     * Set calendar.
+     *
+     * @param Calendar $calendar
+     *
+     * @return WorkPackageProjectWorkCostType
+     */
+    public function setCalendar(Calendar $calendar = null)
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
+
+    /**
+     * Get calendar.
+     *
+     * @return Calendar
+     */
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /**
+     * Add assignment.
+     *
+     * @param Assignment $assignment
+     *
+     * @return WorkPackageProjectWorkCostType
+     */
+    public function addAssignment(Assignment $assignment)
+    {
+        $this->assignments[] = $assignment;
+
+        return $this;
+    }
+
+    /**
+     * Remove assignment.
+     *
+     * @param Assignment $assignment
+     */
+    public function removeAssignment(Assignment $assignment)
+    {
+        $this->assignments->removeElement($assignment);
+
+        return $this;
+    }
+
+    /**
+     * Get assignments.
+     *
+     * @return ArrayCollection
+     */
+    public function getAssignments()
+    {
+        return $this->assignments;
     }
 }
