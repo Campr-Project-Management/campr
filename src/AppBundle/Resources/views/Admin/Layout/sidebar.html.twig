@@ -1,4 +1,8 @@
 {% trans_default_domain 'admin' %}
+<<<<<<< 8ba981b86c3c7e9637582b221cabdac157653a4f
+=======
+
+>>>>>>> Admin CRUDs for Project entities
 <aside id="sidebar" class="sidebar c-overflow">
     <div class="s-profile">
         <a href="" data-ma-action="profile-menu-toggle">
@@ -42,82 +46,28 @@
                 {{ 'admin.sidebar.menu.users'|trans }}
             </a>
         </li>
+        <li class="sub-menu">
+            <a href="{{ path('app_admin_project_category_list') }}" data-ma-action="submenu-toggle"><i class="zmdi zmdi-folder-outline"></i> Project</a>
+
+            <ul>
+                <li><a href="{{ path('app_admin_project_category_list') }}">{{ 'admin.project_category.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_complexity_list') }}">{{ 'admin.project_complexity.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_cost_type_list') }}">{{ 'admin.project_cost_type.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_department_list') }}">{{ 'admin.project_department.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_module_list') }}">{{ 'admin.project_module.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_role_list') }}">{{ 'admin.project_role.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_scope_list') }}">{{ 'admin.project_scope.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_status_list') }}">{{ 'admin.project_status.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_team_list') }}">{{ 'admin.project_team.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_user_list') }}">{{ 'admin.project_user.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_work_cost_type_list') }}">{{ 'admin.project_work_cost_type.list.title'|trans }}</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="{{ path('app_admin_portfolio_list') }}">{{ 'admin.portfolio.list.title'|trans }}</a>
+        </li>
+        <li>
+            <a href="{{ path('app_admin_color_status_list') }}">{{ 'admin.color_status.list.title'|trans }}</a>
+        </li>
     </ul>
-</aside>
-
-<aside id="chat" class="sidebar">
-
-    <div class="chat-search">
-        <div class="fg-line">
-            <input type="text" class="form-control" placeholder="Search People">
-            <i class="zmdi zmdi-search"></i>
-        </div>
-    </div>
-
-    <div class="lg-body c-overflow">
-        <div class="list-group">
-            <a class="list-group-item media" href="">
-                <div class="pull-left p-relative">
-                    <img class="lgi-img" src="img/profile-pics/2.jpg" alt="">
-                    <i class="chat-status-busy"></i>
-                </div>
-                <div class="media-body">
-                    <div class="lgi-heading">Jonathan Morris</div>
-                    <small class="lgi-text">Available</small>
-                </div>
-            </a>
-
-            <a class="list-group-item media" href="">
-                <div class="pull-left">
-                    <img class="lgi-img" src="img/profile-pics/1.jpg" alt="">
-                </div>
-                <div class="media-body">
-                    <div class="lgi-heading">David Belle</div>
-                    <small class="lgi-text">Last seen 3 hours ago</small>
-                </div>
-            </a>
-
-            <a class="list-group-item media" href="">
-                <div class="pull-left p-relative">
-                    <img class="lgi-img" src="img/profile-pics/3.jpg" alt="">
-                    <i class="chat-status-online"></i>
-                </div>
-                <div class="media-body">
-                    <div class="lgi-heading">Fredric Mitchell Jr.</div>
-                    <small class="lgi-text">Availble</small>
-                </div>
-            </a>
-
-            <a class="list-group-item media" href="">
-                <div class="pull-left p-relative">
-                    <img class="lgi-img" src="img/profile-pics/4.jpg" alt="">
-                    <i class="chat-status-online"></i>
-                </div>
-                <div class="media-body">
-                    <div class="lgi-heading">Glenn Jecobs</div>
-                    <small class="lgi-text">Availble</small>
-                </div>
-            </a>
-
-            <a class="list-group-item media" href="">
-                <div class="pull-left">
-                    <img class="lgi-img" src="img/profile-pics/5.jpg" alt="">
-                </div>
-                <div class="media-body">
-                    <div class="lgi-heading">Bill Phillips</div>
-                    <small class="lgi-text">Last seen 3 days ago</small>
-                </div>
-            </a>
-
-            <a class="list-group-item media" href="">
-                <div class="pull-left">
-                    <img class="lgi-img" src="img/profile-pics/6.jpg" alt="">
-                </div>
-                <div class="media-body">
-                    <div class="lgi-heading">Wendy Mitchell</div>
-                    <small class="lgi-text">Last seen 2 minutes ago</small>
-                </div>
-            </a>
-        </div>
-    </div>
 </aside>

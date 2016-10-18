@@ -1,16 +1,38 @@
 admin:
-    general:
-        yes: Yes
-        no: No
     title: Campr Administration
     general:
         yes: Yes
         no: No
+        form:
+            checkbox:
+                checked: Yes
+                unchecked: No
+            button:
+                create: Create
+                edit: Edit
+                view: View
+                save_changes: Save changes
+                back_to_list: Back to list
+                delete: Delete
+            label: Label
+        placeholder:
+            name: Name
+            number: Number
+            description: Description
+            sequence: Sequence
+            abbreviation: Abbreviation
+            rate: Rate
+            module: Module
     sidebar:
         menu:
             home: Home
             users: Users
     user:
+        choice: Choose one user
+        sponsor:
+            choice: Choose one sponsore
+        manager:
+            choice: Choose one manager
         list:
             title: Users
             subtitle: List of users
@@ -157,3 +179,396 @@ admin:
             success: WorkPackage successfully edited!
         delete:
             success: WorkPackage successfully deleted!
+
+    portfolio:
+        choice: Choose one portfolio
+        list:
+            title: Portfolio
+            subtitle: List of portfolios
+            add: Add new portfolio
+            table:
+                id: Id
+                name: Name
+                description: Description
+                created_at: Created at
+                updated_at: Updated at
+            not_found: No portfolio found!
+        create:
+            title: Create Portfolio
+            name: Name
+            description: Description
+            success: Portfolio successfully created!
+        edit:
+            title: Edit Portfolio
+            success: Portfolio successfully edited!
+        delete:
+            success: Portfolio successfully deleted!
+
+    project:
+        choice: Choose one project
+        list:
+            title: Project
+            subtitle: List of projects
+            add: Add new project
+            table:
+                id: Id
+                name: Name
+                number: Number
+                sponsor: Sponsor
+                manager: Manager
+                company: Company
+                project_complexity: Project Complexity
+                project_category: Project Category
+                project_scope: Project Scope
+                status: Status
+                portfolio: Portfolio
+                approved_at: Approved at
+                status_updated_at: Status updated at
+                created_at: Created at
+                updated_at: Updated at
+            not_found: No project categories found!
+        create:
+            title: Create Project
+            name: Name
+            number: Number
+            sponsor: Sponsor
+            manager: Manager
+            company: Company
+            project_complexity: Project Complexity
+            project_category: Project Category
+            project_scope: Project Scope
+            status: Status
+            portfolio: Portfolio
+            success: Project successfully created!
+        edit:
+            title: Edit Project
+            success: Project successfully edited!
+        delete:
+            success: Project successfully deleted!
+
+    project_category:
+        choice: Choose one project category
+        list:
+            title: Project Category
+            subtitle: List of project categories
+            add: Add new project category
+            table:
+                id: Id
+                name: Name
+                project: Project
+                sequence: Sequence
+                created_at: Created at
+                updated_at: Updated at
+            not_found: No project categories found!
+        create:
+            title: Create Project Category
+            name: Name
+            project: Project
+            sequence: Sequence
+            success: Project category successfully created!
+        edit:
+            title: Edit Project Category
+            success: Project category successfully edited!
+        delete:
+            success: Project category successfully deleted!
+
+    project_complexity:
+        choice: Choose one project complexity
+        list:
+            title: Project Complexity
+            subtitle: List of project complexities
+            add: Add new project complexity
+            table:
+                id: Id
+                name: Name
+                project: Project
+                sequence: Sequence
+                created_at: Created at
+                updated_at: Updated at
+            not_found: No project complexities found!
+        create:
+            title: Create Project Complexity
+            name: Name
+            project: Project
+            sequence: Sequence
+            success: Project complexity successfully created!
+        edit:
+            title: Edit Project Complexity
+            success: Project complexity successfully edited!
+        delete:
+            success: Project complexity successfully deleted!
+
+    project_cost_type:
+        list:
+            title: Project Cost Type
+            subtitle: List of project cost types
+            add: Add new project cost type
+            table:
+                id: Id
+                name: Name
+                project: Project
+                sequence: Sequence
+                created_at: Created at
+                updated_at: Updated at
+            not_found: No project cost type found!
+        create:
+            title: Create Project Cost Type
+            name: Name
+            project: Project
+            sequence: Sequence
+            success: Project cost type successfully created!
+        edit:
+            title: Edit Project Cost Type
+            success: Project cost type successfully edited!
+        delete:
+            success: Project cost type successfully deleted!
+
+    project_department:
+        choice: Choose one project department
+        list:
+            title: Project Department
+            subtitle: List of project departments
+            add: Add new project department
+            table:
+                id: Id
+                name: Name
+                abbreviation: Abbreviation
+                sequence: Sequence
+                rate: Rate
+                project_work_cost_type: Project Work Cost Type
+                created_at: Created at
+                updated_at: Updated at
+            not_found: No project department found!
+        create:
+            title: Create Project Department
+            name: Name
+            abbreviation: Abbreviation
+            sequence: Sequence
+            rate: Rate
+            project_work_cost_type: Project Work Cost Type
+            success: Project department successfully created!
+        edit:
+            title: Edit Project Department
+            success: Project department successfully edited!
+        delete:
+            success: Project department successfully deleted!
+
+    project_module:
+        list:
+            title: Project Module
+            subtitle: List of project modules
+            add: Add new project module
+            table:
+                id: Id
+                module: Module
+                project: Project
+                enabled: Enabled
+                required: Required
+                printable: Printable
+                created_at: Created at
+                updated_at: Updated at
+            not_found: No project module found!
+        create:
+            title: Create Project Module
+            module: Module
+            project: Project
+            enabled: Enabled
+            required: Required
+            printable: Printable
+            success: Project module successfully created!
+        edit:
+            title: Edit Project Module
+            success: Project module successfully edited!
+        delete:
+            success: Project module successfully deleted!
+
+    project_role:
+        choice: Choose one project role
+        list:
+            title: Project Role
+            subtitle: List of project roles
+            add: Add new project role
+            table:
+                id: Id
+                name: Name
+                sequence: Sequence
+                lead: Lead
+                created_at: Created at
+                updated_at: Updated at
+            not_found: No project role found!
+        create:
+            title: Create Project Role
+            name: Name
+            sequence: Sequence
+            lead: Lead
+            success: Project role successfully created!
+        edit:
+            title: Edit Project Role
+            success: Project role successfully edited!
+        delete:
+            success: Project role successfully deleted!
+
+    project_scope:
+        choice: Choose one project scope
+        list:
+            title: Project Scopes
+            subtitle: List of project scopes
+            add: Add new project scope
+            table:
+                id: Id
+                name: Name
+                project: Project
+                sequence: Sequence
+                created_at: Created at
+                updated_at: Updated at
+            not_found: No project scope found!
+        create:
+            title: Create Project Scope
+            name: Name
+            project: Project
+            sequence: Sequence
+            success: Project scope successfully created!
+        edit:
+            title: Edit Project Scope
+            success: Project scope successfully edited!
+        delete:
+            success: Project scope successfully deleted!
+
+    project_status:
+        choice: Choose one project status
+        list:
+            title: Projects Status
+            subtitle: List of projects status
+            add: Add new project status
+            table:
+                id: Id
+                name: Name
+                project: Project
+                sequence: Sequence
+                created_at: Created at
+                updated_at: Updated at
+            not_found: No project status found!
+        create:
+            title: Create Project Status
+            name: Name
+            project: Project
+            sequence: Sequence
+            success: Project status successfully created!
+        edit:
+            title: Edit Project Status
+            success: Project status successfully edited!
+        delete:
+            success: Project status successfully deleted!
+
+    project_team:
+        choice: Choose one project team
+        list:
+            title: Project Team
+            subtitle: List of project teams
+            add: Add new project team
+            table:
+                id: Id
+                name: Name
+                created_at: Created at
+                updated_at: Updated at
+            not_found: No project team found!
+        create:
+            title: Create Project Team
+            name: Name
+            success: Project team successfully created!
+        edit:
+            title: Edit Project Team
+            success: Project team successfully edited!
+        delete:
+            success: Project team successfully deleted!
+
+    project_user:
+        choice: Choose one project user
+        list:
+            title: Project User
+            subtitle: List of project users
+            add: Add new project user
+            table:
+                id: Id
+                user: Name
+                project: Project
+                project_category: Project Category
+                project_role: Project Role
+                project_department: Project Department
+                project_team: Project Team
+                show_in_resources: Show In Resources
+                show_in_raci: Show In Raci
+                show_in_org: Show In Org
+                created_at: Created at
+                updated_at: Updated at
+            not_found: No project team found!
+        create:
+            title: Create Project User
+            user: Name
+            project: Project
+            project_category: Project Category
+            project_role: Project Role
+            project_department: Project Department
+            project_team: Project Team
+            show_in_resources: Show In Resources
+            show_in_raci: Show In Raci
+            show_in_org: Show In Org
+            success: Project user successfully created!
+        edit:
+            title: Edit Project User
+            success: Project user successfully edited!
+        delete:
+            success: Project user successfully deleted!
+
+    project_work_cost_type:
+        choice: Choose one project work cost type
+        list:
+            title: Project Work Cost Type
+            subtitle: List of project work cost types
+            add: Add new project work cost type
+            table:
+                id: Id
+                name: Name
+                project: Project
+                sequence: Sequence
+                created_at: Created at
+                updated_at: Updated at
+            not_found: No project work cost type found!
+        create:
+            title: Create Project Work Cost Type
+            name: Name
+            project: Project
+            sequence: Sequence
+            success: Project work cost type successfully created!
+        edit:
+            title: Edit Project Work Cost Type
+            success: Project work cost type successfully edited!
+        delete:
+            success: Project work cost type successfully deleted!
+
+    company:
+        choice: Choose one company
+
+    color_status:
+        choice: Choose one color status
+        list:
+            title: Color Status
+            subtitle: List color statuses
+            add: Add new color status
+            table:
+                id: Id
+                name: Name
+                color: Color
+                sequence: Sequence
+            not_found: No color status found!
+        create:
+            title: Create Color Status
+            name: Name
+            color: Color
+            sequence: Sequence
+            success: Color status successfully created!
+        edit:
+            title: Edit Color Status
+            success: Color status successfully edited!
+        delete:
+            success: Color status successfully deleted!
