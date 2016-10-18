@@ -1,0 +1,81 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ 'admin.portfolio.list.title'|trans }}<small>{{ 'admin.portfolio.list.subtitle'|trans }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_portfolio_create') }}">{{ 'admin.portfolio.list.add'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {% for flash_message in app.session.flashBag.get('success') %}
+                        <div class="alert alert-success m-t-15">
+                            <strong>{{ flash_message }}</strong>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'admin.portfolio.list.table.id'|trans }}</th>
+                                    <th>{{ 'admin.portfolio.list.table.name'|trans }}</th>
+                                    <th>{{ 'admin.portfolio.list.table.description'|trans }}</th>
+                                    <th>{{ 'admin.portfolio.list.table.created_at'|trans }}</th>
+                                    <th>{{ 'admin.portfolio.list.table.updated_at'|trans }}</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for portfolio in portfolios %}
+                                <tr>
+                                    <td class="f-500 c-cyan">{{ portfolio.id }}</td>
+                                    <td>{{ portfolio.name }}</td>
+                                    <td>{{ portfolio.description }}</td>
+                                    <td>
+                                        {% if portfolio.createdAt %}
+                                            {{ portfolio.createdAt|date('d/m/Y') }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if portfolio.updatedAt %}
+                                            {{ portfolio.updatedAt|date('d/m/Y') }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% include '@App/Admin/Layout/Partials/form_list_buttons.html.twig'
+                                            with {
+                                                'show_path': 'app_admin_portfolio_show',
+                                                'edit_path': 'app_admin_portfolio_edit',
+                                                'delete_path': 'app_admin_portfolio_delete',
+                                                'id': portfolio.id,
+                                            }
+                                        %}
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" class="f-500 c-cyan">{{ 'admin.portfolio.list.not_found'|trans }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
