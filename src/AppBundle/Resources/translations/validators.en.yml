@@ -31,4 +31,3 @@ validation:
                 not_blank: PUID should not be blank
             puid:
                 not_blank: The name should not be blank
-
