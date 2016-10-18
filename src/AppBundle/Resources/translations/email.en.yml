@@ -1,0 +1,18 @@
+general:
+    hello: Hello
+user:
+    register:
+        subject: Campr - Account registration
+        message: To activate your account click the following
+        link: link
+        expiration: The activation link will expire in {1}1 day|]1,Inf]%expiration_time% days
+    activation:
+        subject: Campr - Account activation code
+        message: Your activation code has been reseted. To activate your account click on the following
+        link: link
+        expiration: The activation link will expire in {1}1 day|]1,Inf]%expiration_time% days
+    reset:
+        subject: Campr - Reset account psasword
+        message: To reset your password click on the following
+        link: link
+        expiration: The reset token will expire in {1}1 day|]1,Inf]%expiration_time% days
