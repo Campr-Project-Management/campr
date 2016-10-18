@@ -20,3 +20,9 @@ services:
         class: Snc\RedisBundle\Session\Storage\Handler\RedisSessionHandler
         arguments:
             - '@redis.client'
+    app.service.db_logger:
+        class: AppBundle\Services\DBLogger
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+        arguments:
+            - "@security.token_storage"
