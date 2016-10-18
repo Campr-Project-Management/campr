@@ -14,6 +14,8 @@ services:
                 - "@mailer"
                 - "@twig"
                 - "%emails%"
+    app.service.user:
+            class: AppBundle\Services\UserService
     redis.client:
         class: Predis\Client
     session.handler.redis:
@@ -26,3 +28,16 @@ services:
             - { name: doctrine.event_listener, event: onFlush }
         arguments:
             - "@security.token_storage"
+
+### LISTENERS ###
+    app.listener.updated_at:
+        class: AppBundle\EventListener\UpdatedAtListener
+        tags:
+            - { name: doctrine.event_listener, event: preUpdate }
+    app.listener.user:
+        class: AppBundle\EventListener\UserListener
+        arguments:
+            - '@app.service.user'
+            - '@security.password_encoder'
+        tags :
+            - { name: doctrine.event_listener, event: onFlush }
