@@ -1,0 +1,72 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+{% trans_default_domain 'admin' %}
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ 'admin.workpackage.list.title'|trans }}<small>{{ 'admin.workpackage.list.subtitle'|trans }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_workpackage_create') }}">{{ 'admin.workpackage.list.add'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {% for flash_message in app.session.flashBag.get('success') %}
+                        <div class="alert alert-success">
+                            <strong>{{ flash_message }}</strong>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="card-body m-t-0">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'admin.workpackage.list.table.id'|trans }}</th>
+                                    <th>{{ 'admin.workpackage.list.table.puid'|trans }}</th>
+                                    <th>{{ 'admin.workpackage.list.table.name'|trans }}</th>
+                                    <th>{{ 'admin.workpackage.list.table.responsible'|trans }}</th>
+                                    <th>{{ 'admin.workpackage.list.table.schedule_start'|trans }}</th>
+                                    <th>{{ 'admin.workpackage.list.table.schedule_finish'|trans }}</th>
+                                    <th>{{ 'admin.workpackage.list.table.actions'|trans }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for workPackage in workPackages %}
+                                    <tr>
+                                        <td class="f-500 c-cyan">{{ workPackage.id }}</td>
+                                        <td>{{ workPackage.puid }}</td>
+                                        <td>{{ workPackage.name }}</td>
+                                        <td>{{ workPackage.responsibility.username }}</td>
+                                        <td>{{ workPackage.scheduledStartAt|date('d/m/Y') }}</td>
+                                        <td>{{ workPackage.scheduledFinishAt|date('d/m/Y') }}</td>
+                                        <td>
+                                            <a href="{{ path('app_admin_workpackage_edit', {'id': workPackage.id}) }}">
+                                                <button class="btn btn-primary btn-sm">{{ 'admin.workpackage.list.edit'|trans }}</button>
+                                            </a>
+                                            <a href="{{ path('app_admin_workpackage_delete', {'id': workPackage.id}) }}">
+                                                <button class="btn btn-danger btn-sm">{{ 'admin.workpackage.list.delete'|trans }}</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="4" class="f-500 c-cyan">{{ 'admin.workpackage.list.no-workpackages'|trans }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="recent-items-chart" class="flot-chart"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
