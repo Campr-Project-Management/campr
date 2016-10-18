@@ -1,0 +1,34 @@
+validation:
+    constraints:
+        user:
+            username:
+                not_blank: The username should not be blank
+            email:
+                not_blank: The email should not be blank
+                email: Invalid email provided
+            password:
+                match: The passwords do not match
+                not_blank: Password should not be blank
+                regex: Password must containt 1 upper case letter, 1 lower case letter, and 1 number
+            first_name:
+                not_blank: The first name should not be blank
+            last_name:
+                not_blank: The last name should not be blank
+            unique:
+                username: The username is already used
+                email: The email is already used
+        status:
+            name:
+                not_blank: The name should not be blank
+        schedule:
+            name:
+                not_blank: The name should not be blank
+        raci:
+            data:
+                not_blank: The data field should not be blank
+        workpackage:
+            puid:
+                not_blank: PUID should not be blank
+            puid:
+                not_blank: The name should not be blank
+
