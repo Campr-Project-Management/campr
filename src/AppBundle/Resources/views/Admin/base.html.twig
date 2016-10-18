@@ -37,7 +37,9 @@
             {% include 'AppBundle:Admin/Layout:sidebar.html.twig' %}
 
             <section id="content">
-                {% block body_content %}{% endblock %}
+                    <div class="container">
+                        {% block body_content %}{% endblock %}
+                    </div>
             </section>
         </section>
 
