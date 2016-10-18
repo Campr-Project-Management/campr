@@ -1,0 +1,57 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+{% trans_default_domain 'admin' %}
+{% block body_content %}
+    {{ form_start(
+        form,
+        {
+            'method': 'POST',
+            'action': path('app_admin_raci_create'),
+            'attr': {
+                'class': 'form-horizontal',
+                'novalidate': 'novalidate',
+            },
+        }
+    ) }}
+    {% if form.vars.valid == false %}
+        <div class="alert alert-danger">
+            {% for field in form.children %}
+                {{ form_errors(field) }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ 'admin.raci.create.title'|trans }}</h2>
+                </div>
+                <div class="card-body m-t-0 card-padding">
+                    <div class="form-group">
+                        <label for="workpackage" class="col-sm-2 control-label">{{ 'admin.raci.create.workpackage'|trans }}:</label>
+                        <div class="col-sm-3 m-b-25">
+                            {{ form_widget(form.workPackage, {'attr': {'class': 'selectpicker'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="user" class="col-sm-2 control-label">{{ 'admin.raci.create.user'|trans }}:</label>
+                        <div class="col-sm-3 m-b-25">
+                            {{ form_widget(form.user, {'attr': {'class': 'selectpicker'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="data" class="col-sm-2 control-label">{{ 'admin.raci.create.data'|trans }}:</label>
+                        <div class="col-sm-8">
+                            <div class="fg-line">
+                                {{ form_widget(form.data, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div align="center" class="form-group">
+                        <button class="btn btn-primary btn-sm" type="submit">{{ 'admin.raci.create.create'|trans }}</button>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
