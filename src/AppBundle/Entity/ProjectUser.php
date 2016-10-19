@@ -256,7 +256,7 @@ class ProjectUser
      *
      * @param User $user
      *
-     * @return User
+     * @return ProjectUser
      */
     public function setUser(User $user = null)
     {
@@ -304,7 +304,7 @@ class ProjectUser
      *
      * @param ProjectCategory $projectCategory
      *
-     * @return ProjectCategory
+     * @return ProjectUser
      */
     public function setProjectCategory(ProjectCategory $projectCategory = null)
     {
