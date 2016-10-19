@@ -31,7 +31,7 @@ class Timephase
     /**
      * @var Assignment|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Assignment")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Assignment", inversedBy="timephases")
      * @ORM\JoinColumn(name="assignment_id")
      */
     private $assignment;
