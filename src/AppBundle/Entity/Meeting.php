@@ -118,12 +118,12 @@ class Meeting
      */
     public function __construct()
     {
-        $this->meetingParticipants = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->meetingAgendas = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->documents = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->decisions = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->todos = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->notes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->meetingParticipants = new ArrayCollection();
+        $this->meetingAgendas = new ArrayCollection();
+        $this->documents = new ArrayCollection();
+        $this->decisions = new ArrayCollection();
+        $this->todos = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     /**
@@ -283,11 +283,11 @@ class Meeting
     /**
      * Set project.
      *
-     * @param \AppBundle\Entity\Project $project
+     * @param Project $project
      *
      * @return Meeting
      */
-    public function setProject(\AppBundle\Entity\Project $project = null)
+    public function setProject(Project $project = null)
     {
         $this->project = $project;
 
@@ -297,7 +297,7 @@ class Meeting
     /**
      * Get project.
      *
-     * @return \AppBundle\Entity\Project
+     * @return Project
      */
     public function getProject()
     {
@@ -307,11 +307,11 @@ class Meeting
     /**
      * Add meetingParticipant.
      *
-     * @param \AppBundle\Entity\MeetingParticipant $meetingParticipant
+     * @param MeetingParticipant $meetingParticipant
      *
      * @return Meeting
      */
-    public function addMeetingParticipant(\AppBundle\Entity\MeetingParticipant $meetingParticipant)
+    public function addMeetingParticipant(MeetingParticipant $meetingParticipant)
     {
         $this->meetingParticipants[] = $meetingParticipant;
 
@@ -321,9 +321,9 @@ class Meeting
     /**
      * Remove meetingParticipant.
      *
-     * @param \AppBundle\Entity\MeetingParticipant $meetingParticipant
+     * @param MeetingParticipant $meetingParticipant
      */
-    public function removeMeetingParticipant(\AppBundle\Entity\MeetingParticipant $meetingParticipant)
+    public function removeMeetingParticipant(MeetingParticipant $meetingParticipant)
     {
         $this->meetingParticipants->removeElement($meetingParticipant);
     }
@@ -341,11 +341,11 @@ class Meeting
     /**
      * Add meetingAgenda.
      *
-     * @param \AppBundle\Entity\MeetingAgenda $meetingAgenda
+     * @param MeetingAgenda $meetingAgenda
      *
      * @return Meeting
      */
-    public function addMeetingAgenda(\AppBundle\Entity\MeetingAgenda $meetingAgenda)
+    public function addMeetingAgenda(MeetingAgenda $meetingAgenda)
     {
         $this->meetingAgendas[] = $meetingAgenda;
 
@@ -355,9 +355,9 @@ class Meeting
     /**
      * Remove meetingAgenda.
      *
-     * @param \AppBundle\Entity\MeetingAgenda $meetingAgenda
+     * @param MeetingAgenda $meetingAgenda
      */
-    public function removeMeetingAgenda(\AppBundle\Entity\MeetingAgenda $meetingAgenda)
+    public function removeMeetingAgenda(MeetingAgenda $meetingAgenda)
     {
         $this->meetingAgendas->removeElement($meetingAgenda);
     }
@@ -375,11 +375,11 @@ class Meeting
     /**
      * Add document.
      *
-     * @param \AppBundle\Entity\Document $document
+     * @param Document $document
      *
      * @return Meeting
      */
-    public function addDocument(\AppBundle\Entity\Document $document)
+    public function addDocument(Document $document)
     {
         $this->documents[] = $document;
 
@@ -389,9 +389,9 @@ class Meeting
     /**
      * Remove document.
      *
-     * @param \AppBundle\Entity\Document $document
+     * @param Document $document
      */
-    public function removeDocument(\AppBundle\Entity\Document $document)
+    public function removeDocument(Document $document)
     {
         $this->documents->removeElement($document);
     }
@@ -409,11 +409,11 @@ class Meeting
     /**
      * Add decision.
      *
-     * @param \AppBundle\Entity\Decision $decision
+     * @param Decision $decision
      *
      * @return Meeting
      */
-    public function addDecision(\AppBundle\Entity\Decision $decision)
+    public function addDecision(Decision $decision)
     {
         $this->decisions[] = $decision;
 
@@ -423,9 +423,9 @@ class Meeting
     /**
      * Remove decision.
      *
-     * @param \AppBundle\Entity\Decision $decision
+     * @param Decision $decision
      */
-    public function removeDecision(\AppBundle\Entity\Decision $decision)
+    public function removeDecision(Decision $decision)
     {
         $this->decisions->removeElement($decision);
     }
@@ -443,11 +443,11 @@ class Meeting
     /**
      * Add todo.
      *
-     * @param \AppBundle\Entity\Todo $todo
+     * @param Todo $todo
      *
      * @return Meeting
      */
-    public function addTodo(\AppBundle\Entity\Todo $todo)
+    public function addTodo(Todo $todo)
     {
         $this->todos[] = $todo;
 
@@ -457,9 +457,9 @@ class Meeting
     /**
      * Remove todo.
      *
-     * @param \AppBundle\Entity\Todo $todo
+     * @param Todo $todo
      */
-    public function removeTodo(\AppBundle\Entity\Todo $todo)
+    public function removeTodo(Todo $todo)
     {
         $this->todos->removeElement($todo);
     }
@@ -477,11 +477,11 @@ class Meeting
     /**
      * Add note.
      *
-     * @param \AppBundle\Entity\Note $note
+     * @param Note $note
      *
      * @return Meeting
      */
-    public function addNote(\AppBundle\Entity\Note $note)
+    public function addNote(Note $note)
     {
         $this->notes[] = $note;
 
@@ -491,9 +491,9 @@ class Meeting
     /**
      * Remove note.
      *
-     * @param \AppBundle\Entity\Note $note
+     * @param Note $note
      */
-    public function removeNote(\AppBundle\Entity\Note $note)
+    public function removeNote(Note $note)
     {
         $this->notes->removeElement($note);
     }
