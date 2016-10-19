@@ -618,6 +618,8 @@ class WorkPackage
      * Remove assignment.
      *
      * @param Assignment $assignment
+     *
+     * @return WorkPackage
      */
     public function removeAssignment(Assignment $assignment)
     {

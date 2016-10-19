@@ -562,6 +562,8 @@ class WorkPackageProjectWorkCostType
      * Remove assignment.
      *
      * @param Assignment $assignment
+     *
+     * @return WorkPackageProjectWorkCostType
      */
     public function removeAssignment(Assignment $assignment)
     {
