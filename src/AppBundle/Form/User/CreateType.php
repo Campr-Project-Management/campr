@@ -74,7 +74,7 @@ class CreateType extends AbstractType
                 ],
             ])
             ->add('phone', TextType::class, [
-                'required' => true,
+                'required' => false,
             ])
             ->add('roles', ChoiceType::class, array(
                 'expanded' => true,
