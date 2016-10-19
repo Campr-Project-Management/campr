@@ -37,7 +37,7 @@ class Day
     private $working;
 
     /**
-     * @var ArrayCollection|WorkTime[]
+     * @var ArrayCollection|WorkingTime[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkingTime", mappedBy="day")
      */
@@ -53,7 +53,7 @@ class Day
 
     public function __construct()
     {
-        $workingTimes = new ArrayCollection();
+        $this->workingTimes = new ArrayCollection();
     }
 
     /**

@@ -283,11 +283,11 @@ class Decision
     /**
      * Set project.
      *
-     * @param \AppBundle\Entity\Project $project
+     * @param Project $project
      *
      * @return Decision
      */
-    public function setProject(\AppBundle\Entity\Project $project = null)
+    public function setProject(Project $project = null)
     {
         $this->project = $project;
 
@@ -297,7 +297,7 @@ class Decision
     /**
      * Get project.
      *
-     * @return \AppBundle\Entity\Project
+     * @return Project
      */
     public function getProject()
     {
@@ -307,11 +307,11 @@ class Decision
     /**
      * Set meeting.
      *
-     * @param \AppBundle\Entity\Meeting $meeting
+     * @param Meeting $meeting
      *
      * @return Decision
      */
-    public function setMeeting(\AppBundle\Entity\Meeting $meeting = null)
+    public function setMeeting(Meeting $meeting = null)
     {
         $this->meeting = $meeting;
 
@@ -321,7 +321,7 @@ class Decision
     /**
      * Get meeting.
      *
-     * @return \AppBundle\Entity\Meeting
+     * @return Meeting
      */
     public function getMeeting()
     {
@@ -331,11 +331,11 @@ class Decision
     /**
      * Set responsibility.
      *
-     * @param \AppBundle\Entity\User $responsibility
+     * @param User $responsibility
      *
      * @return Decision
      */
-    public function setResponsibility(\AppBundle\Entity\User $responsibility = null)
+    public function setResponsibility(User $responsibility = null)
     {
         $this->responsibility = $responsibility;
 
@@ -345,7 +345,7 @@ class Decision
     /**
      * Get responsibility.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getResponsibility()
     {
@@ -355,11 +355,11 @@ class Decision
     /**
      * Set status.
      *
-     * @param \AppBundle\Entity\Status $status
+     * @param Status $status
      *
      * @return Decision
      */
-    public function setStatus(\AppBundle\Entity\Status $status = null)
+    public function setStatus(Status $status = null)
     {
         $this->status = $status;
 
@@ -369,7 +369,7 @@ class Decision
     /**
      * Get status.
      *
-     * @return \AppBundle\Entity\Status
+     * @return Status
      */
     public function getStatus()
     {
