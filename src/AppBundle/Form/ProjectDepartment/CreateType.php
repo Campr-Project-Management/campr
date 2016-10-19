@@ -16,7 +16,7 @@ class CreateType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -41,7 +41,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.general_field.sequence.not_blank'
+                        'message' => 'validation.constraints.general_field.sequence.not_blank',
                     ]),
                     new Regex([
                         'pattern' => '/^([1-9]+\d*)$|^0$/',
@@ -66,7 +66,7 @@ class CreateType extends AbstractType
             ])
         ;
     }
-    
+
     /**
      * @param OptionsResolver $resolver
      */

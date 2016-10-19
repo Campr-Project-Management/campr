@@ -43,7 +43,7 @@ class ProjectDepartment
     /**
      * @var float
      *
-     * @ORM\Column(name="rate", type="decimal", precision=10, scale=2, nullable=true)   
+     * @ORM\Column(name="rate", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $rate;
 
@@ -68,7 +68,7 @@ class ProjectDepartment
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
-    
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();

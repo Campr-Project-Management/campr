@@ -42,6 +42,7 @@ admin:
                 email: Email
                 first_name: First name
                 last_name: Last name
+                full_name: Name
                 phone: Phone
                 enabled: Enabled
                 suspended: Suspended
@@ -49,8 +50,6 @@ admin:
                 actions: Actions
             no-users: No users found!
             add: Add new user
-            edit: Edit
-            delete: Delete
         create:
             title: Create new user
             username: Username
