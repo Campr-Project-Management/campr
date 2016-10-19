@@ -173,11 +173,11 @@ class ProjectWorkCostType
     /**
      * Set project.
      *
-     * @param \AppBundle\Entity\Project $project
+     * @param Project $project
      *
      * @return ProjectWorkCostType
      */
-    public function setProject(\AppBundle\Entity\Project $project = null)
+    public function setProject(Project $project = null)
     {
         $this->project = $project;
 
@@ -187,7 +187,7 @@ class ProjectWorkCostType
     /**
      * Get project.
      *
-     * @return \AppBundle\Entity\Project
+     * @return Project
      */
     public function getProject()
     {

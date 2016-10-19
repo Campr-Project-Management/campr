@@ -38,7 +38,7 @@ class Assignment
     private $workPackage;
 
     /**
-     * @var WorkPackage
+     * @var WorkPackageProjectWorkCostType
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackageProjectWorkCostType")
      * @ORM\JoinColumn(name="work_package_project_work_cost_type_id", nullable=false)
