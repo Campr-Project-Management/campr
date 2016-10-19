@@ -1,11 +1,30 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
+
 {% trans_default_domain 'admin' %}
+
+{% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
+
 {% block body_content %}
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-8 col-md-offset-2">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header bgm-teal">
                     <h2>{{ 'admin.workpackage.edit.title'|trans }}</h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_workpackage_create') }}">{{ 'admin.workpackage.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_workpackage_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
                 <div class="card-body m-t-0 card-padding">
                     {{ form_start(
@@ -26,69 +45,90 @@
                             {% endfor %}
                         </div>
                     {% endif %}
-                    <div class="form-group">
-                        <label for="puid" class="col-sm-2 control-label">{{ 'admin.workpackage.create.puid'|trans }}:</label>
-                        <div class="col-sm-8">
-                            <div class="fg-line">
-                                {{ form_widget(form.puid, {'attr': {'id': 'puid', 'class': 'form-control'}}) }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="name" class="col-sm-2 control-label">{{ 'admin.workpackage.create.name'|trans }}:</label>
-                        <div class="col-sm-8">
-                            <div class="fg-line">
-                                {{ form_widget(form.name, {'attr': {'id': 'name','class': 'form-control'}}) }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="parent" class="col-sm-2 control-label">{{ 'admin.workpackage.create.parent'|trans }}:</label>
-                        <div class="col-sm-3 m-b-25">
-                            {{ form_widget(form.parent, {'attr': {'id': 'parent','class': 'selectpicker'}}) }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="colorStatus" class="col-sm-2 control-label">{{ 'admin.workpackage.create.color'|trans }}:</label>
-                        <div class="col-sm-3 m-b-25">
-                            {{ form_widget(form.colorStatus, {'attr': {'id': 'colorStatus','class': 'selectpicker'}}) }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="responsible" class="col-sm-2 control-label">{{ 'admin.workpackage.create.responsible'|trans }}:</label>
-                        <div class="col-sm-3 m-b-25">
-                            {{ form_widget(form.responsibility, {'attr': {'id': 'responsible','class': 'selectpicker'}}) }}
-                        </div>
-                    </div>
-                    <label for="schedule_start" class="col-sm-2 control-label">{{ 'admin.workpackage.create.schedule_start'|trans }}:</label>
-                    <div class='input-group form-group'>
-                        <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
-                        <div class="dtp-container col-sm-8">
-                            {{ form_widget(form.scheduledStartAt, {'attr': {'id': 'schedule_start','class': 'form-control date-picker'}}) }}
-                        </div>
-                    </div>
-                    <label for="schedule_end" class="col-sm-2 control-label">{{ 'admin.workpackage.create.schedule_finish'|trans }}:</label>
-                    <div class='input-group form-group'>
-                        <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
-                        <div class="dtp-container col-sm-8">
-                            {{ form_widget(form.scheduledFinishAt, {'attr': {'id': 'schedule_end','class': 'form-control date-picker'}}) }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="content" class="col-sm-2 control-label">{{ 'admin.workpackage.create.content'|trans }}:</label>
-                        <div class="col-sm-8">
-                            <div class="fg-line">
-                                {{ form_widget(form.content, {'attr': {'id': 'content','class': 'form-control'}}) }}
-                            </div>
-                        </div>
-                    </div>
-                    <div align="center" class="form-group">
-                        <button class="btn btn-primary btn-sm" type="submit">{{ 'admin.workpackage.list.edit'|trans }}</button>
-                        <a class="btn btn-danger btn-sm" href="{{ path('app_admin_workpackage_delete', {'id': id}) }}">
-                            {{ 'admin.workpackage.list.delete'|trans }}
-                        </a>
-                    </div>
-                    {{ form_end(form) }}
+                    {{ form_widget(
+                        form.puid,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'admin.workpackage.create.puid'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.name,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'admin.workpackage.create.name'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.parent,
+                        {
+                            'attr': {
+                                'class': 'selectpicker',
+                            },
+                            'label': 'admin.workpackage.create.parent'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.colorStatus,
+                        {
+                            'attr': {
+                                'class': 'selectpicker',
+                            },
+                            'label': 'admin.workpackage.create.color'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                    form.responsibility,
+                        {
+                            'attr': {
+                                'class': 'selectpicker',
+                            },
+                            'label': 'admin.workpackage.create.responsible'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                    form.scheduledStartAt,
+                        {
+                            'attr': {
+                                'class': 'form-control date-picker',
+                                'addon_front': 'calendar',
+                            },
+                            'label': 'admin.workpackage.create.schedule_start'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.scheduledFinishAt,
+                        {
+                            'attr': {
+                                'class': 'form-control date-picker',
+                                'addon_front': 'calendar',
+                            },
+                            'label': 'admin.workpackage.create.schedule_finish'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.content,
+                        {
+                            'attr': {
+                                'class': 'form-control',
+                            },
+                            'label': 'admin.workpackage.create.content'|trans
+                        }
+                    ) }}
+
+                    {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
+                        with {
+                            'delete_path': 'app_admin_workpackage_delete',
+                            'id': id,
+                        }
+                    %}
+
+                    <span class="hidden">{{ form_row(form._token) }}</span>
+                    {{ form_end(form, {'render_rest': false}) }}
                 </div>
             </div>
         </div>

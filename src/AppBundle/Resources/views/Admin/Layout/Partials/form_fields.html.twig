@@ -1,10 +1,18 @@
 {%- block form_widget_simple -%}
+    {% if attr.addon_front is defined or attr.addon_back is defined %}
+        {% set class = "input-group fg-float col-sm-4 col-md-offset-2"  %}
+    {% else %}
+        {% set class = "col-sm-8 col-md-offset-2"  %}
+    {% endif %}
     <div class="form-group fg-float">
-        <div class="col-sm-8 col-md-offset-2">
+        <div class="{{ class }}">
+            {% if attr.addon_front is defined %}
+                <span class="input-group-addon"><i class="zmdi zmdi-{{ attr.addon_front }}"></i></span>
+            {% endif %}
             <div class="fg-line">
                 {%- set type = type|default('text') -%}
                 <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
-                <label class="fg-label" for="name">
+                <label class="fg-label" for="{{ name }}">
                     {% if label is not none %}
                         {{ label }}
                     {% else %}
@@ -15,21 +23,24 @@
                     {% endif %}
                 </label>
             </div>
+            {% if attr.addon_back is defined %}
+                <span class="input-group-addon last"><i class="zmdi zmdi-{{ attr.addon_back }}"></i></span>
+            {% endif %}
         </div>
     </div>
 {%- endblock form_widget_simple -%}
 
 {%- block choice_widget_collapsed -%}
     <div class="form-group">
-        <label class="col-sm-2 control-label" for="{{ name }}">
-            {% if label is not none %}
-                {{ label }}
-            {% else %}
-                {{ 'admin.general.form.label'|trans({}, 'admin') }}
-            {% endif %}
-        </label>
-        <div class="col-sm-8 col-md-offset-2">
-            <div class="select fg-line">
+        <div class="col-sm-4 col-md-offset-2">
+            <label for="{{ name }}">
+                {% if label is not none %}
+                    {{ label }}
+                {% else %}
+                    {{ 'admin.general.form.label'|trans({}, 'admin') }}:
+                {% endif %}
+            </label>
+            <div class="select">
                 {%- if required and placeholder is none and not placeholder_in_choices and not multiple and (attr.size is not defined or attr.size <= 1) -%}
                     {% set required = false %}
                 {%- endif -%}
@@ -81,7 +92,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="fg-line">
                 <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
-                <label class="col-sm-2 control-label" for="name">
+                <label class="fg-label" for="{{ name }}">
                     {% if label is not none %}
                         {{ label }}
                     {% else %}

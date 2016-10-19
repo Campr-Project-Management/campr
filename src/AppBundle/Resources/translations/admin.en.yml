@@ -26,11 +26,10 @@ admin:
     sidebar:
         menu:
             home: Home
-            users: Users
     user:
         choice: Choose one user
         sponsor:
-            choice: Choose one sponsore
+            choice: Choose one sponsor
         manager:
             choice: Choose one manager
         list:
@@ -136,7 +135,6 @@ admin:
             title: Create RACI
             workpackage: WorkPackage
             user: User
-            create: Create
             data: Data
             success: Raci successfully added!
         edit:
@@ -152,13 +150,24 @@ admin:
             table:
                 id: Id
                 puid: Puid
+                parent: Parent
                 name: Name
+                project: Project
                 responsible: Responsible
+                color_status: Color Status
+                progress: Progress
                 schedule_start: Schedule Start
                 schedule_finish: Schedule Finish
+                forecast_start: Forecast Start
+                forecast_finish: Forecast Finish
+                actual_start: Actual Start
+                actual_finish: Actual Finish
+                content: Content
+                results: Results
+                is_key_milestone: Is Key Milestone
+                created_at: Created At
+                updated_at: Updated At
                 actions: Actions
-            edit: Edit
-            delete: Delete
             no-workpackages: No workpackages found!
         create:
             title: Create new workpackage
@@ -170,7 +179,6 @@ admin:
             schedule_start: Scheduled Start At
             schedule_finish: Scheduled Finish At
             content: Content
-            create: Create
             data: Data
             success: WorkPackage successfully added!
         edit:

@@ -32,7 +32,7 @@ class Assignment
     /**
      * @var WorkPackage
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="assignments")
      * @ORM\JoinColumn(name="work_package_id", nullable=false)
      */
     private $workPackage;
