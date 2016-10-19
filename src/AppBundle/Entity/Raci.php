@@ -30,7 +30,7 @@ class Raci
     private $workpackage;
 
     /**
-     * @var WorkPackage
+     * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id")
@@ -81,11 +81,11 @@ class Raci
     /**
      * Set workpackage.
      *
-     * @param \AppBundle\Entity\WorkPackage $workpackage
+     * @param WorkPackage $workpackage
      *
      * @return Raci
      */
-    public function setWorkpackage(\AppBundle\Entity\WorkPackage $workpackage = null)
+    public function setWorkpackage(WorkPackage $workpackage = null)
     {
         $this->workpackage = $workpackage;
 
@@ -95,7 +95,7 @@ class Raci
     /**
      * Get workpackage.
      *
-     * @return \AppBundle\Entity\WorkPackage
+     * @return WorkPackage
      */
     public function getWorkpackage()
     {
@@ -105,11 +105,11 @@ class Raci
     /**
      * Set user.
      *
-     * @param \AppBundle\Entity\User $user
+     * @param User $user
      *
      * @return Raci
      */
-    public function setUser(\AppBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -119,7 +119,7 @@ class Raci
     /**
      * Get user.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {

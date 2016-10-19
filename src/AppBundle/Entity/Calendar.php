@@ -65,7 +65,7 @@ class Calendar
     private $workPackageProjectWorkCostTypes;
 
     /**
-     * @var Calendar|null
+     * @var Project|null
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project")
      * @ORM\JoinColumn(name="project_id")
@@ -202,6 +202,8 @@ class Calendar
      * Remove day.
      *
      * @param Day $day
+     *
+     * @return Calendar
      */
     public function removeDay(Day $day)
     {
@@ -262,6 +264,8 @@ class Calendar
      * Remove workPackageProjectWorkCostType.
      *
      * @param WorkPackageProjectWorkCostType $workPackageProjectWorkCostType
+     *
+     * @return Calendar
      */
     public function removeWorkPackageProjectWorkCostType(WorkPackageProjectWorkCostType $workPackageProjectWorkCostType)
     {

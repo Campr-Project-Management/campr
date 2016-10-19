@@ -99,7 +99,7 @@ class Project
     private $projectScope;
 
     /**
-     * @var string
+     * @var ProjectStatus
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectStatus")
      * @ORM\JoinColumns({
@@ -162,13 +162,9 @@ class Project
     
     public function __construct()
     {
-<<<<<<< 8ba981b86c3c7e9637582b221cabdac157653a4f
         $this->calendars = new ArrayCollection();
         $this->workPackages = new ArrayCollection();
-=======
         $this->createdAt = new \DateTime();
-        $this->calendars = new ArrayCollection();
->>>>>>> Admin CRUDs for Project entities
     }
 
     /**
@@ -535,6 +531,8 @@ class Project
      * Remove calendar.
      *
      * @param Calendar $calendar
+     *
+     * @return Project
      */
     public function removeCalendar(Calendar $calendar)
     {
@@ -571,6 +569,8 @@ class Project
      * Remove workPackage.
      *
      * @param WorkPackage $workPackage
+     *
+     * @return Project
      */
     public function removeWorkPackage(WorkPackage $workPackage)
     {

@@ -384,11 +384,11 @@ class Risk
     /**
      * Set impact.
      *
-     * @param \AppBundle\Entity\Impact $impact
+     * @param Impact $impact
      *
      * @return Risk
      */
-    public function setImpact(\AppBundle\Entity\Impact $impact = null)
+    public function setImpact(Impact $impact = null)
     {
         $this->impact = $impact;
 
@@ -398,7 +398,7 @@ class Risk
     /**
      * Get impact.
      *
-     * @return \AppBundle\Entity\Impact
+     * @return Impact
      */
     public function getImpact()
     {
@@ -408,11 +408,11 @@ class Risk
     /**
      * Set riskStrategy.
      *
-     * @param \AppBundle\Entity\RiskStrategy $riskStrategy
+     * @param RiskStrategy $riskStrategy
      *
      * @return Risk
      */
-    public function setRiskStrategy(\AppBundle\Entity\RiskStrategy $riskStrategy = null)
+    public function setRiskStrategy(RiskStrategy $riskStrategy = null)
     {
         $this->riskStrategy = $riskStrategy;
 
@@ -422,7 +422,7 @@ class Risk
     /**
      * Get riskStrategy.
      *
-     * @return \AppBundle\Entity\RiskStrategy
+     * @return RiskStrategy
      */
     public function getRiskStrategy()
     {
@@ -432,11 +432,11 @@ class Risk
     /**
      * Set riskCategory.
      *
-     * @param \AppBundle\Entity\RiskCategory $riskCategory
+     * @param RiskCategory $riskCategory
      *
      * @return Risk
      */
-    public function setRiskCategory(\AppBundle\Entity\RiskCategory $riskCategory = null)
+    public function setRiskCategory(RiskCategory $riskCategory = null)
     {
         $this->riskCategory = $riskCategory;
 
@@ -446,7 +446,7 @@ class Risk
     /**
      * Get riskCategory.
      *
-     * @return \AppBundle\Entity\RiskCategory
+     * @return RiskCategory
      */
     public function getRiskCategory()
     {
@@ -456,11 +456,11 @@ class Risk
     /**
      * Set responsibility.
      *
-     * @param \AppBundle\Entity\User $responsibility
+     * @param User $responsibility
      *
      * @return Risk
      */
-    public function setResponsibility(\AppBundle\Entity\User $responsibility = null)
+    public function setResponsibility(User $responsibility = null)
     {
         $this->responsibility = $responsibility;
 
@@ -470,7 +470,7 @@ class Risk
     /**
      * Get responsibility.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getResponsibility()
     {
@@ -480,11 +480,11 @@ class Risk
     /**
      * Set status.
      *
-     * @param \AppBundle\Entity\Status $status
+     * @param Status $status
      *
      * @return Risk
      */
-    public function setStatus(\AppBundle\Entity\Status $status = null)
+    public function setStatus(Status $status = null)
     {
         $this->status = $status;
 
@@ -494,7 +494,7 @@ class Risk
     /**
      * Get status.
      *
-     * @return \AppBundle\Entity\Status
+     * @return Status
      */
     public function getStatus()
     {
