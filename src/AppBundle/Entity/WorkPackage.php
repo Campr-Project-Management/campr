@@ -61,7 +61,7 @@ class WorkPackage
     /**
      * @var WorkPackage|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="workPackages")
      * @ORM\JoinColumn(name="project_id")
      */
     private $project;
@@ -134,7 +134,7 @@ class WorkPackage
     /**
      * @var ArrayCollection|Assignment[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Assignment", mappedBy="workPackageProjectWorkCostType")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Assignment", mappedBy="workPackage")
      */
     private $assignments;
 

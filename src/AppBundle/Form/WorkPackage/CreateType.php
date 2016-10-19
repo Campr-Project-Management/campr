@@ -59,7 +59,9 @@ class CreateType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
             ])
-            ->add('content', TextareaType::class)
+            ->add('content', TextareaType::class, [
+                'required' => false,
+            ])
         ;
     }
 
