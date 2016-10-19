@@ -104,7 +104,7 @@ class ProjectUserController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $projectUser->setUpdatedAt(new \DateTime());
-            
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectUser);
             $em->flush();

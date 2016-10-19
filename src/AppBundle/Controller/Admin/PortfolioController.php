@@ -179,7 +179,7 @@ class PortfolioController extends Controller
                     ->trans('admin.portfolio.delete.success', [], 'admin')
             )
         ;
-        
+
         return $this->redirectToRoute('app_admin_portfolio_list');
     }
 }

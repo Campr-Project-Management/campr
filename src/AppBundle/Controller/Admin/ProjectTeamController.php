@@ -103,7 +103,7 @@ class ProjectTeamController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $projectTeam->setUpdatedAt(new \DateTime());
-            
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectTeam);
             $em->flush();
@@ -177,7 +177,7 @@ class ProjectTeamController extends Controller
                     ->trans('admin.project_team.delete.success', [], 'admin')
             )
         ;
-        
+
         return $this->redirectToRoute('app_admin_project_team_list');
     }
 }

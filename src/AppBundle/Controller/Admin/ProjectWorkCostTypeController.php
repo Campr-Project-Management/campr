@@ -104,7 +104,7 @@ class ProjectWorkCostTypeController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $projectWorkCostType->setUpdatedAt(new \DateTime());
-            
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectWorkCostType);
             $em->flush();
@@ -151,7 +151,7 @@ class ProjectWorkCostTypeController extends Controller
             ]
         );
     }
-    
+
     /**
      * Deletes a ProjectWorkCostType entity.
      *

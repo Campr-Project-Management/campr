@@ -1,30 +1,23 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
+
 {% trans_default_domain 'admin' %}
+
 {% block body_content %}
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header bgm-teal">
                     <h2>{{ 'admin.user.list.title'|trans }}<small>{{ 'admin.user.list.subtitle'|trans }}</small></h2>
-                    <ul class="actions">
-                        <li class="dropdown">
-                            <a href="" data-toggle="dropdown">
-                                <i class="zmdi zmdi-more-vert"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                <li>
-                                    <a href="{{ path('app_admin_user_create') }}">{{ 'admin.user.list.add'|trans }}</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                    <a href="{{ path('app_admin_user_create') }}">
+                        <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
+                    </a>
+                </div>
+                <div class="card-body">
                     {% for flash_message in app.session.flashBag.get('success') %}
                         <div class="alert alert-success">
                             <strong>{{ flash_message }}</strong>
                         </div>
                     {% endfor %}
-                </div>
-                <div class="card-body m-t-0">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -32,9 +25,7 @@
                                     <th>{{ 'admin.user.list.table.id'|trans }}</th>
                                     <th>{{ 'admin.user.list.table.username'|trans }}</th>
                                     <th>{{ 'admin.user.list.table.email'|trans }}</th>
-                                    <th>{{ 'admin.user.list.table.first_name'|trans }}</th>
-                                    <th>{{ 'admin.user.list.table.last_name'|trans }}</th>
-                                    <th>{{ 'admin.user.list.table.phone'|trans }}</th>
+                                    <th>{{ 'admin.user.list.table.full_name'|trans }}</th>
                                     <th>{{ 'admin.user.list.table.enabled'|trans }}</th>
                                     <th>{{ 'admin.user.list.table.suspended'|trans }}</th>
                                     <th>{{ 'admin.user.list.table.roles'|trans }}</th>
@@ -45,11 +36,9 @@
                                 {% for user in pagination.items %}
                                     <tr>
                                         <td class="f-500 c-cyan">{{ user.id }}</td>
-                                        <td>{{ user.username }}</td>
+                                        <td>@{{ user.username }}</td>
                                         <td>{{ user.email }}</td>
-                                        <td>{{ user.firstName }}</td>
-                                        <td>{{ user.lastName }}</td>
-                                        <td>{{ user.phone }}</td>
+                                        <td>{{ user.fullName }}</td>
                                         <td>
                                             {% if user.isEnabled %}
                                                 <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
@@ -66,25 +55,23 @@
                                         </td>
                                         <td>
                                             {% for role in user.roles %}
-                                                {{ role }}
+                                                {{ role }}{% if not loop.last %}, {% endif %}
                                             {% endfor %}
                                         </td>
                                         <td>
-                                            <a href="{{ path('app_admin_user_edit', {'id': user.id}) }}">
-                                                <div class="col-sm-offset-2 col-sm-10">
-                                                    <button class="btn btn-primary btn-sm">{{ 'admin.user.list.edit'|trans }}</button>
-                                                </div>
-                                            </a>
-                                            <a href="{{ path('app_admin_user_delete', {'id': user.id}) }}">
-                                                <div class="col-sm-offset-2 col-sm-10">
-                                                    <button class="btn btn-danger btn-sm">{{ 'admin.user.list.delete'|trans }}</button>
-                                                </div>
-                                            </a>
+                                            {% include '@App/Admin/Layout/Partials/form_list_buttons.html.twig'
+                                                with {
+                                                'show_path': 'app_admin_user_show',
+                                                'edit_path': 'app_admin_user_edit',
+                                                'delete_path': 'app_admin_user_delete',
+                                                'id': user.id,
+                                                }
+                                            %}
                                         </td>
                                     </tr>
                                 {% else %}
                                     <tr>
-                                        <td class="f-500 c-cyan">{{ 'admin.user.list.no-users'|trans }}</td>
+                                        <td colspan="10", class="f-500 c-cyan">{{ 'admin.user.list.no-users'|trans }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
