@@ -67,7 +67,7 @@ class Calendar
     /**
      * @var Project|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="calendars")
      * @ORM\JoinColumn(name="project_id")
      */
     private $project;

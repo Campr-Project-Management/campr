@@ -90,7 +90,7 @@ class ColorStatusController extends Controller
      * @Route("/{id}/edit", name="app_admin_color_status_edit")
      * @Method({"GET", "POST"})
      *
-     * @param Request $request
+     * @param Request     $request
      * @param ColorStatus $colorStatus
      *
      * @return Response|RedirectResponse

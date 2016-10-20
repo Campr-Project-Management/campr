@@ -1,30 +1,23 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
+
 {% trans_default_domain 'admin' %}
+
 {% block body_content %}
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header bgm-teal">
                     <h2>{{ 'admin.workpackage.list.title'|trans }}<small>{{ 'admin.workpackage.list.subtitle'|trans }}</small></h2>
-                    <ul class="actions">
-                        <li class="dropdown">
-                            <a href="" data-toggle="dropdown">
-                                <i class="zmdi zmdi-more-vert"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                <li>
-                                    <a href="{{ path('app_admin_workpackage_create') }}">{{ 'admin.workpackage.list.add'|trans }}</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                    <a href="{{ path('app_admin_workpackage_create') }}">
+                        <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
+                    </a>
+                </div>
+                <div class="card-body m-t-0">
                     {% for flash_message in app.session.flashBag.get('success') %}
                         <div class="alert alert-success">
                             <strong>{{ flash_message }}</strong>
                         </div>
                     {% endfor %}
-                </div>
-                <div class="card-body m-t-0">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -48,12 +41,14 @@
                                         <td>{{ workPackage.scheduledStartAt|date('d/m/Y') }}</td>
                                         <td>{{ workPackage.scheduledFinishAt|date('d/m/Y') }}</td>
                                         <td>
-                                            <a href="{{ path('app_admin_workpackage_edit', {'id': workPackage.id}) }}">
-                                                <button class="btn btn-primary btn-sm">{{ 'admin.workpackage.list.edit'|trans }}</button>
-                                            </a>
-                                            <a href="{{ path('app_admin_workpackage_delete', {'id': workPackage.id}) }}">
-                                                <button class="btn btn-danger btn-sm">{{ 'admin.workpackage.list.delete'|trans }}</button>
-                                            </a>
+                                            {% include '@App/Admin/Layout/Partials/form_list_buttons.html.twig'
+                                                with {
+                                                    'show_path': 'app_admin_workpackage_show',
+                                                    'edit_path': 'app_admin_workpackage_edit',
+                                                    'delete_path': 'app_admin_workpackage_delete',
+                                                    'id': workPackage.id,
+                                                }
+                                            %}
                                         </td>
                                     </tr>
                                 {% else %}

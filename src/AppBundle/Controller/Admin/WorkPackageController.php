@@ -37,6 +37,26 @@ class WorkPackageController extends Controller
     }
 
     /**
+     * Displays WorkPackage entity.
+     *
+     * @Route("/{id}/show", name="app_admin_workpackage_show")
+     * @Method({"GET"})
+     *
+     * @param WorkPackage $workPackage
+     *
+     * @return Response
+     */
+    public function showAction(WorkPackage $workPackage)
+    {
+        return $this->render(
+            'AppBundle:Admin/WorkPackage:show.html.twig',
+            [
+                'workPackage' => $workPackage,
+            ]
+        );
+    }
+
+    /**
      * @Route("/create", name="app_admin_workpackage_create")
      * @Method({"GET", "POST"})
      *
@@ -75,7 +95,7 @@ class WorkPackageController extends Controller
     }
 
     /**
-     * @Route("/edit/{id}", name="app_admin_workpackage_edit")
+     * @Route("/{id}/edit", name="app_admin_workpackage_edit")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -87,7 +107,6 @@ class WorkPackageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $workPackage->setUpdatedAt(new \DateTime());
             $em->persist($workPackage);
             $em->flush();
 
@@ -115,7 +134,7 @@ class WorkPackageController extends Controller
     }
 
     /**
-     * @Route("/delete/{id}", name="app_admin_workpackage_delete")
+     * @Route("/{id}/delete", name="app_admin_workpackage_delete")
      * @Method({"GET"})
      *
      * @param Request $request

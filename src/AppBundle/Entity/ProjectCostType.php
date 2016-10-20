@@ -58,7 +58,7 @@ class ProjectCostType
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
-    
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();

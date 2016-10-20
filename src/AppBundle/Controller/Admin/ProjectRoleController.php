@@ -74,7 +74,7 @@ class ProjectRoleController extends Controller
                         ->trans('admin.project_role.create.success', [], 'admin')
                 )
             ;
-            
+
             return $this->redirectToRoute('app_admin_project_role_list');
         }
 
@@ -104,7 +104,7 @@ class ProjectRoleController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $projectRole->setUpdatedAt(new \DateTime());
-            
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectRole);
             $em->flush();
@@ -119,7 +119,7 @@ class ProjectRoleController extends Controller
                         ->trans('admin.project_role.edit.success', [], 'admin')
                 )
             ;
-            
+
             return $this->redirectToRoute('app_admin_project_role_list');
         }
 
@@ -151,7 +151,7 @@ class ProjectRoleController extends Controller
             ]
         );
     }
-    
+
     /**
      * Deletes a ProjectRole entity.
      *
@@ -178,7 +178,7 @@ class ProjectRoleController extends Controller
                     ->trans('admin.project_role.delete.success', [], 'admin')
             )
         ;
-        
+
         return $this->redirectToRoute('app_admin_project_role_list');
     }
 }
