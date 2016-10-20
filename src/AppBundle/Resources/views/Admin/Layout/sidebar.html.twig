@@ -34,17 +34,18 @@
         <li class="active">
             <a href="{{ path('app_admin_index') }}">
                 <i class="zmdi zmdi-home"></i>
-                {{ 'admin.sidebar.menu.home'|trans }}
+                {{ 'admin.user.list.title'|trans }}
             </a>
         </li>
         <li>
             <a href="{{ path('app_admin_user_list') }}">
                 <i class="zmdi zmdi-account"></i>
-                {{ 'admin.sidebar.menu.users'|trans }}
+                {{ 'admin.user.list.title'|trans }}
             </a>
         </li>
         <li class="sub-menu">
-            <a href="{{ path('app_admin_project_category_list') }}" data-ma-action="submenu-toggle"><i class="zmdi zmdi-folder-outline"></i> Project</a>
+            <a href="{{ path('app_admin_project_category_list') }}" data-ma-action="submenu-toggle"><i class="zmdi zmdi-folder-outline"></i>{{ 'admin.project.list.title'|trans }}
+            </a>
 
             <ul>
                 <li><a href="{{ path('app_admin_project_category_list') }}">{{ 'admin.project_category.list.title'|trans }}</a></li>
@@ -61,10 +62,28 @@
             </ul>
         </li>
         <li>
-            <a href="{{ path('app_admin_portfolio_list') }}">{{ 'admin.portfolio.list.title'|trans }}</a>
+            <a href="{{ path('app_admin_portfolio_list') }}"><i class="zmdi zmdi-laptop-mac"></i>{{ 'admin.portfolio.list.title'|trans }}</a>
         </li>
         <li>
-            <a href="{{ path('app_admin_color_status_list') }}">{{ 'admin.color_status.list.title'|trans }}</a>
+            <a href="{{ path('app_admin_color_status_list') }}"><i class="zmdi zmdi-invert-colors"></i>{{ 'admin.color_status.list.title'|trans }}</a>
+        </li>
+        <li>
+            <a href="{{ path('app_admin_workpackage_list') }}">
+                <i class="zmdi zmdi-present-to-all"></i>
+                {{ 'admin.workpackage.list.title'|trans }}
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_admin_schedule_list') }}">
+                <i class="zmdi zmdi-calendar-note"></i>
+                {{ 'admin.schedule.list.title'|trans }}
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_admin_raci_list') }}">
+                <i class="zmdi zmdi-view-agenda"></i>
+                {{ 'admin.raci.list.title'|trans }}
+            </a>
         </li>
     </ul>
 </aside>

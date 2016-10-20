@@ -6,9 +6,9 @@
 
 {% block body_content %}
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-8 col-md-offset-2">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header bgm-teal">
                     <h2>{{ 'admin.project_cost_type.edit.title'|trans }}</h2>
                     <ul class="dropdown-menu dropdown-menu-right">
                         <li>
@@ -43,7 +43,6 @@
                             {
                                 'attr': {
                                     'class': 'form-control input-sm',
-                                    'placeholder': 'admin.general.placeholder.name'|trans,
                                 },
                                 'label': 'admin.project_cost_type.create.name'|trans,
                             }
@@ -51,7 +50,7 @@
                         {{ form_widget(
                             form.project,
                             {
-                                'attr': {'class': 'form-control input-sm'},
+                                'attr': {'class': 'selectpicker'},
                                 'label': 'admin.project_cost_type.create.project'|trans,
                             }
                         ) }}

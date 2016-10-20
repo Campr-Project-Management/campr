@@ -23,14 +23,14 @@ admin:
             abbreviation: Abbreviation
             rate: Rate
             module: Module
+            actions: Actions
     sidebar:
         menu:
             home: Home
-            users: Users
     user:
         choice: Choose one user
         sponsor:
-            choice: Choose one sponsore
+            choice: Choose one sponsor
         manager:
             choice: Choose one manager
         list:
@@ -42,6 +42,7 @@ admin:
                 email: Email
                 first_name: First name
                 last_name: Last name
+                full_name: Name
                 phone: Phone
                 enabled: Enabled
                 suspended: Suspended
@@ -49,8 +50,6 @@ admin:
                 actions: Actions
             no-users: No users found!
             add: Add new user
-            edit: Edit
-            delete: Delete
         create:
             title: Create new user
             username: Username
@@ -106,13 +105,10 @@ admin:
                 id: Id
                 name: Name
                 actions: Actions
-            edit: Edit
-            delete: Delete
             no-schedules: No schedules found!
         create:
             title: Create new schedule
             name: Schedule name
-            create: Create
             success: Schedule successfully added!
         edit:
             title: Edit schedule
@@ -130,14 +126,11 @@ admin:
                 user: User
                 data: Data
                 actions: Actions
-            edit: Edit
-            delete: Delete
             no-raci: No raci found!
         create:
             title: Create RACI
             workpackage: WorkPackage
             user: User
-            create: Create
             data: Data
             success: Raci successfully added!
         edit:
@@ -153,13 +146,24 @@ admin:
             table:
                 id: Id
                 puid: Puid
+                parent: Parent
                 name: Name
+                project: Project
                 responsible: Responsible
+                color_status: Color Status
+                progress: Progress
                 schedule_start: Schedule Start
                 schedule_finish: Schedule Finish
+                forecast_start: Forecast Start
+                forecast_finish: Forecast Finish
+                actual_start: Actual Start
+                actual_finish: Actual Finish
+                content: Content
+                results: Results
+                is_key_milestone: Is Key Milestone
+                created_at: Created At
+                updated_at: Updated At
                 actions: Actions
-            edit: Edit
-            delete: Delete
             no-workpackages: No workpackages found!
         create:
             title: Create new workpackage
@@ -171,7 +175,6 @@ admin:
             schedule_start: Scheduled Start At
             schedule_finish: Scheduled Finish At
             content: Content
-            create: Create
             data: Data
             success: WorkPackage successfully added!
         edit:
