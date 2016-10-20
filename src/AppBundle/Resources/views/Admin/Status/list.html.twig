@@ -1,0 +1,62 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+{% trans_default_domain 'admin' %}
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ 'admin.status.list.title'|trans }}<small>{{ 'admin.status.list.subtitle'|trans }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_status_create') }}">{{ 'admin.status.list.add'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {% for flash_message in app.session.flashBag.get('success') %}
+                        <div class="alert alert-success">
+                            <strong>{{ flash_message }}</strong>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="card-body m-t-0">
+                    <table class="table table-inner table-vmiddle">
+                        <thead>
+                            <tr>
+                                <th>{{ 'admin.status.list.table.id'|trans }}</th>
+                                <th>{{ 'admin.status.list.table.name'|trans }}</th>
+                                <th>{{ 'admin.status.list.table.actions'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for stat in statuses %}
+                                <tr>
+                                    <td class="f-500 c-cyan">{{ stat.id }}</td>
+                                    <td>{{ stat.name }}</td>
+                                    <td>
+                                        <a href="{{ path('app_admin_status_edit', {'id': stat.id}) }}">
+                                            <button class="btn btn-primary btn-sm">{{ 'admin.status.list.edit'|trans }}</button>
+                                        </a>
+                                        <a href="{{ path('app_admin_status_delete', {'id': stat.id}) }}">
+                                            <button class="btn btn-danger btn-sm">{{ 'admin.status.list.delete'|trans }}</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td class="f-500 c-cyan">{{ 'admin.status.list.no-status'|trans }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="recent-items-chart" class="flot-chart"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

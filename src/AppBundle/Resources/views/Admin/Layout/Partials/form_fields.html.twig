@@ -1,0 +1,108 @@
+{%- block form_widget_simple -%}
+    {% if attr.addon_front is defined or attr.addon_back is defined %}
+        {% set class = "input-group fg-float col-sm-4 col-md-offset-2"  %}
+    {% else %}
+        {% set class = "col-sm-8 col-md-offset-2"  %}
+    {% endif %}
+    <div class="form-group fg-float">
+        <div class="{{ class }}">
+            {% if attr.addon_front is defined %}
+                <span class="input-group-addon"><i class="zmdi zmdi-{{ attr.addon_front }}"></i></span>
+            {% endif %}
+            <div class="fg-line">
+                {%- set type = type|default('text') -%}
+                <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+                <label class="fg-label" for="{{ name }}">
+                    {% if label is not none %}
+                        {{ label }}
+                    {% else %}
+                        {{ 'admin.general.form.label'|trans({}, 'admin') }}
+                    {% endif %}
+                    {% if required %}
+                        <span class="c-red">*</span>
+                    {% endif %}
+                </label>
+            </div>
+            {% if attr.addon_back is defined %}
+                <span class="input-group-addon last"><i class="zmdi zmdi-{{ attr.addon_back }}"></i></span>
+            {% endif %}
+        </div>
+    </div>
+{%- endblock form_widget_simple -%}
+
+{%- block choice_widget_collapsed -%}
+    <div class="form-group">
+        <div class="col-sm-4 col-md-offset-2">
+            <label for="{{ name }}">
+                {% if label is not none %}
+                    {{ label }}
+                {% else %}
+                    {{ 'admin.general.form.label'|trans({}, 'admin') }}:
+                {% endif %}
+            </label>
+            <div class="select">
+                {%- if required and placeholder is none and not placeholder_in_choices and not multiple and (attr.size is not defined or attr.size <= 1) -%}
+                    {% set required = false %}
+                {%- endif -%}
+                <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+                    {%- if placeholder is not none -%}
+                        <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
+                    {%- endif -%}
+                    {%- if preferred_choices|length > 0 -%}
+                        {% set options = preferred_choices %}
+                        {{- block('choice_widget_options') -}}
+                        {%- if choices|length > 0 and separator is not none -%}
+                            <option disabled="disabled">{{ separator }}</option>
+                        {%- endif -%}
+                    {%- endif -%}
+                    {%- set options = choices -%}
+                    {{- block('choice_widget_options') -}}
+                </select>
+            </div>
+        </div>
+    </div>
+{%- endblock choice_widget_collapsed -%}
+
+{%- block checkbox_widget -%}
+    <div class="col-md-offset-2">
+        {% if attr.toggle is defined %}
+            <div class="toggle-switch toggle-switch-demo m-t-10">
+                <label for="{{ name }}" class="ts-label">{{ label }}:</label>
+                <input type="checkbox" id="{{ id }}" name="{{ full_name }}"  {% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+                <label for="ts1" class="ts-helper"></label>
+            </div>
+        {% else %}
+            <label class="checkbox checkbox-inline m-r-10">
+                <label for="{{ name }}">
+                    {% if label is not none %}
+                        {{ label }}
+                    {% else %}
+                        {{ 'admin.general.form.label'|trans({}, 'admin') }}
+                    {% endif %}
+                </label>
+                <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+                <i class="input-helper"></i>
+            </label>
+        {% endif %}
+    </div>
+{%- endblock checkbox_widget -%}
+
+{%- block textarea_widget -%}
+    <div class="form-group fg-float">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="fg-line">
+                <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+                <label class="fg-label" for="{{ name }}">
+                    {% if label is not none %}
+                        {{ label }}
+                    {% else %}
+                        {{ 'admin.general.form.label'|trans({}, 'admin') }}
+                    {% endif %}
+                    {% if required %}
+                        <span class="c-red">*</span>
+                    {% endif %}
+                </label>
+            </div>
+        </div>
+    </div>
+{%- endblock textarea_widget -%}

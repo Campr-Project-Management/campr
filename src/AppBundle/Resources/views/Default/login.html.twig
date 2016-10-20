@@ -1,0 +1,183 @@
+{% extends 'AppBundle:Layout:base.html.twig' %}
+{% trans_default_domain 'layout' %}
+
+{% block body %}
+    <div class="login-content">
+        <div class="lc-block {% if login is defined %}toggled{% endif %}" id="l-login">
+            <div class="lcb-form">
+                {% if error %}
+                    <div class="c-red">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                {{ form_start(
+                    form,
+                    {
+                        'method': 'POST',
+                        'action': path(route),
+                        'attr': {
+                            'novalidate': 'novalidate',
+                        },
+                    }
+                ) }}
+                <div class="input-group m-b-20 fg-float">
+                    <span class="input-group-addon"><i class="zmdi zmdi-account"></i></span>
+                    <div class="fg-line {% if error %}has-error{% endif %}">
+                        {{ form_widget(form.email, {'attr': {'class': 'form-control', 'value': last_username}}) }}
+                        <label class="fg-label" for="email">
+                            {{ 'login.email'|trans }}
+                        </label>
+                    </div>
+                </div>
+                <div class="input-group m-b-20 fg-float">
+                    <span class="input-group-addon"><i class="zmdi zmdi-male"></i></span>
+                    <div class="fg-line {% if error %}has-error{% endif %}">
+                        {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="email">
+                            {{ 'login.password'|trans }}
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-login btn-success btn-float">
+                    <i class="zmdi zmdi-arrow-forward"></i>
+                </button>
+                {{ form_errors(form) }}
+                {{ form_end(form) }}
+            </div>
+            <div class="lcb-navigation">
+                <a href="" data-ma-action="login-switch" data-ma-block="#l-register"><i class="zmdi zmdi-plus"></i> <span>{{ 'register.title'|trans }}</span></a>
+                <a href="" data-ma-action="login-switch" data-ma-block="#l-forget-password"><i>?</i> <span>{{ 'forgot.title'|trans }}</span></a>
+            </div>
+        </div>
+
+        <!-- Register -->
+        <div class="lc-block {% if register is defined %}toggled{% endif %}" id="l-register">
+            <div class="lcb-form">
+                {{ form_start(
+                    form_register,
+                    {
+                        'method': 'POST',
+                        'action': path('app_user_register'),
+                        'attr': {
+                            'novalidate': 'novalidate',
+                        },
+                    }
+                ) }}
+                <div class="input-group m-b-20 fg-float">
+                    <span class="input-group-addon"><i class="zmdi zmdi-account"></i></span>
+                    <div class="fg-line {% if form_errors(form_register.username) %}has-error{% endif %}">
+                        {{ form_widget(form_register.username, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="username">
+                            {{ 'register.username'|trans }}
+                        </label>
+                    </div>
+                    <small class="help-block c-red">{{ form_errors(form_register.username)}}</small>
+                </div>
+
+                <div class="input-group m-b-20 fg-float">
+                    <span class="input-group-addon"><i class="zmdi zmdi-email"></i></span>
+                    <div class="fg-line {% if form_errors(form_register.email) %}has-error{% endif %}">
+                        {{ form_widget(form_register.email, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="email">
+                            {{  'register.email'|trans }}
+                        </label>
+                    </div>
+                    <small class="help-block c-red">{{ form_errors(form_register.email)}}</small>
+                </div>
+
+                <div class="input-group m-b-20 fg-float">
+                    <span class="input-group-addon"><i class="zmdi zmdi-male"></i></span>
+                    <div class="fg-line {% if form_errors(form_register.plainPassword.first) %}has-error{% endif %}">
+                        {{ form_widget(form_register.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="plainPasswordFirst">
+                            {{ 'register.password'|trans }}
+                        </label>
+                    </div>
+                    <small class="help-block c-red">{{ form_errors(form_register.plainPassword.first)}}</small>
+                </div>
+                <div class="input-group m-b-20 fg-float">
+                    <span class="input-group-addon"><i class="zmdi zmdi-repeat"></i></span>
+                    <div class="fg-line {% if form_errors(form_register.plainPassword.second) %}has-error{% endif %}">
+                        {{ form_widget(form_register.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="plainPasswordSecond">
+                            {{ 'register.password_repeat'|trans }}
+                        </label>
+                    </div>
+                    <small class="help-block c-red">{{ form_errors(form_register.plainPassword.second)}}</small>
+                </div>
+                <div class="input-group m-b-20 fg-float">
+                    <span class="input-group-addon"><i class="zmdi zmdi-account-box"></i></span>
+                    <div class="fg-line {% if form_errors(form_register.firstName) %}has-error{% endif %}">
+                        {{ form_widget(form_register.firstName, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="firstName">
+                            {{ 'register.firstname'|trans }}
+                        </label>
+                    </div>
+                    <small class="help-block c-red">{{ form_errors(form_register.firstName)}}</small>
+                </div>
+                <div class="input-group m-b-20 fg-float">
+                    <span class="input-group-addon"><i class="zmdi zmdi-account-box"></i></span>
+                    <div class="fg-line {% if form_errors(form_register.lastName) %}has-error{% endif %}">
+                        {{ form_widget(form_register.lastName, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="lastName">
+                            {{ 'register.lastname'|trans }}
+                        </label>
+                    </div>
+                    <small class="help-block c-red">{{ form_errors(form_register.lastName)}}</small>
+                </div>
+                <div class="input-group m-b-20 fg-float">
+                    <span class="input-group-addon"><i class="zmdi zmdi-phone"></i></span>
+                    <div class="fg-line {% if form_errors(form_register.phone) %}has-error{% endif %}">
+                        {{ form_widget(form_register.phone, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="phone">
+                            {{ 'register.phone'|trans }}
+                        </label>
+                    </div>
+                    <small class="help-block c-red">{{ form_errors(form_register.phone)}}</small>
+                </div>
+                <button type="submit" class="btn btn-login btn-success btn-float"><i class="zmdi zmdi-check"></i></button>
+                {{ form_end(form_register) }}
+            </div>
+            <div class="lcb-navigation">
+                <a href="" data-ma-action="login-switch" data-ma-block="#l-login"><i class="zmdi zmdi-long-arrow-right"></i> <span>{{ 'login.sign_in'|trans }}</span></a>
+                <a href="" data-ma-action="login-switch" data-ma-block="#l-forget-password"><i>?</i> <span>{{ 'forgot.title'|trans }}</span></a>
+            </div>
+        </div>
+
+         <!-- Forgot Password -->
+        <div class="lc-block {% if forgot_password is defined %}toggled{% endif %}" id="l-forget-password">
+            <div class="lcb-form">
+                {{ form_start(
+                    form_reset,
+                    {
+                        'method': 'POST',
+                        'action': path('app_user_request_reset'),
+                        'attr': {
+                            'novalidate': 'novalidate',
+                        },
+                    }
+                ) }}
+                <p class="text-left">{{ 'reset.title'|trans }}</p>
+                {% if user_not_found is defined %}
+                    {% if user_not_found %}
+                        <small class="help-block c-red">{{ 'forgot.user_not_found'|trans }}</small>
+                    {% endif %}
+                {% endif %}
+                <div class="input-group m-b-20 fg-float">
+                    <span class="input-group-addon"><i class="zmdi zmdi-email"></i></span>
+                    <div class="fg-line {% if form_errors(form_reset.email) %}has-error{% endif %}">
+                        {{ form_widget(form_reset.email, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="email">
+                            {{ 'register.email'|trans }}
+                        </label>
+                    </div>
+                    <small class="help-block c-red">{{ form_errors(form_reset.email)}}</small>
+                </div>
+                <button type="submit" class="btn btn-login btn-success btn-float"><i class="zmdi zmdi-check"></i></button>
+                {{ form_end(form_reset) }}
+            </div>
+            <div class="lcb-navigation">
+                <a href="" data-ma-action="login-switch" data-ma-block="#l-login"><i class="zmdi zmdi-long-arrow-right"></i> <span>{{ 'login.sign_in'|trans }}</span></a>
+                <a href="" data-ma-action="login-switch" data-ma-block="#l-register"><i class="zmdi zmdi-plus"></i> <span>{{ 'register.title'|trans }}</span></a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

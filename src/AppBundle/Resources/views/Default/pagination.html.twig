@@ -1,0 +1,83 @@
+{% if pageCount > 1 %}
+    <ul class="pagination lg-pagination">
+        {% if current <= last %}
+            {% if last <= 7 %}
+                {% for page in range(first, last) %}
+                    {% if page != current %}
+                        <li class="page">
+                            <a href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
+                        </li>
+                    {% else %}
+                        <li class="active"><a>{{ page }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                {% if current <= 4 %}
+                    {% for page in range(1, 6) %}
+                        {% if page != current %}
+                            <li class="page">
+                                <a href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="active"><a>{{ page }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    <li class="disabled">
+                        <a>
+                            ...
+                        </a>
+                    </li>
+                    <li class="last">
+                        <a href="{{ path(route, query|merge({(pageParameterName): last})) }}">{{ last }}</a>
+                    </li>
+                {% elseif current >= last-3 %}
+                    <li class="first">
+                        <a href="{{ path(route, query|merge({(pageParameterName): first})) }}">{{ first }}</a>
+                    </li>
+                    <li class="disabled">
+                        <a>
+                            ...
+                        </a>
+                    </li>
+                    {% for page in range(last-5, last) %}
+                        {% if page != current %}
+                            <li class="page">
+                                <a href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="active"><a>{{ page }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <li class="first">
+                        <a href="{{ path(route, query|merge({(pageParameterName): first})) }}">{{ first }}</a>
+                    </li>
+                    <li class="disabled">
+                        <a>
+                            ...
+                        </a>
+                    </li>
+                    {% for page in range(current-2, current+2) %}
+                        {% if page != current %}
+                            <li class="page">
+                                <a href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="active"><a>{{ page }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    <li class="disabled">
+                        <a>
+                            ...
+                        </a>
+                    </li>
+                    <li class="last">
+                        <a href="{{ path(route, query|merge({(pageParameterName): last})) }}">{{ last }}</a>
+                    </li>
+                {% endif %}
+            {% endif %}
+        {% else %}
+            This page does not exist!
+        {% endif %}
+    </ul>
+{% endif %}
