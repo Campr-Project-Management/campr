@@ -273,7 +273,10 @@ admin:
             title: Edit Project Category
             success: Project category successfully edited!
         delete:
-            success: Project category successfully deleted!
+            success:
+                general: Project category successfully deleted!
+                first: Project category with ID
+                second: successfully deleted!
 
     project_complexity:
         choice: Choose one project complexity
