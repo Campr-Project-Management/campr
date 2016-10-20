@@ -55,7 +55,7 @@ then
     sudo apt-get install -y software-properties-common
 fi
 
-PHPV=(`php -v | grep -Ei "PHP 7.0.[0-9]+" | grep -oEi "7.0.[0-9]+" | sed 's/\./\n/g'`)
+PHPV=(`php -v | grep -Ei "PHP [0-9]+.[0-9]+.[0-9]+" | grep -oEi "[0-9]+.[0-9]+.[0-9]+" | sed 's/\./\n/g'`)
 
 if [ ! -e "`which php`" ] || [ ${PHPV[0]} -lt 7 ] || [ ${PHPV[2]} -lt 11 ];
 then
