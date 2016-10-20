@@ -1,0 +1,84 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.project_role.list.title'|trans }}<small>{{ 'admin.project_role.list.subtitle'|trans }}</small></h2>
+                    <a href="{{ path('app_admin_project_role_create') }}">
+                        <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% for flash_message in app.session.flashBag.get('success') %}
+                        <div class="alert alert-success m-t-15">
+                            <strong>{{ flash_message }}</strong>
+                        </div>
+                    {% endfor %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'admin.project_role.list.table.id'|trans }}</th>
+                                    <th>{{ 'admin.project_role.list.table.name'|trans }}</th>
+                                    <th>{{ 'admin.project_role.list.table.sequence'|trans }}</th>
+                                    <th>{{ 'admin.project_role.list.table.lead'|trans }}</th>
+                                    <th>{{ 'admin.project_role.list.table.created_at'|trans }}</th>
+                                    <th>{{ 'admin.project_role.list.table.updated_at'|trans }}</th>
+                                    <th>{{ 'admin.general.list.placeholder.actions'|trans }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for project_role in project_roles %}
+                                <tr>
+                                    <td class="f-500 c-cyan">{{ project_role.id }}</td>
+                                    <td>{{ project_role.name }}</td>
+                                    <td>{{ project_role.sequence }}</td>
+                                    <td>
+                                        {% if project_role.isLead %}
+                                            <span class="p-5 c-white brd-2 bgm-green">
+                                                {{ 'admin.general.form.checkbox.checked'|trans }}
+                                            </span>
+                                        {% else %}
+                                            <span class="p-5 c-white brd-2 bgm-blue">
+                                                {{ 'admin.general.form.checkbox.unchecked'|trans }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if project_role.createdAt %}
+                                            {{ project_role.createdAt|date('d/m/Y') }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if project_role.updatedAt %}
+                                            {{ project_role.updatedAt|date('d/m/Y') }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% include '@App/Admin/Layout/Partials/form_list_buttons.html.twig'
+                                            with {
+                                                'show_path': 'app_admin_project_role_show',
+                                                'edit_path': 'app_admin_project_role_edit',
+                                                'delete_path': 'app_admin_project_role_delete',
+                                                'id': project_role.id,
+                                            }
+                                        %}
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="7" class="f-500 c-cyan">{{ 'admin.project_role.list.not_found'|trans }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

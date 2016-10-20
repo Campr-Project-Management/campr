@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Table(name="project_department")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectDepartmentRepository")
  */
 class ProjectDepartment
@@ -67,6 +68,11 @@ class ProjectDepartment
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     /**
      * Get id.
@@ -225,11 +231,11 @@ class ProjectDepartment
     /**
      * Set projectWorkCostType.
      *
-     * @param \AppBundle\Entity\ProjectWorkCostType $projectWorkCostType
+     * @param ProjectWorkCostType $projectWorkCostType
      *
      * @return ProjectDepartment
      */
-    public function setProjectWorkCostType(\AppBundle\Entity\ProjectWorkCostType $projectWorkCostType = null)
+    public function setProjectWorkCostType(ProjectWorkCostType $projectWorkCostType = null)
     {
         $this->projectWorkCostType = $projectWorkCostType;
 
@@ -239,7 +245,7 @@ class ProjectDepartment
     /**
      * Get projectWorkCostType.
      *
-     * @return \AppBundle\Entity\ProjectWorkCostType
+     * @return ProjectWorkCostType
      */
     public function getProjectWorkCostType()
     {

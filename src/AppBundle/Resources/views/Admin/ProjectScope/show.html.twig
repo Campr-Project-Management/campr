@@ -1,0 +1,73 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.project_scope.list.title'|trans }}<small>{{ project_scope.name }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_project_scope_create') }}">{{ 'admin.project_scope.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_project_scope_edit', {'id': project_scope.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_project_scope_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th>{{ 'admin.project_scope.list.table.name'|trans }}</th>
+                                    <td>{{ project_scope.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_scope.list.table.project'|trans }}</th>
+                                    <td>
+                                        {% if project_scope.project %}
+                                            {{ project_scope.project.name }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_scope.list.table.sequence'|trans }}</th>
+                                    <td>{{ project_scope.sequence }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_scope.list.table.created_at'|trans }}</th>
+                                    <td>
+                                        {% if project_scope.createdAt %}
+                                            {{ project_scope.createdAt|date('d/m/Y') }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_scope.list.table.updated_at'|trans }}</th>
+                                    <td>
+                                        {% if project_scope.updatedAt %}
+                                            {{ project_scope.updatedAt|date('d/m/Y') }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

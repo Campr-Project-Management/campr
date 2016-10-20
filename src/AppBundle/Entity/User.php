@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
@@ -10,10 +11,22 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  *     @ORM\UniqueConstraint(name="username_unique", columns={"username"}),
  *     @ORM\UniqueConstraint(name="email_unique", columns={"email"})
  * })
+ * @UniqueEntity(
+ *      fields="email",
+ *      errorPath="email",
+ *      message="validation.constraints.user.unique.email"
+ *  )
+ * @UniqueEntity(
+ *      fields="username",
+ *      errorPath="username",
+ *      message="validation.constraints.user.unique.username"
+ *  )
  * @ORM\Entity
  */
 class User implements AdvancedUserInterface, \Serializable
 {
+    const ROLE_USER = 'ROLE_USER';
+
     /**
      * @var int
      *
@@ -65,6 +78,11 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @var string
+     */
+    private $plainPassword;
+
+    /**
+     * @var string
      * @ORM\Column(name="salt", type="string", length=32)
      */
     private $salt;
@@ -79,16 +97,16 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_enabled", type="boolean", nullable=false)
+     * @ORM\Column(name="is_enabled", type="boolean", nullable=false, options={"default"=0})
      */
-    private $isEnabled = '0';
+    private $isEnabled = false;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_suspended", type="boolean", nullable=false)
+     * @ORM\Column(name="is_suspended", type="boolean", nullable=false, options={"default"=0})
      */
-    private $isSuspended = '0';
+    private $isSuspended = false;
 
     /**
      * @var string
@@ -131,6 +149,13 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="activated_at", type="datetime", nullable=true)
+     */
+    private $activatedAt;
 
     /**
      * Constructor.
@@ -263,6 +288,14 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        return sprintf('%s %s', $this->firstName, $this->lastName);
+    }
+
+    /**
      * Get lastName.
      *
      * @return string
@@ -294,6 +327,30 @@ class User implements AdvancedUserInterface, \Serializable
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Set plainPassword.
+     *
+     * @param string $plainPassword
+     *
+     * @return User
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    /**
+     * Get plainPassword.
+     *
+     * @return string
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
     }
 
     /**
@@ -334,14 +391,29 @@ class User implements AdvancedUserInterface, \Serializable
         return $this;
     }
 
-    /**
-     * Get roles.
-     *
-     * @return array
-     */
     public function getRoles()
     {
-        return $this->roles;
+        $roles = $this->roles;
+
+        if (!is_array($roles)) {
+            $roles = [];
+        }
+
+        $roles[] = self::ROLE_USER;
+
+        return array_unique($roles);
+    }
+
+    /**
+     * Has role.
+     *
+     * @param $role
+     *
+     * @return bool
+     */
+    public function hasRole($role)
+    {
+        return in_array($role, $this->getRoles());
     }
 
     /**
@@ -545,7 +617,7 @@ class User implements AdvancedUserInterface, \Serializable
 
     public function eraseCredentials()
     {
-        $this->setPassword(null);
+        $this->setPlainPassword(null);
     }
 
     /**
@@ -590,5 +662,29 @@ class User implements AdvancedUserInterface, \Serializable
     public function isCredentialsNonExpired()
     {
         return true;
+    }
+
+    /**
+     * Set activatedAt.
+     *
+     * @param \DateTime $activatedAt
+     *
+     * @return User
+     */
+    public function setActivatedAt(\DateTime $activatedAt = null)
+    {
+        $this->activatedAt = $activatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get activatedAt.
+     *
+     * @return \DateTime
+     */
+    public function getActivatedAt()
+    {
+        return $this->activatedAt;
     }
 }
