@@ -57,7 +57,7 @@ class Document
      */
     public function __construct()
     {
-        $this->meetings = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->meetings = new ArrayCollection();
     }
 
     /**
@@ -97,11 +97,11 @@ class Document
     /**
      * Set project.
      *
-     * @param \AppBundle\Entity\Project $project
+     * @param Project $project
      *
      * @return Document
      */
-    public function setProject(\AppBundle\Entity\Project $project = null)
+    public function setProject(Project $project = null)
     {
         $this->project = $project;
 
@@ -111,7 +111,7 @@ class Document
     /**
      * Get project.
      *
-     * @return \AppBundle\Entity\Project
+     * @return Project
      */
     public function getProject()
     {
@@ -121,11 +121,11 @@ class Document
     /**
      * Add meeting.
      *
-     * @param \AppBundle\Entity\Meeting $meeting
+     * @param Meeting $meeting
      *
      * @return Document
      */
-    public function addMeeting(\AppBundle\Entity\Meeting $meeting)
+    public function addMeeting(Meeting $meeting)
     {
         $this->meetings[] = $meeting;
 
@@ -135,9 +135,9 @@ class Document
     /**
      * Remove meeting.
      *
-     * @param \AppBundle\Entity\Meeting $meeting
+     * @param Meeting $meeting
      */
-    public function removeMeeting(\AppBundle\Entity\Meeting $meeting)
+    public function removeMeeting(Meeting $meeting)
     {
         $this->meetings->removeElement($meeting);
     }

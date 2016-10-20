@@ -1,0 +1,82 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.project_department.list.title'|trans }}<small>{{ 'admin.project_department.list.subtitle'|trans }}</small></h2>
+                    <a href="{{ path('app_admin_project_department_create') }}">
+                        <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% for flash_message in app.session.flashBag.get('success') %}
+                        <div class="alert alert-success m-t-15">
+                            <strong>{{ flash_message }}</strong>
+                        </div>
+                    {% endfor %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'admin.project_department.list.table.id'|trans }}</th>
+                                    <th>{{ 'admin.project_department.list.table.name'|trans }}</th>
+                                    <th>{{ 'admin.project_department.list.table.abbreviation'|trans }}</th>
+                                    <th>{{ 'admin.project_department.list.table.sequence'|trans }}</th>
+                                    <th>{{ 'admin.project_department.list.table.rate'|trans }}</th>
+                                    <th>{{ 'admin.project_department.list.table.project_work_cost_type'|trans }}</th>
+                                    <th>{{ 'admin.project_department.list.table.created_at'|trans }}</th>
+                                    <th>{{ 'admin.project_department.list.table.updated_at'|trans }}</th>
+                                    <th>{{ 'admin.general.list.placeholder.actions'|trans }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for project_department in project_departments %}
+                                <tr>
+                                    <td class="f-500 c-cyan">{{ project_department.id }}</td>
+                                    <td>{{ project_department.name }}</td>
+                                    <td>{{ project_department.abbreviation }}</td>
+                                    <td>{{ project_department.sequence }}</td>
+                                    <td>{{ project_department.rate }}</td>
+                                    <td>
+                                        {% if project_department.projectWorkCostType %}
+                                            {{ project_department.projectWorkCostType.name }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if project_department.createdAt %}
+                                            {{ project_department.createdAt|date('d/m/Y') }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if project_department.updatedAt %}
+                                            {{ project_department.updatedAt|date('d/m/Y') }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% include '@App/Admin/Layout/Partials/form_list_buttons.html.twig'
+                                            with {
+                                                'show_path': 'app_admin_project_department_show',
+                                                'edit_path': 'app_admin_project_department_edit',
+                                                'delete_path': 'app_admin_project_department_delete',
+                                                'id': project_department.id,
+                                            }
+                                        %}
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="9" class="f-500 c-cyan">{{ 'admin.project_department.list.not_found'|trans }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

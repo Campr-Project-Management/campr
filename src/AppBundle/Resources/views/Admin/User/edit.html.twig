@@ -1,0 +1,124 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.user.edit.title'|trans }}</h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_user_create') }}">{{ 'admin.user.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_user_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body m-t-10 card-padding">
+                    {{ form_start(
+                        form,
+                        {
+                            'method': 'POST',
+                            'action': path('app_admin_user_edit', {'id': id}),
+                            'attr': {
+                                'class': 'form-horizontal',
+                                'novalidate': 'novalidate',
+                            },
+                        }
+                    ) }}
+                    {% if form.vars.valid == false %}
+                        <div class="alert alert-danger">
+                            {% for field in form.children %}
+                                {{ form_errors(field) }}
+                                {% if field.children %}
+                                    {% for child in field.children %}
+                                        {{ form_errors(child) }}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {{ form_widget(
+                            form.firstName,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                        },
+                            'label': 'admin.user.create.first_name'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.lastName,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                        },
+                            'label': 'admin.user.create.last_name'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.phone,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                        },
+                            'label': 'admin.user.create.phone'|trans
+                        }
+                    ) }}
+                    {% for roleChild in form.roles.children %}
+                        {{ form_widget(
+                            roleChild,
+                            {
+                                'attr': {
+                                    'class': 'form-control input-sm',
+                            },
+                                'label': roleChild.vars.label|trans
+                            }
+                        ) }}
+                    {% endfor %}
+                    {{ form_widget(
+                        form.isEnabled,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                                'toggle': true
+                            },
+                            'label': 'admin.user.edit.enabled'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.isSuspended,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                                'toggle': true
+                            },
+                            'label': 'admin.user.edit.suspended'|trans
+                        }
+                    ) }}
+
+                    {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
+                        with {
+                            'delete_path': 'app_admin_user_delete',
+                            'id': id,
+                        }
+                    %}
+                    <span class="hidden">{{ form_row(form._token) }}</span>
+                    {{ form_end(form, {'render_rest': false}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

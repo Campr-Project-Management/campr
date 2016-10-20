@@ -1,0 +1,81 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.project_department.list.title'|trans }}<small>{{ project_department.name }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_project_department_create') }}">{{ 'admin.project_department.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_project_department_edit', {'id': project_department.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_project_department_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th>{{ 'admin.project_department.list.table.name'|trans }}</th>
+                                    <td>{{ project_department.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_department.list.table.abbreviation'|trans }}</th>
+                                    <td>{{ project_department.abbreviation }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_department.list.table.project_work_cost_type'|trans }}</th>
+                                    <td>
+                                        {% if project_department.projectWorkCostType %}
+                                            {{ project_department.projectWorkCostType.name }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_department.list.table.sequence'|trans }}</th>
+                                    <td>{{ project_department.sequence }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_department.list.table.rate'|trans }}</th>
+                                    <td>{{ project_department.rate }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_department.list.table.created_at'|trans }}</th>
+                                    <td>
+                                        {% if project_department.createdAt %}
+                                            {{ project_department.createdAt|date('d/m/Y') }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.project_department.list.table.updated_at'|trans }}</th>
+                                    <td>
+                                        {% if project_department.updatedAt %}
+                                            {{ project_department.updatedAt|date('d/m/Y') }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -174,11 +174,11 @@ class MeetingAgenda
     /**
      * Set meeting.
      *
-     * @param \AppBundle\Entity\Meeting $meeting
+     * @param Meeting $meeting
      *
      * @return MeetingAgenda
      */
-    public function setMeeting(\AppBundle\Entity\Meeting $meeting = null)
+    public function setMeeting(Meeting $meeting = null)
     {
         $this->meeting = $meeting;
 
@@ -188,7 +188,7 @@ class MeetingAgenda
     /**
      * Get meeting.
      *
-     * @return \AppBundle\Entity\Meeting
+     * @return Meeting
      */
     public function getMeeting()
     {
@@ -198,11 +198,11 @@ class MeetingAgenda
     /**
      * Set responsibility.
      *
-     * @param \AppBundle\Entity\User $responsibility
+     * @param User $responsibility
      *
      * @return MeetingAgenda
      */
-    public function setResponsibility(\AppBundle\Entity\User $responsibility = null)
+    public function setResponsibility(User $responsibility = null)
     {
         $this->responsibility = $responsibility;
 
@@ -212,7 +212,7 @@ class MeetingAgenda
     /**
      * Get responsibility.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getResponsibility()
     {

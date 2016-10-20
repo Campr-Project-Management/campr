@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="project_category")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectCategoryRepository")
+ * @UniqueEntity(fields="name", message="validation.constraints.general_field.name.unique")
  */
 class ProjectCategory
 {
@@ -56,6 +58,11 @@ class ProjectCategory
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     /**
      * Get id.
@@ -166,11 +173,11 @@ class ProjectCategory
     /**
      * Set project.
      *
-     * @param \AppBundle\Entity\Project $project
+     * @param Project $project
      *
      * @return ProjectCategory
      */
-    public function setProject(\AppBundle\Entity\Project $project = null)
+    public function setProject(Project $project = null)
     {
         $this->project = $project;
 
@@ -180,7 +187,7 @@ class ProjectCategory
     /**
      * Get project.
      *
-     * @return \AppBundle\Entity\Project
+     * @return Project
      */
     public function getProject()
     {
