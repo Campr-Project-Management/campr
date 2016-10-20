@@ -7,7 +7,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.color_status.list.title'|trans }}<small>{{ color_status.name }}</small></h2>
+                    <h2>{{ 'admin.raci.list.title'|trans }}<small>{{ raci.workPackage.name|default('-') }}</small></h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -15,33 +15,37 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_color_status_create') }}">{{ 'admin.color_status.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_raci_create') }}">{{ 'admin.raci.list.add'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_color_status_edit', {'id': color_status.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                    <a href="{{ path('app_admin_raci_edit', {'id': raci.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_color_status_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_raci_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
                     </ul>
                 </div>
-                <div class="card-body">
+                <div class="card-body m-t-10 card-padding">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <tbody>
                                 <tr>
-                                    <th>{{ 'admin.color_status.list.table.name'|trans }}</th>
-                                    <td>{{ color_status.name }}</td>
+                                    <th>{{ 'admin.raci.list.table.id'|trans }}</th>
+                                    <td>{{ raci.id }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.color_status.list.table.color'|trans }}</th>
-                                    <td>{{ color_status.color }}</td>
+                                    <th>{{ 'admin.raci.list.table.workpackage'|trans }}</th>
+                                    <td>{{ raci.workPackage.name|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.color_status.list.table.sequence'|trans }}</th>
-                                    <td>{{ color_status.sequence }}</td>
+                                    <th>{{ 'admin.raci.list.table.user'|trans }}</th>
+                                    <td>{{ raci.user.username|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.raci.list.table.data'|trans }}</th>
+                                    <td>{{ raci.data|default('-') }}</td>
                                 </tr>
                             </tbody>
                         </table>
