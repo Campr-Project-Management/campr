@@ -168,7 +168,7 @@ class ProjectController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($project);
         $em->flush();
-        
+
         return $this->redirectToRoute('app_admin_project_list');
     }
 }

@@ -19,7 +19,7 @@ class CreateType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -65,7 +65,7 @@ class CreateType extends AbstractType
             ->add('showInOrg', CheckboxType::class)
         ;
     }
-    
+
     /**
      * @param OptionsResolver $resolver
      */

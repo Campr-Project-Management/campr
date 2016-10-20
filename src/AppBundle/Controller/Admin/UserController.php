@@ -43,6 +43,27 @@ class UserController extends Controller
             ]
         );
     }
+
+    /**
+     * Displays User entity.
+     *
+     * @Route("/{id}/show", name="app_admin_user_show")
+     * @Method({"GET"})
+     *
+     * @param User $user
+     *
+     * @return Response
+     */
+    public function showAction(User $user)
+    {
+        return $this->render(
+            'AppBundle:Admin/User:show.html.twig',
+            [
+                'user' => $user,
+            ]
+        );
+    }
+
     /**
      * @Route("/create", name="app_admin_user_create")
      * @Method({"GET", "POST"})
@@ -83,7 +104,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/edit/{id}", name="app_admin_user_edit")
+     * @Route("/{id}/edit", name="app_admin_user_edit")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -122,7 +143,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/delete/{id}", name="app_admin_user_delete")
+     * @Route("/{id}/delete", name="app_admin_user_delete")
      * @Method({"GET"})
      *
      * @param Request $request

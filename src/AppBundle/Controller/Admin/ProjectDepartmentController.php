@@ -104,7 +104,7 @@ class ProjectDepartmentController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $projectDepartment->setUpdatedAt(new \DateTime());
-            
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectDepartment);
             $em->flush();
@@ -178,7 +178,7 @@ class ProjectDepartmentController extends Controller
                     ->trans('admin.project_department.delete.success', [], 'admin')
             )
         ;
-        
+
         return $this->redirectToRoute('app_admin_project_department_list');
     }
 }

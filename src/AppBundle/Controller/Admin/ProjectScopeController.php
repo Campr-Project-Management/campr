@@ -178,7 +178,7 @@ class ProjectScopeController extends Controller
                     ->trans('admin.project_scope.delete.success', [], 'admin')
             )
         ;
-        
+
         return $this->redirectToRoute('app_admin_project_scope_list');
     }
 }

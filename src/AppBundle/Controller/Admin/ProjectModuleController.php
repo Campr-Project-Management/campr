@@ -105,7 +105,7 @@ class ProjectModuleController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $projectModule->setUpdatedAt(new \DateTime());
-            
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectModule);
             $em->flush();
@@ -179,7 +179,7 @@ class ProjectModuleController extends Controller
                     ->trans('admin.project_module.delete.success', [], 'admin')
             )
         ;
-        
+
         return $this->redirectToRoute('app_admin_project_module_list');
     }
 }
