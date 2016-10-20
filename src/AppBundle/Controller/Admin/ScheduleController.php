@@ -37,6 +37,26 @@ class ScheduleController extends Controller
     }
 
     /**
+     * Displays Schedule entity.
+     *
+     * @Route("/{id}/show", name="app_admin_schedule_show")
+     * @Method({"GET"})
+     *
+     * @param Schedule $schedule
+     *
+     * @return Response
+     */
+    public function showAction(Schedule $schedule)
+    {
+        return $this->render(
+            'AppBundle:Admin/Schedule:show.html.twig',
+            [
+                'schedule' => $schedule,
+            ]
+        );
+    }
+
+    /**
      * @Route("/create", name="app_admin_schedule_create")
      * @Method({"GET", "POST"})
      *
@@ -75,7 +95,7 @@ class ScheduleController extends Controller
     }
 
     /**
-     * @Route("/edit/{id}", name="app_admin_schedule_edit")
+     * @Route("/{id}/edit", name="app_admin_schedule_edit")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -114,7 +134,7 @@ class ScheduleController extends Controller
     }
 
     /**
-     * @Route("/delete/{id}", name="app_admin_schedule_delete")
+     * @Route("/{id}/delete", name="app_admin_schedule_delete")
      * @Method({"GET"})
      *
      * @param Request $request

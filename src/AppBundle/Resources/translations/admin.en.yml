@@ -23,6 +23,7 @@ admin:
             abbreviation: Abbreviation
             rate: Rate
             module: Module
+            actions: Actions
     sidebar:
         menu:
             home: Home
@@ -104,13 +105,10 @@ admin:
                 id: Id
                 name: Name
                 actions: Actions
-            edit: Edit
-            delete: Delete
             no-schedules: No schedules found!
         create:
             title: Create new schedule
             name: Schedule name
-            create: Create
             success: Schedule successfully added!
         edit:
             title: Edit schedule
@@ -128,8 +126,6 @@ admin:
                 user: User
                 data: Data
                 actions: Actions
-            edit: Edit
-            delete: Delete
             no-raci: No raci found!
         create:
             title: Create RACI

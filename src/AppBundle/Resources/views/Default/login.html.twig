@@ -18,16 +18,22 @@
                         },
                     }
                 ) }}
-                <div class="input-group m-b-20">
+                <div class="input-group m-b-20 fg-float">
                     <span class="input-group-addon"><i class="zmdi zmdi-account"></i></span>
                     <div class="fg-line {% if error %}has-error{% endif %}">
-                        {{ form_widget(form.email, {'attr': {'placeholder': 'login.email'|trans, 'class': 'form-control', 'value': last_username}}) }}
+                        {{ form_widget(form.email, {'attr': {'class': 'form-control', 'value': last_username}}) }}
+                        <label class="fg-label" for="email">
+                            {{ 'login.email'|trans }}
+                        </label>
                     </div>
                 </div>
-                <div class="input-group m-b-20">
+                <div class="input-group m-b-20 fg-float">
                     <span class="input-group-addon"><i class="zmdi zmdi-male"></i></span>
                     <div class="fg-line {% if error %}has-error{% endif %}">
-                        {{ form_widget(form.password, {'attr': {'placeholder': 'login.password'|trans, 'class': 'form-control'}}) }}
+                        {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="email">
+                            {{ 'login.password'|trans }}
+                        </label>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-login btn-success btn-float">
@@ -55,54 +61,75 @@
                         },
                     }
                 ) }}
-                <div class="input-group m-b-20">
+                <div class="input-group m-b-20 fg-float">
                     <span class="input-group-addon"><i class="zmdi zmdi-account"></i></span>
                     <div class="fg-line {% if form_errors(form_register.username) %}has-error{% endif %}">
-                        {{ form_widget(form_register.username, {'attr': {'placeholder': 'register.username'|trans, 'class': 'form-control'}}) }}
+                        {{ form_widget(form_register.username, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="username">
+                            {{ 'register.username'|trans }}
+                        </label>
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_register.username)}}</small>
                 </div>
 
-                <div class="input-group m-b-20">
+                <div class="input-group m-b-20 fg-float">
                     <span class="input-group-addon"><i class="zmdi zmdi-email"></i></span>
                     <div class="fg-line {% if form_errors(form_register.email) %}has-error{% endif %}">
-                        {{ form_widget(form_register.email, {'attr': {'placeholder': 'register.email'|trans, 'class': 'form-control'}}) }}
+                        {{ form_widget(form_register.email, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="email">
+                            {{  'register.email'|trans }}
+                        </label>
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_register.email)}}</small>
                 </div>
 
-                <div class="input-group m-b-20">
+                <div class="input-group m-b-20 fg-float">
                     <span class="input-group-addon"><i class="zmdi zmdi-male"></i></span>
                     <div class="fg-line {% if form_errors(form_register.plainPassword.first) %}has-error{% endif %}">
-                        {{ form_widget(form_register.plainPassword.first, {'attr': {'placeholder': 'register.password'|trans, 'class': 'form-control'}}) }}
+                        {{ form_widget(form_register.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="plainPasswordFirst">
+                            {{ 'register.password'|trans }}
+                        </label>
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_register.plainPassword.first)}}</small>
                 </div>
-                <div class="input-group m-b-20">
+                <div class="input-group m-b-20 fg-float">
                     <span class="input-group-addon"><i class="zmdi zmdi-repeat"></i></span>
                     <div class="fg-line {% if form_errors(form_register.plainPassword.second) %}has-error{% endif %}">
-                        {{ form_widget(form_register.plainPassword.second, {'attr': {'placeholder': 'register.password_repeat'|trans, 'class': 'form-control'}}) }}
+                        {{ form_widget(form_register.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="plainPasswordSecond">
+                            {{ 'register.password_repeat'|trans }}
+                        </label>
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_register.plainPassword.second)}}</small>
                 </div>
-                <div class="input-group m-b-20">
+                <div class="input-group m-b-20 fg-float">
                     <span class="input-group-addon"><i class="zmdi zmdi-account-box"></i></span>
                     <div class="fg-line {% if form_errors(form_register.firstName) %}has-error{% endif %}">
-                        {{ form_widget(form_register.firstName, {'attr': {'placeholder': 'register.firstname'|trans, 'class': 'form-control'}}) }}
+                        {{ form_widget(form_register.firstName, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="firstName">
+                            {{ 'register.firstname'|trans }}
+                        </label>
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_register.firstName)}}</small>
                 </div>
-                <div class="input-group m-b-20">
+                <div class="input-group m-b-20 fg-float">
                     <span class="input-group-addon"><i class="zmdi zmdi-account-box"></i></span>
                     <div class="fg-line {% if form_errors(form_register.lastName) %}has-error{% endif %}">
-                        {{ form_widget(form_register.lastName, {'attr': {'placeholder': 'register.lastname'|trans, 'class': 'form-control'}}) }}
+                        {{ form_widget(form_register.lastName, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="lastName">
+                            {{ 'register.lastname'|trans }}
+                        </label>
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_register.lastName)}}</small>
                 </div>
-                <div class="input-group m-b-20">
+                <div class="input-group m-b-20 fg-float">
                     <span class="input-group-addon"><i class="zmdi zmdi-phone"></i></span>
                     <div class="fg-line {% if form_errors(form_register.phone) %}has-error{% endif %}">
-                        {{ form_widget(form_register.phone, {'attr': {'placeholder': 'register.phone'|trans, 'class': 'form-control'}}) }}
+                        {{ form_widget(form_register.phone, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="phone">
+                            {{ 'register.phone'|trans }}
+                        </label>
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_register.phone)}}</small>
                 </div>
@@ -134,10 +161,13 @@
                         <small class="help-block c-red">{{ 'forgot.user_not_found'|trans }}</small>
                     {% endif %}
                 {% endif %}
-                <div class="input-group m-b-20">
+                <div class="input-group m-b-20 fg-float">
                     <span class="input-group-addon"><i class="zmdi zmdi-email"></i></span>
                     <div class="fg-line {% if form_errors(form_reset.email) %}has-error{% endif %}">
-                        {{ form_widget(form_reset.email, {'attr': {'placeholder': 'register.email'|trans, 'class': 'form-control'}}) }}
+                        {{ form_widget(form_reset.email, {'attr': {'class': 'form-control'}}) }}
+                        <label class="fg-label" for="email">
+                            {{ 'register.email'|trans }}
+                        </label>
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_reset.email)}}</small>
                 </div>
