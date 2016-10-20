@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -41,6 +42,49 @@ class ProjectCategoryController extends Controller
                 'project_categories' => $projectCategories,
             ]
         );
+    }
+
+    /**
+     * @Route("/list/filtered", options={"expose"=true}, name="app_admin_project_category_list_filtered")
+     * @Method("POST")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function listByPageAction(Request $request)
+    {
+        $requestParams = $request->request->all();
+        $requestParser = $this->get('app.service.request_parser');
+        $requestParser->parse($requestParams);
+        $serializer = $this->get('app.service.serializer');
+
+        $entriesNumber = $this
+            ->getDoctrine()
+            ->getRepository(ProjectCategory::class)
+            ->countTotal()
+        ;
+
+        $projectCategories = $this
+            ->getDoctrine()
+            ->getRepository(ProjectCategory::class)
+            ->findByKeyAndField(
+                $requestParser->key,
+                $requestParser->field,
+                $requestParser->order,
+                $requestParser->offset,
+                $requestParser->limit
+            )
+        ;
+
+        $response = [
+            'current' => intval($requestParams['current']),
+            'rowCount' => intval($requestParams['rowCount']),
+            'rows' => json_decode($serializer->serialize($projectCategories), true),
+            'total' => intval($entriesNumber),
+        ];
+
+        return new JsonResponse($response);
     }
 
     /**
@@ -89,7 +133,7 @@ class ProjectCategoryController extends Controller
     /**
      * Displays a form to edit an existing ProjectCategory entity.
      *
-     * @Route("/{id}/edit", name="app_admin_project_category_edit")
+     * @Route("/{id}/edit", options={"expose"=true}, name="app_admin_project_category_edit")
      * @Method({"GET", "POST"})
      *
      * @param Request         $request
@@ -135,7 +179,7 @@ class ProjectCategoryController extends Controller
     /**
      * Displays a ProjectCategory entity.
      *
-     * @Route("/{id}/show", name="app_admin_project_category_show")
+     * @Route("/{id}/show", options={"expose"=true}, name="app_admin_project_category_show")
      * @Method({"GET"})
      *
      * @param ProjectCategory $projectCategory
@@ -155,18 +199,27 @@ class ProjectCategoryController extends Controller
     /**
      * Deletes a ProjectCategory entity.
      *
-     * @Route("/{id}/delete", name="app_admin_project_category_delete")
+     * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_category_delete")
      * @Method({"GET"})
      *
      * @param ProjectCategory $projectCategory
+     * @param Request         $request
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ProjectCategory $projectCategory)
+    public function deleteAction(ProjectCategory $projectCategory, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectCategory);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message, Response::HTTP_OK);
+        }
 
         $this
             ->get('session')
@@ -175,7 +228,7 @@ class ProjectCategoryController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.project_category.delete.success', [], 'admin')
+                    ->trans('admin.project_category.delete.success.general', [], 'admin')
             )
         ;
 
