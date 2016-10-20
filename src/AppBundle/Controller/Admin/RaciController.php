@@ -37,6 +37,26 @@ class RaciController extends Controller
     }
 
     /**
+     * Displays Raci entity.
+     *
+     * @Route("/{id}/show", name="app_admin_raci_show")
+     * @Method({"GET"})
+     *
+     * @param WorkPackage $workPackage
+     *
+     * @return Response
+     */
+    public function showAction(Raci $raci)
+    {
+        return $this->render(
+            'AppBundle:Admin/Raci:show.html.twig',
+            [
+                'raci' => $raci,
+            ]
+        );
+    }
+
+    /**
      * @Route("/create", name="app_admin_raci_create")
      * @Method({"GET", "POST"})
      *
@@ -75,7 +95,7 @@ class RaciController extends Controller
     }
 
     /**
-     * @Route("/edit/{id}", name="app_admin_raci_edit")
+     * @Route("/{id}/edit", name="app_admin_raci_edit")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -114,7 +134,7 @@ class RaciController extends Controller
     }
 
     /**
-     * @Route("/delete/{id}", name="app_admin_raci_delete")
+     * @Route("/{id}/delete", name="app_admin_raci_delete")
      * @Method({"GET"})
      *
      * @param Request $request

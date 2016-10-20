@@ -6,14 +6,14 @@
 
 {% block body_content %}
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-8 col-md-offset-2">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header bgm-teal">
                     <h2>{{ 'admin.project_role.create.title'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
-                                <i class="zmdi zmdi-more-vert"></i>
+                                <i class="zmdi zmdi-more-vert c-white"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
@@ -47,7 +47,6 @@
                             {
                                 'attr': {
                                     'class': 'form-control input-sm',
-                                    'placeholder': 'admin.general.placeholder.name'|trans,
                                 },
                                 'label': 'admin.project_role.create.name'|trans,
                             }
@@ -57,7 +56,6 @@
                             {
                                 'attr': {
                                     'class': 'form-control input-sm',
-                                    'placeholder': 'admin.general.placeholder.sequence'|trans,
                                 },
                                 'label': 'admin.project_role.create.sequence'|trans,
                             }
@@ -67,7 +65,10 @@
                                 {{ form_widget(
                                     form.isLead,
                                     {
-                                        'attr': {'class': 'form-control'},
+                                        'attr': {
+                                            'class': 'form-control',
+                                            'toggle': true
+                                        },
                                         'label': 'admin.project_role.create.lead'|trans,
                                     }
                                 ) }}

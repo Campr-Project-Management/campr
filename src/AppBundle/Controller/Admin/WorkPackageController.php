@@ -42,7 +42,7 @@ class WorkPackageController extends Controller
      * @Route("/{id}/show", name="app_admin_workpackage_show")
      * @Method({"GET"})
      *
-     * @param User $user
+     * @param WorkPackage $workPackage
      *
      * @return Response
      */
