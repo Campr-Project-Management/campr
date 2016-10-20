@@ -1,0 +1,11 @@
+{% extends 'AppBundle:Email:base.html.twig' %}
+
+{% block subject %}
+	{{ 'user.activation.subject'|trans }}
+{% endblock %}
+
+{% block message %}
+    <p>{{'general.hello'|trans }} {{ fullName }},
+    <p>{{ 'user.activation.message'|trans }} <a href="{{ url('app_user_activate', {'token': token}) }}">{{ 'user.activation.link'|trans }}</a></p>
+    <p>{{ 'user.activation.expiration'|transchoice(expirationTime, {'%expirationTime%': expirationTime}) }}</p>
+{% endblock %}

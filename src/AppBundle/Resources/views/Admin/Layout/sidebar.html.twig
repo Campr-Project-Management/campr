@@ -1,0 +1,89 @@
+{% trans_default_domain 'admin' %}
+
+<aside id="sidebar" class="sidebar c-overflow">
+    <div class="s-profile">
+        <a href="" data-ma-action="profile-menu-toggle">
+            <div class="sp-pic">
+                <img src="img/profile-pics/1.jpg" alt="">
+            </div>
+
+            <div class="sp-info">
+                Malinda Hollaway
+
+                <i class="zmdi zmdi-caret-down"></i>
+            </div>
+        </a>
+
+        <ul class="main-menu">
+            <li>
+                <a href="profile-about.html"><i class="zmdi zmdi-account"></i> View Profile</a>
+            </li>
+            <li>
+                <a href=""><i class="zmdi zmdi-input-antenna"></i> Privacy Settings</a>
+            </li>
+            <li>
+                <a href=""><i class="zmdi zmdi-settings"></i> Settings</a>
+            </li>
+            <li>
+                <a href=""><i class="zmdi zmdi-time-restore"></i> Logout</a>
+            </li>
+        </ul>
+    </div>
+
+    <ul class="main-menu">
+        <li class="active">
+            <a href="{{ path('app_admin_index') }}">
+                <i class="zmdi zmdi-home"></i>
+                {{ 'admin.user.list.title'|trans }}
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_admin_user_list') }}">
+                <i class="zmdi zmdi-account"></i>
+                {{ 'admin.user.list.title'|trans }}
+            </a>
+        </li>
+        <li class="sub-menu">
+            <a href="{{ path('app_admin_project_category_list') }}" data-ma-action="submenu-toggle"><i class="zmdi zmdi-folder-outline"></i>{{ 'admin.project.list.title'|trans }}
+            </a>
+
+            <ul>
+                <li><a href="{{ path('app_admin_project_category_list') }}">{{ 'admin.project_category.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_complexity_list') }}">{{ 'admin.project_complexity.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_cost_type_list') }}">{{ 'admin.project_cost_type.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_department_list') }}">{{ 'admin.project_department.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_module_list') }}">{{ 'admin.project_module.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_role_list') }}">{{ 'admin.project_role.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_scope_list') }}">{{ 'admin.project_scope.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_status_list') }}">{{ 'admin.project_status.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_team_list') }}">{{ 'admin.project_team.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_user_list') }}">{{ 'admin.project_user.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_project_work_cost_type_list') }}">{{ 'admin.project_work_cost_type.list.title'|trans }}</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="{{ path('app_admin_portfolio_list') }}"><i class="zmdi zmdi-laptop-mac"></i>{{ 'admin.portfolio.list.title'|trans }}</a>
+        </li>
+        <li>
+            <a href="{{ path('app_admin_color_status_list') }}"><i class="zmdi zmdi-invert-colors"></i>{{ 'admin.color_status.list.title'|trans }}</a>
+        </li>
+        <li>
+            <a href="{{ path('app_admin_workpackage_list') }}">
+                <i class="zmdi zmdi-present-to-all"></i>
+                {{ 'admin.workpackage.list.title'|trans }}
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_admin_schedule_list') }}">
+                <i class="zmdi zmdi-calendar-note"></i>
+                {{ 'admin.schedule.list.title'|trans }}
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_admin_raci_list') }}">
+                <i class="zmdi zmdi-view-agenda"></i>
+                {{ 'admin.raci.list.title'|trans }}
+            </a>
+        </li>
+    </ul>
+</aside>

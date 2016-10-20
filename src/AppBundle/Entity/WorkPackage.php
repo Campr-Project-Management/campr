@@ -3,9 +3,10 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Workspace.
+ * WorkPackage.
  *
  * @ORM\Table(name="work_package")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\WorkPackageRepository")
@@ -56,6 +57,14 @@ class WorkPackage
      * @ORM\Column(name="progress", type="integer", options={"default": 0})
      */
     private $progress = 0;
+
+    /**
+     * @var WorkPackage|null
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="workPackages")
+     * @ORM\JoinColumn(name="project_id")
+     */
+    private $project;
 
     /**
      * @var User|null
@@ -120,7 +129,14 @@ class WorkPackage
      *
      * @ORM\Column(name="is_key_milestone", type="boolean", nullable=false, options={"default"=0})
      */
-    private $isKeyMilestone = 0;
+    private $isKeyMilestone = false;
+
+    /**
+     * @var ArrayCollection|Assignment[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Assignment", mappedBy="workPackage")
+     */
+    private $assignments;
 
     /**
      * @var \DateTime
@@ -135,6 +151,12 @@ class WorkPackage
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->assignments = new ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -225,7 +247,7 @@ class WorkPackage
      *
      * @return WorkPackage
      */
-    public function setScheduledStartAt($scheduledStartAt)
+    public function setScheduledStartAt(\DateTime $scheduledStartAt = null)
     {
         $this->scheduledStartAt = $scheduledStartAt;
 
@@ -249,7 +271,7 @@ class WorkPackage
      *
      * @return WorkPackage
      */
-    public function setScheduledFinishAt($scheduledFinishAt)
+    public function setScheduledFinishAt(\DateTime $scheduledFinishAt = null)
     {
         $this->scheduledFinishAt = $scheduledFinishAt;
 
@@ -273,7 +295,7 @@ class WorkPackage
      *
      * @return WorkPackage
      */
-    public function setForecastStartAt($forecastStartAt)
+    public function setForecastStartAt(\DateTime $forecastStartAt = null)
     {
         $this->forecastStartAt = $forecastStartAt;
 
@@ -297,7 +319,7 @@ class WorkPackage
      *
      * @return WorkPackage
      */
-    public function setForecastFinishAt($forecastFinishAt)
+    public function setForecastFinishAt(\DateTime $forecastFinishAt = null)
     {
         $this->forecastFinishAt = $forecastFinishAt;
 
@@ -321,7 +343,7 @@ class WorkPackage
      *
      * @return WorkPackage
      */
-    public function setActualStartAt($actualStartAt)
+    public function setActualStartAt(\DateTime $actualStartAt = null)
     {
         $this->actualStartAt = $actualStartAt;
 
@@ -345,7 +367,7 @@ class WorkPackage
      *
      * @return WorkPackage
      */
-    public function setActualFinishAt($actualFinishAt)
+    public function setActualFinishAt(\DateTime $actualFinishAt = null)
     {
         $this->actualFinishAt = $actualFinishAt;
 
@@ -441,7 +463,7 @@ class WorkPackage
      *
      * @return WorkPackage
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt = null)
     {
         $this->createdAt = $createdAt;
 
@@ -465,7 +487,7 @@ class WorkPackage
      *
      * @return WorkPackage
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
@@ -485,11 +507,11 @@ class WorkPackage
     /**
      * Set parent.
      *
-     * @param \AppBundle\Entity\WorkPackage $parent
+     * @param WorkPackage $parent
      *
      * @return WorkPackage
      */
-    public function setParent(\AppBundle\Entity\WorkPackage $parent = null)
+    public function setParent(WorkPackage $parent = null)
     {
         $this->parent = $parent;
 
@@ -509,11 +531,11 @@ class WorkPackage
     /**
      * Set colorStatus.
      *
-     * @param \AppBundle\Entity\ColorStatus $colorStatus
+     * @param ColorStatus $colorStatus
      *
      * @return WorkPackage
      */
-    public function setColorStatus(\AppBundle\Entity\ColorStatus $colorStatus = null)
+    public function setColorStatus(ColorStatus $colorStatus = null)
     {
         $this->colorStatus = $colorStatus;
 
@@ -523,7 +545,7 @@ class WorkPackage
     /**
      * Get colorStatus.
      *
-     * @return \AppBundle\Entity\ColorStatus
+     * @return ColorStatus
      */
     public function getColorStatus()
     {
@@ -533,11 +555,11 @@ class WorkPackage
     /**
      * Set responsibility.
      *
-     * @param \AppBundle\Entity\User $responsibility
+     * @param User $responsibility
      *
      * @return WorkPackage
      */
-    public function setResponsibility(\AppBundle\Entity\User $responsibility = null)
+    public function setResponsibility(User $responsibility = null)
     {
         $this->responsibility = $responsibility;
 
@@ -547,10 +569,72 @@ class WorkPackage
     /**
      * Get responsibility.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getResponsibility()
     {
         return $this->responsibility;
+    }
+
+    /**
+     * Set project.
+     *
+     * @param Project $project
+     *
+     * @return WorkPackage
+     */
+    public function setProject(Project $project = null)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get project.
+     *
+     * @return Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * Add assignment.
+     *
+     * @param Assignment $assignment
+     *
+     * @return WorkPackage
+     */
+    public function addAssignment(Assignment $assignment)
+    {
+        $this->assignments[] = $assignment;
+
+        return $this;
+    }
+
+    /**
+     * Remove assignment.
+     *
+     * @param Assignment $assignment
+     *
+     * @return WorkPackage
+     */
+    public function removeAssignment(Assignment $assignment)
+    {
+        $this->assignments->removeElement($assignment);
+
+        return $this;
+    }
+
+    /**
+     * Get assignments.
+     *
+     * @return ArrayCollection
+     */
+    public function getAssignments()
+    {
+        return $this->assignments;
     }
 }

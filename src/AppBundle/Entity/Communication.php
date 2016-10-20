@@ -93,7 +93,7 @@ class Communication
      */
     public function __construct()
     {
-        $this->participants = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->participants = new ArrayCollection();
     }
 
     /**
@@ -229,11 +229,11 @@ class Communication
     /**
      * Set project.
      *
-     * @param \AppBundle\Entity\Project $project
+     * @param Project $project
      *
      * @return Communication
      */
-    public function setProject(\AppBundle\Entity\Project $project = null)
+    public function setProject(Project $project = null)
     {
         $this->project = $project;
 
@@ -243,7 +243,7 @@ class Communication
     /**
      * Get project.
      *
-     * @return \AppBundle\Entity\Project
+     * @return Project
      */
     public function getProject()
     {
@@ -253,11 +253,11 @@ class Communication
     /**
      * Add participant.
      *
-     * @param \AppBundle\Entity\User $participant
+     * @param User $participant
      *
      * @return Communication
      */
-    public function addParticipant(\AppBundle\Entity\User $participant)
+    public function addParticipant(User $participant)
     {
         $this->participants[] = $participant;
 
@@ -267,9 +267,9 @@ class Communication
     /**
      * Remove participant.
      *
-     * @param \AppBundle\Entity\User $participant
+     * @param User $participant
      */
-    public function removeParticipant(\AppBundle\Entity\User $participant)
+    public function removeParticipant(User $participant)
     {
         $this->participants->removeElement($participant);
     }
@@ -287,11 +287,11 @@ class Communication
     /**
      * Set schedule.
      *
-     * @param \AppBundle\Entity\Schedule $schedule
+     * @param Schedule $schedule
      *
      * @return Communication
      */
-    public function setSchedule(\AppBundle\Entity\Schedule $schedule = null)
+    public function setSchedule(Schedule $schedule = null)
     {
         $this->schedule = $schedule;
 
@@ -301,7 +301,7 @@ class Communication
     /**
      * Get schedule.
      *
-     * @return \AppBundle\Entity\Schedule
+     * @return Schedule
      */
     public function getSchedule()
     {

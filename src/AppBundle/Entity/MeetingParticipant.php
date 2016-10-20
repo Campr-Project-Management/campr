@@ -174,11 +174,11 @@ class MeetingParticipant
     /**
      * Set meeting.
      *
-     * @param \AppBundle\Entity\Meeting $meeting
+     * @param Meeting $meeting
      *
      * @return MeetingParticipant
      */
-    public function setMeeting(\AppBundle\Entity\Meeting $meeting = null)
+    public function setMeeting(Meeting $meeting = null)
     {
         $this->meeting = $meeting;
 
@@ -188,7 +188,7 @@ class MeetingParticipant
     /**
      * Get meeting.
      *
-     * @return \AppBundle\Entity\Meeting
+     * @return Meeting
      */
     public function getMeeting()
     {
@@ -198,11 +198,11 @@ class MeetingParticipant
     /**
      * Set user.
      *
-     * @param \AppBundle\Entity\User $user
+     * @param User $user
      *
      * @return MeetingParticipant
      */
-    public function setUser(\AppBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -212,7 +212,7 @@ class MeetingParticipant
     /**
      * Get user.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {

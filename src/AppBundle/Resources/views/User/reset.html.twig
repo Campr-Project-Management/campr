@@ -1,0 +1,47 @@
+{% extends 'AppBundle:Layout:base.html.twig' %}
+{% trans_default_domain 'layout' %}
+
+{% block body %}
+    <div class="login-content">
+        <div class="lc-block toggled" id="l-login">
+            <div class="lcb-form">
+                {% if app.session.flashBag.has('message') %}
+                    {% for msg in app.session.flashBag.get('message') %}
+                        <p>{{ msg }}</p>
+                    {% endfor %}
+                {% endif %}
+                {% if form is defined %}
+                    {{ form_start(
+                        form,
+                        {
+                            'method': 'POST',
+                            'action': path('app_user_reset_password', {'token': token}),
+                            'attr': {
+                                'novalidate': 'novalidate',
+                            },
+                        }
+                    ) }}
+                    <div class="input-group m-b-20">
+                        <span class="input-group-addon"><i class="zmdi zmdi-male"></i></span>
+                        <div class="fg-line {% if form_errors(form.plainPassword.first) %}has-error{% endif %}">
+                            {{ form_widget(form.plainPassword.first, {'attr': {'placeholder': 'register.password'|trans, 'class': 'form-control'}}) }}
+                        </div>
+                        <small class="help-block c-red">{{ form_errors(form.plainPassword.first)}}</small>
+                    </div>
+                    <div class="input-group m-b-20">
+                        <span class="input-group-addon"><i class="zmdi zmdi-repeat"></i></span>
+                        <div class="fg-line {% if form_errors(form.plainPassword.second) %}has-error{% endif %}">
+                            {{ form_widget(form.plainPassword.second, {'attr': {'placeholder': 'register.password_repeat'|trans, 'class': 'form-control'}}) }}
+                        </div>
+                        <small class="help-block c-red">{{ form_errors(form.plainPassword.second)}}</small>
+                    </div>
+                    <button type="submit" class="btn btn-login btn-success btn-float">
+                        <i class="zmdi zmdi-arrow-forward"></i>
+                    </button>
+                    {{ form_errors(form) }}
+                    {{ form_end(form) }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

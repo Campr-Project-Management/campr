@@ -1,0 +1,57 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.raci.list.title'|trans }}<small>{{ raci.workPackage.name|default('-') }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_raci_create') }}">{{ 'admin.raci.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_raci_edit', {'id': raci.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_raci_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body m-t-10 card-padding">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th>{{ 'admin.raci.list.table.id'|trans }}</th>
+                                    <td>{{ raci.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.raci.list.table.workpackage'|trans }}</th>
+                                    <td>{{ raci.workPackage.name|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.raci.list.table.user'|trans }}</th>
+                                    <td>{{ raci.user.username|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.raci.list.table.data'|trans }}</th>
+                                    <td>{{ raci.data|default('-') }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
