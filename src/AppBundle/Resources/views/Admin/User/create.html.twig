@@ -1,13 +1,29 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
+
 {% trans_default_domain 'admin' %}
+
+{% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
+
 {% block body_content %}
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-8 col-md-offset-2">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header bgm-teal">
                     <h2>{{ 'admin.user.create.title'|trans }}</h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_user_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
-                <div class="card-body m-t-0 card-padding">
+                <div class="card-body m-t-10 card-padding">
                     {{ form_start(
                         form,
                         {
@@ -31,82 +47,86 @@
                             {% endfor %}
                         </div>
                     {% endif %}
-                        <div class="form-group">
-                            <label for="username" class="col-sm-2 control-label">{{ 'admin.user.create.username'|trans }}:</label>
-                            <div class="col-sm-8">
-                                <div class="fg-line">
-                                {{ form_widget(form.username, {'attr': {'id': 'username', 'class': 'form-control input-sm'}}) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" class="col-sm-2 control-label">{{ 'admin.user.create.email'|trans }}:</label>
-                            <div class="col-sm-8">
-                                <div class="fg-line">
-                                    {{ form_widget(form.email, {'attr': {'id': 'email', 'class': 'form-control'}}) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="passwordfirst" class="col-sm-2 control-label">{{ 'admin.user.create.password.first'|trans }}:</label>
-                            <div class="col-sm-8">
-                                <div class="fg-line">
-                                    {{ form_widget(form.plainPassword.first, {'attr': {'id': 'passwordfirst', 'class': 'form-control'}}) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="passwordsecond" class="col-sm-2 control-label">{{ 'admin.user.create.password.repeat'|trans }}:</label>
-                            <div class="col-sm-8">
-                                <div class="fg-line">
-                                    {{ form_widget(form.plainPassword.second, {'attr': {'id': 'passwordsecond', 'class': 'form-control'}}) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="firstname" class="col-sm-2 control-label">{{ 'admin.user.create.first_name'|trans }}:</label>
-                            <div class="col-sm-8">
-                                <div class="fg-line">
-                                    {{ form_widget(form.firstName, {'attr': {'id': 'firstname', 'class': 'form-control'}}) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="lastname" class="col-sm-2 control-label">{{ 'admin.user.create.last_name'|trans }}:</label>
-                            <div class="col-sm-8">
-                                <div class="fg-line">
-                                    {{ form_widget(form.lastName, {'attr': {'id': 'lastname', 'class': 'form-control'}}) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone" class="col-sm-2 control-label">{{ 'admin.user.create.phone'|trans }}:</label>
-                            <div class="col-sm-8">
-                                <div class="fg-line">
-                                    {{ form_widget(form.phone, {'attr': {'id': 'phone', 'class': 'form-control'}}) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="roles" class="col-sm-2 control-label"> {{ 'admin.user.create.roles'|trans }}:</label>
-                            <div class="col-sm-offset-2 col-sm-10">
-                                {% for roleChild in form.roles.children %}
-                                    <div class="checkbox">
-                                        <label>
-                                            {{ form_widget(roleChild) }}
-                                            <i class="input-helper"></i>
-                                            {{ form_label(roleChild) }}
-                                        </label>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div align="center" class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button class="btn btn-primary btn-sm" type="submit">{{ 'admin.user.create.create'|trans }}</button>
-                            </div>
-                        </div>
-                    {{ form_end(form) }}
+                    {{ form_widget(
+                        form.username,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'admin.user.create.username'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.email,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'admin.user.create.email'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.plainPassword.first,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'admin.user.create.password.first'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.plainPassword.second,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'admin.user.create.password.repeat'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.firstName,
+                        {
+                        'attr': {
+                            'class': 'form-control input-sm',
+                        },
+                        'label': 'admin.user.create.first_name'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.lastName,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'admin.user.create.last_name'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.phone,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'admin.user.create.phone'|trans
+                        }
+                    ) }}
+                    {% for roleChild in form.roles.children %}
+                        {{ form_widget(
+                            roleChild,
+                            {
+                                'attr': {
+                                    'class': 'form-control input-sm',
+                                },
+                                'label': roleChild.vars.label|trans
+                            }
+                        ) }}
+                    {% endfor %}
+
+
+                    {% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
+
+                    <span class="hidden">{{ form_row(form._token) }}</span>
+                    {{ form_end(form, {'render_rest': false}) }}
                 </div>
             </div>
         </div>

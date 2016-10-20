@@ -104,7 +104,7 @@ class ProjectCategoryController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $projectCategory->setUpdatedAt(new \DateTime());
-            
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectCategory);
             $em->flush();
@@ -119,7 +119,7 @@ class ProjectCategoryController extends Controller
                         ->trans('admin.project_category.edit.success', [], 'admin')
                 )
             ;
-            
+
             return $this->redirectToRoute('app_admin_project_category_list');
         }
 
@@ -167,7 +167,7 @@ class ProjectCategoryController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectCategory);
         $em->flush();
-        
+
         $this
             ->get('session')
             ->getFlashBag()
