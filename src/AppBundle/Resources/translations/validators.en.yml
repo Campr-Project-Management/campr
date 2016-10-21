@@ -54,3 +54,32 @@ validation:
         color_status:
             color:
                 not_blank: The color field should not be blank
+        risk:
+            title:
+                not_blank: The title should not be blank
+            description:
+                not_blank: The description should not be blank
+            cost:
+                not_blank: The cost should not be blank
+            budget:
+                not_blank: The budget should not be blank
+            delay:
+                not_blank: The delay should not be blank
+            priority:
+                not_blank: The priority should not be blank
+            priority:
+                not_blank: The measure should not be blank
+        risk_category:
+            name:
+                not_blank: The name should not be blank
+        risk_strategy:
+            name:
+                not_blank: The name should not be blank
+        todo:
+            title:
+                not_blank: The title should not be blank
+            description:
+                not_blank: The description should not be blank
+        unit:
+            name:
+                not_blank: The name should not be blank
