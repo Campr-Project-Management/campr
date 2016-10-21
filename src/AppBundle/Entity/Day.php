@@ -46,7 +46,7 @@ class Day
     /**
      * @var Calendar|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", cascade={"persist"})
      * @ORM\JoinColumn(name="calendar_id")
      */
     private $calendar;
