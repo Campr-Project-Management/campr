@@ -39,11 +39,12 @@
         "whiteoctober/breadcrumbs-bundle": "^1.2",
         "spraed/pdf-generator-bundle": "^1.3",
         "vich/uploader-bundle": "1.2.0",
-        "friendsofsymfony/jsrouting-bundle": "1.6.0",
+        "friendsofsymfony/jsrouting-bundle": "^1.6",
         "gregwar/captcha-bundle": "^2.0",
         "liip/imagine-bundle": "^1.6",
         "knplabs/knp-menu-bundle": "^2.0",
-        "fabpot/php-cs-fixer": "^1.12"
+        "fabpot/php-cs-fixer": "^1.12",
+        "symfony/serializer": "^3.1"
 
     },
     "require-dev": {
