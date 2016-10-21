@@ -232,7 +232,7 @@ class Project
      *
      * @return Project
      */
-    public function setStatusUpdatedAt($statusUpdatedAt)
+    public function setStatusUpdatedAt(\DateTime $statusUpdatedAt = null)
     {
         $this->statusUpdatedAt = $statusUpdatedAt;
 
@@ -256,7 +256,7 @@ class Project
      *
      * @return Project
      */
-    public function setApprovedAt($approvedAt)
+    public function setApprovedAt(\DateTime $approvedAt = null)
     {
         $this->approvedAt = $approvedAt;
 
@@ -280,7 +280,7 @@ class Project
      *
      * @return Project
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt = null)
     {
         $this->createdAt = $createdAt;
 
@@ -304,7 +304,7 @@ class Project
      *
      * @return Project
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
