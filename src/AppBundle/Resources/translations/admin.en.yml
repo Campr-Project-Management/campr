@@ -40,14 +40,11 @@ admin:
                 id: Id
                 username: Username
                 email: Email
-                first_name: First name
-                last_name: Last name
                 full_name: Name
                 phone: Phone
                 enabled: Enabled
                 suspended: Suspended
                 roles: Roles
-                actions: Actions
             no-users: No users found!
             add: Add new user
         create:
@@ -104,7 +101,6 @@ admin:
             table:
                 id: Id
                 name: Name
-                actions: Actions
             no-schedules: No schedules found!
         create:
             title: Create new schedule
@@ -578,3 +574,194 @@ admin:
             success: Color status successfully edited!
         delete:
             success: Color status successfully deleted!
+            data: Data
+            success: WorkPackage successfully added!
+        edit:
+            success: WorkPackage successfully edited!
+        delete:
+            success: WorkPackage successfully deleted!
+    risk:
+        list:
+            title: Risk
+            subtitle: List of risks
+            add: Add new risk
+            table:
+                id: Id
+                title: Title
+                impact: Impact
+                cost: Cost
+                budget: Budget
+                delay: Delay
+                priority: Priority
+                strategy: Strategy
+                category: Category
+                measure: Measure
+                responsible: Responsible
+                due_date: Due Date
+                status: Status
+                actions: Actions
+            edit: Edit
+            delete: Delete
+            no-risks: No risks found!
+        create:
+            title: Title
+            description: Description
+            impact: Impact
+            cost: Cost
+            budget: Budget
+            delay: Delay
+            priority: Priority
+            strategy: Strategy
+            category: Category
+            measure: Measure
+            responsible: Responsible
+            due_date: Due Date
+            status: Status
+            create: Create
+            success: Risk successfully added!
+        edit:
+            success: Risk successfully edited!
+        delete:
+            success: Risk successfully deleted!
+    risk_category:
+        list:
+            title: Risk Categories
+            subtitle: List of risk categories
+            add: Add new risk category
+            table:
+                id: Id
+                name: Name
+                sequence: Sequence
+                actions: Actions
+            edit: Edit
+            delete: Delete
+            no-categories: No risk categories found!
+        create:
+            name: Name
+            create: Create
+            success: Risk category successfully added!
+        edit:
+            sequence: Sequence
+            success: Risk category successfully edited!
+        delete:
+            success: Risk category successfully deleted!
+    risk_strategy:
+        list:
+            title: Risk Strategies
+            subtitle: List of risk strategies
+            add: Add new risk strategy
+            table:
+                id: Id
+                name: Name
+                sequence: Sequence
+                actions: Actions
+            edit: Edit
+            delete: Delete
+            no-strategies: No risk strategies found!
+        create:
+            name: Name
+            create: Create
+            success: Risk strategy successfully added!
+        edit:
+            sequence: Sequence
+            success: Risk strategy successfully edited!
+        delete:
+            success: Risk strategy successfully deleted!
+    todo:
+        list:
+            title: TODOs
+            subtitle: Todo list
+            add: Add todo
+            table:
+                id: Id
+                project: Project
+                meeting: Meeting
+                title: Title
+                report_status: Show in status report
+                responsible: Responsible
+                date: Date
+                due_date: Due Date
+                status: Status
+                created_at: Created At
+                updated_at: Updated At
+            no-todos: No TODOs found!
+        create:
+            title: Create new todo
+            project: Project
+            meeting: Meeting
+            title: Title
+            responsible: Responsible
+            description: Description
+            date: Date
+            due_date: Due Date
+            status: Status
+            create: Create
+            success: Todo successfully added!
+        edit:
+            title: Edit todo
+            success: Todo successfully edited!
+        delete:
+            success: Todo successfully deleted!
+    unit:
+        list:
+            title: Units
+            subtitle: List of units
+            add: Add unit
+            table:
+                id: Id
+                project: Project
+                name: Name
+                sequence: Sequence
+                created_at: Created At
+                updated_at: Updated At
+            no-units: No Units found!
+        create:
+            title: Create new unit
+            project: Project
+            name: Name
+            sequence: Sequence
+            success: Unit successfully added!
+        edit:
+            title: Edit unit
+            success: Unit successfully edited!
+        delete:
+            success: Unit successfully deleted!
+    wppcwct:
+        list:
+            title: WorkPackage - ProjectWorkCostType
+            subtitle: List of WorkPackage - ProjectWorkCostType
+            add: Add WorkPackageProjectWorkCostType
+            table:
+                id: Id
+                name: Name
+                workpackage: WorkPackage
+                projectworkcosttype: ProjectWorkCostType
+                base: Base
+                change: Change
+                actual: Actual
+                remaining: Remaining
+                forecast: Forecast
+                is_generic: Is Generic
+                is_inactive: Is Inactive
+                is_enterprise: Is Enterprise
+                is_cost_resource: Is Cost Resource
+                is_budget: Is Budget
+                created_at: Created At
+                updated_at: Updated At
+            no-wppcwct: No WorkPackage - ProjectWorkCostType found!
+        create:
+            title: Create new WorkPackage - ProjectWorkCostType
+            name: Name
+            workpackage: WorkPackage
+            projectworkcosttype: ProjectWorkCostType
+            base: Base
+            change: Change
+            actual: Actual
+            remaining: Remaining
+            forecast: Forecast
+            success: WorkPackage - ProjectWorkCostType successfully added!
+        edit:
+            title: Edit WorkPackage - ProjectWorkCostType
+            success: WorkPackage - ProjectWorkCostType successfully edited!
+        delete:
+            success: WorkPackage - ProjectWorkCostType successfully deleted!
