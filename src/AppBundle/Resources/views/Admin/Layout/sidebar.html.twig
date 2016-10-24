@@ -44,10 +44,11 @@
             </a>
         </li>
         <li class="sub-menu">
-            <a href="{{ path('app_admin_project_category_list') }}" data-ma-action="submenu-toggle"><i class="zmdi zmdi-folder-outline"></i>{{ 'admin.project.list.title'|trans }}
+            <a href="{{ path('app_admin_project_list') }}" data-ma-action="submenu-toggle">
+                <i class="zmdi zmdi-folder-outline"></i>{{ 'admin.project.list.title'|trans }}
             </a>
-
             <ul>
+                <li><a href="{{ path('app_admin_project_list') }}">{{ 'admin.project.list.title'|trans }}</a></li>
                 <li><a href="{{ path('app_admin_project_category_list') }}">{{ 'admin.project_category.list.title'|trans }}</a></li>
                 <li><a href="{{ path('app_admin_project_complexity_list') }}">{{ 'admin.project_complexity.list.title'|trans }}</a></li>
                 <li><a href="{{ path('app_admin_project_cost_type_list') }}">{{ 'admin.project_cost_type.list.title'|trans }}</a></li>
