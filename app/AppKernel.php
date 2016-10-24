@@ -15,9 +15,8 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new AppBundle\AppBundle(),
 
-             //additional
+            //additional
             new Snc\RedisBundle\SncRedisBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
@@ -30,9 +29,10 @@ class AppKernel extends Kernel
             new Spraed\PDFGeneratorBundle\SpraedPDFGeneratorBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            new TSS\AutomailerBundle\TSSAutomailerBundle(),
 
             //internals
-            new TSS\AutomailerBundle\TSSAutomailerBundle(),
+            new AppBundle\AppBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test', 'qa'], true)) {
