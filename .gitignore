@@ -18,3 +18,5 @@
 Vagrantfile
 .vagrant
 /web/assets/admin/vendors/bower_components/
+.DS_Store
+/front/node_modules
