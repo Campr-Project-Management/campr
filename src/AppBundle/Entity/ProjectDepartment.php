@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Table(name="project_department")
@@ -50,6 +51,8 @@ class ProjectDepartment
     /**
      * @var ProjectWorkCostType|null
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectWorkCostType")
      * @ORM\JoinColumn(name="project_work_cost_type_id")
      */
@@ -58,12 +61,16 @@ class ProjectDepartment
     /**
      * @var \DateTime
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -250,5 +257,38 @@ class ProjectDepartment
     public function getProjectWorkCostType()
     {
         return $this->projectWorkCostType;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectWorkCostType")
+     *
+     * @return string
+     */
+    public function getProjectWorkCostTypeName()
+    {
+        return $this->projectWorkCostType ? $this->projectWorkCostType->getName() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("createdAt")
+     *
+     * @return string
+     */
+    public function getCreatedAtFormatted()
+    {
+        return $this->createdAt ? $this->createdAt->format('d/m/Y') : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("updatedAt")
+     *
+     * @return string
+     */
+    public function getUpdatedAtFormatted()
+    {
+        return $this->updatedAt ? $this->updatedAt->format('d/m/Y') : null;
     }
 }
