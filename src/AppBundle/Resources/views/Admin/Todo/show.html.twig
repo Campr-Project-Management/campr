@@ -1,0 +1,91 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.todo.list.title'|trans }}<small>{{ todo.title }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_todo_create') }}">{{ 'admin.todo.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_todo_edit', {'id': todo.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_todo_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body m-t-10 card-padding">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <th>{{ 'admin.todo.list.table.id'|trans }}</th>
+                                <td>{{ todo.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.todo.list.table.title'|trans }}</th>
+                                <td>{{ todo.title }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.todo.list.table.project'|trans }}</th>
+                                <td>{{ todo.project.name|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.todo.list.table.meeting'|trans }}</th>
+                                <td>{{ todo.meeting.name|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.todo.list.table.report_status'|trans }}</th>
+                                <td>
+                                    {% if todo.showInStatusReport %}
+                                        <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                    {% else %}
+                                        <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.todo.list.table.responsible'|trans }}</th>
+                                <td>{{ todo.responsibility.username|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.todo.list.table.date'|trans }}</th>
+                                <td>{{ todo.date|date('d/m/Y') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.todo.list.table.due_date'|trans }}</th>
+                                <td>{{ todo.dueDate|date('d/m/Y') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.todo.list.table.status'|trans }}</th>
+                                <td>{{ todo.status.name|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.todo.list.table.created_at'|trans }}</th>
+                                <td>{{ todo.createdAt|date('d/m/Y') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.todo.list.table.updated_at'|trans }}</th>
+                                <td>{{ todo.updatedAt|date('d/m/Y') }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
