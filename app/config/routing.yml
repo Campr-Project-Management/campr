@@ -5,3 +5,6 @@ app:
 
 api_login_check:
     path: /api/login-check
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

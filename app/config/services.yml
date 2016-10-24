@@ -9,13 +9,20 @@ parameters:
 
 services:
     app.service.mailer:
-            class: AppBundle\Services\MailerService
-            arguments:
-                - "@mailer"
-                - "@twig"
-                - "%emails%"
+        class: AppBundle\Services\MailerService
+        arguments:
+            - "@mailer"
+            - "@twig"
+            - "%emails%"
     app.service.user:
-            class: AppBundle\Services\UserService
+        class: AppBundle\Services\UserService
+    app.service.request_parser:
+        class: AppBundle\Services\RequestParserService
+    app.service.serializer:
+        class: AppBundle\Services\SerializerService
+        arguments:
+            - "@fos_js_routing.encoder"
+            - "@fos_js_routing.normalizer"
     redis.client:
         class: Predis\Client
     session.handler.redis:
