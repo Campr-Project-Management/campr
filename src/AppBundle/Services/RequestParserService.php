@@ -4,19 +4,19 @@ namespace AppBundle\Services;
 
 class RequestParserService
 {
-    /** @var  string|null */
+    /** @var string|null */
     public $key;
 
-    /** @var  string|null */
+    /** @var string|null */
     public $field;
 
-    /** @var  string|null */
+    /** @var string|null */
     public $order;
 
-    /** @var  int */
+    /** @var int */
     public $offset;
 
-    /** @var  int */
+    /** @var int */
     public $limit;
 
     public function parse($params)
