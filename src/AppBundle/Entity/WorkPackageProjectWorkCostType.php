@@ -55,7 +55,7 @@ class WorkPackageProjectWorkCostType
     /**
      * @var float
      *
-     * @ORM\Column(name="change", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="change_value", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $change;
 

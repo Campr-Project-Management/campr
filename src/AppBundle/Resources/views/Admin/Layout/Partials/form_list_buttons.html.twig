@@ -1,20 +1,17 @@
 {% trans_default_domain 'admin' %}
 
 <a href="{{ path(show_path, {'id': id}) }}">
-    <button class="btn btn-xs bgm-blue">
+    <button type="button" class="btn btn-icon waves-effect waves-circle bgm-teal" data-toggle="tooltip" data-placement="bottom" title="View">
         <i class="zmdi zmdi-zoom-in"></i>
-        {{ 'admin.general.form.button.view'|trans }}
     </button>
 </a>
 <a href="{{ path(edit_path, {'id': id}) }}">
-    <button class="btn btn-xs bgm-blue">
+    <button type="button" class="btn btn-icon waves-effect waves-circle bgm-blue" data-toggle="tooltip" data-placement="bottom" title="Edit">
         <i class="zmdi zmdi-edit"></i>
-        {{ 'admin.general.form.button.edit'|trans }}
     </button>
 </a>
 <a href="{{ path(delete_path, {'id': id}) }}">
-    <button class="btn btn-xs bgm-red">
+    <button type="button" class="btn btn-icon waves-effect waves-circle bgm-red" data-toggle="tooltip" data-placement="bottom" title="Delete">
         <i class="zmdi zmdi-delete"></i>
-        {{ 'admin.general.form.button.delete'|trans }}
     </button>
 </a>
