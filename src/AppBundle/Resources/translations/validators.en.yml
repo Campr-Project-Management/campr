@@ -83,3 +83,11 @@ validation:
         unit:
             name:
                 not_blank: The name should not be blank
+        meeting_agenda:
+            topic:
+                not_blank: The topic should not be blank
+        meeting:
+            location:
+                not_blank: The location should not be blank
+            objectives:
+                not_blank: The objectives should not be blank

@@ -1,0 +1,87 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.meeting_participant.list.title'|trans }}<small>{{ meeting_participant.meeting.name|default('-') }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_meeting_participant_create') }}">{{ 'admin.meeting_participant.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_meeting_participant_edit', {'id': meeting_participant.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_meeting_participant_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th>{{ 'admin.meeting_participant.list.table.id'|trans }}</th>
+                                    <td>{{ meeting_participant.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.meeting_participant.list.table.meeting'|trans }}</th>
+                                    <td>{{ meeting_participant.meeting.name|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.meeting_participant.list.table.remark'|trans }}</th>
+                                    <td>{{ meeting_participant.remark|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.meeting_participant.list.table.user'|trans }}</th>
+                                    <td>{{ meeting_participant.user.username|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.meeting_participant.list.table.is_present'|trans }}</th>
+                                    <td>
+                                        {% if meeting_participant.isPresent %}
+                                            <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                        {% else %}
+                                            <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.meeting_participant.list.table.is_excused'|trans }}</th>
+                                    <td>
+                                        {% if meeting_participant.isExcused %}
+                                            <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                        {% else %}
+                                            <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.meeting_participant.list.table.in_distribution_list'|trans }}</th>
+                                    <td>
+                                        {% if meeting_participant.inDistributionList %}
+                                            <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                        {% else %}
+                                            <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
