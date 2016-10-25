@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -41,6 +42,23 @@ class ProjectDepartmentController extends Controller
                 'project_departments' => $projectDepartments,
             ]
         );
+    }
+
+    /**
+     * @Route("/list/filtered", options={"expose"=true}, name="app_admin_project_department_list_filtered")
+     * @Method("POST")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function listByPageAction(Request $request)
+    {
+        $requestParams = $request->request->all();
+        $dataTableService = $this->get('app.service.data_table');
+        $response = $dataTableService->paginate(ProjectDepartment::class, $requestParams);
+
+        return new JsonResponse($response);
     }
 
     /**
@@ -89,7 +107,7 @@ class ProjectDepartmentController extends Controller
     /**
      * Displays a form to edit an existing ProjectDepartment entity.
      *
-     * @Route("/{id}/edit", name="app_admin_project_department_edit")
+     * @Route("/{id}/edit", options={"expose"=true}, name="app_admin_project_department_edit")
      * @Method({"GET", "POST"})
      *
      * @param Request           $request
@@ -135,7 +153,7 @@ class ProjectDepartmentController extends Controller
     /**
      * Displays a ProjectDepartment entity.
      *
-     * @Route("/{id}/show", name="app_admin_project_department_show")
+     * @Route("/{id}/show", options={"expose"=true}, name="app_admin_project_department_show")
      * @Method({"GET"})
      *
      * @param ProjectDepartment $projectDepartment
@@ -155,18 +173,27 @@ class ProjectDepartmentController extends Controller
     /**
      * Deletes a ProjectDepartment entity.
      *
-     * @Route("/{id}/delete", name="app_admin_project_department_delete")
+     * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_department_delete")
      * @Method({"GET"})
      *
      * @param ProjectDepartment $projectDepartment
+     * @param Request           $request
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ProjectDepartment $projectDepartment)
+    public function deleteAction(ProjectDepartment $projectDepartment, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectDepartment);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message, Response::HTTP_OK);
+        }
 
         $this
             ->get('session')
@@ -175,7 +202,7 @@ class ProjectDepartmentController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.project_department.delete.success', [], 'admin')
+                    ->trans('admin.project_department.delete.success.general', [], 'admin')
             )
         ;
 

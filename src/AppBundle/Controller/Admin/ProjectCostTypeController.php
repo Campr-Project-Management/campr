@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -41,6 +42,23 @@ class ProjectCostTypeController extends Controller
                 'project_cost_types' => $projectCostTypes,
             ]
         );
+    }
+
+    /**
+     * @Route("/list/filtered", options={"expose"=true}, name="app_admin_project_cost_type_list_filtered")
+     * @Method("POST")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function listByPageAction(Request $request)
+    {
+        $requestParams = $request->request->all();
+        $dataTableService = $this->get('app.service.data_table');
+        $response = $dataTableService->paginate(ProjectCostType::class, $requestParams);
+
+        return new JsonResponse($response);
     }
 
     /**
@@ -89,7 +107,7 @@ class ProjectCostTypeController extends Controller
     /**
      * Displays a form to edit an existing ProjectCostType entity.
      *
-     * @Route("/{id}/edit", name="app_admin_project_cost_type_edit")
+     * @Route("/{id}/edit", options={"expose"=true}, name="app_admin_project_cost_type_edit")
      * @Method({"GET", "POST"})
      *
      * @param Request         $request
@@ -135,7 +153,7 @@ class ProjectCostTypeController extends Controller
     /**
      * Displays a ProjectCostType entity.
      *
-     * @Route("/{id}/show", name="app_admin_project_cost_type_show")
+     * @Route("/{id}/show", options={"expose"=true}, name="app_admin_project_cost_type_show")
      * @Method({"GET"})
      *
      * @param ProjectCostType $projectCostType
@@ -155,18 +173,27 @@ class ProjectCostTypeController extends Controller
     /**
      * Deletes a ProjectCostType entity.
      *
-     * @Route("/{id}/delete", name="app_admin_project_cost_type_delete")
+     * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_cost_type_delete")
      * @Method({"GET"})
      *
      * @param ProjectCostType $projectCostType
+     * @param Request         $request
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ProjectCostType $projectCostType)
+    public function deleteAction(ProjectCostType $projectCostType, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectCostType);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message, Response::HTTP_OK);
+        }
 
         $this
             ->get('session')
@@ -175,7 +202,7 @@ class ProjectCostTypeController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.project_cost_type.delete.success', [], 'admin')
+                    ->trans('admin.project_cost_type.delete.success.general', [], 'admin')
             )
         ;
 

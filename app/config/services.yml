@@ -18,11 +18,12 @@ services:
         class: AppBundle\Services\UserService
     app.service.request_parser:
         class: AppBundle\Services\RequestParserService
-    app.service.serializer:
-        class: AppBundle\Services\SerializerService
+    app.service.data_table:
+        class: AppBundle\Services\DataTableService
         arguments:
-            - "@fos_js_routing.encoder"
-            - "@fos_js_routing.normalizer"
+            - "@doctrine.orm.entity_manager"
+            - "@app.service.request_parser"
+            - "@jms_serializer"
     redis.client:
         class: Predis\Client
     session.handler.redis:
