@@ -3,70 +3,51 @@
 {% trans_default_domain 'admin' %}
 
 {% block body_content %}
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.portfolio.list.title'|trans }}<small>{{ 'admin.portfolio.list.subtitle'|trans }}</small></h2>
-                    <a href="{{ path('app_admin_portfolio_create') }}">
-                        <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
-                    </a>
+    <div class="card">
+        <div class="card-header bgm-teal">
+            <h2>{{ 'admin.portfolio.list.title'|trans }}<small>{{ 'admin.portfolio.list.subtitle'|trans }}</small></h2>
+            <a href="{{ path('app_admin_portfolio_create') }}">
+                <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
+            </a>
+        </div>
+        <div class="card-body">
+            {% for flash_message in app.session.flashBag.get('success') %}
+                <div id="general-alert" class="alert alert-success m-t-15">
+                    <strong>{{ flash_message }}</strong>
                 </div>
-                <div class="card-body">
-                    {% for flash_message in app.session.flashBag.get('success') %}
-                        <div class="alert alert-success m-t-15">
-                            <strong>{{ flash_message }}</strong>
-                        </div>
-                    {% endfor %}
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>{{ 'admin.portfolio.list.table.id'|trans }}</th>
-                                    <th>{{ 'admin.portfolio.list.table.name'|trans }}</th>
-                                    <th>{{ 'admin.portfolio.list.table.description'|trans }}</th>
-                                    <th>{{ 'admin.portfolio.list.table.created_at'|trans }}</th>
-                                    <th>{{ 'admin.portfolio.list.table.updated_at'|trans }}</th>
-                                    <th>{{ 'admin.general.placeholder.actions'|trans }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for portfolio in portfolios %}
-                                <tr>
-                                    <td class="f-500 c-cyan">{{ portfolio.id }}</td>
-                                    <td>{{ portfolio.name }}</td>
-                                    <td>{{ portfolio.description }}</td>
-                                    <td>
-                                        {% if portfolio.createdAt %}
-                                            {{ portfolio.createdAt|date('d/m/Y') }}
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if portfolio.updatedAt %}
-                                            {{ portfolio.updatedAt|date('d/m/Y') }}
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% include '@App/Admin/Layout/Partials/form_list_buttons.html.twig'
-                                            with {
-                                                'show_path': 'app_admin_portfolio_show',
-                                                'edit_path': 'app_admin_portfolio_edit',
-                                                'delete_path': 'app_admin_portfolio_delete',
-                                                'id': portfolio.id,
-                                            }
-                                        %}
-                                    </td>
-                                </tr>
-                            {% else %}
-                                <tr>
-                                    <td colspan="6" class="f-500 c-cyan">{{ 'admin.portfolio.list.not_found'|trans }}</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            {% endfor %}
+            <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
+                <strong>
+                    {{ 'admin.portfolio.delete.success.first'|trans }}
+                    <span id="object-id">
+                        {% for flash_message in app.session.flashBag.get('success') %}
+                            {{ flash_message }}
+                        {% endfor %}
+                    </span>
+                    {{ 'admin.portfolio.delete.success.second'|trans }}
+                </strong>
+            </div>
+            <div class="table-responsive">
+                <table id="data-table-command" class="table table-condensed table-striped table-vmiddle" data-url="{{ path('app_admin_portfolio_list_filtered') }}" data-show="app_admin_portfolio_show" data-edit="app_admin_portfolio_edit" data-delete="app_admin_portfolio_delete">
+                    <thead>
+                        <tr>
+                            <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.portfolio.list.table.id'|trans }}</th>
+                            <th data-column-id="name">{{ 'admin.portfolio.list.table.name'|trans }}</th>
+                            <th data-column-id="description">{{ 'admin.portfolio.list.table.description'|trans }}</th>
+                            <th data-column-id="createdAt">{{ 'admin.portfolio.list.table.created_at'|trans }}</th>
+                            <th data-column-id="updatedAt">{{ 'admin.portfolio.list.table.updated_at'|trans }}</th>
+                            <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'admin.general.placeholder.actions'|trans }}</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <!-- Data Table -->
+    <script src="{{ asset('bundles/app/assets/js/data_table.js') }}"></script>
+    <script src="{{ asset('bundles/app/assets/js/alert_messages.js') }}"></script>
 {% endblock %}
