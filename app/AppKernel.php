@@ -30,6 +30,7 @@ class AppKernel extends Kernel
             new Vich\UploaderBundle\VichUploaderBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new TSS\AutomailerBundle\TSSAutomailerBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
 
             //internals
             new AppBundle\AppBundle(),
