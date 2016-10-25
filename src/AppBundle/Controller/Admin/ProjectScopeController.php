@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -41,6 +42,23 @@ class ProjectScopeController extends Controller
                 'project_scopes' => $projectScopes,
             ]
         );
+    }
+
+    /**
+     * @Route("/list/filtered", options={"expose"=true}, name="app_admin_project_scope_list_filtered")
+     * @Method("POST")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function listByPageAction(Request $request)
+    {
+        $requestParams = $request->request->all();
+        $dataTableService = $this->get('app.service.data_table');
+        $response = $dataTableService->paginate(ProjectScope::class, $requestParams);
+
+        return new JsonResponse($response);
     }
 
     /**
@@ -89,7 +107,7 @@ class ProjectScopeController extends Controller
     /**
      * Displays a form to edit an existing ProjectScope entity.
      *
-     * @Route("/{id}/edit", name="app_admin_project_scope_edit")
+     * @Route("/{id}/edit", options={"expose"=true}, name="app_admin_project_scope_edit")
      * @Method({"GET", "POST"})
      *
      * @param Request      $request
@@ -135,7 +153,7 @@ class ProjectScopeController extends Controller
     /**
      * Displays a ProjectScope entity.
      *
-     * @Route("/{id}/show", name="app_admin_project_scope_show")
+     * @Route("/{id}/show", options={"expose"=true}, name="app_admin_project_scope_show")
      * @Method({"GET"})
      *
      * @param ProjectScope $projectScope
@@ -155,18 +173,27 @@ class ProjectScopeController extends Controller
     /**
      * Deletes a ProjectScope entity.
      *
-     * @Route("/{id}/delete", name="app_admin_project_scope_delete")
+     * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_scope_delete")
      * @Method({"GET"})
      *
      * @param ProjectScope $projectScope
+     * @param Request      $request
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ProjectScope $projectScope)
+    public function deleteAction(ProjectScope $projectScope, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectScope);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message, Response::HTTP_OK);
+        }
 
         $this
             ->get('session')
@@ -175,7 +202,7 @@ class ProjectScopeController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.project_scope.delete.success', [], 'admin')
+                    ->trans('admin.project_scope.delete.success.general', [], 'admin')
             )
         ;
 
