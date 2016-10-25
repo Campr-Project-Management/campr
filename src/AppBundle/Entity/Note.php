@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Note.
@@ -24,6 +25,8 @@ class Note
     /**
      * @var Project
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="Project")
      * @ORM\JoinColumn(name="project_id")
      */
@@ -31,6 +34,8 @@ class Note
 
     /**
      * @var Meeting|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="notes")
      * @ORM\JoinColumn(name="meeting_id")
@@ -61,6 +66,8 @@ class Note
     /**
      * @var User|null
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="responsibility_id")
      */
@@ -68,6 +75,8 @@ class Note
 
     /**
      * @var \DateTime
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="date", type="date", nullable=true)
      */
@@ -101,6 +110,11 @@ class Note
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     /**
      * Get id.
@@ -209,6 +223,17 @@ class Note
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("date")
+     *
+     * @return string
+     */
+    public function getDateFormatted()
+    {
+        return $this->date ? $this->date->format('d/m/Y') : null;
+    }
+
+    /**
      * Set dueDate.
      *
      * @param \DateTime $dueDate
@@ -305,6 +330,17 @@ class Note
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("project")
+     *
+     * @return string
+     */
+    public function getProjectName()
+    {
+        return $this->project ? $this->project->getName() : null;
+    }
+
+    /**
      * Set meeting.
      *
      * @param \AppBundle\Entity\Meeting $meeting
@@ -329,6 +365,17 @@ class Note
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("meeting")
+     *
+     * @return string
+     */
+    public function getMeetingName()
+    {
+        return $this->meeting ? $this->meeting->getName() : null;
+    }
+
+    /**
      * Set responsibility.
      *
      * @param \AppBundle\Entity\User $responsibility
@@ -350,6 +397,17 @@ class Note
     public function getResponsibility()
     {
         return $this->responsibility;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibility")
+     *
+     * @return string
+     */
+    public function getResponsibilityName()
+    {
+        return $this->responsibility ? $this->responsibility->getUsername() : null;
     }
 
     /**
