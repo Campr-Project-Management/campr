@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.project_category.create.title'|trans }}</h2>
+                    <h2>{{ 'admin.company.create.title'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,7 +17,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_project_category_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_company_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -28,7 +28,7 @@
                         form,
                         {
                             'method': 'POST',
-                            'action': path('app_admin_project_category_create'),
+                            'action': path('app_admin_company_create'),
                             'attr': {
                                 'class': 'form-horizontal',
                                 'novalidate': 'novalidate',
@@ -48,23 +48,7 @@
                                 'attr': {
                                     'class': 'form-control input-sm',
                                 },
-                                'label': 'admin.project_category.create.name'|trans,
-                            }
-                        ) }}
-                        {{ form_widget(
-                            form.project,
-                            {
-                                'attr': {'class': 'selectpicker'},
-                                'label': 'admin.project_category.create.project'|trans,
-                            }
-                        ) }}
-                        {{ form_widget(
-                            form.sequence,
-                            {
-                                'attr': {
-                                    'class': 'form-control input-sm',
-                                },
-                                'label': 'admin.project_category.create.sequence'|trans,
+                                'label': 'admin.company.create.name'|trans,
                             }
                         ) }}
 
