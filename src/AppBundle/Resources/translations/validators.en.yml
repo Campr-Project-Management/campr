@@ -108,3 +108,12 @@ validation:
                 not_blank: The unit should not be blank
             value:
                 not_blank: The value field should not be blank
+        document:
+            path:
+                not_blank: The path should not be blank
+                unique: That path is taken
+        decision:
+            title:
+                not_blank: The title should not be blank
+            description:
+                not_blank: The description should not be blank
