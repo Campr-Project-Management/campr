@@ -4,7 +4,7 @@ namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class ProjectComplexityRepository extends EntityRepository
+abstract class BaseRepository extends EntityRepository
 {
     /**
      * Used to retrieve information for data table.
@@ -24,14 +24,14 @@ class ProjectComplexityRepository extends EntityRepository
         $qb = $this->createQueryBuilder('q');
 
         if (isset($key)) {
-            $qb = $qb
+            $qb
                 ->where('q.name LIKE CONCAT(\'%\', :key, \'%\')')
                 ->setParameter('key', $key)
             ;
         }
 
         if (isset($field) && isset($order)) {
-            $qb = $qb->orderBy('q.'.$field, $order);
+            $qb->orderBy('q.'.$field, $order);
         }
 
         return $qb
