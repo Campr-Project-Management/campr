@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -41,6 +42,23 @@ class ProjectModuleController extends Controller
                 'project_modules' => $projectModules,
             ]
         );
+    }
+
+    /**
+     * @Route("/list/filtered", options={"expose"=true}, name="app_admin_module_list_filtered")
+     * @Method("POST")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function listByPageAction(Request $request)
+    {
+        $requestParams = $request->request->all();
+        $dataTableService = $this->get('app.service.data_table');
+        $response = $dataTableService->paginate(ProjectModule::class, $requestParams);
+
+        return new JsonResponse($response);
     }
 
     /**
@@ -90,7 +108,7 @@ class ProjectModuleController extends Controller
     /**
      * Displays a form to edit an existing ProjectModule entity.
      *
-     * @Route("/{id}/edit", name="app_admin_project_module_edit")
+     * @Route("/{id}/edit", options={"expose"=true}, name="app_admin_project_module_edit")
      * @Method({"GET", "POST"})
      *
      * @param Request       $request
@@ -136,7 +154,7 @@ class ProjectModuleController extends Controller
     /**
      * Displays a ProjectModule entity.
      *
-     * @Route("/{id}/show", name="app_admin_project_module_show")
+     * @Route("/{id}/show", options={"expose"=true}, name="app_admin_project_module_show")
      * @Method({"GET"})
      *
      * @param ProjectModule $projectModule
@@ -156,18 +174,27 @@ class ProjectModuleController extends Controller
     /**
      * Deletes a ProjectModule entity.
      *
-     * @Route("/{id}/delete", name="app_admin_project_module_delete")
+     * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_module_delete")
      * @Method({"GET"})
      *
      * @param ProjectModule $projectModule
+     * @param Request       $request
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ProjectModule $projectModule)
+    public function deleteAction(ProjectModule $projectModule, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectModule);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message, Response::HTTP_OK);
+        }
 
         $this
             ->get('session')
@@ -176,7 +203,7 @@ class ProjectModuleController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.project_module.delete.success', [], 'admin')
+                    ->trans('admin.project_module.delete.success.general', [], 'admin')
             )
         ;
 
