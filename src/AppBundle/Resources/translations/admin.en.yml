@@ -74,6 +74,7 @@ admin:
                 first: Unit with ID
                 second: successfully deleted!
     status:
+        choice: Choose one status
         list:
             title: Status
             subtitle: Status list
@@ -98,6 +99,7 @@ admin:
                 first: Status with ID
                 second: successfully deleted!
     schedule:
+        choice: Choose schedule
         list:
             title: Schedules
             subtitle: List of schedules
@@ -667,9 +669,6 @@ admin:
                 first: Project work cost type with ID
                 second: successfully deleted!
 
-    company:
-        choice: Choose one company
-
     color_status:
         choice: Choose one color status
         list:
@@ -973,6 +972,7 @@ admin:
                 first: Meeting participant with ID
                 second: successfully deleted!
     meeting:
+        choice: Choose one meeting
         list:
             title: Meeting
             subtitle: List of meetings
@@ -1192,4 +1192,68 @@ admin:
             general: Timephase successfully deleted!
             success:
                 first: Timephase with ID
+                second: successfully deleted!
+
+    company:
+        choice: Choose one company
+        list:
+            title: Company
+            subtitle: List of companies
+            add: Add new company
+            table:
+                id: Id
+                name: Name
+                created_at: Created at
+                updated_at: Updated at
+        create:
+            title: Create Company
+            name: Name
+            success: Company successfully created!
+        edit:
+            title: Edit Company
+            success: Company successfully edited!
+        delete:
+            success:
+                general: Company successfully deleted!
+                first: Company with ID
+                second: successfully deleted!
+
+    decision:
+        choice: Choose one document
+        list:
+            title: Decision
+            subtitle: List of decisions
+            add: Add new decision
+            table:
+                id: Id
+                title: Title
+                description: Description
+                date: Date
+                due_date: Due Date
+                project: Project
+                meeting: Meeting
+                status: Status
+                responsibility: Responsibility
+                show_in_status_report: Show in status report
+                created_at: Created at
+                updated_at: Updated at
+        create:
+            title: Create decision
+            field_title: Title
+            description: Description
+            date: Date
+            due_date: Due Date
+            project: Project
+            meeting: Meeting
+            status: Status
+            responsibility: Responsibility
+            show_in_status_report: Show in status report
+            success: Decision successfully created!
+        edit:
+            title: Edit Decision
+            success: Decision successfully edited!
+        delete:
+            success:
+                general: Decision successfully deleted!
+                first: Decision with ID
                 second: successfully deleted!
