@@ -36,15 +36,8 @@ env('bin/php', function () {
     return sprintf('%s -dmemory_limit=-1', $php);
 });
 env('bin/composer', function () {
-    if (commandExist('composer')) {
-        $composer = run('which composer')->toString();
-        run('sudo composer self-update');
-    }
-    if (empty($composer)) {
-        run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}");
-        $composer = '{{bin/php}} {{release_path}}/composer.phar';
-    }
-    return $composer;
+    run("cd {{release_path}} && wget -q https://getcomposer.org/download/1.1.3/composer.phar && chmod +x composer.phar");
+    return '{{bin/php}} {{release_path}}/composer.phar';
 });
 env('cron_domain', function () {
     return strtr(env('domain'), ['.' => '_']);
