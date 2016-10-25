@@ -243,7 +243,10 @@ admin:
             title: Edit Project
             success: Project successfully edited!
         delete:
-            success: Project successfully deleted!
+            success:
+              general: Project successfully deleted!
+              first: Project with ID
+              second: successfully deleted!
 
     project_category:
         choice: Choose one project category
@@ -298,7 +301,10 @@ admin:
             title: Edit Project Complexity
             success: Project complexity successfully edited!
         delete:
-            success: Project complexity successfully deleted!
+            success:
+                general: Project complexity successfully deleted!
+                first: Project complexity with ID
+                second: successfully deleted!
 
     project_cost_type:
         list:
@@ -323,7 +329,10 @@ admin:
             title: Edit Project Cost Type
             success: Project cost type successfully edited!
         delete:
-            success: Project cost type successfully deleted!
+            success:
+                general: Project cost type successfully deleted!
+                first: Project cost type with ID
+                second: successfully deleted!
 
     project_department:
         choice: Choose one project department
@@ -353,7 +362,11 @@ admin:
             title: Edit Project Department
             success: Project department successfully edited!
         delete:
-            success: Project department successfully deleted!
+            success:
+                general: Project department successfully deleted!
+                first: Project department with ID
+                second: successfully edited!
+
 
     project_module:
         list:
