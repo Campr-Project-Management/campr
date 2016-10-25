@@ -54,34 +54,8 @@ class MeetingController extends Controller
     public function listByPageAction(Request $request)
     {
         $requestParams = $request->request->all();
-        $requestParser = $this->get('app.service.request_parser');
-        $requestParser->parse($requestParams);
-        $serializer = $this->get('app.service.serializer');
-
-        $entriesNumber = $this
-            ->getDoctrine()
-            ->getRepository(Meeting::class)
-            ->countTotal()
-        ;
-
-        $meetings = $this
-            ->getDoctrine()
-            ->getRepository(Meeting::class)
-            ->findByKeyAndField(
-                $requestParser->key,
-                $requestParser->field,
-                $requestParser->order,
-                $requestParser->offset,
-                $requestParser->limit
-            )
-        ;
-
-        $response = [
-            'current' => intval($requestParams['current']),
-            'rowCount' => intval($requestParams['rowCount']),
-            'rows' => json_decode($serializer->serialize($meetings), true),
-            'total' => intval($entriesNumber),
-        ];
+        $dataTableService = $this->get('app.service.data_table');
+        $response = $dataTableService->paginate(Meeting ::class, $requestParams);
 
         return new JsonResponse($response);
     }

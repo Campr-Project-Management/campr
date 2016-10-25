@@ -8,22 +8,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use AppBundle\Entity\Impact;
-use AppBundle\Form\Impact\CreateType;
-use AppBundle\Form\Impact\EditType;
+use AppBundle\Entity\Note;
+use AppBundle\Form\Note\CreateType;
+use AppBundle\Form\Note\EditType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * ImpactController controller.
+ * NoteController controller.
  *
- * @Route("/admin/impact")
+ * @Route("/admin/note")
  */
-class ImpactController extends Controller
+class NoteController extends Controller
 {
     /**
-     * Lists all Impact entities.
+     * Lists all Meeting entities.
      *
-     * @Route("/list", name="app_admin_impact_list")
+     * @Route("/list", name="app_admin_note_list")
      * @Method("GET")
      *
      * @return Response
@@ -32,20 +32,20 @@ class ImpactController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $impacts = $em
-            ->getRepository(Impact::class)
+        $notes = $em
+            ->getRepository(Note::class)
             ->findAll();
 
         return $this->render(
-            'AppBundle:Admin/Impact:list.html.twig',
+            'AppBundle:Admin/Note:list.html.twig',
             [
-                'impacts' => $impacts,
+                'notes' => $notes,
             ]
         );
     }
 
     /**
-     * @Route("/list/filtered", options={"expose"=true}, name="app_admin_impact_list_filtered")
+     * @Route("/list/filtered", options={"expose"=true}, name="app_admin_note_list_filtered")
      * @Method("POST")
      *
      * @param Request $request
@@ -56,35 +56,35 @@ class ImpactController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Impact::class, $requestParams);
+        $response = $dataTableService->paginate(Note::class, $requestParams);
 
         return new JsonResponse($response);
     }
 
     /**
-     * Displays Impact entity.
+     * Displays Note entity.
      *
-     * @Route("/{id}/show", name="app_admin_impact_show", options={"expose"=true})
+     * @Route("/{id}/show", name="app_admin_note_show", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Impact $impact
+     * @param Note $note
      *
      * @return Response
      */
-    public function showAction(Impact $impact)
+    public function showAction(Note $note)
     {
         return $this->render(
-            'AppBundle:Admin/Impact:show.html.twig',
+            'AppBundle:Admin/Note:show.html.twig',
             [
-                'impact' => $impact,
+                'note' => $note,
             ]
         );
     }
 
     /**
-     * Creates a new Impact entity.
+     * Creates a new Note entity.
      *
-     * @Route("/create", name="app_admin_impact_create", options={"expose"=true})
+     * @Route("/create", name="app_admin_note_create", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -108,15 +108,15 @@ class ImpactController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.impact.create.success', [], 'admin')
+                        ->trans('admin.note.create.success', [], 'admin')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_impact_list');
+            return $this->redirectToRoute('app_admin_note_list');
         }
 
         return $this->render(
-            'AppBundle:Admin/Impact:create.html.twig',
+            'AppBundle:Admin/Note:create.html.twig',
             [
                 'form' => $form->createView(),
             ]
@@ -124,19 +124,19 @@ class ImpactController extends Controller
     }
 
     /**
-     * @Route("/{id}/edit", name="app_admin_impact_edit", options={"expose"=true})
+     * @Route("/{id}/edit", name="app_admin_note_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
      */
-    public function editAction(Impact $impact, Request $request)
+    public function editAction(Note $note, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(EditType::class, $impact);
+        $form = $this->createForm(EditType::class, $note);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($impact);
+            $em->persist($note);
             $em->flush();
 
             $this
@@ -146,32 +146,32 @@ class ImpactController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.impact.edit.success', [], 'admin')
+                        ->trans('admin.note.edit.success', [], 'admin')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_impact_list');
+            return $this->redirectToRoute('app_admin_note_list');
         }
 
         return $this->render(
-            'AppBundle:Admin/Impact:edit.html.twig',
+            'AppBundle:Admin/Note:edit.html.twig',
             [
-                'id' => $impact->getId(),
+                'id' => $note->getId(),
                 'form' => $form->createView(),
             ]
         );
     }
 
     /**
-     * @Route("/{id}/delete", name="app_admin_impact_delete", options={"expose"=true})
+     * @Route("/{id}/delete", name="app_admin_note_delete", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Request $request
      */
-    public function deleteAction(Impact $impact, Request $request)
+    public function deleteAction(Note $note, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($impact);
+        $em->remove($note);
         $em->flush();
 
         if ($request->isXmlHttpRequest()) {
@@ -189,10 +189,10 @@ class ImpactController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.impact.delete.success.general', [], 'admin')
+                    ->trans('admin.note.delete.success.general', [], 'admin')
             )
         ;
 
-        return $this->redirectToRoute('app_admin_impact_list');
+        return $this->redirectToRoute('app_admin_note_list');
     }
 }
