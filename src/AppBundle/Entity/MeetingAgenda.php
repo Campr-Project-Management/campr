@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * MeetingAgenda.
@@ -24,6 +25,8 @@ class MeetingAgenda
     /**
      * @var Meeting
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="meetingAgendas")
      * @ORM\JoinColumn(name="meeting_id")
      */
@@ -39,6 +42,8 @@ class MeetingAgenda
     /**
      * @var User|null
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="responsibility_id")
      */
@@ -47,12 +52,16 @@ class MeetingAgenda
     /**
      * @var \DateTime
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="start", type="time", nullable=false)
      */
     private $start;
 
     /**
      * @var \DateTime
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="end", type="time", nullable=false)
      */
@@ -124,6 +133,17 @@ class MeetingAgenda
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("start")
+     *
+     * @return string
+     */
+    public function getStartFormatted()
+    {
+        return $this->start ? $this->start->format('H:i') : null;
+    }
+
+    /**
      * Set end.
      *
      * @param \DateTime $end
@@ -145,6 +165,17 @@ class MeetingAgenda
     public function getEnd()
     {
         return $this->end;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("end")
+     *
+     * @return string
+     */
+    public function getEndFormatted()
+    {
+        return $this->end ? $this->end->format('H:i') : null;
     }
 
     /**
@@ -196,6 +227,17 @@ class MeetingAgenda
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("meeting")
+     *
+     * @return string
+     */
+    public function getMeetingName()
+    {
+        return $this->meeting ? $this->meeting->getName() : null;
+    }
+
+    /**
      * Set responsibility.
      *
      * @param User $responsibility
@@ -217,5 +259,16 @@ class MeetingAgenda
     public function getResponsibility()
     {
         return $this->responsibility;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibility")
+     *
+     * @return string
+     */
+    public function getResponsibilityName()
+    {
+        return $this->responsibility ? $this->responsibility->getUsername() : null;
     }
 }
