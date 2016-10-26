@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -41,6 +42,23 @@ class ProjectTeamController extends Controller
                 'project_teams' => $projectTeams,
             ]
         );
+    }
+
+    /**
+     * @Route("/list/filtered", options={"expose"=true}, name="app_admin_project_team_list_filtered")
+     * @Method("POST")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function listByPageAction(Request $request)
+    {
+        $requestParams = $request->request->all();
+        $dataTableService = $this->get('app.service.data_table');
+        $response = $dataTableService->paginate(ProjectTeam::class, $requestParams);
+
+        return new JsonResponse($response);
     }
 
     /**
@@ -88,7 +106,7 @@ class ProjectTeamController extends Controller
     /**
      * Displays a form to edit an existing ProjectTeam entity.
      *
-     * @Route("/{id}/edit", name="app_admin_project_team_edit")
+     * @Route("/{id}/edit", options={"expose"=true}, name="app_admin_project_team_edit")
      * @Method({"GET", "POST"})
      *
      * @param Request     $request
@@ -134,7 +152,7 @@ class ProjectTeamController extends Controller
     /**
      * Displays a ProjectTeam entity.
      *
-     * @Route("/{id}/show", name="app_admin_project_team_show")
+     * @Route("/{id}/show", options={"expose"=true}, name="app_admin_project_team_show")
      * @Method({"GET"})
      *
      * @param ProjectTeam $projectTeam
@@ -154,18 +172,27 @@ class ProjectTeamController extends Controller
     /**
      * Deletes a ProjectTeam entity.
      *
-     * @Route("/{id}/delete", name="app_admin_project_team_delete")
+     * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_team_delete")
      * @Method({"GET"})
      *
      * @param ProjectTeam $projectTeam
+     * @param Request     $request
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ProjectTeam $projectTeam)
+    public function deleteAction(ProjectTeam $projectTeam, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectTeam);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message, Response::HTTP_OK);
+        }
 
         $this
             ->get('session')
@@ -174,7 +201,7 @@ class ProjectTeamController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.project_team.delete.success', [], 'admin')
+                    ->trans('admin.project_team.delete.success.general', [], 'admin')
             )
         ;
 
