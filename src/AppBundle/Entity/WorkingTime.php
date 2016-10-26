@@ -36,7 +36,7 @@ class WorkingTime
     /**
      * @var Day|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Day")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Day", inversedBy="workingTimes")
      * @ORM\JoinColumn(name="day_id")
      */
     private $day;

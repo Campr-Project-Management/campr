@@ -59,7 +59,7 @@ class Log
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="logs")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $user;

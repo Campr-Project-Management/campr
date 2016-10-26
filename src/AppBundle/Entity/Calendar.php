@@ -311,7 +311,7 @@ class Calendar
      *
      * @param WorkPackage $workPackage
      */
-    public function removeWorkPackage(WorkPackagee $workPackage)
+    public function removeWorkPackage(WorkPackage $workPackage)
     {
         $this->workPackages->removeElement($workPackage);
 
