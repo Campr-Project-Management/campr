@@ -1,0 +1,69 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.meeting_agenda.list.title'|trans }}<small>{{ meeting_agenda.meeting.name|default('-') }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_meeting_agenda_create') }}">{{ 'admin.meeting_agenda.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_meeting_agenda_edit', {'id': meeting_agenda.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_meeting_agenda_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <th>{{ 'admin.meeting_agenda.list.table.id'|trans }}</th>
+                                <td>{{ meeting_agenda.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.meeting_agenda.list.table.meeting'|trans }}</th>
+                                <td>{{ meeting_agenda.meeting.name|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.meeting_agenda.list.table.topic'|trans }}</th>
+                                <td>{{ meeting_agenda.topic|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.meeting_agenda.list.table.responsible'|trans }}</th>
+                                <td>{{ meeting_agenda.responsibility.username|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.meeting_agenda.list.table.start'|trans }}</th>
+                                <td>{{ meeting_agenda.start|date('H:i') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.meeting_agenda.list.table.end'|trans }}</th>
+                                <td>{{ meeting_agenda.end|date('H:i') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.meeting_agenda.list.table.duration'|trans }}</th>
+                                <td>{{ meeting_agenda.duration|date('H:i') }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,6 +41,8 @@ class ProjectRole
     /**
      * @var bool
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="is_lead", type="boolean")
      */
     private $isLead;
@@ -47,12 +50,16 @@ class ProjectRole
     /**
      * @var \DateTime
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -191,5 +198,27 @@ class ProjectRole
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("createdAt")
+     *
+     * @return string
+     */
+    public function getCreatedAtFormatted()
+    {
+        return $this->createdAt ? $this->createdAt->format('d/m/Y') : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("updatedAt")
+     *
+     * @return string
+     */
+    public function getUpdatedAtFormatted()
+    {
+        return $this->updatedAt ? $this->updatedAt->format('d/m/Y') : null;
     }
 }

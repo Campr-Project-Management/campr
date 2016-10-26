@@ -34,9 +34,9 @@ class WorkPackage
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, options={"default": "WorkPackage"})
      */
-    private $name;
+    private $name = 'WorkPackage';
 
     /**
      * @var WorkPackage
@@ -137,6 +137,14 @@ class WorkPackage
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Assignment", mappedBy="workPackage")
      */
     private $assignments;
+
+    /**
+     * @var Calendar
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="workPackages")
+     * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id")
+     */
+    private $calendar;
 
     /**
      * @var \DateTime
@@ -636,5 +644,29 @@ class WorkPackage
     public function getAssignments()
     {
         return $this->assignments;
+    }
+
+    /**
+     * Set calendar.
+     *
+     * @param Calendar $calendar
+     *
+     * @return WorkPackage
+     */
+    public function setCalendar(Calendar $calendar = null)
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
+
+    /**
+     * Get calendar.
+     *
+     * @return Calendar
+     */
+    public function getCalendar()
+    {
+        return $this->calendar;
     }
 }

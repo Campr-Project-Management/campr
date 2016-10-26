@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * MeetingParticipant.
@@ -24,6 +25,8 @@ class MeetingParticipant
     /**
      * @var Meeting
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="meetingParticipants")
      * @ORM\JoinColumn(name="meeting_id")
      */
@@ -31,6 +34,8 @@ class MeetingParticipant
 
     /**
      * @var User
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id")
@@ -194,6 +199,16 @@ class MeetingParticipant
     {
         return $this->meeting;
     }
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("meeting")
+     *
+     * @return string
+     */
+    public function getMeetingName()
+    {
+        return $this->meeting ? $this->meeting->getName() : null;
+    }
 
     /**
      * Set user.
@@ -217,5 +232,16 @@ class MeetingParticipant
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("user")
+     *
+     * @return string
+     */
+    public function getUserName()
+    {
+        return $this->user ? $this->user->getUsername() : null;
     }
 }

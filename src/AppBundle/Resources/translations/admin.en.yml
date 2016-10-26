@@ -201,7 +201,10 @@ admin:
             title: Edit Portfolio
             success: Portfolio successfully edited!
         delete:
-            success: Portfolio successfully deleted!
+            success:
+                general: Portfolio successfully deleted!
+                first: Portfolio with ID
+                second: successfully deleted!
 
     project:
         choice: Choose one project
@@ -395,7 +398,10 @@ admin:
             title: Edit Project Module
             success: Project module successfully edited!
         delete:
-            success: Project module successfully deleted!
+            success:
+                general: Project module successfully deleted!
+                first: Projcet module with ID
+                second: successfully deleted!
 
     project_role:
         choice: Choose one project role
@@ -421,7 +427,10 @@ admin:
             title: Edit Project Role
             success: Project role successfully edited!
         delete:
-            success: Project role successfully deleted!
+            success:
+                general: Project role successfully deleted!
+                first: Project role with ID
+                second: successfully deleted!
 
     project_scope:
         choice: Choose one project scope
@@ -447,7 +456,10 @@ admin:
             title: Edit Project Scope
             success: Project scope successfully edited!
         delete:
-            success: Project scope successfully deleted!
+            success:
+                general: Project scope successfully deleted!
+                first: Project scope with ID
+                second: successfully deleted!
 
     project_status:
         choice: Choose one project status
@@ -473,7 +485,10 @@ admin:
             title: Edit Project Status
             success: Project status successfully edited!
         delete:
-            success: Project status successfully deleted!
+            success:
+                general: Project status successfully deleted!
+                first: Project status with ID
+                second: successfully deleted!
 
     project_team:
         choice: Choose one project team
@@ -495,7 +510,10 @@ admin:
             title: Edit Project Team
             success: Project team successfully edited!
         delete:
-            success: Project team successfully deleted!
+            success:
+                general: Project team successfully deleted!
+                first: Project team with ID
+                second: successfully deleted!
 
     project_user:
         choice: Choose one project user
@@ -533,7 +551,10 @@ admin:
             title: Edit Project User
             success: Project user successfully edited!
         delete:
-            success: Project user successfully deleted!
+            success:
+                general: Project user successfully deleted!
+                first: Project user with ID
+                second: successfully deleted!
 
     project_work_cost_type:
         choice: Choose one project work cost type
@@ -559,7 +580,10 @@ admin:
             title: Edit Project Work Cost Type
             success: Project work cost type successfully edited!
         delete:
-            success: Project work cost type successfully deleted!
+            success:
+                general: Project work cost type successfully deleted!
+                first: Project work cost type with ID
+                second: successfully deleted!
 
     company:
         choice: Choose one company
@@ -586,13 +610,11 @@ admin:
             title: Edit Color Status
             success: Color status successfully edited!
         delete:
-            success: Color status successfully deleted!
-            data: Data
-            success: WorkPackage successfully added!
-        edit:
-            success: WorkPackage successfully edited!
-        delete:
-            success: WorkPackage successfully deleted!
+            success:
+                general: Color status successfully deleted!
+                first: Color status with ID
+                second: successfully deleted!
+
     risk:
         list:
             title: Risk
@@ -778,3 +800,164 @@ admin:
             success: WorkPackage - ProjectWorkCostType successfully edited!
         delete:
             success: WorkPackage - ProjectWorkCostType successfully deleted!
+    impact:
+        list:
+            title: Impact
+            subtitle: List of impacts
+            table:
+                id: Id
+                name: Name
+                sequence: Sequence
+            add: Add new impact
+        create:
+            title: Create impact
+            name: Name
+            sequence: Sequence
+            success: Impact successfully created!
+        edit:
+            title: Edit impact
+            success: Impact successfully edited!
+        delete:
+            general: Impact successfully deleted!
+            success:
+                first: Impact with ID
+                second: successfully deleted!
+    meeting_agenda:
+        list:
+            title: Meeting agenda
+            subtitle: List of meeting agendas
+            table:
+                id: Id
+                meeting: Meeting
+                topic: Topic
+                responsible: Responsible
+                start: Start
+                end: End
+                duration: Duration
+            add: Add new meeting agenda
+        create:
+            title: Create meeting agenda
+            meeting: Meeting
+            responsible: Responsible
+            topic: Topic
+            start: Start
+            end: End
+            duration: Duration
+            success: Meeting agenda successfully created!
+        edit:
+            title: Edit meeting agenda
+            success: Meeting agenda successfully edited!
+        delete:
+            general: Meeting agenda successfully deleted!
+            success:
+                first: Meeting agenda with ID
+                second: successfully deleted!
+    meeting_participant:
+        list:
+            title: Meeting participant
+            subtitle: List of meeting participants
+            table:
+                id: Id
+                meeting: Meeting
+                responsible: Responsible
+                remark: Remark
+                is_present: Is Present
+                is_excused: Is Excused
+                in_distribution_list: In Distribution List
+            add: Add new meeting participant
+        create:
+            title: Create meeting participant
+            meeting: Meeting
+            user: User
+            remark: Remark
+            success: Meeting participant successfully created!
+        edit:
+            title: Edit meeting participant
+            is_present: Is Present
+            is_excused: Is Excused
+            in_distribution_list: In Distribution List
+            success: Meeting participant successfully edited!
+        delete:
+            general: Meeting participant successfully deleted!
+            success:
+                first: Meeting participant with ID
+                second: successfully deleted!
+    meeting:
+        list:
+            title: Meeting
+            subtitle: List of meetings
+            table:
+                id: Id
+                name: Name
+                project: Project
+                date: Date
+                start: Start
+                end: End
+                location: Location
+                objectives: Objectives
+                participants: Meeting Participants
+                agendas: Meeting Agendas
+                decisions: Decisions
+                todos: TODOs
+                notes: Notes
+            add: Add new meeting
+        create:
+            title: Create meeting
+            project: Project
+            name: Name
+            location: Location
+            date: Date
+            start: Start
+            end: End
+            objectives: Objectives
+            documents: Documents
+            success: Meeting successfully created!
+        edit:
+            title: Edit meeting
+            is_present: Is Present
+            is_excused: Is Excused
+            in_distribution_list: In Distribution List
+            success: Meeting successfully edited!
+        delete:
+            general: Meeting successfully deleted!
+            success:
+                first: Meeting with ID
+                second: successfully deleted!
+    note:
+        list:
+            title: Note
+            subtitle: List of notes
+            table:
+                id: Id
+                meeting: Meeting
+                project: Project
+                date: Date
+                title: Title
+                description: Description
+                show_in_report: Show in status report
+                date: Date
+                due_date: Due Date
+                responsible: Responsible
+                created_at: Created At
+                updated_at: Updated At
+            add: Add new note
+        create:
+            title: Create note
+            note_title: Title
+            project: Project
+            description: Description
+            meeting: Meeting
+            responsible: Responsible
+            status: Status
+            date: Date
+            due_date: Due date
+            success: Note successfully created!
+        edit:
+            title: Edit note
+            show_in_status: Show in status report
+            success: Note successfully edited!
+        delete:
+            general: Note successfully deleted!
+            success:
+                first: Note with ID
+                second: successfully deleted!
