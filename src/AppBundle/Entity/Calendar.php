@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Calendar.
@@ -45,6 +46,9 @@ class Calendar
 
     /**
      * @var Calendar
+     *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar")
      * @ORM\JoinColumn(name="parent_id")
      */
@@ -73,6 +77,8 @@ class Calendar
 
     /**
      * @var Project|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="calendars", cascade={"persist"})
      * @ORM\JoinColumn(name="project_id")
@@ -193,6 +199,17 @@ class Calendar
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("parent")
+     *
+     * @return string
+     */
+    public function getParentName()
+    {
+        return $this->parent ? $this->parent->getName() : null;
+    }
+
+    /**
      * Add day.
      *
      * @param Day $day
@@ -252,6 +269,17 @@ class Calendar
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("project")
+     *
+     * @return string
+     */
+    public function getProjectName()
+    {
+        return $this->project ? $this->project->getName() : null;
     }
 
     /**

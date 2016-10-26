@@ -961,3 +961,82 @@ admin:
             success:
                 first: Note with ID
                 second: successfully deleted!
+    calendar:
+        list:
+            title: Calendar
+            subtitle: List of calendars
+            table:
+                id: Id
+                name: Name
+                parent: Parent
+                project: Project
+                is_based: Is Based
+                is_baseline: Is Baseline
+                workpackages: WorkPackages
+                wppwct: WorkPackage ProjecWorkCostTypes
+            add: Add new calendar
+        create:
+            title: Create calendar
+            name: Name
+            project: Project
+            parent: Parent
+            baseline: Is Baseline
+            success: Calendar successfully created!
+        edit:
+            title: Edit calendar
+            based: Is Based
+            success: Calendar successfully edited!
+        delete:
+            general: Calendar successfully deleted!
+            success:
+                first: Calendar with ID
+                second: successfully deleted!
+    day:
+        list:
+            title: Day
+            subtitle: List of days
+            table:
+                id: Id
+                type: Type
+                working: Working
+                calendar: Calendar
+                working_times: Working Times
+            add: Add new day
+        create:
+            title: Create day
+            type: Type
+            working: Working
+            calendar: Calendar
+            success: Day successfully created!
+        edit:
+            title: Edit day
+            success: Day successfully edited!
+        delete:
+            general: Day successfully deleted!
+            success:
+                first: Day with ID
+                second: successfully deleted!
+    working_time:
+        list:
+            title: Working times
+            subtitle: List of working times
+            table:
+                id: Id
+                day: Calendar - Day
+                from_time: From Time
+                to_time: To Time
+            add: Add new working time
+        create:
+            title: Create working time
+            day: Day
+            from_time: From Time
+            to_time: To Time
+            success: Working time successfully created!
+        edit:
+            title: Working time day
+            success: Working time successfully edited!
+        delete:
+            general: Working time successfully deleted!
+            success:
+                first: Working time with ID
+                second: successfully deleted!
