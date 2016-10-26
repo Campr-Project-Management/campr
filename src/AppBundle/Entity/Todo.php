@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,6 +24,8 @@ class Todo
 
     /**
      * @var Project
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="Project")
      * @ORM\JoinColumn(name="project_id")
@@ -61,6 +64,8 @@ class Todo
     /**
      * @var User|null
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="responsibility_id")
      */
@@ -69,6 +74,8 @@ class Todo
     /**
      * @var \DateTime
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="date", type="date", nullable=true)
      */
     private $date;
@@ -76,12 +83,16 @@ class Todo
     /**
      * @var \DateTime
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="due_date", type="date", nullable=true)
      */
     private $dueDate;
 
     /**
      * @var Status
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Status")
      * @ORM\JoinColumn(name="status_id")
@@ -217,6 +228,17 @@ class Todo
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("date")
+     *
+     * @return string
+     */
+    public function getDateFormatted()
+    {
+        return $this->date ? $this->date->format('d/m/Y') : null;
+    }
+
+    /**
      * Set dueDate.
      *
      * @param \DateTime $dueDate
@@ -238,6 +260,17 @@ class Todo
     public function getDueDate()
     {
         return $this->dueDate;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("dueDate")
+     *
+     * @return string
+     */
+    public function getDueDateFormatted()
+    {
+        return $this->dueDate ? $this->dueDate->format('d/m/Y') : null;
     }
 
     /**
@@ -313,6 +346,17 @@ class Todo
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("project")
+     *
+     * @return string
+     */
+    public function getProjectName()
+    {
+        return $this->project ? $this->project->getName() : null;
+    }
+
+    /**
      * Set meeting.
      *
      * @param Meeting $meeting
@@ -361,6 +405,17 @@ class Todo
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibility")
+     *
+     * @return string
+     */
+    public function getResponsibilityName()
+    {
+        return $this->responsibility ? $this->responsibility->getUsername() : null;
+    }
+
+    /**
      * Set status.
      *
      * @param Status $status
@@ -382,5 +437,16 @@ class Todo
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("status")
+     *
+     * @return string
+     */
+    public function getStatusName()
+    {
+        return $this->status ? $this->status->getName() : null;
     }
 }

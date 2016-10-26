@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  *      errorPath="username",
  *      message="validation.constraints.user.unique.username"
  *  )
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  */
 class User implements AdvancedUserInterface, \Serializable
 {

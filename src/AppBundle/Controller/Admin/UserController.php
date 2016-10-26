@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Admin;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
 use AppBundle\Form\User\CreateType;
@@ -29,25 +30,35 @@ class UserController extends Controller
             ->findAll()
         ;
 
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-            $users,
-            $request->get('page', 1),
-            $this->getParameter('admin.per_page')
-        );
-
         return $this->render(
             'AppBundle:Admin/User:list.html.twig',
             [
-                'pagination' => $pagination,
+                'users' => $users,
             ]
         );
     }
 
     /**
+     * @Route("/list/filtered", name="app_admin_user_list_filtered", options={"expose"=true})
+     * @Method("POST")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function listByPageAction(Request $request)
+    {
+        $requestParams = $request->request->all();
+        $dataTableService = $this->get('app.service.data_table');
+        $response = $dataTableService->paginate(User::class, 'username', $requestParams);
+
+        return new JsonResponse($response);
+    }
+
+    /**
      * Displays User entity.
      *
-     * @Route("/{id}/show", name="app_admin_user_show")
+     * @Route("/{id}/show", name="app_admin_user_show", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param User $user
@@ -104,7 +115,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/{id}/edit", name="app_admin_user_edit")
+     * @Route("/{id}/edit", name="app_admin_user_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -143,7 +154,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/{id}/delete", name="app_admin_user_delete")
+     * @Route("/{id}/delete", name="app_admin_user_delete", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Request $request
