@@ -2,8 +2,6 @@
 
 namespace AppBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
-
-class ProjectTeamRepository extends EntityRepository
+class ProjectTeamRepository extends BaseRepository
 {
 }
