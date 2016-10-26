@@ -58,6 +58,13 @@ class Calendar
     private $days;
 
     /**
+     * @var ArrayCollection|WorkPackage[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="calendar")
+     */
+    private $workPackages;
+
+    /**
      * @var ArrayCollection|WorkPackageProjectWorkCostType[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackageProjectWorkCostType", mappedBy="calendar")
@@ -67,7 +74,7 @@ class Calendar
     /**
      * @var Project|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="calendars")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="calendars", cascade={"persist"})
      * @ORM\JoinColumn(name="project_id")
      */
     private $project;
@@ -76,6 +83,7 @@ class Calendar
     {
         $this->days = new ArrayCollection();
         $this->workPackageProjectWorkCostTypes = new ArrayCollection();
+        $this->workPackages = new ArrayCollection();
     }
 
     /**
@@ -282,5 +290,41 @@ class Calendar
     public function getWorkPackageProjectWorkCostTypes()
     {
         return $this->workPackageProjectWorkCostTypes;
+    }
+
+    /**
+     * Add workPackage.
+     *
+     * @param WorkPackageProjectWorkCostType $workPackage
+     *
+     * @return Calendar
+     */
+    public function addWorkPackage(WorkPackage $workPackage)
+    {
+        $this->workPackages[] = $workPackage;
+
+        return $this;
+    }
+
+    /**
+     * Remove workPackage.
+     *
+     * @param WorkPackage $workPackage
+     */
+    public function removeWorkPackage(WorkPackagee $workPackage)
+    {
+        $this->workPackages->removeElement($workPackage);
+
+        return $this;
+    }
+
+    /**
+     * Get workPackages.
+     *
+     * @return ArrayCollection
+     */
+    public function getWorkPackages()
+    {
+        return $this->workPackages;
     }
 }

@@ -24,6 +24,12 @@ services:
             - "@doctrine.orm.entity_manager"
             - "@app.service.request_parser"
             - "@jms_serializer"
+            - "@fos_js_routing.encoder"
+            - "@fos_js_routing.normalizer"
+    app.service.import:
+        class: AppBundle\Services\ImportService
+        arguments:
+            - "@doctrine.orm.entity_manager"
     redis.client:
         class: Predis\Client
     session.handler.redis:
