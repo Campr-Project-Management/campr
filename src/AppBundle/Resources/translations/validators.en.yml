@@ -91,3 +91,8 @@ validation:
                 not_blank: The location should not be blank
             objectives:
                 not_blank: The objectives should not be blank
+        day:
+            type:
+                not_blank: The type should not be blank
+            working:
+                not_blank: The working field should not be blank

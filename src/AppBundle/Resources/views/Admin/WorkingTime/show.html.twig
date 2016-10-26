@@ -1,0 +1,57 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.working_time.list.title'|trans }}</h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_working_time_create') }}">{{ 'admin.working_time.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_working_time_edit', {'id': workingTime.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_working_time_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body m-t-10 card-padding">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th>{{ 'admin.working_time.list.table.id'|trans }}</th>
+                                    <td>{{ workingTime.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.working_time.list.table.day'|trans }}</th>
+                                    <td>{{ workingTime.day.calendar.name|default('-') }} - {{ workingTime.day.id|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.working_time.list.table.from_time'|trans }}</th>
+                                    <td>{{ workingTime.fromTime|date('H:i') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.working_time.list.table.to_time'|trans }}</th>
+                                    <td>{{ workingTime.toTime|date('H:i') }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
