@@ -25,15 +25,15 @@ class WorkPackageProjectWorkCostType
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="name", type="string", length=255, options={"default": "Resource"})
      */
-    private $name;
+    private $name = 'Resource';
 
     /**
      * @var WorkPackage
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage")
-     * @ORM\JoinColumn(name="work_package_id", nullable=false)
+     * @ORM\JoinColumn(name="work_package_id", nullable=true)
      */
     private $workPackage;
 
@@ -41,7 +41,7 @@ class WorkPackageProjectWorkCostType
      * @var ProjectWorkCostType
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectWorkCostType")
-     * @ORM\JoinColumn(name="project_work_cost_type_id", nullable=false)
+     * @ORM\JoinColumn(name="project_work_cost_type_id", nullable=true)
      */
     private $projectWorkCostType;
 
