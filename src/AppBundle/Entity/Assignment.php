@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Assignment.
@@ -32,6 +33,8 @@ class Assignment
     /**
      * @var WorkPackage
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="assignments")
      * @ORM\JoinColumn(name="work_package_id")
      */
@@ -39,6 +42,8 @@ class Assignment
 
     /**
      * @var WorkPackageProjectWorkCostType
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackageProjectWorkCostType", inversedBy="assignments")
      * @ORM\JoinColumn(name="work_package_project_work_cost_type_id")
@@ -336,6 +341,17 @@ class Assignment
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("workPackage")
+     *
+     * @return string
+     */
+    public function getWorkPackageName()
+    {
+        return $this->workPackage ? $this->workPackage->getName() : null;
+    }
+
+    /**
      * Set workPackageProjectWorkCostType.
      *
      * @param WorkPackageProjectWorkCostType $workPackageProjectWorkCostType
@@ -357,5 +373,15 @@ class Assignment
     public function getWorkPackageProjectWorkCostType()
     {
         return $this->workPackageProjectWorkCostType;
+    }
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("workPackageProjectWorkCostType")
+     *
+     * @return string
+     */
+    public function getWorkPackageProjectWorkCostTypeName()
+    {
+        return $this->workPackageProjectWorkCostType ? $this->workPackageProjectWorkCostType->getName() : null;
     }
 }

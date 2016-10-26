@@ -1040,3 +1040,66 @@ admin:
             success:
                 first: Working time with ID
                 second: successfully deleted!
+    assignment:
+        list:
+            title: Assignments
+            subtitle: List of assignments
+            table:
+                id: Id
+                workpackage: Workpackage
+                wppwct: Workpackage ProjectWorkCosttype
+                milestone: Milestone
+                percent_complete: Percent Complete
+                confirmed: Confirmed
+                started_at: Started At
+                finished_at: Finished At
+                timephases: Timephases
+            add: Add new assignment
+        create:
+            title: Create assignment
+            workpackage: Workpackage
+            wppwct: Workpackage ProjectWorkCosttype
+            milestone: Milestone
+            started_at: Started At
+            finished_at: Finished At
+            success: Assignment successfully created!
+        edit:
+            title: Edit Assignment
+            percent_work: Percent Work
+            confirmed: Confirmed
+            success: Assignment successfully edited!
+        delete:
+            general: Assignment successfully deleted!
+            success:
+                first: Assignment with ID
+                second: successfully deleted!
+    timephase:
+        list:
+            title: Timephase
+            subtitle: List of timephases
+            table:
+                id: Id
+                type: Type
+                workpackage_assignment: WorkPackage Assignment
+                unit: Unit
+                value: Value
+                started_at: Started At
+                finished_at: Finished At
+            add: Add new timephase
+        create:
+            title: Create timephase
+            type: Type
+            assignment: Assignment
+            unit: Unit
+            value: Value
+            started_at: Started At
+            finished_at: Finished At
+            success: Timephase successfully created!
+        edit:
+            title: Edit timephase
+            success: Timephase successfully edited!
+        delete:
+            general: Timephase successfully deleted!
+            success:
+                first: Timephase with ID
+                second: successfully deleted!

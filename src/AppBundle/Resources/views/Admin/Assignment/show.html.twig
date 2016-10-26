@@ -1,0 +1,90 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.assignment.list.title'|trans }}<small>{{ assignment.workPackge.name|default('-') }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_assignment_create') }}">{{ 'admin.assignment.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_assignment_edit', {'id': assignment.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_assignment_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body m-t-10 card-padding">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <th>{{ 'admin.assignment.list.table.id'|trans }}</th>
+                                <td>{{ assignment.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.assignment.list.table.workpackage'|trans }}</th>
+                                <td>{{ assignment.workPackage.name|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.assignment.list.table.wppwct'|trans }}</th>
+                                <td>{{ assignment.workPackageProjectWorkCostType.name|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.assignment.list.table.percent_complete'|trans }}</th>
+                                <td>{{ assignment.percentWorkComplete }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.assignment.list.table.milestone'|trans }}</th>
+                                <td>{{ assignment.milestone }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.assignment.list.table.confirmed'|trans }}</th>
+                                <td>
+                                    {% if assignment.confirmed %}
+                                        <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                    {% else %}
+                                        <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.assignment.list.table.started_at'|trans }}</th>
+                                <td>{{ assignment.startedAt|date('d/m/Y') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.assignment.list.table.finished_at'|trans }}</th>
+                                <td>{{ assignment.finishedAt|date('d/m/Y') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.assignment.list.table.timephases'|trans }}</th>
+                                <td>
+                                    {% for timephase in assignment.timephases %}
+                                        <p>{{ timephase.value }} -
+                                            [ {{ timephase.startedAt|date('d/m/Y') }} -
+                                            {{ timephase.finishedAt|date('d/m/Y') }} ]
+                                        </p>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
