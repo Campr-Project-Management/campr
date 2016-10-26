@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Day.
@@ -45,6 +46,8 @@ class Day
 
     /**
      * @var Calendar|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="days", cascade={"persist"})
      * @ORM\JoinColumn(name="calendar_id")
@@ -170,5 +173,16 @@ class Day
     public function getCalendar()
     {
         return $this->calendar;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("calendar")
+     *
+     * @return string
+     */
+    public function getCalendarName()
+    {
+        return $this->calendar ? $this->calendar->getName() : null;
     }
 }
