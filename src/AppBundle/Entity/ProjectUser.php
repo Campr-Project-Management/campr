@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * ProjectUser.
@@ -24,6 +25,8 @@ class ProjectUser
     /**
      * @var User
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
@@ -33,6 +36,8 @@ class ProjectUser
 
     /**
      * @var Project
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project")
      * @ORM\JoinColumns({
@@ -44,6 +49,8 @@ class ProjectUser
     /**
      * @var ProjectCategory
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectCategory")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="project_category_id", referencedColumnName="id")
@@ -53,6 +60,8 @@ class ProjectUser
 
     /**
      * @var ProjectRole|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectRole")
      * @ORM\JoinColumns({
@@ -64,6 +73,8 @@ class ProjectUser
     /**
      * @var ProjectDepartment
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectDepartment")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="project_department_id", referencedColumnName="id")
@@ -73,6 +84,8 @@ class ProjectUser
 
     /**
      * @var ProjectTeam
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectTeam")
      * @ORM\JoinColumns({
@@ -84,12 +97,16 @@ class ProjectUser
     /**
      * @var bool
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="show_in_resources", type="boolean", nullable=false, options={"default": 1})
      */
     private $showInResources = true;
 
     /**
      * @var bool
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="show_in_raci", type="boolean", nullable=true)
      */
@@ -98,6 +115,8 @@ class ProjectUser
     /**
      * @var bool
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="show_in_org", type="boolean", nullable=true)
      */
     private $showInOrg;
@@ -105,12 +124,16 @@ class ProjectUser
     /**
      * @var \DateTime
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -393,5 +416,71 @@ class ProjectUser
     public function getProjectTeam()
     {
         return $this->projectTeam;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("user")
+     *
+     * @return string
+     */
+    public function getUserName()
+    {
+        return $this->user ? $this->user->getUsername() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("project")
+     *
+     * @return string
+     */
+    public function getProjectName()
+    {
+        return $this->project ? $this->project->getName() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectCategory")
+     *
+     * @return string
+     */
+    public function getProjectCategoryName()
+    {
+        return $this->projectCategory ? $this->projectCategory->getName() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectRole")
+     *
+     * @return string
+     */
+    public function getProjectRoleName()
+    {
+        return $this->projectRole ? $this->projectRole->getName() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectDepartment")
+     *
+     * @return string
+     */
+    public function getProjectDepartmentName()
+    {
+        return $this->projectDepartment ? $this->projectDepartment->getName() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectTeam")
+     *
+     * @return string
+     */
+    public function getProjectTeamName()
+    {
+        return $this->projectTeam ? $this->projectTeam->getName() : null;
     }
 }
