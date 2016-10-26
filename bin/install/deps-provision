@@ -55,9 +55,11 @@ then
     sudo apt-get install -y software-properties-common
 fi
 
-PHPV=(`php -v | grep -Ei "PHP [0-9]+.[0-9]+.[0-9]+" | grep -oEi "[0-9]+.[0-9]+.[0-9]+" | sed 's/\./\n/g'`)
+PHPV=`php -r "echo PHP_VERSION_ID;"`
 
-if [ ! -e "`which php`" ] || [ ${PHPV[0]} -lt 7 ] || [ ${PHPV[2]} -lt 11 ];
+echo PHP Version is $PHPV
+
+if [ ! -e "`which php`" ] || [ $PHPV -lt 70011 ];
 then
     LC_ALL=C.UTF-8 sudo add-apt-repository -y ppa:ondrej/php
     sudo apt-get update -y
