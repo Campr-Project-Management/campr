@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -41,6 +42,8 @@ class Project
     /**
      * @var User
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="sponsor_id", referencedColumnName="id")
@@ -50,6 +53,8 @@ class Project
 
     /**
      * @var User
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumns({
@@ -61,6 +66,8 @@ class Project
     /**
      * @var Company
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Company")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="company_id", referencedColumnName="id")
@@ -70,6 +77,8 @@ class Project
 
     /**
      * @var ProjectComplexity
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectComplexity")
      * @ORM\JoinColumns({
@@ -81,6 +90,8 @@ class Project
     /**
      * @var ProjectCategory
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectCategory")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="project_category_id", referencedColumnName="id")
@@ -90,6 +101,8 @@ class Project
 
     /**
      * @var ProjectScope
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectScope")
      * @ORM\JoinColumns({
@@ -101,6 +114,8 @@ class Project
     /**
      * @var ProjectStatus
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectStatus")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="project_status_id", referencedColumnName="id")
@@ -110,6 +125,8 @@ class Project
 
     /**
      * @var Portfolio
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Portfolio")
      * @ORM\JoinColumns({
@@ -121,12 +138,16 @@ class Project
     /**
      * @var ArrayCollection|Calendar[]
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Calendar", mappedBy="project")
      */
     private $calendars;
 
     /**
      * @var ArrayCollection|WorkPackage[]
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="project")
      */
@@ -135,12 +156,16 @@ class Project
     /**
      * @var \DateTime
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="status_updated_at", type="datetime", nullable=true)
      */
     private $statusUpdatedAt;
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="approved_at", type="datetime", nullable=true)
      */
@@ -149,12 +174,16 @@ class Project
     /**
      * @var \DateTime
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -232,7 +261,7 @@ class Project
      *
      * @return Project
      */
-    public function setStatusUpdatedAt($statusUpdatedAt)
+    public function setStatusUpdatedAt(\DateTime $statusUpdatedAt = null)
     {
         $this->statusUpdatedAt = $statusUpdatedAt;
 
@@ -256,7 +285,7 @@ class Project
      *
      * @return Project
      */
-    public function setApprovedAt($approvedAt)
+    public function setApprovedAt(\DateTime $approvedAt = null)
     {
         $this->approvedAt = $approvedAt;
 
@@ -280,7 +309,7 @@ class Project
      *
      * @return Project
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt = null)
     {
         $this->createdAt = $createdAt;
 
@@ -304,7 +333,7 @@ class Project
      *
      * @return Project
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
@@ -587,5 +616,38 @@ class Project
     public function getWorkPackages()
     {
         return $this->workPackages;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectCategory")
+     *
+     * @return string
+     */
+    public function getProjectCategoryName()
+    {
+        return $this->projectCategory ? $this->projectCategory->getName() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("status")
+     *
+     * @return string
+     */
+    public function getStatusName()
+    {
+        return $this->status ? $this->status->getName() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("portfolio")
+     *
+     * @return string
+     */
+    public function getPortfolioName()
+    {
+        return $this->portfolio ? $this->portfolio->getName() : null;
     }
 }

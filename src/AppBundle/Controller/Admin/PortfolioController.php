@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -41,6 +42,23 @@ class PortfolioController extends Controller
                 'portfolios' => $portfolios,
             ]
         );
+    }
+
+    /**
+     * @Route("/list/filtered", options={"expose"=true}, name="app_admin_portfolio_list_filtered")
+     * @Method("POST")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function listByPageAction(Request $request)
+    {
+        $requestParams = $request->request->all();
+        $dataTableService = $this->get('app.service.data_table');
+        $response = $dataTableService->paginate(Portfolio::class, $requestParams);
+
+        return new JsonResponse($response);
     }
 
     /**
@@ -90,7 +108,7 @@ class PortfolioController extends Controller
     /**
      * Displays a form to edit an existing Portfolio entity.
      *
-     * @Route("/{id}/edit", name="app_admin_portfolio_edit")
+     * @Route("/{id}/edit", options={"expose"=true}, name="app_admin_portfolio_edit")
      * @Method({"GET", "POST"})
      *
      * @param Request   $request
@@ -136,7 +154,7 @@ class PortfolioController extends Controller
     /**
      * Displays a Portfolio entity.
      *
-     * @Route("/{id}/show", name="app_admin_portfolio_show")
+     * @Route("/{id}/show", options={"expose"=true}, name="app_admin_portfolio_show")
      * @Method({"GET"})
      *
      * @param Portfolio $portfolio
@@ -156,18 +174,27 @@ class PortfolioController extends Controller
     /**
      * Deletes a Portfolio entity.
      *
-     * @Route("/{id}/delete", name="app_admin_portfolio_delete")
+     * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_portfolio_delete")
      * @Method({"GET"})
      *
      * @param Portfolio $portfolio
+     * @param Request   $request
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(Portfolio $portfolio)
+    public function deleteAction(Portfolio $portfolio, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($portfolio);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message, Response::HTTP_OK);
+        }
 
         $this
             ->get('session')
@@ -176,7 +203,7 @@ class PortfolioController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.portfolio.delete.success', [], 'admin')
+                    ->trans('admin.portfolio.delete.success.general', [], 'admin')
             )
         ;
 

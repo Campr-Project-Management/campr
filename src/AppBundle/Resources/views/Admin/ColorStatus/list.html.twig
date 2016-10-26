@@ -3,60 +3,50 @@
 {% trans_default_domain 'admin' %}
 
 {% block body_content %}
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.color_status.list.title'|trans }}<small>{{ 'admin.color_status.list.subtitle'|trans }}</small></h2>
-                    <a href="{{ path('app_admin_color_status_create') }}">
-                        <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
-                    </a>
+    <div class="card">
+        <div class="card-header bgm-teal">
+            <h2>{{ 'admin.color_status.list.title'|trans }}<small>{{ 'admin.color_status.list.subtitle'|trans }}</small></h2>
+            <a href="{{ path('app_admin_color_status_create') }}">
+                <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
+            </a>
+        </div>
+        <div class="card-body">
+            {% for flash_message in app.session.flashBag.get('success') %}
+                <div id="general-alert" class="alert alert-success m-t-15">
+                    <strong>{{ flash_message }}</strong>
                 </div>
-                <div class="card-body">
-                    {% for flash_message in app.session.flashBag.get('success') %}
-                        <div class="alert alert-success m-t-15">
-                            <strong>{{ flash_message }}</strong>
-                        </div>
-                    {% endfor %}
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>{{ 'admin.color_status.list.table.id'|trans }}</th>
-                                <th>{{ 'admin.color_status.list.table.name'|trans }}</th>
-                                <th>{{ 'admin.color_status.list.table.color'|trans }}</th>
-                                <th>{{ 'admin.project_category.list.table.sequence'|trans }}</th>
-                                <th>{{ 'admin.general.placeholder.actions'|trans }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for color_status in color_statuses %}
-                                <tr>
-                                    <td class="f-500 c-cyan">{{ color_status.id }}</td>
-                                    <td>{{ color_status.name }}</td>
-                                    <td>{{ color_status.color }}</td>
-                                    <td>{{ color_status.sequence }}</td>
-                                    <td>
-                                        {% include '@App/Admin/Layout/Partials/form_list_buttons.html.twig'
-                                            with {
-                                                'show_path': 'app_admin_color_status_show',
-                                                'edit_path': 'app_admin_color_status_edit',
-                                                'delete_path': 'app_admin_color_status_delete',
-                                                'id': color_status.id,
-                                            }
-                                        %}
-                                    </td>
-                                </tr>
-                            {% else %}
-                                <tr>
-                                    <td colspan="5" class="f-500 c-cyan">{{ 'admin.color_status.list.not_found'|trans }}</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            {% endfor %}
+            <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
+                <strong>
+                    {{ 'admin.color_status.delete.success.first'|trans }}
+                    <span id="object-id">
+                        {% for flash_message in app.session.flashBag.get('success') %}
+                            {{ flash_message }}
+                        {% endfor %}
+                    </span>
+                    {{ 'admin.color_status.delete.success.second'|trans }}
+                </strong>
+            </div>
+            <div class="table-responsive">
+                <table id="data-table-command" class="table table-condensed table-striped table-vmiddle" data-url="{{ path('app_admin_color_status_list_filtered') }}" data-show="app_admin_color_status_show" data-edit="app_admin_color_status_edit" data-delete="app_admin_color_status_delete">
+                    <thead>
+                        <tr>
+                            <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.color_status.list.table.id'|trans }}</th>
+                            <th data-column-id="name">{{ 'admin.color_status.list.table.name'|trans }}</th>
+                            <th data-column-id="color">{{ 'admin.color_status.list.table.color'|trans }}</th>
+                            <th data-column-id="sequence">{{ 'admin.project_category.list.table.sequence'|trans }}</th>
+                            <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'admin.general.placeholder.actions'|trans }}</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <!-- Data Table -->
+    <script src="{{ asset('bundles/app/assets/js/data_table.js') }}"></script>
+    <script src="{{ asset('bundles/app/assets/js/alert_messages.js') }}"></script>
 {% endblock %}
