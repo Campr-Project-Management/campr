@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Timephase.
@@ -30,6 +31,8 @@ class Timephase
 
     /**
      * @var Assignment|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Assignment", inversedBy="timephases")
      * @ORM\JoinColumn(name="assignment_id")
@@ -216,5 +219,19 @@ class Timephase
     public function getAssignment()
     {
         return $this->assignment;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("assignment")
+     *
+     * @return string
+     */
+    public function getAssignmentWorkPackageName()
+    {
+        return $this->assignment && $this->assignment->getWorkPackage()
+            ? $this->assignment->getWorkPackage()->getName().' - '.$this->assignment->getId()
+            : null
+        ;
     }
 }
