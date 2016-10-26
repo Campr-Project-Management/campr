@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -24,13 +25,17 @@ class Raci
     /**
      * @var WorkPackage
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage")
      * @ORM\JoinColumn(name="work_package_id")
      */
-    private $workpackage;
+    private $workPackage;
 
     /**
      * @var User
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id")
@@ -85,9 +90,9 @@ class Raci
      *
      * @return Raci
      */
-    public function setWorkpackage(WorkPackage $workpackage = null)
+    public function setWorkPackage(WorkPackage $workPackage = null)
     {
-        $this->workpackage = $workpackage;
+        $this->workPackage = $workPackage;
 
         return $this;
     }
@@ -97,9 +102,20 @@ class Raci
      *
      * @return WorkPackage
      */
-    public function getWorkpackage()
+    public function getWorkPackage()
     {
-        return $this->workpackage;
+        return $this->workPackage;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("workPackage")
+     *
+     * @return string
+     */
+    public function getWorkPackageName()
+    {
+        return $this->workPackage ? $this->workPackage->getName() : null;
     }
 
     /**
@@ -124,5 +140,16 @@ class Raci
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("user")
+     *
+     * @return string
+     */
+    public function getUserName()
+    {
+        return $this->user ? $this->user->getUsername() : null;
     }
 }
