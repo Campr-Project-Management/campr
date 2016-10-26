@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Meeting.
@@ -24,6 +25,8 @@ class Meeting
 
     /**
      * @var Project
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="Project")
      * @ORM\JoinColumn(name="project_id")
@@ -46,6 +49,8 @@ class Meeting
 
     /**
      * @var \DateTime
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="date", type="date")
      */
@@ -209,6 +214,17 @@ class Meeting
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("date")
+     *
+     * @return string
+     */
+    public function getDateFormatted()
+    {
+        return $this->date ? $this->date->format('d/m/Y') : null;
+    }
+
+    /**
      * Set start.
      *
      * @param \DateTime $start
@@ -302,6 +318,17 @@ class Meeting
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("project")
+     *
+     * @return string
+     */
+    public function getProjectName()
+    {
+        return $this->project ? $this->project->getName() : null;
     }
 
     /**
