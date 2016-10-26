@@ -16,6 +16,9 @@
             "Tests\\": "tests/"
         }
     },
+    "repositories": {
+        "packagist": { "url": "https://packagist.org", "type": "composer" }
+    },
     "require": {
         "php": ">=7.0.11",
         "symfony/symfony": "3.1.*",
