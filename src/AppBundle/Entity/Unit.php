@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Unit.
@@ -23,6 +24,8 @@ class Unit
 
     /**
      * @var Project|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project")
      * @ORM\JoinColumn(name="project_id")
@@ -193,5 +196,16 @@ class Unit
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("project")
+     *
+     * @return string
+     */
+    public function getProjectName()
+    {
+        return $this->project ? $this->project->getName() : null;
     }
 }

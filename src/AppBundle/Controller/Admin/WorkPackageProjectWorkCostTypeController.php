@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Admin;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\WorkPackageProjectWorkCostType;
 use AppBundle\Form\WorkPackageProjectWorkCostType\CreateType;
@@ -37,9 +38,26 @@ class WorkPackageProjectWorkCostTypeController extends Controller
     }
 
     /**
+     * @Route("/list/filtered", name="app_admin_wppcwct_list_filtered", options={"expose"=true})
+     * @Method("POST")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function listByPageAction(Request $request)
+    {
+        $requestParams = $request->request->all();
+        $dataTableService = $this->get('app.service.data_table');
+        $response = $dataTableService->paginate(WorkPackageProjectWorkCostType::class, 'name', $requestParams);
+
+        return new JsonResponse($response);
+    }
+
+    /**
      * Displays WorkPackageProjectCostWorkType entity.
      *
-     * @Route("/{id}/show", name="app_admin_wppcwct_show")
+     * @Route("/{id}/show", name="app_admin_wppcwct_show", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param WorkPackageProjectWorkCostType $workProjectType
@@ -95,7 +113,7 @@ class WorkPackageProjectWorkCostTypeController extends Controller
     }
 
     /**
-     * @Route("/{id}/edit", name="app_admin_wppcwct_edit")
+     * @Route("/{id}/edit", name="app_admin_wppcwct_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -135,7 +153,7 @@ class WorkPackageProjectWorkCostTypeController extends Controller
     }
 
     /**
-     * @Route("/{id}/delete", name="app_admin_wppcwct_delete")
+     * @Route("/{id}/delete", name="app_admin_wppcwct_delete", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Request $request

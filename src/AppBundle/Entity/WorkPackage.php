@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * WorkPackage.
@@ -69,6 +70,8 @@ class WorkPackage
     /**
      * @var User|null
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="responsibility_id")
      */
@@ -76,12 +79,18 @@ class WorkPackage
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="scheduled_start_at", type="date", nullable=true)
      */
     private $scheduledStartAt;
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="scheduled_finish_at", type="date", nullable=true)
      */
     private $scheduledFinishAt;
@@ -273,6 +282,17 @@ class WorkPackage
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("scheduledStartAt")
+     *
+     * @return string
+     */
+    public function getScheduledStartAtFormatted()
+    {
+        return $this->scheduledStartAt ? $this->scheduledStartAt->format('d/m/Y') : null;
+    }
+
+    /**
      * Set scheduledFinishAt.
      *
      * @param \DateTime $scheduledFinishAt
@@ -294,6 +314,17 @@ class WorkPackage
     public function getScheduledFinishAt()
     {
         return $this->scheduledFinishAt;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("scheduledFinishAt")
+     *
+     * @return string
+     */
+    public function getScheduledFinishAtFormatted()
+    {
+        return $this->scheduledFinishAt ? $this->scheduledFinishAt->format('d/m/Y') : null;
     }
 
     /**
@@ -582,6 +613,17 @@ class WorkPackage
     public function getResponsibility()
     {
         return $this->responsibility;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibility")
+     *
+     * @return string
+     */
+    public function getResponsibilityName()
+    {
+        return $this->responsibility ? $this->responsibility->getUsername() : null;
     }
 
     /**

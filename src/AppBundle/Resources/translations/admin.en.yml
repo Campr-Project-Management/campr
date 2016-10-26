@@ -70,7 +70,10 @@ admin:
                 superadmin: ROLE_SUPER_ADMIN
             success: User successfully edited!
         delete:
-            success: User successfully deleted!
+            success:
+                general: User successfully deleted!
+                first: Unit with ID
+                second: successfully deleted!
     status:
         list:
             title: Status
@@ -110,7 +113,10 @@ admin:
             title: Edit schedule
             success: Schedule successfully edited!
         delete:
-            success: Schedule successfully deleted!
+            general: Schedule successfully deleted!
+            success:
+                first: Schedule with ID
+                second: successfully deleted!
     raci:
         list:
             title: Raci
@@ -133,7 +139,10 @@ admin:
             title: Edit RACI
             success: Raci successfully edited!
         delete:
-            success: Raci successfully deleted!
+            general: Raci successfully deleted!
+            success:
+                first: Raci with ID
+                second: successfully deleted!
     workpackage:
         list:
             title: WorkPackage
@@ -736,7 +745,10 @@ admin:
             title: Edit todo
             success: Todo successfully edited!
         delete:
-            success: Todo successfully deleted!
+            success:
+                general: Todo successfully deleted!
+                first: Todo with ID
+                second: successfully deleted!
     unit:
         list:
             title: Units
@@ -760,7 +772,10 @@ admin:
             title: Edit unit
             success: Unit successfully edited!
         delete:
-            success: Unit successfully deleted!
+            general: Unit successfully deleted!
+            success:
+                first: Unit with ID
+                second: successfully deleted!
     wppcwct:
         list:
             title: WorkPackage - ProjectWorkCostType
@@ -799,7 +814,10 @@ admin:
             title: Edit WorkPackage - ProjectWorkCostType
             success: WorkPackage - ProjectWorkCostType successfully edited!
         delete:
-            success: WorkPackage - ProjectWorkCostType successfully deleted!
+            general: WorkPackage - ProjectWorkCostType successfully deleted!
+            success:
+                first: WorkPackage - ProjectWorkCostType with ID
+                second: successfully deleted!
     impact:
         list:
             title: Impact
