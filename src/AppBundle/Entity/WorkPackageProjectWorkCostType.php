@@ -83,7 +83,7 @@ class WorkPackageProjectWorkCostType
     /**
      * @var Calendar
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="workPackageProjectWorkCostTypes")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id")
      */
     private $calendar;
