@@ -40,7 +40,7 @@ class Assignment
     /**
      * @var WorkPackageProjectWorkCostType
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackageProjectWorkCostType")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackageProjectWorkCostType", inversedBy="assignments")
      * @ORM\JoinColumn(name="work_package_project_work_cost_type_id")
      */
     private $workPackageProjectWorkCostType;
