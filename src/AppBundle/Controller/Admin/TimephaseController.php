@@ -8,44 +8,42 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use AppBundle\Entity\Day;
-use AppBundle\Form\Day\CreateType;
+use AppBundle\Entity\Timephase;
+use AppBundle\Form\Timephase\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * DayController controller.
+ * Timephase controller.
  *
- * @Route("/admin/day")
+ * @Route("/admin/timephase")
  */
-class DayController extends Controller
+class TimephaseController extends Controller
 {
     /**
-     * Lists all Day entities.
+     * Lists all Timephase entities.
      *
-     * @Route("/list", name="app_admin_day_list")
+     * @Route("/list", name="app_admin_timephase_list")
      * @Method("GET")
-     *
-     * @return Response
      */
     public function listAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $days = $em
-            ->getRepository(Day::class)
+        $timephases = $em
+            ->getRepository(Timephase::class)
             ->findAll()
         ;
 
         return $this->render(
-            'AppBundle:Admin/Day:list.html.twig',
+            'AppBundle:Admin/Timephase:list.html.twig',
             [
-                'days' => $days,
+                'timephases' => $timephases,
             ]
         );
     }
 
     /**
-     * @Route("/list/filtered", options={"expose"=true}, name="app_admin_day_list_filtered")
+     * @Route("/list/filtered", options={"expose"=true}, name="app_admin_timephase_list_filtered")
      * @Method("POST")
      *
      * @param Request $request
@@ -56,35 +54,15 @@ class DayController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Day::class, 'name', $requestParams);
+        $response = $dataTableService->paginate(Timephase::class, 'value', $requestParams);
 
         return new JsonResponse($response);
     }
 
     /**
-     * Displays Day entity.
+     * Creates a new Timephase entity.
      *
-     * @Route("/{id}/show", name="app_admin_day_show", options={"expose"=true})
-     * @Method({"GET"})
-     *
-     * @param Day $day
-     *
-     * @return Response
-     */
-    public function showAction(Day $day)
-    {
-        return $this->render(
-            'AppBundle:Admin/Day:show.html.twig',
-            [
-                'day' => $day,
-            ]
-        );
-    }
-
-    /**
-     * Creates a new Day entity.
-     *
-     * @Route("/create", name="app_admin_day_create", options={"expose"=true})
+     * @Route("/create", name="app_admin_timephase_create")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -93,11 +71,11 @@ class DayController extends Controller
      */
     public function createAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
 
@@ -108,15 +86,15 @@ class DayController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.day.create.success', [], 'admin')
+                        ->trans('admin.timephase.create.success', [], 'admin')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_day_list');
+            return $this->redirectToRoute('app_admin_timephase_list');
         }
 
         return $this->render(
-            'AppBundle:Admin/Day:create.html.twig',
+            'AppBundle:Admin/Timephase:create.html.twig',
             [
                 'form' => $form->createView(),
             ]
@@ -124,19 +102,24 @@ class DayController extends Controller
     }
 
     /**
-     * @Route("/{id}/edit", name="app_admin_day_edit", options={"expose"=true})
+     * Displays a form to edit an existing Timephase entity.
+     *
+     * @Route("/{id}/edit", options={"expose"=true}, name="app_admin_timephase_edit")
      * @Method({"GET", "POST"})
      *
-     * @param Request $request
+     * @param Request   $request
+     * @param Timephase $timephase
+     *
+     * @return Response|RedirectResponse
      */
-    public function editAction(Day $day, Request $request)
+    public function editAction(Request $request, Timephase $timephase)
     {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(CreateType::class, $day);
+        $form = $this->createForm(CreateType::class, $timephase);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($day);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($timephase);
             $em->flush();
 
             $this
@@ -146,32 +129,57 @@ class DayController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.day.edit.success', [], 'admin')
+                        ->trans('admin.timephase.edit.success', [], 'admin')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_day_list');
+            return $this->redirectToRoute('app_admin_timephase_list');
         }
 
         return $this->render(
-            'AppBundle:Admin/Day:edit.html.twig',
+            'AppBundle:Admin/Timephase:edit.html.twig',
             [
-                'id' => $day->getId(),
+                'id' => $timephase->getId(),
                 'form' => $form->createView(),
             ]
         );
     }
 
     /**
-     * @Route("/{id}/delete", name="app_admin_day_delete", options={"expose"=true})
+     * Displays a Timephase entity.
+     *
+     * @Route("/{id}/show", options={"expose"=true}, name="app_admin_timephase_show")
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @param Timephase $timephase
+     *
+     * @return Response
      */
-    public function deleteAction(Day $day, Request $request)
+    public function showAction(Timephase $timephase)
+    {
+        return $this->render(
+            'AppBundle:Admin/Timephase:show.html.twig',
+            [
+                'timephase' => $timephase,
+            ]
+        );
+    }
+
+    /**
+     * Deletes a Timephase entity.
+     *
+     * @Route("/{id}", options={"expose"=true}, name="app_admin_timephase_delete")
+     * @Method({"GET"})
+     *
+     * @param Timephase $timephase
+     * @param Request   $request
+     *
+     * @return RedirectResponse|JsonResponse
+     */
+    public function deleteAction(Timephase $timephase, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($day);
+        $em->remove($timephase);
         $em->flush();
 
         if ($request->isXmlHttpRequest()) {
@@ -189,10 +197,10 @@ class DayController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.day.delete.success.general', [], 'admin')
+                    ->trans('admin.timephase.delete.success.general', [], 'admin')
             )
         ;
 
-        return $this->redirectToRoute('app_admin_day_list');
+        return $this->redirectToRoute('app_admin_timephase_list');
     }
 }

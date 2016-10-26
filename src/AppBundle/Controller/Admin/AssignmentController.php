@@ -8,44 +8,43 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use AppBundle\Entity\Day;
-use AppBundle\Form\Day\CreateType;
+use AppBundle\Entity\Assignment;
+use AppBundle\Form\Assignment\CreateType;
+use AppBundle\Form\Assignment\EditType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * DayController controller.
+ * Assignment controller.
  *
- * @Route("/admin/day")
+ * @Route("/admin/assignment")
  */
-class DayController extends Controller
+class AssignmentController extends Controller
 {
     /**
-     * Lists all Day entities.
+     * Lists all Assignment entities.
      *
-     * @Route("/list", name="app_admin_day_list")
+     * @Route("/list", name="app_admin_assignment_list")
      * @Method("GET")
-     *
-     * @return Response
      */
     public function listAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $days = $em
-            ->getRepository(Day::class)
+        $assignments = $em
+            ->getRepository(Assignment::class)
             ->findAll()
         ;
 
         return $this->render(
-            'AppBundle:Admin/Day:list.html.twig',
+            'AppBundle:Admin/Assignment:list.html.twig',
             [
-                'days' => $days,
+                'assignments' => $assignments,
             ]
         );
     }
 
     /**
-     * @Route("/list/filtered", options={"expose"=true}, name="app_admin_day_list_filtered")
+     * @Route("/list/filtered", options={"expose"=true}, name="app_admin_assignment_list_filtered")
      * @Method("POST")
      *
      * @param Request $request
@@ -56,35 +55,15 @@ class DayController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Day::class, 'name', $requestParams);
+        $response = $dataTableService->paginate(Assignment::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }
 
     /**
-     * Displays Day entity.
+     * Creates a new Assignment entity.
      *
-     * @Route("/{id}/show", name="app_admin_day_show", options={"expose"=true})
-     * @Method({"GET"})
-     *
-     * @param Day $day
-     *
-     * @return Response
-     */
-    public function showAction(Day $day)
-    {
-        return $this->render(
-            'AppBundle:Admin/Day:show.html.twig',
-            [
-                'day' => $day,
-            ]
-        );
-    }
-
-    /**
-     * Creates a new Day entity.
-     *
-     * @Route("/create", name="app_admin_day_create", options={"expose"=true})
+     * @Route("/create", name="app_admin_assignment_create")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -93,11 +72,11 @@ class DayController extends Controller
      */
     public function createAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
 
@@ -108,15 +87,15 @@ class DayController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.day.create.success', [], 'admin')
+                        ->trans('admin.assignment.create.success', [], 'admin')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_day_list');
+            return $this->redirectToRoute('app_admin_assignment_list');
         }
 
         return $this->render(
-            'AppBundle:Admin/Day:create.html.twig',
+            'AppBundle:Admin/Assignment:create.html.twig',
             [
                 'form' => $form->createView(),
             ]
@@ -124,19 +103,24 @@ class DayController extends Controller
     }
 
     /**
-     * @Route("/{id}/edit", name="app_admin_day_edit", options={"expose"=true})
+     * Displays a form to edit an existing Assignment entity.
+     *
+     * @Route("/{id}/edit", options={"expose"=true}, name="app_admin_assignment_edit")
      * @Method({"GET", "POST"})
      *
-     * @param Request $request
+     * @param Request    $request
+     * @param Assignment $assignment
+     *
+     * @return Response|RedirectResponse
      */
-    public function editAction(Day $day, Request $request)
+    public function editAction(Request $request, Assignment $assignment)
     {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(CreateType::class, $day);
+        $form = $this->createForm(EditType::class, $assignment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($day);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($assignment);
             $em->flush();
 
             $this
@@ -146,32 +130,57 @@ class DayController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.day.edit.success', [], 'admin')
+                        ->trans('admin.assignment.edit.success', [], 'admin')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_day_list');
+            return $this->redirectToRoute('app_admin_assignment_list');
         }
 
         return $this->render(
-            'AppBundle:Admin/Day:edit.html.twig',
+            'AppBundle:Admin/Assignment:edit.html.twig',
             [
-                'id' => $day->getId(),
+                'id' => $assignment->getId(),
                 'form' => $form->createView(),
             ]
         );
     }
 
     /**
-     * @Route("/{id}/delete", name="app_admin_day_delete", options={"expose"=true})
+     * Displays a Assignment entity.
+     *
+     * @Route("/{id}/show", options={"expose"=true}, name="app_admin_assignment_show")
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @param Assignment $assignment
+     *
+     * @return Response
      */
-    public function deleteAction(Day $day, Request $request)
+    public function showAction(Assignment $assignment)
+    {
+        return $this->render(
+            'AppBundle:Admin/Assignment:show.html.twig',
+            [
+                'assignment' => $assignment,
+            ]
+        );
+    }
+
+    /**
+     * Deletes a Assignment entity.
+     *
+     * @Route("/{id}", options={"expose"=true}, name="app_admin_assignment_delete")
+     * @Method({"GET"})
+     *
+     * @param Assignment $assignment
+     * @param Request    $request
+     *
+     * @return RedirectResponse|JsonResponse
+     */
+    public function deleteAction(Assignment $assignment, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($day);
+        $em->remove($assignment);
         $em->flush();
 
         if ($request->isXmlHttpRequest()) {
@@ -189,10 +198,10 @@ class DayController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.day.delete.success.general', [], 'admin')
+                    ->trans('admin.assignment.delete.success.general', [], 'admin')
             )
         ;
 
-        return $this->redirectToRoute('app_admin_day_list');
+        return $this->redirectToRoute('app_admin_assignment_list');
     }
 }

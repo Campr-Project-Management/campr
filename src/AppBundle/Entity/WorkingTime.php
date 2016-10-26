@@ -162,12 +162,9 @@ class WorkingTime
      */
     public function getCalendarDay()
     {
-        if ($this->day) {
-            if ($this->day->getCalendar()) {
-                return $this->day->getCalendar()->getName().' - '.$this->day->getId();
-            }
-        }
-
-        return null;
+        return $this->day && $this->day->getCalendar()
+            ? $this->day->getCalendar()->getName().' - '.$this->day->getId()
+            : null
+        ;
     }
 }
