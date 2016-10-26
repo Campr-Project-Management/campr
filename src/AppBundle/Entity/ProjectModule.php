@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * ProjectModule.
@@ -24,6 +25,8 @@ class ProjectModule
     /**
      * @var Project
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project")
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      */
@@ -39,12 +42,16 @@ class ProjectModule
     /**
      * @var bool
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="is_enabled", type="boolean")
      */
     private $isEnabled;
 
     /**
      * @var bool
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="is_required", type="boolean", nullable=true)
      */
@@ -53,6 +60,8 @@ class ProjectModule
     /**
      * @var bool
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="is_print", type="boolean", nullable=true)
      */
     private $isPrint;
@@ -60,12 +69,16 @@ class ProjectModule
     /**
      * @var \DateTime
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -233,11 +246,11 @@ class ProjectModule
     /**
      * Set project.
      *
-     * @param \AppBundle\Entity\Project $project
+     * @param Project $project
      *
      * @return ProjectModule
      */
-    public function setProject(\AppBundle\Entity\Project $project = null)
+    public function setProject(Project $project = null)
     {
         $this->project = $project;
 
@@ -247,10 +260,43 @@ class ProjectModule
     /**
      * Get project.
      *
-     * @return \AppBundle\Entity\Project
+     * @return Project
      */
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("project")
+     *
+     * @return string
+     */
+    public function getProjectName()
+    {
+        return $this->project ? $this->project->getName() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("createdAt")
+     *
+     * @return string
+     */
+    public function getCreatedAtFormatted()
+    {
+        return $this->createdAt ? $this->createdAt->format('d/m/Y') : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("updatedAt")
+     *
+     * @return string
+     */
+    public function getUpdatedAtFormatted()
+    {
+        return $this->updatedAt ? $this->updatedAt->format('d/m/Y') : null;
     }
 }

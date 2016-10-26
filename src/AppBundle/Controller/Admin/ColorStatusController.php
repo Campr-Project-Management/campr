@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -39,6 +40,23 @@ class ColorStatusController extends Controller
                 'color_statuses' => $colorStatuses,
             ]
         );
+    }
+
+    /**
+     * @Route("/list/filtered", options={"expose"=true}, name="app_admin_color_status_list_filtered")
+     * @Method("POST")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function listByPageAction(Request $request)
+    {
+        $requestParams = $request->request->all();
+        $dataTableService = $this->get('app.service.data_table');
+        $response = $dataTableService->paginate(ColorStatus::class, $requestParams);
+
+        return new JsonResponse($response);
     }
 
     /**
@@ -87,7 +105,7 @@ class ColorStatusController extends Controller
     /**
      * Displays a form to edit an existing ColorStatus entity.
      *
-     * @Route("/{id}/edit", name="app_admin_color_status_edit")
+     * @Route("/{id}/edit", options={"expose"=true}, name="app_admin_color_status_edit")
      * @Method({"GET", "POST"})
      *
      * @param Request     $request
@@ -131,7 +149,7 @@ class ColorStatusController extends Controller
     /**
      * Displays a ColorStatus entity.
      *
-     * @Route("/{id}/show", name="app_admin_color_status_show")
+     * @Route("/{id}/show", options={"expose"=true}, name="app_admin_color_status_show")
      * @Method({"GET"})
      *
      * @param ColorStatus $colorStatus
@@ -151,18 +169,27 @@ class ColorStatusController extends Controller
     /**
      * Deletes a ColorStatus entity.
      *
-     * @Route("/{id}", name="app_admin_color_status_delete")
+     * @Route("/{id}", options={"expose"=true}, name="app_admin_color_status_delete")
      * @Method({"GET"})
      *
      * @param ColorStatus $colorStatus
+     * @param Request     $request
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ColorStatus $colorStatus)
+    public function deleteAction(ColorStatus $colorStatus, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($colorStatus);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message, Response::HTTP_OK);
+        }
 
         $this
             ->get('session')
@@ -171,7 +198,7 @@ class ColorStatusController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.color_status.delete.success', [], 'admin')
+                    ->trans('admin.color_status.delete.success.general', [], 'admin')
             )
         ;
 
