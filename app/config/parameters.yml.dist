@@ -34,6 +34,6 @@ parameters:
     admin.per_page: 10
 
     #misc
-    activation_token_expiration: P1D    // in days
-    reset_token_expiration: P1D         // in days
-    import_folder: '%kernel.root_dir%/Resources/import'  // path to import folder
+    activation_token_expiration: P1D
+    reset_token_expiration: P1D
+    import_folder: '%kernel.root_dir%/Resources/import'
