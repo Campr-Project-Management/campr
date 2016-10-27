@@ -106,3 +106,22 @@
         </div>
     </div>
 {%- endblock textarea_widget -%}
+
+{%- block file_widget -%}
+    <div class="col-sm-8 col-md-offset-2">
+        <div class="fileinput fileinput-new" data-provides="fileinput">
+            <span class="btn bgm-teal btn-file m-r-10">
+                {% if not data %}
+                    <span class="fileinput-new">{{ 'admin.general.form.button.select_file'|trans({}, 'admin') }}</span>
+                {% else %}
+                    <span class="fileinput-exists">{{ 'admin.general.form.button.change'|trans({}, 'admin') }}</span>
+                {% endif %}
+                <input {{ block('widget_attributes') }} type="file">
+            </span>
+            {% if data %}
+                <span class="fileinput-filename">{{ data }}</span>
+                <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>
+            {% endif %}
+        </div>
+    </div>
+{%- endblock file_widget -%}
