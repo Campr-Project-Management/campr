@@ -55,7 +55,7 @@ class MeetingController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Meeting ::class, $requestParams);
+        $response = $dataTableService->paginate(Meeting ::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }
@@ -126,7 +126,10 @@ class MeetingController extends Controller
      * @Route("/{id}/edit", name="app_admin_meeting_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
+     * @param Meeting $meeting
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction(Meeting $meeting, Request $request)
     {
@@ -165,7 +168,10 @@ class MeetingController extends Controller
      * @Route("/{id}/delete", name="app_admin_meeting_delete", options={"expose"=true})
      * @Method({"GET"})
      *
+     * @param Meeting $meeting
      * @param Request $request
+     *
+     * @return RedirectResponse|JsonResponse
      */
     public function deleteAction(Meeting $meeting, Request $request)
     {

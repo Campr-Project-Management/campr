@@ -56,7 +56,7 @@ class NoteController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Note::class, $requestParams);
+        $response = $dataTableService->paginate(Note::class, 'title', $requestParams);
 
         return new JsonResponse($response);
     }
@@ -127,7 +127,10 @@ class NoteController extends Controller
      * @Route("/{id}/edit", name="app_admin_note_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
+     * @param Note    $note
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction(Note $note, Request $request)
     {
@@ -166,7 +169,10 @@ class NoteController extends Controller
      * @Route("/{id}/delete", name="app_admin_note_delete", options={"expose"=true})
      * @Method({"GET"})
      *
+     * @param Note    $note
      * @param Request $request
+     *
+     * @return RedirectResponse|JsonResponse
      */
     public function deleteAction(Note $note, Request $request)
     {
