@@ -6,40 +6,37 @@ use Doctrine\ORM\EntityRepository;
 
 abstract class BaseRepository extends EntityRepository
 {
-    /**
-     * Used to retrieve information for data table.
-     *
-     * New fields to be added to WHERE clause where the $key should be searched for.
-     *
-     * @param string|null $key
-     * @param string|null $field
-     * @param string|null $order
-     * @param int         $offset
-     * @param int         $limit
-     *
-     * @return array
-     */
-    public function findByKeyAndField($key, $field, $order, $offset, $limit)
+    public function findByWithLike(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('q');
 
-        if (isset($key)) {
-            $qb
-                ->where('q.name LIKE CONCAT(\'%\', :key, \'%\')')
-                ->setParameter('key', $key)
-            ;
+        foreach ($criteria as $key => $value) {
+            if (empty($value)) {
+                continue;
+            }
+            $qb->andWhere(
+                $qb->expr()->like(
+                    'q.'.$key,
+                    $qb->expr()->literal('%'.$value.'%')
+                )
+            );
         }
 
-        if (isset($field) && isset($order)) {
-            $qb->orderBy('q.'.$field, $order);
+        if ($orderBy) {
+            foreach ($orderBy as $key => $value) {
+                $qb->orderBy('q.'.$key, $value);
+            }
         }
 
-        return $qb
-            ->setFirstResult($offset)
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult()
-        ;
+        if ($limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        if ($offset) {
+            $qb->setFirstResult($offset);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
     public function countTotal()

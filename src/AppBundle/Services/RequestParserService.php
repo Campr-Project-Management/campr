@@ -5,7 +5,7 @@ namespace AppBundle\Services;
 class RequestParserService
 {
     /** @var string|null */
-    public $key;
+    public $searchPhrase;
 
     /** @var string|null */
     public $field;
@@ -32,8 +32,8 @@ class RequestParserService
             $this->order = null;
         }
 
-        if (isset($params['searchPhrase']) && !empty($params['searchPhrase'])) {
-            $this->key = $params['searchPhrase'];
+        if (!empty($params['searchPhrase'])) {
+            $this->searchPhrase = $params['searchPhrase'];
         } else {
             $key = null;
         }
