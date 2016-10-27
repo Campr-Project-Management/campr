@@ -23,7 +23,7 @@ class DataTableService
         $this->requestParser = $requestParser;
     }
 
-    public function paginate($persistentObjectName, $requestParams)
+    public function paginate($persistentObjectName, $searchField, $requestParams)
     {
         $this->requestParser->parse($requestParams);
 
@@ -33,15 +33,21 @@ class DataTableService
             ->countTotal()
         ;
 
+        $order = [];
+        if (!empty($this->requestParser->field)) {
+            $order = [
+                $this->requestParser->field => $this->requestParser->order ?: 'asc',
+            ];
+        }
+
         $entries = $this
             ->em
             ->getRepository($persistentObjectName)
-            ->findByKeyAndField(
-                $this->requestParser->key,
-                $this->requestParser->field,
-                $this->requestParser->order,
-                $this->requestParser->offset,
-                $this->requestParser->limit
+            ->findByWithLike(
+                [$searchField => $this->requestParser->searchPhrase],
+                $order,
+                $this->requestParser->limit,
+                $this->requestParser->offset
             )
         ;
 
