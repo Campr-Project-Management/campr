@@ -36,7 +36,7 @@ env('bin/php', function () {
     return sprintf('%s -dmemory_limit=-1', $php);
 });
 env('bin/composer', function () {
-    run("cd {{release_path}} && wget -q https://getcomposer.org/download/1.1.3/composer.phar && chmod +x composer.phar");
+    run("cd {{release_path}} && wget -q https://getcomposer.org/composer.phar && chmod +x composer.phar");
     return '{{bin/php}} {{release_path}}/composer.phar';
 });
 env('cron_domain', function () {
