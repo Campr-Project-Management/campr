@@ -56,7 +56,7 @@ class ImpactController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Impact::class, $requestParams);
+        $response = $dataTableService->paginate(Impact::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }
@@ -127,7 +127,10 @@ class ImpactController extends Controller
      * @Route("/{id}/edit", name="app_admin_impact_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
+     * @param Impact  $impact
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction(Impact $impact, Request $request)
     {
@@ -166,7 +169,10 @@ class ImpactController extends Controller
      * @Route("/{id}/delete", name="app_admin_impact_delete", options={"expose"=true})
      * @Method({"GET"})
      *
+     * @param Impact  $impact
      * @param Request $request
+     *
+     * @return RedirectResponse|JsonResponse
      */
     public function deleteAction(Impact $impact, Request $request)
     {
