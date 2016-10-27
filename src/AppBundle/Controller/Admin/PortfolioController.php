@@ -56,7 +56,7 @@ class PortfolioController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Portfolio::class, $requestParams);
+        $response = $dataTableService->paginate(Portfolio::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }
