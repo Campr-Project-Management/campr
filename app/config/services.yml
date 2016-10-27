@@ -43,6 +43,20 @@ services:
         arguments:
             - "@security.token_storage"
 
+### FORM TYPES ###
+    app.form.type.document.create:
+        class: AppBundle\Form\Document\CreateType
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: form.type }
+    app.form.type.document.edit:
+            class: AppBundle\Form\Document\EditType
+            arguments:
+                - "@service_container"
+            tags:
+                - { name: form.type }
+
 ### LISTENERS ###
     app.listener.updated_at:
         class: AppBundle\EventListener\UpdatedAtListener

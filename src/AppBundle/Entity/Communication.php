@@ -26,6 +26,8 @@ class Communication
     /**
      * @var Project
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="Project")
      * @ORM\JoinColumn(name="project_id")
      */
@@ -254,6 +256,17 @@ class Communication
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("project")
+     *
+     * @return string
+     */
+    public function getProjectName()
+    {
+        return $this->project ? $this->project->getName() : null;
     }
 
     /**
