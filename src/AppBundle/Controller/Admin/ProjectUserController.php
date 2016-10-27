@@ -56,7 +56,7 @@ class ProjectUserController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(ProjectUser::class, $requestParams);
+        $response = $dataTableService->paginate(ProjectUser::class, 'username', $requestParams);
 
         return new JsonResponse($response);
     }
