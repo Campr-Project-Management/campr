@@ -14,6 +14,8 @@ admin:
                 save_changes: Save changes
                 back_to_list: Back to list
                 delete: Delete
+                select_file: Select File
+                change: Change
             label: Label
         placeholder:
             name: Name
@@ -990,6 +992,7 @@ admin:
                 decisions: Decisions
                 todos: TODOs
                 notes: Notes
+                documents: Documents
             add: Add new meeting
         create:
             title: Create meeting
@@ -1000,7 +1003,6 @@ admin:
             start: Start
             end: End
             objectives: Objectives
-            documents: Documents
             success: Meeting successfully created!
         edit:
             title: Edit meeting
@@ -1256,4 +1258,61 @@ admin:
             success:
                 general: Decision successfully deleted!
                 first: Decision with ID
+                second: successfully deleted!
+    communication:
+        list:
+            title: Communication
+            subtitle: List of communications
+            table:
+                id: Id
+                meeting_name: Meeting Name
+                project: Project
+                location: Location
+                content: Content
+                schedule: Schedule
+                participants: Participants
+                created_at: Created At
+                updated_at: Updated At
+            add: Add new communication
+        create:
+            title: Create communication
+            project: Project
+            meeting_name: Meeting Name
+            content: Content
+            schedule: Schedule
+            participants: Participants
+            location: Location
+            success: Communication successfully created!
+        edit:
+            title: Edit communication
+            success: Communication successfully edited!
+        delete:
+            general: Communication successfully deleted!
+            success:
+                first: Communication with ID
+                second: successfully deleted!
+    document:
+        list:
+            title: Document
+            subtitle: List of documents
+            table:
+                id: Id
+                project: Project
+                file: File
+                meetings: Meetings
+            add: Add new document
+        create:
+            title: Create document
+            project: Project
+            meetings: Meetings
+            file: Document file
+            file_exists: Uploaded document already exists in documents folder.
+            success: Document successfully created!
+        edit:
+            title: Edit document
+            success: Document successfully edited!
+        delete:
+            general: Document successfully deleted!
+            success:
+                first: Document with ID
                 second: successfully deleted!

@@ -14,6 +14,7 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
+/web/uploads/
 .idea
 Vagrantfile
 .vagrant
