@@ -2,8 +2,6 @@
 
 namespace AppBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
-
-class TimephaseRepository extends EntityRepository
+class TimephaseRepository extends BaseRepository
 {
 }

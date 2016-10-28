@@ -91,3 +91,20 @@ validation:
                 not_blank: The location should not be blank
             objectives:
                 not_blank: The objectives should not be blank
+        day:
+            type:
+                not_blank: The type should not be blank
+            working:
+                not_blank: The working field should not be blank
+        assignment:
+            milestone:
+                not_blank: The milestone should not be blank
+            work_percent:
+                not_blank: The work percent complet should not be blank
+        timephase:
+            type:
+                not_blank: The type should not be blank
+            unit:
+                not_blank: The unit should not be blank
+            value:
+                not_blank: The value field should not be blank
