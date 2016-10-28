@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * WorkingTime.
@@ -23,18 +24,26 @@ class WorkingTime
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="from_time", type="time", nullable=true)
      */
     private $fromTime;
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="to_time", type="time", nullable=true)
      */
     private $toTime;
 
     /**
      * @var Day|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Day", inversedBy="workingTimes")
      * @ORM\JoinColumn(name="day_id")
@@ -76,6 +85,17 @@ class WorkingTime
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("fromTime")
+     *
+     * @return string
+     */
+    public function getFromTimeFormatted()
+    {
+        return $this->fromTime ? $this->fromTime->format('H:i') : null;
+    }
+
+    /**
      * Set toTime.
      *
      * @param \DateTime $toTime
@@ -100,6 +120,17 @@ class WorkingTime
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("toTime")
+     *
+     * @return string
+     */
+    public function getToTimeFormatted()
+    {
+        return $this->toTime ? $this->toTime->format('H:i') : null;
+    }
+
+    /**
      * Set day.
      *
      * @param Day $day
@@ -121,5 +152,19 @@ class WorkingTime
     public function getDay()
     {
         return $this->day;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("day")
+     *
+     * @return string
+     */
+    public function getCalendarDay()
+    {
+        return $this->day && $this->day->getCalendar()
+            ? $this->day->getCalendar()->getName().' - '.$this->day->getId()
+            : null
+        ;
     }
 }

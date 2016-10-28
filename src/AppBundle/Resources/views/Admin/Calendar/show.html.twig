@@ -1,0 +1,93 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.calendar.list.title'|trans }}<small>{{ calendar.name }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_calendar_create') }}">{{ 'admin.calendar.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_calendar_edit', {'id': calendar.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_calendar_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body m-t-10 card-padding">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th>{{ 'admin.calendar.list.table.id'|trans }}</th>
+                                    <td>{{ calendar.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.calendar.list.table.name'|trans }}</th>
+                                    <td>{{ calendar.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.calendar.list.table.is_based'|trans }}</th>
+                                    <td>
+                                        {% if calendar.isBased %}
+                                            <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                        {% else %}
+                                            <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.calendar.list.table.is_baseline'|trans }}</th>
+                                    <td>
+                                        {% if calendar.isBaseline %}
+                                            <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                        {% else %}
+                                            <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.calendar.list.table.parent'|trans }}</th>
+                                    <td>{{ calendar.parent.name|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.calendar.list.table.project'|trans }}</th>
+                                    <td>{{ calendar.project.name|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.calendar.list.table.workpackages'|trans }}</th>
+                                    <td>
+                                        {% for wp in calendar.workPackages %}
+                                            <p>{{ wp.name|default('-') }}</p>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.calendar.list.table.wppwct'|trans }}</th>
+                                    <td>
+                                        {% for wppwct in calendar.workPackageProjectWorkCostTypes %}
+                                            <p>{{ wppwct.name|default('-') }}</p>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
