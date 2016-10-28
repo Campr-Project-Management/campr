@@ -58,7 +58,6 @@ admin:
             last_name: Last name
             phone: Phone
             roles: Roles
-            create: Create
             success: User successfully created!
         edit:
             title: Edit user
@@ -89,13 +88,15 @@ admin:
         create:
             title: Create new status
             name: Status name
-            create: Create
             success: Status successfully added!
         edit:
             title: Edit status
             success: Status successfully edited!
         delete:
-            success: Status successfully deleted!
+            success:
+                general: Status successfully deleted!
+                first: Status with ID
+                second: successfully deleted!
     schedule:
         list:
             title: Schedules
@@ -111,7 +112,7 @@ admin:
             success: Schedule successfully added!
         edit:
             title: Edit schedule
-            success: Schedule successfully edited!
+            no-schedules: No schedules found!
         delete:
             general: Schedule successfully deleted!
             success:
@@ -137,6 +138,14 @@ admin:
             success: Raci successfully added!
         edit:
             title: Edit RACI
+            no-raci: No raci found!
+        create:
+            workpackage: WorkPackage
+            user: User
+            create: Create
+            data: Data
+            success: Raci successfully added!
+        edit:
             success: Raci successfully edited!
         delete:
             general: Raci successfully deleted!
@@ -418,13 +427,12 @@ admin:
             title: Project Role
             subtitle: List of project roles
             add: Add new project role
-            table:
-                id: Id
-                name: Name
-                sequence: Sequence
-                lead: Lead
-                created_at: Created at
-                updated_at: Updated at
+            id: Id
+            name: Name
+            sequence: Sequence
+            lead: Lead
+            created_at: Created at
+            updated_at: Updated at
             not_found: No project role found!
         create:
             title: Create Project Role
@@ -440,7 +448,72 @@ admin:
                 general: Project role successfully deleted!
                 first: Project role with ID
                 second: successfully deleted!
-
+    risk:
+        list:
+            title: Risk
+            subtitle: List of risks
+            add: Add new risk
+            table:
+                id: Id
+                title: Title
+                impact: Impact
+                cost: Cost
+                budget: Budget
+                delay: Delay
+                priority: Priority
+                strategy: Strategy
+                category: Category
+                measure: Measure
+                responsible: Responsible
+                due_date: Due Date
+                status: Status
+            no-risks: No risks found!
+        create:
+            title: Title
+            description: Description
+            impact: Impact
+            cost: Cost
+            budget: Budget
+            delay: Delay
+            priority: Priority
+            strategy: Strategy
+            category: Category
+            measure: Measure
+            responsible: Responsible
+            due_date: Due Date
+            status: Status
+            create: Create
+            success: Risk successfully added!
+        edit:
+            title: Edit Risk
+            success: Risk successfully edited!
+        delete:
+            success:
+                general: Risk successfully deleted!
+                first: Risk with ID
+                second: successfully edited!
+    risk_category:
+        list:
+            title: Risk Categories
+            subtitle: List of risk categories
+            add: Add new risk category
+            table:
+                id: Id
+                name: Name
+                sequence: Sequence
+            no-categories: No risk categories found!
+        create:
+            title: Create new Risk Category
+            name: Name
+            success: Risk category successfully added!
+        edit:
+            sequence: Sequence
+            success: Risk category successfully edited!
+        delete:
+            success:
+                general: Risk category successfully deleted!
+                first: Risk category with ID
+                second: successfully edited!
     project_scope:
         choice: Choose one project scope
         list:
@@ -623,7 +696,6 @@ admin:
                 general: Color status successfully deleted!
                 first: Color status with ID
                 second: successfully deleted!
-
     risk:
         list:
             title: Risk
@@ -698,19 +770,19 @@ admin:
                 id: Id
                 name: Name
                 sequence: Sequence
-                actions: Actions
-            edit: Edit
-            delete: Delete
             no-strategies: No risk strategies found!
         create:
+            title: Create new Risk Strategy
             name: Name
-            create: Create
             success: Risk strategy successfully added!
         edit:
             sequence: Sequence
             success: Risk strategy successfully edited!
         delete:
-            success: Risk strategy successfully deleted!
+            success:
+                general: Risk strategy successfully deleted!
+                first: Risk strategy with ID
+                second: successfully edited!
     todo:
         list:
             title: TODOs
