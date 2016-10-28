@@ -2,8 +2,6 @@
 
 namespace AppBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
-
-class CalendarRepository extends EntityRepository
+class CalendarRepository extends BaseRepository
 {
 }
