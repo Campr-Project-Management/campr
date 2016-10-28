@@ -1,0 +1,89 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.risk.list.title'|trans }}<small>{{ risk.title }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_risk_create') }}">{{ 'admin.risk.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_risk_edit', {'id': risk.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_risk_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body m-t-10 card-padding">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <th>{{ 'admin.risk.list.table.id'|trans }}</th>
+                                <td>{{ risk.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.risk.list.table.title'|trans }}</th>
+                                <td>{{ risk.title }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.risk.list.table.impact'|trans }}</th>
+                                <td>{{ risk.impact.name|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.risk.list.table.cost'|trans }}</th>
+                                <td>{{ risk.cost|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.risk.list.table.budget'|trans }}</th>
+                                <td>{{ risk.budget|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.risk.list.table.delay'|trans }}</th>
+                                <td>{{ risk.delay|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.risk.list.table.priority'|trans }}</th>
+                                <td>{{ risk.priority|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.risk.list.table.strategy'|trans }}</th>
+                                <td>{{ risk.riskStrategy.name|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.risk.list.table.category'|trans }}</th>
+                                <td>{{ risk.riskCategory.name|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.risk.list.table.measure'|trans }}</th>
+                                <td>{{ risk.measure|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.risk.list.table.due_date'|trans }}</th>
+                                <td>{{ risk.dueDate|date('d/m/Y') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.risk.list.table.status'|trans }}</th>
+                                <td>{{ risk.status.name|default('-') }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

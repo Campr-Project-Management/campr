@@ -2,43 +2,45 @@
 
 namespace AppBundle\Controller\Admin;
 
+use Proxies\__CG__\AppBundle\Entity\Risk;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Status;
-use AppBundle\Form\Status\CreateType;
+use AppBundle\Entity\RiskCategory;
+use AppBundle\Form\RiskCategory\CreateType;
+use AppBundle\Form\RiskCategory\EditType;
 
 /**
- * @Route("/admin/status")
+ * @Route("/admin/risk-category")
  */
-class StatusController extends Controller
+class RiskCategoryController extends Controller
 {
     /**
-     * @Route("/list", name="app_admin_status_list")
+     * @Route("/list", name="app_admin_risk_category_list")
      * @Method({"GET"})
      *
      * @param Request $request
      */
     public function listAction(Request $request)
     {
-        $statuses = $this
+        $categories = $this
             ->getDoctrine()
-            ->getRepository(Status::class)
+            ->getRepository(RiskCategory::class)
             ->findAll()
         ;
 
         return $this->render(
-            'AppBundle:Admin/Status:list.html.twig',
+            'AppBundle:Admin/RiskCategory:list.html.twig',
             [
-                'statuses' => $statuses,
+                'categories' => $categories,
             ]
         );
     }
 
     /**
-     * @Route("/list/filtered", name="app_admin_status_list_filtered", options={"expose"=true})
+     * @Route("/list/filtered", name="app_admin_risk_category_list_filtered", options={"expose"=true})
      * @Method("POST")
      *
      * @param Request $request
@@ -49,33 +51,33 @@ class StatusController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Status::class, 'name', $requestParams);
+        $response = $dataTableService->paginate(RiskCategory::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }
 
     /**
-     * Displays Status entity.
+     * Displays RiskCategory entity.
      *
-     * @Route("/{id}/show", name="app_admin_status_show", options={"expose"=true})
+     * @Route("/{id}/show", name="app_admin_risk_category_show", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Status $status
+     * @param RiskCategory $riskCategory
      *
      * @return Response
      */
-    public function showAction(Status $status)
+    public function showAction(RiskCategory $category)
     {
         return $this->render(
-            'AppBundle:Admin/Status:show.html.twig',
+            'AppBundle:Admin/RiskCategory:show.html.twig',
             [
-                'status' => $status,
+                'category' => $category,
             ]
         );
     }
 
     /**
-     * @Route("/create", name="app_admin_status_create")
+     * @Route("/create", name="app_admin_risk_category_create")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -97,15 +99,15 @@ class StatusController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.status.create.success', [], 'admin')
+                        ->trans('admin.risk_category.create.success', [], 'admin')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_status_list');
+            return $this->redirectToRoute('app_admin_risk_category_list');
         }
 
         return $this->render(
-            'AppBundle:Admin/Status:create.html.twig',
+            'AppBundle:Admin/RiskCategory:create.html.twig',
             [
                 'form' => $form->createView(),
             ]
@@ -113,19 +115,19 @@ class StatusController extends Controller
     }
 
     /**
-     * @Route("/{id}/edit", name="app_admin_status_edit", options={"expose"=true})
+     * @Route("/{id}/edit", name="app_admin_risk_category_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
      */
-    public function editAction(Status $status, Request $request)
+    public function editAction(RiskCategory $riskCategory, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(CreateType::class, $status);
+        $form = $this->createForm(EditType::class, $riskCategory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($status);
+            $em->persist($riskCategory);
             $em->flush();
 
             $this
@@ -135,32 +137,32 @@ class StatusController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.status.edit.success', [], 'admin')
+                        ->trans('admin.risk_category.edit.success', [], 'admin')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_status_list');
+            return $this->redirectToRoute('app_admin_risk_category_list');
         }
 
         return $this->render(
-            'AppBundle:Admin/Status:edit.html.twig',
+            'AppBundle:Admin/RiskCategory:edit.html.twig',
             [
-                'id' => $status->getId(),
+                'id' => $riskCategory->getId(),
                 'form' => $form->createView(),
             ]
         );
     }
 
     /**
-     * @Route("/{id}/delete", name="app_admin_status_delete", options={"expose"=true})
+     * @Route("/{id}/delete", name="app_admin_risk_category_delete", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Request $request
      */
-    public function deleteAction(Status $status)
+    public function deleteAction(RiskCategory $riskCategory)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($status);
+        $em->remove($riskCategory);
         $em->flush();
 
         $this
@@ -170,10 +172,10 @@ class StatusController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.status.delete.success', [], 'admin')
+                    ->trans('admin.risk_category.delete.success', [], 'admin')
             )
         ;
 
-        return $this->redirectToRoute('app_admin_status_list');
+        return $this->redirectToRoute('app_admin_risk_category_list');
     }
 }
