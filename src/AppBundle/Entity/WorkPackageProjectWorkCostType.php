@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * WorkPackageProjectWorkCostType.
@@ -32,6 +33,8 @@ class WorkPackageProjectWorkCostType
     /**
      * @var WorkPackage
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage")
      * @ORM\JoinColumn(name="work_package_id", nullable=true)
      */
@@ -39,6 +42,8 @@ class WorkPackageProjectWorkCostType
 
     /**
      * @var ProjectWorkCostType
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectWorkCostType")
      * @ORM\JoinColumn(name="project_work_cost_type_id", nullable=true)
@@ -132,6 +137,8 @@ class WorkPackageProjectWorkCostType
 
     /**
      * @var \DateTime
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
@@ -305,6 +312,17 @@ class WorkPackageProjectWorkCostType
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("createdAt")
+     *
+     * @return string
+     */
+    public function getCreatedAtFormatted()
+    {
+        return $this->createdAt ? $this->createdAt->format('d/m/Y') : null;
+    }
+
+    /**
      * Set updatedAt.
      *
      * @param \DateTime $updatedAt
@@ -353,6 +371,17 @@ class WorkPackageProjectWorkCostType
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("workPackage")
+     *
+     * @return string
+     */
+    public function getWorkPackageName()
+    {
+        return $this->workPackage ? $this->workPackage->getName() : null;
+    }
+
+    /**
      * Set projectWorkCostType.
      *
      * @param ProjectWorkCostType $projectWorkCostType
@@ -374,6 +403,17 @@ class WorkPackageProjectWorkCostType
     public function getProjectWorkCostType()
     {
         return $this->projectWorkCostType;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectWorkCostType")
+     *
+     * @return string
+     */
+    public function getProjectWorkCostTypeName()
+    {
+        return $this->projectWorkCostType ? $this->projectWorkCostType->getName() : null;
     }
 
     /**
