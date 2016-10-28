@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.schedule.create.title'|trans }}</h2>
+                    <h2>{{ 'admin.risk_strategy.create.title'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,7 +17,10 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_schedule_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_risk_strategy_create') }}">{{ 'admin.risk_strategy.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_risk_strategy_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -28,7 +31,7 @@
                         form,
                         {
                             'method': 'POST',
-                            'action': path('app_admin_status_create'),
+                            'action': path('app_admin_risk_category_edit', {'id': id}),
                             'attr': {
                                 'class': 'form-horizontal',
                                 'novalidate': 'novalidate',
@@ -48,11 +51,25 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.status.create.name'|trans
+                            'label': 'admin.risk_category.create.name'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.sequence,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'admin.risk_category.edit.sequence'|trans
                         }
                     ) }}
 
-                    {% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
+                    {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
+                        with {
+                            'delete_path': 'app_admin_risk_strategy_delete',
+                            'id': id,
+                        }
+                    %}
 
                     <span class="hidden">{{ form_row(form._token) }}</span>
                     {{ form_end(form, {'render_rest': false}) }}
