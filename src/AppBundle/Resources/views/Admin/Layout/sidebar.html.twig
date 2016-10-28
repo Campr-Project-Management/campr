@@ -62,6 +62,16 @@
                 <li><a href="{{ path('app_admin_project_work_cost_type_list') }}">{{ 'admin.project_work_cost_type.list.title'|trans }}</a></li>
             </ul>
         </li>
+        <li class="sub-menu">
+            <a href="{{ path('app_admin_calendar_list') }}" data-ma-action="submenu-toggle">
+                <i class="zmdi zmdi-calendar"></i>{{ 'admin.calendar.list.title'|trans }}
+            </a>
+            <ul>
+                <li><a href="{{ path('app_admin_calendar_list') }}">{{ 'admin.calendar.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_day_list') }}">{{ 'admin.day.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_working_time_list') }}">{{ 'admin.working_time.list.title'|trans }}</a></li>
+            </ul>
+        </li>
         <li>
             <a href="{{ path('app_admin_portfolio_list') }}"><i class="zmdi zmdi-laptop-mac"></i>{{ 'admin.portfolio.list.title'|trans }}</a>
         </li>
@@ -72,6 +82,18 @@
             <a href="{{ path('app_admin_workpackage_list') }}">
                 <i class="zmdi zmdi-present-to-all"></i>
                 {{ 'admin.workpackage.list.title'|trans }}
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_admin_assignment_list') }}">
+                <i class="zmdi zmdi-assignment"></i>
+                {{ 'admin.assignment.list.title'|trans }}
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_admin_timephase_list') }}">
+                <i class="zmdi zmdi-hourglass"></i>
+                {{ 'admin.timephase.list.title'|trans }}
             </a>
         </li>
         <li>
