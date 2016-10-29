@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Decision.
@@ -24,6 +25,8 @@ class Decision
     /**
      * @var Project
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="Project")
      * @ORM\JoinColumn(name="project_id")
      */
@@ -31,6 +34,8 @@ class Decision
 
     /**
      * @var Meeting|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="decisions")
      * @ORM\JoinColumn(name="meeting_id")
@@ -47,6 +52,8 @@ class Decision
     /**
      * @var string
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="description", type="text")
      */
     private $description;
@@ -54,12 +61,16 @@ class Decision
     /**
      * @var bool
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="show_in_status_report", type="boolean", nullable=false, options={"default"=0})
      */
     private $showInStatusReport = false;
 
     /**
      * @var User|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="responsibility_id")
@@ -69,6 +80,8 @@ class Decision
     /**
      * @var \DateTime
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="date", type="date", nullable=true)
      */
     private $date;
@@ -76,12 +89,16 @@ class Decision
     /**
      * @var \DateTime
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="due_date", type="date", nullable=true)
      */
     private $dueDate;
 
     /**
      * @var Status
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Status")
      * @ORM\JoinColumn(name="status_id")
@@ -91,6 +108,8 @@ class Decision
     /**
      * @var \DateTime
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
@@ -98,9 +117,16 @@ class Decision
     /**
      * @var \DateTime|null
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     /**
      * Get id.
@@ -374,5 +400,49 @@ class Decision
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("project")
+     *
+     * @return string
+     */
+    public function getProjectName()
+    {
+        return $this->project ? $this->project->getName() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibility")
+     *
+     * @return string
+     */
+    public function getResponsibilityName()
+    {
+        return $this->responsibility ? $this->responsibility->getUsername() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("date")
+     *
+     * @return string
+     */
+    public function getDateFormatted()
+    {
+        return $this->date ? $this->date->format('d/m/Y') : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("dueDate")
+     *
+     * @return string
+     */
+    public function getDueDateFormatted()
+    {
+        return $this->dueDate ? $this->dueDate->format('d/m/Y') : null;
     }
 }
