@@ -1,0 +1,95 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.decision.list.title'|trans }}<small>{{ decision.title|default('-') }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_decision_create') }}">{{ 'admin.decision.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_decision_edit', {'id': decision.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_decision_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th>{{ 'admin.decision.list.table.id'|trans }}</th>
+                                    <td>{{ decision.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.decision.list.table.title'|trans }}</th>
+                                    <td>{{ decision.title|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.decision.list.table.description'|trans }}</th>
+                                    <td>{{ decision.description|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.decision.list.table.date'|trans }}</th>
+                                    <td>{{ decision.date|date('d/m/Y')|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.decision.list.table.due_date'|trans }}</th>
+                                    <td>{{ decision.dueDate|date('d/m/Y')|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.decision.list.table.project'|trans }}</th>
+                                    <td>{{ decision.project.name|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.decision.list.table.meeting'|trans }}</th>
+                                    <td>{{ decision.meeting.name|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.decision.list.table.responsibility'|trans }}</th>
+                                    <td>{{ decision.responsibility.username|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.decision.list.table.status'|trans }}</th>
+                                    <td>{{ decision.status.name|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.decision.list.table.show_in_status_report'|trans }}</th>
+                                    <td>
+                                        {% if decision.showInStatusReport %}
+                                            {{ 'admin.general.yes'|trans }}
+                                        {% else %}
+                                            {{ 'admin.general.no'|trans }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.decision.list.table.created_at'|trans }}</th>
+                                    <td>{{ decision.createdAt|date('d/m/Y')|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.decision.list.table.updated_at'|trans }}</th>
+                                    <td>{{ decision.updatedAt|date('d/m/Y')|default('-') }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
