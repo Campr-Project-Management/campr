@@ -14,19 +14,23 @@ class UserCreateCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('app:user-create')
-            ->addArgument('username', InputArgument::REQUIRED, 'The username of the new user')
+            ->setName('tss:app:user-create')
             ->addArgument('email', InputArgument::REQUIRED, 'The email of the new user')
             ->addArgument('password', InputArgument::REQUIRED, 'The password of the new user')
+            ->addArgument('username', InputArgument::REQUIRED, 'The username of the new user')
+            ->addOption('first_name', null, InputArgument::OPTIONAL, 'The first name of the new user', 'John')
+            ->addOption('last_name', null, InputArgument::OPTIONAL, 'The last name of the new user', 'Doe')
             ->addOption('role', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'Roles to set to the user')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $username = $input->getArgument('username');
         $email = $input->getArgument('email');
         $password = $input->getArgument('password');
+        $username = $input->getArgument('username');
+        $firstName = $input->getOption('first_name');
+        $lastName = $input->getOption('last_name');
         $roles = $input->getOption('role');
 
         $em = $this->getContainer()->get('doctrine')->getManager();
@@ -46,8 +50,8 @@ class UserCreateCommand extends ContainerAwareCommand
             ->setUsername($username)
             ->setEmail($email)
             ->setPassword($encoder->encodePassword($password, $user->getSalt()))
-            ->setFirstName('John')
-            ->setLastName('Doe')
+            ->setFirstName($firstName)
+            ->setLastName($lastName)
             ->setRoles($roles)
             ->setIsEnabled(true)
             ->setIsSuspended(false)
