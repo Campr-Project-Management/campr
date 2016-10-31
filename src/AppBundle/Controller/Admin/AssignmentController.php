@@ -55,7 +55,7 @@ class AssignmentController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Assignment::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(Assignment::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }

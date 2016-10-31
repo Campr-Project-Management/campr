@@ -23,7 +23,7 @@ class DataTableService
         $this->requestParser = $requestParser;
     }
 
-    public function paginate($persistentObjectName, $searchField, $requestParams)
+    public function paginateByColumn($persistentObjectName, $searchField, $requestParams)
     {
         $this->requestParser->parse($requestParams);
 
