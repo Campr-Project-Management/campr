@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
@@ -158,6 +159,14 @@ class User implements AdvancedUserInterface, \Serializable
     private $activatedAt;
 
     /**
+     * @var ArrayCollection|Media[]
+     *
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Media", mappedBy="user")
+     */
+    private $medias;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -165,6 +174,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->salt = md5(uniqid('', true));
         $this->roles = array();
         $this->createdAt = new \DateTime();
+        $this->medias = new ArrayCollection();
     }
 
     /**
@@ -686,5 +696,39 @@ class User implements AdvancedUserInterface, \Serializable
     public function getActivatedAt()
     {
         return $this->activatedAt;
+    }
+
+    /**
+     * Add media.
+     *
+     * @param Media $media
+     *
+     * @return User
+     */
+    public function addMedia(Media $media)
+    {
+        $this->medias[] = $media;
+
+        return $this;
+    }
+
+    /**
+     * Remove media.
+     *
+     * @param Media $media
+     */
+    public function removeMedia(Media $media)
+    {
+        $this->medias->removeElement($media);
+    }
+
+    /**
+     * Get medias.
+     *
+     * @return ArrayCollection
+     */
+    public function getMedias()
+    {
+        return $this->medias;
     }
 }

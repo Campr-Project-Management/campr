@@ -139,3 +139,25 @@ validation:
                 not_blank: The title field should not be blank
             description:
                 not_blank: The description field should not be blank
+            from_time:
+                not_blank: The from time field should not be blank
+        filesystem:
+            driver:
+                not_null: You must select a driver
+            local_adapter:
+                path:
+                    not_blank : The path should not be empty
+            dropbox_adapter:
+                key:
+                    not_blank: The key should not be blank
+                secret:
+                    not_blank: The secret should not be blank
+                token:
+                    not_blank: The token should not be blank
+                token_secret:
+                    not_blank: The token secret should not be blank
+        media:
+            filesystem:
+                not_null: You must select a filesystem
+            file:
+              not_blank: You must select a file
