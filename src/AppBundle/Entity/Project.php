@@ -172,6 +172,14 @@ class Project
     private $approvedAt;
 
     /**
+     * @var ArrayCollection|FileSystem[]
+     *
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\FileSystem", mappedBy="project")
+     */
+    private $fileSystems;
+
+    /**
      * @var \DateTime
      *
      * @Serializer\Exclude()
@@ -193,6 +201,7 @@ class Project
     {
         $this->calendars = new ArrayCollection();
         $this->workPackages = new ArrayCollection();
+        $this->fileSystems = new ArrayCollection();
         $this->createdAt = new \DateTime();
     }
 
@@ -649,5 +658,43 @@ class Project
     public function getPortfolioName()
     {
         return $this->portfolio ? $this->portfolio->getName() : null;
+    }
+
+    /**
+     * Add FileSystem.
+     *
+     * @param FileSystem $fileSystem
+     *
+     * @return Project
+     */
+    public function addFileSystem(FileSystem $fileSystem)
+    {
+        $this->fileSystems[] = $fileSystem;
+
+        return $this;
+    }
+
+    /**
+     * Remove fileSystem.
+     *
+     * @param FileSystem $fileSystem
+     *
+     * @return Project
+     */
+    public function removeFileSystem(FileSystem $fileSystem)
+    {
+        $this->fileSystems->removeElement($fileSystem);
+
+        return $this;
+    }
+
+    /**
+     * Get fileSystems.
+     *
+     * @return ArrayCollection
+     */
+    public function getFileSystems()
+    {
+        return $this->fileSystems;
     }
 }

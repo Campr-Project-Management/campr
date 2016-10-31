@@ -101,6 +101,11 @@ then
     sudo apt-get install -y php7.0-intl
 fi
 
+if [ ! "`php -m | grep '^curl$'`" ];
+then
+    sudo apt-get install -y php7.0-curl
+fi
+
 if [ ! "`php -m | grep '^json$'`" ];
 then
     sudo apt-get install -y php7.0-json

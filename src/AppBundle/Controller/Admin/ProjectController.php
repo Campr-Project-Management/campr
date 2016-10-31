@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Entity\Media;
+use AppBundle\Form\FileSystem\MediaUploadType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,7 +34,7 @@ class ProjectController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $projects = $em
-            ->getRepository('AppBundle:Project')
+            ->getRepository(Project::class)
             ->findAll()
         ;
 
@@ -182,7 +184,7 @@ class ProjectController extends Controller
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(Project $project, Request $request)
+    public function deleteAction(Request $request, Project $project)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($project);
@@ -193,7 +195,7 @@ class ProjectController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this
@@ -206,6 +208,126 @@ class ProjectController extends Controller
                     ->trans('admin.project.delete.success.general', [], 'admin')
             )
         ;
+
+        return $this->redirectToRoute('app_admin_project_list');
+    }
+
+    /**
+     * @Route("/{id}/files", name="app_admin_project_files", options={"expose"=true})
+     */
+    public function filesAction(Project $project)
+    {
+        $ids = [];
+        foreach ($project->getFileSystems() as $fs) {
+            $ids[] = $fs->getId();
+        }
+        $files = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(Media::class)
+            ->findByFileSystem($ids)
+        ;
+
+        return $this->render(
+            'AppBundle:Admin/Project:files.html.twig',
+            [
+                'id' => $project->getId(),
+                'files' => $files,
+            ]
+        );
+    }
+
+    /**
+     * @Route("/{id}/files/filtered", options={"expose"=true}, name="app_admin_project_files_filtered")
+     * @Method("POST")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function filesFilteredAction(Request $request, Project $project)
+    {
+        $fsIds = [];
+        foreach ($project->getFileSystems() as $fs) {
+            $fsIds[] = $fs->getId();
+        }
+        $requestParams = $request->request->all();
+        $dataTableService = $this->get('app.service.data_table');
+        $response = $dataTableService->paginateByColumn(
+            Media::class,
+            'path',
+            $requestParams,
+            [
+                'countFunction' => 'countTotalByFileSystem',
+                'countArguments' => [$fsIds],
+                'findIn' => [
+                    'fileSystem' => $fsIds,
+                ],
+            ]
+        );
+
+        return new JsonResponse($response);
+    }
+
+    /**
+     * @Route("/{id}/upload", name="app_admin_project_upload")
+     */
+    public function uploadAction(Request $request, Project $project)
+    {
+        $media = new Media();
+        $form = $this->createForm(MediaUploadType::class, $media, ['project' => $project]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            try {
+                $em->persist($form->getData());
+                $em->flush();
+            } catch (\Exception $ex) {
+                $this
+                    ->get('session')
+                    ->getFlashBag()
+                    ->set(
+                        'error',
+                        $this
+                            ->get('translator')
+                            ->trans('admin.project.files.upload.failed', [], 'admin')
+                    )
+                ;
+            }
+        }
+
+        return $this->render(
+            'AppBundle:Admin/Project:upload.html.twig',
+            [
+                'project_id' => $project->getId(),
+                'form' => $form->createView(),
+            ]
+        );
+    }
+
+    /**
+     * @Route("/{id}/remove-file", name="app_admin_project_remove_file", options={"expose"=true})
+     */
+    public function removeFileAction(Request $request, Media $media)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+
+            try {
+                $em->remove($media);
+                $em->flush();
+                $message = [
+                    'delete' => 'success',
+                ];
+            } catch (\Exception $ex) {
+                $message = [
+                    'delete' => 'failed',
+                ];
+            }
+
+            return new JsonResponse($message);
+        }
 
         return $this->redirectToRoute('app_admin_project_list');
     }
