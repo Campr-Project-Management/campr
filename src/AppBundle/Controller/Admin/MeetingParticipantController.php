@@ -56,7 +56,7 @@ class MeetingParticipantController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(MeetingParticipant::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(MeetingParticipant::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }

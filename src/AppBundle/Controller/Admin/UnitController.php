@@ -6,10 +6,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Unit;
 use AppBundle\Form\Unit\CreateType;
 use AppBundle\Form\Unit\EditType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/admin/unit")
@@ -20,9 +22,9 @@ class UnitController extends Controller
      * @Route("/list", name="app_admin_unit_list")
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @return Response
      */
-    public function listAction(Request $request)
+    public function listAction()
     {
         $units = $this
             ->getDoctrine()
@@ -50,7 +52,7 @@ class UnitController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Unit::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(Unit::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }
@@ -80,6 +82,8 @@ class UnitController extends Controller
      * @Method({"GET", "POST"})
      *
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
@@ -117,7 +121,10 @@ class UnitController extends Controller
      * @Route("/{id}/edit", name="app_admin_unit_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
+     * @param Unit    $unit
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction(Unit $unit, Request $request)
     {
@@ -157,7 +164,9 @@ class UnitController extends Controller
      * @Route("/{id}/delete", name="app_admin_unit_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @param Unit $unit
+     *
+     * @return RedirectResponse
      */
     public function deleteAction(Unit $unit)
     {
