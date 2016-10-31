@@ -6,9 +6,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Status;
 use AppBundle\Form\Status\CreateType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/admin/status")
@@ -19,9 +21,9 @@ class StatusController extends Controller
      * @Route("/list", name="app_admin_status_list")
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @return Response
      */
-    public function listAction(Request $request)
+    public function listAction()
     {
         $statuses = $this
             ->getDoctrine()
@@ -49,7 +51,7 @@ class StatusController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Status::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(Status::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }
@@ -79,6 +81,8 @@ class StatusController extends Controller
      * @Method({"GET", "POST"})
      *
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
@@ -116,7 +120,10 @@ class StatusController extends Controller
      * @Route("/{id}/edit", name="app_admin_status_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
+     * @param Status  $status
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction(Status $status, Request $request)
     {
@@ -155,7 +162,9 @@ class StatusController extends Controller
      * @Route("/{id}/delete", name="app_admin_status_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @param Status $status
+     *
+     * @return RedirectResponse
      */
     public function deleteAction(Status $status)
     {
