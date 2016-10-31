@@ -33,18 +33,23 @@ class CreateType extends AbstractType
                 'choice_label' => 'name',
             ])
             ->add('base', NumberType::class, [
+                'required' => false,
                 'scale' => 2,
             ])
             ->add('change', NumberType::class, [
+                'required' => false,
                 'scale' => 2,
             ])
             ->add('actual', NumberType::class, [
+                'required' => false,
                 'scale' => 2,
             ])
             ->add('remaining', NumberType::class, [
+                'required' => false,
                 'scale' => 2,
             ])
             ->add('forecast', NumberType::class, [
+                'required' => false,
                 'scale' => 2,
             ])
         ;
