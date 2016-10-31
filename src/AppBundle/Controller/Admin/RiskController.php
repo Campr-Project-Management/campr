@@ -6,9 +6,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Risk;
 use AppBundle\Form\Risk\CreateType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/admin/risk")
@@ -19,9 +21,9 @@ class RiskController extends Controller
      * @Route("/list", name="app_admin_risk_list")
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @return Response
      */
-    public function listAction(Request $request)
+    public function listAction()
     {
         $risks = $this
             ->getDoctrine()
@@ -49,7 +51,7 @@ class RiskController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Risk::class, 'title', $requestParams);
+        $response = $dataTableService->paginateByColumn(Risk::class, 'title', $requestParams);
 
         return new JsonResponse($response);
     }
@@ -79,6 +81,8 @@ class RiskController extends Controller
      * @Method({"GET", "POST"})
      *
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
@@ -116,7 +120,10 @@ class RiskController extends Controller
      * @Route("/{id}/edit", name="app_admin_risk_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
+     * @param Risk    $risk
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction(Risk $risk, Request $request)
     {
@@ -155,7 +162,9 @@ class RiskController extends Controller
      * @Route("/{id}/delete", name="app_admin_risk_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @param Risk $risk
+     *
+     * @return RedirectResponse
      */
     public function deleteAction(Risk $risk)
     {

@@ -56,7 +56,7 @@ class ProjectWorkCostTypeController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(ProjectWorkCostType::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(ProjectWorkCostType::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }

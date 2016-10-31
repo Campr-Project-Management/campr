@@ -56,7 +56,7 @@ class ProjectComplexityController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(ProjectComplexity::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(ProjectComplexity::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }
