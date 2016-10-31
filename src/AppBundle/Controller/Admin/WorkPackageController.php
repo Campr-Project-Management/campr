@@ -6,9 +6,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Form\WorkPackage\CreateType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/admin/workpackage")
@@ -19,9 +21,9 @@ class WorkPackageController extends Controller
      * @Route("/list", name="app_admin_workpackage_list")
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @return Response
      */
-    public function listAction(Request $request)
+    public function listAction()
     {
         $workPackages = $this
             ->getDoctrine()
@@ -49,7 +51,7 @@ class WorkPackageController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(WorkPackage::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(WorkPackage::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }
@@ -79,6 +81,8 @@ class WorkPackageController extends Controller
      * @Method({"GET", "POST"})
      *
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
@@ -116,7 +120,10 @@ class WorkPackageController extends Controller
      * @Route("/{id}/edit", name="app_admin_workpackage_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Request $request
+     * @param WorkPackage $workPackage
+     * @param Request     $request
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction(WorkPackage $workPackage, Request $request)
     {
@@ -155,7 +162,9 @@ class WorkPackageController extends Controller
      * @Route("/{id}/delete", name="app_admin_workpackage_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @param WorkPackage $workPackage
+     *
+     * @return RedirectResponse
      */
     public function deleteAction(WorkPackage $workPackage)
     {

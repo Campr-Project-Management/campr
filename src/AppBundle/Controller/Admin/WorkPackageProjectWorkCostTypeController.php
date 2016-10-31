@@ -6,9 +6,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\WorkPackageProjectWorkCostType;
 use AppBundle\Form\WorkPackageProjectWorkCostType\CreateType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/admin/workpackage-projectworkcost")
@@ -19,9 +21,9 @@ class WorkPackageProjectWorkCostTypeController extends Controller
      * @Route("/list", name="app_admin_wppcwct_list")
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @return Response
      */
-    public function listAction(Request $request)
+    public function listAction()
     {
         $workProjectTypes = $this
             ->getDoctrine()
@@ -49,7 +51,7 @@ class WorkPackageProjectWorkCostTypeController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(WorkPackageProjectWorkCostType::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(WorkPackageProjectWorkCostType::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }
@@ -79,6 +81,8 @@ class WorkPackageProjectWorkCostTypeController extends Controller
      * @Method({"GET", "POST"})
      *
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
@@ -116,7 +120,10 @@ class WorkPackageProjectWorkCostTypeController extends Controller
      * @Route("/{id}/edit", name="app_admin_wppcwct_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Request $request
+     * @param WorkPackageProjectWorkCostType $workProjectType
+     * @param Request                        $request
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction(WorkPackageProjectWorkCostType $workProjectType, Request $request)
     {
@@ -156,7 +163,9 @@ class WorkPackageProjectWorkCostTypeController extends Controller
      * @Route("/{id}/delete", name="app_admin_wppcwct_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @param WorkPackageProjectWorkCostType $workProjectType
+     *
+     * @return RedirectResponse
      */
     public function deleteAction(WorkPackageProjectWorkCostType $workProjectType)
     {

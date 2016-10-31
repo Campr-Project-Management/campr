@@ -4,41 +4,40 @@ namespace AppBundle\Repository;
 
 class WorkingTimeRepository extends BaseRepository
 {
-    /**
-     * Used to retrieve information for data table.
-     *
-     * New fields to be added to WHERE clause where the $key should be searched for.
-     *
-     * @param string|null $key
-     * @param string|null $field
-     * @param string|null $order
-     * @param int         $offset
-     * @param int         $limit
-     *
-     * @return array
-     */
-    public function findByKeyAndField($key, $field, $order, $offset, $limit)
+    public function findByWithLike(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        $qb = $this->createQueryBuilder('q');
-
-        if (isset($key)) {
-            $qb
-                ->innerJoin('q.day', 'd')
-                ->innerJoin('d.calendar', 'c')
-                ->where('c.name LIKE CONCAT(\'%\', :key, \'%\')')
-                ->setParameter('key', $key)
-            ;
-        }
-
-        if (isset($field) && isset($order)) {
-            $qb->orderBy('q.'.$field, $order);
-        }
-
-        return $qb
-            ->setFirstResult($offset)
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult()
+        $qb = $this
+            ->createQueryBuilder('q')
+            ->innerJoin('q.day', 'd')
+            ->innerJoin('d.calendar', 'c')
         ;
+
+        foreach ($criteria as $key => $value) {
+            if (empty($value)) {
+                continue;
+            }
+            $qb->andWhere(
+                $qb->expr()->like(
+                    'c.'.$key,
+                    $qb->expr()->literal('%'.$value.'%')
+                )
+            );
+        }
+
+        if ($orderBy) {
+            foreach ($orderBy as $key => $value) {
+                $qb->orderBy('c.'.$key, $value);
+            }
+        }
+
+        if ($limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        if ($offset) {
+            $qb->setFirstResult($offset);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

@@ -56,7 +56,7 @@ class DecisionController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Decision::class, 'title', $requestParams);
+        $response = $dataTableService->paginateByColumn(Decision::class, 'title', $requestParams);
 
         return new JsonResponse($response);
     }

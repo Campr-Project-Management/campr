@@ -6,10 +6,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\RiskStrategy;
 use AppBundle\Form\RiskStrategy\CreateType;
 use AppBundle\Form\RiskStrategy\EditType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/admin/risk-strategy")
@@ -20,9 +22,9 @@ class RiskStrategyController extends Controller
      * @Route("/list", name="app_admin_risk_strategy_list")
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @return Response
      */
-    public function listAction(Request $request)
+    public function listAction()
     {
         $strategies = $this
             ->getDoctrine()
@@ -50,7 +52,7 @@ class RiskStrategyController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(RiskStrategy::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(RiskStrategy::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }
@@ -80,6 +82,8 @@ class RiskStrategyController extends Controller
      * @Method({"GET", "POST"})
      *
      * @param Request $request
+     *
+     * @return Response|JsonResponse
      */
     public function createAction(Request $request)
     {
@@ -117,7 +121,10 @@ class RiskStrategyController extends Controller
      * @Route("/edit/{id}", name="app_admin_risk_strategy_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Request $request
+     * @param RiskStrategy $riskStrategy
+     * @param Request      $request
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction(RiskStrategy $riskStrategy, Request $request)
     {
@@ -156,7 +163,9 @@ class RiskStrategyController extends Controller
      * @Route("/delete/{id}", name="app_admin_risk_strategy_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @param RiskStrategy $riskStrategy
+     *
+     * @return RedirectResponse
      */
     public function deleteAction(RiskStrategy $riskStrategy)
     {

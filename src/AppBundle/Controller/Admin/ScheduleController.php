@@ -6,9 +6,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Schedule;
 use AppBundle\Form\Schedule\CreateType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/admin/schedule")
@@ -19,9 +21,9 @@ class ScheduleController extends Controller
      * @Route("/list", name="app_admin_schedule_list")
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @return Response
      */
-    public function listAction(Request $request)
+    public function listAction()
     {
         $schedules = $this
             ->getDoctrine()
@@ -49,7 +51,7 @@ class ScheduleController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Schedule::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(Schedule::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }
@@ -79,6 +81,8 @@ class ScheduleController extends Controller
      * @Method({"GET", "POST"})
      *
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
@@ -116,7 +120,10 @@ class ScheduleController extends Controller
      * @Route("/{id}/edit", name="app_admin_schedule_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Request $request
+     * @param Schedule $schedule
+     * @param Request  $request
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction(Schedule $schedule, Request $request)
     {
@@ -155,7 +162,9 @@ class ScheduleController extends Controller
      * @Route("/{id}/delete", name="app_admin_schedule_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @param Schedule $schedule
+     *
+     * @return RedirectResponse
      */
     public function deleteAction(Schedule $schedule)
     {

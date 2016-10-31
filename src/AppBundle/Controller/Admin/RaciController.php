@@ -6,9 +6,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Raci;
 use AppBundle\Form\Raci\CreateType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/admin/raci")
@@ -19,9 +21,9 @@ class RaciController extends Controller
      * @Route("/list", name="app_admin_raci_list")
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @return Response
      */
-    public function listAction(Request $request)
+    public function listAction()
     {
         $raci = $this
             ->getDoctrine()
@@ -49,7 +51,7 @@ class RaciController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Raci::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(Raci::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }
@@ -60,7 +62,7 @@ class RaciController extends Controller
      * @Route("/{id}/show", name="app_admin_raci_show", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param WorkPackage $workPackage
+     * @param Raci $raci
      *
      * @return Response
      */
@@ -79,6 +81,8 @@ class RaciController extends Controller
      * @Method({"GET", "POST"})
      *
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
@@ -116,7 +120,10 @@ class RaciController extends Controller
      * @Route("/{id}/edit", name="app_admin_raci_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
+     * @param Raci    $raci
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction(Raci $raci, Request $request)
     {
@@ -155,7 +162,9 @@ class RaciController extends Controller
      * @Route("/{id}/delete", name="app_admin_raci_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @param Raci $raci
+     *
+     * @return RedirectResponse
      */
     public function deleteAction(Raci $raci)
     {

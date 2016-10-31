@@ -55,7 +55,7 @@ class CalendarController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Calendar::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(Calendar::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }

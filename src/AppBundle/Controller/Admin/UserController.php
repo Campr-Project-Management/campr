@@ -6,10 +6,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
 use AppBundle\Form\User\CreateType;
 use AppBundle\Form\User\EditType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/admin/user")
@@ -20,9 +22,9 @@ class UserController extends Controller
      * @Route("/list", name="app_admin_user_list")
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @return Response
      */
-    public function listAction(Request $request)
+    public function listAction()
     {
         $users = $this
             ->getDoctrine()
@@ -50,7 +52,7 @@ class UserController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(User::class, 'username', $requestParams);
+        $response = $dataTableService->paginateByColumn(User::class, 'username', $requestParams);
 
         return new JsonResponse($response);
     }
@@ -80,6 +82,8 @@ class UserController extends Controller
      * @Method({"GET", "POST"})
      *
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
@@ -118,7 +122,10 @@ class UserController extends Controller
      * @Route("/{id}/edit", name="app_admin_user_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
+     * @param User    $user
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction(User $user, Request $request)
     {
@@ -157,7 +164,9 @@ class UserController extends Controller
      * @Route("/{id}/delete", name="app_admin_user_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @param User $user
+     *
+     * @return Response
      */
     public function deleteAction(User $user)
     {
