@@ -13,11 +13,16 @@ $(function () {
         formatters: {
             'commands': function (column, row) {
                 var editLink = $('#data-table-command').data('edit'),
-                    showLink = $('#data-table-command').data('show');
+                    showLink = $('#data-table-command').data('show'),
+                    filesLink = $('#data-table-command').data('files'),
+                    commands = '';
 
-                return '<a href=' + Routing.generate(showLink, {'id': row.id}, true) + '><button type="button" class="btn btn-icon bgm-teal waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-zoom-in"></span></button></a>' +
-                    '<a href=' + Routing.generate(editLink, {"id": row.id}, true) + '><button type="button" class="btn btn-icon bgm-blue command-edit waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-edit"></span></button></a>' +
-                    '<button type="button" class="btn btn-icon bgm-red command-delete waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-delete"></span></button>';
+                commands += editLink ? '<a href=' + Routing.generate(editLink, {"id": row.id}, true) + '><button type="button" class="btn btn-icon bgm-blue command-edit waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-edit"></span></button></a>' : '';
+                commands += showLink ? '<a href=' + Routing.generate(showLink, {'id': row.id}, true) + '><button type="button" class="btn btn-icon bgm-teal waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-zoom-in"></span></button></a>' : '';
+                commands += filesLink ? '<a href=' + Routing.generate(filesLink, {'id': row.id}, true) + '><button type="button" class="btn btn-icon bgm-bluegray waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-file"></span></button></a>' : '';
+                commands += '<button type="button" class="btn btn-icon bgm-red command-delete waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-delete"></span></button>';
+
+                return  commands;
             }
         }
     }).on('loaded.rs.jquery.bootgrid', function () {
@@ -30,10 +35,17 @@ $(function () {
                 type: 'get',
                 dataType: 'json',
                 success: function (data) {
-                    if (data.delete == 'success') {
+                    if (data.delete === 'success') {
                         $('#data-table-command').bootgrid('reload');
                         $('#object-id').html(rowId);
                         $('#delete-item-alert').removeClass('hidden');
+                        setTimeout(function () {
+                            $('#delete-item-alert').fadeOut('slow');
+                        }, 2500);
+                    }
+                    if (data.delete === 'failed') {
+                        $('#delete-item-alert-failure').removeClass('hidden');
+                        $('#object-id').html(rowId);
                         setTimeout(function () {
                             $('#delete-item-alert').fadeOut('slow');
                         }, 2500);

@@ -1,0 +1,71 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.project.files.upload.title'|trans }}</h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_project_files', {'id': project_id}) }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                {% for flash_message in app.session.flashBag.get('error') %}
+                    <div class="alert alert-danger">
+                        {{ flash_message }}
+                    </div>
+                {% endfor %}
+                {% if form.vars.valid == false %}
+                    <div class="alert alert-danger">
+                        {% for field in form.children %}
+                            {{ form_errors(field) }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="card-body card-padding">
+                    {{ form_start(
+                        form,
+                        {
+                            'method': 'POST',
+                            'action': path('app_admin_project_upload', {'id': project_id}),
+                            'attr': {
+                                'class': 'form-horizontal',
+                                'novalidate': 'novalidate',
+                            },
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.fileSystem,
+                        {
+                            'attr': {'class': 'selectpicker'},
+                            'label': 'admin.project.files.upload.filesystem'|trans,
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.file,
+                        {
+                            'label': 'admin.project.files.upload.file'|trans,
+                        }
+                    ) }}
+                    {% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
+
+                    <span class="hidden">{{ form_row(form._token) }}</span>
+                    {{ form_end(form, {'render_rest': false}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
