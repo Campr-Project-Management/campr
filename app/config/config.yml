@@ -78,7 +78,7 @@ snc_redis:
                 connection_persistent: false
     session:
         client: default
-        prefix: %router.request_context.host%_ses
+        prefix: "%router.request_context.host%_ses"
 
 # Lexik JWT Authentication Configuration
 lexik_jwt_authentication:

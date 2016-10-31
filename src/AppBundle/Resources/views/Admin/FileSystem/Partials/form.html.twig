@@ -1,0 +1,54 @@
+{% trans_default_domain 'admin' %}
+
+{% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
+
+{% set LOCAL_ADAPTER = constant('AppBundle\\Entity\\FileSystem::LOCAL_ADAPTER') %}
+{% set DROPBOX_ADAPTER = constant('AppBundle\\Entity\\FileSystem::DROPBOX_ADAPTER') %}
+
+{{ form_start(
+    form,
+    {
+        'method': 'POST',
+        'action': path('app_admin_filesystem_create'),
+        'attr': {
+            'id': 'create-form',
+            'class': 'form-horizontal',
+            'novalidate': 'novalidate',
+        },
+    }
+) }}
+{{ form_widget(
+    form.name,
+    {
+        'attr': {
+            'class': 'form-control input-sm',
+        },
+        'label': 'admin.filesystem.create.name'|trans,
+    }
+) }}
+{{ form_widget(
+    form.project,
+    {
+        'attr': {'class': 'selectpicker driver-create'},
+        'label': 'admin.filesystem.create.project'|trans,
+    }
+) }}
+{{ form_widget(
+    form.driver,
+    {
+        'attr': {'class': 'selectpicker driver-create'},
+        'label': 'admin.filesystem.create.driver'|trans,
+    }
+) }}
+
+{% if form.driver.vars.value == LOCAL_ADAPTER  %}
+    {% include '@App/Admin/FileSystem/Partials/local_storage_config_form.html.twig' with {'form': form.adapter} %}
+{% endif %}
+{% if form.driver.vars.value == DROPBOX_ADAPTER %}
+    {% include '@App/Admin/FileSystem/Partials/dropbox_config_form.html.twig' with {'form': form.adapter} %}
+{% endif %}
+
+{% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
+
+<span class="hidden">{{ form_row(form._token) }}</span>
+{{ form_end(form, {'render_rest': false}) }}

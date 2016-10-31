@@ -246,6 +246,30 @@ admin:
                 created_at: Created at
                 updated_at: Updated at
             not_found: No project categories found!
+        files:
+            list:
+                title: Project files
+                subtitle: List of project files
+                id: Id
+                filesystem: Filesystem
+                user: User
+                path: Path
+                mime_type: Mime Type
+                file_size: File Size
+            upload:
+                title: Upload new file
+                filesystem_placeholder: Select filesystem
+                filesystem: Filesystem
+                failed: File upload failed. Filesystem cannot be reached.
+            delete:
+                failed:
+                    general: File delete failed. Filesystem cannot be reached or file does not exist in it
+                    first: File with ID
+                    second: cannot be deleted. Filesystem cannot be reached or file does not exist in it
+                success:
+                    general: File successfully deleted!
+                    first: File with ID
+                    second: successfully deleted!
         create:
             title: Create Project
             name: Name
@@ -264,9 +288,9 @@ admin:
             success: Project successfully edited!
         delete:
             success:
-              general: Project successfully deleted!
-              first: Project with ID
-              second: successfully deleted!
+                general: Project successfully deleted!
+                first: Project with ID
+                second: successfully deleted!
 
     project_category:
         choice: Choose one project category
@@ -1151,7 +1175,6 @@ admin:
                 general: Company successfully deleted!
                 first: Company with ID
                 second: successfully deleted!
-
     decision:
         choice: Choose one document
         list:
@@ -1247,4 +1270,42 @@ admin:
             general: Document successfully deleted!
             success:
                 first: Document with ID
+    filesystem:
+        driver:
+            choice:
+                local: Local
+                dropbox: Dropbox
+        list:
+            title: Decision
+            subtitle: List of decisions
+            add: Add new filesystem
+            table:
+                id: Id
+                name: Name
+                project: Project
+                driver: Driver
+                config: Config
+        create:
+            title: Create File System
+            name: Name
+            project: Project
+            project_placeholder: Select project
+            driver: Driver
+            adapter:
+                placeholder: Select driver
+                local_config:
+                    path: Path
+                dropbox_config:
+                    key: Dropbox key
+                    secret: Dropbox secret
+                    token: Dropbox token
+                    token_secret: Dropbox token secret
+            success: FileSystem successfully created!
+        edit:
+            title: Edit file system
+            success: FileSystem successfully edited!
+        delete:
+            success:
+                general: FileSystem successfully deleted!
+                first: FileSystem with ID
                 second: successfully deleted!

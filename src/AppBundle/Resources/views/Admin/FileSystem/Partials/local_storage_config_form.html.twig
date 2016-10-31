@@ -1,0 +1,11 @@
+{% trans_default_domain 'admin' %}
+
+{{ form_widget(
+    form.path,
+    {
+        'attr': {
+            'class': 'form-control input-sm',
+        },
+        'label': 'admin.filesystem.create.adapter.local_config.path'|trans,
+    }
+) }}

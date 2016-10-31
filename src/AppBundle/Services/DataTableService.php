@@ -16,6 +16,11 @@ class DataTableService
     /** @var EntityManager */
     private $em;
 
+    private $options = [
+        'countFunction' => 'countTotal',
+        'countArguments' => [],
+    ];
+
     public function __construct(EntityManager $em, RequestParserService $requestParser, Serializer $serializer)
     {
         $this->em = $em;
@@ -23,15 +28,14 @@ class DataTableService
         $this->requestParser = $requestParser;
     }
 
-    public function paginateByColumn($persistentObjectName, $searchField, $requestParams)
+    public function paginateByColumn($persistentObjectName, $searchField, $requestParams, array $options = [])
     {
         $this->requestParser->parse($requestParams);
 
-        $entriesNumber = $this
-            ->em
-            ->getRepository($persistentObjectName)
-            ->countTotal()
-        ;
+        $countFunction = isset($options['countFunction']) ? $options['countFunction'] : $this->options['countFunction'];
+        $countArguments = isset($options['countArguments']) ? $options['countArguments'] : $this->options['countArguments'];
+        $repo = $this->em->getRepository($persistentObjectName);
+        $entriesNumber = call_user_func_array([$repo, $countFunction], $countArguments);
 
         $order = [];
         if (!empty($this->requestParser->field)) {
@@ -40,11 +44,16 @@ class DataTableService
             ];
         }
 
+        $criteria = [];
+        if (isset($options['findIn'])) {
+            $criteria['findIn'] = $options['findIn'];
+        }
+        $criteria[$searchField] = $this->requestParser->searchPhrase;
         $entries = $this
             ->em
             ->getRepository($persistentObjectName)
             ->findByWithLike(
-                [$searchField => $this->requestParser->searchPhrase],
+                $criteria,
                 $order,
                 $this->requestParser->limit,
                 $this->requestParser->offset
