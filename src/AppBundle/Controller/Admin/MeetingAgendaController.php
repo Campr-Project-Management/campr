@@ -55,7 +55,7 @@ class MeetingAgendaController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(MeetingAgenda::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(MeetingAgenda::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }

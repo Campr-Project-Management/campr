@@ -24,6 +24,8 @@ class TimephaseController extends Controller
      *
      * @Route("/list", name="app_admin_timephase_list")
      * @Method("GET")
+     *
+     * @return Response
      */
     public function listAction()
     {
@@ -54,7 +56,7 @@ class TimephaseController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Timephase::class, 'value', $requestParams);
+        $response = $dataTableService->paginateByColumn(Timephase::class, 'value', $requestParams);
 
         return new JsonResponse($response);
     }
