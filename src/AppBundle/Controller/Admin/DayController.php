@@ -56,7 +56,7 @@ class DayController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Day::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(Day::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }

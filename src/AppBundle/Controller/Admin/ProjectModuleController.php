@@ -56,7 +56,7 @@ class ProjectModuleController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(ProjectModule::class, 'module', $requestParams);
+        $response = $dataTableService->paginateByColumn(ProjectModule::class, 'module', $requestParams);
 
         return new JsonResponse($response);
     }

@@ -6,9 +6,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Todo;
 use AppBundle\Form\Todo\CreateType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/admin/todo")
@@ -19,9 +21,9 @@ class TodoController extends Controller
      * @Route("/list", name="app_admin_todo_list")
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @return Response
      */
-    public function listAction(Request $request)
+    public function listAction()
     {
         $todos = $this
             ->getDoctrine()
@@ -49,7 +51,7 @@ class TodoController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Todo::class, 'title', $requestParams);
+        $response = $dataTableService->paginateByColumn(Todo::class, 'title', $requestParams);
 
         return new JsonResponse($response);
     }
@@ -79,6 +81,8 @@ class TodoController extends Controller
      * @Method({"GET", "POST"})
      *
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
@@ -116,7 +120,10 @@ class TodoController extends Controller
      * @Route("/{id}/edit", name="app_admin_todo_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
+     * @param Todo    $todo
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction(Todo $todo, Request $request)
     {
@@ -156,7 +163,9 @@ class TodoController extends Controller
      * @Route("/{id}/delete", name="app_admin_todo_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @param Todo $todo
+     *
+     * @return RedirectResponse
      */
     public function deleteAction(Todo $todo)
     {

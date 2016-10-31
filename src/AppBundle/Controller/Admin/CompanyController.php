@@ -56,7 +56,7 @@ class CompanyController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Company::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(Company::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }

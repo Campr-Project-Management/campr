@@ -54,7 +54,7 @@ class ColorStatusController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(ColorStatus::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(ColorStatus::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }

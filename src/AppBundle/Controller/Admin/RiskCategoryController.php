@@ -2,15 +2,16 @@
 
 namespace AppBundle\Controller\Admin;
 
-use Proxies\__CG__\AppBundle\Entity\Risk;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\RiskCategory;
 use AppBundle\Form\RiskCategory\CreateType;
 use AppBundle\Form\RiskCategory\EditType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/admin/risk-category")
@@ -21,9 +22,9 @@ class RiskCategoryController extends Controller
      * @Route("/list", name="app_admin_risk_category_list")
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @return Response
      */
-    public function listAction(Request $request)
+    public function listAction()
     {
         $categories = $this
             ->getDoctrine()
@@ -51,7 +52,7 @@ class RiskCategoryController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(RiskCategory::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(RiskCategory::class, 'name', $requestParams);
 
         return new JsonResponse($response);
     }
@@ -66,12 +67,12 @@ class RiskCategoryController extends Controller
      *
      * @return Response
      */
-    public function showAction(RiskCategory $category)
+    public function showAction(RiskCategory $riskCategory)
     {
         return $this->render(
             'AppBundle:Admin/RiskCategory:show.html.twig',
             [
-                'category' => $category,
+                'category' => $riskCategory,
             ]
         );
     }
@@ -81,6 +82,8 @@ class RiskCategoryController extends Controller
      * @Method({"GET", "POST"})
      *
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
@@ -118,7 +121,10 @@ class RiskCategoryController extends Controller
      * @Route("/{id}/edit", name="app_admin_risk_category_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Request $request
+     * @param RiskCategory $riskCategory
+     * @param Request      $request
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction(RiskCategory $riskCategory, Request $request)
     {
@@ -157,7 +163,9 @@ class RiskCategoryController extends Controller
      * @Route("/{id}/delete", name="app_admin_risk_category_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @param RiskCategory $riskCategory
+     *
+     * @return RedirectResponse
      */
     public function deleteAction(RiskCategory $riskCategory)
     {
