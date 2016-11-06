@@ -1,0 +1,21 @@
+stages:
+  - test
+
+before_script:
+  - export SYMFONY_ENV=test
+  - rm -rf var/cache/*
+  - wget https://getcomposer.org/composer.phar
+  - cp app/config/parameters_test.yml.dist app/config/parameters_test.yml
+  - php composer.phar install --quiet --prefer-dist --no-interaction
+  - cp phpunit.xml.dist phpunit.xml
+  - rm -rf web/uploads/test
+  - bin/console doctrine:database:drop --if-exists --force --env=test
+  - bin/console doctrine:database:create --env=test
+  - bin/console doctrine:migrations:migrate --no-interaction --env=test
+  - bin/console doctrine:fixtures:load --fixtures=src/AppBundle/DataFixtures/ORM/ --no-interaction --env=test
+  - bin/console cache:clear --env=test
+
+test:phpunit:
+  stage: test
+  script:
+    - vendor/bin/phpunit -c . src
