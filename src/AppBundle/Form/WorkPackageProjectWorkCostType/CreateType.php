@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\WorkPackageProjectWorkCostType;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\ProjectWorkCostType;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CreateType extends AbstractType
 {
@@ -23,14 +24,23 @@ class CreateType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'validation.constraints.general_field.name.not_blank',
+                    ]),
+                ],
             ])
             ->add('workPackage', EntityType::class, [
                 'class' => WorkPackage::class,
                 'choice_label' => 'name',
+                'placeholder' => 'admin.workpackage.choice',
+                'translation_domain' => 'admin',
             ])
             ->add('projectWorkCostType', EntityType::class, [
                 'class' => ProjectWorkCostType::class,
                 'choice_label' => 'name',
+                'placeholder' => 'admin.project_work_cost_type.choice',
+                'translation_domain' => 'admin',
             ])
             ->add('base', NumberType::class, [
                 'required' => false,

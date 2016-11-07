@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Unit;
 use AppBundle\Form\Unit\CreateType;
-use AppBundle\Form\Unit\EditType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -129,7 +128,7 @@ class UnitController extends Controller
     public function editAction(Unit $unit, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(EditType::class, $unit);
+        $form = $this->createForm(CreateType::class, $unit);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -181,7 +180,7 @@ class UnitController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.unit.delete.success', [], 'admin')
+                    ->trans('admin.unit.delete.success.general', [], 'admin')
             )
         ;
 

@@ -47,12 +47,27 @@ class CreateType extends AbstractType
             ->add('date', DateType::class, [
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'validation.constraints.meeting.date.not_blank',
+                    ]),
+                ],
             ])
             ->add('start', TimeType::class, [
                 'widget' => 'single_text',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'validation.constraints.meeting.start.not_blank',
+                    ]),
+                ],
             ])
             ->add('end', TimeType::class, [
                 'widget' => 'single_text',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'validation.constraints.meeting.end.not_blank',
+                    ]),
+                ],
             ])
             ->add('objectives', TextareaType::class, [
                 'required' => true,

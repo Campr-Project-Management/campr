@@ -179,7 +179,7 @@ class WorkPackageController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.workpackage.delete.success', [], 'admin')
+                    ->trans('admin.workpackage.delete.success.general', [], 'admin')
             )
         ;
 

@@ -32,6 +32,7 @@ class EditType extends AbstractType
             ->add('project', EntityType::class, [
                 'class' => Project::class,
                 'choice_label' => 'name',
+                'placeholder' => 'admin.project.choice',
                 'translation_domain' => 'admin',
             ])
             ->add('isBaseline', CheckboxType::class)
@@ -39,6 +40,7 @@ class EditType extends AbstractType
             ->add('parent', EntityType::class, [
                 'class' => Calendar::class,
                 'choice_label' => 'name',
+                'placeholder' => 'admin.calendar.choice',
                 'translation_domain' => 'admin',
             ])
         ;

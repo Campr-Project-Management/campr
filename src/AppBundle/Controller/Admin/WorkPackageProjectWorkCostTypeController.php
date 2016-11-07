@@ -180,7 +180,7 @@ class WorkPackageProjectWorkCostTypeController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.wppcwct.delete.success', [], 'admin')
+                    ->trans('admin.wppcwct.delete.success.general', [], 'admin')
             )
         ;
 
