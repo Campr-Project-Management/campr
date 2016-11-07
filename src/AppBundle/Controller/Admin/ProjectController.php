@@ -4,6 +4,8 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Media;
 use AppBundle\Form\FileSystem\MediaUploadType;
+use AppBundle\Entity\ChatRoom;
+use AppBundle\Entity\Message;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -213,7 +215,14 @@ class ProjectController extends Controller
     }
 
     /**
+     * Display project related files
+     *
      * @Route("/{id}/files", name="app_admin_project_files", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return Response
      */
     public function filesAction(Project $project)
     {
@@ -238,10 +247,13 @@ class ProjectController extends Controller
     }
 
     /**
+     * Display filtered project files
+     *
      * @Route("/{id}/files/filtered", options={"expose"=true}, name="app_admin_project_files_filtered")
      * @Method("POST")
      *
      * @param Request $request
+     * @param Project $project
      *
      * @return JsonResponse
      */
@@ -270,7 +282,14 @@ class ProjectController extends Controller
     }
 
     /**
+     * Upload new file to a filesystem
+     *
      * @Route("/{id}/upload", name="app_admin_project_upload")
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return Response
      */
     public function uploadAction(Request $request, Project $project)
     {
@@ -307,7 +326,14 @@ class ProjectController extends Controller
     }
 
     /**
+     * Remove a file from a project
+     *
      * @Route("/{id}/remove-file", name="app_admin_project_remove_file", options={"expose"=true})
+     *
+     * @param Request $request
+     * @param Media   $media
+     *
+     * @return JsonResponse|RedirectResponse
      */
     public function removeFileAction(Request $request, Media $media)
     {
@@ -330,5 +356,39 @@ class ProjectController extends Controller
         }
 
         return $this->redirectToRoute('app_admin_project_list');
+    }
+
+    /**
+     * Project chat
+     *
+     * @Route("/{id}/chat", name="app_admin_project_chat")
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return Response
+     */
+    public function chatAction(Project $project)
+    {
+        $chatRooms = $project->getChatRooms();
+        if (empty($chats)) {
+            // create general chat for project
+        }
+        $chatService = $this->get('app.service.chat');
+
+        $privateMessages = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(Message::class)
+            ->findBy(['chatRoom' => null, 'project' => $project], ['createdAt' => 'DESC'])
+        ;
+
+        return $this->render(
+            'AppBundle:Admin/Project:chat.html.twig',
+            [
+                'chatRooms' => $chatRooms,
+                'privateMessages' => $privateMessages,
+            ]
+        );
     }
 }
