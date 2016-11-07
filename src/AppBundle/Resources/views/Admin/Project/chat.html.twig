@@ -1,0 +1,234 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <aside id="chat" class="sidebar">
+        <div class="chat-search">
+            <div class="fg-line">
+                <input type="text" class="form-control" placeholder="Search People">
+                <i class="zmdi zmdi-search"></i>
+            </div>
+        </div>
+        <div class="lg-body c-overflow">
+            <div class="list-group">
+                <a class="list-group-item media" href="">
+                    <div class="pull-left p-relative">
+                        <img class="lgi-img" src="img/profile-pics/2.jpg" alt="">
+                        <i class="chat-status-busy"></i>
+                    </div>
+                    <div class="media-body">
+                        <div class="lgi-heading">Jonathan Morris</div>
+                        <small class="lgi-text">Available</small>
+                    </div>
+                </a>
+                <a class="list-group-item media" href="">
+                    <div class="pull-left">
+                        <img class="lgi-img" src="img/profile-pics/1.jpg" alt="">
+                    </div>
+                    <div class="media-body">
+                        <div class="lgi-heading">David Belle</div>
+                        <small class="lgi-text">Last seen 3 hours ago</small>
+                    </div>
+                </a>
+                <a class="list-group-item media" href="">
+                    <div class="pull-left p-relative">
+                        <img class="lgi-img" src="img/profile-pics/3.jpg" alt="">
+                        <i class="chat-status-online"></i>
+                    </div>
+                    <div class="media-body">
+                        <div class="lgi-heading">Fredric Mitchell Jr.</div>
+                        <small class="lgi-text">Availble</small>
+                    </div>
+                </a>
+                <a class="list-group-item media" href="">
+                    <div class="pull-left p-relative">
+                        <img class="lgi-img" src="img/profile-pics/4.jpg" alt="">
+                        <i class="chat-status-online"></i>
+                    </div>
+                    <div class="media-body">
+                        <div class="lgi-heading">Glenn Jecobs</div>
+                        <small class="lgi-text">Availble</small>
+                    </div>
+                </a>
+                <a class="list-group-item media" href="">
+                    <div class="pull-left">
+                        <img class="lgi-img" src="img/profile-pics/5.jpg" alt="">
+                    </div>
+                    <div class="media-body">
+                        <div class="lgi-heading">Bill Phillips</div>
+                        <small class="lgi-text">Last seen 3 days ago</small>
+                    </div>
+                </a>
+                <a class="list-group-item media" href="">
+                    <div class="pull-left">
+                        <img class="lgi-img" src="img/profile-pics/6.jpg" alt="">
+                    </div>
+                    <div class="media-body">
+                        <div class="lgi-heading">Wendy Mitchell</div>
+                        <small class="lgi-text">Last seen 2 minutes ago</small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </aside>
+    <div class="container container-alt">
+        <div class="messages card">
+            <div class="m-sidebar">
+                <header>
+                    <h2 class="hidden-xs">{{ 'admin.chat.messages'|trans }}</h2>
+                    <ul class="actions">
+                        <li>
+                            <a href="">
+                                <i class="zmdi zmdi-comment-text"></i>
+                            </a>
+                        </li>
+                        <li class="dropdown hidden-xs">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="">Profile & Status</a>
+                                </li>
+                                <li>
+                                    <a href="">Help</a>
+                                </li>
+                                <li>
+                                    <a href="">Settings</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </header>
+                {% if chatRooms is not empty or privateMessages is not empty %}
+                    <div class="ms-search hidden-xs">
+                        <div class="fg-line">
+                            <i class="zmdi zmdi-search"></i>
+                            <input type="text" class="form-control" placeholder="Search...">
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="list-group c-overflow">
+                    {% for chat in chatRooms %}
+                        <a class="list-group-item media" href="">
+                            <div class="pull-left">
+                                <img src="img/profile-pics/4.jpg" alt="" class="lgi-img">
+                            </div>
+                            <div class="media-body">
+                                <div class="lgi-heading">{{ chat.name }}</div>
+                                <small class="lgi-text">Fierent fastidii recteque ad pro</small>
+                                <small class="ms-time">05:00 PM</small>
+                            </div>
+                        </a>
+                    {% else %}
+                        <div class="ms-search hidden-xs">
+                            <div class="pull-left">
+                                <img src="img/profile-pics/4.jpg" alt="" class="lgi-img">
+                            </div>
+                            <div class="media-body">
+                                <p>{{ 'admin.chat.no_chat_rooms'|trans }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="list-group c-overflow">
+                    sadsahfdasadsfa
+                </div>
+            </div>
+            <div class="m-body">
+                <header class="mb-header">
+                    <div class="mbh-user clearfix">
+                        <img src="img/profile-pics/2.jpg" alt="">
+                        <div class="p-t-5">Ann Watkinson</div>
+                    </div>
+                    <ul class="actions">
+                        <li>
+                            <a href="">
+                                <i class="zmdi zmdi-refresh-alt"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <i class="zmdi zmdi-delete"></i>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="">Contact Info</a>
+                                </li>
+                                <li>
+                                    <a href="">Mute</a>
+                                </li>
+                                <li>
+                                    <a href="">Clear Messages</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </header>
+                <div class="mb-list">
+                    <div class="mbl-messages c-overflow">
+                        <div class="mblm-item mblm-item-left">
+                            <div>
+                                Nullam id dolor id nibh ultricies vehicula ut id elit
+                            </div>
+                            <small>5:47 PM</small>
+                        </div>
+                        <div class="mblm-item mblm-item-right">
+                            <div>
+                                Cras justo odio, dapibus ac facilisis in, egestas eget quamurabitur blandit tempus porttitor
+                            </div>
+                            <small>5:49 PM</small>
+                        </div>
+                        <div class="mblm-item mblm-item-right">
+                            <div>
+                                blandit tempus
+                            </div>
+                            <small>5:55 PM</small>
+                        </div>
+                        <div class="mblm-item mblm-item-left">
+                            <div>
+                                Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec ullamcorper nulla non metus auctor fringilla. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo.
+                            </div>
+                            <small>6:10 PM</small>
+                        </div>
+                        <div class="mblm-item mblm-item-left">
+                            <div>
+                                <div class="mblmi-img">
+                                    <img src="media/gallery/20.jpg" alt="">
+                                </div>
+                            </div>
+                            <small>6:10 PM</small>
+                        </div>
+                        <div class="mblm-item mblm-item-left">
+                            <div>
+                                Donec id elit non mi porta gravida at eget metus
+                            </div>
+                            <small>6:11 PM</small>
+                        </div>
+                        <div class="mblm-item mblm-item-right">
+                            <div>
+                                Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Sed posuere consectetur est at lobortis. Aenean lacinia bibendum nulla sed consectetur. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.                                    </div>
+                            <small>6:15 PM</small>
+                        </div>
+                    </div>
+                    <div class="mbl-compose">
+                        <textarea placeholder="Type a message..."></textarea>
+                        <button><i class="zmdi zmdi-mail-send"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ ws_client() }}
+    <script type="text/javascript" src="{{ asset('bundles/app/assets/js/chat.js') }}"></script>
+{% endblock %}
