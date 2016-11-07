@@ -127,7 +127,10 @@ class DayController extends Controller
      * @Route("/{id}/edit", name="app_admin_day_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
+     * @param Day     $day
      * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction(Day $day, Request $request)
     {
@@ -166,7 +169,10 @@ class DayController extends Controller
      * @Route("/{id}/delete", name="app_admin_day_delete", options={"expose"=true})
      * @Method({"GET"})
      *
+     * @param Day     $day
      * @param Request $request
+     *
+     * @return RedirectResponse|JsonResponse
      */
     public function deleteAction(Day $day, Request $request)
     {

@@ -87,6 +87,7 @@ class Calendar
 
     public function __construct()
     {
+        $this->isBaseline = false;
         $this->days = new ArrayCollection();
         $this->workPackageProjectWorkCostTypes = new ArrayCollection();
         $this->workPackages = new ArrayCollection();

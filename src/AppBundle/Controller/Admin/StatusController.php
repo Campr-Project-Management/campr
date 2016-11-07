@@ -179,7 +179,7 @@ class StatusController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.status.delete.success', [], 'admin')
+                    ->trans('admin.status.delete.success.general', [], 'admin')
             )
         ;
 

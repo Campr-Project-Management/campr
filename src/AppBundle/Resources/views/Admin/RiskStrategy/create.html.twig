@@ -25,36 +25,46 @@
                 </div>
                 <div class="card-body m-t-0 card-padding">
                     {{ form_start(
-                    form,
-                    {
-                        'method': 'POST',
-                        'action': path('app_admin_risk_strategy_create'),
-                        'attr': {
-                        'class': 'form-horizontal',
-                        'novalidate': 'novalidate',
-                    },
-                    }
+                        form,
+                        {
+                            'method': 'POST',
+                            'action': path('app_admin_risk_strategy_create'),
+                            'attr': {
+                                'id': 'create-form',
+                                'class': 'form-horizontal',
+                                'novalidate': 'novalidate',
+                            },
+                        }
                     ) }}
-                    {% if form.vars.valid == false %}
-                        <div class="alert alert-danger">
-                            {% for field in form.children %}
-                                {{ form_errors(field) }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    {{ form_widget(
-                    form.name,
-                    {
-                        'attr': {
-                        'class': 'form-control input-sm',
-                    },
-                        'label': 'admin.risk_strategy.create.name'|trans
-                    }
-                    ) }}
+                        {% if form.vars.valid == false %}
+                            <div class="alert alert-danger">
+                                {% for field in form.children %}
+                                    {{ form_errors(field) }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {{ form_widget(
+                            form.name,
+                            {
+                                'attr': {
+                                    'class': 'form-control input-sm',
+                                },
+                                'label': 'admin.risk_strategy.create.name'|trans
+                            }
+                        ) }}
+                        {{ form_widget(
+                            form.sequence,
+                            {
+                                'attr': {
+                                    'class': 'form-control input-sm',
+                                },
+                                'label': 'admin.risk_strategy.create.sequence'|trans,
+                            }
+                        ) }}
 
-                    {% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
+                        {% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
 
-                    <span class="hidden">{{ form_row(form._token) }}</span>
+                        <span class="hidden">{{ form_row(form._token) }}</span>
                     {{ form_end(form, {'render_rest': false}) }}
                 </div>
             </div>

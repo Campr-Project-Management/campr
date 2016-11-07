@@ -10,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Impact;
 use AppBundle\Form\Impact\CreateType;
-use AppBundle\Form\Impact\EditType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -135,7 +134,7 @@ class ImpactController extends Controller
     public function editAction(Impact $impact, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(EditType::class, $impact);
+        $form = $this->createForm(CreateType::class, $impact);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
