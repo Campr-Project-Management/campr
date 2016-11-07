@@ -143,3 +143,10 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+
+### SUBSCRIBERS ###
+    ambta_doctrine_encrypt.subscriber:
+        class: AppBundle\Subscribers\EncryptSubscriber
+        arguments: ["@annotation_reader", "%ambta_doctrine_encrypt.encryptor_class_name%", "%ambta_doctrine_encrypt.secret_key%"]
+        tags:
+            -  { name: doctrine.event_subscriber }
