@@ -35,6 +35,7 @@ class AppKernel extends Kernel
             new Gos\Bundle\WebSocketBundle\GosWebSocketBundle(),
             new Gos\Bundle\PubSubRouterBundle\GosPubSubRouterBundle(),
             new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
+            new Ambta\DoctrineEncryptBundle\AmbtaDoctrineEncryptBundle(),
 
             //internals
             new AppBundle\AppBundle(),
