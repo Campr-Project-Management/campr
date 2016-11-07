@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\Unit;
 use AppBundle\Entity\Project;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class CreateType extends AbstractType
 {
@@ -28,7 +29,19 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.name.title.not_blank',
+                        'message' => 'validation.constraints.general_field.name.not_blank',
+                    ]),
+                ],
+            ])
+            ->add('sequence', TextType::class, [
+                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'validation.constraints.general_field.sequence.not_blank',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^([1-9]+\d*)$|^0$/',
+                        'message' => 'validation.constraints.general_field.sequence.invalid',
                     ]),
                 ],
             ])

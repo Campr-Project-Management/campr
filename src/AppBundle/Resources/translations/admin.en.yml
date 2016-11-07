@@ -91,7 +91,7 @@ admin:
         create:
             title: Create new status
             name: Status name
-            success: Status successfully added!
+            success: Status successfully created!
         edit:
             title: Edit status
             success: Status successfully edited!
@@ -157,6 +157,7 @@ admin:
                 first: Raci with ID
                 second: successfully deleted!
     workpackage:
+        choice: Choose one workpackage
         list:
             title: WorkPackage
             subtitle: List of workpackages
@@ -194,12 +195,15 @@ admin:
             schedule_finish: Scheduled Finish At
             content: Content
             data: Data
-            success: WorkPackage successfully added!
+            success: WorkPackage successfully created!
         edit:
             title: WorkPackage edit
             success: WorkPackage successfully edited!
         delete:
-            success: WorkPackage successfully deleted!
+            success:
+                general: WorkPackage successfully deleted!
+                first: WorkPackage with ID
+                second: successfully deleted!
 
     portfolio:
         choice: Choose one portfolio
@@ -431,12 +435,13 @@ admin:
             title: Project Role
             subtitle: List of project roles
             add: Add new project role
-            id: Id
-            name: Name
-            sequence: Sequence
-            lead: Lead
-            created_at: Created at
-            updated_at: Updated at
+            table:
+                id: Id
+                name: Name
+                sequence: Sequence
+                lead: Lead
+                created_at: Created at
+                updated_at: Updated at
             not_found: No project role found!
         create:
             title: Create Project Role
@@ -452,72 +457,6 @@ admin:
                 general: Project role successfully deleted!
                 first: Project role with ID
                 second: successfully deleted!
-    risk:
-        list:
-            title: Risk
-            subtitle: List of risks
-            add: Add new risk
-            table:
-                id: Id
-                title: Title
-                impact: Impact
-                cost: Cost
-                budget: Budget
-                delay: Delay
-                priority: Priority
-                strategy: Strategy
-                category: Category
-                measure: Measure
-                responsible: Responsible
-                due_date: Due Date
-                status: Status
-            no-risks: No risks found!
-        create:
-            title: Title
-            description: Description
-            impact: Impact
-            cost: Cost
-            budget: Budget
-            delay: Delay
-            priority: Priority
-            strategy: Strategy
-            category: Category
-            measure: Measure
-            responsible: Responsible
-            due_date: Due Date
-            status: Status
-            create: Create
-            success: Risk successfully added!
-        edit:
-            title: Edit Risk
-            success: Risk successfully edited!
-        delete:
-            success:
-                general: Risk successfully deleted!
-                first: Risk with ID
-                second: successfully edited!
-    risk_category:
-        list:
-            title: Risk Categories
-            subtitle: List of risk categories
-            add: Add new risk category
-            table:
-                id: Id
-                name: Name
-                sequence: Sequence
-            no-categories: No risk categories found!
-        create:
-            title: Create new Risk Category
-            name: Name
-            success: Risk category successfully added!
-        edit:
-            sequence: Sequence
-            success: Risk category successfully edited!
-        delete:
-            success:
-                general: Risk category successfully deleted!
-                first: Risk category with ID
-                second: successfully edited!
     project_scope:
         choice: Choose one project scope
         list:
@@ -716,10 +655,6 @@ admin:
                 responsible: Responsible
                 due_date: Due Date
                 status: Status
-                actions: Actions
-            edit: Edit
-            delete: Delete
-            no-risks: No risks found!
         create:
             title: Title
             description: Description
@@ -735,11 +670,15 @@ admin:
             due_date: Due Date
             status: Status
             create: Create
-            success: Risk successfully added!
+            success: Risk successfully created!
         edit:
+            title: Edit Risk
             success: Risk successfully edited!
         delete:
-            success: Risk successfully deleted!
+            success:
+                general: Risk successfully deleted!
+                first: Risk with ID
+                second: successfully edited!
     risk_category:
         list:
             title: Risk Categories
@@ -749,19 +688,18 @@ admin:
                 id: Id
                 name: Name
                 sequence: Sequence
-                actions: Actions
-            edit: Edit
-            delete: Delete
-            no-categories: No risk categories found!
         create:
+            title: Create new Risk Category
             name: Name
-            create: Create
-            success: Risk category successfully added!
-        edit:
             sequence: Sequence
+            success: Risk category successfully created!
+        edit:
             success: Risk category successfully edited!
         delete:
-            success: Risk category successfully deleted!
+            success:
+                general: Risk category successfully deleted!
+                first: Risk category with ID
+                second: successfully edited!
     risk_strategy:
         list:
             title: Risk Strategies
@@ -771,11 +709,11 @@ admin:
                 id: Id
                 name: Name
                 sequence: Sequence
-            no-strategies: No risk strategies found!
         create:
             title: Create new Risk Strategy
             name: Name
-            success: Risk strategy successfully added!
+            sequence: Sequence
+            success: Risk strategy successfully created!
         edit:
             sequence: Sequence
             success: Risk strategy successfully edited!
@@ -834,19 +772,18 @@ admin:
                 sequence: Sequence
                 created_at: Created At
                 updated_at: Updated At
-            no-units: No Units found!
         create:
             title: Create new unit
             project: Project
             name: Name
             sequence: Sequence
-            success: Unit successfully added!
+            success: Unit successfully created!
         edit:
             title: Edit unit
             success: Unit successfully edited!
         delete:
-            general: Unit successfully deleted!
             success:
+                general: Unit successfully deleted!
                 first: Unit with ID
                 second: successfully deleted!
     wppcwct:
@@ -882,13 +819,13 @@ admin:
             actual: Actual
             remaining: Remaining
             forecast: Forecast
-            success: WorkPackage - ProjectWorkCostType successfully added!
+            success: WorkPackage - ProjectWorkCostType successfully created!
         edit:
             title: Edit WorkPackage - ProjectWorkCostType
             success: WorkPackage - ProjectWorkCostType successfully edited!
         delete:
-            general: WorkPackage - ProjectWorkCostType successfully deleted!
             success:
+                general: WorkPackage - ProjectWorkCostType successfully deleted!
                 first: WorkPackage - ProjectWorkCostType with ID
                 second: successfully deleted!
     impact:
@@ -909,8 +846,8 @@ admin:
             title: Edit impact
             success: Impact successfully edited!
         delete:
-            general: Impact successfully deleted!
             success:
+                general: Impact successfully deleted!
                 first: Impact with ID
                 second: successfully deleted!
     meeting_agenda:
@@ -939,8 +876,8 @@ admin:
             title: Edit meeting agenda
             success: Meeting agenda successfully edited!
         delete:
-            general: Meeting agenda successfully deleted!
             success:
+                general: Meeting agenda successfully deleted!
                 first: Meeting agenda with ID
                 second: successfully deleted!
     meeting_participant:
@@ -969,8 +906,8 @@ admin:
             in_distribution_list: In Distribution List
             success: Meeting participant successfully edited!
         delete:
-            general: Meeting participant successfully deleted!
             success:
+                general: Meeting participant successfully deleted!
                 first: Meeting participant with ID
                 second: successfully deleted!
     meeting:
@@ -1011,8 +948,8 @@ admin:
             in_distribution_list: In Distribution List
             success: Meeting successfully edited!
         delete:
-            general: Meeting successfully deleted!
             success:
+                general: Meeting successfully deleted!
                 first: Meeting with ID
                 second: successfully deleted!
     note:
@@ -1054,6 +991,7 @@ admin:
                 first: Note with ID
                 second: successfully deleted!
     calendar:
+        choice: Choose calendar
         list:
             title: Calendar
             subtitle: List of calendars
@@ -1079,8 +1017,8 @@ admin:
             based: Is Based
             success: Calendar successfully edited!
         delete:
-            general: Calendar successfully deleted!
             success:
+                general: Calendar successfully deleted!
                 first: Calendar with ID
                 second: successfully deleted!
     day:
@@ -1104,8 +1042,8 @@ admin:
             title: Edit day
             success: Day successfully edited!
         delete:
-            general: Day successfully deleted!
             success:
+                general: Day successfully deleted!
                 first: Day with ID
                 second: successfully deleted!
     working_time:
@@ -1128,8 +1066,8 @@ admin:
             title: Working time day
             success: Working time successfully edited!
         delete:
-            general: Working time successfully deleted!
             success:
+                general: Working time successfully deleted!
                 first: Working time with ID
                 second: successfully deleted!
     assignment:
