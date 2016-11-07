@@ -111,6 +111,11 @@ then
     sudo apt-get install -y php7.0-json
 fi
 
+if [ ! "`php -m | grep '^mcrypt'`" ];
+then
+    sudo apt-get install php-mcrypt
+fi
+
 # apache2
 if [ ! -e "`which apache2ctl`" ];
 then

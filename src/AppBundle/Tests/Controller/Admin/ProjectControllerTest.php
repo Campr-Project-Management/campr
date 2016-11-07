@@ -72,9 +72,7 @@ class ProjectControllerTest extends BaseController
         $project = $this
             ->em
             ->getRepository(Project::class)
-            ->findOneBy([
-                'name' => 'project1',
-            ])
+            ->findOneByName('project1')
         ;
 
         /** @var Crawler $crawler */
@@ -112,9 +110,7 @@ class ProjectControllerTest extends BaseController
         $project = $this
             ->em
             ->getRepository(Project::class)
-            ->findOneBy([
-                'number' => 'project-number-3',
-            ])
+            ->findOneByName('project3')
         ;
         $this->em->remove($project);
         $this->em->flush();
@@ -207,9 +203,7 @@ class ProjectControllerTest extends BaseController
         $project = $this
             ->em
             ->getRepository(Project::class)
-            ->findOneBy([
-                'name' => 'project2',
-            ])
+            ->findOneByName('project2')
         ;
 
         /** @var Crawler $crawler */
