@@ -30,6 +30,13 @@ framework:
     http_method_override: true
     assets: ~
 
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
+    bundles: [ AppBundle ]
+
 # Twig Configuration
 twig:
     debug: "%kernel.debug%"
@@ -91,3 +98,13 @@ lexik_jwt_authentication:
 # VichUploaderBundle
 vich_uploader:
     db_driver: orm
+
+
+# GoS Web Socket #
+gos_web_socket:
+    server:
+        port: 1558          #The port the socket server will listen on
+        host: 0.0.0.0       #The host ip to bind to
+        router:
+            resources:
+                - '@AppBundle/Resources/config/pubsub/routing.yml'
