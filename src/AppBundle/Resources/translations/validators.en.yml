@@ -117,3 +117,13 @@ validation:
                 not_blank: The title should not be blank
             description:
                 not_blank: The description should not be blank
+        communication:
+            meeting_name:
+                not_blank: The meeting name should not be blank
+            content:
+                not_blank: The content should not be blank
+            location:
+                not_blank: The location should not be blank
+        document:
+            file:
+                not_blank: A document should be selected

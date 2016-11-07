@@ -5,6 +5,8 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Document.
@@ -26,6 +28,8 @@ class Document
 
     /**
      * @var Project
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="Project")
      * @ORM\JoinColumn(name="project_id")
@@ -51,9 +55,12 @@ class Document
     /**
      * @var string
      *
-     * @ORM\Column(name="path", type="string", length=255, nullable=false, unique=true)
+     * @ORM\Column(name="file_name", type="string", length=255, nullable=false, unique=true)
      */
-    private $path;
+    private $fileName;
+
+    private $file;
+
     /**
      * Constructor.
      */
@@ -73,27 +80,27 @@ class Document
     }
 
     /**
-     * Set path.
+     * Set fileName.
      *
-     * @param string $path
+     * @param string $fileName
      *
      * @return Document
      */
-    public function setPath($path)
+    public function setFileName($fileName)
     {
-        $this->path = $path;
+        $this->fileName = $fileName;
 
         return $this;
     }
 
     /**
-     * Get path.
+     * Get fileName.
      *
      * @return string
      */
-    public function getPath()
+    public function getFileName()
     {
-        return $this->path;
+        return $this->fileName;
     }
 
     /**
@@ -118,6 +125,17 @@ class Document
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("project")
+     *
+     * @return string
+     */
+    public function getProjectName()
+    {
+        return $this->project ? $this->project->getName() : null;
     }
 
     /**
@@ -152,5 +170,29 @@ class Document
     public function getMeetings()
     {
         return $this->meetings;
+    }
+
+    /**
+     * Set file.
+     *
+     * @param File|null $file
+     *
+     * @return Document
+     */
+    public function setFile(File $file = null)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Get file.
+     *
+     * @return File
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 }

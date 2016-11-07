@@ -103,6 +103,14 @@
                                     {% endfor %}
                                 </td>
                             </tr>
+                            <tr>
+                                <th>{{ 'admin.meeting.list.table.documents'|trans }}</th>
+                                <td>
+                                    {% for document in meeting.documents %}
+                                        </p>{{ document.fileName|default('-') }}</p>
+                                    {% endfor %}
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
