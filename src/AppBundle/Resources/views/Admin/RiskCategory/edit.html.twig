@@ -33,6 +33,7 @@
                             'method': 'POST',
                             'action': path('app_admin_risk_category_edit', {'id': id}),
                             'attr': {
+                                'id': 'edit-form',
                                 'class': 'form-horizontal',
                                 'novalidate': 'novalidate',
                             },
@@ -60,7 +61,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.risk_category.edit.sequence'|trans
+                            'label': 'admin.risk_category.create.sequence'|trans,
                         }
                     ) }}
 

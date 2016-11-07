@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\RiskCategory;
 use AppBundle\Form\RiskCategory\CreateType;
-use AppBundle\Form\RiskCategory\EditType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -129,7 +128,7 @@ class RiskCategoryController extends Controller
     public function editAction(RiskCategory $riskCategory, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(EditType::class, $riskCategory);
+        $form = $this->createForm(CreateType::class, $riskCategory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -180,7 +179,7 @@ class RiskCategoryController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.risk_category.delete.success', [], 'admin')
+                    ->trans('admin.risk_category.delete.success.general', [], 'admin')
             )
         ;
 

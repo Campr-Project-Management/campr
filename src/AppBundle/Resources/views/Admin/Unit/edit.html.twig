@@ -33,6 +33,7 @@
                             'method': 'POST',
                             'action': path('app_admin_unit_edit', {'id': id}),
                             'attr': {
+                                'id': 'edit-form',
                                 'class': 'form-horizontal',
                                 'novalidate': 'novalidate',
                             },
@@ -55,21 +56,21 @@
                         }
                     ) }}
                     {{ form_widget(
-                        form.project,
-                        {
-                            'attr': {
-                                'class': 'selectpicker',
-                            },
-                            'label': 'admin.unit.create.project'|trans
-                        }
-                    ) }}
-                    {{ form_widget(
                         form.sequence,
                         {
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
                             'label': 'admin.unit.create.sequence'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.project,
+                        {
+                            'attr': {
+                                'class': 'selectpicker',
+                            },
+                            'label': 'admin.unit.create.project'|trans
                         }
                     ) }}
 

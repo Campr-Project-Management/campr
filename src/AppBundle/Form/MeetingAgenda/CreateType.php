@@ -42,12 +42,27 @@ class CreateType extends AbstractType
             ])
             ->add('start', TimeType::class, [
                 'widget' => 'single_text',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'validation.constraints.meeting_agenda.start.not_blank',
+                    ]),
+                ],
             ])
             ->add('end', TimeType::class, [
                 'widget' => 'single_text',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'validation.constraints.meeting_agenda.end.not_blank',
+                    ]),
+                ],
             ])
             ->add('duration', TimeType::class, [
                 'widget' => 'single_text',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'validation.constraints.meeting_agenda.duration.not_blank',
+                    ]),
+                ],
             ])
         ;
     }
