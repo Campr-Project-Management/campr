@@ -145,6 +145,20 @@ class Project
     private $calendars;
 
     /**
+     * @var ArrayCollection|ChatRoom[]
+     *
+     ** @ORM\OneToMany(targetEntity="AppBundle\Entity\ChatRoom", mappedBy="project")
+     */
+    private $chatRooms;
+
+    /**
+     * @var ArrayCollection|Message[]
+     *
+     ** @ORM\OneToMany(targetEntity="AppBundle\Entity\Message", mappedBy="project")
+     */
+    private $messages;
+
+    /**
      * @var ArrayCollection|WorkPackage[]
      *
      * @Serializer\Exclude()
@@ -202,6 +216,8 @@ class Project
         $this->calendars = new ArrayCollection();
         $this->workPackages = new ArrayCollection();
         $this->fileSystems = new ArrayCollection();
+        $this->chatRooms = new ArrayCollection();
+        $this->messages = new ArrayCollection();
         $this->createdAt = new \DateTime();
     }
 
@@ -675,6 +691,20 @@ class Project
     }
 
     /**
+     * Add chatRoom.
+     *
+     * @param ChatRoom $chatRoom
+     *
+     * @return Project
+     */
+    public function addChatRoom(ChatRoom $chatRoom)
+    {
+        $this->chatRooms[] = $chatRoom;
+
+        return $this;
+    }
+
+    /**
      * Remove fileSystem.
      *
      * @param FileSystem $fileSystem
@@ -689,6 +719,54 @@ class Project
     }
 
     /**
+     * Remove chatRoom.
+     *
+     * @param ChatRoom $chatRoom
+     */
+    public function removeChatRoom(ChatRoom $chatRoom)
+    {
+        $this->chatRooms->removeElement($chatRoom);
+
+        return $this;
+    }
+
+    /**
+     * Get rooms.
+     *
+     * @return ArrayCollection
+     */
+    public function getChatRooms()
+    {
+        return $this->chatRooms;
+    }
+
+    /**
+     * Add message.
+     *
+     * @param Message $message
+     *
+     * @return Project
+     */
+    public function addMessage(Message $message)
+    {
+        $this->messages[] = $message;
+
+        return $this;
+    }
+
+    /**
+     * Remove message.
+     *
+     * @param Message $message
+     */
+    public function removeMessage(Message $message)
+    {
+        $this->messages->removeElement($message);
+
+        return $this;
+    }
+
+    /**
      * Get fileSystems.
      *
      * @return ArrayCollection
@@ -696,5 +774,15 @@ class Project
     public function getFileSystems()
     {
         return $this->fileSystems;
+    }
+
+    /**
+     * Get messages.
+     *
+     * @return ArrayCollection
+     */
+    public function getMessages()
+    {
+        return $this->messages;
     }
 }

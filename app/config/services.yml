@@ -38,6 +38,11 @@ services:
         arguments:
             - "@doctrine.orm.entity_manager"
 
+    app.service.chat:
+        class: AppBundle\Services\ChatService
+        arguments:
+            - "@doctrine.orm.entity_manager"
+
     redis.client:
         class: Predis\Client
 
