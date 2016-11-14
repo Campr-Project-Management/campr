@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\WorkingTime;
 use AppBundle\Entity\Day;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CreateType extends AbstractType
 {
@@ -25,9 +26,19 @@ class CreateType extends AbstractType
             ])
             ->add('fromTime', TimeType::class, [
                 'widget' => 'single_text',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'validation.constraints.working_time.from_time.not_blank',
+                    ]),
+                ],
             ])
             ->add('toTime', TimeType::class, [
                 'widget' => 'single_text',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'validation.constraints.working_time.from_time.not_blank',
+                    ]),
+                ],
             ])
         ;
     }

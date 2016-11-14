@@ -24,9 +24,6 @@ validation:
             unique:
                 username: The username is already used
                 email: The email is already used
-        status:
-            name:
-                not_blank: The name should not be blank
         schedule:
             name:
                 not_blank: The name should not be blank
@@ -36,8 +33,6 @@ validation:
         workpackage:
             puid:
                 not_blank: PUID should not be blank
-            puid:
-                not_blank: The name should not be blank
         project:
             number:
                 not_blank: The number field should not be blank
@@ -67,33 +62,36 @@ validation:
                 not_blank: The delay should not be blank
             priority:
                 not_blank: The priority should not be blank
-            priority:
+            measure:
                 not_blank: The measure should not be blank
-        risk_category:
-            name:
-                not_blank: The name should not be blank
-        risk_strategy:
-            name:
-                not_blank: The name should not be blank
         todo:
             title:
                 not_blank: The title should not be blank
             description:
                 not_blank: The description should not be blank
-        unit:
-            name:
-                not_blank: The name should not be blank
         meeting_agenda:
             topic:
-                not_blank: The topic should not be blank
+                not_blank: The topic field should not be blank
+            start:
+                not_blank: The start field should not be blank
+            end:
+                not_blank: The end field should not be blank
+            duration:
+                not_blank: The duration field should not be blank
         meeting:
+            date:
+                not_blank: The date field should not be blank
+            start:
+                not_blank: The start field should not be blank
+            end:
+                not_blank: The end field should not be blank
             location:
-                not_blank: The location should not be blank
+                not_blank: The location field should not be blank
             objectives:
-                not_blank: The objectives should not be blank
+                not_blank: The objectives field should not be blank
         day:
             type:
-                not_blank: The type should not be blank
+                not_blank: The type field should not be blank
             working:
                 not_blank: The working field should not be blank
         assignment:
@@ -127,3 +125,6 @@ validation:
         document:
             file:
                 not_blank: A document should be selected
+        working_time:
+            from_time:
+                not_blank: The from time field should not be blank
