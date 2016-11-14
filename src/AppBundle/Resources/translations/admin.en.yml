@@ -113,13 +113,13 @@ admin:
         create:
             title: Create new schedule
             name: Schedule name
-            success: Schedule successfully added!
+            success: Schedule successfully created!
         edit:
             title: Edit schedule
-            no-schedules: No schedules found!
+            success: Schedule successfully edited!
         delete:
-            general: Schedule successfully deleted!
             success:
+                general: Schedule successfully deleted!
                 first: Schedule with ID
                 second: successfully deleted!
     raci:
@@ -133,27 +133,18 @@ admin:
                 user: User
                 data: Data
                 actions: Actions
-            no-raci: No raci found!
         create:
             title: Create RACI
             workpackage: WorkPackage
             user: User
             data: Data
-            success: Raci successfully added!
+            success: Raci successfully created!
         edit:
-            title: Edit RACI
-            no-raci: No raci found!
-        create:
-            workpackage: WorkPackage
-            user: User
-            create: Create
-            data: Data
-            success: Raci successfully added!
-        edit:
+            title: Edit Raci
             success: Raci successfully edited!
         delete:
-            general: Raci successfully deleted!
             success:
+                general: Raci successfully deleted!
                 first: Raci with ID
                 second: successfully deleted!
     workpackage:
@@ -751,7 +742,7 @@ admin:
             due_date: Due Date
             status: Status
             create: Create
-            success: Todo successfully added!
+            success: Todo successfully created!
         edit:
             title: Edit todo
             success: Todo successfully edited!
@@ -787,6 +778,7 @@ admin:
                 first: Unit with ID
                 second: successfully deleted!
     wppcwct:
+        choice: Choose one work package project work cost type
         list:
             title: WorkPackage - ProjectWorkCostType
             subtitle: List of WorkPackage - ProjectWorkCostType
@@ -980,14 +972,14 @@ admin:
             status: Status
             date: Date
             due_date: Due date
+            show_in_status: Show in status report
             success: Note successfully created!
         edit:
             title: Edit note
-            show_in_status: Show in status report
             success: Note successfully edited!
         delete:
-            general: Note successfully deleted!
             success:
+                general: Note successfully deleted!
                 first: Note with ID
                 second: successfully deleted!
     calendar:
@@ -1022,6 +1014,7 @@ admin:
                 first: Calendar with ID
                 second: successfully deleted!
     day:
+        choice: Choose one day
         list:
             title: Day
             subtitle: List of days
@@ -1071,6 +1064,7 @@ admin:
                 first: Working time with ID
                 second: successfully deleted!
     assignment:
+        choice: Choose one assignment
         list:
             title: Assignments
             subtitle: List of assignments
@@ -1092,15 +1086,15 @@ admin:
             milestone: Milestone
             started_at: Started At
             finished_at: Finished At
+            percent_work: Percent Work
+            confirmed: Confirmed
             success: Assignment successfully created!
         edit:
             title: Edit Assignment
-            percent_work: Percent Work
-            confirmed: Confirmed
             success: Assignment successfully edited!
         delete:
-            general: Assignment successfully deleted!
             success:
+                general: Assignment successfully deleted!
                 first: Assignment with ID
                 second: successfully deleted!
     timephase:
@@ -1129,8 +1123,8 @@ admin:
             title: Edit timephase
             success: Timephase successfully edited!
         delete:
-            general: Timephase successfully deleted!
             success:
+                general: Timephase successfully deleted!
                 first: Timephase with ID
                 second: successfully deleted!
 
