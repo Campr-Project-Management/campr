@@ -30,6 +30,7 @@
                             'method': 'POST',
                             'action': path('app_admin_note_create'),
                             'attr': {
+                                'id': 'create-form',
                                 'class': 'form-horizontal',
                                 'novalidate': 'novalidate',
                             },
@@ -114,6 +115,16 @@
                                 'addon_front': 'calendar',
                             },
                             'label': 'admin.note.create.due_date'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.showInStatusReport,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                                'toggle': true
+                            },
+                            'label': 'admin.note.create.show_in_status'|trans
                         }
                     ) }}
 

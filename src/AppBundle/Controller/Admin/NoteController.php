@@ -10,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Note;
 use AppBundle\Form\Note\CreateType;
-use AppBundle\Form\Note\EditType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -135,7 +134,7 @@ class NoteController extends Controller
     public function editAction(Note $note, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(EditType::class, $note);
+        $form = $this->createForm(CreateType::class, $note);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

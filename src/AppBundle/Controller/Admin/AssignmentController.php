@@ -10,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Assignment;
 use AppBundle\Form\Assignment\CreateType;
-use AppBundle\Form\Assignment\EditType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -115,7 +114,7 @@ class AssignmentController extends Controller
      */
     public function editAction(Request $request, Assignment $assignment)
     {
-        $form = $this->createForm(EditType::class, $assignment);
+        $form = $this->createForm(CreateType::class, $assignment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
