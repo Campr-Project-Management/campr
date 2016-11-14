@@ -14,6 +14,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CreateType extends AbstractType
 {
@@ -29,12 +30,22 @@ class CreateType extends AbstractType
                 'choice_label' => 'username',
                 'placeholder' => 'admin.user.choice',
                 'translation_domain' => 'admin',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'validation.constraints.project_user.user.not_blank',
+                    ]),
+                ],
             ])
             ->add('project', EntityType::class, [
                 'class' => Project::class,
                 'choice_label' => 'name',
                 'placeholder' => 'admin.project.choice',
                 'translation_domain' => 'admin',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'validation.constraints.project_user.project.not_blank',
+                    ]),
+                ],
             ])
             ->add('projectCategory', EntityType::class, [
                 'class' => ProjectCategory::class,

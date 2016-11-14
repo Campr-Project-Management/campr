@@ -24,10 +24,14 @@ class CreateType extends AbstractType
             ->add('workPackage', EntityType::class, [
                 'class' => WorkPackage::class,
                 'choice_label' => 'name',
+                'placeholder' => 'admin.workpackage.choice',
+                'translation_domain' => 'admin',
             ])
             ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'username',
+                'placeholder' => 'admin.user.choice',
+                'translation_domain' => 'admin',
             ])
             ->add('data', TextType::class, [
                 'required' => true,

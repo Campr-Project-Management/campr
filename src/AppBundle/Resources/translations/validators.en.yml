@@ -9,24 +9,21 @@ validation:
                 invalid: The sequence field should contain numbers greater than or equal to 0
         user:
             username:
-                not_blank: The username should not be blank
+                not_blank: The username field should not be blank
             email:
-                not_blank: The email should not be blank
+                not_blank: The email field should not be blank
                 email: Invalid email provided
             password:
-                match: The passwords do not match
-                not_blank: Password should not be blank
-                regex: Password must containt 1 upper case letter, 1 lower case letter, and 1 number
+                match: The password fields do not match
+                not_blank: Password fields should not be blank
+                regex: Password must contain 1 upper case letter, 1 lower case letter, and 1 number
             first_name:
-                not_blank: The first name should not be blank
+                not_blank: The first name field should not be blank
             last_name:
-                not_blank: The last name should not be blank
+                not_blank: The last name field should not be blank
             unique:
                 username: The username is already used
                 email: The email is already used
-        schedule:
-            name:
-                not_blank: The name should not be blank
         raci:
             data:
                 not_blank: The data field should not be blank
@@ -38,6 +35,11 @@ validation:
                 not_blank: The number field should not be blank
                 length: Your project number cannot be longer than 128 characters
                 unique: That number is taken
+        project_user:
+            user:
+                not_blank: The name field should not be blank. Choose one user
+            project:
+                not_blank: The project field should not be blank. Choose one project
         project_department:
             abbreviation:
                 not_blank: The abbreviation should not be blank
@@ -66,9 +68,9 @@ validation:
                 not_blank: The measure should not be blank
         todo:
             title:
-                not_blank: The title should not be blank
+                not_blank: The title field should not be blank
             description:
-                not_blank: The description should not be blank
+                not_blank: The description field should not be blank
         meeting_agenda:
             topic:
                 not_blank: The topic field should not be blank
@@ -96,14 +98,18 @@ validation:
                 not_blank: The working field should not be blank
         assignment:
             milestone:
-                not_blank: The milestone should not be blank
+                not_blank: The milestone field should not be blank
+                greater_than_or_equal: The milestone field should contain numbers greater than or equal to 0
             work_percent:
-                not_blank: The work percent complet should not be blank
+                not_blank: The work complete percent field should not be blank
+                greater_than_or_equal: The work percent field should contain numbers greater than or equal to 0
         timephase:
             type:
-                not_blank: The type should not be blank
+                not_blank: The type field should not be blank
+                greater_than_or_equal: The type field should contain numbers greater than or equal to 0
             unit:
-                not_blank: The unit should not be blank
+                not_blank: The unit field should not be blank
+                greater_than_or_equal: The unit field should contain numbers greater than or equal to 0
             value:
                 not_blank: The value field should not be blank
         document:
@@ -126,5 +132,10 @@ validation:
             file:
                 not_blank: A document should be selected
         working_time:
-            from_time:
-                not_blank: The from time field should not be blank
+            day:
+                not_blank: The day field should not be blank
+        note:
+            title:
+                not_blank: The title field should not be blank
+            description:
+                not_blank: The description field should not be blank

@@ -30,6 +30,7 @@
                             'method': 'POST',
                             'action': path('app_admin_assignment_create'),
                             'attr': {
+                                'id': 'create-form',
                                 'class': 'form-horizontal',
                                 'novalidate': 'novalidate',
                             },
@@ -70,6 +71,15 @@
                         }
                     ) }}
                     {{ form_widget(
+                        form.percentWorkComplete,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'admin.assignment.create.percent_work'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
                         form.startedAt,
                         {
                             'attr': {
@@ -87,6 +97,16 @@
                                 'addon_front': 'calendar',
                             },
                             'label': 'admin.assignment.create.finished_at'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.confirmed,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                                'toggle': true
+                            },
+                            'label': 'admin.assignment.create.confirmed'|trans
                         }
                     ) }}
 

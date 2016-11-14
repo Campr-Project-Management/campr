@@ -31,12 +31,14 @@ class CreateType extends AbstractType
                     ]),
                     new GreaterThanOrEqual([
                         'value' => 0,
+                        'message' => 'validation.constraints.timephase.type.greater_than_or_equal',
                     ]),
                 ],
             ])
             ->add('assignment', EntityType::class, [
                 'class' => Assignment::class,
                 'choice_label' => 'id',
+                'placeholder' => 'admin.assignment.choice',
                 'translation_domain' => 'admin',
             ])
             ->add('unit', IntegerType::class, [
@@ -47,6 +49,7 @@ class CreateType extends AbstractType
                     ]),
                     new GreaterThanOrEqual([
                         'value' => 0,
+                        'message' => 'validation.constraints.timephase.unit.greater_than_or_equal',
                     ]),
                 ],
             ])
@@ -59,10 +62,12 @@ class CreateType extends AbstractType
                 ],
             ])
             ->add('startedAt', DateType::class, [
+                'required' => false,
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
             ])
             ->add('finishedAt', DateType::class, [
+                'required' => false,
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
             ])
