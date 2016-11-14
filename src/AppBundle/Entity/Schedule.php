@@ -3,12 +3,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Schedule.
  *
  * @ORM\Table(name="schedule")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ScheduleRepository")
+ * @UniqueEntity(fields="name", message="validation.constraints.general_field.name.unique")
  */
 class Schedule
 {

@@ -33,35 +33,36 @@
                             'method': 'POST',
                             'action': path('app_admin_schedule_edit', {'id': id}),
                             'attr': {
+                                'id': 'edit-form',
                                 'class': 'form-horizontal',
                                 'novalidate': 'novalidate',
                             },
                         }
                     ) }}
-                    {% if form.vars.valid == false %}
-                        <div class="alert alert-danger">
-                            {% for field in form.children %}
-                                {{ form_errors(field) }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    {{ form_widget(
-                        form.name,
-                        {
-                            'attr': {
-                                'class': 'form-control input-sm',
-                            },
-                            'label': 'admin.schedule.create.name'|trans
-                        }
-                    ) }}
+                        {% if form.vars.valid == false %}
+                            <div class="alert alert-danger">
+                                {% for field in form.children %}
+                                    {{ form_errors(field) }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {{ form_widget(
+                            form.name,
+                            {
+                                'attr': {
+                                    'class': 'form-control input-sm',
+                                },
+                                'label': 'admin.schedule.create.name'|trans
+                            }
+                        ) }}
 
-                    {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
-                        with {
-                            'delete_path': 'app_admin_schedule_delete',
-                            'id': id,
-                        }
-                    %}
-                    <span class="hidden">{{ form_row(form._token) }}</span>
+                        {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
+                            with {
+                                'delete_path': 'app_admin_schedule_delete',
+                                'id': id,
+                            }
+                        %}
+                        <span class="hidden">{{ form_row(form._token) }}</span>
                     {{ form_end(form, {'render_rest': false}) }}
                 </div>
             </div>

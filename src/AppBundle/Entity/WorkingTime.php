@@ -67,7 +67,7 @@ class WorkingTime
      *
      * @return WorkingTime
      */
-    public function setFromTime(\DateTime $fromTime)
+    public function setFromTime(\DateTime $fromTime = null)
     {
         $this->fromTime = $fromTime;
 
@@ -102,7 +102,7 @@ class WorkingTime
      *
      * @return WorkingTime
      */
-    public function setToTime(\DateTime $toTime)
+    public function setToTime(\DateTime $toTime = null)
     {
         $this->toTime = $toTime;
 
