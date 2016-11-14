@@ -28,10 +28,14 @@ class CreateType extends AbstractType
             ->add('project', EntityType::class, [
                 'class' => Project::class,
                 'choice_label' => 'name',
+                'placeholder' => 'admin.project.choice',
+                'translation_domain' => 'admin',
             ])
             ->add('meeting', EntityType::class, [
                 'class' => Meeting::class,
                 'choice_label' => 'name',
+                'placeholder' => 'admin.meeting.choice',
+                'translation_domain' => 'admin',
             ])
             ->add('title', TextType::class, [
                 'required' => true,
@@ -52,6 +56,8 @@ class CreateType extends AbstractType
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'username',
+                'placeholder' => 'admin.user.choice',
+                'translation_domain' => 'admin',
             ])
             ->add('date', DateType::class, [
                 'required' => false,
@@ -66,6 +72,8 @@ class CreateType extends AbstractType
             ->add('status', EntityType::class, [
                 'class' => Status::class,
                 'choice_label' => 'name',
+                'placeholder' => 'admin.status.choice',
+                'translation_domain' => 'admin',
             ])
         ;
     }

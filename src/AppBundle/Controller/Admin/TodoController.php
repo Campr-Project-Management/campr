@@ -180,7 +180,7 @@ class TodoController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.todo.delete.success', [], 'admin')
+                    ->trans('admin.todo.delete.success.general', [], 'admin')
             )
         ;
 
