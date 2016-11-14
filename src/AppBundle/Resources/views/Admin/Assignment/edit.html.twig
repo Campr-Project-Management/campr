@@ -33,6 +33,7 @@
                             'method': 'POST',
                             'action': path('app_admin_assignment_edit', {'id': id}),
                             'attr': {
+                                'id': 'edit-form',
                                 'class': 'form-horizontal',
                                 'novalidate': 'novalidate',
                             },
@@ -78,7 +79,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.assignment.edit.percent_work'|trans
+                            'label': 'admin.assignment.create.percent_work'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -108,7 +109,7 @@
                                 'class': 'form-control input-sm',
                                 'toggle': true
                             },
-                            'label': 'admin.assignment.edit.confirmed'|trans
+                            'label': 'admin.assignment.create.confirmed'|trans
                         }
                     ) }}
 

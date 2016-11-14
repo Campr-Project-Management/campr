@@ -127,7 +127,10 @@ class WorkingTimeController extends Controller
      * @Route("/{id}/edit", name="app_admin_working_time_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Request $request
+     * @param WorkingTime $workingTime
+     * @param Request     $request
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction(WorkingTime $workingTime, Request $request)
     {
@@ -166,7 +169,10 @@ class WorkingTimeController extends Controller
      * @Route("/{id}/delete", name="app_admin_working_time_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @param WorkingTime $workingTime
+     * @param Request     $request
+     *
+     * @return RedirectResponse|JsonResponse
      */
     public function deleteAction(WorkingTime $workingTime, Request $request)
     {
