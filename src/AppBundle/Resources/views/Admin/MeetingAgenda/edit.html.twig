@@ -28,15 +28,16 @@
                 </div>
                 <div class="card-body card-padding">
                     {{ form_start(
-                    form,
-                    {
-                        'method': 'POST',
-                        'action': path('app_admin_meeting_agenda_edit', {'id': id}),
-                        'attr': {
-                        'class': 'form-horizontal',
-                        'novalidate': 'novalidate',
-                    },
-                    }
+                        form,
+                        {
+                            'method': 'POST',
+                            'action': path('app_admin_meeting_agenda_edit', {'id': id}),
+                            'attr': {
+                                'id': 'edit-form',
+                                'class': 'form-horizontal',
+                                'novalidate': 'novalidate',
+                            },
+                        }
                     ) }}
                     {% if form.vars.valid == false %}
                         <div class="alert alert-danger">
@@ -103,7 +104,7 @@
                                 'data-date-format': "HH:mm",
                                 'addon_front': 'time',
                             },
-                            'label': 'admin.meeting_agenda.create.start'|trans
+                            'label': 'admin.meeting_agenda.create.duration'|trans
                         }
                     ) }}
 

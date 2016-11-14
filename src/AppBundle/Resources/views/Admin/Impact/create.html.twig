@@ -30,6 +30,7 @@
                             'method': 'POST',
                             'action': path('app_admin_impact_create'),
                             'attr': {
+                                'id': 'create-form',
                                 'class': 'form-horizontal',
                                 'novalidate': 'novalidate',
                             },
@@ -49,6 +50,15 @@
                                 'class': 'form-control input-sm',
                             },
                             'label': 'admin.impact.create.name'|trans,
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.sequence,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'admin.impact.create.sequence'|trans,
                         }
                     ) }}
 

@@ -3,12 +3,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * RiskStrategy.
  *
  * @ORM\Table(name="risk_strategy")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RiskStrategyRepository")
+ * @UniqueEntity(fields="name", message="validation.constraints.general_field.name.unique")
  */
 class RiskStrategy
 {
