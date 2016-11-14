@@ -134,7 +134,7 @@ class MeetingAgendaController extends Controller
     public function editAction(MeetingAgenda $meetingAgenda, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(EditType::class, $meetingAgenda);
+        $form = $this->createForm(CreateType::class, $meetingAgenda);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

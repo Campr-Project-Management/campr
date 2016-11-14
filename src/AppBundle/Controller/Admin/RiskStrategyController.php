@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\RiskStrategy;
 use AppBundle\Form\RiskStrategy\CreateType;
-use AppBundle\Form\RiskStrategy\EditType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -118,7 +117,7 @@ class RiskStrategyController extends Controller
     }
 
     /**
-     * @Route("/edit/{id}", name="app_admin_risk_strategy_edit", options={"expose"=true})
+     * @Route("/{id}/edit", name="app_admin_risk_strategy_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
      * @param RiskStrategy $riskStrategy
@@ -129,7 +128,7 @@ class RiskStrategyController extends Controller
     public function editAction(RiskStrategy $riskStrategy, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(EditType::class, $riskStrategy);
+        $form = $this->createForm(CreateType::class, $riskStrategy);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -160,7 +159,7 @@ class RiskStrategyController extends Controller
     }
 
     /**
-     * @Route("/delete/{id}", name="app_admin_risk_strategy_delete", options={"expose"=true})
+     * @Route("/{id}/delete", name="app_admin_risk_strategy_delete", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param RiskStrategy $riskStrategy
@@ -180,7 +179,7 @@ class RiskStrategyController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.risk_strategy.delete.success', [], 'admin')
+                    ->trans('admin.risk_strategy.delete.success.general', [], 'admin')
             )
         ;
 

@@ -27,7 +27,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.workpackage.pui.not_blank',
+                        'message' => 'validation.constraints.workpackage.puid.not_blank',
                     ]),
                 ],
             ])
@@ -35,27 +35,35 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.workpackage.name.not_blank',
+                        'message' => 'validation.constraints.general_field.name.not_blank',
                     ]),
                 ],
             ])
             ->add('parent', EntityType::class, [
                 'class' => WorkPackage::class,
                 'choice_label' => 'name',
+                'placeholder' => 'admin.workpackage.choice',
+                'translation_domain' => 'admin',
             ])
             ->add('colorStatus', EntityType::class, [
                 'class' => ColorStatus::class,
                 'choice_label' => 'name',
+                'placeholder' => 'admin.color_status.choice',
+                'translation_domain' => 'admin',
             ])
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'username',
+                'placeholder' => 'admin.user.choice',
+                'translation_domain' => 'admin',
             ])
             ->add('scheduledStartAt', DateType::class, [
+                'required' => false,
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
             ])
             ->add('scheduledFinishAt', DateType::class, [
+                'required' => false,
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
             ])
