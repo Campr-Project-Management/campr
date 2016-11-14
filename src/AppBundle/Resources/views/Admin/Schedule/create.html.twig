@@ -30,31 +30,32 @@
                             'method': 'POST',
                             'action': path('app_admin_schedule_create'),
                             'attr': {
+                                'id': 'create-form',
                                 'class': 'form-horizontal',
                                 'novalidate': 'novalidate',
                             },
                         }
                     ) }}
-                    {% if form.vars.valid == false %}
-                        <div class="alert alert-danger">
-                            {% for field in form.children %}
-                                {{ form_errors(field) }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    {{ form_widget(
-                        form.name,
-                        {
-                            'attr': {
-                                'class': 'form-control input-sm',
-                            },
-                            'label': 'admin.schedule.create.name'|trans
-                        }
-                    ) }}
+                        {% if form.vars.valid == false %}
+                            <div class="alert alert-danger">
+                                {% for field in form.children %}
+                                    {{ form_errors(field) }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {{ form_widget(
+                            form.name,
+                            {
+                                'attr': {
+                                    'class': 'form-control input-sm',
+                                },
+                                'label': 'admin.schedule.create.name'|trans
+                            }
+                        ) }}
 
-                    {% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
+                        {% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
 
-                    <span class="hidden">{{ form_row(form._token) }}</span>
+                        <span class="hidden">{{ form_row(form._token) }}</span>
                     {{ form_end(form, {'render_rest': false}) }}
                 </div>
             </div>

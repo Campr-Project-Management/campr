@@ -26,6 +26,8 @@ class Assignment
     /**
      * @var ArrayCollection|Timephase[]
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Timephase", mappedBy="assignment")
      */
     private $timephases;
@@ -102,6 +104,7 @@ class Assignment
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->timephases = new ArrayCollection();
     }
 
     /**
@@ -349,6 +352,17 @@ class Assignment
     public function getWorkPackageName()
     {
         return $this->workPackage ? $this->workPackage->getName() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("percentWorkComplete")
+     *
+     * @return string
+     */
+    public function getPercentWork()
+    {
+        return $this->percentWorkComplete;
     }
 
     /**

@@ -179,7 +179,7 @@ class RaciController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.raci.delete.success', [], 'admin')
+                    ->trans('admin.raci.delete.success.general', [], 'admin')
             )
         ;
 

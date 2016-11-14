@@ -23,22 +23,21 @@ class CreateType extends AbstractType
             ->add('day', EntityType::class, [
                 'class' => Day::class,
                 'choice_label' => 'id',
+                'placeholder' => 'admin.day.choice',
+                'translation_domain' => 'admin',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'validation.constraints.working_time.day.not_blank',
+                    ]),
+                ],
             ])
             ->add('fromTime', TimeType::class, [
+                'required' => false,
                 'widget' => 'single_text',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'validation.constraints.working_time.from_time.not_blank',
-                    ]),
-                ],
             ])
             ->add('toTime', TimeType::class, [
+                'required' => false,
                 'widget' => 'single_text',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'validation.constraints.working_time.from_time.not_blank',
-                    ]),
-                ],
             ])
         ;
     }
