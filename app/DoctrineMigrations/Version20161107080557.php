@@ -25,6 +25,9 @@ class Version20161107080557 extends AbstractMigration
         $this->addSql('ALTER TABLE message ADD CONSTRAINT FK_B6BD307F1819BCFA FOREIGN KEY (chat_room_id) REFERENCES chat_room (id)');
         $this->addSql('ALTER TABLE message ADD CONSTRAINT FK_B6BD307F78CED90B FOREIGN KEY (from_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE message ADD CONSTRAINT FK_B6BD307F30354A65 FOREIGN KEY (to_id) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE message ADD chat_key VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE message ADD deleted_from_at DATETIME DEFAULT NULL, ADD deleted_to_at DATETIME DEFAULT NULL');
+        $this->addSql('CREATE INDEX chat_key_idx ON message (chat_key)');
     }
 
     /**
@@ -37,6 +40,7 @@ class Version20161107080557 extends AbstractMigration
 
         $this->addSql('ALTER TABLE message DROP FOREIGN KEY FK_B6BD307F1819BCFA');
         $this->addSql('DROP TABLE chat_room');
+        $this->addSql('DROP INDEX chat_key_idx ON message');
         $this->addSql('DROP TABLE message');
     }
 }

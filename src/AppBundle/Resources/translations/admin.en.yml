@@ -1333,3 +1333,4 @@ admin:
         messages: Messages
         no_chat_rooms: Chat list is empty for this project
         no_private_messages: There are no private messages on this project
+        delete_messages: Messages successfully deleted!
