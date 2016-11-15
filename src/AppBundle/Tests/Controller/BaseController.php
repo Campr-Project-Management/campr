@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Tests\Controller\Admin;
+namespace AppBundle\Tests\Controller;
 
 use AppBundle\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
