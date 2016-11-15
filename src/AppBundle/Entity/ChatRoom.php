@@ -165,7 +165,7 @@ class ChatRoom
     /**
      * Get project.
      *
-     * @return 4Project
+     * @return Project
      */
     public function getProject()
     {
@@ -206,5 +206,10 @@ class ChatRoom
     public function getMessages()
     {
         return $this->messages;
+    }
+
+    public function getLastMessage()
+    {
+        return $this->messages->last();
     }
 }

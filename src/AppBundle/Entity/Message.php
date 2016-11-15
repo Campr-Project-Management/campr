@@ -7,7 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Schedule.
  *
- * @ORM\Table(name="message")
+ * @ORM\Table(
+ *     name="message",
+ *     indexes={@ORM\Index(name="chat_key_idx", columns={"chat_key"})}
+ * )
+ *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MessageRepository")
  */
 class Message
@@ -61,6 +65,13 @@ class Message
     private $body;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="chat_key", type="string", length=255, nullable=true)
+     */
+    private $chatKey;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
@@ -73,6 +84,20 @@ class Message
      * @ORM\Column(name="read_at", type="datetime", nullable=true)
      */
     private $readAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="deleted_from_at", type="datetime", nullable=true)
+     */
+    private $deletedFromAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="deleted_to_at", type="datetime", nullable=true)
+     */
+    private $deletedToAt;
 
     public function __construct()
     {
@@ -255,5 +280,77 @@ class Message
     public function getTo()
     {
         return $this->to;
+    }
+
+    /**
+     * Set body.
+     *
+     * @param string $chatKey
+     *
+     * @return Message
+     */
+    public function setChatKey($chatKey)
+    {
+        $this->chatKey = $chatKey;
+
+        return $this;
+    }
+
+    /**
+     * Get chatKey.
+     *
+     * @return string
+     */
+    public function getChatKey()
+    {
+        return $this->chatKey;
+    }
+
+    /**
+     * Set deletedFromAt.
+     *
+     * @param \DateTime $deletedFromAt
+     *
+     * @return Message
+     */
+    public function setDeletedFromAt(\DateTime $deletedFromAt = null)
+    {
+        $this->deletedFromAt = $deletedFromAt;
+
+        return $this;
+    }
+
+    /**
+     * Get deletedFromAt.
+     *
+     * @return \DateTime
+     */
+    public function getDeletedFromAt()
+    {
+        return $this->deletedFromAt;
+    }
+
+    /**
+     * Set deletedToAt.
+     *
+     * @param \DateTime $deletedToAt
+     *
+     * @return Message
+     */
+    public function setDeletedToAt(\DateTime $deletedToAt = null)
+    {
+        $this->deletedToAt = $deletedToAt;
+
+        return $this;
+    }
+
+    /**
+     * Get deletedToAt.
+     *
+     * @return \DateTime
+     */
+    public function getDeletedToAt()
+    {
+        return $this->deletedToAt;
     }
 }
