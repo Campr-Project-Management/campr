@@ -4,6 +4,7 @@ namespace AppBundle\Tests\Controller\Admin;
 
 use AppBundle\Entity\Day;
 use AppBundle\Entity\WorkingTime;
+use AppBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
