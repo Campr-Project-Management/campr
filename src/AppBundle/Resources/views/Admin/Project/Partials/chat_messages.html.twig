@@ -1,0 +1,17 @@
+<div class="mbl-messages c-overflow">
+    {% for message in messages %}
+        <div class="mblm-item {% if app.user == message.from %}mblm-item-right{% else %}mblm-item-left{% endif %}">
+            {% if not (private is defined and private) %}
+                <small>
+                    {% if app.user.username != message.from.username %}
+                        <a class="user-chat" data-id="{{ message.from.id }}">@{{ message.from.username }}</a>
+                    {% else %}
+                        @{{ message.from.username }}
+                    {% endif  %}
+                </small>
+            {% endif %}
+            <div>{{ message.body }}</div>
+            <small>{{ message.createdAt|chat_date }}</small>
+        </div>
+    {% endfor %}
+</div>

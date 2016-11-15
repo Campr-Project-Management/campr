@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: bundles/gos_web_socket.yml }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -64,6 +65,17 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
+doctrine_cache:
+    providers:
+        redis_cache:
+            redis:
+                host: 127.0.0.1
+                port: 6379
+                database: 3
+        websocket_cache_client:
+            type: redis
+            alias: gos_web_socket.client_storage.driver.redis
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
@@ -98,13 +110,3 @@ lexik_jwt_authentication:
 # VichUploaderBundle
 vich_uploader:
     db_driver: orm
-
-
-# GoS Web Socket #
-gos_web_socket:
-    server:
-        port: 1558          #The port the socket server will listen on
-        host: 0.0.0.0       #The host ip to bind to
-        router:
-            resources:
-                - '@AppBundle/Resources/config/pubsub/routing.yml'

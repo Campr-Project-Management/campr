@@ -278,4 +278,107 @@ class ProjectControllerTest extends BaseController
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
+
+    public function testChatAction()
+    {
+        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
+        $this->login($this->user);
+        $this->assertNotNull($this->user, 'User not found');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/project/1/chat');
+        $this->assertEquals(1, $crawler->filter('section#content')->count());
+        $this->assertContains('<div class="container container-alt">', $crawler->html());
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testChatMessagesAction()
+    {
+        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
+        $this->login($this->user);
+        $this->assertNotNull($this->user, 'User not found');
+
+        $this->client->request(Request::METHOD_GET, 'admin/project/1/chat/1/messages');
+        $response = $this->client->getResponse();
+        $html = json_decode($response->getContent(), true);
+        $this->assertContains('<div class="mbl-messages c-overflow">', $html);
+        $this->assertEquals(3, substr_count($html, '<a class="user-chat" data-id='));
+        $this->assertEquals(3, substr_count($html, '<div class="mblm-item mblm-item-left">'));
+    }
+
+    public function testChatPrivateMessagesAction()
+    {
+        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
+        $this->login($this->getUserByUsername('superadmin'));
+        $this->assertNotNull($this->user, 'User not found');
+
+        $this->client->request(Request::METHOD_GET, 'admin/project/1/chat/5/private-messages');
+        $response = $this->client->getResponse();
+        $html = json_decode($response->getContent(), true);
+        $this->assertContains('<div class="mbl-messages c-overflow">', $html);
+        $this->assertEquals(4, substr_count($html, '<div class="mblm-item mblm-item-right">'));
+    }
+
+    public function testDeletePrivateMessagesAction()
+    {
+        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
+        $this->login($this->getUserByUsername('superadmin'));
+        $this->assertNotNull($this->user, 'User not found');
+
+        $this->client->request(Request::METHOD_GET, 'admin/project/1/chat/5/delete-private-messages');
+        $html = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertSame(['success' => 'Messages successfully deleted!'], $html);
+    }
+
+    /**
+     * @dataProvider getDataForTestParticipantsAction
+     */
+    public function testParticipantsAction($expected)
+    {
+        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
+        $this->login($this->user);
+        $this->assertNotNull($this->user, 'User not found');
+
+        $this->client->request(Request::METHOD_GET, '/admin/project/1/participants');
+
+        $this->assertEquals(json_encode($expected), $this->client->getResponse()->getContent());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForTestParticipantsAction()
+    {
+        return [
+            [
+                [
+                    [
+                        'id' => 1,
+                        'username' => 'superadmin',
+                    ],
+                    [
+                        'id' => 2,
+                        'username' => 'admin',
+                    ],
+                    [
+                        'id' => 3,
+                        'username' => 'user3',
+                    ],
+                    [
+                        'id' => 4,
+                        'username' => 'user4',
+                    ],
+                    [
+                        'id' => 5,
+                        'username' => 'user5',
+                    ],
+                    [
+                        'id' => 6,
+                        'username' => 'user6',
+                    ],
+                ],
+            ],
+        ];
+    }
 }
