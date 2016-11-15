@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\API;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -16,8 +15,6 @@ class UserController extends Controller
     /**
      * @Route("", name="app_api_default")
      * @Method({"GET"})
-     *
-     * @param Request $request
      *
      * @return JsonResponse
      */
