@@ -3,9 +3,8 @@
 namespace AppBundle\Tests\Services;
 
 use AppBundle\Services\MailerService;
-use Symfony\Component\HttpKernel\Tests\KernelTest;
 
-class MailerServiceTest extends KernelTest
+class MailerServiceTest extends \PHPUnit_Framework_TestCase
 {
     /** @var MailerService */
     private $mailer;
@@ -19,6 +18,9 @@ class MailerServiceTest extends KernelTest
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $template;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->swiftMailer = $this
@@ -108,5 +110,16 @@ class MailerServiceTest extends KernelTest
         return [
             ['templateName', 'to@email.com'],
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function tearDown()
+    {
+        $this->swiftMailer = null;
+        $this->twig = null;
+        $this->template = null;
+        $this->mailer = null;
     }
 }
