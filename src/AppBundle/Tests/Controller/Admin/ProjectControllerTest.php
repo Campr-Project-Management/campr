@@ -64,7 +64,7 @@ class ProjectControllerTest extends BaseController
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testIfNumberIsUniqueOnCreatePage()
+    public function testNumberIsUniqueOnCreatePage()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
         $this->login($this->user);
@@ -199,7 +199,7 @@ class ProjectControllerTest extends BaseController
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testIfNumberIsUniqueOnEditPage()
+    public function testNumberIsUniqueOnEditPage()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
         $this->login($this->user);

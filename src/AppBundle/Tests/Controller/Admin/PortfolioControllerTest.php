@@ -44,7 +44,7 @@ class PortfolioControllerTest extends BaseController
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testIfNameIsUniqueOnCreatePage()
+    public function testNameIsUniqueOnCreatePage()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
         $this->login($this->user);
@@ -149,7 +149,7 @@ class PortfolioControllerTest extends BaseController
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testIfNameIsUniqueOnEditPage()
+    public function testNameIsUniqueOnEditPage()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
         $this->login($this->user);

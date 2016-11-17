@@ -62,6 +62,15 @@
                         }
                     ) }}
                     {{ form_widget(
+                        form.progress,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'admin.workpackage.create.progress'|trans,
+                        }
+                    ) }}
+                    {{ form_widget(
                         form.parent,
                         {
                             'attr': {
@@ -89,6 +98,24 @@
                         }
                     ) }}
                     {{ form_widget(
+                        form.project,
+                        {
+                            'attr': {
+                                'class': 'selectpicker',
+                            },
+                            'label': 'admin.workpackage.create.project'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.calendar,
+                        {
+                            'attr': {
+                                'class': 'selectpicker',
+                            },
+                            'label': 'admin.workpackage.create.calendar'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
                         form.scheduledStartAt,
                         {
                             'attr': {
@@ -109,12 +136,71 @@
                         }
                     ) }}
                     {{ form_widget(
+                        form.forecastStartAt,
+                        {
+                            'attr': {
+                                'class': 'form-control date-picker',
+                                'addon_front': 'calendar',
+                            },
+                            'label': 'admin.workpackage.create.forecast_start'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.forecastFinishAt,
+                        {
+                            'attr': {
+                                'class': 'form-control date-picker',
+                                'addon_front': 'calendar',
+                            },
+                            'label': 'admin.workpackage.create.forecast_finish'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.actualStartAt,
+                        {
+                            'attr': {
+                                'class': 'form-control date-picker',
+                                'addon_front': 'calendar',
+                            },
+                            'label': 'admin.workpackage.create.actual_start'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.actualFinishAt,
+                        {
+                            'attr': {
+                                'class': 'form-control date-picker',
+                                'addon_front': 'calendar',
+                            },
+                            'label': 'admin.workpackage.create.actual_finish'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
                         form.content,
                         {
                             'attr': {
                                 'class': 'form-control',
                             },
                             'label': 'admin.workpackage.create.content'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                    form.results,
+                        {
+                            'attr': {
+                                'class': 'form-control',
+                            },
+                            'label': 'admin.workpackage.create.results'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.isKeyMilestone,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                                'toggle': true
+                            },
+                            'label': 'admin.workpackage.create.is_key_milestone'|trans
                         }
                     ) }}
 
