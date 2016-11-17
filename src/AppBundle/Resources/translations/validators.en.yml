@@ -30,6 +30,9 @@ validation:
         workpackage:
             puid:
                 not_blank: PUID should not be blank
+            progress:
+                not_blank: The progress field should not be blank
+                invalid: The progress field should contain numbers greater than or equal to 0
         project:
             number:
                 not_blank: The number field should not be blank
@@ -161,3 +164,8 @@ validation:
                 not_null: You must select a filesystem
             file:
               not_blank: You must select a file
+        meeting_participant:
+            meeting:
+                not_blank: A meeting should be selected
+            user:
+                not_blank: An user should be selected

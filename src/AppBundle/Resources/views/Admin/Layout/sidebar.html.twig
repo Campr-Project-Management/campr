@@ -153,9 +153,39 @@
                 {{ 'admin.document.list.title'|trans }}
             </a>
         </li>
+        <li>
             <a href="{{ path('app_admin_filesystem_list') }}">
                 <i class="zmdi zmdi-cloud-outline"></i>
                 {{ 'admin.filesystem.list.title'|trans }}
+            </a>
+        </li>
+        <li class="sub-menu">
+            <a href="{{ path('app_admin_meeting_list') }}" data-ma-action="submenu-toggle">
+                <i class="zmdi zmdi-accounts"></i>
+                {{ 'admin.meeting.list.title'|trans }}
+            </a>
+            <ul>
+                <li><a href="{{ path('app_admin_meeting_list') }}">{{ 'admin.meeting.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_meeting_agenda_list') }}">{{ 'admin.meeting_agenda.list.title'|trans }}</a></li>
+                <li><a href="{{ path('app_admin_meeting_participant_list') }}">{{ 'admin.meeting_participant.list.title'|trans }}</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="{{ path('app_admin_note_list') }}">
+                <i class="zmdi zmdi-comment-edit"></i>
+                {{ 'admin.note.list.title'|trans }}
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_admin_company_list') }}">
+                <i class="zmdi zmdi-case"></i>
+                {{ 'admin.company.list.title'|trans }}
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_admin_decision_list') }}">
+                <i class="zmdi zmdi-device-hub"></i>
+                {{ 'admin.decision.list.title'|trans }}
             </a>
         </li>
     </ul>

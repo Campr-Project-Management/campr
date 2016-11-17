@@ -182,9 +182,18 @@ admin:
             parent: Parent
             color: Color Status
             responsible: Responsible
+            progress: Progress
+            project: Project
+            calendar: Calendar
             schedule_start: Scheduled Start At
             schedule_finish: Scheduled Finish At
+            forecast_start: Forecast Start At
+            forecast_finish: Forecast Finish At
+            actual_start: Actual Start At
+            actual_finish: Actual Finish At
             content: Content
+            results: Results
+            is_key_milestone: Key milestone
             data: Data
             success: WorkPackage successfully created!
         edit:
@@ -695,6 +704,7 @@ admin:
                 first: Risk with ID
                 second: successfully edited!
     risk_category:
+        choice: Choose one category
         list:
             title: Risk Categories
             subtitle: List of risk categories
@@ -716,6 +726,7 @@ admin:
                 first: Risk category with ID
                 second: successfully edited!
     risk_strategy:
+        choice: Choose one strategy
         list:
             title: Risk Strategies
             subtitle: List of risk strategies
@@ -765,6 +776,7 @@ admin:
             date: Date
             due_date: Due Date
             status: Status
+            show_in_status_report: Show In Status Report
             create: Create
             success: Todo successfully created!
         edit:
@@ -812,6 +824,7 @@ admin:
                 name: Name
                 workpackage: WorkPackage
                 projectworkcosttype: ProjectWorkCostType
+                calendar: Calendar
                 base: Base
                 change: Change
                 actual: Actual
@@ -830,11 +843,17 @@ admin:
             name: Name
             workpackage: WorkPackage
             projectworkcosttype: ProjectWorkCostType
+            calendar: Calendar
             base: Base
             change: Change
             actual: Actual
             remaining: Remaining
             forecast: Forecast
+            is_generic: Generic
+            is_inactive: Inactive
+            is_enterprise: Enterprise
+            is_cost_resource: Cost resource
+            is_budget: Budget
             success: WorkPackage - ProjectWorkCostType successfully created!
         edit:
             title: Edit WorkPackage - ProjectWorkCostType
@@ -845,6 +864,7 @@ admin:
                 first: WorkPackage - ProjectWorkCostType with ID
                 second: successfully deleted!
     impact:
+        choice: Choose impact
         list:
             title: Impact
             subtitle: List of impacts
@@ -914,12 +934,12 @@ admin:
             meeting: Meeting
             user: User
             remark: Remark
-            success: Meeting participant successfully created!
-        edit:
-            title: Edit meeting participant
             is_present: Is Present
             is_excused: Is Excused
             in_distribution_list: In Distribution List
+            success: Meeting participant successfully created!
+        edit:
+            title: Edit meeting participant
             success: Meeting participant successfully edited!
         delete:
             success:
@@ -1267,8 +1287,8 @@ admin:
             title: Edit document
             success: Document successfully edited!
         delete:
-            general: Document successfully deleted!
             success:
+                general: Document successfully deleted!
                 first: Document with ID
     filesystem:
         driver:
