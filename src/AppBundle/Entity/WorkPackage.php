@@ -60,7 +60,7 @@ class WorkPackage
     private $progress = 0;
 
     /**
-     * @var WorkPackage|null
+     * @var Project|null
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="workPackages")
      * @ORM\JoinColumn(name="project_id")

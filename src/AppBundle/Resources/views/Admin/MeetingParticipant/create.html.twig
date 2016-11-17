@@ -71,6 +71,36 @@
                             'label': 'admin.meeting_participant.create.remark'|trans,
                         }
                     ) }}
+                    {{ form_widget(
+                        form.isPresent,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                                'toggle': true
+                            },
+                            'label': 'admin.meeting_participant.create.is_present'|trans,
+                    }
+                    ) }}
+                    {{ form_widget(
+                        form.isExcused,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                                'toggle': true
+                            },
+                            'label': 'admin.meeting_participant.create.is_excused'|trans,
+                    }
+                    ) }}
+                    {{ form_widget(
+                        form.inDistributionList,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                                'toggle': true
+                            },
+                            'label': 'admin.meeting_participant.create.in_distribution_list'|trans,
+                    }
+                    ) }}
 
                     {% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
 

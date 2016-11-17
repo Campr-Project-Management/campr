@@ -29,6 +29,7 @@ class CreateType extends AbstractType
             ])
             ->add('sequence', TextType::class, [
                 'required' => true,
+                'data' => 0,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'validation.constraints.general_field.sequence.not_blank',

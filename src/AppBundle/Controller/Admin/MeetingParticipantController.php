@@ -10,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\MeetingParticipant;
 use AppBundle\Form\MeetingParticipant\CreateType;
-use AppBundle\Form\MeetingParticipant\EditType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -135,7 +134,7 @@ class MeetingParticipantController extends Controller
     public function editAction(MeetingParticipant $meetingParticipant, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(EditType::class, $meetingParticipant);
+        $form = $this->createForm(CreateType::class, $meetingParticipant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -74,6 +74,15 @@
                         }
                     ) }}
                     {{ form_widget(
+                        form.calendar,
+                        {
+                            'attr': {
+                                'class': 'selectpicker',
+                            },
+                            'label': 'admin.wppcwct.create.calendar'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
                         form.base,
                         {
                             'attr': {
@@ -116,6 +125,56 @@
                                 'class': 'form-control input-sm',
                             },
                             'label': 'admin.wppcwct.create.forecast'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.isGeneric,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                                'toggle': true
+                            },
+                            'label': 'admin.wppcwct.create.is_generic'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.isInactive,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                                'toggle': true
+                            },
+                            'label': 'admin.wppcwct.create.is_inactive'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.isEnterprise,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                                'toggle': true
+                            },
+                            'label': 'admin.wppcwct.create.is_enterprise'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.isCostResource,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                                'toggle': true
+                            },
+                            'label': 'admin.wppcwct.create.is_cost_resource'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.isBudget,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                                'toggle': true
+                            },
+                            'label': 'admin.wppcwct.create.is_budget'|trans
                         }
                     ) }}
 

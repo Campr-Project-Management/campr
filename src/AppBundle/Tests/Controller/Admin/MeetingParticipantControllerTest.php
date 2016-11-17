@@ -26,7 +26,32 @@ class MeetingParticipantControllerTest extends BaseController
         $this->assertContains('name="create[user]"', $crawler->html());
         $this->assertContains('id="create_remark"', $crawler->html());
         $this->assertContains('name="create[remark]"', $crawler->html());
+        $this->assertContains('id="create_isPresent"', $crawler->html());
+        $this->assertContains('name="create[isPresent]"', $crawler->html());
+        $this->assertContains('id="create_isExcused"', $crawler->html());
+        $this->assertContains('name="create[isExcused]"', $crawler->html());
+        $this->assertContains('id="create_inDistributionList"', $crawler->html());
+        $this->assertContains('name="create[inDistributionList]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testFormValidationOnCreatePage()
+    {
+        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
+        $this->login($this->user);
+        $this->assertNotNull($this->user, 'User not found');
+
+        /** @var Crawler $crawler */
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/meeting-participant/create');
+
+        $form = $crawler->filter('#create-form')->first()->form();
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertContains('A meeting should be selected', $crawler->html());
+        $this->assertContains('An user should be selected', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -132,20 +157,41 @@ class MeetingParticipantControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/meeting-participant/1/edit');
 
-        $this->assertContains('id="edit_meeting"', $crawler->html());
-        $this->assertContains('name="edit[meeting]"', $crawler->html());
-        $this->assertContains('id="edit_user"', $crawler->html());
-        $this->assertContains('name="edit[user]"', $crawler->html());
-        $this->assertContains('id="edit_remark"', $crawler->html());
-        $this->assertContains('name="edit[remark]"', $crawler->html());
-        $this->assertContains('id="edit_isPresent"', $crawler->html());
-        $this->assertContains('name="edit[isPresent]"', $crawler->html());
-        $this->assertContains('id="edit_isExcused"', $crawler->html());
-        $this->assertContains('name="edit[isExcused]"', $crawler->html());
-        $this->assertContains('id="edit_inDistributionList"', $crawler->html());
-        $this->assertContains('name="edit[inDistributionList]"', $crawler->html());
+        $this->assertContains('id="create_meeting"', $crawler->html());
+        $this->assertContains('name="create[meeting]"', $crawler->html());
+        $this->assertContains('id="create_user"', $crawler->html());
+        $this->assertContains('name="create[user]"', $crawler->html());
+        $this->assertContains('id="create_remark"', $crawler->html());
+        $this->assertContains('name="create[remark]"', $crawler->html());
+        $this->assertContains('id="create_isPresent"', $crawler->html());
+        $this->assertContains('name="create[isPresent]"', $crawler->html());
+        $this->assertContains('id="create_isExcused"', $crawler->html());
+        $this->assertContains('name="create[isExcused]"', $crawler->html());
+        $this->assertContains('id="create_inDistributionList"', $crawler->html());
+        $this->assertContains('name="create[inDistributionList]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testFormValidationOnEditPage()
+    {
+        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
+        $this->login($this->user);
+        $this->assertNotNull($this->user, 'User not found');
+
+        /** @var Crawler $crawler */
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/meeting-participant/1/edit');
+
+        $form = $crawler->filter('#edit-form')->first()->form();
+        $form['create[meeting]'] = '';
+        $form['create[user]'] = '';
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertContains('A meeting should be selected', $crawler->html());
+        $this->assertContains('An user should be selected', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -159,7 +205,7 @@ class MeetingParticipantControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/meeting-participant/1/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['edit[remark]'] = 'remark1';
+        $form['create[remark]'] = 'remark1';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
