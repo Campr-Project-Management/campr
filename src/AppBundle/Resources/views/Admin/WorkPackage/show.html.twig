@@ -61,27 +61,27 @@
                                 </tr>
                                 <tr>
                                     <th>{{ 'admin.workpackage.list.table.schedule_start'|trans }}</th>
-                                    <td>{{ workPackage.scheduledStartAt|date('d/m/Y') }}</td>
+                                    <td>{{ workPackage.scheduledStartAt is empty ? '-' : workPackage.scheduledStartAt|date('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ 'admin.workpackage.list.table.schedule_finish'|trans }}</th>
-                                    <td>{{ workPackage.scheduledFinishAt|date('d/m/Y') }}</td>
+                                    <td>{{ workPackage.scheduledFinishAt is empty ? '-' : workPackage.scheduledFinishAt|date('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ 'admin.workpackage.list.table.forecast_start'|trans }}</th>
-                                    <td>{{ workPackage.forecastStartAt|date('d/m/Y') }}</td>
+                                    <td>{{ workPackage.forecastStartAt is empty ? '-' : workPackage.forecastStartAt|date('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ 'admin.workpackage.list.table.forecast_finish'|trans }}</th>
-                                    <td>{{ workPackage.forecastFinishAt|date('d/m/Y') }}</td>
+                                    <td>{{  workPackage.forecastFinishAt is empty ? '-' : workPackage.forecastFinishAt|date('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ 'admin.workpackage.list.table.actual_start'|trans }}</th>
-                                    <td>{{ workPackage.actualStartAt|date('d/m/Y') }}</td>
+                                    <td>{{ workPackage.actualFinishAt is empty ? '-' : workPackage.actualStartAt|date('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ 'admin.workpackage.list.table.actual_finish'|trans }}</th>
-                                    <td>{{ workPackage.actualFinishAt|date('d/m/Y') }}</td>
+                                    <td>{{ workPackage.actualFinishAt is empty ? '- ' : workPackage.actualFinishAt|date('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ 'admin.workpackage.list.table.content'|trans }}</th>
@@ -107,7 +107,7 @@
                                 </tr>
                                 <tr>
                                     <th>{{ 'admin.workpackage.list.table.updated_at'|trans }}</th>
-                                    <td>{{ workPackage.updatedAt|date('d/m/Y') }}</td>
+                                    <td>{{ workPackage.updatedAt is empty ? '-' : workPackage.updatedAt|date('d/m/Y') }}</td>
                                 </tr>
                             </tbody>
                         </table>
