@@ -14,7 +14,7 @@ class LoadRiskData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $responsible = $this->getReference('user2');
+        $responsible = $this->getReference('user3');
 
         for ($i = 1; $i <= 2; ++$i) {
             $dueDate = new \DateTime(sprintf('+%d days', $i + 1));
