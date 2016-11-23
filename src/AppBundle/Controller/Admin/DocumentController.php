@@ -57,7 +57,7 @@ class DocumentController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginate(Document::class, 'fileName', $requestParams);
+        $response = $dataTableService->paginateByColumn(Document::class, 'fileName', $requestParams);
 
         return new JsonResponse($response);
     }
