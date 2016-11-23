@@ -329,6 +329,25 @@ class UserControllerTest extends BaseController
         $this->em->flush();
     }
 
+    public function testDataTableOnListPage()
+    {
+        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
+        $this->login($this->user);
+        $this->assertNotNull($this->user, 'User not found');
+
+        /** @var Crawler $crawler */
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/user/list');
+
+        $this->assertEquals(1, $crawler->filter('#data-table-command')->count());
+        $this->assertContains('data-column-id="id"', $crawler->html());
+        $this->assertContains('data-column-id="username"', $crawler->html());
+        $this->assertContains('data-column-id="email"', $crawler->html());
+        $this->assertContains('data-column-id="commands"', $crawler->html());
+        $this->assertEquals(1, $crawler->filter('.zmdi-plus')->count());
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
     public function testTableStructureOnShowAction()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
