@@ -1,7 +1,9 @@
 <?php
 
-namespace AppBundle\Services;
+namespace AppBundle\EventListener;
 
+use Doctrine\Common\Persistence\Mapping\MappingException;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use AppBundle\Entity\Log;
@@ -26,7 +28,7 @@ class DBLogger
             if ($entity instanceof Log) {
                 continue;
             }
-
+            
             $changeSet = $uok->getEntityChangeSet($entity);
 
             $log = new Log();
@@ -57,18 +59,18 @@ class DBLogger
         }
     }
 
-    private function normalizeValue(\Doctrine\ORM\EntityManager $em, $value)
+    private function normalizeValue(EntityManager $em, $value)
     {
         if (is_object($value)) {
             $class = get_class($value);
             try {
                 $md = $em->getClassMetadata($class);
-
+                
                 return [
                     'class' => $md->getName(),
                     'id' => $value->getId(),
                 ];
-            } catch (\Doctrine\Common\Persistence\Mapping\MappingException $e) {
+            } catch (MappingException $e) {
             }
         }
 

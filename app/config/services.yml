@@ -46,13 +46,6 @@ services:
         arguments:
             - '@redis.client'
 
-    app.service.db_logger:
-        class: AppBundle\Services\DBLogger
-        tags:
-            - { name: doctrine.event_listener, event: onFlush }
-        arguments:
-            - "@security.token_storage"
-
     app.service.filesystem:
             class: AppBundle\Services\FileSystemService
             arguments:
@@ -86,6 +79,7 @@ services:
             - "@security.token_storage"
         tags:
             - { name: form.type }
+
 ### LISTENERS ###
     app.listener.updated_at:
         class: AppBundle\EventListener\UpdatedAtListener
@@ -107,3 +101,10 @@ services:
             tags :
                 - { name: doctrine.event_listener, event: prePersist }
                 - { name: doctrine.event_listener, event: preRemove }
+
+    app.listener.db_logger:
+        class: AppBundle\EventListener\DBLogger
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+        arguments:
+            - "@security.token_storage"
