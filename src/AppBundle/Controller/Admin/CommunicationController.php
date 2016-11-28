@@ -13,7 +13,7 @@ use AppBundle\Form\Communication\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * CommunicationController controller.
+ * Communication admin controller.
  *
  * @Route("/admin/communication")
  */
@@ -45,6 +45,8 @@ class CommunicationController extends Controller
     }
 
     /**
+     * Lists all Communication entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_communication_list_filtered")
      * @Method("POST")
      *
@@ -127,12 +129,12 @@ class CommunicationController extends Controller
      * @Route("/{id}/edit", name="app_admin_communication_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Communication $communication
      * @param Request       $request
+     * @param Communication $communication
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Communication $communication, Request $request)
+    public function editAction(Request $request, Communication $communication)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $communication);
@@ -169,9 +171,12 @@ class CommunicationController extends Controller
      * @Route("/{id}/delete", name="app_admin_communication_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
+     * @param Request       $request
+     * @param Communication $communication
+     *
+     * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(Communication $communication, Request $request)
+    public function deleteAction(Request $request, Communication $communication)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($communication);
@@ -182,7 +187,7 @@ class CommunicationController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

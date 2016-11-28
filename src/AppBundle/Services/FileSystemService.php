@@ -10,15 +10,31 @@ use AppBundle\Entity\Filesystem as FileSystemEntity;
 use Gaufrette\FilesystemMap;
 use Symfony\Component\HttpFoundation\File\File;
 
+/**
+ * Class FileSystemService
+ * Service used to handle operations on Filesystems.
+ */
 class FileSystemService
 {
     private $map;
 
+    /**
+     * FileSystemService constructor.
+     */
     public function __construct()
     {
         $this->map = new FilesystemMap();
     }
 
+    /**
+     * Creates new FileSystem entity based on a selected adapter.
+     *
+     * @param FileSystemEntity $fileSystem
+     *
+     * @return Filesystem
+     *
+     * @throws \Exception
+     */
     public function createFileSystem(FileSystemEntity $fileSystem)
     {
         $config = $fileSystem->getConfig();
@@ -53,11 +69,22 @@ class FileSystemService
         }
     }
 
+    /**
+     * Returns the map of filesystems.
+     *
+     * @return FilesystemMap
+     */
     public function getFileSystemMap()
     {
         return $this->map;
     }
 
+    /**
+     * Saves a media file into a filesystem.
+     *
+     * @param Media $media
+     * @param File  $file
+     */
     public function saveMediaFile(Media $media, File $file)
     {
         $fs = $this->getFileSystemMap()->get($media->getFileSystem()->getName());
@@ -65,6 +92,11 @@ class FileSystemService
         $fs->write($media->getPath(), file_get_contents($file->getPathName()));
     }
 
+    /**
+     * Removes a specific media from filesystem.
+     *
+     * @param Media $media
+     */
     public function removeMediaFile(Media $media)
     {
         $this

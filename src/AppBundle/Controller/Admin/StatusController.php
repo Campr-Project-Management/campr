@@ -13,11 +13,15 @@ use AppBundle\Form\Status\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * Status admin controller.
+ *
  * @Route("/admin/status")
  */
 class StatusController extends Controller
 {
     /**
+     * List all Status entities.
+     *
      * @Route("/list", name="app_admin_status_list")
      * @Method({"GET"})
      *
@@ -40,6 +44,8 @@ class StatusController extends Controller
     }
 
     /**
+     * Lists all Status entities filtered and paginated.
+     *
      * @Route("/list/filtered", name="app_admin_status_list_filtered", options={"expose"=true})
      * @Method("POST")
      *
@@ -77,6 +83,8 @@ class StatusController extends Controller
     }
 
     /**
+     * Create a new Status entity.
+     *
      * @Route("/create", name="app_admin_status_create")
      * @Method({"GET", "POST"})
      *
@@ -117,15 +125,17 @@ class StatusController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing Status entity.
+     *
      * @Route("/{id}/edit", name="app_admin_status_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Status  $status
      * @param Request $request
+     * @param Status  $status
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Status $status, Request $request)
+    public function editAction(Request $request, Status $status)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $status);
@@ -159,18 +169,29 @@ class StatusController extends Controller
     }
 
     /**
+     * Deletes a specific Status entity.
+     *
      * @Route("/{id}/delete", name="app_admin_status_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Status $status
+     * @param Request $request
+     * @param Status  $status
      *
      * @return RedirectResponse
      */
-    public function deleteAction(Status $status)
+    public function deleteAction(Request $request, Status $status)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($status);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message);
+        }
 
         $this
             ->get('session')

@@ -7,6 +7,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
+/**
+ * Insert database entries for Risk entity.
+ */
 class LoadRiskData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**

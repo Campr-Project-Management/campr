@@ -13,7 +13,7 @@ use AppBundle\Form\ProjectComplexity\CreateType as ProjectComplexityCreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * ProjectComplexity controller.
+ * ProjectComplexity admin controller.
  *
  * @Route("/admin/project-complexity")
  */
@@ -45,6 +45,8 @@ class ProjectComplexityController extends Controller
     }
 
     /**
+     * Lists all ProjectComplexity entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_project_complexity_list_filtered")
      * @Method("POST")
      *
@@ -176,12 +178,12 @@ class ProjectComplexityController extends Controller
      * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_complexity_delete")
      * @Method({"GET"})
      *
-     * @param ProjectComplexity $projectComplexity
      * @param Request           $request
+     * @param ProjectComplexity $projectComplexity
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ProjectComplexity $projectComplexity, Request $request)
+    public function deleteAction(Request $request, ProjectComplexity $projectComplexity)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectComplexity);
@@ -192,7 +194,7 @@ class ProjectComplexityController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

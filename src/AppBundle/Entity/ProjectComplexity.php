@@ -7,7 +7,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Complexity.
+ * ProjectComplexity.
  *
  * @ORM\Table(name="project_complexity")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectComplexityRepository")
@@ -66,6 +66,9 @@ class ProjectComplexity
      */
     private $updatedAt;
 
+    /**
+     * ProjectComplexity constructor.
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -136,7 +139,7 @@ class ProjectComplexity
      *
      * @return ProjectComplexity
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -160,7 +163,7 @@ class ProjectComplexity
      *
      * @return ProjectComplexity
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
@@ -202,6 +205,8 @@ class ProjectComplexity
     }
 
     /**
+     * Returns project name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      *
@@ -213,6 +218,8 @@ class ProjectComplexity
     }
 
     /**
+     * Returns createdAt date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("createdAt")
      *
@@ -224,6 +231,8 @@ class ProjectComplexity
     }
 
     /**
+     * Returns updatedAt date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("updatedAt")
      *

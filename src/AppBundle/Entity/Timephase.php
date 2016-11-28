@@ -222,6 +222,8 @@ class Timephase
     }
 
     /**
+     * Returns workpackage name of the assignment.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("assignment")
      *

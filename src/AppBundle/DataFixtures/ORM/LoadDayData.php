@@ -7,6 +7,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
+/**
+ * Insert database entries for Day entity.
+ */
 class LoadDayData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**

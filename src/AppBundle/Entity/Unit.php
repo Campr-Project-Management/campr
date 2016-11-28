@@ -63,7 +63,7 @@ class Unit
     private $updatedAt;
 
     /**
-     * Constructor.
+     * Unit constructor.
      */
     public function __construct()
     {
@@ -135,7 +135,7 @@ class Unit
      *
      * @return Unit
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -159,7 +159,7 @@ class Unit
      *
      * @return Unit
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
@@ -201,6 +201,8 @@ class Unit
     }
 
     /**
+     * Returns project name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      *

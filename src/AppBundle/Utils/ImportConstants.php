@@ -2,6 +2,10 @@
 
 namespace AppBundle\Utils;
 
+/**
+ * Class ImportConstants
+ * Constants used for project import.
+ */
 class ImportConstants
 {
     // TAGS

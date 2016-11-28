@@ -200,6 +200,8 @@ class MeetingParticipant
         return $this->meeting;
     }
     /**
+     * Returns meeting name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("meeting")
      *
@@ -235,6 +237,8 @@ class MeetingParticipant
     }
 
     /**
+     * Returns user username.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("user")
      *

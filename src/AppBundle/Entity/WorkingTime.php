@@ -85,6 +85,8 @@ class WorkingTime
     }
 
     /**
+     * Returns fromTime date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("fromTime")
      *
@@ -120,6 +122,8 @@ class WorkingTime
     }
 
     /**
+     * Returns toTime date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("toTime")
      *
@@ -155,6 +159,8 @@ class WorkingTime
     }
 
     /**
+     * Returns day's calendar name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("day")
      *
