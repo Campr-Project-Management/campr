@@ -66,6 +66,9 @@ class ProjectScope
      */
     private $updatedAt;
 
+    /**
+     * ProjectScope constructor.
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -136,7 +139,7 @@ class ProjectScope
      *
      * @return ProjectScope
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -160,7 +163,7 @@ class ProjectScope
      *
      * @return ProjectScope
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
@@ -202,6 +205,8 @@ class ProjectScope
     }
 
     /**
+     * Returns project name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      *
@@ -213,6 +218,8 @@ class ProjectScope
     }
 
     /**
+     * Returns createdAt date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("createdAt")
      *
@@ -224,6 +231,8 @@ class ProjectScope
     }
 
     /**
+     * Returns updatedAt date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("updatedAt")
      *

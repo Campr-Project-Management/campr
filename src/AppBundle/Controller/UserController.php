@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\User\LoginType;
 use AppBundle\Entity\User;
@@ -12,12 +13,20 @@ use AppBundle\Form\User\ChangePasswordType;
 use AppBundle\Form\User\RegisterType;
 
 /**
+ * User controller.
+ *
  * @Route("/user")
  */
 class UserController extends Controller
 {
     /**
+     * User registration.
+     *
      * @Route("/register", name="app_user_register")
+     *
+     * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function registerAction(Request $request)
     {
@@ -71,7 +80,13 @@ class UserController extends Controller
     }
 
     /**
+     * Activate a specific user based on token.
+     *
      * @Route("/activate/{token}", name="app_user_activate")
+     *
+     * @param string $token
+     *
+     * @return Response
      */
     public function activateAction($token)
     {
@@ -137,7 +152,13 @@ class UserController extends Controller
     }
 
     /**
+     * Resend user activation token.
+     *
      * @Route("/resend-activation/{token}", name="app_user_resend_activation")
+     *
+     * @param string $token
+     *
+     * @return RedirectResponse
      */
     public function resendActivationAction($token)
     {
@@ -174,7 +195,13 @@ class UserController extends Controller
     }
 
     /**
+     * Request a reset password token.
+     *
      * @Route("/request-reset", name="app_user_request_reset")
+     *
+     * @param Request $request
+     *
+     * @return Response|RedirectResponse
      */
     public function requestResetAction(Request $request)
     {
@@ -239,9 +266,16 @@ class UserController extends Controller
     }
 
     /**
+     * Reset user password based on token.
+     *
      * @Route("/reset-password/{token}", name="app_user_reset_password")
+     *
+     * @param Request $request
+     * @param string  $token
+     *
+     * @return Response|RedirectResponse
      */
-    public function resetPasswordAction($token, Request $request)
+    public function resetPasswordAction(Request $request, $token)
     {
         $em = $this->getDoctrine()->getManager();
         $user = $em

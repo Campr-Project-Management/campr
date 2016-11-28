@@ -13,7 +13,7 @@ use AppBundle\Form\Impact\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * ImpactController controller.
+ * Impact admin controller.
  *
  * @Route("/admin/impact")
  */
@@ -44,6 +44,8 @@ class ImpactController extends Controller
     }
 
     /**
+     * Lists all Impact entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_impact_list_filtered")
      * @Method("POST")
      *
@@ -123,15 +125,17 @@ class ImpactController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing Impact entity.
+     *
      * @Route("/{id}/edit", name="app_admin_impact_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Impact  $impact
      * @param Request $request
+     * @param Impact  $impact
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Impact $impact, Request $request)
+    public function editAction(Request $request, Impact $impact)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $impact);
@@ -165,15 +169,17 @@ class ImpactController extends Controller
     }
 
     /**
+     * Deletes a specific Impact entity.
+     *
      * @Route("/{id}/delete", name="app_admin_impact_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Impact  $impact
      * @param Request $request
+     * @param Impact  $impact
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(Impact $impact, Request $request)
+    public function deleteAction(Request $request, Impact $impact)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($impact);
@@ -184,7 +190,7 @@ class ImpactController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

@@ -13,11 +13,15 @@ use AppBundle\Form\Todo\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * Todo admin controller.
+ *
  * @Route("/admin/todo")
  */
 class TodoController extends Controller
 {
     /**
+     * List all Todo entities.
+     *
      * @Route("/list", name="app_admin_todo_list")
      * @Method({"GET"})
      *
@@ -40,6 +44,8 @@ class TodoController extends Controller
     }
 
     /**
+     * Lists all Todo entities filtered and paginated.
+     *
      * @Route("/list/filtered", name="app_admin_todo_list_filtered", options={"expose"=true})
      * @Method("POST")
      *
@@ -77,6 +83,8 @@ class TodoController extends Controller
     }
 
     /**
+     * Creates a new Todo entity.
+     *
      * @Route("/create", name="app_admin_todo_create")
      * @Method({"GET", "POST"})
      *
@@ -117,15 +125,17 @@ class TodoController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing Todo entity.
+     *
      * @Route("/{id}/edit", name="app_admin_todo_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Todo    $todo
      * @param Request $request
+     * @param Todo    $todo
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Todo $todo, Request $request)
+    public function editAction(Request $request, Todo $todo)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $todo);
@@ -163,15 +173,24 @@ class TodoController extends Controller
      * @Route("/{id}/delete", name="app_admin_todo_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Todo $todo
+     * @param Request $request
+     * @param Todo    $todo
      *
      * @return RedirectResponse
      */
-    public function deleteAction(Todo $todo)
+    public function deleteAction(Request $request, Todo $todo)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($todo);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message);
+        }
 
         $this
             ->get('session')

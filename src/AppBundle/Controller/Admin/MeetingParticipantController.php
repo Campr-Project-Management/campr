@@ -13,7 +13,7 @@ use AppBundle\Form\MeetingParticipant\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * MeetingParticipant controller.
+ * MeetingParticipant admin controller.
  *
  * @Route("/admin/meeting-participant")
  */
@@ -44,6 +44,8 @@ class MeetingParticipantController extends Controller
     }
 
     /**
+     * Lists all MeetingParticipant entities filtered and paginated.
+     *
      * @Route("/list/filtered", name="app_admin_meeting_participant_list_filtered", options={"expose"=true})
      * @Method("POST")
      *
@@ -123,15 +125,17 @@ class MeetingParticipantController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing MeetingParticipant entity.
+     *
      * @Route("/{id}/edit", name="app_admin_meeting_participant_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param MeetingParticipant $meetingParticipant
      * @param Request            $request
+     * @param MeetingParticipant $meetingParticipant
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(MeetingParticipant $meetingParticipant, Request $request)
+    public function editAction(Request $request, MeetingParticipant $meetingParticipant)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $meetingParticipant);
@@ -165,15 +169,17 @@ class MeetingParticipantController extends Controller
     }
 
     /**
+     * Deletes a specific MeetingParticipant entity.
+     *
      * @Route("/{id}/delete", name="app_admin_meeting_participant_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param MeetingParticipant $meetingParticipant
      * @param Request            $request
+     * @param MeetingParticipant $meetingParticipant
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(MeetingParticipant $meetingParticipant, Request $request)
+    public function deleteAction(Request $request, MeetingParticipant $meetingParticipant)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($meetingParticipant);
@@ -184,7 +190,7 @@ class MeetingParticipantController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

@@ -13,7 +13,7 @@ use AppBundle\Form\ProjectModule\CreateType as ProjectModuleCreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * ProjectModule controller.
+ * ProjectModule admin controller.
  *
  * @Route("/admin/project-module")
  */
@@ -45,6 +45,8 @@ class ProjectModuleController extends Controller
     }
 
     /**
+     * Lists all ProjectModule entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_module_list_filtered")
      * @Method("POST")
      *
@@ -177,12 +179,12 @@ class ProjectModuleController extends Controller
      * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_module_delete")
      * @Method({"GET"})
      *
-     * @param ProjectModule $projectModule
      * @param Request       $request
+     * @param ProjectModule $projectModule
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ProjectModule $projectModule, Request $request)
+    public function deleteAction(Request $request, ProjectModule $projectModule)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectModule);
@@ -193,7 +195,7 @@ class ProjectModuleController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

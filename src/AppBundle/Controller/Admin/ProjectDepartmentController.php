@@ -13,7 +13,7 @@ use AppBundle\Form\ProjectDepartment\CreateType as ProjectDepartmentCreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * ProjectDepartment controller.
+ * ProjectDepartment admin controller.
  *
  * @Route("/admin/project-department")
  */
@@ -45,6 +45,8 @@ class ProjectDepartmentController extends Controller
     }
 
     /**
+     * Lists all ProjectDepartment entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_project_department_list_filtered")
      * @Method("POST")
      *
@@ -176,12 +178,12 @@ class ProjectDepartmentController extends Controller
      * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_department_delete")
      * @Method({"GET"})
      *
-     * @param ProjectDepartment $projectDepartment
      * @param Request           $request
+     * @param ProjectDepartment $projectDepartment
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ProjectDepartment $projectDepartment, Request $request)
+    public function deleteAction(Request $request, ProjectDepartment $projectDepartment)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectDepartment);
@@ -192,7 +194,7 @@ class ProjectDepartmentController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

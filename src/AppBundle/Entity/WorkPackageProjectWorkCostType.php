@@ -151,6 +151,9 @@ class WorkPackageProjectWorkCostType
      */
     private $updatedAt;
 
+    /**
+     * WorkPackageProjectWorkCostType constructor.
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -312,6 +315,8 @@ class WorkPackageProjectWorkCostType
     }
 
     /**
+     * Returns createdAt date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("createdAt")
      *
@@ -371,6 +376,8 @@ class WorkPackageProjectWorkCostType
     }
 
     /**
+     * Returns workpackage name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("workPackage")
      *
@@ -406,6 +413,8 @@ class WorkPackageProjectWorkCostType
     }
 
     /**
+     * Returns projectWorkCostType name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectWorkCostType")
      *
