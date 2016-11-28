@@ -28,7 +28,7 @@ class DBLogger
             if ($entity instanceof Log) {
                 continue;
             }
-            
+
             $changeSet = $uok->getEntityChangeSet($entity);
 
             $log = new Log();
@@ -36,6 +36,7 @@ class DBLogger
             $log->setClass(get_class($entity));
             $oldValues = [];
             $newValues = [];
+
             foreach ($changeSet as $key => $value) {
                 $oldValues[$key] = $value[0];
                 $newValues[$key] = $value[1];
@@ -45,6 +46,7 @@ class DBLogger
             $log->setNewValue($this->normalizeValue($em, $newValues));
             if ($token = $this->tokenStorage->getToken()) {
                 $user = $token->getUser();
+
                 if ($user instanceof User) {
                     $user = $em
                         ->getRepository(User::class)
@@ -61,16 +63,18 @@ class DBLogger
 
     private function normalizeValue(EntityManager $em, $value)
     {
-        if (is_object($value)) {
-            $class = get_class($value);
-            try {
-                $md = $em->getClassMetadata($class);
-                
-                return [
-                    'class' => $md->getName(),
-                    'id' => $value->getId(),
-                ];
-            } catch (MappingException $e) {
+        foreach ($value as $key => $field) {
+            if (is_object($field) && !($field instanceof \DateTime)) {
+                try {
+                    $class = get_class($field);
+                    $md = $em->getClassMetadata($class);
+
+                    $value[$key] = [
+                        $md->getName(),
+                        $field->getId(),
+                    ];
+                } catch (MappingException $e) {
+                }
             }
         }
 
