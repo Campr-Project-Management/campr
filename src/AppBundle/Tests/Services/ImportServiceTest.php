@@ -54,9 +54,6 @@ class ImportServiceTest extends KernelTestCase
     /** @var string */
     private $path;
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUp()
     {
         self::bootKernel();
@@ -329,9 +326,6 @@ class ImportServiceTest extends KernelTestCase
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function tearDown()
     {
         parent::tearDown();
@@ -341,5 +335,6 @@ class ImportServiceTest extends KernelTestCase
         $this->entityManager = null;
         $this->path = null;
         $this->files = null;
+        $this->finder = null;
     }
 }
