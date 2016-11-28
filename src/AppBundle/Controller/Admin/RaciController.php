@@ -13,11 +13,15 @@ use AppBundle\Form\Raci\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * Raci admin controller.
+ *
  * @Route("/admin/raci")
  */
 class RaciController extends Controller
 {
     /**
+     * List all Raci entities.
+     *
      * @Route("/list", name="app_admin_raci_list")
      * @Method({"GET"})
      *
@@ -40,6 +44,8 @@ class RaciController extends Controller
     }
 
     /**
+     * Lists all Raci entities filtered and paginated.
+     *
      * @Route("/list/filtered", name="app_admin_raci_list_filtered", options={"expose"=true})
      * @Method("POST")
      *
@@ -57,7 +63,7 @@ class RaciController extends Controller
     }
 
     /**
-     * Displays Raci entity.
+     * Display a specific Raci entity.
      *
      * @Route("/{id}/show", name="app_admin_raci_show", options={"expose"=true})
      * @Method({"GET"})
@@ -77,6 +83,8 @@ class RaciController extends Controller
     }
 
     /**
+     * Creates a new Raci entity.
+     *
      * @Route("/create", name="app_admin_raci_create")
      * @Method({"GET", "POST"})
      *
@@ -117,15 +125,17 @@ class RaciController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing Raci entity.
+     *
      * @Route("/{id}/edit", name="app_admin_raci_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Raci    $raci
      * @param Request $request
+     * @param Raci    $raci
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Raci $raci, Request $request)
+    public function editAction(Request $request, Raci $raci)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $raci);
@@ -159,18 +169,29 @@ class RaciController extends Controller
     }
 
     /**
-     * @Route("/{id}/delete", name="app_admin_raci_delete", options={"expose"=true})
+     * Deletes a specific Raci entity.
+     *
+     * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_raci_delete")
      * @Method({"GET"})
      *
-     * @param Raci $raci
+     * @param Request $request
+     * @param Raci    $raci
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(Raci $raci)
+    public function deleteAction(Request $request, Raci $raci)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($raci);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message);
+        }
 
         $this
             ->get('session')

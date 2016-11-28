@@ -45,8 +45,8 @@ class MessageRepository extends BaseRepository
      * Returns undeleted private messages.
      *
      * @param Project $project
-     * @param $chatKey
      * @param User $user
+     * @param $chatKey
      *
      * @return array
      */

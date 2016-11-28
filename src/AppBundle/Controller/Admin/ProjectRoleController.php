@@ -13,7 +13,7 @@ use AppBundle\Form\ProjectRole\CreateType as ProjectRoleCreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * ProjectRole controller.
+ * ProjectRole admin controller.
  *
  * @Route("/admin/project-role")
  */
@@ -45,6 +45,8 @@ class ProjectRoleController extends Controller
     }
 
     /**
+     * Lists all ProjectRole entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_project_role_list_filtered")
      * @Method("POST")
      *
@@ -176,12 +178,12 @@ class ProjectRoleController extends Controller
      * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_role_delete")
      * @Method({"GET"})
      *
-     * @param ProjectRole $projectRole
      * @param Request     $request
+     * @param ProjectRole $projectRole
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ProjectRole $projectRole, Request $request)
+    public function deleteAction(Request $request, ProjectRole $projectRole)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectRole);
@@ -192,7 +194,7 @@ class ProjectRoleController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

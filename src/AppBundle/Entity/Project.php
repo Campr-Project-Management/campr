@@ -211,6 +211,9 @@ class Project
      */
     private $updatedAt;
 
+    /**
+     * Project constructor.
+     */
     public function __construct()
     {
         $this->calendars = new ArrayCollection();
@@ -334,7 +337,7 @@ class Project
      *
      * @return Project
      */
-    public function setCreatedAt(\DateTime $createdAt = null)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -644,6 +647,8 @@ class Project
     }
 
     /**
+     * Returns project category name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectCategory")
      *
@@ -655,6 +660,8 @@ class Project
     }
 
     /**
+     * Returns status name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("status")
      *
@@ -666,6 +673,8 @@ class Project
     }
 
     /**
+     * Returns portfolio name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("portfolio")
      *

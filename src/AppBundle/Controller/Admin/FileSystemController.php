@@ -25,6 +25,8 @@ class FileSystemController extends Controller
      *
      * @Route("/list", name="app_admin_filesystem_list")
      * @Method("GET")
+     *
+     * @return Response
      */
     public function listAction()
     {
@@ -44,6 +46,8 @@ class FileSystemController extends Controller
     }
 
     /**
+     * Display all filesystem filtered.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_filesystem_list_filtered")
      * @Method("POST")
      *
@@ -199,12 +203,12 @@ class FileSystemController extends Controller
      * @Route("/{id}", options={"expose"=true}, name="app_admin_filesystem_delete")
      * @Method({"GET"})
      *
-     * @param FileSystem $fileSystem
      * @param Request    $request
+     * @param FileSystem $fileSystem
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(FileSystem $fileSystem, Request $request)
+    public function deleteAction(Request $request, FileSystem $fileSystem)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($fileSystem);

@@ -7,6 +7,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
+/**
+ * Insert database entries for WorkingTime entity.
+ */
 class LoadWorkingTimeData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**

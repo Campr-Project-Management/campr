@@ -13,7 +13,7 @@ use AppBundle\Form\Decision\CreateType as DecisionCreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Decision controller.
+ * Decision admin controller.
  *
  * @Route("/admin/decision")
  */
@@ -45,6 +45,8 @@ class DecisionController extends Controller
     }
 
     /**
+     * Lists all Decision entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_decision_list_filtered")
      * @Method({"POST"})
      *
@@ -192,7 +194,7 @@ class DecisionController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this
