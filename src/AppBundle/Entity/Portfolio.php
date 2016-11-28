@@ -56,6 +56,9 @@ class Portfolio
      */
     private $updatedAt;
 
+    /**
+     * Portfolio constructor.
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -126,7 +129,7 @@ class Portfolio
      *
      * @return Portfolio
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -150,7 +153,7 @@ class Portfolio
      *
      * @return Portfolio
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
@@ -168,6 +171,8 @@ class Portfolio
     }
 
     /**
+     * Returns createdAt date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("createdAt")
      *
@@ -179,6 +184,8 @@ class Portfolio
     }
 
     /**
+     * Returns updatedAt date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("updatedAt")
      *

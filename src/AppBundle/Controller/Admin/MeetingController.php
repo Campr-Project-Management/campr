@@ -13,7 +13,7 @@ use AppBundle\Form\Meeting\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * MeetingController controller.
+ * Meeting admin controller.
  *
  * @Route("/admin/meeting")
  */
@@ -44,6 +44,8 @@ class MeetingController extends Controller
     }
 
     /**
+     * Lists all Meeting entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_meeting_list_filtered")
      * @Method("POST")
      *
@@ -123,15 +125,17 @@ class MeetingController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing Meeting entity.
+     *
      * @Route("/{id}/edit", name="app_admin_meeting_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Meeting $meeting
      * @param Request $request
+     * @param Meeting $meeting
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Meeting $meeting, Request $request)
+    public function editAction(Request $request, Meeting $meeting)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $meeting);
@@ -165,15 +169,17 @@ class MeetingController extends Controller
     }
 
     /**
+     * Deletes a specific Meeting entity.
+     *
      * @Route("/{id}/delete", name="app_admin_meeting_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Meeting $meeting
      * @param Request $request
+     * @param Meeting $meeting
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(Meeting $meeting, Request $request)
+    public function deleteAction(Request $request, Meeting $meeting)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($meeting);
@@ -184,7 +190,7 @@ class MeetingController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

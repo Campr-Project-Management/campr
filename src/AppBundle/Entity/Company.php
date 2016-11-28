@@ -49,6 +49,9 @@ class Company
      */
     private $updatedAt;
 
+    /**
+     * Company constructor.
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -137,6 +140,8 @@ class Company
     }
 
     /**
+     * Returns createdAt date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("createdAt")
      *
@@ -148,6 +153,8 @@ class Company
     }
 
     /**
+     * Returns updatedAt date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("updatedAt")
      *

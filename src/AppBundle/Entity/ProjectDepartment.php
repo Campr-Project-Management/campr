@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
+ * ProjectDepartment.
+ *
  * @ORM\Table(name="project_department")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectDepartmentRepository")
  */
@@ -76,6 +78,9 @@ class ProjectDepartment
      */
     private $updatedAt;
 
+    /**
+     * ProjectDepartment constructor.
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -194,7 +199,7 @@ class ProjectDepartment
      *
      * @return ProjectDepartment
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -218,7 +223,7 @@ class ProjectDepartment
      *
      * @return ProjectDepartment
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
@@ -260,6 +265,8 @@ class ProjectDepartment
     }
 
     /**
+     * Returns projectWorkCostType name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectWorkCostType")
      *
@@ -271,6 +278,8 @@ class ProjectDepartment
     }
 
     /**
+     * Returns createdAt date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("createdAt")
      *
@@ -282,6 +291,8 @@ class ProjectDepartment
     }
 
     /**
+     * Returns updatedAt date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("updatedAt")
      *

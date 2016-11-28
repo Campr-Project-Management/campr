@@ -2,6 +2,10 @@
 
 namespace AppBundle\Services;
 
+/**
+ * Class MailerService
+ * Service used for sending emails.
+ */
 class MailerService
 {
     private $mailer;
@@ -11,8 +15,11 @@ class MailerService
     private $parameters = [];
 
     /**
+     * MailerService constructor.
+     *
      * @param \Swift_Mailer     $mailer
      * @param \Twig_Environment $twig
+     * @param $fromParameters
      */
     public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, $fromParameters)
     {

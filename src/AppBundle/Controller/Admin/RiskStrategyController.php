@@ -13,11 +13,15 @@ use AppBundle\Form\RiskStrategy\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * RiskStrategy admin controller.
+ *
  * @Route("/admin/risk-strategy")
  */
 class RiskStrategyController extends Controller
 {
     /**
+     * List all RiskStrategy controller.
+     *
      * @Route("/list", name="app_admin_risk_strategy_list")
      * @Method({"GET"})
      *
@@ -40,6 +44,8 @@ class RiskStrategyController extends Controller
     }
 
     /**
+     * Lists all RiskStrategy entities filtered and paginated.
+     *
      * @Route("/list/filtered", name="app_admin_risk_strategy_list_filtered", options={"expose"=true})
      * @Method("POST")
      *
@@ -77,6 +83,8 @@ class RiskStrategyController extends Controller
     }
 
     /**
+     * Creates a new RiskStrategy entity.
+     *
      * @Route("/create", name="app_admin_risk_strategy_create")
      * @Method({"GET", "POST"})
      *
@@ -117,15 +125,17 @@ class RiskStrategyController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing RiskStrategy entity.
+     *
      * @Route("/{id}/edit", name="app_admin_risk_strategy_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param RiskStrategy $riskStrategy
      * @param Request      $request
+     * @param RiskStrategy $riskStrategy
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(RiskStrategy $riskStrategy, Request $request)
+    public function editAction(Request $request, RiskStrategy $riskStrategy)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $riskStrategy);
@@ -159,18 +169,29 @@ class RiskStrategyController extends Controller
     }
 
     /**
+     * Deletes a specific RiskStrategy entity.
+     *
      * @Route("/{id}/delete", name="app_admin_risk_strategy_delete", options={"expose"=true})
      * @Method({"GET"})
      *
+     * @param Request      $request
      * @param RiskStrategy $riskStrategy
      *
      * @return RedirectResponse
      */
-    public function deleteAction(RiskStrategy $riskStrategy)
+    public function deleteAction(Request $request, RiskStrategy $riskStrategy)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($riskStrategy);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message);
+        }
 
         $this
             ->get('session')

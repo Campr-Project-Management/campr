@@ -14,11 +14,15 @@ use AppBundle\Form\User\EditType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * User admin controller.
+ *
  * @Route("/admin/user")
  */
 class UserController extends Controller
 {
     /**
+     * List all user entities.
+     *
      * @Route("/list", name="app_admin_user_list")
      * @Method({"GET"})
      *
@@ -41,6 +45,8 @@ class UserController extends Controller
     }
 
     /**
+     * Lists all User entities filtered and paginated.
+     *
      * @Route("/list/filtered", name="app_admin_user_list_filtered", options={"expose"=true})
      * @Method("POST")
      *
@@ -78,6 +84,8 @@ class UserController extends Controller
     }
 
     /**
+     * Creates a new User entity.
+     *
      * @Route("/create", name="app_admin_user_create")
      * @Method({"GET", "POST"})
      *
@@ -119,15 +127,17 @@ class UserController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing User entity.
+     *
      * @Route("/{id}/edit", name="app_admin_user_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param User    $user
      * @param Request $request
+     * @param User    $user
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(User $user, Request $request)
+    public function editAction(Request $request, User $user)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(EditType::class, $user);
@@ -161,18 +171,29 @@ class UserController extends Controller
     }
 
     /**
+     * Deletes a specific User entity.
+     *
      * @Route("/{id}/delete", name="app_admin_user_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param User $user
+     * @param Request $request
+     * @param User    $user
      *
      * @return Response
      */
-    public function deleteAction(User $user)
+    public function deleteAction(Request $request, User $user)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message);
+        }
 
         $this
             ->get('session')

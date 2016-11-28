@@ -13,7 +13,7 @@ use AppBundle\Form\Day\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * DayController controller.
+ * Day admin controller.
  *
  * @Route("/admin/day")
  */
@@ -45,6 +45,8 @@ class DayController extends Controller
     }
 
     /**
+     * Lists all Day entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_day_list_filtered")
      * @Method("POST")
      *
@@ -127,12 +129,12 @@ class DayController extends Controller
      * @Route("/{id}/edit", name="app_admin_day_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Day     $day
      * @param Request $request
+     * @param Day     $day
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Day $day, Request $request)
+    public function editAction(Request $request, Day $day)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $day);
@@ -169,12 +171,12 @@ class DayController extends Controller
      * @Route("/{id}/delete", name="app_admin_day_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Day     $day
      * @param Request $request
+     * @param Day     $day
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(Day $day, Request $request)
+    public function deleteAction(Request $request, Day $day)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($day);
@@ -185,7 +187,7 @@ class DayController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

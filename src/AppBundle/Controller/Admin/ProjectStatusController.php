@@ -13,7 +13,7 @@ use AppBundle\Form\ProjectStatus\CreateType as ProjectStatusCreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * ProjectStatus controller.
+ * ProjectStatus admin controller.
  *
  * @Route("/admin/project-status")
  */
@@ -45,6 +45,8 @@ class ProjectStatusController extends Controller
     }
 
     /**
+     * Lists all ProjectStatus entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_project_status_list_filtered")
      * @Method("POST")
      *
@@ -176,12 +178,12 @@ class ProjectStatusController extends Controller
      * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_status_delete")
      * @Method({"GET"})
      *
-     * @param ProjectStatus $projectStatus
      * @param Request       $request
+     * @param ProjectStatus $projectStatus
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ProjectStatus $projectStatus, Request $request)
+    public function deleteAction(Request $request, ProjectStatus $projectStatus)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectStatus);
@@ -192,7 +194,7 @@ class ProjectStatusController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

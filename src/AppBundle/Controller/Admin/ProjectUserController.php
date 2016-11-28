@@ -13,7 +13,7 @@ use AppBundle\Form\ProjectUser\CreateType as ProjectUserCreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * ProjectUser controller.
+ * ProjectUser admin controller.
  *
  * @Route("/admin/project-user")
  */
@@ -45,6 +45,8 @@ class ProjectUserController extends Controller
     }
 
     /**
+     * Lists all ProjectUser entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_project_user_list_filtered")
      * @Method("POST")
      *
@@ -176,12 +178,12 @@ class ProjectUserController extends Controller
      * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_user_delete")
      * @Method({"GET"})
      *
-     * @param ProjectUser $projectUser
      * @param Request     $request
+     * @param ProjectUser $projectUser
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ProjectUser $projectUser, Request $request)
+    public function deleteAction(Request $request, ProjectUser $projectUser)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectUser);
@@ -192,7 +194,7 @@ class ProjectUserController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

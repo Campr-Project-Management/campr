@@ -13,18 +13,39 @@ use AppBundle\Entity\Day;
 use AppBundle\Entity\WorkingTime;
 use AppBundle\Utils\ImportConstants;
 
+/**
+ * Class ImportService
+ * Imports projects based on xml file.
+ */
 class ImportService
 {
+    /**
+     * ImportService constructor.
+     *
+     * @param EntityManager $em
+     */
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
     }
 
+    /**
+     * Check if given string has a date format.
+     *
+     * @param $string
+     *
+     * @return mixed
+     */
     private function checkIsDate($string)
     {
         return preg_match('/(?<!\d)\d{4}-\d{2}-\d{2}(?!\d)/', $string);
     }
 
+    /**
+     * Import project based on xml content.
+     *
+     * @param $content
+     */
     public function importProjects($content)
     {
         $xml = new \SimpleXMLElement($content);
@@ -69,6 +90,12 @@ class ImportService
         $this->em->flush();
     }
 
+    /**
+     * Import calendars based on xml content.
+     *
+     * @param $project
+     * @param $calendars
+     */
     public function importCalendars($project, $calendars)
     {
         if (is_array($calendars) && is_object($calendars['Calendar'])) {
@@ -107,6 +134,12 @@ class ImportService
         $this->em->flush();
     }
 
+    /**
+     * Import days based on xml content.
+     *
+     * @param $calendar
+     * @param $days
+     */
     public function importDays($calendar, $days)
     {
         if (is_array($days) && is_object($days['WeekDay'])) {
@@ -135,6 +168,12 @@ class ImportService
         $this->em->flush();
     }
 
+    /**
+     * Import work times based on xml content.
+     *
+     * @param $day
+     * @param $workingTimes
+     */
     public function importWorkingTimes($day, $workingTimes)
     {
         if (is_array($workingTimes) && is_object($workingTimes['WorkingTime'])) {
@@ -159,6 +198,12 @@ class ImportService
         $this->em->flush();
     }
 
+    /**
+     * Import work packages (tasks) based on xml content.
+     *
+     * @param $project
+     * @param $workPackages
+     */
     public function importWorkPackages($project, $workPackages)
     {
         if (is_array($workPackages) && is_object($workPackages['Task'])) {
@@ -211,6 +256,11 @@ class ImportService
         $this->em->flush();
     }
 
+    /**
+     * Import workPackagesProjectWorkCostTypes based on xml content.
+     *
+     * @param $workPackagesProjectWorkCostTypes
+     */
     public function importWorkPackageProjectWorkCostTypes($workPackagesProjectWorkCostTypes)
     {
         if (is_array($workPackagesProjectWorkCostTypes) && is_object($workPackagesProjectWorkCostTypes['Resource'])) {
@@ -249,6 +299,11 @@ class ImportService
         $this->em->flush();
     }
 
+    /**
+     * Import assignments based on xml content.
+     *
+     * @param $assignments
+     */
     public function importAssignments($assignments)
     {
         if (is_array($assignments) && is_object($assignments['Assignment'])) {
@@ -304,6 +359,12 @@ class ImportService
         $this->em->flush();
     }
 
+    /**
+     * Import timephases based on xml content.
+     *
+     * @param $assignment
+     * @param $timephasedData
+     */
     public function importTimephased($assignment, $timephasedData)
     {
         if (is_array($timephasedData) && is_string(key($timephasedData))) {

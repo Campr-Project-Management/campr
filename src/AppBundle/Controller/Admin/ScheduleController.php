@@ -13,11 +13,15 @@ use AppBundle\Form\Schedule\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * Schedule admin controller.
+ *
  * @Route("/admin/schedule")
  */
 class ScheduleController extends Controller
 {
     /**
+     * List all Schedule entity.
+     *
      * @Route("/list", name="app_admin_schedule_list")
      * @Method({"GET"})
      *
@@ -40,6 +44,8 @@ class ScheduleController extends Controller
     }
 
     /**
+     * Lists all Schedule entities filtered and paginated.
+     *
      * @Route("/list/filtered", name="app_admin_schedule_list_filtered", options={"expose"=true})
      * @Method("POST")
      *
@@ -77,6 +83,8 @@ class ScheduleController extends Controller
     }
 
     /**
+     * Creates a new Schedule entity.
+     *
      * @Route("/create", name="app_admin_schedule_create")
      * @Method({"GET", "POST"})
      *
@@ -117,15 +125,17 @@ class ScheduleController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing Schedule entity.
+     *
      * @Route("/{id}/edit", name="app_admin_schedule_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Schedule $schedule
      * @param Request  $request
+     * @param Schedule $schedule
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Schedule $schedule, Request $request)
+    public function editAction(Request $request, Schedule $schedule)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $schedule);
@@ -159,18 +169,29 @@ class ScheduleController extends Controller
     }
 
     /**
+     * Deletes a specific Schedule entity.
+     *
      * @Route("/{id}/delete", name="app_admin_schedule_delete", options={"expose"=true})
      * @Method({"GET"})
      *
+     * @param Request  $request
      * @param Schedule $schedule
      *
      * @return RedirectResponse
      */
-    public function deleteAction(Schedule $schedule)
+    public function deleteAction(Request $request, Schedule $schedule)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($schedule);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message);
+        }
 
         $this
             ->get('session')
