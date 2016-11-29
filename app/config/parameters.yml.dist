@@ -38,3 +38,4 @@ parameters:
     reset_token_expiration: P1D
     import_folder: '%kernel.root_dir%/Resources/import'
     documents_upload_folder: '%kernel.root_dir%/../web/uploads/documents'
+    tests_import_folder: '%kernel.root_dir%/../web/tests/import'
