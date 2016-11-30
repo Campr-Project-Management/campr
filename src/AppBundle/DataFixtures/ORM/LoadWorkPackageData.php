@@ -14,7 +14,7 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
      */
     public function load(ObjectManager $manager)
     {
-        $responsible = $this->getReference('user2');
+        $responsible = $this->getReference('user5');
         $startAt = new \DateTime();
 
         for ($i = 1; $i <= 2; ++$i) {
