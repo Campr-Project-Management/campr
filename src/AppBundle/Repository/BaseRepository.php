@@ -14,6 +14,15 @@ abstract class BaseRepository extends EntityRepository
             if (empty($value)) {
                 continue;
             }
+
+            if ($key === 'findIn') {
+                foreach ($criteria[$key] as $column => $vals) {
+                    $qb->andWhere($qb->expr()->in('q.'.$column, $vals));
+                }
+
+                continue;
+            }
+
             $qb->andWhere(
                 $qb->expr()->like(
                     'q.'.$key,
