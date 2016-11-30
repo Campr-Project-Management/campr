@@ -33,7 +33,8 @@ class ImportService
         foreach ($xml->children() as $tag => $element) {
             if (array_key_exists($tag, ImportConstants::PROJECT_KEY_FUNCTION)) {
                 if ($tag === ImportConstants::PROJECT_NAME_TAG) {
-                    if ($this->em->getRepository(Project::class)->findByName((string) $element)) {
+                    //if ($this->em->getRepository(Project::class)->findByName((string) $element)) {
+                    if ($this->em->getRepository(Project::class)->findBy(['name' => (string) $element])) {
                         return;
                     }
                 }
@@ -70,6 +71,11 @@ class ImportService
 
     public function importCalendars($project, $calendars)
     {
+        if (is_array($calendars) && is_object($calendars['Calendar'])) {
+            $calendar = $calendars['Calendar'];
+            $calendars['Calendar'] = [$calendar];
+        }
+
         foreach ($calendars['Calendar'] as $calendar) {
             $newCalendar = new Calendar();
             foreach ((array) $calendar as $calendarTag => $element) {
@@ -79,7 +85,7 @@ class ImportService
                         $newCalendar->$action((string) $element);
                     }
                 }
-                if ($calendarTag == ImportConstants::BASE_CALENDAR_TAG && $element == '-1') {
+                if ($calendarTag == ImportConstants::BASE_CALENDAR_TAG && $element != '-1') {
                     $baseCalendar = $this
                         ->em
                         ->getRepository(Calendar::class)
@@ -103,6 +109,11 @@ class ImportService
 
     public function importDays($calendar, $days)
     {
+        if (is_array($days) && is_object($days['WeekDay'])) {
+            $day = $days['WeekDay'];
+            $days['WeekDay'] = [$day];
+        }
+
         foreach ($days['WeekDay'] as $day) {
             $newDay = new Day();
             foreach ((array) $day as $dayTag => $element) {
@@ -116,15 +127,21 @@ class ImportService
                 if ($dayTag === ImportConstants::WORKING_TIMES_TAG) {
                     $this->importWorkingTimes($newDay, (array) $element);
                 }
-                $newDay->setCalendar($calendar);
-                $this->em->persist($newDay);
             }
+
+            $newDay->setCalendar($calendar);
+            $this->em->persist($newDay);
         }
         $this->em->flush();
     }
 
     public function importWorkingTimes($day, $workingTimes)
     {
+        if (is_array($workingTimes) && is_object($workingTimes['WorkingTime'])) {
+            $workingTime = $workingTimes['WorkingTime'];
+            $workingTimes['WorkingTime'] = [$workingTime];
+        }
+
         foreach ($workingTimes['WorkingTime'] as $workingTime) {
             $newWorkingTime = new WorkingTime();
             foreach ((array) $workingTime as $workingTag => $element) {
@@ -134,15 +151,21 @@ class ImportService
                         $newWorkingTime->$action(new \DateTime($element));
                     }
                 }
-                $newWorkingTime->setDay($day);
-                $this->em->persist($newWorkingTime);
             }
+
+            $newWorkingTime->setDay($day);
+            $this->em->persist($newWorkingTime);
         }
         $this->em->flush();
     }
 
     public function importWorkPackages($project, $workPackages)
     {
+        if (is_array($workPackages) && is_object($workPackages['Task'])) {
+            $workPackage = $workPackages['Task'];
+            $workPackages['Task'] = [$workPackage];
+        }
+
         foreach ($workPackages['Task'] as $workPackage) {
             $newWorkPackage = new WorkPackage();
             foreach ((array) $workPackage as $workPackageTag => $element) {
@@ -181,16 +204,20 @@ class ImportService
                         $newWorkPackage->setCalendar($calendar);
                     }
                 }
-
-                $newWorkPackage->setProject($project);
-                $this->em->persist($newWorkPackage);
             }
+            $newWorkPackage->setProject($project);
+            $this->em->persist($newWorkPackage);
         }
         $this->em->flush();
     }
 
     public function importWorkPackageProjectWorkCostTypes($workPackagesProjectWorkCostTypes)
     {
+        if (is_array($workPackagesProjectWorkCostTypes) && is_object($workPackagesProjectWorkCostTypes['Resource'])) {
+            $workPackagesProjectWorkCostType = $workPackagesProjectWorkCostTypes['Resource'];
+            $workPackagesProjectWorkCostTypes['Resource'] = [$workPackagesProjectWorkCostType];
+        }
+
         foreach ($workPackagesProjectWorkCostTypes['Resource'] as $workPackagesProjectWorkCostType) {
             $newWorkPackagesProjectWorkCostType = new WorkPackageProjectWorkCostType();
             foreach ((array) $workPackagesProjectWorkCostType as $workPackageTag => $element) {
@@ -216,14 +243,19 @@ class ImportService
                         $newWorkPackagesProjectWorkCostType->setCalendar($calendar);
                     }
                 }
-                $this->em->persist($newWorkPackagesProjectWorkCostType);
             }
+            $this->em->persist($newWorkPackagesProjectWorkCostType);
         }
         $this->em->flush();
     }
 
     public function importAssignments($assignments)
     {
+        if (is_array($assignments) && is_object($assignments['Assignment'])) {
+            $assignment = $assignments['Assignment'];
+            $assignments['Assignment'] = [$assignment];
+        }
+
         foreach ($assignments['Assignment'] as $assignment) {
             $newAssignment = new Assignment();
             foreach ((array) $assignment as $assignmentTag => $element) {
@@ -257,6 +289,7 @@ class ImportService
                         ->getRepository(WorkPackageProjectWorkCostType::class)
                         ->find((int) $element)
                     ;
+
                     if ($workPackageProjectWorkCostType) {
                         $newAssignment->setWorkPackageProjectWorkCostType($workPackageProjectWorkCostType);
                     }
@@ -265,14 +298,22 @@ class ImportService
                 if ($assignmentTag == ImportConstants::TIMEPHASED_TAG) {
                     $this->importTimephased($newAssignment, (array) $element);
                 }
-                $this->em->persist($newAssignment);
             }
+            $this->em->persist($newAssignment);
         }
         $this->em->flush();
     }
 
     public function importTimephased($assignment, $timephasedData)
     {
+        if (is_array($timephasedData) && is_string(key($timephasedData))) {
+            $node = new \SimpleXMLElement('<TimephaseData></TimephaseData>');
+            foreach ($timephasedData as $key => $value) {
+                $node->addChild($key, $value);
+            }
+            $timephasedData = [$node];
+        }
+
         foreach ((array) $timephasedData as $timephased) {
             $newTimephase = new Timephase();
             foreach ((array) $timephased as $timephasedTag => $element) {
@@ -287,11 +328,10 @@ class ImportService
                         }
                     }
                 }
-                $newTimephase->setAssignment($assignment);
             }
+            $newTimephase->setAssignment($assignment);
             $this->em->persist($newTimephase);
         }
-
         $this->em->flush();
     }
 }
