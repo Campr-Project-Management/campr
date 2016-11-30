@@ -6,6 +6,9 @@ parameters:
         from_name:
             info: "Info Campr"
             no-reply: "No Reply"
+    adapters:
+        admin.filesystem.driver.choice.local: "local_adapter"
+        admin.filesystem.driver.choice.dropbox: "dropbox_adapter"
 
 services:
     app.service.mailer:
@@ -14,10 +17,13 @@ services:
             - "@mailer"
             - "@twig"
             - "%emails%"
+
     app.service.user:
         class: AppBundle\Services\UserService
+
     app.service.request_parser:
         class: AppBundle\Services\RequestParserService
+
     app.service.data_table:
         class: AppBundle\Services\DataTableService
         arguments:
@@ -26,22 +32,31 @@ services:
             - "@jms_serializer"
             - "@fos_js_routing.encoder"
             - "@fos_js_routing.normalizer"
+
     app.service.import:
         class: AppBundle\Services\ImportService
         arguments:
             - "@doctrine.orm.entity_manager"
+
     redis.client:
         class: Predis\Client
+
     session.handler.redis:
         class: Snc\RedisBundle\Session\Storage\Handler\RedisSessionHandler
         arguments:
             - '@redis.client'
+
     app.service.db_logger:
         class: AppBundle\Services\DBLogger
         tags:
             - { name: doctrine.event_listener, event: onFlush }
         arguments:
             - "@security.token_storage"
+
+    app.service.filesystem:
+            class: AppBundle\Services\FileSystemService
+            arguments:
+                - "@knp_gaufrette.filesystem_map"
 
 ### FORM TYPES ###
     app.form.type.document.create:
@@ -50,6 +65,7 @@ services:
             - "@service_container"
         tags:
             - { name: form.type }
+
     app.form.type.document.edit:
             class: AppBundle\Form\Document\EditType
             arguments:
@@ -57,11 +73,25 @@ services:
             tags:
                 - { name: form.type }
 
+    app.form.filesystem.create_type:
+        class: AppBundle\Form\FileSystem\CreateType
+        arguments:
+            - "%adapters%"
+        tags:
+            - { name: form.type }
+
+    app.form.filesystem.media_upload_type:
+        class: AppBundle\Form\FileSystem\MediaUploadType
+        arguments:
+            - "@security.token_storage"
+        tags:
+            - { name: form.type }
 ### LISTENERS ###
     app.listener.updated_at:
         class: AppBundle\EventListener\UpdatedAtListener
         tags:
             - { name: doctrine.event_listener, event: preUpdate }
+
     app.listener.user:
         class: AppBundle\EventListener\UserListener
         arguments:
@@ -69,3 +99,11 @@ services:
             - '@security.password_encoder'
         tags :
             - { name: doctrine.event_listener, event: onFlush }
+
+    app.listener.media:
+            class: AppBundle\EventListener\MediaListener
+            arguments:
+                - '@app.service.filesystem'
+            tags :
+                - { name: doctrine.event_listener, event: prePersist }
+                - { name: doctrine.event_listener, event: preRemove }
