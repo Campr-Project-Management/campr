@@ -9,6 +9,7 @@ before_script:
   - php composer.phar install --quiet --prefer-dist --no-interaction
   - cp phpunit.xml.dist phpunit.xml
   - rm -rf web/uploads/test
+  - mkdir -p src/AppBundle/Tests/Resources/files/ && touch src/AppBundle/Tests/Resources/files/file.txt
   - bin/console doctrine:database:drop --if-exists --force --env=test
   - bin/console doctrine:database:create --env=test
   - bin/console doctrine:migrations:migrate --no-interaction --env=test
@@ -19,3 +20,6 @@ test:phpunit:
   stage: test
   script:
     - vendor/bin/phpunit -c . src
+
+after_script:
+  - rm -rf src/AppBundle/Tests/Resources/files/
