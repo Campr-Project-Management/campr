@@ -1,0 +1,57 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="card">
+        <div class="card-header bgm-teal">
+            <h2>{{ 'admin.filesystem.list.title'|trans }}<small>{{ 'admin.filesystem.list.subtitle'|trans }}</small></h2>
+            <a href="{{ path('app_admin_filesystem_create') }}">
+                <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
+            </a>
+        </div>
+        <div class="card-body">
+            {% for flash_message in app.session.flashBag.get('success') %}
+                <div id="general-alert" class="alert alert-success m-t-15">
+                    <strong>{{ flash_message }}</strong>
+                </div>
+            {% endfor %}
+            <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
+                <strong>
+                    {{ 'admin.filesystem.delete.success.first'|trans }}
+                    <span id="object-id">
+                        {% for flash_message in app.session.flashBag.get('success') %}
+                            {{ flash_message }}
+                        {% endfor %}
+                    </span>
+                    {{ 'admin.filesystem.delete.success.second'|trans }}
+                </strong>
+            </div>
+            <div class="table-responsive">
+                <table
+                        id="data-table-command"
+                        class="table table-condensed table-striped table-vmiddle"
+                        data-url="{{ path('app_admin_filesystem_list_filtered') }}"
+                        data-show="app_admin_filesystem_show"
+                        data-edit="app_admin_filesystem_edit"
+                        data-delete="app_admin_filesystem_delete">
+                    <thead>
+                    <tr>
+                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.filesystem.list.table.id'|trans }}</th>
+                        <th data-column-id="name">{{ 'admin.filesystem.list.table.name'|trans }}</th>
+                        <th data-column-id="driver">{{ 'admin.filesystem.list.table.driver'|trans }}</th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'admin.general.placeholder.actions'|trans }}</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <!-- Data Table -->
+    <script src="{{ asset('bundles/app/assets/js/data_table.js') }}"></script>
+    <script src="{{ asset('bundles/app/assets/js/alert_messages.js') }}"></script>
+{% endblock %}

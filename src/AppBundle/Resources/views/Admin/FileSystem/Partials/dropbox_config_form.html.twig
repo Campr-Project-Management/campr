@@ -1,0 +1,38 @@
+{% trans_default_domain 'admin' %}
+
+{{ form_widget(
+    form.key,
+    {
+        'attr': {
+            'class': 'form-control input-sm',
+        },
+        'label': 'admin.filesystem.create.adapter.dropbox_config.key'|trans,
+    }
+) }}
+{{ form_widget(
+    form.secret,
+    {
+        'attr': {
+            'class': 'form-control input-sm',
+        },
+        'label': 'admin.filesystem.create.adapter.dropbox_config.secret'|trans,
+}
+) }}
+{{ form_widget(
+    form.token,
+    {
+        'attr': {
+            'class': 'form-control input-sm',
+        },
+        'label': 'admin.filesystem.create.adapter.dropbox_config.token'|trans,
+    }
+) }}
+{{ form_widget(
+    form.tokenSecret,
+    {
+        'attr': {
+            'class': 'form-control input-sm',
+        },
+        'label': 'admin.filesystem.create.adapter.dropbox_config.token_secret'|trans,
+    }
+) }}

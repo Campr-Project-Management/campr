@@ -22,3 +22,4 @@ Vagrantfile
 .DS_Store
 /front/node_modules
 /app/config/parameters_test.yml
+src/AppBundle/Tests/Resources/

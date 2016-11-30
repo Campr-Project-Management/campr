@@ -9,7 +9,7 @@
             {% if attr.addon_front is defined %}
                 <span class="input-group-addon"><i class="zmdi zmdi-{{ attr.addon_front }}"></i></span>
             {% endif %}
-            <div class="fg-line">
+            <div class="fg-line {% if value is not empty %}fg-toggled{% endif %}">
                 {%- set type = type|default('text') -%}
                 <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
                 <label class="fg-label" for="{{ name }}">
@@ -118,10 +118,8 @@
                 {% endif %}
                 <input {{ block('widget_attributes') }} type="file">
             </span>
-            {% if data %}
-                <span class="fileinput-filename">{{ data }}</span>
-                <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>
-            {% endif %}
+            <span class="fileinput-filename">{{ data }}</span>
+            <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>
         </div>
     </div>
 {%- endblock file_widget -%}
