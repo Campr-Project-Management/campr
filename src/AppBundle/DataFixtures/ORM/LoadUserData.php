@@ -29,7 +29,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $superAdmin = new User();
         $superAdmin->setUsername('superadmin');
         $superAdmin->setFirstName('FirstName1');
-        $superAdmin->setLastName('LastName2');
+        $superAdmin->setLastName('LastName1');
         $superAdmin->setEmail('superadmin@trisoft.ro');
         $superAdmin->setPlainPassword('PasswordSuperAdmin');
         $superAdmin->setRoles(['ROLE_SUPER_ADMIN']);
@@ -48,7 +48,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $admin->setPassword($this->encodePassword($admin, $admin->getPlainPassword()));
         $manager->persist($admin);
 
-        for ($i = 2; $i <= 5; ++$i) {
+        for ($i = 3; $i <= 6; ++$i) {
             $user = (new User())
                 ->setUsername('user'.$i)
                 ->setFirstName('FirstName'.$i)

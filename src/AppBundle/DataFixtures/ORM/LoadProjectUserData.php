@@ -14,10 +14,10 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
      */
     public function load(ObjectManager $manager)
     {
-        $user = $this->getReference('user4');
+        $user = $this->getReference('user3');
         $project = $this->getReference('project1');
         $projectCategory = $this->getReference('project-category1');
-        $projectRole = $this->getReference('team-member');
+        $projectRole = $this->getReference('manager');
         $projectDepartment = $this->getReference('project-department1');
         $projectTeam = $this->getReference('project-team1');
 
@@ -31,10 +31,10 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
         ;
         $manager->persist($projectUser1);
 
-        $user = $this->getReference('user5');
-        $project = $this->getReference('project2');
+        $user = $this->getReference('user4');
+        $project = $this->getReference('project1');
         $projectCategory = $this->getReference('project-category2');
-        $projectRole = $this->getReference('team-participant');
+        $projectRole = $this->getReference('sponsor');
         $projectDepartment = $this->getReference('project-department2');
         $projectTeam = $this->getReference('project-team2');
 
@@ -47,6 +47,40 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
             ->setProjectTeam($projectTeam)
         ;
         $manager->persist($projectUser2);
+
+        $user = $this->getReference('user5');
+        $project = $this->getReference('project1');
+        $projectCategory = $this->getReference('project-category1');
+        $projectRole = $this->getReference('team-member');
+        $projectDepartment = $this->getReference('project-department1');
+        $projectTeam = $this->getReference('project-team1');
+
+        $projectUser3 = (new ProjectUser())
+            ->setUser($user)
+            ->setProject($project)
+            ->setProjectCategory($projectCategory)
+            ->setProjectRole($projectRole)
+            ->setProjectDepartment($projectDepartment)
+            ->setProjectTeam($projectTeam)
+        ;
+        $manager->persist($projectUser3);
+
+        $user = $this->getReference('user6');
+        $project = $this->getReference('project2');
+        $projectCategory = $this->getReference('project-category2');
+        $projectRole = $this->getReference('team-participant');
+        $projectDepartment = $this->getReference('project-department2');
+        $projectTeam = $this->getReference('project-team2');
+
+        $projectUser4 = (new ProjectUser())
+            ->setUser($user)
+            ->setProject($project)
+            ->setProjectCategory($projectCategory)
+            ->setProjectRole($projectRole)
+            ->setProjectDepartment($projectDepartment)
+            ->setProjectTeam($projectTeam)
+        ;
+        $manager->persist($projectUser4);
 
         $manager->flush();
     }
