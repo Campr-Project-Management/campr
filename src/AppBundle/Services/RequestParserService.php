@@ -19,6 +19,9 @@ class RequestParserService
     /** @var int */
     public $limit;
 
+    /**
+     * @param array $params
+     */
     public function parse($params)
     {
         $this->offset = intval(($params['current'] - 1) * $params['rowCount'], 10);
@@ -35,7 +38,7 @@ class RequestParserService
         if (!empty($params['searchPhrase'])) {
             $this->searchPhrase = $params['searchPhrase'];
         } else {
-            $key = null;
+            $this->searchPhrase = null;
         }
     }
 }
