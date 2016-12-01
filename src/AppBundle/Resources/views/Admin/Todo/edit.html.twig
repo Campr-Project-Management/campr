@@ -120,6 +120,16 @@
                             'label': 'admin.todo.create.status'|trans
                         }
                     ) }}
+                    {{ form_widget(
+                        form.showInStatusReport,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                                'toggle': true
+                            },
+                            'label': 'admin.todo.create.show_in_status_report'|trans,
+                        }
+                    ) }}
 
                     {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
                         with {

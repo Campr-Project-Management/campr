@@ -25,6 +25,7 @@ class CreateType extends AbstractType
             ->add('meeting', EntityType::class, [
                 'class' => Meeting::class,
                 'choice_label' => 'name',
+                'placeholder' => 'admin.meeting.choice',
                 'translation_domain' => 'admin',
             ])
             ->add('topic', TextType::class, [
@@ -38,9 +39,11 @@ class CreateType extends AbstractType
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'username',
+                'placeholder' => 'admin.user.choice',
                 'translation_domain' => 'admin',
             ])
             ->add('start', TimeType::class, [
+                'required' => false,
                 'widget' => 'single_text',
                 'constraints' => [
                     new NotBlank([
@@ -49,6 +52,7 @@ class CreateType extends AbstractType
                 ],
             ])
             ->add('end', TimeType::class, [
+                'required' => false,
                 'widget' => 'single_text',
                 'constraints' => [
                     new NotBlank([
@@ -57,6 +61,7 @@ class CreateType extends AbstractType
                 ],
             ])
             ->add('duration', TimeType::class, [
+                'required' => false,
                 'widget' => 'single_text',
                 'constraints' => [
                     new NotBlank([
