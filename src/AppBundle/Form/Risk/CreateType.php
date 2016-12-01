@@ -46,6 +46,8 @@ class CreateType extends AbstractType
                 'class' => Impact::class,
                 'required' => false,
                 'choice_label' => 'name',
+                'placeholder' => 'admin.impact.choice',
+                'translation_domain' => 'admin',
             ])
             ->add('cost', TextType::class, [
                 'required' => true,
@@ -83,11 +85,15 @@ class CreateType extends AbstractType
                 'class' => RiskStrategy::class,
                 'required' => false,
                 'choice_label' => 'name',
+                'placeholder' => 'admin.risk_strategy.choice',
+                'translation_domain' => 'admin',
             ])
             ->add('riskCategory', EntityType::class, [
                 'class' => RiskCategory::class,
                 'required' => false,
                 'choice_label' => 'name',
+                'placeholder' => 'admin.risk_category.choice',
+                'translation_domain' => 'admin',
             ])
             ->add('measure', TextareaType::class, [
                 'required' => true,
@@ -100,6 +106,8 @@ class CreateType extends AbstractType
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'username',
+                'placeholder' => 'admin.user.choice',
+                'translation_domain' => 'admin',
             ])
             ->add('dueDate', DateType::class, [
                 'widget' => 'single_text',

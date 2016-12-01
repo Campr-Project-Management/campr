@@ -36,6 +36,8 @@ class TodoControllerTest extends BaseController
         $this->assertContains('name="create[dueDate]"', $crawler->html());
         $this->assertContains('id="create_status"', $crawler->html());
         $this->assertContains('name="create[status]"', $crawler->html());
+        $this->assertContains('id="create_showInStatusReport"', $crawler->html());
+        $this->assertContains('name="create[showInStatusReport]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -172,6 +174,8 @@ class TodoControllerTest extends BaseController
         $this->assertContains('name="create[dueDate]"', $crawler->html());
         $this->assertContains('id="create_status"', $crawler->html());
         $this->assertContains('name="create[status]"', $crawler->html());
+        $this->assertContains('id="create_showInStatusReport"', $crawler->html());
+        $this->assertContains('name="create[showInStatusReport]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 
