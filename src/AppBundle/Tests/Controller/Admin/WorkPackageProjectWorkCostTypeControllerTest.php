@@ -25,6 +25,8 @@ class WorkPackageProjectWorkCostTypeControllerTest extends BaseController
         $this->assertContains('name="create[workPackage]"', $crawler->html());
         $this->assertContains('id="create_projectWorkCostType"', $crawler->html());
         $this->assertContains('name="create[projectWorkCostType]"', $crawler->html());
+        $this->assertContains('id="create_calendar"', $crawler->html());
+        $this->assertContains('name="create[calendar]"', $crawler->html());
         $this->assertContains('id="create_base"', $crawler->html());
         $this->assertContains('name="create[base]"', $crawler->html());
         $this->assertContains('id="create_change"', $crawler->html());
@@ -35,6 +37,16 @@ class WorkPackageProjectWorkCostTypeControllerTest extends BaseController
         $this->assertContains('name="create[remaining]"', $crawler->html());
         $this->assertContains('id="create_forecast"', $crawler->html());
         $this->assertContains('name="create[forecast]"', $crawler->html());
+        $this->assertContains('id="create_isGeneric"', $crawler->html());
+        $this->assertContains('name="create[isGeneric]"', $crawler->html());
+        $this->assertContains('id="create_isInactive"', $crawler->html());
+        $this->assertContains('name="create[isInactive]"', $crawler->html());
+        $this->assertContains('id="create_isEnterprise"', $crawler->html());
+        $this->assertContains('name="create[isEnterprise]"', $crawler->html());
+        $this->assertContains('id="create_isCostResource"', $crawler->html());
+        $this->assertContains('name="create[isCostResource]"', $crawler->html());
+        $this->assertContains('id="create_isBudget"', $crawler->html());
+        $this->assertContains('name="create[isBudget]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -122,6 +134,8 @@ class WorkPackageProjectWorkCostTypeControllerTest extends BaseController
         $this->assertContains('name="create[workPackage]"', $crawler->html());
         $this->assertContains('id="create_projectWorkCostType"', $crawler->html());
         $this->assertContains('name="create[projectWorkCostType]"', $crawler->html());
+        $this->assertContains('id="create_calendar"', $crawler->html());
+        $this->assertContains('name="create[calendar]"', $crawler->html());
         $this->assertContains('id="create_base"', $crawler->html());
         $this->assertContains('name="create[base]"', $crawler->html());
         $this->assertContains('id="create_change"', $crawler->html());
@@ -132,6 +146,16 @@ class WorkPackageProjectWorkCostTypeControllerTest extends BaseController
         $this->assertContains('name="create[remaining]"', $crawler->html());
         $this->assertContains('id="create_forecast"', $crawler->html());
         $this->assertContains('name="create[forecast]"', $crawler->html());
+        $this->assertContains('id="create_isGeneric"', $crawler->html());
+        $this->assertContains('name="create[isGeneric]"', $crawler->html());
+        $this->assertContains('id="create_isInactive"', $crawler->html());
+        $this->assertContains('name="create[isInactive]"', $crawler->html());
+        $this->assertContains('id="create_isEnterprise"', $crawler->html());
+        $this->assertContains('name="create[isEnterprise]"', $crawler->html());
+        $this->assertContains('id="create_isCostResource"', $crawler->html());
+        $this->assertContains('name="create[isCostResource]"', $crawler->html());
+        $this->assertContains('id="create_isBudget"', $crawler->html());
+        $this->assertContains('name="create[isBudget]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 

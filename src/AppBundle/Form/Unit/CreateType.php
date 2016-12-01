@@ -24,6 +24,8 @@ class CreateType extends AbstractType
             ->add('project', EntityType::class, [
                 'class' => Project::class,
                 'choice_label' => 'name',
+                'placeholder' => 'admin.project.choice',
+                'translation_domain' => 'admin',
             ])
             ->add('name', TextType::class, [
                 'required' => true,
@@ -35,6 +37,7 @@ class CreateType extends AbstractType
             ])
             ->add('sequence', TextType::class, [
                 'required' => true,
+                'data' => 0,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'validation.constraints.general_field.sequence.not_blank',

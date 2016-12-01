@@ -55,7 +55,7 @@ class ProjectDepartmentControllerTest extends BaseController
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testIfSequenceIsValidOnCreatePage()
+    public function testSequenceIsValidOnCreatePage()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
         $this->login($this->user);
@@ -178,7 +178,7 @@ class ProjectDepartmentControllerTest extends BaseController
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testIfSequenceIsValidOnEditPage()
+    public function testSequenceIsValidOnEditPage()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
         $this->login($this->user);

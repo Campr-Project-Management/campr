@@ -127,7 +127,10 @@ class CommunicationController extends Controller
      * @Route("/{id}/edit", name="app_admin_communication_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Request $request
+     * @param Communication $communication
+     * @param Request       $request
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction(Communication $communication, Request $request)
     {

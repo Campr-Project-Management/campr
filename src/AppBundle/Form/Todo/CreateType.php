@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Todo;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -75,6 +76,7 @@ class CreateType extends AbstractType
                 'placeholder' => 'admin.status.choice',
                 'translation_domain' => 'admin',
             ])
+            ->add('showInStatusReport', CheckboxType::class)
         ;
     }
 

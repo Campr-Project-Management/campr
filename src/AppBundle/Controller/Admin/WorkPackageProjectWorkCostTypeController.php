@@ -147,7 +147,7 @@ class WorkPackageProjectWorkCostTypeController extends Controller
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_unit_list');
+            return $this->redirectToRoute('app_admin_wppcwct_list');
         }
 
         return $this->render(
