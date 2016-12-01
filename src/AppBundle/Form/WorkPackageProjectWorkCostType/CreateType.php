@@ -2,7 +2,9 @@
 
 namespace AppBundle\Form\WorkPackageProjectWorkCostType;
 
+use AppBundle\Entity\Calendar;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -42,6 +44,12 @@ class CreateType extends AbstractType
                 'placeholder' => 'admin.project_work_cost_type.choice',
                 'translation_domain' => 'admin',
             ])
+            ->add('calendar', EntityType::class, [
+                'class' => Calendar::class,
+                'choice_label' => 'name',
+                'placeholder' => 'admin.calendar.choice',
+                'translation_domain' => 'admin',
+            ])
             ->add('base', NumberType::class, [
                 'required' => false,
                 'scale' => 2,
@@ -62,6 +70,11 @@ class CreateType extends AbstractType
                 'required' => false,
                 'scale' => 2,
             ])
+            ->add('isGeneric', CheckboxType::class)
+            ->add('isInactive', CheckboxType::class)
+            ->add('isEnterprise', CheckboxType::class)
+            ->add('isCostResource', CheckboxType::class)
+            ->add('isBudget', CheckboxType::class)
         ;
     }
 

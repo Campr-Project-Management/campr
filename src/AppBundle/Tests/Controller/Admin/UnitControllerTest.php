@@ -40,7 +40,7 @@ class UnitControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/unit/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-
+        $form['create[sequence]'] = '';
         $crawler = $this->client->submit($form);
 
         $this->assertContains('The name field should not be blank', $crawler->html());
@@ -49,7 +49,7 @@ class UnitControllerTest extends BaseController
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testIfNameIsUniqueOnCreatePage()
+    public function testNameIsUniqueOnCreatePage()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
         $this->login($this->user);
@@ -68,7 +68,7 @@ class UnitControllerTest extends BaseController
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testIfSequenceIsValidOnCreatePage()
+    public function testSequenceIsValidOnCreatePage()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
         $this->login($this->user);
@@ -182,7 +182,7 @@ class UnitControllerTest extends BaseController
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testIfNameIsUniqueOnEditPage()
+    public function testNameIsUniqueOnEditPage()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
         $this->login($this->user);
@@ -201,7 +201,7 @@ class UnitControllerTest extends BaseController
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testIfSequenceIsValidOnEditPage()
+    public function testSequenceIsValidOnEditPage()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
         $this->login($this->user);

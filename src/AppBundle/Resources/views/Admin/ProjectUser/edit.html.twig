@@ -49,70 +49,87 @@
                         {{ form_widget(
                             form.user,
                             {
-                                'attr': {'class': 'form-control input-sm'},
+                                'attr': {
+                                    'class': 'selectpicker',
+                                },
                                 'label': 'admin.project_user.create.user'|trans,
                             }
                         ) }}
                         {{ form_widget(
                             form.project,
                             {
-                                'attr': {'class': 'form-control input-sm'},
+                                'attr': {
+                                    'class': 'selectpicker',
+                                },
                                 'label': 'admin.project_user.create.project'|trans,
                             }
                         ) }}
                         {{ form_widget(
                             form.projectCategory,
                             {
-                                'attr': {'class': 'form-control input-sm'},
+                                'attr': {
+                                    'class': 'selectpicker',
+                                },
                                 'label': 'admin.project_user.create.project_category'|trans,
                             }
                         ) }}
                         {{ form_widget(
                             form.projectRole,
                             {
-                                'attr': {'class': 'form-control input-sm'},
+                                'attr': {
+                                    'class': 'selectpicker',
+                                },
                                 'label': 'admin.project_user.create.project_role'|trans,
                             }
                         ) }}
                         {{ form_widget(
                             form.projectDepartment,
                             {
-                                'attr': {'class': 'form-control input-sm'},
+                                'attr': {
+                                    'class': 'selectpicker',
+                                },
                                 'label': 'admin.project_user.create.project_department'|trans,
                             }
                         ) }}
                         {{ form_widget(
                             form.projectTeam,
                             {
-                                'attr': {'class': 'form-control input-sm'},
+                                'attr': {
+                                    'class': 'selectpicker',
+                                },
                                 'label': 'admin.project_user.create.project_team'|trans,
                             }
                         ) }}
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                {{ form_widget(
-                                    form.showInResources,
-                                    {
-                                        'attr': {'class': 'form-control'},
-                                        'label': 'admin.project_user.create.show_in_resources'|trans,
-                                    }
-                                ) }}
-                                {{ form_widget(
-                                    form.showInRaci,
-                                    {
-                                        'attr': {'class': 'form-control'},
-                                        'label': 'admin.project_user.create.show_in_raci'|trans,
-                                    }
-                                ) }}
-                                {{ form_widget(
-                                    form.showInOrg,
-                                    {
-                                        'attr': {'class': 'form-control'},
-                                        'label': 'admin.project_user.create.show_in_org'|trans,
-                                    }
-                                ) }}
-                            </div>
-                        </div>
+                        {{ form_widget(
+                            form.showInResources,
+                            {
+                                'attr': {
+                                    'class': 'form-control input-sm',
+                                    'toggle': true
+                                },
+                                'label': 'admin.project_user.create.show_in_resources'|trans,
+                            }
+                        ) }}
+                        {{ form_widget(
+                            form.showInRaci,
+                            {
+                                'attr': {
+                                    'class': 'form-control input-sm',
+                                    'toggle': true
+                                },
+                                'label': 'admin.project_user.create.show_in_raci'|trans,
+                            }
+                        ) }}
+                        {{ form_widget(
+                            form.showInOrg,
+                            {
+                                'attr': {
+                                    'class': 'form-control input-sm',
+                                    'toggle': true
+                                },
+                                'label': 'admin.project_user.create.show_in_org'|trans,
+                            }
+                        ) }}
 
                         {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
                             with {

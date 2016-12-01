@@ -23,18 +23,36 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('name="create[puid]"', $crawler->html());
         $this->assertContains('id="create_name"', $crawler->html());
         $this->assertContains('name="create[name]"', $crawler->html());
+        $this->assertContains('id="create_progress"', $crawler->html());
+        $this->assertContains('name="create[progress]"', $crawler->html());
         $this->assertContains('id="create_parent"', $crawler->html());
         $this->assertContains('name="create[parent]"', $crawler->html());
         $this->assertContains('id="create_colorStatus"', $crawler->html());
         $this->assertContains('name="create[colorStatus]"', $crawler->html());
         $this->assertContains('id="create_responsibility"', $crawler->html());
         $this->assertContains('name="create[responsibility]"', $crawler->html());
+        $this->assertContains('id="create_project"', $crawler->html());
+        $this->assertContains('name="create[project]"', $crawler->html());
+        $this->assertContains('id="create_calendar"', $crawler->html());
+        $this->assertContains('name="create[calendar]"', $crawler->html());
         $this->assertContains('id="create_scheduledStartAt"', $crawler->html());
         $this->assertContains('name="create[scheduledStartAt]"', $crawler->html());
         $this->assertContains('id="create_scheduledFinishAt"', $crawler->html());
         $this->assertContains('name="create[scheduledFinishAt]"', $crawler->html());
+        $this->assertContains('id="create_forecastStartAt"', $crawler->html());
+        $this->assertContains('name="create[forecastStartAt]"', $crawler->html());
+        $this->assertContains('id="create_forecastFinishAt"', $crawler->html());
+        $this->assertContains('name="create[forecastFinishAt]"', $crawler->html());
+        $this->assertContains('id="create_actualStartAt"', $crawler->html());
+        $this->assertContains('name="create[actualStartAt]"', $crawler->html());
+        $this->assertContains('id="create_actualFinishAt"', $crawler->html());
+        $this->assertContains('name="create[actualFinishAt]"', $crawler->html());
         $this->assertContains('id="create_content"', $crawler->html());
         $this->assertContains('name="create[content]"', $crawler->html());
+        $this->assertContains('id="create_results"', $crawler->html());
+        $this->assertContains('name="create[results]"', $crawler->html());
+        $this->assertContains('id="create_isKeyMilestone"', $crawler->html());
+        $this->assertContains('name="create[isKeyMilestone]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -50,10 +68,33 @@ class WorkPackageControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
+        $form['create[progress]'] = '';
         $crawler = $this->client->submit($form);
 
         $this->assertContains('PUID should not be blank', $crawler->html());
         $this->assertContains('The name field should not be blank', $crawler->html());
+        $this->assertContains('The progress field should not be blank', $crawler->html());
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testProgressIsValidOnCreatePage()
+    {
+        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
+        $this->login($this->user);
+        $this->assertNotNull($this->user, 'User not found');
+
+        /** @var Crawler $crawler */
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage/create');
+
+        $form = $crawler->filter('#create-form')->first()->form();
+        $form['create[puid]'] = 'puid';
+        $form['create[name]'] = 'workpackage';
+        $form['create[progress]'] = '-2';
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertContains('The progress field should contain numbers greater than or equal to 0', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -123,18 +164,36 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('name="create[puid]"', $crawler->html());
         $this->assertContains('id="create_name"', $crawler->html());
         $this->assertContains('name="create[name]"', $crawler->html());
+        $this->assertContains('id="create_progress"', $crawler->html());
+        $this->assertContains('name="create[progress]"', $crawler->html());
         $this->assertContains('id="create_parent"', $crawler->html());
         $this->assertContains('name="create[parent]"', $crawler->html());
         $this->assertContains('id="create_colorStatus"', $crawler->html());
         $this->assertContains('name="create[colorStatus]"', $crawler->html());
         $this->assertContains('id="create_responsibility"', $crawler->html());
         $this->assertContains('name="create[responsibility]"', $crawler->html());
+        $this->assertContains('id="create_project"', $crawler->html());
+        $this->assertContains('name="create[project]"', $crawler->html());
+        $this->assertContains('id="create_calendar"', $crawler->html());
+        $this->assertContains('name="create[calendar]"', $crawler->html());
         $this->assertContains('id="create_scheduledStartAt"', $crawler->html());
         $this->assertContains('name="create[scheduledStartAt]"', $crawler->html());
         $this->assertContains('id="create_scheduledFinishAt"', $crawler->html());
         $this->assertContains('name="create[scheduledFinishAt]"', $crawler->html());
+        $this->assertContains('id="create_forecastStartAt"', $crawler->html());
+        $this->assertContains('name="create[forecastStartAt]"', $crawler->html());
+        $this->assertContains('id="create_forecastFinishAt"', $crawler->html());
+        $this->assertContains('name="create[forecastFinishAt]"', $crawler->html());
+        $this->assertContains('id="create_actualStartAt"', $crawler->html());
+        $this->assertContains('name="create[actualStartAt]"', $crawler->html());
+        $this->assertContains('id="create_actualFinishAt"', $crawler->html());
+        $this->assertContains('name="create[actualFinishAt]"', $crawler->html());
         $this->assertContains('id="create_content"', $crawler->html());
         $this->assertContains('name="create[content]"', $crawler->html());
+        $this->assertContains('id="create_results"', $crawler->html());
+        $this->assertContains('name="create[results]"', $crawler->html());
+        $this->assertContains('id="create_isKeyMilestone"', $crawler->html());
+        $this->assertContains('name="create[isKeyMilestone]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 
@@ -153,11 +212,32 @@ class WorkPackageControllerTest extends BaseController
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['create[puid]'] = '';
         $form['create[name]'] = '';
+        $form['create[progress]'] = '';
 
         $crawler = $this->client->submit($form);
 
         $this->assertContains('PUID should not be blank', $crawler->html());
         $this->assertContains('The name field should not be blank', $crawler->html());
+        $this->assertContains('The progress field should not be blank', $crawler->html());
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testProgressIsValidOnEditPage()
+    {
+        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
+        $this->login($this->user);
+        $this->assertNotNull($this->user, 'User not found');
+
+        /** @var Crawler $crawler */
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage/1/edit');
+
+        $form = $crawler->filter('#edit-form')->first()->form();
+        $form['create[progress]'] = '-2';
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertContains('The progress field should contain numbers greater than or equal to 0', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
