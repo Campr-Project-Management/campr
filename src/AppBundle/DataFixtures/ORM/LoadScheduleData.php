@@ -19,6 +19,7 @@ class LoadScheduleData extends AbstractFixture implements OrderedFixtureInterfac
                 ->setName('schedule'.$i)
             ;
             $manager->persist($schedule);
+            $this->setReference('schedule'.$i, $schedule);
         }
 
         $manager->flush();

@@ -326,4 +326,15 @@ class Communication
     {
         return $this->schedule;
     }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("meetingName")
+     *
+     * @return string
+     */
+    public function getMeetingNameSerialized()
+    {
+        return $this->meetingName ? $this->meetingName : null;
+    }
 }

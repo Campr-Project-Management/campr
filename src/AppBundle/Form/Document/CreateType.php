@@ -39,15 +39,21 @@ class CreateType extends AbstractType
                 'class' => Project::class,
                 'choice_label' => 'name',
                 'translation_domain' => 'admin',
+                'placeholder' => 'admin.user.choice',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'validation.constraints.document.project.not_blank',
+                    ]),
+                ],
             ])
             ->add('meetings', EntityType::class, [
                 'class' => Meeting::class,
                 'choice_label' => 'name',
                 'translation_domain' => 'admin',
+                'placeholder' => 'admin.meeting.multiple_choices',
                 'multiple' => true,
             ])
             ->add('file', FileType::class, [
-                'required' => true,
                 'data_class' => File::class,
                 'constraints' => [
                     new FileConstaint(),

@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\File\File;
  *
  * @ORM\Table(name="document")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DocumentRepository")
- * @UniqueEntity(fields="path", message="validation.constraints.document.path.unique")
+ * @UniqueEntity(fields="fileName", message="validation.constraints.document.file_name.unique")
  */
 class Document
 {
@@ -194,5 +194,16 @@ class Document
     public function getFile()
     {
         return $this->file;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("fileName")
+     *
+     * @return string
+     */
+    public function getFileNameSerialized()
+    {
+        return $this->fileName;
     }
 }

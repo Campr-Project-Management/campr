@@ -948,6 +948,7 @@ admin:
                 second: successfully deleted!
     meeting:
         choice: Choose one meeting
+        multiple_choices: Choose one or more meetings
         list:
             title: Meeting
             subtitle: List of meetings
@@ -1262,8 +1263,8 @@ admin:
             title: Edit communication
             success: Communication successfully edited!
         delete:
-            general: Communication successfully deleted!
             success:
+                general: Communication successfully deleted!
                 first: Communication with ID
                 second: successfully deleted!
     document:
