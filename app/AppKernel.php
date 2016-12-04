@@ -32,6 +32,9 @@ class AppKernel extends Kernel
             new TSS\AutomailerBundle\TSSAutomailerBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
+            new Gos\Bundle\WebSocketBundle\GosWebSocketBundle(),
+            new Gos\Bundle\PubSubRouterBundle\GosPubSubRouterBundle(),
+            new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
 
             //internals
             new AppBundle\AppBundle(),

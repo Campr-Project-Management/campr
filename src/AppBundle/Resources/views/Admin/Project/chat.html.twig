@@ -1,0 +1,96 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="container container-alt">
+        <div class="messages card">
+            <div class="m-sidebar">
+                <header>
+                    <h2 class="hidden-xs">{{ 'admin.chat.messages'|trans }}</h2>
+                    <ul class="actions">
+                        <li>
+                            <a id="create-new-chat" href="#">
+                                <i class="zmdi zmdi-comment-text"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </header>
+                <div class="ms-search hidden-xs">
+                    <div class="fg-line">
+                        <i class="zmdi zmdi-search"></i>
+                        <input id="user-search" type="text" class="form-control" placeholder="Search...">
+                    </div>
+                </div>
+                <div class="list-group c-overflow">
+                    <a data-id="{{ app.user.id }}" data-key="-" class="list-group-item media chat-room hidden"></a>
+                    {% for chat in chat_list %}
+                        <a data-id="{{ chat.id }}" data-key="{% if chat.chat_key is defined %}{{ chat.chat_key }}{% endif %}" class="list-group-item media chat-room">
+                            <div class="pull-left"></div>
+                            <div class="media-body">
+                                <div class="lgi-heading">{{ chat.name }}</div>
+                                <div id="last-message">
+                                    <small class="lgi-text">{{ chat.message|default('') }}</small>
+                                    <small class="ms-time">{% if chat.time is defined %}{{ chat.time|chat_date }}{% endif %}</small>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="m-body">
+                <header class="mb-header">
+                    <div class="mbh-user clearfix">
+                        <img src="img/profile-pics/2.jpg" alt="">
+                        <div class="p-t-5">{{ app.user.fullName }}</div>
+                    </div>
+                    <ul class="actions">
+                        <li>
+                            <a href="">
+                                <i class="zmdi zmdi-refresh-alt"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a id="delete-chat" href="#">
+                                <i class="zmdi zmdi-delete"></i>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="">Contact Info</a>
+                                </li>
+                                <li>
+                                    <a href="">Mute</a>
+                                </li>
+                                <li>
+                                    <a href="">Clear Messages</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </header>
+                <div class="mb-list">
+                    <div id="chat-messages"></div>
+                    <div id="message-form" class="mbl-compose">
+                        <textarea class="form-control input-sm" placeholder="Type a message..."></textarea>
+                        <button><i class="zmdi zmdi-mail-send"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ ws_client() }}
+    <script type="text/javascript">
+        var projectId = '{{ project_id }}',
+            currentUserId = '{{ app.user.id }}';
+    </script>
+    <script type="text/javascript" src="{{ asset('bundles/app/assets/js/chat.js') }}"></script>
+{% endblock %}

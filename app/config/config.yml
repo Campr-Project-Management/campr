@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: bundles/gos_web_socket.yml }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -30,6 +31,13 @@ framework:
     http_method_override: true
     assets: ~
 
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
+    bundles: [ AppBundle ]
+
 # Twig Configuration
 twig:
     debug: "%kernel.debug%"
@@ -56,6 +64,17 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+
+doctrine_cache:
+    providers:
+        redis_cache:
+            redis:
+                host: 127.0.0.1
+                port: 6379
+                database: 3
+        websocket_cache_client:
+            type: redis
+            alias: gos_web_socket.client_storage.driver.redis
 
 # Swiftmailer Configuration
 swiftmailer:
