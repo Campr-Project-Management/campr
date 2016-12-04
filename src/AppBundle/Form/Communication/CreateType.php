@@ -27,6 +27,12 @@ class CreateType extends AbstractType
                 'class' => Project::class,
                 'choice_label' => 'name',
                 'translation_domain' => 'admin',
+                'placeholder' => 'admin.project.choice',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'validation.constraints.communication.project.not_blank',
+                    ]),
+                ],
             ])
             ->add('meetingName', TextType::class, [
                 'required' => true,
@@ -51,7 +57,7 @@ class CreateType extends AbstractType
                 ],
             ])
             ->add('content', TextareaType::class, [
-                'required' => true,
+                'required' => false,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'validation.constraints.communication.content.not_blank',
@@ -62,6 +68,12 @@ class CreateType extends AbstractType
                 'class' => Schedule::class,
                 'choice_label' => 'name',
                 'translation_domain' => 'admin',
+                'placeholder' => 'admin.schedule.choice',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'validation.constraints.communication.schedule.not_blank',
+                    ]),
+                ],
             ])
         ;
     }
