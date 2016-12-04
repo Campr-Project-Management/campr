@@ -66,6 +66,15 @@ class BaseController extends WebTestCase
         return $user;
     }
 
+    public function getUserByUsername($username)
+    {
+        return $this
+            ->em
+            ->getRepository(User::class)
+            ->findOneByUsername($username)
+        ;
+    }
+
     /**
      * @param User $user
      */

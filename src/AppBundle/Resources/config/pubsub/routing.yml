@@ -1,0 +1,8 @@
+chat_topic:
+    channel: chat/room/{id}
+    handler:
+        callback: 'chat.topic'
+chat_user_topic:
+    channel: chat/room/user/{id}
+    handler:
+        callback: 'chat.user.topic'

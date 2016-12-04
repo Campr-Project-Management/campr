@@ -38,6 +38,11 @@ services:
         arguments:
             - "@doctrine.orm.entity_manager"
 
+    app.service.chat:
+        class: AppBundle\Services\ChatService
+        arguments:
+            - "@doctrine.orm.entity_manager"
+
     redis.client:
         class: Predis\Client
 
@@ -50,6 +55,24 @@ services:
             class: AppBundle\Services\FileSystemService
             arguments:
                 - "@knp_gaufrette.filesystem_map"
+
+    app.service.chat_topic:
+        class: AppBundle\Topic\ChatTopic
+        arguments:
+            - "@app.service.chat"
+            - "@gos_web_socket.websocket.client_manipulator"
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: gos_web_socket.topic }
+
+    app.service.chat_user_topic:
+            class: AppBundle\Topic\ChatUserTopic
+            arguments:
+                - "@app.service.chat"
+                - "@gos_web_socket.websocket.client_manipulator"
+                - "@doctrine.orm.entity_manager"
+            tags:
+                - { name: gos_web_socket.topic }
 
 ### FORM TYPES ###
     app.form.type.document.create:
@@ -108,3 +131,15 @@ services:
             - { name: doctrine.event_listener, event: onFlush }
         arguments:
             - "@security.token_storage"
+
+    app.listener.message:
+            class: AppBundle\EventListener\MessageListener
+            tags :
+                - { name: doctrine.event_listener, event: prePersist }
+
+### EXTENSIONS ###
+    app.chat_date.twig_extension:
+        class: AppBundle\Twig\ChatDateExtension
+        public: false
+        tags:
+            - { name: twig.extension }
