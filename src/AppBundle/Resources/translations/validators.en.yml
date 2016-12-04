@@ -116,9 +116,12 @@ validation:
             value:
                 not_blank: The value field should not be blank
         document:
-            path:
-                not_blank: The path should not be blank
-                unique: That path is taken
+            project:
+                not_blank: The project field should not be blank. Choose one project
+            file:
+                not_blank: A document should be selected
+            file_name:
+                unique: That file name is taken
         decision:
             title:
                 not_blank: The title should not be blank
@@ -127,13 +130,14 @@ validation:
         communication:
             meeting_name:
                 not_blank: The meeting name should not be blank
-            content:
-                not_blank: The content should not be blank
             location:
                 not_blank: The location should not be blank
-        document:
-            file:
-                not_blank: A document should be selected
+            project:
+                not_blank: The project field should not be blank. Choose one project
+            schedule:
+                not_blank: The schedule field should not be blank. Choose one schedule
+            content:
+                not_blank: The content field should not be blank
         working_time:
             day:
                 not_blank: The day field should not be blank
