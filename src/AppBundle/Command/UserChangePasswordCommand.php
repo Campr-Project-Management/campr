@@ -39,8 +39,7 @@ class UserChangePasswordCommand extends ContainerAwareCommand
             return -1;
         }
 
-        $encoder = $this->getContainer()->get('security.encoder_factory')->getEncoder($user);
-        $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
+        $user->setPlainPassword($password);
 
         if ($roles) {
             $user->setRoles($roles);
