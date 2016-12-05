@@ -45,11 +45,10 @@ class UserCreateCommand extends ContainerAwareCommand
         }
 
         $user = new User();
-        $encoder = $this->getContainer()->get('security.encoder_factory')->getEncoder($user);
         $user
             ->setUsername($username)
             ->setEmail($email)
-            ->setPassword($encoder->encodePassword($password, $user->getSalt()))
+            ->setPlainPassword($password)
             ->setFirstName($firstName)
             ->setLastName($lastName)
             ->setRoles($roles)
