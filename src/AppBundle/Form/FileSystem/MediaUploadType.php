@@ -38,7 +38,7 @@ class MediaUploadType extends AbstractType
             ->add('fileSystem', EntityType::class, [
                 'class' => FileSystem::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.project.files.upload.filesystem_placeholder',
+                'placeholder' => 'admin.media.upload.filesystem_placeholder',
                 'translation_domain' => 'admin',
                 'constraints' => [
                     new NotNull([
@@ -72,10 +72,12 @@ class MediaUploadType extends AbstractType
                 function (FormEvent $event) {
                     $media = $event->getData();
                     $file = $media->getFile();
-                    $media->setUser($this->tokenStorage->getToken()->getUser());
-                    $media->setPath($file->getClientOriginalName());
-                    $media->setMimeType($file->getMimeType());
-                    $media->setFileSize($file->getSize());
+                    if ($file) {
+                        $media->setUser($this->tokenStorage->getToken()->getUser());
+                        $media->setPath($file->getClientOriginalName());
+                        $media->setMimeType($file->getMimeType());
+                        $media->setFileSize($file->getSize());
+                    }
                 }
             )
         ;

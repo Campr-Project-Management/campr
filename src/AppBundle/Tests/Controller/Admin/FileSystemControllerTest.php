@@ -152,6 +152,8 @@ class FileSystemControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
+        $container = self::$kernel->getContainer();
+
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/file-system/1/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
@@ -161,7 +163,7 @@ class FileSystemControllerTest extends BaseController
         $domDocument = new \DOMDocument();
         $ff = $domDocument->createElement('input');
         $ff->setAttribute('name', 'create[adapter][path]');
-        $ff->setAttribute('value', 'folder_path');
+        $ff->setAttribute('value', $container->getParameter('media_upload_folder_test'));
         $formField = new InputFormField($ff);
         $form->set($formField);
 
