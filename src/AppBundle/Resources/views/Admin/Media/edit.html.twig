@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.project.files.upload.title'|trans }}</h2>
+                    <h2>{{ 'admin.media.edit.title'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,7 +17,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_project_files', {'id': project_id}) }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_project_media_list', {'project': project_id}) }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -40,27 +40,40 @@
                         form,
                         {
                             'method': 'POST',
-                            'action': path('app_admin_project_upload', {'id': project_id}),
+                            'action': path('app_admin_project_media_edit', {'project': project_id, 'id': media.id }),
                             'attr': {
+                                'id': 'edit-form',
                                 'class': 'form-horizontal',
                                 'novalidate': 'novalidate',
                             },
-                        }
+                    }
                     ) }}
                     {{ form_widget(
                         form.fileSystem,
                         {
                             'attr': {'class': 'selectpicker'},
-                            'label': 'admin.project.files.upload.filesystem'|trans,
+                            'label': 'admin.media.upload.filesystem'|trans,
                         }
                     ) }}
                     {{ form_widget(
                         form.file,
                         {
-                            'label': 'admin.project.files.upload.file'|trans,
+                            'label': 'admin.media.upload.file'|trans,
                         }
                     ) }}
-                    {% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
+
+                    <div class="form-group m-t-15">
+                        <div class="col-sm-offset-4 col-sm-10">
+                            <button class="btn btn-sm bgm-blue" type="submit">
+                                <i class="zmdi zmdi-floppy"></i>
+                                {{ 'admin.general.form.button.save_changes'|trans }}
+                            </button>
+                            <a class="btn btn-sm bgm-red" href="{{ path('app_admin_project_media_delete', {'project': project_id, 'id': media.id}) }}">
+                                <i class="zmdi zmdi-delete"></i>
+                                {{ 'admin.general.form.button.delete'|trans }}
+                            </a>
+                        </div>
+                    </div>
 
                     <span class="hidden">{{ form_row(form._token) }}</span>
                     {{ form_end(form, {'render_rest': false}) }}

@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Document.
+ * FileSystem.
  *
  * @ORM\Table(name="file_system")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\FileSystemRepository")
