@@ -2,7 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\Document;
+use AppBundle\Entity\Media;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -12,7 +12,7 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 
-class LoadDocumentData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+class LoadMediaData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     /** @var ContainerInterface */
     private $container;
@@ -27,27 +27,31 @@ class LoadDocumentData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        $project = $this->getReference('project1');
+        $fileSystem = $this->getReference('fs');
         $meeting = $this->getReference('meeting1');
+        $user = $this->getReference('superadmin');
 
         $fs = new Filesystem();
         try {
-            $fs->mkdir($this->container->getParameter('documents_upload_folder'));
-            $fs->touch($this->container->getParameter('documents_upload_folder').'/file1.txt');
+            $fs->mkdir($this->container->getParameter('media_upload_folder_test'));
+            $fs->touch($this->container->getParameter('media_upload_folder_test').'/file1.txt');
         } catch (IOExceptionInterface $e) {
             sprintf($e->getMessage());
         }
-        $file = new File($this->container->getParameter('documents_upload_folder').'/file1.txt');
+        $file = new File($this->container->getParameter('media_upload_folder_test').'/file1.txt');
         $fileName = basename($file->getFilename(), '.txt');
 
-        $document = (new Document())
-            ->setProject($project)
+        $media = (new Media())
+            ->setFileSystem($fileSystem)
+            ->setUser($user)
             ->addMeeting($meeting)
             ->setFile($file)
-            ->setFileName($fileName)
+            ->setPath($fileName)
+            ->setMimeType($file->getMimeType())
+            ->setFileSize($file->getSize())
         ;
 
-        $manager->persist($document);
+        $manager->persist($media);
         $manager->flush();
     }
 
@@ -56,6 +60,6 @@ class LoadDocumentData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function getOrder()
     {
-        return 4;
+        return 6;
     }
 }

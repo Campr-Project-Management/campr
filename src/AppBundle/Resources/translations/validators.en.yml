@@ -115,13 +115,6 @@ validation:
                 greater_than_or_equal: The unit field should contain numbers greater than or equal to 0
             value:
                 not_blank: The value field should not be blank
-        document:
-            project:
-                not_blank: The project field should not be blank. Choose one project
-            file:
-                not_blank: A document should be selected
-            file_name:
-                unique: That file name is taken
         decision:
             title:
                 not_blank: The title should not be blank
@@ -167,7 +160,7 @@ validation:
             filesystem:
                 not_null: You must select a filesystem
             file:
-              not_blank: You must select a file
+                not_blank: You must select a file
         meeting_participant:
             meeting:
                 not_blank: A meeting should be selected
