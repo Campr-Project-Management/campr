@@ -37,6 +37,6 @@ parameters:
     activation_token_expiration: P1D
     reset_token_expiration: P1D
     import_folder: '%kernel.root_dir%/Resources/import'
-    documents_upload_folder: '%kernel.root_dir%/../web/uploads/documents'
+    media_upload_folder: '%kernel.root_dir%/../web/uploads/media'
     tests_import_folder: '%kernel.root_dir%/../web/tests/import'
-    documents_upload_folder_test: '%kernel.root_dir%/../web/uploads/tests'
+    media_upload_folder_test: '%kernel.root_dir%/../web/uploads/tests'

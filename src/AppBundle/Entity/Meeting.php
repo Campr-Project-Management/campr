@@ -92,11 +92,11 @@ class Meeting
     private $meetingAgendas;
 
     /**
-     * @var ArrayCollection|Document[]
+     * @var ArrayCollection|Media[]
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Document", mappedBy="meetings")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Media", mappedBy="meetings")
      */
-    private $documents;
+    private $medias;
 
     /**
      * @var ArrayCollection|Decision[]
@@ -125,7 +125,7 @@ class Meeting
     {
         $this->meetingParticipants = new ArrayCollection();
         $this->meetingAgendas = new ArrayCollection();
-        $this->documents = new ArrayCollection();
+        $this->medias = new ArrayCollection();
         $this->decisions = new ArrayCollection();
         $this->todos = new ArrayCollection();
         $this->notes = new ArrayCollection();
@@ -400,37 +400,37 @@ class Meeting
     }
 
     /**
-     * Add document.
+     * Add media.
      *
-     * @param Document $document
+     * @param Media $media
      *
      * @return Meeting
      */
-    public function addDocument(Document $document)
+    public function addMedia(Media $media)
     {
-        $this->documents[] = $document;
+        $this->medias[] = $media;
 
         return $this;
     }
 
     /**
-     * Remove document.
+     * Remove media.
      *
-     * @param Document $document
+     * @param Media $media
      */
-    public function removeDocument(Document $document)
+    public function removeMedia(Media $media)
     {
-        $this->documents->removeElement($document);
+        $this->medias->removeElement($media);
     }
 
     /**
-     * Get documents.
+     * Get medias.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection
      */
-    public function getDocuments()
+    public function getMedias()
     {
-        return $this->documents;
+        return $this->medias;
     }
 
     /**
