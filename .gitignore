@@ -24,3 +24,4 @@ Vagrantfile
 /front/node_modules
 /app/config/parameters_test.yml
 src/AppBundle/Tests/Resources/
+src/AppBundle/Resources/views/Default/index.html.twig
