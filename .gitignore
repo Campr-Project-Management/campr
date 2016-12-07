@@ -15,6 +15,7 @@
 /vendor/
 /web/bundles/
 /web/uploads/
+/web/static/
 .idea
 Vagrantfile
 .vagrant
