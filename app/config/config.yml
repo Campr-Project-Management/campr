@@ -42,8 +42,6 @@ assetic:
 twig:
     debug: "%kernel.debug%"
     strict_variables: "%kernel.debug%"
-    paths:
-           "%kernel.root_dir%/../web": vue
 
 # Doctrine Configuration
 doctrine:
