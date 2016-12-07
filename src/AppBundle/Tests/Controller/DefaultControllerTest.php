@@ -51,8 +51,6 @@ class DefaultControllerTest extends BaseController
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $this->client->followRedirect();
-
-        $this->assertContains('Welcome', $this->client->getResponse()->getContent());
     }
 
     public function testLogoutSuccessfully()
