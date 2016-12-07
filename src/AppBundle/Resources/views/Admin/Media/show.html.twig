@@ -1,0 +1,71 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.media.list.title'|trans }}<small>{{ media.path }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_project_media_edit', {'project': project_id,  'id': media.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <th>{{ 'admin.media.list.table.id'|trans }}</th>
+                                <td>{{ media.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.media.list.table.filesystem'|trans }}</th>
+                                <td>{{ media.filesystem.name|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.media.list.table.meetings'|trans }}</th>
+                                <td>
+                                    {% for meeting in media.meetings %}
+                                        <p>{{ meeting.name }}</p>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.media.list.table.user'|trans }}</th>
+                                <td>{{ media.user.username|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.media.list.table.path'|trans }}</th>
+                                <td>{{ media.path|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.media.list.table.mime'|trans }}</th>
+                                <td>{{ media.mimeType|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.media.list.table.size'|trans }}</th>
+                                <td>{{ media.fileSize|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.media.list.table.created_at'|trans }}</th>
+                                <td>{{ media.createdAt|date('d/m/Y') }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
