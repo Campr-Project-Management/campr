@@ -214,7 +214,7 @@ class ProjectRole
      */
     public function getCreatedAtFormatted()
     {
-        return $this->createdAt ? $this->createdAt->format('d/m/Y') : null;
+        return $this->createdAt ? $this->createdAt->format('d/m/Y') : '-';
     }
 
     /**
@@ -227,6 +227,6 @@ class ProjectRole
      */
     public function getUpdatedAtFormatted()
     {
-        return $this->updatedAt ? $this->updatedAt->format('d/m/Y') : null;
+        return $this->updatedAt ? $this->updatedAt->format('d/m/Y') : '-';
     }
 }

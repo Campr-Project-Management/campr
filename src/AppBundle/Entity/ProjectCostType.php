@@ -214,7 +214,7 @@ class ProjectCostType
      */
     public function getProjectName()
     {
-        return $this->project ? $this->project->getName() : null;
+        return $this->project ? $this->project->getName() : '-';
     }
 
     /**
@@ -227,7 +227,7 @@ class ProjectCostType
      */
     public function getCreatedAtFormatted()
     {
-        return $this->createdAt ? $this->createdAt->format('d/m/Y') : null;
+        return $this->createdAt ? $this->createdAt->format('d/m/Y') : '-';
     }
 
     /**
@@ -240,6 +240,6 @@ class ProjectCostType
      */
     public function getUpdatedAtFormatted()
     {
-        return $this->updatedAt ? $this->updatedAt->format('d/m/Y') : null;
+        return $this->updatedAt ? $this->updatedAt->format('d/m/Y') : '-';
     }
 }

@@ -664,7 +664,7 @@ class Project
      */
     public function getProjectCategoryName()
     {
-        return $this->projectCategory ? $this->projectCategory->getName() : null;
+        return $this->projectCategory ? $this->projectCategory->getName() : '-';
     }
 
     /**
@@ -677,7 +677,7 @@ class Project
      */
     public function getStatusName()
     {
-        return $this->status ? $this->status->getName() : null;
+        return $this->status ? $this->status->getName() : '-';
     }
 
     /**
@@ -690,7 +690,7 @@ class Project
      */
     public function getPortfolioName()
     {
-        return $this->portfolio ? $this->portfolio->getName() : null;
+        return $this->portfolio ? $this->portfolio->getName() : '-';
     }
 
     /**
