@@ -149,7 +149,7 @@ class Company
      */
     public function getCreatedAtFormatted()
     {
-        return $this->createdAt ? $this->createdAt->format('d/m/Y') : null;
+        return $this->createdAt ? $this->createdAt->format('d/m/Y') : '-';
     }
 
     /**
@@ -162,6 +162,6 @@ class Company
      */
     public function getUpdatedAtFormatted()
     {
-        return $this->updatedAt ? $this->updatedAt->format('d/m/Y') : null;
+        return $this->updatedAt ? $this->updatedAt->format('d/m/Y') : '-';
     }
 }

@@ -209,7 +209,7 @@ class MeetingParticipant
      */
     public function getMeetingName()
     {
-        return $this->meeting ? $this->meeting->getName() : null;
+        return $this->meeting ? $this->meeting->getName() : '-';
     }
 
     /**
@@ -246,6 +246,6 @@ class MeetingParticipant
      */
     public function getUserName()
     {
-        return $this->user ? $this->user->getUsername() : null;
+        return $this->user ? $this->user->getUsername() : '-';
     }
 }

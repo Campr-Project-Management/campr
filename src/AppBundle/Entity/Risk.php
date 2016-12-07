@@ -362,7 +362,7 @@ class Risk
      */
     public function getDueDateFormatted()
     {
-        return $this->dueDate ? $this->dueDate->format('d/m/Y') : null;
+        return $this->dueDate ? $this->dueDate->format('d/m/Y') : '-';
     }
 
     /**
@@ -471,7 +471,7 @@ class Risk
      */
     public function getRiskStrategyName()
     {
-        return $this->riskStrategy ? $this->riskStrategy->getName() : null;
+        return $this->riskStrategy ? $this->riskStrategy->getName() : '-';
     }
 
     /**
@@ -508,7 +508,7 @@ class Risk
      */
     public function getRiskCategoryName()
     {
-        return $this->riskCategory ? $this->riskCategory->getName() : null;
+        return $this->riskCategory ? $this->riskCategory->getName() : '-';
     }
 
     /**
@@ -545,7 +545,7 @@ class Risk
      */
     public function getResponsibilityName()
     {
-        return $this->responsibility ? $this->responsibility->getUsername() : null;
+        return $this->responsibility ? $this->responsibility->getUsername() : '-';
     }
 
     /**
@@ -582,6 +582,6 @@ class Risk
      */
     public function getStatusName()
     {
-        return $this->status ? $this->status->getName() : null;
+        return $this->status ? $this->status->getName() : '-';
     }
 }

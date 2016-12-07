@@ -235,7 +235,7 @@ class Note
      */
     public function getDateFormatted()
     {
-        return $this->date ? $this->date->format('d/m/Y') : null;
+        return $this->date ? $this->date->format('d/m/Y') : '-';
     }
 
     /**
@@ -344,7 +344,7 @@ class Note
      */
     public function getProjectName()
     {
-        return $this->project ? $this->project->getName() : null;
+        return $this->project ? $this->project->getName() : '-';
     }
 
     /**
@@ -381,7 +381,7 @@ class Note
      */
     public function getMeetingName()
     {
-        return $this->meeting ? $this->meeting->getName() : null;
+        return $this->meeting ? $this->meeting->getName() : '-';
     }
 
     /**
@@ -418,7 +418,7 @@ class Note
      */
     public function getResponsibilityName()
     {
-        return $this->responsibility ? $this->responsibility->getUsername() : null;
+        return $this->responsibility ? $this->responsibility->getUsername() : '-';
     }
 
     /**

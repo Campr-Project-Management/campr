@@ -8,7 +8,7 @@ class MediaRepository extends BaseRepository
     {
         $qb = $this
             ->createQueryBuilder('q')
-            ->innerJoin('q.fileSystem', 'fs')
+            ->leftJoin('q.fileSystem', 'fs')
         ;
 
         foreach ($criteria as $key => $value) {
