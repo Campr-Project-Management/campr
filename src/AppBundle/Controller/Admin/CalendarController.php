@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,6 +26,9 @@ class CalendarController extends Controller
      *
      * @Route("/list", name="app_admin_calendar_list")
      * @Method("GET")
+     * @Secure(roles="ROLE_SUPER_ADMIN")
+     *
+     * @return Response
      */
     public function listAction()
     {
