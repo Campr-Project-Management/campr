@@ -1,0 +1,7 @@
+.active-link > ul {
+    display: block;
+}
+
+.current > a {
+    color: #262626!important;
+}
