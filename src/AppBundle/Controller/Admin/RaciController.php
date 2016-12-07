@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,6 +25,7 @@ class RaciController extends Controller
      *
      * @Route("/list", name="app_admin_raci_list")
      * @Method({"GET"})
+     * @Secure(roles="ROLE_SUPER_ADMIN")
      *
      * @return Response
      */

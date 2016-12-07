@@ -52,9 +52,9 @@ services:
             - '@redis.client'
 
     app.service.filesystem:
-            class: AppBundle\Services\FileSystemService
-            arguments:
-                - "@knp_gaufrette.filesystem_map"
+        class: AppBundle\Services\FileSystemService
+        arguments:
+            - "@knp_gaufrette.filesystem_map"
 
     app.service.chat_topic:
         class: AppBundle\Topic\ChatTopic
@@ -66,13 +66,28 @@ services:
             - { name: gos_web_socket.topic }
 
     app.service.chat_user_topic:
-            class: AppBundle\Topic\ChatUserTopic
-            arguments:
-                - "@app.service.chat"
-                - "@gos_web_socket.websocket.client_manipulator"
-                - "@doctrine.orm.entity_manager"
-            tags:
-                - { name: gos_web_socket.topic }
+        class: AppBundle\Topic\ChatUserTopic
+        arguments:
+            - "@app.service.chat"
+            - "@gos_web_socket.websocket.client_manipulator"
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: gos_web_socket.topic }
+
+    app.menu.menu_builder:
+        class: AppBundle\Menu\MenuBuilder
+        arguments:
+            - "@router"
+            - "@security.token_storage"
+            - "@security.authorization_checker"
+            - "@translator"
+
+    app.admin_menu:
+        class: Knp\Menu\MenuItem
+        factory: ["@app.menu.menu_builder", createAdminMenu]
+        arguments: ["@knp_menu.factory"]
+        tags:
+            - { name: knp_menu.menu, alias: admin_main }
 
 ### FORM TYPES ###
     app.form.type.document.create:
@@ -83,11 +98,11 @@ services:
             - { name: form.type }
 
     app.form.type.document.edit:
-            class: AppBundle\Form\Document\EditType
-            arguments:
-                - "@service_container"
-            tags:
-                - { name: form.type }
+        class: AppBundle\Form\Document\EditType
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: form.type }
 
     app.form.filesystem.create_type:
         class: AppBundle\Form\FileSystem\CreateType
@@ -118,12 +133,12 @@ services:
             - { name: doctrine.event_listener, event: onFlush }
 
     app.listener.media:
-            class: AppBundle\EventListener\MediaListener
-            arguments:
-                - '@app.service.filesystem'
-            tags :
-                - { name: doctrine.event_listener, event: prePersist }
-                - { name: doctrine.event_listener, event: preRemove }
+        class: AppBundle\EventListener\MediaListener
+        arguments:
+            - '@app.service.filesystem'
+        tags :
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preRemove }
 
     app.listener.db_logger:
         class: AppBundle\EventListener\DBLogger
@@ -133,9 +148,9 @@ services:
             - "@security.token_storage"
 
     app.listener.message:
-            class: AppBundle\EventListener\MessageListener
-            tags :
-                - { name: doctrine.event_listener, event: prePersist }
+        class: AppBundle\EventListener\MessageListener
+        tags :
+            - { name: doctrine.event_listener, event: prePersist }
 
 ### EXTENSIONS ###
     app.chat_date.twig_extension:
