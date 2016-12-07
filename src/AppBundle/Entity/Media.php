@@ -240,7 +240,7 @@ class Media
      */
     public function getFileSystemName()
     {
-        return $this->fileSystem ? $this->fileSystem->getName() : null;
+        return $this->fileSystem ? $this->fileSystem->getName() : '-';
     }
 
     /**
@@ -275,7 +275,7 @@ class Media
      */
     public function getUserName()
     {
-        return $this->user ? $this->user->getUsername() : null;
+        return $this->user ? $this->user->getUsername() : '-';
     }
 
     /**

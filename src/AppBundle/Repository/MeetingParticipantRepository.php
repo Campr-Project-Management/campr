@@ -8,7 +8,7 @@ class MeetingParticipantRepository extends BaseRepository
     {
         $qb = $this
             ->createQueryBuilder('q')
-            ->join('q.meeting', 'm')
+            ->leftJoin('q.meeting', 'm')
         ;
 
         foreach ($criteria as $key => $value) {

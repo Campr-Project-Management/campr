@@ -197,7 +197,7 @@ class Meeting
      *
      * @return Meeting
      */
-    public function setDate($date)
+    public function setDate(\DateTime $date = null)
     {
         $this->date = $date;
 
@@ -224,7 +224,7 @@ class Meeting
      */
     public function getDateFormatted()
     {
-        return $this->date ? $this->date->format('d/m/Y') : null;
+        return $this->date ? $this->date->format('d/m/Y') : '-';
     }
 
     /**
@@ -234,7 +234,7 @@ class Meeting
      *
      * @return Meeting
      */
-    public function setStart($start)
+    public function setStart(\DateTime $start = null)
     {
         $this->start = $start;
 
@@ -258,7 +258,7 @@ class Meeting
      *
      * @return Meeting
      */
-    public function setEnd($end)
+    public function setEnd(\DateTime $end = null)
     {
         $this->end = $end;
 
@@ -333,7 +333,7 @@ class Meeting
      */
     public function getProjectName()
     {
-        return $this->project ? $this->project->getName() : null;
+        return $this->project ? $this->project->getName() : '-';
     }
 
     /**

@@ -233,7 +233,7 @@ class Timephase
     {
         return $this->assignment && $this->assignment->getWorkPackage()
             ? $this->assignment->getWorkPackage()->getName().' - '.$this->assignment->getId()
-            : null
+            : '-'
         ;
     }
 }
