@@ -53,14 +53,11 @@ class UserControllerTest extends BaseController
 
     public function testUsernameIsUniqueOnRegisterPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->assertNotNull($this->user, 'User not found');
-
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/user/register');
 
         $form = $crawler->filter('#register-form')->first()->form();
-        $form['register[username]'] = 'testuser';
+        $form['register[username]'] = 'admin';
         $form['register[email]'] = 'testuser2@trisoft.ro';
         $form['register[plainPassword][first]'] = 'Password2';
         $form['register[plainPassword][second]'] = 'Password2';
@@ -76,15 +73,12 @@ class UserControllerTest extends BaseController
 
     public function testEmailIsUniqueOnRegisterPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->assertNotNull($this->user, 'User not found');
-
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/user/register');
 
         $form = $crawler->filter('#register-form')->first()->form();
         $form['register[username]'] = 'testuser2';
-        $form['register[email]'] = 'testuser@trisoft.ro';
+        $form['register[email]'] = 'admin@trisoft.ro';
         $form['register[plainPassword][first]'] = 'Password2';
         $form['register[plainPassword][second]'] = 'Password2';
         $form['register[firstName]'] = 'FirstName';
@@ -152,9 +146,10 @@ class UserControllerTest extends BaseController
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
+        $target = $this->client->getResponse()->getTargetUrl();
 
         $this->client->followRedirect();
-        $this->assertContains('Welcome', $this->client->getResponse()->getContent());
+        $this->assertEquals('/', $target);
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
@@ -185,9 +180,10 @@ class UserControllerTest extends BaseController
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
+        $target = $this->client->getResponse()->getTargetUrl();
 
         $this->client->followRedirect();
-        $this->assertContains('Welcome', $this->client->getResponse()->getContent());
+        $this->assertEquals('/', $target);
 
         $user = $this
             ->em
@@ -231,9 +227,10 @@ class UserControllerTest extends BaseController
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
+        $target = $this->client->getResponse()->getTargetUrl();
 
         $this->client->followRedirect();
-        $this->assertContains('Welcome', $this->client->getResponse()->getContent());
+        $this->assertEquals('/', $target);
 
         $user = $this
             ->em
@@ -253,9 +250,10 @@ class UserControllerTest extends BaseController
         $link = $crawler->selectLink('Click here to resend the activation token')->link();
         $this->client->click($link);
         $this->assertTrue($this->client->getResponse()->isRedirect());
-        $this->client->followRedirect();
+        $target = $this->client->getResponse()->getTargetUrl();
 
-        $this->assertContains('Welcome', $this->client->getResponse()->getContent());
+        $this->client->followRedirect();
+        $this->assertEquals('/', $target);
 
         $user = $this
             ->em
@@ -284,9 +282,10 @@ class UserControllerTest extends BaseController
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
+        $target = $this->client->getResponse()->getTargetUrl();
 
         $this->client->followRedirect();
-        $this->assertContains('Welcome', $this->client->getResponse()->getContent());
+        $this->assertEquals('/', $target);
 
         $user = $this
             ->em
@@ -356,7 +355,6 @@ class UserControllerTest extends BaseController
     public function testFormSuccessfullySubmittedOnRequestResetPasswordPage()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->assertNotNull($this->user, 'User not found');
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/user/request-reset');
@@ -365,10 +363,12 @@ class UserControllerTest extends BaseController
         $form['reset_password[email]'] = 'testuser@trisoft.ro';
 
         $this->client->submit($form);
+        $target = $this->client->getResponse()->getTargetUrl();
+
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
-        $this->assertContains('Welcome', $this->client->getResponse()->getContent());
+        $this->assertEquals('/', $target);
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -376,7 +376,6 @@ class UserControllerTest extends BaseController
     public function testFormIsDisplayedOnResetPasswordPage()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->assertNotNull($this->user, 'User not found');
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/user/request-reset');
@@ -385,7 +384,10 @@ class UserControllerTest extends BaseController
         $form['reset_password[email]'] = 'testuser@trisoft.ro';
 
         $this->client->submit($form);
+        $target = $this->client->getResponse()->getTargetUrl();
+
         $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertEquals('/', $target);
 
         $user = $this
             ->em
@@ -409,7 +411,6 @@ class UserControllerTest extends BaseController
     public function testPasswordEmptyOnResetPasswordPage()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->assertNotNull($this->user, 'User not found');
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/user/request-reset');
@@ -418,7 +419,10 @@ class UserControllerTest extends BaseController
         $form['reset_password[email]'] = 'testuser@trisoft.ro';
 
         $this->client->submit($form);
+        $target = $this->client->getResponse()->getTargetUrl();
+
         $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertEquals('/', $target);
 
         $user = $this
             ->em
@@ -440,7 +444,6 @@ class UserControllerTest extends BaseController
     public function testPasswordsMatchOnResetPasswordPage()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->assertNotNull($this->user, 'User not found');
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/user/request-reset');
@@ -449,7 +452,10 @@ class UserControllerTest extends BaseController
         $form['reset_password[email]'] = 'testuser@trisoft.ro';
 
         $this->client->submit($form);
+        $target = $this->client->getResponse()->getTargetUrl();
+
         $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertEquals('/', $target);
 
         $user = $this
             ->em
@@ -473,7 +479,6 @@ class UserControllerTest extends BaseController
     public function testPasswordPatternOnResetPasswordPage()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->assertNotNull($this->user, 'User not found');
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/user/request-reset');
@@ -482,7 +487,10 @@ class UserControllerTest extends BaseController
         $form['reset_password[email]'] = 'testuser@trisoft.ro';
 
         $this->client->submit($form);
+        $target = $this->client->getResponse()->getTargetUrl();
+
         $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertEquals('/', $target);
 
         $user = $this
             ->em
@@ -506,7 +514,6 @@ class UserControllerTest extends BaseController
     public function testResetPasswordSuccessfully()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->assertNotNull($this->user, 'User not found');
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/user/request-reset');
@@ -515,7 +522,10 @@ class UserControllerTest extends BaseController
         $form['reset_password[email]'] = 'testuser@trisoft.ro';
 
         $this->client->submit($form);
+        $target = $this->client->getResponse()->getTargetUrl();
+
         $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->assertEquals('/', $target);
 
         $user = $this
             ->em
@@ -533,8 +543,10 @@ class UserControllerTest extends BaseController
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
+        $target = $this->client->getResponse()->getTargetUrl();
 
         $this->client->followRedirect();
+        $this->assertEquals('/login', $target);
 
         $this->assertContains('id="login-form"', $this->client->getResponse()->getContent());
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
