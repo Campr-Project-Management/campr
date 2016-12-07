@@ -255,30 +255,6 @@ admin:
                 created_at: Created at
                 updated_at: Updated at
             not_found: No project categories found!
-        files:
-            list:
-                title: Project files
-                subtitle: List of project files
-                id: Id
-                filesystem: Filesystem
-                user: User
-                path: Path
-                mime_type: Mime Type
-                file_size: File Size
-            upload:
-                title: Upload new file
-                filesystem_placeholder: Select filesystem
-                filesystem: Filesystem
-                failed: File upload failed. Filesystem cannot be reached.
-            delete:
-                failed:
-                    general: File delete failed. Filesystem cannot be reached or file does not exist in it
-                    first: File with ID
-                    second: cannot be deleted. Filesystem cannot be reached or file does not exist in it
-                success:
-                    general: File successfully deleted!
-                    first: File with ID
-                    second: successfully deleted!
         create:
             title: Create Project
             name: Name
@@ -966,7 +942,7 @@ admin:
                 decisions: Decisions
                 todos: TODOs
                 notes: Notes
-                documents: Documents
+                medias: Medias
             add: Add new meeting
         create:
             title: Create meeting
@@ -1267,30 +1243,6 @@ admin:
                 general: Communication successfully deleted!
                 first: Communication with ID
                 second: successfully deleted!
-    document:
-        list:
-            title: Document
-            subtitle: List of documents
-            table:
-                id: Id
-                project: Project
-                file: File
-                meetings: Meetings
-            add: Add new document
-        create:
-            title: Create document
-            project: Project
-            meetings: Meetings
-            file: Document file
-            file_exists: Uploaded document already exists in documents folder.
-            success: Document successfully created!
-        edit:
-            title: Edit document
-            success: Document successfully edited!
-        delete:
-            success:
-                general: Document successfully deleted!
-                first: Document with ID
     filesystem:
         driver:
             choice:
@@ -1329,6 +1281,38 @@ admin:
             success:
                 general: FileSystem successfully deleted!
                 first: FileSystem with ID
+                second: successfully deleted!
+    media:
+        list:
+            title: Media
+            subtitle: List of project files
+            upload: Upload new media file
+            table:
+              id: Id
+              filesystem: Filesystem
+              meetings: Meetings
+              user: User
+              path: Path
+              mime: Mime Type
+              size: File size
+              created_at: Created At
+        upload:
+            title: Upload new file
+            filesystem_placeholder: Select filesystem
+            filesystem: Filesystem
+            failed: File upload failed. Filesystem cannot be reached.
+            success: Media file successfully created!
+        edit:
+            title: Edit media file
+            success: Media file successfully edited!
+        delete:
+            failed:
+                general: File delete failed. Filesystem cannot be reached or file does not exist in it
+                first: File with ID
+                second: cannot be deleted. Filesystem cannot be reached or file does not exist in it
+            success:
+                general: Media file successfully deleted!
+                first: File with ID
                 second: successfully deleted!
     chat:
         messages: Messages

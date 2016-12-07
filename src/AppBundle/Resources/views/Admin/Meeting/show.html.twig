@@ -104,10 +104,10 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.meeting.list.table.documents'|trans }}</th>
+                                <th>{{ 'admin.meeting.list.table.medias'|trans }}</th>
                                 <td>
-                                    {% for document in meeting.documents %}
-                                        </p>{{ document.fileName|default('-') }}</p>
+                                    {% for media in meeting.medias %}
+                                        </p>{{ media.path|default('-') }}</p>
                                     {% endfor %}
                                 </td>
                             </tr>

@@ -8,7 +8,7 @@ before_script:
   - cp app/config/parameters_test.yml.dist app/config/parameters_test.yml
   - php composer.phar install --quiet --prefer-dist --no-interaction
   - cp phpunit.xml.dist phpunit.xml
-  - rm -rf web/uploads/test
+  - rm -rf web/uploads/tests
   - mkdir -p src/AppBundle/Tests/Resources/files/ && touch src/AppBundle/Tests/Resources/files/file.txt
   - bin/console doctrine:database:drop --if-exists --force --env=test
   - bin/console doctrine:database:create --env=test
