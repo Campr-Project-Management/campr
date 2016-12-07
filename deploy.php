@@ -5,7 +5,7 @@ require 'recipe/symfony3.php';
 // Set configurations
 set('repository', 'git@lab.trisoft.ro:campr/campr.git');
 set('shared_files', ['app/config/parameters.yml']);
-set('shared_dirs', ['var/logs', 'vendor', 'web/uploads']);
+set('shared_dirs', ['var/logs', 'vendor', 'web/uploads', 'front/node_modules']);
 set('writable_dirs', ['var/cache', 'var/logs']);
 set('http_user', 'www-data');
 
@@ -117,6 +117,9 @@ task('server:provision', function () {
         writeln('<info>Skipping...</info>');
     }
 });
+task('project:build:front', function () {
+    run('cd {{release_path}}/front && npm install && npm run build');
+});
 task('hivebot:deploy-whois', function () {
     env('localUser', sprintf(
         '%s',
@@ -154,6 +157,7 @@ before('database:migrate', 'database:cleanup');
 after('deploy:symlink', 'database:migrate');
 after('deploy:symlink', 'project:apache:restart');
 after('deploy:symlink', 'project:enable-cron');
+after('deploy:symlink', 'project:build:front');
 before('project:apache:restart', 'project:apache:enable-config');
 after('project:apache:restart', 'project:supervisor:restart');
 after('deploy:assetic:dump', 'project:fos:js-routing:dump');
