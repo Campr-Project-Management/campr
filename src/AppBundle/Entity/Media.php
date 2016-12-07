@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\HttpFoundation\File\File;
@@ -34,12 +35,28 @@ class Media
     private $fileSystem;
 
     /**
+     * @var ArrayCollection|Meeting[]
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Meeting", inversedBy="medias")
+     * @ORM\JoinTable(
+     *     name="media_meeting",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="media_id")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="meeting_id")
+     *     }
+     * )
+     */
+    private $meetings;
+
+    /**
      * @var User
      *
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="medias")
-     * @ORM\JoinColumn(name="user_id", nullable=false)
+     * @ORM\JoinColumn(name="user_id", nullable=true, onDelete="SET NULL")
      */
     private $user;
 
@@ -76,9 +93,13 @@ class Media
      */
     private $createdAt;
 
+    /**
+     * Media constructor.
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->meetings = new ArrayCollection();
     }
 
     /**
@@ -279,5 +300,39 @@ class Media
         $this->file = $file;
 
         return $this;
+    }
+
+    /**
+     * Add meeting.
+     *
+     * @param Meeting $meeting
+     *
+     * @return Media
+     */
+    public function addMeeting(Meeting $meeting)
+    {
+        $this->meetings[] = $meeting;
+
+        return $this;
+    }
+
+    /**
+     * Remove meeting.
+     *
+     * @param Meeting $meeting
+     */
+    public function removeMeeting(Meeting $meeting)
+    {
+        $this->meetings->removeElement($meeting);
+    }
+
+    /**
+     * Get meetings.
+     *
+     * @return ArrayCollection
+     */
+    public function getMeetings()
+    {
+        return $this->meetings;
     }
 }
