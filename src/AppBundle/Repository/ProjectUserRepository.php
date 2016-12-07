@@ -8,7 +8,7 @@ class ProjectUserRepository extends BaseRepository
     {
         $qb = $this
             ->createQueryBuilder('q')
-            ->join('q.user', 'u');
+            ->leftJoin('q.user', 'u');
 
         foreach ($criteria as $key => $value) {
             if (empty($value)) {

@@ -220,7 +220,7 @@ class Decision
      *
      * @return Decision
      */
-    public function setDate($date)
+    public function setDate(\DateTime $date = null)
     {
         $this->date = $date;
 
@@ -244,7 +244,7 @@ class Decision
      *
      * @return Decision
      */
-    public function setDueDate($dueDate)
+    public function setDueDate(\DateTime $dueDate = null)
     {
         $this->dueDate = $dueDate;
 
@@ -268,7 +268,7 @@ class Decision
      *
      * @return Decision
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -292,7 +292,7 @@ class Decision
      *
      * @return Decision
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
@@ -415,7 +415,7 @@ class Decision
      */
     public function getProjectName()
     {
-        return $this->project ? $this->project->getName() : null;
+        return $this->project ? $this->project->getName() : '-';
     }
 
     /**
@@ -428,7 +428,7 @@ class Decision
      */
     public function getResponsibilityName()
     {
-        return $this->responsibility ? $this->responsibility->getUsername() : null;
+        return $this->responsibility ? $this->responsibility->getUsername() : '-';
     }
 
     /**
@@ -441,7 +441,7 @@ class Decision
      */
     public function getDateFormatted()
     {
-        return $this->date ? $this->date->format('d/m/Y') : null;
+        return $this->date ? $this->date->format('d/m/Y') : '-';
     }
 
     /**
@@ -454,6 +454,6 @@ class Decision
      */
     public function getDueDateFormatted()
     {
-        return $this->dueDate ? $this->dueDate->format('d/m/Y') : null;
+        return $this->dueDate ? $this->dueDate->format('d/m/Y') : '-';
     }
 }
