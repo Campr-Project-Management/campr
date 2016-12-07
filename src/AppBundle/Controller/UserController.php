@@ -21,6 +21,10 @@ class UserController extends Controller
      */
     public function registerAction(Request $request)
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_homepage');
+        }
+
         $em = $this->getDoctrine()->getManager();
         $formRegister = $this->createForm(RegisterType::class);
         $formRegister->handleRequest($request);
@@ -69,7 +73,7 @@ class UserController extends Controller
     /**
      * @Route("/activate/{token}", name="app_user_activate")
      */
-    public function activateAction($token, Request $request)
+    public function activateAction($token)
     {
         $em = $this->getDoctrine()->getManager();
         $user = $em
@@ -135,7 +139,7 @@ class UserController extends Controller
     /**
      * @Route("/resend-activation/{token}", name="app_user_resend_activation")
      */
-    public function resendActivationAction($token, Request $request)
+    public function resendActivationAction($token)
     {
         $em = $this->getDoctrine()->getManager();
         $user = $em
@@ -174,6 +178,10 @@ class UserController extends Controller
      */
     public function requestResetAction(Request $request)
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_homepage');
+        }
+
         $em = $this->getDoctrine()->getManager();
         $formReset = $this->createForm(ResetPasswordType::class);
         $formReset->handleRequest($request);
