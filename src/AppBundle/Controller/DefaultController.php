@@ -17,7 +17,7 @@ class DefaultController extends Controller
     public function indexAction(Request $request)
     {
         return $this->render(
-            '@vue/index.html'
+            'AppBundle:Default:index.html.twig'
         );
     }
 
