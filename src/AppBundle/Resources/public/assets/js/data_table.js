@@ -16,6 +16,7 @@ $(function () {
                     showLink = $('#data-table-command').data('show'),
                     filesLink = $('#data-table-command').data('files'),
                     downloadLink = $('#data-table-command').data('download'),
+                    impersonateUserLink = $('#data-table-command').data('impersonate'),
                     params = $('#data-table-command').data('params'),
                     routeParams = {},
                     commands = '';
@@ -29,6 +30,7 @@ $(function () {
                 commands += showLink ? '<a href=' + Routing.generate(showLink, routeParams, true) + '><button type="button" class="btn btn-icon bgm-teal waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-zoom-in"></span></button></a>' : '';
                 commands += filesLink ? '<a href=' + Routing.generate(filesLink, {'project': row.id}, true) + '><button type="button" class="btn btn-icon bgm-bluegray waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-file"></span></button></a>' : '';
                 commands += downloadLink ? '<a href=' + Routing.generate(downloadLink, {'id': row.id}, true) + '><button type="button" class="btn btn-icon bgm-bluegray waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-download"></span></button></a>' : '';
+                commands += impersonateUserLink ? '<button type="button" class="btn btn-icon bgm-bluegray waves-effect waves-circle command-impersonate" data-row-id="' + row.id + '"><span class="zmdi zmdi-account-circle"></span></button></a>' : '';
                 commands += '<button type="button" class="btn btn-icon bgm-red command-delete waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-delete"></span></button>';
 
                 return  commands;
@@ -36,12 +38,20 @@ $(function () {
         }
     }).on('loaded.rs.jquery.bootgrid', function () {
         var deleteLink = $('#data-table-command').data('delete'),
+            impersonateUserLink = $('#data-table-command').data('impersonate'),
             params = $('#data-table-command').data('params'),
             routeParams = {};
 
         if (params) {
             routeParams[params.name] = params.value;
         }
+
+        grid.find('.command-impersonate').on('click', function () {
+            var row = $(this).data('row-id'),
+                email = $('#data-table-command tbody tr[data-row-id=' + row + '] td:nth-child(3)').html();
+
+            window.location.href = Routing.generate(impersonateUserLink, {'_switch_user': email}, true);
+        });
 
         grid.find('.command-delete').on('click', function () {
             routeParams['id'] = $(this).data('row-id');

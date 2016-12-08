@@ -17,7 +17,7 @@ class DefaultController extends Controller
     /**
      * Application homepage.
      *
-     * @Route("/", name="app_homepage")
+     * @Route("/", name="app_homepage", options={"expose"=true})
      *
      * @return Response
      */
