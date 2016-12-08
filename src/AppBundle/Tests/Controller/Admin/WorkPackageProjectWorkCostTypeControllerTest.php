@@ -84,7 +84,7 @@ class WorkPackageProjectWorkCostTypeControllerTest extends BaseController
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
-        $this->assertContains('WorkPackage - ProjectWorkCostType successfully created!', $this->client->getResponse()->getContent());
+        $this->assertContains('Work Package Project Work Cost Type successfully created!', $this->client->getResponse()->getContent());
 
         $workPackageProjectWorkCostType = $this
             ->em
@@ -116,7 +116,7 @@ class WorkPackageProjectWorkCostTypeControllerTest extends BaseController
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
-        $this->assertContains('WorkPackage - ProjectWorkCostType successfully deleted!', $this->client->getResponse()->getContent());
+        $this->assertContains('Work Package Project Work Cost Type successfully deleted!', $this->client->getResponse()->getContent());
     }
 
     public function testFormIsDisplayedOnEditPage()
@@ -196,7 +196,7 @@ class WorkPackageProjectWorkCostTypeControllerTest extends BaseController
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
-        $this->assertContains('WorkPackage - ProjectWorkCostType successfully edited!', $this->client->getResponse()->getContent());
+        $this->assertContains('Work Package Project Work Cost Type successfully edited!', $this->client->getResponse()->getContent());
     }
 
     public function testDataTableOnListPage()
