@@ -26,6 +26,7 @@
 
             <link href="{{ asset('assets/admin/css/app_1.min.css') }}" rel="stylesheet">
             <link href="{{ asset('assets/admin/css/app_2.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('bundles/app/assets/css/admin.css') }}" rel="stylesheet">
         {% endblock %}
         {% block icon %}
             <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -36,7 +37,7 @@
         {% include 'AppBundle:Admin/Layout:header.html.twig' %}
 
         <section id="main">
-            {% include 'AppBundle:Admin/Layout:sidebar.html.twig' %}
+            {{ knp_menu_render('admin_main', {'template': 'AppBundle:Admin/Layout:sidebar.html.twig'}) }}
 
             <section id="content">
                     <div class="container">
