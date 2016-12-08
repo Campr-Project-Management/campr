@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\ChatRoom;
 use AppBundle\Entity\Message;
 use AppBundle\Entity\User;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,6 +28,7 @@ class ProjectController extends Controller
      *
      * @Route("/list", name="app_admin_project_list")
      * @Method("GET")
+     * @Secure(roles="ROLE_SUPER_ADMIN")
      *
      * @return Response
      */

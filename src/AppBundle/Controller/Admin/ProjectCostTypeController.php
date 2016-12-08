@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +25,7 @@ class ProjectCostTypeController extends Controller
      *
      * @Route("/list", name="app_admin_project_cost_type_list")
      * @Method("GET")
+     * @Secure(roles="ROLE_SUPER_ADMIN")
      *
      * @return Response
      */
