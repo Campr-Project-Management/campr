@@ -8,7 +8,7 @@ class DayRepository extends BaseRepository
     {
         $qb = $this
             ->createQueryBuilder('q')
-            ->innerJoin('q.calendar', 'c')
+            ->leftJoin('q.calendar', 'c')
         ;
 
         foreach ($criteria as $key => $value) {

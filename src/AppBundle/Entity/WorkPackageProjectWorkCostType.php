@@ -324,7 +324,7 @@ class WorkPackageProjectWorkCostType
      */
     public function getCreatedAtFormatted()
     {
-        return $this->createdAt ? $this->createdAt->format('d/m/Y') : null;
+        return $this->createdAt ? $this->createdAt->format('d/m/Y') : '-';
     }
 
     /**
@@ -385,7 +385,7 @@ class WorkPackageProjectWorkCostType
      */
     public function getWorkPackageName()
     {
-        return $this->workPackage ? $this->workPackage->getName() : null;
+        return $this->workPackage ? $this->workPackage->getName() : '-';
     }
 
     /**
@@ -422,7 +422,7 @@ class WorkPackageProjectWorkCostType
      */
     public function getProjectWorkCostTypeName()
     {
-        return $this->projectWorkCostType ? $this->projectWorkCostType->getName() : null;
+        return $this->projectWorkCostType ? $this->projectWorkCostType->getName() : '-';
     }
 
     /**

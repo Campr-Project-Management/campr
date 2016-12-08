@@ -431,7 +431,7 @@ class ProjectUser
      */
     public function getUserName()
     {
-        return $this->user ? $this->user->getUsername() : null;
+        return $this->user ? $this->user->getUsername() : '-';
     }
 
     /**
@@ -444,7 +444,7 @@ class ProjectUser
      */
     public function getProjectName()
     {
-        return $this->project ? $this->project->getName() : null;
+        return $this->project ? $this->project->getName() : '-';
     }
 
     /**
@@ -457,7 +457,7 @@ class ProjectUser
      */
     public function getProjectCategoryName()
     {
-        return $this->projectCategory ? $this->projectCategory->getName() : null;
+        return $this->projectCategory ? $this->projectCategory->getName() : '-';
     }
 
     /**
@@ -470,7 +470,7 @@ class ProjectUser
      */
     public function getProjectRoleName()
     {
-        return $this->projectRole ? $this->projectRole->getName() : null;
+        return $this->projectRole ? $this->projectRole->getName() : '-';
     }
 
     /**
@@ -483,7 +483,7 @@ class ProjectUser
      */
     public function getProjectDepartmentName()
     {
-        return $this->projectDepartment ? $this->projectDepartment->getName() : null;
+        return $this->projectDepartment ? $this->projectDepartment->getName() : '-';
     }
 
     /**
@@ -496,6 +496,6 @@ class ProjectUser
      */
     public function getProjectTeamName()
     {
-        return $this->projectTeam ? $this->projectTeam->getName() : null;
+        return $this->projectTeam ? $this->projectTeam->getName() : '-';
     }
 }

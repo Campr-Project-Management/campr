@@ -269,7 +269,7 @@ class Communication
      */
     public function getProjectName()
     {
-        return $this->project ? $this->project->getName() : null;
+        return $this->project ? $this->project->getName() : '-';
     }
 
     /**
@@ -338,6 +338,6 @@ class Communication
      */
     public function getMeetingNameSerialized()
     {
-        return $this->meetingName ? $this->meetingName : null;
+        return $this->meetingName ? $this->meetingName : '-';
     }
 }
