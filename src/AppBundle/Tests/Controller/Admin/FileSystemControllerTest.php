@@ -103,7 +103,7 @@ class FileSystemControllerTest extends BaseController
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
-        $this->assertContains('FileSystem successfully deleted!', $this->client->getResponse()->getContent());
+        $this->assertContains('File System successfully deleted!', $this->client->getResponse()->getContent());
     }
 
     public function testFormIsDisplayedOnEditPage()
@@ -171,7 +171,7 @@ class FileSystemControllerTest extends BaseController
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
-        $this->assertContains('FileSystem successfully edited!', $this->client->getResponse()->getContent());
+        $this->assertContains('File System successfully edited!', $this->client->getResponse()->getContent());
     }
 
     public function testDataTableOnListPage()
