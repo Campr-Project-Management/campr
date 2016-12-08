@@ -356,7 +356,7 @@ class Assignment
      */
     public function getWorkPackageName()
     {
-        return $this->workPackage ? $this->workPackage->getName() : null;
+        return $this->workPackage ? $this->workPackage->getName() : '-';
     }
 
     /**
@@ -405,6 +405,6 @@ class Assignment
      */
     public function getWorkPackageProjectWorkCostTypeName()
     {
-        return $this->workPackageProjectWorkCostType ? $this->workPackageProjectWorkCostType->getName() : null;
+        return $this->workPackageProjectWorkCostType ? $this->workPackageProjectWorkCostType->getName() : '-';
     }
 }

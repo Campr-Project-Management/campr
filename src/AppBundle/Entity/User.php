@@ -507,7 +507,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @return User
      */
-    public function setActivationTokenCreatedAt($activationTokenCreatedAt)
+    public function setActivationTokenCreatedAt(\DateTime $activationTokenCreatedAt = null)
     {
         $this->activationTokenCreatedAt = $activationTokenCreatedAt;
 

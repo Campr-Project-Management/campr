@@ -188,6 +188,6 @@ class Day
      */
     public function getCalendarName()
     {
-        return $this->calendar ? $this->calendar->getName() : null;
+        return $this->calendar ? $this->calendar->getName() : '-';
     }
 }

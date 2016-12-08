@@ -115,7 +115,7 @@ class MeetingAgenda
      *
      * @return MeetingAgenda
      */
-    public function setStart($start)
+    public function setStart(\DateTime $start = null)
     {
         $this->start = $start;
 
@@ -142,7 +142,7 @@ class MeetingAgenda
      */
     public function getStartFormatted()
     {
-        return $this->start ? $this->start->format('H:i') : null;
+        return $this->start ? $this->start->format('H:i') : '-';
     }
 
     /**
@@ -152,7 +152,7 @@ class MeetingAgenda
      *
      * @return MeetingAgenda
      */
-    public function setEnd($end)
+    public function setEnd(\DateTime $end = null)
     {
         $this->end = $end;
 
@@ -179,7 +179,7 @@ class MeetingAgenda
      */
     public function getEndFormatted()
     {
-        return $this->end ? $this->end->format('H:i') : null;
+        return $this->end ? $this->end->format('H:i') : '-';
     }
 
     /**
@@ -189,7 +189,7 @@ class MeetingAgenda
      *
      * @return MeetingAgenda
      */
-    public function setDuration($duration)
+    public function setDuration(\DateTime $duration = null)
     {
         $this->duration = $duration;
 
@@ -240,7 +240,7 @@ class MeetingAgenda
      */
     public function getMeetingName()
     {
-        return $this->meeting ? $this->meeting->getName() : null;
+        return $this->meeting ? $this->meeting->getName() : '-';
     }
 
     /**
@@ -277,6 +277,6 @@ class MeetingAgenda
      */
     public function getResponsibilityName()
     {
-        return $this->responsibility ? $this->responsibility->getUsername() : null;
+        return $this->responsibility ? $this->responsibility->getUsername() : '-';
     }
 }

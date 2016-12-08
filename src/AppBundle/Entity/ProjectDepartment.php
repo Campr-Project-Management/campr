@@ -274,7 +274,7 @@ class ProjectDepartment
      */
     public function getProjectWorkCostTypeName()
     {
-        return $this->projectWorkCostType ? $this->projectWorkCostType->getName() : null;
+        return $this->projectWorkCostType ? $this->projectWorkCostType->getName() : '-';
     }
 
     /**
@@ -287,7 +287,7 @@ class ProjectDepartment
      */
     public function getCreatedAtFormatted()
     {
-        return $this->createdAt ? $this->createdAt->format('d/m/Y') : null;
+        return $this->createdAt ? $this->createdAt->format('d/m/Y') : '-';
     }
 
     /**
@@ -300,6 +300,6 @@ class ProjectDepartment
      */
     public function getUpdatedAtFormatted()
     {
-        return $this->updatedAt ? $this->updatedAt->format('d/m/Y') : null;
+        return $this->updatedAt ? $this->updatedAt->format('d/m/Y') : '-';
     }
 }
