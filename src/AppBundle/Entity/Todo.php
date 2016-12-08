@@ -210,7 +210,7 @@ class Todo
      *
      * @return Todo
      */
-    public function setDate(\DatetIme $date = null)
+    public function setDate(\DateTime $date = null)
     {
         $this->date = $date;
 
@@ -237,7 +237,7 @@ class Todo
      */
     public function getDateFormatted()
     {
-        return $this->date ? $this->date->format('d/m/Y') : null;
+        return $this->date ? $this->date->format('d/m/Y') : '-';
     }
 
     /**
@@ -274,7 +274,7 @@ class Todo
      */
     public function getDueDateFormatted()
     {
-        return $this->dueDate ? $this->dueDate->format('d/m/Y') : null;
+        return $this->dueDate ? $this->dueDate->format('d/m/Y') : '-';
     }
 
     /**
@@ -359,7 +359,7 @@ class Todo
      */
     public function getProjectName()
     {
-        return $this->project ? $this->project->getName() : null;
+        return $this->project ? $this->project->getName() : '-';
     }
 
     /**
@@ -420,7 +420,7 @@ class Todo
      */
     public function getResponsibilityName()
     {
-        return $this->responsibility ? $this->responsibility->getUsername() : null;
+        return $this->responsibility ? $this->responsibility->getUsername() : '-';
     }
 
     /**
@@ -457,6 +457,6 @@ class Todo
      */
     public function getStatusName()
     {
-        return $this->status ? $this->status->getName() : null;
+        return $this->status ? $this->status->getName() : '-';
     }
 }

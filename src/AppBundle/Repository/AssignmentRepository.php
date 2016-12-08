@@ -18,7 +18,7 @@ class AssignmentRepository extends BaseRepository
     {
         $qb = $this
             ->createQueryBuilder('q')
-            ->innerJoin('q.workPackage', 'wp')
+            ->leftJoin('q.workPackage', 'wp')
         ;
 
         foreach ($criteria as $key => $value) {

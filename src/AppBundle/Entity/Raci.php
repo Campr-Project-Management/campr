@@ -115,7 +115,7 @@ class Raci
      */
     public function getWorkPackageName()
     {
-        return $this->workPackage ? $this->workPackage->getName() : null;
+        return $this->workPackage ? $this->workPackage->getName() : '-';
     }
 
     /**
@@ -152,6 +152,6 @@ class Raci
      */
     public function getUserName()
     {
-        return $this->user ? $this->user->getUsername() : null;
+        return $this->user ? $this->user->getUsername() : '-';
     }
 }

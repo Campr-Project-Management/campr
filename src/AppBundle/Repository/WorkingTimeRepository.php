@@ -8,8 +8,8 @@ class WorkingTimeRepository extends BaseRepository
     {
         $qb = $this
             ->createQueryBuilder('q')
-            ->innerJoin('q.day', 'd')
-            ->innerJoin('d.calendar', 'c')
+            ->leftJoin('q.day', 'd')
+            ->leftJoin('d.calendar', 'c')
         ;
 
         foreach ($criteria as $key => $value) {
