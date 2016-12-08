@@ -84,6 +84,9 @@ class ProjectModule
      */
     private $updatedAt;
 
+    /**
+     * ProjectModule constructor.
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -202,7 +205,7 @@ class ProjectModule
      *
      * @return ProjectModule
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -226,7 +229,7 @@ class ProjectModule
      *
      * @return ProjectModule
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
@@ -268,6 +271,8 @@ class ProjectModule
     }
 
     /**
+     * Returns project name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      *
@@ -279,6 +284,8 @@ class ProjectModule
     }
 
     /**
+     * Returns createdAt date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("createdAt")
      *
@@ -290,6 +297,8 @@ class ProjectModule
     }
 
     /**
+     * Returns updatedAt date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("updatedAt")
      *

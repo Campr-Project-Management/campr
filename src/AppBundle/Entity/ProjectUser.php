@@ -139,6 +139,9 @@ class ProjectUser
      */
     private $updatedAt;
 
+    /**
+     * ProjectUser constructor.
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -233,7 +236,7 @@ class ProjectUser
      *
      * @return ProjectUser
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -257,7 +260,7 @@ class ProjectUser
      *
      * @return ProjectUser
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
@@ -419,6 +422,8 @@ class ProjectUser
     }
 
     /**
+     * Returns user username.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("user")
      *
@@ -430,6 +435,8 @@ class ProjectUser
     }
 
     /**
+     * Returns project name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      *
@@ -441,6 +448,8 @@ class ProjectUser
     }
 
     /**
+     * Returns project category name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectCategory")
      *
@@ -452,6 +461,8 @@ class ProjectUser
     }
 
     /**
+     * Returns project role name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectRole")
      *
@@ -463,6 +474,8 @@ class ProjectUser
     }
 
     /**
+     * Returns project department name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectDepartment")
      *
@@ -474,6 +487,8 @@ class ProjectUser
     }
 
     /**
+     * Returns project team name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectTeam")
      *

@@ -86,7 +86,7 @@ class Raci
     /**
      * Set workpackage.
      *
-     * @param WorkPackage $workpackage
+     * @param WorkPackage $workPackage
      *
      * @return Raci
      */
@@ -143,6 +143,8 @@ class Raci
     }
 
     /**
+     * Returns user username.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("user")
      *

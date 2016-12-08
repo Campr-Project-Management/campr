@@ -13,7 +13,7 @@ use AppBundle\Form\ProjectCostType\CreateType as ProjectCategoryTypeCreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * ProjectCostType controller.
+ * ProjectCostType admin controller.
  *
  * @Route("/admin/project-cost-type")
  */
@@ -45,6 +45,8 @@ class ProjectCostTypeController extends Controller
     }
 
     /**
+     * Lists all ProjectCostType entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_project_cost_type_list_filtered")
      * @Method("POST")
      *
@@ -176,12 +178,12 @@ class ProjectCostTypeController extends Controller
      * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_cost_type_delete")
      * @Method({"GET"})
      *
-     * @param ProjectCostType $projectCostType
      * @param Request         $request
+     * @param ProjectCostType $projectCostType
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ProjectCostType $projectCostType, Request $request)
+    public function deleteAction(Request $request, ProjectCostType $projectCostType)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectCostType);
@@ -192,7 +194,7 @@ class ProjectCostTypeController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

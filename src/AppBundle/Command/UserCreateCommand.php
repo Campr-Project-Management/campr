@@ -9,6 +9,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use AppBundle\Entity\User;
 
+/**
+ * Create a new user object (firstname, lastname and role are optionally).
+ *
+ * Command usage: tss:app:user-create email@email.com password username firstname lastname ROLE_ADMIN
+ */
 class UserCreateCommand extends ContainerAwareCommand
 {
     protected function configure()

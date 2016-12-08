@@ -95,8 +95,9 @@ class Communication
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
     /**
-     * Constructor.
+     * Communication constructor.
      */
     public function __construct()
     {
@@ -259,6 +260,8 @@ class Communication
     }
 
     /**
+     * Returns project name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      *

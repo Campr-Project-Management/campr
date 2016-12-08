@@ -133,6 +133,8 @@ class MeetingAgenda
     }
 
     /**
+     * Returns start date formattted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("start")
      *
@@ -168,6 +170,8 @@ class MeetingAgenda
     }
 
     /**
+     * Returns end date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("end")
      *
@@ -227,6 +231,8 @@ class MeetingAgenda
     }
 
     /**
+     * Returns meeting name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("meeting")
      *
@@ -262,6 +268,8 @@ class MeetingAgenda
     }
 
     /**
+     * Returns responsibility username.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("responsibility")
      *

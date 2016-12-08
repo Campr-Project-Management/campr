@@ -123,6 +123,9 @@ class Decision
      */
     private $updatedAt;
 
+    /**
+     * Decision constructor.
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -403,6 +406,8 @@ class Decision
     }
 
     /**
+     * Returns project name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      *
@@ -414,6 +419,8 @@ class Decision
     }
 
     /**
+     * Returns the responsibility username.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("responsibility")
      *
@@ -425,6 +432,8 @@ class Decision
     }
 
     /**
+     * Returns date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("date")
      *
@@ -436,6 +445,8 @@ class Decision
     }
 
     /**
+     * Returns dueDate formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("dueDate")
      *

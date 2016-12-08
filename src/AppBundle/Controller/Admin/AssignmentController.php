@@ -13,7 +13,7 @@ use AppBundle\Form\Assignment\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Assignment controller.
+ * Assignment admin controller.
  *
  * @Route("/admin/assignment")
  */
@@ -43,6 +43,8 @@ class AssignmentController extends Controller
     }
 
     /**
+     * Lists all Assignment entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_assignment_list_filtered")
      * @Method("POST")
      *
@@ -146,7 +148,7 @@ class AssignmentController extends Controller
     }
 
     /**
-     * Displays a Assignment entity.
+     * Displays an Assignment entity.
      *
      * @Route("/{id}/show", options={"expose"=true}, name="app_admin_assignment_show")
      * @Method({"GET"})
@@ -171,12 +173,12 @@ class AssignmentController extends Controller
      * @Route("/{id}", options={"expose"=true}, name="app_admin_assignment_delete")
      * @Method({"GET"})
      *
-     * @param Assignment $assignment
      * @param Request    $request
+     * @param Assignment $assignment
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(Assignment $assignment, Request $request)
+    public function deleteAction(Request $request, Assignment $assignment)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($assignment);
@@ -187,7 +189,7 @@ class AssignmentController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

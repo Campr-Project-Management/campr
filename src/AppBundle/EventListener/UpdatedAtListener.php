@@ -4,6 +4,10 @@ namespace AppBundle\EventListener;
 
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 
+/**
+ * Class UpdatedAtListener
+ * Sets the updatedAt field for all entities on update.
+ */
 class UpdatedAtListener
 {
     /**

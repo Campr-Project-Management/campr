@@ -54,6 +54,9 @@ class Day
      */
     private $calendar;
 
+    /**
+     * Day constructor.
+     */
     public function __construct()
     {
         $this->workingTimes = new ArrayCollection();
@@ -176,6 +179,8 @@ class Day
     }
 
     /**
+     * Returns calendar name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("calendar")
      *

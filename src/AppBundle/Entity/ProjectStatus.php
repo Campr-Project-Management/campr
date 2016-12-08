@@ -66,6 +66,9 @@ class ProjectStatus
      */
     private $updatedAt;
 
+    /**
+     * ProjectStatus constructor.
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -136,7 +139,7 @@ class ProjectStatus
      *
      * @return ProjectStatus
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -160,7 +163,7 @@ class ProjectStatus
      *
      * @return ProjectStatus
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 

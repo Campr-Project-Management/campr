@@ -7,6 +7,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
+/**
+ * Insert database entries for Timephase entity.
+ */
 class LoadTimephaseData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**

@@ -14,7 +14,7 @@ use AppBundle\Form\Calendar\EditType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Calendar controller.
+ * Calendar admin controller.
  *
  * @Route("/admin/calendar")
  */
@@ -44,6 +44,8 @@ class CalendarController extends Controller
     }
 
     /**
+     * Lists all Calendar entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_calendar_list_filtered")
      * @Method("POST")
      *
@@ -172,12 +174,12 @@ class CalendarController extends Controller
      * @Route("/{id}", options={"expose"=true}, name="app_admin_calendar_delete")
      * @Method({"GET"})
      *
-     * @param Calendar $calendar
      * @param Request  $request
+     * @param Calendar $calendar
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(Calendar $calendar, Request $request)
+    public function deleteAction(Request $request, Calendar $calendar)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($calendar);
@@ -188,7 +190,7 @@ class CalendarController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

@@ -85,6 +85,9 @@ class Calendar
      */
     private $project;
 
+    /**
+     * Calendar constructor.
+     */
     public function __construct()
     {
         $this->isBaseline = false;
@@ -273,6 +276,8 @@ class Calendar
     }
 
     /**
+     * Returns Project name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      *

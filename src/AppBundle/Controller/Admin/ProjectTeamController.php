@@ -13,7 +13,7 @@ use AppBundle\Form\ProjectTeam\CreateType as ProjectTeamCreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * ProjectTeam controller.
+ * ProjectTeam admin controller.
  *
  * @Route("/admin/project-team")
  */
@@ -45,6 +45,8 @@ class ProjectTeamController extends Controller
     }
 
     /**
+     * Lists all ProjectTeam- entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_project_team_list_filtered")
      * @Method("POST")
      *
@@ -175,12 +177,12 @@ class ProjectTeamController extends Controller
      * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_team_delete")
      * @Method({"GET"})
      *
-     * @param ProjectTeam $projectTeam
      * @param Request     $request
+     * @param ProjectTeam $projectTeam
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ProjectTeam $projectTeam, Request $request)
+    public function deleteAction(Request $request, ProjectTeam $projectTeam)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectTeam);
@@ -191,7 +193,7 @@ class ProjectTeamController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

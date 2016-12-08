@@ -9,6 +9,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Change password  and role (optionally) for specific user.
+ *
+ * Command usage: tss:app:user-change-password email@email.com new_password ROLE_ADMIN
+ */
 class UserChangePasswordCommand extends ContainerAwareCommand
 {
     protected function configure()

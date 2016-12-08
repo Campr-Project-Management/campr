@@ -13,7 +13,7 @@ use AppBundle\Form\WorkingTime\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * WorkingTime controller.
+ * WorkingTime admin controller.
  *
  * @Route("/admin/working-time")
  */
@@ -45,6 +45,8 @@ class WorkingTimeController extends Controller
     }
 
     /**
+     * Lists all WorkingTime entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_working_time_list_filtered")
      * @Method("POST")
      *
@@ -124,15 +126,17 @@ class WorkingTimeController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing WorkingTime entity.
+     *
      * @Route("/{id}/edit", name="app_admin_working_time_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param WorkingTime $workingTime
      * @param Request     $request
+     * @param WorkingTime $workingTime
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(WorkingTime $workingTime, Request $request)
+    public function editAction(Request $request, WorkingTime $workingTime)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $workingTime);
@@ -166,15 +170,17 @@ class WorkingTimeController extends Controller
     }
 
     /**
+     * Deletes a specific WorkingTime entity.
+     *
      * @Route("/{id}/delete", name="app_admin_working_time_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param WorkingTime $workingTime
      * @param Request     $request
+     * @param WorkingTime $workingTime
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(WorkingTime $workingTime, Request $request)
+    public function deleteAction(Request $request, WorkingTime $workingTime)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($workingTime);
@@ -185,7 +191,7 @@ class WorkingTimeController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

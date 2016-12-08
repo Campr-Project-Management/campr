@@ -143,7 +143,7 @@ class Risk
     private $updatedAt;
 
     /**
-     * Constructor.
+     * Risk constructor.
      */
     public function __construct()
     {
@@ -335,7 +335,7 @@ class Risk
      *
      * @return Risk
      */
-    public function setDueDate($dueDate)
+    public function setDueDate(\DateTime $dueDate = null)
     {
         $this->dueDate = $dueDate;
 
@@ -353,6 +353,8 @@ class Risk
     }
 
     /**
+     * Returns dueDate date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("dueDate")
      *
@@ -370,7 +372,7 @@ class Risk
      *
      * @return Risk
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -394,7 +396,7 @@ class Risk
      *
      * @return Risk
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
@@ -460,6 +462,8 @@ class Risk
     }
 
     /**
+     * Returns risk strategy name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("riskStrategy")
      *
@@ -495,6 +499,8 @@ class Risk
     }
 
     /**
+     * Returns risk category name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("riskCategory")
      *
@@ -530,6 +536,8 @@ class Risk
     }
 
     /**
+     * Returns responsibility name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("responsibility")
      *
@@ -565,6 +573,8 @@ class Risk
     }
 
     /**
+     * Returns status name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("status")
      *

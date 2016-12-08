@@ -4,8 +4,22 @@ namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
+/**
+ * Class BaseRepository
+ * Represents the base class for all repository classes.
+ */
 abstract class BaseRepository extends EntityRepository
 {
+    /**
+     * Finds entities based on criteria, order and limit.
+     *
+     * @param array      $criteria
+     * @param array|null $orderBy
+     * @param null       $limit
+     * @param null       $offset
+     *
+     * @return array
+     */
     public function findByWithLike(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('q');
@@ -51,6 +65,11 @@ abstract class BaseRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * Counts total number of entities.
+     *
+     * @return mixed
+     */
     public function countTotal()
     {
         return $this

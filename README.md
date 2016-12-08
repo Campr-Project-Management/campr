@@ -1,12 +1,12 @@
 Campr - Project Management Tool
 ===============================
 
-The following entities have default values for all projects (project is set to null) and can also have custom values for the current project:
+Use the following pages to find more about the structure of this project:
 
-- AppBundle\Entity\ProjectComplexity
-- AppBundle\Entity\ProjectCategory
-- AppBundle\Entity\ProjectScope
-- AppBundle\Entity\ProjectStatus
-- AppBundle\Entity\ProjectCostType
-- AppBundle\Entity\ProjectWorkCostType
-- AppBundle\Entity\Unit
+* [Sami documentation](src/AppBundle/Resources/docs/SamiDoc.md)
+* [Admin Controllers](src/AppBundle/Resources/docs/AdminControllers.md)
+* [API Controllers](src/AppBundle/Resources/docs/ApiControllers.md)
+* [Entities](src/AppBundle/Resources/docs/Entities.md)
+* [Forms](src/AppBundle/Resources/docs/Forms.md)
+* [Services](src/AppBundle/Resources/docs/Services.md)
+* [Javascripts](src/AppBundle/Resources/docs/Javascripts.md)
