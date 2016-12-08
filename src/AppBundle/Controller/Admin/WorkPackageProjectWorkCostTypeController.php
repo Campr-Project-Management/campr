@@ -13,11 +13,15 @@ use AppBundle\Form\WorkPackageProjectWorkCostType\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * WorkPackageProjectWorkCostType admin controller.
+ *
  * @Route("/admin/workpackage-projectworkcost")
  */
 class WorkPackageProjectWorkCostTypeController extends Controller
 {
     /**
+     * List all WorkPackageProjectWorkCostType entities.
+     *
      * @Route("/list", name="app_admin_wppcwct_list")
      * @Method({"GET"})
      *
@@ -40,6 +44,8 @@ class WorkPackageProjectWorkCostTypeController extends Controller
     }
 
     /**
+     * Lists all WorkPackageProjectWorkCostType entities filtered and paginated.
+     *
      * @Route("/list/filtered", name="app_admin_wppcwct_list_filtered", options={"expose"=true})
      * @Method("POST")
      *
@@ -77,6 +83,8 @@ class WorkPackageProjectWorkCostTypeController extends Controller
     }
 
     /**
+     * Create a new WorkPackageProjectWorkCostType entity.
+     *
      * @Route("/create", name="app_admin_wppcwct_create")
      * @Method({"GET", "POST"})
      *
@@ -117,15 +125,17 @@ class WorkPackageProjectWorkCostTypeController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing WorkPackageProjectWorkCostType entity.
+     *
      * @Route("/{id}/edit", name="app_admin_wppcwct_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param WorkPackageProjectWorkCostType $workProjectType
      * @param Request                        $request
+     * @param WorkPackageProjectWorkCostType $workProjectType
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(WorkPackageProjectWorkCostType $workProjectType, Request $request)
+    public function editAction(Request $request, WorkPackageProjectWorkCostType $workProjectType)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $workProjectType);
@@ -160,18 +170,29 @@ class WorkPackageProjectWorkCostTypeController extends Controller
     }
 
     /**
+     * Deletes a specific WorkPackageProjectWorkCostType entity.
+     *
      * @Route("/{id}/delete", name="app_admin_wppcwct_delete", options={"expose"=true})
      * @Method({"GET"})
      *
+     * @param Request                        $request
      * @param WorkPackageProjectWorkCostType $workProjectType
      *
      * @return RedirectResponse
      */
-    public function deleteAction(WorkPackageProjectWorkCostType $workProjectType)
+    public function deleteAction(Request $request, WorkPackageProjectWorkCostType $workProjectType)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($workProjectType);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message);
+        }
 
         $this
             ->get('session')

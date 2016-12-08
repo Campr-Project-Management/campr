@@ -114,7 +114,7 @@ class Todo
     private $updatedAt;
 
     /**
-     * Constructor.
+     * Todo constructor.
      */
     public function __construct()
     {
@@ -210,7 +210,7 @@ class Todo
      *
      * @return Todo
      */
-    public function setDate($date)
+    public function setDate(\DatetIme $date = null)
     {
         $this->date = $date;
 
@@ -228,6 +228,8 @@ class Todo
     }
 
     /**
+     * Returns date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("date")
      *
@@ -245,7 +247,7 @@ class Todo
      *
      * @return Todo
      */
-    public function setDueDate($dueDate)
+    public function setDueDate(\DateTime $dueDate = null)
     {
         $this->dueDate = $dueDate;
 
@@ -263,6 +265,8 @@ class Todo
     }
 
     /**
+     * Returns dueDate date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("dueDate")
      *
@@ -280,7 +284,7 @@ class Todo
      *
      * @return Todo
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -304,7 +308,7 @@ class Todo
      *
      * @return Todo
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
@@ -346,6 +350,8 @@ class Todo
     }
 
     /**
+     * Returns project name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      *
@@ -405,6 +411,8 @@ class Todo
     }
 
     /**
+     * Returns responsibility username.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("responsibility")
      *
@@ -440,6 +448,8 @@ class Todo
     }
 
     /**
+     * Returns status name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("status")
      *

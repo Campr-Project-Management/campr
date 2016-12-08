@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
+ * User.
+ *
  * @ORM\Table(name="user", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="username_unique", columns={"username"}),
  *     @ORM\UniqueConstraint(name="email_unique", columns={"email"})
@@ -167,7 +169,7 @@ class User implements AdvancedUserInterface, \Serializable
     private $medias;
 
     /**
-     * Constructor.
+     * User constructor.
      */
     public function __construct()
     {
@@ -394,7 +396,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @return User
      */
-    public function setRoles($roles)
+    public function setRoles(array $roles)
     {
         $this->roles = $roles;
 
@@ -553,7 +555,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @return User
      */
-    public function setResetPasswordTokenCreatedAt($resetPasswordTokenCreatedAt)
+    public function setResetPasswordTokenCreatedAt(\DateTime $resetPasswordTokenCreatedAt = null)
     {
         $this->resetPasswordTokenCreatedAt = $resetPasswordTokenCreatedAt;
 
@@ -577,7 +579,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @return User
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -601,13 +603,18 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @return User
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
+    /**
+     * Serialize id, email and password.
+     *
+     * @return mixed
+     */
     public function serialize()
     {
         return serialize([
@@ -616,6 +623,12 @@ class User implements AdvancedUserInterface, \Serializable
             $this->password,
         ]);
     }
+
+    /**
+     * Unserialize string.
+     *
+     * @param string $serialized
+     */
     public function unserialize($serialized)
     {
         list(
@@ -625,6 +638,9 @@ class User implements AdvancedUserInterface, \Serializable
         ) = unserialize($serialized);
     }
 
+    /**
+     *  Sets the plain password to null.
+     */
     public function eraseCredentials()
     {
         $this->setPlainPassword(null);

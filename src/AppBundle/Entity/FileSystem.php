@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * FileSystem.
+ * Filesystem.
  *
  * @ORM\Table(name="file_system")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\FileSystemRepository")
@@ -70,7 +70,7 @@ class FileSystem
     private $medias;
 
     /**
-     * Constructor.
+     * FileSystem constructor.
      */
     public function __construct()
     {

@@ -65,7 +65,7 @@ class Log
     private $user;
 
     /**
-     * Constructor.
+     * Log constructor.
      */
     public function __construct()
     {
@@ -73,6 +73,8 @@ class Log
     }
 
     /**
+     * Returns string containing user email, log class and createdAt formatted.
+     *
      * @return string
      */
     public function __toString()

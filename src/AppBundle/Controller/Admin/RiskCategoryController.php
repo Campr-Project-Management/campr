@@ -13,11 +13,15 @@ use AppBundle\Form\RiskCategory\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * RiskCategory admin controller.
+ *
  * @Route("/admin/risk-category")
  */
 class RiskCategoryController extends Controller
 {
     /**
+     * List all RiskCategory entities.
+     *
      * @Route("/list", name="app_admin_risk_category_list")
      * @Method({"GET"})
      *
@@ -40,6 +44,8 @@ class RiskCategoryController extends Controller
     }
 
     /**
+     * Lists all RiskCategory entities filtered and paginated.
+     *
      * @Route("/list/filtered", name="app_admin_risk_category_list_filtered", options={"expose"=true})
      * @Method("POST")
      *
@@ -77,6 +83,8 @@ class RiskCategoryController extends Controller
     }
 
     /**
+     * Creates a new RiskCategory entity.
+     *
      * @Route("/create", name="app_admin_risk_category_create")
      * @Method({"GET", "POST"})
      *
@@ -117,15 +125,17 @@ class RiskCategoryController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing RiskCategory entity.
+     *
      * @Route("/{id}/edit", name="app_admin_risk_category_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param RiskCategory $riskCategory
      * @param Request      $request
+     * @param RiskCategory $riskCategory
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(RiskCategory $riskCategory, Request $request)
+    public function editAction(Request $request, RiskCategory $riskCategory)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $riskCategory);
@@ -159,18 +169,29 @@ class RiskCategoryController extends Controller
     }
 
     /**
+     * Deletes a specific RiskCategory entity.
+     *
      * @Route("/{id}/delete", name="app_admin_risk_category_delete", options={"expose"=true})
      * @Method({"GET"})
      *
+     * @param Request      $request
      * @param RiskCategory $riskCategory
      *
      * @return RedirectResponse
      */
-    public function deleteAction(RiskCategory $riskCategory)
+    public function deleteAction(Request $request, RiskCategory $riskCategory)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($riskCategory);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message);
+        }
 
         $this
             ->get('session')

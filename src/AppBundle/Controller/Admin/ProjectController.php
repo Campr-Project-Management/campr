@@ -16,7 +16,7 @@ use AppBundle\Form\Project\CreateType as ProjectCreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Project controller.
+ * Project admin controller.
  *
  * @Route("/admin/project")
  */
@@ -48,6 +48,8 @@ class ProjectController extends Controller
     }
 
     /**
+     * Lists all Project entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_project_list_filtered")
      * @Method("POST")
      *
@@ -180,8 +182,8 @@ class ProjectController extends Controller
      * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_delete")
      * @Method({"GET"})
      *
-     * @param Project $project
      * @param Request $request
+     * @param Project $project
      *
      * @return RedirectResponse|JsonResponse
      */
@@ -362,7 +364,7 @@ class ProjectController extends Controller
      * @Method({"GET", "POST"})
      *
      * @param Project $project
-     * @param User    $user
+     * @param User    $toUser
      *
      * @return JsonResponse
      */

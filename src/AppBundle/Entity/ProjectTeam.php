@@ -7,6 +7,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * ProjectTeam.
+ *
  * @ORM\Table(name="project_team")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectTeamRepository")
  * @UniqueEntity(fields="name", message="validation.constraints.general_field.name.unique")
@@ -47,6 +49,9 @@ class ProjectTeam
      */
     private $updatedAt;
 
+    /**
+     * ProjectTeam constructor.
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -93,7 +98,7 @@ class ProjectTeam
      *
      * @return ProjectTeam
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -117,7 +122,7 @@ class ProjectTeam
      *
      * @return ProjectTeam
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
@@ -135,6 +140,8 @@ class ProjectTeam
     }
 
     /**
+     * Returns createdAt date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("createdAt")
      *
@@ -146,6 +153,8 @@ class ProjectTeam
     }
 
     /**
+     * Returns updatedAt date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("updatedAt")
      *

@@ -13,7 +13,7 @@ use AppBundle\Form\MeetingAgenda\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * MeetingAgenda controller.
+ * MeetingAgenda admin controller.
  *
  * @Route("/admin/meeting-agenda")
  */
@@ -44,6 +44,8 @@ class MeetingAgendaController extends Controller
     }
 
     /**
+     * Lists all MeetingAgenda entities filtered and paginated.
+     *
      * @Route("/list/filtered", name="app_admin_meeting_agenda_list_filtered", options={"expose"=true})
      * @Method("POST")
      *
@@ -123,15 +125,17 @@ class MeetingAgendaController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing MeetingAgenda entity.
+     *
      * @Route("/{id}/edit", name="app_admin_meeting_agenda_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param MeetingAgenda $meetingAgenda
      * @param Request       $request
+     * @param MeetingAgenda $meetingAgenda
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(MeetingAgenda $meetingAgenda, Request $request)
+    public function editAction(Request $request, MeetingAgenda $meetingAgenda)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $meetingAgenda);
@@ -165,15 +169,17 @@ class MeetingAgendaController extends Controller
     }
 
     /**
+     * Deletes a specific MeetingAgenda entity.
+     *
      * @Route("/{id}/delete", name="app_admin_meeting_agenda_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param MeetingAgenda $meetingAgenda
      * @param Request       $request
+     * @param MeetingAgenda $meetingAgenda
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(MeetingAgenda $meetingAgenda, Request $request)
+    public function deleteAction(Request $request, MeetingAgenda $meetingAgenda)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($meetingAgenda);
@@ -184,7 +190,7 @@ class MeetingAgendaController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

@@ -13,7 +13,7 @@ use AppBundle\Form\Company\CreateType as CompanyCreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Company controller.
+ * Company admin controller.
  *
  * @Route("/admin/company")
  */
@@ -45,6 +45,8 @@ class CompanyController extends Controller
     }
 
     /**
+     * Lists all Company entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_company_list_filtered")
      * @Method("POST")
      *
@@ -176,12 +178,12 @@ class CompanyController extends Controller
      * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_company_delete")
      * @Method({"GET"})
      *
-     * @param Company $company
      * @param Request $request
+     * @param Company $company
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(Company $company, Request $request)
+    public function deleteAction(Request $request, Company $company)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($company);
@@ -192,7 +194,7 @@ class CompanyController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

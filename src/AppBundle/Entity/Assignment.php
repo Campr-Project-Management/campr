@@ -101,6 +101,9 @@ class Assignment
      */
     private $updatedAt;
 
+    /**
+     * Assignment constructor.
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -344,6 +347,8 @@ class Assignment
     }
 
     /**
+     * Returns the WorkPackage name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("workPackage")
      *
@@ -355,6 +360,8 @@ class Assignment
     }
 
     /**
+     * Get percentWorkComplete.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("percentWorkComplete")
      *
@@ -389,6 +396,8 @@ class Assignment
         return $this->workPackageProjectWorkCostType;
     }
     /**
+     * Returns workPackageProjectWorkCostType name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("workPackageProjectWorkCostType")
      *

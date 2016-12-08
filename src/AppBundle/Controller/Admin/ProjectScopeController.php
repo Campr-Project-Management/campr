@@ -13,7 +13,7 @@ use AppBundle\Form\ProjectScope\CreateType as ProjectScopeCreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * ProjectScope controller.
+ * ProjectScope admin controller.
  *
  * @Route("/admin/project-scope")
  */
@@ -45,6 +45,8 @@ class ProjectScopeController extends Controller
     }
 
     /**
+     * Lists all ProjectScope entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_project_scope_list_filtered")
      * @Method("POST")
      *
@@ -176,12 +178,12 @@ class ProjectScopeController extends Controller
      * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_scope_delete")
      * @Method({"GET"})
      *
-     * @param ProjectScope $projectScope
      * @param Request      $request
+     * @param ProjectScope $projectScope
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ProjectScope $projectScope, Request $request)
+    public function deleteAction(Request $request, ProjectScope $projectScope)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectScope);
@@ -192,7 +194,7 @@ class ProjectScopeController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

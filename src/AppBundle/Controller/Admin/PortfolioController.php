@@ -13,7 +13,7 @@ use AppBundle\Form\Portfolio\CreateType as PortfolioCreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Portfolio controller.
+ * Portfolio admin controller.
  *
  * @Route("/admin/portfolio")
  */
@@ -45,6 +45,8 @@ class PortfolioController extends Controller
     }
 
     /**
+     * Lists all Portfolio entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_portfolio_list_filtered")
      * @Method("POST")
      *
@@ -177,12 +179,12 @@ class PortfolioController extends Controller
      * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_portfolio_delete")
      * @Method({"GET"})
      *
-     * @param Portfolio $portfolio
      * @param Request   $request
+     * @param Portfolio $portfolio
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(Portfolio $portfolio, Request $request)
+    public function deleteAction(Request $request, Portfolio $portfolio)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($portfolio);
@@ -193,7 +195,7 @@ class PortfolioController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

@@ -13,11 +13,15 @@ use AppBundle\Form\Unit\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * Unit admin controller.
+ *
  * @Route("/admin/unit")
  */
 class UnitController extends Controller
 {
     /**
+     * List all Unit entities.
+     *
      * @Route("/list", name="app_admin_unit_list")
      * @Method({"GET"})
      *
@@ -40,6 +44,8 @@ class UnitController extends Controller
     }
 
     /**
+     * Lists all Unit entities filtered and paginated.
+     *
      * @Route("/list/filtered", name="app_admin_unit_list_filtered", options={"expose"=true})
      * @Method("POST")
      *
@@ -77,6 +83,8 @@ class UnitController extends Controller
     }
 
     /**
+     * Create a new Unit entity.
+     *
      * @Route("/create", name="app_admin_unit_create")
      * @Method({"GET", "POST"})
      *
@@ -117,15 +125,17 @@ class UnitController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing Unit entity.
+     *
      * @Route("/{id}/edit", name="app_admin_unit_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Unit    $unit
      * @param Request $request
+     * @param Unit    $unit
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Unit $unit, Request $request)
+    public function editAction(Request $request, Unit $unit)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $unit);
@@ -160,18 +170,29 @@ class UnitController extends Controller
     }
 
     /**
+     * Deletes a specific Unit entity.
+     *
      * @Route("/{id}/delete", name="app_admin_unit_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Unit $unit
+     * @param Request $request
+     * @param Unit    $unit
      *
      * @return RedirectResponse
      */
-    public function deleteAction(Unit $unit)
+    public function deleteAction(Request $request, Unit $unit)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($unit);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message);
+        }
 
         $this
             ->get('session')
