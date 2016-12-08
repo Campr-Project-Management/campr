@@ -2,14 +2,6 @@
 
 {% trans_default_domain 'admin' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link href="{{ asset('assets/admin/vendors/bootgrid/jquery.bootgrid.min.css') }}" rel="stylesheet">
-
-    <link href="{{ asset('assets/admin/css/app_1.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/admin/css/app_2.min.css') }}" rel="stylesheet">
-{% endblock %}
-
 {% block body_content %}
     <div class="card">
         <div class="card-header bgm-teal">

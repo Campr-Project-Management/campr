@@ -36,6 +36,9 @@ class AppKernel extends Kernel
             new Gos\Bundle\PubSubRouterBundle\GosPubSubRouterBundle(),
             new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
             new Ambta\DoctrineEncryptBundle\AmbtaDoctrineEncryptBundle(),
+            new JMS\AopBundle\JMSAopBundle(),
+            new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
+            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
 
             //internals
             new AppBundle\AppBundle(),

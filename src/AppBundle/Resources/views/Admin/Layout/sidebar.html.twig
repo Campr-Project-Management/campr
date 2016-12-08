@@ -1,186 +1,67 @@
-{% trans_default_domain 'admin' %}
+{% extends 'knp_menu.html.twig' %}
 
-<aside id="sidebar" class="sidebar c-overflow">
-    <div class="s-profile">
-        <a href="" data-ma-action="profile-menu-toggle">
-            <div class="sp-pic">
-                <img src="img/profile-pics/1.jpg" alt="">
-            </div>
+{% macro attributes(attributes) %}
+    {% for name, value in attributes %}
+        {%- if value is not none and value is not same as(false) -%}
+            {{- ' %s="%s"'|format(name, value is same as(true) ? name|e : value|e)|raw -}}
+        {%- endif -%}
+    {%- endfor -%}
+{% endmacro %}
 
-            <div class="sp-info">
-                Malinda Hollaway
+{% block root %}
+    <aside id="sidebar" class="sidebar c-overflow">
+        {% set listAttributes = item.childrenAttributes %}
+        {{ block('list') -}}
+    </aside>
+{% endblock %}
 
-                <i class="zmdi zmdi-caret-down"></i>
-            </div>
-        </a>
+{% block item %}
+    {% if item.displayed %}
+        {# building the class of the item #}
+        {%- set classes = item.attribute('class') is not empty ? [item.attribute('class')] : [] %}
+        {%- if matcher.isCurrent(item) %}
+            {%- set classes = classes|merge([options.currentClass]) %}
+        {%- elseif matcher.isAncestor(item, options.matchingDepth) %}
+            {%- set classes = classes|merge([options.ancestorClass, 'toggled active-link']) %}
+        {%- endif %}
+        {%- if item.actsLikeFirst %}
+            {%- set classes = classes|merge([options.firstClass]) %}
+        {%- endif %}
+        {%- if item.actsLikeLast %}
+            {%- set classes = classes|merge([options.lastClass]) %}
+        {%- endif %}
 
-        <ul class="main-menu">
-            <li>
-                <a href="profile-about.html"><i class="zmdi zmdi-account"></i> View Profile</a>
-            </li>
-            <li>
-                <a href=""><i class="zmdi zmdi-input-antenna"></i> Privacy Settings</a>
-            </li>
-            <li>
-                <a href=""><i class="zmdi zmdi-settings"></i> Settings</a>
-            </li>
-            <li>
-                <a href=""><i class="zmdi zmdi-time-restore"></i> Logout</a>
-            </li>
-        </ul>
-    </div>
+        {# Mark item as "leaf" (no children) or as "branch" (has children that are displayed) #}
+        {% if item.hasChildren and options.depth is not same as(0) %}
+            {% if options.branch_class is not empty and item.displayChildren %}
+                {%- set classes = classes|merge([options.branch_class]) %}
+            {% endif %}
+        {% elseif options.leaf_class is not empty %}
+            {%- set classes = classes|merge([options.leaf_class]) %}
+        {%- endif %}
+        {%- set attributes = item.attributes %}
+        {%- if classes is not empty %}
+            {%- set attributes = attributes|merge({'class': classes|join(' ')}) %}
+        {%- endif %}
+        {# displaying the item #}
+        {% import _self as knp_menu %}
+        <li{{ knp_menu.attributes(attributes) }}>
+            {{ block('linkElement') }}
+            {# render the list of children#}
+            {%- set childrenClasses = item.childrenAttribute('class') is not empty ? [item.childrenAttribute('class')] : [] %}
+            {%- set childrenClasses = childrenClasses|merge(['menu_level_' ~ item.level]) %}
+            {%- set listAttributes = item.childrenAttributes|merge({'class': childrenClasses|join(' ') }) %}
+            {{ block('list') }}
+        </li>
+    {% endif %}
+{% endblock %}
 
-    <ul class="main-menu">
-        <li>
-            <a href="{{ path('app_admin_user_list') }}">
-                <i class="zmdi zmdi-account"></i>
-                {{ 'admin.user.list.title'|trans }}
-            </a>
-        </li>
-        <li class="sub-menu">
-            <a href="{{ path('app_admin_project_list') }}" data-ma-action="submenu-toggle">
-                <i class="zmdi zmdi-folder-outline"></i>{{ 'admin.project.list.title'|trans }}
-            </a>
-            <ul>
-                <li><a href="{{ path('app_admin_project_list') }}">{{ 'admin.project.list.title'|trans }}</a></li>
-                <li><a href="{{ path('app_admin_project_category_list') }}">{{ 'admin.project_category.list.title'|trans }}</a></li>
-                <li><a href="{{ path('app_admin_project_complexity_list') }}">{{ 'admin.project_complexity.list.title'|trans }}</a></li>
-                <li><a href="{{ path('app_admin_project_cost_type_list') }}">{{ 'admin.project_cost_type.list.title'|trans }}</a></li>
-                <li><a href="{{ path('app_admin_project_department_list') }}">{{ 'admin.project_department.list.title'|trans }}</a></li>
-                <li><a href="{{ path('app_admin_project_module_list') }}">{{ 'admin.project_module.list.title'|trans }}</a></li>
-                <li><a href="{{ path('app_admin_project_role_list') }}">{{ 'admin.project_role.list.title'|trans }}</a></li>
-                <li><a href="{{ path('app_admin_project_scope_list') }}">{{ 'admin.project_scope.list.title'|trans }}</a></li>
-                <li><a href="{{ path('app_admin_project_status_list') }}">{{ 'admin.project_status.list.title'|trans }}</a></li>
-                <li><a href="{{ path('app_admin_project_team_list') }}">{{ 'admin.project_team.list.title'|trans }}</a></li>
-                <li><a href="{{ path('app_admin_project_user_list') }}">{{ 'admin.project_user.list.title'|trans }}</a></li>
-                <li><a href="{{ path('app_admin_project_work_cost_type_list') }}">{{ 'admin.project_work_cost_type.list.title'|trans }}</a></li>
-            </ul>
-        </li>
-        <li class="sub-menu">
-            <a href="{{ path('app_admin_calendar_list') }}" data-ma-action="submenu-toggle">
-                <i class="zmdi zmdi-calendar"></i>{{ 'admin.calendar.list.title'|trans }}
-            </a>
-            <ul>
-                <li><a href="{{ path('app_admin_calendar_list') }}">{{ 'admin.calendar.list.title'|trans }}</a></li>
-                <li><a href="{{ path('app_admin_day_list') }}">{{ 'admin.day.list.title'|trans }}</a></li>
-                <li><a href="{{ path('app_admin_working_time_list') }}">{{ 'admin.working_time.list.title'|trans }}</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="{{ path('app_admin_portfolio_list') }}"><i class="zmdi zmdi-laptop-mac"></i>{{ 'admin.portfolio.list.title'|trans }}</a>
-        </li>
-        <li>
-            <a href="{{ path('app_admin_color_status_list') }}"><i class="zmdi zmdi-invert-colors"></i>{{ 'admin.color_status.list.title'|trans }}</a>
-        </li>
-        <li>
-            <a href="{{ path('app_admin_workpackage_list') }}">
-                <i class="zmdi zmdi-present-to-all"></i>
-                {{ 'admin.workpackage.list.title'|trans }}
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('app_admin_assignment_list') }}">
-                <i class="zmdi zmdi-assignment"></i>
-                {{ 'admin.assignment.list.title'|trans }}
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('app_admin_timephase_list') }}">
-                <i class="zmdi zmdi-hourglass"></i>
-                {{ 'admin.timephase.list.title'|trans }}
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('app_admin_schedule_list') }}">
-                <i class="zmdi zmdi-calendar-note"></i>
-                {{ 'admin.schedule.list.title'|trans }}
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('app_admin_raci_list') }}">
-                <i class="zmdi zmdi-view-agenda"></i>
-                {{ 'admin.raci.list.title'|trans }}
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('app_admin_wppcwct_list') }}">
-                <i class="zmdi zmdi-tv-list"></i>
-                {{ 'admin.wppcwct.list.title'|trans }}
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('app_admin_unit_list') }}">
-                <i class="zmdi zmdi-apps"></i>
-                {{ 'admin.unit.list.title'|trans }}
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('app_admin_todo_list') }}">
-                <i class="zmdi zmdi-collection-item"></i>
-                {{ 'admin.todo.list.title'|trans }}
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('app_admin_impact_list') }}">
-                <i class="zmdi zmdi-gps"></i>
-                {{ 'admin.impact.list.title'|trans }}
-            </a>
-        </li>
-        <li class="sub-menu">
-            <a href="{{ path('app_admin_risk_list') }}" data-ma-action="submenu-toggle"><i class="zmdi zmdi-folder-outline"></i>{{ 'admin.risk.list.title'|trans }}
-            </a>
-            <ul>
-                <li><a href="{{ path('app_admin_risk_list') }}">{{ 'admin.risk.list.title'|trans }}</a></li>
-                <li><a href="{{ path('app_admin_risk_category_list') }}">{{ 'admin.risk_category.list.title'|trans }}</a></li>
-                <li><a href="{{ path('app_admin_risk_strategy_list') }}">{{ 'admin.risk_strategy.list.title'|trans }}</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="{{ path('app_admin_status_list') }}">
-                <i class="zmdi zmdi-power-input"></i>
-                {{ 'admin.status.list.title'|trans }}
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('app_admin_communication_list') }}">
-                <i class="zmdi zmdi-comment"></i>
-                {{ 'admin.communication.list.title'|trans }}
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('app_admin_filesystem_list') }}">
-                <i class="zmdi zmdi-cloud-outline"></i>
-                {{ 'admin.filesystem.list.title'|trans }}
-            </a>
-        </li>
-        <li class="sub-menu">
-            <a href="{{ path('app_admin_meeting_list') }}" data-ma-action="submenu-toggle">
-                <i class="zmdi zmdi-accounts"></i>
-                {{ 'admin.meeting.list.title'|trans }}
-            </a>
-            <ul>
-                <li><a href="{{ path('app_admin_meeting_list') }}">{{ 'admin.meeting.list.title'|trans }}</a></li>
-                <li><a href="{{ path('app_admin_meeting_agenda_list') }}">{{ 'admin.meeting_agenda.list.title'|trans }}</a></li>
-                <li><a href="{{ path('app_admin_meeting_participant_list') }}">{{ 'admin.meeting_participant.list.title'|trans }}</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="{{ path('app_admin_note_list') }}">
-                <i class="zmdi zmdi-comment-edit"></i>
-                {{ 'admin.note.list.title'|trans }}
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('app_admin_company_list') }}">
-                <i class="zmdi zmdi-case"></i>
-                {{ 'admin.company.list.title'|trans }}
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('app_admin_decision_list') }}">
-                <i class="zmdi zmdi-device-hub"></i>
-                {{ 'admin.decision.list.title'|trans }}
-            </a>
-        </li>
-    </ul>
-</aside>
+{% block linkElement %}
+    {% import _self as knp_menu %}
+    <a href="{{ item.uri }}"{{ knp_menu.attributes(item.linkAttributes) }}{% if item.attribute('dropdown') %} data-ma-action="submenu-toggle" {% endif %}>
+        {% if item.linkAttribute('icon') %}
+            <i class="{{ item.linkAttribute('icon') }}"></i>
+        {% endif %}
+        {{ block('label') }}
+    </a>
+{% endblock %}
