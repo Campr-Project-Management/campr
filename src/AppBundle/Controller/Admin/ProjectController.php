@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\ChatRoom;
 use AppBundle\Entity\Message;
 use AppBundle\Entity\User;
+use AppBundle\Security\ProjectVoter;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -125,6 +126,8 @@ class ProjectController extends Controller
      */
     public function editAction(Request $request, Project $project)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
+
         $form = $this->createForm(ProjectCreateType::class, $project);
         $form->handleRequest($request);
 
@@ -170,6 +173,8 @@ class ProjectController extends Controller
      */
     public function showAction(Project $project)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::VIEW, $project);
+
         return $this->render(
             'AppBundle:Admin/Project:show.html.twig',
             [
@@ -191,6 +196,8 @@ class ProjectController extends Controller
      */
     public function deleteAction(Request $request, Project $project)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($project);
         $em->flush();
