@@ -73,7 +73,7 @@ admin:
         delete:
             success:
                 general: User successfully deleted!
-                first: Unit with ID
+                first: User with ID
                 second: successfully deleted!
     status:
         choice: Choose one status
@@ -84,10 +84,6 @@ admin:
             table:
                 id: Id
                 name: Name
-                actions: Actions
-            edit: Edit
-            delete: Delete
-            no-status: Status list empty
         create:
             title: Create new status
             name: Status name
@@ -109,7 +105,6 @@ admin:
             table:
                 id: Id
                 name: Name
-            no-schedules: No schedules found!
         create:
             title: Create new schedule
             name: Schedule name
@@ -132,7 +127,6 @@ admin:
                 workpackage: WorkPackage
                 user: User
                 data: Data
-                actions: Actions
         create:
             title: Create RACI
             workpackage: WorkPackage
@@ -173,8 +167,6 @@ admin:
                 is_key_milestone: Is Key Milestone
                 created_at: Created At
                 updated_at: Updated At
-                actions: Actions
-            no-workpackages: No workpackages found!
         create:
             title: Create new workpackage
             name: Name
@@ -217,7 +209,6 @@ admin:
                 description: Description
                 created_at: Created at
                 updated_at: Updated at
-            not_found: No portfolio found!
         create:
             title: Create Portfolio
             name: Name
@@ -254,7 +245,30 @@ admin:
                 status_updated_at: Status updated at
                 created_at: Created at
                 updated_at: Updated at
-            not_found: No project categories found!
+        files:
+            list:
+                title: Project files
+                subtitle: List of project files
+                id: Id
+                filesystem: Filesystem
+                user: User
+                path: Path
+                mime_type: Mime Type
+                file_size: File Size
+            upload:
+                title: Upload new file
+                filesystem_placeholder: Select filesystem
+                filesystem: Filesystem
+                failed: File upload failed. Filesystem cannot be reached.
+            delete:
+                failed:
+                    general: File delete failed. Filesystem cannot be reached or file does not exist in it
+                    first: File with ID
+                    second: cannot be deleted. Filesystem cannot be reached or file does not exist in it
+                success:
+                    general: File successfully deleted!
+                    first: File with ID
+                    second: successfully deleted!
         create:
             title: Create Project
             name: Name
@@ -290,7 +304,6 @@ admin:
                 sequence: Sequence
                 created_at: Created at
                 updated_at: Updated at
-            not_found: No project categories found!
         create:
             title: Create Project Category
             name: Name
@@ -319,7 +332,6 @@ admin:
                 sequence: Sequence
                 created_at: Created at
                 updated_at: Updated at
-            not_found: No project complexities found!
         create:
             title: Create Project Complexity
             name: Name
@@ -347,7 +359,6 @@ admin:
                 sequence: Sequence
                 created_at: Created at
                 updated_at: Updated at
-            not_found: No project cost type found!
         create:
             title: Create Project Cost Type
             name: Name
@@ -378,7 +389,6 @@ admin:
                 project_work_cost_type: Project Work Cost Type
                 created_at: Created at
                 updated_at: Updated at
-            not_found: No project department found!
         create:
             title: Create Project Department
             name: Name
@@ -396,7 +406,6 @@ admin:
                 first: Project department with ID
                 second: successfully edited!
 
-
     project_module:
         list:
             title: Project Module
@@ -411,7 +420,6 @@ admin:
                 printable: Printable
                 created_at: Created at
                 updated_at: Updated at
-            not_found: No project module found!
         create:
             title: Create Project Module
             module: Module
@@ -426,7 +434,7 @@ admin:
         delete:
             success:
                 general: Project module successfully deleted!
-                first: Projcet module with ID
+                first: Project module with ID
                 second: successfully deleted!
 
     project_role:
@@ -442,7 +450,6 @@ admin:
                 lead: Lead
                 created_at: Created at
                 updated_at: Updated at
-            not_found: No project role found!
         create:
             title: Create Project Role
             name: Name
@@ -457,6 +464,7 @@ admin:
                 general: Project role successfully deleted!
                 first: Project role with ID
                 second: successfully deleted!
+
     project_scope:
         choice: Choose one project scope
         list:
@@ -470,7 +478,6 @@ admin:
                 sequence: Sequence
                 created_at: Created at
                 updated_at: Updated at
-            not_found: No project scope found!
         create:
             title: Create Project Scope
             name: Name
@@ -499,7 +506,6 @@ admin:
                 sequence: Sequence
                 created_at: Created at
                 updated_at: Updated at
-            not_found: No project status found!
         create:
             title: Create Project Status
             name: Name
@@ -526,7 +532,6 @@ admin:
                 name: Name
                 created_at: Created at
                 updated_at: Updated at
-            not_found: No project team found!
         create:
             title: Create Project Team
             name: Name
@@ -559,7 +564,6 @@ admin:
                 show_in_org: Show In Org
                 created_at: Created at
                 updated_at: Updated at
-            not_found: No project team found!
         create:
             title: Create Project User
             user: Name
@@ -594,7 +598,6 @@ admin:
                 sequence: Sequence
                 created_at: Created at
                 updated_at: Updated at
-            not_found: No project work cost type found!
         create:
             title: Create Project Work Cost Type
             name: Name
@@ -621,7 +624,6 @@ admin:
                 name: Name
                 color: Color
                 sequence: Sequence
-            not_found: No color status found!
         create:
             title: Create Color Status
             name: Name
@@ -636,6 +638,7 @@ admin:
                 general: Color status successfully deleted!
                 first: Color status with ID
                 second: successfully deleted!
+
     risk:
         list:
             title: Risk
@@ -679,8 +682,9 @@ admin:
                 general: Risk successfully deleted!
                 first: Risk with ID
                 second: successfully edited!
+
     risk_category:
-        choice: Choose one category
+        choice: Choose one risk category
         list:
             title: Risk Categories
             subtitle: List of risk categories
@@ -701,8 +705,9 @@ admin:
                 general: Risk category successfully deleted!
                 first: Risk category with ID
                 second: successfully edited!
+
     risk_strategy:
-        choice: Choose one strategy
+        choice: Choose one risk strategy
         list:
             title: Risk Strategies
             subtitle: List of risk strategies
@@ -724,6 +729,7 @@ admin:
                 general: Risk strategy successfully deleted!
                 first: Risk strategy with ID
                 second: successfully edited!
+
     todo:
         list:
             title: TODOs
@@ -741,7 +747,6 @@ admin:
                 status: Status
                 created_at: Created At
                 updated_at: Updated At
-            no-todos: No TODOs found!
         create:
             title: Create new todo
             project: Project
@@ -763,6 +768,7 @@ admin:
                 general: Todo successfully deleted!
                 first: Todo with ID
                 second: successfully deleted!
+
     unit:
         list:
             title: Units
@@ -789,17 +795,18 @@ admin:
                 general: Unit successfully deleted!
                 first: Unit with ID
                 second: successfully deleted!
+
     wppcwct:
         choice: Choose one work package project work cost type
         list:
-            title: WorkPackage - ProjectWorkCostType
-            subtitle: List of WorkPackage - ProjectWorkCostType
-            add: Add WorkPackageProjectWorkCostType
+            title: Work Package Project Work Cost Type
+            subtitle: List of Work Package Project Work Cost Type
+            add: Add Work Package Project Work Cost Type
             table:
                 id: Id
                 name: Name
-                workpackage: WorkPackage
-                projectworkcosttype: ProjectWorkCostType
+                workpackage: Work Package
+                projectworkcosttype: Project Work Cost Type
                 calendar: Calendar
                 base: Base
                 change: Change
@@ -813,12 +820,11 @@ admin:
                 is_budget: Is Budget
                 created_at: Created At
                 updated_at: Updated At
-            no-wppcwct: No WorkPackage - ProjectWorkCostType found!
         create:
-            title: Create new WorkPackage - ProjectWorkCostType
+            title: Create new Work Package Project Work Cost Type
             name: Name
-            workpackage: WorkPackage
-            projectworkcosttype: ProjectWorkCostType
+            workpackage: Work Package
+            projectworkcosttype: Project Work Cost Type
             calendar: Calendar
             base: Base
             change: Change
@@ -830,15 +836,16 @@ admin:
             is_enterprise: Enterprise
             is_cost_resource: Cost resource
             is_budget: Budget
-            success: WorkPackage - ProjectWorkCostType successfully created!
+            success: Work Package Project Work Cost Type successfully created!
         edit:
-            title: Edit WorkPackage - ProjectWorkCostType
-            success: WorkPackage - ProjectWorkCostType successfully edited!
+            title: Edit Work Package Project Work Cost Type
+            success: Work Package Project Work Cost Type successfully edited!
         delete:
             success:
-                general: WorkPackage - ProjectWorkCostType successfully deleted!
-                first: WorkPackage - ProjectWorkCostType with ID
+                general: Work Package Project Work Cost Type successfully deleted!
+                first: Work Package Project Work Cost Type with ID
                 second: successfully deleted!
+
     impact:
         choice: Choose impact
         list:
@@ -862,6 +869,7 @@ admin:
                 general: Impact successfully deleted!
                 first: Impact with ID
                 second: successfully deleted!
+
     meeting_agenda:
         list:
             title: Meeting agenda
@@ -892,6 +900,7 @@ admin:
                 general: Meeting agenda successfully deleted!
                 first: Meeting agenda with ID
                 second: successfully deleted!
+
     meeting_participant:
         list:
             title: Meeting participant
@@ -922,6 +931,7 @@ admin:
                 general: Meeting participant successfully deleted!
                 first: Meeting participant with ID
                 second: successfully deleted!
+
     meeting:
         choice: Choose one meeting
         multiple_choices: Choose one or more meetings
@@ -965,6 +975,7 @@ admin:
                 general: Meeting successfully deleted!
                 first: Meeting with ID
                 second: successfully deleted!
+
     note:
         list:
             title: Note
@@ -1003,6 +1014,7 @@ admin:
                 general: Note successfully deleted!
                 first: Note with ID
                 second: successfully deleted!
+
     calendar:
         choice: Choose calendar
         list:
@@ -1016,7 +1028,7 @@ admin:
                 is_based: Is Based
                 is_baseline: Is Baseline
                 workpackages: WorkPackages
-                wppwct: WorkPackage ProjecWorkCostTypes
+                wppwct: Work Package Project Work Cost Types
             add: Add new calendar
         create:
             title: Create calendar
@@ -1034,6 +1046,7 @@ admin:
                 general: Calendar successfully deleted!
                 first: Calendar with ID
                 second: successfully deleted!
+
     day:
         choice: Choose one day
         list:
@@ -1084,6 +1097,7 @@ admin:
                 general: Working time successfully deleted!
                 first: Working time with ID
                 second: successfully deleted!
+
     assignment:
         choice: Choose one assignment
         list:
@@ -1092,7 +1106,7 @@ admin:
             table:
                 id: Id
                 workpackage: Workpackage
-                wppwct: Workpackage ProjectWorkCosttype
+                wppwct: Work Package Project Work Cost Type
                 milestone: Milestone
                 percent_complete: Percent Complete
                 confirmed: Confirmed
@@ -1102,8 +1116,8 @@ admin:
             add: Add new assignment
         create:
             title: Create assignment
-            workpackage: Workpackage
-            wppwct: Workpackage ProjectWorkCosttype
+            workpackage: Work Package
+            wppwct: Work Package Project Work Cost Type
             milestone: Milestone
             started_at: Started At
             finished_at: Finished At
@@ -1118,6 +1132,7 @@ admin:
                 general: Assignment successfully deleted!
                 first: Assignment with ID
                 second: successfully deleted!
+
     timephase:
         list:
             title: Timephase
@@ -1125,7 +1140,7 @@ admin:
             table:
                 id: Id
                 type: Type
-                workpackage_assignment: WorkPackage Assignment
+                workpackage_assignment: Work Package Assignment
                 unit: Unit
                 value: Value
                 started_at: Started At
@@ -1172,8 +1187,9 @@ admin:
                 general: Company successfully deleted!
                 first: Company with ID
                 second: successfully deleted!
+
     decision:
-        choice: Choose one document
+        choice: Choose one decision
         list:
             title: Decision
             subtitle: List of decisions
@@ -1211,13 +1227,14 @@ admin:
                 general: Decision successfully deleted!
                 first: Decision with ID
                 second: successfully deleted!
+
     communication:
         list:
             title: Communication
             subtitle: List of communications
             table:
                 id: Id
-                meeting_name: Meeting Name
+                meeting_name: Meeting
                 project: Project
                 location: Location
                 content: Content
@@ -1243,14 +1260,38 @@ admin:
                 general: Communication successfully deleted!
                 first: Communication with ID
                 second: successfully deleted!
+    document:
+        list:
+            title: Document
+            subtitle: List of documents
+            table:
+                id: Id
+                project: Project
+                file: File
+                meetings: Meetings
+            add: Add new document
+        create:
+            title: Create document
+            project: Project
+            meetings: Meetings
+            file: Document file
+            file_exists: Uploaded document already exists in documents folder.
+            success: Document successfully created!
+        edit:
+            title: Edit document
+            success: Document successfully edited!
+        delete:
+            success:
+                general: Document successfully deleted!
+                first: Document with ID
     filesystem:
         driver:
             choice:
                 local: Local
                 dropbox: Dropbox
         list:
-            title: Decision
-            subtitle: List of decisions
+            title: File System
+            subtitle: List of file systems
             add: Add new filesystem
             table:
                 id: Id
@@ -1275,12 +1316,12 @@ admin:
                     token_secret: Dropbox token secret
             success: FileSystem successfully created!
         edit:
-            title: Edit file system
-            success: FileSystem successfully edited!
+            title: Edit File System
+            success: File System successfully edited!
         delete:
             success:
-                general: FileSystem successfully deleted!
-                first: FileSystem with ID
+                general: File System successfully deleted!
+                first: File System with ID
                 second: successfully deleted!
     media:
         list:
