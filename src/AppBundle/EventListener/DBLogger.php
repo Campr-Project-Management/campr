@@ -9,15 +9,27 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use AppBundle\Entity\Log;
 use AppBundle\Entity\User;
 
+/**
+ * Class DBLogger
+ * Create a log entity when an object is updated.
+ */
 class DBLogger
 {
     private $tokenStorage;
 
+    /**
+     * DBLogger constructor.
+     *
+     * @param TokenStorage $tokenStorage
+     */
     public function __construct(TokenStorage $tokenStorage)
     {
         $this->tokenStorage = $tokenStorage;
     }
 
+    /**
+     * @param OnFlushEventArgs $event
+     */
     public function onFlush(OnFlushEventArgs $event)
     {
         $em = $event->getEntityManager();
@@ -61,6 +73,12 @@ class DBLogger
         }
     }
 
+    /**
+     * @param EntityManager $em
+     * @param $value
+     *
+     * @return mixed
+     */
     private function normalizeValue(EntityManager $em, $value)
     {
         foreach ($value as $key => $field) {

@@ -2,6 +2,10 @@
 
 namespace AppBundle\Services;
 
+/**
+ * Class RequestParserService
+ * Service used to parse request parameters.
+ */
 class RequestParserService
 {
     /** @var string|null */
@@ -20,7 +24,9 @@ class RequestParserService
     public $limit;
 
     /**
-     * @param array $params
+     * Parse sent parameters.
+     *
+     * @param $params
      */
     public function parse($params)
     {

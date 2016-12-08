@@ -13,7 +13,7 @@ use AppBundle\Form\Timephase\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Timephase controller.
+ * Timephase admin controller.
  *
  * @Route("/admin/timephase")
  */
@@ -45,6 +45,8 @@ class TimephaseController extends Controller
     }
 
     /**
+     * Lists all Timephase entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_timephase_list_filtered")
      * @Method("POST")
      *
@@ -173,12 +175,12 @@ class TimephaseController extends Controller
      * @Route("/{id}", options={"expose"=true}, name="app_admin_timephase_delete")
      * @Method({"GET"})
      *
-     * @param Timephase $timephase
      * @param Request   $request
+     * @param Timephase $timephase
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(Timephase $timephase, Request $request)
+    public function deleteAction(Request $request, Timephase $timephase)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($timephase);
@@ -189,7 +191,7 @@ class TimephaseController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

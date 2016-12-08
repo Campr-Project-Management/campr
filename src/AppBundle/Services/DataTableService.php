@@ -5,6 +5,10 @@ namespace AppBundle\Services;
 use Doctrine\ORM\EntityManager;
 use JMS\Serializer\Serializer;
 
+/**
+ * Class DataTableService
+ * Service used to retrieve data for listing table.
+ */
 class DataTableService
 {
     /** @var Serializer */
@@ -16,11 +20,21 @@ class DataTableService
     /** @var EntityManager */
     private $em;
 
+    /**
+     * @var array
+     */
     private $options = [
         'countFunction' => 'countTotal',
         'countArguments' => [],
     ];
 
+    /**
+     * DataTableService constructor.
+     *
+     * @param EntityManager        $em
+     * @param RequestParserService $requestParser
+     * @param Serializer           $serializer
+     */
     public function __construct(EntityManager $em, RequestParserService $requestParser, Serializer $serializer)
     {
         $this->em = $em;
@@ -28,6 +42,16 @@ class DataTableService
         $this->requestParser = $requestParser;
     }
 
+    /**
+     * Paginate with search by column.
+     *
+     * @param $persistentObjectName
+     * @param $searchField
+     * @param $requestParams
+     * @param $options
+     *
+     * @return array
+     */
     public function paginateByColumn($persistentObjectName, $searchField, $requestParams, array $options = [])
     {
         $this->requestParser->parse($requestParams);
