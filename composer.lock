@@ -4,9 +4,57 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ab262ca4b1e435e457ab1de288e2245d",
-    "content-hash": "c95fa691378b73959cc9a2c21b34f13b",
+    "hash": "d40b7b695e87bd682a4105d9540a1818",
+    "content-hash": "aae762ff9dc97588ba973517fd9f947a",
     "packages": [
+        {
+            "name": "ambta/doctrine-encrypt-bundle",
+            "version": "v2.4.5",
+            "target-dir": "Ambta/DoctrineEncryptBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ambta/DoctrineEncryptBundle.git",
+                "reference": "531d55621aa9f28ee5abe613e19905869ab60558"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ambta/DoctrineEncryptBundle/zipball/531d55621aa9f28ee5abe613e19905869ab60558",
+                "reference": "531d55621aa9f28ee5abe613e19905869ab60558",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": ">=2.5",
+                "ext-mcrypt": "*",
+                "php": ">=5.4",
+                "symfony/framework-bundle": ">=2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Ambta\\DoctrineEncryptBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcel van Nuil",
+                    "email": "marcel@ambta.com"
+                }
+            ],
+            "description": "Symfony 2 bundle which allows to encrypt data in database with some encrypt algorithm",
+            "keywords": [
+                "Rijndael",
+                "aes256",
+                "decrypt",
+                "doctrine",
+                "encrypt",
+                "symfony"
+            ],
+            "time": "2016-01-18 12:39:27"
+        },
         {
             "name": "doctrine/annotations",
             "version": "v1.3.0",
@@ -1769,7 +1817,7 @@
                 "exception"
             ],
             "abandoned": "guzzle/guzzle",
-            "time": "2014-08-11 04:32:36"
+            "time": "2016-11-15 09:10:47"
         },
         {
             "name": "guzzle/http",
@@ -6218,16 +6266,16 @@
         },
         {
             "name": "sebastian/recursion-context",
-            "version": "1.0.2",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/recursion-context.git",
-                "reference": "913401df809e99e4f47b27cdd781f4a258d58791"
+                "reference": "938df7a6478e72795e5f8266cff24d06e3136f2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/recursion-context/zipball/913401df809e99e4f47b27cdd781f4a258d58791",
-                "reference": "913401df809e99e4f47b27cdd781f4a258d58791",
+                "url": "https://api.github.com/repos/sebastianbergmann/recursion-context/zipball/938df7a6478e72795e5f8266cff24d06e3136f2e",
+                "reference": "938df7a6478e72795e5f8266cff24d06e3136f2e",
                 "shasum": ""
             },
             "require": {
@@ -6267,7 +6315,7 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
-            "time": "2015-11-11 19:50:13"
+            "time": "2016-11-15 06:55:36"
         },
         {
             "name": "sebastian/version",
@@ -6412,7 +6460,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2016-11-25 22:54:21"
+            "time": "2016-11-17 10:59:24"
         },
         {
             "name": "webmozart/assert",
