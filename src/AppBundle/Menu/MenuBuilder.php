@@ -98,16 +98,17 @@ class MenuBuilder
 
     public function createAdminMenu(FactoryInterface $factory)
     {
-        $menu = $factory->createItem('root')->setChildrenAttribute('class', 'main-menu');
+        $menu = $factory->createItem('root')->setChildrenAttribute('class', 'main-menu sidebar-main-menu');
 
         $menu->addChild($this->translator->trans('admin.user.list.title', [], 'admin'), [
                 'route' => 'app_admin_user_list',
             ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-account');
 
         $menu->addChild($this->translator->trans('admin.project.list.title', [], 'admin'), [])
             ->setAttributes([
-                'class' => 'sub-menu',
+                'class' => 'sub-menu main-category',
                 'dropdown' => true,
             ])
             ->setLinkAttribute('icon', 'zmdi zmdi-folder-outline')
@@ -151,7 +152,7 @@ class MenuBuilder
 
         $menu->addChild($this->translator->trans('admin.calendar.list.title', [], 'admin'), [])
             ->setAttributes([
-                'class' => 'sub-menu',
+                'class' => 'sub-menu main-category',
                 'dropdown' => true,
             ])
             ->setLinkAttribute('icon', 'zmdi zmdi-calendar')
@@ -169,63 +170,74 @@ class MenuBuilder
         $menu->addChild($this->translator->trans('admin.portfolio.list.title', [], 'admin'), [
                 'route' => 'app_admin_portfolio_list',
             ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-laptop-mac')
             ->getParent()
             ->addChild($this->translator->trans('admin.color_status.list.title', [], 'admin'), [
                 'route' => 'app_admin_color_status_list',
             ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-invert-colors')
             ->getParent()
             ->addChild($this->translator->trans('admin.workpackage.list.title', [], 'admin'), [
                 'route' => 'app_admin_workpackage_list',
             ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-present-to-all')
             ->getParent()
             ->addChild($this->translator->trans('admin.assignment.list.title', [], 'admin'), [
                 'route' => 'app_admin_assignment_list',
             ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-assignment')
             ->getParent()
             ->addChild($this->translator->trans('admin.timephase.list.title', [], 'admin'), [
                 'route' => 'app_admin_timephase_list',
             ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-hourglass')
             ->getParent()
             ->addChild($this->translator->trans('admin.schedule.list.title', [], 'admin'), [
                 'route' => 'app_admin_schedule_list',
             ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-calendar-note')
             ->getParent()
             ->addChild($this->translator->trans('admin.raci.list.title', [], 'admin'), [
                 'route' => 'app_admin_raci_list',
             ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-view-agenda')
             ->getParent()
             ->addChild($this->translator->trans('admin.wppcwct.list.title', [], 'admin'), [
                 'route' => 'app_admin_wppcwct_list',
             ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-tv-list')
             ->getParent()
             ->addChild($this->translator->trans('admin.unit.list.title', [], 'admin'), [
                 'route' => 'app_admin_unit_list',
             ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-apps')
             ->getParent()
             ->addChild($this->translator->trans('admin.todo.list.title', [], 'admin'), [
                 'route' => 'app_admin_todo_list',
             ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-collection-item')
             ->getParent()
             ->addChild($this->translator->trans('admin.impact.list.title', [], 'admin'), [
                 'route' => 'app_admin_impact_list',
             ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-gps')
             ->getParent()
         ;
 
         $menu->addChild($this->translator->trans('admin.risk.list.title', [], 'admin'), [])
             ->setAttributes([
-                'class' => 'sub-menu',
+                'class' => 'sub-menu main-category',
                 'dropdown' => true,
             ])
             ->setLinkAttribute('icon', 'zmdi zmdi-folder-outline')
@@ -243,23 +255,26 @@ class MenuBuilder
         $menu->addChild($this->translator->trans('admin.status.list.title', [], 'admin'), [
                 'route' => 'app_admin_status_list',
             ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-power-input')
             ->getParent()
             ->addChild($this->translator->trans('admin.communication.list.title', [], 'admin'), [
                 'route' => 'app_admin_communication_list',
             ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-comment')
             ->getParent()
             ->addChild($this->translator->trans('admin.filesystem.list.title', [], 'admin'), [
                 'route' => 'app_admin_filesystem_list',
             ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-cloud-outline')
             ->getParent()
         ;
 
         $menu->addChild($this->translator->trans('admin.meeting.list.title', [], 'admin'), [])
             ->setAttributes([
-                'class' => 'sub-menu',
+                'class' => 'sub-menu main-category',
                 'dropdown' => true,
             ])
             ->setLinkAttribute('icon', 'zmdi zmdi-accounts')
@@ -277,11 +292,13 @@ class MenuBuilder
         $menu->addChild($this->translator->trans('admin.note.list.title', [], 'admin'), [
                 'route' => 'app_admin_note_list',
             ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-comment-edit')
             ->getParent()
             ->addChild($this->translator->trans('admin.company.list.title', [], 'admin'), [
                 'route' => 'app_admin_company_list',
             ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-case')
             ->getParent()
             ->addChild($this->translator->trans('admin.decision.list.title', [], 'admin'), [
