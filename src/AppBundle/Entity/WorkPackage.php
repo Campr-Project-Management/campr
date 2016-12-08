@@ -294,7 +294,7 @@ class WorkPackage
      */
     public function getScheduledStartAtFormatted()
     {
-        return $this->scheduledStartAt ? $this->scheduledStartAt->format('d/m/Y') : null;
+        return $this->scheduledStartAt ? $this->scheduledStartAt->format('d/m/Y') : '-';
     }
 
     /**
@@ -331,7 +331,7 @@ class WorkPackage
      */
     public function getScheduledFinishAtFormatted()
     {
-        return $this->scheduledFinishAt ? $this->scheduledFinishAt->format('d/m/Y') : null;
+        return $this->scheduledFinishAt ? $this->scheduledFinishAt->format('d/m/Y') : '-';
     }
 
     /**
@@ -632,7 +632,7 @@ class WorkPackage
      */
     public function getResponsibilityName()
     {
-        return $this->responsibility ? $this->responsibility->getUsername() : null;
+        return $this->responsibility ? $this->responsibility->getUsername() : '-';
     }
 
     /**

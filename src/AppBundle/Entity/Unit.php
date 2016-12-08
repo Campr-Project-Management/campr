@@ -210,6 +210,6 @@ class Unit
      */
     public function getProjectName()
     {
-        return $this->project ? $this->project->getName() : null;
+        return $this->project ? $this->project->getName() : '-';
     }
 }

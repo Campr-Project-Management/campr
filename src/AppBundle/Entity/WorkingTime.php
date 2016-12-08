@@ -94,7 +94,7 @@ class WorkingTime
      */
     public function getFromTimeFormatted()
     {
-        return $this->fromTime ? $this->fromTime->format('H:i') : null;
+        return $this->fromTime ? $this->fromTime->format('H:i') : '-';
     }
 
     /**
@@ -131,7 +131,7 @@ class WorkingTime
      */
     public function getToTimeFormatted()
     {
-        return $this->toTime ? $this->toTime->format('H:i') : null;
+        return $this->toTime ? $this->toTime->format('H:i') : '-';
     }
 
     /**
@@ -170,7 +170,7 @@ class WorkingTime
     {
         return $this->day && $this->day->getCalendar()
             ? $this->day->getCalendar()->getName().' - '.$this->day->getId()
-            : null
+            : '-'
         ;
     }
 }
