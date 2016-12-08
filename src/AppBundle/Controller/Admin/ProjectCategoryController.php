@@ -13,7 +13,7 @@ use AppBundle\Form\ProjectCategory\CreateType as ProjectCategoryCreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * ProjectCategory controller.
+ * ProjectCategory admin controller.
  *
  * @Route("/admin/project-category")
  */
@@ -45,6 +45,8 @@ class ProjectCategoryController extends Controller
     }
 
     /**
+     * Lists all ProjectCategory entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_project_category_list_filtered")
      * @Method("POST")
      *
@@ -176,12 +178,12 @@ class ProjectCategoryController extends Controller
      * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_category_delete")
      * @Method({"GET"})
      *
-     * @param ProjectCategory $projectCategory
      * @param Request         $request
+     * @param ProjectCategory $projectCategory
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ProjectCategory $projectCategory, Request $request)
+    public function deleteAction(Request $request, ProjectCategory $projectCategory)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectCategory);
@@ -192,7 +194,7 @@ class ProjectCategoryController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

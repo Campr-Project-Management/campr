@@ -9,6 +9,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Insert database entries for Filesystem entity.
+ */
 class LoadFileSystemData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     /** @var ContainerInterface */

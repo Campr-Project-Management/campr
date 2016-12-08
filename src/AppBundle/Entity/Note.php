@@ -111,6 +111,9 @@ class Note
      */
     private $updatedAt;
 
+    /**
+     * Note constructor.
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -205,7 +208,7 @@ class Note
      *
      * @return Note
      */
-    public function setDate($date)
+    public function setDate(\DateTime $date = null)
     {
         $this->date = $date;
 
@@ -223,6 +226,8 @@ class Note
     }
 
     /**
+     * Returns date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("date")
      *
@@ -240,7 +245,7 @@ class Note
      *
      * @return Note
      */
-    public function setDueDate($dueDate)
+    public function setDueDate(\DateTime $dueDate = null)
     {
         $this->dueDate = $dueDate;
 
@@ -264,7 +269,7 @@ class Note
      *
      * @return Note
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -288,7 +293,7 @@ class Note
      *
      * @return Note
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
@@ -308,11 +313,11 @@ class Note
     /**
      * Set project.
      *
-     * @param \AppBundle\Entity\Project $project
+     * @param Project $project
      *
      * @return Note
      */
-    public function setProject(\AppBundle\Entity\Project $project = null)
+    public function setProject(Project $project = null)
     {
         $this->project = $project;
 
@@ -322,7 +327,7 @@ class Note
     /**
      * Get project.
      *
-     * @return \AppBundle\Entity\Project
+     * @return Project
      */
     public function getProject()
     {
@@ -330,6 +335,8 @@ class Note
     }
 
     /**
+     * Returns project name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      *
@@ -343,11 +350,11 @@ class Note
     /**
      * Set meeting.
      *
-     * @param \AppBundle\Entity\Meeting $meeting
+     * @param Meeting $meeting
      *
      * @return Note
      */
-    public function setMeeting(\AppBundle\Entity\Meeting $meeting = null)
+    public function setMeeting(Meeting $meeting = null)
     {
         $this->meeting = $meeting;
 
@@ -357,7 +364,7 @@ class Note
     /**
      * Get meeting.
      *
-     * @return \AppBundle\Entity\Meeting
+     * @return Meeting
      */
     public function getMeeting()
     {
@@ -365,6 +372,8 @@ class Note
     }
 
     /**
+     * Returns meeting name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("meeting")
      *
@@ -378,11 +387,11 @@ class Note
     /**
      * Set responsibility.
      *
-     * @param \AppBundle\Entity\User $responsibility
+     * @param User $responsibility
      *
      * @return Note
      */
-    public function setResponsibility(\AppBundle\Entity\User $responsibility = null)
+    public function setResponsibility(User $responsibility = null)
     {
         $this->responsibility = $responsibility;
 
@@ -392,7 +401,7 @@ class Note
     /**
      * Get responsibility.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getResponsibility()
     {
@@ -400,6 +409,8 @@ class Note
     }
 
     /**
+     * Returns responsibility username.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("responsibility")
      *
@@ -413,11 +424,11 @@ class Note
     /**
      * Set status.
      *
-     * @param \AppBundle\Entity\Status $status
+     * @param Status $status
      *
      * @return Note
      */
-    public function setStatus(\AppBundle\Entity\Status $status = null)
+    public function setStatus(Status $status = null)
     {
         $this->status = $status;
 
@@ -427,7 +438,7 @@ class Note
     /**
      * Get status.
      *
-     * @return \AppBundle\Entity\Status
+     * @return Status
      */
     public function getStatus()
     {

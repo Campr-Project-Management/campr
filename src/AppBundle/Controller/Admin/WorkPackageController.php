@@ -13,11 +13,15 @@ use AppBundle\Form\WorkPackage\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * WorkPackage admin controller.
+ *
  * @Route("/admin/workpackage")
  */
 class WorkPackageController extends Controller
 {
     /**
+     * List all WorkPackage entities.
+     *
      * @Route("/list", name="app_admin_workpackage_list")
      * @Method({"GET"})
      *
@@ -40,6 +44,8 @@ class WorkPackageController extends Controller
     }
 
     /**
+     * Lists all WorkPackage entities filtered and paginated.
+     *
      * @Route("/list/filtered", name="app_admin_workpackage_list_filtered", options={"expose"=true})
      * @Method("POST")
      *
@@ -77,6 +83,8 @@ class WorkPackageController extends Controller
     }
 
     /**
+     * Create a new WorkPackage entity.
+     *
      * @Route("/create", name="app_admin_workpackage_create")
      * @Method({"GET", "POST"})
      *
@@ -117,15 +125,17 @@ class WorkPackageController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing WorkPackage entity.
+     *
      * @Route("/{id}/edit", name="app_admin_workpackage_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param WorkPackage $workPackage
      * @param Request     $request
+     * @param WorkPackage $workPackage
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(WorkPackage $workPackage, Request $request)
+    public function editAction(Request $request, WorkPackage $workPackage)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $workPackage);
@@ -159,18 +169,29 @@ class WorkPackageController extends Controller
     }
 
     /**
+     * Deletes a specific WorkPackage entity.
+     *
      * @Route("/{id}/delete", name="app_admin_workpackage_delete", options={"expose"=true})
      * @Method({"GET"})
      *
+     * @param Request     $request
      * @param WorkPackage $workPackage
      *
      * @return RedirectResponse
      */
-    public function deleteAction(WorkPackage $workPackage)
+    public function deleteAction(Request $request, WorkPackage $workPackage)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($workPackage);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message);
+        }
 
         $this
             ->get('session')

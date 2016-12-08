@@ -13,11 +13,15 @@ use AppBundle\Form\Risk\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * Risk admin controller.
+ *
  * @Route("/admin/risk")
  */
 class RiskController extends Controller
 {
     /**
+     * List all Risk entities.
+     *
      * @Route("/list", name="app_admin_risk_list")
      * @Method({"GET"})
      *
@@ -40,6 +44,8 @@ class RiskController extends Controller
     }
 
     /**
+     * Lists all Risk entities filtered and paginated.
+     *
      * @Route("/list/filtered", name="app_admin_risk_list_filtered", options={"expose"=true})
      * @Method("POST")
      *
@@ -77,6 +83,8 @@ class RiskController extends Controller
     }
 
     /**
+     * Creates a new Risk entity.
+     *
      * @Route("/create", name="app_admin_risk_create")
      * @Method({"GET", "POST"})
      *
@@ -117,15 +125,17 @@ class RiskController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing Risk entity.
+     *
      * @Route("/{id}/edit", name="app_admin_risk_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Risk    $risk
      * @param Request $request
+     * @param Risk    $risk
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Risk $risk, Request $request)
+    public function editAction(Request $request, Risk $risk)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $risk);
@@ -159,18 +169,29 @@ class RiskController extends Controller
     }
 
     /**
+     * Deletes a specific Risk entity.
+     *
      * @Route("/{id}/delete", name="app_admin_risk_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Risk $risk
+     * @param Request $request
+     * @param Risk    $risk
      *
      * @return RedirectResponse
      */
-    public function deleteAction(Risk $risk)
+    public function deleteAction(Request $request, Risk $risk)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($risk);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            $message = [
+                'delete' => 'success',
+            ];
+
+            return new JsonResponse($message);
+        }
 
         $this
             ->get('session')

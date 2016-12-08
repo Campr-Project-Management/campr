@@ -13,7 +13,7 @@ use AppBundle\Form\ColorStatus\CreateType as ColorStatusCreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * ColorStatus controller.
+ * ColorStatus admin controller.
  *
  * @Route("/admin/color-status")
  */
@@ -43,6 +43,8 @@ class ColorStatusController extends Controller
     }
 
     /**
+     * Lists all ColorStatus entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_color_status_list_filtered")
      * @Method("POST")
      *
@@ -172,12 +174,12 @@ class ColorStatusController extends Controller
      * @Route("/{id}", options={"expose"=true}, name="app_admin_color_status_delete")
      * @Method({"GET"})
      *
-     * @param ColorStatus $colorStatus
      * @param Request     $request
+     * @param ColorStatus $colorStatus
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(ColorStatus $colorStatus, Request $request)
+    public function deleteAction(Request $request, ColorStatus $colorStatus)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($colorStatus);
@@ -188,7 +190,7 @@ class ColorStatusController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

@@ -169,6 +169,9 @@ class WorkPackage
      */
     private $updatedAt;
 
+    /**
+     * WorkPackage constructor.
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -282,6 +285,8 @@ class WorkPackage
     }
 
     /**
+     * Returns scheduledStartAt date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("scheduledStartAt")
      *
@@ -317,6 +322,8 @@ class WorkPackage
     }
 
     /**
+     * Returns scheduledFinishAt date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("scheduledFinishAt")
      *
@@ -560,7 +567,7 @@ class WorkPackage
     /**
      * Get parent.
      *
-     * @return \AppBundle\Entity\WorkPackage
+     * @return WorkPackage
      */
     public function getParent()
     {
@@ -616,6 +623,8 @@ class WorkPackage
     }
 
     /**
+     * Returns responsibility username.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("responsibility")
      *

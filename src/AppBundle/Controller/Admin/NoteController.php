@@ -13,14 +13,14 @@ use AppBundle\Form\Note\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * NoteController controller.
+ * Note admin controller.
  *
  * @Route("/admin/note")
  */
 class NoteController extends Controller
 {
     /**
-     * Lists all Meeting entities.
+     * Lists all Note entities.
      *
      * @Route("/list", name="app_admin_note_list")
      * @Method("GET")
@@ -44,6 +44,8 @@ class NoteController extends Controller
     }
 
     /**
+     * Lists all Note entities filtered and paginated.
+     *
      * @Route("/list/filtered", options={"expose"=true}, name="app_admin_note_list_filtered")
      * @Method("POST")
      *
@@ -123,15 +125,17 @@ class NoteController extends Controller
     }
 
     /**
+     * Displays a form to edit an existing Note entity.
+     *
      * @Route("/{id}/edit", name="app_admin_note_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Note    $note
      * @param Request $request
+     * @param Note    $note
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Note $note, Request $request)
+    public function editAction(Request $request, Note $note)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $note);
@@ -165,6 +169,8 @@ class NoteController extends Controller
     }
 
     /**
+     * Deletes a specific Note entity.
+     *
      * @Route("/{id}/delete", name="app_admin_note_delete", options={"expose"=true})
      * @Method({"GET"})
      *
@@ -184,7 +190,7 @@ class NoteController extends Controller
                 'delete' => 'success',
             ];
 
-            return new JsonResponse($message, Response::HTTP_OK);
+            return new JsonResponse($message);
         }
 
         $this

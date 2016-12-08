@@ -118,8 +118,9 @@ class Meeting
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Note", mappedBy="meeting")
      */
     private $notes;
+
     /**
-     * Constructor.
+     * Meeting constructor.
      */
     public function __construct()
     {
@@ -214,6 +215,8 @@ class Meeting
     }
 
     /**
+     * Returns date formatted.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("date")
      *
@@ -321,6 +324,8 @@ class Meeting
     }
 
     /**
+     * Returns project name.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      *

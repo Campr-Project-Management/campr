@@ -4,17 +4,24 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\User\LoginType;
 use AppBundle\Form\User\RegisterType;
 use AppBundle\Form\User\ResetPasswordType;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Default application controller.
+ */
 class DefaultController extends Controller
 {
     /**
+     * Application homepage.
+     *
      * @Route("/", name="app_homepage")
+     *
+     * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         return $this->render(
             'AppBundle:Default:index.html.twig'
@@ -22,9 +29,13 @@ class DefaultController extends Controller
     }
 
     /**
+     * Login into application page.
+     *
      * @Route("/login", name="app_login")
+     *
+     * @return Response|RedirectResponse
      */
-    public function loginAction(Request $request)
+    public function loginAction()
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_homepage');
@@ -52,6 +63,8 @@ class DefaultController extends Controller
     }
 
     /**
+     * Logout from application.
+     *
      * @Route("/logout", name="app_logout")
      */
     public function logoutAction()
