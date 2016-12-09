@@ -165,3 +165,13 @@ services:
         arguments: ["@annotation_reader", "%ambta_doctrine_encrypt.encryptor_class_name%", "%ambta_doctrine_encrypt.secret_key%"]
         tags:
             -  { name: doctrine.event_subscriber }
+
+### VOTERS ###
+    app.project_voter:
+        class: AppBundle\Security\ProjectVoter
+        arguments:
+            - '@security.access.decision_manager'
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: security.voter }
+        public: false
