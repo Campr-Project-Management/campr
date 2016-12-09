@@ -3,6 +3,8 @@ admin:
     general:
         yes: Yes
         no: No
+        click: Click
+        here: Here
         form:
             checkbox:
                 checked: Yes
@@ -29,6 +31,9 @@ admin:
     sidebar:
         menu:
             home: Home
+    header:
+        impersonate: You are currently logged in as
+        return: to return to your original user.
     user:
         choice: Choose one user
         sponsor:
