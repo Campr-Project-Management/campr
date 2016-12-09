@@ -140,8 +140,9 @@ class FileSystemController extends Controller
 
         if ($request->isXmlHttpRequest()) {
             $html = $this->renderView(
-                'AppBundle:Admin/FileSystem/Partials:form.html.twig',
+                'AppBundle:Admin/FileSystem/Partials:form_edit.html.twig',
                 [
+                    'id' => $fileSystem->getId(),
                     'form' => $form->createView(),
                 ]
             );
