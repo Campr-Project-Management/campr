@@ -93,7 +93,7 @@ class EncryptSubscriber extends DoctrineEncryptSubscriber
     {
         if (method_exists($entity, 'getEncryptionKey') && $entity->getEncryptionKey()) {
             $this->encryptor->setSecretKey($entity->getEncryptionKey());
-        } else if (method_exists($entity, 'getProject') && $entity->getProject() && $entity->getProject()->getEncryptionKey()) {
+        } elseif (method_exists($entity, 'getProject') && $entity->getProject() && $entity->getProject()->getEncryptionKey()) {
             $this->encryptor->setSecretKey($entity->getProject()->getEncryptionKey());
         } else {
             $this->encryptor->setSecretKey($this->secretKey);
