@@ -26,3 +26,4 @@ Vagrantfile
 /src/AppBundle/Resources/views/Default/index.html.twig
 /src/AppBundle/Tests/Resources/
 /src/AppBundle/Resources/docs/cache/
+/src/AppBundle/Resources/docs/build/
