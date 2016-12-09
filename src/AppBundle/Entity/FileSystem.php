@@ -137,6 +137,16 @@ class FileSystem
     }
 
     /**
+     * Get slug.
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return str_replace(' ', '_', $this->name);
+    }
+
+    /**
      * Set config.
      *
      * @param array $config

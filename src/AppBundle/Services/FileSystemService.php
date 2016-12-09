@@ -63,7 +63,7 @@ class FileSystemService
 
         if ($adapter) {
             $fs = new Filesystem($adapter);
-            $this->map->set($fileSystem->getName(), $fs);
+            $this->map->set($fileSystem->getSlug(), $fs);
 
             return $fs;
         }
