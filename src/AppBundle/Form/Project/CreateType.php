@@ -10,6 +10,7 @@ use AppBundle\Entity\ProjectComplexity;
 use AppBundle\Entity\ProjectScope;
 use AppBundle\Entity\ProjectStatus;
 use AppBundle\Entity\User;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -26,6 +27,10 @@ class CreateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /** @var Project $entity */
+        $entity = $builder->getData();
+        $self = $this;
+
         $builder
             ->add('name', TextType::class, [
                 'required' => true,
@@ -68,24 +73,36 @@ class CreateType extends AbstractType
             ->add('projectComplexity', EntityType::class, [
                 'class' => ProjectComplexity::class,
                 'choice_label' => 'name',
+                'query_builder' => function (EntityRepository $er) use ($self, $entity) {
+                    return $self->findRelatedEntities($er, $entity);
+                },
                 'placeholder' => 'admin.project_complexity.choice',
                 'translation_domain' => 'admin',
             ])
             ->add('projectCategory', EntityType::class, [
                 'class' => ProjectCategory::class,
                 'choice_label' => 'name',
+                'query_builder' => function (EntityRepository $er) use ($self, $entity) {
+                    return $self->findRelatedEntities($er, $entity);
+                },
                 'placeholder' => 'admin.project_category.choice',
                 'translation_domain' => 'admin',
             ])
             ->add('projectScope', EntityType::class, [
                 'class' => ProjectScope::class,
                 'choice_label' => 'name',
+                'query_builder' => function (EntityRepository $er) use ($self, $entity) {
+                    return $self->findRelatedEntities($er, $entity);
+                },
                 'placeholder' => 'admin.project_scope.choice',
                 'translation_domain' => 'admin',
             ])
             ->add('status', EntityType::class, [
                 'class' => ProjectStatus::class,
                 'choice_label' => 'name',
+                'query_builder' => function (EntityRepository $er) use ($self, $entity) {
+                    return $self->findRelatedEntities($er, $entity);
+                },
                 'placeholder' => 'admin.project_status.choice',
                 'translation_domain' => 'admin',
             ])
@@ -106,5 +123,17 @@ class CreateType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Project::class,
         ]);
+    }
+
+    private function findRelatedEntities(EntityRepository $er, Project $entity)
+    {
+        $qb = $er->createQueryBuilder('q');
+        $qb->where($qb->expr()->isNull('q.project'));
+
+        if ($entity->getId()) {
+            $qb->orWhere($qb->expr()->eq('q.project', $entity->getId()));
+        }
+
+        return $qb;
     }
 }
