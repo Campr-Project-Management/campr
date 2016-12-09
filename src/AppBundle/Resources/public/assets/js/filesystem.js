@@ -7,7 +7,7 @@ $(document).ready(function () {
             data: $form.serialize(),
             success: function (html) {
                 $('#ajaxForm').html(html);
-                $('select.driver-create').selectpicker();
+                $('select.filesystem-picker').selectpicker();
             }
         });
     });
