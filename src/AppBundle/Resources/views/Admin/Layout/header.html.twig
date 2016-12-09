@@ -1,5 +1,10 @@
 {% trans_default_domain 'admin' %}
-<header id="header" class="clearfix" data-ma-theme="teal">
+<header id="header" class="clearfix p-t-20" data-ma-theme="teal">
+    {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+        <div class="bgm-orange c-white text-center" style="width: 100%;position: absolute;left: 0;right: 0;top:0;">
+            <p>{{ 'admin.header.impersonate'|trans }} "{{ app.user.username }}". {{ 'admin.general.click'|trans }}  <a href="{{ path('app_homepage', {'_switch_user': '_exit'}) }}">{{ 'admin.general.here'|trans }} </a> {{ 'admin.header.return'|trans }} </p>
+        </div>
+    {% endif %}
     <ul class="h-inner">
         <li class="hi-trigger ma-trigger" data-ma-action="sidebar-open" data-ma-target="#sidebar">
             <div class="line-wrap">

@@ -34,7 +34,8 @@
                         data-url="{{ path('app_admin_user_list_filtered') }}"
                         data-show="app_admin_user_show"
                         data-edit="app_admin_user_edit"
-                        data-delete="app_admin_user_delete">
+                        data-delete="app_admin_user_delete"
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}data-impersonate="app_homepage"{% endif %}>
                     <thead>
                     <tr>
                         <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.user.list.table.id'|trans }}</th>
@@ -52,7 +53,7 @@
 {% block javascripts %}
     {{ parent() }}
     <!-- Data Table -->
-    <script src="{{ asset('bundles/app/assets/js/data_table.js') }}"></script>
-    <script src="{{ asset('bundles/app/assets/js/alert_messages.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/app/assets/js/data_table.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/app/assets/js/alert_messages.js') }}"></script>
 {% endblock %}
 
