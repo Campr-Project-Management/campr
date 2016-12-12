@@ -170,7 +170,6 @@ services:
     app.project_voter:
         class: AppBundle\Security\ProjectVoter
         arguments:
-            - '@security.access.decision_manager'
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: security.voter }
