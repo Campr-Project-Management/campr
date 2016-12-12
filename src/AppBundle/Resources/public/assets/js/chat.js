@@ -182,10 +182,14 @@ function loadMessages (key, chatId) {
         success: function (data) {
             $('#chat-messages').html(data);
             $('#chat-messages').attr('data-id', chatId);
-            key.length > 0
-                ? $('#chat-messages').attr('data-key', key)
-                : $('#chat-messages').attr('data-key', '')
-            ;
+            $('#message-form textarea').attr('data-id', chatId);
+            if (key.length > 0) {
+                $('#chat-messages').attr('data-key', key)
+                $('#message-form textarea').attr('data-key', key);
+            } else {
+                $('#chat-messages').attr('data-key', '')
+                $('#message-form textarea').attr('data-key', currentUserId);
+            }
 
             $('.mbl-messages').mCustomScrollbar({
                 theme: 'minimal-dark',
@@ -252,17 +256,36 @@ function subscribeToChat (chat, session) {
                 ) {
                     container.append(messageContainer);
                     $('.mbl-messages').mCustomScrollbar("scrollTo", "bottom");
-                    $('#message-form textarea').val('');
+                    $('#message-form textarea[data-id="' + chatId + '"][data-key="' + key + '"]').val('');
                 }
-                $('a.chat-room[data-id="' + chatId + '"][data-key="' + key + '"] #last-message').html(lastMessage);
-                $('a.chat-room[data-id="' + payload.message.from_id + '"][data-key="' + key + '"] #last-message').html(lastMessage);
+                var chatElement = 'a.chat-room[data-id="' + chatId + '"][data-key="' + key + '"]',
+                    fromChatElement = 'a.chat-room[data-id="' + payload.message.from_id + '"][data-key="' + key + '"]';
+
+                if (typeof $(chatElement)[0] != 'undefined') {
+                    var content = $(chatElement)[0].outerHTML;
+                    $(chatElement).remove();
+                    $('#mCSB_2_container').prepend(content);
+                    $(chatElement + ' #last-message').html(lastMessage);
+                }
+                if (typeof $(fromChatElement)[0] !== 'undefined') {
+                    var content = $(fromChatElement)[0].outerHTML;
+                    $(fromChatElement).remove();
+                    $('#mCSB_2_container').prepend(content);
+                    $(fromChatElement + ' #last-message').html(lastMessage);
+                }
             } else {
                 if ($('#chat-messages').attr('data-id') == chatId && $('#chat-messages').attr('data-key') == '') {
                     container.append(messageContainer);
                     $('.mbl-messages').mCustomScrollbar("scrollTo", "bottom");
-                    $('#message-form textarea').val('');
+                    $('#message-form textarea[data-id="' + chatId + '"][data-key="' + payload.message.from_id + '"]').val('');
                 }
-                $('a.chat-room[data-id="' + chatId + '"][data-key=""] #last-message').html(lastMessage);
+                var element = 'a.chat-room[data-id="' + chatId + '"][data-key=""]';
+                if (typeof $(element)[0] != 'undefined') {
+                    var content = $(element)[0].outerHTML;
+                    $(element).remove();
+                    $('#mCSB_2_container').prepend(content);
+                    $(element + ' #last-message').html(lastMessage);
+                }
             }
         }
     });
