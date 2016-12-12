@@ -10,6 +10,12 @@
 
 {% block root %}
     <aside id="sidebar" class="sidebar c-overflow">
+        <div class="ms-search hidden-xs">
+            <div class="fg-line">
+                <i class="zmdi zmdi-search"></i>
+                <input type="text" class="form-control sidebar-search" placeholder="Search...">
+            </div>
+        </div>
         {% set listAttributes = item.childrenAttributes %}
         {{ block('list') -}}
     </aside>
