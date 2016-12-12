@@ -27,20 +27,14 @@ class ProjectVoter extends Voter
     private $em;
 
     /**
-     * @var AccessDecisionManagerInterface
-     */
-    private $decisionManager;
-
-    /**
      * ProjectVoter constructor.
      *
      * @param AccessDecisionManagerInterface $decisionManager
      * @param EntityManager                  $em
      */
-    public function __construct(AccessDecisionManagerInterface $decisionManager, EntityManager $em)
+    public function __construct(EntityManager $em)
     {
         $this->em = $em;
-        $this->decisionManager = $decisionManager;
     }
 
     /**
@@ -81,7 +75,7 @@ class ProjectVoter extends Voter
             return false;
         }
 
-        if ($this->decisionManager->decide($token, [User::ROLE_ADMIN, User::ROLE_SUPER_ADMIN])) {
+        if ($user->hasRole(User::ROLE_ADMIN) || $user->hasRole(User::ROLE_SUPER_ADMIN)) {
             return true;
         }
 
