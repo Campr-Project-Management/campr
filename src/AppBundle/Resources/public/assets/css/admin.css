@@ -3,5 +3,9 @@
 }
 
 .current > a {
-    color: #262626!important;
+    color: #262626 !important;
+}
+
+.sidebar-main-menu {
+    margin: 0;
 }
