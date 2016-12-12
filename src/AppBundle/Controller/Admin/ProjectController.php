@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\ChatRoom;
 use AppBundle\Entity\Message;
+use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\User;
 use AppBundle\Security\ProjectVoter;
 use JMS\SecurityExtraBundle\Annotation\Secure;
@@ -262,21 +263,31 @@ class ProjectController extends Controller
      */
     public function participantsAction(Project $project)
     {
-        // TODO: add condition to retrieve only project participants.
-        $users = $this
+        $projectUsers = $this
             ->getDoctrine()
             ->getManager()
-            ->getRepository(User::class)
-            ->findAll()
+            ->getRepository(ProjectUser::class)
+            ->findByProject($project)
         ;
 
         $names = [];
-        foreach ($users as $user) {
-            if ($user !== $this->getUser()) {
-                $info['id'] = $user->getId();
-                $info['username'] = $user->getUsername();
-                $names[] = $info;
-            }
+        foreach ($projectUsers as $projectUser) {
+            $user = $projectUser->getUser();
+            $info['id'] = $user->getId();
+            $info['username'] = $user->getUsername();
+            $names[] = $info;
+        }
+
+        if ($manager = $project->getManager()) {
+            $info['id'] = $manager->getId();
+            $info['username'] = $manager->getUsername();
+            $names[] = $info;
+        }
+
+        if ($sponsor = $project->getSponsor()) {
+            $info['id'] = $sponsor->getId();
+            $info['username'] = $sponsor->getUsername();
+            $names[] = $info;
         }
 
         return new JsonResponse($names);

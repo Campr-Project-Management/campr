@@ -49,6 +49,7 @@ class ChatService
     {
         $list = [];
         foreach ($project->getChatRooms() as $room) {
+            $item = [];
             $item['id'] = $room->getId();
             $item['name'] = $room->getName();
             if ($message = $room->getLastMessage()) {
@@ -64,6 +65,7 @@ class ChatService
             ->findPrivateByUserAndProject($user, $project)
         ;
         foreach ($privateMessages as $pm) {
+            $item = [];
             if (($pm->getFrom() === $user && $pm->getDeletedFromAt())
                 || ($pm->getTo() === $user && $pm->getDeletedToAt())
             ) {
@@ -79,7 +81,13 @@ class ChatService
         }
 
         usort($list, function ($message, $nextMessage) {
-            return strtotime($message['time']->format('Y/m/d H:i:s')) < strtotime($nextMessage['time']->format('Y/m/d H:i:s')) ? 1 : -1;
+            if (isset($message['time']) && isset($nextMessage['time'])) {
+                return $nextMessage['time']->getTimestamp() <=> $message['time']->getTimestamp();
+            } elseif (isset($message['time']) && !isset($nextMessage['time'])) {
+                return -1;
+            }
+
+            return 1;
         });
 
         return $list;
