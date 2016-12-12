@@ -7,14 +7,14 @@
           <router-link :to="{name: 'dashboard'}">
             <span class="default">Dashboard</span>
             <span class="tablet">SVG</span>
-            <span class="notifications">1</span>
+            <span class="notification-balloon">1</span>
           </router-link>
         </li>
         <li>
           <router-link :to="{name: 'projects'}">
             <span class="default">Projects</span>
             <span class="tablet">SVG</span>
-            <span class="notifications">2</span>
+            <span class="notification-balloon">2</span>
           </router-link>
         </li>
         <li>
@@ -37,6 +37,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -58,6 +59,7 @@ export default {
       .default {
         display: none;
       }
+
       .tablet {
         display: block;
       }
@@ -83,29 +85,17 @@ export default {
       font-size: 11px;
       text-transform: uppercase;
 
-      ul li {
+      li {
         padding: 2px 0;
         position: relative;
 
-        .notifications {
-          display: block;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: $secondColor;
-          color: $mainColor;
-          position: absolute;
+        .notification-balloon {
           right: 5px;
           top: 8px;
-          text-align: center;
-          line-height: 20px;
 
           @media screen and (max-width: 768px) {
-            width: 16px;
-            height: 16px;
             top: -1px;
             right: -9px;
-            line-height: 16px;
           }
         }
 

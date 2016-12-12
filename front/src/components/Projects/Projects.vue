@@ -1,20 +1,27 @@
 <template>
-    <div>
-        Tasks
-    </div>
+  <div>
+    <navigation></navigation>
+    <div>Projects</div>
+  </div>
 </template>
 
 <script>
+import Navigation from '../Navigation'
+
 export default {
+  components: {
+    Navigation
+  },
   data () {
     return {
       title: 'CAMPR'
     }
   }
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-    @import '../css/_variables.scss';
+  @import '../../css/_variables';
 </style>
