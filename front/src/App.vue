@@ -17,35 +17,65 @@ export default {
 </script>
 
 <style lang="scss">
+@import 'css/_variables.scss';
+
 html, body {
   height: 100%;
   margin: 0;
+}
 
-  .tablet {
-    display: none;
-  }
+.tablet {
+  display: none;
+}
 
-  ul {
-    list-style-type: none;
-    padding: 0;
-    text-align: left;
-  }
-  a {
-    color: inherit;
+ul {
+  list-style-type: none;
+  padding: 0;
+  text-align: left;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover, &:active, &:focus {
     text-decoration: none;
-
-    &:hover, &:active, &:focus {
-      text-decoration: none;
-      color: inherit;
-    }
-  }
-  #app {
-    font-family: 'Poppins', sans-serif;
-    text-align: center;
-    color: #D8DAE5;
-    background: #232D4B;
-    height: 100%;
-    padding-left: 210px;
+    color: inherit;
   }
 }
+
+.notification-balloon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: $secondColor;
+  color: $mainColor;
+  position: absolute;
+  text-align: center;
+  line-height: 20px;
+
+  @media screen and (max-width: 768px) {
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+  }
+}
+
+#app {
+  font-family: 'Poppins', sans-serif;
+  color: #D8DAE5;
+  background: #232D4B;
+  height: 100%;
+  padding: 0 20px 0 230px;
+
+  @media screen and (max-width: 768px) {
+    padding: 0 20px 0 75px;
+  }
+}
+
 </style>
