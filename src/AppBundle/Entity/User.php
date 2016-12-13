@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * User.
@@ -94,6 +95,8 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @var string
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="roles", type="json_array", nullable=false)
      */
@@ -416,6 +419,19 @@ class User implements AdvancedUserInterface, \Serializable
         $roles[] = self::ROLE_USER;
 
         return array_unique($roles);
+    }
+
+    /**
+     * Returns roles names.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("roles")
+     *
+     * @return string
+     */
+    public function getRolesNames()
+    {
+        return implode(', ', $this->roles);
     }
 
     /**

@@ -238,7 +238,7 @@ class UserControllerTest extends BaseController
         $this->assertNotNull($this->user, 'User not found');
 
         /** @var Crawler $crawler */
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/user/1/edit');
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/user/2/edit');
 
         $this->assertContains('id="edit_firstName"', $crawler->html());
         $this->assertContains('name="edit[firstName]"', $crawler->html());
@@ -266,7 +266,7 @@ class UserControllerTest extends BaseController
         $this->assertNotNull($this->user, 'User not found');
 
         /** @var Crawler $crawler */
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/user/1/edit');
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/user/2/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['edit[firstName]'] = '';
