@@ -208,6 +208,9 @@ class ChatRoom
         return $this->messages;
     }
 
+    /**
+     * @return mixed
+     */
     public function getLastMessage()
     {
         return $this->messages->last();
