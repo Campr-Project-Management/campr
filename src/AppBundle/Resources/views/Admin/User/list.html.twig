@@ -11,6 +11,11 @@
             </a>
         </div>
         <div class="card-body">
+            {% for flash_message in app.session.flashBag.get('error') %}
+                <div class="alert alert-danger">
+                    {{ flash_message }}
+                </div>
+            {% endfor %}
             {% for flash_message in app.session.flashBag.get('success') %}
                 <div id="general-alert" class="alert alert-success m-t-15">
                     <strong>{{ flash_message }}</strong>
@@ -41,6 +46,7 @@
                         <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.user.list.table.id'|trans }}</th>
                         <th data-column-id="username">{{ 'admin.user.list.table.username'|trans }}</th>
                         <th data-column-id="email">{{ 'admin.user.list.table.email'|trans }}</th>
+                        <th data-column-id="roles">{{ 'admin.user.list.table.email'|trans }}</th>
                         <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'admin.general.placeholder.actions'|trans }}</th>
                     </tr>
                     </thead>

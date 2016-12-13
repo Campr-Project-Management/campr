@@ -18,6 +18,7 @@ $(function () {
                     downloadLink = $('#data-table-command').data('download'),
                     impersonateUserLink = $('#data-table-command').data('impersonate'),
                     params = $('#data-table-command').data('params'),
+                    url = $('#data-table-command').data('url'),
                     routeParams = {},
                     commands = '';
 
@@ -26,12 +27,23 @@ $(function () {
                 }
                 routeParams['id'] = row.id;
 
-                commands += editLink ? '<a href=' + Routing.generate(editLink, routeParams, true) + '><button type="button" class="btn btn-icon bgm-blue command-edit waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-edit"></span></button></a>' : '';
-                commands += showLink ? '<a href=' + Routing.generate(showLink, routeParams, true) + '><button type="button" class="btn btn-icon bgm-teal waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-zoom-in"></span></button></a>' : '';
-                commands += filesLink ? '<a href=' + Routing.generate(filesLink, {'project': row.id}, true) + '><button type="button" class="btn btn-icon bgm-bluegray waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-file"></span></button></a>' : '';
-                commands += downloadLink ? '<a href=' + Routing.generate(downloadLink, {'id': row.id}, true) + '><button type="button" class="btn btn-icon bgm-bluegray waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-download"></span></button></a>' : '';
-                commands += impersonateUserLink ? '<button type="button" class="btn btn-icon bgm-bluegray waves-effect waves-circle command-impersonate" data-row-id="' + row.id + '"><span class="zmdi zmdi-account-circle"></span></button></a>' : '';
-                commands += '<button type="button" class="btn btn-icon bgm-red command-delete waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-delete"></span></button>';
+                if ((typeof row.roles !== 'undefined' && row.roles.indexOf("ROLE_SUPER_ADMIN") >= 0 && currentUserId == row.id)
+                    || (typeof row.roles !== 'undefined' && row.roles.indexOf("ROLE_SUPER_ADMIN") < 0)
+                    || url !== Routing.generate('app_admin_user_list_filtered')
+                ) {
+                    commands += editLink ? '<a href="' + Routing.generate(editLink, routeParams, true) + '"><button type="button" class="btn btn-icon bgm-blue command-edit waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-edit"></span></button></a>' : '';
+                }
+
+                commands += showLink ? '<a href="' + Routing.generate(showLink, routeParams, true) + '"><button type="button" class="btn btn-icon bgm-teal waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-zoom-in"></span></button></a>' : '';
+                commands += filesLink ? '<a href="' + Routing.generate(filesLink, {'project': row.id}, true) + '"><button type="button" class="btn btn-icon bgm-bluegray waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-file"></span></button></a>' : '';
+                commands += downloadLink ? '<a href="' + Routing.generate(downloadLink, {'id': row.id}, true) + '"><button type="button" class="btn btn-icon bgm-bluegray waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-download"></span></button></a>' : '';
+
+                if ((typeof row.roles !== 'undefined' && row.roles.indexOf("ROLE_SUPER_ADMIN") < 0)
+                    || url != Routing.generate('app_admin_user_list_filtered')
+                ) {
+                    commands += impersonateUserLink ? '<button type="button" class="btn btn-icon bgm-bluegray waves-effect waves-circle command-impersonate" data-row-id="' + row.id + '"><span class="zmdi zmdi-account-circle"></span></button></a>' : '';
+                    commands += '<button type="button" class="btn btn-icon bgm-red command-delete waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-delete"></span></button>';
+                }
 
                 return  commands;
             }

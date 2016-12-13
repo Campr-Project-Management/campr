@@ -74,8 +74,11 @@ admin:
                 user: ROLE_USER
                 admin: ROLE_ADMIN
                 superadmin: ROLE_SUPER_ADMIN
+            superadmin: You cannot edit other SUPER ADMIN profile!
             success: User successfully edited!
         delete:
+            yourself: You cannot delete yourself!
+            superadmin: You cannot delete other SUPER ADMIN user!
             success:
                 general: User successfully deleted!
                 first: User with ID
