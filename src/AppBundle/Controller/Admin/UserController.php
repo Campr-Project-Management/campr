@@ -141,6 +141,21 @@ class UserController extends Controller
      */
     public function editAction(Request $request, User $user)
     {
+        if ($user->hasRole(User::ROLE_SUPER_ADMIN) && $this->getUser() !== $user) {
+            $this
+                ->get('session')
+                ->getFlashBag()
+                ->set(
+                    'error',
+                    $this
+                        ->get('translator')
+                        ->trans('admin.user.edit.superadmin', [], 'admin')
+                )
+            ;
+
+            return $this->redirectToRoute('app_admin_user_list');
+        }
+
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(EditType::class, $user);
         $form->handleRequest($request);
@@ -185,6 +200,34 @@ class UserController extends Controller
      */
     public function deleteAction(Request $request, User $user)
     {
+        if ($this->getUser() === $user) {
+            $this
+                ->get('session')
+                ->getFlashBag()
+                ->set(
+                    'error',
+                    $this
+                        ->get('translator')
+                        ->trans('admin.user.delete.yourself', [], 'admin')
+                )
+            ;
+
+            return $this->redirectToRoute('app_admin_user_list');
+        } elseif ($user->hasRole(User::ROLE_SUPER_ADMIN)) {
+            $this
+                ->get('session')
+                ->getFlashBag()
+                ->set(
+                    'error',
+                    $this
+                        ->get('translator')
+                        ->trans('admin.user.delete.superadmin', [], 'admin')
+                )
+            ;
+
+            return $this->redirectToRoute('app_admin_user_list');
+        }
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
         $em->flush();
