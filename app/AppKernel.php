@@ -42,6 +42,7 @@ class AppKernel extends Kernel
 
             //internals
             new AppBundle\AppBundle(),
+            new MainBundle\MainBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test', 'qa'], true)) {

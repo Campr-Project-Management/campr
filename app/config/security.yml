@@ -45,11 +45,11 @@ security:
             form_login:
                 username_parameter: "email"
                 password_parameter: "password"
-                login_path: app_login
-                check_path: app_login
+                login_path: main_login
+                check_path: main_login
             logout:
-                path: app_logout
-                target: app_homepage
+                path: main_logout
+                target: main_homepage
             provider: our_db_provider
             switch_user: { role: ROLE_SUPER_ADMIN }
     role_hierarchy:
