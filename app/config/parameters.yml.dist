@@ -18,6 +18,8 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
 
+    domain: campr.biz
+
     #redis
     #redis_dsn: 172.19.0.2
     redis_dsn: localhost

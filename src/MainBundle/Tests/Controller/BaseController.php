@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Tests\Controller;
+namespace MainBundle\Tests\Controller;
 
 use AppBundle\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -29,13 +29,10 @@ class BaseController extends WebTestCase
         parent::setUp();
 
         $this->client = static::createClient();
-
         $env = $this->client->getContainer()->getParameter('kernel.environment');
         $domain = $this->client->getContainer()->getParameter('domain');
-
-        // TODO: Load team slug from Fixtures after entites are created.
         $this->client->setServerParameters([
-            'HTTP_HOST' => $env.'.team.'.$domain,
+            'HTTP_HOST' => $env.'.'.$domain,
         ]);
 
         $this->em = $this->client->getContainer()->get('doctrine')->getManager();
@@ -81,7 +78,7 @@ class BaseController extends WebTestCase
             ->em
             ->getRepository(User::class)
             ->findOneByUsername($username)
-        ;
+            ;
     }
 
     /**
