@@ -14,6 +14,7 @@ module.exports = {
   'rules': {
     "indent": ["error", 4],
     "eol-last": ["error", "always"],
+    "linebreak-style": 0,
     // allow paren-less arrow functions
     'arrow-parens': 0,
     // allow async-await
