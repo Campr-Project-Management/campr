@@ -1,18 +1,20 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import * as actions from './actions'
-import * as mutations from './mutations'
-import dashboard from './modules/project'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import * as actions from './actions';
+import * as mutations from './mutations';
+import project from './modules/project';
+import task from './modules/task';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-const debug = process.env.NODE_ENV !== 'production'
+const debug = process.env.NODE_ENV !== 'production';
 
 export default new Vuex.Store({
-  actions,
-  mutations,
-  modules: {
-    dashboard
-  },
-  strict: debug
-})
+    actions,
+    mutations,
+    modules: {
+        project,
+        task,
+    },
+    strict: debug,
+});

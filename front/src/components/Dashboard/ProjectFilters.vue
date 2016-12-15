@@ -2,12 +2,12 @@
     <div class="filters">
         <span class="title">Filter By</span>
         <div class="dropdowns">
-            <dropdown title="Schedule"></dropdown>
+            <dropdown title="Customer"></dropdown>
+            <dropdown title="Programme"></dropdown>
             <dropdown title="Status"></dropdown>
-            <dropdown title="Project"></dropdown>
         </div>
         <div class="separator"></div>
-        <a href="" class="btn-rounded">View all my Tasks</a>
+        <a href="" class="btn-rounded">View all my Projects</a>
     </div>
 </template>
 
