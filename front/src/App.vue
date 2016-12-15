@@ -1,27 +1,33 @@
 <template>
-  <div id="app">
-    <sidebar></sidebar>
-    <router-view></router-view>
-  </div>
+    <div id="app">
+        <sidebar></sidebar>
+        <div class="page">
+            <router-view></router-view>
+        </div>
+    </div>
 </template>
 
 <script>
-import Sidebar from './components/Sidebar'
+import Sidebar from './components/Sidebar';
 
 export default {
-  name: 'app',
-  components: {
-    Sidebar
-  }
-}
+    name: 'app',
+    components: {
+        Sidebar,
+    },
+};
 </script>
 
 <style lang="scss">
 @import 'css/_variables.scss';
 
 html, body {
-  height: 100%;
   margin: 0;
+  min-height: 100vh;
+}
+
+body {
+  font-size: 12px;
 }
 
 .tablet {
@@ -66,16 +72,68 @@ a {
   }
 }
 
-#app {
-  font-family: 'Poppins', sans-serif;
-  color: #D8DAE5;
-  background: #232D4B;
-  height: 100%;
-  padding: 0 20px 0 230px;
+.dropdown-menu {
+  color: $lightColor;
+  background: $darkColor;
 
-  @media screen and (max-width: 768px) {
-    padding: 0 20px 0 75px;
+  li a {
+    color: inherit;
+  }
+
+  a:hover {
+    color: $lighterColor;
+    background: $mainColor;
   }
 }
 
+.btn-rounded {
+  background: $middleColor;
+  border-radius: 10px;
+  text-transform: uppercase;
+  font-size: 8px;
+  text-align: center;
+}
+
+.new-box {
+  height: 189px;
+  width: 394px;
+  border: 1px dashed #5FC3A5;
+  text-align: center;
+  line-height: 189px;
+  text-transform: uppercase;
+  display: block;
+  color: $secondColor;
+  margin: 0 12.5px 30px;
+}
+
+.second-col-bg {
+  background: $secondColor !important;
+}
+
+.warning-col-bg {
+  background: $warningColor !important;
+}
+
+.danger-col-bg {
+  background: $dangerColor !important;
+}
+
+#app {
+  font-family: 'Poppins', sans-serif;
+  color: #D8DAE5;
+  background: $darkColor;
+  height: 100%;
+  padding: 0 0 0 210px;
+  min-height: 100vh;
+
+  @media screen and (max-width: 768px) {
+    padding: 0 0 0 75px;
+  }
+
+  .page {
+    padding: 0 20px;
+    background: #232D4B;
+    min-height: 100vh;
+  }
+}
 </style>
