@@ -1,43 +1,42 @@
 <template>
-  <aside>
-    <a href="/" class="logo"></a>
-    <nav>
-      <ul>
-        <li class="active">
-          <router-link :to="{name: 'dashboard'}">
-            <span class="default">Dashboard</span>
-            <span class="tablet">SVG</span>
-            <span class="notification-balloon">1</span>
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="{name: 'projects'}">
-            <span class="default">Projects</span>
-            <span class="tablet">SVG</span>
-            <span class="notification-balloon">2</span>
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="{name: 'tasks'}">
-            <span class="default">Tasks</span>
-            <span class="tablet">SVG</span>
-          </router-link>
-        </li>
-      </ul>
-    </nav>
-  </aside>
+    <aside>
+        <a href="/" class="logo"></a>
+        <nav>
+            <ul>
+                <li class="active">
+                    <router-link :to="{name: 'dashboard'}">
+                        <span class="default">Dashboard</span>
+                        <span class="tablet">SVG</span>
+                        <span class="notification-balloon">1</span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'projects'}">
+                        <span class="default">Projects</span>
+                        <span class="tablet">SVG</span>
+                        <span class="notification-balloon">2</span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'tasks'}">
+                        <span class="default">Tasks</span>
+                        <span class="tablet">SVG</span>
+                    </router-link>
+                </li>
+            </ul>
+        </nav>
+    </aside>
 </template>
 
 <script>
 export default {
-  name: 'sidebar',
-  data () {
-    return {
-      title: 'CAMPR'
-    }
-  }
-}
-
+    name: 'sidebar',
+    data() {
+        return {
+            title: 'CAMPR',
+        };
+    },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -45,13 +44,12 @@ export default {
   @import '../css/_variables.scss';
 
   aside {
-    height: 100%;
     width: 210px;
-    background: $darkColor;
     padding: 10px;
     position: absolute;
     left: 0;
     top: 0;
+    bottom: 0;
 
     @media screen and (max-width: 768px) {
       width: 59px;

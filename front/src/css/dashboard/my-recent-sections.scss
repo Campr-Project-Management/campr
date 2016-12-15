@@ -1,0 +1,23 @@
+.my-recent {
+  .header {
+    display: flex;
+    justify-content: space-between;
+
+    @media screen and (max-width: 1440px) {
+      display: block;
+    }
+
+    h1 {
+      margin: 0;
+      text-transform: uppercase;
+      font-size: 20px;
+      line-height: 80px;
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-flow: row wrap;
+    margin: 0 -12px;
+  }
+}

@@ -1,22 +1,22 @@
 <template>
-  <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ title }}
-      <span class="caret"></span></button>
-      <ul class="dropdown-menu dropdown-menu-right">
-        <li><a href="#">Filter 1</a></li>
-      </ul>
-  </div>
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ title }}
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+            <li><a href="#">Filter 1</a></li>
+        </ul>
+    </div>
 </template>
 
 <script>
 export default {
-  props: ['title'],
-  data () {
-    return {
-    }
-  }
-}
-
+    props: ['title'],
+    data() {
+        return {
+        };
+    },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -32,5 +32,20 @@ export default {
     height: 40px;
     font-size: 10px;
     border-radius: 1px;
+    text-align: left;
+
+    @media screen and (max-width: 1440px) {
+      width: 120px;
+    }
+
+    .caret {
+      float: right;
+      margin-top: 4px;
+    }
+  }
+
+  .btn-primary.active, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
+    background-color: $darkColor;
+    border-color: $darkColor;
   }
 </style>
