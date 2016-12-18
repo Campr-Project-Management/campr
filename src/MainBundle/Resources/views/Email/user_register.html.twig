@@ -1,11 +1,11 @@
-{% extends 'AppBundle:Email:base.html.twig' %}
+{% extends 'MainBundle:Email:base.html.twig' %}
 
 {% block subject %}
-	{{ 'user.register.subject'|trans }}
+    {{ 'user.register.subject'|trans }}
 {% endblock %}
 
 {% block message %}
     <p>{{'general.hello'|trans }} {{ full_name }},
-    <p>{{ 'user.register.message'|trans }} <a href="{{ url('app_user_activate', {'token': token}) }}">{{ 'user.register.link'|trans }}</a></p>
+    <p>{{ 'user.register.message'|trans }} <a href="{{ url('main_user_activate', {'token': token}) }}">{{ 'user.register.link'|trans }}</a></p>
     <p>{{ 'user.register.expiration'|transchoice(expiration_time, {'%expiration_time%': expiration_time}) }}</p>
 {% endblock %}
