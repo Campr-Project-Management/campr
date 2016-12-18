@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Tests\Controller;
+namespace MainBundle\Tests\Controller;
 
 use AppBundle\Entity\User;
 use Symfony\Component\DomCrawler\Crawler;
