@@ -5,8 +5,10 @@ namespace MainBundle\Controller;
 use AppBundle\Form\User\LoginType;
 use AppBundle\Form\User\RegisterType;
 use AppBundle\Form\User\ResetPasswordType;
+use MainBundle\Form\ContactType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
@@ -16,6 +18,53 @@ class DefaultController extends Controller
     public function indexAction()
     {
         return $this->render('MainBundle:Default:index.html.twig');
+    }
+
+    /**
+     * Contact page.
+     *
+     * @Route("/contact", name="main_contact")
+     *
+     * @return Response|RedirectResponse
+     */
+    public function contactAction(Request $request)
+    {
+        $form = $this->createForm(ContactType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $mailerService = $this->get('app.service.mailer');
+            $mailerService->addFromParameter('contact_from', ['email' => $data['email'], 'name' => $data['full_name']]);
+            $mailerService
+                ->sendEmail(
+                    'MainBundle:Email:contact.html.twig',
+                    'contact_from',
+                    'info@campr.biz',
+                    ['subject' => $data['subject'], 'fullName' => $data['full_name'], 'message' => $data['message']]
+                )
+            ;
+
+            $this
+                ->get('session')
+                ->getFlashBag()
+                ->add(
+                    'success',
+                    $this
+                        ->get('translator')
+                        ->trans('main.contact.success', [], 'main')
+                )
+            ;
+
+            return $this->redirectToRoute('main_contact');
+        }
+
+        return $this->render(
+            'MainBundle:Default:contact.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**

@@ -1,0 +1,10 @@
+{% extends 'MainBundle:Email:base.html.twig' %}
+
+{% block subject %}
+    {{ 'invoice.subject'|trans }}
+{% endblock %}
+
+{% block message %}
+    <p>{{'general.hello'|trans }} {{ full_name }},
+    <p>{{ 'invoice.message'|transchoice(payment, {'%payment%': payment}) }}</p>
+{% endblock %}

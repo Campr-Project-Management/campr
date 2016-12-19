@@ -1,0 +1,54 @@
+main:
+    title: Campr Main Site
+    general:
+        actions: Actions
+    nav:
+        account:
+            title: Account
+            teams: Teams
+            payment_methods: Payment Methods
+            payments: Payments
+        sign_in: Sign In
+        logout: Logout
+        contact: Contact
+        toggle: Toggle Navigation
+    account:
+        team:
+            title: Team List
+            table:
+                id: Id
+                name: Name
+                slug: Slug
+                members: Members
+            back: Back to team list
+            create:
+                title: Create new team
+            edit:
+                title: Edit team
+        payment:
+            title: Payments
+            table:
+                id: Id
+                method: Method
+                team: Team
+            back: Back to payments
+            create:
+                title: Create new payment
+            edit:
+                title: Edit payment
+        payment_method:
+            title: Payment Methods
+            table:
+                id: Id
+                name: Name
+                token: Token
+    contact:
+        title: Send us a message
+        form:
+            full_name: Full name
+            email: Email
+            subject: Subject
+            message: Message
+            send: Send message
+        success: Message succesfully sent!
+
