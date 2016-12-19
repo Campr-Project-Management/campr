@@ -1,0 +1,12 @@
+validation:
+    constraints:
+        contact:
+            full_name:
+                not_blank: Please enter your full name!
+            email:
+                email: Invalid email
+                not_blank: Please enter your email address!
+            subject:
+                not_blank: Please enter a subject!
+            message:
+                not_blank: Please enter a message!
