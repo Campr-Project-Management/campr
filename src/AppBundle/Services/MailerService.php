@@ -86,4 +86,10 @@ class MailerService
 
         return $this->mailer->send($message);
     }
+
+    public function addFromParameter($name, $data)
+    {
+        $this->parameters['from_email'][$name] = isset($data['email']) ? $data['email'] : '';
+        $this->parameters['from_name'][$name] = isset($data['name']) ? $data['name'] : '';
+    }
 }

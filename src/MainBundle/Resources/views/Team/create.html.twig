@@ -1,0 +1,19 @@
+{% trans_default_domain 'main' %}
+
+{% extends 'MainBundle::base.html.twig' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                <p class="text-primary">{{ 'main.account.team.create.title'|trans }}</p>
+            </h1>
+            <a href="{{ path('main_team_list') }}" class="btn btn-sm btn-primary">{{ 'main.account.team.back'|trans }}</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {# insert create form #}
+        </div>
+    </div>
+{% endblock %}
