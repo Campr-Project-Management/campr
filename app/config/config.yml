@@ -71,7 +71,7 @@ doctrine_cache:
     providers:
         redis_cache:
             redis:
-                host: 127.0.0.1
+                host: "%redis_host%"
                 port: 6379
                 database: 3
         websocket_cache_client:
@@ -92,7 +92,7 @@ snc_redis:
         default:
             type: predis
             alias: default
-            dsn: redis://%redis_dsn%
+            dsn: redis://%redis_host%
             options:
                 read_write_timeout: 0
                 connection_timeout: 30
