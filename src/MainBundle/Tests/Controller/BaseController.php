@@ -29,10 +29,9 @@ class BaseController extends WebTestCase
         parent::setUp();
 
         $this->client = static::createClient();
-        $env = $this->client->getContainer()->getParameter('kernel.environment');
         $domain = $this->client->getContainer()->getParameter('domain');
         $this->client->setServerParameters([
-            'HTTP_HOST' => $env.'.'.$domain,
+            'HTTP_HOST' => $domain,
         ]);
 
         $this->em = $this->client->getContainer()->get('doctrine')->getManager();

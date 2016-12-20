@@ -1,0 +1,39 @@
+{% extends 'MainBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                <p class="text-primary">
+                    {{ user.fullName }}
+                    <a href="{{ path('main_admin_user_list') }}" class="btn btn-sm btn-primary pull-right">{{ 'admin.general.back'|trans }}</span></a>
+                </p>
+            </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="caption">
+                <ul class="list-unstyled">
+                    <li class="list-group-item">
+                        <strong>{{ 'admin.user.show.id'|trans }}: </strong>{{ user.id }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>{{ 'admin.user.show.full_name'|trans }}: </strong>{{ user.fullName }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>{{ 'admin.user.show.username'|trans }}: </strong>{{ user.username }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>{{ 'admin.user.show.email'|trans }}: </strong>{{ user.email }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>{{ 'admin.user.show.phone'|trans }}: </strong>{{ user.phone }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

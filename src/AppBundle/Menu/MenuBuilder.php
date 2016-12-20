@@ -96,7 +96,7 @@ class MenuBuilder
         return $menu;
     }
 
-    public function createAdminMenu(FactoryInterface $factory)
+    public function createAdminAppMenu(FactoryInterface $factory)
     {
         $menu = $factory->createItem('root')->setChildrenAttribute('class', 'main-menu sidebar-main-menu');
 
@@ -306,6 +306,41 @@ class MenuBuilder
             ])
             ->setLinkAttribute('icon', 'zmdi zmdi-device-hub')
             ->getParent()
+        ;
+
+        $this->filterMenu($menu);
+
+        return $menu;
+    }
+
+    public function createAdminMainMenu(FactoryInterface $factory)
+    {
+        $menu = $factory->createItem('root')->setChildrenAttribute('class', ' list-unstyled');
+
+        $menu
+            ->addChild($this->translator->trans('admin.menu.users', [], 'admin'), [
+                'route' => 'main_admin_user_list',
+            ])
+            ->setAttribute('class', 'list-group-item')
+            ->setLinkAttribute('icon', 'glyphicon glyphicon-user')
+            ->getParent()
+            ->addChild($this->translator->trans('admin.menu.teams', [], 'admin'), [
+                'route' => 'main_admin_team_list',
+            ])
+            ->setAttribute('class', 'list-group-item')
+            ->setLinkAttribute('icon', 'glyphicon glyphicon-align-justify')
+            ->getParent()
+            ->addChild($this->translator->trans('admin.menu.payment_methods', [], 'admin'), [
+                'route' => 'main_admin_payment_method_list',
+            ])
+            ->setAttribute('class', 'list-group-item')
+            ->setLinkAttribute('icon', 'glyphicon glyphicon-cog')
+            ->getParent()
+            ->addChild($this->translator->trans('admin.menu.payments', [], 'admin'), [
+                'route' => 'main_admin_payment_list',
+            ])
+            ->setAttribute('class', 'list-group-item')
+            ->setLinkAttribute('icon', 'glyphicon glyphicon-euro')
         ;
 
         $this->filterMenu($menu);
