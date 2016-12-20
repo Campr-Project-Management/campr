@@ -4,6 +4,7 @@ namespace MainBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Payment controller.
@@ -21,10 +22,7 @@ class PaymentController extends Controller
      */
     public function methodListAction()
     {
-        return $this->render(
-            'MainBundle:Payment:method_list.html.twig',
-            []
-        );
+        return $this->render('MainBundle:Payment:method_list.html.twig');
     }
 
     /**
@@ -36,10 +34,7 @@ class PaymentController extends Controller
      */
     public function listAction()
     {
-        return $this->render(
-            'MainBundle:Payment:list.html.twig',
-            []
-        );
+        return $this->render('MainBundle:Payment:list.html.twig');
     }
 
     /**
@@ -51,10 +46,7 @@ class PaymentController extends Controller
      */
     public function createAction()
     {
-        return $this->render(
-            'MainBundle:Payment:create.html.twig',
-            []
-        );
+        return $this->render('MainBundle:Payment:create.html.twig');
     }
 
     /**
