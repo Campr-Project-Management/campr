@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie9"><![endif]-->
+<head>
+    {% trans_default_domain 'main' %}
+    {% block meta %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% endblock %}
+    <title>{% block title %}{{ 'main.title'|trans }}{% endblock %}</title>
+    {% block stylesheets %}
+        <link href="{{ asset('assets/admin/vendors/bower_components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/admin/vendors/bower_components/bootstrap/dist/css/bootstrap-theme.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('bundles/main/assets/css/main.css') }}" rel="stylesheet">
+    {% endblock %}
+    {% block icon %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+    {% include 'MainBundle:Layout:header.html.twig' %}
+
+    <div class="container">
+        {% block body_content %}{% endblock %}
+
+        {% include 'MainBundle:Layout:footer.html.twig' %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <!-- Javascript Libraries -->
+    <script src="{{ asset('assets/admin/vendors/bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js') }}"></script>
+{% endblock %}
+</body>
+</html>
