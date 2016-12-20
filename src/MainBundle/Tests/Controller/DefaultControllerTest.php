@@ -106,8 +106,8 @@ class DefaultControllerTest extends BaseController
 
         $form['contact[full_name]'] = 'Test test';
         $form['contact[email]'] = 'test@trisoft.ro';
-        $form['contact[subject]']  = 'Subject';
-        $form['contact[message]']  = 'Message';
+        $form['contact[subject]'] = 'Subject';
+        $form['contact[message]'] = 'Message';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

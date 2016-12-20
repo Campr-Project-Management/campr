@@ -4,6 +4,7 @@ namespace MainBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Team controller.
@@ -21,10 +22,7 @@ class TeamController extends Controller
      */
     public function listAction()
     {
-        return $this->render(
-            'MainBundle:Team:list.html.twig',
-            []
-        );
+        return $this->render('MainBundle:Team:list.html.twig');
     }
 
     /**
@@ -36,10 +34,7 @@ class TeamController extends Controller
      */
     public function createAction()
     {
-        return $this->render(
-            'MainBundle:Team:create.html.twig',
-            []
-        );
+        return $this->render('MainBundle:Team:create.html.twig');
     }
 
     /**
