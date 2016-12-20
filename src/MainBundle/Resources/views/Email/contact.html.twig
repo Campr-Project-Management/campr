@@ -1,0 +1,9 @@
+{% extends 'MainBundle:Email:base.html.twig' %}
+
+{% block subject %}{{ 'contact.subject'|trans }} - {{ subject }}{% endblock %}
+
+{% block message %}
+    <p>{{ 'contact.from'|trans }}: {{ fullName }}</p>
+    <p>{{ 'contact.subject'|trans }}: {{ subject }}</p>
+    <p>{{ 'contact.message'|trans }}: {{ message }}</p>
+{% endblock %}
