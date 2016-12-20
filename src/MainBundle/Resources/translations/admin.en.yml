@@ -1,0 +1,92 @@
+admin:
+    general:
+        actions: Actions
+        back: Back to list
+        button:
+            create: Create
+            save: Save changes
+    menu:
+        users: Users
+        teams: Teams
+        payment_methods: Payment Methods
+        payments: Payments
+    user:
+        list:
+            title: User list
+            table:
+                id: Id
+                username: Username
+                email: Email
+        show:
+            id: Id
+            full_name: Full name
+            username: Username
+            email: Email
+            phone: Phone
+    team:
+        list:
+            title: Team list
+            table:
+                id: Id
+                name: Name
+                slug: Slug
+                created_at: Created At
+                updated_at: Updated At
+        create:
+            title: Create new team
+            name: Name
+            slug: Slug
+            team_members: Team members
+            success: Team successfully created!
+        edit:
+            title: Edit team
+            success: Team successfully edited!
+        delete:
+            success: Team successfully deleted!
+    team_member:
+        list:
+            title: Team member list
+            table:
+                id: Id
+                username: Username
+                created_at: Created At
+                updated_at: Updated At
+                roles: Roles
+            back_team: Back to team list
+        create:
+            title: Create new team member
+            user: User
+            team: Team
+            roles: Roles
+            success: Team member successfully created!
+        edit:
+            title: Edit team member
+            success: Team member successfully edited!
+        delete:
+            success: Team member successfully deleted!
+    payment_method:
+        list:
+            title: Payment method list
+            table:
+                id: Id
+                name: Name
+                token: Token
+                created_at: Created At
+        create:
+            title: Create new Payment Method
+            name: Name
+            token: Token
+            success: Payment method successfully created!
+        edit:
+            title: Edit payment method
+            success: Payment method successfully edited!
+        delete:
+            success: Payment method successfully deleted!
+    payment:
+        list:
+            title: Payments
+            table:
+                id: Id
+                method: Payment Method
+                team: Team
+                created_at: Created At

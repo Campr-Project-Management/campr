@@ -30,12 +30,10 @@ class BaseController extends WebTestCase
 
         $this->client = static::createClient();
 
-        $env = $this->client->getContainer()->getParameter('kernel.environment');
         $domain = $this->client->getContainer()->getParameter('domain');
 
-        // TODO: Load team slug from Fixtures after entites are created.
         $this->client->setServerParameters([
-            'HTTP_HOST' => $env.'.team.'.$domain,
+            'HTTP_HOST' => 'team.'.$domain,
         ]);
 
         $this->em = $this->client->getContainer()->get('doctrine')->getManager();

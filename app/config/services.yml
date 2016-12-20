@@ -103,10 +103,10 @@ services:
 
     app.admin_menu:
         class: Knp\Menu\MenuItem
-        factory: ["@app.menu.menu_builder", createAdminMenu]
+        factory: ["@app.menu.menu_builder", createAdminAppMenu]
         arguments: ["@knp_menu.factory"]
         tags:
-            - { name: knp_menu.menu, alias: admin_main }
+            - { name: knp_menu.menu, alias: admin_app }
 
 ### FORM TYPES ###
     app.form.filesystem.create_type:
