@@ -21,8 +21,8 @@ parameters:
     domain: campr.biz
 
     #redis
-    #redis_dsn: 172.19.0.2
-    redis_dsn: localhost
+    #redis_host: 172.19.0.2
+    redis_host: localhost
 
     #jwt
     jwt_private_key_path: %kernel.root_dir%/var/jwt/private.pem
