@@ -18,11 +18,11 @@ export default {
         RecentTasks,
     },
     created() {
-        window.$(document).ready(function () {
+        window.$(document).ready(function() {
             const progressBar = window.$('.filled');
             let speed = 1000;
 
-            progressBar.each(function (i, elem) {
+            progressBar.each(function(i, elem) {
                 const $this = window.$(elem);
                 const $percentageNumber = $this.parents('.box').find('.number');
 
@@ -31,7 +31,7 @@ export default {
                 window.$({Counter: 0})
                 .animate({Counter: $this.data('number')}, {
                     duration: speed,
-                    step: function () {
+                    step: function() {
                         $percentageNumber.text(Math.ceil(this.Counter));
                     },
                 });
