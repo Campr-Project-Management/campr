@@ -1,0 +1,38 @@
+@import '_variables';
+
+.flex {
+  display: flex;
+}
+
+.flex-space-between {
+  justify-content: space-between;
+}
+
+.flex-end {
+  align-self: flex-end;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.relative {
+  position: relative;
+}
+
+.bullets {
+  list-style-type: disc;
+  margin-left: 15px;
+}
+
+.icon {
+  fill: $middleColor;
+
+  &.active {
+    fill: $secondColor;
+  }
+}
+
+h2 {
+  font-weight: 300;
+}
