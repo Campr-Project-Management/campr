@@ -14,13 +14,13 @@ const actions = {
     getTasks({commit}) {
         // TODO: API
         const tasks = [
-          {'status': 'NOT_STARTED', 'percentage': 0},
-          {'status': 'IN_PROGRESS', 'percentage': 75},
-          {'status': 'IN_PROGRESS', 'percentage': 75},
-          {'status': 'IN_PROGRESS', 'percentage': 75},
-          {'status': 'IN_PROGRESS', 'percentage': 75},
-          {'status': 'IN_PROGRESS', 'percentage': 75},
-          {'status': 'FINISHED', 'percentage': 100},
+          {'id': 1, 'status': 'NOT_STARTED', 'percentage': 0},
+          {'id': 2, 'status': 'IN_PROGRESS', 'percentage': 75},
+          {'id': 3, 'status': 'IN_PROGRESS', 'percentage': 75},
+          {'id': 4, 'status': 'IN_PROGRESS', 'percentage': 75},
+          {'id': 5, 'status': 'IN_PROGRESS', 'percentage': 75},
+          {'id': 6, 'status': 'IN_PROGRESS', 'percentage': 75},
+          {'id': 7, 'status': 'FINISHED', 'percentage': 100},
         ];
 
         commit(types.SET_TASKS, {tasks});

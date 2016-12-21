@@ -1,0 +1,100 @@
+@import '_variables.scss';
+
+.box {
+  font-weight: 300;
+  background: $darkColor;
+  padding: 20px;
+  color: $lighterColor;
+  width: 394px;
+  letter-spacing: 1px;
+  margin: 0 12.5px 30px;
+
+  &.border-color-1 {
+    border-bottom: 4px solid $additionalColor1;
+  }
+  &.border-color-2 {
+    border-bottom: 4px solid $additionalColor2;
+  }
+  &.border-color-3 {
+    border-bottom: 4px solid $additionalColor3;
+  }
+  &.border-color-4 {
+    border-bottom: 4px solid $additionalColor4;
+  }
+  &.border-color-5 {
+    border-bottom: 4px solid $additionalColor5;
+  }
+
+  &.small-box {
+    height: 189px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid $mainColor;
+    padding-bottom: 13px;
+
+    h2 {
+      margin: 2px 0 0 0;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.icons {
+  display: flex;
+
+  .icon-holder {
+    display: flex;
+    margin-left: 16px;
+    align-self: flex-end;
+
+    .number {
+      align-self: center;
+    }
+  }
+}
+
+table {
+  th {
+    color: $middleColor;
+    text-transform: uppercase;
+    font-weight: 400;
+    width: 100%;
+  }
+
+  .odd {
+    background: $mainColor;
+  }
+
+  .even {
+    background: $fadeColor;
+  }
+}
+
+.new {
+  position: relative;
+
+  .tag {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    border: 17px solid transparent;
+    border-left-color: $secondColor;
+    border-top-color: $secondColor;
+
+    span {
+      position: absolute;
+      font-size: 7px;
+      top: -10px;
+      transform: rotate(-45deg);
+      left: -14px;
+      text-transform: uppercase;
+      color: $secondDarkColor;
+    }
+  }
+}
+
+
