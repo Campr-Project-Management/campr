@@ -1,0 +1,29 @@
+.info {
+  padding-top: 18px;
+
+  .title {
+    font-size: 11px;
+    margin-bottom: 13px;
+    height: 15px;
+    line-height: 15px;
+  }
+  .status {
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-size: 8px;
+    height: 12px;
+    line-height: 12px;
+  }
+}
+
+.status-boxes {
+  display: flex;
+
+  .status-box {
+    width: 20px;
+    height: 20px;
+    margin-right: 2px;
+    border-radius: 50%;
+    background: $mainColor;
+  }
+}
