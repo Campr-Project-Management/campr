@@ -1,24 +1,28 @@
 <template>
-    <div class="my-recent tasks">
+    <div class="page-section tasks">
         <div class="header">
             <h1>My Recent Tasks</h1>
-            <task-filters></task-filters>
+            <div class="full-filters">
+                <task-filters></task-filters>
+                <div class="separator"></div>
+                <router-link :to="{name: 'tasks'}" class="btn-rounded">View all my Tasks</router-link>
+            </div>
         </div>
         <div class="content">
-            <task-box v-for="task in tasks" v-bind:task="task"></task-box>
+            <small-task-box v-for="task in tasks" v-bind:task="task"></small-task-box>
         </div>
     </div>
 </template>
 
 <script>
-import TaskFilters from './TaskFilters';
-import TaskBox from '../TaskBox';
+import TaskFilters from '../_common/TaskFilters';
+import SmallTaskBox from './SmallTaskBox';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
     components: {
         TaskFilters,
-        TaskBox,
+        SmallTaskBox,
     },
     methods: mapActions(['getTasks']),
     created() {
@@ -32,5 +36,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import '../../css/dashboard/my-recent-sections';
+  @import '../../css/page-section';
 </style>
