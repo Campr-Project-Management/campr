@@ -21,11 +21,23 @@ const routes = [
         path: '/projects',
         name: 'projects',
         component: Projects,
+        children: [
+            {
+                name: 'project',
+                path: ':id',
+            },
+        ],
     },
     {
         path: '/tasks',
         name: 'tasks',
         component: Tasks,
+        children: [
+            {
+                name: 'task',
+                path: ':id',
+            },
+        ],
     },
 ];
 
