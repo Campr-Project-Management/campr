@@ -7,7 +7,9 @@ import router from './router';
 import store from './store';
 import {sync} from 'vuex-router-sync';
 import App from './App';
+import VueResource from 'vue-resource';
 
+Vue.use(VueResource);
 sync(store, router);
 
 new Vue({

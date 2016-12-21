@@ -81,11 +81,6 @@
 <script>
 export default {
     name: 'sidebar',
-    data() {
-        return {
-            title: 'CAMPR',
-        };
-    },
 };
 </script>
 

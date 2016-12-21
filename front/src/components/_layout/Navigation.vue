@@ -62,11 +62,6 @@
 <script>
 export default {
     name: 'navigation',
-    data() {
-        return {
-            title: 'CAMPR',
-        };
-    },
 };
 </script>
 

@@ -1,11 +1,11 @@
 <template>
-  <div :data-percentage="percentage" class="chart relative">
+  <div :data-percentage="percentage" class="chart relative" :id="'chart-' + _uid">
       <svg viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="49" class="empty" stroke-width="1" fill="transparent"/>
           <circle cx="50" cy="50" r="49" class="full" stroke-width="1" fill="transparent"/>
       </svg>
       <div class="text">
-          <p class="title">Task Status</p>
+          <p class="title">{{ title }}</p>
           <p class="flex">
               <span class="percentage">0</span>
               <span class="percentage-sign flex-end">%</span>
@@ -16,37 +16,34 @@
 
 <script>
 export default {
-    props: ['percentage'],
+    props: ['percentage', 'title'],
     mounted() {
-        const progressBar = window.$('.chart');
+        const $this = window.$('#chart-' + this._uid);
         let speed = 1000;
 
-        progressBar.each(function(i, elem) {
-            const $this = window.$(elem);
-            const $percentageNumber = $this.find('.percentage');
-            const animatedCircle = $this.find('.full');
-            const percentage = $this.data('percentage');
-            const c = Math.PI*(animatedCircle.attr('r')*2);
+        const $percentageNumber = $this.find('.percentage');
+        const animatedCircle = $this.find('.full');
+        const percentage = $this.data('percentage');
+        const c = Math.PI*(animatedCircle.attr('r')*2);
 
-            let strokeDasharray = 0;
-            let pct = percentage/100*c;
-            let animation = setInterval(function() {
-                strokeDasharray++;
+        let strokeDasharray = 0;
+        let pct = percentage/100*c;
+        let animation = setInterval(function() {
+            strokeDasharray++;
 
-                animatedCircle[0]
-                  .style.strokeDasharray = strokeDasharray + ', 10000';
-                if (strokeDasharray >= pct) {
-                    clearInterval(animation);
-                };
-            }, 1);
+            animatedCircle[0]
+            .style.strokeDasharray = strokeDasharray + ', 10000';
+            if (strokeDasharray >= pct) {
+                clearInterval(animation);
+            };
+        }, 1);
 
-            window.$({Counter: 0})
-                .animate({Counter: $this.data('percentage')}, {
-                    duration: speed,
-                    step: function() {
-                        $percentageNumber.text(this.Counter.toFixed(2));
-                    },
-                });
+        window.$({Counter: 0})
+        .animate({Counter: $this.data('percentage')}, {
+            duration: speed,
+            step: function() {
+                $percentageNumber.text(this.Counter.toFixed(2));
+            },
         });
     },
 };
@@ -54,31 +51,53 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+  @import '../../../css/_common';
   @import '../../../css/_variables.scss';
 
-  .btn-primary {
-    background: $darkColor;
-    color: $lightColor;
-    border: none;
-    width: 200px;
-    text-transform: uppercase;
-    height: 40px;
-    font-size: 10px;
-    border-radius: 1px;
-    text-align: left;
+  .chart {
+    font-size: 22px;
 
-    @media screen and (max-width: 1440px) {
-      width: 120px;
+    svg {
+      display: block;
+      width: 100%;
+      transform: rotate(-90deg);
     }
 
-    .caret {
-      float: right;
-      margin-top: 4px;
+    .empty {
+      stroke: $mainColor;
     }
-  }
 
-  .btn-primary.active, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
-    background-color: $darkColor;
-    border-color: $darkColor;
+    .full {
+      stroke: $secondColor;
+      stroke-dasharray: 0, 10000;
+    }
+
+    .text {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      padding: 0;
+      margin: 0;
+      transform: translate(-50%, -50%);
+      color: rgb(216, 218, 229);
+
+      .title {
+        text-transform: uppercase;
+        font-size: 9px;
+        text-align: center;
+      }
+
+      .percentage {
+        font-weight: 700;
+        font-size: 34px;
+        line-height: 38px;
+        height: 33px;
+      }
+
+      .percentage-sign {
+        color: $middleColor;
+        font-size: 12px;
+      }
+    }
   }
 </style>
