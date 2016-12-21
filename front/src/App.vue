@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/_layout/Sidebar';
 
 export default {
     name: 'app',

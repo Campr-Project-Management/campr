@@ -14,26 +14,40 @@ const actions = {
     getProjects({commit}) {
         // TODO: API
         const projects = [{
+            'id': 1,
             'status': 'IN_PROGRESS',
             'percentage': 0,
+            'favourite': true,
         }, {
+            'id': 2,
             'status': 'IN_PROGRESS',
             'percentage': 75,
+            'favourite': false,
         }, {
+            'id': 3,
             'status': 'IN_PROGRESS',
             'percentage': 75,
+            'favourite': true,
         }, {
+            'id': 4,
             'status': 'IN_PROGRESS',
             'percentage': 75,
+            'favourite': false,
         }, {
+            'id': 5,
             'status': 'IN_PROGRESS',
             'percentage': 75,
+            'favourite': true,
         }, {
+            'id': 6,
             'status': 'IN_PROGRESS',
             'percentage': 75,
+            'favourite': false,
         }, {
+            'id': 7,
             'status': 'FINISHED',
             'percentage': 100,
+            'favourite': true,
         },
         ];
         commit(types.SET_PROJECTS, {projects});
