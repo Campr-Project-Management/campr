@@ -75,7 +75,9 @@ task('deploy:assetic:dump', function () {
     run('{{symfony_console}} assetic:dump {{symfony_console_options}}');
 })->desc('Dump assets');
 task('project:supervisor:restart', function () {
-    run('sudo /etc/init.d/supervisor stop; sudo /etc/init.d/supervisor start');
+    run('sudo /etc/init.d/supervisor stop');
+    run('sudo systemctl daemon-reload');
+    run('sudo /etc/init.d/supervisor start');
 });
 task('project:apache:restart', function () {
     run('sudo service apache2 restart');
