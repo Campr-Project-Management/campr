@@ -1,5 +1,9 @@
 validation:
     constraints:
+        general:
+            email:
+                email: The email is not vaild.
+                not_blank: The email field should not be blank.
         contact:
             full_name:
                 not_blank: Please enter your full name!
@@ -12,9 +16,10 @@ validation:
                 not_blank: Please enter a message!
         team:
             name:
-                not_blank: Please enter a team name!
+                unique: Team name already used.
+                not_blank: Team name should not be blank.
             slug:
-                unique: The provided slug is already used!
+                unique: Team slug already used.
                 used: Slug was already used for this team!
                 not_blank: Please enter a slug!
                 invalid: The slug is invalid. Slug must start/end only with alphanumeric values and contain alphanumeric or '-' characters

@@ -19,7 +19,6 @@ class CreateType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => false,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'validation.constraints.team.name.not_blank',
@@ -47,6 +46,9 @@ class CreateType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Team::class,
+            'attr' => [
+                'novalidate' => 'novalidate',
+            ],
         ]);
     }
 }
