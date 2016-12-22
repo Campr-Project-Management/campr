@@ -23,19 +23,12 @@ class TeamControllerTest extends BaseController
 
         $this->assertContains('id="create_name"', $crawler->html());
         $this->assertContains('name="create[name]"', $crawler->html());
-<<<<<<< HEAD
         $this->assertContains('id="create_logoFile_file"', $crawler->html());
         $this->assertContains('name="create[logoFile][file]"', $crawler->html());
         $this->assertContains('id="create_description"', $crawler->html());
         $this->assertContains('name="create[description]"', $crawler->html());
         $this->assertContains('id="create_enabled"', $crawler->html());
         $this->assertContains('name="create[enabled]"', $crawler->html());
-=======
-        $this->assertContains('id="create_enabled"', $crawler->html());
-        $this->assertContains('name="create[enabled]"', $crawler->html());
-        $this->assertContains('id="create_description"', $crawler->html());
-        $this->assertContains('name="create[description]"', $crawler->html());
->>>>>>> Team user management for users
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -53,20 +46,12 @@ class TeamControllerTest extends BaseController
         $form = $crawler->filter('#create-team')->first()->form();
         $crawler = $this->client->submit($form);
 
-<<<<<<< HEAD
-        $this->assertContains('Please enter a team name!', $crawler->html());
-=======
         $this->assertContains('Team name should not be blank.', $crawler->html());
->>>>>>> Team user management for users
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-<<<<<<< HEAD
     public function testFormFileValidationOnCreatePage()
-=======
-    public function testUniqueNameOnCreatePage()
->>>>>>> Team user management for users
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
         $this->login($this->user);
@@ -76,7 +61,6 @@ class TeamControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/team/create');
 
         $form = $crawler->filter('#create-team')->first()->form();
-<<<<<<< HEAD
         $form['create[name]'] = 'tname';
 
         $container = self::$kernel->getContainer();
@@ -102,13 +86,24 @@ class TeamControllerTest extends BaseController
         $crawler = $this->client->submit($form);
 
         $this->assertContains('Uploaded file must be an image!', $crawler->html());
-=======
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testUniqueNameOnCreatePage()
+    {
+        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
+        $this->login($this->user);
+        $this->assertNotNull($this->user, 'User not found');
+
+        /** @var Crawler $crawler */
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/team/create');
+
+        $form = $crawler->filter('#create-team')->first()->form();
         $form['create[name]'] = 'team_1';
         $crawler = $this->client->submit($form);
 
         $this->assertContains('Team name already used.', $crawler->html());
->>>>>>> Team user management for users
-
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
@@ -122,10 +117,7 @@ class TeamControllerTest extends BaseController
 
         $form = $crawler->filter('#create-team')->first()->form();
         $form['create[name]'] = 'tname';
-<<<<<<< HEAD
         $form['create[description]'] = 'descript';
-=======
->>>>>>> Team user management for users
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -138,10 +130,7 @@ class TeamControllerTest extends BaseController
             ->getRepository(Team::class)
             ->findOneBy([
                 'name' => 'tname',
-<<<<<<< HEAD
                 'description' => 'descript',
-=======
->>>>>>> Team user management for users
             ])
         ;
         $this->em->remove($team);
@@ -156,10 +145,7 @@ class TeamControllerTest extends BaseController
 
         $team = (new Team())
             ->setName('team_test')
-<<<<<<< HEAD
             ->setDescription('description team test')
-=======
->>>>>>> Team user management for users
         ;
         $this->em->persist($team);
         $this->em->flush();
@@ -180,7 +166,6 @@ class TeamControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/team/1/edit');
 
-<<<<<<< HEAD
         $this->assertContains('id="edit_name"', $crawler->html());
         $this->assertContains('name="edit[name]"', $crawler->html());
         $this->assertContains('id="edit_slug"', $crawler->html());
@@ -191,14 +176,6 @@ class TeamControllerTest extends BaseController
         $this->assertContains('name="edit[description]"', $crawler->html());
         $this->assertContains('id="edit_enabled"', $crawler->html());
         $this->assertContains('name="edit[enabled]"', $crawler->html());
-=======
-        $this->assertContains('id="create_name"', $crawler->html());
-        $this->assertContains('name="create[name]"', $crawler->html());
-        $this->assertContains('id="create_enabled"', $crawler->html());
-        $this->assertContains('name="create[enabled]"', $crawler->html());
-        $this->assertContains('id="create_description"', $crawler->html());
-        $this->assertContains('name="create[description]"', $crawler->html());
->>>>>>> Team user management for users
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -214,12 +191,8 @@ class TeamControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/team/1/edit');
 
         $form = $crawler->filter('#edit-team')->first()->form();
-<<<<<<< HEAD
         $form['edit[name]'] = '';
         $form['edit[slug]'] = 'team-2';
-=======
-        $form['create[name]'] = '';
->>>>>>> Team user management for users
 
         $crawler = $this->client->submit($form);
 
@@ -238,7 +211,7 @@ class TeamControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/team/2/edit');
 
         $form = $crawler->filter('#edit-team')->first()->form();
-        $form['create[name]'] = 'team_1';
+        $form['edit[name]'] = 'team_1';
 
         $crawler = $this->client->submit($form);
 
