@@ -20,11 +20,6 @@
                         <strong>{{ flash_message }}</strong>
                     </div>
                 {% endfor %}
-                {% for flash_message in app.session.flashBag.get('error') %}
-                    <div id="general-alert" class="alert alert-warning m-t-15">
-                        <strong>{{ flash_message }}</strong>
-                    </div>
-                {% endfor %}
                 {{ form_start(
                     form,
                     {

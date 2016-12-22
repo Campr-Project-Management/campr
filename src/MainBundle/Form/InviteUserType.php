@@ -33,6 +33,7 @@ class InviteUserType extends AbstractType
                     ]),
                     new ActiveMember([
                         'team' => $options['team'],
+                        'user' => $options['user'],
                     ]),
                 ],
             ])

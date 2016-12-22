@@ -93,7 +93,7 @@ class TeamControllerTest extends BaseController
 
         $crawler = $this->client->followRedirect();
 
-        $this->assertContains('Team created!', $crawler->html());
+        $this->assertContains('Team successfully created!', $crawler->html());
         $this->assertContains('test-team', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -149,12 +149,16 @@ class TeamControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/team/%d/edit', $this->team->getId()));
 
-        $this->assertContains('id="create_name"', $crawler->html());
-        $this->assertContains('name="create[name]"', $crawler->html());
-        $this->assertContains('id="create_enabled"', $crawler->html());
-        $this->assertContains('name="create[enabled]"', $crawler->html());
-        $this->assertContains('id="create_description"', $crawler->html());
-        $this->assertContains('name="create[description]"', $crawler->html());
+        $this->assertContains('id="edit_name"', $crawler->html());
+        $this->assertContains('name="edit[name]"', $crawler->html());
+        $this->assertContains('id="edit_enabled"', $crawler->html());
+        $this->assertContains('name="edit[enabled]"', $crawler->html());
+        $this->assertContains('id="edit_description"', $crawler->html());
+        $this->assertContains('name="edit[description]"', $crawler->html());
+        $this->assertContains('id="edit_slug"', $crawler->html());
+        $this->assertContains('name="edit[slug]"', $crawler->html());
+        $this->assertContains('id="edit_logoFile_file"', $crawler->html());
+        $this->assertContains('name="edit[logoFile][file]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -174,7 +178,7 @@ class TeamControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/team/%d/edit', $this->team->getId()));
 
         $form = $crawler->filter('#edit-team')->first()->form();
-        $form['create[name]'] = '';
+        $form['edit[name]'] = '';
 
         $crawler = $this->client->submit($form);
 
@@ -197,7 +201,7 @@ class TeamControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/team/%d/edit', $this->team->getId()));
 
         $form = $crawler->filter('#edit-team')->first()->form();
-        $form['create[name]'] = 'test-team1';
+        $form['edit[name]'] = 'test-team1';
 
         $crawler = $this->client->submit($form);
 
@@ -220,16 +224,16 @@ class TeamControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/team/%d/edit', $this->team->getId()));
 
         $form = $crawler->filter('#edit-team')->first()->form();
-        $form['create[name]'] = 'test-team';
+        $form['edit[name]'] = 'test-team';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $target = $this->client->getResponse()->getTargetUrl();
 
-        $this->assertEquals('/team/list', $target);
+        $this->assertEquals(sprintf('/team/%d/show', $this->team->getId()), $target);
         $crawler = $this->client->followRedirect();
 
-        $this->assertContains('Team saved!', $crawler->html());
+        $this->assertContains('Team successfully edited!', $crawler->html());
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $this->removeTeam('test-team');
@@ -314,9 +318,7 @@ class TeamControllerTest extends BaseController
         $form = $crawler->filter('#invite-form')->first()->form();
         $form['invite_user[email]'] = $this->user->getEmail();
 
-        $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
-        $crawler = $this->client->followRedirect();
+        $crawler = $this->client->submit($form);
 
         $this->assertContains('You are already part of the team.', $crawler->html());
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -324,7 +326,7 @@ class TeamControllerTest extends BaseController
         $this->removeTeam('test-team');
     }
 
-    public function testInviteTeamMemberOnInviteUserPage()
+    public function testActiveTeamMemberOnInviteUserPage()
     {
         $this->user = $this->createUser('teamowner', 'teamowner@trisoft.ro', 'Password1', ['ROLE_USER']);
         $this->login($this->user);
@@ -339,7 +341,7 @@ class TeamControllerTest extends BaseController
         $teamMember = (new TeamMember())
             ->setTeam($this->team)
             ->setUser($user)
-            ->setRoles([User::ROLE_TEAM_MEMBER])
+            ->setRoles([User::ROLE_USER])
         ;
         $this->em->persist($teamMember);
         $this->em->flush();
@@ -350,9 +352,7 @@ class TeamControllerTest extends BaseController
         $form = $crawler->filter('#invite-form')->first()->form();
         $form['invite_user[email]'] = $user->getEmail();
 
-        $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
-        $crawler = $this->client->followRedirect();
+        $crawler = $this->client->submit($form);
 
         $this->assertContains('User with this email is already part of the team.', $crawler->html());
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -404,9 +404,7 @@ class TeamControllerTest extends BaseController
         $form = $crawler->filter('#invite-form')->first()->form();
         $form['invite_user[email]'] = 'teammember@trisoft.ro';
 
-        $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
-        $crawler = $this->client->followRedirect();
+        $crawler = $this->client->submit($form);
 
         $this->assertContains('You already sent an invitation to this email.', $crawler->html());
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -514,7 +512,7 @@ class TeamControllerTest extends BaseController
         $this->teamMember = (new TeamMember())
             ->setTeam($this->team)
             ->setUser($user)
-            ->setRoles([User::ROLE_TEAM_OWNER])
+            ->setRoles([User::ROLE_SUPER_ADMIN])
         ;
 
         $this->em->persist($this->team);

@@ -189,7 +189,6 @@ services:
             - { name: security.voter }
         public: false
 
-<<<<<<< HEAD
 ### Authentication ###
     app_api.authentication.handler.success:
         class: AppBundle\Services\Authentication\SuccessHandler
