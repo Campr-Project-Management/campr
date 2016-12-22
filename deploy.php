@@ -92,7 +92,7 @@ task('project:ln-console-env', function () {
     run('cd {{release_path}} && rm -rf app/env.php && ln -s env/env_{{env}}.php app/env.php');
 });
 task('project:copy-parameters', function () {
-    run('cp {{release_path}}/app/config/parameters.yml.dist {{release_path}}/app/config/parameters.yml');
+    run('cp {{release_path}}/app/config/parameters_{{env}}.yml.dist {{release_path}}/app/config/parameters.yml');
 });
 task('project:enable-cron', function () {
     run('sudo rm -rf /etc/cron.d/{{cron_domain}} && sudo cp {{release_path}}/app/config/cron/{{env}} /etc/cron.d/{{cron_domain}} && sudo service cron restart');
