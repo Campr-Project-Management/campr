@@ -46,6 +46,8 @@ class CreateType extends AbstractType
                     'admin.user.edit.role.user' => 'ROLE_USER',
                     'admin.user.edit.role.admin' => 'ROLE_ADMIN',
                     'admin.user.edit.role.superadmin' => 'ROLE_SUPER_ADMIN',
+                    'admin.user.edit.role.team_member' => 'ROLE_TEAM_MEMBER',
+                    'admin.user.edit.role.team_owner' => 'ROLE_TEAM_OWNER',
                 ],
                 'translation_domain' => 'admin',
             ))
