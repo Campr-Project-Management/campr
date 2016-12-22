@@ -11,6 +11,22 @@ parameters:
         admin.filesystem.driver.choice.dropbox: "dropbox_adapter"
 
 services:
+    app.service.team:
+        class: AppBundle\Services\TeamService
+        arguments:
+            - '@request_stack'
+            - '@redis.client'
+            - '%domain%'
+
+    app.jwt_signer:
+        class: Lcobucci\JWT\Signer\Hmac\Sha512
+
+    app.jwt_builder:
+        class: Lcobucci\JWT\Builder
+
+    app.jwt_parser:
+        class: Lcobucci\JWT\Parser
+
     app.service.mailer:
         class: AppBundle\Services\MailerService
         arguments:
@@ -108,6 +124,15 @@ services:
             - { name: form.type }
 
 ### LISTENERS ###
+    # gedmo listeners are found here
+    # https://github.com/Atlantic18/DoctrineExtensions/blob/a3d7ad1cf41f397104bc16d99c0a91fd7b2e6d38/doc/symfony2.md
+    gedmo.listener.sluggable:
+        class: Gedmo\Sluggable\SluggableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ "@annotation_reader" ] ]
+
     app.listener.updated_at:
         class: AppBundle\EventListener\UpdatedAtListener
         tags:
@@ -142,8 +167,8 @@ services:
             - { name: doctrine.event_listener, event: prePersist }
 
 ### EXTENSIONS ###
-    app.chat_date.twig_extension:
-        class: AppBundle\Twig\ChatDateExtension
+    app.app_extension:
+        class: AppBundle\Twig\AppExtension
         public: false
         tags:
             - { name: twig.extension }

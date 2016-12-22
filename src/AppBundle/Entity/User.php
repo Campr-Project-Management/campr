@@ -174,6 +174,20 @@ class User implements AdvancedUserInterface, \Serializable
     private $medias;
 
     /**
+     * @var Team[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Team", mappedBy="user")
+     */
+    private $teams;
+
+    /**
+     * @var TeamMember[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamMember", mappedBy="user")
+     */
+    private $teamMembers;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -182,6 +196,20 @@ class User implements AdvancedUserInterface, \Serializable
         $this->roles = array();
         $this->createdAt = new \DateTime();
         $this->medias = new ArrayCollection();
+        $this->teams = new ArrayCollection();
+        $this->teamMembers = new ArrayCollection();
+    }
+
+    /**
+     * @param $id
+     *
+     * @return User
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -764,5 +792,69 @@ class User implements AdvancedUserInterface, \Serializable
     public function getMedias()
     {
         return $this->medias;
+    }
+
+    /**
+     * @param TeamMember $teamMember
+     *
+     * @return User
+     */
+    public function addTeamMember(TeamMember $teamMember)
+    {
+        $this->teamMembers[] = $teamMember;
+
+        return $this;
+    }
+
+    /**
+     * @param TeamMember $teamMember
+     *
+     * @return User
+     */
+    public function removeTeamMember(TeamMember $teamMember)
+    {
+        $this->teamMembers->removeElement($teamMember);
+
+        return $this;
+    }
+
+    /**
+     * @return TeamMember[]|ArrayCollection
+     */
+    public function getTeamMembers()
+    {
+        return $this->teamMembers;
+    }
+
+    /**
+     * @param Team $team
+     *
+     * @return User
+     */
+    public function addTeam(Team $team)
+    {
+        $this->teams[] = $team;
+
+        return $this;
+    }
+
+    /**
+     * @param Team $team
+     *
+     * @return User
+     */
+    public function removeTeam(Team $team)
+    {
+        $this->teams->removeElement($team);
+
+        return $this;
+    }
+
+    /**
+     * @return Team[]|ArrayCollection
+     */
+    public function getTeams()
+    {
+        return $this->teams;
     }
 }

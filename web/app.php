@@ -16,7 +16,9 @@ if ($debug) {
     Debug::enable();
 }
 
-if ($env != 'dev') {
+$env = str_replace('-', '_', $env);
+$envParts = explode('_', $env);
+if ($env != end($envParts)) {
     $apcLoader = new Symfony\Component\ClassLoader\ApcClassLoader($env.'.campr.biz', $loader);
     $loader->unregister();
     $apcLoader->register(true);
