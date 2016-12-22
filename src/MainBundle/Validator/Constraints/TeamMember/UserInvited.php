@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraint;
 
 class UserInvited extends Constraint
 {
+    /** @var Team */
     public $team;
 
     public $message = 'validation.constraints.team_member.invitation.sent';

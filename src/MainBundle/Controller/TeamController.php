@@ -9,6 +9,7 @@ use AppBundle\Entity\TeamMember;
 use AppBundle\Entity\User;
 use Doctrine\Common\Collections\Criteria;
 use MainBundle\Form\Team\CreateType;
+use MainBundle\Form\Team\EditType;
 use MainBundle\Security\TeamVoter;
 use MainBundle\Form\InviteUserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -131,7 +132,7 @@ class TeamController extends Controller
     {
         $this->denyAccessUnlessGranted(TeamVoter::EDIT, $team);
 
-        $form = $this->createForm(CreateType::class, $team);
+        $form = $this->createForm(EditType::class, $team);
         $form->handleRequest($request);
 
         if ($request->isMethod('POST') && $form->isValid()) {
@@ -272,8 +273,6 @@ class TeamController extends Controller
     }
 
     /**
-     * TODO: Add Dan's voter to deny access if you are not part of the team or if you are not team owner.
-     *
      * Invite one user to be part of a team.
      *
      * @Route("/{id}/invite-user", name="main_team_invite_user")
@@ -285,6 +284,8 @@ class TeamController extends Controller
      */
     public function inviteUserAction(Request $request, Team $team)
     {
+        $this->denyAccessUnlessGranted(TeamVoter::INVITE, $team);
+
         $form = $this->createForm(
             InviteUserType::class,
             null,
