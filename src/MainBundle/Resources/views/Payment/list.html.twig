@@ -8,7 +8,6 @@
             <h1 class="page-header">
                 <p class="text-primary">{{ 'main.account.payment.title'|trans }}</p>
             </h1>
-            <a href="{{ path('main_payment_create') }}" class="btn btn-sm btn-primary pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
         </div>
     </div>
     <div class="row">
@@ -26,10 +25,7 @@
                         <td>{{ i }}</td>
                         <td>method{{ i }}</td>
                         <td>team-{{ i }}</td>
-                        <td>
-                            <a href="{{ path('main_payment_edit', {'id': i}) }}" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
-                            <a href="{{ path('main_payment_invoice', {'id': i}) }}" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span></a>
-                        </td>
+                        <td></td>
                     </tr>
                 {% endfor %}
                 </tbody>
