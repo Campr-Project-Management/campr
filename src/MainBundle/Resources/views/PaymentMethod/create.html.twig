@@ -7,8 +7,8 @@
         <div class="col-lg-12">
             <h1 class="page-header">
                 <p class="text-primary">
-                    {{ 'main.account.team.create.title'|trans }}
-                    <a href="{{ path('main_team_list') }}" class="btn btn-sm btn-primary pull-right">{{ 'main.account.team.back'|trans }}</a>
+                    {{ 'main.account.payment_method.create.title'|trans }}
+                    <a href="{{ path('main_payment_method_list') }}" class="btn btn-sm btn-primary pull-right">{{ 'main.account.payment_method.back'|trans }}</a>
                 </p>
             </h1>
         </div>
@@ -19,9 +19,9 @@
                 form,
                 {
                     'method': 'POST',
-                    'action': path('main_team_create'),
+                    'action': path('main_payment_method_create'),
                     'attr': {
-                        'id': 'create-team',
+                        'id': 'create-payment-method',
                         'novalidate': 'novalidate',
                     },
                 }
@@ -35,28 +35,18 @@
             {% endif %}
             <div class="control-group form-group {% if form_errors(form.name) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.account.team.create.name'|trans }}</label>
+                    <label>{{ 'main.account.payment_method.create.name'|trans }}</label>
                     {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
-            <div class="form-group">
-                <label>{{ 'main.account.team.create.logo'|trans }}</label>
-                {{ form_widget(form.logoFile) }}
-            </div>
-            <div class="control-group form-group {% if form_errors(form.description) %}has-error{% endif %}">
+            <div class="control-group form-group {% if form_errors(form.token) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.account.team.create.description'|trans }}</label>
-                    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                    <label>{{ 'main.account.payment_method.create.token'|trans }}</label>
+                    {{ form_widget(form.token, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
-            <div class="control-group form-group">
-                <label class="checkbox-inline">
-                    {{ form_widget(form.enabled) }}
-                    <strong>{{ 'main.account.team.create.enabled'|trans }}</strong>
-                </label>
-            </div>
             <div class="form-group">
-                <button class="btn btn-primary" type="submit">{{ 'main.general.button.save'|trans }}</button>
+                <button class="btn btn-primary" type="submit">{{ 'main.general.button.create'|trans }}</button>
             </div>
             {{ form_end(form, {'render_rest': true}) }}
         </div>

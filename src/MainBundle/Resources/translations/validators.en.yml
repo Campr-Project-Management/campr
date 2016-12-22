@@ -15,8 +15,11 @@ validation:
                 not_blank: Please enter a team name!
             slug:
                 unique: The provided slug is already used!
+                used: Slug was already used for this team!
                 not_blank: Please enter a slug!
                 invalid: The slug is invalid. Slug must start/end only with alphanumeric values and contain alphanumeric or '-' characters
+            logo:
+                image: Uploaded file must be an image!
         payment_method:
             name:
                 not_blank: Please enter a payment method name!

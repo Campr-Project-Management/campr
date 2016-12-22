@@ -2,12 +2,17 @@ main:
     title: Campr Main Site
     general:
         actions: Actions
+        button:
+            create: Create
+            save: Save
+            login: Login
     nav:
         account:
             title: Account
             teams: Teams
             payment_methods: Payment Methods
             payments: Payments
+            settings: Settings
         sign_in: Sign In
         logout: Logout
         contact: Contact
@@ -18,9 +23,18 @@ main:
             table:
                 id: Id
                 name: Name
+                logo: Logo
                 slug: Slug
                 members: Members
                 enabled: Enabled
+                no_members: No members in this team
+            create:
+                title: Create new team
+                name: Name
+                slug: Slug
+                enabled: Enabled
+                logo: Logo
+                description: Description
             back: Back to team list
             create:
                 title: Create new team
@@ -43,6 +57,23 @@ main:
                 id: Id
                 name: Name
                 token: Token
+            create:
+                title: Create new payment method
+                name: Name
+                token: Token
+            edit:
+                title: Edit payment method
+            back: Back to payment method list
+        settings:
+            title: My account
+            username: Username
+            email: Email
+            first_name: First name
+            last_name: Last name
+            phone: Phone
+            password: Password
+            repeat_password: Repeat password
+            success: Your account was succesfully edited!
     contact:
         title: Send us a message
         form:

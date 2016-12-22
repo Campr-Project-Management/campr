@@ -26,6 +26,7 @@
             <table class="table table-condensed table-responsive">
                 <thead>
                 <th>{{ 'admin.team.list.table.id'|trans }}</th>
+                <th>{{ 'admin.team.list.table.logo'|trans }}</th>
                 <th>{{ 'admin.team.list.table.name'|trans }}</th>
                 <th>{{ 'admin.team.list.table.slug'|trans }}</th>
                 <th>{{ 'admin.team.list.table.created_at'|trans }}</th>
@@ -36,6 +37,9 @@
                 {% for team in teams %}
                     <tr>
                         <td>{{ team.id }}</td>
+                        <td class="col-xs-1 thumbnail">
+                            <img src="{{ vich_uploader_asset(team, 'logoFile') }}" alt="{{ team.name }}">
+                        </td>
                         <td>{{ team.name }}</td>
                         <td>{{ team.slug }}</td>
                         <td>{{ team.createdAt|date('d/m/Y') }}</td>

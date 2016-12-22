@@ -4,6 +4,7 @@ imports:
     - { resource: services.yml }
     - { resource: bundles/gos_web_socket.yml }
     - { resource: bundles/ambta_doctrine_encrypt.yml }
+    - { resource: bundles/vich_uploader.yml }
     - { resource: "@MainBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
@@ -44,6 +45,8 @@ assetic:
 twig:
     debug: "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form_themes:
+        - 'VichUploaderBundle:Form:fields.html.twig'
 
 # Doctrine Configuration
 doctrine:
@@ -108,7 +111,3 @@ lexik_jwt_authentication:
     pass_phrase: "%jwt_key_pass_phrase%"
     token_ttl: "%jwt_token_ttl%"
     user_identity_field: email
-
-# VichUploaderBundle
-vich_uploader:
-    db_driver: orm

@@ -5,3 +5,26 @@ services:
         arguments: ["@knp_menu.factory"]
         tags:
             - { name: knp_menu.menu, alias: admin_main }
+
+### VALIDATION CONSTRAINTS ###
+    main.team_slug_usable_constraint:
+        class: MainBundle\Validator\Constraints\TeamSlugUsableValidator
+        arguments:
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: validator.constraint_validator }
+
+### LISTENERS ###
+    main.listener.team:
+        class: MainBundle\EventListener\TeamListener
+        tags :
+            - { name: doctrine.event_listener, event: onFlush }
+
+### VOTERS ###
+    main.team_voter:
+        class: MainBundle\Security\TeamVoter
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: security.voter }
+        public: false

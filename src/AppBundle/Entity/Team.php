@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Team.
@@ -22,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TeamRepository")
  * @UniqueEntity(fields={"name"}, message="Team name already used.")
  * @UniqueEntity(fields={"slug"}, message="Team slug already used.")
+ * @Vich\Uploadable
  */
 class Team
 {
@@ -75,6 +78,20 @@ class Team
     private $enabled = false;
 
     /**
+     * @Vich\UploadableField(mapping="team_images", fileNameProperty="logo")
+     *
+     * @var File
+     */
+    private $logoFile;
+
+    /**
+     * @ORM\Column(name="logo", type="string", length=255, nullable=true)
+     *
+     * @var string
+     */
+    private $logo;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
@@ -95,10 +112,18 @@ class Team
      */
     private $teamMembers;
 
+    /**
+     * @var ArrayCollection|TeamSlug[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamSlug", mappedBy="team")
+     */
+    private $teamSlugs;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->teamMembers = new ArrayCollection();
+        $this->teamSlugs = new ArrayCollection();
     }
 
     public function __toString()
@@ -233,6 +258,50 @@ class Team
     }
 
     /**
+     * @return string
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * @param string $logo
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+    }
+
+    /**
+     * Set logoFile.
+     *
+     * @param File|null $image
+     *
+     * @return User
+     */
+    public function setLogoFile(File $image = null)
+    {
+        $this->logoFile = $image;
+
+        if ($image) {
+            $this->updatedAt = new \DateTime();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get logoFile.
+     *
+     * @return File
+     */
+    public function getLogoFile()
+    {
+        return $this->logoFile;
+    }
+
+    /**
      * Set createdAt.
      *
      * @param \DateTime $createdAt
@@ -292,6 +361,42 @@ class Team
     public function getTeamMembers()
     {
         return $this->teamMembers;
+    }
+
+    /**
+     * Add teamSlug.
+     *
+     * @param TeamSlug $teamSlug
+     *
+     * @return Team
+     */
+    public function addTeamSlug(TeamSlug $teamSlug)
+    {
+        $this->teamSlugs[] = $teamSlug;
+
+        return $this;
+    }
+
+    /**
+     * Remove teamSlug.
+     *
+     * @param TeamSlug $teamSlug
+     */
+    public function removeTeamSlug(TeamSlug $teamSlug)
+    {
+        $this->teamSlugs->removeElement($teamSlug);
+
+        return $this;
+    }
+
+    /**
+     * Get teamSlugs.
+     *
+     * @return ArrayCollection|TeamSlug[]
+     */
+    public function getTeamSlugs()
+    {
+        return $this->teamSlugs;
     }
 
     /**
