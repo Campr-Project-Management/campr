@@ -20,6 +20,7 @@ main:
                 name: Name
                 slug: Slug
                 members: Members
+                enabled: Enabled
             back: Back to team list
             create:
                 title: Create new team
@@ -52,3 +53,6 @@ main:
             send: Send message
         success: Message succesfully sent!
 
+login: Login
+yes: Yes
+no: No

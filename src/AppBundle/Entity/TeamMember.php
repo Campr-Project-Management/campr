@@ -31,7 +31,7 @@ class TeamMember
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="teamMembers")
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * })
@@ -41,7 +41,7 @@ class TeamMember
     /**
      * @var Team
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team", inversedBy="teamMembers")
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="team_id", referencedColumnName="id")
      * })
@@ -85,7 +85,7 @@ class TeamMember
      *
      * @return TeamMember
      */
-    public function setRoles($roles)
+    public function setRoles(array $roles = [])
     {
         $this->roles = $roles;
 
