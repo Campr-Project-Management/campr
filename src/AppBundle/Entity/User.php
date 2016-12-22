@@ -32,6 +32,8 @@ class User implements AdvancedUserInterface, \Serializable
     const ROLE_USER = 'ROLE_USER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
     const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    const ROLE_TEAM_OWNER = 'ROLE_TEAM_OWNER';
+    const ROLE_TEAM_MEMBER = 'ROLE_TEAM_MEMBER';
 
     /**
      * @var int
@@ -195,6 +197,13 @@ class User implements AdvancedUserInterface, \Serializable
     private $apiToken;
 
     /**
+     * @var ArrayCollection|TeamInvite[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamInvite", mappedBy="team")
+     */
+    private $teamInvites;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -206,6 +215,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->teams = new ArrayCollection();
         $this->teamMembers = new ArrayCollection();
         $this->apiToken = hash('sha512', microtime(true).uniqid('campr', true));
+        $this->teamInvites = new ArrayCollection();
     }
 
     /**
@@ -803,6 +813,8 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
+     * Add teamMember.
+     *
      * @param TeamMember $teamMember
      *
      * @return User
@@ -815,6 +827,8 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
+     * Remove teamMember.
+     *
      * @param TeamMember $teamMember
      *
      * @return User
@@ -827,6 +841,8 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
+     * Get teamMembers.
+     *
      * @return TeamMember[]|ArrayCollection
      */
     public function getTeamMembers()
@@ -835,6 +851,8 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
+     * Add team.
+     *
      * @param Team $team
      *
      * @return User
@@ -847,6 +865,8 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
+     * Remove team.
+     *
      * @param Team $team
      *
      * @return User
@@ -859,6 +879,8 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
+     * Get teams.
+     *
      * @return Team[]|ArrayCollection
      */
     public function getTeams()
@@ -888,5 +910,43 @@ class User implements AdvancedUserInterface, \Serializable
     public function getApiToken()
     {
         return $this->apiToken;
+    }
+
+    /**
+     * Add teamInvite.
+     *
+     * @param TeamInvite $teamInvite
+     *
+     * @return User
+     */
+    public function addTeamInvite(TeamInvite $teamInvite)
+    {
+        $this->teamInvites[] = $teamInvite;
+
+        return $this;
+    }
+
+    /**
+     * Remove teamInvite.
+     *
+     * @param TeamInvite $teamInvite
+     *
+     * @return User
+     */
+    public function removeTeamInvite(TeamInvite $teamInvite)
+    {
+        $this->teamInvites->removeElement($teamInvite);
+
+        return $this;
+    }
+
+    /**
+     * Get teamInvites.
+     *
+     * @return ArrayCollection|TeamInvite[]
+     */
+    public function getTeamInvites()
+    {
+        return $this->teamInvites;
     }
 }

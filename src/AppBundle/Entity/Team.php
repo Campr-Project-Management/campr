@@ -16,14 +16,9 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Table(name="team", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="slug_unique", columns={"slug"}),
  * }))
- * @UniqueEntity(
- *      fields="slug",
- *      errorPath="slug",
- *      message="validation.constraints.team.slug.unique"
- *  )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TeamRepository")
- * @UniqueEntity(fields={"name"}, message="Team name already used.")
- * @UniqueEntity(fields={"slug"}, message="Team slug already used.")
+ * @UniqueEntity(fields={"name"}, message="validation.constraints.team.name.unique")
+ * @UniqueEntity(fields={"slug"}, message="validation.constraints.team.slug.unique")
  * @Vich\Uploadable
  */
 class Team
@@ -51,7 +46,6 @@ class Team
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $name;
 
@@ -119,11 +113,19 @@ class Team
      */
     private $teamSlugs;
 
+    /**
+     * @var ArrayCollection|TeamInvite[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamInvite", mappedBy="team")
+     */
+    private $teamInvites;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->teamMembers = new ArrayCollection();
         $this->teamSlugs = new ArrayCollection();
+        $this->teamInvites = new ArrayCollection();
     }
 
     public function __toString()
@@ -381,6 +383,8 @@ class Team
      * Remove teamSlug.
      *
      * @param TeamSlug $teamSlug
+     *
+     * @return Team
      */
     public function removeTeamSlug(TeamSlug $teamSlug)
     {
@@ -421,5 +425,43 @@ class Team
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Add teamInvite.
+     *
+     * @param TeamInvite $teamInvite
+     *
+     * @return Team
+     */
+    public function addTeamInvite(TeamInvite $teamInvite)
+    {
+        $this->teamInvites[] = $teamInvite;
+
+        return $this;
+    }
+
+    /**
+     * Remove teamInvite.
+     *
+     * @param TeamInvite $teamInvite
+     *
+     * @return Team
+     */
+    public function removeTeamInvite(TeamInvite $teamInvite)
+    {
+        $this->teamInvites->removeElement($teamInvite);
+
+        return $this;
+    }
+
+    /**
+     * Get teamInvites.
+     *
+     * @return ArrayCollection|TeamInvite[]
+     */
+    public function getTeamInvites()
+    {
+        return $this->teamInvites;
     }
 }
