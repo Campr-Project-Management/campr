@@ -58,6 +58,7 @@ security:
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN
     access_control:
+        - { path: ^/api/team/[\d\w-_]+, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
