@@ -1,0 +1,43 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+parameters:
+    database_host:     127.0.0.1
+    database_port:     ~
+    database_name:     campr
+    database_user:     root
+    database_password: root
+    # You should uncomment this if you want use pdo_sqlite
+    # database_path: "%kernel.root_dir%/data.db3"
+
+    mailer_transport:  smtp
+    mailer_host:       127.0.0.1
+    mailer_user:       ~
+    mailer_password:   ~
+
+    # A secret key that's used to generate certain security-related tokens
+    secret:            ThisTokenIsNotSoSecretChangeIt
+
+    domain: qa.campr.biz
+
+    #redis
+    redis_host: localhost
+
+    #jwt
+    jwt_private_key_path: %kernel.root_dir%/var/jwt/private.pem
+    jwt_public_key_path: %kernel.root_dir%/var/jwt/public.pem
+    jwt_key_pass_phrase: 'campr'
+    jwt_token_ttl: 86400
+    jwt_token_refresh_ttl: 2592000
+    jwt_token_refresh_ttl_update: true
+
+    #paginator
+    admin.per_page: 10
+
+    #misc
+    activation_token_expiration: P1D
+    reset_token_expiration: P1D
+    import_folder: '%kernel.root_dir%/Resources/import'
+    media_upload_folder: '%kernel.root_dir%/../web/uploads/media'
+    tests_import_folder: '%kernel.root_dir%/../web/tests/import'
+    media_upload_folder_test: '%kernel.root_dir%/../web/uploads/tests'

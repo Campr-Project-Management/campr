@@ -13,13 +13,13 @@ _errors:
 main:
     resource: "@MainBundle/Controller/"
     type:  annotation
-    host: "qa.%domain%"
+    host: "%domain%"
     prefix: /
 
 app:
     resource: "@AppBundle/Controller/"
     type: annotation
-    host: "{subdomain}.qa.%domain%"
+    host: "{subdomain}.%domain%"
     defaults:
         subdomain: team
 
