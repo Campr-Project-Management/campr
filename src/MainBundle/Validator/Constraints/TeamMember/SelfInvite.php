@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraint;
 
 class SelfInvite extends Constraint
 {
+    /** @var User */
     public $user;
 
     public $message = 'validation.constraints.team_member.invite.yourself';

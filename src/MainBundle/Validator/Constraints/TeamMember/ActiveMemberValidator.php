@@ -27,7 +27,7 @@ class ActiveMemberValidator extends ConstraintValidator
             ])
         ;
 
-        if ($user) {
+        if ($user && $user != $constraint->user) {
             $teamMember = $this
                 ->em
                 ->getRepository(TeamMember::class)
