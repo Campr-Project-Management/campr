@@ -47,23 +47,22 @@ class DefaultController extends Controller
 
         $redis = $this->get('redis.client');
         if ($redis->exists($jwt)) {
-            //            throw $this->createNotFoundException('Token already used.');
+            throw $this->createNotFoundException('Token already used.');
         }
         $redis->setex($jwt, 3600, time());
 
-        $claims = $token->getClaims();
         $iat = $token->getClaim('iat', 0);
         $iss = $token->getClaim('iss', '');
         $jti = $token->getClaim('jti');
 
         if ($redis->exists($jti)) {
-            //            throw $this->createNotFoundException('Token already used.');
+            throw $this->createNotFoundException('Token already used.');
         }
         $redis->setex($jti, 3600, time());
 
         // check the time of the
         if ($iat + 5 < time()) {
-            //            throw $this->createNotFoundException('Token expired.');
+            throw $this->createNotFoundException('Token expired.');
         }
 
         // check issuer
@@ -72,7 +71,6 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('Invalid token.');
         }
 
-//        $teamData = (array) $token->getClaim('team');
         $userData = (array) $token->getClaim('user');
 
         $em = $this->getDoctrine()->getManager();
