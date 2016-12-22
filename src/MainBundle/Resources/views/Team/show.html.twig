@@ -21,6 +21,16 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="caption">
+                {% for flash_message in app.session.flashBag.get('success') %}
+                    <div id="general-alert" class="alert alert-success m-t-15">
+                        <strong>{{ flash_message }}</strong>
+                    </div>
+                {% endfor %}
+                {% for flash_message in app.session.flashBag.get('error') %}
+                    <div id="general-alert" class="alert alert-warning m-t-15">
+                        <strong>{{ flash_message }}</strong>
+                    </div>
+                {% endfor %}
                 <ul class="list-unstyled">
                     <li class="list-group-item">
                         <strong>{{ 'main.account.team.table.id'|trans }}: </strong>{{ team.id }}
@@ -32,15 +42,43 @@
                         <strong>{{ 'main.account.team.table.slug'|trans }}: </strong>{{ team.slug }}
                     </li>
                     <li class="list-group-item">
-                        <strong>{{ 'main.account.team.table.members'|trans }}: </strong>
-                        {% for member in team.teamMembers %}
-                            <p>@{{ member.user.username }} - {{ member.user.fullName }}</p>
+                        <strong>{{ 'main.account.team.table.enabled'|trans }}: </strong>
+                        {% if team.enabled %}
+                            <span class="c-green">{{ 'main.general.yes'|trans }}</span>
                         {% else %}
-                            {{ 'main.account.team.table.no_members'|trans }}
-                        {% endfor %}
+                            <span class="c-red">{{ 'main.general.no'|trans }}</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>{{ 'main.account.team.table.members'|trans }}: </strong>
+                        {%  if team.teamMembers %}
+                            <ul>
+                                {% for teamMember in team.teamMembers %}
+                                    <li>
+                                        {{ teamMember.user.username }}
+                                        {% if "ROLE_SUPER_ADMIN" in current_team_member.roles %}
+                                            {% if teamMember.user != app.user %}
+                                                <a href="{{ path('main_team_remove_team_member', {'team': team.id, 'id': teamMember.id}) }}" data-toggle="tooltip" title="Remove team member">
+                                                    <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                                                </a>
+                                            {% endif %}
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            {{ '-' }}
+                        {% endif %}
                     </li>
                 </ul>
             </div>
+            {% if team.user == current_team_member.user %}
+                <div class="col-lg-12">
+                    <a href="{{ path('main_team_invite_user', {'id': team.id}) }}" class="btn btn-primary">
+                        {{ 'main.account.team.invite_user'|trans }}
+                    </a>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
