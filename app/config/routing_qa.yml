@@ -19,7 +19,7 @@ main:
 app:
     resource: "@AppBundle/Controller/"
     type: annotation
-    host: "qa.{subdomain}.%domain%"
+    host: "{subdomain}.qa.%domain%"
     defaults:
         subdomain: team
 
