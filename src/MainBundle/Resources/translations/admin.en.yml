@@ -28,6 +28,7 @@ admin:
             title: Team list
             table:
                 id: Id
+                logo: Logo
                 name: Name
                 slug: Slug
                 created_at: Created At
@@ -36,6 +37,9 @@ admin:
             title: Create new team
             name: Name
             slug: Slug
+            description: Description
+            enabled: Enabled
+            logo: Logo
             team_members: Team members
             success: Team successfully created!
         edit:
