@@ -7,8 +7,11 @@ use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamMember;
 use AppBundle\Entity\User;
 use Doctrine\Common\Collections\Criteria;
-use MainBundle\Form\TeamType;
+use MainBundle\Form\Team\CreateType;
+use MainBundle\Form\Team\EditType;
+use MainBundle\Security\TeamVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,6 +27,7 @@ class TeamController extends Controller
      * Team list.
      *
      * @Route("/list", name="main_team_list")
+     * @Method("GET")
      *
      * @return Response
      */
@@ -33,15 +37,38 @@ class TeamController extends Controller
     }
 
     /**
+     * Team show.
+     *
+     * @Route("/{id}/show", name="main_team_show")
+     * @Method("GET")
+     *
+     * @param Team $team
+     *
+     * @return Response
+     */
+    public function showAction(Team $team)
+    {
+        return $this->render(
+            'MainBundle:Team:show.html.twig',
+            [
+                'team' => $team,
+            ]
+        );
+    }
+
+    /**
      * Create new team.
      *
      * @Route("/create", name="main_team_create")
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
      *
      * @return Response
      */
     public function createAction(Request $request)
     {
-        $form = $this->createForm(TeamType::class);
+        $form = $this->createForm(CreateType::class);
         $form->handleRequest($request);
 
         if ($request->isMethod('POST') && $form->isValid()) {
@@ -57,7 +84,16 @@ class TeamController extends Controller
             $em->persist($teamMember);
             $em->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'Team created!');
+            $this
+                ->get('session')
+                ->getFlashBag()
+                ->set(
+                    'success',
+                    $this
+                        ->get('translator')
+                        ->trans('admin.team.create.success', [], 'admin')
+                )
+            ;
 
             $env = $this->getParameter('kernel.environment');
             $redis = $this->get('redis.client');
@@ -76,7 +112,7 @@ class TeamController extends Controller
                 ),
             ]);
 
-            return $this->redirectToRoute('main_team_edit', ['id' => $team->getId()]);
+            return $this->redirectToRoute('main_team_list');
         }
 
         return $this->render('MainBundle:Team:create.html.twig', [
@@ -88,12 +124,18 @@ class TeamController extends Controller
      * Edit a specific team.
      *
      * @Route("/{id}/edit", name="main_team_edit")
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param Team    $team
      *
      * @return Response
      */
     public function editAction(Request $request, Team $team)
     {
-        $form = $this->createForm(TeamType::class, $team);
+        $this->denyAccessUnlessGranted(TeamVoter::EDIT, $team);
+
+        $form = $this->createForm(EditType::class, $team);
         $form->handleRequest($request);
 
         if ($request->isMethod('POST') && $form->isValid()) {
@@ -103,9 +145,18 @@ class TeamController extends Controller
             $em->persist($team);
             $em->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'Team saved!');
+            $this
+                ->get('session')
+                ->getFlashBag()
+                ->set(
+                    'success',
+                    $this
+                        ->get('translator')
+                        ->trans('admin.team.edit.success', [], 'admin')
+                )
+            ;
 
-            return $this->redirectToRoute('main_team_edit', ['id' => $team->getId()]);
+            return $this->redirectToRoute('main_team_list');
         }
 
         return $this->render(
@@ -161,5 +212,37 @@ class TeamController extends Controller
         ;
 
         return $this->redirect($subdomain.'/login?'.http_build_query(['jwt' => (string) $token]));
+    }
+
+    /**
+     * Deletes a specific Team entity.
+     *
+     * @Route("/{id}/delete", name="main_team_delete")
+     * @Method({"GET"})
+     *
+     * @param Team $team
+     *
+     * @return Response
+     */
+    public function deleteAction(Team $team)
+    {
+        $this->denyAccessUnlessGranted(TeamVoter::DELETE, $team);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($team);
+        $em->flush();
+
+        $this
+            ->get('session')
+            ->getFlashBag()
+            ->set(
+                'success',
+                $this
+                    ->get('translator')
+                    ->trans('admin.team.delete.success', [], 'admin')
+            )
+        ;
+
+        return $this->redirectToRoute('main_team_list');
     }
 }
