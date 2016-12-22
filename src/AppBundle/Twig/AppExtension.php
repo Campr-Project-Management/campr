@@ -2,13 +2,20 @@
 
 namespace AppBundle\Twig;
 
-class ChatDateExtension extends \Twig_Extension
+class AppExtension extends \Twig_Extension
 {
     public function getFilters()
     {
-        return array(
+        return [
             new \Twig_SimpleFilter('chat_date', [$this, 'formatChatDate']),
-        );
+        ];
+    }
+
+    public function getTests()
+    {
+        return [
+            new \Twig_SimpleTest('object', 'is_object'),
+        ];
     }
 
     public function formatChatDate(\DateTime $date)
@@ -26,6 +33,6 @@ class ChatDateExtension extends \Twig_Extension
 
     public function getName()
     {
-        return 'app_chat_date_extension';
+        return 'app_extension';
     }
 }

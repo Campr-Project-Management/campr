@@ -3,9 +3,47 @@
 {% block body_content %}
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">
-            <p class="text-primary">Homepage</p>
-        </h1>
+        <h1 class="page-header text-primary">Homepage</h1>
     </div>
+    {% if app.user is object %}
+        {% if app.user.teams.count %}
+            <div class="col-lg-12">
+                <h2 class="page-header">Your teams:</h2>
+                <ul>
+                    {% for team in app.user.teams %}
+                        <li>
+                            {{ team }}
+
+                            {% if team.enabled %}
+                                <a href="{{ path('main_team_sso', {id: team.id}) }}" class="btn btn-primary">
+                                    <i class="glyphicon glyphicon-expand"></i>
+                                    {{ 'login'|trans }}
+                                </a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% if app.user.teamMembers.count %}
+            <div class="col-lg-12">
+                <h2 class="page-header">Teams you are a part of:</h2>
+                <ul>
+                    {% for teamMember in app.user.teamMembers %}
+                        <li>
+                            {{ teamMember.team }} - Roles: {{ teamMember.roles|join(', ') }}
+
+                            {% if teamMember.team.enabled %}
+                                <a href="{{ path('main_team_sso', {id: teamMember.team.id}) }}" class="btn btn-primary">
+                                    <i class="glyphicon glyphicon-expand"></i>
+                                    {{ 'login'|trans }}
+                                </a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endif %}
 </div>
 {% endblock %}

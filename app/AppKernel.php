@@ -5,6 +5,12 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
+    public function __construct($environment, $debug)
+    {
+        $environment = str_replace('-', '_', $environment);
+        parent::__construct($environment, $debug);
+    }
+
     public function registerBundles()
     {
         $bundles = [
@@ -39,19 +45,20 @@ class AppKernel extends Kernel
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
 
             //internals
             new AppBundle\AppBundle(),
             new MainBundle\MainBundle(),
         ];
 
-        if (in_array($this->getEnvironment(), ['dev', 'test', 'qa'], true)) {
+        if (in_array($this->getRealEnvironment(), ['dev', 'test', 'qa'], true)) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
         }
 
-        if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
+        if (in_array($this->getRealEnvironment(), ['dev', 'test'], true)) {
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
@@ -76,6 +83,37 @@ class AppKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');
+        $loader->load($this->getRootDir().'/config/config_'.$this->getRealEnvironment().'.yml');
+    }
+
+    private function getRealEnvironment()
+    {
+        $env = explode('_', $this->getEnvironment());
+        $env = end($env);
+
+        return $env;
+    }
+
+    public function getTeamSlug()
+    {
+        $env = explode('_', $this->getEnvironment());
+        if (count($env) === 1) {
+            return null;
+        }
+
+        array_pop($env);
+
+        return implode('_', $env);
+    }
+
+    public function getKernelParameters()
+    {
+        return array_merge(
+            [
+                'kernel.team_slug' => $this->getTeamSlug(),
+                'kernel.real_environment' => $this->getRealEnvironment(),
+            ],
+            parent::getKernelParameters()
+        );
     }
 }
