@@ -1,0 +1,54 @@
+{% extends 'MainBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                <p class="text-primary">{{ 'admin.user.list.title'|trans }}</p>
+            </h1>
+            <a href="{{ path('main_admin_user_create') }}" class="btn btn-sm btn-primary pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-condensed table-responsive">
+                <thead>
+                    <th>{{ 'admin.user.list.table.id'|trans }}</th>
+                    <th>{{ 'admin.user.list.table.username'|trans }}</th>
+                    <th>{{ 'admin.user.list.table.email'|trans }}</th>
+                    <th>{{ 'admin.general.actions'|trans }}</th>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <a href="{{ path('main_admin_user_show', {'id': user.id}) }}" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span></a>
+                            {% if not user.hasRole("ROLE_SUPER_ADMIN") or (user.hasRole("ROLE_SUPER_ADMIN") and user == app.user) %}
+                                <a href="{{ path('main_admin_user_edit', {'id': user.id}) }}" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                            {% endif %}
+                            {% if not user.hasRole("ROLE_SUPER_ADMIN") and user != app.user %}
+                                <a href="{{ path('main_admin_user_delete', {'id': user.id}) }}" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

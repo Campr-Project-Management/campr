@@ -1,4 +1,7 @@
 services:
-#    main.example:
-#        class: MainBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    main.admin_menu:
+        class: Knp\Menu\MenuItem
+        factory: ["@app.menu.menu_builder", createAdminMainMenu]
+        arguments: ["@knp_menu.factory"]
+        tags:
+            - { name: knp_menu.menu, alias: admin_main }
