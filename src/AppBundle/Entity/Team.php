@@ -11,7 +11,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Team.
  *
- * @ORM\Table(name="team")
+ * @ORM\Table(name="team", uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="slug_unique", columns={"slug"}),
+ * }))
+ * @UniqueEntity(
+ *      fields="slug",
+ *      errorPath="slug",
+ *      message="validation.constraints.team.slug.unique"
+ *  )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TeamRepository")
  * @UniqueEntity(fields={"name"}, message="Team name already used.")
  * @UniqueEntity(fields={"slug"}, message="Team slug already used.")
