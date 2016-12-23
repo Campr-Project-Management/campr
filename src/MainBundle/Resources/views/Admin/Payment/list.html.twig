@@ -1,0 +1,49 @@
+{% extends 'MainBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                <p class="text-primary">{{ 'admin.payment.list.title'|trans }}</p>
+            </h1>
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-condensed table-responsive">
+                <thead>
+                <th>{{ 'admin.payment.list.table.id'|trans }}</th>
+                <th>{{ 'admin.payment.list.table.method'|trans }}</th>
+                <th>{{ 'admin.payment.list.table.team'|trans }}</th>
+                <th>{{ 'admin.payment.list.table.created_at'|trans }}</th>
+                <th>{{ 'admin.general.actions'|trans }}</th>
+                </thead>
+                <tbody>
+                {% for payment in payments %}
+                    <tr>
+                        <td>{{ payment.id }}</td>
+                        <td>{{ payment.paymentMethod.name }}</td>
+                        <td>{{ payment.team.name }}</td>
+                        <td>{{ payment.createdAt|date('d/m/Y') }}</td>
+                        <td>
+                            <a href="{{ path('main_admin_payment_refund', {'id': payment.id}) }}" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-euro" aria-hidden="true"></span></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

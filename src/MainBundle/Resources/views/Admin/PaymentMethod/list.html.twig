@@ -1,0 +1,51 @@
+{% extends 'MainBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                <p class="text-primary">{{ 'admin.payment_method.list.title'|trans }}</p>
+            </h1>
+            <a href="{{ path('main_admin_payment_method_create') }}" class="btn btn-sm btn-primary pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-condensed table-responsive">
+                <thead>
+                <th>{{ 'admin.payment_method.list.table.id'|trans }}</th>
+                <th>{{ 'admin.payment_method.list.table.name'|trans }}</th>
+                <th>{{ 'admin.payment_method.list.table.token'|trans }}</th>
+                <th>{{ 'admin.payment_method.list.table.created_at'|trans }}</th>
+                <th>{{ 'admin.general.actions'|trans }}</th>
+                </thead>
+                <tbody>
+                {% for payment_method in payment_methods %}
+                    <tr>
+                        <td>{{ payment_method.id }}</td>
+                        <td>{{ payment_method.name }}</td>
+                        <td>{{ payment_method.token }}</td>
+                        <td>{{ payment_method.createdAt|date('d/m/Y') }}</td>
+                        <td>
+                            <a href="{{ path('main_admin_payment_method_edit', {'id': payment_method.id}) }}" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                            <a href="{{ path('main_admin_payment_method_delete', {'id': payment_method.id}) }}" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
