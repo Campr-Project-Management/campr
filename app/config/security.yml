@@ -3,6 +3,8 @@ security:
         AppBundle\Entity\User:
             algorithm: bcrypt
     providers:
+        api_provider:
+            id: app_api.authentication.handler.user_provider
         our_db_provider:
             entity:
                 class: AppBundle:User
@@ -14,31 +16,21 @@ security:
             stateless: true
             anonymous: true
             form_login:
-                check_path: /api/login-check
+                check_path: /api/login
                 username_parameter: email
                 password_parameter: password
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+                success_handler: app_api.authentication.handler.success
+                failure_handler: app_api.authentication.handler.failure
                 require_previous_session: false
+
         api:
             pattern: ^/api
             stateless: true
             anonymous: true
-            lexik_jwt:
-                authorization_header: # check token in Authorization Header
-                    enabled: true
-                    prefix: Bearer
-                    name: Authorization
-                cookie:               # check token in a cookie
-                    enabled: false
-                    name: BEARER
-                query_parameter:      # check token in query string parameter
-                    enabled: false
-                    name: bearer
-                throw_exceptions: false     # When an authentication failure occurs, return a 401 response immediately
-                create_entry_point: true      # When no authentication details are provided, create a default entry point that returns a 401 response
-                authentication_provider: lexik_jwt_authentication.security.authentication.provider
-                authentication_listener: lexik_jwt_authentication.security.authentication.listener
+            simple_preauth:
+                authenticator: app_api.authentication.handler.authenticator
+            provider: api_provider
+
         main:
             anonymous: ~
             pattern: ^/
