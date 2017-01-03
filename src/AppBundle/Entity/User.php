@@ -188,6 +188,13 @@ class User implements AdvancedUserInterface, \Serializable
     private $teamMembers;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="api_token", type="string", length=255, unique=true)
+     */
+    private $apiToken;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -198,6 +205,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->medias = new ArrayCollection();
         $this->teams = new ArrayCollection();
         $this->teamMembers = new ArrayCollection();
+        $this->apiToken = hash('sha512', microtime(true).uniqid('campr', true));
     }
 
     /**
@@ -856,5 +864,29 @@ class User implements AdvancedUserInterface, \Serializable
     public function getTeams()
     {
         return $this->teams;
+    }
+
+    /**
+     * Set apiToken.
+     *
+     * @param string $apiToken
+     *
+     * @return User
+     */
+    public function setApiToken($apiToken)
+    {
+        $this->apiToken = $apiToken;
+
+        return $this;
+    }
+
+    /**
+     * Get apiToken.
+     *
+     * @return string
+     */
+    public function getApiToken()
+    {
+        return $this->apiToken;
     }
 }
