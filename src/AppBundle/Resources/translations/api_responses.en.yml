@@ -1,0 +1,5 @@
+api:
+    authentication:
+        account_disabled: 'Account disabled'
+        bad_credentials: 'Bad credentials'
+        token_returned: 'Token returned'

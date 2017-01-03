@@ -188,3 +188,23 @@ services:
         tags:
             - { name: security.voter }
         public: false
+
+### Authentication ###
+    app_api.authentication.handler.success:
+        class: AppBundle\Services\Authentication\SuccessHandler
+        arguments:
+            - "@translator.default"
+
+    app_api.authentication.handler.failure:
+        class: AppBundle\Services\Authentication\FailureHandler
+        arguments:
+            - "@translator.default"
+
+    app_api.authentication.handler.user_provider:
+        class: AppBundle\Services\Authentication\UserProvider
+        arguments:
+            - "@doctrine.orm.entity_manager"
+
+    app_api.authentication.handler.authenticator:
+        class: AppBundle\Services\Authentication\Authenticator
+        public: false
