@@ -37,6 +37,10 @@ class TeamService
         $this->httpClient = new HttpClient([
             'base_uri' => sprintf('%s://%s/api/', $scheme, $mainDomain),
             'timeout' => 5,
+            'curl' => [
+                CURLOPT_SSL_VERIFYHOST => false,
+                CURLOPT_SSL_VERIFYPEER => false,
+            ],
         ]);
     }
 
