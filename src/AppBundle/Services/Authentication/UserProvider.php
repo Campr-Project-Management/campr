@@ -22,7 +22,7 @@ class UserProvider implements UserProviderInterface
             ->em
             ->getRepository(User::class)
             ->findOneBy([
-                'activationToken' => $apiToken,
+                'apiToken' => $apiToken,
             ])
         ;
     }

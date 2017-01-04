@@ -11,6 +11,7 @@ use AppBundle\Entity\User;
 use AppBundle\Form\User\ResetPasswordType;
 use AppBundle\Form\User\ChangePasswordType;
 use AppBundle\Form\User\RegisterType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * User controller.
