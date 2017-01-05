@@ -55,3 +55,5 @@ security:
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: ['ROLE_ADMIN', 'ROLE_SUPER_ADMIN'] }
+        - { path: ^/team, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/payment, roles: IS_AUTHENTICATED_FULLY }
