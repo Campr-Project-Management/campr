@@ -93,6 +93,7 @@ class DefaultController extends Controller
         $user->setPhone($userData['phone']);
         $user->setRoles($userData['roles']);
         $user->setId($userData['id']);
+        $user->setApiToken($userData['api_token']);
 
         $em->persist($user);
         $em->flush();

@@ -31,7 +31,7 @@ class TeamSlug
     /**
      * @var Team
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team", inversedBy="teamSlugs")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team", inversedBy="teamSlugs", cascade={"remove"})
      * @ORM\JoinColumn(name="team_id")
      */
     private $team;

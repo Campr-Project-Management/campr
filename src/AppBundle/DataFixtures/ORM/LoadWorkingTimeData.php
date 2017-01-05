@@ -18,11 +18,10 @@ class LoadWorkingTimeData extends AbstractFixture implements OrderedFixtureInter
     public function load(ObjectManager $manager)
     {
         $day = $this->getReference('day1');
+        $fromTime = new \DateTime('2017-01-01 14:30:00');
+        $toTime = new \DateTime('2017-01-01 18:30:00');
 
         for ($i = 1; $i <= 2; ++$i) {
-            $fromTime = new \DateTime(sprintf('+%d hours', $i + 1));
-            $toTime = new \DateTime(sprintf('+%d hours', $i + 2));
-
             $workingTime = (new WorkingTime())
                 ->setDay($day)
                 ->setFromTime($fromTime)

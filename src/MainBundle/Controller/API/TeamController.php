@@ -4,8 +4,10 @@ namespace MainBundle\Controller\API;
 
 use AppBundle\Entity\Team;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/api/team")
@@ -13,7 +15,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class TeamController extends Controller
 {
     /**
+     * Retrieve Team information.
+     *
      * @Route("/{id}", name="main_api_team_get")
+     * @Method({"GET"})
+     *
+     * @param $id
+     *
+     * @return JsonResponse
      */
     public function getAction($id)
     {
@@ -25,8 +34,10 @@ class TeamController extends Controller
 
         if (!$team) {
             return new JsonResponse([
-                'message' => 'Not found.',
-            ], 404);
+                'message' => $this
+                    ->get('translator')
+                    ->trans('api.general.not_found', [], 'api_responses'),
+            ], Response::HTTP_NOT_FOUND);
         }
 
         return new JsonResponse([
