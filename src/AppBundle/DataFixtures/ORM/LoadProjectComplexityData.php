@@ -21,6 +21,7 @@ class LoadProjectComplexityData extends AbstractFixture implements OrderedFixtur
             $projectComplexity = (new ProjectComplexity())
                 ->setName('project-complexity'.$i)
                 ->setSequence($i)
+                ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
             ;
             $this->setReference('project-complexity'.$i, $projectComplexity);
             $manager->persist($projectComplexity);

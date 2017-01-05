@@ -24,6 +24,7 @@ class LoadProjectDepartmentData extends AbstractFixture implements OrderedFixtur
                 ->setAbbreviation('pd'.$i)
                 ->setSequence($i)
                 ->setProjectWorkCostType($projectWorkCostType)
+                ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
             ;
             $this->setReference('project-department'.$i, $projectDepartment);
             $manager->persist($projectDepartment);

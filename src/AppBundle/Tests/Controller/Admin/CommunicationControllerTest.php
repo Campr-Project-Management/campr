@@ -262,7 +262,7 @@ class CommunicationControllerTest extends BaseController
         $this->assertEquals(1, $crawler->filter('#data-table-command')->count());
         $this->assertContains('data-column-id="id"', $crawler->html());
         $this->assertContains('data-column-id="meetingName"', $crawler->html());
-        $this->assertContains('data-column-id="project"', $crawler->html());
+        $this->assertContains('data-column-id="projectName"', $crawler->html());
         $this->assertContains('data-column-id="location"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());
         $this->assertEquals(1, $crawler->filter('.zmdi-plus')->count());

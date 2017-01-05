@@ -20,6 +20,7 @@ class LoadProjectTeamData extends AbstractFixture implements OrderedFixtureInter
         for ($i = 1; $i <= 2; ++$i) {
             $projectTeam = (new ProjectTeam())
                 ->setName('project-team'.$i)
+                ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
             ;
             $this->setReference('project-team'.$i, $projectTeam);
             $manager->persist($projectTeam);
