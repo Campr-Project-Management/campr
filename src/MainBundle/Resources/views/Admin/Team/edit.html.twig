@@ -46,6 +46,22 @@
                 </div>
             </div>
             <div class="form-group">
+                <label>{{ 'admin.team.create.logo'|trans }}</label>
+                {{ form_widget(form.logoFile) }}
+            </div>
+            <div class="control-group form-group {% if form_errors(form.description) %}has-error{% endif %}">
+                <div class="controls">
+                    <label>{{ 'admin.team.create.description'|trans }}</label>
+                    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="control-group form-group">
+                <label class="checkbox-inline">
+                    {{ form_widget(form.enabled) }}
+                    {{ 'admin.team.create.enabled'|trans }}
+                </label>
+            </div>
+            <div class="form-group">
                 <button class="btn btn-primary" type="submit">{{ 'admin.general.button.save'|trans }}</button>
             </div>
             {{ form_end(form, {'render_rest': true}) }}

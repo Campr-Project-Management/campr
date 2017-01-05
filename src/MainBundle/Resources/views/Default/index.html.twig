@@ -1,3 +1,5 @@
+{% trans_default_domain 'main' %}
+
 {% extends 'MainBundle::base.html.twig' %}
 
 {% block body_content %}
@@ -12,12 +14,13 @@
                 <ul>
                     {% for team in app.user.teams %}
                         <li>
-                            {{ team }}
-
+                            <div class="col-xs-1 thumbnail">
+                                <img src="{{ vich_uploader_asset(team, 'logoFile') }}" alt="{{ team.name }}">
+                            </div> - {{ team }}
                             {% if team.enabled %}
                                 <a href="{{ path('main_team_sso', {id: team.id}) }}" class="btn btn-primary">
                                     <i class="glyphicon glyphicon-expand"></i>
-                                    {{ 'login'|trans }}
+                                    {{ 'main.general.button.login'|trans }}
                                 </a>
                             {% endif %}
                         </li>
@@ -31,12 +34,13 @@
                 <ul>
                     {% for teamMember in app.user.teamMembers %}
                         <li>
-                            {{ teamMember.team }} - Roles: {{ teamMember.roles|join(', ') }}
-
+                            <div class="col-xs-1 thumbnail">
+                                <img src="{{ vich_uploader_asset(teamMember.team, 'logoFile') }}" alt="{{ teamMember.team.name }}">
+                            </div> - {{ teamMember.team }} - Roles: {{ teamMember.roles|join(', ') }}
                             {% if teamMember.team.enabled %}
                                 <a href="{{ path('main_team_sso', {id: teamMember.team.id}) }}" class="btn btn-primary">
                                     <i class="glyphicon glyphicon-expand"></i>
-                                    {{ 'login'|trans }}
+                                    {{ 'main.general.button.login'|trans }}
                                 </a>
                             {% endif %}
                         </li>

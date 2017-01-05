@@ -2,7 +2,9 @@
 
 namespace MainBundle\Controller;
 
+use AppBundle\Entity\Payment;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -14,54 +16,25 @@ use Symfony\Component\HttpFoundation\Response;
 class PaymentController extends Controller
 {
     /**
-     * Payment methods list.
-     *
-     * @Route("/method/list", name="main_payment_method_list")
-     *
-     * @return Response
-     */
-    public function methodListAction()
-    {
-        return $this->render('MainBundle:Payment:method_list.html.twig');
-    }
-
-    /**
-     * Payment list.
+     * List all Payment entities.
      *
      * @Route("/list", name="main_payment_list")
+     * @Method({"GET"})
      *
      * @return Response
      */
     public function listAction()
     {
-        return $this->render('MainBundle:Payment:list.html.twig');
-    }
+        $payments = $this
+            ->getDoctrine()
+            ->getRepository(Payment::class)
+            ->findAll()
+        ;
 
-    /**
-     * Create new payment.
-     *
-     * @Route("/create", name="main_payment_create")
-     *
-     * @return Response
-     */
-    public function createAction()
-    {
-        return $this->render('MainBundle:Payment:create.html.twig');
-    }
-
-    /**
-     * Create new team.
-     *
-     * @Route("/{id}/edit", name="main_payment_edit")
-     *
-     * @return Response
-     */
-    public function editAction($id)
-    {
         return $this->render(
-            'MainBundle:Payment:edit.html.twig',
+            'MainBundle:Payment:list.html.twig',
             [
-                'payment' => $id,
+                'payments' => $payments,
             ]
         );
     }

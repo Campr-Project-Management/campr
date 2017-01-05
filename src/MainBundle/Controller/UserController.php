@@ -2,6 +2,7 @@
 
 namespace MainBundle\Controller;
 
+use MainBundle\Form\User\AccountType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -330,5 +331,48 @@ class UserController extends Controller
         }
 
         return $this->render('MainBundle:User:reset.html.twig');
+    }
+
+    /**
+     * Current user account settings.
+     *
+     * @Route("/account", name="main_user_account")
+     *
+     * @param Request $request
+     *
+     * @return Response|RedirectResponse
+     */
+    public function accountAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        $form = $this->createForm(AccountType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($user);
+            $em->flush();
+
+            $this
+                ->get('session')
+                ->getFlashBag()
+                ->set(
+                    'success',
+                    $this
+                        ->get('translator')
+                        ->trans('main.account.settings.success', [], 'main')
+                )
+            ;
+
+            return $this->redirectToRoute('main_user_account');
+        }
+
+        return $this->render(
+            'MainBundle:User:account.html.twig',
+            [
+                'form' => $form->createView(),
+                'user' => $user,
+            ]
+        );
     }
 }
