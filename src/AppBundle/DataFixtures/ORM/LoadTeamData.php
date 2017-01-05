@@ -21,6 +21,7 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
             $team = (new Team())
                 ->setName('team_'.$i)
                 ->setSlug('team-'.$i)
+                ->setCreatedAt(new \DateTime('2017-01-01'))
             ;
             $this->setReference('team'.$i, $team);
             $manager->persist($team);

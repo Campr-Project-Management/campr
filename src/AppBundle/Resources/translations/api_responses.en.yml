@@ -1,4 +1,6 @@
 api:
+    general:
+        not_found: Resource not found!
     authentication:
         account_disabled: 'Account disabled'
         bad_credentials: 'Bad credentials'

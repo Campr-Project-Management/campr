@@ -14,6 +14,9 @@ Beside create and update forms, additional form types can be found here such as:
 * [Reset Password Type](#reset-password-type)
 * [Change Password Type](#change-password-type)
 * [Filesystem Forms](#filesystem-forms)
+* [Account Type](#account-type)
+* [Contact Type](#contact-type)
+* [InviteUser Type](#inviteuser-type)
 
 ## Login Type
 >
@@ -55,6 +58,26 @@ Contains forms related to the projects filesystem functionality and contains the
 * ```LocalAdapterType.php``` - Used to display specific fields for the local filesystem
 * ```MediaUploadType.php``` - Form used to upload a new media file into the filesystem.
 
+## Account Type
+>
+path: src/MainBundle/Form/User/AccountType.php
+>
+
+This form is used to allow users to modify their account personal information.
+
+## Contact Type
+>
+path: src/MainBundle/Form/User/AccountType.php
+>
+
+Used to send messages to website administrators.
+
+## InviteUser Type
+>
+path: src/MainBundle/Form/User/AccountType.php
+>
+
+This form is used to invite an user to a specific team based on user's email.
 
 **More information about form fields can be found in Sami Documentation -> Form**
 

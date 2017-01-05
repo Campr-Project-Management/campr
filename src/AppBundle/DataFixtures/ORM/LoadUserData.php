@@ -38,6 +38,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $superAdmin->setRoles(['ROLE_SUPER_ADMIN']);
         $superAdmin->setIsEnabled(true);
         $superAdmin->setPassword($this->encodePassword($superAdmin, $superAdmin->getPlainPassword()));
+        $superAdmin->setCreatedAt(new \DateTime('2017-01-01'));
         $this->setReference('superadmin', $superAdmin);
         $manager->persist($superAdmin);
 

@@ -3,8 +3,7 @@
 namespace AppBundle\Tests\Controller\Admin;
 
 use AppBundle\Entity\Portfolio;
-use AppBundle\Entity\User;
-use AppBundle\Tests\Controller\BaseController;
+use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
