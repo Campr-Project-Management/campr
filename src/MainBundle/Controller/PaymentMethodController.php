@@ -1,54 +1,51 @@
 <?php
 
-namespace MainBundle\Controller\Admin;
+namespace MainBundle\Controller;
 
-use AppBundle\Entity\Team;
-use MainBundle\Form\Team\CreateType;
-use MainBundle\Form\Team\EditType;
+use AppBundle\Entity\PaymentMethod;
+use MainBundle\Form\PaymentMethod\CreateType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Team admin controller.
+ * PaymentMethod admin controller.
  *
- * @Route("/admin/team")
+ * @Route("/payment-method")
  */
-class TeamController extends Controller
+class PaymentMethodController extends Controller
 {
     /**
-     * List all Team entities.
+     * List all PaymentMethod entities.
      *
-     * @Route("/list", name="main_admin_team_list")
+     * @Route("/list", name="main_payment_method_list")
      * @Method({"GET"})
-     * @Secure(roles="ROLE_SUPER_ADMIN")
      *
      * @return Response
      */
     public function listAction()
     {
-        $teams = $this
+        $paymentMethods = $this
             ->getDoctrine()
-            ->getRepository(Team::class)
+            ->getRepository(PaymentMethod::class)
             ->findAll()
         ;
 
         return $this->render(
-            'MainBundle:Admin/Team:list.html.twig',
+            'MainBundle:PaymentMethod:list.html.twig',
             [
-                'teams' => $teams,
+                'payment_methods' => $paymentMethods,
             ]
         );
     }
 
     /**
-     * Creates a new Team entity.
+     * Creates a new PaymentMethod entity.
      *
-     * @Route("/create", name="main_admin_team_create")
+     * @Route("/create", name="main_payment_method_create")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -62,8 +59,8 @@ class TeamController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $team = $form->getData();
-            $em->persist($team);
+            $paymentMethod = $form->getData();
+            $em->persist($paymentMethod);
             $em->flush();
 
             $this
@@ -73,15 +70,15 @@ class TeamController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.team.create.success', [], 'admin')
+                        ->trans('admin.payment_method.create.success', [], 'admin')
                 )
             ;
 
-            return $this->redirectToRoute('main_admin_team_list');
+            return $this->redirectToRoute('main_payment_method_list');
         }
 
         return $this->render(
-            'MainBundle:Admin/Team:create.html.twig',
+            'MainBundle:PaymentMethod:create.html.twig',
             [
                 'form' => $form->createView(),
             ]
@@ -89,24 +86,24 @@ class TeamController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Team entity.
+     * Displays a form to edit an existing PaymentMethod entity.
      *
-     * @Route("/{id}/edit", name="main_admin_team_edit", options={"expose"=true})
+     * @Route("/{id}/edit", name="main_payment_method_edit")
      * @Method({"GET", "POST"})
      *
-     * @param Request $request
-     * @param Team    $team
+     * @param Request       $request
+     * @param PaymentMethod $paymentMethod
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Request $request, Team $team)
+    public function editAction(Request $request, PaymentMethod $paymentMethod)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(EditType::class, $team);
+        $form = $this->createForm(CreateType::class, $paymentMethod);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($team);
+            $em->persist($paymentMethod);
             $em->flush();
 
             $this
@@ -116,36 +113,36 @@ class TeamController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.team.edit.success', [], 'admin')
+                        ->trans('admin.payment_method.edit.success', [], 'admin')
                 )
             ;
 
-            return $this->redirectToRoute('main_admin_team_list');
+            return $this->redirectToRoute('main_payment_method_list');
         }
 
         return $this->render(
-            'MainBundle:Admin/Team:edit.html.twig',
+            'MainBundle:PaymentMethod:edit.html.twig',
             [
-                'team' => $team,
+                'payment_method' => $paymentMethod,
                 'form' => $form->createView(),
             ]
         );
     }
 
     /**
-     * Deletes a specific Team entity.
+     * Deletes a specific PaymentMethod entity.
      *
-     * @Route("/{id}/delete", name="main_admin_team_delete", options={"expose"=true})
+     * @Route("/{id}/delete", name="main_payment_method_delete")
      * @Method({"GET"})
      *
-     * @param Team $team
+     * @param PaymentMethod $paymentMethod
      *
      * @return Response
      */
-    public function deleteAction(Team $team)
+    public function deleteAction(PaymentMethod $paymentMethod)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($team);
+        $em->remove($paymentMethod);
         $em->flush();
 
         $this
@@ -155,10 +152,10 @@ class TeamController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.team.delete.success', [], 'admin')
+                    ->trans('admin.payment_method.delete.success', [], 'admin')
             )
         ;
 
-        return $this->redirectToRoute('main_admin_team_list');
+        return $this->redirectToRoute('main_payment_method_list');
     }
 }
