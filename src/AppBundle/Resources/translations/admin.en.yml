@@ -74,6 +74,8 @@ admin:
                 user: ROLE_USER
                 admin: ROLE_ADMIN
                 superadmin: ROLE_SUPER_ADMIN
+                team_member: ROLE_TEAM_MEMBER
+                team_owner: ROLE_TEAM_OWNER
             superadmin: You cannot edit other SUPER ADMIN profile!
             success: User successfully edited!
         delete:

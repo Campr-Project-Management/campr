@@ -1,0 +1,62 @@
+{% extends 'MainBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                <p class="text-primary">
+                    Invite User
+                </p>
+            </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="caption">
+                {% for flash_message in app.session.flashBag.get('success') %}
+                    <div id="general-alert" class="alert alert-success m-t-15">
+                        <strong>{{ flash_message }}</strong>
+                    </div>
+                {% endfor %}
+                {{ form_start(
+                    form,
+                    {
+                        'method': 'POST',
+                        'action': path('main_team_invite_user', {'id': team.id}),
+                        'attr': {
+                            'id': 'invite-form',
+                            'class': 'form-horizontal',
+                            'novalidate': 'novalidate',
+                        },
+                    }
+                ) }}
+                    {% if form.vars.valid == false %}
+                        <div class="alert alert-danger">
+                            {% for field in form.children %}
+                                {{ form_errors(field) }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {{ form_widget(
+                        form.email,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'Email',
+                        }
+                    ) }}
+                    <div class="form-group m-t-15">
+                        <div class="col-sm-offset-5 col-sm-10">
+                            <button class="btn btn-primary" type="submit">Send invitation</button>
+                        </div>
+                    </div>
+
+                <span class="hidden">{{ form_row(form._token) }}</span>
+                {{ form_end(form, {'render_rest': false}) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

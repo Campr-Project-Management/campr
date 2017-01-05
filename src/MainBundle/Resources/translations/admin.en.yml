@@ -36,9 +36,8 @@ admin:
         create:
             title: Create new team
             name: Name
-            slug: Slug
-            description: Description
             enabled: Enabled
+            description: Description
             logo: Logo
             team_members: Team members
             success: Team successfully created!

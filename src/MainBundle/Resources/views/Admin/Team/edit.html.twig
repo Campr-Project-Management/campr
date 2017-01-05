@@ -39,10 +39,16 @@
                     {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
-            <div class="control-group form-group {% if form_errors(form.slug) %}has-error{% endif %}">
+            <div class="control-group form-group {% if form_errors(form.enabled) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'admin.team.create.slug'|trans }}</label>
-                    {{ form_widget(form.slug, {'attr': {'class': 'form-control'}}) }}
+                    <label>{{ 'admin.team.create.enabled'|trans }}</label>
+                    {{ form_widget(form.enabled, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="control-group form-group {% if form_errors(form.description) %}has-error{% endif %}">
+                <div class="controls">
+                    <label>{{ 'admin.team.create.description'|trans }}</label>
+                    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="form-group">
