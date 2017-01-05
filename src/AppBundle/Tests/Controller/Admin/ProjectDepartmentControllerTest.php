@@ -230,7 +230,7 @@ class ProjectDepartmentControllerTest extends BaseController
         $this->assertContains('data-column-id="abbreviation"', $crawler->html());
         $this->assertContains('data-column-id="sequence"', $crawler->html());
         $this->assertContains('data-column-id="rate"', $crawler->html());
-        $this->assertContains('data-column-id="projectWorkCostType"', $crawler->html());
+        $this->assertContains('data-column-id="projectWorkCostTypeName"', $crawler->html());
         $this->assertContains('data-column-id="createdAt"', $crawler->html());
         $this->assertContains('data-column-id="updatedAt"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());

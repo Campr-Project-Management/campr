@@ -9,6 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class DefaultController extends Controller
 {
     /**
+     * API user login.
+     *
      * @Route("/api/login", name="main_api_login")
      * @Method({"POST"})
      */

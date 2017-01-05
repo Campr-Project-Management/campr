@@ -20,6 +20,7 @@ class LoadProjectRoleData extends AbstractFixture implements OrderedFixtureInter
         $roleManager = (new ProjectRole())
             ->setName('manager')
             ->setSequence(1)
+            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
         ;
         $this->setReference('manager', $roleManager);
         $manager->persist($roleManager);
@@ -27,6 +28,7 @@ class LoadProjectRoleData extends AbstractFixture implements OrderedFixtureInter
         $sponsor = (new ProjectRole())
             ->setName('sponsor')
             ->setSequence(1)
+            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
         ;
         $this->setReference('sponsor', $sponsor);
         $manager->persist($sponsor);
@@ -34,6 +36,7 @@ class LoadProjectRoleData extends AbstractFixture implements OrderedFixtureInter
         $teamMember = (new ProjectRole())
             ->setName('team-member')
             ->setSequence(2)
+            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
         ;
         $this->setReference('team-member', $teamMember);
         $manager->persist($teamMember);
@@ -41,6 +44,7 @@ class LoadProjectRoleData extends AbstractFixture implements OrderedFixtureInter
         $teamParticipant = (new ProjectRole())
             ->setName('team-participant')
             ->setSequence(2)
+            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
         ;
         $this->setReference('team-participant', $teamParticipant);
         $manager->persist($teamParticipant);

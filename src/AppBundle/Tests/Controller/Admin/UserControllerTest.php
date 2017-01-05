@@ -342,6 +342,7 @@ class UserControllerTest extends BaseController
         $this->assertContains('data-column-id="id"', $crawler->html());
         $this->assertContains('data-column-id="username"', $crawler->html());
         $this->assertContains('data-column-id="email"', $crawler->html());
+        $this->assertContains('data-column-id="roles"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());
         $this->assertEquals(1, $crawler->filter('.zmdi-plus')->count());
 

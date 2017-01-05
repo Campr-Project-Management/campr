@@ -35,6 +35,7 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
             ->setProjectScope($projectScope)
             ->setStatus($projectStatus)
             ->setPortfolio($portfolio)
+            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
         ;
         $manager->persist($project1);
         $this->setReference('project1', $project1);
@@ -55,6 +56,7 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
             ->setProjectScope($projectScope)
             ->setStatus($projectStatus)
             ->setPortfolio($portfolio)
+            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
         ;
         $manager->persist($project2);
         $this->setReference('project2', $project2);
