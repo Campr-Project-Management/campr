@@ -21,11 +21,10 @@ class LoadTodoData extends AbstractFixture implements OrderedFixtureInterface
         $meeting = $this->getReference('meeting1');
         $responsible = $this->getReference('user4');
         $status = $this->getReference('status1');
-        $date = new \DateTime();
+        $date = new \DateTime('2017-01-01');
+        $dueDate = new \DateTime('2017-05-01');
 
         for ($i = 1; $i <= 2; ++$i) {
-            $dueData = new \DateTime(sprintf('+%d days', $i + 1));
-
             $todo = (new Todo())
                 ->setTitle('todo'.$i)
                 ->setProject($project)
@@ -33,7 +32,7 @@ class LoadTodoData extends AbstractFixture implements OrderedFixtureInterface
                 ->setDescription('description for todo'.$i)
                 ->setResponsibility($responsible)
                 ->setDate($date)
-                ->setDueDate($dueData)
+                ->setDueDate($dueDate)
                 ->setStatus($status)
             ;
             $manager->persist($todo);

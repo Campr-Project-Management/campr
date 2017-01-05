@@ -19,8 +19,8 @@ class LoadMeetingAgendaData extends AbstractFixture implements OrderedFixtureInt
     {
         $meeting = $this->getReference('meeting1');
         $responsible = $this->getReference('user3');
-        $start = new \DateTime();
-        $end = new \DateTime('+1 hour');
+        $start = new \DateTime('2017-01-01 07:30:00');
+        $end = new \DateTime('2017-01-01 08:00:00');
         $diff = $end->diff($start)->format('%H:%I:%S');
 
         $meetingAgenda1 = (new MeetingAgenda())
@@ -33,8 +33,8 @@ class LoadMeetingAgendaData extends AbstractFixture implements OrderedFixtureInt
         ;
         $manager->persist($meetingAgenda1);
 
-        $start = new \DateTime('+1 hour');
-        $end = new \DateTime('+3 hours');
+        $start = new \DateTime('2017-01-01 11:30:00');
+        $end = new \DateTime('2017-01-01 12:00:00');
         $diff = $end->diff($start)->format('%H:%I:%S');
 
         $meetingAgenda2 = (new MeetingAgenda())

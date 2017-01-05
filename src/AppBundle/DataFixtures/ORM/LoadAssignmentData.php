@@ -17,11 +17,11 @@ class LoadAssignmentData extends AbstractFixture implements OrderedFixtureInterf
      */
     public function load(ObjectManager $manager)
     {
-        $startedAt = new \DateTime();
-        $finishedAt = new \DateTime('+5 days');
+        $startedAt = new \DateTime('2016-12-12');
+        $finishedAt = new \DateTime('2017-01-01');
+        $workPackage = $this->getReference('work-package2');
 
         for ($i = 1; $i <= 2; ++$i) {
-            $workPackage = $this->getReference('work-package'.$i);
             $wppwct = $this->getReference('work-package-project-work-cost-type'.$i);
 
             $assignment = (new Assignment())
@@ -33,9 +33,16 @@ class LoadAssignmentData extends AbstractFixture implements OrderedFixtureInterf
             ;
             $this->setReference('assignment'.$i, $assignment);
             $manager->persist($assignment);
-
-            $finishedAt->add(new \DateInterval('P5D'));
         }
+
+        $assignment = (new Assignment())
+            ->setWorkPackage($this->getReference('work-package1'))
+            ->setMilestone(2)
+            ->setStartedAt(new \DateTime('2017-01-01'))
+            ->setFinishedAt(new \DateTime('2017-01-04'))
+        ;
+        $this->setReference('assignment3', $assignment);
+        $manager->persist($assignment);
 
         $manager->flush();
     }

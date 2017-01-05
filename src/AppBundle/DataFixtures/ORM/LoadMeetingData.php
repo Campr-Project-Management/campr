@@ -18,9 +18,9 @@ class LoadMeetingData extends AbstractFixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         $project = $this->getReference('project1');
-        $date = new \DateTime();
-        $start = new \DateTime();
-        $end = new \DateTime('+1 hour');
+        $date = new \DateTime('2017-01-01');
+        $start = new \DateTime('2017-01-01 07:00:00');
+        $end = new \DateTime('2017-01-01 12:00:00');
 
         $meeting = (new Meeting())
             ->setName('meeting1')
