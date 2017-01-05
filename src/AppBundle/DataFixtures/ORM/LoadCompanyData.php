@@ -20,6 +20,7 @@ class LoadCompanyData extends AbstractFixture implements OrderedFixtureInterface
         for ($i = 1; $i <= 2; ++$i) {
             $company = (new Company())
                 ->setName('company'.$i)
+                ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
             ;
             $this->setReference('company'.$i, $company);
             $manager->persist($company);

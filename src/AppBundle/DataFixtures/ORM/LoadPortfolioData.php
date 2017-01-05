@@ -20,6 +20,7 @@ class LoadPortfolioData extends AbstractFixture implements OrderedFixtureInterfa
         for ($i = 1; $i <= 2; ++$i) {
             $portfolio = (new Portfolio())
                 ->setName('portfolio'.$i)
+                ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
                 ->setDescription('Description for portfolio'.$i)
             ;
             $this->setReference('portfolio'.$i, $portfolio);

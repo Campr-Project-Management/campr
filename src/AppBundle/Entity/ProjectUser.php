@@ -97,16 +97,12 @@ class ProjectUser
     /**
      * @var bool
      *
-     * @Serializer\Exclude()
-     *
      * @ORM\Column(name="show_in_resources", type="boolean", nullable=false, options={"default": 1})
      */
     private $showInResources = true;
 
     /**
      * @var bool
-     *
-     * @Serializer\Exclude()
      *
      * @ORM\Column(name="show_in_raci", type="boolean", nullable=true)
      */
@@ -115,8 +111,6 @@ class ProjectUser
     /**
      * @var bool
      *
-     * @Serializer\Exclude()
-     *
      * @ORM\Column(name="show_in_org", type="boolean", nullable=true)
      */
     private $showInOrg;
@@ -124,7 +118,7 @@ class ProjectUser
     /**
      * @var \DateTime
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
@@ -133,7 +127,7 @@ class ProjectUser
     /**
      * @var \DateTime|null
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -422,80 +416,158 @@ class ProjectUser
     }
 
     /**
-     * Returns user username.
+     * Returns user id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("user")
      *
      * @return string
      */
-    public function getUserName()
+    public function getUserId()
     {
-        return $this->user ? $this->user->getUsername() : '-';
+        return $this->user ? $this->user->getId() : null;
     }
 
     /**
-     * Returns project name.
+     * Returns user full name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userFullName")
+     *
+     * @return string
+     */
+    public function getUserFullName()
+    {
+        return $this->user ? $this->user->getFullName() : null;
+    }
+
+    /**
+     * Returns project id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      *
      * @return string
      */
-    public function getProjectName()
+    public function getProjectId()
     {
-        return $this->project ? $this->project->getName() : '-';
+        return $this->project ? $this->project->getId() : null;
     }
 
     /**
-     * Returns project category name.
+     * Returns project name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectName")
+     *
+     * @return string
+     */
+    public function getProjectName()
+    {
+        return $this->project ? $this->project->getName() : null;
+    }
+
+    /**
+     * Returns projectCategory id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectCategory")
      *
      * @return string
      */
-    public function getProjectCategoryName()
+    public function getProjectCategoryId()
     {
-        return $this->projectCategory ? $this->projectCategory->getName() : '-';
+        return $this->projectCategory ? $this->projectCategory->getId() : null;
     }
 
     /**
-     * Returns project role name.
+     * Returns projectCategory name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectCategoryName")
+     *
+     * @return string
+     */
+    public function getProjectCategoryName()
+    {
+        return $this->projectCategory ? $this->projectCategory->getName() : null;
+    }
+
+    /**
+     * Returns projectRole id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectRole")
      *
      * @return string
      */
-    public function getProjectRoleName()
+    public function getProjectRoleId()
     {
-        return $this->projectRole ? $this->projectRole->getName() : '-';
+        return $this->projectRole ? $this->projectRole->getId() : null;
     }
 
     /**
-     * Returns project department name.
+     * Returns projectRole name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectRoleName")
+     *
+     * @return string
+     */
+    public function getProjectRoleName()
+    {
+        return $this->projectRole ? $this->projectRole->getName() : null;
+    }
+
+    /**
+     * Returns projectDepartment id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectDepartment")
      *
      * @return string
      */
-    public function getProjectDepartmentName()
+    public function getProjectDepartmentId()
     {
-        return $this->projectDepartment ? $this->projectDepartment->getName() : '-';
+        return $this->projectDepartment ? $this->projectDepartment->getId() : null;
     }
 
     /**
-     * Returns project team name.
+     * Returns projectDepartment name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectDepartmentName")
+     *
+     * @return string
+     */
+    public function getProjectDepartmentName()
+    {
+        return $this->projectDepartment ? $this->projectDepartment->getName() : null;
+    }
+
+    /**
+     * Returns projectTeam id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectTeam")
      *
      * @return string
      */
+    public function getProjectTeamId()
+    {
+        return $this->projectTeam ? $this->projectTeam->getId() : null;
+    }
+
+    /**
+     * Returns projectTeam name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectTeamName")
+     *
+     * @return string
+     */
     public function getProjectTeamName()
     {
-        return $this->projectTeam ? $this->projectTeam->getName() : '-';
+        return $this->projectTeam ? $this->projectTeam->getName() : null;
     }
 }

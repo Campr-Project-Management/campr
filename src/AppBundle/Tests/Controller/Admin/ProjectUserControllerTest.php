@@ -261,12 +261,12 @@ class ProjectUserControllerTest extends BaseController
 
         $this->assertEquals(1, $crawler->filter('#data-table-command')->count());
         $this->assertContains('data-column-id="id"', $crawler->html());
-        $this->assertContains('data-column-id="user"', $crawler->html());
-        $this->assertContains('data-column-id="project"', $crawler->html());
-        $this->assertContains('data-column-id="projectCategory"', $crawler->html());
-        $this->assertContains('data-column-id="projectRole"', $crawler->html());
-        $this->assertContains('data-column-id="projectDepartment"', $crawler->html());
-        $this->assertContains('data-column-id="projectTeam"', $crawler->html());
+        $this->assertContains('data-column-id="userFullName"', $crawler->html());
+        $this->assertContains('data-column-id="projectName"', $crawler->html());
+        $this->assertContains('data-column-id="projectCategoryName"', $crawler->html());
+        $this->assertContains('data-column-id="projectRoleName"', $crawler->html());
+        $this->assertContains('data-column-id="projectDepartmentName"', $crawler->html());
+        $this->assertContains('data-column-id="projectTeamName"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());
         $this->assertEquals(1, $crawler->filter('.zmdi-plus')->count());
 

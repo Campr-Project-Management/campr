@@ -176,7 +176,7 @@ class ProjectModuleControllerTest extends BaseController
         $this->assertEquals(1, $crawler->filter('#data-table-command')->count());
         $this->assertContains('data-column-id="id"', $crawler->html());
         $this->assertContains('data-column-id="module"', $crawler->html());
-        $this->assertContains('data-column-id="project"', $crawler->html());
+        $this->assertContains('data-column-id="projectName"', $crawler->html());
         $this->assertContains('data-column-id="createdAt"', $crawler->html());
         $this->assertContains('data-column-id="updatedAt"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());
