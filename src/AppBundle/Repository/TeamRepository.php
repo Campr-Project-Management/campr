@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Team;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
 class TeamRepository extends EntityRepository
@@ -20,5 +21,18 @@ class TeamRepository extends EntityRepository
         $qb->setMaxResults(1);
 
         return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function findByTeamMember(User $user)
+    {
+        $qb = $this->createQueryBuilder('t');
+
+        return $qb
+            ->join('t.teamMembers', 'tm')
+            ->where('tm.user = :user')
+            ->setParameter('user', $user->getId())
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

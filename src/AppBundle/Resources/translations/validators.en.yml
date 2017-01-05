@@ -166,3 +166,9 @@ validation:
                 not_blank: A meeting should be selected
             user:
                 not_blank: An user should be selected
+        team_member:
+            invite:
+                yourself: You are already part of the team.
+                team_member: User with this email is already part of the team.
+            invitation:
+                sent: You already sent an invitation to this email.
