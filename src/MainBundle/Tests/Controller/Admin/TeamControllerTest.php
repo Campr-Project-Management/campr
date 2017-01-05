@@ -5,6 +5,8 @@ namespace MainBundle\Tests\Controller\Admin;
 use AppBundle\Entity\Team;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,8 +23,12 @@ class TeamControllerTest extends BaseController
 
         $this->assertContains('id="create_name"', $crawler->html());
         $this->assertContains('name="create[name]"', $crawler->html());
-        $this->assertContains('id="create_slug"', $crawler->html());
-        $this->assertContains('name="create[slug]"', $crawler->html());
+        $this->assertContains('id="create_logoFile_file"', $crawler->html());
+        $this->assertContains('name="create[logoFile][file]"', $crawler->html());
+        $this->assertContains('id="create_description"', $crawler->html());
+        $this->assertContains('name="create[description]"', $crawler->html());
+        $this->assertContains('id="create_enabled"', $crawler->html());
+        $this->assertContains('name="create[enabled]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -41,12 +47,11 @@ class TeamControllerTest extends BaseController
         $crawler = $this->client->submit($form);
 
         $this->assertContains('Please enter a team name!', $crawler->html());
-        $this->assertContains('Please enter a slug!', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testSlugUniqueOnCreatePage()
+    public function testFormFileValidationOnCreatePage()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
         $this->login($this->user);
@@ -56,30 +61,31 @@ class TeamControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/team/create');
 
         $form = $crawler->filter('#create-team')->first()->form();
-        $form['create[name]'] = 'team-x';
-        $form['create[slug]'] = 'team-1';
+        $form['create[name]'] = 'tname';
+
+        $container = self::$kernel->getContainer();
+        $fs = new Filesystem();
+        try {
+            $oldmask = umask(0);
+            if (!$fs->exists($container->getParameter('media_upload_folder_test'))) {
+                $fs->mkdir($container->getParameter('media_upload_folder_test'));
+            }
+            if (!$fs->exists($container->getParameter('media_upload_folder_test').'/team_logo.txt')) {
+                $fs->touch($container->getParameter('media_upload_folder_test').'/team_logo.txt');
+            }
+            umask($oldmask);
+        } catch (IOExceptionInterface $e) {
+            sprintf($e->getMessage());
+        }
+        $file = new File($container->getParameter('media_upload_folder_test').'/team_logo.txt');
+        $fd = $file->openFile('w');
+        $fd->fwrite('Test document');
+        $fd->fflush();
+        $form['create[logoFile][file]'] = $file;
+
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('The provided slug is already used!', $crawler->html());
-
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testSlugValidatorOnCreatePage()
-    {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
-
-        /** @var Crawler $crawler */
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/team/create');
-
-        $form = $crawler->filter('#create-team')->first()->form();
-        $form['create[name]'] = 'team-x';
-        $form['create[slug]'] = 'slu#g';
-        $crawler = $this->client->submit($form);
-
-        $this->assertContains('The slug is invalid. Slug must start/end only with alphanumeric values and contain alphanumeric or \'-\' characters', $crawler->html());
+        $this->assertContains('Uploaded file must be an image!', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -94,7 +100,7 @@ class TeamControllerTest extends BaseController
 
         $form = $crawler->filter('#create-team')->first()->form();
         $form['create[name]'] = 'tname';
-        $form['create[slug]'] = 'tslug';
+        $form['create[description]'] = 'descript';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -107,7 +113,7 @@ class TeamControllerTest extends BaseController
             ->getRepository(Team::class)
             ->findOneBy([
                 'name' => 'tname',
-                'slug' => 'tslug',
+                'description' => 'descript',
             ])
         ;
         $this->em->remove($team);
@@ -122,7 +128,7 @@ class TeamControllerTest extends BaseController
 
         $team = (new Team())
             ->setName('team_test')
-            ->setSlug('slug_team_test')
+            ->setDescription('description team test')
         ;
         $this->em->persist($team);
         $this->em->flush();
@@ -143,10 +149,16 @@ class TeamControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/team/1/edit');
 
-        $this->assertContains('id="create_name"', $crawler->html());
-        $this->assertContains('name="create[name]"', $crawler->html());
-        $this->assertContains('id="create_slug"', $crawler->html());
-        $this->assertContains('name="create[slug]"', $crawler->html());
+        $this->assertContains('id="edit_name"', $crawler->html());
+        $this->assertContains('name="edit[name]"', $crawler->html());
+        $this->assertContains('id="edit_slug"', $crawler->html());
+        $this->assertContains('name="edit[slug]"', $crawler->html());
+        $this->assertContains('id="edit_logoFile_file"', $crawler->html());
+        $this->assertContains('name="edit[logoFile][file]"', $crawler->html());
+        $this->assertContains('id="edit_description"', $crawler->html());
+        $this->assertContains('name="edit[description]"', $crawler->html());
+        $this->assertContains('id="edit_enabled"', $crawler->html());
+        $this->assertContains('name="edit[enabled]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -162,13 +174,51 @@ class TeamControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/team/1/edit');
 
         $form = $crawler->filter('#edit-team')->first()->form();
-        $form['create[name]'] = '';
-        $form['create[slug]'] = 'team-2';
+        $form['edit[name]'] = '';
+        $form['edit[slug]'] = 'team-2';
 
         $crawler = $this->client->submit($form);
 
         $this->assertContains('Please enter a team name!', $crawler->html());
         $this->assertContains('The provided slug is already used!', $crawler->html());
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testFormFileValidationOnEditPage()
+    {
+        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
+        $this->login($this->user);
+        $this->assertNotNull($this->user, 'User not found');
+
+        /** @var Crawler $crawler */
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/team/1/edit');
+
+        $form = $crawler->filter('#edit-team')->first()->form();
+
+        $container = self::$kernel->getContainer();
+        $fs = new Filesystem();
+        try {
+            $oldmask = umask(0);
+            if (!$fs->exists($container->getParameter('media_upload_folder_test'))) {
+                $fs->mkdir($container->getParameter('media_upload_folder_test'));
+            }
+            if (!$fs->exists($container->getParameter('media_upload_folder_test').'/team_logo.txt')) {
+                $fs->touch($container->getParameter('media_upload_folder_test').'/team_logo.txt');
+            }
+            umask($oldmask);
+        } catch (IOExceptionInterface $e) {
+            sprintf($e->getMessage());
+        }
+        $file = new File($container->getParameter('media_upload_folder_test').'/team_logo.txt');
+        $fd = $file->openFile('w');
+        $fd->fwrite('Test document');
+        $fd->fflush();
+        $form['edit[logoFile][file]'] = $file;
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertContains('Uploaded file must be an image!', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -182,7 +232,7 @@ class TeamControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/team/1/edit');
 
         $form = $crawler->filter('#edit-team')->first()->form();
-        $form['create[name]'] = 'new-team';
+        $form['edit[name]'] = 'new-team';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -201,7 +251,7 @@ class TeamControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/team/list');
 
         $this->assertEquals(1, $crawler->filter('table.table-condensed.table-responsive')->count());
-        $this->assertEquals(6, $crawler->filter('table.table-condensed.table-responsive th')->count());
+        $this->assertEquals(7, $crawler->filter('table.table-condensed.table-responsive th')->count());
         $this->assertEquals(1, $crawler->filter('.glyphicon-plus')->count());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());

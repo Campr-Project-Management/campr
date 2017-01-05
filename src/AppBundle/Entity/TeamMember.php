@@ -43,7 +43,7 @@ class TeamMember
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team", inversedBy="teamMembers")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="team_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="team_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $team;
@@ -100,6 +100,18 @@ class TeamMember
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    /**
+     * Has role.
+     *
+     * @param $role
+     *
+     * @return bool
+     */
+    public function hasRole($role)
+    {
+        return in_array($role, $this->getRoles());
     }
 
     /**
