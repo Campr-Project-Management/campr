@@ -42,6 +42,8 @@ class Project
     /**
      * @var string
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="encryption_key", type="string", length=128, nullable=true)
      */
     private $encryptionKey;
@@ -154,12 +156,16 @@ class Project
     /**
      * @var ArrayCollection|ChatRoom[]
      *
+     * @Serializer\Exclude()
+     *
      ** @ORM\OneToMany(targetEntity="AppBundle\Entity\ChatRoom", mappedBy="project")
      */
     private $chatRooms;
 
     /**
      * @var ArrayCollection|Message[]
+     *
+     * @Serializer\Exclude()
      *
      ** @ORM\OneToMany(targetEntity="AppBundle\Entity\Message", mappedBy="project")
      */
@@ -177,7 +183,7 @@ class Project
     /**
      * @var \DateTime
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="status_updated_at", type="datetime", nullable=true)
      */
@@ -186,7 +192,7 @@ class Project
     /**
      * @var \DateTime|null
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="approved_at", type="datetime", nullable=true)
      */
@@ -195,6 +201,7 @@ class Project
     /**
      * @var ArrayCollection|FileSystem[]
      *
+     * @Serializer\Exclude()
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\FileSystem", mappedBy="project")
      */
@@ -203,7 +210,7 @@ class Project
     /**
      * @var \DateTime
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
@@ -212,7 +219,7 @@ class Project
     /**
      * @var \DateTime|null
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -411,6 +418,32 @@ class Project
     }
 
     /**
+     * Returns sponsor id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("sponsor")
+     *
+     * @return string
+     */
+    public function getSponsorId()
+    {
+        return $this->sponsor ? $this->sponsor->getId() : null;
+    }
+
+    /**
+     * Returns sponsor full name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("sponsorFullName")
+     *
+     * @return string
+     */
+    public function getSponsorFullName()
+    {
+        return $this->sponsor ? $this->sponsor->getFullName() : null;
+    }
+
+    /**
      * Set manager.
      *
      * @param User $manager
@@ -432,6 +465,32 @@ class Project
     public function getManager()
     {
         return $this->manager;
+    }
+
+    /**
+     * Returns manager id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("manager")
+     *
+     * @return string
+     */
+    public function getManagerId()
+    {
+        return $this->manager ? $this->manager->getId() : null;
+    }
+
+    /**
+     * Returns manager full name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("managerFullName")
+     *
+     * @return string
+     */
+    public function getManagerFullName()
+    {
+        return $this->manager ? $this->manager->getFullName() : null;
     }
 
     /**
@@ -459,6 +518,32 @@ class Project
     }
 
     /**
+     * Returns company id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("company")
+     *
+     * @return string
+     */
+    public function getCompanyId()
+    {
+        return $this->company ? $this->company->getId() : null;
+    }
+
+    /**
+     * Returns company name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("companyName")
+     *
+     * @return string
+     */
+    public function getCompanyName()
+    {
+        return $this->company ? $this->company->getName() : null;
+    }
+
+    /**
      * Set projectComplexity.
      *
      * @param ProjectComplexity $projectComplexity
@@ -480,6 +565,32 @@ class Project
     public function getProjectComplexity()
     {
         return $this->projectComplexity;
+    }
+
+    /**
+     * Returns projectComplexity id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectComplexity")
+     *
+     * @return string
+     */
+    public function getProjectComplexityId()
+    {
+        return $this->projectComplexity ? $this->projectComplexity->getId() : null;
+    }
+
+    /**
+     * Returns projectComplexity name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectComplexityName")
+     *
+     * @return string
+     */
+    public function getProjectComplexityName()
+    {
+        return $this->projectComplexity ? $this->projectComplexity->getName() : null;
     }
 
     /**
@@ -507,6 +618,32 @@ class Project
     }
 
     /**
+     * Returns projectCategory id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectCategory")
+     *
+     * @return string
+     */
+    public function getProjectCategoryId()
+    {
+        return $this->projectCategory ? $this->projectCategory->getId() : null;
+    }
+
+    /**
+     * Returns projectCategory name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectCategoryName")
+     *
+     * @return string
+     */
+    public function getProjectCategoryName()
+    {
+        return $this->projectCategory ? $this->projectCategory->getName() : null;
+    }
+
+    /**
      * Set projectScope.
      *
      * @param ProjectScope $projectScope
@@ -528,6 +665,32 @@ class Project
     public function getProjectScope()
     {
         return $this->projectScope;
+    }
+
+    /**
+     * Returns projectScope id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectScope")
+     *
+     * @return string
+     */
+    public function getProjectScopeId()
+    {
+        return $this->projectScope ? $this->projectScope->getId() : null;
+    }
+
+    /**
+     * Returns projectScope name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectScopeName")
+     *
+     * @return string
+     */
+    public function getProjectScopeName()
+    {
+        return $this->projectScope ? $this->projectScope->getName() : null;
     }
 
     /**
@@ -655,42 +818,55 @@ class Project
     }
 
     /**
-     * Returns project category name.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("projectCategory")
-     *
-     * @return string
-     */
-    public function getProjectCategoryName()
-    {
-        return $this->projectCategory ? $this->projectCategory->getName() : '-';
-    }
-
-    /**
-     * Returns status name.
+     * Returns status id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("status")
      *
      * @return string
      */
-    public function getStatusName()
+    public function getStatusId()
     {
-        return $this->status ? $this->status->getName() : '-';
+        return $this->status ? $this->status->getId() : null;
     }
 
     /**
-     * Returns portfolio name.
+     * Returns status name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("statusName")
+     *
+     * @return string
+     */
+    public function getStatusName()
+    {
+        return $this->status ? $this->status->getName() : null;
+    }
+
+    /**
+     * Returns portfolio id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("portfolio")
      *
      * @return string
      */
+    public function getPortfolioId()
+    {
+        return $this->portfolio ? $this->portfolio->getId() : null;
+    }
+
+    /**
+     * Returns portfolio name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("portfolioName")
+     *
+     * @return string
+     */
     public function getPortfolioName()
     {
-        return $this->portfolio ? $this->portfolio->getName() : '-';
+        return $this->portfolio ? $this->portfolio->getName() : null;
     }
 
     /**
@@ -753,6 +929,8 @@ class Project
      * Remove chatRoom.
      *
      * @param ChatRoom $chatRoom
+     *
+     * @return Project
      */
     public function removeChatRoom(ChatRoom $chatRoom)
     {
@@ -789,6 +967,8 @@ class Project
      * Remove message.
      *
      * @param Message $message
+     *
+     * @return Project
      */
     public function removeMessage(Message $message)
     {

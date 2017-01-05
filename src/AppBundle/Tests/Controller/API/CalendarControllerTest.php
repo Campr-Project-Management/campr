@@ -266,7 +266,6 @@ class CalendarControllerTest extends BaseController
      *
      * @param $isResponseSuccessful
      * @param $responseStatusCode
-     * @param $responseContent
      */
     public function testDeleteAction(
         $isResponseSuccessful,

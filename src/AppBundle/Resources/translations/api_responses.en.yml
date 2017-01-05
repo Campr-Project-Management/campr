@@ -2,6 +2,90 @@ api:
     general:
         not_found: Resource not found!
     authentication:
-        account_disabled: 'Account disabled'
-        bad_credentials: 'Bad credentials'
-        token_returned: 'Token returned'
+        account_disabled: Account disabled
+        bad_credentials: Bad credentials
+        token_returned: Token returned
+    project:
+        created: New project created.
+        edited: Project successfully edited.
+        deleted: Project deleted.
+    project_user:
+        created: New project user created.
+        edited: Project user successfully edited.
+        deleted: Project user deleted.
+    project_complexity:
+        created: New project complexity created.
+        edited: Project complexity successfully edited.
+        deleted: Project complexity deleted.
+    project_category:
+        created: New project category created.
+        edited: Project category successfully edited.
+        deleted: Project category deleted.
+    project_scope:
+        created: New project scope created.
+        edited: Project scope successfully edited.
+        deleted: Project scope deleted.
+    project_status:
+        created: New project status created.
+        edited: Project status successfully edited.
+        deleted: Project status deleted.
+    project_module:
+        created: New project module created.
+        edited: Project module successfully edited.
+        deleted: Project module deleted.
+    project_role:
+        created: New project role created.
+        edited: Project role successfully edited.
+        deleted: Project role deleted.
+    project_team:
+        created: New project team created.
+        edited: Project team successfully edited.
+        deleted: Project team deleted.
+    project_department:
+        created: New project department created.
+        edited: Project department successfully edited.
+        deleted: Project department deleted.
+    project_cost_type:
+        created: New project cost type created.
+        edited: Project cost type successfully edited.
+        deleted: Project cost type deleted.
+    project_work_cost_type:
+        created: New project work cost type created.
+        edited: Project work cost type successfully edited.
+        deleted: Project work cost type deleted.
+    project_user:
+        created: New project user created.
+        edited: Project user successfully edited.
+        deleted: Project user deleted.
+    status:
+        created: New status created.
+        edited: Status successfully edited.
+        deleted: Status deleted.
+    schedule:
+        created: New schedule created.
+        edited: Schedule successfully edited.
+        deleted: Schedule deleted.
+    risk:
+        created: New risk created.
+        edited: Risk successfully edited.
+        deleted: Risk deleted.
+    risk_category:
+        created: New risk category created.
+        edited: Risk category successfully edited.
+        deleted: Risk category deleted.
+    risk_strategy:
+        created: New risk strategy created.
+        edited: Risk strategy successfully edited.
+        deleted: Risk strategy deleted.
+    impact:
+        created: New impact created.
+        edited: Impact successfully edited.
+        deleted: Impact deleted.
+    company:
+        created: New company created.
+        edited: Company successfully edited.
+        deleted: Company deleted.
+    portfolio:
+        created: New portfolio created.
+        edited: Portfolio successfully edited.
+        deleted: Portfolio deleted.
