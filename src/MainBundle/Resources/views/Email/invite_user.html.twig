@@ -1,0 +1,14 @@
+{% extends 'MainBundle:Email:base.html.twig' %}
+
+{% trans_default_domain 'email' %}
+
+{% block subject %}
+    {{ 'team_member.invite.subject'|trans }}
+{% endblock %}
+
+{% block message %}
+    <p>{{'general.hello'|trans }} {{ user_email }},
+    <p>{{ 'team_member.invite.first_message'|trans({'%team_name%': team.name}) }}</p>
+    <p>{{ 'team_member.invite.second_message'|trans }}</p>
+    <p>{{ 'team_member.invite.third_message'|trans }} <a href="{{ url('main_team_invitation_accepted', {'token': token}) }}">{{ 'team_member.invite.link_message'|trans }}</a></p>
+{% endblock %}

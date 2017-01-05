@@ -6,6 +6,8 @@ main:
             create: Create
             save: Save
             login: Login
+        yes: Yes
+        no: No
     nav:
         account:
             title: Account
@@ -40,6 +42,7 @@ main:
                 title: Create new team
             edit:
                 title: Edit team
+            invite_user: Invite user
         payment:
             title: Payments
             table:
@@ -74,6 +77,16 @@ main:
             password: Password
             repeat_password: Repeat password
             success: Your account was succesfully edited!
+        team_member:
+            invite:
+                success: New invitation sent to user with email %user_email%.
+            invitation:
+                accepted: Congratulation! You are now part of the team %team_name%.
+                denied: The invitation was sent to user with email %user_email%. If you don't have an account with this email, make one.
+            remove:
+                success: User %team_member_name% has been removed from the team %team_name%.
+                yourself: You are not able to remove yourself from the %team_name%.
+                not_part_of_the_team: User %team_member_name% is not part of the team %team_name%.
     contact:
         title: Send us a message
         form:

@@ -46,7 +46,7 @@ class TeamControllerTest extends BaseController
         $form = $crawler->filter('#create-team')->first()->form();
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('Please enter a team name!', $crawler->html());
+        $this->assertContains('Team name should not be blank.', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -87,6 +87,23 @@ class TeamControllerTest extends BaseController
 
         $this->assertContains('Uploaded file must be an image!', $crawler->html());
 
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testUniqueNameOnCreatePage()
+    {
+        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
+        $this->login($this->user);
+        $this->assertNotNull($this->user, 'User not found');
+
+        /** @var Crawler $crawler */
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/team/create');
+
+        $form = $crawler->filter('#create-team')->first()->form();
+        $form['create[name]'] = 'team_1';
+        $crawler = $this->client->submit($form);
+
+        $this->assertContains('Team name already used.', $crawler->html());
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
@@ -179,8 +196,26 @@ class TeamControllerTest extends BaseController
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('Please enter a team name!', $crawler->html());
-        $this->assertContains('The provided slug is already used!', $crawler->html());
+        $this->assertContains('Team name should not be blank.', $crawler->html());
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testUniqueNameOnEditPage()
+    {
+        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
+        $this->login($this->user);
+        $this->assertNotNull($this->user, 'User not found');
+
+        /** @var Crawler $crawler */
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/team/2/edit');
+
+        $form = $crawler->filter('#edit-team')->first()->form();
+        $form['edit[name]'] = 'team_1';
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertContains('Team name already used.', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }

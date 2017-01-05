@@ -208,3 +208,25 @@ services:
     app_api.authentication.handler.authenticator:
         class: AppBundle\Services\Authentication\Authenticator
         public: false
+
+### VALIDATORS ###
+    app.user_invited_validator:
+        class: MainBundle\Validator\Constraints\TeamMember\UserInvitedValidator
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: validator.constraint_validator }
+
+    app.self_imvite_validator:
+        class: MainBundle\Validator\Constraints\TeamMember\SelfInviteValidator
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: validator.constraint_validator }
+
+    app.team_member_validator:
+        class: MainBundle\Validator\Constraints\TeamMember\ActiveMemberValidator
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: validator.constraint_validator }

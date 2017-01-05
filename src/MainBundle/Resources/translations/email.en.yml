@@ -24,3 +24,10 @@ contact:
     from: There is a new contact message from:
     subject: Subject
     message: Message
+team_member:
+    invite:
+        subject: Campr - Team member invitation
+        first_message: You are invited to be part of the team %team_name%.
+        second_message: If you don't have an account with this email please make one in order to accept invitation.
+        third_message: Please click on the following
+        link_message: invitation
