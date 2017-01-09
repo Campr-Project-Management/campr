@@ -34,6 +34,7 @@ parameters:
 
     #paginator
     admin.per_page: 10
+    front.per_page: 12
 
     #misc
     activation_token_expiration: P1D

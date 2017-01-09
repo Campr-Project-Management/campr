@@ -21,11 +21,10 @@ class LoadNoteData extends AbstractFixture implements OrderedFixtureInterface
         $meeting = $this->getReference('meeting1');
         $responsible = $this->getReference('user4');
         $status = $this->getReference('status1');
-        $date = new \DateTime();
+        $date = new \DateTime('2017-01-01');
+        $dueDate = new \DateTime('2017-05-01');
 
         for ($i = 1; $i <= 2; ++$i) {
-            $dueDate = new \DateTime(sprintf('+%d days', $i * 2));
-
             $note = (new Note())
                 ->setTitle('note'.$i)
                 ->setDescription('description'.$i)

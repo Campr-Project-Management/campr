@@ -5,7 +5,7 @@ namespace AppBundle\Tests\Controller\Admin;
 use AppBundle\Entity\Media;
 use AppBundle\Entity\FileSystem as FileSystemEntity;
 use AppBundle\Entity\Project;
-use AppBundle\Tests\Controller\BaseController;
+use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;

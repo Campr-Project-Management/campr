@@ -197,7 +197,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var ArrayCollection|TeamInvite[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamInvite", mappedBy="team")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamInvite", mappedBy="user")
      */
     private $teamInvites;
 
