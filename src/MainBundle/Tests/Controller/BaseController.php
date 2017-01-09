@@ -29,9 +29,13 @@ class BaseController extends WebTestCase
         parent::setUp();
 
         $this->client = static::createClient();
+
         $domain = $this->client->getContainer()->getParameter('domain');
+        $bundle = explode('\\', get_class($this));
+        $host = $bundle[0] === 'AppBundle' ? 'team.'.$domain : $domain;
+
         $this->client->setServerParameters([
-            'HTTP_HOST' => $domain,
+            'HTTP_HOST' => $host,
         ]);
 
         $this->em = $this->client->getContainer()->get('doctrine')->getManager();
@@ -77,7 +81,7 @@ class BaseController extends WebTestCase
             ->em
             ->getRepository(User::class)
             ->findOneByUsername($username)
-            ;
+        ;
     }
 
     /**
@@ -118,7 +122,8 @@ class BaseController extends WebTestCase
                 ]);
             $this
                 ->em
-                ->remove($user);
+                ->remove($user)
+            ;
 
             $this->em->flush();
         }

@@ -5,7 +5,7 @@ namespace AppBundle\Form\Meeting;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Meeting;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -53,16 +53,18 @@ class CreateType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('start', TimeType::class, [
+            ->add('start', DateTimeType::class, [
                 'widget' => 'single_text',
+                'format' => 'H:i:s',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'validation.constraints.meeting.start.not_blank',
                     ]),
                 ],
             ])
-            ->add('end', TimeType::class, [
+            ->add('end', DateTimeType::class, [
                 'widget' => 'single_text',
+                'format' => 'H:i:s',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'validation.constraints.meeting.end.not_blank',
