@@ -225,6 +225,7 @@ class TeamController extends Controller
             'last_name' => $user->getLastName(),
             'phone' => $user->getPhone(),
             'roles' => $roles,
+            'api_token' => $user->getApiToken(),
         ];
 
         $signer = $this->get('app.jwt_signer');

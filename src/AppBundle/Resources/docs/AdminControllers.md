@@ -4,6 +4,9 @@ All the controllers that are related to the admin section of the websites can be
 >
 src/AppBundle/Controller/Admin/
 >
+>
+src/MainBundle/Controller/Admin/
+>
 
 The following controllers are used to create CRUD's for the existing entities:
 >

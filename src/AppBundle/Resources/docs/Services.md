@@ -8,6 +8,7 @@ The following services are currently used:
 * [Mailer Service](#mailer-service)
 * [User Service](#user-service)
 * [FileSystem Service](#filesystem-service)
+* [Team Service](#team-service)
 
 ## Data Table Service
 >
@@ -59,10 +60,20 @@ path: src/AppBundle/Services/UserService.php
 
 Service used to handle the projects filesystem.
 
-* ```createFileSystem``` - creates a new filesystem based on settings saved in FileSystem entity.
-* ```getFileSystemMap``` - returns the map with all existing filesystem.
-* ```saveMediaFile``` - saves a specific Media entity into a filesystem.
-* ```removeMediaFile``` - removes a specific Media entity from a filesystem.
+* ```createFileSystem(FileSystemEntity $fileSystem)``` - creates a new filesystem based on settings saved in FileSystem entity.
+* ```getFileSystemMap()``` - returns the map with all existing filesystem.
+* ```saveMediaFile(Media $media, File $file)``` - saves a specific Media entity into a filesystem.
+* ```removeMediaFile(Media $media)``` - removes a specific Media entity from a filesystem.
+
+## Team Service
+>
+path: src/AppBundle/Services/TeamService.php
+>
+
+Service used to handle operations on Team entity.
+
+* ```isEnabled($slug)``` - checks if a Team object is enabled based on "slug" parameter in order to allow users to login on team website.
+
 
 **More information about functions and parameters of each services can be found in Sami Documentation -> Services.**
 
