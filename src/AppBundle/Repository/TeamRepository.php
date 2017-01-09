@@ -13,7 +13,7 @@ class TeamRepository extends EntityRepository
      *
      * @return null|Team
      */
-    public function findOneByIDOrSlug($id): Team
+    public function findOneByIDOrSlug($id)
     {
         $qb = $this->createQueryBuilder('t');
         $qb->where($qb->expr()->eq('t.id', $qb->expr()->literal($id)));

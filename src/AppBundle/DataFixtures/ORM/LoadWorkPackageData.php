@@ -17,7 +17,8 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
      */
     public function load(ObjectManager $manager)
     {
-        $responsible = $this->getReference('user5');
+        $user5 = $this->getReference('user5');
+        $user4 = $this->getReference('user4');
         $startAt = new \DateTime();
 
         for ($i = 1; $i <= 2; ++$i) {
@@ -30,12 +31,33 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
                 ->setContent('content'.$i)
                 ->setScheduledStartAt($startAt)
                 ->setScheduledFinishAt($finishAt)
-                ->setResponsibility($responsible)
+                ->setResponsibility($user5)
                 ->setColorStatus($colorStatus)
             ;
             $this->setReference('work-package'.$i, $workPackage);
             $manager->persist($workPackage);
         }
+
+        $workPackage = (new WorkPackage())
+            ->setPuid('1234')
+            ->setName('work-package3')
+            ->setContent('content')
+            ->setScheduledStartAt(new \DateTime('2017-01-01'))
+            ->setScheduledFinishAt(new \DateTime('2017-01-05'))
+            ->setResponsibility($user4)
+            ->setColorStatus($colorStatus)
+        ;
+        $manager->persist($workPackage);
+        $workPackage = (new WorkPackage())
+            ->setPuid('123456')
+            ->setName('work-package4')
+            ->setContent('content4')
+            ->setScheduledStartAt(new \DateTime('2017-01-01'))
+            ->setScheduledFinishAt(new \DateTime('2017-01-05'))
+            ->setResponsibility($user4)
+            ->setColorStatus($colorStatus)
+        ;
+        $manager->persist($workPackage);
 
         $manager->flush();
     }

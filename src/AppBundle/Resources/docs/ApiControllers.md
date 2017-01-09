@@ -4,8 +4,11 @@ All the controllers that are related to the API component can be found under:
 >
 src/AppBundle/Controller/API/
 >
+>
+src/MainBundle/Controller/API/
+>
 
-You can check the following controllers for more information about the implemented functionality: 
+You can check Sami documentation for the API usage. 
 
 ## 
 

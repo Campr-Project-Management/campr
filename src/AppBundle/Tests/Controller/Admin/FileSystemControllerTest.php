@@ -3,7 +3,7 @@
 namespace AppBundle\Tests\Controller\Admin;
 
 use AppBundle\Entity\FileSystem;
-use AppBundle\Tests\Controller\BaseController;
+use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Field\InputFormField;
 use Symfony\Component\HttpFoundation\Request;
