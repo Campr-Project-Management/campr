@@ -179,15 +179,28 @@ class Day
     }
 
     /**
-     * Returns calendar name.
+     * Returns calendar id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("calendar")
      *
      * @return string
      */
+    public function getCalendarId()
+    {
+        return $this->calendar ? $this->calendar->getId() : null;
+    }
+
+    /**
+     * Returns calendar name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("calendarName")
+     *
+     * @return string
+     */
     public function getCalendarName()
     {
-        return $this->calendar ? $this->calendar->getName() : '-';
+        return $this->calendar ? $this->calendar->getName() : null;
     }
 }
