@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * TeamSlug.
@@ -30,6 +31,8 @@ class TeamSlug
 
     /**
      * @var Team
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team", inversedBy="teamSlugs", cascade={"remove"})
      * @ORM\JoinColumn(name="team_id")

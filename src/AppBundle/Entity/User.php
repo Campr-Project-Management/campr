@@ -78,25 +78,31 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @var string
+     *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="password", type="string", length=128)
      */
     private $password;
 
     /**
      * @var string
+     *
+     * @Serializer\Exclude()
      */
     private $plainPassword;
 
     /**
      * @var string
+     *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="salt", type="string", length=32)
      */
     private $salt;
 
     /**
      * @var string
-     *
-     * @Serializer\Exclude()
      *
      * @ORM\Column(name="roles", type="json_array", nullable=false)
      */
@@ -119,12 +125,16 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var string
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="activation_token", type="string", length=32, nullable=true)
      */
     private $activationToken;
 
     /**
      * @var \DateTime
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="activation_token_created_at", type="datetime", nullable=true)
      */
@@ -133,12 +143,16 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var string
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="reset_password_token", type="string", length=32, nullable=true)
      */
     private $resetPasswordToken;
 
     /**
      * @var \DateTime
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="reset_password_token_created_at", type="datetime", nullable=true)
      */
@@ -147,12 +161,16 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var \DateTime
      *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -161,6 +179,8 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var \DateTime|null
      *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     *
      * @ORM\Column(name="activated_at", type="datetime", nullable=true)
      */
     private $activatedAt;
@@ -168,6 +188,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var ArrayCollection|Media[]
      *
+     * @Serializer\Exclude()
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Media", mappedBy="user")
      */
@@ -189,6 +210,8 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @var string
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="api_token", type="string", length=255, unique=true)
      */

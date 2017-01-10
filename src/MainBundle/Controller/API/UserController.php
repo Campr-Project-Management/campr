@@ -6,7 +6,6 @@ use AppBundle\Entity\User;
 use MainBundle\Form\User\AccountType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Route("/api/user")
  */
-class UserController extends Controller
+class UserController extends ApiController
 {
     /**
      * Retrieve User information.
@@ -35,24 +34,14 @@ class UserController extends Controller
         ;
 
         if (!$user) {
-            return new JsonResponse([
+            return $this->createApiResponse([
                 'message' => $this
                     ->get('translator')
                     ->trans('api.general.not_found', [], 'api_responses'),
             ], Response::HTTP_NOT_FOUND);
         }
 
-        return new JsonResponse([
-            'id' => $user->getId(),
-            'username' => $user->getUsername(),
-            'email' => $user->getEmail(),
-            'phone' => $user->getPhone(),
-            'first_name' => $user->getFirstName(),
-            'last_name' => $user->getLastName(),
-            'created_at' => $user->getCreatedAt() ? $user->getCreatedAt()->format('Y-m-d H:i:s') : null,
-            'updated_at' => $user->getUpdatedAt() ? $user->getUpdatedAt()->format('Y-m-d H:i:s') : null,
-            'activated_at' => $user->getActivatedAt() ? $user->getActivatedAt()->format('Y-m-d H:i:s') : null,
-        ]);
+        return $this->createApiResponse($user);
     }
 
     /**
@@ -84,17 +73,7 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
 
-            return new JsonResponse([
-                'id' => $user->getId(),
-                'username' => $user->getUsername(),
-                'email' => $user->getEmail(),
-                'phone' => $user->getPhone(),
-                'first_name' => $user->getFirstName(),
-                'last_name' => $user->getLastName(),
-                'created_at' => $user->getCreatedAt() ? $user->getCreatedAt()->format('Y-m-d H:i:s') : null,
-                'updated_at' => $user->getUpdatedAt() ? $user->getUpdatedAt()->format('Y-m-d H:i:s') : null,
-                'activated_at' => $user->getActivatedAt() ? $user->getActivatedAt()->format('Y-m-d H:i:s') : null,
-            ]);
+            return $this->createApiResponse($user);
         }
 
         $errors = [];
@@ -102,8 +81,6 @@ class UserController extends Controller
             $errors[] = $error->getMessage();
         }
 
-        return new JsonResponse([
-            'errors' => $errors,
-        ]);
+        return $this->createApiResponse($errors);
     }
 }

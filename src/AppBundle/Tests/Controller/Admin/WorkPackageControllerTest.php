@@ -273,7 +273,7 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('data-column-id="id"', $crawler->html());
         $this->assertContains('data-column-id="puid"', $crawler->html());
         $this->assertContains('data-column-id="name"', $crawler->html());
-        $this->assertContains('data-column-id="responsibility"', $crawler->html());
+        $this->assertContains('data-column-id="responsibilityFullName"', $crawler->html());
         $this->assertContains('data-column-id="scheduledStartAt"', $crawler->html());
         $this->assertContains('data-column-id="scheduledFinishAt"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());

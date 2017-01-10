@@ -144,8 +144,8 @@ class ImportServiceTest extends KernelTestCase
                 }
 
                 if ($object instanceof WorkingTime) {
-                    $self->assertEquals('08:00', $object->getFromTimeFormatted());
-                    $self->assertEquals('12:00', $object->getToTimeFormatted());
+                    $self->assertEquals('08:00:00', $object->getFromTime()->format('H:i:s'));
+                    $self->assertEquals('12:00:00', $object->getToTime()->format('H:i:s'));
                     $self->assertEquals(1, $object->getDay()->getType());
                 }
             })
