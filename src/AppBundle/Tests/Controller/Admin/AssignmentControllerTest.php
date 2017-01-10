@@ -267,8 +267,8 @@ class AssignmentControllerTest extends BaseController
 
         $this->assertEquals(1, $crawler->filter('#data-table-command')->count());
         $this->assertContains('data-column-id="id"', $crawler->html());
-        $this->assertContains('data-column-id="workPackage"', $crawler->html());
-        $this->assertContains('data-column-id="workPackageProjectWorkCostType"', $crawler->html());
+        $this->assertContains('data-column-id="workPackageName"', $crawler->html());
+        $this->assertContains('data-column-id="workPackageProjectWorkCostTypeName"', $crawler->html());
         $this->assertContains('data-column-id="milestone"', $crawler->html());
         $this->assertContains('data-column-id="percentWorkComplete"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());

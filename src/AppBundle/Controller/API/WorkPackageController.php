@@ -6,9 +6,9 @@ use AppBundle\Entity\WorkPackage;
 use AppBundle\Form\WorkPackage\CreateType;
 use AppBundle\Security\ProjectVoter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Route("/api/workpackage")
  */
-class WorkPackageController extends Controller
+class WorkPackageController extends ApiController
 {
     /**
      * All tasks for the current user.
@@ -46,12 +46,7 @@ class WorkPackageController extends Controller
             ->setMaxResults($pageSize)
         ;
 
-        $tasks = [];
-        foreach ($paginator as $wp) {
-            $tasks[] = $this->serialize($wp);
-        }
-
-        return new JsonResponse($tasks);
+        return $this->createApiResponse($paginator->getIterator()->getArrayCopy());
     }
 
     /**
@@ -66,7 +61,7 @@ class WorkPackageController extends Controller
      */
     public function getAction(WorkPackage $workPackage)
     {
-        return new JsonResponse($this->serialize($workPackage));
+        return $this->createApiResponse($workPackage);
     }
 
     /**
@@ -90,7 +85,7 @@ class WorkPackageController extends Controller
             $em->persist($form->getData());
             $em->flush();
 
-            return new JsonResponse($this->serialize($form->getData()));
+            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
         }
 
         $errors = [];
@@ -98,9 +93,7 @@ class WorkPackageController extends Controller
             $errors[] = $error->getMessage();
         }
 
-        return new JsonResponse([
-            'errors' => $errors,
-        ]);
+        return $this->createApiResponse($errors);
     }
 
     /**
@@ -129,7 +122,7 @@ class WorkPackageController extends Controller
             $em->persist($wp);
             $em->flush();
 
-            return new JsonResponse($this->serialize($wp));
+            return $this->createApiResponse($wp);
         }
 
         $errors = [];
@@ -137,9 +130,7 @@ class WorkPackageController extends Controller
             $errors[] = $error->getMessage();
         }
 
-        return new JsonResponse([
-            'errors' => $errors,
-        ]);
+        return $this->createApiResponse($errors);
     }
 
     /**
@@ -162,42 +153,6 @@ class WorkPackageController extends Controller
         $em->remove($wp);
         $em->flush();
 
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
-    }
-
-    /**
-     * Create array with needed information from WorkPackage object.
-     *
-     * @param WorkPackage $workPackage
-     *
-     * @return array
-     */
-    private function serialize(WorkPackage $wp)
-    {
-        return [
-            'id' => $wp->getId(),
-            'name' => $wp->getName(),
-            'project' =>  $wp->getProject() ? $wp->getProject()->getId() : null,
-            'project_name' => $wp->getProject() ? $wp->getProject()->getName() : null,
-            'responsibility' => $wp->getResponsibility() ? $wp->getResponsibility()->getId() : null,
-            'responsibility_name' => $wp->getResponsibility() ? $wp->getResponsibility()->getFullName() : null,
-            'schedules' => [
-                'base' => [
-                    'start' => $wp->getScheduledStartAt() ? $wp->getScheduledStartAt()->format('Y-m-d H:i:s') : null,
-                    'finish' => $wp->getScheduledFinishAt() ? $wp->getScheduledFinishAt()->format('Y-m-d H:i:s') : null,
-                ],
-                'forecast' => [
-                    'start' => $wp->getForecastStartAt() ? $wp->getScheduledStartAt()->format('Y-m-d H:i:s') : null,
-                    'finish' => $wp->getForecastFinishAt() ? $wp->getScheduledStartAt()->format('Y-m-d H:i:s') : null,
-                ],
-            ],
-            'progress' => $wp->getProgress(),
-            'content' => $wp->getContent(),
-            'color_status' => [
-                'id' => $wp->getColorStatus() ? $wp->getColorStatus()->getId() : null,
-                'name' => $wp->getColorStatus() ? $wp->getColorStatus()->getName() : null,
-                'color' => $wp->getColorStatus() ? $wp->getColorStatus()->getColor() : null,
-            ],
-        ];
+        return $this->createApiResponse([], Response::HTTP_NO_CONTENT);
     }
 }

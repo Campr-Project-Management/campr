@@ -25,7 +25,7 @@ class WorkingTime
     /**
      * @var \DateTime|null
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'H:i:s'>")
      *
      * @ORM\Column(name="from_time", type="time", nullable=true)
      */
@@ -34,7 +34,7 @@ class WorkingTime
     /**
      * @var \DateTime|null
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'H:i:s'>")
      *
      * @ORM\Column(name="to_time", type="time", nullable=true)
      */
@@ -85,19 +85,6 @@ class WorkingTime
     }
 
     /**
-     * Returns fromTime date formatted.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("fromTime")
-     *
-     * @return string
-     */
-    public function getFromTimeFormatted()
-    {
-        return $this->fromTime ? $this->fromTime->format('H:i') : '-';
-    }
-
-    /**
      * Set toTime.
      *
      * @param \DateTime $toTime
@@ -119,19 +106,6 @@ class WorkingTime
     public function getToTime()
     {
         return $this->toTime;
-    }
-
-    /**
-     * Returns toTime date formatted.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("toTime")
-     *
-     * @return string
-     */
-    public function getToTimeFormatted()
-    {
-        return $this->toTime ? $this->toTime->format('H:i') : '-';
     }
 
     /**
@@ -159,18 +133,15 @@ class WorkingTime
     }
 
     /**
-     * Returns day's calendar name.
+     * Returns day id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("day")
      *
-     * @return string
+     * @return int
      */
-    public function getCalendarDay()
+    public function getDayId()
     {
-        return $this->day && $this->day->getCalendar()
-            ? $this->day->getCalendar()->getName().' - '.$this->day->getId()
-            : '-'
-        ;
+        return $this->day ? $this->day->getId() : null;
     }
 }

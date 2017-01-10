@@ -41,6 +41,9 @@ class WorkPackage
 
     /**
      * @var WorkPackage
+     *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage")
      * @ORM\JoinColumn(name="parent_id")
      */
@@ -48,6 +51,9 @@ class WorkPackage
 
     /**
      * @var ColorStatus|null
+     *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ColorStatus")
      * @ORM\JoinColumn(name="color_status_id")
      */
@@ -61,6 +67,8 @@ class WorkPackage
 
     /**
      * @var Project|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="workPackages")
      * @ORM\JoinColumn(name="project_id")
@@ -80,7 +88,7 @@ class WorkPackage
     /**
      * @var \DateTime|null
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="scheduled_start_at", type="date", nullable=true)
      */
@@ -89,7 +97,7 @@ class WorkPackage
     /**
      * @var \DateTime|null
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="scheduled_finish_at", type="date", nullable=true)
      */
@@ -97,24 +105,36 @@ class WorkPackage
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     *
      * @ORM\Column(name="forecast_start_at", type="date", nullable=true)
      */
     private $forecastStartAt;
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     *
      * @ORM\Column(name="forecast_finish_at", type="date", nullable=true)
      */
     private $forecastFinishAt;
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     *
      * @ORM\Column(name="actual_start_at", type="date", nullable=true)
      */
     private $actualStartAt;
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     *
      * @ORM\Column(name="actual_finish_at", type="date", nullable=true)
      */
     private $actualFinishAt;
@@ -150,6 +170,8 @@ class WorkPackage
     /**
      * @var Calendar
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="workPackages")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id")
      */
@@ -158,12 +180,16 @@ class WorkPackage
     /**
      * @var \DateTime
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -285,19 +311,6 @@ class WorkPackage
     }
 
     /**
-     * Returns scheduledStartAt date formatted.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("scheduledStartAt")
-     *
-     * @return string
-     */
-    public function getScheduledStartAtFormatted()
-    {
-        return $this->scheduledStartAt ? $this->scheduledStartAt->format('d/m/Y') : '-';
-    }
-
-    /**
      * Set scheduledFinishAt.
      *
      * @param \DateTime $scheduledFinishAt
@@ -319,19 +332,6 @@ class WorkPackage
     public function getScheduledFinishAt()
     {
         return $this->scheduledFinishAt;
-    }
-
-    /**
-     * Returns scheduledFinishAt date formatted.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("scheduledFinishAt")
-     *
-     * @return string
-     */
-    public function getScheduledFinishAtFormatted()
-    {
-        return $this->scheduledFinishAt ? $this->scheduledFinishAt->format('d/m/Y') : '-';
     }
 
     /**
@@ -623,16 +623,29 @@ class WorkPackage
     }
 
     /**
-     * Returns responsibility username.
+     * Returns responsibility id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("responsibility")
      *
      * @return string
      */
-    public function getResponsibilityName()
+    public function getResponsibilityId()
     {
-        return $this->responsibility ? $this->responsibility->getUsername() : '-';
+        return $this->responsibility ? $this->responsibility->getId() : null;
+    }
+
+    /**
+     * Returns responsibility full name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibilityFullName")
+     *
+     * @return string
+     */
+    public function getResponsibilityFullName()
+    {
+        return $this->responsibility ? $this->responsibility->getFullName() : null;
     }
 
     /**
@@ -719,5 +732,122 @@ class WorkPackage
     public function getCalendar()
     {
         return $this->calendar;
+    }
+
+    /**
+     * Returns parent id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("parent")
+     *
+     * @return string
+     */
+    public function getParentId()
+    {
+        return $this->parent ? $this->parent->getId() : null;
+    }
+
+    /**
+     * Returns parent name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("parentName")
+     *
+     * @return string
+     */
+    public function getParentName()
+    {
+        return $this->parent ? $this->parent->getName() : null;
+    }
+
+    /**
+     * Returns ColorStatus id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("colorStatus")
+     *
+     * @return string
+     */
+    public function getColorStatusId()
+    {
+        return $this->colorStatus ? $this->colorStatus->getId() : null;
+    }
+
+    /**
+     * Returns ColorStatus name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("colorStatusName")
+     *
+     * @return string
+     */
+    public function getColorStatusName()
+    {
+        return $this->colorStatus ? $this->colorStatus->getName() : null;
+    }
+
+    /**
+     * Returns ColorStatus color.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("colorStatusColor")
+     *
+     * @return string
+     */
+    public function getColorStatusColor()
+    {
+        return $this->colorStatus ? $this->colorStatus->getColor() : null;
+    }
+
+    /**
+     * Returns Project id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("project")
+     *
+     * @return string
+     */
+    public function getProjectId()
+    {
+        return $this->project ? $this->project->getId() : null;
+    }
+
+    /**
+     * Returns Project name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectName")
+     *
+     * @return string
+     */
+    public function getProjectName()
+    {
+        return $this->project ? $this->project->getName() : null;
+    }
+
+    /**
+     * Returns Calendar id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("calendar")
+     *
+     * @return int
+     */
+    public function getCalendarId()
+    {
+        return $this->calendar ? $this->calendar->getId() : null;
+    }
+
+    /**
+     * Returns Calendar name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("calendarName")
+     *
+     * @return string
+     */
+    public function getCalendarName()
+    {
+        return $this->calendar ? $this->calendar->getName() : null;
     }
 }

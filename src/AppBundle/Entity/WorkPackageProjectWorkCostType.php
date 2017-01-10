@@ -88,6 +88,8 @@ class WorkPackageProjectWorkCostType
     /**
      * @var Calendar
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="workPackageProjectWorkCostTypes")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id")
      */
@@ -146,6 +148,8 @@ class WorkPackageProjectWorkCostType
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -376,16 +380,29 @@ class WorkPackageProjectWorkCostType
     }
 
     /**
-     * Returns workpackage name.
+     * Returns workpackage id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("workPackage")
+     *
+     * @return int
+     */
+    public function getWorkPackageId()
+    {
+        return $this->workPackage ? $this->workPackage->getId() : null;
+    }
+
+    /**
+     * Returns workpackage name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("workPackageName")
      *
      * @return string
      */
     public function getWorkPackageName()
     {
-        return $this->workPackage ? $this->workPackage->getName() : '-';
+        return $this->workPackage ? $this->workPackage->getName() : null;
     }
 
     /**
@@ -413,16 +430,29 @@ class WorkPackageProjectWorkCostType
     }
 
     /**
-     * Returns projectWorkCostType name.
+     * Returns projectWorkCostType id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectWorkCostType")
+     *
+     * @return int
+     */
+    public function getProjectWorkCostTypeId()
+    {
+        return $this->projectWorkCostType ? $this->projectWorkCostType->getId() : null;
+    }
+
+    /**
+     * Returns projectWorkCostType name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectWorkCostTypeName")
      *
      * @return string
      */
     public function getProjectWorkCostTypeName()
     {
-        return $this->projectWorkCostType ? $this->projectWorkCostType->getName() : '-';
+        return $this->projectWorkCostType ? $this->projectWorkCostType->getName() : null;
     }
 
     /**
@@ -629,5 +659,31 @@ class WorkPackageProjectWorkCostType
     public function getAssignments()
     {
         return $this->assignments;
+    }
+
+    /**
+     * Returns Calendar id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("calendar")
+     *
+     * @return int
+     */
+    public function getCalendarId()
+    {
+        return $this->calendar ? $this->calendar->getId() : null;
+    }
+
+    /**
+     * Returns Calendar name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("calendarName")
+     *
+     * @return string
+     */
+    public function getCalendarName()
+    {
+        return $this->calendar ? $this->calendar->getName() : null;
     }
 }

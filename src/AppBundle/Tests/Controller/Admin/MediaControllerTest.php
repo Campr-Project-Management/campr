@@ -332,8 +332,8 @@ class MediaControllerTest extends BaseController
 
         $this->assertEquals(1, $crawler->filter('#data-table-command')->count());
         $this->assertContains('data-column-id="id"', $crawler->html());
-        $this->assertContains('data-column-id="fileSystem"', $crawler->html());
-        $this->assertContains('data-column-id="user"', $crawler->html());
+        $this->assertContains('data-column-id="fileSystemName"', $crawler->html());
+        $this->assertContains('data-column-id="userFullName"', $crawler->html());
         $this->assertContains('data-column-id="path"', $crawler->html());
         $this->assertContains('data-column-id="mimeType"', $crawler->html());
         $this->assertContains('data-column-id="fileSize"', $crawler->html());

@@ -176,7 +176,7 @@ class DayControllerTest extends BaseController
         $this->assertContains('data-column-id="id"', $crawler->html());
         $this->assertContains('data-column-id="type"', $crawler->html());
         $this->assertContains('data-column-id="working"', $crawler->html());
-        $this->assertContains('data-column-id="calendar"', $crawler->html());
+        $this->assertContains('data-column-id="calendarName"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());
         $this->assertEquals(1, $crawler->filter('.zmdi-plus')->count());
 

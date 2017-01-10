@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * TeamMember.
@@ -31,6 +32,8 @@ class TeamMember
     /**
      * @var User
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="teamMembers")
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="user_id", referencedColumnName="id")
@@ -40,6 +43,8 @@ class TeamMember
 
     /**
      * @var Team
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team", inversedBy="teamMembers")
      * @ORM\JoinColumns({
@@ -51,12 +56,16 @@ class TeamMember
     /**
      * @var \DateTime
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
 
     /**
      * @var \DateTime
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -208,5 +217,57 @@ class TeamMember
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Returns User id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("user")
+     *
+     * @return int
+     */
+    public function getUserId()
+    {
+        return $this->user ? $this->user->getId() : null;
+    }
+
+    /**
+     * Returns User name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userFullName")
+     *
+     * @return string
+     */
+    public function getUserFullName()
+    {
+        return $this->user ? $this->user->getFullName() : null;
+    }
+
+    /**
+     * Returns Team id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("team")
+     *
+     * @return int
+     */
+    public function getTeamId()
+    {
+        return $this->team ? $this->team->getId() : null;
+    }
+
+    /**
+     * Returns Team name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("teamName")
+     *
+     * @return string
+     */
+    public function getTeamName()
+    {
+        return $this->team ? $this->team->getName() : null;
     }
 }
