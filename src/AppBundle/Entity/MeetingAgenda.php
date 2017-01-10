@@ -52,7 +52,7 @@ class MeetingAgenda
     /**
      * @var \DateTime
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'H:i:s'>")
      *
      * @ORM\Column(name="start", type="time", nullable=false)
      */
@@ -61,7 +61,7 @@ class MeetingAgenda
     /**
      * @var \DateTime
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'H:i:s'>")
      *
      * @ORM\Column(name="end", type="time", nullable=false)
      */
@@ -69,6 +69,8 @@ class MeetingAgenda
 
     /**
      * @var \DateTime
+     *
+     * @Serializer\Type("DateTime<'H:i:s'>")
      *
      * @ORM\Column(name="duration", type="time", nullable=false)
      */
@@ -133,19 +135,6 @@ class MeetingAgenda
     }
 
     /**
-     * Returns start date formattted.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("start")
-     *
-     * @return string
-     */
-    public function getStartFormatted()
-    {
-        return $this->start ? $this->start->format('H:i') : '-';
-    }
-
-    /**
      * Set end.
      *
      * @param \DateTime $end
@@ -167,19 +156,6 @@ class MeetingAgenda
     public function getEnd()
     {
         return $this->end;
-    }
-
-    /**
-     * Returns end date formatted.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("end")
-     *
-     * @return string
-     */
-    public function getEndFormatted()
-    {
-        return $this->end ? $this->end->format('H:i') : '-';
     }
 
     /**
@@ -231,16 +207,29 @@ class MeetingAgenda
     }
 
     /**
-     * Returns meeting name.
+     * Returns meeting id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("meeting")
      *
      * @return string
      */
+    public function getMeetingId()
+    {
+        return $this->meeting ? $this->meeting->getId() : null;
+    }
+
+    /**
+     * Returns meeting name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("meetingName")
+     *
+     * @return string
+     */
     public function getMeetingName()
     {
-        return $this->meeting ? $this->meeting->getName() : '-';
+        return $this->meeting ? $this->meeting->getName() : null;
     }
 
     /**
@@ -275,8 +264,21 @@ class MeetingAgenda
      *
      * @return string
      */
-    public function getResponsibilityName()
+    public function getResponsibilityId()
     {
-        return $this->responsibility ? $this->responsibility->getUsername() : '-';
+        return $this->responsibility ? $this->responsibility->getId() : null;
+    }
+
+    /**
+     * Returns responsibility username.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibilityFullName")
+     *
+     * @return string
+     */
+    public function getResponsibilityFullName()
+    {
+        return $this->responsibility ? $this->responsibility->getFullName() : null;
     }
 }

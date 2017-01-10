@@ -6,9 +6,9 @@ use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Project;
 use AppBundle\Form\Meeting\CreateType;
 use AppBundle\Security\ProjectVoter;
+use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Route("/api/meeting")
  */
-class MeetingController extends Controller
+class MeetingController extends ApiController
 {
     /**
      * All meetings for a specific Project.
@@ -35,12 +35,7 @@ class MeetingController extends Controller
             ->getRepository(Meeting::class)
             ->findByProject($project);
 
-        $meetingsArray = [];
-        foreach ($meetings as $meeting) {
-            $meetingsArray[] = $this->serialize($meeting);
-        }
-
-        return new JsonResponse($meetingsArray);
+        return $this->createApiResponse($meetings);
     }
 
     /**
@@ -55,7 +50,7 @@ class MeetingController extends Controller
      */
     public function getAction(Meeting $meeting)
     {
-        return new JsonResponse($this->serialize($meeting));
+        return $this->createApiResponse($meeting);
     }
 
     /**
@@ -79,7 +74,7 @@ class MeetingController extends Controller
             $em->persist($form->getData());
             $em->flush();
 
-            return new JsonResponse($this->serialize($form->getData()));
+            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
         }
 
         $errors = [];
@@ -87,9 +82,7 @@ class MeetingController extends Controller
             $errors[] = $error->getMessage();
         }
 
-        return new JsonResponse([
-            'errors' => $errors,
-        ]);
+        return $this->createApiResponse($errors);
     }
 
     /**
@@ -118,7 +111,7 @@ class MeetingController extends Controller
             $em->persist($meeting);
             $em->flush();
 
-            return new JsonResponse($this->serialize($meeting));
+            return $this->createApiResponse($meeting);
         }
 
         $errors = [];
@@ -126,9 +119,7 @@ class MeetingController extends Controller
             $errors[] = $error->getMessage();
         }
 
-        return new JsonResponse([
-            'errors' => $errors,
-        ]);
+        return $this->createApiResponse($errors);
     }
 
     /**
@@ -151,128 +142,6 @@ class MeetingController extends Controller
         $em->remove($meeting);
         $em->flush();
 
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
-    }
-
-    /**
-     * Create array with needed information from Meeting object.
-     *
-     * @param Meeting $meeting
-     *
-     * @return array
-     */
-    private function serialize(Meeting $meeting)
-    {
-        $info = [
-            'id' => $meeting->getId(),
-            'name' => $meeting->getName(),
-            'project' => $meeting->getProject() ? $meeting->getProject()->getId() : null,
-            'project_name' => $meeting->getProject() ? $meeting->getProject()->getName() : null,
-            'location' => $meeting->getLocation(),
-            'date' => $meeting->getDate() ? $meeting->getDate()->format('Y-m-d') : null,
-            'start' => $meeting->getStart() ? $meeting->getStart()->format('H:i:s') : null,
-            'end' => $meeting->getEnd() ? $meeting->getEnd()->format('H:i:s') : null,
-            'objectives' => $meeting->getObjectives(),
-            'meeting_participants' => [],
-            'meeting_agendas' => [],
-            'medias' => [],
-            'decisions' => [],
-            'todos' => [],
-            'notes' => [],
-        ];
-
-        if (!$meeting->getMeetingParticipants()->isEmpty()) {
-            foreach ($meeting->getMeetingParticipants() as $participant) {
-                $info['meeting_participants'][] = [
-                    'id' => $participant->getId(),
-                    'user' => [
-                        'id' => $participant->getUser() ? $participant->getUser()->getId() : null,
-                        'name' => $participant->getUser() ? $participant->getUser()->getFullName() : null,
-                    ],
-                    'remark' => $participant->getRemark(),
-                    'present' => $participant->getIsPresent(),
-                ];
-            }
-        }
-
-        if (!$meeting->getMeetingAgendas()->isEmpty()) {
-            foreach ($meeting->getMeetingAgendas() as $agenda) {
-                $info['meeting_agendas'][] = [
-                    'id' => $agenda->getId(),
-                    'topic' => $agenda->getTopic(),
-                    'responsibility' => [
-                        'id' => $agenda->getResponsibility() ? $agenda->getResponsibility()->getId() : null,
-                        'name' => $agenda->getResponsibility() ? $agenda->getResponsibility()->getFullName() : null,
-                    ],
-                    'start' => $agenda->getStart() ? $agenda->getStart()->format('H:i:s') : null,
-                    'end' => $agenda->getEnd() ? $agenda->getEnd()->format('H:i:s') : null,
-                ];
-            }
-        }
-
-        if (!$meeting->getMedias()->isEmpty()) {
-            foreach ($meeting->getMedias() as $media) {
-                $info['medias'][] = [
-                    'id' => $media->getId(),
-                    'path' => $media->getPath(),
-                ];
-            }
-        }
-
-        if (!$meeting->getDecisions()->isEmpty()) {
-            foreach ($meeting->getDecisions() as $decision) {
-                $info['decisions'][] = [
-                    'id' => $decision->getId(),
-                    'title' => $decision->getTitle(),
-                    'description' => $decision->getDescription(),
-                    'show_in_report' => $decision->getShowInStatusReport(),
-                    'responsibility' => [
-                        'id' => $decision->getResponsibility() ? $decision->getResponsibility()->getId() : null,
-                        'name' => $decision->getResponsibility() ? $decision->getResponsibility()->getFullName() : null,
-                    ],
-                    'date' => $decision->getDate() ? $decision->getDate()->format('Y-m-d H:i:s') : null,
-                    'due_date' => $decision->getDueDate() ? $decision->getDueDate()->format('Y-m-d H:i:s') : null,
-                    'status' => $decision->getStatus() ? $decision->getStatus()->getName() : null,
-                ];
-            }
-        }
-
-        if (!$meeting->getTodos()->isEmpty()) {
-            foreach ($meeting->getTodos() as $todo) {
-                $info['todos'][] = [
-                    'id' => $todo->getId(),
-                    'title' => $todo->getTitle(),
-                    'description' => $todo->getDescription(),
-                    'show_in_report' => $todo->getShowInStatusReport(),
-                    'responsibility' => [
-                        'id' => $todo->getResponsibility() ? $todo->getResponsibility()->getId() : null,
-                        'name' => $todo->getResponsibility() ? $todo->getResponsibility()->getFullName() : null,
-                    ],
-                    'date' => $todo->getDate() ? $todo->getDate()->format('Y-m-d H:i:s') : null,
-                    'due_date' => $todo->getDueDate() ? $todo->getDueDate()->format('Y-m-d H:i:s') : null,
-                    'status' => $todo->getStatus() ? $todo->getStatus()->getName() : null,
-                ];
-            }
-        }
-
-        if (!$meeting->getNotes()->isEmpty()) {
-            foreach ($meeting->getNotes() as $note) {
-                $info['notes'][] = [
-                    'id' => $note->getId(),
-                    'title' => $note->getTitle(),
-                    'description' => $note->getDescription(),
-                    'show_in_report' => $note->getShowInStatusReport(),
-                    'responsibility' => [
-                        'id' => $note->getResponsibility() ? $note->getResponsibility()->getId() : null,
-                        'name' => $note->getResponsibility() ? $note->getResponsibility()->getFullName() : null,
-                    ],
-                    'date' => $note->getDate() ? $note->getDate()->format('Y-m-d H:i:s') : null,
-                    'due_date' => $note->getDueDate() ? $note->getDueDate()->format('Y-m-d H:i:s') : null,
-                    'status' => $note->getStatus() ? $note->getStatus()->getName() : null,
-                ];
-            }
-        }
-
-        return $info;
+        return $this->createApiResponse([], Response::HTTP_NO_CONTENT);
     }
 }

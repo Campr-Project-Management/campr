@@ -265,7 +265,7 @@ class TimephaseControllerTest extends BaseController
         $this->assertEquals(1, $crawler->filter('#data-table-command')->count());
         $this->assertContains('data-column-id="id"', $crawler->html());
         $this->assertContains('data-column-id="type"', $crawler->html());
-        $this->assertContains('data-column-id="assignment"', $crawler->html());
+        $this->assertContains('data-column-id="assignmentName"', $crawler->html());
         $this->assertContains('data-column-id="unit"', $crawler->html());
         $this->assertContains('data-column-id="value"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());

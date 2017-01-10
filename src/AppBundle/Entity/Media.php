@@ -37,6 +37,8 @@ class Media
     /**
      * @var ArrayCollection|Meeting[]
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Meeting", inversedBy="medias")
      * @ORM\JoinTable(
      *     name="media_meeting",
@@ -69,6 +71,8 @@ class Media
 
     /**
      * @var File
+     *
+     * @Serializer\Exclude()
      */
     private $file;
 
@@ -88,6 +92,8 @@ class Media
 
     /**
      * @var \DateTime
+     *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
@@ -233,14 +239,29 @@ class Media
     }
 
     /**
+     * Returns FileSystem id.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("fileSystem")
      *
      * @return string
      */
+    public function getFileSystemId()
+    {
+        return $this->fileSystem ? $this->fileSystem->getId() : null;
+    }
+
+    /**
+     * Returns FileSystem name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("fileSystemName")
+     *
+     * @return string
+     */
     public function getFileSystemName()
     {
-        return $this->fileSystem ? $this->fileSystem->getName() : '-';
+        return $this->fileSystem ? $this->fileSystem->getName() : null;
     }
 
     /**
@@ -268,14 +289,29 @@ class Media
     }
 
     /**
+     * Returns User id.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("user")
      *
+     * @return int
+     */
+    public function getUserId()
+    {
+        return $this->user ? $this->user->getId() : null;
+    }
+
+    /**
+     * Returns User full name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userFullName")
+     *
      * @return string
      */
-    public function getUserName()
+    public function getUserFullName()
     {
-        return $this->user ? $this->user->getUsername() : '-';
+        return $this->user ? $this->user->getFullName() : null;
     }
 
     /**
