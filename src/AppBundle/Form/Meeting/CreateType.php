@@ -46,7 +46,7 @@ class CreateType extends AbstractType
             ])
             ->add('date', DateType::class, [
                 'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
+                'format' => 'yyyy-MM-dd',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'validation.constraints.meeting.date.not_blank',
@@ -89,6 +89,7 @@ class CreateType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Meeting::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

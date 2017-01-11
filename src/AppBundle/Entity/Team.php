@@ -8,6 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Team.
@@ -33,6 +34,8 @@ class Team
 
     /**
      * @var User
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="teams")
      * @ORM\JoinColumns({
@@ -72,6 +75,7 @@ class Team
 
     /**
      * @Vich\UploadableField(mapping="team_images", fileNameProperty="logo")
+     * @Serializer\Exclude()
      *
      * @var File
      */
@@ -87,12 +91,16 @@ class Team
     /**
      * @var \DateTime
      *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
 
     /**
      * @var \DateTime
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -462,5 +470,31 @@ class Team
     public function getTeamInvites()
     {
         return $this->teamInvites;
+    }
+
+    /**
+     * Returns User id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("user")
+     *
+     * @return int
+     */
+    public function getUserId()
+    {
+        return $this->user ? $this->user->getId() : null;
+    }
+
+    /**
+     * Returns User name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userFullName")
+     *
+     * @return string
+     */
+    public function getUserFullName()
+    {
+        return $this->user ? $this->user->getFullName() : null;
     }
 }

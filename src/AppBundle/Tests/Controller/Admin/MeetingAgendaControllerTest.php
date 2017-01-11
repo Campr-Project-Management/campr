@@ -203,9 +203,9 @@ class MeetingAgendaControllerTest extends BaseController
 
         $this->assertEquals(1, $crawler->filter('#data-table-command')->count());
         $this->assertContains('data-column-id="id"', $crawler->html());
-        $this->assertContains('data-column-id="meeting"', $crawler->html());
+        $this->assertContains('data-column-id="meetingName"', $crawler->html());
         $this->assertContains('data-column-id="topic"', $crawler->html());
-        $this->assertContains('data-column-id="responsibility"', $crawler->html());
+        $this->assertContains('data-column-id="responsibilityFullName"', $crawler->html());
         $this->assertContains('data-column-id="start"', $crawler->html());
         $this->assertContains('data-column-id="end"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());

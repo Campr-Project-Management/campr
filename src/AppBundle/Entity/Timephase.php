@@ -56,12 +56,16 @@ class Timephase
     /**
      * @var \DateTime
      *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     *
      * @ORM\Column(name="started_at", type="datetime", nullable=true)
      */
     private $startedAt;
 
     /**
      * @var \DateTime
+     *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="finished_at", type="datetime", nullable=true)
      */
@@ -222,7 +226,7 @@ class Timephase
     }
 
     /**
-     * Returns workpackage name of the assignment.
+     * Returns assignment id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("assignment")
@@ -231,9 +235,6 @@ class Timephase
      */
     public function getAssignmentWorkPackageName()
     {
-        return $this->assignment && $this->assignment->getWorkPackage()
-            ? $this->assignment->getWorkPackage()->getName().' - '.$this->assignment->getId()
-            : '-'
-        ;
+        return $this->assignment ? $this->assignment->getId() : null;
     }
 }

@@ -52,16 +52,12 @@ class Decision
     /**
      * @var string
      *
-     * @Serializer\Exclude()
-     *
      * @ORM\Column(name="description", type="text")
      */
     private $description;
 
     /**
      * @var bool
-     *
-     * @Serializer\Exclude()
      *
      * @ORM\Column(name="show_in_status_report", type="boolean", nullable=false, options={"default"=0})
      */
@@ -80,7 +76,7 @@ class Decision
     /**
      * @var \DateTime
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="date", type="date", nullable=true)
      */
@@ -89,7 +85,7 @@ class Decision
     /**
      * @var \DateTime
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="due_date", type="date", nullable=true)
      */
@@ -406,16 +402,81 @@ class Decision
     }
 
     /**
-     * Returns project name.
+     * Returns status id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("status")
+     *
+     * @return string
+     */
+    public function getStatusId()
+    {
+        return $this->status ? $this->status->getId() : null;
+    }
+
+    /**
+     * Returns status name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("statusName")
+     *
+     * @return string
+     */
+    public function getStatusName()
+    {
+        return $this->status ? $this->status->getName() : null;
+    }
+
+    /**
+     * Returns meeting id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("meeting")
+     *
+     * @return string
+     */
+    public function getMeetingId()
+    {
+        return $this->meeting ? $this->meeting->getId() : null;
+    }
+
+    /**
+     * Returns meeting name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("meetingName")
+     *
+     * @return string
+     */
+    public function getMeetingName()
+    {
+        return $this->meeting ? $this->meeting->getName() : null;
+    }
+
+    /**
+     * Returns project id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      *
      * @return string
      */
+    public function getProjectId()
+    {
+        return $this->project ? $this->project->getId() : null;
+    }
+
+    /**
+     * Returns project name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectName")
+     *
+     * @return string
+     */
     public function getProjectName()
     {
-        return $this->project ? $this->project->getName() : '-';
+        return $this->project ? $this->project->getName() : null;
     }
 
     /**
@@ -426,34 +487,21 @@ class Decision
      *
      * @return string
      */
-    public function getResponsibilityName()
+    public function getResponsibilityId()
     {
-        return $this->responsibility ? $this->responsibility->getUsername() : '-';
+        return $this->responsibility ? $this->responsibility->getId() : null;
     }
 
     /**
-     * Returns date formatted.
+     * Returns the responsibility username.
      *
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("date")
+     * @Serializer\SerializedName("responsibilityFullName")
      *
      * @return string
      */
-    public function getDateFormatted()
+    public function getResponsibilityFullName()
     {
-        return $this->date ? $this->date->format('d/m/Y') : '-';
-    }
-
-    /**
-     * Returns dueDate formatted.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("dueDate")
-     *
-     * @return string
-     */
-    public function getDueDateFormatted()
-    {
-        return $this->dueDate ? $this->dueDate->format('d/m/Y') : '-';
+        return $this->responsibility ? $this->responsibility->getFullName() : null;
     }
 }

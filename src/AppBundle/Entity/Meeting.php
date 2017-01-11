@@ -50,7 +50,7 @@ class Meeting
     /**
      * @var \DateTime
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="date", type="date")
      */
@@ -59,12 +59,16 @@ class Meeting
     /**
      * @var \DateTime
      *
+     * @Serializer\Type("DateTime<'H:i:s'>")
+     *
      * @ORM\Column(name="start", type="time")
      */
     private $start;
 
     /**
      * @var \DateTime
+     *
+     * @Serializer\Type("DateTime<'H:i:s'>")
      *
      * @ORM\Column(name="end", type="time")
      */
@@ -101,7 +105,7 @@ class Meeting
     /**
      * @var ArrayCollection|Decision[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Decision", mappedBy="meeting")
+     * @ORM\OneToMany   (targetEntity="AppBundle\Entity\Decision", mappedBy="meeting")
      */
     private $decisions;
 
@@ -215,19 +219,6 @@ class Meeting
     }
 
     /**
-     * Returns date formatted.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("date")
-     *
-     * @return string
-     */
-    public function getDateFormatted()
-    {
-        return $this->date ? $this->date->format('d/m/Y') : '-';
-    }
-
-    /**
      * Set start.
      *
      * @param \DateTime $start
@@ -324,16 +315,29 @@ class Meeting
     }
 
     /**
-     * Returns project name.
+     * Returns project id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      *
      * @return string
      */
+    public function getProjectId()
+    {
+        return $this->project ? $this->project->getId() : null;
+    }
+
+    /**
+     * Returns project name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectName")
+     *
+     * @return string
+     */
     public function getProjectName()
     {
-        return $this->project ? $this->project->getName() : '-';
+        return $this->project ? $this->project->getName() : null;
     }
 
     /**

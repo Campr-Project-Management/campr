@@ -5,9 +5,9 @@ namespace AppBundle\Controller\API;
 use AppBundle\Entity\Assignment;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Form\Assignment\CreateType;
+use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Route("/api/assignment")
  */
-class AssignmentController extends Controller
+class AssignmentController extends ApiController
 {
     /**
      * All aassignments for a specific WorkPackage.
@@ -35,12 +35,7 @@ class AssignmentController extends Controller
             ->findByWorkPackage($wp)
         ;
 
-        $assign = [];
-        foreach ($assignments as $assignment) {
-            $assign[] = $this->serialize($assignment);
-        }
-
-        return new JsonResponse($assign);
+        return $this->createApiResponse($assignments);
     }
 
     /**
@@ -55,7 +50,7 @@ class AssignmentController extends Controller
      */
     public function getAction(Assignment $assignment)
     {
-        return new JsonResponse($this->serialize($assignment));
+        return $this->createApiResponse($assignment);
     }
 
     /**
@@ -79,7 +74,7 @@ class AssignmentController extends Controller
             $em->persist($form->getData());
             $em->flush();
 
-            return new JsonResponse($this->serialize($form->getData()));
+            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
         }
 
         $errors = [];
@@ -87,9 +82,7 @@ class AssignmentController extends Controller
             $errors[] = $error->getMessage();
         }
 
-        return new JsonResponse([
-            'errors' => $errors,
-        ]);
+        return  $this->createApiResponse($errors);
     }
 
     /**
@@ -114,7 +107,7 @@ class AssignmentController extends Controller
             $em->persist($assignment);
             $em->flush();
 
-            return new JsonResponse($this->serialize($assignment));
+            return  $this->createApiResponse($assignment);
         }
 
         $errors = [];
@@ -122,9 +115,7 @@ class AssignmentController extends Controller
             $errors[] = $error->getMessage();
         }
 
-        return new JsonResponse([
-            'errors' => $errors,
-        ]);
+        return $this->createApiResponse($errors);
     }
 
     /**
@@ -143,43 +134,6 @@ class AssignmentController extends Controller
         $em->remove($assignment);
         $em->flush();
 
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
-    }
-
-    /**
-     * Create array with needed information from Assignment object.
-     *
-     * @param Assignment $assignment
-     *
-     * @return array
-     */
-    private function serialize(Assignment $assignment)
-    {
-        $info = [
-            'id' => $assignment->getId(),
-            'work_package' => $assignment->getWorkPackage() ? $assignment->getWorkPackage()->getId() : null,
-            'work_package_name' => $assignment->getWorkPackage() ? $assignment->getWorkPackage()->getName() : null,
-            'percent_complete' => $assignment->getPercentWorkComplete(),
-            'milestone' => $assignment->getMilestone(),
-            'confirmed' => $assignment->getConfirmed(),
-            'started_at' => $assignment->getStartedAt() ? $assignment->getStartedAt()->format('Y-m-d H:i:s') : null,
-            'finished_at' => $assignment->getFinishedAt() ? $assignment->getFinishedAt()->format('Y-m-d H:i:s') : null,
-        ];
-
-        $info['timephases'] = [];
-        if (!$assignment->getTimephases()->isEmpty()) {
-            foreach ($assignment->getTimephases() as $tp) {
-                $info['timephases'][] = [
-                    'id' => $tp->getId(),
-                    'type' => $tp->getType(),
-                    'unit' => $tp->getUnit(),
-                    'value' => $tp->getValue(),
-                    'started_at' => $tp->getStartedAt() ? $tp->getStartedAt()->format('Y-m-d H:i:s') : null,
-                    'finished_at' => $tp->getFinishedAt() ? $tp->getFinishedAt()->format('Y-m-d H:i:s') : null,
-                ];
-            }
-        }
-
-        return $info;
+        return $this->createApiResponse([], Response::HTTP_NO_CONTENT);
     }
 }

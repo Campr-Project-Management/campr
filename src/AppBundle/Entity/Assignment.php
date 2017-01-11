@@ -26,8 +26,6 @@ class Assignment
     /**
      * @var ArrayCollection|Timephase[]
      *
-     * @Serializer\Exclude()
-     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Timephase", mappedBy="assignment")
      */
     private $timephases;
@@ -76,12 +74,16 @@ class Assignment
     /**
      * @var \DateTime
      *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     *
      * @ORM\Column(name="started_at", type="datetime", nullable=true)
      */
     private $startedAt;
 
     /**
      * @var \DateTime
+     *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="finished_at", type="datetime", nullable=true)
      */
@@ -90,12 +92,16 @@ class Assignment
     /**
      * @var \DateTime
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -347,16 +353,29 @@ class Assignment
     }
 
     /**
-     * Returns the WorkPackage name.
+     * Returns the WorkPackage id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("workPackage")
      *
      * @return string
      */
+    public function getWorkPackageId()
+    {
+        return $this->workPackage ? $this->workPackage->getId() : null;
+    }
+
+    /**
+     * Returns the WorkPackage name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("workPackageName")
+     *
+     * @return string
+     */
     public function getWorkPackageName()
     {
-        return $this->workPackage ? $this->workPackage->getName() : '-';
+        return $this->workPackage ? $this->workPackage->getName() : null;
     }
 
     /**
@@ -395,16 +414,30 @@ class Assignment
     {
         return $this->workPackageProjectWorkCostType;
     }
+
     /**
-     * Returns workPackageProjectWorkCostType name.
+     * Returns workPackageProjectWorkCostType id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("workPackageProjectWorkCostType")
      *
      * @return string
      */
+    public function getWorkPackageProjectWorkCostTypeId()
+    {
+        return $this->workPackageProjectWorkCostType ? $this->workPackageProjectWorkCostType->getId() : null;
+    }
+
+    /**
+     * Returns workPackageProjectWorkCostType name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("workPackageProjectWorkCostTypeName")
+     *
+     * @return string
+     */
     public function getWorkPackageProjectWorkCostTypeName()
     {
-        return $this->workPackageProjectWorkCostType ? $this->workPackageProjectWorkCostType->getName() : '-';
+        return $this->workPackageProjectWorkCostType ? $this->workPackageProjectWorkCostType->getName() : null;
     }
 }
