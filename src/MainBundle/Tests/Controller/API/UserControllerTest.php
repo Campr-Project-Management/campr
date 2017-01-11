@@ -53,15 +53,21 @@ class UserControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
+                    'roles' => ['ROLE_SUPER_ADMIN'],
                     'id' => 1,
                     'username' => 'superadmin',
                     'email' => 'superadmin@trisoft.ro',
                     'phone' => null,
-                    'first_name' => 'FirstName1',
-                    'last_name' => 'LastName1',
-                    'created_at' => '2017-01-01 00:00:00',
-                    'updated_at' => null,
-                    'activated_at' => null,
+                    'firstName' => 'FirstName1',
+                    'lastName' => 'LastName1',
+                    'isEnabled' => true,
+                    'isSuspended' => false,
+                    'createdAt' => '2017-01-01 00:00:00',
+                    'updatedAt' => null,
+                    'activatedAt' => null,
+                    'teams' => [],
+                    'teamMembers' => [],
+                    'teamInvites' => [],
                 ],
             ],
         ];
@@ -93,11 +99,11 @@ class UserControllerTest extends BaseController
         if (isset($responseContent['id'])) {
             $responseContent['id'] = $user->getId();
         }
-        if (isset($responseContent['created_at'])) {
-            $responseContent['created_at'] = $user->getCreatedAt() ? $user->getCreatedAt()->format('Y-m-d H:i:s') : null;
+        if (isset($responseContent['createdAt'])) {
+            $responseContent['createdAt'] = $user->getCreatedAt() ? $user->getCreatedAt()->format('Y-m-d H:i:s') : null;
         }
-        if (isset($responseContent['updated_at'])) {
-            $responseContent['updated_at'] = $user->getUpdatedAt() ? $user->getUpdatedAt()->format('Y-m-d H:i:s') : null;
+        if (isset($responseContent['updatedAt'])) {
+            $responseContent['updatedAt'] = $user->getUpdatedAt() ? $user->getUpdatedAt()->format('Y-m-d H:i:s') : null;
         }
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -118,9 +124,7 @@ class UserControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'errors' => [
-                        'The password fields do not match',
-                    ],
+                    'The password fields do not match',
                 ],
             ],
             [
@@ -130,15 +134,21 @@ class UserControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
+                    'roles' => ['ROLE_SUPER_ADMIN'],
                     'id' => '',
                     'username' => 'testuser',
                     'email' => 'testuser@trisoft.ro',
                     'phone' => null,
-                    'first_name' => 'User3',
-                    'last_name' => 'LastName',
-                    'created_at' => '',
-                    'updated_at' => '',
-                    'activated_at' => null,
+                    'firstName' => 'User3',
+                    'lastName' => 'LastName',
+                    'isEnabled' => true,
+                    'isSuspended' => false,
+                    'createdAt' => '',
+                    'updatedAt' => '',
+                    'activatedAt' => null,
+                    'teams' => [],
+                    'teamMembers' => [],
+                    'teamInvites' => [],
                 ],
             ],
         ];

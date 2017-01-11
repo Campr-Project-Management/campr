@@ -77,7 +77,7 @@ class MeetingControllerTest extends BaseController
         $form['create[name]'] = 'meeting2';
         $form['create[location]'] = 'meeting-location';
         $form['create[objectives]'] = 'meeting-objectives';
-        $form['create[date]'] = $date->format('d/m/Y');
+        $form['create[date]'] = $date->format('Y-m-d');
         $form['create[start]'] = $start->format('H:m');
         $form['create[end]'] = $end->format('H:m');
 
@@ -212,7 +212,7 @@ class MeetingControllerTest extends BaseController
         $this->assertEquals(1, $crawler->filter('#data-table-command')->count());
         $this->assertContains('data-column-id="id"', $crawler->html());
         $this->assertContains('data-column-id="name"', $crawler->html());
-        $this->assertContains('data-column-id="project"', $crawler->html());
+        $this->assertContains('data-column-id="projectName"', $crawler->html());
         $this->assertContains('data-column-id="date"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());
         $this->assertEquals(1, $crawler->filter('.zmdi-plus')->count());

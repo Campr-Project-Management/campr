@@ -76,7 +76,7 @@ class Note
     /**
      * @var \DateTime
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="date", type="date", nullable=true)
      */
@@ -85,12 +85,16 @@ class Note
     /**
      * @var \DateTime
      *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     *
      * @ORM\Column(name="due_date", type="date", nullable=true)
      */
     private $dueDate;
 
     /**
      * @var Status
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Status")
      * @ORM\JoinColumn(name="status_id")
@@ -100,12 +104,16 @@ class Note
     /**
      * @var \DateTime
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -226,19 +234,6 @@ class Note
     }
 
     /**
-     * Returns date formatted.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("date")
-     *
-     * @return string
-     */
-    public function getDateFormatted()
-    {
-        return $this->date ? $this->date->format('d/m/Y') : '-';
-    }
-
-    /**
      * Set dueDate.
      *
      * @param \DateTime $dueDate
@@ -335,19 +330,6 @@ class Note
     }
 
     /**
-     * Returns project name.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("project")
-     *
-     * @return string
-     */
-    public function getProjectName()
-    {
-        return $this->project ? $this->project->getName() : '-';
-    }
-
-    /**
      * Set meeting.
      *
      * @param Meeting $meeting
@@ -369,19 +351,6 @@ class Note
     public function getMeeting()
     {
         return $this->meeting;
-    }
-
-    /**
-     * Returns meeting name.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("meeting")
-     *
-     * @return string
-     */
-    public function getMeetingName()
-    {
-        return $this->meeting ? $this->meeting->getName() : '-';
     }
 
     /**
@@ -409,19 +378,6 @@ class Note
     }
 
     /**
-     * Returns responsibility username.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("responsibility")
-     *
-     * @return string
-     */
-    public function getResponsibilityName()
-    {
-        return $this->responsibility ? $this->responsibility->getUsername() : '-';
-    }
-
-    /**
      * Set status.
      *
      * @param Status $status
@@ -443,5 +399,109 @@ class Note
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Returns status id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("status")
+     *
+     * @return string
+     */
+    public function getStatusId()
+    {
+        return $this->status ? $this->status->getId() : null;
+    }
+
+    /**
+     * Returns status name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("statusName")
+     *
+     * @return string
+     */
+    public function getStatusName()
+    {
+        return $this->status ? $this->status->getName() : null;
+    }
+
+    /**
+     * Returns meeting id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("meeting")
+     *
+     * @return string
+     */
+    public function getMeetingId()
+    {
+        return $this->meeting ? $this->meeting->getId() : null;
+    }
+
+    /**
+     * Returns meeting name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("meetingName")
+     *
+     * @return string
+     */
+    public function getMeetingName()
+    {
+        return $this->meeting ? $this->meeting->getName() : null;
+    }
+
+    /**
+     * Returns project id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("project")
+     *
+     * @return string
+     */
+    public function getProjectId()
+    {
+        return $this->project ? $this->project->getId() : null;
+    }
+
+    /**
+     * Returns project name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectName")
+     *
+     * @return string
+     */
+    public function getProjectName()
+    {
+        return $this->project ? $this->project->getName() : null;
+    }
+
+    /**
+     * Returns the responsibility username.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibility")
+     *
+     * @return string
+     */
+    public function getResponsibilityId()
+    {
+        return $this->responsibility ? $this->responsibility->getId() : null;
+    }
+
+    /**
+     * Returns the responsibility username.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibilityFullName")
+     *
+     * @return string
+     */
+    public function getResponsibilityFullName()
+    {
+        return $this->responsibility ? $this->responsibility->getFullName() : null;
     }
 }

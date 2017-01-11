@@ -199,17 +199,31 @@ class MeetingParticipant
     {
         return $this->meeting;
     }
+
     /**
-     * Returns meeting name.
+     * Returns meeting id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("meeting")
      *
      * @return string
      */
+    public function getMeetingId()
+    {
+        return $this->meeting ? $this->meeting->getId() : null;
+    }
+
+    /**
+     * Returns meeting name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("meetingName")
+     *
+     * @return string
+     */
     public function getMeetingName()
     {
-        return $this->meeting ? $this->meeting->getName() : '-';
+        return $this->meeting ? $this->meeting->getName() : null;
     }
 
     /**
@@ -237,15 +251,28 @@ class MeetingParticipant
     }
 
     /**
-     * Returns user username.
+     * Returns user id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("user")
      *
      * @return string
      */
+    public function getUserId()
+    {
+        return $this->user ? $this->user->getId() : null;
+    }
+
+    /**
+     * Returns user full name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userFullName")
+     *
+     * @return string
+     */
     public function getUserName()
     {
-        return $this->user ? $this->user->getUsername() : '-';
+        return $this->user ? $this->user->getFullName() : null;
     }
 }
