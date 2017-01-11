@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * TeamInvite.
@@ -24,6 +25,8 @@ class TeamInvite
     /**
      * @var Team
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team", inversedBy="teamInvites")
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="team_id", referencedColumnName="id", nullable=false)
@@ -33,6 +36,8 @@ class TeamInvite
 
     /**
      * @var User
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="teamInvites")
      * @ORM\JoinColumns({

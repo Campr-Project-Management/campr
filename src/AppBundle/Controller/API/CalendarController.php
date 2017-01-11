@@ -7,9 +7,9 @@ use AppBundle\Entity\Project;
 use AppBundle\Form\Calendar\CreateType;
 use AppBundle\Form\Calendar\EditType;
 use AppBundle\Security\ProjectVoter;
+use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Route("/api/calendar")
  */
-class CalendarController extends Controller
+class CalendarController extends ApiController
 {
     /**
      * All Calendars for a specific Project.
@@ -37,12 +37,7 @@ class CalendarController extends Controller
             ->findByProject($project)
         ;
 
-        $calendarArray = [];
-        foreach ($calendars as $calendar) {
-            $calendarArray[] = $this->serialize($calendar);
-        }
-
-        return new JsonResponse($calendarArray);
+        return $this->createApiResponse($calendars);
     }
 
     /**
@@ -57,7 +52,7 @@ class CalendarController extends Controller
      */
     public function getAction(Calendar $calendar)
     {
-        return new JsonResponse($this->serialize($calendar));
+        return $this->createApiResponse($calendar);
     }
 
     /**
@@ -81,7 +76,7 @@ class CalendarController extends Controller
             $em->persist($form->getData());
             $em->flush();
 
-            return new JsonResponse($this->serialize($form->getData()));
+            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
         }
 
         $errors = [];
@@ -89,9 +84,7 @@ class CalendarController extends Controller
             $errors[] = $error->getMessage();
         }
 
-        return new JsonResponse([
-            'errors' => $errors,
-        ]);
+        return $this->createApiResponse($errors);
     }
 
     /**
@@ -120,7 +113,7 @@ class CalendarController extends Controller
             $em->persist($calendar);
             $em->flush();
 
-            return new JsonResponse($this->serialize($calendar));
+            return $this->createApiResponse($calendar);
         }
 
         $errors = [];
@@ -128,9 +121,7 @@ class CalendarController extends Controller
             $errors[] = $error->getMessage();
         }
 
-        return new JsonResponse([
-            'errors' => $errors,
-        ]);
+        return $this->createApiResponse($errors);
     }
 
     /**
@@ -153,50 +144,6 @@ class CalendarController extends Controller
         $em->remove($calendar);
         $em->flush();
 
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
-    }
-
-    /**
-     * Create array with needed information from Calendar object.
-     *
-     * @param Calendar $calendar
-     *
-     * @return array
-     */
-    private function serialize(Calendar $calendar)
-    {
-        $calendarInfo = [
-            'id' => $calendar->getId(),
-            'name' => $calendar->getName(),
-            'is_based' => $calendar->getIsBased(),
-            'is_baseline' => $calendar->getIsBaseline(),
-            'parent_id' => $calendar->getParent() ? $calendar->getParent()->getId() : null,
-            'project' => $calendar->getProject() ? $calendar->getProject()->getId() : null,
-            'project_name' => $calendar->getProject() ? $calendar->getProject()->getName() : null,
-            'days' => [],
-        ];
-
-        if (!$calendar->getDays()->isEmpty()) {
-            foreach ($calendar->getDays() as $day) {
-                $dayInfo = [
-                    'id' => $day->getId(),
-                    'type' => $day->getType(),
-                    'working' => $day->getWorking(),
-                    'working_times' => [],
-                ];
-                if (!$day->getWorkingTimes()->isEmpty()) {
-                    foreach ($day->getWorkingTimes() as $wt) {
-                        $dayInfo['working_times'][] = [
-                            'id' => $wt->getId(),
-                            'from_time' => $wt->getFromTime() ? $wt->getFromTime()->format('H:i:s') : null,
-                            'to_time' => $wt->getToTime() ? $wt->getToTime()->format('H:i:s') : null,
-                        ];
-                    }
-                }
-                $calendarInfo['days'][] = $dayInfo;
-            }
-        }
-
-        return $calendarInfo;
+        return $this->createApiResponse([], Response::HTTP_NO_CONTENT);
     }
 }
