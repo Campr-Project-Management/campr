@@ -49,6 +49,7 @@ class LoadMediaData extends AbstractFixture implements OrderedFixtureInterface, 
             ->setPath($fileName)
             ->setMimeType($file->getMimeType())
             ->setFileSize($file->getSize())
+            ->setCreatedAt(new \DateTime('2017-01-01'))
         ;
 
         $manager->persist($media);

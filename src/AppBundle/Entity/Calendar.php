@@ -203,17 +203,6 @@ class Calendar
     }
 
     /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("parent")
-     *
-     * @return string
-     */
-    public function getParentName()
-    {
-        return $this->parent ? $this->parent->getName() : null;
-    }
-
-    /**
      * Add day.
      *
      * @param Day $day
@@ -276,16 +265,29 @@ class Calendar
     }
 
     /**
-     * Returns Project name.
+     * Returns Project id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      *
      * @return string
      */
+    public function getProjectId()
+    {
+        return $this->project ? $this->project->getId() : null;
+    }
+
+    /**
+     * Returns Project name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectName")
+     *
+     * @return string
+     */
     public function getProjectName()
     {
-        return $this->project ? $this->project->getName() : '-';
+        return $this->project ? $this->project->getName() : null;
     }
 
     /**
@@ -360,5 +362,31 @@ class Calendar
     public function getWorkPackages()
     {
         return $this->workPackages;
+    }
+
+    /**
+     * Returns parent id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("parent")
+     *
+     * @return string
+     */
+    public function getParentId()
+    {
+        return $this->parent ? $this->parent->getId() : null;
+    }
+
+    /**
+     * Returns parent name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("parentName")
+     *
+     * @return string
+     */
+    public function getParentName()
+    {
+        return $this->parent ? $this->parent->getName() : null;
     }
 }

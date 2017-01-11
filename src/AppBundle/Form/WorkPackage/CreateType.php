@@ -89,32 +89,32 @@ class CreateType extends AbstractType
             ->add('scheduledStartAt', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
+                'format' => 'yyyy-MM-dd',
             ])
             ->add('scheduledFinishAt', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
+                'format' => 'yyyy-MM-dd',
             ])
             ->add('forecastStartAt', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
+                'format' => 'yyyy-MM-dd',
             ])
             ->add('forecastFinishAt', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
+                'format' => 'yyyy-MM-dd',
             ])
             ->add('actualStartAt', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
+                'format' => 'yyyy-MM-dd',
             ])
             ->add('actualFinishAt', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
+                'format' => 'yyyy-MM-dd',
             ])
             ->add('content', TextareaType::class, [
                 'required' => false,
@@ -133,6 +133,7 @@ class CreateType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => WorkPackage::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }
