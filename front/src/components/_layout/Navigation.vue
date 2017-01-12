@@ -25,8 +25,8 @@
                 <li><a href="#">Something else here</a></li>
             </ul>
         </div>
-        <p class="user-message">Hi, <span>Victor Ilioiu</span></p>
-        <img class="user-avatar" src="" alt=""/>
+        <p class="user-message">Hi, <span>{{ user.name }}</span></p>
+        <img class="user-avatar" :src="user.avatar" :alt="user.name"/>
         <a class="notifications" href="">
             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
               width="26.438px" height="24.469px" viewBox="0 0 26.438 24.469" enable-background="new 0 0 26.438 24.469" xml:space="preserve">
@@ -54,7 +54,7 @@
                 <polygon fill="none" stroke="#636EA0" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
                   12.697,19.03 18.436,19.03 23.132,23.204 23.132,19.03 25.219,19.03 25.219,10.683 12.697,10.683 "/>
             </svg>
-            <span class="notification-balloon">25</span>
+            <span class="notification-balloon">{{ user.notifications }}</span>
         </a>
     </header>
 </template>
@@ -62,6 +62,7 @@
 <script>
 export default {
     name: 'navigation',
+    props: ['user'],
 };
 </script>
 

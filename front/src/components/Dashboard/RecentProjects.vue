@@ -30,7 +30,7 @@ export default {
         this.getProjects();
     },
     computed: mapGetters({
-        projects: 'projects',
+        projects: 'filteredProjects',
     }),
 };
 </script>

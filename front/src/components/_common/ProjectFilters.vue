@@ -4,7 +4,7 @@
         <div class="dropdowns">
             <dropdown title="Customer"></dropdown>
             <dropdown title="Programme"></dropdown>
-            <dropdown title="Status"></dropdown>
+            <dropdown title="Status" v-bind:options="statuses" item="project" filter="status"></dropdown>
         </div>
     </div>
 </template>
@@ -15,6 +15,28 @@ import Dropdown from '../_common/Dropdown';
 export default {
     components: {
         Dropdown,
+    },
+    data() {
+        return {
+            statuses: [
+                {
+                    'key': '',
+                    'label': 'All Statuses',
+                },
+                {
+                    'key': 'NOT_STARTED',
+                    'label': 'Not started',
+                },
+                {
+                    'key': 'IN_PROGRESS',
+                    'label': 'In progress',
+                },
+                {
+                    'key': 'FINISHED',
+                    'label': 'Finished',
+                },
+            ],
+        };
     },
 };
 </script>
