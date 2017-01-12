@@ -1,7 +1,7 @@
 <template>
     <div class="project-box box small-box">
         <div class="header">
-            <h2>TASK</h2>
+            <h2>{{ task.title }}</h2>
             <div>
               <eye-icon :link="{name: 'task', params: { id: task.id }}"></eye-icon>
             </div>

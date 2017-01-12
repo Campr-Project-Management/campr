@@ -1,6 +1,5 @@
 <template>
     <div>
-        <navigation></navigation>
         <div class="page-section">
             <div class="header">
                 <h1>My Tasks</h1>
@@ -15,23 +14,23 @@
 </template>
 
 <script>
-import Navigation from '../_layout/Navigation';
 import TaskFilters from '../_common/TaskFilters';
 import TaskBox from './TaskBox';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
     components: {
-        Navigation,
         TaskFilters,
         TaskBox,
     },
-    methods: mapActions(['getTasks']),
+    methods: {
+        ...mapActions(['getTasks']),
+    },
     created() {
         this.getTasks();
     },
     computed: mapGetters({
-        tasks: 'tasks',
+        tasks: 'filteredTasks',
     }),
 };
 </script>
