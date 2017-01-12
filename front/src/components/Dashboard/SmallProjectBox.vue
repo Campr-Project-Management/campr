@@ -1,21 +1,21 @@
 <template>
     <div class="project-box box small-box">
         <div class="header">
-            <h2>Campr Dashboard Design</h2>
+            <h2>{{ project.title }}</h2>
             <div>
                 <eye-icon :link="{name: 'project', params: { id: project.id }}"></eye-icon>
-                <star-icon :active="project.favourite"></star-icon>
+                <star-icon :item="project"></star-icon>
             </div>
         </div>
         <div class="content flex flex-space-between">
             <div class="info">
                 <p>
                     <span class="title">Started on:</span>
-                    <span class="data">12.05.2016</span>
+                    <span class="data">{{ project.date | moment('DD.MM.YYYY') }}</span>
                 </p>
                 <p>
                     <span class="title">Customer:</span>
-                    <span class="data">Christoph Poll</span>
+                    <span class="data">{{ project.customer }}</span>
                 </p>
                 <p>
                     <span class="title">Status:</span>
@@ -25,7 +25,7 @@
                 </p>
             </div>
         </div>
-        <bar-chart :percentage="project.percentage" :status="project.status" title-right="Progress"></bar-chart>
+        <bar-chart :percentage="project.progress" :status="project.status" title-right="Progress"></bar-chart>
    </div>
 </template>
 
