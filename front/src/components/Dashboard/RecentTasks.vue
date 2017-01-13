@@ -29,7 +29,7 @@ export default {
         this.getTasks();
     },
     computed: mapGetters({
-        tasks: 'tasks',
+        tasks: 'filteredTasks',
     }),
 };
 </script>

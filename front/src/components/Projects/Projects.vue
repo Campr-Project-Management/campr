@@ -1,6 +1,5 @@
 <template>
     <div>
-        <navigation></navigation>
         <div class="page-section">
             <div class="header">
                 <h1>My Projects</h1>
@@ -15,26 +14,21 @@
 </template>
 
 <script>
-import Navigation from '../_layout/Navigation';
 import ProjectFilters from '../_common/ProjectFilters';
 import ProjectBox from './ProjectBox';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
     components: {
-        Navigation,
         ProjectFilters,
         ProjectBox,
     },
     methods: mapActions(['getProjects']),
     created() {
         this.getProjects();
-        window.$(document).ready(function() {
-
-        });
     },
     computed: mapGetters({
-        projects: 'projects',
+        projects: 'filteredProjects',
     }),
 };
 </script>

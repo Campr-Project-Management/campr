@@ -4,25 +4,25 @@
           <span>New</span>
         </span>
         <div class="header">
-            <h2>Campr Dashboard Design</h2>
+            <h2>{{ project.title }}</h2>
             <div>
               <eye-icon :link="{name: 'project', params: { id: project.id }}"></eye-icon>
-              <star-icon :active="project.favourite"></star-icon>
+              <star-icon :item="project"></star-icon>
             </div>
         </div>
         <div class="content flex flex-space-between">
             <div class="info">
                 <p>
                     <span class="title">Started on:</span>
-                    <span class="data">12.05.2016</span>
+                    <span class="data">{{ project.date | moment('DD.MM.YYYY') }}</span>
                 </p>
                 <p>
                     <span class="title">Customer:</span>
-                    <span class="data">Christoph Poll</span>
+                    <span class="data">{{ project.customer }}</span>
                 </p>
                 <p>
                     <span class="title">Programme:</span>
-                    <span class="data">CAMPR</span>
+                    <span class="data">{{ project.programme }}</span>
                 </p>
                 <p>
                     <span class="title">Status:</span>
@@ -32,10 +32,10 @@
                 </p>
             </div>
           </div>
-        <bar-chart :percentage="project.percentage" :status="project.status" title-right="Progress"></bar-chart>
+        <bar-chart :percentage="project.progress" :status="project.status" title-right="Progress"></bar-chart>
         <div class="content-bottom flex">
-          <circle-chart percentage="77" title="Task Status" class="left"></circle-chart>
-          <circle-chart percentage="44.34" title="Costs Status" class="right"></circle-chart>
+          <circle-chart :percentage="project.task_status" title="Task Status" class="left"></circle-chart>
+          <circle-chart :percentage="project.costs_status" title="Costs Status" class="right"></circle-chart>
         </div>
         <div class="flex flex-space-between notes-title">
             <span class="uppercase">Notes</span>
@@ -54,9 +54,7 @@
           </svg>
         </div>
         <ul class="bullets">
-            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis at dolor sollicitudin, interdum nibh quis, faucibus justo. Suspendisse sed nisi id mi aliquam finibus ac sem.</li>
-            <li>Suspendisse in massa in ligula suscipit vulputate.</li>
-            <li>Sed finibus massa nec est rutrum malesuada a et eros. Cras volutpat leo eu lorem viverra ornare.</li>
+            <li v-for="note in project.notes">{{ note }}</li>
         </ul>
         <a href="" class="add-note">add some notes for this project</a>
     </div>
