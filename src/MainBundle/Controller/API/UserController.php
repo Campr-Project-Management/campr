@@ -57,14 +57,14 @@ class UserController extends ApiController
     public function editAction(Request $request)
     {
         if ((!$user = $this->getUser())) {
-            return new JsonResponse([
+            return $this->createApiResponse([
                 'message' => $this
                     ->get('translator')
                     ->trans('api.general.not_found', [], 'api_responses'),
             ], Response::HTTP_NOT_FOUND);
         }
 
-        $data = json_decode($request->getContent(), true);
+        $data = $request->request->all();
         $form = $this->createForm(AccountType::class, $user, ['csrf_protection' => false]);
         $form->submit($data, false);
 

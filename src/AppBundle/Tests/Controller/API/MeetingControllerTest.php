@@ -150,7 +150,7 @@ class MeetingControllerTest extends BaseController
                             [
                                 'status' => 1,
                                 'statusName' => 'status1',
-                                'meeting' => null,
+                                'meeting' => 1,
                                 'meetingName' => 'meeting1',
                                 'project' => 1,
                                 'projectName' => 'project1',
@@ -166,7 +166,7 @@ class MeetingControllerTest extends BaseController
                             [
                                 'status' => 1,
                                 'statusName' => 'status1',
-                                'meeting' => null,
+                                'meeting' => 1,
                                 'meetingName' => 'meeting1',
                                 'project' => 1,
                                 'projectName' => 'project1',
@@ -363,7 +363,7 @@ class MeetingControllerTest extends BaseController
                         [
                             'status' => 1,
                             'statusName' => 'status1',
-                            'meeting' => null,
+                            'meeting' => 1,
                             'meetingName' => 'meeting1',
                             'project' => 1,
                             'projectName' => 'project1',
@@ -379,7 +379,7 @@ class MeetingControllerTest extends BaseController
                         [
                             'status' => 1,
                             'statusName' => 'status1',
-                            'meeting' => null,
+                            'meeting' => 1,
                             'meetingName' => 'meeting1',
                             'project' => 1,
                             'projectName' => 'project1',
