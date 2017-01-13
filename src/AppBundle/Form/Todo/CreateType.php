@@ -63,12 +63,12 @@ class CreateType extends AbstractType
             ->add('date', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
+                'format' => 'yyyy-MM-dd',
             ])
             ->add('dueDate', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
+                'format' => 'yyyy-MM-dd',
             ])
             ->add('status', EntityType::class, [
                 'class' => Status::class,
@@ -87,6 +87,7 @@ class CreateType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Todo::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }
