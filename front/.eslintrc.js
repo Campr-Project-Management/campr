@@ -13,6 +13,7 @@ module.exports = {
   // add your custom rules here
   'rules': {
     "indent": ["error", 4],
+    "max-len": ["error", 160],
     "eol-last": ["error", "always"],
     "linebreak-style": 0,
     // allow paren-less arrow functions
