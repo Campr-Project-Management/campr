@@ -2,10 +2,8 @@
     <div class="project-box box" v-bind:class="'border-color-' + task.id">
         <div class="header">
             <div>
-                <h2>Design the user interface for the
-                  clients who want to use the Digital
-                  Wall Remotely</h2>
-                <p class="task-id">#324</p>
+                <h2>{{ task.title }}</h2>
+                <p class="task-id">#{{ task.id }}</p>
             </div>
             <div>
                 <eye-icon :link="{name: 'task', params: { id: task.id }}"></eye-icon>
@@ -14,24 +12,18 @@
         <div class="content">
             <div class="info">
                 <p class="title">DigitlWall > Phase 2 > Millestone 2.2</p>
-                <table>
+                <table v-show="task.schedules">
                     <tr>
                         <th>Schedule</th>
                         <th>Start</th>
                         <th>Finish</th>
                         <th>Duration</th>
                     </tr>
-                    <tr class="odd">
-                        <td>Schedule Base</td>
-                        <td>01.11.2016</td>
-                        <td>03.12.2016</td>
-                        <td>32</td>
-                    </tr>
-                    <tr class="even">
-                        <td>Schedule Base</td>
-                        <td>01.11.2016</td>
-                        <td>03.12.2016</td>
-                        <td>32</td>
+                    <tr :class="index % 2 === 0 ? 'odd': 'even'" v-for="(schedule, index) in task.schedules">
+                        <td>{{ schedule.name }}</td>
+                        <td>{{ schedule.start | moment('DD.MM.YYYY') }}</td>
+                        <td>{{ schedule.finish | moment('DD.MM.YYYY') }}</td>
+                        <td>{{ schedule.duration }}</td>
                     </tr>
                 </table>
             </div>
@@ -39,14 +31,7 @@
         <bar-chart :percentage="task.percentage" :status="task.status" class="bar-chart" title-left="In progress"></bar-chart>
         <div class="nicescroll">
             <ul class="info bullets">
-                <li>Mauris nec maximus odio.</li>
-                <li>Suspendisse eget enim finibus.</li>
-                <li>Integer euismod luctus convallis.</li>
-                <li>Quisque ut interdum risus, vitae convallis odio. Integer vel gravida risus.</li>
-                <li>Quisque ut interdum risus, vitae convallis odio. Integer vel gravida risus.</li>
-                <li>Quisque ut interdum risus, vitae convallis odio. Integer vel gravida risus.</li>
-                <li>Quisque ut interdum risus, vitae convallis odio. Integer vel gravida risus.</li>
-                <li>Quisque ut interdum risus, vitae convallis odio. Integer vel gravida risus.</li>
+                <li v-for="note in task.notes">{{ note }}</li>
             </ul>
         </div>
         <div class="info bottom flex flex-space-between">
@@ -72,7 +57,7 @@
                         </g>
                     </g>
                     </svg>
-                    <span class="number">2</span>
+                    <span class="number">{{ task.attachments.length }}</span>
                 </div>
 
                 <div class="icon-holder">

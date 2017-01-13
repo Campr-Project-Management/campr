@@ -4,18 +4,17 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-            <li><a href="#">Filter 1</a></li>
+            <li v-for="option in options"><a href="javascript:void(0)" v-on:click="filterItems([filter, option.key, item]), title = option.label">{{ option.label }}</a></li>
         </ul>
     </div>
 </template>
 
 <script>
+import {mapActions} from 'vuex';
+
 export default {
-    props: ['title'],
-    data() {
-        return {
-        };
-    },
+    props: ['title', 'filter', 'options', 'item'],
+    methods: mapActions(['filterItems']),
 };
 </script>
 
@@ -33,14 +32,20 @@ export default {
     font-size: 10px;
     border-radius: 1px;
     text-align: left;
+    padding-right: 22px;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     @media screen and (max-width: 1440px) {
       width: 120px;
     }
 
     .caret {
-      float: right;
+      right: 8px;
       margin-top: 4px;
+      position: absolute;
     }
   }
 
