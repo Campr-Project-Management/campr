@@ -27,6 +27,10 @@
       background: $darkColor;
       margin-right: 20px;
 
+      @media screen and (max-width: 1440px) {
+        margin-bottom: 20px;
+      }
+
       @media screen and (max-width: 1024px) {
         display: none;
       }
@@ -42,6 +46,7 @@
 
       @media screen and (max-width: 1440px) {
         padding: 0 15px;
+        margin-bottom: 20px;
       }
     }
   }

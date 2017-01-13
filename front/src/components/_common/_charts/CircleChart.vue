@@ -44,6 +44,9 @@ export default {
             step: function() {
                 $percentageNumber.text(this.Counter.toFixed(2));
             },
+            complete: function() {
+                $percentageNumber.text(this.Counter.toFixed(2));
+            },
         });
     },
 };
