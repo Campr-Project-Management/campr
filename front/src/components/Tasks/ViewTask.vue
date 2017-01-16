@@ -2,7 +2,7 @@
     <div>
         <div class="page-section">
             <div class="header">
-                <h1>{{ task.title }}</h1>
+                <h1>{{ task.name }}</h1>
             </div>
         </div>
     </div>

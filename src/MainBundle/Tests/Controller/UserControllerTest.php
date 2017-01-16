@@ -28,6 +28,8 @@ class UserControllerTest extends BaseController
         $this->assertContains('name="register[lastName]"', $crawler->html());
         $this->assertContains('id="register_phone"', $crawler->html());
         $this->assertContains('name="register[phone]"', $crawler->html());
+        $this->assertContains('id="register_avatarFile_file"', $crawler->html());
+        $this->assertContains('name="register[avatarFile][file]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());

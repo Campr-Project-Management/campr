@@ -84,6 +84,8 @@ class Team
     /**
      * @ORM\Column(name="logo", type="string", length=255, nullable=true)
      *
+     * @Serializer\Exclude()
+     *
      * @var string
      */
     private $logo;

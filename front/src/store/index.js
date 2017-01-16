@@ -7,6 +7,7 @@ import loader from './modules/loader';
 import user from './modules/user';
 import project from './modules/project';
 import task from './modules/task';
+import colorStatus from './modules/color_status';
 
 Vue.use(Vuex);
 
@@ -21,6 +22,7 @@ export default new Vuex.Store({
         user,
         project,
         task,
+        colorStatus,
     },
     strict: debug,
 });

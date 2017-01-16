@@ -25,14 +25,9 @@ class UserController extends ApiController
      *
      * @return JsonResponse
      */
-    public function getAction($id)
+    public function getAction($id = null)
     {
-        $user = $this
-            ->getDoctrine()
-            ->getRepository(User::class)
-            ->find($id)
-        ;
-
+        $user = !$id ? $this->getUser() : $this->getDoctrine()->getRepository(User::class)->find($id);
         if (!$user) {
             return $this->createApiResponse([
                 'message' => $this

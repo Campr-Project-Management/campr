@@ -66,8 +66,8 @@ class UserControllerTest extends BaseController
                     'updatedAt' => null,
                     'activatedAt' => null,
                     'teams' => [],
-                    'teamMembers' => [],
-                    'teamInvites' => [],
+                    'widgetSettings' => [],
+                    'avatar' => null,
                 ],
             ],
         ];
@@ -147,8 +147,8 @@ class UserControllerTest extends BaseController
                     'updatedAt' => '',
                     'activatedAt' => null,
                     'teams' => [],
-                    'teamMembers' => [],
-                    'teamInvites' => [],
+                    'widgetSettings' => [],
+                    'avatar' => null,
                 ],
             ],
         ];
