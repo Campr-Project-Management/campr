@@ -263,13 +263,13 @@ class Communication
      * Returns project name.
      *
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("project")
+     * @Serializer\SerializedName("projectName")
      *
      * @return string
      */
     public function getProjectName()
     {
-        return $this->project ? $this->project->getName() : '-';
+        return $this->project ? $this->project->getName() : null;
     }
 
     /**
@@ -338,6 +338,6 @@ class Communication
      */
     public function getMeetingNameSerialized()
     {
-        return $this->meetingName ? $this->meetingName : '-';
+        return $this->meetingName ? $this->meetingName : null;
     }
 }

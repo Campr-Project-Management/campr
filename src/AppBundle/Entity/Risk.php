@@ -39,6 +39,8 @@ class Risk
     /**
      * @var Impact
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Impact")
      * @ORM\JoinColumn(name="impact_id")
      */
@@ -112,7 +114,7 @@ class Risk
     /**
      * @var \DateTime|null
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="due_date", type="date", nullable=true)
      */
@@ -131,12 +133,16 @@ class Risk
     /**
      * @var \DateTime
      *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -353,19 +359,6 @@ class Risk
     }
 
     /**
-     * Returns dueDate date formatted.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("dueDate")
-     *
-     * @return string
-     */
-    public function getDueDateFormatted()
-    {
-        return $this->dueDate ? $this->dueDate->format('d/m/Y') : '-';
-    }
-
-    /**
      * Set createdAt.
      *
      * @param \DateTime $createdAt
@@ -438,6 +431,32 @@ class Risk
     }
 
     /**
+     * Returns impact id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("impact")
+     *
+     * @return string
+     */
+    public function getImpactId()
+    {
+        return $this->impact ? $this->impact->getId() : null;
+    }
+
+    /**
+     * Returns impact name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("impactName")
+     *
+     * @return string
+     */
+    public function getImpactName()
+    {
+        return $this->impact ? $this->impact->getName() : null;
+    }
+
+    /**
      * Set riskStrategy.
      *
      * @param RiskStrategy $riskStrategy
@@ -462,16 +481,29 @@ class Risk
     }
 
     /**
-     * Returns risk strategy name.
+     * Returns riskStrategy id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("riskStrategy")
      *
      * @return string
      */
+    public function getRiskStrategyId()
+    {
+        return $this->riskStrategy ? $this->riskStrategy->getId() : null;
+    }
+
+    /**
+     * Returns riskStrategy name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("riskStrategyName")
+     *
+     * @return string
+     */
     public function getRiskStrategyName()
     {
-        return $this->riskStrategy ? $this->riskStrategy->getName() : '-';
+        return $this->riskStrategy ? $this->riskStrategy->getName() : null;
     }
 
     /**
@@ -499,16 +531,29 @@ class Risk
     }
 
     /**
-     * Returns risk category name.
+     * Returns riskCategory id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("riskCategory")
      *
      * @return string
      */
+    public function getRiskCategoryId()
+    {
+        return $this->riskCategory ? $this->riskCategory->getId() : null;
+    }
+
+    /**
+     * Returns riskCategory name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("riskCategoryName")
+     *
+     * @return string
+     */
     public function getRiskCategoryName()
     {
-        return $this->riskCategory ? $this->riskCategory->getName() : '-';
+        return $this->riskCategory ? $this->riskCategory->getName() : null;
     }
 
     /**
@@ -536,16 +581,29 @@ class Risk
     }
 
     /**
-     * Returns responsibility name.
+     * Returns responsibility id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("responsibility")
      *
      * @return string
      */
-    public function getResponsibilityName()
+    public function getResponsibilityId()
     {
-        return $this->responsibility ? $this->responsibility->getUsername() : '-';
+        return $this->responsibility ? $this->responsibility->getId() : null;
+    }
+
+    /**
+     * Returns responsibility full name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibilityFullName")
+     *
+     * @return string
+     */
+    public function getResponsibilityFullName()
+    {
+        return $this->responsibility ? $this->responsibility->getFullName() : null;
     }
 
     /**
@@ -573,15 +631,28 @@ class Risk
     }
 
     /**
-     * Returns status name.
+     * Returns status id.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("status")
      *
      * @return string
      */
+    public function getStatusId()
+    {
+        return $this->status ? $this->status->getId() : null;
+    }
+
+    /**
+     * Returns status name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("statusName")
+     *
+     * @return string
+     */
     public function getStatusName()
     {
-        return $this->status ? $this->status->getName() : '-';
+        return $this->status ? $this->status->getName() : null;
     }
 }

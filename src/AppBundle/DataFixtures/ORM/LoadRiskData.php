@@ -20,7 +20,7 @@ class LoadRiskData extends AbstractFixture implements OrderedFixtureInterface
         $responsible = $this->getReference('user3');
 
         for ($i = 1; $i <= 2; ++$i) {
-            $dueDate = new \DateTime(sprintf('+%d days', $i + 1));
+            $dueDate = new \DateTime('2017-03-03');
             $impact = $this->getReference('impact'.$i);
             $strategy = $this->getReference('risk-strategy'.$i);
             $category = $this->getReference('risk-category'.$i);
@@ -28,6 +28,7 @@ class LoadRiskData extends AbstractFixture implements OrderedFixtureInterface
 
             $risk = (new Risk())
                 ->setTitle('title'.$i)
+                ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
                 ->setDescription('description'.$i)
                 ->setCost('cost'.$i)
                 ->setBudget('budget'.$i)

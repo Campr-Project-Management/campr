@@ -21,6 +21,7 @@ class LoadProjectModuleData extends AbstractFixture implements OrderedFixtureInt
             $projectModule = (new ProjectModule())
                 ->setModule('project-module'.$i)
                 ->setIsEnabled(true)
+                ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
             ;
             $manager->persist($projectModule);
         }
@@ -31,6 +32,7 @@ class LoadProjectModuleData extends AbstractFixture implements OrderedFixtureInt
             ->setProject($project)
             ->setIsEnabled(true)
             ->setIsRequired(true)
+            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
         ;
         $manager->persist($projectModule);
 

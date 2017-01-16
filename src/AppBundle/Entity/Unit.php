@@ -204,12 +204,12 @@ class Unit
      * Returns project name.
      *
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("project")
+     * @Serializer\SerializedName("projectName")
      *
      * @return string
      */
     public function getProjectName()
     {
-        return $this->project ? $this->project->getName() : '-';
+        return $this->project ? $this->project->getName() : null;
     }
 }
