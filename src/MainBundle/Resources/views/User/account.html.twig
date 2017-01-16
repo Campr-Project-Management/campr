@@ -69,6 +69,9 @@
                     {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
+            <div class="control-group form-group {% if form_errors(form.avatarFile) %}has-error{% endif %}">
+                {{ form_widget(form.avatarFile, {'attr': {'class': 'form-control'}}) }}
+            </div>
             <div class="control-group form-group {% if form_errors(form.phone) %}has-error{% endif %}">
                 <div class="controls">
                     <label>{{ 'main.account.settings.phone'|trans }}</label>

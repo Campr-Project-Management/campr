@@ -16,7 +16,7 @@ const getters = {
     projectsForFilter: function(state) {
         let projectsForFilter = [{'key': '', 'label': 'All Projects'}];
         state.items.map( function(project) {
-            projectsForFilter.push({'key': project.id, 'label': project.title});
+            projectsForFilter.push({'key': project.id, 'label': project.name});
         });
 
         return projectsForFilter;
@@ -46,7 +46,7 @@ const actions = {
      */
     getProjects({commit}) {
         Vue.http
-        .get('/api/projects').then((response) => {
+        .get('/api/project/list').then((response) => {
             let projects = response.data;
             commit(types.SET_PROJECTS, {projects});
         }, (response) => {

@@ -88,7 +88,7 @@ class WorkPackage
     /**
      * @var \DateTime|null
      *
-     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     * @Serializer\Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(name="scheduled_start_at", type="date", nullable=true)
      */
@@ -97,7 +97,7 @@ class WorkPackage
     /**
      * @var \DateTime|null
      *
-     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     * @Serializer\Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(name="scheduled_finish_at", type="date", nullable=true)
      */
@@ -106,7 +106,7 @@ class WorkPackage
     /**
      * @var \DateTime|null
      *
-     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     * @Serializer\Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(name="forecast_start_at", type="date", nullable=true)
      */
@@ -115,7 +115,7 @@ class WorkPackage
     /**
      * @var \DateTime|null
      *
-     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     * @Serializer\Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(name="forecast_finish_at", type="date", nullable=true)
      */
@@ -124,7 +124,7 @@ class WorkPackage
     /**
      * @var \DateTime|null
      *
-     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     * @Serializer\Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(name="actual_start_at", type="date", nullable=true)
      */
@@ -133,7 +133,7 @@ class WorkPackage
     /**
      * @var \DateTime|null
      *
-     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     * @Serializer\Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(name="actual_finish_at", type="date", nullable=true)
      */
