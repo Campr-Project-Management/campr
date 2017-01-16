@@ -93,7 +93,7 @@ class NoteController extends ApiController
      * @Method({"PATCH"})
      *
      * @param Request $request
-     * @param Note $note
+     * @param Note    $note
      *
      * @return JsonResponse
      */

@@ -33,6 +33,8 @@ class UserControllerTest extends BaseController
         $this->assertContains('name="create[lastName]"', $crawler->html());
         $this->assertContains('id="create_phone"', $crawler->html());
         $this->assertContains('name="create[phone]"', $crawler->html());
+        $this->assertContains('id="create_avatarFile_file"', $crawler->html());
+        $this->assertContains('name="create[avatarFile][file]"', $crawler->html());
         $this->assertContains('id="create_roles_0"', $crawler->html());
         $this->assertContains('id="create_roles_1"', $crawler->html());
         $this->assertContains('id="create_roles_2"', $crawler->html());
@@ -244,6 +246,8 @@ class UserControllerTest extends BaseController
         $this->assertContains('name="edit[firstName]"', $crawler->html());
         $this->assertContains('id="edit_lastName"', $crawler->html());
         $this->assertContains('name="edit[lastName]"', $crawler->html());
+        $this->assertContains('id="edit_avatarFile_file"', $crawler->html());
+        $this->assertContains('name="edit[avatarFile][file]"', $crawler->html());
         $this->assertContains('id="edit_phone"', $crawler->html());
         $this->assertContains('name="edit[phone]"', $crawler->html());
         $this->assertContains('id="edit_roles_0"', $crawler->html());

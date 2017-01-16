@@ -21,6 +21,8 @@ validation:
                 not_blank: The first name field should not be blank
             last_name:
                 not_blank: The last name field should not be blank
+            avatar:
+                image: Uploaded file must be an image!
             unique:
                 username: The username is already used
                 email: The email is already used

@@ -4,6 +4,7 @@ export const SET_PROJECTS = 'SET_PROJECTS';
 export const TOGGLE_FAVOURITE = 'TOGGLE_FAVOURITE';
 export const SET_PROJECT = 'SET_PROJECT';
 export const SET_TASKS = 'SET_TASKS';
+export const SET_COLOR_STATUSES = 'SET_COLOR_STATUSES';
 export const SET_TASK = 'SET_TASK';
 export const SET_FILTERS = 'SET_FILTERS';
 export const SET_FILTERED_ITEMS = 'SET_FILTERED_ITEMS';
