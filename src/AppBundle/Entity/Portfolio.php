@@ -41,7 +41,7 @@ class Portfolio
     /**
      * @var \DateTime
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
@@ -50,7 +50,7 @@ class Portfolio
     /**
      * @var \DateTime|null
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -168,31 +168,5 @@ class Portfolio
     public function getUpdatedAt()
     {
         return $this->updatedAt;
-    }
-
-    /**
-     * Returns createdAt date formatted.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("createdAt")
-     *
-     * @return string
-     */
-    public function getCreatedAtFormatted()
-    {
-        return $this->createdAt ? $this->createdAt->format('d/m/Y') : '-';
-    }
-
-    /**
-     * Returns updatedAt date formatted.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("updatedAt")
-     *
-     * @return string
-     */
-    public function getUpdatedAtFormatted()
-    {
-        return $this->updatedAt ? $this->updatedAt->format('d/m/Y') : '-';
     }
 }

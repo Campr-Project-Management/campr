@@ -31,6 +31,7 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
             ->setProjectRole($projectRole)
             ->setProjectDepartment($projectDepartment)
             ->setProjectTeam($projectTeam)
+            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
         ;
         $manager->persist($projectUser1);
 
@@ -48,6 +49,7 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
             ->setProjectRole($projectRole)
             ->setProjectDepartment($projectDepartment)
             ->setProjectTeam($projectTeam)
+            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
         ;
         $manager->persist($projectUser2);
 
@@ -65,6 +67,7 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
             ->setProjectRole($projectRole)
             ->setProjectDepartment($projectDepartment)
             ->setProjectTeam($projectTeam)
+            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
         ;
         $manager->persist($projectUser3);
 
@@ -82,6 +85,7 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
             ->setProjectRole($projectRole)
             ->setProjectDepartment($projectDepartment)
             ->setProjectTeam($projectTeam)
+            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
         ;
         $manager->persist($projectUser4);
 

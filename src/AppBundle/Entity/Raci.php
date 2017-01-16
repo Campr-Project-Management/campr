@@ -109,13 +109,13 @@ class Raci
 
     /**
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("workPackage")
+     * @Serializer\SerializedName("workPackageName")
      *
      * @return string
      */
     public function getWorkPackageName()
     {
-        return $this->workPackage ? $this->workPackage->getName() : '-';
+        return $this->workPackage ? $this->workPackage->getName() : null;
     }
 
     /**
@@ -143,15 +143,15 @@ class Raci
     }
 
     /**
-     * Returns user username.
+     * Returns user full name.
      *
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("user")
+     * @Serializer\SerializedName("userFullName")
      *
      * @return string
      */
-    public function getUserName()
+    public function getUserFullName()
     {
-        return $this->user ? $this->user->getUsername() : '-';
+        return $this->user ? $this->user->getFullName() : null;
     }
 }

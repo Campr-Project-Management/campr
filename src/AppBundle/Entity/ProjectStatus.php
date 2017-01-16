@@ -51,7 +51,7 @@ class ProjectStatus
     /**
      * @var \DateTime
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
@@ -60,7 +60,7 @@ class ProjectStatus
     /**
      * @var \DateTime|null
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -205,35 +205,28 @@ class ProjectStatus
     }
 
     /**
+     * Returns project id.
+     *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      *
      * @return string
      */
+    public function getProjectId()
+    {
+        return $this->project ? $this->project->getId() : null;
+    }
+
+    /**
+     * Returns project name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectName")
+     *
+     * @return string
+     */
     public function getProjectName()
     {
-        return $this->project ? $this->project->getName() : '-';
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("createdAt")
-     *
-     * @return string
-     */
-    public function getCreatedAtFormatted()
-    {
-        return $this->createdAt ? $this->createdAt->format('d/m/Y') : '-';
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("updatedAt")
-     *
-     * @return string
-     */
-    public function getUpdatedAtFormatted()
-    {
-        return $this->updatedAt ? $this->updatedAt->format('d/m/Y') : '-';
+        return $this->project ? $this->project->getName() : null;
     }
 }

@@ -11,7 +11,6 @@ class MeetingControllerTest extends BaseController
     /**
      * @dataProvider getDataForListAction()
      *
-     * @param $url
      * @param $isResponseSuccessful
      * @param $responseStatusCode
      * @param $responseContent
@@ -558,7 +557,6 @@ class MeetingControllerTest extends BaseController
      *
      * @param $isResponseSuccessful
      * @param $responseStatusCode
-     * @param $responseContent
      */
     public function testDeleteAction(
         $isResponseSuccessful,
