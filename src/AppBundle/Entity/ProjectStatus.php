@@ -15,6 +15,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ProjectStatus
 {
+    const STATUS_NOT_STARTED = 1;
+    const STATUS_IN_PROGRESS = 2;
+    const STATUS_FINISHED = 3;
+
     /**
      * @var int
      *

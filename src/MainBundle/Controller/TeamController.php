@@ -108,6 +108,13 @@ class TeamController extends Controller
                     $env
                 ),
             ]);
+            $redis->rpush(RedisQueueManagerCommand::DEFAULT, [
+                sprintf(
+                    '--env=%s_%s doctrine:fixtures:load -n --fixtures=src/AppBundle/DataFixtures/Team',
+                    str_replace('-', '_', $team->getSlug()),
+                    $env
+                ),
+            ]);
 
             return $this->redirectToRoute('main_team_show', ['id' => $team->getId()]);
         }
