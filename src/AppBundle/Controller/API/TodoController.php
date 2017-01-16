@@ -2,10 +2,10 @@
 
 namespace AppBundle\Controller\API;
 
-use AppBundle\Entity\WorkPackage;
-use AppBundle\Form\WorkPackage\CreateType;
+use AppBundle\Entity\Project;
+use AppBundle\Entity\Todo;
+use AppBundle\Form\Todo\CreateType;
 use AppBundle\Security\ProjectVoter;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -14,60 +14,50 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/workpackage")
+ * @Route("/api/todo")
  */
-class WorkPackageController extends ApiController
+class TodoController extends ApiController
 {
     /**
-     * All tasks for the current user.
+     * All Todos for the current project.
      *
-     * @Route("/list", name="app_api_workpackage_list")
+     * @Route("/{id}/list", name="app_api_todo_list")
      * @Method({"GET", "POST"})
      *
-     * @param Request $request
+     * @param Project $project
      *
      * @return JsonResponse
      */
-    public function listAction(Request $request)
+    public function listAction(Project $project)
     {
-        $filters = $request->request->all();
-        $user = $this->getUser();
-        $wpQuery = $this
+        $todos = $this
             ->getDoctrine()
-            ->getRepository(WorkPackage::class)
-            ->findUserFiltered($user, $filters)
+            ->getRepository(Todo::class)
+            ->findByProject($project)
         ;
 
-        $pageSize = $this->getParameter('front.per_page');
-        $currentPage = isset($filters['page']) ? $filters['page'] : 1;
-        $paginator = new Paginator($wpQuery);
-        $paginator->getQuery()
-            ->setFirstResult($pageSize * ($currentPage - 1))
-            ->setMaxResults($pageSize)
-        ;
-
-        return $this->createApiResponse($paginator->getIterator()->getArrayCopy());
+        return $this->createApiResponse($todos);
     }
 
     /**
-     * Retrieve WorkPackage information.
+     * Retrieve todo information.
      *
-     * @Route("/{id}", name="app_api_workpackage_get")
+     * @Route("/{id}", name="app_api_todo_get")
      * @Method({"GET"})
      *
-     * @param WorkPackage $workPackage
+     * @param Todo $todo
      *
      * @return JsonResponse
      */
-    public function getAction(WorkPackage $workPackage)
+    public function getAction(Todo $todo)
     {
-        return $this->createApiResponse($workPackage);
+        return $this->createApiResponse($todo);
     }
 
     /**
-     * Create a new WorkPackage.
+     * Create a new Todo.
      *
-     * @Route("/create", name="app_api_workpackage_create")
+     * @Route("/create", name="app_api_todo_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -97,32 +87,32 @@ class WorkPackageController extends ApiController
     }
 
     /**
-     * Edit a specific WorkPackage.
+     * Edit a specific Todo.
      *
-     * @Route("/{id}/edit", name="app_api_workpackage_edit")
+     * @Route("/{id}/edit", name="app_api_todo_edit")
      * @Method({"PATCH"})
      *
      * @param Request     $request
-     * @param WorkPackage $wp
+     * @param Todo $todo
      *
      * @return JsonResponse
      */
-    public function editAction(Request $request, WorkPackage $wp)
+    public function editAction(Request $request, Todo $todo)
     {
-        if ($project = $wp->getProject()) {
+        if ($project = $todo->getProject()) {
             $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
         }
 
         $data = $request->request->all();
-        $form = $this->createForm(CreateType::class, $wp, ['csrf_protection' => false]);
+        $form = $this->createForm(CreateType::class, $todo, ['csrf_protection' => false]);
         $form->submit($data, false);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($wp);
+            $em->persist($todo);
             $em->flush();
 
-            return $this->createApiResponse($wp);
+            return $this->createApiResponse($todo);
         }
 
         $errors = [];
@@ -134,23 +124,23 @@ class WorkPackageController extends ApiController
     }
 
     /**
-     * Delete a specific WorkPackage.
+     * Delete a specific Todo.
      *
-     * @Route("/{id}/delete", name="app_api_workpackage_delete")
+     * @Route("/{id}/delete", name="app_api_todo_delete")
      * @Method({"GET"})
      *
-     * @param WorkPackage $wp
+     * @param Todo $todo
      *
      * @return JsonResponse
      */
-    public function deleteAction(WorkPackage $wp)
+    public function deleteAction(Todo $todo)
     {
-        if ($project = $wp->getProject()) {
+        if ($project = $todo->getProject()) {
             $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
         }
 
         $em = $this->getDoctrine()->getManager();
-        $em->remove($wp);
+        $em->remove($todo);
         $em->flush();
 
         return $this->createApiResponse([], Response::HTTP_NO_CONTENT);
