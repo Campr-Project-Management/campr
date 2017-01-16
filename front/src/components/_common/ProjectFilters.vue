@@ -2,7 +2,7 @@
     <div class="filters">
         <span class="title">Filter By</span>
         <div class="dropdowns">
-            <dropdown title="Customer"></dropdown>
+            <dropdown title="Customer" v-bind:options="customers" item="project" filter="company"></dropdown>
             <dropdown title="Programme"></dropdown>
             <dropdown title="Status" v-bind:options="statuses" item="project" filter="status"></dropdown>
         </div>
@@ -11,32 +11,22 @@
 
 <script>
 import Dropdown from '../_common/Dropdown';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     components: {
         Dropdown,
     },
-    data() {
-        return {
-            statuses: [
-                {
-                    'key': '',
-                    'label': 'All Statuses',
-                },
-                {
-                    'key': 'NOT_STARTED',
-                    'label': 'Not started',
-                },
-                {
-                    'key': 'IN_PROGRESS',
-                    'label': 'In progress',
-                },
-                {
-                    'key': 'FINISHED',
-                    'label': 'Finished',
-                },
-            ],
-        };
+    methods: mapActions(['getProjectStatuses', 'getCustomers']),
+    created() {
+        this.getProjectStatuses();
+        this.getCustomers();
+    },
+    computed: {
+        ...mapGetters({
+            statuses: 'projectStatusesForFilter',
+            customers: 'customersForFilter',
+        }),
     },
 };
 </script>
