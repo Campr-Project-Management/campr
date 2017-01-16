@@ -67,7 +67,7 @@ class CalendarController extends ApiController
      */
     public function createAction(Request $request)
     {
-        $data = json_decode($request->getContent(), true);
+        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
         $form->submit($data);
 
@@ -104,7 +104,7 @@ class CalendarController extends ApiController
             $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
         }
 
-        $data = json_decode($request->getContent(), true);
+        $data = $request->request->all();
         $form = $this->createForm(EditType::class, $calendar, ['csrf_protection' => false]);
         $form->submit($data, false);
 
