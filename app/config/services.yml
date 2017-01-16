@@ -166,6 +166,11 @@ services:
         tags :
             - { name: doctrine.event_listener, event: prePersist }
 
+    app.listenter.request:
+            class: AppBundle\EventListener\RequestListener
+            tags:
+                - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
 ### EXTENSIONS ###
     app.app_extension:
         class: AppBundle\Twig\AppExtension
