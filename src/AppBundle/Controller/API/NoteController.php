@@ -2,10 +2,10 @@
 
 namespace AppBundle\Controller\API;
 
-use AppBundle\Entity\WorkPackage;
-use AppBundle\Form\WorkPackage\CreateType;
+use AppBundle\Entity\Project;
+use AppBundle\Entity\Note;
+use AppBundle\Form\Note\CreateType;
 use AppBundle\Security\ProjectVoter;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -14,60 +14,50 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/workpackage")
+ * @Route("/api/note")
  */
-class WorkPackageController extends ApiController
+class NoteController extends ApiController
 {
     /**
-     * All tasks for the current user.
+     * All notes for the current project.
      *
-     * @Route("/list", name="app_api_workpackage_list")
+     * @Route("/{id}/list", name="app_api_note_list")
      * @Method({"GET", "POST"})
      *
-     * @param Request $request
+     * @param Project $project
      *
      * @return JsonResponse
      */
-    public function listAction(Request $request)
+    public function listAction(Project $project)
     {
-        $filters = $request->request->all();
-        $user = $this->getUser();
-        $wpQuery = $this
+        $notes = $this
             ->getDoctrine()
-            ->getRepository(WorkPackage::class)
-            ->findUserFiltered($user, $filters)
+            ->getRepository(Note::class)
+            ->findByProject($project)
         ;
 
-        $pageSize = $this->getParameter('front.per_page');
-        $currentPage = isset($filters['page']) ? $filters['page'] : 1;
-        $paginator = new Paginator($wpQuery);
-        $paginator->getQuery()
-            ->setFirstResult($pageSize * ($currentPage - 1))
-            ->setMaxResults($pageSize)
-        ;
-
-        return $this->createApiResponse($paginator->getIterator()->getArrayCopy());
+        return $this->createApiResponse($notes);
     }
 
     /**
-     * Retrieve WorkPackage information.
+     * Retrieve Note information.
      *
-     * @Route("/{id}", name="app_api_workpackage_get")
+     * @Route("/{id}", name="app_api_note_get")
      * @Method({"GET"})
      *
-     * @param WorkPackage $workPackage
+     * @param Note $note
      *
      * @return JsonResponse
      */
-    public function getAction(WorkPackage $workPackage)
+    public function getAction(Note $note)
     {
-        return $this->createApiResponse($workPackage);
+        return $this->createApiResponse($note);
     }
 
     /**
-     * Create a new WorkPackage.
+     * Create a new Note.
      *
-     * @Route("/create", name="app_api_workpackage_create")
+     * @Route("/create", name="app_api_note_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -97,32 +87,32 @@ class WorkPackageController extends ApiController
     }
 
     /**
-     * Edit a specific WorkPackage.
+     * Edit a specific Note.
      *
-     * @Route("/{id}/edit", name="app_api_workpackage_edit")
+     * @Route("/{id}/edit", name="app_api_note_edit")
      * @Method({"PATCH"})
      *
-     * @param Request     $request
-     * @param WorkPackage $wp
+     * @param Request $request
+     * @param Note $note
      *
      * @return JsonResponse
      */
-    public function editAction(Request $request, WorkPackage $wp)
+    public function editAction(Request $request, Note $note)
     {
-        if ($project = $wp->getProject()) {
+        if ($project = $note->getProject()) {
             $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
         }
 
         $data = $request->request->all();
-        $form = $this->createForm(CreateType::class, $wp, ['csrf_protection' => false]);
+        $form = $this->createForm(CreateType::class, $note, ['csrf_protection' => false]);
         $form->submit($data, false);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($wp);
+            $em->persist($note);
             $em->flush();
 
-            return $this->createApiResponse($wp);
+            return $this->createApiResponse($note);
         }
 
         $errors = [];
@@ -134,23 +124,23 @@ class WorkPackageController extends ApiController
     }
 
     /**
-     * Delete a specific WorkPackage.
+     * Delete a specific Note.
      *
-     * @Route("/{id}/delete", name="app_api_workpackage_delete")
+     * @Route("/{id}/delete", name="app_api_note_delete")
      * @Method({"GET"})
      *
-     * @param WorkPackage $wp
+     * @param Note $note
      *
      * @return JsonResponse
      */
-    public function deleteAction(WorkPackage $wp)
+    public function deleteAction(Note $note)
     {
-        if ($project = $wp->getProject()) {
+        if ($project = $note->getProject()) {
             $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
         }
 
         $em = $this->getDoctrine()->getManager();
-        $em->remove($wp);
+        $em->remove($note);
         $em->flush();
 
         return $this->createApiResponse([], Response::HTTP_NO_CONTENT);

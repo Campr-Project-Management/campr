@@ -35,6 +35,8 @@ class Todo
     /**
      * @var Meeting|null
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="todos")
      * @ORM\JoinColumn(name="meeting_id")
      */

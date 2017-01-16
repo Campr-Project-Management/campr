@@ -65,7 +65,7 @@ class AssignmentController extends ApiController
      */
     public function createAction(Request $request)
     {
-        $data = json_decode($request->getContent(), true);
+        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
         $form->submit($data);
 
@@ -98,7 +98,7 @@ class AssignmentController extends ApiController
      */
     public function editAction(Request $request, Assignment $assignment)
     {
-        $data = json_decode($request->getContent(), true);
+        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $assignment, ['csrf_protection' => false]);
         $form->submit($data, false);
 
