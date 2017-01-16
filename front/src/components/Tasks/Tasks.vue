@@ -6,7 +6,7 @@
                 <task-filters></task-filters>
             </div>
             <div class="content">
-                <task-box v-for="task in tasks" v-bind:task="task"></task-box>
+                <task-box v-for="task in tasks" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></task-box>
                 <a href="" class="new-box">New Task +</a>
             </div>
         </div>
@@ -24,13 +24,15 @@ export default {
         TaskBox,
     },
     methods: {
-        ...mapActions(['getTasks']),
+        ...mapActions(['getTasks', 'getColorStatuses']),
     },
     created() {
         this.getTasks();
+        this.getColorStatuses();
     },
     computed: mapGetters({
         tasks: 'filteredTasks',
+        colorStatuses: 'colorStatuses',
     }),
 };
 </script>

@@ -135,6 +135,9 @@
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_register.phone)}}</small>
                 </div>
+                <div class="input-group m-b-20 fg-float">
+                    {{ form_widget(form_register.avatarFile, {'attr': {'class': 'form-control'}}) }}
+                </div>
                 <button type="submit" class="btn btn-login btn-success btn-float"><i class="zmdi zmdi-check"></i></button>
                 {{ form_end(form_register) }}
             </div>

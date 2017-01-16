@@ -16,199 +16,27 @@ const getters = {
 
 const actions = {
     /**
+     * Gets this month tasks from the API and commits SET_TASKS mutation
+     * @param {function} commit
+     */
+    getRecentTasks({commit}) {
+        Vue.http
+            .post('api/workpackage/list', {'recent': true}).then((response) => {
+                let tasks = response.data;
+                commit(types.SET_TASKS, {tasks});
+            }, (response) => {
+            });
+    },
+    /**
      * Gets tasks from the API and commits SET_TASKS mutation
      * @param {function} commit
      */
     getTasks({commit}) {
         Vue.http
-            .get('/api/tasks').then((response) => {
+            .get('api/workpackage/list').then((response) => {
                 let tasks = response.data;
                 commit(types.SET_TASKS, {tasks});
             }, (response) => {
-            // TODO: REMOVE MOCK DATA
-                let tasks = [
-                    {
-                        'id': 1,
-                        'project': 1,
-                        'status': 'NOT_STARTED',
-                        'title': 'Task',
-                        'percentage': 0,
-                        'notes': [
-                            'Mauris nec maximus odio.',
-                            'Suspendisse eget enim finibus.',
-                            'Integer euismod luctus convallis.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                        ],
-                        'attachments': [1, 2, 3],
-                        'schedules': [
-                            {
-                                'name': 'Schedule Base',
-                                'start': '2016-12-12',
-                                'finish': '2016-12-13',
-                                'duration': 4,
-                            }, {
-                                'name': 'Schedule Base',
-                                'start': '2016-12-12',
-                                'finish': '2016-12-13',
-                                'duration': 6,
-                            },
-                        ],
-                    },
-                    {
-                        'id': 2,
-                        'status': 'IN_PROGRESS',
-                        'title': 'Task',
-                        'percentage': 75,
-                        'notes': [
-                            'Mauris nec maximus odio.',
-                            'Suspendisse eget enim finibus.',
-                            'Integer euismod luctus convallis.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae' +
-                            ' convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae' +
-                            ' convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae' +
-                            ' convallis odio. Integer vel gravida risus.',
-                        ],
-                        'attachments': [],
-                        'schedules': [
-                            {
-                                'name': 'Schedule Base',
-                                'start': '2016-12-12',
-                                'finish': '2016-12-13',
-                                'duration': 4,
-                            }, {
-                                'name': 'Schedule Base',
-                                'start': '2016-12-12',
-                                'finish': '2016-12-13',
-                                'duration': 6,
-                            },
-                        ],
-                    },
-                    {
-                        'id': 3,
-                        'status': 'IN_PROGRESS',
-                        'title': 'Task',
-                        'percentage': 75,
-                        'notes': [
-                            'Mauris nec maximus odio.',
-                            'Suspendisse eget enim finibus.',
-                            'Integer euismod luctus convallis.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae' +
-                            ' convallis odio. Integer vel gravida risus.',
-                        ],
-                        'attachments': [],
-                        'schedules': [
-                            {
-                                'name': 'Schedule Base',
-                                'start': '2016-12-12',
-                                'finish': '2016-12-13',
-                                'duration': 4,
-                            }, {
-                                'name': 'Schedule Base',
-                                'start': '2016-12-12',
-                                'finish': '2016-12-13',
-                                'duration': 6,
-                            },
-                        ],
-                    },
-                    {
-                        'id': 4,
-                        'status': 'IN_PROGRESS',
-                        'title': 'Task',
-                        'percentage': 75,
-                        'notes': [
-                            'Mauris nec maximus odio.',
-                            'Suspendisse eget enim finibus.',
-                            'Integer euismod luctus convallis.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae' +
-                            ' convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae' +
-                            ' convallis odio. Integer vel gravida risus.',
-                        ],
-                        'attachments': [],
-                    },
-                    {
-                        'id': 5,
-                        'status': 'IN_PROGRESS',
-                        'title': 'Task',
-                        'percentage': 75,
-                        'notes': [
-                            'Mauris nec maximus odio.',
-                            'Suspendisse eget enim finibus.',
-                            'Integer euismod luctus convallis.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae' +
-                            ' convallis odio. Integer vel gravida risus.',
-                        ],
-                        'attachments': [],
-                    },
-                    {
-                        'id': 6,
-                        'status': 'IN_PROGRESS',
-                        'title': 'Task',
-                        'percentage': 75,
-                        'notes': [
-                            'Mauris nec maximus odio.',
-                            'Suspendisse eget enim finibus.',
-                            'Integer euismod luctus convallis.',
-                            'Quisque ut interdum risus, vitae' +
-                            ' convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae' +
-                            ' convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae' +
-                            ' convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae' +
-                            ' convallis odio. Integer vel gravida risus.',
-                        ],
-                        'attachments': [],
-                    },
-                    {
-                        'id': 7,
-                        'status': 'FINISHED',
-                        'title': 'Task',
-                        'percentage': 100,
-                        'notes': [
-                            'Mauris nec maximus odio.',
-                            'Suspendisse eget enim finibus.',
-                            'Integer euismod luctus convallis.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae' +
-                            ' convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae' +
-                            ' convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae' +
-                            ' convallis odio. Integer vel gravida risus.',
-                        ],
-                        'attachments': [],
-                    },
-                ];
-                commit(types.SET_TASKS, {tasks});
             });
     },
     /**
@@ -218,52 +46,24 @@ const actions = {
      */
     getTaskById({commit}, id) {
         Vue.http
-            .get('/api/task/' + id).then((response) => {
+            .get('/api/workpackage/' + id).then((response) => {
                 let task = response.data;
                 commit(types.SET_TASK, {task});
             }, (response) => {
-            // TODO: REMOVE MOCK DATA
-                let task =
-                    {
-                        'id': 1,
-                        'project': 1,
-                        'status': 'NOT_STARTED',
-                        'title': 'Task',
-                        'percentage': 0,
-                        'notes': [
-                            'Mauris nec maximus odio.',
-                            'Suspendisse eget enim finibus.',
-                            'Integer euismod luctus convallis.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                            'Quisque ut interdum risus, vitae ' +
-                            'convallis odio. Integer vel gravida risus.',
-                        ],
-                        'attachments': [1, 2, 3],
-                        'schedules': [
-                            {
-                                'name': 'Schedule Base',
-                                'start': '2016-12-12',
-                                'finish': '2016-12-13',
-                                'duration': 4,
-                            }, {
-                                'name': 'Schedule Base',
-                                'start': '2016-12-12',
-                                'finish': '2016-12-13',
-                                'duration': 6,
-                            },
-                        ],
-                    };
-                commit(types.SET_TASK, {task});
             });
     },
 };
 
 const mutations = {
+    /**
+     * Sets color statuses to state
+     * @param {Object} state
+     * @param {array} colorStatuses
+     */
+    [types.SET_COLOR_STATUSES](state, {colorStatuses}) {
+        state.items = colorStatuses;
+        state.filteredItems = colorStatuses;
+    },
     /**
      * Sets tasks to state
      * @param {Object} state

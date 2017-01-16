@@ -6,10 +6,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\User;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class EditType extends AbstractType
 {
@@ -38,6 +40,16 @@ class EditType extends AbstractType
             ])
             ->add('phone', TextType::class, [
                 'required' => false,
+            ])
+            ->add('avatarFile', VichImageType::class, [
+                'required' => false,
+                'download_link' => false,
+                'constraints' => [
+                    new File([
+                        'mimeTypes' => ['image/jpg', 'image/jpeg', 'image/png'],
+                        'mimeTypesMessage' => 'validation.constraints.user.avatar.image',
+                    ]),
+                ],
             ])
             ->add('roles', ChoiceType::class, array(
                 'expanded' => true,
