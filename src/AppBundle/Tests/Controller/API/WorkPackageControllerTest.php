@@ -11,7 +11,6 @@ class WorkPackageControllerTest extends BaseController
     /**
      * @dataProvider getDataForListAction()
      *
-     * @param $url
      * @param $isResponseSuccessful
      * @param $responseStatusCode
      * @param $responseContent
@@ -308,7 +307,6 @@ class WorkPackageControllerTest extends BaseController
      *
      * @param $isResponseSuccessful
      * @param $responseStatusCode
-     * @param $responseContent
      */
     public function testDeleteAction(
         $isResponseSuccessful,

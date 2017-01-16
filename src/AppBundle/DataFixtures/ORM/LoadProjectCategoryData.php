@@ -21,6 +21,7 @@ class LoadProjectCategoryData extends AbstractFixture implements OrderedFixtureI
             $projectCategory = (new ProjectCategory())
                 ->setName('project-category'.$i)
                 ->setSequence($i)
+                ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
             ;
             $this->setReference('project-category'.$i, $projectCategory);
             $manager->persist($projectCategory);

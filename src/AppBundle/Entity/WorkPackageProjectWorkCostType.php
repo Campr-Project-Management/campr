@@ -140,7 +140,7 @@ class WorkPackageProjectWorkCostType
     /**
      * @var \DateTime
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'H:i:s'>")
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
@@ -316,19 +316,6 @@ class WorkPackageProjectWorkCostType
     public function getCreatedAt()
     {
         return $this->createdAt;
-    }
-
-    /**
-     * Returns createdAt date formatted.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("createdAt")
-     *
-     * @return string
-     */
-    public function getCreatedAtFormatted()
-    {
-        return $this->createdAt ? $this->createdAt->format('d/m/Y') : '-';
     }
 
     /**

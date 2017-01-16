@@ -21,6 +21,7 @@ class LoadProjectScopeData extends AbstractFixture implements OrderedFixtureInte
             $projectScope = (new ProjectScope())
                 ->setName('project-scope'.$i)
                 ->setSequence($i)
+                ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
             ;
             $this->setReference('project-scope'.$i, $projectScope);
             $manager->persist($projectScope);
