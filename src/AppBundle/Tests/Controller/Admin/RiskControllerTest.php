@@ -269,9 +269,9 @@ class RiskControllerTest extends BaseController
         $this->assertEquals(1, $crawler->filter('#data-table-command')->count());
         $this->assertContains('data-column-id="id"', $crawler->html());
         $this->assertContains('data-column-id="title"', $crawler->html());
-        $this->assertContains('data-column-id="riskStrategy"', $crawler->html());
-        $this->assertContains('data-column-id="riskCategory"', $crawler->html());
-        $this->assertContains('data-column-id="responsibility"', $crawler->html());
+        $this->assertContains('data-column-id="riskStrategyName"', $crawler->html());
+        $this->assertContains('data-column-id="riskCategoryName"', $crawler->html());
+        $this->assertContains('data-column-id="responsibilityFullName"', $crawler->html());
         $this->assertContains('data-column-id="dueDate"', $crawler->html());
         $this->assertContains('data-column-id="status"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());

@@ -21,6 +21,7 @@ class LoadProjectWorkCostTypeData extends AbstractFixture implements OrderedFixt
             $projectWorkCostType = (new ProjectWorkCostType())
                 ->setName('project-work-cost-type'.$i)
                 ->setSequence($i)
+                ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
             ;
             $this->setReference('project-work-cost-type'.$i, $projectWorkCostType);
             $manager->persist($projectWorkCostType);

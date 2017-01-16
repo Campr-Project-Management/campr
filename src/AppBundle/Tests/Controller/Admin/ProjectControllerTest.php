@@ -249,8 +249,9 @@ class ProjectControllerTest extends BaseController
         $this->assertContains('data-column-id="id"', $crawler->html());
         $this->assertContains('data-column-id="name"', $crawler->html());
         $this->assertContains('data-column-id="number"', $crawler->html());
-        $this->assertContains('data-column-id="projectCategory"', $crawler->html());
-        $this->assertContains('data-column-id="portfolio"', $crawler->html());
+        $this->assertContains('data-column-id="projectCategoryName"', $crawler->html());
+        $this->assertContains('data-column-id="statusName"', $crawler->html());
+        $this->assertContains('data-column-id="portfolioName"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());
         $this->assertEquals(1, $crawler->filter('.zmdi-plus')->count());
 
