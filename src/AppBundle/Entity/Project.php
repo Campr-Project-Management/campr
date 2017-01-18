@@ -49,30 +49,6 @@ class Project
     private $encryptionKey;
 
     /**
-     * @var User
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="sponsor_id", referencedColumnName="id")
-     * })
-     */
-    private $sponsor;
-
-    /**
-     * @var User
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="manager_id", referencedColumnName="id")
-     * })
-     */
-    private $manager;
-
-    /**
      * @var Company
      *
      * @Serializer\Exclude()
@@ -391,106 +367,6 @@ class Project
     public function getUpdatedAt()
     {
         return $this->updatedAt;
-    }
-
-    /**
-     * Set sponsor.
-     *
-     * @param User $sponsor
-     *
-     * @return Project
-     */
-    public function setSponsor(User $sponsor = null)
-    {
-        $this->sponsor = $sponsor;
-
-        return $this;
-    }
-
-    /**
-     * Get sponsor.
-     *
-     * @return User
-     */
-    public function getSponsor()
-    {
-        return $this->sponsor;
-    }
-
-    /**
-     * Returns sponsor id.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("sponsor")
-     *
-     * @return string
-     */
-    public function getSponsorId()
-    {
-        return $this->sponsor ? $this->sponsor->getId() : null;
-    }
-
-    /**
-     * Returns sponsor full name.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("sponsorFullName")
-     *
-     * @return string
-     */
-    public function getSponsorFullName()
-    {
-        return $this->sponsor ? $this->sponsor->getFullName() : null;
-    }
-
-    /**
-     * Set manager.
-     *
-     * @param User $manager
-     *
-     * @return Project
-     */
-    public function setManager(User $manager = null)
-    {
-        $this->manager = $manager;
-
-        return $this;
-    }
-
-    /**
-     * Get manager.
-     *
-     * @return User
-     */
-    public function getManager()
-    {
-        return $this->manager;
-    }
-
-    /**
-     * Returns manager id.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("manager")
-     *
-     * @return string
-     */
-    public function getManagerId()
-    {
-        return $this->manager ? $this->manager->getId() : null;
-    }
-
-    /**
-     * Returns manager full name.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("managerFullName")
-     *
-     * @return string
-     */
-    public function getManagerFullName()
-    {
-        return $this->manager ? $this->manager->getFullName() : null;
     }
 
     /**

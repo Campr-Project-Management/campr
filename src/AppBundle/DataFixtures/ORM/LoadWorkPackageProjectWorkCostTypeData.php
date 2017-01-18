@@ -25,6 +25,7 @@ class LoadWorkPackageProjectWorkCostTypeData extends AbstractFixture implements 
                 ->setName('work-package-project-work-cost-type'.$i)
                 ->setWorkPackage($workPackage)
                 ->setProjectWorkCostType($projectWorkCostType)
+                ->setCreatedAt(new \DateTime('2017-01-20'))
             ;
             $this->setReference('work-package-project-work-cost-type'.$i, $wppwct);
             $manager->persist($wppwct);

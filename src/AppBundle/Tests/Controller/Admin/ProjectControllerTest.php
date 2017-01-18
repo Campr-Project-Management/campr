@@ -23,10 +23,6 @@ class ProjectControllerTest extends BaseController
         $this->assertContains('name="create[name]"', $crawler->html());
         $this->assertContains('id="create_number"', $crawler->html());
         $this->assertContains('name="create[number]"', $crawler->html());
-        $this->assertContains('id="create_sponsor"', $crawler->html());
-        $this->assertContains('name="create[sponsor]"', $crawler->html());
-        $this->assertContains('id="create_manager"', $crawler->html());
-        $this->assertContains('name="create[manager]"', $crawler->html());
         $this->assertContains('id="create_company"', $crawler->html());
         $this->assertContains('name="create[company]"', $crawler->html());
         $this->assertContains('id="create_projectComplexity"', $crawler->html());
@@ -151,10 +147,6 @@ class ProjectControllerTest extends BaseController
         $this->assertContains('name="create[name]"', $crawler->html());
         $this->assertContains('id="create_number"', $crawler->html());
         $this->assertContains('name="create[number]"', $crawler->html());
-        $this->assertContains('id="create_sponsor"', $crawler->html());
-        $this->assertContains('name="create[sponsor]"', $crawler->html());
-        $this->assertContains('id="create_manager"', $crawler->html());
-        $this->assertContains('name="create[manager]"', $crawler->html());
         $this->assertContains('id="create_company"', $crawler->html());
         $this->assertContains('name="create[company]"', $crawler->html());
         $this->assertContains('id="create_projectComplexity"', $crawler->html());
@@ -350,22 +342,17 @@ class ProjectControllerTest extends BaseController
                     [
                         'id' => 3,
                         'username' => 'user3',
+                        'role' => 'manager',
                     ],
                     [
                         'id' => 4,
                         'username' => 'user4',
+                        'role' => 'sponsor',
                     ],
                     [
                         'id' => 5,
                         'username' => 'user5',
-                    ],
-                    [
-                        'id' => 4,
-                        'username' => 'user4',
-                    ],
-                    [
-                        'id' => 3,
-                        'username' => 'user3',
+                        'role' => 'team-member',
                     ],
                 ],
             ],
