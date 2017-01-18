@@ -22,7 +22,7 @@ const actions = {
     getRecentTasks({commit}) {
         Vue.http
             .post('api/workpackage/list', {'recent': true}).then((response) => {
-                let tasks = response.data;
+                let tasks = response.data.items;
                 commit(types.SET_TASKS, {tasks});
             }, (response) => {
             });
@@ -34,7 +34,7 @@ const actions = {
     getTasks({commit}) {
         Vue.http
             .get('api/workpackage/list').then((response) => {
-                let tasks = response.data;
+                let tasks = response.data.items;
                 commit(types.SET_TASKS, {tasks});
             }, (response) => {
             });

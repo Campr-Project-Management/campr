@@ -3,6 +3,7 @@
 namespace AppBundle\Security;
 
 use AppBundle\Entity\Project;
+use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
@@ -102,10 +103,13 @@ class ProjectVoter extends Voter
      */
     private function canView(Project $project, User $user)
     {
-        return $this->canEdit($project, $user) || $project->getSponsor() === $user
-            ? true
-            : false
+        $projectUser = $this
+            ->em
+            ->getRepository(ProjectUser::class)
+            ->findOneBy(['user' => $user, 'project' => $project])
         ;
+
+        return $projectUser !== null;
     }
 
     /**
@@ -124,9 +128,9 @@ class ProjectVoter extends Voter
             ->findOneBy(['user' => $user, 'project' => $project])
         ;
 
-        return $project->getManager() === $user || $projectUser
-            ? true
-            : false
+        return $projectUser
+            && $projectUser->getProjectRole()
+            && $projectUser->getProjectRoleName() !== ProjectRole::ROLE_SPONSOR
         ;
     }
 
@@ -140,9 +144,15 @@ class ProjectVoter extends Voter
      */
     private function canDelete(Project $project, User $user)
     {
-        return $project->getManager() === $user
-            ? true
-            : false
+        $projectUser = $this
+            ->em
+            ->getRepository(ProjectUser::class)
+            ->findOneBy(['user' => $user, 'project' => $project])
+        ;
+
+        return $projectUser
+            && $projectUser->getProjectRole()
+            && $projectUser->getProjectRoleName() === ProjectRole::ROLE_MANAGER
         ;
     }
 }

@@ -140,7 +140,7 @@ class WorkPackageProjectWorkCostType
     /**
      * @var \DateTime
      *
-     * @Serializer\Type("DateTime<'H:i:s'>")
+     * @Serializer\Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */

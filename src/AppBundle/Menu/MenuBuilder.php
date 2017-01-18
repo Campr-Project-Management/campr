@@ -3,6 +3,7 @@
 namespace AppBundle\Menu;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Cache\ApcuCache;
 use JMS\SecurityExtraBundle\Metadata\ClassMetadata;
 use JMS\SecurityExtraBundle\Metadata\Driver\AnnotationDriver;
 use Knp\Menu\FactoryInterface;
@@ -58,16 +59,21 @@ class MenuBuilder
         $token = $this->securityTokenStorage->getToken();
 
         if ($token->isAuthenticated()) {
-            $route = $this->router->getRouteCollection()->get($routeName);
-            $controller = $route->getDefault('_controller');
-            list($class, $method) = explode('::', $controller, 2);
+            $cacheDriver = new ApcuCache();
+            if (!$cacheDriver->contains($routeName)) {
+                $route = $this->router->getRouteCollection()->get($routeName);
+                $controller = $route->getDefault('_controller');
+                list($class, $method) = explode('::', $controller, 2);
+                $cacheDriver->save($routeName, ['class' => $class, 'method' => $method]);
+            }
+            $apcData = $cacheDriver->fetch($routeName);
+            $metadata = $this->getMetadata($apcData['class']);
 
-            $metadata = $this->getMetadata($class);
-            if (!isset($metadata->methodMetadata[$method])) {
+            if (!isset($metadata->methodMetadata[$apcData['method']])) {
                 return false;
             }
 
-            foreach ($metadata->methodMetadata[$method]->roles as $role) {
+            foreach ($metadata->methodMetadata[$apcData['method']]->roles as $role) {
                 if ($this->securityAuthorizationChecker->isGranted($role)) {
                     return true;
                 }

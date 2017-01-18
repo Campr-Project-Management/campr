@@ -17,8 +17,6 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $sponsorUser = $this->getReference('user3');
-        $managerUser = $this->getReference('user4');
         $projectComplexity = $this->getReference('project-complexity1');
         $projectCategory = $this->getReference('project-category1');
         $projectScope = $this->getReference('project-scope1');
@@ -28,8 +26,6 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
         $project1 = (new Project())
             ->setName('project1')
             ->setNumber('project-number-1')
-            ->setSponsor($sponsorUser)
-            ->setManager($managerUser)
             ->setProjectComplexity($projectComplexity)
             ->setProjectCategory($projectCategory)
             ->setProjectScope($projectScope)
@@ -49,8 +45,6 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
         $project2 = (new Project())
             ->setName('project2')
             ->setNumber('project-number-2')
-            ->setSponsor($sponsorUser)
-            ->setManager($managerUser)
             ->setProjectComplexity($projectComplexity)
             ->setProjectCategory($projectCategory)
             ->setProjectScope($projectScope)
