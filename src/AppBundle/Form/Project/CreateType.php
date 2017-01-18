@@ -9,7 +9,6 @@ use AppBundle\Entity\ProjectCategory;
 use AppBundle\Entity\ProjectComplexity;
 use AppBundle\Entity\ProjectScope;
 use AppBundle\Entity\ProjectStatus;
-use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -51,18 +50,6 @@ class CreateType extends AbstractType
                         'maxMessage' => 'validation.constraints.project.number.length',
                     ]),
                 ],
-            ])
-            ->add('sponsor', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'username',
-                'placeholder' => 'admin.user.sponsor.choice',
-                'translation_domain' => 'admin',
-            ])
-            ->add('manager', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'username',
-                'placeholder' => 'admin.user.manager.choice',
-                'translation_domain' => 'admin',
             ])
             ->add('company', EntityType::class, [
                 'class' => Company::class,
