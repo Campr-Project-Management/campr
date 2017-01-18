@@ -9,11 +9,13 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\User;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CreateType extends AbstractType
 {
@@ -75,6 +77,16 @@ class CreateType extends AbstractType
             ])
             ->add('phone', TextType::class, [
                 'required' => false,
+            ])
+            ->add('avatarFile', VichImageType::class, [
+                'required' => false,
+                'download_link' => false,
+                'constraints' => [
+                    new File([
+                        'mimeTypes' => ['image/jpg', 'image/jpeg', 'image/png'],
+                        'mimeTypesMessage' => 'validation.constraints.user.avatar.image',
+                    ]),
+                ],
             ])
             ->add('roles', ChoiceType::class, array(
                 'expanded' => true,

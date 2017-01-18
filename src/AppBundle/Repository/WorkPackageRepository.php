@@ -22,6 +22,17 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('user', $user)
         ;
 
+        if (isset($filters['recent'])) {
+            $startDate = new \DateTime('first day of this month');
+            $endDate = new \DateTime('last day of this month');
+            $qb
+                ->andWhere('wp.createdAt >= :startDate')
+                ->setParameter('startDate', $startDate)
+                ->andWhere('wp.createdAt <= :endDate')
+                ->setParameter('endDate', $endDate)
+            ;
+        }
+
         if (isset($filters['project'])) {
             $qb
                 ->innerJoin('wp.project', 'p')
