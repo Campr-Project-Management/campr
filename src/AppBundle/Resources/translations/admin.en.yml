@@ -64,6 +64,7 @@ admin:
             first_name: First name
             last_name: Last name
             phone: Phone
+            avatar: Avatar
             roles: Roles
             success: User successfully created!
         edit:

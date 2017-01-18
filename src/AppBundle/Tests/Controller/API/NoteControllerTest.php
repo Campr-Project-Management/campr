@@ -166,9 +166,9 @@ class NoteControllerTest extends BaseController
         return [
             [
                 [
-                    'title' => "note project 1",
+                    'title' => 'note project 1',
                     'project' => 1,
-                    'description' => "descript",
+                    'description' => 'descript',
                 ],
                 true,
                 Response::HTTP_CREATED,

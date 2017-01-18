@@ -1,23 +1,21 @@
 <template>
     <div class="project-box box small-box">
         <div class="header">
-            <h2>{{ task.title }}</h2>
+            <h2>{{ task.name }}</h2>
             <div>
-              <eye-icon :link="{name: 'task', params: { id: task.id }}"></eye-icon>
+              <eye-icon :link="{name: 'tasks', params: { id: task.id }}"></eye-icon>
             </div>
         </div>
         <div class="content flex flex-space-between">
             <div class="info">
-                <p class="title">DigitlWall > Phase 2 > Millestone 2.2</p>
-                <p class="status">Status</p>
+                <p class="title">{{ task.projectName }}</p>
+                <p class="status">{{ task.colorStatusName }}</p>
                 <div class="status-boxes">
-                    <span class="status-box" v-bind:class="{ 'second-col-bg': task.status === 'FINISHED' }"></span>
-                    <span class="status-box" v-bind:class="{ 'warning-col-bg': task.status === 'IN_PROGRESS' }"></span>
-                    <span class="status-box" v-bind:class="{ 'danger-col-bg': task.status === 'NOT_STARTED' }"></span>
+                    <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? '#' + task.colorStatusColor : '' }"></span>
                 </div>
             </div>
         </div>
-        <bar-chart :percentage="task.percentage" :status="task.status" title-right="Progress"></bar-chart>
+        <bar-chart :percentage="task.progress" :status="task.colorStatusName" title-right="Progress"></bar-chart>
     </div>
 </template>
 
@@ -30,7 +28,7 @@ export default {
         BarChart,
         EyeIcon,
     },
-    props: ['task'],
+    props: ['task', 'colorStatuses'],
 };
 </script>
 

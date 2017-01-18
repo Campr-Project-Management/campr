@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="content">
-            <small-task-box v-for="task in tasks" v-bind:task="task"></small-task-box>
+            <small-task-box v-for="task in tasks" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></small-task-box>
         </div>
     </div>
 </template>
@@ -24,12 +24,14 @@ export default {
         TaskFilters,
         SmallTaskBox,
     },
-    methods: mapActions(['getTasks']),
+    methods: mapActions(['getRecentTasks', 'getColorStatuses']),
     created() {
-        this.getTasks();
+        this.getRecentTasks();
+        this.getColorStatuses();
     },
     computed: mapGetters({
         tasks: 'filteredTasks',
+        colorStatuses: 'colorStatuses',
     }),
 };
 </script>
