@@ -1,6 +1,7 @@
 <template>
     <header>
-        <div class="dropdown menu-toggler">
+        <div class="flex flex-direction-reverse">
+            <div class="dropdown menu-toggler">
             <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="17px" height="17px" viewBox="0 0 17.805 16.354" enable-background="new 0 0 17.805 16.354" xml:space="preserve">
                     <g>
@@ -19,16 +20,16 @@
                     </g>
                 </svg>
             </span>
-            <ul class="dropdown-menu dropdown-menu-right">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-            </ul>
-        </div>
-        <p class="user-message">Hi, <span>{{ user.firstName }} {{ user.lastName }}</span></p>
-        <img class="user-avatar" :src="user.avatar" :alt="user.name"/>
-        <a class="notifications" href="">
-            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                </ul>
+            </div>
+            <p class="user-message">Hi, <span>{{ user.firstName }} {{ user.lastName }}</span></p>
+            <img class="user-avatar" :src="user.avatar" :alt="user.name"/>
+            <a class="notifications" href="">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
               width="26.438px" height="24.469px" viewBox="0 0 26.438 24.469" enable-background="new 0 0 26.438 24.469" xml:space="preserve">
                 <g>
                     <defs>
@@ -54,20 +55,31 @@
                 <polygon fill="none" stroke="#636EA0" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
                   12.697,19.03 18.436,19.03 23.132,23.204 23.132,19.03 25.219,19.03 25.219,10.683 12.697,10.683 "/>
             </svg>
-            <span class="notification-balloon">5</span>
-        </a>
+                <span class="notification-balloon">5</span>
+            </a>
+        </div>
+        <div v-show="this.$route.name.indexOf('project-contract') != -1" class="project-title">
+            <p>Project</p>
+            <h4>{{ currentProjectTitle }}</h4>
+        </div>
     </header>
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
+
 export default {
     name: 'navigation',
     props: ['user'],
+    computed: mapGetters({
+        currentProjectTitle: 'currentProjectTitle',
+    }),
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+  @import '../../css/_common';
   @import '../../css/_variables';
 
   svg {
@@ -80,7 +92,25 @@ export default {
     padding: 20px 0;
     display: flex;
     flex-direction: row-reverse;
+    justify-content: space-between;
     color: $lightColor;
+  }
+
+  .project-title {
+      p {
+        text-transform: uppercase;
+        color: $middleColor;
+        font-size: 8px;
+        line-height: 12px;
+        margin-top: 4px;
+      }
+
+      h4 {
+        text-transform: uppercase;
+        color: $lighterColor;
+        font-size: 14px;
+        margin-top: 0;
+      }
   }
 
   .menu-toggler {
