@@ -112,14 +112,6 @@ export default {
     }
   }
 
-  .btn-rounded {
-    background: $middleColor;
-    border-radius: 10px;
-    text-transform: uppercase;
-    font-size: 8px;
-    text-align: center;
-  }
-
   .new-box {
     height: 189px;
     width: 394px;

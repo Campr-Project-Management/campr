@@ -2,7 +2,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Dashboard from '../components/Dashboard/Dashboard';
 import Projects from '../components/Projects/Projects';
-import ViewProject from '../components/Projects/ViewProject';
+import ViewProject from '../components/Projects/ViewProject.vue';
+import ProjectDashboard from '../components/Projects/ProjectDashboard.vue';
+import ProjectContract from '../components/Projects/ProjectContract.vue';
 import ViewTask from '../components/Tasks/ViewTask';
 import Tasks from '../components/Tasks/Tasks';
 
@@ -27,8 +29,19 @@ const routes = [
     },
     {
         path: '/projects/:id',
-        name: 'project',
         component: ViewProject,
+        children: [
+            {
+                path: 'dashboard',
+                component: ProjectDashboard,
+                name: 'project-dashboard',
+            },
+            {
+                path: 'contract',
+                component: ProjectContract,
+                name: 'project-contract',
+            },
+        ],
     },
     {
         path: '/tasks',
