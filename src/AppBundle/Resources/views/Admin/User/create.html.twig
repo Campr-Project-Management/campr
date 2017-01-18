@@ -111,6 +111,15 @@
                             'label': 'admin.user.create.phone'|trans
                         }
                     ) }}
+                    {{ form_widget(
+                        form.avatarFile,
+                        {
+                            'attr': {
+                                'class': 'form-control',
+                            },
+                            'label': 'admin.user.create.avatar'|trans
+                        }
+                    ) }}
                     {% for roleChild in form.roles.children %}
                         {{ form_widget(
                             roleChild,

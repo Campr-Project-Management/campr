@@ -23,6 +23,5 @@ export const filterItems = ({commit, rootState}, params) => {
             filteredItems.push(item);
         }
     });
-
     commit(types.SET_FILTERED_ITEMS, {filteredItems, module});
 };
