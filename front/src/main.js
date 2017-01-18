@@ -8,8 +8,10 @@ import store from './store';
 import {sync} from 'vuex-router-sync';
 import App from './App';
 import VueResource from 'vue-resource';
+import {Vue2Dragula} from 'vue2-dragula';
 
 Vue.use(VueResource);
+Vue.use(Vue2Dragula);
 
 sync(store, router);
 Vue.use(require('vue-moment'));

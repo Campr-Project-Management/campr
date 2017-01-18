@@ -74,6 +74,105 @@
                     </router-link>
                 </li>
             </ul>
+            <ul v-show="this.$route.name.indexOf('project-') != -1">
+                <li class="separator"></li>
+                <li>
+                    <router-link :to="{name: 'project-dashboard'}" title="Project Dashboard">
+                        <span class="default">Project Dashboard</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-contract'}" title="Contract">
+                        <span class="default">Contract</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-contract'}" title="Organization">
+                        <span class="default">Organization</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-contract'}" title="Plan">
+                        <span class="default">Plan</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-contract'}" title="Task Management">
+                        <span class="default">Task Management</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-contract'}" title="Phases & Milestones">
+                        <span class="default">Phases & Milestones</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-contract'}" title="Costs">
+                        <span class="default">Costs</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-contract'}" title="Resources">
+                        <span class="default">Resources</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-contract'}" title="Risks & Opportunities">
+                        <span class="default">Risks & Opportunities</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-contract'}" title="Communication">
+                        <span class="default">Communication</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-contract'}" title="Control Measures">
+                        <span class="default">Control Measures</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-contract'}" title="Status Report">
+                        <span class="default">Status Report</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-contract'}" title="Meetings">
+                        <span class="default">Meetings</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-contract'}" title="Todos">
+                        <span class="default">Todos</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-contract'}" title="Notes">
+                        <span class="default">Notes</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-contract'}" title="Close Down Project">
+                        <span class="default">Close Down Project</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+            </ul>
         </nav>
     </aside>
 </template>
@@ -87,6 +186,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
   @import '../../css/_variables';
+
+  .separator {
+      height: 1px;
+      background: $mainColor;
+      margin: 14px 5px;
+      padding: 0;
+  }
 
   .st0 {
     fill:none;
