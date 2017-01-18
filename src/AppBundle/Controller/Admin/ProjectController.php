@@ -275,18 +275,7 @@ class ProjectController extends Controller
             $user = $projectUser->getUser();
             $info['id'] = $user->getId();
             $info['username'] = $user->getUsername();
-            $names[] = $info;
-        }
-
-        if ($manager = $project->getManager()) {
-            $info['id'] = $manager->getId();
-            $info['username'] = $manager->getUsername();
-            $names[] = $info;
-        }
-
-        if ($sponsor = $project->getSponsor()) {
-            $info['id'] = $sponsor->getId();
-            $info['username'] = $sponsor->getUsername();
+            $info['role'] = $projectUser->getProjectRoleName();
             $names[] = $info;
         }
 
