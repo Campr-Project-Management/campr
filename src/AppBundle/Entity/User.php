@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
@@ -25,7 +27,8 @@ use JMS\Serializer\Annotation as Serializer;
  *      errorPath="username",
  *      message="validation.constraints.user.unique.username"
  *  )
- * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")\
+ * @Vich\Uploadable
  */
 class User implements AdvancedUserInterface, \Serializable
 {
@@ -204,6 +207,8 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var TeamMember[]|ArrayCollection
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamMember", mappedBy="user")
      */
     private $teamMembers;
@@ -220,9 +225,35 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var ArrayCollection|TeamInvite[]
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamInvite", mappedBy="user")
      */
     private $teamInvites;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="widget_settings", type="json_array", nullable=false)
+     */
+    private $widgetSettings;
+
+    /**
+     * @Vich\UploadableField(mapping="user_avatars", fileNameProperty="avatar")
+     * @Serializer\Exclude()
+     *
+     * @var File
+     */
+    private $avatarFile;
+
+    /**
+     * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
+     *
+     * @Serializer\Exclude()
+     *
+     * @var string
+     */
+    private $avatar;
 
     /**
      * User constructor.
@@ -230,7 +261,8 @@ class User implements AdvancedUserInterface, \Serializable
     public function __construct()
     {
         $this->salt = md5(uniqid('', true));
-        $this->roles = array();
+        $this->roles = [];
+        $this->widgetSettings = [];
         $this->createdAt = new \DateTime();
         $this->medias = new ArrayCollection();
         $this->teams = new ArrayCollection();
@@ -259,6 +291,43 @@ class User implements AdvancedUserInterface, \Serializable
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set widgetSettings.
+     *
+     * @param array $widgetSettings
+     *
+     * @return User
+     */
+    public function setWidgetSettings(array $widgetSettings)
+    {
+        $this->widgetSettings = $widgetSettings;
+
+        return $this;
+    }
+
+    public function getWidgetSettings()
+    {
+        $widgetSettings = $this->widgetSettings;
+
+        if (!is_array($widgetSettings)) {
+            $widgetSettings = [];
+        }
+
+        return $widgetSettings;
+    }
+
+    /**
+     * Has widgetSetting.
+     *
+     * @param $widgetSetting
+     *
+     * @return bool
+     */
+    public function hasWidgetSetting($widgetSetting)
+    {
+        return in_array($widgetSetting, $this->getWidgetSettings());
     }
 
     /**
@@ -969,5 +1038,51 @@ class User implements AdvancedUserInterface, \Serializable
     public function getTeamInvites()
     {
         return $this->teamInvites;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * @param string $avatar
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * Set avatarFile.
+     *
+     * @param File|null $image
+     *
+     * @return User
+     */
+    public function setAvatarFile(File $image = null)
+    {
+        $this->avatarFile = $image;
+
+        if ($image) {
+            $this->updatedAt = new \DateTime();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get avatarFile.
+     *
+     * @return File
+     */
+    public function getAvatarFile()
+    {
+        return $this->avatarFile;
     }
 }

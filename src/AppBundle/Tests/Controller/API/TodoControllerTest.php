@@ -166,9 +166,9 @@ class TodoControllerTest extends BaseController
         return [
             [
                 [
-                    'title' => "do this",
+                    'title' => 'do this',
                     'project' => 1,
-                    'description' => "descript",
+                    'description' => 'descript',
                 ],
                 true,
                 Response::HTTP_CREATED,

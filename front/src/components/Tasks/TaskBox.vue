@@ -2,7 +2,7 @@
     <div class="project-box box" v-bind:class="'border-color-' + task.id">
         <div class="header">
             <div>
-                <h2>{{ task.title }}</h2>
+                <h2>{{ task.name }}</h2>
                 <p class="task-id">#{{ task.id }}</p>
             </div>
             <div>
@@ -11,36 +11,38 @@
         </div>
         <div class="content">
             <div class="info">
-                <p class="title">DigitlWall > Phase 2 > Millestone 2.2</p>
-                <table v-show="task.schedules">
+                <p class="title">{{ task.projectName }}</p>
+                <table>
                     <tr>
                         <th>Schedule</th>
                         <th>Start</th>
                         <th>Finish</th>
                         <th>Duration</th>
                     </tr>
-                    <tr :class="index % 2 === 0 ? 'odd': 'even'" v-for="(schedule, index) in task.schedules">
-                        <td>{{ schedule.name }}</td>
-                        <td>{{ schedule.start | moment('DD.MM.YYYY') }}</td>
-                        <td>{{ schedule.finish | moment('DD.MM.YYYY') }}</td>
-                        <td>{{ schedule.duration }}</td>
+                    <tr class="even" v-show="task.scheduledStartAt || task.scheduledFinishAt">
+                        <td>Schedule Base</td>
+                        <td>{{ task.scheduledStartAt }}</td>
+                        <td>{{ task.scheduledFinishAt }}</td>
+                        <td>{{ duration(task.scheduledStartAt, task.scheduledFinishAt) }}</td>
+                    </tr>
+                    <tr class="odd" v-show="task.forecastStartAt || task.forecastFinishAt">
+                        <td>Schedule Forescast</td>
+                        <td>{{ task.forecastStartAt }}</td>
+                        <td>{{ task.forecastFinishAt }}</td>
+                        <td>{{ duration(task.forecastStartAt, task.forecastFinishAt) }}</td>
                     </tr>
                 </table>
             </div>
         </div>
-        <bar-chart :percentage="task.percentage" :status="task.status" class="bar-chart" title-left="In progress"></bar-chart>
+        <bar-chart :percentage="task.progress" :status="task.colorStatusName" class="bar-chart" :title-left="task.colorStatusName"></bar-chart>
         <div class="nicescroll">
-            <ul class="info bullets">
-                <li v-for="note in task.notes">{{ note }}</li>
-            </ul>
+            {{ task.content }}
         </div>
         <div class="info bottom flex flex-space-between">
             <div>
                 <p class="status">Status</p>
                 <div class="status-boxes">
-                  <span class="status-box" v-bind:class="{ 'second-col-bg': task.status === 'FINISHED' }"></span>
-                  <span class="status-box" v-bind:class="{ 'warning-col-bg': task.status === 'IN_PROGRESS' }"></span>
-                  <span class="status-box" v-bind:class="{ 'danger-col-bg': task.status === 'NOT_STARTED' }"></span>
+                    <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? '#' + task.colorStatusColor : '' }"></span>
                 </div>
             </div>
             <div class="icons">
@@ -57,7 +59,7 @@
                         </g>
                     </g>
                     </svg>
-                    <span class="number">{{ task.attachments.length }}</span>
+                    <span class="number">0</span>
                 </div>
 
                 <div class="icon-holder">
@@ -93,6 +95,7 @@
 import BarChart from '../_common/_charts/BarChart';
 import EyeIcon from '../_common/_icons/EyeIcon';
 import 'jquery.nicescroll/jquery.nicescroll.min.js';
+import moment from 'moment';
 
 export default {
     components: {
@@ -106,7 +109,14 @@ export default {
             });
         });
     },
-    props: ['task'],
+    methods: {
+        duration: function(startDate, endDate) {
+            let start = moment(startDate);
+            let end = moment(endDate);
+            return end.diff(start, 'days');
+        },
+    },
+    props: ['task', 'colorStatuses'],
 };
 </script>
 

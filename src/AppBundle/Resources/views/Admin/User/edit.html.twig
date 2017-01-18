@@ -70,6 +70,15 @@
                         }
                     ) }}
                     {{ form_widget(
+                        form.avatarFile,
+                        {
+                            'attr': {
+                                'class': 'form-control',
+                            },
+                            'label': 'admin.user.create.avatar'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
                         form.phone,
                         {
                             'attr': {
@@ -109,7 +118,6 @@
                             'label': 'admin.user.edit.suspended'|trans
                         }
                     ) }}
-
                     {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
                         with {
                             'delete_path': 'app_admin_user_delete',

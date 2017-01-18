@@ -92,8 +92,8 @@ class TodoController extends ApiController
      * @Route("/{id}/edit", name="app_api_todo_edit")
      * @Method({"PATCH"})
      *
-     * @param Request     $request
-     * @param Todo $todo
+     * @param Request $request
+     * @param Todo    $todo
      *
      * @return JsonResponse
      */

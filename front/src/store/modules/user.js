@@ -16,19 +16,11 @@ const actions = {
      */
     getUserInfo({commit}) {
         Vue.http
-        .get('/api/user').then((response) => {
+        .get('api/user').then((response) => {
             let user = response.data;
             commit(types.SET_USER, {user});
+            commit(types.TOGGLE_LOADER, false);
         }, (response) => {
-            // TODO: REMOVE MOCK DATA
-            let user = {
-                'id': 1,
-                'name': 'John Doe',
-                'avatar':
-                  'http://cdn-01.belfasttelegraph.co.uk/opinion/columnists/jane-graham/article34424816.ece/5c02f/AUTOCROP/w620/2016-02-05_opi_16642636_I1.JPG',
-                'notifications': 24,
-            };
-            commit(types.SET_USER, {user});
             commit(types.TOGGLE_LOADER, false);
         });
     },
