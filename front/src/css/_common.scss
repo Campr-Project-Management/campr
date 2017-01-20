@@ -8,6 +8,10 @@
   justify-content: space-between;
 }
 
+.flex-direction-reverse {
+  flex-direction: row-reverse;
+}
+
 .flex-end {
   align-self: flex-end;
 }
@@ -36,3 +40,81 @@
 h2 {
   font-weight: 300;
 }
+
+.input-holder {
+  position: relative;
+}
+
+input[type=text], textarea {
+  background: $darkColor;
+  width: 100%;
+  border: none;
+  padding: 12px 20px;
+  color: $lightColor;
+  margin-bottom: 20px;
+}
+
+textarea {
+  min-height: 100px;
+  resize: none;
+}
+
+label {
+  font-weight: 300;
+  text-transform: uppercase;
+  cursor: text;
+  position: absolute;
+  left: 20px;
+  top: 14px;
+  color: $lightColor;
+  font-size: 11px;
+  display: inline-block;
+  transition: color 0.3s, top 0.2s, font-size 0.2s;
+
+  &.active{
+    top: -15px;
+    left: 20px;
+    font-style: oblique;
+    font-size: 0.8em;
+  }
+}
+
+.btn-rounded {
+  background: $middleColor;
+  text-transform: uppercase;
+  text-align: center;
+  height: 40px;
+  padding: 0 38px;
+  line-height: 40px;
+  font-size: 11px;
+  border-radius: 20px;
+}
+
+.datetime-picker {
+  &.red input {
+    background: $dangerColor;
+    color: $lighterColor;
+  }
+
+  input {
+    background: $darkColor;
+    color: $lightColor;
+    border: none !important;
+    padding: 5px 20px !important;
+  }
+}
+
+.datetime-picker .picker-wrap {
+  border: 1px solid $fadeColor !important;
+  box-shadow: none !important;
+}
+
+.datetime-picker .date-head {
+  background-color: $mainColor !important;
+}
+
+.datetime-picker .date-days {
+  color: $mainColor !important;
+}
+
+

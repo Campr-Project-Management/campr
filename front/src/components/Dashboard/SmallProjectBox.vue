@@ -3,7 +3,7 @@
         <div class="header">
             <h2>{{ project.title }}</h2>
             <div>
-                <eye-icon :link="{name: 'project', params: { id: project.id }}"></eye-icon>
+                <eye-icon :link="{name: 'project-dashboard', params: { id: project.id }}"></eye-icon>
                 <star-icon :item="project"></star-icon>
             </div>
         </div>
