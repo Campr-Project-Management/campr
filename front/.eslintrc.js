@@ -14,6 +14,7 @@ module.exports = {
   'rules': {
     "indent": ["error", 4],
     "max-len": ["error", 160],
+    "no-invalid-this": 0,
     "eol-last": ["error", "always"],
     "linebreak-style": 0,
     // allow paren-less arrow functions
