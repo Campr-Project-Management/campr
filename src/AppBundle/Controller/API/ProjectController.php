@@ -130,11 +130,11 @@ class ProjectController extends ApiController
      */
     public function deleteAction(Project $project)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($project);
         $em->flush();
-
-        $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
 
         return $this->createApiResponse([], JsonResponse::HTTP_NO_CONTENT);
     }
