@@ -1,7 +1,15 @@
 @import '_variables';
 
 .flex {
-  display: flex;
+  display: flex !important;
+}
+
+.flex-row {
+  flex-flow: row wrap;
+}
+
+.flex-center {
+  justify-content: center;
 }
 
 .flex-space-between {
@@ -88,6 +96,17 @@ label {
   line-height: 40px;
   font-size: 11px;
   border-radius: 20px;
+  display: block;
+}
+
+.btn-md {
+  height: 30px;
+  line-height: 30px;
+}
+
+.btn-empty {
+  background: transparent;
+  border: 1px solid $middleColor;
 }
 
 .datetime-picker {
@@ -99,6 +118,7 @@ label {
   input {
     background: $darkColor;
     color: $lightColor;
+    height: 40px !important;
     border: none !important;
     padding: 5px 20px !important;
   }
@@ -117,4 +137,7 @@ label {
   color: $mainColor !important;
 }
 
-
+.hr {
+  height: 1px;
+  background: $darkColor;
+}

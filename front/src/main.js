@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import VueCharts from 'vue-charts';
 import 'expose?$!expose?jQuery!jquery';
 import 'normalise.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,6 +16,7 @@ Vue.use(Vue2Dragula);
 
 sync(store, router);
 Vue.use(require('vue-moment'));
+Vue.use(VueCharts);
 
 Vue.http.options.root = 'https://potato.dev.campr.biz';
 
