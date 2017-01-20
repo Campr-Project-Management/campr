@@ -68,10 +68,6 @@ class ProjectControllerTest extends BaseController
                 true,
                 Response::HTTP_CREATED,
                 [
-                    'sponsor' => null,
-                    'sponsorFullName' => null,
-                    'manager' => null,
-                    'managerFullName' => null,
                     'company' => null,
                     'companyName' => null,
                     'projectComplexity' => null,
@@ -265,10 +261,6 @@ class ProjectControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'sponsor' => 3,
-                    'sponsorFullName' => 'FirstName3 LastName3',
-                    'manager' => 4,
-                    'managerFullName' => 'FirstName4 LastName4',
                     'company' => null,
                     'companyName' => null,
                     'projectComplexity' => 1,
@@ -499,10 +491,6 @@ class ProjectControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'sponsor' => 3,
-                    'sponsorFullName' => 'FirstName3 LastName3',
-                    'manager' => 4,
-                    'managerFullName' => 'FirstName4 LastName4',
                     'company' => null,
                     'companyName' => null,
                     'projectComplexity' => 2,

@@ -46,7 +46,10 @@ class WorkPackageController extends ApiController
             ->setMaxResults($pageSize)
         ;
 
-        return $this->createApiResponse($paginator->getIterator()->getArrayCopy());
+        $responseArray['totalItems'] = count($paginator);
+        $responseArray['items'] = $paginator->getIterator()->getArrayCopy();
+
+        return $this->createApiResponse($responseArray);
     }
 
     /**
