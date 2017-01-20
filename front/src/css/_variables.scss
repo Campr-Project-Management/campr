@@ -15,3 +15,15 @@ $additionalColor3: #50C9DD;
 $additionalColor4: #5EDD50;
 $additionalColor5: #D87F52;
 
+.lighter-fill {
+  fill: $lighterColor;
+}
+.lighter-stroke {
+  stroke: $lighterColor;
+}
+.middle-fill {
+  fill: $middleColor;
+}
+.middle-stroke {
+  stroke: $middleColor;
+}

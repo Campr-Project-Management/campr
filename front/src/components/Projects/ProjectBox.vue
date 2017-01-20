@@ -6,7 +6,7 @@
         <div class="header">
             <h2>{{ project.title }}</h2>
             <div>
-              <eye-icon :link="{name: 'project', params: { id: project.id }}"></eye-icon>
+              <eye-icon :link="{name: 'project-dashboard', params: { id: project.id }}"></eye-icon>
               <star-icon :item="project"></star-icon>
             </div>
         </div>
@@ -39,19 +39,7 @@
         </div>
         <div class="flex flex-space-between notes-title">
             <span class="uppercase">Notes</span>
-            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" height="32px"
-             viewBox="0 0 29.4 26.3" style="enable-background:new 0 0 29.4 26.3;" xml:space="preserve">
-            <g id="XMLID_1972_">
-                <path id="XMLID_1976_" class="st0" d="M6.5,21.6c0,0.1,0,0.2,0.1,0.3C6.7,22,6.8,22.1,6.9,22c0,0,4.4-1,4.5-1.1l-3.8-3.8
-                  C7.5,17.2,6.5,21.6,6.5,21.6z"/>
-
-                  <rect id="XMLID_1975_" x="18.8" y="6.7" transform="matrix(-0.7074 0.7069 -0.7069 -0.7074 39.3086 2.5665)" class="st0" width="0.7" height="5.4"/>
-
-                  <rect id="XMLID_1974_" x="8.2" y="11.7" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 34.3533 14.5166)" class="st0" width="12" height="5.4"/>
-                <path id="XMLID_1973_" class="st0" d="M21.8,10.6l0.2-0.2c0.7-0.7,0.7-1.7,0-2.4l-1.4-1.4c-0.3-0.3-0.7-0.5-1.2-0.5
-                  c-0.5,0-0.9,0.2-1.2,0.5l-0.2,0.2L21.8,10.6z"/>
-            </g>
-          </svg>
+            <pencil-icon :link="{name: 'edit'}"></pencil-icon>
         </div>
         <ul class="bullets">
             <li v-for="note in project.notes">{{ note }}</li>
@@ -65,6 +53,7 @@ import CircleChart from '../_common/_charts/CircleChart';
 import BarChart from '../_common/_charts/BarChart';
 import StarIcon from '../_common/_icons/StarIcon';
 import EyeIcon from '../_common/_icons/EyeIcon';
+import PencilIcon from '../_common/_icons/PencilIcon';
 
 export default {
     components: {
@@ -72,6 +61,7 @@ export default {
         BarChart,
         StarIcon,
         EyeIcon,
+        PencilIcon,
     },
     props: ['project'],
 };
@@ -81,10 +71,6 @@ export default {
 <style scoped lang="scss">
   @import '../../css/_common';
   @import '../../css/box';
-
-  .st0 {
-    fill:#666FA1;
-  }
 
   .info {
     padding-top: 16px;
