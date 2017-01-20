@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="page-section">
+        <div class="page-section projects">
             <div class="header">
                 <h1>My Projects</h1>
                 <project-filters></project-filters>
