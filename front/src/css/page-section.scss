@@ -37,12 +37,7 @@
     }
 
     .btn-rounded {
-      height: 40px;
-      padding: 0 38px;
-      line-height: 40px;
-      font-size: 11px;
-      border-radius: 20px;
-      min-width: 200px;
+      width: 200px;
 
       @media screen and (max-width: 1440px) {
         padding: 0 15px;
