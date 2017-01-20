@@ -1,6 +1,6 @@
 <template>
     <div class="calendar-icon">
-        <svg version="1.1" id="Layer_1" width="20px" height="20px" fill="transparent" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+        <svg version="1.1" id="Layer_1" width="30px" height="30px" fill="transparent" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                viewBox="0 0 26.3 26.5" style="enable-background:new 0 0 26.3 26.5;" xml:space="preserve">
             <g id="XMLID_149_">
                 <rect id="XMLID_152_" x="-327.2" y="67.2" v-bind:class="fill" width="395" height="40"/>
