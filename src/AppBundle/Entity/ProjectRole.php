@@ -15,6 +15,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ProjectRole
 {
+    const ROLE_SPONSOR = 'ROLE_SPONSOR';
+    const ROLE_MANAGER = 'ROLE_MANAGER';
+    const ROLE_PARTICIPANT = 'ROLE_PARTICIPANT';
+
     /**
      * @var int
      *

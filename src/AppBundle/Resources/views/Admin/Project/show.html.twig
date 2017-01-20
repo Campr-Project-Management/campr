@@ -40,22 +40,6 @@
                                 <td>{{ project.number }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.project.list.table.sponsor'|trans }}</th>
-                                <td>
-                                    {% if project.sponsor %}
-                                        {{ project.sponsor.username }}
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>{{ 'admin.project.list.table.manager'|trans }}</th>
-                                <td>
-                                    {% if project.manager %}
-                                        {{ project.manager.username }}
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            <tr>
                                 <th>{{ 'admin.project.list.table.project_complexity'|trans }}</th>
                                 <td>
                                     {% if project.projectComplexity %}

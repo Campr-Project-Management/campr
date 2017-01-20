@@ -19,6 +19,7 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
     {
         $user5 = $this->getReference('user5');
         $user4 = $this->getReference('user4');
+        $project = $this->getReference('project1');
         $startAt = new \DateTime();
 
         for ($i = 1; $i <= 2; ++$i) {
@@ -33,6 +34,7 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
                 ->setScheduledFinishAt($finishAt)
                 ->setResponsibility($user5)
                 ->setColorStatus($colorStatus)
+                ->setProject($project)
             ;
             $this->setReference('work-package'.$i, $workPackage);
             $manager->persist($workPackage);
@@ -46,6 +48,7 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
             ->setScheduledFinishAt(new \DateTime('2017-01-05'))
             ->setResponsibility($user4)
             ->setColorStatus($colorStatus)
+            ->setProject($project)
         ;
         $manager->persist($workPackage);
         $workPackage = (new WorkPackage())
@@ -56,6 +59,7 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
             ->setScheduledFinishAt(new \DateTime('2017-01-05'))
             ->setResponsibility($user4)
             ->setColorStatus($colorStatus)
+            ->setProject($project)
         ;
         $manager->persist($workPackage);
 
