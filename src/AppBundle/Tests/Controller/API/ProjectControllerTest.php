@@ -89,6 +89,7 @@ class ProjectControllerTest extends BaseController
                     'approvedAt' => null,
                     'createdAt' => '',
                     'updatedAt' => null,
+                    'logo' => null,
                 ],
             ],
         ];
@@ -378,6 +379,7 @@ class ProjectControllerTest extends BaseController
                     'approvedAt' => null,
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
+                    'logo' => null,
                 ],
             ],
         ];
@@ -631,6 +633,7 @@ class ProjectControllerTest extends BaseController
                     'approvedAt' => null,
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
+                    'logo' => null,
                 ],
             ],
         ];

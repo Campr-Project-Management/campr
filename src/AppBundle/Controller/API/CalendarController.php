@@ -31,13 +31,7 @@ class CalendarController extends ApiController
      */
     public function listAction(Project $project)
     {
-        $calendars = $this
-            ->getDoctrine()
-            ->getRepository(Calendar::class)
-            ->findByProject($project)
-        ;
-
-        return $this->createApiResponse($calendars);
+        return $this->createApiResponse($project->getCalendars());
     }
 
     /**

@@ -50,7 +50,7 @@ class ProjectUserControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-user/list',
+                '/api/project-user/1/list',
                 true,
                 Response::HTTP_OK,
                 [
@@ -108,26 +108,6 @@ class ProjectUserControllerTest extends BaseController
                         'projectTeam' => 1,
                         'projectTeamName' => 'project-team1',
                         'id' => 3,
-                        'showInResources' => true,
-                        'showInRaci' => null,
-                        'showInOrg' => null,
-                        'createdAt' => '2017-01-01 12:00:00',
-                        'updatedAt' => null,
-                    ],
-                    [
-                        'user' => 6,
-                        'userFullName' => 'FirstName6 LastName6',
-                        'project' => 2,
-                        'projectName' => 'project2',
-                        'projectCategory' => 2,
-                        'projectCategoryName' => 'project-category2',
-                        'projectRole' => 4,
-                        'projectRoleName' => 'team-participant',
-                        'projectDepartment' => 2,
-                        'projectDepartmentName' => 'project-department2',
-                        'projectTeam' => 2,
-                        'projectTeamName' => 'project-team2',
-                        'id' => 4,
                         'showInResources' => true,
                         'showInRaci' => null,
                         'showInOrg' => null,
