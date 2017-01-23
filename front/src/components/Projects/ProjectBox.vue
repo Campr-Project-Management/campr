@@ -4,7 +4,7 @@
           <span>New</span>
         </span>
         <div class="header">
-            <h2>{{ project.title }}</h2>
+            <h2>{{ project.name }}</h2>
             <div>
               <eye-icon :link="{name: 'project-dashboard', params: { id: project.id }}"></eye-icon>
               <star-icon :item="project"></star-icon>
@@ -14,25 +14,25 @@
             <div class="info">
                 <p>
                     <span class="title">Started on:</span>
-                    <span class="data">{{ project.date | moment('DD.MM.YYYY') }}</span>
+                    <span class="data">{{ project.createdAt | moment('DD.MM.YYYY') }}</span>
                 </p>
                 <p>
                     <span class="title">Customer:</span>
-                    <span class="data">{{ project.customer }}</span>
+                    <span class="data">{{ project.companyName }}</span>
                 </p>
                 <p>
                     <span class="title">Programme:</span>
-                    <span class="data">{{ project.programme }}</span>
+                    <span class="data"> {{ project.programme }}</span>
                 </p>
                 <p>
                     <span class="title">Status:</span>
-                    <span v-bind:class="{ finished: project.status === 'FINISHED' }" class="status-label btn-rounded">
-                        {{project.status === 'IN_PROGRESS' && 'In progress' || project.status === 'FINISHED' && 'Finished'}}
+                    <span v-bind:class="{ finished: project.statusName === 'Finished' }" class="status-label btn-rounded">
+                        {{ project.statusName }}
                     </span>
                 </p>
             </div>
           </div>
-        <bar-chart :percentage="project.progress" :status="project.status" title-right="Progress"></bar-chart>
+        <bar-chart :percentage="project.progress" :status="project.statusName" title-right="Progress"></bar-chart>
         <div class="content-bottom flex">
           <circle-chart :percentage="project.task_status" title="Task Status" class="left"></circle-chart>
           <circle-chart :percentage="project.costs_status" title="Costs Status" class="right"></circle-chart>

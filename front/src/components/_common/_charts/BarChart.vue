@@ -1,5 +1,5 @@
 <template>
-    <div class="progress-line" :id="'chart' + _uid" :data-number="percentage" v-bind:class="{ 'danger-col-bg': status === 'NOT_STARTED' }">
+    <div class="progress-line" :id="'chart' + _uid" :data-number="percentage" v-bind:class="{ 'danger-col-bg': status === 'Not started' }">
         <div class="progress-area right flex-end">
             <p class="title-right">{{ titleRight }}</p>
             <p class="percentage">
@@ -8,7 +8,7 @@
             </p>
         </div>
         <p v-show="titleLeft" class="title-left">{{ titleLeft }}</p>
-        <div class="filled" v-bind:class="{ finished: status === 'FINISHED' }"></div>
+        <div class="filled" v-bind:class="{ finished: status === 'Finished' }"></div>
     </div>
 </template>
 
