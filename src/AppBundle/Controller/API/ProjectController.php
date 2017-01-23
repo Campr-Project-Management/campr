@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Project;
+use AppBundle\Entity\ProjectStatus;
 use AppBundle\Form\Project\CreateType;
 use AppBundle\Security\ProjectVoter;
 use MainBundle\Controller\API\ApiController;
@@ -24,11 +25,21 @@ class ProjectController extends ApiController
      * @Route("/list", name="app_api_project_list")
      * @Method({"GET"})
      *
+     * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function listAction()
+    public function listAction(Request $request)
     {
-        return $this->createApiResponse([]);
+        $em = $this->getDoctrine()->getManager();
+        $filters = $request->request->all();
+
+        $projects = $em
+            ->getRepository(Project::class)
+            ->findByUserAndFilters($this->getUser(), $filters)
+        ;
+
+        return $this->createApiResponse($projects);
     }
 
     /**
@@ -50,6 +61,16 @@ class ProjectController extends ApiController
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            if (!$project->getStatus()) {
+                $projectStatus = $em
+                    ->getRepository(ProjectStatus::class)
+                    ->find(ProjectStatus::STATUS_NOT_STARTED)
+                ;
+
+                $project->setStatus($projectStatus);
+            }
+
             $em->persist($project);
             $em->flush();
 

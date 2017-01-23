@@ -16,9 +16,10 @@ Vue.use(Vue2Dragula);
 sync(store, router);
 Vue.use(require('vue-moment'));
 
-Vue.http.options.root = 'https://avengers.dev.campr.biz';
+Vue.http.options.root = 'https://potato.dev.campr.biz';
 
-localStorage.setItem('id_token', 'ae45f7534d57f545a66cd0f66c95f7283bc4c065');
+localStorage.setItem('id_token', 'c90d967c68656f7ac53affb2478' +
+  '68158a8a5aed5a250b4d45ef22c4dd3402e0f00b9c9b8e1a36fe548d80e7ddaec319d788ffee1ee6ac55498cb612a1c5c66e5');
 
 Vue.http.headers.common['Authorization'] =
   'Bearer ' + localStorage.getItem('id_token');

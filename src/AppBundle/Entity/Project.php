@@ -109,6 +109,13 @@ class Project
     private $status;
 
     /**
+     * @var ArrayCollection|ProjectUser[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectUser", mappedBy="project")
+     */
+    private $projectUsers;
+
+    /**
      * @var Portfolio
      *
      * @Serializer\Exclude()
@@ -128,6 +135,13 @@ class Project
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Calendar", mappedBy="project")
      */
     private $calendars;
+
+    /**
+     * @var ArrayCollection|Note[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Note", mappedBy="project")
+     */
+    private $notes;
 
     /**
      * @var ArrayCollection|ChatRoom[]
@@ -211,6 +225,8 @@ class Project
         $this->fileSystems = new ArrayCollection();
         $this->chatRooms = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->projectUsers = new ArrayCollection();
+        $this->notes = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->setEncryptionKey(base64_encode(random_bytes(16)));
     }
@@ -881,5 +897,73 @@ class Project
     public function getEncryptionKey()
     {
         return $this->encryptionKey;
+    }
+
+    /**
+     * Add projectUser.
+     *
+     * @param ProjectUser $projectUser
+     *
+     * @return Project
+     */
+    public function addProjectUser(ProjectUser $projectUser)
+    {
+        $this->projectUsers[] = $projectUser;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectUser.
+     *
+     * @param ProjectUser $projectUser
+     */
+    public function removeProjectUser(ProjectUser $projectUser)
+    {
+        $this->projectUsers->removeElement($projectUser);
+    }
+
+    /**
+     * Get projectUsers.
+     *
+     * @return ArrayCollection|ProjectUser[]
+     */
+    public function getProjectUsers()
+    {
+        return $this->projectUsers;
+    }
+
+    /**
+     * Add note.
+     *
+     * @param Note $note
+     *
+     * @return Project
+     */
+    public function addNote(Note $note)
+    {
+        $this->notes[] = $note;
+
+        return $this;
+    }
+
+    /**
+     * Remove note.
+     *
+     * @param Note $note
+     */
+    public function removeNote(Note $note)
+    {
+        $this->notes->removeElement($note);
+    }
+
+    /**
+     * Get notes.
+     *
+     * @return ArrayCollection|Note[]
+     */
+    public function getNotes()
+    {
+        return $this->notes;
     }
 }
