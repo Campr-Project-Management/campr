@@ -2,6 +2,7 @@
 
 namespace MainBundle\Controller\API;
 
+use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
 use MainBundle\Form\User\AccountType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -37,6 +38,21 @@ class UserController extends ApiController
         }
 
         return $this->createApiResponse($user);
+    }
+
+    /**
+     * Retrieve all user teams.
+     *
+     * @Route("/{id}/teams", name="main_api_user_teams_get")
+     * @Method({"GET"})
+     *
+     * @param User $user
+     *
+     * @return JsonResponse
+     */
+    public function getTeamsAction(User $user)
+    {
+        return $this->createApiResponse($user->getTeams());
     }
 
     /**

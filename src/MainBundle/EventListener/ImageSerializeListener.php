@@ -2,6 +2,7 @@
 
 namespace MainBundle\EventListener;
 
+use AppBundle\Entity\Project;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Team;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -48,6 +49,7 @@ class ImageSerializeListener
                 $visitor->addData('avatar', $this->getUri($object, 'avatarFile'));
                 break;
             case $object instanceof Team:
+            case $object instanceof Project:
                 $visitor->addData('logo', $this->getUri($object, 'logoFile'));
                 break;
         }

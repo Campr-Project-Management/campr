@@ -30,13 +30,7 @@ class NoteController extends ApiController
      */
     public function listAction(Project $project)
     {
-        $notes = $this
-            ->getDoctrine()
-            ->getRepository(Note::class)
-            ->findByProject($project)
-        ;
-
-        return $this->createApiResponse($notes);
+        return $this->createApiResponse($project->getNotes());
     }
 
     /**
