@@ -44,6 +44,8 @@ parameters:
     media_upload_folder_test: '%kernel.root_dir%/../web/uploads/tests'
     main.team.uri_prefix: /uploads/teams
     main.team.images_path: '%kernel.root_dir%/../web/uploads/teams'
+    main.project.uri_prefix: /uploads/projects
+    main.project.images_path: '%kernel.root_dir%/../web/uploads/projects'
     app.user.uri_prefix: /uploads/avatars
     app.user.avatars_path: '%kernel.root_dir%/../web/uploads/avatars'
     jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
