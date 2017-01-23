@@ -39,7 +39,7 @@ class ProjectUser
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="projectUsers")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      * })
