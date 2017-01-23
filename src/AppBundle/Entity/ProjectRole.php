@@ -17,7 +17,7 @@ class ProjectRole
 {
     const ROLE_SPONSOR = 'ROLE_SPONSOR';
     const ROLE_MANAGER = 'ROLE_MANAGER';
-    const ROLE_PARTICIPANT = 'ROLE_PARTICIPANT';
+    const ROLE_TEAM_MEMBER = 'ROLE_TEAM_MEMBER';
 
     /**
      * @var int
