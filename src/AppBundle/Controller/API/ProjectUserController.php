@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\API;
 
+use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Form\ProjectUser\CreateType;
 use MainBundle\Controller\API\ApiController;
@@ -18,20 +19,16 @@ class ProjectUserController extends ApiController
     /**
      * Get all project users.
      *
-     * @Route("/list", name="app_api_project_user_list")
+     * @Route("/{id}/list", name="app_api_project_user_list")
      * @Method({"GET"})
+     *
+     * @param Project $project
      *
      * @return JsonResponse
      */
-    public function listAction()
+    public function listAction(Project $project)
     {
-        $projectUsers = $this
-            ->getDoctrine()
-            ->getRepository(ProjectUser::class)
-            ->findAll()
-        ;
-
-        return $this->createApiResponse($projectUsers);
+        return $this->createApiResponse($project->getProjectUsers());
     }
 
     /**
@@ -99,8 +96,6 @@ class ProjectUserController extends ApiController
         $form->submit($data, false);
 
         if ($form->isValid()) {
-            $projectUser->setUpdatedAt(new \DateTime());
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectUser);
             $em->flush();
