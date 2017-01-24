@@ -10,7 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * Insert database entries for ProjectStatus entity.
  */
-class LoadProjectStatusData extends AbstractFixture  implements OrderedFixtureInterface
+class LoadProjectStatusData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @param ObjectManager $manager
