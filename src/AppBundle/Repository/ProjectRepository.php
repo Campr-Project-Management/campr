@@ -19,8 +19,7 @@ class ProjectRepository extends BaseRepository
         $qb = $this
             ->createQueryBuilder('p')
             ->leftJoin('p.projectUsers', 'pu')
-            ->where('p.manager = :user')
-            ->orWhere('pu.user = :user')
+            ->where('pu.user = :user')
             ->setParameter('user', $user)
         ;
 
