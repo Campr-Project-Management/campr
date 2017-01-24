@@ -40,6 +40,8 @@ validation:
                 not_blank: The number field should not be blank
                 length: Your project number cannot be longer than 128 characters
                 unique: That number is taken
+            logo:
+                image: Uploaded file must be an image!
         project_user:
             user:
                 not_blank: The name field should not be blank. Choose one user

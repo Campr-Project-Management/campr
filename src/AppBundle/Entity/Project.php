@@ -6,6 +6,8 @@ use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Project.
@@ -13,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="project")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRepository")
  * @UniqueEntity(fields="number", message="validation.constraints.project.number.unique")
+ * @Vich\Uploadable
  */
 class Project
 {
@@ -187,6 +190,23 @@ class Project
      * @ORM\Column(name="approved_at", type="datetime", nullable=true)
      */
     private $approvedAt;
+
+    /**
+     * @Vich\UploadableField(mapping="project_images", fileNameProperty="logo")
+     * @Serializer\Exclude()
+     *
+     * @var File
+     */
+    private $logoFile;
+
+    /**
+     * @ORM\Column(name="logo", type="string", length=255, nullable=true)
+     *
+     * @Serializer\Exclude()
+     *
+     * @var string
+     */
+    private $logo;
 
     /**
      * @var ArrayCollection|FileSystem[]
@@ -965,5 +985,49 @@ class Project
     public function getNotes()
     {
         return $this->notes;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * @param string $logo
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+    }
+
+    /**
+     * Set logoFile.
+     *
+     * @param File|null $image
+     *
+     * @return User
+     */
+    public function setLogoFile(File $image = null)
+    {
+        $this->logoFile = $image;
+
+        if ($image) {
+            $this->updatedAt = new \DateTime();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get logoFile.
+     *
+     * @return File
+     */
+    public function getLogoFile()
+    {
+        return $this->logoFile;
     }
 }
