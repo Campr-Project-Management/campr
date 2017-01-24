@@ -59,7 +59,8 @@
         "jms/security-extra-bundle": "^1.6",
         "lcobucci/jwt": "^3.2",
         "stof/doctrine-extensions-bundle": "^1.2",
-        "guzzlehttp/guzzle": "^6.2"
+        "guzzlehttp/guzzle": "^6.2",
+        "nelmio/cors-bundle": "^1.5"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
