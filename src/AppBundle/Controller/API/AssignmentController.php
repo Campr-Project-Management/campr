@@ -29,13 +29,7 @@ class AssignmentController extends ApiController
      */
     public function listAction(WorkPackage $wp)
     {
-        $assignments = $this
-            ->getDoctrine()
-            ->getRepository(Assignment::class)
-            ->findByWorkPackage($wp)
-        ;
-
-        return $this->createApiResponse($assignments);
+        return $this->createApiResponse($wp->getAssignments());
     }
 
     /**

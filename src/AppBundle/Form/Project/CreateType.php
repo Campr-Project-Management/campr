@@ -15,8 +15,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CreateType extends AbstractType
 {
@@ -48,6 +50,16 @@ class CreateType extends AbstractType
                     new Length([
                         'max' => 128,
                         'maxMessage' => 'validation.constraints.project.number.length',
+                    ]),
+                ],
+            ])
+            ->add('logoFile', VichImageType::class, [
+                'required' => false,
+                'download_link' => false,
+                'constraints' => [
+                    new File([
+                        'mimeTypes' => ['image/jpg', 'image/jpeg', 'image/png'],
+                        'mimeTypesMessage' => 'validation.constraints.project.logo.image',
                     ]),
                 ],
             ])
