@@ -50,8 +50,8 @@ class TeamControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'user' => null,
-                    'userFullName' => null,
+                    'user' => 3,
+                    'userFullName' => 'FirstName3 LastName3',
                     'id' => 1,
                     'name' => 'team_1',
                     'slug' => 'team-1',
@@ -94,8 +94,8 @@ class TeamControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'user' => null,
-                    'userFullName' => null,
+                    'user' => 3,
+                    'userFullName' => 'FirstName3 LastName3',
                     'id' => 2,
                     'name' => 'team_2',
                     'slug' => 'team-2',
