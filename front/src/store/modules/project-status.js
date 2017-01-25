@@ -7,9 +7,9 @@ const state = {
 
 const getters = {
     projectStatuses: state => state.items,
-    projectStatusesForFilter: function (state) {
+    projectStatusesForFilter: function(state) {
         let projectStatusesForFilter = [{'key': '', 'label': 'All Statuses'}];
-        state.items.map( function (projectStatus) {
+        state.items.map(function(projectStatus) {
             projectStatusesForFilter.push({'key': projectStatus.id, 'label': projectStatus.name});
         });
 
