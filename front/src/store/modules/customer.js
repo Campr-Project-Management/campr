@@ -7,9 +7,9 @@ const state = {
 
 const getters = {
     customers: state => state.items,
-    customersForFilter: function (state) {
+    customersForFilter: function(state) {
         let customersForFilter = [{'key': '', 'label': 'All Customers'}];
-        state.items.map( function (customer) {
+        state.items.map(function(customer) {
             customersForFilter.push({'key': customer.id, 'label': customer.name});
         });
 
