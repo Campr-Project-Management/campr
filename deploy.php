@@ -5,7 +5,7 @@ require 'recipe/symfony3.php';
 // Set configurations
 set('repository', 'git@lab.trisoft.ro:campr/campr.git');
 set('shared_files', ['app/config/parameters.yml']);
-set('shared_dirs', ['var/logs', 'vendor', 'web/uploads', 'front/node_modules']);
+set('shared_dirs', ['var/logs', 'vendor', 'web/uploads']);
 set('writable_dirs', ['var/cache', 'var/logs']);
 set('http_user', 'www-data');
 
@@ -17,13 +17,13 @@ option('reset-db', null, \Symfony\Component\Console\Input\InputOption::VALUE_NON
 env('deploy_path', '/var/www/{{domain}}');
 env('env_vars', 'SYMFONY_ENV={{env}}');
 env('release_path', function () {
-    return str_replace("\n", '', run("if [ -L {{deploy_path}}/release ]; then readlink {{deploy_path}}/release; else readlink {{deploy_path}}/current; fi"));
+    return str_replace("\n", '', run('if [ -L {{deploy_path}}/release ]; then readlink {{deploy_path}}/release; else readlink {{deploy_path}}/current; fi'));
 });
 env('symfony_console', function () {
     return sprintf('%s %s/%s%s', env('bin/php'), env('release_path'), trim(get('bin_dir'), '/'), '/console');
 });
 env('symfony_console_options', function () {
-   return sprintf(
+    return sprintf(
        '--env=%s%s %s',
        env('env'),
        env('env') === 'prod' ? ' --no-debug' : '',
@@ -36,7 +36,8 @@ env('bin/php', function () {
     return sprintf('%s -dmemory_limit=-1', $php);
 });
 env('bin/composer', function () {
-    run("cd {{release_path}} && wget -q https://getcomposer.org/composer.phar && chmod +x composer.phar");
+    run('cd {{release_path}} && wget -q https://getcomposer.org/composer.phar && chmod +x composer.phar');
+
     return '{{bin/php}} {{release_path}}/composer.phar';
 });
 env('cron_domain', function () {
@@ -83,7 +84,7 @@ task('project:apache:restart', function () {
     run('sudo service apache2 restart');
 });
 task('project:dizda:backup', function () {
-   run('{{symfony_console}} dizda:backup:start {{symfony_console_options}}');
+    run('{{symfony_console}} dizda:backup:start {{symfony_console_options}}');
 });
 task('project:fos:js-routing:dump', function () {
     run('{{symfony_console}} fos:js-routing:dump {{symfony_console_options}}');
@@ -141,7 +142,7 @@ task('deploy:start-time', function () {
     set('startTime', time());
 });
 task('deploy:end-time', function () {
-    env('deployTime', time()-get('startTime'));
+    env('deployTime', time() - get('startTime'));
 });
 
 // Set flows
