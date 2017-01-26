@@ -36,6 +36,9 @@ services:
 
     app.service.user:
         class: AppBundle\Services\UserService
+        arguments:
+            - '@request_stack'
+            - '%domain%'
 
     app.service.request_parser:
         class: AppBundle\Services\RequestParserService
