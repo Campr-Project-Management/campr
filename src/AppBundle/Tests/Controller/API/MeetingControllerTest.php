@@ -3,7 +3,6 @@
 namespace AppBundle\Tests\Controller\API;
 
 use MainBundle\Tests\Controller\BaseController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class MeetingControllerTest extends BaseController
@@ -213,6 +212,7 @@ class MeetingControllerTest extends BaseController
                                 'dueDate' => '2017-05-01 00:00:00',
                             ],
                         ],
+                        'distributionLists' => [],
                     ],
                 ],
             ],
@@ -426,6 +426,7 @@ class MeetingControllerTest extends BaseController
                             'dueDate' => '2017-05-01 00:00:00',
                         ],
                     ],
+                    'distributionLists' => [],
                 ],
             ],
         ];
@@ -467,7 +468,7 @@ class MeetingControllerTest extends BaseController
                     'location' => 'loc1',
                     'objectives' => 'objectives',
                     'project' => 1,
-                    'date' => '2017-01-07',
+                    'date' => '07/01/2017',
                     'start' => '16:00:00',
                     'end' => '17:00:00',
                 ],
@@ -489,6 +490,7 @@ class MeetingControllerTest extends BaseController
                     'decisions' => [],
                     'todos' => [],
                     'notes' => [],
+                    'distributionLists' => [],
                 ],
             ],
         ];
@@ -527,7 +529,7 @@ class MeetingControllerTest extends BaseController
             [
                 [
                     'name' => 'meeting-renamed',
-                    'date' => '2017-03-09',
+                    'date' => '09/03/2017',
                 ],
                 true,
                 Response::HTTP_OK,
@@ -547,6 +549,7 @@ class MeetingControllerTest extends BaseController
                     'decisions' => [],
                     'todos' => [],
                     'notes' => [],
+                    'distributionLists' => [],
                 ],
             ],
         ];

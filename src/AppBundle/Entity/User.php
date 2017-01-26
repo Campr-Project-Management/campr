@@ -296,6 +296,22 @@ class User implements AdvancedUserInterface, \Serializable
     private $medium;
 
     /**
+     * @var ArrayCollection|DistributionList[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\DistributionList", mappedBy="createdBy")
+     */
+    private $ownedDistributionLists;
+
+    /**
+     * @var ArrayCollection|DistributionList[]
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\DistributionList", mappedBy="users")
+     */
+    private $distributionLists;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -309,6 +325,8 @@ class User implements AdvancedUserInterface, \Serializable
         $this->teamMembers = new ArrayCollection();
         $this->apiToken = hash('sha512', microtime(true).uniqid('campr', true));
         $this->teamInvites = new ArrayCollection();
+        $this->ownedDistributionLists = new ArrayCollection();
+        $this->distributionLists = new ArrayCollection();
     }
 
     /**
@@ -1090,6 +1108,8 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @param string $avatar
+     *
+     * @return User
      */
     public function setAvatar($avatar)
     {
@@ -1136,10 +1156,14 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @param string $facebook
+     *
+     * @return User
      */
     public function setFacebook($facebook)
     {
         $this->facebook = $facebook;
+
+        return $this;
     }
 
     /**
@@ -1152,10 +1176,14 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @param string $twitter
+     *
+     * @return User
      */
     public function setTwitter($twitter)
     {
         $this->twitter = $twitter;
+
+        return $this;
     }
 
     /**
@@ -1168,10 +1196,14 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @param string $instagram
+     *
+     * @return User
      */
     public function setInstagram($instagram)
     {
         $this->instagram = $instagram;
+
+        return $this;
     }
 
     /**
@@ -1184,10 +1216,14 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @param string $gplus
+     *
+     * @return User
      */
     public function setGplus($gplus)
     {
         $this->gplus = $gplus;
+
+        return $this;
     }
 
     /**
@@ -1200,10 +1236,14 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @param string $linkedIn
+     *
+     * @return User
      */
     public function setLinkedIn($linkedIn)
     {
         $this->linkedIn = $linkedIn;
+
+        return $this;
     }
 
     /**
@@ -1216,9 +1256,81 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @param string $medium
+     *
+     * @return User
      */
     public function setMedium($medium)
     {
         $this->medium = $medium;
+
+        return $this;
+    }
+
+    /**
+     * Add ownedDistributionList.
+     *
+     * @param DistributionList $ownedDistributionList
+     *
+     * @return User
+     */
+    public function addOwnedDistributionList(DistributionList $ownedDistributionList)
+    {
+        $this->ownedDistributionLists[] = $ownedDistributionList;
+
+        return $this;
+    }
+
+    /**
+     * Remove ownedDistributionList.
+     *
+     * @param DistributionList $ownedDistributionList
+     */
+    public function removeOwnedDistributionList(DistributionList $ownedDistributionList)
+    {
+        $this->ownedDistributionLists->removeElement($ownedDistributionList);
+    }
+
+    /**
+     * Get ownedDistributionLists.
+     *
+     * @return ArrayCollection|DistributionList[]
+     */
+    public function getOwnedDistributionLists()
+    {
+        return $this->ownedDistributionLists;
+    }
+
+    /**
+     * Add distributionList.
+     *
+     * @param DistributionList $distributionList
+     *
+     * @return User
+     */
+    public function addDistributionList(DistributionList $distributionList)
+    {
+        $this->distributionLists[] = $distributionList;
+
+        return $this;
+    }
+
+    /**
+     * Remove distributionList.
+     *
+     * @param DistributionList $distributionList
+     */
+    public function removeDistributionList(DistributionList $distributionList)
+    {
+        $this->distributionLists->removeElement($distributionList);
+    }
+
+    /**
+     * Get distributionLists.
+     *
+     * @return ArrayCollection|DistributionList[]
+     */
+    public function getDistributionLists()
+    {
+        return $this->distributionLists;
     }
 }

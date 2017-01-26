@@ -113,7 +113,7 @@ fi
 
 if [ ! "`php -m | grep '^mcrypt'`" ];
 then
-    sudo apt-get install php-mcrypt
+    sudo apt-get install php7.0-mcrypt
 fi
 
 # apache2
