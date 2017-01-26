@@ -2,13 +2,13 @@
 
 namespace AppBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Gedmo\Sortable\Entity\Repository\SortableRepository;
 
 /**
  * Class BaseRepository
  * Represents the base class for all repository classes.
  */
-abstract class BaseRepository extends EntityRepository
+abstract class BaseRepository extends SortableRepository
 {
     /**
      * Finds entities based on criteria, order and limit.
