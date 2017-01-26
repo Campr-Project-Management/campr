@@ -1239,6 +1239,39 @@ admin:
                 first: Decision with ID
                 second: successfully deleted!
 
+    distribution_list:
+        choice: Choose one distribution list
+        list:
+            title: Distribution List
+            subtitle: List of distribution lists
+            add: Add new distribution list
+            table:
+                id: Id
+                name: Name
+                sequence: Sequence
+                project: Project
+                participants: Participants
+                meetings: Meetings
+                created_by: Created by
+                created_at: Created at
+                updated_at: Updated at
+        create:
+            title: Create distribution list
+            name: Name
+            project: Project
+            sequence: Sequence
+            participants: Participants
+            meetings: Meetings
+            success: Distribution list successfully created!
+        edit:
+            title: Edit Distribution List
+            success: Distribution list successfully edited!
+        delete:
+            success:
+                general: Distribution list successfully deleted!
+                first: Distribution list with ID
+                second: successfully deleted!
+
     communication:
         list:
             title: Communication
