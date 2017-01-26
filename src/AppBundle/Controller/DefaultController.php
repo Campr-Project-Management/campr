@@ -96,6 +96,12 @@ class DefaultController extends Controller
         $user->setApiToken($userData['api_token']);
         $user->setWidgetSettings($userData['widget_settings']);
         $user->setAvatar($userData['avatar']);
+        $user->setFacebook($userData['facebook']);
+        $user->setTwitter($userData['twitter']);
+        $user->setInstagram($userData['instagram']);
+        $user->setGplus($userData['gplus']);
+        $user->setLinkedIn($userData['linked_in']);
+        $user->setMedium($userData['medium']);
 
         $em->persist($user);
         $em->flush();
