@@ -33,7 +33,8 @@ class MeetingController extends ApiController
         $meetings = $this
             ->getDoctrine()
             ->getRepository(Meeting::class)
-            ->findByProject($project);
+            ->findByProject($project)
+        ;
 
         return $this->createApiResponse($meetings);
     }
