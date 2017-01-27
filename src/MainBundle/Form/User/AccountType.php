@@ -60,6 +60,24 @@ class AccountType extends AbstractType
             ->add('phone', TextType::class, [
                 'required' => false,
             ])
+            ->add('facebook', TextType::class, [
+                'required' => false,
+            ])
+            ->add('twitter', TextType::class, [
+                'required' => false,
+            ])
+            ->add('instagram', TextType::class, [
+                'required' => false,
+            ])
+            ->add('gplus', TextType::class, [
+                'required' => false,
+            ])
+            ->add('linkedIn', TextType::class, [
+                'required' => false,
+            ])
+            ->add('medium', TextType::class, [
+                'required' => false,
+            ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'validation.constraints.user.password.match',
