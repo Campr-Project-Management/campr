@@ -23,12 +23,15 @@ class UserControllerTest extends BaseController
         $responseStatusCode,
         $responseContent
     ) {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
+        $user = $this->getUserByUsername('superadmin');
+        $token = $user->getApiToken();
 
-        $token = $this->user->getApiToken();
         $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
+
+        if (isset($responseContent['apiToken'])) {
+            $responseContent['apiToken'] = $token;
+        }
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -66,7 +69,14 @@ class UserControllerTest extends BaseController
                     'updatedAt' => null,
                     'activatedAt' => null,
                     'teams' => [],
+                    'apiToken' => '',
                     'widgetSettings' => [],
+                    'facebook' => null,
+                    'twitter' => null,
+                    'instagram' => null,
+                    'gplus' => null,
+                    'linkedIn' => null,
+                    'medium' => null,
                     'avatar' => null,
                 ],
             ],
@@ -98,6 +108,9 @@ class UserControllerTest extends BaseController
         $user = $this->getUserByUsername('testuser');
         if (isset($responseContent['id'])) {
             $responseContent['id'] = $user->getId();
+        }
+        if (isset($responseContent['apiToken'])) {
+            $responseContent['apiToken'] = $token;
         }
         if (isset($responseContent['createdAt'])) {
             $responseContent['createdAt'] = $user->getCreatedAt() ? $user->getCreatedAt()->format('Y-m-d H:i:s') : null;
@@ -147,125 +160,15 @@ class UserControllerTest extends BaseController
                     'updatedAt' => '',
                     'activatedAt' => null,
                     'teams' => [],
+                    'apiToken' => '',
                     'widgetSettings' => [],
+                    'facebook' => null,
+                    'twitter' => null,
+                    'instagram' => null,
+                    'gplus' => null,
+                    'linkedIn' => null,
+                    'medium' => null,
                     'avatar' => null,
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider getDataForGetTeamsAction
-     *
-     * @param $url
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
-     */
-    public function testGetTeamsAction(
-        $url,
-        $isResponseSuccessful,
-        $responseStatusCode,
-        $responseContent
-    ) {
-        $user = $this->getUserByUsername('superadmin');
-        $token = $user->getApiToken();
-
-        $this->client->request(
-            'GET',
-            $url,
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)
-            ],
-            ''
-        );
-        $response = $this->client->getResponse();
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataForGetTeamsAction()
-    {
-        return [
-            [
-                '/api/user/3/teams',
-                true,
-                Response::HTTP_OK,
-                [
-                    [
-                        'user' => 3,
-                        'userFullName' => 'FirstName3 LastName3',
-                        'id' => 1,
-                        'name' => 'team_1',
-                        'slug' => 'team-1',
-                        'description' => null,
-                        'enabled' => false,
-                        'createdAt' => '2017-01-01 00:00:00',
-                        'teamMembers' => [
-                            [
-                                'user' => 3,
-                                'userFullName' => 'FirstName3 LastName3',
-                                'team' => 1,
-                                'teamName' => 'team_1',
-                                'id' => 1,
-                                'roles' => ['ROLE_SUPER_ADMIN'],
-                            ],
-                            [
-                                'user' => 3,
-                                'userFullName' => 'FirstName3 LastName3',
-                                'team' => 1,
-                                'teamName' => 'team_1',
-                                'id' => 2,
-                                'roles' => ['ROLE_SUPER_ADMIN'],
-                            ],
-                            [
-                                'user' => 3,
-                                'userFullName' => 'FirstName3 LastName3',
-                                'team' => 1,
-                                'teamName' => 'team_1',
-                                'id' => 3,
-                                'roles' => ['ROLE_SUPER_ADMIN'],
-                            ],
-                        ],
-                        'teamSlugs' => [],
-                        'teamInvites' => [],
-                        'logo' => null,
-                    ],
-                    [
-                        'user' => 3,
-                        'userFullName' => 'FirstName3 LastName3',
-                        'id' => 2,
-                        'name' => 'team_2',
-                        'slug' => 'team-2',
-                        'description' => null,
-                        'enabled' => false,
-                        'createdAt' => '2017-01-01 00:00:00',
-                        'teamMembers' => [],
-                        'teamSlugs' => [],
-                        'teamInvites' => [],
-                        'logo' => null,
-                    ],
-                    [
-                        'user' => 3,
-                        'userFullName' => 'FirstName3 LastName3',
-                        'id' => 3,
-                        'name' => 'team_3',
-                        'slug' => 'team-3',
-                        'description' => null,
-                        'enabled' => false,
-                        'createdAt' => '2017-01-01 00:00:00',
-                        'teamMembers' => [],
-                        'teamSlugs' => [],
-                        'teamInvites' => [],
-                        'logo' => null,
-                    ],
                 ],
             ],
         ];

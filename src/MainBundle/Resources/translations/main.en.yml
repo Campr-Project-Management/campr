@@ -74,6 +74,12 @@ main:
             first_name: First name
             last_name: Last name
             phone: Phone
+            facebook: Facebook
+            twitter: Twitter
+            instagram: Instagram
+            gplus: Google+
+            linked_in: LinkedIn
+            medium: Medium
             password: Password
             repeat_password: Repeat password
             success: Your account was succesfully edited!

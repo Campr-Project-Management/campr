@@ -235,6 +235,13 @@ class TeamController extends Controller
             'api_token' => $user->getApiToken(),
             'widget_settings' => $user->getWidgetSettings(),
             'avatar' => $user->getAvatar(),
+            'facebook' => $user->getFacebook(),
+            'twitter' => $user->getTwitter(),
+            'instagram' => $user->getInstagram(),
+            'twitter' => $user->getTwitter(),
+            'gplus' => $user->getGplus(),
+            'linked_in' => $user->getLinkedIn(),
+            'medium' => $user->getMedium(),
         ];
 
         $signer = $this->get('app.jwt_signer');
