@@ -216,8 +216,6 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var string
      *
-     * @Serializer\Exclude()
-     *
      * @ORM\Column(name="api_token", type="string", length=255, unique=true)
      */
     private $apiToken;
@@ -254,6 +252,48 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      */
     private $avatar;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="facebook", type="string", length=256, nullable=true)
+     */
+    private $facebook;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="twitter", type="string", length=256, nullable=true)
+     */
+    private $twitter;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="instagram", type="string", length=256, nullable=true)
+     */
+    private $instagram;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="gplus", type="string", length=256, nullable=true)
+     */
+    private $gplus;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="linked_in", type="string", length=256, nullable=true)
+     */
+    private $linkedIn;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="medium", type="string", length=256, nullable=true)
+     */
+    private $medium;
 
     /**
      * User constructor.
@@ -1084,5 +1124,101 @@ class User implements AdvancedUserInterface, \Serializable
     public function getAvatarFile()
     {
         return $this->avatarFile;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFacebook()
+    {
+        return $this->facebook;
+    }
+
+    /**
+     * @param string $facebook
+     */
+    public function setFacebook($facebook)
+    {
+        $this->facebook = $facebook;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTwitter()
+    {
+        return $this->twitter;
+    }
+
+    /**
+     * @param string $twitter
+     */
+    public function setTwitter($twitter)
+    {
+        $this->twitter = $twitter;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInstagram()
+    {
+        return $this->instagram;
+    }
+
+    /**
+     * @param string $instagram
+     */
+    public function setInstagram($instagram)
+    {
+        $this->instagram = $instagram;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGplus()
+    {
+        return $this->gplus;
+    }
+
+    /**
+     * @param string $gplus
+     */
+    public function setGplus($gplus)
+    {
+        $this->gplus = $gplus;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLinkedIn()
+    {
+        return $this->linkedIn;
+    }
+
+    /**
+     * @param string $linkedIn
+     */
+    public function setLinkedIn($linkedIn)
+    {
+        $this->linkedIn = $linkedIn;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMedium()
+    {
+        return $this->medium;
+    }
+
+    /**
+     * @param string $medium
+     */
+    public function setMedium($medium)
+    {
+        $this->medium = $medium;
     }
 }
