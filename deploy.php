@@ -110,7 +110,7 @@ task('database:cleanup', function () {
     }
 });
 task('database:migrate', function () {
-    run('{{symfony_console}} doctrine:migrations:migrate --allow-no-migration {{symfony_console_options}}');
+    run('{{symfony_console}} app:migrate:all-databases {{symfony_console_options}}');
 });
 task('server:provision', function () {
     if (input()->getFirstArgument() == 'server:provision' || input()->getOption('provision')) {
