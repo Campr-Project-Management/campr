@@ -78,6 +78,42 @@
                     {{ form_widget(form.phone, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
+            <div class="control-group form-group {% if form_errors(form.facebook) %}has-error{% endif %}">
+                <div class="controls">
+                    <label>{{ 'main.account.settings.facebook'|trans }}</label>
+                    {{ form_widget(form.facebook, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="control-group form-group {% if form_errors(form.twitter) %}has-error{% endif %}">
+                <div class="controls">
+                    <label>{{ 'main.account.settings.twitter'|trans }}</label>
+                    {{ form_widget(form.twitter, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="control-group form-group {% if form_errors(form.instagram) %}has-error{% endif %}">
+                <div class="controls">
+                    <label>{{ 'main.account.settings.instagram'|trans }}</label>
+                    {{ form_widget(form.instagram, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="control-group form-group {% if form_errors(form.gplus) %}has-error{% endif %}">
+                <div class="controls">
+                    <label>{{ 'main.account.settings.gplus'|trans }}</label>
+                    {{ form_widget(form.gplus, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="control-group form-group {% if form_errors(form.linkedIn) %}has-error{% endif %}">
+                <div class="controls">
+                    <label>{{ 'main.account.settings.linked_in'|trans }}</label>
+                    {{ form_widget(form.linkedIn, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="control-group form-group {% if form_errors(form.medium) %}has-error{% endif %}">
+                <div class="controls">
+                    <label>{{ 'main.account.settings.medium'|trans }}</label>
+                    {{ form_widget(form.medium, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
             <div class="control-group form-group {% if form_errors(form.plainPassword.first) %}has-error{% endif %}">
                 <div class="controls">
                     <label>{{ 'main.account.settings.password'|trans }}</label>
