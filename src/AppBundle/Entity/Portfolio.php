@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Portfolio.
@@ -51,6 +52,7 @@ class Portfolio
      * @var \DateTime|null
      *
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     * @Gedmo\Timestampable(on="update")
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */

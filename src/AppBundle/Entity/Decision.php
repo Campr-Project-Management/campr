@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Decision.
@@ -114,6 +115,7 @@ class Decision
      * @var \DateTime|null
      *
      * @Serializer\Exclude()
+     * @Gedmo\Timestampable(on="update")
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */

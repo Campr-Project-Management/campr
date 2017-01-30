@@ -32,10 +32,16 @@ class CompanyControllerTest extends BaseController
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token), ],
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+            ],
             ''
         );
         $response = $this->client->getResponse();
+        for ($i = 1; $i <= 2; ++$i) {
+            $company = $this->em->getRepository(Company::class)->find($i);
+            $responseContent[$i - 1]['updatedAt'] = $company->getUpdatedAt()->format('Y-m-d H:i:s');
+        }
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -101,6 +107,7 @@ class CompanyControllerTest extends BaseController
 
         $company = json_decode($response->getContent(), true);
         $responseContent['createdAt'] = $company['createdAt'];
+        $responseContent['updatedAt'] = $company['updatedAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -496,6 +503,8 @@ class CompanyControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
+        $company = json_decode($response->getContent(), true);
+        $responseContent['updatedAt'] = $company['updatedAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
