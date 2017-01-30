@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Todo.
@@ -114,6 +115,7 @@ class Todo
      * @var \DateTime|null
      *
      * @Serializer\Exclude()
+     * @Gedmo\Timestampable(on="update")
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */

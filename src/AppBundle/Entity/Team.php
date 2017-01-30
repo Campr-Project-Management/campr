@@ -103,6 +103,7 @@ class Team
      * @var \DateTime
      *
      * @Serializer\Exclude()
+     * @Gedmo\Timestampable(on="update")
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */

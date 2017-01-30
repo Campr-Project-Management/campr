@@ -9,7 +9,9 @@ class DynamicDatabaseConnectionPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (empty($container->getParameter('kernel.team_slug'))) {
+        if (empty($container->getParameter('kernel.team_slug'))
+            || $container->getParameter('kernel.team_slug') === 'team'
+        ) {
             return;
         }
         $definition = $container->getDefinition('doctrine.dbal.default_connection');

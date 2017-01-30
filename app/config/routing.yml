@@ -9,7 +9,7 @@ app:
     type: annotation
     host: "{subdomain}.%domain%"
     defaults:
-        subdomain: team
+        subdomain: "%kernel.team_slug%"
 
 api_login_check:
     path: /api/login-check

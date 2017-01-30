@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * TeamMember.
@@ -66,6 +67,7 @@ class TeamMember
      * @var \DateTime
      *
      * @Serializer\Exclude()
+     * @Gedmo\Timestampable(on="update")
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
@@ -74,7 +76,7 @@ class TeamMember
     public function __construct()
     {
         $this->createdAt = new \DateTime();
-        $this->roles = array();
+        $this->roles = [];
     }
 
     /**
