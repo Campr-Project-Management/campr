@@ -36,6 +36,11 @@ class ProjectScopeControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
+        for ($i = 1; $i <= 2; ++$i) {
+            $ps = $this->em->getRepository(ProjectScope::class)->find($i);
+            $responseContent[$i - 1]['updatedAt'] = $ps->getUpdatedAt()->format('Y-m-d H:i:s');
+        }
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -107,6 +112,7 @@ class ProjectScopeControllerTest extends BaseController
 
         $projectScope = json_decode($response->getContent(), true);
         $responseContent['createdAt'] = $projectScope['createdAt'];
+        $responseContent['updatedAt'] = $projectScope['updatedAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -627,6 +633,8 @@ class ProjectScopeControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
+        $projectScope = json_decode($response->getContent(), true);
+        $responseContent['updatedAt'] = $projectScope['updatedAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());

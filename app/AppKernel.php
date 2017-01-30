@@ -111,7 +111,7 @@ class AppKernel extends Kernel
     {
         return array_merge(
             [
-                'kernel.team_slug' => $this->getTeamSlug(),
+                'kernel.team_slug' => $this->getTeamSlug() ? $this->getTeamSlug() : 'team',
                 'kernel.real_environment' => $this->getRealEnvironment(),
             ],
             parent::getKernelParameters()
