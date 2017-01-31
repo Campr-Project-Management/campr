@@ -1,0 +1,204 @@
+{% trans_default_domain 'admin' %}
+
+{% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
+
+{{ form_start(
+    form,
+    {
+        'method': 'POST',
+        'action': path('app_admin_workpackage_edit', {'id': id}),
+        'attr': {
+            'id': 'edit-form',
+            'class': 'form-horizontal',
+            'novalidate': 'novalidate',
+        },
+    }
+) }}
+{% if form.vars.valid == false %}
+    <div class="alert alert-danger">
+        {% for field in form.children %}
+            {{ form_errors(field) }}
+        {% endfor %}
+    </div>
+{% endif %}
+
+{{ form_widget(
+    form.puid,
+    {
+        'attr': {
+            'class': 'form-control input-sm',
+        },
+        'label': 'admin.workpackage.create.puid'|trans
+    }
+) }}
+{{ form_widget(
+    form.name,
+    {
+        'attr': {
+            'class': 'form-control input-sm',
+        },
+        'label': 'admin.workpackage.create.name'|trans
+    }
+) }}
+{{ form_widget(
+    form.progress,
+    {
+        'attr': {
+            'class': 'form-control input-sm',
+        },
+        'label': 'admin.workpackage.create.progress'|trans,
+    }
+) }}
+{{ form_widget(
+    form.parent,
+    {
+        'attr': {
+            'class': 'selectpicker',
+        },
+        'label': 'admin.workpackage.create.parent'|trans
+    }
+) }}
+{{ form_widget(
+    form.colorStatus,
+    {
+        'attr': {
+            'class': 'selectpicker',
+        },
+        'label': 'admin.workpackage.create.color'|trans
+    }
+) }}
+{{ form_widget(
+    form.responsibility,
+    {
+        'attr': {
+            'class': 'selectpicker',
+        },
+        'label': 'admin.workpackage.create.responsible'|trans
+    }
+) }}
+{{ form_widget(
+    form.project,
+    {
+        'attr': {
+            'class': 'selectpicker',
+        },
+        'label': 'admin.workpackage.create.project'|trans
+    }
+) }}
+{{ form_widget(
+    form.labels,
+    {
+        'attr': {
+            'class': 'selectpicker',
+            'multiple': '',
+        },
+        'label': 'admin.workpackage.create.labels'|trans,
+    }
+) }}
+{{ form_widget(
+    form.calendar,
+    {
+        'attr': {
+            'class': 'selectpicker',
+        },
+        'label': 'admin.workpackage.create.calendar'|trans
+    }
+) }}
+{{ form_widget(
+    form.scheduledStartAt,
+    {
+        'attr': {
+            'class': 'form-control date-picker',
+            'addon_front': 'calendar',
+        },
+        'label': 'admin.workpackage.create.schedule_start'|trans
+    }
+) }}
+{{ form_widget(
+    form.scheduledFinishAt,
+    {
+        'attr': {
+            'class': 'form-control date-picker',
+            'addon_front': 'calendar',
+        },
+        'label': 'admin.workpackage.create.schedule_finish'|trans
+    }
+) }}
+{{ form_widget(
+    form.forecastStartAt,
+    {
+        'attr': {
+            'class': 'form-control date-picker',
+            'addon_front': 'calendar',
+        },
+        'label': 'admin.workpackage.create.forecast_start'|trans
+    }
+) }}
+{{ form_widget(
+    form.forecastFinishAt,
+    {
+        'attr': {
+            'class': 'form-control date-picker',
+            'addon_front': 'calendar',
+        },
+        'label': 'admin.workpackage.create.forecast_finish'|trans
+    }
+) }}
+{{ form_widget(
+    form.actualStartAt,
+    {
+        'attr': {
+            'class': 'form-control date-picker',
+            'addon_front': 'calendar',
+        },
+        'label': 'admin.workpackage.create.actual_start'|trans
+    }
+) }}
+{{ form_widget(
+    form.actualFinishAt,
+    {
+        'attr': {
+            'class': 'form-control date-picker',
+            'addon_front': 'calendar',
+        },
+        'label': 'admin.workpackage.create.actual_finish'|trans
+    }
+) }}
+{{ form_widget(
+    form.content,
+    {
+        'attr': {
+            'class': 'form-control',
+        },
+        'label': 'admin.workpackage.create.content'|trans
+    }
+) }}
+{{ form_widget(
+    form.results,
+    {
+        'attr': {
+            'class': 'form-control',
+        },
+        'label': 'admin.workpackage.create.results'|trans
+    }
+) }}
+{{ form_widget(
+    form.isKeyMilestone,
+    {
+        'attr': {
+            'class': 'form-control input-sm',
+            'toggle': true
+        },
+        'label': 'admin.workpackage.create.is_key_milestone'|trans
+    }
+) }}
+
+{% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
+    with {
+        'delete_path': 'app_admin_workpackage_delete',
+        'id': id,
+    }
+%}
+
+<span class="hidden">{{ form_row(form._token) }}</span>
+{{ form_end(form, {'render_rest': false}) }}

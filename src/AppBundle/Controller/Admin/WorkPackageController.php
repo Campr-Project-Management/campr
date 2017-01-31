@@ -96,11 +96,22 @@ class WorkPackageController extends Controller
      */
     public function createAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(CreateType::class);
+        $form = $this->createForm(CreateType::class, new WorkPackage());
         $form->handleRequest($request);
 
+        if ($request->isXmlHttpRequest()) {
+            $html = $this->renderView(
+                'AppBundle:Admin/WorkPackage/Partials:form.html.twig',
+                [
+                    'form' => $form->createView(),
+                ]
+            );
+
+            return new JsonResponse($html);
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
 
@@ -139,11 +150,22 @@ class WorkPackageController extends Controller
      */
     public function editAction(Request $request, WorkPackage $workPackage)
     {
-        $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(CreateType::class, $workPackage);
         $form->handleRequest($request);
+        if ($request->isXmlHttpRequest()) {
+            $html = $this->renderView(
+                'AppBundle:Admin/WorkPackage/Partials:form_edit.html.twig',
+                [
+                    'id' => $workPackage->getId(),
+                    'form' => $form->createView(),
+                ]
+            );
+
+            return new JsonResponse($html);
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($workPackage);
             $em->flush();
 
