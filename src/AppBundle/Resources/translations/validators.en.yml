@@ -179,3 +179,9 @@ validation:
         distribution_list:
             project:
                 not_blank: You must select one project
+        label:
+            title:
+                not_blank: The label title should not be blank
+            color:
+                not_blank: The label color should not be blank
+                length: The label color should have maximum 6 characters
