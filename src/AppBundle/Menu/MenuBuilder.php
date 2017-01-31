@@ -121,6 +121,9 @@ class MenuBuilder
             ->addChild($this->translator->trans('admin.project.list.title', [], 'admin'), [
                 'route' => 'app_admin_project_list',
             ])->getParent()
+            ->addChild($this->translator->trans('admin.label.list.title', [], 'admin'), [
+                'route' => 'app_admin_label_list',
+            ])->getParent()
             ->addChild($this->translator->trans('admin.project_category.list.title', [], 'admin'), [
                 'route' => 'app_admin_project_category_list',
             ])->getParent()

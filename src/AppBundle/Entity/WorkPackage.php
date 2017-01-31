@@ -178,6 +178,22 @@ class WorkPackage
     private $calendar;
 
     /**
+     * @var ArrayCollection|Label[]
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Label")
+     * @ORM\JoinTable(
+     *     name="workpackage_label",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="workpackage_id")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="label_id")
+     *     }
+     * )
+     */
+    private $labels;
+
+    /**
      * @var \DateTime
      *
      * @Serializer\Exclude()
@@ -202,6 +218,7 @@ class WorkPackage
     {
         $this->createdAt = new \DateTime();
         $this->assignments = new ArrayCollection();
+        $this->labels = new ArrayCollection();
     }
 
     /**
@@ -849,5 +866,43 @@ class WorkPackage
     public function getCalendarName()
     {
         return $this->calendar ? $this->calendar->getName() : null;
+    }
+
+    /**
+     * Add label.
+     *
+     * @param Label $label
+     *
+     * @return WorkPackage
+     */
+    public function addLabel(Label $label)
+    {
+        $this->labels[] = $label;
+
+        return $this;
+    }
+
+    /**
+     * Remove label.
+     *
+     * @param Label $label
+     *
+     * @return WorkPackage
+     */
+    public function removeLabel(Label $label)
+    {
+        $this->labels->removeElement($label);
+
+        return $this;
+    }
+
+    /**
+     * Get labels.
+     *
+     * @return ArrayCollection
+     */
+    public function getLabels()
+    {
+        return $this->labels;
     }
 }
