@@ -315,6 +315,16 @@ class MenuBuilder
             ])
             ->setLinkAttribute('icon', 'zmdi zmdi-device-hub')
             ->getParent()
+            ->addChild($this->translator->trans('admin.distribution_list.list.title', [], 'admin'), [
+                'route' => 'app_admin_distribution_list_list',
+            ])
+            ->setLinkAttribute('icon', 'zmdi zmdi-arrow-split')
+            ->getParent()
+            ->addChild($this->translator->trans('admin.contract.list.title', [], 'admin'), [
+                'route' => 'app_admin_contract_list',
+            ])
+            ->setLinkAttribute('icon', 'zmdi zmdi-file-text')
+            ->getParent()
         ;
 
         $this->filterMenu($menu);
