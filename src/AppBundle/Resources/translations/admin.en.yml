@@ -1429,3 +1429,40 @@ admin:
                 general: Label successfully deleted!
                 first: Label with ID
                 second: successfully deleted!
+
+    contract:
+        list:
+            title: Contract
+            subtitle: List of contracts
+            table:
+                id: Id
+                name: Name
+                project: Project
+                description: Description
+                proposed_start_date: Proposed Start Date
+                proposed_end_date: Proposed End Date
+                forecast_start_date: Forecast Start Date
+                forecast_end_date: Forecast End Date
+                created_by: Created By
+                created_at: Created At
+                updated_at: Updated At
+            add: Add new contract
+        create:
+            title: Create Company
+            name: Name
+            project: Project
+            description: Description
+            proposed_start_date: Proposed Start Date
+            proposed_end_date: Proposed End Date
+            forecast_start_date: Forecast Start Date
+            forecast_end_date: Forecast End Date
+            created_by: Created By
+            success: Contract successfully created!
+        edit:
+            title: Edit Contract
+            success: Contract successfully edited!
+        delete:
+            success:
+                general: Contract successfully deleted!
+                first: Contract with ID
+                second: successfully deleted!

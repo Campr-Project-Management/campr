@@ -42,6 +42,8 @@ class UserControllerTest extends BaseController
             $responseContent['ownedDistributionLists'][0]['users'][0]['updatedAt'] = $userContent['ownedDistributionLists'][0]['users'][0]['updatedAt'];
             $responseContent['ownedDistributionLists'][1]['users'][0]['apiToken'] = $userContent['ownedDistributionLists'][1]['users'][0]['apiToken'];
             $responseContent['ownedDistributionLists'][1]['users'][0]['updatedAt'] = $userContent['ownedDistributionLists'][1]['users'][0]['updatedAt'];
+            $responseContent['contracts'][0]['updatedAt'] = $userContent['contracts'][0]['updatedAt'];
+            $responseContent['contracts'][1]['updatedAt'] = $userContent['contracts'][1]['updatedAt'];
         }
 
         if (isset($responseContent['updatedAt'])) {
@@ -125,6 +127,7 @@ class UserControllerTest extends BaseController
                                     'linkedIn' => null,
                                     'medium' => null,
                                     'ownedDistributionLists' => [],
+                                    'contracts' => [],
                                     'avatar' => null,
                                 ],
                             ],
@@ -164,12 +167,45 @@ class UserControllerTest extends BaseController
                                     'linkedIn' => null,
                                     'medium' => null,
                                     'ownedDistributionLists' => [],
+                                    'contracts' => [],
                                     'avatar' => null,
                                 ],
                             ],
                             'meetings' => [],
                             'createdAt' => '2017-01-01 07:00:00',
                             'updatedAt' => '2017-01-30 07:11:12',
+                        ],
+                    ],
+                    'contracts' => [
+                        [
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'createdBy' => 1,
+                            'createdByFullName' => 'FirstName1 LastName1',
+                            'id' => 1,
+                            'name' => 'contract1',
+                            'description' => 'contract-description1',
+                            'proposedStartDate' => '2017-01-01',
+                            'proposedEndDate' => '2017-05-01',
+                            'forecastStartDate' => null,
+                            'forecastEndDate' => null,
+                            'createdAt' => '2017-01-01 12:00:00',
+                            'updatedAt' => null,
+                        ],
+                        [
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'createdBy' => 1,
+                            'createdByFullName' => 'FirstName1 LastName1',
+                            'id' => 2,
+                            'name' => 'contract2',
+                            'description' => 'contract-description2',
+                            'proposedStartDate' => '2017-05-01',
+                            'proposedEndDate' => '2017-08-01',
+                            'forecastStartDate' => null,
+                            'forecastEndDate' => null,
+                            'createdAt' => '2017-01-01 12:00:00',
+                            'updatedAt' => null,
                         ],
                     ],
                     'avatar' => null,
@@ -264,6 +300,7 @@ class UserControllerTest extends BaseController
                     'linkedIn' => null,
                     'medium' => null,
                     'ownedDistributionLists' => [],
+                    'contracts' => [],
                     'avatar' => null,
                 ],
             ],
