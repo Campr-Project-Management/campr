@@ -1,19 +1,31 @@
 @import '_variables.scss';
 
 .page-section {
+  &.projects, &.tasks {
+    .header {
+      @media screen and (max-width: 1440px) {
+        display: block;
+      }
+    }
+  }
+
   .header {
     display: flex;
     justify-content: space-between;
 
-    @media screen and (max-width: 1440px) {
-      display: block;
-    }
-
-    h1 {
+    h1, h2 {
       margin: 0;
       text-transform: uppercase;
       font-size: 20px;
       line-height: 80px;
+    }
+
+    h1 {
+      font-size: 20px;
+    }
+
+    h2 {
+      font-size: 16px;
     }
 
     .full-filters {
@@ -36,7 +48,7 @@
       }
     }
 
-    .btn-rounded {
+    .full-filters .btn-rounded {
       width: 200px;
 
       @media screen and (max-width: 1440px) {
