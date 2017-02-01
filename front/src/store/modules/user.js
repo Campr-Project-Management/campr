@@ -1,6 +1,13 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
 
+let host = window.location.hostname;
+let hostSplit = host.split('.');
+hostSplit.shift();
+host = hostSplit.join('.');
+
+const root = (window.location.hostname != 'localhost') ? window.location.protocol + '//' + host : 'https://dev.campr.biz';
+
 const state = {
     user: {},
 };
@@ -16,9 +23,10 @@ const actions = {
      */
     getUserInfo({commit}) {
         Vue.http
-        .get('api/user').then((response) => {
+        .get(root + '/api/user').then((response) => {
             let user = response.data;
             commit(types.SET_USER, {user});
+            localStorage.setItem('id_token', user.apiToken);
             commit(types.TOGGLE_LOADER, false);
         }, (response) => {
             commit(types.TOGGLE_LOADER, false);

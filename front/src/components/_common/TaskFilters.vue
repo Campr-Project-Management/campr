@@ -18,13 +18,16 @@ export default {
         Dropdown,
     },
     methods: mapActions(['getProjects']),
-    created() {
-        this.getProjects();
+    watch: {
+        user: function() {
+            this.getProjects();
+        },
     },
     computed: {
         ...mapGetters({
             projectsForFilter: 'projectsForFilter',
             statuses: 'colorStatusesForFilter',
+            user: 'user',
         }),
     },
 };

@@ -18,10 +18,7 @@ sync(store, router);
 Vue.use(require('vue-moment'));
 Vue.use(VueCharts);
 
-Vue.http.options.root = 'https://potato.dev.campr.biz';
-
-localStorage.setItem('id_token', 'c90d967c68656f7ac53affb2478' +
-  '68158a8a5aed5a250b4d45ef22c4dd3402e0f00b9c9b8e1a36fe548d80e7ddaec319d788ffee1ee6ac55498cb612a1c5c66e5');
+Vue.http.options.root = (window.location.hostname != 'localhost') ? window.location.protocol + '//' + window.location.hostname : 'https://m.dev.campr.biz';
 
 Vue.http.headers.common['Authorization'] =
   'Bearer ' + localStorage.getItem('id_token');
@@ -32,3 +29,4 @@ new Vue({
     template: '<App/>',
     components: {App},
 }).$mount('#app');
+
