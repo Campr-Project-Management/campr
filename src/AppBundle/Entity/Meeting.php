@@ -124,6 +124,13 @@ class Meeting
     private $notes;
 
     /**
+     * @var ArrayCollection|DistributionList[]
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\DistributionList", mappedBy="meetings")
+     */
+    private $distributionLists;
+
+    /**
      * Meeting constructor.
      */
     public function __construct()
@@ -134,6 +141,7 @@ class Meeting
         $this->decisions = new ArrayCollection();
         $this->todos = new ArrayCollection();
         $this->notes = new ArrayCollection();
+        $this->distributionLists = new ArrayCollection();
     }
 
     /**
@@ -469,7 +477,7 @@ class Meeting
     /**
      * Get decisions.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection|Decision[]
      */
     public function getDecisions()
     {
@@ -503,7 +511,7 @@ class Meeting
     /**
      * Get todos.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection|Todo[]
      */
     public function getTodos()
     {
@@ -537,10 +545,44 @@ class Meeting
     /**
      * Get notes.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection|Note[]
      */
     public function getNotes()
     {
         return $this->notes;
+    }
+
+    /**
+     * Add distributionList.
+     *
+     * @param DistributionList $distributionList
+     *
+     * @return Meeting
+     */
+    public function addDistributionList(DistributionList $distributionList)
+    {
+        $this->distributionLists[] = $distributionList;
+
+        return $this;
+    }
+
+    /**
+     * Remove distributionList.
+     *
+     * @param DistributionList $distributionList
+     */
+    public function removeDistributionList(DistributionList $distributionList)
+    {
+        $this->distributionLists->removeElement($distributionList);
+    }
+
+    /**
+     * Get distributionLists.
+     *
+     * @return ArrayCollection|DistributionList[]
+     */
+    public function getDistributionLists()
+    {
+        return $this->distributionLists;
     }
 }
