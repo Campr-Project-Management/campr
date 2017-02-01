@@ -10,32 +10,38 @@ const state = {
 
 const getters = {
     task: state => state.currentItem,
-    tasks: state => state.items,
-    filteredTasks: state => state.filteredItems,
+    tasks: state => state.items.items,
+    count: state => state.items.totalItems,
 };
 
 const actions = {
     /**
      * Gets this month tasks from the API and commits SET_TASKS mutation
      * @param {function} commit
+     * @param {number} page
      */
-    getRecentTasks({commit}) {
+    getRecentTasks({commit}, page) {
+        commit(types.TOGGLE_LOADER, true);
         Vue.http
-            .post('api/workpackage/list', {'recent': true}).then((response) => {
-                let tasks = response.data.items;
+            .post('api/workpackage/list', {'recent': true, 'page': page}).then((response) => {
+                let tasks = response.data;
                 commit(types.SET_TASKS, {tasks});
+                commit(types.TOGGLE_LOADER, false);
             }, (response) => {
             });
     },
     /**
      * Gets tasks from the API and commits SET_TASKS mutation
      * @param {function} commit
+     * @param {number} page
      */
-    getTasks({commit}) {
+    getTasks({commit}, page) {
+        commit(types.TOGGLE_LOADER, true);
         Vue.http
-            .get('api/workpackage/list').then((response) => {
-                let tasks = response.data.items;
+            .post('api/workpackage/list', {'page': page}).then((response) => {
+                let tasks = response.data;
                 commit(types.SET_TASKS, {tasks});
+                commit(types.TOGGLE_LOADER, false);
             }, (response) => {
             });
     },

@@ -12,6 +12,10 @@
   justify-content: center;
 }
 
+.flex-v-center {
+  align-items: center;
+}
+
 .flex-space-between {
   justify-content: space-between;
 }
@@ -67,7 +71,7 @@ textarea {
   resize: none;
 }
 
-label {
+.input-holder label {
   font-weight: 300;
   text-transform: uppercase;
   cursor: text;
@@ -97,6 +101,7 @@ label {
   font-size: 11px;
   border-radius: 20px;
   display: block;
+  width: 200px;
 }
 
 .btn-md {
@@ -140,4 +145,62 @@ label {
 .hr {
   height: 1px;
   background: $darkColor;
+}
+
+.checkbox-input {
+
+  input[type=checkbox] {
+    display: none;
+  }
+
+  input[type=checkbox] + label:before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 1px solid $lighterColor;
+    display: block;
+    float: left;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  input[type=checkbox]:checked + label:before {
+    //content: '\2713';
+    content: '';
+    text-align: center;
+    background: $secondColor;
+    border: none;
+    line-height: 20px;
+    font-size: 16px;
+    color: $darkColor;
+    font-weight: 700;
+  }
+
+  label {
+    float: left;
+    text-transform: uppercase;
+    font-size: 10px;
+    line-height: 20px;
+    font-weight: 300;
+    letter-spacing: 1.7px;
+  }
+}
+
+.pagination {
+  display: flex;
+
+  span {
+    background: $middleColor;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-left: 10px;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+
+    &.active {
+      background: $secondColor;
+    }
+  }
 }

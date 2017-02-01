@@ -172,7 +172,7 @@
 import Vue from 'vue';
 import {mapGetters, mapActions} from 'vuex';
 import DragBox from './DragBox';
-import inputField from '../_common/_form-components/inputField';
+import InputField from '../_common/_form-components/InputField';
 import CalendarIcon from '../_common/_icons/CalendarIcon';
 import DownloadIcon from '../_common/_icons/DownloadIcon';
 import EyeIcon from '../_common/_icons/EyeIcon';
@@ -183,7 +183,7 @@ export default {
     components: {
         DragBox,
         datepicker,
-        inputField,
+        InputField,
         CalendarIcon,
         DownloadIcon,
         EyeIcon,
@@ -361,5 +361,9 @@ export default {
         a {
             margin: 0 10px;
         }
+    }
+
+    .input-holder {
+        margin-bottom: 20px;
     }
 </style>
