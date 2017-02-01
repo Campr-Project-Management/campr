@@ -314,6 +314,13 @@ class User implements AdvancedUserInterface, \Serializable
     private $distributionLists;
 
     /**
+     * @var ArrayCollection|Contract[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Contract", mappedBy="createdBy")
+     */
+    private $contracts;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -329,6 +336,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->teamInvites = new ArrayCollection();
         $this->ownedDistributionLists = new ArrayCollection();
         $this->distributionLists = new ArrayCollection();
+        $this->contracts = new ArrayCollection();
     }
 
     /**
@@ -1334,5 +1342,39 @@ class User implements AdvancedUserInterface, \Serializable
     public function getDistributionLists()
     {
         return $this->distributionLists;
+    }
+
+    /**
+     * Add contract.
+     *
+     * @param Contract $contract
+     *
+     * @return User
+     */
+    public function addContract(Contract $contract)
+    {
+        $this->contracts[] = $contract;
+
+        return $this;
+    }
+
+    /**
+     * Remove contract.
+     *
+     * @param Contract $contract
+     */
+    public function removeContract(Contract $contract)
+    {
+        $this->contracts->removeElement($contract);
+    }
+
+    /**
+     * Get contracts.
+     *
+     * @return ArrayCollection|Contract[]
+     */
+    public function getContracts()
+    {
+        return $this->contracts;
     }
 }

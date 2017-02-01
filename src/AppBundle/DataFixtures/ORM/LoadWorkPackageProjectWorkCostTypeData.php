@@ -39,6 +39,6 @@ class LoadWorkPackageProjectWorkCostTypeData extends AbstractFixture implements 
      */
     public function getOrder()
     {
-        return 3;
+        return 4;
     }
 }

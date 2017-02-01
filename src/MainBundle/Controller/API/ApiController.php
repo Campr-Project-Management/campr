@@ -11,13 +11,17 @@ abstract class ApiController extends Controller
 {
     protected function createApiResponse($data, $statusCode = Response::HTTP_OK)
     {
-        $serializedData = $this
-            ->container
-            ->get('jms_serializer')
-            ->toArray(
-                $data,
-                (new SerializationContext())->setSerializeNull(true)
-            );
+        $serializedData = null;
+        if ($data) {
+            $serializedData = $this
+                ->container
+                ->get('jms_serializer')
+                ->toArray(
+                    $data,
+                    (new SerializationContext())->setSerializeNull(true)
+                 )
+            ;
+        }
 
         return new JsonResponse($serializedData, $statusCode);
     }
