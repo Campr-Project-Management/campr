@@ -46,7 +46,7 @@ class CreateType extends AbstractType
             ])
             ->add('date', DateType::class, [
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
+                'format' => 'dd/MM/yyyy',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'validation.constraints.meeting.date.not_blank',

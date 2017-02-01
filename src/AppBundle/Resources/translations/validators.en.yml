@@ -176,3 +176,6 @@ validation:
                 team_member: User with this email is already part of the team.
             invitation:
                 sent: You already sent an invitation to this email.
+        distribution_list:
+            project:
+                not_blank: You must select one project
