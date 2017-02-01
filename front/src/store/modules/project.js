@@ -49,7 +49,7 @@ const actions = {
      */
     getProjects({commit}) {
         Vue.http
-        .get('/api/project/list').then((response) => {
+        .get('api/project/list').then((response) => {
             let projects = response.data;
             commit(types.SET_PROJECTS, {projects});
         }, (response) => {
@@ -63,7 +63,7 @@ const actions = {
      */
     getProjectById({commit}, id) {
         Vue.http
-            .get('/api/projects/' + id).then((response) => {
+            .get('api/projects/' + id).then((response) => {
                 let project = response.data;
                 commit(types.SET_PROJECT, {project});
             }, (response) => {
