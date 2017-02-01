@@ -18,14 +18,17 @@ export default {
         Dropdown,
     },
     methods: mapActions(['getProjectStatuses', 'getCustomers']),
-    created() {
-        this.getProjectStatuses();
-        this.getCustomers();
+    watch: {
+        user: function() {
+            this.getCustomers();
+            this.getProjectStatuses();
+        },
     },
     computed: {
         ...mapGetters({
             statuses: 'projectStatusesForFilter',
             customers: 'customersForFilter',
+            user: 'user',
         }),
     },
 };

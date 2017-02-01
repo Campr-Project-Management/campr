@@ -5,16 +5,6 @@ nelmio_cors:
         max_age: 86400
     paths:
         '^/api/':
-            allow_origin:
-                # dev
-                - 'http://localhost'
-                - 'http://localhost:8080'
-                - 'https://localhost'
-                - 'https://localhost:8080'
-                # other
-                - 'http://%domain%'
-                - 'http://*.%domain%'
-                - 'https://%domain%'
-                - 'https://*.%domain%'
+            allow_origin: ['http://localhost', 'http://localhost:8080', 'https://localhost', 'https://localhost:8080']
             allow_headers: ['Authorization', 'Content-Type', 'X-Requested-With']
             allow_methods: ['OPTIONS', 'POST', 'PUT', 'GET', 'DELETE']
