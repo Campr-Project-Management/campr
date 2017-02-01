@@ -1,0 +1,94 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.distribution_list.list.title'|trans }}<small>{{ distribution_list.name }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_distribution_list_create') }}">{{ 'admin.distribution_list.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_distribution_list_edit', {'id': distribution_list.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_distribution_list_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    {% for flash_message in app.session.flashBag.get('success') %}
+                        <div id="general-alert" class="alert alert-success m-t-15">
+                            <strong>{{ flash_message }}</strong>
+                        </div>
+                    {% endfor %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <th>{{ 'admin.distribution_list.list.table.id'|trans }}</th>
+                                <td>{{ distribution_list.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.distribution_list.list.table.name'|trans }}</th>
+                                <td>{{ distribution_list.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.distribution_list.list.table.sequence'|trans }}</th>
+                                <td>{{ distribution_list.sequence }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.distribution_list.list.table.project'|trans }}</th>
+                                <td>{{ distribution_list.project.name|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.distribution_list.list.table.participants'|trans }}</th>
+                                <td>
+                                    {% for user in distribution_list.users %}
+                                        <p>@{{ user.username }} - {{ user.fullName }}</p>
+                                    {% else %}
+                                        -
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.distribution_list.list.table.meetings'|trans }}</th>
+                                <td>
+                                    {% for meeting in distribution_list.meetings %}
+                                        <p>{{ meeting.name }}</p>
+                                    {% else %}
+                                        -
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.distribution_list.list.table.created_by'|trans }}</th>
+                                <td>{{ distribution_list.createdBy.username }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.distribution_list.list.table.created_at'|trans }}</th>
+                                <td>{{ distribution_list.createdAt|date('d/m/Y') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.distribution_list.list.table.updated_at'|trans }}</th>
+                                <td>{{ distribution_list.updatedAt|date('d/m/Y') }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

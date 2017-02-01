@@ -147,6 +147,13 @@ class Project
     private $notes;
 
     /**
+     * @var ArrayCollection|DistributionList[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\DistributionList", mappedBy="project")
+     */
+    private $distributionLists;
+
+    /**
      * @var ArrayCollection|ChatRoom[]
      *
      * @Serializer\Exclude()
@@ -247,6 +254,7 @@ class Project
         $this->messages = new ArrayCollection();
         $this->projectUsers = new ArrayCollection();
         $this->notes = new ArrayCollection();
+        $this->distributionLists = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->setEncryptionKey(base64_encode(random_bytes(16)));
     }
@@ -1029,5 +1037,39 @@ class Project
     public function getLogoFile()
     {
         return $this->logoFile;
+    }
+
+    /**
+     * Add distributionList.
+     *
+     * @param DistributionList $distributionList
+     *
+     * @return Project
+     */
+    public function addDistributionList(DistributionList $distributionList)
+    {
+        $this->distributionLists[] = $distributionList;
+
+        return $this;
+    }
+
+    /**
+     * Remove distributionList.
+     *
+     * @param DistributionList $distributionList
+     */
+    public function removeDistributionList(DistributionList $distributionList)
+    {
+        $this->distributionLists->removeElement($distributionList);
+    }
+
+    /**
+     * Get distributionLists.
+     *
+     * @return ArrayCollection|DistributionList[]
+     */
+    public function getDistributionLists()
+    {
+        return $this->distributionLists;
     }
 }

@@ -32,6 +32,16 @@ class UserControllerTest extends BaseController
         if (isset($responseContent['apiToken'])) {
             $responseContent['apiToken'] = $token;
         }
+
+        $user = json_decode($response->getContent(), true);
+
+        if (!array_key_exists('message', $user)) {
+            $responseContent['ownedDistributionLists'][0]['updatedAt'] = $user['ownedDistributionLists'][0]['updatedAt'];
+            $responseContent['ownedDistributionLists'][1]['updatedAt'] = $user['ownedDistributionLists'][1]['updatedAt'];
+            $responseContent['ownedDistributionLists'][0]['users'][0]['apiToken'] = $user['ownedDistributionLists'][0]['users'][0]['apiToken'];
+            $responseContent['ownedDistributionLists'][1]['users'][0]['apiToken'] = $user['ownedDistributionLists'][1]['users'][0]['apiToken'];
+        }
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -77,6 +87,86 @@ class UserControllerTest extends BaseController
                     'gplus' => null,
                     'linkedIn' => null,
                     'medium' => null,
+                    'ownedDistributionLists' => [
+                        [
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'createdBy' => 1,
+                            'createdByFullName' => 'FirstName1 LastName1',
+                            'id' => 1,
+                            'name' => 'distribution-list-1',
+                            'sequence' => 1,
+                            'users' => [
+                                [
+                                    'roles' => ['ROLE_USER'],
+                                    'id' => 7,
+                                    'username' => 'user10',
+                                    'email' => 'user10@trisoft.ro',
+                                    'phone' => null,
+                                    'firstName' => 'FirstName10',
+                                    'lastName' => 'LastName10',
+                                    'isEnabled' => true,
+                                    'isSuspended' => false,
+                                    'createdAt' => '2017-01-01 00:00:00',
+                                    'updatedAt' => null,
+                                    'activatedAt' => null,
+                                    'teams' => [],
+                                    'apiToken' => null,
+                                    'widgetSettings' => [],
+                                    'facebook' => null,
+                                    'twitter' => null,
+                                    'instagram' => null,
+                                    'gplus' => null,
+                                    'linkedIn' => null,
+                                    'medium' => null,
+                                    'ownedDistributionLists' => [],
+                                    'avatar' => null,
+                                ],
+                            ],
+                            'meetings' => [],
+                            'createdAt' => '2017-01-01 07:00:00',
+                            'updatedAt' => '2017-01-30 07:11:12',
+                        ],
+                        [
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'createdBy' => 1,
+                            'createdByFullName' => 'FirstName1 LastName1',
+                            'id' => 2,
+                            'name' => 'distribution-list-2',
+                            'sequence' => 1,
+                            'users' => [
+                                [
+                                    'roles' => ['ROLE_USER'],
+                                    'id' => 7,
+                                    'username' => 'user10',
+                                    'email' => 'user10@trisoft.ro',
+                                    'phone' => null,
+                                    'firstName' => 'FirstName10',
+                                    'lastName' => 'LastName10',
+                                    'isEnabled' => true,
+                                    'isSuspended' => false,
+                                    'createdAt' => '2017-01-01 00:00:00',
+                                    'updatedAt' => null,
+                                    'activatedAt' => null,
+                                    'teams' => [],
+                                    'apiToken' => null,
+                                    'widgetSettings' => [],
+                                    'facebook' => null,
+                                    'twitter' => null,
+                                    'instagram' => null,
+                                    'gplus' => null,
+                                    'linkedIn' => null,
+                                    'medium' => null,
+                                    'ownedDistributionLists' => [],
+                                    'avatar' => null,
+                                ],
+                            ],
+                            'meetings' => [],
+                            'createdAt' => '2017-01-01 07:00:00',
+                            'updatedAt' => '2017-01-30 07:11:12',
+                        ],
+                    ],
                     'avatar' => null,
                 ],
             ],
@@ -168,6 +258,7 @@ class UserControllerTest extends BaseController
                     'gplus' => null,
                     'linkedIn' => null,
                     'medium' => null,
+                    'ownedDistributionLists' => [],
                     'avatar' => null,
                 ],
             ],
