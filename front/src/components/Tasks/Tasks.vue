@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="page-section">
+        <div class="page-section tasks">
             <div class="header">
                 <h1>My Tasks</h1>
                 <task-filters></task-filters>
