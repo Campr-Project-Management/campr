@@ -4,6 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\ProjectRole;
 use AppBundle\Form\ProjectRole\CreateType;
+use AppBundle\Security\AdminVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -78,6 +79,8 @@ class ProjectRoleController extends ApiController
      */
     public function getAction(ProjectRole $projectRole)
     {
+        $this->denyAccessUnlessGranted(AdminVoter::VIEW, $projectRole);
+
         return $this->createApiResponse($projectRole);
     }
 
@@ -94,6 +97,8 @@ class ProjectRoleController extends ApiController
      */
     public function editAction(Request $request, ProjectRole $projectRole)
     {
+        $this->denyAccessUnlessGranted(AdminVoter::EDIT, $projectRole);
+
         $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $projectRole, ['csrf_protection' => false]);
         $form->submit($data, false);
@@ -128,6 +133,8 @@ class ProjectRoleController extends ApiController
      */
     public function deleteAction(ProjectRole $projectRole)
     {
+        $this->denyAccessUnlessGranted(AdminVoter::DELETE, $projectRole);
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectRole);
         $em->flush();

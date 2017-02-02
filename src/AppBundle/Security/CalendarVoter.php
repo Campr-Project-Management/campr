@@ -1,24 +1,23 @@
 <?php
 
-namespace MainBundle\Security;
+namespace AppBundle\Security;
 
-use AppBundle\Entity\Team;
+use AppBundle\Entity\Calendar;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * Class TeamVoter.
+ * Class CalendarVoter.
  *
- * Restricts users access to Team entities
+ * Restricts users access to Calendar entities
  */
-class TeamVoter extends Voter
+class CalendarVoter extends Voter
 {
     const VIEW = 'view';
     const EDIT = 'edit';
     const DELETE = 'delete';
-    const INVITE = 'invite';
 
     /**
      * @var EntityManager
@@ -26,7 +25,7 @@ class TeamVoter extends Voter
     private $em;
 
     /**
-     * ProjectVoter constructor.
+     * CalendarVoter constructor.
      *
      * @param EntityManager $em
      */
@@ -45,11 +44,11 @@ class TeamVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [self::EDIT, self::DELETE, self::INVITE])) {
+        if (!in_array($attribute, [self::VIEW, self::EDIT, self::DELETE])) {
             return false;
         }
 
-        return $subject instanceof Team;
+        return $subject instanceof Calendar;
     }
 
     /**
@@ -70,59 +69,68 @@ class TeamVoter extends Voter
         }
 
         switch ($attribute) {
+            case self::VIEW:
+                return $this->canView($subject, $user);
             case self::EDIT:
                 return $this->canEdit($subject, $user);
             case self::DELETE:
                 return $this->canDelete($subject, $user);
-            case self::INVITE:
-                return $this->canInvite($subject, $user);
         }
 
         return false;
     }
 
     /**
-     * Edit access restriction.
+     * View access restriction.
      *
-     * @param Team $team
-     * @param User $user
+     * @param Calendar $calendar
+     * @param User     $user
      *
      * @return bool
      */
-    private function canEdit(Team $team, User $user)
+    private function canView(Calendar $calendar, User $user)
     {
-        $members = $team->getTeamMembers();
+        $projectUser = $this
+            ->em
+            ->getRepository(ProjectUser::class)
+            ->findOneBy(['user' => $user, 'project' => $calendar->getProject()])
+        ;
 
-        foreach ($members as $member) {
-            $userMember = $member->getUser() === $user ? $member : null;
-        }
+        return $projectUser !== null;
+    }
 
-        return $team->getUser() === $user || ($userMember && $userMember->hasRole(User::ROLE_SUPER_ADMIN));
+    /**
+     * Edit access restriction.
+     *
+     * @param Calendar $calendar
+     * @param User     $user
+     *
+     * @return bool
+     */
+    private function canEdit(Calendar $calendar, User $user)
+    {
+        return $this->canView($calendar, $user);
     }
 
     /**
      * Delete access restriction.
      *
-     * @param Team $team
-     * @param User $user
+     * @param Calendar $calendar
+     * @param User     $user
      *
      * @return bool
      */
-    private function canDelete(Team $team, User $user)
+    private function canDelete(Calendar $calendar, User $user)
     {
-        return $team->getUser() === $user;
-    }
+        $projectUser = $this
+            ->em
+            ->getRepository(ProjectUser::class)
+            ->findOneBy(['user' => $user, 'project' => $calendar->getProject()])
+        ;
 
-    /**
-     * Invite access restriction.
-     *
-     * @param Team $team
-     * @param User $user
-     *
-     * @return bool
-     */
-    private function canInvite(Team $team, User $user)
-    {
-        return $this->canEdit($team, $user);
+        return $projectUser
+            && $projectUser->getProjectRole()
+            && $projectUser->getProjectRoleName() === ProjectRole::ROLE_MANAGER
+        ;
     }
 }

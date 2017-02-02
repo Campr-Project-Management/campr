@@ -24,6 +24,11 @@ class MeetingControllerTest extends BaseController
 
         $this->client->request('GET', '/api/meeting/1/list', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
+
+        $content = json_decode($response->getContent(), true);
+        $responseContent[0]['createdAt'] = $content[0]['createdAt'];
+        $responseContent[0]['updatedAt'] = $content[0]['updatedAt'];
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -42,6 +47,8 @@ class MeetingControllerTest extends BaseController
                     [
                         'project' => 1,
                         'projectName' => 'project1',
+                        'createdBy' => null,
+                        'createdByFullName' => null,
                         'id' => 1,
                         'name' => 'meeting1',
                         'location' => 'location1',
@@ -213,6 +220,8 @@ class MeetingControllerTest extends BaseController
                             ],
                         ],
                         'distributionLists' => [],
+                        'createdAt' => '',
+                        'updatedAt' => '',
                     ],
                 ],
             ],
@@ -238,6 +247,11 @@ class MeetingControllerTest extends BaseController
 
         $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
+
+        $content = json_decode($response->getContent(), true);
+        $responseContent['createdAt'] = $content['createdAt'];
+        $responseContent['updatedAt'] = $content['updatedAt'];
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -256,6 +270,8 @@ class MeetingControllerTest extends BaseController
                 [
                     'project' => 1,
                     'projectName' => 'project1',
+                    'createdBy' => null,
+                    'createdByFullName' => null,
                     'id' => 1,
                     'name' => 'meeting1',
                     'location' => 'location1',
@@ -427,6 +443,8 @@ class MeetingControllerTest extends BaseController
                         ],
                     ],
                     'distributionLists' => [],
+                    'createdAt' => '',
+                    'updatedAt' => '',
                 ],
             ],
         ];
@@ -451,6 +469,11 @@ class MeetingControllerTest extends BaseController
 
         $this->client->request('POST', '/api/meeting/create', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
         $response = $this->client->getResponse();
+
+        $content = json_decode($response->getContent(), true);
+        $responseContent['createdAt'] = $content['createdAt'];
+        $responseContent['updatedAt'] = $content['updatedAt'];
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -477,6 +500,8 @@ class MeetingControllerTest extends BaseController
                 [
                     'project' => 1,
                     'projectName' => 'project1',
+                    'createdBy' => 1,
+                    'createdByFullName' => 'FirstName1 LastName1',
                     'id' => 2,
                     'name' => 'meet',
                     'location' => 'loc1',
@@ -491,6 +516,8 @@ class MeetingControllerTest extends BaseController
                     'todos' => [],
                     'notes' => [],
                     'distributionLists' => [],
+                    'createdAt' => '',
+                    'updatedAt' => '',
                 ],
             ],
         ];
@@ -515,6 +542,11 @@ class MeetingControllerTest extends BaseController
 
         $this->client->request('PATCH', '/api/meeting/2/edit', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
         $response = $this->client->getResponse();
+
+        $content = json_decode($response->getContent(), true);
+        $responseContent['createdAt'] = $content['createdAt'];
+        $responseContent['updatedAt'] = $content['updatedAt'];
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -536,6 +568,8 @@ class MeetingControllerTest extends BaseController
                 [
                     'project' => 1,
                     'projectName' => 'project1',
+                    'createdBy' => 1,
+                    'createdByFullName' => 'FirstName1 LastName1',
                     'id' => 2,
                     'name' => 'meeting-renamed',
                     'location' => 'loc1',
@@ -550,6 +584,8 @@ class MeetingControllerTest extends BaseController
                     'todos' => [],
                     'notes' => [],
                     'distributionLists' => [],
+                    'createdAt' => '',
+                    'updatedAt' => '',
                 ],
             ],
         ];

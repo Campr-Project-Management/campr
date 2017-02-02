@@ -4,7 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Form\WorkPackage\CreateType;
-use AppBundle\Security\ProjectVoter;
+use AppBundle\Security\WorkPackageVoter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -64,6 +64,8 @@ class WorkPackageController extends ApiController
      */
     public function getAction(WorkPackage $workPackage)
     {
+        $this->denyAccessUnlessGranted(WorkPackageVoter::VIEW, $workPackage);
+
         return $this->createApiResponse($workPackage);
     }
 
@@ -112,9 +114,7 @@ class WorkPackageController extends ApiController
      */
     public function editAction(Request $request, WorkPackage $wp)
     {
-        if ($project = $wp->getProject()) {
-            $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
-        }
+        $this->denyAccessUnlessGranted(WorkPackageVoter::EDIT, $wp);
 
         $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $wp, ['csrf_protection' => false]);
@@ -148,9 +148,7 @@ class WorkPackageController extends ApiController
      */
     public function deleteAction(WorkPackage $wp)
     {
-        if ($project = $wp->getProject()) {
-            $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
-        }
+        $this->denyAccessUnlessGranted(WorkPackageVoter::DELETE, $wp);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($wp);
