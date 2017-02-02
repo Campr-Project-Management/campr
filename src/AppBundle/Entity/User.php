@@ -321,6 +321,13 @@ class User implements AdvancedUserInterface, \Serializable
     private $contracts;
 
     /**
+     * @var ArrayCollection|Meeting[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Meeting", mappedBy="createdBy")
+     */
+    private $ownedMeetings;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -337,6 +344,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->ownedDistributionLists = new ArrayCollection();
         $this->distributionLists = new ArrayCollection();
         $this->contracts = new ArrayCollection();
+        $this->ownedMeetings = new ArrayCollection();
     }
 
     /**
@@ -1366,6 +1374,8 @@ class User implements AdvancedUserInterface, \Serializable
     public function removeContract(Contract $contract)
     {
         $this->contracts->removeElement($contract);
+
+        return $this;
     }
 
     /**
@@ -1376,5 +1386,41 @@ class User implements AdvancedUserInterface, \Serializable
     public function getContracts()
     {
         return $this->contracts;
+    }
+
+    /**
+     * Add ownedMeeting.
+     *
+     * @param Meeting $ownedMeeting
+     *
+     * @return User
+     */
+    public function addOwnedMeeting(Meeting $ownedMeeting)
+    {
+        $this->ownedMeetings[] = $ownedMeeting;
+
+        return $this;
+    }
+
+    /**
+     * Remove ownedMeeting.
+     *
+     * @param Meeting $ownedMeeting
+     */
+    public function removeOwnedMeeting(Meeting $ownedMeeting)
+    {
+        $this->ownedMeetings->removeElement($ownedMeeting);
+
+        return $this;
+    }
+
+    /**
+     * Get ownedMeetings.
+     *
+     * @return ArrayCollection|Meeting[]
+     */
+    public function getOwnedMeetings()
+    {
+        return $this->ownedMeetings;
     }
 }
