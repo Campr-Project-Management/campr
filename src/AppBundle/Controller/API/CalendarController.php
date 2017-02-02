@@ -23,7 +23,7 @@ class CalendarController extends ApiController
      * All Calendars for a specific Project.
      *
      * @Route("/{id}/list", name="app_api_calendar_list")
-     * @Method({"GET", "POST"})
+     * @Method({"GET"})
      *
      * @param Project $project
      *
@@ -67,9 +67,8 @@ class CalendarController extends ApiController
      */
     public function createAction(Request $request)
     {
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
-        $form->submit($data);
+        $this->processForm($request, $form);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -79,12 +78,12 @@ class CalendarController extends ApiController
             return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -106,31 +105,30 @@ class CalendarController extends ApiController
         }
         $this->denyAccessUnlessGranted(CalendarVoter::EDIT, $project);
 
-        $data = $request->request->all();
         $form = $this->createForm(EditType::class, $calendar, ['csrf_protection' => false]);
-        $form->submit($data, false);
+        $this->processForm($request, $form, false);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($calendar);
             $em->flush();
 
-            return $this->createApiResponse($calendar);
+            return $this->createApiResponse($calendar, Response::HTTP_ACCEPTED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
      * Delete a specific Calendar.
      *
      * @Route("/{id}/delete", name="app_api_calendar_delete")
-     * @Method({"GET"})
+     * @Method({"DELETE"})
      *
      * @param Calendar $calendar
      *
@@ -148,6 +146,6 @@ class CalendarController extends ApiController
         $em->remove($calendar);
         $em->flush();
 
-        return $this->createApiResponse([], Response::HTTP_NO_CONTENT);
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

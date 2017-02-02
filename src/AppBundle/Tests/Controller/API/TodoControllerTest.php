@@ -227,7 +227,7 @@ class TodoControllerTest extends BaseController
                     'dueDate' => '11-01-2017',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_ACCEPTED,
                 [
                     'status' => null,
                     'statusName' => null,
@@ -253,7 +253,6 @@ class TodoControllerTest extends BaseController
      *
      * @param $isResponseSuccessful
      * @param $responseStatusCode
-     * @param $responseContent
      */
     public function testDeleteAction(
         $isResponseSuccessful,
@@ -262,7 +261,7 @@ class TodoControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', '/api/todo/3/delete', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request('DELETE', '/api/todo/3/delete', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
