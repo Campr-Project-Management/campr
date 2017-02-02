@@ -51,6 +51,12 @@ class TodoController extends ApiController
      */
     public function getAction(Todo $todo)
     {
+        $project = $todo->getProject();
+        if (!$project) {
+            throw new \LogicException('Project does not exist!');
+        }
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
+
         return $this->createApiResponse($todo);
     }
 
@@ -99,9 +105,11 @@ class TodoController extends ApiController
      */
     public function editAction(Request $request, Todo $todo)
     {
-        if ($project = $todo->getProject()) {
-            $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
+        $project = $todo->getProject();
+        if (!$project) {
+            throw new \LogicException('Project does not exist!');
         }
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
         $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $todo, ['csrf_protection' => false]);
@@ -135,9 +143,11 @@ class TodoController extends ApiController
      */
     public function deleteAction(Todo $todo)
     {
-        if ($project = $todo->getProject()) {
-            $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
+        $project = $todo->getProject();
+        if (!$project) {
+            throw new \LogicException('Project does not exist!');
         }
+        $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($todo);

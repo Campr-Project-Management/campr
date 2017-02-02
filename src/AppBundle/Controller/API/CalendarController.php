@@ -6,7 +6,7 @@ use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Project;
 use AppBundle\Form\Calendar\CreateType;
 use AppBundle\Form\Calendar\EditType;
-use AppBundle\Security\ProjectVoter;
+use AppBundle\Security\CalendarVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -46,6 +46,12 @@ class CalendarController extends ApiController
      */
     public function getAction(Calendar $calendar)
     {
+        $project = $calendar->getProject();
+        if (!$project) {
+            throw new \LogicException('Project does not exist!');
+        }
+        $this->denyAccessUnlessGranted(CalendarVoter::VIEW, $project);
+
         return $this->createApiResponse($calendar);
     }
 
@@ -94,9 +100,11 @@ class CalendarController extends ApiController
      */
     public function editAction(Request $request, Calendar $calendar)
     {
-        if ($project = $calendar->getProject()) {
-            $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
+        $project = $calendar->getProject();
+        if (!$project) {
+            throw new \LogicException('Project does not exist!');
         }
+        $this->denyAccessUnlessGranted(CalendarVoter::EDIT, $project);
 
         $data = $request->request->all();
         $form = $this->createForm(EditType::class, $calendar, ['csrf_protection' => false]);
@@ -130,9 +138,11 @@ class CalendarController extends ApiController
      */
     public function deleteAction(Calendar $calendar)
     {
-        if ($project = $calendar->getProject()) {
-            $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
+        $project = $calendar->getProject();
+        if (!$project) {
+            throw new \LogicException('Project does not exist!');
         }
+        $this->denyAccessUnlessGranted(CalendarVoter::DELETE, $project);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($calendar);

@@ -5,7 +5,7 @@ namespace AppBundle\Controller\API;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Project;
 use AppBundle\Form\Meeting\CreateType;
-use AppBundle\Security\ProjectVoter;
+use AppBundle\Security\MeetingVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -51,6 +51,8 @@ class MeetingController extends ApiController
      */
     public function getAction(Meeting $meeting)
     {
+        $this->denyAccessUnlessGranted(MeetingVoter::VIEW, $meeting);
+
         return $this->createApiResponse($meeting);
     }
 
@@ -66,16 +68,19 @@ class MeetingController extends ApiController
      */
     public function createAction(Request $request)
     {
+        $meeting = new Meeting();
+        $meeting->setCreatedBy($this->getUser());
+
         $data = $request->request->all();
-        $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
+        $form = $this->createForm(CreateType::class, $meeting, ['csrf_protection' => false]);
         $form->submit($data);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($form->getData());
+            $em->persist($meeting);
             $em->flush();
 
-            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
+            return $this->createApiResponse($meeting, Response::HTTP_CREATED);
         }
 
         $errors = [];
@@ -99,9 +104,7 @@ class MeetingController extends ApiController
      */
     public function editAction(Request $request, Meeting $meeting)
     {
-        if ($project = $meeting->getProject()) {
-            $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
-        }
+        $this->denyAccessUnlessGranted(MeetingVoter::EDIT, $meeting);
 
         $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $meeting, ['csrf_protection' => false]);
@@ -135,9 +138,7 @@ class MeetingController extends ApiController
      */
     public function deleteAction(Meeting $meeting)
     {
-        if ($project = $meeting->getProject()) {
-            $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
-        }
+        $this->denyAccessUnlessGranted(MeetingVoter::DELETE, $meeting);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($meeting);

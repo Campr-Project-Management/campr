@@ -2,39 +2,21 @@
 
 namespace AppBundle\Security;
 
-use AppBundle\Entity\Project;
-use AppBundle\Entity\ProjectRole;
-use AppBundle\Entity\ProjectUser;
+use AppBundle\Entity\Meeting;
 use AppBundle\Entity\User;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * Class ProjectVoter.
+ * Class MeetingVoter.
  *
- * Restricts users access to Project entities
+ * Restricts users access to Meeting entities
  */
-class ProjectVoter extends Voter
+class MeetingVoter extends Voter
 {
     const VIEW = 'view';
     const EDIT = 'edit';
     const DELETE = 'delete';
-
-    /**
-     * @var EntityManager
-     */
-    private $em;
-
-    /**
-     * ProjectVoter constructor.
-     *
-     * @param EntityManager $em
-     */
-    public function __construct(EntityManager $em)
-    {
-        $this->em = $em;
-    }
 
     /**
      * Define actions on entity.
@@ -50,7 +32,7 @@ class ProjectVoter extends Voter
             return false;
         }
 
-        return $subject instanceof Project;
+        return $subject instanceof Meeting;
     }
 
     /**
@@ -85,63 +67,48 @@ class ProjectVoter extends Voter
     /**
      * View access restriction.
      *
-     * @param Project $project
+     * @param Meeting $meeting
      * @param User    $user
      *
      * @return bool
      */
-    private function canView(Project $project, User $user)
+    private function canView(Meeting $meeting, User $user)
     {
-        $projectUser = $this
-            ->em
-            ->getRepository(ProjectUser::class)
-            ->findOneBy(['user' => $user, 'project' => $project])
-        ;
+        $participants = $meeting->getMeetingParticipants();
+        $isParticipant = false;
+        foreach ($participants as $participant) {
+            if ($participant->getUser() === $user) {
+                $isParticipant = true;
+                break;
+            }
+        }
 
-        return $projectUser !== null;
+        return $isParticipant || $meeting->getCreatedBy() === $user;
     }
 
     /**
      * Edit access restriction.
      *
-     * @param Project $project
+     * @param Meeting $meeting
      * @param User    $user
      *
      * @return bool
      */
-    private function canEdit(Project $project, User $user)
+    private function canEdit(Meeting $meeting, User $user)
     {
-        $projectUser = $this
-            ->em
-            ->getRepository(ProjectUser::class)
-            ->findOneBy(['user' => $user, 'project' => $project])
-        ;
-
-        return $projectUser
-            && $projectUser->getProjectRole()
-            && $projectUser->getProjectRoleName() !== ProjectRole::ROLE_SPONSOR
-        ;
+        return $meeting->getCreatedBy() === $user;
     }
 
     /**
      * Delete access restriction.
      *
-     * @param Project $project
+     * @param Meeting $meeting
      * @param User    $user
      *
      * @return bool
      */
-    private function canDelete(Project $project, User $user)
+    private function canDelete(Meeting $meeting, User $user)
     {
-        $projectUser = $this
-            ->em
-            ->getRepository(ProjectUser::class)
-            ->findOneBy(['user' => $user, 'project' => $project])
-        ;
-
-        return $projectUser
-            && $projectUser->getProjectRole()
-            && $projectUser->getProjectRoleName() === ProjectRole::ROLE_MANAGER
-        ;
+        return $this->canEdit($meeting, $user);
     }
 }

@@ -48,6 +48,8 @@ class ContractController extends ApiController
      */
     public function getAction(Contract $contract)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::VIEW, $contract->getProject());
+
         return $this->createApiResponse($contract);
     }
 
@@ -99,9 +101,7 @@ class ContractController extends ApiController
      */
     public function editAction(Request $request, Contract $contract)
     {
-        if ($project = $contract->getProject()) {
-            $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
-        }
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $contract->getProject());
 
         $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $contract, ['csrf_protection' => false]);
@@ -135,9 +135,7 @@ class ContractController extends ApiController
      */
     public function deleteAction(Contract $contract)
     {
-        if ($project = $contract->getProject()) {
-            $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
-        }
+        $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $contract->getProject());
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($contract);

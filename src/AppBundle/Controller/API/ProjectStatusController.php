@@ -4,6 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\ProjectStatus;
 use AppBundle\Form\ProjectStatus\CreateType;
+use AppBundle\Security\ProjectVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -78,6 +79,8 @@ class ProjectStatusController extends ApiController
      */
     public function getAction(ProjectStatus $projectStatus)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::VIEW, $projectStatus->getProject());
+
         return $this->createApiResponse($projectStatus);
     }
 
@@ -94,6 +97,8 @@ class ProjectStatusController extends ApiController
      */
     public function editAction(Request $request, ProjectStatus $projectStatus)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $projectStatus->getProject());
+
         $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $projectStatus, ['csrf_protection' => false]);
         $form->submit($data, false);
@@ -128,6 +133,8 @@ class ProjectStatusController extends ApiController
      */
     public function deleteAction(ProjectStatus $projectStatus)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $projectStatus->getProject());
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectStatus);
         $em->flush();
