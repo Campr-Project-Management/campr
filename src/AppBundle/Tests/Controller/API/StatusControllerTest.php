@@ -164,7 +164,7 @@ class StatusControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
 
@@ -183,9 +183,11 @@ class StatusControllerTest extends BaseController
                     'name' => 'status3',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'That name is taken',
+                    'messages' => [
+                        'name' => ['That name is taken'],
+                    ],
                 ],
             ],
         ];
@@ -221,7 +223,7 @@ class StatusControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -237,9 +239,11 @@ class StatusControllerTest extends BaseController
                     'name' => '',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The name field should not be blank',
+                    'messages' => [
+                        'name' => ['The name field should not be blank'],
+                    ],
                 ],
             ],
         ];
@@ -263,7 +267,7 @@ class StatusControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/status/1/edit',
             [],
             [],
@@ -291,7 +295,7 @@ class StatusControllerTest extends BaseController
                     'name' => 'status1',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_ACCEPTED,
                 [
                     'id' => 1,
                     'name' => 'status1',
@@ -318,7 +322,7 @@ class StatusControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/status/1/edit',
             [],
             [],
@@ -330,7 +334,7 @@ class StatusControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -346,9 +350,11 @@ class StatusControllerTest extends BaseController
                     'name' => 'status2',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'That name is taken',
+                    'messages' => [
+                        'name' => ['That name is taken'],
+                    ],
                 ],
             ],
         ];
@@ -372,7 +378,7 @@ class StatusControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/status/1/edit',
             [],
             [],
@@ -384,7 +390,7 @@ class StatusControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -400,9 +406,11 @@ class StatusControllerTest extends BaseController
                     'name' => '',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The name field should not be blank',
+                    'messages' => [
+                        'name' => ['The name field should not be blank'],
+                    ],
                 ],
             ],
         ];

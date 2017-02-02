@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/api/distribution-list")
@@ -47,24 +48,23 @@ class DistributionListController extends ApiController
         $distributionList = new DistributionList();
         $distributionList->setCreatedBy($this->getUser());
 
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $distributionList, ['csrf_protection' => false]);
-        $form->submit($data);
+        $this->processForm($request, $form);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($distributionList);
             $em->flush();
 
-            return $this->createApiResponse($form->getData(), JsonResponse::HTTP_CREATED);
+            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -88,7 +88,7 @@ class DistributionListController extends ApiController
      * Edit a specific DistributionList.
      *
      * @Route("/{id}/edit", name="app_api_distribution_list_edit")
-     * @Method({"POST"})
+     * @Method({"PATCH"})
      *
      * @param Request          $request
      * @param DistributionList $distributionList
@@ -99,9 +99,8 @@ class DistributionListController extends ApiController
     {
         $this->denyAccessUnlessGranted(DistributionListVoter::EDIT, $distributionList);
 
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $distributionList, ['csrf_protection' => false]);
-        $form->submit($data, false);
+        $this->processForm($request, $form, false);
 
         if ($form->isValid()) {
             $distributionList->setUpdatedAt(new \DateTime());
@@ -110,15 +109,15 @@ class DistributionListController extends ApiController
             $em->persist($distributionList);
             $em->flush();
 
-            return $this->createApiResponse($distributionList);
+            return $this->createApiResponse($distributionList, Response::HTTP_ACCEPTED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -139,6 +138,6 @@ class DistributionListController extends ApiController
         $em->remove($distributionList);
         $em->flush();
 
-        return $this->createApiResponse([], JsonResponse::HTTP_NO_CONTENT);
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

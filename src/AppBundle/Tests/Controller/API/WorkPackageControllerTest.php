@@ -277,7 +277,7 @@ class WorkPackageControllerTest extends BaseController
                     'project' => 1,
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_ACCEPTED,
                 [
                     'responsibility' => null,
                     'responsibilityFullName' => null,
@@ -323,7 +323,7 @@ class WorkPackageControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', '/api/workpackage/5/delete', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request('DELETE', '/api/workpackage/5/delete', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());

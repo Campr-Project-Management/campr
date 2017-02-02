@@ -190,7 +190,7 @@ class ProjectDepartmentControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -204,11 +204,13 @@ class ProjectDepartmentControllerTest extends BaseController
             [
                 [],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The name field should not be blank',
-                    'The abbreviation should not be blank',
-                    'The sequence field should not be blank',
+                    'messages' => [
+                        'name' => ['The name field should not be blank'],
+                        'abbreviation' => ['The abbreviation should not be blank'],
+                        'sequence' => ['The sequence field should not be blank'],
+                    ],
                 ],
             ],
         ];
@@ -244,7 +246,7 @@ class ProjectDepartmentControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -262,9 +264,11 @@ class ProjectDepartmentControllerTest extends BaseController
                     'sequence' => 'project-department',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The sequence field should contain numbers greater than or equal to 0',
+                    'messages' => [
+                        'sequence' => ['The sequence field should contain numbers greater than or equal to 0'],
+                    ],
                 ],
             ],
         ];
@@ -288,7 +292,7 @@ class ProjectDepartmentControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project-department/1/edit',
             [],
             [],
@@ -319,7 +323,7 @@ class ProjectDepartmentControllerTest extends BaseController
                     'name' => 'project-department1',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_ACCEPTED,
                 [
                     'projectWorkCostType' => 1,
                     'projectWorkCostTypeName' => 'project-work-cost-type1',
@@ -353,7 +357,7 @@ class ProjectDepartmentControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project-department/1/edit',
             [],
             [],
@@ -365,7 +369,7 @@ class ProjectDepartmentControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -383,11 +387,13 @@ class ProjectDepartmentControllerTest extends BaseController
                     'sequence' => '',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The name field should not be blank',
-                    'The abbreviation should not be blank',
-                    'The sequence field should not be blank',
+                    'messages' => [
+                        'name' => ['The name field should not be blank'],
+                        'abbreviation' => ['The abbreviation should not be blank'],
+                        'sequence' => ['The sequence field should not be blank'],
+                    ],
                 ],
             ],
         ];
@@ -411,7 +417,7 @@ class ProjectDepartmentControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project-department/1/edit',
             [],
             [],
@@ -423,7 +429,7 @@ class ProjectDepartmentControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -440,9 +446,11 @@ class ProjectDepartmentControllerTest extends BaseController
                     'sequence' => 'project-department',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The sequence field should contain numbers greater than or equal to 0',
+                    'messages' => [
+                        'sequence' => ['The sequence field should contain numbers greater than or equal to 0'],
+                    ],
                 ],
             ],
         ];

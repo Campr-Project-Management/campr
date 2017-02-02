@@ -238,7 +238,7 @@ class ProjectUserControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -252,10 +252,12 @@ class ProjectUserControllerTest extends BaseController
             [
                 [],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The name field should not be blank. Choose one user',
-                    'The project field should not be blank. Choose one project',
+                    'messages' => [
+                        'user' => ['The name field should not be blank. Choose one user'],
+                        'project' => ['The project field should not be blank. Choose one project'],
+                    ],
                 ],
             ],
         ];
@@ -279,7 +281,7 @@ class ProjectUserControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project-user/1/edit',
             [],
             [],
@@ -310,7 +312,7 @@ class ProjectUserControllerTest extends BaseController
                     'user' => 3,
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_ACCEPTED,
                 [
                     'user' => 3,
                     'userFullName' => 'FirstName3 LastName3',
@@ -353,7 +355,7 @@ class ProjectUserControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project-user/1/edit',
             [],
             [],
@@ -365,7 +367,7 @@ class ProjectUserControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -382,10 +384,12 @@ class ProjectUserControllerTest extends BaseController
                     'project' => '',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The name field should not be blank. Choose one user',
-                    'The project field should not be blank. Choose one project',
+                    'messages' => [
+                        'user' => ['The name field should not be blank. Choose one user'],
+                        'project' => ['The project field should not be blank. Choose one project'],
+                    ],
                 ],
             ],
         ];

@@ -221,7 +221,7 @@ class AssignmentControllerTest extends BaseController
                     'milestone' => 2,
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_ACCEPTED,
                 [
                     'workPackage' => 1,
                     'workPackageName' => 'work-package1',
@@ -252,7 +252,7 @@ class AssignmentControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', '/api/assignment/4/delete', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request('DELETE', '/api/assignment/4/delete', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());

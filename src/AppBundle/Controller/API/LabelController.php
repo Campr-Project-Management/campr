@@ -58,9 +58,8 @@ class LabelController extends ApiController
      */
     public function createAction(Request $request)
     {
-        $data = $request->request->all();
         $form = $this->createForm(LabelType::class, null, ['csrf_protection' => false]);
-        $form->submit($data);
+        $this->processForm($request, $form);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -70,12 +69,12 @@ class LabelController extends ApiController
             return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -97,31 +96,30 @@ class LabelController extends ApiController
         }
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
-        $data = $request->request->all();
         $form = $this->createForm(LabelType::class, $label, ['csrf_protection' => false]);
-        $form->submit($data, false);
+        $this->processForm($request, $form, false);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($label);
             $em->flush();
 
-            return $this->createApiResponse($label);
+            return $this->createApiResponse($label, Response::HTTP_ACCEPTED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
      * Delete a specific label.
      *
      * @Route("/{id}/delete", name="app_api_label_delete")
-     * @Method({"GET"})
+     * @Method({"DELETE"})
      *
      * @param Label $label
      *
