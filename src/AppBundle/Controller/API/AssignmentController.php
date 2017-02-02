@@ -19,10 +19,10 @@ use Symfony\Component\HttpFoundation\Response;
 class AssignmentController extends ApiController
 {
     /**
-     * All aassignments for a specific WorkPackage.
+     * All assignments for a specific WorkPackage.
      *
      * @Route("/{id}/list", name="app_api_assignment_list")
-     * @Method({"GET", "POST"})
+     * @Method({"GET"})
      *
      * @param WorkPackage $wp
      *
@@ -66,9 +66,8 @@ class AssignmentController extends ApiController
      */
     public function createAction(Request $request)
     {
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
-        $form->submit($data);
+        $this->processForm($request, $form);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -78,12 +77,12 @@ class AssignmentController extends ApiController
             return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return  $this->createApiResponse($errors);
+        return  $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -105,31 +104,30 @@ class AssignmentController extends ApiController
         }
         $this->denyAccessUnlessGranted(WorkPackageVoter::EDIT, $wp);
 
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $assignment, ['csrf_protection' => false]);
-        $form->submit($data, false);
+        $this->processForm($request, $form, false);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($assignment);
             $em->flush();
 
-            return  $this->createApiResponse($assignment);
+            return  $this->createApiResponse($assignment, Response::HTTP_ACCEPTED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
      * Delete a specific Assignment.
      *
      * @Route("/{id}/delete", name="app_api_assignment_delete")
-     * @Method({"GET"})
+     * @Method({"DELETE"})
      *
      * @param Assignment $assignment
      *
@@ -147,6 +145,6 @@ class AssignmentController extends ApiController
         $em->remove($assignment);
         $em->flush();
 
-        return $this->createApiResponse([], Response::HTTP_NO_CONTENT);
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

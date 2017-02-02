@@ -236,7 +236,11 @@ class UserControllerTest extends BaseController
 
         $this->client->request('PATCH', '/api/user/edit', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
         $response = $this->client->getResponse();
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        if ($responseStatusCode === Response::HTTP_BAD_REQUEST) {
+            $this->assertEquals($isResponseSuccessful, $response->isClientError());
+        } else {
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        }
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
 
         $user = $this->getUserByUsername('testuser');
@@ -269,9 +273,13 @@ class UserControllerTest extends BaseController
                     ],
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The password fields do not match',
+                    'messages' => [
+                        'plainPassword' => [
+                            'first' => ['The password fields do not match'],
+                        ],
+                    ],
                 ],
             ],
             [
@@ -279,7 +287,7 @@ class UserControllerTest extends BaseController
                     'firstName' => 'User3',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_ACCEPTED,
                 [
                     'roles' => ['ROLE_SUPER_ADMIN'],
                     'id' => '',

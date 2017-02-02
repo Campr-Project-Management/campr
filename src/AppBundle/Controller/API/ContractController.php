@@ -21,7 +21,7 @@ class ContractController extends ApiController
      * Retrieve all Contracts.
      *
      * @Route("/list", name="app_api_contract_list")
-     * @Method({"GET", "POST"})
+     * @Method({"GET"})
      *
      * @return JsonResponse
      */
@@ -66,9 +66,8 @@ class ContractController extends ApiController
     public function createAction(Request $request)
     {
         $contract = new Contract();
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $contract, ['csrf_protection' => false]);
-        $form->submit($data);
+        $this->processForm($request, $form);
 
         if ($form->isValid()) {
             $contract->setCreatedBy($this->getUser());
@@ -80,12 +79,12 @@ class ContractController extends ApiController
             return $this->createApiResponse($contract, Response::HTTP_CREATED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -103,24 +102,23 @@ class ContractController extends ApiController
     {
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $contract->getProject());
 
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $contract, ['csrf_protection' => false]);
-        $form->submit($data, false);
+        $this->processForm($request, $form, false);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($contract);
             $em->flush();
 
-            return $this->createApiResponse($contract);
+            return $this->createApiResponse($contract, Response::HTTP_ACCEPTED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
