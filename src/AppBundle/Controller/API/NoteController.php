@@ -45,6 +45,12 @@ class NoteController extends ApiController
      */
     public function getAction(Note $note)
     {
+        $project = $note->getProject();
+        if (!$project) {
+            throw new \LogicException('Project does not exist!');
+        }
+        $this->denyAccessUnlessGranted(ProjectVoter::VIEW, $project);
+
         return $this->createApiResponse($note);
     }
 
@@ -93,9 +99,11 @@ class NoteController extends ApiController
      */
     public function editAction(Request $request, Note $note)
     {
-        if ($project = $note->getProject()) {
-            $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
+        $project = $note->getProject();
+        if (!$project) {
+            throw new \LogicException('Project does not exist!');
         }
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
         $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $note, ['csrf_protection' => false]);
@@ -129,9 +137,11 @@ class NoteController extends ApiController
      */
     public function deleteAction(Note $note)
     {
-        if ($project = $note->getProject()) {
-            $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
+        $project = $note->getProject();
+        if (!$project) {
+            throw new \LogicException('Project does not exist!');
         }
+        $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($note);

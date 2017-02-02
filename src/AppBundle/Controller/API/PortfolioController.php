@@ -4,6 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Portfolio;
 use AppBundle\Form\Portfolio\CreateType;
+use AppBundle\Security\AdminVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -78,6 +79,8 @@ class PortfolioController extends ApiController
      */
     public function getAction(Portfolio $portfolio)
     {
+        $this->denyAccessUnlessGranted(AdminVoter::VIEW, $portfolio);
+
         return $this->createApiResponse($portfolio);
     }
 
@@ -94,6 +97,8 @@ class PortfolioController extends ApiController
      */
     public function editAction(Request $request, Portfolio $portfolio)
     {
+        $this->denyAccessUnlessGranted(AdminVoter::EDIT, $portfolio);
+
         $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $portfolio, ['csrf_protection' => false]);
         $form->submit($data, false);
@@ -128,6 +133,8 @@ class PortfolioController extends ApiController
      */
     public function deleteAction(Portfolio $portfolio)
     {
+        $this->denyAccessUnlessGranted(AdminVoter::DELETE, $portfolio);
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($portfolio);
         $em->flush();

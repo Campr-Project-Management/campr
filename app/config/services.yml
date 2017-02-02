@@ -198,6 +198,40 @@ services:
             -  { name: doctrine.event_subscriber }
 
 ### VOTERS ###
+    app.admin_voter:
+        class: AppBundle\Security\AdminVoter
+        tags:
+            - { name: security.voter, priority: 255 }
+        public: false
+
+    app.calendar_voter:
+        class: AppBundle\Security\CalendarVoter
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: security.voter }
+        public: false
+
+    app.distribution_list_voter:
+        class: AppBundle\Security\DistributionListVoter
+        tags:
+            - { name: security.voter }
+        public: false
+
+    app.meeting_voter:
+        class: AppBundle\Security\MeetingVoter
+        tags:
+            - { name: security.voter }
+        public: false
+
+    app.workpackage_voter:
+        class: AppBundle\Security\WorkPackageVoter
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: security.voter }
+        public: false
+
     app.project_voter:
         class: AppBundle\Security\ProjectVoter
         arguments:

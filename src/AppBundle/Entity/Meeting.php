@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Meeting.
@@ -131,6 +132,35 @@ class Meeting
     private $distributionLists;
 
     /**
+     * @var User
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="ownedMeetings")
+     * @ORM\JoinColumn(name="user_id", nullable=true)
+     */
+    private $createdBy;
+
+    /**
+     * @var \DateTime
+     *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     */
+    private $updatedAt;
+
+    /**
      * Meeting constructor.
      */
     public function __construct()
@@ -142,6 +172,7 @@ class Meeting
         $this->todos = new ArrayCollection();
         $this->notes = new ArrayCollection();
         $this->distributionLists = new ArrayCollection();
+        $this->createdAt = new \DateTime();
     }
 
     /**
@@ -584,5 +615,98 @@ class Meeting
     public function getDistributionLists()
     {
         return $this->distributionLists;
+    }
+
+    /**
+     * Set createdBy.
+     *
+     * @param User $createdBy
+     *
+     * @return Meeting
+     */
+    public function setCreatedBy(User $createdBy)
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    /**
+     * Get createdBy.
+     *
+     * @return User
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * Returns createdBy id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("createdBy")
+     *
+     * @return string
+     */
+    public function getCreatedById()
+    {
+        return $this->createdBy ? $this->createdBy->getId() : null;
+    }
+
+    /**
+     * Returns createdBy fullname.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("createdByFullName")
+     *
+     * @return string
+     */
+    public function getCreatedByFullName()
+    {
+        return $this->createdBy ? $this->createdBy->getFullName() : null;
+    }
+
+    /**
+     * Set createdAt.
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return Meeting
+     */
+    public function setCreatedAt(\DateTime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt.
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt.
+     *
+     * @param \DateTime $updatedAt
+     *
+     * @return Meeting
+     */
+    public function setUpdatedAt(\DateTime $updatedAt = null)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 }

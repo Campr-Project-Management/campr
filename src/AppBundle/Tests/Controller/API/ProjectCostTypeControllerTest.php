@@ -2,6 +2,7 @@
 
 namespace AppBundle\Tests\Controller\API;
 
+use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectCostType;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,8 +59,8 @@ class ProjectCostTypeControllerTest extends BaseController
                 Response::HTTP_OK,
                 [
                     [
-                        'project' => null,
-                        'projectName' => null,
+                        'project' => 1,
+                        'projectName' => 'project1',
                         'id' => 1,
                         'name' => 'project-cost-type1',
                         'sequence' => 1,
@@ -67,8 +68,8 @@ class ProjectCostTypeControllerTest extends BaseController
                         'updatedAt' => null,
                     ],
                     [
-                        'project' => null,
-                        'projectName' => null,
+                        'project' => 1,
+                        'projectName' => 'project1',
                         'id' => 2,
                         'name' => 'project-cost-type2',
                         'sequence' => 2,
@@ -377,8 +378,8 @@ class ProjectCostTypeControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'project' => null,
-                    'projectName' => null,
+                    'project' => 1,
+                    'projectName' => 'project1',
                     'id' => 1,
                     'name' => 'project-cost-type1',
                     'sequence' => 1,
@@ -564,8 +565,10 @@ class ProjectCostTypeControllerTest extends BaseController
         $isResponseSuccessful,
         $responseStatusCode
     ) {
+        $project = $this->em->getRepository(Project::class)->find(1);
         $projectCostType = (new ProjectCostType())
             ->setName('project-cost-type3')
+            ->setProject($project)
             ->setSequence(1)
         ;
         $this->em->persist($projectCostType);
@@ -652,8 +655,8 @@ class ProjectCostTypeControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'project' => null,
-                    'projectName' => null,
+                    'project' => 1,
+                    'projectName' => 'project1',
                     'id' => 2,
                     'name' => 'project-cost-type2',
                     'sequence' => 2,
