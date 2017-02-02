@@ -136,7 +136,7 @@ class ProjectControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
 
@@ -156,9 +156,11 @@ class ProjectControllerTest extends BaseController
                     'number' => 'project-number-3',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'That number is taken',
+                    'messages' => [
+                        'number' => ['That number is taken'],
+                    ],
                 ],
             ],
         ];
@@ -194,7 +196,7 @@ class ProjectControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -208,10 +210,13 @@ class ProjectControllerTest extends BaseController
             [
                 [],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The name field should not be blank',
-                    'The number field should not be blank',
+                    'messages' => [
+                        'name' => ['The name field should not be blank'],
+                        'number' => ['The number field should not be blank'],
+                    ],
+
                 ],
             ],
         ];
@@ -235,7 +240,7 @@ class ProjectControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project/1/edit',
             [],
             [],
@@ -280,7 +285,7 @@ class ProjectControllerTest extends BaseController
                     'name' => 'project1',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_ACCEPTED,
                 [
                     'company' => null,
                     'companyName' => null,
@@ -537,7 +542,7 @@ class ProjectControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project/1/edit',
             [],
             [],
@@ -549,7 +554,7 @@ class ProjectControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -565,9 +570,11 @@ class ProjectControllerTest extends BaseController
                     'number' => 'project-number-2',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'That number is taken',
+                    'messages' => [
+                        'number' => ['That number is taken'],
+                    ],
                 ],
             ],
         ];
@@ -591,7 +598,7 @@ class ProjectControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project/1/edit',
             [],
             [],
@@ -603,7 +610,7 @@ class ProjectControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -620,10 +627,12 @@ class ProjectControllerTest extends BaseController
                     'number' => '',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The name field should not be blank',
-                    'The number field should not be blank',
+                    'messages' => [
+                        'name' => ['The name field should not be blank'],
+                        'number' => ['The number field should not be blank'],
+                    ],
                 ],
             ],
         ];

@@ -72,9 +72,8 @@ class TodoController extends ApiController
      */
     public function createAction(Request $request)
     {
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
-        $form->submit($data);
+        $this->processForm($request, $form);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -84,12 +83,12 @@ class TodoController extends ApiController
             return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -111,31 +110,30 @@ class TodoController extends ApiController
         }
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $todo, ['csrf_protection' => false]);
-        $form->submit($data, false);
+        $this->processForm($request, $form, false);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($todo);
             $em->flush();
 
-            return $this->createApiResponse($todo);
+            return $this->createApiResponse($todo, Response::HTTP_ACCEPTED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
      * Delete a specific Todo.
      *
      * @Route("/{id}/delete", name="app_api_todo_delete")
-     * @Method({"GET"})
+     * @Method({"DELETE"})
      *
      * @param Todo $todo
      *
@@ -153,6 +151,6 @@ class TodoController extends ApiController
         $em->remove($todo);
         $em->flush();
 
-        return $this->createApiResponse([], Response::HTTP_NO_CONTENT);
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

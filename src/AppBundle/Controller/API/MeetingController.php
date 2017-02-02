@@ -22,7 +22,7 @@ class MeetingController extends ApiController
      * All meetings for a specific Project.
      *
      * @Route("/{id}/list", name="app_api_meeting_list")
-     * @Method({"GET", "POST"})
+     * @Method({"GET"})
      *
      * @param Project $project
      *
@@ -71,9 +71,8 @@ class MeetingController extends ApiController
         $meeting = new Meeting();
         $meeting->setCreatedBy($this->getUser());
 
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $meeting, ['csrf_protection' => false]);
-        $form->submit($data);
+        $this->processForm($request, $form);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -83,12 +82,12 @@ class MeetingController extends ApiController
             return $this->createApiResponse($meeting, Response::HTTP_CREATED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -106,31 +105,30 @@ class MeetingController extends ApiController
     {
         $this->denyAccessUnlessGranted(MeetingVoter::EDIT, $meeting);
 
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $meeting, ['csrf_protection' => false]);
-        $form->submit($data, false);
+        $this->processForm($request, $form, false);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($meeting);
             $em->flush();
 
-            return $this->createApiResponse($meeting);
+            return $this->createApiResponse($meeting, Response::HTTP_ACCEPTED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
      * Delete a specific Meeting.
      *
      * @Route("/{id}/delete", name="app_api_meeting_delete")
-     * @Method({"GET"})
+     * @Method({"DELETE"})
      *
      * @param Meeting $meeting
      *
@@ -144,6 +142,6 @@ class MeetingController extends ApiController
         $em->remove($meeting);
         $em->flush();
 
-        return $this->createApiResponse([], Response::HTTP_NO_CONTENT);
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/api/impact")
@@ -46,24 +47,23 @@ class ImpactController extends ApiController
      */
     public function createAction(Request $request)
     {
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
-        $form->submit($data);
+        $this->processForm($request, $form);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
 
-            return $this->createApiResponse($form->getData(), JsonResponse::HTTP_CREATED);
+            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -85,7 +85,7 @@ class ImpactController extends ApiController
      * Edit a specific Impact.
      *
      * @Route("/{id}/edit", name="app_api_impact_edit")
-     * @Method({"POST"})
+     * @Method({"PATCH"})
      *
      * @param Request $request
      * @param Impact  $impact
@@ -94,24 +94,23 @@ class ImpactController extends ApiController
      */
     public function editAction(Request $request, Impact $impact)
     {
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $impact, ['csrf_protection' => false]);
-        $form->submit($data, false);
+        $this->processForm($request, $form, false);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($impact);
             $em->flush();
 
-            return $this->createApiResponse($impact);
+            return $this->createApiResponse($impact, Response::HTTP_ACCEPTED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -130,6 +129,6 @@ class ImpactController extends ApiController
         $em->remove($impact);
         $em->flush();
 
-        return $this->createApiResponse([], JsonResponse::HTTP_NO_CONTENT);
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

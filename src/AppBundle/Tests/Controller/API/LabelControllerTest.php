@@ -181,7 +181,7 @@ class LabelControllerTest extends BaseController
                     'description' => 'descript',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_ACCEPTED,
                 [
                     'project' => 2,
                     'projectName' => 'project2',
@@ -208,7 +208,7 @@ class LabelControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'GET',
+            'DELETE',
             '/api/label/3/delete',
             [],
             [],

@@ -202,7 +202,7 @@ class ContractControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -216,10 +216,12 @@ class ContractControllerTest extends BaseController
             [
                 [],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The name field should not be blank',
-                    'You must select one project',
+                    'messages' => [
+                        'name' => ['The name field should not be blank'],
+                        'project' => ['You must select one project'],
+                    ],
                 ],
             ],
         ];
@@ -270,7 +272,7 @@ class ContractControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
 
@@ -290,9 +292,11 @@ class ContractControllerTest extends BaseController
                     'project' => 1,
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'That name is taken',
+                    'messages' => [
+                        'name' => ['That name is taken'],
+                    ],
                 ],
             ],
         ];
@@ -347,7 +351,7 @@ class ContractControllerTest extends BaseController
                     'name' => 'contract1',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_ACCEPTED,
                 [
                     'project' => 1,
                     'projectName' => 'project1',
@@ -397,7 +401,7 @@ class ContractControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -414,10 +418,12 @@ class ContractControllerTest extends BaseController
                     'project' => '',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The name field should not be blank',
-                    'You must select one project',
+                    'messages' => [
+                        'name' => ['The name field should not be blank'],
+                        'project' => ['You must select one project'],
+                    ],
                 ],
             ],
         ];
@@ -453,7 +459,7 @@ class ContractControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -469,9 +475,11 @@ class ContractControllerTest extends BaseController
                     'name' => 'contract2',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'That name is taken',
+                    'messages' => [
+                        'name' => ['That name is taken'],
+                    ],
                 ],
             ],
         ];
