@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/team")
+ * @Route("/api/teams")
  */
 class TeamController extends ApiController
 {

@@ -48,7 +48,7 @@ class ScheduleControllerTest extends BaseController
     {
         return [
             [
-                '/api/schedule/list',
+                '/api/schedules',
                 true,
                 Response::HTTP_OK,
                 [
@@ -84,7 +84,7 @@ class ScheduleControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/schedule/create',
+            '/api/schedules',
             [],
             [],
             [
@@ -153,7 +153,7 @@ class ScheduleControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/schedule/create',
+            '/api/schedules',
             [],
             [],
             [
@@ -212,7 +212,7 @@ class ScheduleControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/schedule/create',
+            '/api/schedules',
             [],
             [],
             [
@@ -268,7 +268,7 @@ class ScheduleControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/schedule/1/edit',
+            '/api/schedules/1',
             [],
             [],
             [
@@ -323,7 +323,7 @@ class ScheduleControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/schedule/1/edit',
+            '/api/schedules/1',
             [],
             [],
             [
@@ -379,7 +379,7 @@ class ScheduleControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/schedule/1/edit',
+            '/api/schedules/1',
             [],
             [],
             [
@@ -435,7 +435,7 @@ class ScheduleControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            sprintf('/api/schedule/%d/delete', $schedule->getId()),
+            sprintf('/api/schedules/%d', $schedule->getId()),
             [],
             [],
             [
@@ -505,7 +505,7 @@ class ScheduleControllerTest extends BaseController
     {
         return [
             [
-                '/api/schedule/1',
+                '/api/schedules/1',
                 true,
                 Response::HTTP_OK,
                 [

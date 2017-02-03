@@ -3,7 +3,6 @@
 namespace AppBundle\Form\Calendar;
 
 use AppBundle\Entity\Calendar;
-use AppBundle\Entity\Project;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -12,7 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class EditType extends AbstractType
+class BaseCreateType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -28,12 +27,6 @@ class EditType extends AbstractType
                         'message' => 'not_blank.name',
                     ]),
                 ],
-            ])
-            ->add('project', EntityType::class, [
-                'class' => Project::class,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.project',
-                'translation_domain' => 'messages',
             ])
             ->add('isBaseline', CheckboxType::class)
             ->add('isBased', CheckboxType::class)

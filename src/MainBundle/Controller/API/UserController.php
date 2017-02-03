@@ -11,14 +11,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/user")
+ * @Route("/api/users")
  */
 class UserController extends ApiController
 {
     /**
      * Retrieve User information.
      *
-     * @Route("/{id}", name="main_api_user_get")
+     * @Route("/{id}", name="main_api_users_get")
      * @Method({"GET"})
      *
      * @param $id
@@ -42,7 +42,7 @@ class UserController extends ApiController
     /**
      * Edit current user information.
      *
-     * @Route("/edit", name="main_api_user_edit")
+     * @Route(name="main_api_users_edit")
      * @Method({"PATCH"})
      *
      * @param Request $request

@@ -28,7 +28,7 @@ class Todo
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="Project")
+     * @ORM\ManyToOne(targetEntity="Project", inversedBy="todos")
      * @ORM\JoinColumn(name="project_id")
      */
     private $project;

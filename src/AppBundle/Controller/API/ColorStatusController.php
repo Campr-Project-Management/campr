@@ -9,14 +9,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * @Route("/api/color-status")
+ * @Route("/api/color-statuses")
  */
 class ColorStatusController extends ApiController
 {
     /**
      * All ColorStatuses.
      *
-     * @Route("/list", name="app_api_color_status_list")
+     * @Route(name="app_api_color_status_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
