@@ -217,10 +217,11 @@ export default {
   aside {
     width: 210px;
     padding: 10px;
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
+    background: $darkColor;
 
     @media screen and (max-width: 768px) {
       width: 59px;

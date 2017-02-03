@@ -3,7 +3,12 @@
         <div class="page-section projects">
             <div class="header">
                 <h1>My Projects</h1>
-                <project-filters></project-filters>
+                <div class="flex">
+                    <project-filters></project-filters>
+                    <div class="pagination" v-if="count > 0">
+                        <span v-for="page in count/projects.length" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
+                    </div>
+                </div>
             </div>
             <div class="content">
                 <project-box v-for="project in projects" v-bind:project="project"></project-box>
@@ -23,13 +28,27 @@ export default {
         ProjectFilters,
         ProjectBox,
     },
-    methods: mapActions(['getProjects']),
-    created() {
-        this.getProjects();
+    methods: {
+        ...mapActions(['getProjects']),
+        changePage(page) {
+            this.getProjects(page);
+            this.activePage = page;
+        },
+    },
+    watch: {
+        user: function() {
+            this.getProjects(this.activePage);
+        },
     },
     computed: mapGetters({
-        projects: 'filteredProjects',
+        projects: 'projects',
+        user: 'user',
     }),
+    data() {
+        return {
+            activePage: 1,
+        };
+    },
 };
 </script>
 
