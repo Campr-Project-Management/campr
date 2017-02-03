@@ -53,6 +53,8 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('name="create[results]"', $crawler->html());
         $this->assertContains('id="create_isKeyMilestone"', $crawler->html());
         $this->assertContains('name="create[isKeyMilestone]"', $crawler->html());
+        $this->assertContains('id="create_labels"', $crawler->html());
+        $this->assertContains('name="create[labels][]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -68,6 +70,7 @@ class WorkPackageControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
+        $form['create[name]'] = '';
         $form['create[progress]'] = '';
         $crawler = $this->client->submit($form);
 
@@ -194,6 +197,8 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('name="create[results]"', $crawler->html());
         $this->assertContains('id="create_isKeyMilestone"', $crawler->html());
         $this->assertContains('name="create[isKeyMilestone]"', $crawler->html());
+        $this->assertContains('id="create_labels"', $crawler->html());
+        $this->assertContains('name="create[labels][]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 

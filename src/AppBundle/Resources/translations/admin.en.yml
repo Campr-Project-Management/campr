@@ -187,6 +187,7 @@ admin:
             responsible: Responsible
             progress: Progress
             project: Project
+            labels: Labels
             calendar: Calendar
             schedule_start: Scheduled Start At
             schedule_finish: Scheduled Finish At
@@ -1404,3 +1405,27 @@ admin:
         no_chat_rooms: Chat list is empty for this project
         no_private_messages: There are no private messages on this project
         delete_messages: Messages successfully deleted!
+    label:
+        list:
+            title: Label
+            subtitle: List of project labels
+            table:
+                id: Id
+                title: Title
+                project: Project
+                description: Description
+                color: Color
+            add: Add new label
+        create:
+            title: Title
+            project: Project
+            description: Description
+            color: Color
+            success: Label successfully created!
+        edit:
+            success: Label successfully edited!
+        delete:
+            success:
+                general: Label successfully deleted!
+                first: Label with ID
+                second: successfully deleted!
