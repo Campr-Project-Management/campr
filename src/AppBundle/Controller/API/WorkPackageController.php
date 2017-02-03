@@ -80,7 +80,7 @@ class WorkPackageController extends ApiController
     public function createAction(Request $request)
     {
         $data = $request->request->all();
-        $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
+        $form = $this->createForm(CreateType::class, new WorkPackage(), ['csrf_protection' => false]);
         $form->submit($data);
 
         if ($form->isValid()) {
