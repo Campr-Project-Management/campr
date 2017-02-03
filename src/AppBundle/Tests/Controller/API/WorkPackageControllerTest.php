@@ -68,6 +68,7 @@ class WorkPackageControllerTest extends BaseController
                             'results' => null,
                             'isKeyMilestone' => false,
                             'assignments' => [],
+                            'labels' => [],
                         ],
                         [
                             'responsibility' => 4,
@@ -95,6 +96,7 @@ class WorkPackageControllerTest extends BaseController
                             'results' => null,
                             'isKeyMilestone' => false,
                             'assignments' => [],
+                            'labels' => [],
                         ],
                     ],
                 ],
@@ -162,6 +164,7 @@ class WorkPackageControllerTest extends BaseController
                     'results' => null,
                     'isKeyMilestone' => false,
                     'assignments' => [],
+                    'labels' => [],
                 ],
             ],
         ];
@@ -231,6 +234,7 @@ class WorkPackageControllerTest extends BaseController
                     'results' => null,
                     'isKeyMilestone' => false,
                     'assignments' => [],
+                    'labels' => [],
                 ],
             ],
         ];
@@ -300,6 +304,7 @@ class WorkPackageControllerTest extends BaseController
                     'results' => null,
                     'isKeyMilestone' => false,
                     'assignments' => [],
+                    'labels' => [],
                 ],
             ],
         ];

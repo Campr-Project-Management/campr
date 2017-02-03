@@ -225,6 +225,15 @@ class Project
     private $fileSystems;
 
     /**
+     * @var ArrayCollection|Label[]
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Label", mappedBy="project")
+     */
+    private $labels;
+
+    /**
      * @var \DateTime
      *
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
@@ -255,6 +264,7 @@ class Project
         $this->projectUsers = new ArrayCollection();
         $this->notes = new ArrayCollection();
         $this->distributionLists = new ArrayCollection();
+        $this->labels = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->setEncryptionKey(base64_encode(random_bytes(16)));
     }
@@ -1061,6 +1071,8 @@ class Project
     public function removeDistributionList(DistributionList $distributionList)
     {
         $this->distributionLists->removeElement($distributionList);
+
+        return $this;
     }
 
     /**
@@ -1071,5 +1083,43 @@ class Project
     public function getDistributionLists()
     {
         return $this->distributionLists;
+    }
+
+    /**
+     * Remove label.
+     *
+     * @param Label $label
+     *
+     * @return Project
+     */
+    public function removeLabel(Label $label)
+    {
+        $this->labels->removeElement($label);
+
+        return $this;
+    }
+
+    /**
+     * Add label.
+     *
+     * @param Label $label
+     *
+     * @return Project
+     */
+    public function addLabel(Label $label)
+    {
+        $this->labels[] = $label;
+
+        return $this;
+    }
+
+    /**
+     * Get labels.
+     *
+     * @return ArrayCollection
+     */
+    public function getLabels()
+    {
+        return $this->labels;
     }
 }
