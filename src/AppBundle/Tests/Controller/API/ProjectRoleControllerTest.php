@@ -53,7 +53,7 @@ class ProjectRoleControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-role/list',
+                '/api/project-roles',
                 true,
                 Response::HTTP_OK,
                 [
@@ -113,7 +113,7 @@ class ProjectRoleControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-role/create',
+            '/api/project-roles',
             [],
             [],
             [
@@ -192,7 +192,7 @@ class ProjectRoleControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-role/create',
+            '/api/project-roles',
             [],
             [],
             [
@@ -252,7 +252,7 @@ class ProjectRoleControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-role/create',
+            '/api/project-roles',
             [],
             [],
             [
@@ -307,7 +307,7 @@ class ProjectRoleControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-role/create',
+            '/api/project-roles',
             [],
             [],
             [
@@ -364,7 +364,7 @@ class ProjectRoleControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-role/1/edit',
+            '/api/project-roles/1',
             [],
             [],
             [
@@ -426,7 +426,7 @@ class ProjectRoleControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-role/1/edit',
+            '/api/project-roles/1',
             [],
             [],
             [
@@ -482,7 +482,7 @@ class ProjectRoleControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-role/1/edit',
+            '/api/project-roles/1',
             [],
             [],
             [
@@ -540,7 +540,7 @@ class ProjectRoleControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-role/1/edit',
+            '/api/project-roles/1',
             [],
             [],
             [
@@ -600,7 +600,7 @@ class ProjectRoleControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            sprintf('/api/project-role/%d/delete', $projectRole->getId()),
+            sprintf('/api/project-roles/%d', $projectRole->getId()),
             [],
             [],
             [
@@ -672,7 +672,7 @@ class ProjectRoleControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-role/2',
+                '/api/project-roles/2',
                 true,
                 Response::HTTP_OK,
                 [

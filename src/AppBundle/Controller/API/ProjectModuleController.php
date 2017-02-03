@@ -13,14 +13,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/project-module")
+ * @Route("/api/project-modules")
  */
 class ProjectModuleController extends ApiController
 {
     /**
      * Get all project modules.
      *
-     * @Route("/list", name="app_api_project_module_list")
+     * @Route(name="app_api_project_modules_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -39,7 +39,7 @@ class ProjectModuleController extends ApiController
     /**
      * Create a new Project Module.
      *
-     * @Route("/create", name="app_api_project_module_create")
+     * @Route(name="app_api_project_modules_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -70,7 +70,7 @@ class ProjectModuleController extends ApiController
     /**
      * Get Project Module by id.
      *
-     * @Route("/{id}", name="app_api_project_module_get")
+     * @Route("/{id}", name="app_api_project_modules_get")
      * @Method({"GET"})
      *
      * @param ProjectModule $projectModule
@@ -91,8 +91,8 @@ class ProjectModuleController extends ApiController
     /**
      * Edit a specific Project Module.
      *
-     * @Route("/{id}/edit", name="app_api_project_module_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_project_modules_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request       $request
      * @param ProjectModule $projectModule
@@ -108,7 +108,7 @@ class ProjectModuleController extends ApiController
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
         $form = $this->createForm(CreateType::class, $projectModule, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
             $projectModule->setUpdatedAt(new \DateTime());
@@ -131,7 +131,7 @@ class ProjectModuleController extends ApiController
     /**
      * Delete a specific Project Module.
      *
-     * @Route("/{id}/delete", name="app_api_project_module_delete")
+     * @Route("/{id}", name="app_api_project_modules_delete")
      * @Method({"DELETE"})
      *
      * @param ProjectModule $projectModule

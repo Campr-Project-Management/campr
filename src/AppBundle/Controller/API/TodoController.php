@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\API;
 
-use AppBundle\Entity\Project;
 use AppBundle\Entity\Todo;
 use AppBundle\Form\Todo\CreateType;
 use AppBundle\Security\ProjectVoter;
@@ -14,35 +13,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/todo")
+ * @Route("/api/todos")
  */
 class TodoController extends ApiController
 {
     /**
-     * All Todos for the current project.
-     *
-     * @Route("/{id}/list", name="app_api_todo_list")
-     * @Method({"GET", "POST"})
-     *
-     * @param Project $project
-     *
-     * @return JsonResponse
-     */
-    public function listAction(Project $project)
-    {
-        $todos = $this
-            ->getDoctrine()
-            ->getRepository(Todo::class)
-            ->findByProject($project)
-        ;
-
-        return $this->createApiResponse($todos);
-    }
-
-    /**
      * Retrieve todo information.
      *
-     * @Route("/{id}", name="app_api_todo_get")
+     * @Route("/{id}", name="app_api_todos_get")
      * @Method({"GET"})
      *
      * @param Todo $todo
@@ -61,41 +39,10 @@ class TodoController extends ApiController
     }
 
     /**
-     * Create a new Todo.
-     *
-     * @Route("/create", name="app_api_todo_create")
-     * @Method({"POST"})
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function createAction(Request $request)
-    {
-        $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
-        $this->processForm($request, $form);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($form->getData());
-            $em->flush();
-
-            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
-        }
-
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
      * Edit a specific Todo.
      *
-     * @Route("/{id}/edit", name="app_api_todo_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_todos_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request $request
      * @param Todo    $todo
@@ -111,7 +58,7 @@ class TodoController extends ApiController
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
         $form = $this->createForm(CreateType::class, $todo, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -132,7 +79,7 @@ class TodoController extends ApiController
     /**
      * Delete a specific Todo.
      *
-     * @Route("/{id}/delete", name="app_api_todo_delete")
+     * @Route("/{id}", name="app_api_todos_delete")
      * @Method({"DELETE"})
      *
      * @param Todo $todo

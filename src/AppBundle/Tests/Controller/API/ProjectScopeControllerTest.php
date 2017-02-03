@@ -53,7 +53,7 @@ class ProjectScopeControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-scope/list',
+                '/api/project-scopes',
                 true,
                 Response::HTTP_OK,
                 [
@@ -99,7 +99,7 @@ class ProjectScopeControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-scope/create',
+            '/api/project-scopes',
             [],
             [],
             [
@@ -179,7 +179,7 @@ class ProjectScopeControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-scope/create',
+            '/api/project-scopes',
             [],
             [],
             [
@@ -239,7 +239,7 @@ class ProjectScopeControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-scope/create',
+            '/api/project-scopes',
             [],
             [],
             [
@@ -294,7 +294,7 @@ class ProjectScopeControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-scope/create',
+            '/api/project-scopes',
             [],
             [],
             [
@@ -351,7 +351,7 @@ class ProjectScopeControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-scope/1/edit',
+            '/api/project-scopes/1',
             [],
             [],
             [
@@ -414,7 +414,7 @@ class ProjectScopeControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-scope/1/edit',
+            '/api/project-scopes/1',
             [],
             [],
             [
@@ -470,7 +470,7 @@ class ProjectScopeControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-scope/1/edit',
+            '/api/project-scopes/1',
             [],
             [],
             [
@@ -528,7 +528,7 @@ class ProjectScopeControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-scope/1/edit',
+            '/api/project-scopes/1',
             [],
             [],
             [
@@ -588,7 +588,7 @@ class ProjectScopeControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            sprintf('/api/project-scope/%d/delete', $projectScope->getId()),
+            sprintf('/api/project-scopes/%d', $projectScope->getId()),
             [],
             [],
             [
@@ -660,7 +660,7 @@ class ProjectScopeControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-scope/2',
+                '/api/project-scopes/2',
                 true,
                 Response::HTTP_OK,
                 [

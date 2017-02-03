@@ -53,8 +53,7 @@ abstract class ApiController extends Controller
 
     protected function processForm(Request $request, FormInterface $form, $clearMissing = true)
     {
-        $body = $request->getContent();
-        $data = json_decode($body, true);
+        $data = $request->request->all();
         if (null === $data) {
             throw new BadRequestHttpException();
         }

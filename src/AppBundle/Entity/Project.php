@@ -148,6 +148,13 @@ class Project
     private $notes;
 
     /**
+     * @var ArrayCollection|Todo[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Todo", mappedBy="project")
+     */
+    private $todos;
+
+    /**
      * @var ArrayCollection|DistributionList[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\DistributionList", mappedBy="project")
@@ -235,6 +242,15 @@ class Project
     private $labels;
 
     /**
+     * @var ArrayCollection|Message[]
+     *
+     * @Serializer\Exclude()
+     *
+     ** @ORM\OneToMany(targetEntity="AppBundle\Entity\Meeting", mappedBy="project")
+     */
+    private $meetings;
+
+    /**
      * @var \DateTime
      *
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
@@ -272,9 +288,11 @@ class Project
         $this->messages = new ArrayCollection();
         $this->projectUsers = new ArrayCollection();
         $this->notes = new ArrayCollection();
+        $this->todos = new ArrayCollection();
         $this->distributionLists = new ArrayCollection();
         $this->labels = new ArrayCollection();
         $this->contracts = new ArrayCollection();
+        $this->meetings = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->setEncryptionKey(base64_encode(random_bytes(16)));
     }
@@ -1003,6 +1021,8 @@ class Project
     public function removeNote(Note $note)
     {
         $this->notes->removeElement($note);
+
+        return $this;
     }
 
     /**
@@ -1013,6 +1033,42 @@ class Project
     public function getNotes()
     {
         return $this->notes;
+    }
+
+    /**
+     * Add todo.
+     *
+     * @param Todo $todo
+     *
+     * @return Project
+     */
+    public function addTodo(Todo $todo)
+    {
+        $this->todos[] = $todo;
+
+        return $this;
+    }
+
+    /**
+     * Remove todo.
+     *
+     * @param Todo $todo
+     */
+    public function removeTodo(Todo $todo)
+    {
+        $this->todos->removeElement($todo);
+
+        return $this;
+    }
+
+    /**
+     * Get todos.
+     *
+     * @return ArrayCollection|Todo[]
+     */
+    public function getTodos()
+    {
+        return $this->todos;
     }
 
     /**
@@ -1159,5 +1215,43 @@ class Project
     public function getContracts()
     {
         return $this->contracts;
+    }
+
+    /**
+     * Remove meeting.
+     *
+     * @param Meeting $meeting
+     *
+     * @return Project
+     */
+    public function removeMeeting(Meeting $meeting)
+    {
+        $this->meetings->removeElement($meeting);
+
+        return $this;
+    }
+
+    /**
+     * Add meeting.
+     *
+     * @param Meeting $meeting
+     *
+     * @return Project
+     */
+    public function addMeeting(Meeting $meeting)
+    {
+        $this->meetings[] = $meeting;
+
+        return $this;
+    }
+
+    /**
+     * Get meetings.
+     *
+     * @return ArrayCollection
+     */
+    public function getMeetings()
+    {
+        return $this->meetings;
     }
 }
