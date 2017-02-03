@@ -13,14 +13,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/project-cost-type")
+ * @Route("/api/project-cost-types")
  */
 class ProjectCostTypeController extends ApiController
 {
     /**
      * Get all project cost types.
      *
-     * @Route("/list", name="app_api_project_cost_type_list")
+     * @Route(name="app_api_project_cost_types_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -39,7 +39,7 @@ class ProjectCostTypeController extends ApiController
     /**
      * Create a new Project Cost Type.
      *
-     * @Route("/create", name="app_api_project_cost_type_create")
+     * @Route(name="app_api_project_cost_types_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -70,7 +70,7 @@ class ProjectCostTypeController extends ApiController
     /**
      * Get Project Cost Type by id.
      *
-     * @Route("/{id}", name="app_api_project_cost_type_get")
+     * @Route("/{id}", name="app_api_project_cost_types_get")
      * @Method({"GET"})
      *
      * @param ProjectCostType $projectCostType
@@ -91,8 +91,8 @@ class ProjectCostTypeController extends ApiController
     /**
      * Edit a specific Project Cost Type.
      *
-     * @Route("/{id}/edit", name="app_api_project_cost_type_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_project_cost_types_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request         $request
      * @param ProjectCostType $projectCostType
@@ -108,7 +108,7 @@ class ProjectCostTypeController extends ApiController
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
         $form = $this->createForm(CreateType::class, $projectCostType, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
             $projectCostType->setUpdatedAt(new \DateTime());
@@ -131,7 +131,7 @@ class ProjectCostTypeController extends ApiController
     /**
      * Delete a specific Project Cost Type.
      *
-     * @Route("/{id}/delete", name="app_api_project_cost_type_delete")
+     * @Route("/{id}", name="app_api_project_cost_types_delete")
      * @Method({"DELETE"})
      *
      * @param ProjectCostType $projectCostType

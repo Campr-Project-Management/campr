@@ -48,7 +48,7 @@ class UserControllerTest extends BaseController
     {
         return [
             [
-                '/api/user/3/teams',
+                '/api/users/3/teams',
                 true,
                 Response::HTTP_OK,
                 [

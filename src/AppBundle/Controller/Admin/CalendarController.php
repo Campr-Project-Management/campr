@@ -11,7 +11,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Calendar;
 use AppBundle\Form\Calendar\CreateType;
-use AppBundle\Form\Calendar\EditType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -121,7 +120,7 @@ class CalendarController extends Controller
      */
     public function editAction(Request $request, Calendar $calendar)
     {
-        $form = $this->createForm(EditType::class, $calendar);
+        $form = $this->createForm(CreateType::class, $calendar);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

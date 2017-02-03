@@ -10,14 +10,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/user")
+ * @Route("/api/users")
  */
 class UserController extends ApiController
 {
     /**
      * Sync user information from main website.
      *
-     * @Route("/sync", name="app_api_user_sync")
+     * @Route("/sync", name="app_api_users_sync")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -43,7 +43,7 @@ class UserController extends ApiController
     /**
      * Retrieve all user teams.
      *
-     * @Route("/{id}/teams", name="app_api_user_teams_get")
+     * @Route("/{id}/teams", name="app_api_users_teams_get")
      * @Method({"GET"})
      *
      * @param User $user

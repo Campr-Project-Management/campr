@@ -12,14 +12,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/impact")
+ * @Route("/api/impacts")
  */
 class ImpactController extends ApiController
 {
     /**
      * Get all impacts.
      *
-     * @Route("/list", name="app_api_impact_list")
+     * @Route(name="app_api_impact_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -38,7 +38,7 @@ class ImpactController extends ApiController
     /**
      * Create a new Impact.
      *
-     * @Route("/create", name="app_api_impact_create")
+     * @Route(name="app_api_impact_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -84,8 +84,8 @@ class ImpactController extends ApiController
     /**
      * Edit a specific Impact.
      *
-     * @Route("/{id}/edit", name="app_api_impact_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_impact_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request $request
      * @param Impact  $impact
@@ -95,7 +95,7 @@ class ImpactController extends ApiController
     public function editAction(Request $request, Impact $impact)
     {
         $form = $this->createForm(CreateType::class, $impact, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -116,7 +116,7 @@ class ImpactController extends ApiController
     /**
      * Delete a specific Impact.
      *
-     * @Route("/{id}/delete", name="app_api_impact_delete")
+     * @Route("/{id}", name="app_api_impact_delete")
      * @Method({"DELETE"})
      *
      * @param Impact $impact

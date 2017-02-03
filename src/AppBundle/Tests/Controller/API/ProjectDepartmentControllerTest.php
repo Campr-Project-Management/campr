@@ -53,7 +53,7 @@ class ProjectDepartmentControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-department/list',
+                '/api/project-departments',
                 true,
                 Response::HTTP_OK,
                 [
@@ -103,7 +103,7 @@ class ProjectDepartmentControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-department/create',
+            '/api/project-departments',
             [],
             [],
             [
@@ -179,7 +179,7 @@ class ProjectDepartmentControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-department/create',
+            '/api/project-departments',
             [],
             [],
             [
@@ -235,7 +235,7 @@ class ProjectDepartmentControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-department/create',
+            '/api/project-departments',
             [],
             [],
             [
@@ -293,7 +293,7 @@ class ProjectDepartmentControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-department/1/edit',
+            '/api/project-departments/1',
             [],
             [],
             [
@@ -358,7 +358,7 @@ class ProjectDepartmentControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-department/1/edit',
+            '/api/project-departments/1',
             [],
             [],
             [
@@ -418,7 +418,7 @@ class ProjectDepartmentControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-department/1/edit',
+            '/api/project-departments/1',
             [],
             [],
             [
@@ -479,7 +479,7 @@ class ProjectDepartmentControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            sprintf('/api/project-department/%d/delete', $projectDepartment->getId()),
+            sprintf('/api/project-departments/%d', $projectDepartment->getId()),
             [],
             [],
             [
@@ -551,7 +551,7 @@ class ProjectDepartmentControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-department/2',
+                '/api/project-departments/2',
                 true,
                 Response::HTTP_OK,
                 [

@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Label;
-use AppBundle\Entity\Project;
 use AppBundle\Form\Label\LabelType;
 use AppBundle\Security\ProjectVoter;
 use MainBundle\Controller\API\ApiController;
@@ -14,23 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/label")
+ * @Route("/api/labels")
  */
 class LabelController extends ApiController
 {
-    /**
-     * All labels for a specific project.
-     *
-     * @Route("/{id}/list", name="app_api_label_list")
-     * @Method({"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function listAction(Project $project)
-    {
-        return $this->createApiResponse($project->getLabels());
-    }
-
     /**
      * Get Label by id.
      *
@@ -47,41 +33,10 @@ class LabelController extends ApiController
     }
 
     /**
-     * Create a new label.
-     *
-     * @Route("/create", name="app_api_label_create")
-     * @Method({"POST"})
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function createAction(Request $request)
-    {
-        $form = $this->createForm(LabelType::class, null, ['csrf_protection' => false]);
-        $this->processForm($request, $form);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($form->getData());
-            $em->flush();
-
-            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
-        }
-
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
      * Edit a specific label.
      *
-     * @Route("/{id}/edit", name="app_api_label_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_label_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request $request
      * @param Label   $label
@@ -97,7 +52,7 @@ class LabelController extends ApiController
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
         $form = $this->createForm(LabelType::class, $label, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -118,7 +73,7 @@ class LabelController extends ApiController
     /**
      * Delete a specific label.
      *
-     * @Route("/{id}/delete", name="app_api_label_delete")
+     * @Route("/{id}", name="app_api_label_delete")
      * @Method({"DELETE"})
      *
      * @param Label $label
@@ -137,6 +92,6 @@ class LabelController extends ApiController
         $em->remove($label);
         $em->flush();
 
-        return new JsonResponse('', Response::HTTP_NO_CONTENT);
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

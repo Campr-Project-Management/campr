@@ -53,7 +53,7 @@ class RiskControllerTest extends BaseController
     {
         return [
             [
-                '/api/risk/list',
+                '/api/risks',
                 true,
                 Response::HTTP_OK,
                 [
@@ -127,7 +127,7 @@ class RiskControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/risk/create',
+            '/api/risks',
             [],
             [],
             [
@@ -221,7 +221,7 @@ class RiskControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/risk/create',
+            '/api/risks',
             [],
             [],
             [
@@ -281,7 +281,7 @@ class RiskControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/risk/1/edit',
+            '/api/risks/1',
             [],
             [],
             [
@@ -358,7 +358,7 @@ class RiskControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/risk/1/edit',
+            '/api/risks/1',
             [],
             [],
             [
@@ -434,7 +434,7 @@ class RiskControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            sprintf('/api/risk/%d/delete', $risk->getId()),
+            sprintf('/api/risks/%d', $risk->getId()),
             [],
             [],
             [
@@ -506,7 +506,7 @@ class RiskControllerTest extends BaseController
     {
         return [
             [
-                '/api/risk/2',
+                '/api/risks/2',
                 true,
                 Response::HTTP_OK,
                 [

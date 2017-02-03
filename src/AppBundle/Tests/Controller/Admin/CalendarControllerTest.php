@@ -108,16 +108,16 @@ class CalendarControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/calendar/1/edit');
 
-        $this->assertContains('id="edit_name"', $crawler->html());
-        $this->assertContains('name="edit[name]"', $crawler->html());
-        $this->assertContains('id="edit_project"', $crawler->html());
-        $this->assertContains('name="edit[project]"', $crawler->html());
-        $this->assertContains('id="edit_parent"', $crawler->html());
-        $this->assertContains('name="edit[parent]"', $crawler->html());
-        $this->assertContains('id="edit_isBaseline"', $crawler->html());
-        $this->assertContains('name="edit[isBaseline]"', $crawler->html());
-        $this->assertContains('id="edit_isBased"', $crawler->html());
-        $this->assertContains('name="edit[isBased]"', $crawler->html());
+        $this->assertContains('id="create_name"', $crawler->html());
+        $this->assertContains('name="create[name]"', $crawler->html());
+        $this->assertContains('id="create_project"', $crawler->html());
+        $this->assertContains('name="create[project]"', $crawler->html());
+        $this->assertContains('id="create_parent"', $crawler->html());
+        $this->assertContains('name="create[parent]"', $crawler->html());
+        $this->assertContains('id="create_isBaseline"', $crawler->html());
+        $this->assertContains('name="create[isBaseline]"', $crawler->html());
+        $this->assertContains('id="create_isBased"', $crawler->html());
+        $this->assertContains('name="create[isBased]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 
@@ -134,7 +134,7 @@ class CalendarControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/calendar/1/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['edit[name]'] = '';
+        $form['create[name]'] = '';
 
         $crawler = $this->client->submit($form);
 
@@ -152,7 +152,7 @@ class CalendarControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/calendar/2/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['edit[name]'] = 'calendar2';
+        $form['create[name]'] = 'calendar2';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

@@ -12,14 +12,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/risk")
+ * @Route("/api/risks")
  */
 class RiskController extends ApiController
 {
     /**
      * Get all risks.
      *
-     * @Route("/list", name="app_api_risk_list")
+     * @Route(name="app_api_risks_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -38,7 +38,7 @@ class RiskController extends ApiController
     /**
      * Create a new Risk.
      *
-     * @Route("/create", name="app_api_risk_create")
+     * @Route(name="app_api_risks_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -69,7 +69,7 @@ class RiskController extends ApiController
     /**
      * Get Risk by id.
      *
-     * @Route("/{id}", name="app_api_risk_get")
+     * @Route("/{id}", name="app_api_risks_get")
      * @Method({"GET"})
      *
      * @param Risk $risk
@@ -84,8 +84,8 @@ class RiskController extends ApiController
     /**
      * Edit a specific Risk.
      *
-     * @Route("/{id}/edit", name="app_api_risk_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_risks_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request $request
      * @param Risk    $risk
@@ -95,11 +95,9 @@ class RiskController extends ApiController
     public function editAction(Request $request, Risk $risk)
     {
         $form = $this->createForm(CreateType::class, $risk, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
-            $risk->setUpdatedAt(new \DateTime());
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($risk);
             $em->flush();
@@ -118,7 +116,7 @@ class RiskController extends ApiController
     /**
      * Delete a specific Risk.
      *
-     * @Route("/{id}/delete", name="app_api_risk_delete")
+     * @Route("/{id}", name="app_api_risks_delete")
      * @Method({"DELETE"})
      *
      * @param Risk $risk
