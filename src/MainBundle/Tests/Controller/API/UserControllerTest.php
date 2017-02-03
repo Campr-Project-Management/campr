@@ -61,7 +61,7 @@ class UserControllerTest extends BaseController
     {
         return [
             [
-                '/api/user/999',
+                '/api/users/999',
                 false,
                 Response::HTTP_NOT_FOUND,
                 [
@@ -69,7 +69,7 @@ class UserControllerTest extends BaseController
                 ],
             ],
             [
-                '/api/user/1',
+                '/api/users/1',
                 true,
                 Response::HTTP_OK,
                 [
@@ -234,7 +234,7 @@ class UserControllerTest extends BaseController
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
         $token = $this->user->getApiToken();
 
-        $this->client->request('PATCH', '/api/user/edit', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $this->client->request('PATCH', '/api/users', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
         $response = $this->client->getResponse();
         if ($responseStatusCode === Response::HTTP_BAD_REQUEST) {
             $this->assertEquals($isResponseSuccessful, $response->isClientError());

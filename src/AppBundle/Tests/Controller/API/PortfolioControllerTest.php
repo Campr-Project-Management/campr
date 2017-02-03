@@ -53,7 +53,7 @@ class PortfolioControllerTest extends BaseController
     {
         return [
             [
-                '/api/portfolio/list',
+                '/api/portfolios',
                 true,
                 Response::HTTP_OK,
                 [
@@ -95,7 +95,7 @@ class PortfolioControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/portfolio/create',
+            '/api/portfolios',
             [],
             [],
             [
@@ -169,7 +169,7 @@ class PortfolioControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/portfolio/create',
+            '/api/portfolios',
             [],
             [],
             [
@@ -228,7 +228,7 @@ class PortfolioControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/portfolio/create',
+            '/api/portfolios',
             [],
             [],
             [
@@ -284,7 +284,7 @@ class PortfolioControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/portfolio/1/edit',
+            '/api/portfolios/1',
             [],
             [],
             [
@@ -345,7 +345,7 @@ class PortfolioControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/portfolio/1/edit',
+            '/api/portfolios/1',
             [],
             [],
             [
@@ -401,7 +401,7 @@ class PortfolioControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/portfolio/1/edit',
+            '/api/portfolios/1',
             [],
             [],
             [
@@ -457,7 +457,7 @@ class PortfolioControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            sprintf('/api/portfolio/%d/delete', $portfolio->getId()),
+            sprintf('/api/portfolios/%d', $portfolio->getId()),
             [],
             [],
             [
@@ -529,7 +529,7 @@ class PortfolioControllerTest extends BaseController
     {
         return [
             [
-                '/api/portfolio/2',
+                '/api/portfolios/2',
                 true,
                 Response::HTTP_OK,
                 [

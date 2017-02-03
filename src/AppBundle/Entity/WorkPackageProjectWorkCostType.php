@@ -134,6 +134,8 @@ class WorkPackageProjectWorkCostType
     /**
      * @var ArrayCollection|Assignment[]
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Assignment", mappedBy="workPackageProjectWorkCostType")
      */
     private $assignments;

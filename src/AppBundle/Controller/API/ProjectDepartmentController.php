@@ -13,14 +13,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/project-department")
+ * @Route("/api/project-departments")
  */
 class ProjectDepartmentController extends ApiController
 {
     /**
      * Get all project departments.
      *
-     * @Route("/list", name="app_api_project_department_list")
+     * @Route(name="app_api_project_departments_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -39,7 +39,7 @@ class ProjectDepartmentController extends ApiController
     /**
      * Create a new Project Department.
      *
-     * @Route("/create", name="app_api_project_department_create")
+     * @Route(name="app_api_project_departments_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -70,7 +70,7 @@ class ProjectDepartmentController extends ApiController
     /**
      * Get Project Department by id.
      *
-     * @Route("/{id}", name="app_api_project_department_get")
+     * @Route("/{id}", name="app_api_project_departments_get")
      * @Method({"GET"})
      *
      * @param ProjectDepartment $projectDepartment
@@ -87,8 +87,8 @@ class ProjectDepartmentController extends ApiController
     /**
      * Edit a specific Project Department.
      *
-     * @Route("/{id}/edit", name="app_api_project_department_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_project_departments_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request           $request
      * @param ProjectDepartment $projectDepartment
@@ -123,7 +123,7 @@ class ProjectDepartmentController extends ApiController
     /**
      * Delete a specific Project Department.
      *
-     * @Route("/{id}/delete", name="app_api_project_department_delete")
+     * @Route("/{id}", name="app_api_project_departments_delete")
      * @Method({"DELETE"})
      *
      * @param ProjectDepartment $projectDepartment

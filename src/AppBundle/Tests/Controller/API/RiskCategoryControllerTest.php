@@ -48,7 +48,7 @@ class RiskCategoryControllerTest extends BaseController
     {
         return [
             [
-                '/api/risk-category/list',
+                '/api/risk-categories',
                 true,
                 Response::HTTP_OK,
                 [
@@ -86,7 +86,7 @@ class RiskCategoryControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/risk-category/create',
+            '/api/risk-categories',
             [],
             [],
             [
@@ -160,7 +160,7 @@ class RiskCategoryControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/risk-category/create',
+            '/api/risk-categories',
             [],
             [],
             [
@@ -220,7 +220,7 @@ class RiskCategoryControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/risk-category/create',
+            '/api/risk-categories',
             [],
             [],
             [
@@ -277,7 +277,7 @@ class RiskCategoryControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/risk-category/create',
+            '/api/risk-categories',
             [],
             [],
             [
@@ -334,7 +334,7 @@ class RiskCategoryControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/risk-category/1/edit',
+            '/api/risk-categories/1',
             [],
             [],
             [
@@ -390,7 +390,7 @@ class RiskCategoryControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/risk-category/1/edit',
+            '/api/risk-categories/1',
             [],
             [],
             [
@@ -446,7 +446,7 @@ class RiskCategoryControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/risk-category/1/edit',
+            '/api/risk-categories/1',
             [],
             [],
             [
@@ -504,7 +504,7 @@ class RiskCategoryControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/risk-category/1/edit',
+            '/api/risk-categories/1',
             [],
             [],
             [
@@ -564,7 +564,7 @@ class RiskCategoryControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            sprintf('/api/risk-category/%d/delete', $riskCategory->getId()),
+            sprintf('/api/risk-categories/%d', $riskCategory->getId()),
             [],
             [],
             [
@@ -634,7 +634,7 @@ class RiskCategoryControllerTest extends BaseController
     {
         return [
             [
-                '/api/risk-category/1',
+                '/api/risk-categories/1',
                 true,
                 Response::HTTP_OK,
                 [

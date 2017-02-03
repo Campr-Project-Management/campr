@@ -12,14 +12,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/company")
+ * @Route("/api/companies")
  */
 class CompanyController extends ApiController
 {
     /**
      * Get all companies.
      *
-     * @Route("/list", name="app_api_company_list")
+     * @Route(name="app_api_company_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -38,7 +38,7 @@ class CompanyController extends ApiController
     /**
      * Create a new Company.
      *
-     * @Route("/create", name="app_api_company_create")
+     * @Route(name="app_api_company_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -84,8 +84,8 @@ class CompanyController extends ApiController
     /**
      * Edit a specific Company.
      *
-     * @Route("/{id}/edit", name="app_api_company_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_company_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request $request
      * @param Company $company
@@ -95,11 +95,9 @@ class CompanyController extends ApiController
     public function editAction(Request $request, Company $company)
     {
         $form = $this->createForm(CreateType::class, $company, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
-            $company->setUpdatedAt(new \DateTime());
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($company);
             $em->flush();
@@ -118,7 +116,7 @@ class CompanyController extends ApiController
     /**
      * Delete a specific Company.
      *
-     * @Route("/{id}/delete", name="app_api_company_delete")
+     * @Route("/{id}", name="app_api_company_delete")
      * @Method({"DELETE"})
      *
      * @param Company $company

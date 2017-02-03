@@ -13,14 +13,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/project-status")
+ * @Route("/api/project-statuses")
  */
 class ProjectStatusController extends ApiController
 {
     /**
      * Get all project status.
      *
-     * @Route("/list", name="app_api_project_status_list")
+     * @Route(name="app_api_project_statuses_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -39,7 +39,7 @@ class ProjectStatusController extends ApiController
     /**
      * Create a new Project Status.
      *
-     * @Route("/create", name="app_api_project_status_create")
+     * @Route(name="app_api_project_statuses_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -70,7 +70,7 @@ class ProjectStatusController extends ApiController
     /**
      * Get Project Status by id.
      *
-     * @Route("/{id}", name="app_api_project_status_get")
+     * @Route("/{id}", name="app_api_project_statuses_get")
      * @Method({"GET"})
      *
      * @param ProjectStatus $projectStatus
@@ -87,8 +87,8 @@ class ProjectStatusController extends ApiController
     /**
      * Edit a specific Project Status.
      *
-     * @Route("/{id}/edit", name="app_api_project_status_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_project_statuses_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request       $request
      * @param ProjectStatus $projectStatus
@@ -100,11 +100,9 @@ class ProjectStatusController extends ApiController
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $projectStatus->getProject());
 
         $form = $this->createForm(CreateType::class, $projectStatus, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
-            $projectStatus->setUpdatedAt(new \DateTime());
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectStatus);
             $em->flush();
@@ -123,7 +121,7 @@ class ProjectStatusController extends ApiController
     /**
      * Delete a specific Project Status.
      *
-     * @Route("/{id}/delete", name="app_api_project_status_delete")
+     * @Route("/{id}", name="app_api_project_statuses_delete")
      * @Method({"DELETE"})
      *
      * @param ProjectStatus $projectStatus

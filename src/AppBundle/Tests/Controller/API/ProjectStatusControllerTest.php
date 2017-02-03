@@ -53,7 +53,7 @@ class ProjectStatusControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-status/list',
+                '/api/project-statuses',
                 true,
                 Response::HTTP_OK,
                 [
@@ -99,7 +99,7 @@ class ProjectStatusControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-status/create',
+            '/api/project-statuses',
             [],
             [],
             [
@@ -179,7 +179,7 @@ class ProjectStatusControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-status/create',
+            '/api/project-statuses',
             [],
             [],
             [
@@ -239,7 +239,7 @@ class ProjectStatusControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-status/create',
+            '/api/project-statuses',
             [],
             [],
             [
@@ -294,7 +294,7 @@ class ProjectStatusControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-status/create',
+            '/api/project-statuses',
             [],
             [],
             [
@@ -351,7 +351,7 @@ class ProjectStatusControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-status/1/edit',
+            '/api/project-statuses/1',
             [],
             [],
             [
@@ -414,7 +414,7 @@ class ProjectStatusControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-status/1/edit',
+            '/api/project-statuses/1',
             [],
             [],
             [
@@ -470,7 +470,7 @@ class ProjectStatusControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-status/1/edit',
+            '/api/project-statuses/1',
             [],
             [],
             [
@@ -528,7 +528,7 @@ class ProjectStatusControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-status/1/edit',
+            '/api/project-statuses/1',
             [],
             [],
             [
@@ -588,7 +588,7 @@ class ProjectStatusControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            sprintf('/api/project-status/%d/delete', $projectStatus->getId()),
+            sprintf('/api/project-statuses/%d', $projectStatus->getId()),
             [],
             [],
             [
@@ -660,7 +660,7 @@ class ProjectStatusControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-status/2',
+                '/api/project-statuses/2',
                 true,
                 Response::HTTP_OK,
                 [
