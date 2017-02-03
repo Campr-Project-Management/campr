@@ -3,13 +3,18 @@
 namespace AppBundle\Form\WorkPackage;
 
 use AppBundle\Entity\Calendar;
+use AppBundle\Entity\Label;
 use AppBundle\Entity\Project;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -124,6 +129,43 @@ class CreateType extends AbstractType
             ])
             ->add('isKeyMilestone', CheckboxType::class)
         ;
+
+        $labelModifier = function (FormInterface $form, $project = null) {
+            $form->add('labels', EntityType::class, [
+                'class' => Label::class,
+                'choice_label' => 'title',
+                'translation_domain' => 'admin',
+                'multiple' => true,
+                'query_builder' => function (EntityRepository $er) use ($project) {
+                    return $er
+                        ->createQueryBuilder('l')
+                        ->where('l.project = :project')
+                        ->setParameter('project', $project)
+                    ;
+                },
+            ]);
+        };
+
+        $builder
+            ->addEventListener(
+                FormEvents::PRE_SET_DATA,
+                function (FormEvent $event) use ($labelModifier) {
+                    $data = $event->getData();
+                    $labelModifier($event->getForm(), $data->getProject());
+                }
+            )
+        ;
+
+        $builder
+            ->get('project')
+            ->addEventListener(
+                FormEvents::POST_SUBMIT,
+                function (FormEvent $event) use ($labelModifier) {
+                    $data = $event->getForm()->getData();
+                    $labelModifier($event->getForm()->getParent(), $data);
+                }
+            )
+        ;
     }
 
     /**
@@ -131,9 +173,11 @@ class CreateType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => WorkPackage::class,
-            'allow_extra_fields' => true,
-        ]);
+        $resolver
+            ->setDefaults([
+                'data_class' => WorkPackage::class,
+                'allow_extra_fields' => true,
+            ])
+        ;
     }
 }
