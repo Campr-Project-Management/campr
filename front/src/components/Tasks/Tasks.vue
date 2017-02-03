@@ -3,7 +3,12 @@
         <div class="page-section tasks">
             <div class="header">
                 <h1>My Tasks</h1>
-                <task-filters></task-filters>
+                <div class="flex">
+                    <task-filters></task-filters>
+                    <div class="pagination" v-if="count > 0">
+                        <span v-for="page in count/tasks.length" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
+                    </div>
+                </div>
             </div>
             <div class="content">
                 <task-box v-for="task in tasks" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></task-box>
@@ -25,15 +30,28 @@ export default {
     },
     methods: {
         ...mapActions(['getTasks', 'getColorStatuses']),
+        changePage(page) {
+            this.getTasks(page);
+            this.activePage = page;
+        },
     },
-    created() {
-        this.getTasks();
-        this.getColorStatuses();
+    watch: {
+        user: function() {
+            this.getTasks(this.activePage);
+            this.getColorStatuses();
+        },
     },
     computed: mapGetters({
-        tasks: 'filteredTasks',
+        user: 'user',
+        tasks: 'tasks',
+        count: 'count',
         colorStatuses: 'colorStatuses',
     }),
+    data() {
+        return {
+            activePage: 1,
+        };
+    },
 };
 </script>
 
