@@ -6,6 +6,9 @@
                 <project-filters></project-filters>
                 <div class="separator"></div>
                 <router-link :to="{name: 'projects'}" class="btn-rounded">View all my Projects</router-link>
+                <div class="pagination" v-if="count > 0">
+                    <span v-for="page in count/projects.length" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
+                </div>
             </div>
         </div>
         <div class="content">
@@ -25,13 +28,27 @@ export default {
         ProjectFilters,
         SmallProjectBox,
     },
-    methods: mapActions(['getProjects']),
-    created() {
-        this.getProjects();
+    methods: {
+        ...mapActions(['getProjects']),
+        changePage(page) {
+            this.getProjects(page);
+            this.activePage = page;
+        },
+    },
+    watch: {
+        user: function() {
+            this.getProjects(this.activePage);
+        },
     },
     computed: mapGetters({
-        projects: 'filteredProjects',
+        projects: 'projects',
+        user: 'user',
     }),
+    data() {
+        return {
+            activePage: 1,
+        };
+    },
 };
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="app" v-bind:class="{ bg: bgRoutes.indexOf(this.$route.name) >= 0 }">
         <pulse-loader :loading="loading" :color="color" :size="size" v-show="loader"></pulse-loader>
         <sidebar></sidebar>
         <div class="page">
@@ -30,6 +30,11 @@ export default {
         user: 'user',
         loader: 'loader',
     }),
+    data: function() {
+        return {
+            bgRoutes: ['projects-create-1', 'projects-create-2', 'projects-create-3'],
+        };
+    },
 };
 </script>
 
@@ -143,7 +148,6 @@ export default {
   #app {
     font-family: 'Poppins', sans-serif;
     color: #D8DAE5;
-    background: $darkColor;
     height: 100%;
     padding: 0 0 0 210px;
     min-height: 100vh;
