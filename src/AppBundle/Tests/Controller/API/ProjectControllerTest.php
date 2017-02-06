@@ -3,6 +3,7 @@
 namespace AppBundle\Tests\Controller\API;
 
 use AppBundle\Entity\Project;
+use AppBundle\Entity\ProjectUser;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -40,6 +41,7 @@ class ProjectControllerTest extends BaseController
 
         $project = json_decode($response->getContent(), true);
         $responseContent['createdAt'] = $project['createdAt'];
+        $responseContent['updatedAt'] = $project['updatedAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -246,10 +248,18 @@ class ProjectControllerTest extends BaseController
 
         $project = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $project['updatedAt'];
+        $responseContent['updatedAt'] = $project['updatedAt'];
         $responseContent['distributionLists'][0]['updatedAt'] = $project['distributionLists'][0]['updatedAt'];
         $responseContent['distributionLists'][1]['updatedAt'] = $project['distributionLists'][1]['updatedAt'];
         $responseContent['distributionLists'][0]['users'][0]['apiToken'] = $project['distributionLists'][0]['users'][0]['apiToken'];
         $responseContent['distributionLists'][1]['users'][0]['apiToken'] = $project['distributionLists'][1]['users'][0]['apiToken'];
+        $responseContent['distributionLists'][0]['users'][0]['updatedAt'] = $project['distributionLists'][0]['users'][0]['updatedAt'];
+        $responseContent['distributionLists'][1]['users'][0]['updatedAt'] = $project['distributionLists'][1]['users'][0]['updatedAt'];
+
+        for ($i = 1; $i <= 3; ++$i) {
+            $projectUser = $this->em->getRepository(ProjectUser::class)->find($i);
+            $responseContent['projectUsers'][$i - 1]['updatedAt'] = $projectUser->getUpdatedAt()->format('Y-m-d H:i:s');
+        }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -617,7 +627,7 @@ class ProjectControllerTest extends BaseController
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
     }
 
-    /**
+    /**d
      * @return array
      */
     public function getDataForDeleteAction()
@@ -659,6 +669,9 @@ class ProjectControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
+        $project = json_decode($response->getContent(), true);
+        $responseContent['updatedAt'] = $project['updatedAt'];
+        $responseContent['projectUsers'][0]['updatedAt'] = $project['projectUsers'][0]['updatedAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
