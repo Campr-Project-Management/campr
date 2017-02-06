@@ -36,6 +36,11 @@ class ProjectWorkCostTypeControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
+        for ($i = 1; $i <= 2; ++$i) {
+            $pm = $this->em->getRepository(ProjectWorkCostType::class)->find($i);
+            $responseContent[$i - 1]['updatedAt'] = $pm->getUpdatedAt()->format('Y-m-d H:i:s');
+        }
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -107,6 +112,7 @@ class ProjectWorkCostTypeControllerTest extends BaseController
 
         $projectWorkCostType = json_decode($response->getContent(), true);
         $responseContent['createdAt'] = $projectWorkCostType['createdAt'];
+        $responseContent['updatedAt'] = $projectWorkCostType['updatedAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -627,6 +633,8 @@ class ProjectWorkCostTypeControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
+        $projectWorkCostType = json_decode($response->getContent(), true);
+        $responseContent['updatedAt'] = $projectWorkCostType['updatedAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());

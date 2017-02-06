@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use JMS\Serializer\Annotation as Serializer;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * User.
@@ -174,6 +175,7 @@ class User implements AdvancedUserInterface, \Serializable
      * @var \DateTime|null
      *
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     * @Gedmo\Timestampable(on="update")
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */

@@ -38,6 +38,11 @@ class ProjectUserControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
+        for ($i = 1; $i <= 3; ++$i) {
+            $pm = $this->em->getRepository(ProjectUser::class)->find($i);
+            $responseContent[$i - 1]['updatedAt'] = $pm->getUpdatedAt()->format('Y-m-d H:i:s');
+        }
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -151,6 +156,7 @@ class ProjectUserControllerTest extends BaseController
 
         $projectUser = json_decode($response->getContent(), true);
         $responseContent['createdAt'] = $projectUser['createdAt'];
+        $responseContent['updatedAt'] = $projectUser['updatedAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -479,6 +485,8 @@ class ProjectUserControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
+        $projectUser = json_decode($response->getContent(), true);
+        $responseContent['updatedAt'] = $projectUser['updatedAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
