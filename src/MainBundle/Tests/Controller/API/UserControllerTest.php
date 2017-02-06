@@ -33,15 +33,20 @@ class UserControllerTest extends BaseController
             $responseContent['apiToken'] = $token;
         }
 
-        $user = json_decode($response->getContent(), true);
+        $userContent = json_decode($response->getContent(), true);
 
-        if (!array_key_exists('message', $user)) {
-            $responseContent['ownedDistributionLists'][0]['updatedAt'] = $user['ownedDistributionLists'][0]['updatedAt'];
-            $responseContent['ownedDistributionLists'][1]['updatedAt'] = $user['ownedDistributionLists'][1]['updatedAt'];
-            $responseContent['ownedDistributionLists'][0]['users'][0]['apiToken'] = $user['ownedDistributionLists'][0]['users'][0]['apiToken'];
-            $responseContent['ownedDistributionLists'][1]['users'][0]['apiToken'] = $user['ownedDistributionLists'][1]['users'][0]['apiToken'];
+        if (!array_key_exists('message', $userContent)) {
+            $responseContent['ownedDistributionLists'][0]['updatedAt'] = $userContent['ownedDistributionLists'][0]['updatedAt'];
+            $responseContent['ownedDistributionLists'][1]['updatedAt'] = $userContent['ownedDistributionLists'][1]['updatedAt'];
+            $responseContent['ownedDistributionLists'][0]['users'][0]['apiToken'] = $userContent['ownedDistributionLists'][0]['users'][0]['apiToken'];
+            $responseContent['ownedDistributionLists'][0]['users'][0]['updatedAt'] = $userContent['ownedDistributionLists'][0]['users'][0]['updatedAt'];
+            $responseContent['ownedDistributionLists'][1]['users'][0]['apiToken'] = $userContent['ownedDistributionLists'][1]['users'][0]['apiToken'];
+            $responseContent['ownedDistributionLists'][1]['users'][0]['updatedAt'] = $userContent['ownedDistributionLists'][1]['users'][0]['updatedAt'];
         }
 
+        if (isset($responseContent['updatedAt'])) {
+            $responseContent['updatedAt'] = $user->getUpdatedAt() ? $user->getUpdatedAt()->format('Y-m-d H:i:s') : null;
+        }
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -76,7 +81,7 @@ class UserControllerTest extends BaseController
                     'isEnabled' => true,
                     'isSuspended' => false,
                     'createdAt' => '2017-01-01 00:00:00',
-                    'updatedAt' => null,
+                    'updatedAt' => '',
                     'activatedAt' => null,
                     'teams' => [],
                     'apiToken' => '',

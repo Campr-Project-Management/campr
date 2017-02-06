@@ -36,6 +36,11 @@ class ProjectDepartmentControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
+        for ($i = 1; $i <= 2; ++$i) {
+            $pd = $this->em->getRepository(ProjectDepartment::class)->find($i);
+            $responseContent[$i - 1]['updatedAt'] = $pd->getUpdatedAt()->format('Y-m-d H:i:s');
+        }
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -111,6 +116,7 @@ class ProjectDepartmentControllerTest extends BaseController
 
         $projectDepartment = json_decode($response->getContent(), true);
         $responseContent['createdAt'] = $projectDepartment['createdAt'];
+        $responseContent['updatedAt'] = $projectDepartment['updatedAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -522,6 +528,8 @@ class ProjectDepartmentControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
+        $projectDepartment = json_decode($response->getContent(), true);
+        $responseContent['updatedAt'] = $projectDepartment['updatedAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());

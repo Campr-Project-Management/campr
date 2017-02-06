@@ -45,6 +45,8 @@ class DistributionListControllerTest extends BaseController
 
         $responseContent[0]['users'][0]['apiToken'] = $responseArray[0]['users'][0]['apiToken'];
         $responseContent[1]['users'][0]['apiToken'] = $responseArray[1]['users'][0]['apiToken'];
+        $responseContent[0]['users'][0]['updatedAt'] = $responseArray[0]['users'][0]['updatedAt'];
+        $responseContent[1]['users'][0]['updatedAt'] = $responseArray[1]['users'][0]['updatedAt'];
 
         $responseArray = json_encode($responseArray);
 
@@ -443,6 +445,7 @@ class DistributionListControllerTest extends BaseController
         $distributionList = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $distributionList['updatedAt'];
         $responseContent['users'][0]['apiToken'] = $distributionList['users'][0]['apiToken'];
+        $responseContent['users'][0]['updatedAt'] = $distributionList['users'][0]['updatedAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -761,6 +764,7 @@ class DistributionListControllerTest extends BaseController
         $distributionList = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $distributionList['updatedAt'];
         $responseContent['users'][0]['apiToken'] = $distributionList['users'][0]['apiToken'];
+        $responseContent['users'][0]['updatedAt'] = $distributionList['users'][0]['updatedAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());

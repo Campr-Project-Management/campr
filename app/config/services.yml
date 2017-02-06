@@ -150,11 +150,6 @@ services:
         calls:
             - [ setAnnotationReader, [ "@annotation_reader" ] ]
 
-    app.listener.updated_at:
-        class: AppBundle\EventListener\UpdatedAtListener
-        tags:
-            - { name: doctrine.event_listener, event: preUpdate }
-
     app.listener.user:
         class: AppBundle\EventListener\UserListener
         arguments:
