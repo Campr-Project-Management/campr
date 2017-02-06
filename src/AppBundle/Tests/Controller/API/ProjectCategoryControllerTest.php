@@ -36,6 +36,11 @@ class ProjectCategoryControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
+        for ($i = 1; $i <= 2; ++$i) {
+            $pc = $this->em->getRepository(ProjectCategory::class)->find($i);
+            $responseContent[$i - 1]['updatedAt'] = $pc->getUpdatedAt()->format('Y-m-d H:i:s');
+        }
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -107,6 +112,7 @@ class ProjectCategoryControllerTest extends BaseController
 
         $projectCategory = json_decode($response->getContent(), true);
         $responseContent['createdAt'] = $projectCategory['createdAt'];
+        $responseContent['updatedAt'] = $projectCategory['updatedAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -627,6 +633,8 @@ class ProjectCategoryControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
+        $projectCategory = json_decode($response->getContent(), true);
+        $responseContent['updatedAt'] = $projectCategory['updatedAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());

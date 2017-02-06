@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * ProjectUser.
@@ -128,6 +129,7 @@ class ProjectUser
      * @var \DateTime|null
      *
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     * @Gedmo\Timestampable(on="update")
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
