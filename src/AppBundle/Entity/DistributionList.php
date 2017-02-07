@@ -250,7 +250,7 @@ class DistributionList
      *
      * @return DistributionList
      */
-    public function setProject(Project $project)
+    public function setProject(Project $project = null)
     {
         $this->project = $project;
 
