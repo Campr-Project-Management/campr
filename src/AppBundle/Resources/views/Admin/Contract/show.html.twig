@@ -1,0 +1,106 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'admin.contract.list.title'|trans }}<small>{{ contract.name|default('-') }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_contract_create') }}">{{ 'admin.contract.list.add'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_contract_edit', {'id': contract.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_contract_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    {% for flash_message in app.session.flashBag.get('success') %}
+                        <div id="general-alert" class="alert alert-success m-t-15">
+                            <strong>{{ flash_message }}</strong>
+                        </div>
+                    {% endfor %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th>{{ 'admin.contract.list.table.id'|trans }}</th>
+                                    <td>{{ contract.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.contract.list.table.name'|trans }}</th>
+                                    <td>{{ contract.name|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.contract.list.table.project'|trans }}</th>
+                                    <td>{{ contract.project.name|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.contract.list.table.description'|trans }}</th>
+                                    <td>{{ contract.description|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.contract.list.table.created_by'|trans }}</th>
+                                    <td>{{ contract.createdBy.username|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.contract.list.table.proposed_start_date'|trans }}</th>
+                                    {% if contract.proposedStartDate %}
+                                        <td>{{ contract.proposedStartDate|date('d/m/Y') }}</td>
+                                    {% else %}
+                                        <td>-</td>
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.contract.list.table.proposed_end_date'|trans }}</th>
+                                    {% if contract.proposedEndDate %}
+                                        <td>{{ contract.proposedEndDate|date('d/m/Y') }}</td>
+                                    {% else %}
+                                        <td>-</td>
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.contract.list.table.forecast_start_date'|trans }}</th>
+                                    {% if contract.forecastStartDate %}
+                                        <td>{{ contract.forecastStartDate|date('d/m/Y') }}</td>
+                                    {% else %}
+                                        <td>-</td>
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.contract.list.table.forecast_end_date'|trans }}</th>
+                                    {% if contract.forecastEndDate %}
+                                        <td>{{ contract.forecastEndDate|date('d/m/Y') }}</td>
+                                    {% else %}
+                                        <td>-</td>
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.contract.list.table.created_at'|trans }}</th>
+                                    <td>{{ contract.createdAt|date('d/m/Y') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'admin.contract.list.table.updated_at'|trans }}</th>
+                                    <td>{{ contract.updatedAt|date('d/m/Y')}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

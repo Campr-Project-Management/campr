@@ -254,6 +254,13 @@ class Project
     private $updatedAt;
 
     /**
+     * @var ArrayCollection|Contract[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Contract", mappedBy="project")
+     */
+    private $contracts;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -267,6 +274,7 @@ class Project
         $this->notes = new ArrayCollection();
         $this->distributionLists = new ArrayCollection();
         $this->labels = new ArrayCollection();
+        $this->contracts = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->setEncryptionKey(base64_encode(random_bytes(16)));
     }
@@ -1028,7 +1036,7 @@ class Project
      *
      * @param File|null $image
      *
-     * @return User
+     * @return Project
      */
     public function setLogoFile(File $image = null)
     {
@@ -1073,8 +1081,6 @@ class Project
     public function removeDistributionList(DistributionList $distributionList)
     {
         $this->distributionLists->removeElement($distributionList);
-
-        return $this;
     }
 
     /**
@@ -1085,20 +1091,6 @@ class Project
     public function getDistributionLists()
     {
         return $this->distributionLists;
-    }
-
-    /**
-     * Remove label.
-     *
-     * @param Label $label
-     *
-     * @return Project
-     */
-    public function removeLabel(Label $label)
-    {
-        $this->labels->removeElement($label);
-
-        return $this;
     }
 
     /**
@@ -1116,12 +1108,57 @@ class Project
     }
 
     /**
+     * Remove label.
+     *
+     * @param Label $label
+     */
+    public function removeLabel(Label $label)
+    {
+        $this->labels->removeElement($label);
+    }
+
+    /**
      * Get labels.
      *
-     * @return ArrayCollection
+     * @return ArrayCollection|Label[]
      */
     public function getLabels()
     {
         return $this->labels;
+    }
+
+    /**
+     * Add contract.
+     *
+     * @param Contract $contract
+     *
+     * @return Project
+     */
+    public function addContract(Contract $contract)
+    {
+        $this->contracts[] = $contract;
+
+        return $this;
+    }
+
+    /**
+     *
+     * Remove contract.
+     *
+     * @param Contract $contract
+     */
+    public function removeContract(Contract $contract)
+    {
+        $this->contracts->removeElement($contract);
+    }
+
+    /**
+     * Get contracts.
+     *
+     * @return ArrayCollection|Contract[]
+     */
+    public function getContracts()
+    {
+        return $this->contracts;
     }
 }
