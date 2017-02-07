@@ -92,6 +92,7 @@ class ProjectControllerTest extends BaseController
                     'approvedAt' => null,
                     'createdAt' => '',
                     'updatedAt' => null,
+                    'contracts' => [],
                     'logo' => null,
                 ],
             ],
@@ -255,6 +256,8 @@ class ProjectControllerTest extends BaseController
         $responseContent['distributionLists'][1]['users'][0]['apiToken'] = $project['distributionLists'][1]['users'][0]['apiToken'];
         $responseContent['distributionLists'][0]['users'][0]['updatedAt'] = $project['distributionLists'][0]['users'][0]['updatedAt'];
         $responseContent['distributionLists'][1]['users'][0]['updatedAt'] = $project['distributionLists'][1]['users'][0]['updatedAt'];
+        $responseContent['contracts'][0]['updatedAt'] = $project['contracts'][0]['updatedAt'];
+        $responseContent['contracts'][1]['updatedAt'] = $project['contracts'][1]['updatedAt'];
 
         for ($i = 1; $i <= 3; ++$i) {
             $projectUser = $this->em->getRepository(ProjectUser::class)->find($i);
@@ -423,6 +426,7 @@ class ProjectControllerTest extends BaseController
                                     'linkedIn' => null,
                                     'medium' => null,
                                     'ownedDistributionLists' => [],
+                                    'contracts' => [],
                                     'avatar' => null,
                                 ],
                             ],
@@ -462,6 +466,7 @@ class ProjectControllerTest extends BaseController
                                     'linkedIn' => null,
                                     'medium' => null,
                                     'ownedDistributionLists' => [],
+                                    'contracts' => [],
                                     'avatar' => null,
                                 ],
                             ],
@@ -474,6 +479,38 @@ class ProjectControllerTest extends BaseController
                     'approvedAt' => null,
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
+                    'contracts' => [
+                        [
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'createdBy' => 1,
+                            'createdByFullName' => 'FirstName1 LastName1',
+                            'id' => 1,
+                            'name' => 'contract1',
+                            'description' => 'contract-description1',
+                            'proposedStartDate' => '2017-01-01',
+                            'proposedEndDate' => '2017-05-01',
+                            'forecastStartDate' => null,
+                            'forecastEndDate' => null,
+                            'createdAt' => '2017-01-01 12:00:00',
+                            'updatedAt' => null,
+                        ],
+                        [
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'createdBy' => 1,
+                            'createdByFullName' => 'FirstName1 LastName1',
+                            'id' => 2,
+                            'name' => 'contract2',
+                            'description' => 'contract-description2',
+                            'proposedStartDate' => '2017-05-01',
+                            'proposedEndDate' => '2017-08-01',
+                            'forecastStartDate' => null,
+                            'forecastEndDate' => null,
+                            'createdAt' => '2017-01-01 12:00:00',
+                            'updatedAt' => null,
+                        ],
+                    ],
                     'logo' => null,
                 ],
             ],
@@ -732,6 +769,7 @@ class ProjectControllerTest extends BaseController
                     'approvedAt' => null,
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
+                    'contracts' => [],
                     'logo' => null,
                 ],
             ],
