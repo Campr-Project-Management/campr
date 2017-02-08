@@ -224,7 +224,7 @@ class TodoControllerTest extends BaseController
         return [
             [
                 [
-                    'dueDate' => '2017-01-11',
+                    'dueDate' => '11-01-2017',
                 ],
                 true,
                 Response::HTTP_OK,
