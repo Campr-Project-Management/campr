@@ -25,7 +25,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.day.type.not_blank',
+                        'message' => 'not_blank.type',
                     ]),
                     new GreaterThanOrEqual([
                         'value' => 0,
@@ -36,7 +36,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.day.working.not_blank',
+                        'message' => 'not_blank.working',
                     ]),
                     new GreaterThanOrEqual([
                         'value' => 0,
@@ -46,8 +46,8 @@ class CreateType extends AbstractType
             ->add('calendar', EntityType::class, [
                 'class' => Calendar::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.calendar.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.calendar',
+                'translation_domain' => 'messages',
             ])
         ;
     }

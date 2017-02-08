@@ -61,7 +61,8 @@
         "stof/doctrine-extensions-bundle": "^1.2",
         "guzzlehttp/guzzle": "^6.2",
         "nelmio/cors-bundle": "^1.5",
-        "willdurand/js-translation-bundle": "^2.6"
+        "willdurand/js-translation-bundle": "^2.6",
+        "lexik/translation-bundle": "^4.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

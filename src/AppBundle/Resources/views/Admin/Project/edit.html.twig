@@ -1,6 +1,6 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
 
@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.project.edit.title'|trans }}</h2>
+                    <h2>{{ 'title.project.edit'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,10 +17,10 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_project_create') }}">{{ 'admin.project.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_project_create') }}">{{ 'add.project'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_project_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_project_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -53,7 +53,7 @@
                                 'attr': {
                                     'class': 'form-control input-sm',
                                 },
-                                'label': 'admin.project.create.name'|trans,
+                                'label': 'label.name'|trans,
                             }
                         ) }}
                         {{ form_widget(
@@ -68,49 +68,49 @@
                                 'attr': {
                                     'class': 'form-control input-sm',
                                 },
-                            'label': 'admin.project.create.number'|trans,
+                            'label': 'label.number'|trans,
                         }
                         ) }}
                         {{ form_widget(
                             form.company,
                             {
                                 'attr': {'class': 'selectpicker'},
-                                'label': 'admin.project.create.company'|trans,
+                                'label': 'label.company'|trans,
                             }
                         ) }}
                         {{ form_widget(
                             form.projectComplexity,
                             {
                                 'attr': {'class': 'selectpicker'},
-                                'label': 'admin.project.create.project_complexity'|trans,
+                                'label': 'label.project_complexity'|trans,
                             }
                         ) }}
                         {{ form_widget(
                             form.projectCategory,
                             {
                                 'attr': {'class': 'selectpicker'},
-                                'label': 'admin.project.create.project_category'|trans,
+                                'label': 'label.project_category'|trans,
                             }
                         ) }}
                         {{ form_widget(
                             form.projectScope,
                             {
                                 'attr': {'class': 'selectpicker'},
-                                'label': 'admin.project.create.project_scope'|trans,
+                                'label': 'label.project_scope'|trans,
                             }
                         ) }}
                         {{ form_widget(
                             form.status,
                             {
                                 'attr': {'class': 'selectpicker'},
-                                'label': 'admin.project.create.status'|trans,
+                                'label': 'label.status'|trans,
                             }
                         ) }}
                         {{ form_widget(
                             form.portfolio,
                             {
                                 'attr': {'class': 'selectpicker'},
-                                'label': 'admin.project.create.portfolio'|trans,
+                                'label': 'label.portfolio'|trans,
                             }
                         ) }}
 

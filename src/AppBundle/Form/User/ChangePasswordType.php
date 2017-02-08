@@ -21,15 +21,15 @@ class ChangePasswordType extends AbstractType
         $builder
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'validation.constraints.user.password.match',
+                'invalid_message' => 'match.password',
                 'required' => true,
                 'constraints' => [
                     new NotBlank(array(
-                        'message' => 'validation.constraints.user.password.not_blank',
+                        'message' => 'not_blank.password',
                     )),
                     new Regex([
                         'pattern' => "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/",
-                        'message' => 'validation.constraints.user.password.regex',
+                        'message' => 'regex.password',
                     ]),
                 ],
             ])

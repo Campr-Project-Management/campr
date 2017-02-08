@@ -37,7 +37,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.general_field.name.not_blank',
+                        'message' => 'not_blank.name',
                     ]),
                 ],
             ])
@@ -45,11 +45,11 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.project.number.not_blank',
+                        'message' => 'not_blank.number',
                     ]),
                     new Length([
                         'max' => 128,
-                        'maxMessage' => 'validation.constraints.project.number.length',
+                        'maxMessage' => 'length.number',
                     ]),
                 ],
             ])
@@ -59,15 +59,15 @@ class CreateType extends AbstractType
                 'constraints' => [
                     new File([
                         'mimeTypes' => ['image/jpg', 'image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'validation.constraints.project.logo.image',
+                        'mimeTypesMessage' => 'invalid.image',
                     ]),
                 ],
             ])
             ->add('company', EntityType::class, [
                 'class' => Company::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.company.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.company',
+                'translation_domain' => 'messages',
             ])
             ->add('projectComplexity', EntityType::class, [
                 'class' => ProjectComplexity::class,
@@ -75,8 +75,8 @@ class CreateType extends AbstractType
                 'query_builder' => function (EntityRepository $er) use ($self, $entity) {
                     return $self->findRelatedEntities($er, $entity);
                 },
-                'placeholder' => 'admin.project_complexity.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.project_complexityo',
+                'translation_domain' => 'messages',
             ])
             ->add('projectCategory', EntityType::class, [
                 'class' => ProjectCategory::class,
@@ -84,8 +84,8 @@ class CreateType extends AbstractType
                 'query_builder' => function (EntityRepository $er) use ($self, $entity) {
                     return $self->findRelatedEntities($er, $entity);
                 },
-                'placeholder' => 'admin.project_category.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.project_category',
+                'translation_domain' => 'messages',
             ])
             ->add('projectScope', EntityType::class, [
                 'class' => ProjectScope::class,
@@ -93,8 +93,8 @@ class CreateType extends AbstractType
                 'query_builder' => function (EntityRepository $er) use ($self, $entity) {
                     return $self->findRelatedEntities($er, $entity);
                 },
-                'placeholder' => 'admin.project_scope.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.project_scope',
+                'translation_domain' => 'messages',
             ])
             ->add('status', EntityType::class, [
                 'class' => ProjectStatus::class,
@@ -102,14 +102,14 @@ class CreateType extends AbstractType
                 'query_builder' => function (EntityRepository $er) use ($self, $entity) {
                     return $self->findRelatedEntities($er, $entity);
                 },
-                'placeholder' => 'admin.project_status.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.project_status',
+                'translation_domain' => 'messages',
             ])
             ->add('portfolio', EntityType::class, [
                 'class' => Portfolio::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.portfolio.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.portfolio',
+                'translation_domain' => 'messages',
             ])
         ;
     }

@@ -91,7 +91,7 @@ class DefaultControllerTest extends BaseController
         $crawler = $this->client->submit($form);
 
         $this->assertContains('Please enter your full name!', $crawler->html());
-        $this->assertContains('Please enter your email address!', $crawler->html());
+        $this->assertContains('The email field should not be blank', $crawler->html());
         $this->assertContains('Please enter a subject!', $crawler->html());
         $this->assertContains('Please enter a message!', $crawler->html());
 

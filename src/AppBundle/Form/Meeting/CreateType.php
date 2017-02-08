@@ -26,13 +26,12 @@ class CreateType extends AbstractType
             ->add('project', EntityType::class, [
                 'class' => Project::class,
                 'choice_label' => 'name',
-                'translation_domain' => 'admin',
             ])
             ->add('name', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.general_field.name.not_blank',
+                        'message' => 'not_blank.name',
                     ]),
                 ],
             ])
@@ -40,7 +39,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.meeting.location.not_blank',
+                        'message' => 'not_blank.location',
                     ]),
                 ],
             ])
@@ -49,7 +48,7 @@ class CreateType extends AbstractType
                 'format' => 'dd-MM-yyyy',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.meeting.date.not_blank',
+                        'message' => 'not_blank.date',
                     ]),
                 ],
             ])
@@ -58,7 +57,7 @@ class CreateType extends AbstractType
                 'format' => 'H:i:s',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.meeting.start.not_blank',
+                        'message' => 'not_blank.start',
                     ]),
                 ],
             ])
@@ -67,7 +66,7 @@ class CreateType extends AbstractType
                 'format' => 'H:i:s',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.meeting.end.not_blank',
+                        'message' => 'not_blank.end',
                     ]),
                 ],
             ])
@@ -75,7 +74,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.meeting.objectives.not_blank',
+                        'message' => 'not_blank.objectives',
                     ]),
                 ],
             ])

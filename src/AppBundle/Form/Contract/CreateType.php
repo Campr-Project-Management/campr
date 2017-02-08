@@ -26,20 +26,20 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.general_field.name.not_blank',
+                        'message' => 'not_blank.name',
                     ]),
                 ],
             ])
             ->add('project', EntityType::class, [
                 'class' => Project::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.project.choice',
+                'placeholder' => 'placeholder.project',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.contract.project.not_blank',
+                        'message' => 'not_blank.project',
                     ]),
                 ],
-                'translation_domain' => 'admin',
+                'translation_domain' => 'messages',
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,

@@ -111,7 +111,7 @@ class ImpactController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.impact.create.success', [], 'admin')
+                        ->trans('success.impact.create', [], 'flashes')
                 )
             ;
 
@@ -154,7 +154,7 @@ class ImpactController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.impact.edit.success', [], 'admin')
+                        ->trans('success.impact.edit', [], 'flashes')
                 )
             ;
 
@@ -202,7 +202,7 @@ class ImpactController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.impact.delete.success.general', [], 'admin')
+                    ->trans('success.impact.delete.general', [], 'flashes')
             )
         ;
 

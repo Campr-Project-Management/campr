@@ -93,7 +93,7 @@ class DecisionController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.decision.create.success', [], 'admin')
+                        ->trans('success.decision.create', [], 'flashes')
                 )
             ;
 
@@ -138,7 +138,7 @@ class DecisionController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.decision.edit.success', [], 'admin')
+                        ->trans('success.decision.edit', [], 'flashes')
                 )
             ;
 
@@ -206,7 +206,7 @@ class DecisionController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.decision.delete.success.general', [], 'admin')
+                    ->trans('success.decision.delete.general', [], 'flashes')
             )
         ;
 

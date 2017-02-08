@@ -1,5 +1,6 @@
 {% extends 'AppBundle:Layout:base.html.twig' %}
-{% trans_default_domain 'layout' %}
+
+{% trans_default_domain 'messages' %}
 
 {% block body %}
     <div class="login-content">
@@ -24,7 +25,7 @@
                     <div class="fg-line {% if error %}has-error{% endif %}">
                         {{ form_widget(form.email, {'attr': {'class': 'form-control', 'value': last_username}}) }}
                         <label class="fg-label" for="email">
-                            {{ 'login.email'|trans }}
+                            {{ 'label.email'|trans }}
                         </label>
                     </div>
                 </div>
@@ -33,7 +34,7 @@
                     <div class="fg-line {% if error %}has-error{% endif %}">
                         {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
                         <label class="fg-label" for="email">
-                            {{ 'login.password'|trans }}
+                            {{ 'label.password.first'|trans }}
                         </label>
                     </div>
                 </div>
@@ -44,8 +45,8 @@
                 {{ form_end(form) }}
             </div>
             <div class="lcb-navigation">
-                <a href="" data-ma-action="login-switch" data-ma-block="#l-register"><i class="zmdi zmdi-plus"></i> <span>{{ 'register.title'|trans }}</span></a>
-                <a href="" data-ma-action="login-switch" data-ma-block="#l-forget-password"><i>?</i> <span>{{ 'forgot.title'|trans }}</span></a>
+                <a href="" data-ma-action="login-switch" data-ma-block="#l-register"><i class="zmdi zmdi-plus"></i> <span>{{ 'button.register'|trans }}</span></a>
+                <a href="" data-ma-action="login-switch" data-ma-block="#l-forget-password"><i>?</i> <span>{{ 'button.forgot_password'|trans }}</span></a>
             </div>
         </div>
 
@@ -68,7 +69,7 @@
                     <div class="fg-line {% if form_errors(form_register.username) %}has-error{% endif %}">
                         {{ form_widget(form_register.username, {'attr': {'class': 'form-control'}}) }}
                         <label class="fg-label" for="username">
-                            {{ 'register.username'|trans }}
+                            {{ 'label.username'|trans }}
                         </label>
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_register.username)}}</small>
@@ -79,7 +80,7 @@
                     <div class="fg-line {% if form_errors(form_register.email) %}has-error{% endif %}">
                         {{ form_widget(form_register.email, {'attr': {'class': 'form-control'}}) }}
                         <label class="fg-label" for="email">
-                            {{  'register.email'|trans }}
+                            {{  'label.email'|trans }}
                         </label>
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_register.email)}}</small>
@@ -90,7 +91,7 @@
                     <div class="fg-line {% if form_errors(form_register.plainPassword.first) %}has-error{% endif %}">
                         {{ form_widget(form_register.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
                         <label class="fg-label" for="plainPasswordFirst">
-                            {{ 'register.password'|trans }}
+                            {{ 'label.password.first'|trans }}
                         </label>
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_register.plainPassword.first)}}</small>
@@ -100,7 +101,7 @@
                     <div class="fg-line {% if form_errors(form_register.plainPassword.second) %}has-error{% endif %}">
                         {{ form_widget(form_register.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
                         <label class="fg-label" for="plainPasswordSecond">
-                            {{ 'register.password_repeat'|trans }}
+                            {{ 'label.password.repeat'|trans }}
                         </label>
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_register.plainPassword.second)}}</small>
@@ -110,7 +111,7 @@
                     <div class="fg-line {% if form_errors(form_register.firstName) %}has-error{% endif %}">
                         {{ form_widget(form_register.firstName, {'attr': {'class': 'form-control'}}) }}
                         <label class="fg-label" for="firstName">
-                            {{ 'register.firstname'|trans }}
+                            {{ 'label.firstname'|trans }}
                         </label>
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_register.firstName)}}</small>
@@ -120,7 +121,7 @@
                     <div class="fg-line {% if form_errors(form_register.lastName) %}has-error{% endif %}">
                         {{ form_widget(form_register.lastName, {'attr': {'class': 'form-control'}}) }}
                         <label class="fg-label" for="lastName">
-                            {{ 'register.lastname'|trans }}
+                            {{ 'label.lastname'|trans }}
                         </label>
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_register.lastName)}}</small>
@@ -130,7 +131,7 @@
                     <div class="fg-line {% if form_errors(form_register.phone) %}has-error{% endif %}">
                         {{ form_widget(form_register.phone, {'attr': {'class': 'form-control'}}) }}
                         <label class="fg-label" for="phone">
-                            {{ 'register.phone'|trans }}
+                            {{ 'label.phone'|trans }}
                         </label>
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_register.phone)}}</small>
@@ -142,8 +143,8 @@
                 {{ form_end(form_register) }}
             </div>
             <div class="lcb-navigation">
-                <a href="" data-ma-action="login-switch" data-ma-block="#l-login"><i class="zmdi zmdi-long-arrow-right"></i> <span>{{ 'login.sign_in'|trans }}</span></a>
-                <a href="" data-ma-action="login-switch" data-ma-block="#l-forget-password"><i>?</i> <span>{{ 'forgot.title'|trans }}</span></a>
+                <a href="" data-ma-action="login-switch" data-ma-block="#l-login"><i class="zmdi zmdi-long-arrow-right"></i> <span>{{ 'button.sign_in'|trans }}</span></a>
+                <a href="" data-ma-action="login-switch" data-ma-block="#l-forget-password"><i>?</i> <span>{{ 'button.forgot_password'|trans }}</span></a>
             </div>
         </div>
 
@@ -161,10 +162,10 @@
                         },
                     }
                 ) }}
-                <p class="text-left">{{ 'reset.title'|trans }}</p>
+                <p class="text-left">{{ 'message.reset_password'|trans }}</p>
                 {% if user_not_found is defined %}
                     {% if user_not_found %}
-                        <small class="help-block c-red">{{ 'forgot.user_not_found'|trans }}</small>
+                        <small class="help-block c-red">{{ 'not_found.email_user'|trans }}</small>
                     {% endif %}
                 {% endif %}
                 <div class="input-group m-b-20 fg-float">
@@ -172,7 +173,7 @@
                     <div class="fg-line {% if form_errors(form_reset.email) %}has-error{% endif %}">
                         {{ form_widget(form_reset.email, {'attr': {'class': 'form-control'}}) }}
                         <label class="fg-label" for="email">
-                            {{ 'register.email'|trans }}
+                            {{ 'label.email'|trans }}
                         </label>
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_reset.email)}}</small>
@@ -181,8 +182,8 @@
                 {{ form_end(form_reset) }}
             </div>
             <div class="lcb-navigation">
-                <a href="" data-ma-action="login-switch" data-ma-block="#l-login"><i class="zmdi zmdi-long-arrow-right"></i> <span>{{ 'login.sign_in'|trans }}</span></a>
-                <a href="" data-ma-action="login-switch" data-ma-block="#l-register"><i class="zmdi zmdi-plus"></i> <span>{{ 'register.title'|trans }}</span></a>
+                <a href="" data-ma-action="login-switch" data-ma-block="#l-login"><i class="zmdi zmdi-long-arrow-right"></i> <span>{{ 'button.sign_in'|trans }}</span></a>
+                <a href="" data-ma-action="login-switch" data-ma-block="#l-register"><i class="zmdi zmdi-plus"></i> <span>{{ 'button.register'|trans }}</span></a>
             </div>
         </div>
     </div>

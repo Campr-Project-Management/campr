@@ -1,11 +1,11 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="card">
         <div class="card-header bgm-teal">
-            <h2><strong>"{{ project_name }}"</strong> {{ 'admin.media.list.title'|trans }}<small>{{ 'admin.media.list.subtitle'|trans }}</small></h2>
+            <h2><strong>"{{ project_name }}"</strong> {{ 'title.media.list'|trans }}<small>{{ 'subtitle.media'|trans }}</small></h2>
             <a href="{{ path('app_admin_project_media_create', {'project': project_id}) }}">
                 <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
             </a>
@@ -18,13 +18,13 @@
             {% endfor %}
             <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                 <strong>
-                    {{ 'admin.media.delete.success.first'|trans }}
+                    {{ 'success.media.delete.first'|trans({}, 'flashes') }}
                     <span id="object-id">
                         {% for flash_message in app.session.flashBag.get('success') %}
                             {{ flash_message }}
                         {% endfor %}
                     </span>
-                    {{ 'admin.media.delete.success.second'|trans }}
+                    {{ 'success.media.delete.second'|trans({}, 'flashes') }}
                 </strong>
             </div>
             <div class="table-responsive">
@@ -39,13 +39,13 @@
                         data-download="app_admin_project_media_download">
                     <thead>
                     <tr>
-                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.media.list.table.id'|trans }}</th>
-                        <th data-column-id="fileSystemName">{{ 'admin.media.list.table.filesystem'|trans }}</th>
-                        <th data-column-id="userFullName">{{ 'admin.media.list.table.user'|trans }}</th>
-                        <th data-column-id="path">{{ 'admin.media.list.table.path'|trans }}</th>
-                        <th data-column-id="mimeType">{{ 'admin.media.list.table.mime'|trans }}</th>
-                        <th data-column-id="fileSize">{{ 'admin.media.list.table.size'|trans }}</th>
-                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'admin.general.placeholder.actions'|trans }}</th>
+                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'table_header_cell.id'|trans }}</th>
+                        <th data-column-id="fileSystemName">{{ 'table_header_cell.filesystem'|trans }}</th>
+                        <th data-column-id="userFullName">{{ 'table_header_cell.user'|trans }}</th>
+                        <th data-column-id="path">{{ 'table_header_cell.path'|trans }}</th>
+                        <th data-column-id="mimeType">{{ 'table_header_cell.mime'|trans }}</th>
+                        <th data-column-id="fileSize">{{ 'table_header_cell.size'|trans }}</th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'placeholder.actions'|trans }}</th>
                     </tr>
                     </thead>
                 </table>

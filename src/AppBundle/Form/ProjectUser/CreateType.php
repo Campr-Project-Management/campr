@@ -28,48 +28,48 @@ class CreateType extends AbstractType
             ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'username',
-                'placeholder' => 'admin.user.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.user',
+                'translation_domain' => 'messages',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.project_user.user.not_blank',
+                        'message' => 'not_blank.user',
                     ]),
                 ],
             ])
             ->add('project', EntityType::class, [
                 'class' => Project::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.project.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.project',
+                'translation_domain' => 'messages',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.project_user.project.not_blank',
+                        'message' => 'not_blank.project',
                     ]),
                 ],
             ])
             ->add('projectCategory', EntityType::class, [
                 'class' => ProjectCategory::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.project_category.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.project_category',
+                'translation_domain' => 'messages',
             ])
             ->add('projectRole', EntityType::class, [
                 'class' => ProjectRole::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.project_role.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.project_role',
+                'translation_domain' => 'messages',
             ])
             ->add('projectDepartment', EntityType::class, [
                 'class' => ProjectDepartment::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.project_department.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.project_department',
+                'translation_domain' => 'messages',
             ])
             ->add('projectTeam', EntityType::class, [
                 'class' => ProjectTeam::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.project_team.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.project_team',
+                'translation_domain' => 'messages',
             ])
             ->add('showInResources', CheckboxType::class)
             ->add('showInRaci', CheckboxType::class)

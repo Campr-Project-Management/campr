@@ -107,7 +107,7 @@ class FileSystemController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.filesystem.create.success', [], 'admin')
+                        ->trans('success.filesystem.create', [], 'flashes')
                 )
             ;
 
@@ -164,7 +164,7 @@ class FileSystemController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.filesystem.edit.success', [], 'admin')
+                        ->trans('success.filesystem.edit', [], 'flashes')
                 )
             ;
 
@@ -232,7 +232,7 @@ class FileSystemController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.filesystem.delete.success.general', [], 'admin')
+                    ->trans('success.filesystem.delete.general', [], 'flashes')
             )
         ;
 

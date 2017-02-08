@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
 
@@ -23,21 +23,21 @@
         'attr': {
             'class': 'form-control input-sm',
         },
-        'label': 'admin.filesystem.create.name'|trans,
+        'label': 'label.name'|trans,
     }
 ) }}
 {{ form_widget(
     form.project,
     {
         'attr': {'class': 'selectpicker filesystem-picker'},
-        'label': 'admin.filesystem.create.project'|trans,
+        'label': 'label.project'|trans,
     }
 ) }}
 {{ form_widget(
     form.driver,
     {
         'attr': {'class': 'selectpicker filesystem-picker'},
-        'label': 'admin.filesystem.create.driver'|trans,
+        'label': 'label.driver'|trans,
     }
 ) }}
 

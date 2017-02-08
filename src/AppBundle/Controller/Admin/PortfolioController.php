@@ -93,7 +93,7 @@ class PortfolioController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.portfolio.create.success', [], 'admin')
+                        ->trans('success.portfolio.create', [], 'flashes')
                 )
             ;
 
@@ -139,7 +139,7 @@ class PortfolioController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.portfolio.edit.success', [], 'admin')
+                        ->trans('success.portfolio.edit', [], 'flashes')
                 )
             ;
 
@@ -207,7 +207,7 @@ class PortfolioController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.portfolio.delete.success.general', [], 'admin')
+                    ->trans('success.portfolio.delete.general', [], 'flashes')
             )
         ;
 

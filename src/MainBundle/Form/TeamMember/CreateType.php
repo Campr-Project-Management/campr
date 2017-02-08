@@ -43,13 +43,13 @@ class CreateType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'choices' => [
-                    'admin.user.edit.role.user' => 'ROLE_USER',
-                    'admin.user.edit.role.admin' => 'ROLE_ADMIN',
-                    'admin.user.edit.role.superadmin' => 'ROLE_SUPER_ADMIN',
-                    'admin.user.edit.role.team_member' => 'ROLE_TEAM_MEMBER',
-                    'admin.user.edit.role.team_owner' => 'ROLE_TEAM_OWNER',
+                    'label.role.user' => 'ROLE_USER',
+                    'label.role.admin' => 'ROLE_ADMIN',
+                    'label.role.superadmin' => 'ROLE_SUPER_ADMIN',
+                    'label.role.team_member' => 'ROLE_TEAM_MEMBER',
+                    'label.role.team_owner' => 'ROLE_TEAM_OWNER',
                 ],
-                'translation_domain' => 'admin',
+                'translation_domain' => 'messages',
             ))
         ;
     }

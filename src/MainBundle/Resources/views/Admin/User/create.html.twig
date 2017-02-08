@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% extends 'MainBundle:Admin:base.html.twig' %}
 
@@ -7,8 +7,8 @@
         <div class="col-lg-12">
             <h1 class="page-header">
                 <p class="text-primary">
-                    {{ 'admin.user.create.title'|trans }}
-                    <a href="{{ path('main_admin_user_list') }}" class="btn btn-sm btn-primary pull-right">{{ 'admin.general.back'|trans }}</span></a>
+                    {{ 'title.user.create'|trans }}
+                    <a href="{{ path('main_admin_user_list') }}" class="btn btn-sm btn-primary pull-right">{{ 'button.back_to_list'|trans }}</span></a>
                 </p>
             </h1>
         </div>
@@ -35,43 +35,43 @@
             {% endif %}
             <div class="control-group form-group {% if form_errors(form.username) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'admin.user.create.username'|trans }}</label>
+                    <label>{{ 'label.username'|trans }}</label>
                     {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.email) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'admin.user.create.email'|trans }}</label>
+                    <label>{{ 'label.email'|trans }}</label>
                     {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.plainPassword.first) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'admin.user.create.password.first'|trans }}</label>
+                    <label>{{ 'label.password.first'|trans }}</label>
                     {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.plainPassword.second) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'admin.user.create.password.repeat'|trans }}</label>
+                    <label>{{ 'label.password.repeat'|trans }}</label>
                     {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.firstName) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'admin.user.create.first_name'|trans }}</label>
+                    <label>{{ 'label.first_name'|trans }}</label>
                     {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.lastName) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'admin.user.create.last_name'|trans }}</label>
+                    <label>{{ 'label.last_name'|trans }}</label>
                     {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.phone) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'admin.user.create.phone'|trans }}</label>
+                    <label>{{ 'label.phone'|trans }}</label>
                     {{ form_widget(form.phone, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
@@ -91,7 +91,7 @@
                 {% endfor %}
             </div>
             <div class="form-group">
-                <button class="btn btn-primary" type="submit">{{ 'admin.general.button.create'|trans }}</button>
+                <button class="btn btn-primary" type="submit">{{ 'button.create'|trans }}</button>
             </div>
             {{ form_end(form, {'render_rest': true}) }}
         </div>

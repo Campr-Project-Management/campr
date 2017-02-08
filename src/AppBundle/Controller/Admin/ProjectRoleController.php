@@ -93,7 +93,7 @@ class ProjectRoleController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_role.create.success', [], 'admin')
+                        ->trans('success.project_role.create', [], 'flashes')
                 )
             ;
 
@@ -138,7 +138,7 @@ class ProjectRoleController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_role.edit.success', [], 'admin')
+                        ->trans('success.project_role.edit', [], 'flashes')
                 )
             ;
 
@@ -206,7 +206,7 @@ class ProjectRoleController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.project_role.delete.success.general', [], 'admin')
+                    ->trans('success.project_role.delete.general', [], 'flashes')
             )
         ;
 

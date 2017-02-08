@@ -1,11 +1,11 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="card">
         <div class="card-header bgm-teal">
-            <h2>{{ 'admin.wppcwct.list.title'|trans }}<small>{{ 'admin.wppcwct.list.subtitle'|trans }}</small></h2>
+            <h2>{{ 'title.wppcwct.list'|trans }}<small>{{ 'subtitle.wppcwct'|trans }}</small></h2>
             <a href="{{ path('app_admin_wppcwct_create') }}">
                 <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
             </a>
@@ -18,13 +18,13 @@
             {% endfor %}
             <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                 <strong>
-                    {{ 'admin.wppcwct.delete.success.first'|trans }}
+                    {{ 'success.wppcwct.delete.first'|trans({}, 'flashes') }}
                     <span id="object-id">
                         {% for flash_message in app.session.flashBag.get('success') %}
                             {{ flash_message }}
                         {% endfor %}
                     </span>
-                    {{ 'admin.wppcwct.delete.success.second'|trans }}
+                    {{ 'success.wppcwct.delete.second'|trans({}, 'flashes') }}
                 </strong>
             </div>
             <div class="table-responsive">
@@ -37,12 +37,12 @@
                         data-delete="app_admin_wppcwct_delete">
                     <thead>
                     <tr>
-                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.wppcwct.list.table.id'|trans }}</th>
-                        <th data-column-id="name">{{ 'admin.wppcwct.list.table.name'|trans }}</th>
-                        <th data-column-id="workPackageName">{{ 'admin.wppcwct.list.table.workpackage'|trans }}</th>
-                        <th data-column-id="projectWorkCostTypeName">{{ 'admin.wppcwct.list.table.projectworkcosttype'|trans }}</th>
-                        <th data-column-id="createdAt">{{ 'admin.wppcwct.list.table.created_at'|trans }}</th>
-                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'admin.general.placeholder.actions'|trans }}</th>
+                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'table_header_cell.id'|trans }}</th>
+                        <th data-column-id="name">{{ 'table_header_cell.name'|trans }}</th>
+                        <th data-column-id="workPackageName">{{ 'table_header_cell.workpackage'|trans }}</th>
+                        <th data-column-id="projectWorkCostTypeName">{{ 'table_header_cell.projectworkcosttype'|trans }}</th>
+                        <th data-column-id="createdAt">{{ 'table_header_cell.created_at'|trans }}</th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'placeholder.actions'|trans }}</th>
                     </tr>
                     </thead>
                 </table>
