@@ -47,22 +47,22 @@ class CreateType extends AbstractType
             ->add('proposedStartDate', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'dd-MM-yyy',
+                'format' => 'dd-MM-yyyy',
             ])
             ->add('proposedEndDate', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'dd-MM-yyy',
+                'format' => 'dd-MM-yyyy',
             ])
             ->add('forecastStartDate', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'dd-MM-yyy',
+                'format' => 'dd-MM-yyyy',
             ])
             ->add('forecastEndDate', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'dd-MM-yyy',
+                'format' => 'dd-MM-yyyy',
             ])
         ;
     }

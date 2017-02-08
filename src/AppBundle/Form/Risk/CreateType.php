@@ -111,7 +111,7 @@ class CreateType extends AbstractType
             ])
             ->add('dueDate', DateType::class, [
                 'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
+                'format' => 'dd-MM-yyyy',
                 'required' => false,
             ])
             ->add('status', EntityType::class, [

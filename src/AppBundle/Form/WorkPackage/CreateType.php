@@ -94,32 +94,32 @@ class CreateType extends AbstractType
             ->add('scheduledStartAt', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
+                'format' => 'dd-MM-yyyy',
             ])
             ->add('scheduledFinishAt', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
+                'format' => 'dd-MM-yyyy',
             ])
             ->add('forecastStartAt', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
+                'format' => 'dd-MM-yyyy',
             ])
             ->add('forecastFinishAt', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
+                'format' => 'dd-MM-yyyy',
             ])
             ->add('actualStartAt', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
+                'format' => 'dd-MM-yyyy',
             ])
             ->add('actualFinishAt', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
+                'format' => 'dd-MM-yyyy',
             ])
             ->add('content', TextareaType::class, [
                 'required' => false,
