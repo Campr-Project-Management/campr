@@ -21,7 +21,7 @@ class CreateType extends AbstractType
             ->add('name', TextType::class, [
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.team.name.not_blank',
+                        'message' => 'not_blank.team.name',
                     ]),
                 ],
             ])
@@ -31,7 +31,7 @@ class CreateType extends AbstractType
                 'constraints' => [
                     new File([
                         'mimeTypes' => ['image/jpg', 'image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'validation.constraints.team.logo.image',
+                        'mimeTypesMessage' => 'invalid.image',
                     ]),
                 ],
             ])

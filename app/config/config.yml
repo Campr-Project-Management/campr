@@ -121,3 +121,7 @@ bazinga_js_translation:
         - en
         - de
 
+# Lexik Translation Configuration
+lexik_translation:
+    fallback_locale: [en] #default locale(s) to use
+    managed_locales: [en, de] #locales that the bundle has to manage

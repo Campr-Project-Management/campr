@@ -111,7 +111,7 @@ class RiskController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.risk.create.success', [], 'admin')
+                        ->trans('success.risk.create', [], 'flashes')
                 )
             ;
 
@@ -154,7 +154,7 @@ class RiskController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.risk.edit.success', [], 'admin')
+                        ->trans('success.risk.edit', [], 'flashes')
                 )
             ;
 
@@ -179,7 +179,7 @@ class RiskController extends Controller
      * @param Request $request
      * @param Risk    $risk
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
     public function deleteAction(Request $request, Risk $risk)
     {
@@ -202,7 +202,7 @@ class RiskController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.risk.delete.success.general', [], 'admin')
+                    ->trans('success.risk.delete.general', [], 'flashes')
             )
         ;
 

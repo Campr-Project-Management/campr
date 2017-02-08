@@ -92,7 +92,7 @@ class TimephaseController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.timephase.create.success', [], 'admin')
+                        ->trans('success.timephase.create', [], 'flashes')
                 )
             ;
 
@@ -135,7 +135,7 @@ class TimephaseController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.timephase.edit.success', [], 'admin')
+                        ->trans('success.timephase.edit', [], 'flashes')
                 )
             ;
 
@@ -203,7 +203,7 @@ class TimephaseController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.timephase.delete.success.general', [], 'admin')
+                    ->trans('success.timephase.delete.general', [], 'flashes')
             )
         ;
 

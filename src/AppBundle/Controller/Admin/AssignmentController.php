@@ -92,7 +92,7 @@ class AssignmentController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.assignment.create.success', [], 'admin')
+                        ->trans('success.assignment.create', [], 'flashes')
                 )
             ;
 
@@ -135,7 +135,7 @@ class AssignmentController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.assignment.edit.success', [], 'admin')
+                        ->trans('success.assignment.edit', [], 'flashes')
                 )
             ;
 
@@ -203,7 +203,7 @@ class AssignmentController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.assignment.delete.success.general', [], 'admin')
+                    ->trans('success.assignment.delete.general', [], 'flashes')
             )
         ;
 

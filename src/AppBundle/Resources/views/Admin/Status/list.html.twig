@@ -1,13 +1,13 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.status.list.title'|trans }}<small>{{ 'admin.status.list.subtitle'|trans }}</small></h2>
+                    <h2>{{ 'title.status.list'|trans }}<small>{{ 'subtitle.status'|trans }}</small></h2>
                     <a href="{{ path('app_admin_status_create') }}">
                         <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
                     </a>
@@ -20,13 +20,13 @@
                     {% endfor %}
                     <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                         <strong>
-                            {{ 'admin.status.delete.success.first'|trans }}
+                            {{ 'success.status.delete.first'|trans({}, 'flashes') }}
                             <span id="object-id">
                                 {% for flash_message in app.session.flashBag.get('success') %}
                                     {{ flash_message }}
                                 {% endfor %}
                             </span>
-                            {{ 'admin.status.delete.success.second'|trans }}
+                            {{ 'success.status.delete.second'|trans({}, 'flashes') }}
                         </strong>
                     </div>
                     <div class="table-responsive">
@@ -39,9 +39,9 @@
                                 data-delete="app_admin_status_delete">
                             <thead>
                                 <tr>
-                                    <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.status.list.table.id'|trans }}</th>
-                                    <th data-column-id="name">{{  'admin.status.list.table.name'|trans }}</th>
-                                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'admin.general.placeholder.actions'|trans }}</th>
+                                    <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'table_header_cell.id'|trans }}</th>
+                                    <th data-column-id="name">{{  'table_header_cell.name'|trans }}</th>
+                                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'placeholder.actions'|trans }}</th>
                                 </tr>
                             </thead>
                         </table>

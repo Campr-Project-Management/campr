@@ -93,7 +93,7 @@ class ProjectComplexityController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_complexity.create.success', [], 'admin')
+                        ->trans('success.project_complexity.create', [], 'flashes')
                 )
             ;
 
@@ -138,7 +138,7 @@ class ProjectComplexityController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_complexity.edit.success', [], 'admin')
+                        ->trans('success.project_complexity.edit', [], 'flashes')
                 )
             ;
 
@@ -206,7 +206,7 @@ class ProjectComplexityController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.project_complexity.delete.success.general', [], 'admin')
+                    ->trans('success.project_complexity.delete.general', [], 'flashes')
             )
         ;
 

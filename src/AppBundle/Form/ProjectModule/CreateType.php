@@ -25,7 +25,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.project_module.module.not_blank',
+                        'message' => 'not_blank.module',
                     ]),
                 ],
             ])
@@ -35,8 +35,8 @@ class CreateType extends AbstractType
             ->add('project', EntityType::class, [
                 'class' => Project::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.project.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.project',
+                'translation_domain' => 'messages',
             ])
         ;
     }

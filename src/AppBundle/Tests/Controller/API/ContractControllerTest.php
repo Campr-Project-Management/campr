@@ -220,7 +220,7 @@ class ContractControllerTest extends BaseController
                 [
                     'messages' => [
                         'name' => ['The name field should not be blank'],
-                        'project' => ['You must select one project'],
+                        'project' => ['The project field should not be blank. Choose one project'],
                     ],
                 ],
             ],
@@ -422,7 +422,7 @@ class ContractControllerTest extends BaseController
                 [
                     'messages' => [
                         'name' => ['The name field should not be blank'],
-                        'project' => ['You must select one project'],
+                        'project' => ['The project field should not be blank. Choose one project'],
                     ],
                 ],
             ],

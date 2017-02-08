@@ -28,27 +28,27 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.general_field.name.not_blank',
+                        'message' => 'not_blank.name',
                     ]),
                 ],
             ])
             ->add('workPackage', EntityType::class, [
                 'class' => WorkPackage::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.workpackage.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.workpackage',
+                'translation_domain' => 'messages',
             ])
             ->add('projectWorkCostType', EntityType::class, [
                 'class' => ProjectWorkCostType::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.project_work_cost_type.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.project_work_cost_type',
+                'translation_domain' => 'messages',
             ])
             ->add('calendar', EntityType::class, [
                 'class' => Calendar::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.calendar.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.calendar',
+                'translation_domain' => 'messages',
             ])
             ->add('base', NumberType::class, [
                 'required' => false,

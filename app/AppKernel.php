@@ -48,6 +48,7 @@ class AppKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),
             new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
+            new Lexik\Bundle\TranslationBundle\LexikTranslationBundle(),
 
             //internals
             new AppBundle\AppBundle(),

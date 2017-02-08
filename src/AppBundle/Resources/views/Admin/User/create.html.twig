@@ -1,6 +1,6 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
 
@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.user.create.title'|trans }}</h2>
+                    <h2>{{ 'title.user.create'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,7 +17,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_user_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_user_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -54,7 +54,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.user.create.username'|trans
+                            'label': 'label.username'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -63,7 +63,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.user.create.email'|trans
+                            'label': 'label.email'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -72,7 +72,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.user.create.password.first'|trans
+                            'label': 'label.password.first'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -81,7 +81,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.user.create.password.repeat'|trans
+                            'label': 'label.password.repeat'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -90,7 +90,7 @@
                         'attr': {
                             'class': 'form-control input-sm',
                         },
-                        'label': 'admin.user.create.first_name'|trans
+                        'label': 'label.first_name'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -99,7 +99,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.user.create.last_name'|trans
+                            'label': 'label.last_name'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -108,7 +108,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.user.create.phone'|trans
+                            'label': 'label.phone'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -117,7 +117,7 @@
                             'attr': {
                                 'class': 'form-control',
                             },
-                            'label': 'admin.user.create.avatar'|trans
+                            'label': 'label.avatar'|trans
                         }
                     ) }}
                     {% for roleChild in form.roles.children %}

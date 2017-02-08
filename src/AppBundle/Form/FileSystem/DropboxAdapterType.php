@@ -21,7 +21,7 @@ class DropboxAdapterType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.filesystem.dropbox_adapter.key.not_blank',
+                        'message' => 'not_blank.key',
                     ]),
                 ],
             ])
@@ -29,7 +29,7 @@ class DropboxAdapterType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.filesystem.dropbox_adapter.secret.not_blank',
+                        'message' => 'not_blank.secret',
                     ]),
                 ],
             ])
@@ -37,7 +37,7 @@ class DropboxAdapterType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.filesystem.dropbox_adapter.token.not_blank',
+                        'message' => 'not_blank.token',
                     ]),
                 ],
             ])
@@ -45,7 +45,7 @@ class DropboxAdapterType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.filesystem.dropbox_adapter.token_secret.not_blank',
+                        'message' => 'not_blank.token_secret',
                     ]),
                 ],
             ])

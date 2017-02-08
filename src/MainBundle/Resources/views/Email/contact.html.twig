@@ -1,9 +1,11 @@
 {% extends 'MainBundle:Email:base.html.twig' %}
 
-{% block subject %}{{ 'contact.subject'|trans }} - {{ subject }}{% endblock %}
+{% trans_default_domain 'messages' %}
+
+{% block subject %}{{ 'email.subject.contact'|trans }} - {{ subject }}{% endblock %}
 
 {% block message %}
-    <p>{{ 'contact.from'|trans }}: {{ fullName }}</p>
-    <p>{{ 'contact.subject'|trans }}: {{ subject }}</p>
-    <p>{{ 'contact.message'|trans }}: {{ message }}</p>
+    <p>{{ 'email.from.contact'|trans }}: {{ fullName }}</p>
+    <p>{{ 'email.subject.general'|trans }}: {{ subject }}</p>
+    <p>{{ 'email.message.contact'|trans }}: {{ message }}</p>
 {% endblock %}

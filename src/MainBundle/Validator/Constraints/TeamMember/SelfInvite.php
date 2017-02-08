@@ -11,7 +11,7 @@ class SelfInvite extends Constraint
     /** @var User */
     public $user;
 
-    public $message = 'validation.constraints.team_member.invite.yourself';
+    public $message = 'invite.yourself';
 
     public function __construct($options)
     {

@@ -53,7 +53,7 @@ class CommunicationControllerTest extends BaseController
 
         $this->assertContains('The project field should not be blank. Choose one project', $crawler->html());
         $this->assertContains('The meeting name should not be blank', $crawler->html());
-        $this->assertContains('The location should not be blank', $crawler->html());
+        $this->assertContains('The location field should not be blank', $crawler->html());
         $this->assertContains('The schedule field should not be blank. Choose one schedule', $crawler->html());
         $this->assertContains('The content field should not be blank', $crawler->html());
 
@@ -225,7 +225,7 @@ class CommunicationControllerTest extends BaseController
 
         $this->assertContains('The project field should not be blank. Choose one project', $crawler->html());
         $this->assertContains('The meeting name should not be blank', $crawler->html());
-        $this->assertContains('The location should not be blank', $crawler->html());
+        $this->assertContains('The location field should not be blank', $crawler->html());
         $this->assertContains('The schedule field should not be blank. Choose one schedule', $crawler->html());
         $this->assertContains('The content field should not be blank', $crawler->html());
 

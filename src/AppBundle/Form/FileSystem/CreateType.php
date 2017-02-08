@@ -35,25 +35,25 @@ class CreateType extends AbstractType
             ->add('project', EntityType::class, [
                 'class' => Project::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.filesystem.create.project_placeholder',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.project',
+                'translation_domain' => 'messages',
             ])
             ->add('driver', ChoiceType::class, [
                 'required' => true,
                 'choices' => $this->adapters,
                 'constraints' => [
                     new NotNull([
-                        'message' => 'validation.constraints.filesystem.driver.not_null',
+                        'message' => 'not_null.driver',
                     ]),
                 ],
-                'placeholder' => 'admin.filesystem.create.adapter.placeholder',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.adapter',
+                'translation_domain' => 'messages',
             ])
             ->add('name', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.general_field.name.not_blank',
+                        'message' => 'not_blank.name',
                     ]),
                 ],
             ])

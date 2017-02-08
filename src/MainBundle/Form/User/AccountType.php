@@ -35,7 +35,7 @@ class AccountType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.user.first_name.not_blank',
+                        'message' => 'not_blank.first_name',
                     ]),
                 ],
             ])
@@ -43,7 +43,7 @@ class AccountType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.user.last_name.not_blank',
+                        'message' => 'not_blank.last_name',
                     ]),
                 ],
             ])
@@ -53,7 +53,7 @@ class AccountType extends AbstractType
                 'constraints' => [
                     new File([
                         'mimeTypes' => ['image/jpg', 'image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'validation.constraints.user.avatar.image',
+                        'mimeTypesMessage' => 'invalid.image',
                     ]),
                 ],
             ])
@@ -80,15 +80,15 @@ class AccountType extends AbstractType
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'validation.constraints.user.password.match',
+                'invalid_message' => 'match.password',
                 'required' => true,
                 'constraints' => [
                     new NotBlank(array(
-                        'message' => 'validation.constraints.user.password.not_blank',
+                        'message' => 'not_blank.password',
                     )),
                     new Regex([
                         'pattern' => "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/",
-                        'message' => 'validation.constraints.user.password.regex',
+                        'message' => 'regex.password',
                     ]),
                 ],
             ])

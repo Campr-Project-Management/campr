@@ -30,7 +30,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.user.username.not_blank',
+                        'message' => 'not_blank.username',
                     ]),
                 ],
             ])
@@ -38,24 +38,24 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.user.email.not_blank',
+                        'message' => 'not_blank.email',
                     ]),
                     new Email([
-                        'message' => 'validation.constraints.user.email.email',
+                        'message' => 'invalid.email',
                     ]),
                 ],
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'validation.constraints.user.password.match',
+                'invalid_message' => 'match.password',
                 'required' => true,
                 'constraints' => [
                     new NotBlank(array(
-                        'message' => 'validation.constraints.user.password.not_blank',
+                        'message' => 'not_blank.password',
                     )),
                     new Regex([
                         'pattern' => "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/",
-                        'message' => 'validation.constraints.user.password.regex',
+                        'message' => 'regex.password',
                     ]),
                 ],
             ])
@@ -63,7 +63,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.user.first_name.not_blank',
+                        'message' => 'not_blank.first_name',
                     ]),
                 ],
             ])
@@ -71,7 +71,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.user.last_name.not_blank',
+                        'message' => 'not_blank.last_name',
                     ]),
                 ],
             ])
@@ -84,7 +84,7 @@ class CreateType extends AbstractType
                 'constraints' => [
                     new File([
                         'mimeTypes' => ['image/jpg', 'image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'validation.constraints.user.avatar.image',
+                        'mimeTypesMessage' => 'invalid.image',
                     ]),
                 ],
             ])
@@ -92,11 +92,11 @@ class CreateType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'choices' => [
-                    'admin.user.edit.role.user' => 'ROLE_USER',
-                    'admin.user.edit.role.admin' => 'ROLE_ADMIN',
-                    'admin.user.edit.role.superadmin' => 'ROLE_SUPER_ADMIN',
+                    'label.role.user' => 'ROLE_USER',
+                    'label.role.admin' => 'ROLE_ADMIN',
+                    'label.role.superadmin' => 'ROLE_SUPER_ADMIN',
                 ],
-                'translation_domain' => 'admin',
+                'translation_domain' => 'messages',
             ))
         ;
     }

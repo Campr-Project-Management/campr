@@ -11,7 +11,7 @@ class UserInvited extends Constraint
     /** @var Team */
     public $team;
 
-    public $message = 'validation.constraints.team_member.invitation.sent';
+    public $message = 'invitation.sent';
 
     public function __construct($options)
     {

@@ -21,7 +21,7 @@ class LocalAdapterType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.filesystem.local_adapter.path.not_blank',
+                        'message' => 'not_blank.path',
                     ]),
                 ],
             ])

@@ -37,7 +37,9 @@ parameters:
 
     #misc
     activation_token_expiration: P1D
+    activation_token_expiration_number: 1
     reset_token_expiration: P1D
+    reset_token_expiration_number: 1
     import_folder: '%kernel.root_dir%/Resources/import'
     media_upload_folder: '%kernel.root_dir%/../web/uploads/media'
     tests_import_folder: '%kernel.root_dir%/../web/tests/import'

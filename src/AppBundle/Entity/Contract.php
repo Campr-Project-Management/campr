@@ -15,7 +15,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @UniqueEntity(
  *     fields="name",
  *     errorPath="name",
- *     message="validation.constraints.general_field.name.unique"
+ *     message="unique.name"
  *  )
  */
 class Contract
