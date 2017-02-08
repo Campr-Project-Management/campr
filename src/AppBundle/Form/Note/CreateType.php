@@ -68,11 +68,11 @@ class CreateType extends AbstractType
             ])
             ->add('date', DateType::class, [
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
+                'format' => 'dd-MM-yyyy',
             ])
             ->add('dueDate', DateType::class, [
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
+                'format' => 'dd-MM-yyyy',
             ])
             ->add('showInStatusReport', CheckboxType::class)
         ;

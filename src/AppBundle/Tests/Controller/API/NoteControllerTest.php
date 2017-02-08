@@ -224,7 +224,7 @@ class NoteControllerTest extends BaseController
         return [
             [
                 [
-                    'date' => '2017-01-02',
+                    'date' => '02-01-2017',
                 ],
                 true,
                 Response::HTTP_OK,
