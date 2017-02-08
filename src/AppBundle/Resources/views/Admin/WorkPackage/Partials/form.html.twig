@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
 
@@ -28,7 +28,7 @@
         'attr': {
             'class': 'form-control input-sm',
         },
-        'label': 'admin.workpackage.create.puid'|trans
+        'label': 'label.puid'|trans
     }
 ) }}
 {{ form_widget(
@@ -37,7 +37,7 @@
         'attr': {
             'class': 'form-control input-sm',
         },
-        'label': 'admin.workpackage.create.name'|trans
+        'label': 'label.name'|trans
     }
 ) }}
 {{ form_widget(
@@ -46,7 +46,7 @@
         'attr': {
             'class': 'form-control input-sm',
         },
-        'label': 'admin.workpackage.create.progress'|trans,
+        'label': 'label.progress'|trans,
     }
 ) }}
 {{ form_widget(
@@ -55,7 +55,7 @@
         'attr': {
             'class': 'selectpicker',
         },
-        'label': 'admin.workpackage.create.parent'|trans
+        'label': 'label.parent'|trans
     }
 ) }}
 {{ form_widget(
@@ -64,7 +64,7 @@
         'attr': {
             'class': 'selectpicker',
         },
-        'label': 'admin.workpackage.create.color'|trans
+        'label': 'label.color'|trans
     }
 ) }}
 {{ form_widget(
@@ -73,7 +73,7 @@
         'attr': {
             'class': 'selectpicker',
         },
-        'label': 'admin.workpackage.create.responsible'|trans
+        'label': 'label.responsible'|trans
     }
 ) }}
 {{ form_widget(
@@ -82,7 +82,7 @@
         'attr': {
             'class': 'selectpicker',
         },
-        'label': 'admin.workpackage.create.project'|trans
+        'label': 'label.project'|trans
     }
 ) }}
 {{ form_widget(
@@ -92,7 +92,7 @@
             'class': 'selectpicker',
             'multiple': '',
         },
-        'label': 'admin.workpackage.create.labels'|trans,
+        'label': 'label.labels'|trans,
     }
 ) }}
 {{ form_widget(
@@ -101,7 +101,7 @@
         'attr': {
             'class': 'selectpicker',
         },
-        'label': 'admin.workpackage.create.calendar'|trans
+        'label': 'label.calendar'|trans
     }
 ) }}
 {{ form_widget(
@@ -111,7 +111,7 @@
             'class': 'form-control date-picker',
             'addon_front': 'calendar',
         },
-        'label': 'admin.workpackage.create.schedule_start'|trans
+        'label': 'label.schedule_start'|trans
     }
 ) }}
 {{ form_widget(
@@ -121,7 +121,7 @@
             'class': 'form-control date-picker',
             'addon_front': 'calendar',
         },
-        'label': 'admin.workpackage.create.schedule_finish'|trans
+        'label': 'label.schedule_finish'|trans
 }
 ) }}
 {{ form_widget(
@@ -131,7 +131,7 @@
             'class': 'form-control date-picker',
             'addon_front': 'calendar',
         },
-        'label': 'admin.workpackage.create.forecast_start'|trans
+        'label': 'label.forecast_start'|trans
     }
 ) }}
 {{ form_widget(
@@ -141,7 +141,7 @@
             'class': 'form-control date-picker',
             'addon_front': 'calendar',
         },
-        'label': 'admin.workpackage.create.forecast_finish'|trans
+        'label': 'label.forecast_finish'|trans
 }
 ) }}
 {{ form_widget(
@@ -151,7 +151,7 @@
             'class': 'form-control date-picker',
             'addon_front': 'calendar',
         },
-        'label': 'admin.workpackage.create.actual_start'|trans
+        'label': 'label.actual_start'|trans
     }
 ) }}
 {{ form_widget(
@@ -161,7 +161,7 @@
             'class': 'form-control date-picker',
             'addon_front': 'calendar',
         },
-        'label': 'admin.workpackage.create.actual_finish'|trans
+        'label': 'label.actual_finish'|trans
     }
 ) }}
 {{ form_widget(
@@ -170,7 +170,7 @@
         'attr': {
             'class': 'form-control',
         },
-        'label': 'admin.workpackage.create.content'|trans
+        'label': 'label.content'|trans
     }
 ) }}
 {{ form_widget(
@@ -179,7 +179,7 @@
         'attr': {
             'class': 'form-control',
         },
-        'label': 'admin.workpackage.create.results'|trans
+        'label': 'label.results'|trans
     }
 ) }}
 {{ form_widget(
@@ -189,7 +189,7 @@ form.isKeyMilestone,
             'class': 'form-control input-sm',
             'toggle': true
         },
-    'label': 'admin.workpackage.create.is_key_milestone'|trans
+    'label': 'label.is_key_milestone'|trans
 }
 ) }}
 

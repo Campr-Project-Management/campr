@@ -27,29 +27,29 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.timephase.type.not_blank',
+                        'message' => 'not_blank.type',
                     ]),
                     new GreaterThanOrEqual([
                         'value' => 0,
-                        'message' => 'validation.constraints.timephase.type.greater_than_or_equal',
+                        'message' => 'greater_than_or_equal.type',
                     ]),
                 ],
             ])
             ->add('assignment', EntityType::class, [
                 'class' => Assignment::class,
                 'choice_label' => 'id',
-                'placeholder' => 'admin.assignment.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.assignment',
+                'translation_domain' => 'messages',
             ])
             ->add('unit', IntegerType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.timephase.unit.not_blank',
+                        'message' => 'not_blank.unit',
                     ]),
                     new GreaterThanOrEqual([
                         'value' => 0,
-                        'message' => 'validation.constraints.timephase.unit.greater_than_or_equal',
+                        'message' => 'greater_than_or_equal.unit',
                     ]),
                 ],
             ])
@@ -57,7 +57,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.timephase.value.not_blank',
+                        'message' => 'not_blank.value',
                     ]),
                 ],
             ])

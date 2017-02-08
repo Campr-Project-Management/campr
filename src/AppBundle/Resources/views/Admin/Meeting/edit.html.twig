@@ -1,6 +1,6 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
 
@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.meeting.edit.title'|trans }}</h2>
+                    <h2>{{ 'title.meeting.edit'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,10 +17,10 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_meeting_create') }}">{{ 'admin.meeting.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_meeting_create') }}">{{ 'add.meeting'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_meeting_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_meeting_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -53,7 +53,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.meeting.create.project'|trans,
+                            'label': 'label.project'|trans,
                         }
                     ) }}
                     {{ form_widget(
@@ -62,7 +62,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.meeting.create.name'|trans,
+                            'label': 'label.name'|trans,
                         }
                     ) }}
                     {{ form_widget(
@@ -71,7 +71,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.meeting.create.location'|trans,
+                            'label': 'label.location'|trans,
                         }
                     ) }}
                     {{ form_widget(
@@ -81,7 +81,7 @@
                                 'class': 'form-control date-picker',
                                 'addon_front': 'calendar',
                             },
-                            'label': 'admin.meeting.create.date'|trans
+                            'label': 'label.date'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -92,7 +92,7 @@
                                 'data-date-format': "HH:mm",
                                 'addon_front': 'time',
                             },
-                            'label': 'admin.meeting.create.start'|trans
+                            'label': 'label.start'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -103,7 +103,7 @@
                                 'data-date-format': "HH:mm",
                                 'addon_front': 'time',
                             },
-                            'label': 'admin.meeting.create.end'|trans
+                            'label': 'label.end'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -112,7 +112,7 @@
                             'attr': {
                                 'class': 'form-control',
                             },
-                            'label': 'admin.meeting.create.objectives'|trans
+                            'label': 'label.objectives'|trans
                         }
                     ) }}
 

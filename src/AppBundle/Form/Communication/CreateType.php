@@ -26,11 +26,11 @@ class CreateType extends AbstractType
             ->add('project', EntityType::class, [
                 'class' => Project::class,
                 'choice_label' => 'name',
-                'translation_domain' => 'admin',
-                'placeholder' => 'admin.project.choice',
+                'translation_domain' => 'messages',
+                'placeholder' => 'placeholder.project',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.communication.project.not_blank',
+                        'message' => 'not_blank.project',
                     ]),
                 ],
             ])
@@ -38,21 +38,20 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.communication.meeting_name.not_blank',
+                        'message' => 'not_blank.meeting_name',
                     ]),
                 ],
             ])
             ->add('participants', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'username',
-                'translation_domain' => 'admin',
                 'multiple' => true,
             ])
             ->add('location', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.communication.location.not_blank',
+                        'message' => 'not_blank.location',
                     ]),
                 ],
             ])
@@ -60,18 +59,18 @@ class CreateType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.communication.content.not_blank',
+                        'message' => 'not_blank.content',
                     ]),
                 ],
             ])
             ->add('schedule', EntityType::class, [
                 'class' => Schedule::class,
                 'choice_label' => 'name',
-                'translation_domain' => 'admin',
-                'placeholder' => 'admin.schedule.choice',
+                'translation_domain' => 'messages',
+                'placeholder' => 'placeholder.schedule',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.communication.schedule.not_blank',
+                        'message' => 'not_blank.schedule',
                     ]),
                 ],
             ])

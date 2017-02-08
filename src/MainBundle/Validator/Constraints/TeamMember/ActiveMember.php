@@ -15,7 +15,7 @@ class ActiveMember extends Constraint
     /** @var User */
     public $user;
 
-    public $message = 'validation.constraints.team_member.invite.team_member';
+    public $message = 'invite.team_member';
 
     public function __construct($options)
     {

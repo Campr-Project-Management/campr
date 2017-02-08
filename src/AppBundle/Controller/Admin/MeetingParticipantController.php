@@ -111,7 +111,7 @@ class MeetingParticipantController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.meeting_participant.create.success', [], 'admin')
+                        ->trans('success.meeting_participant.create', [], 'flashes')
                 )
             ;
 
@@ -154,7 +154,7 @@ class MeetingParticipantController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.meeting_participant.edit.success', [], 'admin')
+                        ->trans('success.meeting_participant.edit', [], 'flashes')
                 )
             ;
 
@@ -202,7 +202,7 @@ class MeetingParticipantController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.meeting_participant.delete.success.general', [], 'admin')
+                    ->trans('success.meeting_participant.delete.general', [], 'flashes')
             )
         ;
 

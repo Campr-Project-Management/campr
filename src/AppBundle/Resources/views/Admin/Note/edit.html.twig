@@ -1,6 +1,6 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
 
@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.note.edit.title'|trans }}</h2>
+                    <h2>{{ 'title.note.edit'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,10 +17,10 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_note_create') }}">{{ 'admin.note.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_note_create') }}">{{ 'add.note'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_note_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_note_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -53,7 +53,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.note.create.note_title'|trans,
+                            'label': 'label.note_title'|trans,
                         }
                     ) }}
                     {{ form_widget(
@@ -62,7 +62,7 @@
                             'attr': {
                                 'class': 'form-control',
                             },
-                            'label': 'admin.note.create.description'|trans,
+                            'label': 'label.description'|trans,
                         }
                     ) }}
                     {{ form_widget(
@@ -71,7 +71,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.note.create.project'|trans,
+                            'label': 'label.project'|trans,
                         }
                     ) }}
                     {{ form_widget(
@@ -80,7 +80,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.note.create.meeting'|trans,
+                            'label': 'label.meeting'|trans,
                         }
                     ) }}
                     {{ form_widget(
@@ -89,7 +89,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.note.create.responsible'|trans,
+                            'label': 'label.responsible'|trans,
                         }
                     ) }}
                     {{ form_widget(
@@ -98,7 +98,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.note.create.status'|trans,
+                            'label': 'label.status'|trans,
                         }
                     ) }}
                     {{ form_widget(
@@ -108,7 +108,7 @@
                                 'class': 'form-control date-picker',
                                 'addon_front': 'calendar',
                             },
-                        'label': 'admin.note.create.date'|trans
+                        'label': 'label.date'|trans
                     }
                     ) }}
                     {{ form_widget(
@@ -118,7 +118,7 @@
                                 'class': 'form-control date-picker',
                                 'addon_front': 'calendar',
                             },
-                            'label': 'admin.note.create.due_date'|trans
+                            'label': 'label.due_date'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -128,7 +128,7 @@
                                 'class': 'form-control input-sm',
                                 'toggle': true
                             },
-                            'label': 'admin.note.create.show_in_status'|trans
+                            'label': 'label.show_in_status'|trans
                         }
                     ) }}
 

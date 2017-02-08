@@ -17,8 +17,8 @@ use JMS\Serializer\Annotation as Serializer;
  *     @ORM\UniqueConstraint(name="slug_unique", columns={"slug"}),
  * }))
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TeamRepository")
- * @UniqueEntity(fields={"name"}, message="validation.constraints.team.name.unique")
- * @UniqueEntity(fields={"slug"}, message="validation.constraints.team.slug.unique")
+ * @UniqueEntity(fields={"name"}, message="unique.team.name")
+ * @UniqueEntity(fields={"slug"}, message="unique.team.slug")
  * @Vich\Uploadable
  */
 class Team

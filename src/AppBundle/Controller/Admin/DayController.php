@@ -112,7 +112,7 @@ class DayController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.day.create.success', [], 'admin')
+                        ->trans('success.day.create', [], 'flashes')
                 )
             ;
 
@@ -153,7 +153,7 @@ class DayController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.day.edit.success', [], 'admin')
+                        ->trans('success.day.edit', [], 'flashes')
                 )
             ;
 
@@ -199,7 +199,7 @@ class DayController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.day.delete.success.general', [], 'admin')
+                    ->trans('success.day.delete.general', [], 'flashes')
             )
         ;
 

@@ -93,7 +93,7 @@ class ProjectStatusController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_status.create.success', [], 'admin')
+                        ->trans('success.project_status.create', [], 'flashes')
                 )
             ;
 
@@ -138,7 +138,7 @@ class ProjectStatusController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_status.edit.success', [], 'admin')
+                        ->trans('success.project_status.edit', [], 'flashes')
                 )
             ;
 
@@ -206,7 +206,7 @@ class ProjectStatusController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.project_status.delete.success.general', [], 'admin')
+                    ->trans('success.project_status.delete.general', [], 'flashes')
             )
         ;
 

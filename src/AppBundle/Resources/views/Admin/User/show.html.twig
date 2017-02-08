@@ -1,13 +1,13 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.user.list.title'|trans }}<small>{{ user.username }} - {{ user.email }}</small></h2>
+                    <h2>{{ 'title.user.list'|trans }}<small>{{ user.username }} - {{ user.email }}</small></h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -15,13 +15,13 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_user_create') }}">{{ 'admin.user.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_user_create') }}">{{ 'add.user'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_user_edit', {'id': user.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                    <a href="{{ path('app_admin_user_edit', {'id': user.id}) }}">{{ 'button.edit'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_user_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_user_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -32,43 +32,43 @@
                         <table class="table table-striped">
                             <tbody>
                             <tr>
-                                <th>{{ 'admin.user.list.table.full_name'|trans }}</th>
+                                <th>{{ 'table_header_cell.name'|trans }}</th>
                                 <td>{{ user.fullName }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.user.list.table.username'|trans }}</th>
+                                <th>{{ 'table_header_cell.username'|trans }}</th>
                                 <td>@{{ user.username }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.user.list.table.email'|trans }}</th>
+                                <th>{{ 'table_header_cell.email'|trans }}</th>
                                 <td>{{ user.email }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.user.list.table.phone'|trans }}</th>
+                                <th>{{ 'table_header_cell.phone'|trans }}</th>
                                 <td>{{ user.phone|default('-') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.user.list.table.enabled'|trans }}</th>
+                                <th>{{ 'table_header_cell.enabled'|trans }}</th>
                                 <td>
                                     {% if user.isEnabled %}
-                                        <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                        <span class="c-green">{{ 'message.yes'|trans }}</span>
                                     {% else %}
-                                        <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                        <span class="c-red">{{ 'message.no'|trans }}</span>
                                     {% endif %}
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.user.list.table.suspended'|trans }}</th>
+                                <th>{{ 'table_header_cell.suspended'|trans }}</th>
                                 <td>
                                     {% if user.isSuspended %}
-                                        <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                        <span class="c-green">{{ 'message.yes'|trans }}</span>
                                     {% else %}
-                                        <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                        <span class="c-red">{{ 'message.no'|trans }}</span>
                                     {% endif %}
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.user.list.table.roles'|trans }}</th>
+                                <th>{{ 'table_header_cell.roles'|trans }}</th>
                                 <td>
                                     {% for role in user.roles %}
                                         <p>{{ role }}</p>

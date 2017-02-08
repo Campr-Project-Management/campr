@@ -16,7 +16,7 @@
                     {% if label is not none %}
                         {{ label }}
                     {% else %}
-                        {{ 'admin.general.form.label'|trans({}, 'admin') }}
+                        {{ 'label.label'|trans({}, 'messages') }}
                     {% endif %}
                     {% if required %}
                         <span class="c-red">*</span>
@@ -37,7 +37,7 @@
                 {% if label is not none %}
                     {{ label }}
                 {% else %}
-                    {{ 'admin.general.form.label'|trans({}, 'admin') }}:
+                    {{ 'label.label'|trans({}, 'messages') }}:
                 {% endif %}
             </label>
             <div class="select">
@@ -77,7 +77,7 @@
                     {% if label is not none %}
                         {{ label }}
                     {% else %}
-                        {{ 'admin.general.form.label'|trans({}, 'admin') }}
+                        {{ 'label.label'|trans({}, 'messages') }}
                     {% endif %}
                 </label>
                 <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
@@ -96,7 +96,7 @@
                     {% if label is not none %}
                         {{ label }}
                     {% else %}
-                        {{ 'admin.general.form.label'|trans({}, 'admin') }}
+                        {{ 'label.label'|trans({}, 'messages') }}
                     {% endif %}
                     {% if required %}
                         <span class="c-red">*</span>
@@ -112,9 +112,9 @@
         <div class="fileinput fileinput-new" data-provides="fileinput">
             <span class="btn bgm-teal btn-file m-r-10">
                 {% if not data %}
-                    <span class="fileinput-new">{{ 'admin.general.form.button.select_file'|trans({}, 'admin') }}</span>
+                    <span class="fileinput-new">{{ 'button.select_file'|trans({}, 'messages') }}</span>
                 {% else %}
-                    <span class="fileinput-exists">{{ 'admin.general.form.button.change'|trans({}, 'admin') }}</span>
+                    <span class="fileinput-exists">{{ 'button.change'|trans({}, 'messages') }}</span>
                 {% endif %}
                 <input {{ block('widget_attributes') }} type="file">
             </span>

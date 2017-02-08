@@ -111,7 +111,7 @@ class RiskCategoryController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.risk_category.create.success', [], 'admin')
+                        ->trans('success.risk_category.create', [], 'flashes')
                 )
             ;
 
@@ -154,7 +154,7 @@ class RiskCategoryController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.risk_category.edit.success', [], 'admin')
+                        ->trans('success.risk_category.edit', [], 'flashes')
                 )
             ;
 
@@ -179,7 +179,7 @@ class RiskCategoryController extends Controller
      * @param Request      $request
      * @param RiskCategory $riskCategory
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
     public function deleteAction(Request $request, RiskCategory $riskCategory)
     {
@@ -202,7 +202,7 @@ class RiskCategoryController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.risk_category.delete.success.general', [], 'admin')
+                    ->trans('success.risk_category.delete.general', [], 'flashes')
             )
         ;
 

@@ -93,7 +93,7 @@ class ProjectUserController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_user.create.success', [], 'admin')
+                        ->trans('success.project_user.create', [], 'flashes')
                 )
             ;
 
@@ -138,7 +138,7 @@ class ProjectUserController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_user.edit.success', [], 'admin')
+                        ->trans('success.project_user.edit', [], 'flashes')
                 )
             ;
 
@@ -206,7 +206,7 @@ class ProjectUserController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.project_user.delete.success.general', [], 'admin')
+                    ->trans('success.project_user.delete.general', [], 'flashes')
             )
         ;
 

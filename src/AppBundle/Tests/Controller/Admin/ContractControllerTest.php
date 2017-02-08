@@ -53,7 +53,7 @@ class ContractControllerTest extends BaseController
         $crawler = $this->client->submit($form);
 
         $this->assertContains('The name field should not be blank', $crawler->html());
-        $this->assertContains('You must select one project', $crawler->html());
+        $this->assertContains('The project field should not be blank. Choose one project', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -191,7 +191,7 @@ class ContractControllerTest extends BaseController
         $crawler = $this->client->submit($form);
 
         $this->assertContains('The name field should not be blank', $crawler->html());
-        $this->assertContains('You must select one project', $crawler->html());
+        $this->assertContains('The project field should not be blank. Choose one project', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
