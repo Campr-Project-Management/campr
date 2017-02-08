@@ -1,6 +1,6 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
 
@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.meeting_agenda.edit.title'|trans }}</h2>
+                    <h2>{{ 'title.meeting_agenda.edit'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,10 +17,10 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_meeting_agenda_create') }}">{{ 'admin.meeting_agenda.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_meeting_agenda_create') }}">{{ 'add.meeting_agenda'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_meeting_agenda_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_meeting_agenda_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -53,7 +53,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.meeting_agenda.create.meeting'|trans,
+                            'label': 'label.meeting'|trans,
                         }
                     ) }}
                     {{ form_widget(
@@ -62,7 +62,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.meeting_agenda.create.topic'|trans,
+                            'label': 'label.topic'|trans,
                         }
                     ) }}
                     {{ form_widget(
@@ -71,7 +71,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.meeting_agenda.create.responsible'|trans,
+                            'label': 'label.responsible'|trans,
                         }
                     ) }}
                     {{ form_widget(
@@ -82,7 +82,7 @@
                                 'data-date-format': "HH:mm",
                                 'addon_front': 'time',
                             },
-                            'label': 'admin.meeting_agenda.create.start'|trans
+                            'label': 'label.start'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -93,7 +93,7 @@
                                 'data-date-format': "HH:mm",
                                 'addon_front': 'time',
                             },
-                            'label': 'admin.meeting_agenda.create.end'|trans
+                            'label': 'label.end'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -104,7 +104,7 @@
                                 'data-date-format': "HH:mm",
                                 'addon_front': 'time',
                             },
-                            'label': 'admin.meeting_agenda.create.duration'|trans
+                            'label': 'label.duration'|trans
                         }
                     ) }}
 

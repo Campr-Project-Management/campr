@@ -12,7 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @ORM\Table(name="company")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CompanyRepository")
- * @UniqueEntity(fields="name", message="validation.constraints.general_field.name.unique")
+ * @UniqueEntity(fields="name", message="unique.name")
  */
 class Company
 {

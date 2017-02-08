@@ -1,14 +1,14 @@
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 <div class="form-group m-t-15">
     <div class="col-sm-offset-4 col-sm-10">
         <button class="btn btn-sm bgm-blue" type="submit">
             <i class="zmdi zmdi-floppy"></i>
-            {{ 'admin.general.form.button.save_changes'|trans }}
+            {{ 'button.save_changes'|trans }}
         </button>
         <a class="btn btn-sm bgm-red" href="{{ path(delete_path, {'id': id}) }}">
             <i class="zmdi zmdi-delete"></i>
-            {{ 'admin.general.form.button.delete'|trans }}
+            {{ 'button.delete'|trans }}
         </a>
     </div>
 </div>

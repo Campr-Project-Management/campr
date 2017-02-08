@@ -1,12 +1,12 @@
 {% extends 'MainBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">
-                <p class="text-primary">{{ 'admin.payment_method.list.title'|trans }}</p>
+                <p class="text-primary">{{ 'title.payment_method.list'|trans }}</p>
             </h1>
             <a href="{{ path('main_admin_payment_method_create') }}" class="btn btn-sm btn-primary pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
             {% for flashMessage in app.session.flashbag.get('success') %}
@@ -25,11 +25,11 @@
         <div class="col-lg-12">
             <table class="table table-condensed table-responsive">
                 <thead>
-                <th>{{ 'admin.payment_method.list.table.id'|trans }}</th>
-                <th>{{ 'admin.payment_method.list.table.name'|trans }}</th>
-                <th>{{ 'admin.payment_method.list.table.token'|trans }}</th>
-                <th>{{ 'admin.payment_method.list.table.created_at'|trans }}</th>
-                <th>{{ 'admin.general.actions'|trans }}</th>
+                    <th>{{ 'table_header_cell.id'|trans }}</th>
+                    <th>{{ 'table_header_cell.name'|trans }}</th>
+                    <th>{{ 'table_header_cell.token'|trans }}</th>
+                    <th>{{ 'table_header_cell.created_at'|trans }}</th>
+                    <th>{{ 'placeholder.actions'|trans }}</th>
                 </thead>
                 <tbody>
                 {% for payment_method in payment_methods %}

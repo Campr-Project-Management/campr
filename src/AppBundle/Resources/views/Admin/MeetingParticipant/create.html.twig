@@ -1,6 +1,6 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
 
@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.meeting_participant.create.title'|trans }}</h2>
+                    <h2>{{ 'title.meeting_participant.create'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,7 +17,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_meeting_participant_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_meeting_participant_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -49,7 +49,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                        'label': 'admin.meeting_participant.create.meeting'|trans,
+                        'label': 'label.meeting'|trans,
                         }
                     ) }}
                     {{ form_widget(
@@ -58,7 +58,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.meeting_participant.create.user'|trans,
+                            'label': 'label.user'|trans,
                         }
                     ) }}
 
@@ -68,7 +68,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.meeting_participant.create.remark'|trans,
+                            'label': 'label.remark'|trans,
                         }
                     ) }}
                     {{ form_widget(
@@ -78,7 +78,7 @@
                                 'class': 'form-control input-sm',
                                 'toggle': true
                             },
-                            'label': 'admin.meeting_participant.create.is_present'|trans,
+                            'label': 'label.is_present'|trans,
                     }
                     ) }}
                     {{ form_widget(
@@ -88,7 +88,7 @@
                                 'class': 'form-control input-sm',
                                 'toggle': true
                             },
-                            'label': 'admin.meeting_participant.create.is_excused'|trans,
+                            'label': 'label.is_excused'|trans,
                     }
                     ) }}
                     {{ form_widget(
@@ -98,7 +98,7 @@
                                 'class': 'form-control input-sm',
                                 'toggle': true
                             },
-                            'label': 'admin.meeting_participant.create.in_distribution_list'|trans,
+                            'label': 'label.in_distribution_list'|trans,
                     }
                     ) }}
 

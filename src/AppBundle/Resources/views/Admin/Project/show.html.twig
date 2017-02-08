@@ -1,13 +1,13 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.project.list.title'|trans }}<small>{{ project.name }}</small></h2>
+                    <h2>{{ 'title.project.list'|trans }}<small>{{ project.name }}</small></h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -15,13 +15,13 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_project_create') }}">{{ 'admin.project.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_project_create') }}">{{ 'add.project'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_project_edit', {'id': project.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                    <a href="{{ path('app_admin_project_edit', {'id': project.id}) }}">{{ 'button.edit'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_project_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_project_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -32,15 +32,15 @@
                         <table class="table table-striped">
                             <tbody>
                             <tr>
-                                <th>{{ 'admin.project.list.table.name'|trans }}</th>
+                                <th>{{ 'table_header_cell.name'|trans }}</th>
                                 <td>{{ project.name }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.project.list.table.number'|trans }}</th>
+                                <th>{{ 'table_header_cell.number'|trans }}</th>
                                 <td>{{ project.number }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.project.list.table.project_complexity'|trans }}</th>
+                                <th>{{ 'table_header_cell.project_complexity'|trans }}</th>
                                 <td>
                                     {% if project.projectComplexity %}
                                         {{ project.projectComplexity.name }}
@@ -48,7 +48,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.project.list.table.project_category'|trans }}</th>
+                                <th>{{ 'table_header_cell.project_category'|trans }}</th>
                                 <td>
                                     {% if project.projectCategory %}
                                         {{ project.projectCategory.name }}
@@ -56,7 +56,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.project.list.table.project_scope'|trans }}</th>
+                                <th>{{ 'table_header_cell.project_scope'|trans }}</th>
                                 <td>
                                     {% if project.projectScope %}
                                         {{ project.projectScope.name }}
@@ -64,7 +64,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.project.list.table.status'|trans }}</th>
+                                <th>{{ 'table_header_cell.status'|trans }}</th>
                                 <td>
                                     {% if project.status %}
                                         {{ project.status.name }}
@@ -72,7 +72,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.project.list.table.portfolio'|trans }}</th>
+                                <th>{{ 'table_header_cell.portfolio'|trans }}</th>
                                 <td>
                                     {% if project.portfolio %}
                                         {{ project.portfolio.name }}
@@ -80,7 +80,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.project.list.table.approved_at'|trans }}</th>
+                                <th>{{ 'table_header_cell.approved_at'|trans }}</th>
                                 <td>
                                     {% if project.approvedAt %}
                                         {{ project.approvedAt|date('d/m/Y') }}
@@ -88,7 +88,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.project.list.table.status_updated_at'|trans }}</th>
+                                <th>{{ 'table_header_cell.status_updated_at'|trans }}</th>
                                 <td>
                                     {% if project.statusUpdatedAt %}
                                         {{ project.statusUpdatedAt|date('d/m/Y') }}
@@ -96,7 +96,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.project.list.table.created_at'|trans }}</th>
+                                <th>{{ 'table_header_cell.created_at'|trans }}</th>
                                 <td>
                                     {% if project.createdAt %}
                                         {{ project.createdAt|date('d/m/Y') }}
@@ -104,7 +104,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.project.list.table.updated_at'|trans }}</th>
+                                <th>{{ 'table_header_cell.updated_at'|trans }}</th>
                                 <td>
                                     {% if project.updatedAt %}
                                         {{ project.updatedAt|date('d/m/Y') }}

@@ -25,7 +25,7 @@ class EditType extends AbstractType
                 'label' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.team.name.not_blank',
+                        'message' => 'not_blank.team.name',
                     ]),
                 ],
             ])
@@ -33,11 +33,11 @@ class EditType extends AbstractType
                 'label' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.team.slug.not_blank',
+                        'message' => 'not_blank.team.slug',
                     ]),
                     new Regex([
                         'pattern' => '/^[a-z0-9]*([a-z0-9-]+[a-z0-9])?$/iD',
-                        'message' => 'validation.constraints.team.slug.invalid',
+                        'message' => 'invalid.slug',
                     ]),
                     new TeamSlugUsable([
                         'team' => $entity,
@@ -50,7 +50,7 @@ class EditType extends AbstractType
                 'constraints' => [
                     new File([
                         'mimeTypes' => ['image/jpg', 'image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'validation.constraints.team.logo.image',
+                        'mimeTypesMessage' => 'invalid.image',
                     ]),
                 ],
             ])

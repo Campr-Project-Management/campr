@@ -24,20 +24,20 @@ class CreateType extends AbstractType
             ->add('workPackage', EntityType::class, [
                 'class' => WorkPackage::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.workpackage.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.workpackage',
+                'translation_domain' => 'messages',
             ])
             ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'username',
-                'placeholder' => 'admin.user.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.user',
+                'translation_domain' => 'messages',
             ])
             ->add('data', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.raci.data.not_blank',
+                        'message' => 'not_blank.data',
                     ]),
                 ],
             ])

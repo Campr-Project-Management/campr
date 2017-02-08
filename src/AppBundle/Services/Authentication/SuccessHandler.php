@@ -29,9 +29,9 @@ class SuccessHandler implements AuthenticationSuccessHandlerInterface
         return new JsonResponse(
             [
                 'message' => $this->translator->trans(
-                    'api.authentication.token_returned',
+                    'authentication.token_returned',
                     [],
-                    'api_responses'
+                    'messages'
                 ),
                 'token' => $user->getApiToken(),
             ],

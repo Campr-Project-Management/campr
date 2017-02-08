@@ -1,11 +1,11 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="card">
         <div class="card-header bgm-teal">
-            <h2>{{ 'admin.note.list.title'|trans }}<small>{{ 'admin.note.list.subtitle'|trans }}</small></h2>
+            <h2>{{ 'title.note.list'|trans }}<small>{{ 'subtitle.note'|trans }}</small></h2>
             <a href="{{ path('app_admin_note_create') }}">
                 <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
             </a>
@@ -18,13 +18,13 @@
             {% endfor %}
             <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                 <strong>
-                    {{ 'admin.note.delete.success.first'|trans }}
+                    {{ 'success.note.delete.first'|trans({}, 'flashes') }}
                     <span id="object-id">
                         {% for flash_message in app.session.flashBag.get('success') %}
                             {{ flash_message }}
                         {% endfor %}
                     </span>
-                    {{ 'admin.note.delete.success.second'|trans }}
+                    {{ 'success.note.delete.second'|trans({}, 'flashes') }}
                 </strong>
             </div>
             <div class="table-responsive">
@@ -37,13 +37,13 @@
                         data-delete="app_admin_note_delete">
                     <thead>
                     <tr>
-                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.note.list.table.id'|trans }}</th>
-                        <th data-column-id="projectName">{{ 'admin.note.list.table.project'|trans }}</th>
-                        <th data-column-id="meetingName">{{ 'admin.note.list.table.meeting'|trans }}</th>
-                        <th data-column-id="title">{{ 'admin.note.list.table.title'|trans }}</th>
-                        <th data-column-id="responsibilityFullName">{{ 'admin.note.list.table.responsible'|trans }}</th>
-                        <th data-column-id="date">{{ 'admin.note.list.table.date'|trans }}</th>
-                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'admin.general.placeholder.actions'|trans }}</th>
+                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'table_header_cell.id'|trans }}</th>
+                        <th data-column-id="projectName">{{ 'table_header_cell.project'|trans }}</th>
+                        <th data-column-id="meetingName">{{ 'table_header_cell.meeting'|trans }}</th>
+                        <th data-column-id="title">{{ 'table_header_cell.title'|trans }}</th>
+                        <th data-column-id="responsibilityFullName">{{ 'table_header_cell.responsible'|trans }}</th>
+                        <th data-column-id="date">{{ 'table_header_cell.date'|trans }}</th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'placeholder.actions'|trans }}</th>
                     </tr>
                     </thead>
                 </table>

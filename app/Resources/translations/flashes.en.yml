@@ -1,0 +1,355 @@
+success:
+    account:
+        edit: Your account was succesfully edited!
+    assignment:
+        create: Assignment successfully created!
+        edit: Assignment successfully edited!
+        delete:
+            general: Assignment successfully deleted!
+            first: Assignment with ID
+            second: successfully deleted!
+    calendar:
+        create: Calendar successfully created!
+        edit: Calendar successfully edited!
+        delete:
+            general: Calendar successfully deleted!
+            first: Calendar with ID
+            second: successfully deleted!
+    color_status:
+        create: Color status successfully created!
+        edit: Color status successfully edited!
+        delete:
+            general: Color status successfully deleted!
+            first: Color status with ID
+            second: successfully deleted!
+    communication:
+        create: Communication successfully created!
+        edit: Communication successfully edited!
+        delete:
+            general: Communication successfully deleted!
+            first: Communication with ID
+            second: successfully deleted!
+    company:
+        create: Company successfully created!
+        edit: Company successfully edited!
+        delete:
+            general: Company successfully deleted!
+            first: Company with ID
+            second: successfully deleted!
+    day:
+        create: Day successfully created!
+        edit: Day successfully edited!
+        delete:
+            general: Day successfully deleted!
+            first: Day with ID
+            second: successfully deleted!
+    decision:
+        create: Decision successfully created!
+        edit: Decision successfully edited!
+        delete:
+            general: Decision successfully deleted!
+            first: Decision with ID
+            second: successfully deleted!
+    distribution_list:
+        create: Distribution list successfully created!
+        edit: Distribution list successfully edited!
+        delete:
+            general: Distribution list successfully deleted!
+            first: Distribution list with ID
+            second: successfully deleted!
+    filesystem:
+        create: FileSystem successfully created!
+        edit: File System successfully edited!
+        delete:
+            general: File System successfully deleted!
+            first: File System with ID
+            second: successfully deleted!
+    impact:
+        create: Impact successfully created!
+        edit: Impact successfully edited!
+        delete:
+            general: Impact successfully deleted!
+            first: Impact with ID
+            second: successfully deleted!
+    label:
+        create: Label successfully created!
+        edit: Label successfully edited!
+        delete:
+            general: Label successfully deleted!
+            first: Label with ID
+            second: successfully deleted!
+    media:
+        upload: Media file successfully created!
+        edit: Media file successfully edited!
+        delete:
+            general: Media file successfully deleted!
+            first: File with ID
+            second: successfully deleted!
+    meeting_agenda:
+        create: Meeting agenda successfully created!
+        edit: Meeting agenda successfully edited!
+        delete:
+            general: Meeting agenda successfully deleted!
+            first: Meeting agenda with ID
+            second: successfully deleted!
+    meeting_participant:
+        create: Meeting participant successfully created!
+        edit: Meeting participant successfully edited!
+        delete:
+            general: Meeting participant successfully deleted!
+            first: Meeting participant with ID
+            second: successfully deleted!
+    meeting:
+        create: Meeting successfully created!
+        edit: Meeting successfully edited!
+        delete:
+            general: Meeting successfully deleted!
+            first: Meeting with ID
+            second: successfully deleted!
+    note:
+        create: Note successfully created!
+        edit: Note successfully edited!
+        delete:
+            general: Note successfully deleted!
+            first: Note with ID
+            second: successfully deleted!
+    portfolio:
+        create: Portfolio successfully created!
+        edit: Portfolio successfully edited!
+        delete:
+            general: Portfolio successfully deleted!
+            first: Portfolio with ID
+            second: successfully deleted!
+    project:
+        create: Project successfully created!
+        edit: Project successfully edited!
+        delete:
+            general: Project successfully deleted!
+            first: Project with ID
+            second: successfully deleted!
+    chat_messages:
+        delete: Messages successfully deleted!
+    project_category:
+        create: Project category successfully created!
+        edit: Project category successfully edited!
+        delete:
+            general: Project category successfully deleted!
+            first: Project category with ID
+            second: successfully deleted!
+    project_complexity:
+        create: Project complexity successfully created!
+        edit: Project complexity successfully edited!
+        delete:
+            general: Project complexity successfully deleted!
+            first: Project complexity with ID
+            second: successfully deleted!
+    project_cost_type:
+        create: Project cost type successfully created!
+        edit: Project cost type successfully edited!
+        delete:
+            general: Project cost type successfully deleted!
+            first: Project cost type with ID
+            second: successfully deleted!
+    project_department:
+        create: Project department successfully created!
+        edit: Project department successfully edited!
+        delete:
+            general: Project department successfully deleted!
+            first: Project department with ID
+            second: successfully edited!
+    project_module:
+        create: Project module successfully created!
+        edit: Project module successfully edited!
+        delete:
+            general: Project module successfully deleted!
+            first: Project module with ID
+            second: successfully deleted!
+    project_role:
+        create: Project role successfully created!
+        edit: Project role successfully edited!
+        delete:
+            general: Project role successfully deleted!
+            first: Project role with ID
+            second: successfully deleted!
+    project_scope:
+        create: Project scope successfully created!
+        edit: Project scope successfully edited!
+        delete:
+            general: Project scope successfully deleted!
+            first: Project scope with ID
+            second: successfully deleted!
+    project_status:
+        create: Project status successfully created!
+        edit: Project status successfully edited!
+        delete:
+            general: Project status successfully deleted!
+            first: Project status with ID
+            second: successfully deleted!
+    project_team:
+        create: Project team successfully created!
+        edit: Project team successfully edited!
+        delete:
+            general: Project team successfully deleted!
+            first: Project team with ID
+            second: successfully deleted!
+    project_user:
+        create: Project user successfully created!
+        edit: Project user successfully edited!
+        delete:
+            general: Project user successfully deleted!
+            first: Project user with ID
+            second: successfully deleted!
+    project_work_cost_type:
+        create: Project work cost type successfully created!
+        edit: Project work cost type successfully edited!
+        delete:
+            general: Project work cost type successfully deleted!
+            first: Project work cost type with ID
+            second: successfully deleted!
+    raci:
+        create: Raci successfully created!
+        edit: Raci successfully edited!
+        delete:
+            general: Raci successfully deleted!
+            first: Raci with ID
+            second: successfully deleted!
+    risk_category:
+        create: Risk category successfully created!
+        edit: Risk category successfully edited!
+        delete:
+            general: Risk category successfully deleted!
+            first: Risk category with ID
+            second: successfully edited!
+    risk:
+        create: Risk successfully created!
+        edit: Risk successfully edited!
+        delete:
+            general: Risk successfully deleted!
+            first: Risk with ID
+            second: successfully edited!
+    risk_strategy:
+        create: Risk strategy successfully created!
+        edit: Risk strategy successfully edited!
+        delete:
+            general: Risk strategy successfully deleted!
+            first: Risk strategy with ID
+            second: successfully edited!
+    schedule:
+        create: Schedule successfully created!
+        edit: Schedule successfully edited!
+        delete:
+            general: Schedule successfully deleted!
+            first: Schedule with ID
+            second: successfully deleted!
+    status:
+        create: Status successfully created!
+        edit: Status successfully edited!
+        delete:
+            general: Status successfully deleted!
+            first: Status with ID
+            second: successfully deleted!
+    timephase:
+        create: Timephase successfully created!
+        edit: Timephase successfully edited!
+        delete:
+            general: Timephase successfully deleted!
+            first: Timephase with ID
+            second: successfully deleted!
+    todo:
+        create: Todo successfully created!
+        edit: Todo successfully edited!
+        delete:
+            general: Todo successfully deleted!
+            first: Todo with ID
+            second: successfully deleted!
+    unit:
+        create: Unit successfully created!
+        edit: Unit successfully edited!
+        delete:
+            general: Unit successfully deleted!
+            first: Unit with ID
+            second: successfully deleted!
+    user:
+        create: User successfully created!
+        edit: User successfully edited!
+        delete:
+            general: User successfully deleted!
+            first: User with ID
+            second: successfully deleted!
+    workpackage:
+        create: WorkPackage successfully created!
+        edit: WorkPackage successfully edited!
+        delete:
+            general: WorkPackage successfully deleted!
+            first: WorkPackage with ID
+            second: successfully deleted!
+    wppcwct:
+        create: Work Package Project Work Cost Type successfully created!
+        edit: Work Package Project Work Cost Type successfully edited!
+        delete:
+            general: Work Package Project Work Cost Type successfully deleted!
+            first: Work Package Project Work Cost Type with ID
+            second: successfully deleted!
+    working_time:
+        create: Working time successfully created!
+        edit: Working time successfully edited!
+        delete:
+            general: Working time successfully deleted!
+            first: Working time with ID
+            second: successfully deleted!
+    team:
+        create: Team successfully created!
+        edit: Team successfully edited!
+        delete: Team successfully deleted!
+    team_member:
+        create: Team member successfully created!
+        edit: Team member successfully edited!
+        delete: Team member successfully deleted!
+        invite: New invitation sent to user with email %user_email%.
+        invitation:
+            accepted: Congratulation! You are now part of the team %team_name%.
+        remove: User %team_member_name% has been removed from the team %team_name%.
+    payment_method:
+        create: Payment method successfully created!
+        edit: Payment method successfully edited!
+        delete: Payment method successfully deleted!
+    contract:
+        create: Contract successfully created!
+        edit: Contract successfully edited!
+        delete:
+            general: Contract successfully deleted!
+            first: Contract with ID
+            second: successfully deleted!
+    contact:
+        message:
+            sent: Message succesfully sent!
+
+failed:
+    media:
+        upload: File upload failed. Filesystem cannot be reached.
+        delete:
+            general: File delete failed. Filesystem cannot be reached or file does not exist in it
+            first: File with ID
+            second: cannot be deleted. Filesystem cannot be reached or file does not exist in it
+    user:
+        edit:
+            superadmin: You cannot edit other SUPER ADMIN profile!
+        delete:
+            yourself: You cannot delete yourself!
+            superadmin: You cannot delete other SUPER ADMIN user!
+    team_member:
+        invitation:
+            denied: The invitation was sent to user with email %user_email%. If you don't have an account with this email, make one.
+        remove:
+            yourself: You are not able to remove yourself from the %team_name%.
+            not_part_of_the_team: User %team_member_name% is not part of the team %team_name%.
+
+activation:
+    not_found: No account activation found!
+    activated: Your account has been activated!
+    expired: Activation token has expired!
+    resend: Click here to resend the activation token
+
+reset:
+    not_found: No reset token found!
+    expired: Reset token expired!

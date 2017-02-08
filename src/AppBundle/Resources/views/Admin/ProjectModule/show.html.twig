@@ -1,13 +1,13 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.project_module.list.title'|trans }}<small>{{ project_module.module }}</small></h2>
+                    <h2>{{ 'title.project_module.list'|trans }}<small>{{ project_module.module }}</small></h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -15,13 +15,13 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_project_module_create') }}">{{ 'admin.project_module.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_project_module_create') }}">{{ 'add.project_module'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_project_module_edit', {'id': project_module.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                    <a href="{{ path('app_admin_project_module_edit', {'id': project_module.id}) }}">{{ 'button.edit'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_project_module_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_project_module_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -32,11 +32,11 @@
                         <table class="table table-striped">
                             <tbody>
                                 <tr>
-                                    <th>{{ 'admin.project_module.list.table.module'|trans }}</th>
+                                    <th>{{ 'table_header_cell.module'|trans }}</th>
                                     <td>{{ project_module.module }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.project_module.list.table.project'|trans }}</th>
+                                    <th>{{ 'table_header_cell.project'|trans }}</th>
                                     <td>
                                         {% if project_module.project %}
                                             {{ project_module.project.name }}
@@ -44,37 +44,37 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.project_module.list.table.enabled'|trans }}</th>
+                                    <th>{{ 'table_header_cell.enabled'|trans }}</th>
                                     <td>
                                         {% if project_module.isEnabled %}
-                                            {{ 'admin.general.yes'|trans }}
+                                            {{ 'message.yes'|trans }}
                                         {% else %}
-                                            {{ 'admin.general.no'|trans }}
+                                            {{ 'message.no'|trans }}
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.project_module.list.table.required'|trans }}</th>
+                                    <th>{{ 'table_header_cell.required'|trans }}</th>
                                     <td>
                                         {% if project_module.isRequired %}
-                                            {{ 'admin.general.yes'|trans }}
+                                            {{ 'message.yes'|trans }}
                                         {% else %}
-                                            {{ 'admin.general.no'|trans }}
+                                            {{ 'message.no'|trans }}
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.project_module.list.table.printable'|trans }}</th>
+                                    <th>{{ 'table_header_cell.printable'|trans }}</th>
                                     <td>
                                         {% if project_module.isPrint %}
-                                            {{ 'admin.general.yes'|trans }}
+                                            {{ 'message.yes'|trans }}
                                         {% else %}
-                                            {{ 'admin.general.no'|trans }}
+                                            {{ 'message.no'|trans }}
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.project_module.list.table.created_at'|trans }}</th>
+                                    <th>{{ 'table_header_cell.created_at'|trans }}</th>
                                     <td>
                                         {% if project_module.createdAt %}
                                             {{ project_module.createdAt|date('d/m/Y') }}
@@ -82,7 +82,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.project_module.list.table.updated_at'|trans }}</th>
+                                    <th>{{ 'table_header_cell.updated_at'|trans }}</th>
                                     <td>
                                         {% if project_module.updatedAt %}
                                             {{ project_module.updatedAt|date('d/m/Y') }}

@@ -1,12 +1,12 @@
 {% extends 'MainBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">
-                <p class="text-primary">{{ 'admin.user.list.title'|trans }}</p>
+                <p class="text-primary">{{ 'title.user.list'|trans }}</p>
             </h1>
             <a href="{{ path('main_admin_user_create') }}" class="btn btn-sm btn-primary pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
             {% for flashMessage in app.session.flashbag.get('success') %}
@@ -25,10 +25,10 @@
         <div class="col-lg-12">
             <table class="table table-condensed table-responsive">
                 <thead>
-                    <th>{{ 'admin.user.list.table.id'|trans }}</th>
-                    <th>{{ 'admin.user.list.table.username'|trans }}</th>
-                    <th>{{ 'admin.user.list.table.email'|trans }}</th>
-                    <th>{{ 'admin.general.actions'|trans }}</th>
+                    <th>{{ 'table_header_cell.id'|trans }}</th>
+                    <th>{{ 'table_header_cell.username'|trans }}</th>
+                    <th>{{ 'table_header_cell.email'|trans }}</th>
+                    <th>{{ 'placeholder.actions'|trans }}</th>
                 </thead>
                 <tbody>
                 {% for user in users %}

@@ -1,6 +1,6 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
 
@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.wppcwct.create.title'|trans }}</h2>
+                    <h2>{{ 'title.wppcwct.create'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,7 +17,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_wppcwct_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_wppcwct_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -49,7 +49,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.wppcwct.create.name'|trans
+                            'label': 'label.name'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -58,7 +58,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.wppcwct.create.workpackage'|trans
+                            'label': 'label.workpackage'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -67,7 +67,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.wppcwct.create.projectworkcosttype'|trans
+                            'label': 'label.projectworkcosttype'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -76,7 +76,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.wppcwct.create.calendar'|trans
+                            'label': 'label.calendar'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -85,7 +85,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.wppcwct.create.base'|trans
+                            'label': 'label.base'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -94,7 +94,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.wppcwct.create.change'|trans
+                            'label': 'label.change'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -103,7 +103,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.wppcwct.create.actual'|trans
+                            'label': 'label.actual'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -112,7 +112,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.wppcwct.create.remaining'|trans
+                            'label': 'label.remaining'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -121,7 +121,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.wppcwct.create.forecast'|trans
+                            'label': 'label.forecast'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -131,7 +131,7 @@
                                 'class': 'form-control input-sm',
                                 'toggle': true
                             },
-                            'label': 'admin.wppcwct.create.is_generic'|trans
+                            'label': 'label.is_generic'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -141,7 +141,7 @@
                                 'class': 'form-control input-sm',
                                 'toggle': true
                             },
-                            'label': 'admin.wppcwct.create.is_inactive'|trans
+                            'label': 'label.is_inactive'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -151,7 +151,7 @@
                                 'class': 'form-control input-sm',
                                 'toggle': true
                             },
-                            'label': 'admin.wppcwct.create.is_enterprise'|trans
+                            'label': 'label.is_enterprise'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -161,7 +161,7 @@
                                 'class': 'form-control input-sm',
                                 'toggle': true
                             },
-                            'label': 'admin.wppcwct.create.is_cost_resource'|trans
+                            'label': 'label.is_cost_resource'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -171,7 +171,7 @@
                                 'class': 'form-control input-sm',
                                 'toggle': true
                             },
-                            'label': 'admin.wppcwct.create.is_budget'|trans
+                            'label': 'label.is_budget'|trans
                         }
                     ) }}
 

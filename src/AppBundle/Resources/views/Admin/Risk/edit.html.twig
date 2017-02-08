@@ -1,6 +1,6 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
 
@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.risk.edit.title'|trans }}</h2>
+                    <h2>{{ 'title.risk.edit'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,10 +17,10 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_risk_create') }}">{{ 'admin.risk.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_risk_create') }}">{{ 'add.risk'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_risk_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_risk_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -52,7 +52,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.risk.create.title'|trans
+                            'label': 'label.title'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -61,7 +61,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.risk.create.description'|trans
+                            'label': 'label.description'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -70,7 +70,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.risk.create.impact'|trans
+                            'label': 'label.impact'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -79,7 +79,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.risk.create.cost'|trans
+                            'label': 'label.cost'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -88,7 +88,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.risk.create.budget'|trans
+                            'label': 'label.budget'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -97,7 +97,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.risk.create.delay'|trans
+                            'label': 'label.delay'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -106,7 +106,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.risk.create.priority'|trans
+                            'label': 'label.priority'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -115,7 +115,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.risk.create.strategy'|trans
+                            'label': 'label.strategy'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -124,7 +124,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.risk.create.category'|trans
+                            'label': 'label.category'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -133,7 +133,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.risk.create.measure'|trans
+                            'label': 'label.measure'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -142,7 +142,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.risk.create.responsible'|trans
+                            'label': 'label.responsible'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -152,7 +152,7 @@
                                 'class': 'form-control date-picker',
                                 'addon_front': 'calendar',
                             },
-                            'label': 'admin.risk.create.due_date'|trans
+                            'label': 'label.due_date'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -161,7 +161,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.risk.create.status'|trans
+                            'label': 'label.status'|trans
                         }
                     ) }}
 

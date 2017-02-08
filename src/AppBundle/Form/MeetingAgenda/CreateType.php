@@ -25,29 +25,29 @@ class CreateType extends AbstractType
             ->add('meeting', EntityType::class, [
                 'class' => Meeting::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.meeting.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.meeting',
+                'translation_domain' => 'messages',
             ])
             ->add('topic', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.meeting_agenda.topic.not_blank',
+                        'message' => 'not_blank.topic',
                     ]),
                 ],
             ])
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'username',
-                'placeholder' => 'admin.user.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.user',
+                'translation_domain' => 'messages',
             ])
             ->add('start', DateTimeType::class, [
                 'required' => false,
                 'widget' => 'single_text',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.meeting_agenda.start.not_blank',
+                        'message' => 'not_blank.start',
                     ]),
                 ],
             ])
@@ -56,7 +56,7 @@ class CreateType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.meeting_agenda.end.not_blank',
+                        'message' => 'not_blank.end',
                     ]),
                 ],
             ])
@@ -65,7 +65,7 @@ class CreateType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.meeting_agenda.duration.not_blank',
+                        'message' => 'not_blank.duration',
                     ]),
                 ],
             ])

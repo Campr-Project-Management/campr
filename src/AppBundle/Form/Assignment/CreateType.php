@@ -27,24 +27,24 @@ class CreateType extends AbstractType
             ->add('workPackage', EntityType::class, [
                 'class' => WorkPackage::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.workpackage.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.workpackage',
+                'translation_domain' => 'messages',
             ])
             ->add('workPackageProjectWorkCostType', EntityType::class, [
                 'class' => WorkPackageProjectWorkCostType::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.wppcwct.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.wppcwct',
+                'translation_domain' => 'messages',
             ])
             ->add('milestone', IntegerType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.assignment.milestone.not_blank',
+                        'message' => 'not_blank.milestone',
                     ]),
                     new GreaterThanOrEqual([
                         'value' => 0,
-                        'message' => 'validation.constraints.assignment.milestone.greater_than_or_equal',
+                        'message' => 'greater_than_or_equal.milestone',
                     ]),
                 ],
             ])
@@ -52,11 +52,11 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.assignment.work_percent.not_blank',
+                        'message' => 'not_blank.work_percent',
                     ]),
                     new GreaterThanOrEqual([
                         'value' => 0,
-                        'message' => 'validation.constraints.assignment.work_percent.greater_than_or_equal',
+                        'message' => 'greater_than_or_equal.work_percent',
                     ]),
                 ],
                 'data' => 0,

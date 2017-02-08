@@ -1,11 +1,11 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="card">
         <div class="card-header bgm-teal">
-            <h2>{{ 'admin.working_time.list.title'|trans }}<small>{{ 'admin.working_time.list.subtitle'|trans }}</small></h2>
+            <h2>{{ 'title.working_time.list'|trans }}<small>{{ 'subtitle.working_time'|trans }}</small></h2>
             <a href="{{ path('app_admin_working_time_create') }}">
                 <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
             </a>
@@ -18,13 +18,13 @@
             {% endfor %}
             <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                 <strong>
-                    {{ 'admin.working_time.delete.success.first'|trans }}
+                    {{ 'success.working_time.delete.first'|trans({}, 'flashes') }}
                     <span id="object-id">
                         {% for flash_message in app.session.flashBag.get('success') %}
                             {{ flash_message }}
                         {% endfor %}
                     </span>
-                    {{ 'admin.working_time.delete.success.second'|trans }}
+                    {{ 'success.working_time.delete.second'|trans({}, 'flashes') }}
                 </strong>
             </div>
             <div class="table-responsive">
@@ -37,11 +37,11 @@
                         data-delete="app_admin_working_time_delete">
                     <thead>
                     <tr>
-                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.working_time.list.table.id'|trans }}</th>
-                        <th data-column-id="day">{{ 'admin.working_time.list.table.day'|trans }}</th>
-                        <th data-column-id="fromTime">{{ 'admin.working_time.list.table.from_time'|trans }}</th>
-                        <th data-column-id="toTime">{{ 'admin.working_time.list.table.to_time'|trans }}</th>
-                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'admin.general.placeholder.actions'|trans }}</th>
+                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'table_header_cell.id'|trans }}</th>
+                        <th data-column-id="day">{{ 'table_header_cell.day'|trans }}</th>
+                        <th data-column-id="fromTime">{{ 'table_header_cell.from_time'|trans }}</th>
+                        <th data-column-id="toTime">{{ 'table_header_cell.to_time'|trans }}</th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'placeholder.actions'|trans }}</th>
                     </tr>
                     </thead>
                 </table>

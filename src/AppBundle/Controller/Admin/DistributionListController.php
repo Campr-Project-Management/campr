@@ -95,7 +95,7 @@ class DistributionListController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.distribution_list.create.success', [], 'admin')
+                        ->trans('success.distribution_list.create', [], 'flashes')
                 )
             ;
 
@@ -138,7 +138,7 @@ class DistributionListController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.distribution_list.edit.success', [], 'admin')
+                        ->trans('success.distribution_list.edit', [], 'flashes')
                 )
             ;
 
@@ -211,7 +211,7 @@ class DistributionListController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.distribution_list.delete.success.general', [], 'admin')
+                    ->trans('success.distribution_list.delete.general', [], 'flashes')
             )
         ;
 

@@ -93,7 +93,7 @@ class CompanyController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.company.create.success', [], 'admin')
+                        ->trans('success.company.create', [], 'flashes')
                 )
             ;
 
@@ -138,7 +138,7 @@ class CompanyController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.company.edit.success', [], 'admin')
+                        ->trans('success.company.edit', [], 'flashes')
                 )
             ;
 
@@ -206,7 +206,7 @@ class CompanyController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.company.delete.success.general', [], 'admin')
+                    ->trans('success.company.delete.general', [], 'flashes')
             )
         ;
 

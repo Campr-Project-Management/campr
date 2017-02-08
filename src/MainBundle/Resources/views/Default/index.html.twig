@@ -1,16 +1,16 @@
-{% trans_default_domain 'main' %}
+{% trans_default_domain 'messages' %}
 
 {% extends 'MainBundle::base.html.twig' %}
 
 {% block body_content %}
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header text-primary">Homepage</h1>
+        <h1 class="page-header text-primary">{{ 'message.homepage'|trans }}</h1>
     </div>
     {% if app.user is object %}
         {% if app.user.teams.count %}
             <div class="col-lg-12">
-                <h2 class="page-header">Your teams:</h2>
+                <h2 class="page-header">{{ 'message.your_teams'|trans }}</h2>
                 <ul>
                     {% for team in app.user.teams %}
                         <li>
@@ -20,7 +20,7 @@
                             {% if team.enabled %}
                                 <a href="{{ path('main_team_sso', {id: team.id}) }}" class="btn btn-primary">
                                     <i class="glyphicon glyphicon-expand"></i>
-                                    {{ 'main.general.button.login'|trans }}
+                                    {{ 'button.edit'|trans }}
                                 </a>
                             {% endif %}
                         </li>
@@ -30,17 +30,17 @@
         {% endif %}
         {% if app.user.teamMembers.count %}
             <div class="col-lg-12">
-                <h2 class="page-header">Teams you are a part of:</h2>
+                <h2 class="page-header">{{ 'message.teams'|trans }}</h2>
                 <ul>
                     {% for teamMember in app.user.teamMembers %}
                         <li>
                             <div class="col-xs-1 thumbnail">
                                 <img src="{{ vich_uploader_asset(teamMember.team, 'logoFile') }}" alt="{{ teamMember.team.name }}">
-                            </div> - {{ teamMember.team }} - Roles: {{ teamMember.roles|join(', ') }}
+                            </div> - {{ teamMember.team }} - {{ 'table_header_cell.roles'|trans }}: {{ teamMember.roles|join(', ') }}
                             {% if teamMember.team.enabled %}
                                 <a href="{{ path('main_team_sso', {id: teamMember.team.id}) }}" class="btn btn-primary">
                                     <i class="glyphicon glyphicon-expand"></i>
-                                    {{ 'main.general.button.login'|trans }}
+                                    {{ 'button.login'|trans }}
                                 </a>
                             {% endif %}
                         </li>

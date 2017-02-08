@@ -1,11 +1,11 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="card">
         <div class="card-header bgm-teal">
-            <h2>{{ 'admin.filesystem.list.title'|trans }}<small>{{ 'admin.filesystem.list.subtitle'|trans }}</small></h2>
+            <h2>{{ 'title.filesystem.list'|trans }}<small>{{ 'subtitle.filesystem'|trans }}</small></h2>
             <a href="{{ path('app_admin_filesystem_create') }}">
                 <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
             </a>
@@ -18,13 +18,13 @@
             {% endfor %}
             <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                 <strong>
-                    {{ 'admin.filesystem.delete.success.first'|trans }}
+                    {{ 'success.filesystem.delete.first'|trans({}, 'flashes') }}
                     <span id="object-id">
                         {% for flash_message in app.session.flashBag.get('success') %}
                             {{ flash_message }}
                         {% endfor %}
                     </span>
-                    {{ 'admin.filesystem.delete.success.second'|trans }}
+                    {{ 'success.filesystem.delete.second'|trans({}, 'flashes') }}
                 </strong>
             </div>
             <div class="table-responsive">
@@ -37,10 +37,10 @@
                         data-delete="app_admin_filesystem_delete">
                     <thead>
                     <tr>
-                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.filesystem.list.table.id'|trans }}</th>
-                        <th data-column-id="name">{{ 'admin.filesystem.list.table.name'|trans }}</th>
-                        <th data-column-id="driver">{{ 'admin.filesystem.list.table.driver'|trans }}</th>
-                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'admin.general.placeholder.actions'|trans }}</th>
+                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'table_header_cell.id'|trans }}</th>
+                        <th data-column-id="name">{{ 'table_header_cell.name'|trans }}</th>
+                        <th data-column-id="driver">{{ 'table_header_cell.driver'|trans }}</th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'placeholder.actions'|trans }}</th>
                     </tr>
                     </thead>
                 </table>

@@ -26,7 +26,7 @@ class EditType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.user.first_name.not_blank',
+                        'message' => 'not_blank.first_name',
                     ]),
                 ],
             ])
@@ -34,7 +34,7 @@ class EditType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.user.last_name.not_blank',
+                        'message' => 'not_blank.last_name',
                     ]),
                 ],
             ])
@@ -47,7 +47,7 @@ class EditType extends AbstractType
                 'constraints' => [
                     new File([
                         'mimeTypes' => ['image/jpg', 'image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'validation.constraints.user.avatar.image',
+                        'mimeTypesMessage' => 'invalid.image',
                     ]),
                 ],
             ])
@@ -55,11 +55,11 @@ class EditType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'choices' => [
-                    'admin.user.edit.role.user' => 'ROLE_USER',
-                    'admin.user.edit.role.admin' => 'ROLE_ADMIN',
-                    'admin.user.edit.role.superadmin' => 'ROLE_SUPER_ADMIN',
+                    'label.role.user' => 'ROLE_USER',
+                    'label.role.admin' => 'ROLE_ADMIN',
+                    'label.role.superadmin' => 'ROLE_SUPER_ADMIN',
                 ],
-                'translation_domain' => 'admin',
+                'translation_domain' => 'messages',
             ))
             ->add('isEnabled', CheckboxType::class)
             ->add('isSuspended', CheckboxType::class)

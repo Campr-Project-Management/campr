@@ -1,11 +1,11 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="card">
         <div class="card-header bgm-teal">
-            <h2>{{ 'admin.user.list.title'|trans }}<small>{{ 'admin.user.list.subtitle'|trans }}</small></h2>
+            <h2>{{ 'title.user.list'|trans }}<small>{{ 'subtitle.user'|trans }}</small></h2>
             <a href="{{ path('app_admin_user_create') }}">
                 <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
             </a>
@@ -23,13 +23,13 @@
             {% endfor %}
             <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                 <strong>
-                    {{ 'admin.user.delete.success.first'|trans }}
+                    {{ 'success.user.delete.first'|trans({}, 'flashes') }}
                     <span id="object-id">
                         {% for flash_message in app.session.flashBag.get('success') %}
                             {{ flash_message }}
                         {% endfor %}
                     </span>
-                    {{ 'admin.user.delete.success.second'|trans }}
+                    {{ 'success.user.delete.second'|trans({}, 'flashes') }}
                 </strong>
             </div>
             <div class="table-responsive">
@@ -43,11 +43,11 @@
                         {% if is_granted('ROLE_SUPER_ADMIN') %}data-impersonate="app_homepage"{% endif %}>
                     <thead>
                     <tr>
-                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.user.list.table.id'|trans }}</th>
-                        <th data-column-id="username">{{ 'admin.user.list.table.username'|trans }}</th>
-                        <th data-column-id="email">{{ 'admin.user.list.table.email'|trans }}</th>
-                        <th data-column-id="roles">{{ 'admin.user.list.table.email'|trans }}</th>
-                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'admin.general.placeholder.actions'|trans }}</th>
+                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'table_header_cell.id'|trans({}, 'messages') }}</th>
+                        <th data-column-id="username">{{ 'table_header_cell.username'|trans({}, 'messages') }}</th>
+                        <th data-column-id="email">{{ 'table_header_cell.email'|trans({}, 'messages') }}</th>
+                        <th data-column-id="roles">{{ 'table_header_cell.roles'|trans({}, 'messages') }}</th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'placeholder.actions'|trans }}</th>
                     </tr>
                     </thead>
                 </table>

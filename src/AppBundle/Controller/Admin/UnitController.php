@@ -111,7 +111,7 @@ class UnitController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.unit.create.success', [], 'admin')
+                        ->trans('success.unit.create', [], 'flashes')
                 )
             ;
 
@@ -155,7 +155,7 @@ class UnitController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.unit.edit.success', [], 'admin')
+                        ->trans('success.unit.edit', [], 'flashes')
                 )
             ;
 
@@ -180,7 +180,7 @@ class UnitController extends Controller
      * @param Request $request
      * @param Unit    $unit
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
     public function deleteAction(Request $request, Unit $unit)
     {
@@ -203,7 +203,7 @@ class UnitController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.unit.delete.success.general', [], 'admin')
+                    ->trans('success.unit.delete.general', [], 'flashes')
             )
         ;
 

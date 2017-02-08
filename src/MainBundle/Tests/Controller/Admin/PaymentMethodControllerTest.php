@@ -41,7 +41,7 @@ class PaymentMethodControllerTest extends BaseController
         $crawler = $this->client->submit($form);
 
         $this->assertContains('Please enter a payment method name!', $crawler->html());
-        $this->assertContains('Token field should not be blank!', $crawler->html());
+        $this->assertContains('The token field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -130,7 +130,7 @@ class PaymentMethodControllerTest extends BaseController
         $crawler = $this->client->submit($form);
 
         $this->assertContains('Please enter a payment method name!', $crawler->html());
-        $this->assertContains('Token field should not be blank!', $crawler->html());
+        $this->assertContains('The token field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }

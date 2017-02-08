@@ -1,13 +1,13 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.unit.list.title'|trans }}<small>{{ unit.name }}</small></h2>
+                    <h2>{{ 'title.unit.list'|trans }}<small>{{ unit.name }}</small></h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -15,13 +15,13 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_unit_create') }}">{{ 'admin.unit.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_unit_create') }}">{{ 'add.unit'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_unit_edit', {'id': unit.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                    <a href="{{ path('app_admin_unit_edit', {'id': unit.id}) }}">{{ 'button.edit'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_unit_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_unit_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -32,28 +32,28 @@
                         <table class="table table-striped">
                             <tbody>
                                 <tr>
-                                    <th>{{ 'admin.unit.list.table.id'|trans }}</th>
+                                    <th>{{ 'table_header_cell.id'|trans }}</th>
                                     <td>{{ unit.id }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.unit.list.table.name'|trans }}</th>
+                                    <th>{{ 'table_header_cell.name'|trans }}</th>
                                     <td>{{ unit.name }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.unit.list.table.project'|trans }}</th>
+                                    <th>{{ 'table_header_cell.project'|trans }}</th>
                                     <td>{{ unit.project.name|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.unit.list.table.sequence'|trans }}</th>
+                                    <th>{{ 'table_header_cell.sequence'|trans }}</th>
                                     <td>{{ unit.sequence }}</td>
                                 </tr>
 
                                 <tr>
-                                    <th>{{ 'admin.unit.list.table.created_at'|trans }}</th>
+                                    <th>{{ 'table_header_cell.created_at'|trans }}</th>
                                     <td>{{ unit.createdAt|date('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.unit.list.table.updated_at'|trans }}</th>
+                                    <th>{{ 'table_header_cell.updated_at'|trans }}</th>
                                     <td>{{ unit.updatedAt|date('d/m/Y') }}</td>
                                 </tr>
                             </tbody>

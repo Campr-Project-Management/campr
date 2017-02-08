@@ -1,13 +1,13 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.workpackage.list.title'|trans }}<small>{{ workPackage.name }}</small></h2>
+                    <h2>{{ 'title.workpackage.list'|trans }}<small>{{ workPackage.name }}</small></h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -15,13 +15,13 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_workpackage_create') }}">{{ 'admin.workpackage.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_workpackage_create') }}">{{ 'add.workpackage'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_workpackage_edit', {'id': workPackage.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                    <a href="{{ path('app_admin_workpackage_edit', {'id': workPackage.id}) }}">{{ 'button.edit'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_workpackage_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_workpackage_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -32,81 +32,81 @@
                         <table class="table table-striped">
                             <tbody>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.puid'|trans }}</th>
+                                    <th>{{ 'table_header_cell.puid'|trans }}</th>
                                     <td>{{ workPackage.puid }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.name'|trans }}</th>
+                                    <th>{{ 'table_header_cell.name'|trans }}</th>
                                     <td>{{ workPackage.name }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.project'|trans }}</th>
+                                    <th>{{ 'table_header_cell.project'|trans }}</th>
                                     <td>{{ workPackage.project.name|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.parent'|trans }}</th>
+                                    <th>{{ 'table_header_cell.parent'|trans }}</th>
                                     <td>{{ workPackage.parent.name|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.color_status'|trans }}</th>
+                                    <th>{{ 'table_header_cell.color_status'|trans }}</th>
                                     <td>{{ workPackage.colorStatus.name|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.responsible'|trans }}</th>
+                                    <th>{{ 'table_header_cell.responsible'|trans }}</th>
                                     <td>{{ workPackage.responsibility.username|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.progress'|trans }}</th>
+                                    <th>{{ 'table_header_cell.progress'|trans }}</th>
                                     <td>{{ workPackage.progress|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.schedule_start'|trans }}</th>
+                                    <th>{{ 'table_header_cell.schedule_start'|trans }}</th>
                                     <td>{{ workPackage.scheduledStartAt is empty ? '-' : workPackage.scheduledStartAt|date('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.schedule_finish'|trans }}</th>
+                                    <th>{{ 'table_header_cell.schedule_finish'|trans }}</th>
                                     <td>{{ workPackage.scheduledFinishAt is empty ? '-' : workPackage.scheduledFinishAt|date('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.forecast_start'|trans }}</th>
+                                    <th>{{ 'table_header_cell.forecast_start'|trans }}</th>
                                     <td>{{ workPackage.forecastStartAt is empty ? '-' : workPackage.forecastStartAt|date('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.forecast_finish'|trans }}</th>
+                                    <th>{{ 'table_header_cell.forecast_finish'|trans }}</th>
                                     <td>{{  workPackage.forecastFinishAt is empty ? '-' : workPackage.forecastFinishAt|date('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.actual_start'|trans }}</th>
+                                    <th>{{ 'table_header_cell.actual_start'|trans }}</th>
                                     <td>{{ workPackage.actualFinishAt is empty ? '-' : workPackage.actualStartAt|date('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.actual_finish'|trans }}</th>
+                                    <th>{{ 'table_header_cell.actual_finish'|trans }}</th>
                                     <td>{{ workPackage.actualFinishAt is empty ? '- ' : workPackage.actualFinishAt|date('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.content'|trans }}</th>
+                                    <th>{{ 'table_header_cell.content'|trans }}</th>
                                     <td>{{ workPackage.content|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.results'|trans }}</th>
+                                    <th>{{ 'table_header_cell.results'|trans }}</th>
                                     <td>{{ workPackage.results|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.is_key_milestone'|trans }}</th>
+                                    <th>{{ 'table_header_cell.is_key_milestone'|trans }}</th>
                                     <td>
                                         {% if workPackage.isKeyMilestone %}
-                                            <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                            <span class="c-green">{{ 'message.yes'|trans }}</span>
                                         {% else %}
-                                            <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                            <span class="c-red">{{ 'message.no'|trans }}</span>
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.created_at'|trans }}</th>
+                                    <th>{{ 'table_header_cell.created_at'|trans }}</th>
                                     <td>{{ workPackage.createdAt|date('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.updated_at'|trans }}</th>
+                                    <th>{{ 'table_header_cell.updated_at'|trans }}</th>
                                     <td>{{ workPackage.updatedAt is empty ? '-' : workPackage.updatedAt|date('d/m/Y') }}</td>
                                 </tr>
                             </tbody>

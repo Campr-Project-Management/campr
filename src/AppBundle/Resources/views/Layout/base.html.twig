@@ -1,3 +1,5 @@
+{% trans_default_domain 'messages' %}
+
 <!DOCTYPE html>
     <!--[if IE 9 ]><html class="ie9"><![endif]-->
     <head>
@@ -6,7 +8,7 @@
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1">
         {% endblock %}
-        <title>{% block title %}Campr Admin{% endblock %}</title>
+        <title>{% block title %}{{ 'title.homepage'|trans({}, 'messages') }}{% endblock %}</title>
         {% block stylesheets %}
             <!-- Vendor CSS -->
             <link href="{{ asset('assets/admin/vendors/bower_components/animate.css/animate.min.css') }}" rel="stylesheet">
@@ -43,7 +45,7 @@
                 <circle class="plc-path" cx="50" cy="50" r="20" />
             </svg>
 
-            <p>Please wait...</p>
+            <p>{{ 'message.wait'|trans }}</p>
         </div>
     </div>
 

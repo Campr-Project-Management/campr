@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Table(name="risk_strategy")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RiskStrategyRepository")
- * @UniqueEntity(fields="name", message="validation.constraints.general_field.name.unique")
+ * @UniqueEntity(fields="name", message="unique.name")
  */
 class RiskStrategy
 {
