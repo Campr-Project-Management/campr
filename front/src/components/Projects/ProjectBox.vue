@@ -1,7 +1,7 @@
 <template>
     <div class="project-box box new">
         <span class="tag">
-          <span>New</span>
+          <span>{{ message.new_message }}</span>
         </span>
         <div class="header">
             <h2>{{ project.name }}</h2>
@@ -13,19 +13,19 @@
         <div class="content flex flex-space-between">
             <div class="info">
                 <p>
-                    <span class="title">Started on:</span>
+                    <span class="title">{{ message.started_on }}:</span>
                     <span class="data">{{ project.createdAt | moment('DD.MM.YYYY') }}</span>
                 </p>
                 <p>
-                    <span class="title">Customer:</span>
+                    <span class="title">{{ message.customer }}:</span>
                     <span class="data">{{ project.companyName }}</span>
                 </p>
                 <p>
-                    <span class="title">Programme:</span>
+                    <span class="title">{{ message.programme }}:</span>
                     <span class="data"> {{ project.programme }}</span>
                 </p>
                 <p>
-                    <span class="title">Status:</span>
+                    <span class="title">{{ message.status }}:</span>
                     <span v-bind:class="{ finished: project.statusName === 'Finished' }" class="status-label btn-rounded">
                         {{ project.statusName }}
                     </span>
@@ -34,17 +34,17 @@
           </div>
         <bar-chart :percentage="project.progress" :status="project.statusName" title-right="Progress"></bar-chart>
         <div class="content-bottom flex">
-          <circle-chart :percentage="project.task_status" title="Task Status" class="left"></circle-chart>
-          <circle-chart :percentage="project.costs_status" title="Costs Status" class="right"></circle-chart>
+          <circle-chart :percentage="project.task_status" v-bind:title="message.task_status" class="left"></circle-chart>
+          <circle-chart :percentage="project.costs_status" v-bind:title="message.cost_status" class="right"></circle-chart>
         </div>
         <div class="flex flex-space-between notes-title">
-            <span class="uppercase">Notes</span>
+            <span class="uppercase">{{ message.notes }}</span>
             <pencil-icon :link="{name: 'edit'}"></pencil-icon>
         </div>
         <ul class="bullets">
             <li v-for="note in project.notes">{{ note }}</li>
         </ul>
-        <a href="" class="add-note">add some notes for this project</a>
+        <a href="" class="add-note">{{ message.add_project_notes }}</a>
     </div>
 </template>
 
@@ -64,6 +64,21 @@ export default {
         PencilIcon,
     },
     props: ['project'],
+    data() {
+        return {
+            message: {
+                new_message: window.Translator.trans('message.new_message'),
+                started_on: window.Translator.trans('message.started_on'),
+                customer: window.Translator.trans('message.customer'),
+                programme: window.Translator.trans('message.programme'),
+                status: window.Translator.trans('message.status'),
+                task_status: window.Translator.trans('message.task_status'),
+                cost_status: window.Translator.trans('message.cost_status'),
+                notes: window.Translator.trans('message.notes'),
+                add_project_notes: window.Translator.trans('message.add_project_notes'),
+            },
+        };
+    },
 };
 </script>
 

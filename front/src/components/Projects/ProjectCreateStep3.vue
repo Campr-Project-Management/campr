@@ -1,43 +1,43 @@
 <template>
     <div class="project-create-wrapper">
         <div class="page-section project-create step-3">
-            <h1>Project Creation Wizard</h1>
-            <h2>Step 3: Project Builder</h2>
+            <h1>{{ message.project_create_wizard }}</h1>
+            <h2>{{ message.project_create_step3 }}</h2>
             <div class="hr"></div>
-            <h3>Project Size: <span>Medium</span></h3>
+            <h3>{{ message.project_size }}: <span>{{ message.medium }}</span></h3>
 
-            <p>based on your estimations we recommend the following modules</p>
+            <p>{{ message.recommended_modules }}</p>
 
-            <project-module title="Project Contract" id="project-contract"></project-module>
-            <project-module title="Project Orgnization" id="project-organization"></project-module>
-            <project-module title="Plan" id="plan"></project-module>
-            <project-module title="Task Management" id="task-management"></project-module>
-            <project-module title="Phases and Milestones" id="phases-milestones"></project-module>
-            <project-module title="Costs" id="costs"></project-module>
-            <project-module title="Resources" id="resources"></project-module>
-            <project-module title="Risks and Opportunities" id="risks-opportunities"></project-module>
-            <project-module title="Communication" id="communication"></project-module>
-            <project-module title="Control Measures" id="control-measures"></project-module>
-            <project-module title="Status Report" id="status-report"></project-module>
-            <project-module title="Meetings" id="meetings"></project-module>
-            <project-module title="Todos" id="todos"></project-module>
-            <project-module title="Notes" id="notes"></project-module>
-            <project-module title="Close Down Project" id="close-down-project"></project-module>
+            <project-module v-bind:title="message.project_contract" id="project-contract"></project-module>
+            <project-module v-bind:title="message.project_organization" id="project-organization"></project-module>
+            <project-module v-bind:title="message.plan" id="plan"></project-module>
+            <project-module v-bind:title="message.task_management" id="task-management"></project-module>
+            <project-module v-bind:title="message.phases_milestones" id="phases-milestones"></project-module>
+            <project-module v-bind:title="message.costs" id="costs"></project-module>
+            <project-module v-bind:title="message.resources" id="resources"></project-module>
+            <project-module v-bind:title="message.risk_oportunities" id="risks-opportunities"></project-module>
+            <project-module v-bind:title="message.communication" id="communication"></project-module>
+            <project-module v-bind:title="message.control_measures" id="control-measures"></project-module>
+            <project-module v-bind:title="message.status_report" id="status-report"></project-module>
+            <project-module v-bind:title="message.meetings" id="meetings"></project-module>
+            <project-module v-bind:title="message.todos" id="todos"></project-module>
+            <project-module v-bind:title="message.notes" id="notes"></project-module>
+            <project-module v-bind:title="message.close_down_project" id="close-down-project"></project-module>
 
-            <p>we don’t recommend using the remaining modules but you can still activate them</p>
+            <p>{{ message.not_recommended_modules }}</p>
 
-            <project-module title="Raci Matrix" id="raci-matrix" inactive="1"></project-module>
-            <project-module title="Task Chart" id="task-chart" inactive="1"></project-module>
-            <project-module title="Gantt Chart" id="gantt-chart" inactive="1"></project-module>
-            <project-module title="Context" id="context" inactive="1"></project-module>
-            <project-module title="Decisions" id="decisions" inactive="1"></project-module>
+            <project-module v-bind:title="message.raci_matrix" id="raci-matrix" inactive="1"></project-module>
+            <project-module v-bind:title="message.task_chart" id="task-chart" inactive="1"></project-module>
+            <project-module v-bind:title="message.gantt_chart" id="gantt-chart" inactive="1"></project-module>
+            <project-module v-bind:title="message.context" id="context" inactive="1"></project-module>
+            <project-module v-bind:title="message.decisions" id="decisions" inactive="1"></project-module>
 
             <div class="flex flex-space-between actions">
-                <router-link :to="{name: 'projects-create-2'}" title="< Previous Step" class="btn-rounded btn-right">
-                    < Previous Step
+                <router-link :to="{name: 'projects-create-2'}" v-bind:title="button.previous_step" class="btn-rounded btn-right">
+                    < {{ button.previous_step }}
                 </router-link>
-                <router-link :to="{name: 'projects-create-3'}" title="Start Project" class="btn-rounded btn-right second-bg">
-                    Analyse
+                <router-link :to="{name: 'projects-create-3'}" v-bind:title="button.start_project" class="btn-rounded btn-right second-bg">
+                    {{ button.start_project }}
                 </router-link>
             </div>
         </div>
@@ -50,6 +50,42 @@ import ProjectModule from './ProjectModule';
 export default {
     components: {
         ProjectModule,
+    },
+    data: function() {
+        return {
+            message: {
+                project_create_wizard: window.Translator.trans('message.project_create_wizard'),
+                project_create_step3: window.Translator.trans('message.project_create_step3'),
+                project_size: window.Translator.trans('message.project_size'),
+                medium: window.Translator.trans('message.medium'),
+                recommended_modules: window.Translator.trans('message.recommended_modules'),
+                project_contract: window.Translator.trans('message.project_contract'),
+                project_organization: window.Translator.trans('message.project_organization'),
+                plan: window.Translator.trans('message.plan'),
+                task_management: window.Translator.trans('message.task_management'),
+                phases_milestones: window.Translator.trans('message.phases_milestones'),
+                costs: window.Translator.trans('message.costs'),
+                resources: window.Translator.trans('message.resources'),
+                risk_oportunities: window.Translator.trans('message.risk_oportunities'),
+                communication: window.Translator.trans('message.communication'),
+                control_measures: window.Translator.trans('message.control_measures'),
+                status_report: window.Translator.trans('message.status_report'),
+                meetings: window.Translator.trans('message.meetings'),
+                todos: window.Translator.trans('message.todos'),
+                notes: window.Translator.trans('message.notes'),
+                close_down_project: window.Translator.trans('message.close_down_project'),
+                not_recommended_modules: window.Translator.trans('message.not_recommended_modules'),
+                raci_matrix: window.Translator.trans('message.raci_matrix'),
+                task_chart: window.Translator.trans('message.task_chart'),
+                gantt_chart: window.Translator.trans('message.gantt_chart'),
+                context: window.Translator.trans('message.context'),
+                decisions: window.Translator.trans('message.decisions'),
+            },
+            button: {
+                previous_step: window.Translator.trans('button.previous_step'),
+                start_project: window.Translator.trans('button.start_project'),
+            },
+        };
     },
 };
 </script>

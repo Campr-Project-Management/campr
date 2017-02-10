@@ -2,7 +2,7 @@
     <div>
         <div class="page-section tasks">
             <div class="header">
-                <h1>My Tasks</h1>
+                <h1>{{ message.my_tasks }}</h1>
                 <div class="flex">
                     <task-filters></task-filters>
                     <div class="pagination" v-if="count > 0">
@@ -12,7 +12,7 @@
             </div>
             <div class="content">
                 <task-box v-for="task in tasks" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></task-box>
-                <a href="" class="new-box">New Task +</a>
+                <a href="" class="new-box">{{ message.new_task }} +</a>
             </div>
         </div>
     </div>
@@ -50,6 +50,10 @@ export default {
     data() {
         return {
             activePage: 1,
+            message: {
+                my_tasks: window.Translator.trans('message.my_tasks'),
+                new_task: window.Translator.trans('message.new_task'),
+            },
         };
     },
 };
