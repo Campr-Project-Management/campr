@@ -1,10 +1,10 @@
 <template>
     <div class="filters">
-        <span class="title">Filter By</span>
+        <span class="title">{{ message.filter_by }}</span>
         <div class="dropdowns">
-            <dropdown title="Schedule" item="task" filter="schedule"></dropdown>
-            <dropdown title="Status" v-bind:options="statuses" item="task" filter="colorStatusName"></dropdown>
-            <dropdown title="Project" v-bind:options="projectsForFilter" item="task" filter="project"></dropdown>
+            <dropdown v-bind:title="message.schedule" item="task" filter="schedule"></dropdown>
+            <dropdown v-bind:title="message.status" v-bind:options="statuses" item="task" filter="colorStatusName"></dropdown>
+            <dropdown v-bind:title="message.project" v-bind:options="projectsForFilter" item="task" filter="project"></dropdown>
         </div>
     </div>
 </template>
@@ -29,6 +29,16 @@ export default {
             statuses: 'colorStatusesForFilter',
             user: 'user',
         }),
+    },
+    data: function() {
+        return {
+            message: {
+                filter_by: window.Translator.trans('message.filter_by'),
+                schedule: window.Translator.trans('message.schedule'),
+                status: window.Translator.trans('message.status'),
+                project: window.Translator.trans('message.project'),
+            },
+        };
     },
 };
 </script>

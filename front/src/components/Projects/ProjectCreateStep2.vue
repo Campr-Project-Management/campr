@@ -1,28 +1,28 @@
 <template>
     <div class="project-create-wrapper">
         <div class="page-section project-create step-2">
-            <h1>Project Creation Wizard</h1>
-            <h2>Step 2: Project Worthiness Analysis</h2>
+            <h1>{{ message.project_create_wizard }}</h1>
+            <h2>{{ message.project_create_step2 }}</h2>
 
-            <range-slider title="Project Duration" min="0" max="10" minSuffix=" Months" type="single" v-model="projectDuration"></range-slider>
-            <range-slider title="Project Budget" min="0" max="30000" minPrefix="$" type="single"></range-slider>
-            <range-slider title="People Involved" min="0" max="20" type="double"></range-slider>
-            <range-slider title="Departments Involved" min="0" max="20" type="double"></range-slider>
+            <range-slider v-bind:title="message.project_duration" min="0" max="10" minSuffix=" Months" type="single" v-model="projectDuration"></range-slider>
+            <range-slider v-bind:title="message.project_budget" min="0" max="30000" minPrefix="$" type="single"></range-slider>
+            <range-slider v-bind:title="message.project_involved" min="0" max="20" type="double"></range-slider>
+            <range-slider v-bind:title="message.departments_involved" min="0" max="20" type="double"></range-slider>
 
-            <range-slider title="Strategical Meaning" min="few" values="few, medium, high" type="single"></range-slider>
-            <range-slider title="Risks" min="few" values="few, medium, high" type="single"></range-slider>
+            <range-slider v-bind:title="message.strategical_meaning" min="few" values="few, medium, high" type="single"></range-slider>
+            <range-slider v-bind:title="message.risks" min="few" values="few, medium, high" type="single"></range-slider>
 
             <div class="dropdowns">
-                <select-field title="Category" v-bind:options="category"></select-field>
-                <select-field title="Scope" v-bind:options="scope"></select-field>
+                <select-field v-bind:title="message.category" v-bind:options="category"></select-field>
+                <select-field v-bind:title="message.scope" v-bind:options="scope"></select-field>
             </div>
 
             <div class="flex flex-space-between actions">
-                <router-link :to="{name: 'projects-create-1'}" title="Previous Step" class="btn-rounded">
-                    < Previous Step
+                <router-link :to="{name: 'projects-create-1'}" v-bind:title="button.previous_step" class="btn-rounded">
+                    < {{ button.previous_step }}
                 </router-link>
-                <router-link :to="{name: 'projects-create-3'}" title="Analyse" class="btn-rounded second-bg">
-                    Analyse
+                <router-link :to="{name: 'projects-create-3'}" v-bind:title="button.analyze" class="btn-rounded second-bg">
+                    {{ button.analyze }}
                 </router-link>
             </div>
         </div>
@@ -40,6 +40,22 @@ export default {
     },
     data: function() {
         return {
+            message: {
+                project_create_wizard: window.Translator.trans('message.project_create_wizard'),
+                project_create_step2: window.Translator.trans('message.project_create_step2'),
+                project_duration: window.Translator.trans('message.project_duration'),
+                project_budget: window.Translator.trans('message.project_budget'),
+                project_involved: window.Translator.trans('message.project_involved'),
+                departments_involved: window.Translator.trans('message.departments_involved'),
+                strategical_meaning: window.Translator.trans('message.strategical_meaning'),
+                risks: window.Translator.trans('message.risks'),
+                category: window.Translator.trans('message.category'),
+                scope: window.Translator.trans('message.scope'),
+            },
+            button: {
+                previous_step: window.Translator.trans('button.previous_step'),
+                analyze: window.Translator.trans('button.analyze'),
+            },
             projectDuration: 0,
         };
     },
