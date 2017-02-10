@@ -1,11 +1,11 @@
 <template>
     <div class="page-section tasks">
         <div class="header">
-            <h1>My Recent Tasks</h1>
+            <h1>{{ message.recent_tasks }}</h1>
             <div class="full-filters">
                 <task-filters></task-filters>
                 <div class="separator"></div>
-                <router-link :to="{name: 'tasks'}" class="btn-rounded">View all my Tasks</router-link>
+                <router-link :to="{name: 'tasks'}" class="btn-rounded">{{ message.all_tasks }}</router-link>
                 <div class="pagination" v-if="count > 0">
                     <span v-for="page in count/tasks.length" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
                 </div>
@@ -49,6 +49,11 @@ export default {
     data() {
         return {
             activePage: 1,
+            message: {
+                recent_tasks: window.Translator.trans('message.recent_tasks'),
+                all_tasks: window.Translator.trans('message.all_tasks'),
+                new_task: window.Translator.trans('message.new_task'),
+            },
         };
     },
 };

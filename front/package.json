@@ -13,6 +13,7 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
+    "bazinga-translator": "^2.6.3",
     "bootstrap": "^3.3.7",
     "exports-loader": "^0.6.3",
     "ion-rangeslider": "^2.1.6",

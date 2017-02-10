@@ -1,11 +1,11 @@
 <template>
     <div class="page-section projects">
         <div class="header">
-            <h1>My Recent Projects</h1>
+            <h1>{{ message.recent_projects }}</h1>
             <div class="full-filters">
                 <project-filters></project-filters>
                 <div class="separator"></div>
-                <router-link :to="{name: 'projects'}" class="btn-rounded">View all my Projects</router-link>
+                <router-link :to="{name: 'projects'}" class="btn-rounded">{{ message.all_projects }}</router-link>
                 <div class="pagination" v-if="count > 0">
                     <span v-for="page in count/projects.length" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
                 </div>
@@ -13,7 +13,7 @@
         </div>
         <div class="content">
             <small-project-box v-for="project in projects" v-bind:project="project"></small-project-box>
-            <a href="" class="new-box">New Project +</a>
+            <a href="" class="new-box">{{ message.new_project }} +</a>
         </div>
     </div>
 </template>
@@ -43,10 +43,16 @@ export default {
     computed: mapGetters({
         projects: 'projects',
         user: 'user',
+        translator: 'translator',
     }),
     data() {
         return {
             activePage: 1,
+            message: {
+                recent_projects: window.Translator.trans('message.recent_projects'),
+                all_projects: window.Translator.trans('message.all_projects'),
+                new_project: window.Translator.trans('message.new_project'),
+            },
         };
     },
 };
