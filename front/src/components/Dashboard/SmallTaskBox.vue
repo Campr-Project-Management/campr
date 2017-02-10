@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div>
-        <bar-chart :percentage="task.progress" :status="task.colorStatusName" title-right="Progress"></bar-chart>
+        <bar-chart :percentage="task.progress" :status="task.colorStatusName" v-bind:title-right="message.progress"></bar-chart>
     </div>
 </template>
 
@@ -29,6 +29,13 @@ export default {
         EyeIcon,
     },
     props: ['task', 'colorStatuses'],
+    data() {
+        return {
+            message: {
+                progress: window.Translator.trans('message.progress'),
+            },
+        };
+    },
 };
 </script>
 

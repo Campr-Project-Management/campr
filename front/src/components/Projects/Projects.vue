@@ -2,7 +2,7 @@
     <div>
         <div class="page-section projects">
             <div class="header">
-                <h1>My Projects</h1>
+                <h1>{{ message.my_projects }}</h1>
                 <div class="flex">
                     <project-filters></project-filters>
                     <div class="pagination" v-if="count > 0">
@@ -12,7 +12,7 @@
             </div>
             <div class="content">
                 <project-box v-for="project in projects" v-bind:project="project"></project-box>
-                <a href="" class="new-box">New Project +</a>
+                <a href="" class="new-box">{{ message.new_project }} +</a>
             </div>
         </div>
     </div>
@@ -47,6 +47,10 @@ export default {
     data() {
         return {
             activePage: 1,
+            message: {
+                my_projects: window.Translator.trans('message.my_projects'),
+                new_project: window.Translator.trans('message.new_project'),
+            },
         };
     },
 };
