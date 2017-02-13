@@ -112,3 +112,12 @@ lexik_jwt_authentication:
     pass_phrase: "%jwt_key_pass_phrase%"
     token_ttl: "%jwt_token_ttl%"
     user_identity_field: email
+
+# Bazinga JS translation
+bazinga_js_translation:
+    locale_fallback: en
+    default_domain: messages
+    active_locales:
+        - en
+        - de
+
