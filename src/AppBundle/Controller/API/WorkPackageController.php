@@ -81,9 +81,8 @@ class WorkPackageController extends ApiController
      */
     public function createAction(Request $request)
     {
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, new WorkPackage(), ['csrf_protection' => false]);
-        $form->submit($data);
+        $this->processForm($request, $form);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -93,12 +92,12 @@ class WorkPackageController extends ApiController
             return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -116,31 +115,30 @@ class WorkPackageController extends ApiController
     {
         $this->denyAccessUnlessGranted(WorkPackageVoter::EDIT, $wp);
 
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $wp, ['csrf_protection' => false]);
-        $form->submit($data, false);
+        $this->processForm($request, $form, false);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($wp);
             $em->flush();
 
-            return $this->createApiResponse($wp);
+            return $this->createApiResponse($wp, Response::HTTP_ACCEPTED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
      * Delete a specific WorkPackage.
      *
      * @Route("/{id}/delete", name="app_api_workpackage_delete")
-     * @Method({"GET"})
+     * @Method({"DELETE"})
      *
      * @param WorkPackage $wp
      *
@@ -154,6 +152,6 @@ class WorkPackageController extends ApiController
         $em->remove($wp);
         $em->flush();
 
-        return $this->createApiResponse([], Response::HTTP_NO_CONTENT);
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
 }
