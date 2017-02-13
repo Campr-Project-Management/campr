@@ -59,23 +59,22 @@ class UserController extends ApiController
             ], Response::HTTP_NOT_FOUND);
         }
 
-        $data = $request->request->all();
         $form = $this->createForm(AccountType::class, $user, ['csrf_protection' => false]);
-        $form->submit($data, false);
+        $this->processForm($request, $form, false);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
 
-            return $this->createApiResponse($user);
+            return $this->createApiResponse($user, Response::HTTP_ACCEPTED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 }

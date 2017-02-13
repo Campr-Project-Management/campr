@@ -201,7 +201,7 @@ class ProjectModuleControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -215,9 +215,11 @@ class ProjectModuleControllerTest extends BaseController
             [
                 [],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The module field should not be blank',
+                    'messages' => [
+                        'module' => ['The module field should not be blank'],
+                    ],
                 ],
             ],
         ];
@@ -241,7 +243,7 @@ class ProjectModuleControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project-module/1/edit',
             [],
             [],
@@ -272,7 +274,7 @@ class ProjectModuleControllerTest extends BaseController
                     'module' => 'project-module1',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_ACCEPTED,
                 [
                     'project' => 1,
                     'projectName' => 'project1',
@@ -306,7 +308,7 @@ class ProjectModuleControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project-module/1/edit',
             [],
             [],
@@ -318,7 +320,7 @@ class ProjectModuleControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -334,9 +336,11 @@ class ProjectModuleControllerTest extends BaseController
                     'module' => '',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The module field should not be blank',
+                    'messages' => [
+                        'module' => ['The module field should not be blank'],
+                    ],
                 ],
             ],
         ];

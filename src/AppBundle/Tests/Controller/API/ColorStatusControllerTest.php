@@ -10,7 +10,6 @@ class ColorStatusControllerTest extends BaseController
     /**
      * @dataProvider getDataForListAction()
      *
-     * @param $url
      * @param $isResponseSuccessful
      * @param $responseStatusCode
      * @param $responseContent

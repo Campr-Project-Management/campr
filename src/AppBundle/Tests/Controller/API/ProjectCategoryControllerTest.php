@@ -190,7 +190,7 @@ class ProjectCategoryControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
 
@@ -210,9 +210,11 @@ class ProjectCategoryControllerTest extends BaseController
                     'sequence' => 1,
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'That name is taken',
+                    'messages' => [
+                        'name' => ['That name is taken'],
+                    ],
                 ],
             ],
         ];
@@ -248,7 +250,7 @@ class ProjectCategoryControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -262,10 +264,12 @@ class ProjectCategoryControllerTest extends BaseController
             [
                 [],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The name field should not be blank',
-                    'The sequence field should not be blank',
+                    'messages' => [
+                        'name' => ['The name field should not be blank'],
+                        'sequence' => ['The sequence field should not be blank'],
+                    ],
                 ],
             ],
         ];
@@ -301,7 +305,7 @@ class ProjectCategoryControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -318,9 +322,11 @@ class ProjectCategoryControllerTest extends BaseController
                     'sequence' => 'project-category',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The sequence field should contain numbers greater than or equal to 0',
+                    'messages' => [
+                        'sequence' => ['The sequence field should contain numbers greater than or equal to 0'],
+                    ],
                 ],
             ],
         ];
@@ -344,7 +350,7 @@ class ProjectCategoryControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project-category/1/edit',
             [],
             [],
@@ -374,7 +380,7 @@ class ProjectCategoryControllerTest extends BaseController
                     'name' => 'project-category1',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_ACCEPTED,
                 [
                     'project' => null,
                     'projectName' => null,
@@ -406,7 +412,7 @@ class ProjectCategoryControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project-category/1/edit',
             [],
             [],
@@ -418,7 +424,7 @@ class ProjectCategoryControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -434,9 +440,11 @@ class ProjectCategoryControllerTest extends BaseController
                     'name' => 'project-category2',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'That name is taken',
+                    'messages' => [
+                        'name' => ['That name is taken'],
+                    ],
                 ],
             ],
         ];
@@ -460,7 +468,7 @@ class ProjectCategoryControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project-category/1/edit',
             [],
             [],
@@ -472,7 +480,7 @@ class ProjectCategoryControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -489,10 +497,12 @@ class ProjectCategoryControllerTest extends BaseController
                     'sequence' => '',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The name field should not be blank',
-                    'The sequence field should not be blank',
+                    'messages' => [
+                        'name' => ['The name field should not be blank'],
+                        'sequence' => ['The sequence field should not be blank'],
+                    ],
                 ],
             ],
         ];
@@ -516,7 +526,7 @@ class ProjectCategoryControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project-category/1/edit',
             [],
             [],
@@ -528,7 +538,7 @@ class ProjectCategoryControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -545,9 +555,11 @@ class ProjectCategoryControllerTest extends BaseController
                     'sequence' => 'project-category',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The sequence field should contain numbers greater than or equal to 0',
+                    'messages' => [
+                        'sequence' => ['The sequence field should contain numbers greater than or equal to 0'],
+                    ],
                 ],
             ],
         ];
