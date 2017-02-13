@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/api/project-scope")
@@ -47,24 +48,23 @@ class ProjectScopeController extends ApiController
      */
     public function createAction(Request $request)
     {
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
-        $form->submit($data);
+        $this->processForm($request, $form);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
 
-            return $this->createApiResponse($form->getData(), JsonResponse::HTTP_CREATED);
+            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -88,7 +88,7 @@ class ProjectScopeController extends ApiController
      * Edit a specific Project Scope.
      *
      * @Route("/{id}/edit", name="app_api_project_scope_edit")
-     * @Method({"POST"})
+     * @Method({"PATCH"})
      *
      * @param Request      $request
      * @param ProjectScope $projectScope
@@ -99,9 +99,8 @@ class ProjectScopeController extends ApiController
     {
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $projectScope->getProject());
 
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $projectScope, ['csrf_protection' => false]);
-        $form->submit($data, false);
+        $this->processForm($request, $form, false);
 
         if ($form->isValid()) {
             $projectScope->setUpdatedAt(new \DateTime());
@@ -110,15 +109,15 @@ class ProjectScopeController extends ApiController
             $em->persist($projectScope);
             $em->flush();
 
-            return $this->createApiResponse($projectScope);
+            return $this->createApiResponse($projectScope, Response::HTTP_ACCEPTED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -139,6 +138,6 @@ class ProjectScopeController extends ApiController
         $em->remove($projectScope);
         $em->flush();
 
-        return $this->createApiResponse([], JsonResponse::HTTP_NO_CONTENT);
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

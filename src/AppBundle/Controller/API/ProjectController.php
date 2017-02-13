@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/api/project")
@@ -55,9 +56,8 @@ class ProjectController extends ApiController
     public function createAction(Request $request)
     {
         $project = new Project();
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $project, ['csrf_protection' => false]);
-        $form->submit($data);
+        $this->processForm($request, $form);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -74,15 +74,15 @@ class ProjectController extends ApiController
             $em->persist($project);
             $em->flush();
 
-            return $this->createApiResponse($project, JsonResponse::HTTP_CREATED);
+            return $this->createApiResponse($project, Response::HTTP_CREATED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -106,7 +106,7 @@ class ProjectController extends ApiController
      * Edit a specific Project.
      *
      * @Route("/{id}/edit", name="app_api_project_edit")
-     * @Method({"POST"})
+     * @Method({"PATCH"})
      *
      * @param Request $request
      * @param Project $project
@@ -117,9 +117,8 @@ class ProjectController extends ApiController
     {
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $project, ['csrf_protection' => false]);
-        $form->submit($data, false);
+        $this->processForm($request, $form, false);
 
         if ($form->isValid()) {
             $project->setUpdatedAt(new \DateTime());
@@ -128,15 +127,15 @@ class ProjectController extends ApiController
             $em->persist($project);
             $em->flush();
 
-            return $this->createApiResponse($project);
+            return $this->createApiResponse($project, Response::HTTP_ACCEPTED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -157,6 +156,6 @@ class ProjectController extends ApiController
         $em->remove($project);
         $em->flush();
 
-        return $this->createApiResponse([], JsonResponse::HTTP_NO_CONTENT);
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

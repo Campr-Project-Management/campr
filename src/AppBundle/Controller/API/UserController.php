@@ -20,8 +20,6 @@ class UserController extends ApiController
      * @Route("/sync", name="app_api_user_sync")
      * @Method({"GET"})
      *
-     * @param $id
-     *
      * @return JsonResponse
      */
     public function syncAction()
