@@ -77,7 +77,7 @@ class MeetingControllerTest extends BaseController
         $form['create[name]'] = 'meeting2';
         $form['create[location]'] = 'meeting-location';
         $form['create[objectives]'] = 'meeting-objectives';
-        $form['create[date]'] = $date->format('d/m/Y');
+        $form['create[date]'] = $date->format('d-m-Y');
         $form['create[start]'] = $start->format('H:m');
         $form['create[end]'] = $end->format('H:m');
 

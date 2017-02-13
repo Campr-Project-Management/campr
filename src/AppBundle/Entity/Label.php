@@ -72,7 +72,7 @@ class Label
     /**
      * @param Project $project
      */
-    public function setProject(Project $project)
+    public function setProject(Project $project = null)
     {
         $this->project = $project;
     }
