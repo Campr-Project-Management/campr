@@ -76,9 +76,11 @@ class LabelController extends ApiController
      */
     public function editAction(Request $request, Label $label)
     {
-        if ($project = $label->getProject()) {
-            $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
+        $project = $label->getProject();
+        if (!$project) {
+            throw new \LogicException('Project does not exist!');
         }
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
         $data = $request->request->all();
         $form = $this->createForm(LabelType::class, $label, ['csrf_protection' => false]);
@@ -112,9 +114,11 @@ class LabelController extends ApiController
      */
     public function deleteAction(Label $label)
     {
-        if ($project = $label->getProject()) {
-            $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
+        $project = $label->getProject();
+        if (!$project) {
+            throw new \LogicException('Project does not exist!');
         }
+        $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($label);

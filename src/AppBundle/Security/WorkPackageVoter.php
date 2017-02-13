@@ -2,20 +2,20 @@
 
 namespace AppBundle\Security;
 
-use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\ProjectUser;
+use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * Class ProjectVoter.
+ * Class WorkPackageVoter.
  *
- * Restricts users access to Project entities
+ * Restricts users access to WorkPackage entities
  */
-class ProjectVoter extends Voter
+class WorkPackageVoter extends Voter
 {
     const VIEW = 'view';
     const EDIT = 'edit';
@@ -27,7 +27,7 @@ class ProjectVoter extends Voter
     private $em;
 
     /**
-     * ProjectVoter constructor.
+     * WorkPackageVoter constructor.
      *
      * @param EntityManager $em
      */
@@ -50,7 +50,7 @@ class ProjectVoter extends Voter
             return false;
         }
 
-        return $subject instanceof Project;
+        return $subject instanceof WorkPackage;
     }
 
     /**
@@ -85,63 +85,55 @@ class ProjectVoter extends Voter
     /**
      * View access restriction.
      *
-     * @param Project $project
-     * @param User    $user
+     * @param WorkPackage $wp
+     * @param User        $user
      *
      * @return bool
      */
-    private function canView(Project $project, User $user)
+    private function canView(WorkPackage $wp, User $user)
     {
         $projectUser = $this
             ->em
             ->getRepository(ProjectUser::class)
-            ->findOneBy(['user' => $user, 'project' => $project])
+            ->findOneBy(['user' => $user, 'project' => $wp->getProject()])
         ;
 
-        return $projectUser !== null;
+        return $projectUser || $user === $wp->getResponsibility();
     }
 
     /**
      * Edit access restriction.
      *
-     * @param Project $project
-     * @param User    $user
+     * @param WorkPackage $wp
+     * @param User        $user
      *
      * @return bool
      */
-    private function canEdit(Project $project, User $user)
+    private function canEdit(WorkPackage $wp, User $user)
     {
-        $projectUser = $this
-            ->em
-            ->getRepository(ProjectUser::class)
-            ->findOneBy(['user' => $user, 'project' => $project])
-        ;
-
-        return $projectUser
-            && $projectUser->getProjectRole()
-            && $projectUser->getProjectRoleName() !== ProjectRole::ROLE_SPONSOR
-        ;
+        return $this->canView($wp, $user);
     }
 
     /**
      * Delete access restriction.
      *
-     * @param Project $project
-     * @param User    $user
+     * @param WorkPackage $wp
+     * @param User        $user
      *
      * @return bool
      */
-    private function canDelete(Project $project, User $user)
+    private function canDelete(WorkPackage $wp, User $user)
     {
         $projectUser = $this
             ->em
             ->getRepository(ProjectUser::class)
-            ->findOneBy(['user' => $user, 'project' => $project])
+            ->findOneBy(['user' => $user, 'project' => $wp->getProject()])
         ;
 
-        return $projectUser
+        return ($projectUser
             && $projectUser->getProjectRole()
-            && $projectUser->getProjectRoleName() === ProjectRole::ROLE_MANAGER
+            && $projectUser->getProjectRoleName() === ProjectRole::ROLE_MANAGER)
+            || $user === $wp->getResponsibility()
         ;
     }
 }

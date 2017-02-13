@@ -4,6 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\ProjectComplexity;
 use AppBundle\Form\ProjectComplexity\CreateType;
+use AppBundle\Security\ProjectVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -78,6 +79,8 @@ class ProjectComplexityController extends ApiController
      */
     public function getAction(ProjectComplexity $projectComplexity)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::VIEW, $projectComplexity->getProject());
+
         return $this->createApiResponse($projectComplexity);
     }
 
@@ -94,6 +97,8 @@ class ProjectComplexityController extends ApiController
      */
     public function editAction(Request $request, ProjectComplexity $projectComplexity)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $projectComplexity->getProject());
+
         $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $projectComplexity, ['csrf_protection' => false]);
         $form->submit($data, false);
@@ -128,6 +133,8 @@ class ProjectComplexityController extends ApiController
      */
     public function deleteAction(ProjectComplexity $projectComplexity)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $projectComplexity->getProject());
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectComplexity);
         $em->flush();
