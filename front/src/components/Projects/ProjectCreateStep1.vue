@@ -1,11 +1,11 @@
 <template>
     <div class="project-create-wrapper">
         <div class="page-section project-create step-1">
-            <h1>Project Creation Wizard</h1>
-            <h2>Step 1: General Info</h2>
+            <h1>{{ message.project_create_wizard }}</h1>
+            <h2>{{ message.project_create_step1 }}</h2>
 
-            <input-field type="text" label="Project Name"></input-field>
-            <input-field type="text" label="Project No."></input-field>
+            <input-field type="text" v-bind:label="message.project_name"></input-field>
+            <input-field type="text" v-bind:label="message.project_number"></input-field>
 
             <svg version="1.1" id="Layer_1" class="avatar" height="122px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                viewBox="0 0 123.5 123.8" style="enable-background:new 0 0 123.5 123.8;" xml:space="preserve">
@@ -18,35 +18,35 @@
                   </g>
                 </g>
             </svg>
-            <a class="btn-rounded btn-empty btn-md">Add Project Logo</a>
+            <a class="btn-rounded btn-empty btn-md">{{ message.project_logo }}</a>
 
             <div class="checkbox-input clearfix">
                 <input id="project-portfolio" type="checkbox" name="" value="1" @click="togglePortfolio">
-                <label for="project-portfolio">Project is part of a portfolio</label>
+                <label for="project-portfolio">{{ message.project_portfolio }}</label>
             </div>
             <div v-show="visiblePortfolio">
                 <select-field title="Select Portfolio" v-bind:options="customers"></select-field>
-                <input-field type="text" label="Add New Portfolio"></input-field>
+                <input-field type="text" v-bind:label="message.add_portfolio"></input-field>
                 <div class="flex flex-direction-reverse">
-                    <a href="" class="btn-rounded btn-right">Add New Portfolio +</a>
+                    <a href="" class="btn-rounded btn-right">{{ message.add_portfolio }} +</a>
                 </div>
             </div>
 
             <div class="checkbox-input clearfix">
                 <input id="project-programme" type="checkbox" name="" value="1" @click="toggleProgramme">
-                <label for="project-programme">Project is part of a programme</label>
+                <label for="project-programme">{{ message.project_programme</label>
             </div>
             <div v-if="visibleProgramme">
                 <select-field title="Select Portfolio" v-bind:options="customers"></select-field>
-                <input-field type="text" label="Add New Programme"></input-field>
+                <input-field type="text" v-bind:label="message.add_programme"></input-field>
                 <div class="flex flex-direction-reverse">
-                    <a href="" class="btn-rounded btn-right">Add New Programme +</a>
+                    <a href="" class="btn-rounded btn-right">{{ message.add_programme }} +</a>
                 </div>
             </div>
 
             <div class="flex flex-direction-reverse actions">
-                <router-link :to="{name: 'projects-create-2'}" class="btn-rounded second-bg" title="Next Step">
-                    Next Step >
+                <router-link :to="{name: 'projects-create-2'}" class="btn-rounded second-bg" v-bind:title="button.next_step">
+                    {{ button.next_step }} >
                 </router-link>
             </div>
         </div>
@@ -72,6 +72,20 @@ export default {
     },
     data: function() {
         return {
+            message: {
+                project_create_wizard: window.Translator.trans('message.project_create_wizard'),
+                project_create_step1: window.Translator.trans('message.project_create_step1'),
+                project_name: window.Translator.trans('message.project_name'),
+                project_number: window.Translator.trans('message.project_number'),
+                project_logo: window.Translator.trans('message.project_logo'),
+                project_portfolio: window.Translator.trans('message.project_portfolio'),
+                add_portfolio: window.Translator.trans('message.add_portfolio'),
+                project_programme: window.Translator.trans('message.project_programme'),
+                add_programme: window.Translator.trans('message.add_programme'),
+            },
+            button: {
+                next_step: window.Translator.trans('button.next_step'),
+            },
             visiblePortfolio: false,
             visibleProgramme: false,
         };

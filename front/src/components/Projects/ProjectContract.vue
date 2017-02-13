@@ -4,7 +4,7 @@
             <div class="page-side left">
                 <div class="header">
                     <div class="flex">
-                        <h1>Project Contract</h1>
+                        <h1>{{ message.project_contract }}</h1>
                         <a href="#" class="pdf">
                             <svg version="1.1" id="Layer_1" width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                 viewBox="0 0 23.1 23.5" style="enable-background:new 0 0 23.1 23.5;" xml:space="preserve">
@@ -32,18 +32,18 @@
                     </div>
                 </div>
 
-                <input-field type="textarea" label="Project Description" :content="project.description"></input-field>
+                <input-field type="textarea" v-bind:label="message.project_description" :content="project.description"></input-field>
 
-                <input-field type="textarea" label="Project Start Event"></input-field>
+                <input-field type="textarea" v-bind:label="message.project_start_event"></input-field>
 
                 <div class="flex flex-space-between dates">
                     <div class="input-holder left">
-                        <label class="active">Proposed start date</label>
+                        <label class="active">{{ message.propsed_start_date }}</label>
                         <datepicker :value="date | moment('DD / MM / YYYY')" format="DD / MM / YYYY"></datepicker>
                         <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                     </div>
                     <div class="input-holder right">
-                        <label class="active">Proposed end date</label>
+                        <label class="active">{{ message.propsed_end_date }}</label>
                         <datepicker :value="date | moment('DD / MM / YYYY')" format="DD / MM / YYYY"></datepicker>
                         <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                     </div>
@@ -51,12 +51,12 @@
 
                 <div class="flex flex-space-between dates right">
                     <div class="input-holder left">
-                        <label class="active">Forecast end date</label>
+                        <label class="active">{{ message.forecast_start_date }}</label>
                         <datepicker :value="date | moment('DD / MM / YYYY')" format="DD / MM / YYYY"></datepicker>
                         <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                     </div>
                     <div class="input-holder right">
-                        <label class="active">Forecast end date</label>
+                        <label class="active">{{ message.forecast_end_date }}</label>
                         <datepicker :value="date | moment('DD / MM / YYYY')" format="DD / MM / YYYY" class="red"></datepicker>
                         <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
                     </div>
@@ -64,52 +64,52 @@
 
                 <div class="header">
                     <div class="flex">
-                        <h1>Project Objectives</h1>
+                        <h1>{{ message.project_objectives }}</h1>
                     </div>
                 </div>
                 <div v-dragula="colOne" drake="objectives">
                     <drag-box v-for="(item, index) in project.objectives" v-bind:item="item" v-bind:index="index"></drag-box>
                 </div>
                 <div class="hr small"></div>
-                <input-field type="text" label="New Objective Title"></input-field>
-                <input-field type="textarea" label="New Objective Description"></input-field>
+                <input-field type="text" v-bind:label="message.new_objective_title"></input-field>
+                <input-field type="textarea" v-bind:label="message.new_objective_description"></input-field>
                 <div class="flex flex-direction-reverse">
-                    <a class="btn-rounded" href="">Add New Objective +</a>
+                    <a class="btn-rounded" href="">{{ message.add_objective }} +</a>
                 </div>
 
                 <div class="header">
                     <div class="flex">
-                        <h1>Project Limitations</h1>
+                        <h1>{{ message.project_limitations }}</h1>
                     </div>
                 </div>
                 <div v-dragula="colOne" drake="limitations">
                     <drag-box v-for="(item, index) in project.limitations" v-bind:item="item" v-bind:index="index"></drag-box>
                 </div>
                 <div class="hr small"></div>
-                <input-field type="text" label="New Project Limitation"></input-field>
+                <input-field type="text" v-bind:label="message.new_project_limitation"></input-field>
                 <div class="flex flex-direction-reverse">
-                    <a class="btn-rounded" href="">Add New Limitation +</a>
+                    <a class="btn-rounded" href="">{{ message.add_limitation }} +</a>
                 </div>
 
                 <div class="header">
                     <div class="flex">
-                        <h1>Project Deliverables</h1>
+                        <h1>{{ message.project_deliverables }}</h1>
                     </div>
                 </div>
                 <div v-dragula="colOne" drake="deliverables">
                     <drag-box v-for="(item, index) in project.deliverables" v-bind:item="item" v-bind:index="index"></drag-box>
                 </div>
                 <div class="hr small"></div>
-                <input-field type="text" label="New Project Deliverable"></input-field>
+                <input-field type="text" v-bind:label="message.new_project_deliverable"></input-field>
                 <div class="flex flex-direction-reverse">
-                    <a class="btn-rounded" href="kk">Add New Deliverable +</a>
+                    <a class="btn-rounded" href="kk">{{ message.add_deliverable }} +</a>
                 </div>
             </div>
 
             <div class="page-side right">
                 <div class="header">
-                    <h2>Sponsors & Managers</h2>
-                    <a class="btn-rounded btn-md btn-empty">Edit Sponsors & Managers</a>
+                    <h2>{{ message.sponsors_managers }}</h2>
+                    <a class="btn-rounded btn-md btn-empty">{{ message.edit_sponsors_managers }}</a>
                 </div>
                 <div class="flex flex-row flex-center members-big">
                     <member-badge size="big"></member-badge>
@@ -118,8 +118,8 @@
                 </div>
 
                 <div class="header">
-                    <h2>Team Members</h2>
-                    <a class="btn-rounded btn-md btn-empty">Edit Team Members</a>
+                    <h2>{{ message.team_members }}</h2>
+                    <a class="btn-rounded btn-md btn-empty">{{ message.edit_team_members }}</a>
                 </div>
                 <div class="flex flex-row flex-center members-small">
                     <member-badge size="small"></member-badge>
@@ -132,7 +132,7 @@
 
                 <div class="header">
                     <div class="flex">
-                        <h2>Project Resources</h2>
+                        <h2>{{ message.project_resources }}</h2>
                     </div>
                 </div>
                 <vue-chart
@@ -144,7 +144,7 @@
 
                 <div class="header">
                     <div class="flex">
-                        <h2>Project Costs</h2>
+                        <h2>{{ message.project_costs }}</h2>
                     </div>
                 </div>
                 <vue-chart
@@ -157,9 +157,9 @@
                 <div class="hr"></div>
 
                 <div class="flex buttons flex-center">
-                    <a class="btn-rounded second-bg">Save</a>
+                    <a class="btn-rounded second-bg">{{ button.save }}</a>
                     <a class="btn-rounded second-bg flex flex-center download-pdf">
-                        <p>Download PDF</p>
+                        <p>{{ button.download_pdf }}</p>
                         <download-icon></download-icon>
                     </a>
                 </div>
@@ -205,12 +205,41 @@ export default {
     }),
     data: function() {
         return {
+            message: {
+                project_contract: window.Translator.trans('message.project_contract'),
+                project_description: window.Translator.trans('message.project_description'),
+                project_start_event: window.Translator.trans('message.project_start_event'),
+                proposed_start_date: window.Translator.trans('message.proposed_start_date'),
+                proposed_end_date: window.Translator.trans('message.proposed_end_date'),
+                forecast_start_date: window.Translator.trans('message.forecast_start_date'),
+                forecast_end_date: window.Translator.trans('message.forecast_end_date'),
+                project_objectives: window.Translator.trans('message.project_objectives'),
+                new_objective_title: window.Translator.trans('message.new_objective_title'),
+                new_objective_description: window.Translator.trans('message.new_objective_description'),
+                add_objective: window.Translator.trans('message.add_objective'),
+                project_limitations: window.Translator.trans('message.project_limitations'),
+                new_project_limitation: window.Translator.trans('message.new_project_limitation'),
+                add_limitation: window.Translator.trans('message.add_limitation'),
+                project_deliverables: window.Translator.trans('message.project_deliverables'),
+                new_project_deliverable: window.Translator.trans('message.new_project_deliverable'),
+                add_deliverable: window.Translator.trans('message.add_deliverable'),
+                sponsors_managers: window.Translator.trans('message.sponsors_managers'),
+                edit_sponsors_managers: window.Translator.trans('message.edit_sponsors_managers'),
+                team_members: window.Translator.trans('message.team_members'),
+                edit_team_members: window.Translator.trans('message.edit_team_members'),
+                project_resources: window.Translator.trans('message.project_resources'),
+                project_costs: window.Translator.trans('message.project_costs'),
+            },
+            button: {
+                save: window.Translator.trans('button.save'),
+                donwload_pdf: window.Translator.trans('button.download_pdf'),
+            },
             columns: [{
                 'type': 'string',
-                'label': 'Year',
+                'label': window.Translator.trans('message.year'),
             }, {
                 'type': 'number',
-                'label': 'Sales',
+                'label': window.Translator.trans('message.sales'),
             }, {
                 'type': 'number',
                 'label': 'Column2',
@@ -219,7 +248,7 @@ export default {
                 'label': 'Column3',
             }, {
                 'type': 'number',
-                'label': 'Expenses',
+                'label': window.Translator.trans('message.expenses'),
             }],
             rows: [
                 ['2004', 1000, 400, 400, 99],
@@ -228,9 +257,9 @@ export default {
                 ['2007', 1030, 540, 400, 67],
             ],
             options: {
-                title: 'Resource Chart',
+                title: window.Translator.trans('message.resource_chart'),
                 hAxis: {
-                    title: 'Year',
+                    title: window.Translator.trans('message.year'),
                     minValue: '2004',
                     maxValue: '2007',
                     textStyle: {

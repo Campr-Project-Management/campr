@@ -60,7 +60,8 @@
         "lcobucci/jwt": "^3.2",
         "stof/doctrine-extensions-bundle": "^1.2",
         "guzzlehttp/guzzle": "^6.2",
-        "nelmio/cors-bundle": "^1.5"
+        "nelmio/cors-bundle": "^1.5",
+        "willdurand/js-translation-bundle": "^2.6"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

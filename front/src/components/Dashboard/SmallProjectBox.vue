@@ -10,15 +10,15 @@
         <div class="content flex flex-space-between">
             <div class="info">
                 <p>
-                    <span class="title">Started on:</span>
+                    <span class="title">{{ message.started_on }}:</span>
                     <span class="data">{{ project.date | moment('DD.MM.YYYY') }}</span>
                 </p>
                 <p>
-                    <span class="title">Customer:</span>
+                    <span class="title">{{ message.customer }}:</span>
                     <span class="data">{{ project.customer }}</span>
                 </p>
                 <p>
-                    <span class="title">Status:</span>
+                    <span class="title">{{ message.status }}:</span>
                     <span v-bind:class="{ finished: project.status === 'FINISHED' }" class="status-label btn-rounded">
                         {{project.status === 'IN_PROGRESS' && 'In progress' || project.status === 'FINISHED' && 'Finished'}}
                     </span>
@@ -41,6 +41,15 @@ export default {
         EyeIcon,
     },
     props: ['project'],
+    data() {
+        return {
+            message: {
+                started_on: window.Translator.trans('message.started_on'),
+                customer: window.Translator.trans('message.customer'),
+                status: window.Translator.trans('message.status'),
+            },
+        };
+    },
 };
 </script>
 

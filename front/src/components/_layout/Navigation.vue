@@ -26,7 +26,7 @@
                     <li><a href="#">Something else here</a></li>
                 </ul>
             </div>
-            <p class="user-message">Hi, <span>{{ user.firstName }} {{ user.lastName }}</span></p>
+            <p class="user-message">{{ message.hi }}, <span>{{ user.firstName }} {{ user.lastName }}</span></p>
             <img class="user-avatar" :src="user.avatar" :alt="user.name"/>
             <a class="notifications" href="">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -59,7 +59,7 @@
             </a>
         </div>
         <div v-show="this.$route.name.indexOf('project-contract') != -1" class="project-title">
-            <p>Project</p>
+            <p>{{ message.project }}</p>
             <h4>{{ currentProjectTitle }}</h4>
         </div>
     </header>
@@ -74,6 +74,14 @@ export default {
     computed: mapGetters({
         currentProjectTitle: 'currentProjectTitle',
     }),
+    data: function() {
+        return {
+            message: {
+                hi: window.Translator.trans('message.hi'),
+                project: window.Translator.trans('message.project'),
+            },
+        };
+    },
 };
 </script>
 
