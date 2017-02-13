@@ -17,10 +17,12 @@ class LoadProjectCostTypeData extends AbstractFixture implements OrderedFixtureI
      */
     public function load(ObjectManager $manager)
     {
+        $project = $this->getReference('project1');
         for ($i = 1; $i <= 2; ++$i) {
             $projectCostType = (new ProjectCostType())
                 ->setName('project-cost-type'.$i)
                 ->setSequence($i)
+                ->setProject($project)
                 ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
             ;
             $this->setReference('project-cost-type'.$i, $projectCostType);
@@ -35,6 +37,6 @@ class LoadProjectCostTypeData extends AbstractFixture implements OrderedFixtureI
      */
     public function getOrder()
     {
-        return 1;
+        return 3;
     }
 }

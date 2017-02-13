@@ -5,6 +5,7 @@ namespace AppBundle\Controller\API;
 use AppBundle\Entity\Assignment;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Form\Assignment\CreateType;
+use AppBundle\Security\WorkPackageVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -44,6 +45,12 @@ class AssignmentController extends ApiController
      */
     public function getAction(Assignment $assignment)
     {
+        $wp = $assignment->getWorkPackage();
+        if (!$wp) {
+            throw new \LogicException('Workpackage does not exist!');
+        }
+        $this->denyAccessUnlessGranted(WorkPackageVoter::VIEW, $wp);
+
         return $this->createApiResponse($assignment);
     }
 
@@ -92,6 +99,12 @@ class AssignmentController extends ApiController
      */
     public function editAction(Request $request, Assignment $assignment)
     {
+        $wp = $assignment->getWorkPackage();
+        if (!$wp) {
+            throw new \LogicException('Workpackage does not exist!');
+        }
+        $this->denyAccessUnlessGranted(WorkPackageVoter::EDIT, $wp);
+
         $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $assignment, ['csrf_protection' => false]);
         $form->submit($data, false);
@@ -124,6 +137,12 @@ class AssignmentController extends ApiController
      */
     public function deleteAction(Assignment $assignment)
     {
+        $wp = $assignment->getWorkPackage();
+        if (!$wp) {
+            throw new \LogicException('Workpackage does not exist!');
+        }
+        $this->denyAccessUnlessGranted(WorkPackageVoter::DELETE, $wp);
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($assignment);
         $em->flush();

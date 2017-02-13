@@ -4,6 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\ProjectModule;
 use AppBundle\Form\ProjectModule\CreateType;
+use AppBundle\Security\ProjectVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -78,6 +79,12 @@ class ProjectModuleController extends ApiController
      */
     public function getAction(ProjectModule $projectModule)
     {
+        $project = $projectModule->getProject();
+        if (!$project) {
+            throw new \LogicException('Project does not exist!');
+        }
+        $this->denyAccessUnlessGranted(ProjectVoter::VIEW, $project);
+
         return $this->createApiResponse($projectModule);
     }
 
@@ -94,6 +101,12 @@ class ProjectModuleController extends ApiController
      */
     public function editAction(Request $request, ProjectModule $projectModule)
     {
+        $project = $projectModule->getProject();
+        if (!$project) {
+            throw new \LogicException('Project does not exist!');
+        }
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
+
         $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $projectModule, ['csrf_protection' => false]);
         $form->submit($data, false);
@@ -128,6 +141,12 @@ class ProjectModuleController extends ApiController
      */
     public function deleteAction(ProjectModule $projectModule)
     {
+        $project = $projectModule->getProject();
+        if (!$project) {
+            throw new \LogicException('Project does not exist!');
+        }
+        $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectModule);
         $em->flush();
