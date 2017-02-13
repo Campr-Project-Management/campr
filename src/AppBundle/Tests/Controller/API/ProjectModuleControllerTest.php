@@ -2,6 +2,7 @@
 
 namespace AppBundle\Tests\Controller\API;
 
+use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectModule;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,8 +59,8 @@ class ProjectModuleControllerTest extends BaseController
                 Response::HTTP_OK,
                 [
                     [
-                        'project' => null,
-                        'projectName' => null,
+                        'project' => 1,
+                        'projectName' => 'project1',
                         'id' => 1,
                         'module' => 'project-module1',
                         'isEnabled' => true,
@@ -69,8 +70,8 @@ class ProjectModuleControllerTest extends BaseController
                         'updatedAt' => null,
                     ],
                     [
-                        'project' => null,
-                        'projectName' => null,
+                        'project' => 1,
+                        'projectName' => 'project1',
                         'id' => 2,
                         'module' => 'project-module2',
                         'isEnabled' => true,
@@ -273,8 +274,8 @@ class ProjectModuleControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'project' => null,
-                    'projectName' => null,
+                    'project' => 1,
+                    'projectName' => 'project1',
                     'id' => 1,
                     'module' => 'project-module1',
                     'isEnabled' => true,
@@ -351,7 +352,11 @@ class ProjectModuleControllerTest extends BaseController
         $isResponseSuccessful,
         $responseStatusCode
     ) {
-        $projectModule = (new ProjectModule())->setModule('project-module4');
+        $project = $this->em->getRepository(Project::class)->find(1);
+        $projectModule = (new ProjectModule())
+            ->setModule('project-module4')
+            ->setProject($project)
+        ;
         $this->em->persist($projectModule);
         $this->em->flush();
 
@@ -436,8 +441,8 @@ class ProjectModuleControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'project' => null,
-                    'projectName' => null,
+                    'project' => 1,
+                    'projectName' => 'project1',
                     'id' => 2,
                     'module' => 'project-module2',
                     'isEnabled' => true,

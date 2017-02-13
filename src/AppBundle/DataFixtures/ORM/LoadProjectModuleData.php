@@ -17,16 +17,17 @@ class LoadProjectModuleData extends AbstractFixture implements OrderedFixtureInt
      */
     public function load(ObjectManager $manager)
     {
+        $project = $this->getReference('project1');
         for ($i = 1; $i <= 2; ++$i) {
             $projectModule = (new ProjectModule())
                 ->setModule('project-module'.$i)
                 ->setIsEnabled(true)
+                ->setProject($project)
                 ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
             ;
             $manager->persist($projectModule);
         }
 
-        $project = $this->getReference('project1');
         $projectModule = (new ProjectModule())
             ->setModule('project-module'.$i)
             ->setProject($project)
