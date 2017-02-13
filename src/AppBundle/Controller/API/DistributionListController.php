@@ -5,6 +5,7 @@ namespace AppBundle\Controller\API;
 use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\Project;
 use AppBundle\Form\DistributionList\CreateType;
+use AppBundle\Security\DistributionListVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -28,15 +29,7 @@ class DistributionListController extends ApiController
      */
     public function listAction(Project $project)
     {
-        $distributionLists = $this
-            ->getDoctrine()
-            ->getRepository(DistributionList::class)
-            ->findBy([
-                'project' => $project,
-            ])
-        ;
-
-        return $this->createApiResponse($distributionLists);
+        return $this->createApiResponse($project->getDistributionLists());
     }
 
     /**
@@ -86,6 +79,8 @@ class DistributionListController extends ApiController
      */
     public function getAction(DistributionList $distributionList)
     {
+        $this->denyAccessUnlessGranted(DistributionListVoter::VIEW, $distributionList);
+
         return $this->createApiResponse($distributionList);
     }
 
@@ -102,6 +97,8 @@ class DistributionListController extends ApiController
      */
     public function editAction(Request $request, DistributionList $distributionList)
     {
+        $this->denyAccessUnlessGranted(DistributionListVoter::EDIT, $distributionList);
+
         $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $distributionList, ['csrf_protection' => false]);
         $form->submit($data, false);
@@ -136,6 +133,8 @@ class DistributionListController extends ApiController
      */
     public function deleteAction(DistributionList $distributionList)
     {
+        $this->denyAccessUnlessGranted(DistributionListVoter::DELETE, $distributionList);
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($distributionList);
         $em->flush();

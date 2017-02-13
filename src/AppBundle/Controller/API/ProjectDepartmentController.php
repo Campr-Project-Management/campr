@@ -4,6 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\ProjectDepartment;
 use AppBundle\Form\ProjectDepartment\CreateType;
+use AppBundle\Security\AdminVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -78,6 +79,8 @@ class ProjectDepartmentController extends ApiController
      */
     public function getAction(ProjectDepartment $projectDepartment)
     {
+        $this->denyAccessUnlessGranted(AdminVoter::VIEW, $projectDepartment);
+
         return $this->createApiResponse($projectDepartment);
     }
 
@@ -94,6 +97,8 @@ class ProjectDepartmentController extends ApiController
      */
     public function editAction(Request $request, ProjectDepartment $projectDepartment)
     {
+        $this->denyAccessUnlessGranted(AdminVoter::VIEW, $projectDepartment);
+
         $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $projectDepartment, ['csrf_protection' => false]);
         $form->submit($data, false);
@@ -128,6 +133,8 @@ class ProjectDepartmentController extends ApiController
      */
     public function deleteAction(ProjectDepartment $projectDepartment)
     {
+        $this->denyAccessUnlessGranted(AdminVoter::DELETE, $projectDepartment);
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectDepartment);
         $em->flush();

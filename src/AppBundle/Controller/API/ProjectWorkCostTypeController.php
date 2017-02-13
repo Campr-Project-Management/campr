@@ -4,6 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\ProjectWorkCostType;
 use AppBundle\Form\ProjectWorkCostType\CreateType;
+use AppBundle\Security\ProjectVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -79,6 +80,8 @@ class ProjectWorkCostTypeController extends ApiController
      */
     public function getAction(ProjectWorkCostType $projectWorkCostType)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::VIEW, $projectWorkCostType->getProject());
+
         return $this->createApiResponse($projectWorkCostType);
     }
 
@@ -95,6 +98,8 @@ class ProjectWorkCostTypeController extends ApiController
      */
     public function editAction(Request $request, ProjectWorkCostType $projectWorkCostType)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $projectWorkCostType->getProject());
+
         $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $projectWorkCostType, ['csrf_protection' => false]);
         $form->submit($data, false);
@@ -129,6 +134,8 @@ class ProjectWorkCostTypeController extends ApiController
      */
     public function deleteAction(ProjectWorkCostType $projectWorkCostType)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $projectWorkCostType->getProject());
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectWorkCostType);
         $em->flush();

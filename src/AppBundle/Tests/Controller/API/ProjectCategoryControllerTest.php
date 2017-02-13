@@ -355,7 +355,6 @@ class ProjectCategoryControllerTest extends BaseController
             json_encode($content)
         );
         $response = $this->client->getResponse();
-
         $projectCategory = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $projectCategory['updatedAt'];
 
