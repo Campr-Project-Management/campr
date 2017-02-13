@@ -5,7 +5,7 @@
             <ul>
                 <li class="active">
                     <router-link :to="{name: 'dashboard'}" title="Dashboard">
-                        <span class="default">Dashboard</span>
+                        <span class="default">{{ message.dashboard }}</span>
                         <span class="tablet">
                             <svg version="1.1" class="dashboard-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                viewBox="0 0 23.6 23.6" xml:space="preserve">
@@ -32,8 +32,8 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'projects'}" title="Projects">
-                        <span class="default">Projects</span>
+                    <router-link :to="{name: 'projects'}" v-bind:title="message.projects">
+                        <span class="default">{{ message.projects }}</span>
                         <span class="tablet">
                             <svg version="1.1" class="projects-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                viewBox="0 0 20.9 20.4" xml:space="preserve">
@@ -50,8 +50,8 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'tasks'}" title="Tasks">
-                        <span class="default">Tasks</span>
+                    <router-link :to="{name: 'tasks'}" v-bind:title="message.tasks">
+                        <span class="default">{{ message.tasks }}</span>
                         <span class="tablet">
                             <svg version="1.1" class="tasks-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                viewBox="0 0 20.2 19.8" xml:space="preserve">
@@ -77,98 +77,98 @@
             <ul v-show="this.$route.name.indexOf('project-') != -1">
                 <li class="separator"></li>
                 <li>
-                    <router-link :to="{name: 'project-dashboard'}" title="Project Dashboard">
-                        <span class="default">Project Dashboard</span>
+                    <router-link :to="{name: 'project-dashboard'}" v-bind:title="message.project_dashboard">
+                        <span class="default">{{ message.project_dashboard }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-contract'}" title="Contract">
-                        <span class="default">Contract</span>
+                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.contract">
+                        <span class="default">{{ message.contract }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-contract'}" title="Organization">
-                        <span class="default">Organization</span>
+                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.organization">
+                        <span class="default">{{ message.organization }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-contract'}" title="Plan">
-                        <span class="default">Plan</span>
+                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.plan">
+                        <span class="default">{{ message.plan }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-contract'}" title="Task Management">
-                        <span class="default">Task Management</span>
+                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.task_management">
+                        <span class="default">{{ message.task_management }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-contract'}" title="Phases & Milestones">
-                        <span class="default">Phases & Milestones</span>
+                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.phases_milestones">
+                        <span class="default">{{ message.phases_milestones }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-contract'}" title="Costs">
-                        <span class="default">Costs</span>
+                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.costs">
+                        <span class="default">{{ message.costs }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-contract'}" title="Resources">
-                        <span class="default">Resources</span>
+                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.resources">
+                        <span class="default">{{ message.resources }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-contract'}" title="Risks & Opportunities">
-                        <span class="default">Risks & Opportunities</span>
+                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.risks_oportunities">
+                        <span class="default">{{ message.risks_oportunities }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-contract'}" title="Communication">
-                        <span class="default">Communication</span>
+                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.communication">
+                        <span class="default">{{ message.communication }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-contract'}" title="Control Measures">
-                        <span class="default">Control Measures</span>
+                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.control_measures">
+                        <span class="default">{{ message.control_measures</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-contract'}" title="Status Report">
-                        <span class="default">Status Report</span>
+                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.status_report">
+                        <span class="default">{{ message.status_report }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-contract'}" title="Meetings">
-                        <span class="default">Meetings</span>
+                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.meetings">
+                        <span class="default">{{ message.meetings }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-contract'}" title="Todos">
-                        <span class="default">Todos</span>
+                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.todos">
+                        <span class="default">{{ message.todos }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-contract'}" title="Notes">
-                        <span class="default">Notes</span>
+                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.notes">
+                        <span class="default">{{ message.notes }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-contract'}" title="Close Down Project">
-                        <span class="default">Close Down Project</span>
+                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.close_down_project">
+                        <span class="default">{{ message.close_down_project }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
@@ -180,6 +180,31 @@
 <script>
 export default {
     name: 'sidebar',
+    data: function() {
+        return {
+            message: {
+                dashboard: window.Translator.trans('message.dashboard'),
+                projects: window.Translator.trans('message.projects'),
+                tasks: window.Translator.trans('message.tasks'),
+                project_dashboard: window.Translator.trans('message.project_dashboard'),
+                contract: window.Translator.trans('message.contract'),
+                organization: window.Translator.trans('message.organization'),
+                plan: window.Translator.trans('message.plan'),
+                task_management: window.Translator.trans('message.task_management'),
+                phases_milestones: window.Translator.trans('message.phases_milestones'),
+                costs: window.Translator.trans('message.costs'),
+                resources: window.Translator.trans('message.resources'),
+                risks_oportunities: window.Translator.trans('message.risks_oportunities'),
+                comunication: window.Translator.trans('message.communication'),
+                control_measures: window.Translator.trans('message.control_measures'),
+                status_report: window.Translator.trans('message.status_report'),
+                meetings: window.Translator.trans('message.meetings'),
+                todos: window.Translator.trans('message.todos'),
+                notes: window.Translator.trans('message.notes'),
+                close_down_project: window.Translator.trans('message.close_down_project'),
+            },
+        };
+    },
 };
 </script>
 

@@ -8,7 +8,6 @@
         </div>
     </div>
 </template>
-
 <script>
 import Navigation from './components/_layout/Navigation';
 import Sidebar from './components/_layout/Sidebar';

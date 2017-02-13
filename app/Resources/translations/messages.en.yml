@@ -1,0 +1,109 @@
+message:
+    dashboard: Dashboard
+    filter_by: Filter By
+    customer: Customer
+    programme: Programme
+    status: Status
+    schedule: Schedule
+    project: Project
+    hi: Hi
+    projects: Projects
+    tasks: Tasks
+    project_dashboard: Project Dashboard
+    contract: Contract
+    organization: Organization
+    plant: Plan
+    task_management: Task Management
+    phases_milestones: Phases & Milestones
+    costs: Costs
+    resources: Resources
+    risks_oportunities: Risks & Oportunities
+    communication: Communication
+    control_measures: Control Measures
+    status_report: Status Report
+    meetings: Meetings
+    todos: Todos
+    notes: Notes
+    close_down_project: Close Down Project
+    recent_projects: My Recent Projects
+    all_projects: View all my Projects
+    my_projects: My Projects
+    new_project: New Project
+    recent_tasks: My Recent Tasks
+    all_tasks: View all my Tasks
+    my_tasks: My Tasks
+    new_task: New Task
+    started_on: Started on
+    progress: Progress
+    new_message: New
+    task_status: Task Status
+    cost_status: Cost Status
+    add_project_notes:
+    year: Year
+    sales: Sales
+    expenses: Expenses
+    resource_chart: Resource Chart
+    project_contract: Project Contract
+    project_description: Project Description
+    project_start_event: Project Start Event
+    proposed_start_date: Proposed Start Date
+    proposed_end_date: Proposed End Date
+    forecast_start_date: Forecast Start Date
+    forecast_end_date: Forecast End Date
+    project_objectives: Project Objectives
+    project_organization: Project Organization
+    new_objective_title: New Objective Title
+    new_objective_description: New Objective Description
+    add_objective: Add new objective
+    project_limitations: Project Limitations
+    new_project_limitation: New Project Limitation
+    add_limitation: Add new limitation
+    project_deliverables: Project Deliverables
+    new_project_deliverable: New Project Deliverable
+    add_deliverable: Add new deliverable
+    sponsors_managers: Sponsors & Managers
+    edit_sponsors_managers: Edit Sponsors & Managers
+    team_members: Team Members
+    edit_team_members: Edit Team Members
+    project_resources: Project Resources
+    projcet_costs: Project Costs
+    project_create_wizard: Project Creation Wizard
+    project_create_step1: 'Step 1: General Info'
+    project_create_step2: 'Step 2: Project Worthiness Analysis'
+    project_create_step3: 'Step 3: Project Builder'
+    project_name: Project Name
+    project_number: Project No.
+    project_logo: Add Project Logo
+    project_portfolio: Project is part of a portfolio
+    add_portfolio: Add New Portfolio
+    project_programme: Project is part of a programme
+    add_programme: Add New Programme
+    project_duration: Project Duration
+    project_budget: Project Budget
+    project_involved: Project Involved
+    departments_involved: Departments Involved
+    strategical_meaning: Strategical Meaning
+    risks: Risks
+    category: Category
+    scope: Scope
+    project_size: Project Size
+    medium: Medium
+    recommended_modules: based on your estimations we recommend the following modules
+    not_recommended_modules: we don’t recommend using the remaining modules but you can still activate them
+    raci_matrix: Raci Matrix
+    task_chart: Task Chart
+    gantt_chart: Gantt Chart
+    context: Context
+    decisions: Decisions
+    start: Start
+    finish: Finish
+    duration: Duration
+    schedule_base: Schedule Base
+    schedule_forecast: Schedule Forecast
+button:
+    save: Save
+    download_pdf: Download PDF
+    next_step: Next Step
+    previous_step: Previous Step
+    start_project: Start Project
+    analyze: Analyze
