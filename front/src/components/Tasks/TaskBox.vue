@@ -14,19 +14,19 @@
                 <p class="title">{{ task.projectName }}</p>
                 <table>
                     <tr>
-                        <th>Schedule</th>
-                        <th>Start</th>
-                        <th>Finish</th>
-                        <th>Duration</th>
+                        <th>{{ message.schedule }}</th>
+                        <th>{{ message.start }}</th>
+                        <th>{{ message.finish }}</th>
+                        <th>{{ message.duration }}</th>
                     </tr>
                     <tr class="even" v-show="task.scheduledStartAt || task.scheduledFinishAt">
-                        <td>Schedule Base</td>
+                        <td>{{ message.schedule_base }}</td>
                         <td>{{ task.scheduledStartAt }}</td>
                         <td>{{ task.scheduledFinishAt }}</td>
                         <td>{{ duration(task.scheduledStartAt, task.scheduledFinishAt) }}</td>
                     </tr>
                     <tr class="odd" v-show="task.forecastStartAt || task.forecastFinishAt">
-                        <td>Schedule Forescast</td>
+                        <td>{{ message.schedule_forecast }}</td>
                         <td>{{ task.forecastStartAt }}</td>
                         <td>{{ task.forecastFinishAt }}</td>
                         <td>{{ duration(task.forecastStartAt, task.forecastFinishAt) }}</td>
@@ -117,6 +117,18 @@ export default {
         },
     },
     props: ['task', 'colorStatuses'],
+    data: function() {
+        return {
+            message: {
+                schedule: window.Translator.trans('message.schedule'),
+                start: window.Translator.trans('message.start'),
+                finish: window.Translator.trans('message.finish'),
+                duration: window.Translator.trans('message.duration'),
+                schedule_base: window.Translator.trans('message.schedule_base'),
+                schedule_forecast: window.Translator.trans('message.schedule_forecast'),
+            },
+        };
+    },
 };
 </script>
 
