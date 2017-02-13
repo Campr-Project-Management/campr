@@ -31,8 +31,14 @@ class LabelType extends AbstractType
                 ],
             ])
             ->add('project', EntityType::class, [
+                'required' => true,
                 'class' => Project::class,
                 'choice_label' => 'name',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'validation.constraints.label.project.not_blank',
+                    ]),
+                ],
                 'placeholder' => 'admin.project.choice',
                 'translation_domain' => 'admin',
             ])

@@ -6,7 +6,7 @@ use AppBundle\Entity\MeetingAgenda;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -42,7 +42,7 @@ class CreateType extends AbstractType
                 'placeholder' => 'admin.user.choice',
                 'translation_domain' => 'admin',
             ])
-            ->add('start', TimeType::class, [
+            ->add('start', DateTimeType::class, [
                 'required' => false,
                 'widget' => 'single_text',
                 'constraints' => [
@@ -51,7 +51,7 @@ class CreateType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('end', TimeType::class, [
+            ->add('end', DateTimeType::class, [
                 'required' => false,
                 'widget' => 'single_text',
                 'constraints' => [
@@ -60,7 +60,7 @@ class CreateType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('duration', TimeType::class, [
+            ->add('duration', DateTimeType::class, [
                 'required' => false,
                 'widget' => 'single_text',
                 'constraints' => [

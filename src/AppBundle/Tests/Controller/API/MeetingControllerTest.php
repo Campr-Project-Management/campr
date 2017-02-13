@@ -491,7 +491,7 @@ class MeetingControllerTest extends BaseController
                     'location' => 'loc1',
                     'objectives' => 'objectives',
                     'project' => 1,
-                    'date' => '07/01/2017',
+                    'date' => '07-01-2017',
                     'start' => '16:00:00',
                     'end' => '17:00:00',
                 ],
@@ -561,7 +561,7 @@ class MeetingControllerTest extends BaseController
             [
                 [
                     'name' => 'meeting-renamed',
-                    'date' => '09/03/2017',
+                    'date' => '09-03-2017',
                 ],
                 true,
                 Response::HTTP_OK,
