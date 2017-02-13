@@ -64,12 +64,12 @@ class CreateType extends AbstractType
             ->add('startedAt', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
+                'format' => 'dd-MM-yyyy',
             ])
             ->add('finishedAt', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
+                'format' => 'dd-MM-yyyy',
             ])
         ;
     }

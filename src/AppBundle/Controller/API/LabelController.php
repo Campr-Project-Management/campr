@@ -32,6 +32,21 @@ class LabelController extends ApiController
     }
 
     /**
+     * Get Label by id.
+     *
+     * @Route("/{id}", name="app_api_label_get")
+     * @Method({"GET"})
+     *
+     * @param Label $label
+     *
+     * @return JsonResponse
+     */
+    public function getAction(Label $label)
+    {
+        return $this->createApiResponse($label);
+    }
+
+    /**
      * Create a new label.
      *
      * @Route("/create", name="app_api_label_create")
