@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/api/project-category")
@@ -47,24 +48,23 @@ class ProjectCategoryController extends ApiController
      */
     public function createAction(Request $request)
     {
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
-        $form->submit($data);
+        $this->processForm($request, $form);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
 
-            return $this->createApiResponse($form->getData(), JsonResponse::HTTP_CREATED);
+            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -88,7 +88,7 @@ class ProjectCategoryController extends ApiController
      * Edit a specific Project Category.
      *
      * @Route("/{id}/edit", name="app_api_project_category_edit")
-     * @Method({"POST"})
+     * @Method({"PATCH"})
      *
      * @param Request         $request
      * @param ProjectCategory $projectCategory
@@ -99,9 +99,8 @@ class ProjectCategoryController extends ApiController
     {
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $projectCategory->getProject());
 
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $projectCategory, ['csrf_protection' => false]);
-        $form->submit($data, false);
+        $this->processForm($request, $form, false);
 
         if ($form->isValid()) {
             $projectCategory->setUpdatedAt(new \DateTime());
@@ -110,15 +109,15 @@ class ProjectCategoryController extends ApiController
             $em->persist($projectCategory);
             $em->flush();
 
-            return $this->createApiResponse($projectCategory);
+            return $this->createApiResponse($projectCategory, Response::HTTP_ACCEPTED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -139,6 +138,6 @@ class ProjectCategoryController extends ApiController
         $em->remove($projectCategory);
         $em->flush();
 
-        return $this->createApiResponse([], JsonResponse::HTTP_NO_CONTENT);
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

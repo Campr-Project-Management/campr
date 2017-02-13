@@ -22,7 +22,7 @@ class NoteController extends ApiController
      * All notes for the current project.
      *
      * @Route("/{id}/list", name="app_api_note_list")
-     * @Method({"GET", "POST"})
+     * @Method({"GET"})
      *
      * @param Project $project
      *
@@ -66,9 +66,8 @@ class NoteController extends ApiController
      */
     public function createAction(Request $request)
     {
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
-        $form->submit($data);
+        $this->processForm($request, $form);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -78,12 +77,12 @@ class NoteController extends ApiController
             return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -105,31 +104,30 @@ class NoteController extends ApiController
         }
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $note, ['csrf_protection' => false]);
-        $form->submit($data, false);
+        $this->processForm($request, $form, false);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($note);
             $em->flush();
 
-            return $this->createApiResponse($note);
+            return $this->createApiResponse($note, Response::HTTP_ACCEPTED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
      * Delete a specific Note.
      *
      * @Route("/{id}/delete", name="app_api_note_delete")
-     * @Method({"GET"})
+     * @Method({"DELETE"})
      *
      * @param Note $note
      *
@@ -147,6 +145,6 @@ class NoteController extends ApiController
         $em->remove($note);
         $em->flush();
 
-        return $this->createApiResponse([], Response::HTTP_NO_CONTENT);
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

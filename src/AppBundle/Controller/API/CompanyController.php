@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/api/company")
@@ -46,24 +47,23 @@ class CompanyController extends ApiController
      */
     public function createAction(Request $request)
     {
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
-        $form->submit($data);
+        $this->processForm($request, $form);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
 
-            return $this->createApiResponse($form->getData(), JsonResponse::HTTP_CREATED);
+            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -85,7 +85,7 @@ class CompanyController extends ApiController
      * Edit a specific Company.
      *
      * @Route("/{id}/edit", name="app_api_company_edit")
-     * @Method({"POST"})
+     * @Method({"PATCH"})
      *
      * @param Request $request
      * @param Company $company
@@ -94,9 +94,8 @@ class CompanyController extends ApiController
      */
     public function editAction(Request $request, Company $company)
     {
-        $data = $request->request->all();
         $form = $this->createForm(CreateType::class, $company, ['csrf_protection' => false]);
-        $form->submit($data, false);
+        $this->processForm($request, $form, false);
 
         if ($form->isValid()) {
             $company->setUpdatedAt(new \DateTime());
@@ -105,15 +104,15 @@ class CompanyController extends ApiController
             $em->persist($company);
             $em->flush();
 
-            return $this->createApiResponse($company);
+            return $this->createApiResponse($company, Response::HTTP_ACCEPTED);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
 
-        return $this->createApiResponse($errors);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -132,6 +131,6 @@ class CompanyController extends ApiController
         $em->remove($company);
         $em->flush();
 
-        return $this->createApiResponse([], JsonResponse::HTTP_NO_CONTENT);
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

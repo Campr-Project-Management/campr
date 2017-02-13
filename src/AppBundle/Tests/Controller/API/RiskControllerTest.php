@@ -232,7 +232,7 @@ class RiskControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -246,15 +246,17 @@ class RiskControllerTest extends BaseController
             [
                 [],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The title should not be blank',
-                    'The description should not be blank',
-                    'The cost should not be blank',
-                    'The budget should not be blank',
-                    'The delay should not be blank',
-                    'The priority should not be blank',
-                    'The measure should not be blank',
+                    'messages' => [
+                        'title' => ['The title should not be blank'],
+                        'description' => ['The description should not be blank'],
+                        'cost' => ['The cost should not be blank'],
+                        'budget' => ['The budget should not be blank'],
+                        'delay' => ['The delay should not be blank'],
+                        'priority' => ['The priority should not be blank'],
+                        'measure' => ['The measure should not be blank'],
+                    ],
                 ],
             ],
         ];
@@ -278,7 +280,7 @@ class RiskControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/risk/1/edit',
             [],
             [],
@@ -309,7 +311,7 @@ class RiskControllerTest extends BaseController
                     'title' => 'title1',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_ACCEPTED,
                 [
                     'impact' => 1,
                     'impactName' => 'impact1',
@@ -355,7 +357,7 @@ class RiskControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/risk/1/edit',
             [],
             [],
@@ -367,7 +369,7 @@ class RiskControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -389,15 +391,17 @@ class RiskControllerTest extends BaseController
                     'measure' => '',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The title should not be blank',
-                    'The description should not be blank',
-                    'The cost should not be blank',
-                    'The budget should not be blank',
-                    'The delay should not be blank',
-                    'The priority should not be blank',
-                    'The measure should not be blank',
+                    'messages' => [
+                        'title' => ['The title should not be blank'],
+                        'description' => ['The description should not be blank'],
+                        'cost' => ['The cost should not be blank'],
+                        'budget' => ['The budget should not be blank'],
+                        'delay' => ['The delay should not be blank'],
+                        'priority' => ['The priority should not be blank'],
+                        'measure' => ['The measure should not be blank'],
+                    ],
                 ],
             ],
         ];

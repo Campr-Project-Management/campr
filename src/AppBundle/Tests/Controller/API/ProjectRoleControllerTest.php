@@ -203,7 +203,7 @@ class ProjectRoleControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
 
@@ -223,9 +223,11 @@ class ProjectRoleControllerTest extends BaseController
                     'sequence' => 1,
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'That name is taken',
+                    'messages' => [
+                        'name' => ['That name is taken'],
+                    ],
                 ],
             ],
         ];
@@ -261,7 +263,7 @@ class ProjectRoleControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -275,10 +277,12 @@ class ProjectRoleControllerTest extends BaseController
             [
                 [],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The name field should not be blank',
-                    'The sequence field should not be blank',
+                    'messages' => [
+                        'name' => ['The name field should not be blank'],
+                        'sequence' => ['The sequence field should not be blank'],
+                    ],
                 ],
             ],
         ];
@@ -314,7 +318,7 @@ class ProjectRoleControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -331,9 +335,11 @@ class ProjectRoleControllerTest extends BaseController
                     'sequence' => 'project-role',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The sequence field should contain numbers greater than or equal to 0',
+                    'messages' => [
+                        'sequence' => ['The sequence field should contain numbers greater than or equal to 0'],
+                    ],
                 ],
             ],
         ];
@@ -357,7 +363,7 @@ class ProjectRoleControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project-role/1/edit',
             [],
             [],
@@ -388,7 +394,7 @@ class ProjectRoleControllerTest extends BaseController
                     'name' => 'manager',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_ACCEPTED,
                 [
                     'id' => 1,
                     'name' => 'manager',
@@ -419,7 +425,7 @@ class ProjectRoleControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project-role/1/edit',
             [],
             [],
@@ -431,7 +437,7 @@ class ProjectRoleControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -447,9 +453,11 @@ class ProjectRoleControllerTest extends BaseController
                     'name' => 'sponsor',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'That name is taken',
+                    'messages' => [
+                        'name' => ['That name is taken'],
+                    ],
                 ],
             ],
         ];
@@ -473,7 +481,7 @@ class ProjectRoleControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project-role/1/edit',
             [],
             [],
@@ -485,7 +493,7 @@ class ProjectRoleControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -502,10 +510,12 @@ class ProjectRoleControllerTest extends BaseController
                     'sequence' => '',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The name field should not be blank',
-                    'The sequence field should not be blank',
+                    'messages' => [
+                        'name' => ['The name field should not be blank'],
+                        'sequence' => ['The sequence field should not be blank'],
+                    ],
                 ],
             ],
         ];
@@ -529,7 +539,7 @@ class ProjectRoleControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $this->client->request(
-            'POST',
+            'PATCH',
             '/api/project-role/1/edit',
             [],
             [],
@@ -541,7 +551,7 @@ class ProjectRoleControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -558,9 +568,11 @@ class ProjectRoleControllerTest extends BaseController
                     'sequence' => 'project-role',
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_BAD_REQUEST,
                 [
-                    'The sequence field should contain numbers greater than or equal to 0',
+                    'messages' => [
+                        'sequence' => ['The sequence field should contain numbers greater than or equal to 0'],
+                    ],
                 ],
             ],
         ];
