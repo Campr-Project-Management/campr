@@ -1142,7 +1142,6 @@ class Project
     }
 
     /**
-     *
      * Remove contract.
      *
      * @param Contract $contract
