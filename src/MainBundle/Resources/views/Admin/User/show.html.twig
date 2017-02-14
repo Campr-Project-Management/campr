@@ -1,6 +1,6 @@
 {% extends 'MainBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
@@ -8,7 +8,7 @@
             <h1 class="page-header">
                 <p class="text-primary">
                     {{ user.fullName }}
-                    <a href="{{ path('main_admin_user_list') }}" class="btn btn-sm btn-primary pull-right">{{ 'admin.general.back'|trans }}</span></a>
+                    <a href="{{ path('main_admin_user_list') }}" class="btn btn-sm btn-primary pull-right">{{ 'button.back_to_list'|trans }}</span></a>
                 </p>
             </h1>
         </div>
@@ -18,19 +18,19 @@
             <div class="caption">
                 <ul class="list-unstyled">
                     <li class="list-group-item">
-                        <strong>{{ 'admin.user.show.id'|trans }}: </strong>{{ user.id }}
+                        <strong>{{ 'table_header_cell.id'|trans }}: </strong>{{ user.id }}
                     </li>
                     <li class="list-group-item">
-                        <strong>{{ 'admin.user.show.full_name'|trans }}: </strong>{{ user.fullName }}
+                        <strong>{{ 'table_header_cell.full_name'|trans }}: </strong>{{ user.fullName }}
                     </li>
                     <li class="list-group-item">
-                        <strong>{{ 'admin.user.show.username'|trans }}: </strong>{{ user.username }}
+                        <strong>{{ 'table_header_cell.username'|trans }}: </strong>{{ user.username }}
                     </li>
                     <li class="list-group-item">
-                        <strong>{{ 'admin.user.show.email'|trans }}: </strong>{{ user.email }}
+                        <strong>{{ 'table_header_cell.email'|trans }}: </strong>{{ user.email }}
                     </li>
                     <li class="list-group-item">
-                        <strong>{{ 'admin.user.show.phone'|trans }}: </strong>{{ user.phone }}
+                        <strong>{{ 'table_header_cell.phone'|trans }}: </strong>{{ user.phone }}
                     </li>
                 </ul>
             </div>

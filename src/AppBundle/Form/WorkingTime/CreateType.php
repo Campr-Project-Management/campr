@@ -23,11 +23,11 @@ class CreateType extends AbstractType
             ->add('day', EntityType::class, [
                 'class' => Day::class,
                 'choice_label' => 'id',
-                'placeholder' => 'admin.day.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.day',
+                'translation_domain' => 'messages',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.working_time.day.not_blank',
+                        'message' => 'not_blank.day',
                     ]),
                 ],
             ])

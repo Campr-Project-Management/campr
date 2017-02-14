@@ -1,13 +1,13 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="container container-alt">
         <div class="messages card">
             <div class="m-sidebar">
                 <header>
-                    <h2 class="hidden-xs">{{ 'admin.chat.messages'|trans }}</h2>
+                    <h2 class="hidden-xs">{{ 'title.messages'|trans }}</h2>
                     <ul class="actions">
                         <li>
                             <a id="create-new-chat" href="#">

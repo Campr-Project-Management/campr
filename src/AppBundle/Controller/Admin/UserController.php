@@ -113,7 +113,7 @@ class UserController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.user.create.success', [], 'admin')
+                        ->trans('success.user.create', [], 'flashes')
                 )
             ;
 
@@ -149,7 +149,7 @@ class UserController extends Controller
                     'error',
                     $this
                         ->get('translator')
-                        ->trans('admin.user.edit.superadmin', [], 'admin')
+                        ->trans('failed.user.edit.superadmin', [], 'flashes')
                 )
             ;
 
@@ -171,7 +171,7 @@ class UserController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.user.edit.success', [], 'admin')
+                        ->trans('success.user.edit', [], 'flashes')
                 )
             ;
 
@@ -208,7 +208,7 @@ class UserController extends Controller
                     'error',
                     $this
                         ->get('translator')
-                        ->trans('admin.user.delete.yourself', [], 'admin')
+                        ->trans('failed.user.delete.yourself', [], 'flashes')
                 )
             ;
 
@@ -221,7 +221,7 @@ class UserController extends Controller
                     'error',
                     $this
                         ->get('translator')
-                        ->trans('admin.user.delete.superadmin', [], 'admin')
+                        ->trans('failed.user.delete.superadmin', [], 'flashes')
                 )
             ;
 
@@ -247,7 +247,7 @@ class UserController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.user.delete.success.general', [], 'admin')
+                    ->trans('success.user.delete.general', [], 'flashes')
             )
         ;
 

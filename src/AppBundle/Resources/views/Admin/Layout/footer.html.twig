@@ -1,12 +1,13 @@
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
+
 <footer id="footer">
-    Copyright &copy; 2015 Material Admin
+    {{ 'copyright'|trans }}
 
     <ul class="f-menu">
-        <li><a href="">Home</a></li>
-        <li><a href="">Dashboard</a></li>
-        <li><a href="">Reports</a></li>
-        <li><a href="">Support</a></li>
-        <li><a href="">Contact</a></li>
+        <li><a href="">{{ 'link.home'|trans }}</a></li>
+        <li><a href="">{{ 'link.dashboad'|trans }}</a></li>
+        <li><a href="">{{ 'link.reports'|trans }}</a></li>
+        <li><a href="">{{ 'link.support'|trans }}</a></li>
+        <li><a href="">{{ 'link.contact'|trans }}</a></li>
     </ul>
 </footer>

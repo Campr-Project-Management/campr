@@ -1,4 +1,4 @@
-{% trans_default_domain 'main' %}
+{% trans_default_domain 'messages' %}
 
 {% extends 'MainBundle::base.html.twig' %}
 
@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">
-                <p class="text-primary">{{ 'main.account.team.title'|trans }}</p>
+                <p class="text-primary">{{ 'title.team.list'|trans }}</p>
             </h1>
             <a href="{{ path('main_team_create') }}" class="btn btn-sm btn-primary pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
             {% for flashMessage in app.session.flashbag.get('success') %}
@@ -25,13 +25,13 @@
         <div class="col-lg-12">
             <table class="table table-condensed table-responsive">
                 <thead>
-                    <th>{{ 'main.account.team.table.id'|trans }}</th>
-                    <th>{{ 'main.account.team.table.logo'|trans }}</th>
-                    <th>{{ 'main.account.team.table.name'|trans }}</th>
-                    <th>{{ 'main.account.team.table.slug'|trans }}</th>
-                    <th>{{ 'main.account.team.table.members'|trans }}</th>
-                    <th>{{ 'main.account.team.table.enabled'|trans }}</th>
-                    <th>{{ 'main.general.actions'|trans }}</th>
+                    <th>{{ 'table_header_cell.id'|trans }}</th>
+                    <th>{{ 'table_header_cell.logo'|trans }}</th>
+                    <th>{{ 'table_header_cell.name'|trans }}</th>
+                    <th>{{ 'table_header_cell.slug'|trans }}</th>
+                    <th>{{ 'table_header_cell.members'|trans }}</th>
+                    <th>{{ 'table_header_cell.enabled'|trans }}</th>
+                    <th>{{ 'placeholder.actions'|trans }}</th>
                 </thead>
                 <tbody>
                     {% for team in app.user.teams %}
@@ -43,12 +43,12 @@
                             <td>{{ team }}</td>
                             <td>{{ team.slug }}</td>
                             <td>{{ team.teamMembers.count }}</td>
-                            <td>{{ team.enabled ? ('yes'|trans) : ('no'|trans) }}</td>
+                            <td>{{ team.enabled ? ('message.yes'|trans) : ('message.no'|trans) }}</td>
                             <td>
                                 {% if team.enabled %}
                                     <a href="{{ path('main_team_sso', {'id': team.id}) }}" class="btn btn-primary">
                                         <i class="glyphicon glyphicon-expand"></i>
-                                        {{ 'login'|trans }}
+                                        {{ 'button.login'|trans }}
                                     </a>
                                 {% endif %}
                                 <a href="{{ path('main_team_show', {'id': team.id}) }}" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span></a>

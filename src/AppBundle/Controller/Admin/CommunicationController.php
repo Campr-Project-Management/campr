@@ -112,7 +112,7 @@ class CommunicationController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.communication.create.success', [], 'admin')
+                        ->trans('success.communication.create', [], 'flashes')
                 )
             ;
 
@@ -153,7 +153,7 @@ class CommunicationController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.communication.edit.success', [], 'admin')
+                        ->trans('success.communication.edit', [], 'flashes')
                 )
             ;
 
@@ -199,7 +199,7 @@ class CommunicationController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.communication.delete.success.general', [], 'admin')
+                    ->trans('success.communication.delete.general', [], 'flashes')
             )
         ;
 

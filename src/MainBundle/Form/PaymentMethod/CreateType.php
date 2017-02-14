@@ -18,7 +18,7 @@ class CreateType extends AbstractType
                 'label' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.payment_method.name.not_blank',
+                        'message' => 'not_blank.payment_method',
                     ]),
                 ],
             ])
@@ -26,7 +26,7 @@ class CreateType extends AbstractType
                 'label' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.payment_method.token.not_blank',
+                        'message' => 'not_blank.token',
                     ]),
                 ],
             ])

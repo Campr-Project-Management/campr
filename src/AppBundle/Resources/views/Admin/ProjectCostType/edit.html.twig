@@ -1,6 +1,6 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
 
@@ -9,13 +9,13 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.project_cost_type.edit.title'|trans }}</h2>
+                    <h2>{{ 'title.project_cost_type.edit'|trans }}</h2>
                     <ul class="dropdown-menu dropdown-menu-right">
                         <li>
-                            <a href="{{ path('app_admin_project_cost_type_create') }}">{{ 'admin.project_cost_type.list.add'|trans }}</a>
+                            <a href="{{ path('app_admin_project_cost_type_create') }}">{{ 'add.project_cost_type'|trans }}</a>
                         </li>
                         <li>
-                            <a href="{{ path('app_admin_project_cost_type_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                            <a href="{{ path('app_admin_project_cost_type_list') }}">{{ 'button.back_to_list'|trans }}</a>
                         </li>
                     </ul>
                 </div>
@@ -45,14 +45,14 @@
                                 'attr': {
                                     'class': 'form-control input-sm',
                                 },
-                                'label': 'admin.project_cost_type.create.name'|trans,
+                                'label': 'label.name'|trans,
                             }
                         ) }}
                         {{ form_widget(
                             form.project,
                             {
                                 'attr': {'class': 'selectpicker'},
-                                'label': 'admin.project_cost_type.create.project'|trans,
+                                'label': 'label.project'|trans,
                             }
                         ) }}
                         {{ form_widget(
@@ -60,9 +60,9 @@
                             {
                                 'attr': {
                                     'class': 'form-control input-sm',
-                                    'placeholder': 'admin.general.placeholder.sequence'|trans,
+                                    'placeholder': 'placeholder.sequence'|trans,
                                 },
-                                'label': 'admin.project_cost_type.create.sequence'|trans,
+                                'label': 'label.sequence'|trans,
                             }
                         ) }}
 

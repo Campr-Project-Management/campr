@@ -93,7 +93,7 @@ class ColorStatusController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.color_status.create.success', [], 'admin')
+                        ->trans('success.color_status.create', [], 'flashes')
                 )
             ;
 
@@ -136,7 +136,7 @@ class ColorStatusController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.color_status.edit.success', [], 'admin')
+                        ->trans('success.color_status.edit', [], 'flashes')
                 )
             ;
 
@@ -204,7 +204,7 @@ class ColorStatusController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.color_status.delete.success.general', [], 'admin')
+                    ->trans('success.color_status.delete.general', [], 'flashes')
             )
         ;
 

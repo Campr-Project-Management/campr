@@ -111,7 +111,7 @@ class StatusController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.status.create.success', [], 'admin')
+                        ->trans('success.status.create', [], 'flashes')
                 )
             ;
 
@@ -154,7 +154,7 @@ class StatusController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.status.edit.success', [], 'admin')
+                        ->trans('success.status.edit', [], 'flashes')
                 )
             ;
 
@@ -179,7 +179,7 @@ class StatusController extends Controller
      * @param Request $request
      * @param Status  $status
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
     public function deleteAction(Request $request, Status $status)
     {
@@ -202,7 +202,7 @@ class StatusController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.status.delete.success.general', [], 'admin')
+                    ->trans('success.status.delete.general', [], 'flashes')
             )
         ;
 

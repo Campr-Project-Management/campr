@@ -54,7 +54,7 @@ class DefaultController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('main.contact.success', [], 'main')
+                        ->trans('success.contact.message.sent', [], 'flashes')
                 )
             ;
 

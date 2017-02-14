@@ -1,13 +1,13 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.wppcwct.list.title'|trans }}<small>{{ workProjectType.name }}</small></h2>
+                    <h2>{{ 'title.wppcwct.list'|trans }}<small>{{ workProjectType.name }}</small></h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -15,13 +15,13 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_wppcwct_create') }}">{{ 'admin.wppcwct.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_wppcwct_create') }}">{{ 'add.wppcwct'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_wppcwct_edit', {'id': workProjectType.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                    <a href="{{ path('app_admin_wppcwct_edit', {'id': workProjectType.id}) }}">{{ 'button.edit'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_wppcwct_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_wppcwct_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -32,100 +32,100 @@
                         <table class="table table-striped">
                             <tbody>
                                 <tr>
-                                    <th>{{ 'admin.wppcwct.list.table.id'|trans }}</th>
+                                    <th>{{ 'table_header_cell.id'|trans }}</th>
                                     <td>{{ workProjectType.id }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.wppcwct.list.table.name'|trans }}</th>
+                                    <th>{{ 'table_header_cell.name'|trans }}</th>
                                     <td>{{ workProjectType.name }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.wppcwct.list.table.workpackage'|trans }}</th>
+                                    <th>{{ 'table_header_cell.workpackage'|trans }}</th>
                                     <td>{{ workProjectType.workPackage.name|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.wppcwct.list.table.projectworkcosttype'|trans }}</th>
+                                    <th>{{ 'table_header_cell.projectworkcosttype'|trans }}</th>
                                     <td>{{ workProjectType.projectWorkCostType.name|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.wppcwct.list.table.calendar'|trans }}</th>
+                                    <th>{{ 'table_header_cell.calendar'|trans }}</th>
                                     <td>{{ workProjectType.Calendar.name|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.wppcwct.list.table.base'|trans }}</th>
+                                    <th>{{ 'table_header_cell.base'|trans }}</th>
                                     <td>{{ workProjectType.base|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.wppcwct.list.table.change'|trans }}</th>
+                                    <th>{{ 'table_header_cell.change'|trans }}</th>
                                     <td>{{ workProjectType.change|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.wppcwct.list.table.actual'|trans }}</th>
+                                    <th>{{ 'table_header_cell.actual'|trans }}</th>
                                     <td>{{ workProjectType.actual|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.wppcwct.list.table.remaining'|trans }}</th>
+                                    <th>{{ 'table_header_cell.remaining'|trans }}</th>
                                     <td>{{ workProjectType.remaining|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.wppcwct.list.table.forecast'|trans }}</th>
+                                    <th>{{ 'table_header_cell.forecast'|trans }}</th>
                                     <td>{{ workProjectType.forecast|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.wppcwct.list.table.is_generic'|trans }}</th>
+                                    <th>{{ 'table_header_cell.is_generic'|trans }}</th>
                                     <td>
                                         {% if workProjectType.isGeneric %}
-                                            <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                            <span class="c-green">{{ 'message.yes'|trans }}</span>
                                         {% else %}
-                                            <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                            <span class="c-red">{{ 'message.no'|trans }}</span>
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.wppcwct.list.table.is_inactive'|trans }}</th>
+                                    <th>{{ 'table_header_cell.is_inactive'|trans }}</th>
                                     <td>
                                         {% if workProjectType.isInactive %}
-                                            <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                            <span class="c-green">{{ 'message.yes'|trans }}</span>
                                         {% else %}
-                                            <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                            <span class="c-red">{{ 'message.no'|trans }}</span>
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.wppcwct.list.table.is_enterprise'|trans }}</th>
+                                    <th>{{ 'table_header_cell.is_enterprise'|trans }}</th>
                                     <td>
                                         {% if workProjectType.isEnterprise %}
-                                            <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                            <span class="c-green">{{ 'message.yes'|trans }}</span>
                                         {% else %}
-                                            <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                            <span class="c-red">{{ 'message.no'|trans }}</span>
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.wppcwct.list.table.is_cost_resource'|trans }}</th>
+                                    <th>{{ 'table_header_cell.is_cost_resource'|trans }}</th>
                                     <td>
                                         {% if workProjectType.isCostResource %}
-                                            <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                            <span class="c-green">{{ 'message.yes'|trans }}</span>
                                         {% else %}
-                                            <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                            <span class="c-red">{{ 'message.no'|trans }}</span>
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.wppcwct.list.table.is_budget'|trans }}</th>
+                                    <th>{{ 'table_header_cell.is_budget'|trans }}</th>
                                     <td>
                                         {% if workProjectType.isBudget %}
-                                            <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                            <span class="c-green">{{ 'message.yes'|trans }}</span>
                                         {% else %}
-                                            <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                            <span class="c-red">{{ 'message.no'|trans }}</span>
                                         {% endif %}
                                     </td>
                                 <tr>
-                                    <th>{{ 'admin.workpackage.list.table.created_at'|trans }}</th>
+                                    <th>{{ 'table_header_cell.created_at'|trans }}</th>
                                     <td>{{ workProjectType.createdAt|date('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.wppcwct.list.table.updated_at'|trans }}</th>
+                                    <th>{{ 'table_header_cell.updated_at'|trans }}</th>
                                     <td>{{ workProjectType.updatedAt|date('d/m/Y')  }}</td>
                                 </tr>
                             </tbody>

@@ -55,8 +55,8 @@ class DecisionControllerTest extends BaseController
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('The title should not be blank', $crawler->html());
-        $this->assertContains('The description should not be blank', $crawler->html());
+        $this->assertContains('The title field should not be blank', $crawler->html());
+        $this->assertContains('The description field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -161,8 +161,8 @@ class DecisionControllerTest extends BaseController
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('The title should not be blank', $crawler->html());
-        $this->assertContains('The description should not be blank', $crawler->html());
+        $this->assertContains('The title field should not be blank', $crawler->html());
+        $this->assertContains('The description field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }

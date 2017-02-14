@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {{ form_widget(
     form.key,
@@ -6,7 +6,7 @@
         'attr': {
             'class': 'form-control input-sm',
         },
-        'label': 'admin.filesystem.create.adapter.dropbox_config.key'|trans,
+        'label': 'label.dropbox.key'|trans,
     }
 ) }}
 {{ form_widget(
@@ -15,7 +15,7 @@
         'attr': {
             'class': 'form-control input-sm',
         },
-        'label': 'admin.filesystem.create.adapter.dropbox_config.secret'|trans,
+        'label': 'label.dropbox.secret'|trans,
 }
 ) }}
 {{ form_widget(
@@ -24,7 +24,7 @@
         'attr': {
             'class': 'form-control input-sm',
         },
-        'label': 'admin.filesystem.create.adapter.dropbox_config.token'|trans,
+        'label': 'label.dropbox.token'|trans,
     }
 ) }}
 {{ form_widget(
@@ -33,6 +33,6 @@
         'attr': {
             'class': 'form-control input-sm',
         },
-        'label': 'admin.filesystem.create.adapter.dropbox_config.token_secret'|trans,
+        'label': 'label.dropbox.token_secret'|trans,
     }
 ) }}

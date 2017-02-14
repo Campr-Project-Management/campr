@@ -1,11 +1,11 @@
-{% trans_default_domain 'main' %}
+{% trans_default_domain 'messages' %}
 
 {% extends 'MainBundle::base.html.twig' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-md-8">
-            <h3>{{ 'main.contact.title'|trans }}</h3>
+            <h3>{{ 'title.contact'|trans }}</h3>
             {% for flashMessage in app.session.flashbag.get('success') %}
                 <div class="alert alert-success">
                     {{ flashMessage }}
@@ -31,30 +31,30 @@
             {% endif %}
             <div class="control-group form-group {% if form_errors(form.full_name) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.contact.form.full_name'|trans }}</label>
+                    <label>{{ 'label.full_name'|trans }}</label>
                     {{ form_widget(form.full_name, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.email) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.contact.form.email'|trans }}</label>
+                    <label>{{ 'label.email'|trans }}</label>
                     {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.subject) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.contact.form.subject'|trans }}</label>
+                    <label>{{ 'label.subject'|trans }}</label>
                     {{ form_widget(form.subject, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.message) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.contact.form.message'|trans }}</label>
+                    <label>{{ 'label.message'|trans }}</label>
                     {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="form-group">
-                <button class="btn btn-primary" type="submit">{{ 'main.contact.form.send'|trans }}</button>
+                <button class="btn btn-primary" type="submit">{{ 'button.send'|trans }}</button>
             </div>
             {{ form_end(form, {'render_rest': true}) }}
         </div>

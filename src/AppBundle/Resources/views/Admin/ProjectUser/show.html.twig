@@ -1,13 +1,13 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">>
-                    <h2>{{ 'admin.project_user.list.title'|trans }}
+                    <h2>{{ 'title.project_user.list'|trans }}
                         {% if project_user.user %}
                             <small>{{ project_user.user.username }}</small>
                         {% endif %}
@@ -19,13 +19,13 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_project_user_create') }}">{{ 'admin.project_user.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_project_user_create') }}">{{ 'add.project_user'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_project_user_edit', {'id': project_user.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                    <a href="{{ path('app_admin_project_user_edit', {'id': project_user.id}) }}">{{ 'button.edit'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_project_user_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_project_user_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -36,7 +36,7 @@
                         <table class="table table-striped">
                             <tbody>
                                 <tr>
-                                    <th>{{ 'admin.project_user.list.table.user'|trans }}</th>
+                                    <th>{{ 'table_header_cell.user'|trans }}</th>
                                     <td>
                                         {% if project_user.user %}
                                             {{ project_user.user.username }}
@@ -44,7 +44,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.project_module.list.table.project'|trans }}</th>
+                                    <th>{{ 'table_header_cell.project'|trans }}</th>
                                     <td>
                                         {% if project_user.project %}
                                             {{ project_user.project.name }}
@@ -52,7 +52,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.project_user.list.table.project_category'|trans }}</th>
+                                    <th>{{ 'table_header_cell.project_category'|trans }}</th>
                                     <td>
                                         {% if project_user.projectCategory %}
                                             {{ project_user.projectCategory.name }}
@@ -60,7 +60,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.project_user.list.table.project_role'|trans }}</th>
+                                    <th>{{ 'table_header_cell.project_role'|trans }}</th>
                                     <td>
                                         {% if project_user.projectRole %}
                                             {{ project_user.projectRole.name }}
@@ -68,7 +68,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.project_user.list.table.project_department'|trans }}</th>
+                                    <th>{{ 'table_header_cell.project_department'|trans }}</th>
                                     <td>
                                         {% if project_user.projectDepartment %}
                                             {{ project_user.projectDepartment.name }}
@@ -76,7 +76,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.project_user.list.table.project_team'|trans }}</th>
+                                    <th>{{ 'table_header_cell.project_team'|trans }}</th>
                                     <td>
                                         {% if project_user.projectTeam %}
                                             {{ project_user.projectTeam.name }}
@@ -84,37 +84,37 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.project_user.list.table.show_in_resources'|trans }}</th>
+                                    <th>{{ 'table_header_cell.show_in_resources'|trans }}</th>
                                     <td>
                                         {% if project_user.showInResources %}
-                                            {{ 'admin.general.form.checkbox.checked'|trans }}
+                                            {{ 'checkbox.checked'|trans }}
                                         {% else %}
-                                            {{ 'admin.general.form.checkbox.unchecked'|trans }}
+                                            {{ 'checkbox.unchecked'|trans }}
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.project_user.list.table.show_in_raci'|trans }}</th>
+                                    <th>{{ 'table_header_cell.show_in_raci'|trans }}</th>
                                     <td>
                                         {% if project_user.showInRaci %}
-                                            {{ 'admin.general.form.checkbox.checked'|trans }}
+                                            {{ 'checkbox.checked'|trans }}
                                         {% else %}
-                                            {{ 'admin.general.form.checkbox.unchecked'|trans }}
+                                            {{ 'checkbox.unchecked'|trans }}
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.project_user.list.table.show_in_org'|trans }}</th>
+                                    <th>{{ 'table_header_cell.show_in_org'|trans }}</th>
                                     <td>
                                         {% if project_user.showInOrg %}
-                                            {{ 'admin.general.form.checkbox.checked'|trans }}
+                                            {{ 'checkbox.checked'|trans }}
                                         {% else %}
-                                            {{ 'admin.general.form.checkbox.unchecked'|trans }}
+                                            {{ 'checkbox.unchecked'|trans }}
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.project_user.list.table.created_at'|trans }}</th>
+                                    <th>{{ 'table_header_cell.created_at'|trans }}</th>
                                     <td>
                                         {% if project_user.createdAt %}
                                             {{ project_user.createdAt|date('d/m/Y') }}
@@ -122,7 +122,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.project_user.list.table.updated_at'|trans }}</th>
+                                    <th>{{ 'table_header_cell.updated_at'|trans }}</th>
                                     <td>
                                         {% if project_user.updatedAt %}
                                             {{ project_user.updatedAt|date('d/m/Y') }}

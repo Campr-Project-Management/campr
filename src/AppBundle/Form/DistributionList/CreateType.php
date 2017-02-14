@@ -27,7 +27,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.general_field.name.not_blank',
+                        'message' => 'not_blank.name',
                     ]),
                 ],
             ])
@@ -35,11 +35,11 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.general_field.sequence.not_blank',
+                        'message' => 'not_blank.sequence',
                     ]),
                     new Regex([
                         'pattern' => '/^([1-9]+\d*)$|^0$/',
-                        'message' => 'validation.constraints.general_field.sequence.invalid',
+                        'message' => 'invalid.sequence',
                     ]),
                 ],
             ])
@@ -47,24 +47,22 @@ class CreateType extends AbstractType
                 'required' => true,
                 'class' => Project::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.project.choice',
+                'placeholder' => 'placeholder.project',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.distribution_list.project.not_blank',
+                        'message' => 'not_blank.project',
                     ]),
                 ],
-                'translation_domain' => 'admin',
+                'translation_domain' => 'messages',
             ])
             ->add('users', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'username',
-                'translation_domain' => 'admin',
                 'multiple' => true,
             ])
             ->add('meetings', EntityType::class, [
                 'class' => Meeting::class,
                 'choice_label' => 'name',
-                'translation_domain' => 'admin',
                 'multiple' => true,
             ])
         ;

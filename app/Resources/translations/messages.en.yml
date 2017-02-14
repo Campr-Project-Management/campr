@@ -46,10 +46,6 @@ message:
     project_contract: Project Contract
     project_description: Project Description
     project_start_event: Project Start Event
-    proposed_start_date: Proposed Start Date
-    proposed_end_date: Proposed End Date
-    forecast_start_date: Forecast Start Date
-    forecast_end_date: Forecast End Date
     project_objectives: Project Objectives
     project_organization: Project Organization
     new_objective_title: New Objective Title
@@ -100,10 +96,772 @@ message:
     duration: Duration
     schedule_base: Schedule Base
     schedule_forecast: Schedule Forecast
+    yes: Yes
+    no: No
+    click: Click
+    here: Here
+    homepage: Homepage
+    impersonate: You are currently logged in as
+    return: to return to your original user.
+    no_chat_rooms: Chat list is empty for this project
+    no_private_messages: There are no private messages on this project
+    your_teams: Your teams:
+    teams: Teams you are a part of:
+    invoce: Invoice for payment:
+    reset_password: Please enter your email address to reset the account password. An email will be sent with instructions.
+    wait: Please wait...
+
+menu:
+    users: Users
+    teams: Teams
+    payment_methods: Payment Methods
+    payments: Payments
+    account: Account
+    teams: Teams
+    settings: Settings
+    contact: Contact
+
+title:
+    homepage_main: Campr Main Site
+    homepage: Campr Admin
+    header: Campr Administration
+    my_account: My Account
+    account_activation: Account activation
+    reset: Please enter your email address to reset the account password. An email will be sent with instructions.
+    user:
+        list: User
+        create: Create new user
+        edit: Edit user
+        invite: Invite user
+    status:
+        list: Status
+        create: Create new status
+        edit: Edit status
+    schedule:
+        list: Schedule
+        create: Create new schedule
+        edit: Edit schedule
+    raci:
+        list: Raci
+        create: Create new raci
+        edit: Edit raci
+    workpackage:
+        list: Work Package
+        create: Create new work package
+        edit: Edit work package
+    portfolio:
+        list: Portfolio
+        create: Create new portfolio
+        edit: Edit portfolio
+    project:
+        list: Project
+        create: Create new project
+        edit: Edit project
+    file:
+        list: Project file
+        upload: Upload new file
+        edit: Edit media file
+    project_category:
+        list: Project category
+        create: Create new project category
+        edit: Edit project category
+    project_complexity:
+        list: Project complexity
+        create: Create new project complexity
+        edit: Edit project complexity
+    project_cost_type:
+        list: Project cost type
+        create: Create new project cost type
+        edit: Edit project cost type
+    project_department:
+        list: Project department
+        create: Create new project department
+        edit: Edit project department
+    project_module:
+        list: Project module
+        create: Create new project module
+        edit: Edit project module
+    project_role:
+        list: Project role
+        create: Create new project role
+        edit: Edit project role
+    project_scope:
+        list: Project scope
+        create: Create new project scope
+        edit: Edit project scope
+    project_status:
+        list: Projects status
+        create: Create new project status
+        edit: Edit project status
+    project_team:
+        list: Project team
+        create: Create new project team
+        edit: Edit project team
+    project_user:
+        list: Project user
+        create: Create new project user
+        edit: Edit project user
+    project_work_cost_type:
+        list: Project work cost type
+        create: Create new project work cost type
+        edit: Edit project work cost type
+    color_status:
+        list: Color status
+        create: Create new color status
+        edit: Edit color status
+    risk:
+        list: Risk
+        create: Create new risk
+        edit: Edit risk
+    risk_category:
+        list: Risk category
+        create: Create new risk category
+        edit: Edit risk category
+    risk_strategy:
+        list: Risk Strategy
+        create: Create new risk strategy
+        edit: Edit risk strategy
+    todo:
+        list: Todo
+        create: Create new todo
+        edit: Edit todo
+    unit:
+        list: Unit
+        create: Create new unit
+        edit: Edit unit
+    wppcwct:
+        list: Work package project work cost type
+        create: Create new work package project work cost type
+        edit: Edit work package project work cost type
+    impact:
+        list: Impact
+        create: Create new impact
+        edit: Edit impact
+    meeting_agenda:
+        list: Meeting agenda
+        create: Create new meeting agenda
+        edit: Edit meeting agenda
+    meeting_participant:
+        list: Meeting participant
+        create: Create new meeting participant
+        edit: Edit meeting participant
+    meeting:
+        list: Meeting
+        create: Create new meeting
+        edit: Edit meeting
+    note:
+        list: Note
+        create: Create new note
+        edit: Edit note
+    calendar:
+        list: Calendar
+        create: Create new calendar
+        edit: Edit calendar
+    day:
+        list: Day
+        create: Create new day
+        edit: Edit day
+    working_time:
+        list: Working time
+        create: Create new working time
+        edit: Edit working time
+    assignment:
+        list: Assignment
+        create: Create new assignment
+        edit: Edit assignment
+    timephase:
+        list: Timephase
+        create: Create new timephase
+        edit: Edit timephase
+    company:
+        list: Company
+        create: Create new company
+        edit: Edit company
+    decision:
+        list: Decision
+        create: Create new decision
+        edit: Edit decision
+    distribution_list:
+        list: Distribution list
+        create: Create new distribution list
+        edit: Edit distribution list
+    communication:
+        list: Communication
+        create: Create new communication
+        edit: Edit communication
+    document:
+        list: Document
+        create: Create new document
+        edit: Edit document
+    filesystem:
+        list: File system
+        create: Create new file system
+        edit: Edit file system
+    media:
+        list: Media
+        upload: Upload new file
+        edit: Edit media file
+    label:
+        list: Label
+        create: Create new label
+        edit: Edit label
+    messages: Messages
+    team:
+        list: Team list
+        create: Create new team
+        edit: Edit team
+    team_member:
+        list: Team member list
+        create: Create new team member
+        edit: Edit team member
+    payment:
+        list: Payments
+    payment_method:
+        list: Payment method list
+        create: Create new Payment Method
+        edit: Edit payment method
+    contact: Send us a message
+    contract:
+        list: Contract
+        create: Create Contract
+        edit: Edit Contract
+
+subtitle:
+    user: List of users
+    status: List of statuses
+    schedule: List of schedules
+    raci: List of raci
+    workpackage: List of workpackages
+    portfolio: List of portfolios
+    project: List of projects
+    file: List of project files
+    project_category: List of project categories
+    project_complexity: List of project complexities
+    project_cost_type: List of project cost types
+    project_department: List of project departments
+    project_module: List of project modules
+    project_role: List of project roles
+    project_scope: List of project scopes
+    project_status: List of projects statuses
+    project_team: List of project teams
+    project_user: List of project users
+    project_work_cost_type: List of project work cost types
+    color_status: List of color statuses
+    risk: List of risks
+    risk_category: List of risk categories
+    risk_strategy: List of risk strategies
+    todo: List of todos
+    unit: List of units
+    wppcwct: List of Work Package Project Work Cost Type
+    impact: List of impacts
+    meeting_agenda: List of meeting agendas
+    meeting_participant: List of meeting participants
+    meeting: List of meetings
+    note: List of notes
+    calendar: List of calendars
+    day: List of days
+    working_time: List of working times
+    assignment: List of assignments
+    timephase: List of timephases
+    company: List of companies
+    decision: List of decisions
+    distribution_list: List of distribution lists
+    communication: List of communications
+    document: List of documents
+    filesystem: List of file systems
+    media: List of project files
+    label: List of project labels
+    contract: List of contracts
+
+label:
+    username: Username
+    email: Email
+    password:
+        first: Password
+        repeat: Repeat password
+    first_name: First name
+    last_name: Last name
+    phone: Phone
+    avatar: Avatar
+    roles: Roles
+    enabled: Enabled
+    suspended: Suspended
+    role:
+        user: ROLE_USER
+        admin: ROLE_ADMIN
+        superadmin: ROLE_SUPER_ADMIN
+        team_member: ROLE_TEAM_MEMBER
+        team_owner: ROLE_TEAM_OWNER
+    name: Name
+    workpackage: Work Package
+    user: User
+    puid: Puid
+    parent: Parent
+    color_status: Color Status
+    responsible: Responsible
+    progress: Progress
+    project: Project
+    label: Label
+    labels: Labels
+    calendar: Calendar
+    schedule_start: Scheduled Start At
+    schedule_finish: Scheduled Finish At
+    forecast_start: Forecast Start At
+    forecast_finish: Forecast Finish At
+    actual_start: Actual Start At
+    actual_finish: Actual Finish At
+    content: Content
+    results: Results
+    is_key_milestone: Key milestone
+    data: Data
+    description: Description
+    filesystem: Filesystem
+    number: Number
+    sponsor: Sponsor
+    manager: Manager
+    company: Company
+    project_complexity: Project Complexity
+    project_category: Project Category
+    project_scope: Project Scope
+    status: Status
+    portfolio: Portfolio
+    sequence: Sequence
+    abbreviation: Abbreviation
+    rate: Rate
+    project_work_cost_type: Project Work Cost Type
+    module: Module
+    required: Required
+    printable: Printable
+    lead: Lead
+    project_role: Project Role
+    project_department: Project Department
+    project_team: Project Team
+    show_in_resources: Show In Resources
+    show_in_raci: Show In Raci
+    show_in_org: Show In Org
+    show_in_status: Show in status report
+    impact: Impact
+    cost: Cost
+    budget: Budget
+    delay: Delay
+    priority: Priority
+    strategy: Strategy
+    category: Category
+    measure: Measure
+    due_date: Due Date
+    create: Create
+    meeting: Meeting
+    meetings: Meetings
+    meeting_name: Meeting name
+    title: Title
+    date: Date
+    show_in_status_report: Show In Status Report
+    projectworkcosttype: Project Work Cost Type
+    base: Base
+    change: Change
+    actual: Actual
+    remaining: Remaining
+    forecast: Forecast
+    is_generic: Generic
+    is_inactive: Inactive
+    is_enterprise: Enterprise
+    is_cost_resource: Cost resource
+    is_budget: Budget
+    start: Start
+    end: End
+    duration: Duration
+    remark: Remark
+    is_present: Is Present
+    is_excused: Is Excused
+    in_distribution_list: In Distribution List
+    location: Location
+    objectives: Objectives
+    note_title: Title
+    baseline: Is Baseline
+    based: Is Based
+    type: Type
+    working: Working
+    day: Day
+    from_time: From Time
+    to_time: To Time
+    wppwct: Work Package Project Work Cost Type
+    milestone: Milestone
+    started_at: Started At
+    finished_at: Finished At
+    percent_work: Percent Work
+    confirmed: Confirmed
+    type: Type
+    assignment: Assignment
+    unit: Unit
+    value: Value
+    field_title: Title
+    due_date: Due Date
+    responsibility: Responsibility
+    schedule: Schedule
+    participants: Participants
+    file: Document file
+    driver: Driver
+    color: Color
+    path: Path
+    dropbox:
+        key: Dropbox key
+        secret: Dropbox secret
+        token: Dropbox token
+        token_secret: Dropbox token secret
+    topic: Topic
+    logo: Logo
+    team_members: Team members
+    team: Team
+    token: Token
+    slug: Slug
+    facebook: Facebook
+    twitter: Twitter
+    instagram: Instagram
+    gplus: Google+
+    linked_in: LinkedIn
+    medium: Medium
+    subject: Subject
+    message: Message
+    full_name: Full name
+    firstname: First name
+    lastname: Last name
+    proposed_start_date: Proposed Start Date
+    proposed_end_date: Proposed End Date
+    forecast_start_date: Forecast Start Date
+    forecast_end_date: Forecast End Date
+    created_by: Created By
+
 button:
+    sign_in: Sign In
+    login: Login
+    logout: Logout
+    register: Register
+    forgot_password: Forgot Password
+    create: Create
+    edit: Edit
+    view: View
+    save_changes: Save changes
     save: Save
+    send: Send
+    back_to_list: Back to list
+    delete: Delete
+    select_file: Select File
+    change: Change
+    toggle: Toggle Navigation
+    send_invitation: Send invitation
+    invite_user: Invite user
     download_pdf: Download PDF
     next_step: Next Step
     previous_step: Previous Step
     start_project: Start Project
     analyze: Analyze
+
+checkbox:
+    checked: Yes
+    unchecked: No
+
+add:
+    user: Add new user
+    status: Add new status
+    schedule: Add new schedule
+    raci: Add new raci
+    workpackage: Add new workpackage
+    portfolio: Add new portfolio
+    project: Add new project
+    project_category: Add new project category
+    project_complexity: Add new project complexity
+    project_cost_type: Add new project cost type
+    project_department: Add new project department
+    project_module: Add new project module
+    project_role: Add new project role
+    project_scope: Add new project scope
+    project_status: Add new project status
+    project_team: Add new project team
+    project_user: Add new project user
+    project_work_cost_type: Add new project work cost type
+    color_status: Add new color status
+    risk: Add new risk
+    risk_category: Add new risk category
+    risk_strategy: Add new risk strategy
+    todo: Add todo
+    unit: Add unit
+    wppcwct: Add Work Package Project Work Cost Type
+    impact: Add new impact
+    meeting_agenda: Add new meeting agenda
+    meeting_participant: Add new meeting participant
+    meeting: Add new meeting
+    note: Add new note
+    calendar: Add new calendar
+    day: Add new day
+    working_time: Add new working time
+    assignment: Add new assignment
+    timephase: Add new timephase
+    company: Add new company
+    decision: Add new decision
+    distribution_list: Add new distribution list
+    communication: Add new communication
+    document: Add new document
+    filesystem: Add new filesystem
+    label: Add new label
+    contract: Add new contract
+
+placeholder:
+    user: Choose one user
+    sponsor: Choose one sponsor
+    manager: Choose one manager
+    status: Choose one status
+    schedule: Choose schedule
+    workpackage: Choose one workpackage
+    portfolio: Choose one portfolio
+    project: Choose one project
+    project_category: Choose one project category
+    project_complexity: Choose one project complexity
+    project_department: Choose one project department
+    project_role: Choose one project role
+    project_scope: Choose one project scope
+    project_status: Choose one project_status
+    project_team: Choose one project team
+    project_user: Choose one project user
+    project_work_cost_type: Choose one project work cost type
+    color_status: Choose one color status
+    risk_category: Choose one risk category
+    risk_strategy: Choose one risk strategy
+    wppcwct: Choose one work package project work cost type
+    impact: Choose impact
+    meeting: Choose one meeting
+    meetings: Choose one or more meetings
+    calendar: Choose calendar
+    day: Choose one day
+    assignment: Choose one assignment
+    company: Choose one company
+    decision: Choose one decision
+    distribution_list: Choose one distribution list
+    driver:
+        local: Local
+        dropbox: Dropbox
+    name: Name
+    number: Number
+    description: Description
+    sequence: Sequence
+    abbreviation: Abbreviation
+    rate: Rate
+    module: Module
+    actions: Actions
+    filesystem: Select filesystem
+    adapter: Select driver
+
+table_header_cell:
+    id: Id
+    puid: Puid
+    username: Username
+    user: User
+    sponsor: Sponsor
+    manager: Manager
+    responsible: Responsible
+    company: Company
+    project: Project
+    project_complexity: Project Complexity
+    project_category: Project Category
+    project_scope: Project Scope
+    project_role: Project Role
+    project_department: Project Department
+    project_team: Project Team
+    project_work_cost_type: Project Work Cost Type
+    status: Status
+    portfolio: Portfolio
+    workpackage: Work Package
+    workpackages: Work Packages
+    wppwct: Work Package Project Work Cost Type
+    wppwcts: Work Package Project Work Cost Types
+    projectworkcosttype: Project Work Cost Type
+    name: Name
+    full_name: Full name
+    email: Email
+    phone: Phone
+    enabled: Enabled
+    required: Required
+    printable: Printable
+    suspended: Suspended
+    roles: Roles
+    data: Data
+    color_status: Color Status
+    progress: Progress
+    schedule_start: Schedule Start
+    schedule_finish: Schedule Finish
+    forecast_start: Forecast Start
+    forecast_finish: Forecast Finish
+    actual_start: Actual Start
+    actual_finish: Actual Finish
+    content: Content
+    results: Results
+    is_key_milestone: Is Key Milestone
+    description: Description
+    created_at: Created At
+    updated_at: Updated At
+    number: Number
+    approved_at: Approved at
+    status_updated_at: Status updated at
+    sequence: Sequence
+    abbreviation: Abbreviation
+    rate: Rate
+    module: Module
+    lead: Lead
+    show_in_resources: Show In Resources
+    show_in_raci: Show In Raci
+    show_in_org: Show In Org
+    color: Color
+    title: Title
+    impact: Impact
+    cost: Cost
+    budget: Budget
+    delay: Delay
+    priority: Priority
+    strategy: Strategy
+    category: Category
+    measure: Measure
+    responsible: Responsible
+    date: Date
+    due_date: Due Date
+    meeting: Meeting
+    meeting_name: Meeting name
+    report_status: Show in status report
+    calendar: Calendar
+    base: Base
+    change: Change
+    actual: Actual
+    remaining: Remaining
+    forecast: Forecast
+    is_generic: Is Generic
+    is_inactive: Is Inactive
+    is_enterprise: Is Enterprise
+    is_cost_resource: Is Cost Resource
+    is_budget: Is Budget
+    topic: Topic
+    start: Start
+    end: End
+    remark: Remark
+    is_present: Is Present
+    is_excused: Is Excused
+    in_distribution_list: In Distribution List
+    location: Location
+    objectives: Objectives
+    participants: Meeting Participants
+    agendas: Meeting Agendas
+    decisions: Decisions
+    todos: TODOs
+    notes: Notes
+    medias: Medias
+    show_in_report: Show in status report
+    is_based: Is Based
+    is_baseline: Is Baseline
+    type: Type
+    working: Working
+    working_times: Working Times
+    day: Calendar - Day
+    from_time: From Time
+    to_time: To Time
+    milestone: Milestone
+    percent_complete: Percent Complete
+    confirmed: Confirmed
+    started_at: Started At
+    finished_at: Finished At
+    timephases: Timephases
+    workpackage_assignment: Work Package Assignment
+    unit: Unit
+    value: Value
+    finished_at: Finished At
+    responsibility: Responsibility
+    show_in_status_report: Show in status report
+    participants: Participants
+    meetings: Meetings
+    created_by: Created by
+    schedule: Schedule
+    file: File
+    driver: Driver
+    config: Config
+    filesystem: Filesystem
+    path: Path
+    mime: Mime Type
+    size: File size
+    parent: Parent
+    duration: Duration
+    lead_checked: Is Lead
+    lead_not_checked: Is Not Lead
+    payment_method: Payment Method
+    method: Method
+    team: Team
+    token: Token
+    roles: Roles
+    logo: Logo
+    slug: Slug
+    members: Members
+    proposed_start_date: Proposed Start Date
+    proposed_end_date: Proposed End Date
+    forecast_start_date: Forecast Start Date
+    forecast_end_date: Forecast End Date
+
+link:
+    home: Home
+    dashboad: Dashboard
+    reports: Reports
+    support: Support
+    contact: Contact
+
+not_found:
+    general: Resource not found!
+    user: User not found
+    email_user: Requested user email not found
+
+email:
+    subject:
+        user:
+          register: Campr - Account registration
+          activation: Campr - Account activation code
+          reset: Campr - Reset account psasword
+        invoice: Campr - Payment Invoice
+        contact: Campr contact
+        team_member:
+            invite: Campr - Team member invitation
+        general: Subject
+    message:
+        user:
+            register: To activate your account click the following
+            activation: Your activation code has been reseted. To activate your account click on the following
+            reset: To reset your password click on the following
+        invoice: You have your invoice for payment %payment% attached in this email.
+        contact: Message
+        team_member:
+            invite:
+                first: You are invited to be part of the team %team_name%.
+                second: If you don't have an account with this email please make one in order to accept invitation.
+                third: Please click on the following
+                link: invitation
+    expiration:
+        user:
+            activation: The activation link will expire in{0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% days
+            reset: The reset token will expire in {0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% days
+    from:
+        contact: There is a new contact message from:
+    general:
+        link: link
+        hello: Hello
+
+authentication:
+    account_disabled: Account disabled
+    bad_credentials: Bad credentials
+    token_returned: Token returned
+
+token:
+    used: Token already used.
+    expired: Token expired.
+    invalid: Invalid token.
+
+site:
+    disabled: Site disabled.
+
+exception:
+    add:
+        team: Please add one team as option parameter
+        user: Please add one user as option parameter
+
+copyright: Copyright &copy; 2015 Material Admin

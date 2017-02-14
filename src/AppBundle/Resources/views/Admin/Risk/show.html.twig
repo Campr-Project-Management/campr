@@ -1,13 +1,13 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.risk.list.title'|trans }}<small>{{ risk.title }}</small></h2>
+                    <h2>{{ 'title.risk.list'|trans }}<small>{{ risk.title }}</small></h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -15,13 +15,13 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_risk_create') }}">{{ 'admin.risk.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_risk_create') }}">{{ 'add.risk'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_risk_edit', {'id': risk.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                    <a href="{{ path('app_admin_risk_edit', {'id': risk.id}) }}">{{ 'button.edit'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_risk_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_risk_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -32,51 +32,51 @@
                         <table class="table table-striped">
                             <tbody>
                             <tr>
-                                <th>{{ 'admin.risk.list.table.id'|trans }}</th>
+                                <th>{{ 'table_header_cell.id'|trans }}</th>
                                 <td>{{ risk.id }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.risk.list.table.title'|trans }}</th>
+                                <th>{{ 'table_header_cell.title'|trans }}</th>
                                 <td>{{ risk.title }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.risk.list.table.impact'|trans }}</th>
+                                <th>{{ 'table_header_cell.impact'|trans }}</th>
                                 <td>{{ risk.impact.name|default('-') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.risk.list.table.cost'|trans }}</th>
+                                <th>{{ 'table_header_cell.cost'|trans }}</th>
                                 <td>{{ risk.cost|default('-') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.risk.list.table.budget'|trans }}</th>
+                                <th>{{ 'table_header_cell.budget'|trans }}</th>
                                 <td>{{ risk.budget|default('-') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.risk.list.table.delay'|trans }}</th>
+                                <th>{{ 'table_header_cell.delay'|trans }}</th>
                                 <td>{{ risk.delay|default('-') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.risk.list.table.priority'|trans }}</th>
+                                <th>{{ 'table_header_cell.priority'|trans }}</th>
                                 <td>{{ risk.priority|default('-') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.risk.list.table.strategy'|trans }}</th>
+                                <th>{{ 'table_header_cell.strategy'|trans }}</th>
                                 <td>{{ risk.riskStrategy.name|default('-') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.risk.list.table.category'|trans }}</th>
+                                <th>{{ 'table_header_cell.category'|trans }}</th>
                                 <td>{{ risk.riskCategory.name|default('-') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.risk.list.table.measure'|trans }}</th>
+                                <th>{{ 'table_header_cell.measure'|trans }}</th>
                                 <td>{{ risk.measure|default('-') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.risk.list.table.due_date'|trans }}</th>
+                                <th>{{ 'table_header_cell.due_date'|trans }}</th>
                                 <td>{{ risk.dueDate|date('d/m/Y') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.risk.list.table.status'|trans }}</th>
+                                <th>{{ 'table_header_cell.status'|trans }}</th>
                                 <td>{{ risk.status.name|default('-') }}</td>
                             </tr>
                             </tbody>

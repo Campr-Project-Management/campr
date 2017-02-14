@@ -93,7 +93,7 @@ class ProjectModuleController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_module.create.success', [], 'admin')
+                        ->trans('success.project_module.create', [], 'flashes')
                 )
             ;
 
@@ -139,7 +139,7 @@ class ProjectModuleController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_module.edit.success', [], 'admin')
+                        ->trans('success.project_module.edit', [], 'flashes')
                 )
             ;
 
@@ -207,7 +207,7 @@ class ProjectModuleController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.project_module.delete.success.general', [], 'admin')
+                    ->trans('success.project_module.delete.general', [], 'flashes')
             )
         ;
 

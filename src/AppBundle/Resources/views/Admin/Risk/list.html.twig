@@ -1,13 +1,13 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.risk.list.title'|trans }}<small>{{ 'admin.risk.list.subtitle'|trans }}</small></h2>
+                    <h2>{{ 'title.risk.list'|trans }}<small>{{ 'subtitle.risk'|trans }}</small></h2>
                     <a href="{{ path('app_admin_risk_create') }}">
                         <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
                     </a>
@@ -20,13 +20,13 @@
                     {% endfor %}
                     <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                         <strong>
-                            {{ 'admin.risk.delete.success.first'|trans }}
+                            {{ 'success.risk.delete.first'|trans({}, 'flashes') }}
                             <span id="object-id">
                                 {% for flash_message in app.session.flashBag.get('success') %}
                                     {{ flash_message }}
                                 {% endfor %}
                             </span>
-                            {{ 'admin.risk.delete.success.second'|trans }}
+                            {{ 'success.risk.delete.second'|trans({}, 'flashes') }}
                         </strong>
                     </div>
                     <div class="table-responsive">
@@ -39,14 +39,14 @@
                                 data-delete="app_admin_risk_delete">
                             <thead>
                             <tr>
-                                <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.risk.list.table.id'|trans }}</th>
-                                <th data-column-id="title">{{ 'admin.risk.list.table.title'|trans }}</th>
-                                <th data-column-id="riskStrategyName">{{ 'admin.risk.list.table.strategy'|trans }}</th>
-                                <th data-column-id="riskCategoryName">{{ 'admin.risk.list.table.category'|trans }}</th>
-                                <th data-column-id="responsibilityFullName">{{ 'admin.risk.list.table.responsible'|trans }}</th>
-                                <th data-column-id="dueDate">{{ 'admin.risk.list.table.due_date'|trans }}</th>
-                                <th data-column-id="status">{{ 'admin.risk.list.table.status'|trans }}</th>
-                                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'admin.general.placeholder.actions'|trans }}</th>
+                                <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'table_header_cell.id'|trans }}</th>
+                                <th data-column-id="title">{{ 'table_header_cell.title'|trans }}</th>
+                                <th data-column-id="riskStrategyName">{{ 'table_header_cell.strategy'|trans }}</th>
+                                <th data-column-id="riskCategoryName">{{ 'table_header_cell.category'|trans }}</th>
+                                <th data-column-id="responsibilityFullName">{{ 'table_header_cell.responsible'|trans }}</th>
+                                <th data-column-id="dueDate">{{ 'table_header_cell.due_date'|trans }}</th>
+                                <th data-column-id="status">{{ 'table_header_cell.status'|trans }}</th>
+                                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'placeholder.actions'|trans }}</th>
                             </tr>
                             </thead>
                         </table>
