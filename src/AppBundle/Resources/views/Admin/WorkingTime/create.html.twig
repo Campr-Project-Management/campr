@@ -1,6 +1,6 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
 
@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.working_time.create.title'|trans }}</h2>
+                    <h2>{{ 'title.working_time.create'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,7 +17,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_working_time_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_working_time_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -49,7 +49,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.working_time.create.day'|trans
+                            'label': 'label.day'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -60,7 +60,7 @@
                                 'data-date-format': "HH:mm",
                                 'addon_front': 'time',
                             },
-                            'label': 'admin.working_time.create.from_time'|trans
+                            'label': 'label.from_time'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -71,7 +71,7 @@
                                 'data-date-format': "HH:mm",
                                 'addon_front': 'time',
                             },
-                            'label': 'admin.working_time.create.to_time'|trans
+                            'label': 'label.to_time'|trans
                         }
                     ) }}
 

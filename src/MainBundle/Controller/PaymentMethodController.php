@@ -70,7 +70,7 @@ class PaymentMethodController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.payment_method.create.success', [], 'admin')
+                        ->trans('success.payment_method.create', [], 'flashes')
                 )
             ;
 
@@ -113,7 +113,7 @@ class PaymentMethodController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.payment_method.edit.success', [], 'admin')
+                        ->trans('success.payment_method.edit', [], 'flashes')
                 )
             ;
 
@@ -152,7 +152,7 @@ class PaymentMethodController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.payment_method.delete.success', [], 'admin')
+                    ->trans('success.payment_method.delete', [], 'flashes')
             )
         ;
 

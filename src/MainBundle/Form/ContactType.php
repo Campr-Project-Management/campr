@@ -20,7 +20,7 @@ class ContactType extends AbstractType
                 'label' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.contact.full_name.not_blank',
+                        'message' => 'not_blank.full_name',
                     ]),
                 ],
             ])
@@ -28,10 +28,10 @@ class ContactType extends AbstractType
                 'label' => false,
                 'constraints' => [
                     new Email([
-                        'message' => 'validation.constraints.contact.email.email',
+                        'message' => 'invalid.email',
                     ]),
                     new NotBlank([
-                        'message' => 'validation.constraints.contact.email.not_blank',
+                        'message' => 'not_blank.email',
                     ]),
                 ],
             ])
@@ -39,7 +39,7 @@ class ContactType extends AbstractType
                 'label' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.contact.subject.not_blank',
+                        'message' => 'not_blank.subject',
                     ]),
                 ],
             ])
@@ -47,7 +47,7 @@ class ContactType extends AbstractType
                 'label' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.contact.message.not_blank',
+                        'message' => 'not_blank.message',
                     ]),
                 ],
             ])

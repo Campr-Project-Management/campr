@@ -111,7 +111,7 @@ class WorkPackageProjectWorkCostTypeController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.wppcwct.create.success', [], 'admin')
+                        ->trans('success.wppcwct.create', [], 'flashes')
                 )
             ;
 
@@ -155,7 +155,7 @@ class WorkPackageProjectWorkCostTypeController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.wppcwct.edit.success', [], 'admin')
+                        ->trans('success.wppcwct.edit', [], 'flashes')
                 )
             ;
 
@@ -180,7 +180,7 @@ class WorkPackageProjectWorkCostTypeController extends Controller
      * @param Request                        $request
      * @param WorkPackageProjectWorkCostType $workProjectType
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
     public function deleteAction(Request $request, WorkPackageProjectWorkCostType $workProjectType)
     {
@@ -203,7 +203,7 @@ class WorkPackageProjectWorkCostTypeController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.wppcwct.delete.success.general', [], 'admin')
+                    ->trans('success.wppcwct.delete.general', [], 'flashes')
             )
         ;
 

@@ -1,6 +1,6 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
 
@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.media.edit.title'|trans }}</h2>
+                    <h2>{{ 'title.media.edit'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,7 +17,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_project_media_list', {'project': project_id}) }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_project_media_list', {'project': project_id}) }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -52,13 +52,13 @@
                         form.fileSystem,
                         {
                             'attr': {'class': 'selectpicker'},
-                            'label': 'admin.media.upload.filesystem'|trans,
+                            'label': 'label.filesystem'|trans,
                         }
                     ) }}
                     {{ form_widget(
                         form.file,
                         {
-                            'label': 'admin.media.upload.file'|trans,
+                            'label': 'label.file'|trans,
                         }
                     ) }}
 
@@ -66,11 +66,11 @@
                         <div class="col-sm-offset-4 col-sm-10">
                             <button class="btn btn-sm bgm-blue" type="submit">
                                 <i class="zmdi zmdi-floppy"></i>
-                                {{ 'admin.general.form.button.save_changes'|trans }}
+                                {{ 'button.save_changes'|trans }}
                             </button>
                             <a class="btn btn-sm bgm-red" href="{{ path('app_admin_project_media_delete', {'project': project_id, 'id': media.id}) }}">
                                 <i class="zmdi zmdi-delete"></i>
-                                {{ 'admin.general.form.button.delete'|trans }}
+                                {{ 'button.delete'|trans }}
                             </a>
                         </div>
                     </div>

@@ -64,13 +64,13 @@ class RiskControllerTest extends BaseController
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('The title should not be blank', $crawler->html());
-        $this->assertContains('The description should not be blank', $crawler->html());
-        $this->assertContains('The cost should not be blank', $crawler->html());
-        $this->assertContains('The budget should not be blank', $crawler->html());
-        $this->assertContains('The delay should not be blank', $crawler->html());
-        $this->assertContains('The priority should not be blank', $crawler->html());
-        $this->assertContains('The measure should not be blank', $crawler->html());
+        $this->assertContains('The title field should not be blank', $crawler->html());
+        $this->assertContains('The description field should not be blank', $crawler->html());
+        $this->assertContains('The cost field should not be blank', $crawler->html());
+        $this->assertContains('The budget field should not be blank', $crawler->html());
+        $this->assertContains('The delay field should not be blank', $crawler->html());
+        $this->assertContains('The priority field should not be blank', $crawler->html());
+        $this->assertContains('The measure field should not be blank', $crawler->html());
     }
 
     public function testCreateAction()
@@ -228,13 +228,13 @@ class RiskControllerTest extends BaseController
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('The title should not be blank', $crawler->html());
-        $this->assertContains('The description should not be blank', $crawler->html());
-        $this->assertContains('The cost should not be blank', $crawler->html());
-        $this->assertContains('The budget should not be blank', $crawler->html());
-        $this->assertContains('The delay should not be blank', $crawler->html());
-        $this->assertContains('The priority should not be blank', $crawler->html());
-        $this->assertContains('The measure should not be blank', $crawler->html());
+        $this->assertContains('The title field should not be blank', $crawler->html());
+        $this->assertContains('The description field should not be blank', $crawler->html());
+        $this->assertContains('The cost field should not be blank', $crawler->html());
+        $this->assertContains('The budget field should not be blank', $crawler->html());
+        $this->assertContains('The delay field should not be blank', $crawler->html());
+        $this->assertContains('The priority field should not be blank', $crawler->html());
+        $this->assertContains('The measure field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }

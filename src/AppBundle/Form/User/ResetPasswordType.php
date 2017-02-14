@@ -22,10 +22,10 @@ class ResetPasswordType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.user.email.not_blank',
+                        'message' => 'not_blank.email',
                     ]),
                     new Email([
-                        'message' => 'validation.constraints.user.email.email',
+                        'message' => 'invalid.email',
                     ]),
                 ],
             ])

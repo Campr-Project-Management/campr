@@ -93,7 +93,7 @@ class CalendarController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.calendar.create.success', [], 'admin')
+                        ->trans('success.calendar.create', [], 'flashes')
                 )
             ;
 
@@ -136,7 +136,7 @@ class CalendarController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.calendar.edit.success', [], 'admin')
+                        ->trans('success.calendar.edit', [], 'flashes')
                 )
             ;
 
@@ -204,7 +204,7 @@ class CalendarController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.calendar.delete.success.general', [], 'admin')
+                    ->trans('success.calendar.delete.general', [], 'flashes')
             )
         ;
 

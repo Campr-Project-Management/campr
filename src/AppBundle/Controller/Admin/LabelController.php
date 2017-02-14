@@ -111,7 +111,7 @@ class LabelController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.label.create.success', [], 'admin')
+                        ->trans('success.label.create', [], 'flashes')
                 )
             ;
 
@@ -154,7 +154,7 @@ class LabelController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.label.edit.success', [], 'admin')
+                        ->trans('success.label.edit', [], 'flashes')
                 )
             ;
 
@@ -179,7 +179,7 @@ class LabelController extends Controller
      * @param Request $request
      * @param Label   $label
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
     public function deleteAction(Request $request, Label $label)
     {
@@ -202,7 +202,7 @@ class LabelController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.label.delete.success.general', [], 'admin')
+                    ->trans('success.label.delete.general', [], 'flashes')
             )
         ;
 

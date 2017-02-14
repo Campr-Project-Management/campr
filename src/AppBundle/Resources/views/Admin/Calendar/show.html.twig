@@ -1,13 +1,13 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.calendar.list.title'|trans }}<small>{{ calendar.name }}</small></h2>
+                    <h2>{{ 'title.calendar.list'|trans }}<small>{{ calendar.name }}</small></h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -15,13 +15,13 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_calendar_create') }}">{{ 'admin.calendar.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_calendar_create') }}">{{ 'add.calendar'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_calendar_edit', {'id': calendar.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                    <a href="{{ path('app_admin_calendar_edit', {'id': calendar.id}) }}">{{ 'button.edit'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_calendar_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_calendar_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -32,43 +32,43 @@
                         <table class="table table-striped">
                             <tbody>
                                 <tr>
-                                    <th>{{ 'admin.calendar.list.table.id'|trans }}</th>
+                                    <th>{{ 'table_header_cell.id'|trans }}</th>
                                     <td>{{ calendar.id }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.calendar.list.table.name'|trans }}</th>
+                                    <th>{{ 'table_header_cell.name'|trans }}</th>
                                     <td>{{ calendar.name }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.calendar.list.table.is_based'|trans }}</th>
+                                    <th>{{ 'table_header_cell.is_based'|trans }}</th>
                                     <td>
                                         {% if calendar.isBased %}
-                                            <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                            <span class="c-green">{{ 'message.yes'|trans }}</span>
                                         {% else %}
-                                            <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                            <span class="c-red">{{ 'message.no'|trans }}</span>
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.calendar.list.table.is_baseline'|trans }}</th>
+                                    <th>{{ 'table_header_cell.is_baseline'|trans }}</th>
                                     <td>
                                         {% if calendar.isBaseline %}
-                                            <span class="c-green">{{ 'admin.general.yes'|trans }}</span>
+                                            <span class="c-green">{{ 'message.yes'|trans }}</span>
                                         {% else %}
-                                            <span class="c-red">{{ 'admin.general.no'|trans }}</span>
+                                            <span class="c-red">{{ 'message.no'|trans }}</span>
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.calendar.list.table.parent'|trans }}</th>
+                                    <th>{{ 'table_header_cell.parent'|trans }}</th>
                                     <td>{{ calendar.parent.name|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.calendar.list.table.project'|trans }}</th>
+                                    <th>{{ 'table_header_cell.project'|trans }}</th>
                                     <td>{{ calendar.project.name|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.calendar.list.table.workpackages'|trans }}</th>
+                                    <th>{{ 'table_header_cell.workpackages'|trans }}</th>
                                     <td>
                                         {% for wp in calendar.workPackages %}
                                             <p>{{ wp.name|default('-') }}</p>
@@ -76,7 +76,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'admin.calendar.list.table.wppwct'|trans }}</th>
+                                    <th>{{ 'table_header_cell.wppwcts'|trans }}</th>
                                     <td>
                                         {% for wppwct in calendar.workPackageProjectWorkCostTypes %}
                                             <p>{{ wppwct.name|default('-') }}</p>

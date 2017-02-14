@@ -1,1 +1,3 @@
-<p>Invoice for payment: {{ payment }}</p>
+{% trans_default_domain 'messages' %}
+
+<p>{{ 'message.invoce'|trans }} {{ payment }}</p>

@@ -139,7 +139,7 @@ class MediaController extends Controller
                         'success',
                         $this
                             ->get('translator')
-                            ->trans('admin.media.upload.success', [], 'admin')
+                            ->trans('success.media.upload', [], 'flashes')
                     )
                 ;
 
@@ -152,7 +152,7 @@ class MediaController extends Controller
                         'error',
                         $this
                             ->get('translator')
-                            ->trans('admin.media.upload.failed', [], 'admin')
+                            ->trans('failed.media.upload', [], 'flashes')
                     )
                 ;
             }
@@ -197,7 +197,7 @@ class MediaController extends Controller
                         'success',
                         $this
                             ->get('translator')
-                            ->trans('admin.media.edit.success', [], 'admin')
+                            ->trans('success.media.edit', [], 'flashes')
                     )
                 ;
 
@@ -210,7 +210,7 @@ class MediaController extends Controller
                         'error',
                         $this
                             ->get('translator')
-                            ->trans('admin.media.upload.failed', [], 'admin')
+                            ->trans('failed.media.upload', [], 'flashes')
                     )
                 ;
             }
@@ -264,7 +264,7 @@ class MediaController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.media.delete.success.general', [], 'admin')
+                    ->trans('success.media.delete.general', [], 'flashes')
             )
         ;
 
@@ -279,7 +279,7 @@ class MediaController extends Controller
      *
      * @param Media $media
      *
-     * @return RedirectResponse|JsonResponse
+     * @return Response
      */
     public function downloadAction(Media $media)
     {

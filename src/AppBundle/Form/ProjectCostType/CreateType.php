@@ -25,7 +25,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.general_field.name.not_blank',
+                        'message' => 'not_blank.name',
                     ]),
                 ],
             ])
@@ -33,19 +33,19 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.general_field.sequence.not_blank',
+                        'message' => 'not_blank.sequence',
                     ]),
                     new Regex([
                         'pattern' => '/^([1-9]+\d*)$|^0$/',
-                        'message' => 'validation.constraints.general_field.sequence.invalid',
+                        'message' => 'invalid.sequence',
                     ]),
                 ],
             ])
             ->add('project', EntityType::class, [
                 'class' => Project::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.project.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.project',
+                'translation_domain' => 'messages',
             ])
         ;
     }

@@ -1,6 +1,6 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
 
@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.contract.edit.title'|trans }}</h2>
+                    <h2>{{ 'title.contract.edit'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,10 +17,10 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_contract_create') }}">{{ 'admin.contract.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_contract_create') }}">{{ 'add.contract'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_contract_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_contract_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -52,7 +52,7 @@
                                 'attr': {
                                     'class': 'form-control input-sm',
                                 },
-                                'label': 'admin.contract.create.name'|trans,
+                                'label': 'label.name'|trans,
                             }
                         ) }}
                         {{ form_widget(
@@ -61,7 +61,7 @@
                                 'attr': {
                                     'class': 'selectpicker',
                                 },
-                                'label': 'admin.contract.create.project'|trans,
+                                'label': 'label.project'|trans,
                             }
                         ) }}
                         {{ form_widget(
@@ -70,7 +70,7 @@
                                 'attr': {
                                     'class': 'form-control input-sm',
                                 },
-                                'label': 'admin.contract.create.description'|trans
+                                'label': 'label.description'|trans
                             }
                         ) }}
                         {{ form_widget(
@@ -80,7 +80,7 @@
                                     'class': 'form-control date-picker',
                                     'addon_front': 'calendar',
                                 },
-                                'label': 'admin.contract.create.proposed_start_date'|trans
+                                'label': 'label.proposed_start_date'|trans
                             }
                         ) }}
                         {{ form_widget(
@@ -90,7 +90,7 @@
                                     'class': 'form-control date-picker',
                                     'addon_front': 'calendar',
                                 },
-                                'label': 'admin.contract.create.proposed_end_date'|trans
+                                'label': 'label.proposed_end_date'|trans
                             }
                         ) }}
                         {{ form_widget(
@@ -100,7 +100,7 @@
                                     'class': 'form-control date-picker',
                                     'addon_front': 'calendar',
                                 },
-                                'label': 'admin.contract.create.forecast_start_date'|trans
+                                'label': 'label.forecast_start_date'|trans
                             }
                         ) }}
                         {{ form_widget(
@@ -110,7 +110,7 @@
                                     'class': 'form-control date-picker',
                                     'addon_front': 'calendar',
                                 },
-                                'label': 'admin.contract.create.forecast_end_date'|trans
+                                'label': 'label.forecast_end_date'|trans
                             }
                         ) }}
 

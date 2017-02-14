@@ -79,7 +79,7 @@ class TeamMemberController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.team_member.create.success', [], 'admin')
+                        ->trans('success.team_member.create', [], 'flashes')
                 )
             ;
 
@@ -124,7 +124,7 @@ class TeamMemberController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.team_member.edit.success', [], 'admin')
+                        ->trans('success.team_member.edit', [], 'flashes')
                 )
             ;
 
@@ -164,7 +164,7 @@ class TeamMemberController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.team_member.delete.success', [], 'admin')
+                    ->trans('success.team_member.delete', [], 'flashes')
             )
         ;
 

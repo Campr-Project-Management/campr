@@ -93,7 +93,7 @@ class ProjectCategoryController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_category.create.success', [], 'admin')
+                        ->trans('success.project_category.create', [], 'flashes')
                 )
             ;
 
@@ -138,7 +138,7 @@ class ProjectCategoryController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_category.edit.success', [], 'admin')
+                        ->trans('success.project_category.edit', [], 'flashes')
                 )
             ;
 
@@ -206,7 +206,7 @@ class ProjectCategoryController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.project_category.delete.success.general', [], 'admin')
+                    ->trans('success.project_category.delete.general', [], 'flashes')
             )
         ;
 

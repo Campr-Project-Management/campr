@@ -111,7 +111,7 @@ class TodoController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.todo.create.success', [], 'admin')
+                        ->trans('success.todo.create', [], 'flashes')
                 )
             ;
 
@@ -155,7 +155,7 @@ class TodoController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.todo.edit.success', [], 'admin')
+                        ->trans('success.todo.edit', [], 'flashes')
                 )
             ;
 
@@ -178,7 +178,7 @@ class TodoController extends Controller
      * @param Request $request
      * @param Todo    $todo
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
     public function deleteAction(Request $request, Todo $todo)
     {
@@ -201,7 +201,7 @@ class TodoController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.todo.delete.success.general', [], 'admin')
+                    ->trans('success.todo.delete.general', [], 'flashes')
             )
         ;
 

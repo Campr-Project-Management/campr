@@ -93,7 +93,7 @@ class ProjectCostTypeController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_cost_type.create.success', [], 'admin')
+                        ->trans('success.project_cost_type.create', [], 'flashes')
                 )
             ;
 
@@ -138,7 +138,7 @@ class ProjectCostTypeController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_cost_type.edit.success', [], 'admin')
+                        ->trans('success.project_cost_type.edit', [], 'flashes')
                 )
             ;
 
@@ -206,7 +206,7 @@ class ProjectCostTypeController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.project_cost_type.delete.success.general', [], 'admin')
+                    ->trans('success.project_cost_type.delete.general', [], 'flashes')
             )
         ;
 

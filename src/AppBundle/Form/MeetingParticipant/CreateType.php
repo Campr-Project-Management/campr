@@ -25,22 +25,22 @@ class CreateType extends AbstractType
             ->add('meeting', EntityType::class, [
                 'class' => Meeting::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.meeting.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.meeting',
+                'translation_domain' => 'messages',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.meeting_participant.meeting.not_blank',
+                        'message' => 'not_blank.meeting',
                     ]),
                 ],
             ])
             ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'username',
-                'placeholder' => 'admin.user.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.user',
+                'translation_domain' => 'messages',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.meeting_participant.user.not_blank',
+                        'message' => 'not_blank.meeting_participant.user',
                     ]),
                 ],
             ])

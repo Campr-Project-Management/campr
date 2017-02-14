@@ -1,13 +1,13 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.communication.list.title'|trans }}<small>{{ communication.meetingName }}</small></h2>
+                    <h2>{{ 'title.communication.list'|trans }}<small>{{ communication.meetingName }}</small></h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -15,13 +15,13 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_communication_create') }}">{{ 'admin.communication.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_communication_create') }}">{{ 'add.communication'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_communication_edit', {'id': communication.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                    <a href="{{ path('app_admin_communication_edit', {'id': communication.id}) }}">{{ 'button.edit'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_communication_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_communication_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -32,31 +32,31 @@
                         <table class="table table-striped">
                             <tbody>
                             <tr>
-                                <th>{{ 'admin.communication.list.table.id'|trans }}</th>
+                                <th>{{ 'table_header_cell.id'|trans }}</th>
                                 <td>{{ communication.id }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.communication.list.table.project'|trans }}</th>
+                                <th>{{ 'table_header_cell.project'|trans }}</th>
                                 <td>{{ communication.project.name|default('-') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.communication.list.table.meeting_name'|trans }}</th>
+                                <th>{{ 'table_header_cell.meeting_name'|trans }}</th>
                                 <td>{{ communication.meetingName }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.communication.list.table.content'|trans }}</th>
+                                <th>{{ 'table_header_cell.content'|trans }}</th>
                                 <td>{{ communication.content }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.communication.list.table.schedule'|trans }}</th>
+                                <th>{{ 'table_header_cell.schedule'|trans }}</th>
                                 <td>{{ communication.schedule.name|default('-') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.communication.list.table.location'|trans }}</th>
+                                <th>{{ 'table_header_cell.location'|trans }}</th>
                                 <td>{{ communication.location }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.communication.list.table.participants'|trans }}</th>
+                                <th>{{ 'table_header_cell.participants'|trans }}</th>
                                 <td>
                                    {% for user in communication.participants %}
                                         <p>@{{ user.username }} - {{ user.fullName }}</p>
@@ -64,11 +64,11 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.communication.list.table.created_at'|trans }}</th>
+                                <th>{{ 'table_header_cell.created_at'|trans }}</th>
                                 <td>{{ communication.createdAt|date('d/m/Y') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.communication.list.table.updated_at'|trans }}</th>
+                                <th>{{ 'table_header_cell.updated_at'|trans }}</th>
                                 <td>{{ communication.updatedAt|date('d/m/Y') }}</td>
                             </tr>
                             </tbody>

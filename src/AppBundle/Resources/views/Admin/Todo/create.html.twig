@@ -1,6 +1,6 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
 
@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.todo.create.title'|trans }}</h2>
+                    <h2>{{ 'title.todo.create'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,7 +17,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_todo_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_todo_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -49,7 +49,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.todo.create.title'|trans
+                            'label': 'label.title'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -58,7 +58,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.todo.create.project'|trans
+                            'label': 'label.project'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -67,7 +67,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.todo.create.meeting'|trans
+                            'label': 'label.meeting'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -76,7 +76,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'admin.todo.create.description'|trans
+                            'label': 'label.description'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -85,7 +85,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.todo.create.responsible'|trans
+                            'label': 'label.responsible'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -95,7 +95,7 @@
                                 'class': 'form-control date-picker',
                                 'addon_front': 'calendar'
                             },
-                            'label': 'admin.todo.create.date'|trans
+                            'label': 'label.date'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -105,7 +105,7 @@
                                 'class': 'form-control date-picker',
                                 'addon_front': 'calendar'
                             },
-                            'label': 'admin.todo.create.due_date'|trans
+                            'label': 'label.due_date'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -114,7 +114,7 @@
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'admin.todo.create.status'|trans
+                            'label': 'label.status'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -124,7 +124,7 @@
                                 'class': 'form-control input-sm',
                                 'toggle': true
                             },
-                            'label': 'admin.todo.create.show_in_status_report'|trans,
+                            'label': 'label.show_in_status_report'|trans,
                         }
                     ) }}
 

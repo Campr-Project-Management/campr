@@ -1,11 +1,11 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="card">
         <div class="card-header bgm-teal">
-            <h2>{{ 'admin.assignment.list.title'|trans }}<small>{{ 'admin.assignment.list.subtitle'|trans }}</small></h2>
+            <h2>{{ 'title.assignment.list'|trans }}<small>{{ 'subtitle.assignment'|trans }}</small></h2>
             <a href="{{ path('app_admin_assignment_create') }}">
                 <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
             </a>
@@ -18,13 +18,13 @@
             {% endfor %}
             <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                 <strong>
-                    {{ 'admin.assignment.delete.success.first'|trans }}
+                    {{ 'success.assignment.delete.first'|trans({}, 'flashes') }}
                     <span id="object-id">
                         {% for flash_message in app.session.flashBag.get('success') %}
                             {{ flash_message }}
                         {% endfor %}
                     </span>
-                    {{ 'admin.assignment.delete.success.second'|trans }}
+                    {{ 'success.assignment.delete.second'|trans({}, 'flashes') }}
                 </strong>
             </div>
             <div class="table-responsive">
@@ -37,12 +37,12 @@
                         data-delete="app_admin_assignment_delete">
                     <thead>
                     <tr>
-                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.assignment.list.table.id'|trans }}</th>
-                        <th data-column-id="workPackageName">{{ 'admin.assignment.list.table.workpackage'|trans }}</th>
-                        <th data-column-id="workPackageProjectWorkCostTypeName">{{ 'admin.assignment.list.table.wppwct'|trans }}</th>
-                        <th data-column-id="milestone">{{ 'admin.assignment.list.table.milestone'|trans }}</th>
-                        <th data-column-id="percentWorkComplete">{{ 'admin.assignment.list.table.percent_complete'|trans }}</th>
-                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'admin.general.placeholder.actions'|trans }}</th>
+                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'table_header_cell.id'|trans }}</th>
+                        <th data-column-id="workPackageName">{{ 'table_header_cell.workpackage'|trans }}</th>
+                        <th data-column-id="workPackageProjectWorkCostTypeName">{{ 'table_header_cell.wppwct'|trans }}</th>
+                        <th data-column-id="milestone">{{ 'table_header_cell.milestone'|trans }}</th>
+                        <th data-column-id="percentWorkComplete">{{ 'table_header_cell.percent_complete'|trans }}</th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'placeholder.actions'|trans }}</th>
                     </tr>
                     </thead>
                 </table>

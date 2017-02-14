@@ -32,7 +32,7 @@ class UserController extends ApiController
             return $this->createApiResponse([
                 'message' => $this
                     ->get('translator')
-                    ->trans('api.general.not_found', [], 'api_responses'),
+                    ->trans('not_found.general', [], 'messages'),
             ], Response::HTTP_NOT_FOUND);
         }
 
@@ -55,7 +55,7 @@ class UserController extends ApiController
             return $this->createApiResponse([
                 'message' => $this
                     ->get('translator')
-                    ->trans('api.general.not_found', [], 'api_responses'),
+                    ->trans('not_found.general', [], 'messages'),
             ], Response::HTTP_NOT_FOUND);
         }
 
