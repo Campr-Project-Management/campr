@@ -1,11 +1,11 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="card">
         <div class="card-header bgm-teal">
-            <h2>{{ 'admin.workpackage.list.title'|trans }}<small>{{ 'admin.workpackage.list.subtitle'|trans }}</small></h2>
+            <h2>{{ 'title.workpackage.list'|trans }}<small>{{ 'subtitle.workpackage'|trans }}</small></h2>
             <a href="{{ path('app_admin_workpackage_create') }}">
                 <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
             </a>
@@ -18,13 +18,13 @@
             {% endfor %}
             <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                 <strong>
-                    {{ 'admin.workpackage.delete.success.first'|trans }}
+                    {{ 'success.workpackage.delete.first'|trans({}, 'flashes') }}
                     <span id="object-id">
                         {% for flash_message in app.session.flashBag.get('success') %}
                             {{ flash_message }}
                         {% endfor %}
                     </span>
-                    {{ 'admin.workpackage.delete.success.second'|trans }}
+                    {{ 'success.workpackage.delete.second'|trans({}, 'flashes') }}
                 </strong>
             </div>
             <div class="table-responsive">
@@ -37,13 +37,13 @@
                         data-delete="app_admin_workpackage_delete">
                     <thead>
                     <tr>
-                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.workpackage.list.table.id'|trans }}</th>
-                        <th data-column-id="puid">{{ 'admin.workpackage.list.table.puid'|trans }}</th>
-                        <th data-column-id="name">{{ 'admin.workpackage.list.table.name'|trans }}</th>
-                        <th data-column-id="responsibilityFullName">{{ 'admin.workpackage.list.table.responsible'|trans }}</th>
-                        <th data-column-id="scheduledStartAt">{{ 'admin.workpackage.list.table.schedule_start'|trans }}</th>
-                        <th data-column-id="scheduledFinishAt">{{ 'admin.workpackage.list.table.schedule_finish'|trans }}</th>
-                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'admin.general.placeholder.actions'|trans }}</th>
+                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'table_header_cell.id'|trans }}</th>
+                        <th data-column-id="puid">{{ 'table_header_cell.puid'|trans }}</th>
+                        <th data-column-id="name">{{ 'table_header_cell.name'|trans }}</th>
+                        <th data-column-id="responsibilityFullName">{{ 'table_header_cell.responsible'|trans }}</th>
+                        <th data-column-id="scheduledStartAt">{{ 'table_header_cell.schedule_start'|trans }}</th>
+                        <th data-column-id="scheduledFinishAt">{{ 'table_header_cell.schedule_finish'|trans }}</th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'placeholder.actions'|trans }}</th>
                     </tr>
                     </thead>
                 </table>

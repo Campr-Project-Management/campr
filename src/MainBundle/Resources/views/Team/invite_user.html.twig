@@ -1,13 +1,13 @@
 {% extends 'MainBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">
                 <p class="text-primary">
-                    Invite User
+                    {{ 'title.user.invite'|trans }}
                 </p>
             </h1>
         </div>
@@ -45,12 +45,12 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'Email',
+                            'label': 'label.email'|trans,
                         }
                     ) }}
                     <div class="form-group m-t-15">
                         <div class="col-sm-offset-5 col-sm-10">
-                            <button class="btn btn-primary" type="submit">Send invitation</button>
+                            <button class="btn btn-primary" type="submit">{{ 'button.send_invitation'|trans }}</button>
                         </div>
                     </div>
 

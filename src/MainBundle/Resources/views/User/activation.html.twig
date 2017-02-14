@@ -1,12 +1,12 @@
 {% extends 'AppBundle:Layout:base.html.twig' %}
-{% trans_default_domain 'layout' %}
+{% trans_default_domain 'messages' %}
 
 {% block body %}
     <div class="login-content">
         <div class="lc-block toggled" id="l-login">
             <div class="card">
                 <div class="card-header bgm-cyan">
-                    <h2>{{ 'activation.title'|trans|upper }}</h2>
+                    <h2>{{ 'title.account_activation'|trans|upper }}</h2>
                 </div>
                 <div class="card-body card-padding">
                     {% if app.session.flashBag.has('message') %}

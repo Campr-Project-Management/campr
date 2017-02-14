@@ -25,7 +25,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.general_field.name.not_blank',
+                        'message' => 'not_blank.name',
                     ]),
                 ],
             ])
@@ -33,7 +33,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.project_department.abbreviation.not_blank',
+                        'message' => 'not_blank.abbreviation',
                     ]),
                 ],
             ])
@@ -41,11 +41,11 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.general_field.sequence.not_blank',
+                        'message' => 'not_blank.sequence',
                     ]),
                     new Regex([
                         'pattern' => '/^([1-9]+\d*)$|^0$/',
-                        'message' => 'validation.constraints.general_field.sequence.invalid',
+                        'message' => 'invalid.sequence',
                     ]),
                 ],
             ])
@@ -54,15 +54,15 @@ class CreateType extends AbstractType
                 'constraints' => [
                     new Regex([
                         'pattern' => '/^(0(?:\.[0-9]{1,2})?)$|^([1-9][0-9]{0,9})$|^([1-9][0-9]{0,7}(?:\.[0-9]{1,2})?)$/',
-                        'message' => 'validation.constraints.project_department.rate.invalid',
+                        'message' => 'invalid.rate',
                     ]),
                 ],
             ])
             ->add('projectWorkCostType', EntityType::class, [
                 'class' => ProjectWorkCostType::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.project_work_cost_type.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.project_work_cost_type',
+                'translation_domain' => 'messages',
             ])
         ;
     }

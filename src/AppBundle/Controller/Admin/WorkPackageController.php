@@ -122,7 +122,7 @@ class WorkPackageController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.workpackage.create.success', [], 'admin')
+                        ->trans('success.workpackage.create', [], 'flashes')
                 )
             ;
 
@@ -176,7 +176,7 @@ class WorkPackageController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.workpackage.edit.success', [], 'admin')
+                        ->trans('success.workpackage.edit', [], 'flashes')
                 )
             ;
 
@@ -201,7 +201,7 @@ class WorkPackageController extends Controller
      * @param Request     $request
      * @param WorkPackage $workPackage
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
     public function deleteAction(Request $request, WorkPackage $workPackage)
     {
@@ -224,7 +224,7 @@ class WorkPackageController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.workpackage.delete.success.general', [], 'admin')
+                    ->trans('success.workpackage.delete.general', [], 'flashes')
             )
         ;
 

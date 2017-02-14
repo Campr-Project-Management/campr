@@ -93,7 +93,7 @@ class ProjectDepartmentController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_department.create.success', [], 'admin')
+                        ->trans('success.project_department.create', [], 'flashes')
                 )
             ;
 
@@ -138,7 +138,7 @@ class ProjectDepartmentController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_department.edit.success', [], 'admin')
+                        ->trans('success.project_department.edit', [], 'flashes')
                 )
             ;
 
@@ -206,7 +206,7 @@ class ProjectDepartmentController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.project_department.delete.success.general', [], 'admin')
+                    ->trans('success.project_department.delete.general', [], 'flashes')
             )
         ;
 

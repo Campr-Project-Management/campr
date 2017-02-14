@@ -1,11 +1,11 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="card">
         <div class="card-header bgm-teal">
-            <h2>{{ 'admin.meeting_agenda.list.title'|trans }}<small>{{ 'admin.meeting_agenda.list.subtitle'|trans }}</small></h2>
+            <h2>{{ 'title.meeting_agenda.list'|trans }}<small>{{ 'subtitle.meeting_agenda'|trans }}</small></h2>
             <a href="{{ path('app_admin_meeting_agenda_create') }}">
                 <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
             </a>
@@ -18,13 +18,13 @@
             {% endfor %}
             <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                 <strong>
-                    {{ 'admin.meeting_agenda.delete.success.first'|trans }}
+                    {{ 'success.meeting_agenda.delete.first'|trans({}, 'flashes') }}
                     <span id="object-id">
                         {% for flash_message in app.session.flashBag.get('success') %}
                             {{ flash_message }}
                         {% endfor %}
                     </span>
-                    {{ 'admin.meeting_agenda.delete.success.second'|trans }}
+                    {{ 'success.meeting_agenda.delete.second'|trans({}, 'flashes') }}
                 </strong>
             </div>
             <div class="table-responsive">
@@ -37,13 +37,13 @@
                         data-delete="app_admin_meeting_agenda_delete">
                     <thead>
                         <tr>
-                            <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.meeting_agenda.list.table.id'|trans }}</th>
-                            <th data-column-id="meetingName">{{ 'admin.meeting_agenda.list.table.meeting'|trans }}</th>
-                            <th data-column-id="topic">{{ 'admin.meeting_agenda.list.table.topic'|trans }}</th>
-                            <th data-column-id="responsibilityFullName">{{ 'admin.meeting_agenda.list.table.responsible'|trans }}</th>
-                            <th data-column-id="start">{{ 'admin.meeting_agenda.list.table.start'|trans }}</th>
-                            <th data-column-id="end">{{ 'admin.meeting_agenda.list.table.end'|trans }}</th>
-                            <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'admin.general.placeholder.actions'|trans }}</th>
+                            <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'table_header_cell.id'|trans }}</th>
+                            <th data-column-id="meetingName">{{ 'table_header_cell.meeting'|trans }}</th>
+                            <th data-column-id="topic">{{ 'table_header_cell.topic'|trans }}</th>
+                            <th data-column-id="responsibilityFullName">{{ 'table_header_cell.responsible'|trans }}</th>
+                            <th data-column-id="start">{{ 'table_header_cell.start'|trans }}</th>
+                            <th data-column-id="end">{{ 'table_header_cell.end'|trans }}</th>
+                            <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'placeholder.actions'|trans }}</th>
                         </tr>
                     </thead>
                 </table>

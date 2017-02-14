@@ -38,11 +38,11 @@ class MediaUploadType extends AbstractType
             ->add('fileSystem', EntityType::class, [
                 'class' => FileSystem::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.media.upload.filesystem_placeholder',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.filesystem',
+                'translation_domain' => 'messages',
                 'constraints' => [
                     new NotNull([
-                        'message' => 'validation.constraints.media.filesystem.not_null',
+                        'message' => 'not_null.filesystem',
                     ]),
                 ],
                 'query_builder' => function (EntityRepository $er) use ($options) {
@@ -63,7 +63,7 @@ class MediaUploadType extends AbstractType
                 'constraints' => [
                     new FileConstaint(),
                     new NotBlank([
-                        'message' => 'validation.constraints.media.file.not_blank',
+                        'message' => 'not_blank.file',
                     ]),
                 ],
             ])

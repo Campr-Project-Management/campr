@@ -111,7 +111,7 @@ class RaciController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.raci.create.success', [], 'admin')
+                        ->trans('success.raci.create', [], 'flashes')
                 )
             ;
 
@@ -154,7 +154,7 @@ class RaciController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.raci.edit.success', [], 'admin')
+                        ->trans('success.raci.edit', [], 'flashes')
                 )
             ;
 
@@ -202,7 +202,7 @@ class RaciController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.raci.delete.success.general', [], 'admin')
+                    ->trans('success.raci.delete.general', [], 'flashes')
             )
         ;
 

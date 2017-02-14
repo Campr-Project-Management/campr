@@ -1,12 +1,12 @@
 {% extends 'MainBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">
-                <p class="text-primary">{{ 'admin.payment.list.title'|trans }}</p>
+                <p class="text-primary">{{ 'title.payment.list'|trans }}</p>
             </h1>
             {% for flashMessage in app.session.flashbag.get('success') %}
                 <div class="alert alert-success">
@@ -24,11 +24,11 @@
         <div class="col-lg-12">
             <table class="table table-condensed table-responsive">
                 <thead>
-                <th>{{ 'admin.payment.list.table.id'|trans }}</th>
-                <th>{{ 'admin.payment.list.table.method'|trans }}</th>
-                <th>{{ 'admin.payment.list.table.team'|trans }}</th>
-                <th>{{ 'admin.payment.list.table.created_at'|trans }}</th>
-                <th>{{ 'admin.general.actions'|trans }}</th>
+                <th>{{ 'table_header_cell.id'|trans }}</th>
+                <th>{{ 'table_header_cell.payment_method'|trans }}</th>
+                <th>{{ 'table_header_cell.team'|trans }}</th>
+                <th>{{ 'table_header_cell.created_at'|trans }}</th>
+                <th>{{ 'placeholder.actions'|trans }}</th>
                 </thead>
                 <tbody>
                 {% for payment in payments %}

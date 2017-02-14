@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Table(name="impact")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ImpactRepository")
- * @UniqueEntity(fields="name", message="validation.constraints.general_field.name.unique")
+ * @UniqueEntity(fields="name", message="unique.name")
  */
 class Impact
 {

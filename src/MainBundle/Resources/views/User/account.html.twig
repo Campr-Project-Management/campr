@@ -1,4 +1,4 @@
-{% trans_default_domain 'main' %}
+{% trans_default_domain 'messages' %}
 
 {% extends 'MainBundle::base.html.twig' %}
 
@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">
-                <p class="text-primary">{{ 'main.account.settings.title'|trans }}: {{ user.fullName }}</p>
+                <p class="text-primary">{{ 'title.my_account'|trans }}: {{ user.fullName }}</p>
             </h1>
             {% for flashMessage in app.session.flashbag.get('success') %}
                 <div class="alert alert-success">
@@ -47,25 +47,25 @@
             {% endif %}
             <div class="control-group form-group {% if form_errors(form.username) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.account.settings.username'|trans }}</label>
+                    <label>{{ 'label.username'|trans }}</label>
                     {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.email) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.account.settings.email'|trans }}</label>
+                    <label>{{ 'label.email'|trans }}</label>
                     {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.firstName) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.account.settings.first_name'|trans }}</label>
+                    <label>{{ 'label.first_name'|trans }}</label>
                     {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.lastName) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.account.settings.last_name'|trans }}</label>
+                    <label>{{ 'label.last_name'|trans }}</label>
                     {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
@@ -74,60 +74,60 @@
             </div>
             <div class="control-group form-group {% if form_errors(form.phone) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.account.settings.phone'|trans }}</label>
+                    <label>{{ 'label.phone'|trans }}</label>
                     {{ form_widget(form.phone, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.facebook) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.account.settings.facebook'|trans }}</label>
+                    <label>{{ 'label.facebook'|trans }}</label>
                     {{ form_widget(form.facebook, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.twitter) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.account.settings.twitter'|trans }}</label>
+                    <label>{{ 'label.twitter'|trans }}</label>
                     {{ form_widget(form.twitter, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.instagram) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.account.settings.instagram'|trans }}</label>
+                    <label>{{ 'label.instagram'|trans }}</label>
                     {{ form_widget(form.instagram, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.gplus) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.account.settings.gplus'|trans }}</label>
+                    <label>{{ 'label.gplus'|trans }}</label>
                     {{ form_widget(form.gplus, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.linkedIn) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.account.settings.linked_in'|trans }}</label>
+                    <label>{{ 'label.linked_in'|trans }}</label>
                     {{ form_widget(form.linkedIn, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.medium) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.account.settings.medium'|trans }}</label>
+                    <label>{{ 'label.medium'|trans }}</label>
                     {{ form_widget(form.medium, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.plainPassword.first) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.account.settings.password'|trans }}</label>
+                    <label>{{ 'label.password.first'|trans }}</label>
                     {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.plainPassword.second) %}has-error{% endif %}">
                 <div class="controls">
-                    <label>{{ 'main.account.settings.repeat_password'|trans }}</label>
+                    <label>{{ 'label.password.repeat'|trans }}</label>
                     {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <div class="form-group">
-                <button class="btn btn-primary" type="submit">{{ 'main.general.button.save'|trans }}</button>
+                <button class="btn btn-primary" type="submit">{{ 'button.save'|trans }}</button>
             </div>
             {{ form_end(form, {'render_rest': true}) }}
         </div>

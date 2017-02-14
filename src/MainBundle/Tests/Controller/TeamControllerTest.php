@@ -291,14 +291,14 @@ class TeamControllerTest extends BaseController
         $form = $crawler->filter('#invite-form')->first()->form();
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('The email field should not be blank.', $crawler->html());
+        $this->assertContains('The email field should not be blank', $crawler->html());
 
         $form = $crawler->filter('#invite-form')->first()->form();
         $form['invite_user[email]'] = 'test';
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('The email is not vaild.', $crawler->html());
+        $this->assertContains('Invalid email provided', $crawler->html());
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $this->removeTeam('test-team');

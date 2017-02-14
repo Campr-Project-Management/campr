@@ -22,7 +22,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.general_field.name.not_blank',
+                        'message' => 'not_blank.name',
                     ]),
                 ],
             ])

@@ -111,7 +111,7 @@ class ScheduleController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.schedule.create.success', [], 'admin')
+                        ->trans('success.schedule.create', [], 'flashes')
                 )
             ;
 
@@ -154,7 +154,7 @@ class ScheduleController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.schedule.edit.success', [], 'admin')
+                        ->trans('success.schedule.edit', [], 'flashes')
                 )
             ;
 
@@ -179,7 +179,7 @@ class ScheduleController extends Controller
      * @param Request  $request
      * @param Schedule $schedule
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
     public function deleteAction(Request $request, Schedule $schedule)
     {
@@ -202,7 +202,7 @@ class ScheduleController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.schedule.delete.success.general', [], 'admin')
+                    ->trans('success.schedule.delete.general', [], 'flashes')
             )
         ;
 

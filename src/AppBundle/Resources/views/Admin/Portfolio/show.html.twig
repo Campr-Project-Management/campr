@@ -1,13 +1,13 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.portfolio.list.title'|trans }}<small>{{ portfolio.name }}</small></h2>
+                    <h2>{{ 'title.portfolio.list'|trans }}<small>{{ portfolio.name }}</small></h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -15,13 +15,13 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_portfolio_create') }}">{{ 'admin.portfolio.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_portfolio_create') }}">{{ 'add.portfolio'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_portfolio_edit', {'id': portfolio.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                    <a href="{{ path('app_admin_portfolio_edit', {'id': portfolio.id}) }}">{{ 'button.edit'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_portfolio_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_portfolio_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -32,15 +32,15 @@
                         <table class="table table-striped">
                             <tbody>
                             <tr>
-                                <th>{{ 'admin.portfolio.list.table.name'|trans }}</th>
+                                <th>{{ 'table_header_cell.name'|trans }}</th>
                                 <td>{{ portfolio.name }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.portfolio.list.table.description'|trans }}</th>
+                                <th>{{ 'table_header_cell.description'|trans }}</th>
                                 <td>{{ portfolio.description }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.portfolio.list.table.created_at'|trans }}</th>
+                                <th>{{ 'table_header_cell.created_at'|trans }}</th>
                                 <td>
                                     {% if portfolio.createdAt %}
                                         {{ portfolio.createdAt|date('d/m/Y') }}
@@ -48,7 +48,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.portfolio.list.table.updated_at'|trans }}</th>
+                                <th>{{ 'table_header_cell.updated_at'|trans }}</th>
                                 <td>
                                     {% if portfolio.updatedAt %}
                                         {{ portfolio.updatedAt|date('d/m/Y') }}

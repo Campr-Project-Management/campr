@@ -98,7 +98,7 @@ class ProjectController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project.create.success', [], 'admin')
+                        ->trans('success.project.create', [], 'flashes')
                 )
             ;
 
@@ -146,7 +146,7 @@ class ProjectController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project.edit.success', [], 'admin')
+                        ->trans('success.project.edit', [], 'flashes')
                 )
             ;
 
@@ -218,7 +218,7 @@ class ProjectController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.project.delete.success.general', [], 'admin')
+                    ->trans('success.project.delete.general', [], 'flashes')
             )
         ;
 
@@ -404,7 +404,7 @@ class ProjectController extends Controller
             [
                 'success' => $this
                     ->get('translator')
-                    ->trans('admin.chat.delete_messages', [], 'admin'),
+                    ->trans('success.chat_messages.delete', [], 'flashes'),
             ]
         );
     }

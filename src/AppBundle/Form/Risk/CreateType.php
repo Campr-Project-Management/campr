@@ -30,7 +30,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.risk.title.not_blank',
+                        'message' => 'not_blank.title',
                     ]),
                 ],
             ])
@@ -38,7 +38,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.risk.description.not_blank',
+                        'message' => 'not_blank.description',
                     ]),
                 ],
             ])
@@ -46,14 +46,14 @@ class CreateType extends AbstractType
                 'class' => Impact::class,
                 'required' => false,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.impact.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.impact',
+                'translation_domain' => 'messages',
             ])
             ->add('cost', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.risk.cost.not_blank',
+                        'message' => 'not_blank.cost',
                     ]),
                 ],
             ])
@@ -61,7 +61,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.risk.budget.not_blank',
+                        'message' => 'not_blank.budget',
                     ]),
                 ],
             ])
@@ -69,7 +69,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.risk.delay.not_blank',
+                        'message' => 'not_blank.delay',
                     ]),
                 ],
             ])
@@ -77,7 +77,7 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.risk.priority.not_blank',
+                        'message' => 'not_blank.priority',
                     ]),
                 ],
             ])
@@ -85,29 +85,29 @@ class CreateType extends AbstractType
                 'class' => RiskStrategy::class,
                 'required' => false,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.risk_strategy.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.risk_strategy',
+                'translation_domain' => 'messages',
             ])
             ->add('riskCategory', EntityType::class, [
                 'class' => RiskCategory::class,
                 'required' => false,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.risk_category.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.risk_category',
+                'translation_domain' => 'messages',
             ])
             ->add('measure', TextareaType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.risk.measure.not_blank',
+                        'message' => 'not_blank.measure',
                     ]),
                 ],
             ])
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'username',
-                'placeholder' => 'admin.user.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.user',
+                'translation_domain' => 'messages',
             ])
             ->add('dueDate', DateType::class, [
                 'widget' => 'single_text',

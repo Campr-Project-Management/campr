@@ -112,7 +112,7 @@ class WorkingTimeController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.working_time.create.success', [], 'admin')
+                        ->trans('success.working_time.create', [], 'flashes')
                 )
             ;
 
@@ -155,7 +155,7 @@ class WorkingTimeController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.working_time.edit.success', [], 'admin')
+                        ->trans('success.working_time.edit', [], 'flashes')
                 )
             ;
 
@@ -203,7 +203,7 @@ class WorkingTimeController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.working_time.delete.success.general', [], 'admin')
+                    ->trans('success.working_time.delete.general', [], 'flashes')
             )
         ;
 

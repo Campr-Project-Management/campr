@@ -21,12 +21,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @UniqueEntity(
  *      fields="email",
  *      errorPath="email",
- *      message="validation.constraints.user.unique.email"
+ *      message="unique.email"
  *  )
  * @UniqueEntity(
  *      fields="username",
  *      errorPath="username",
- *      message="validation.constraints.user.unique.username"
+ *      message="unique.username"
  *  )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")\
  * @Vich\Uploadable

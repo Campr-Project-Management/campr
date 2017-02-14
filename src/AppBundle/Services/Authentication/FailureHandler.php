@@ -21,8 +21,8 @@ class FailureHandler implements AuthenticationFailureHandlerInterface
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         $message = $exception instanceof DisabledException
-            ? $this->translator->trans('api.authentication.account_disabled', [], 'api_responses')
-            : $this->translator->trans('api.authentication.bad_credentials', [], 'api_responses')
+            ? $this->translator->trans('authentication.account_disabled', [], 'messages')
+            : $this->translator->trans('authentication.bad_credentials', [], 'messages')
         ;
 
         return new JsonResponse(
