@@ -20,10 +20,10 @@ class InviteUserType extends AbstractType
             ->add('email', EmailType::class, [
                 'constraints' => [
                     new Email([
-                        'message' => 'validation.constraints.general.email.email',
+                        'message' => 'invalid.email',
                     ]),
                     new NotBlank([
-                        'message' => 'validation.constraints.general.email.not_blank',
+                        'message' => 'not_blank.email',
                     ]),
                     new UserInvited([
                         'team' => $options['team'],

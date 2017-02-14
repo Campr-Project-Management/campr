@@ -111,7 +111,7 @@ class NoteController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.note.create.success', [], 'admin')
+                        ->trans('success.note.create', [], 'flashes')
                 )
             ;
 
@@ -154,7 +154,7 @@ class NoteController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.note.edit.success', [], 'admin')
+                        ->trans('success.note.edit', [], 'flashes')
                 )
             ;
 
@@ -202,7 +202,7 @@ class NoteController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.note.delete.success.general', [], 'admin')
+                    ->trans('success.note.delete.general', [], 'flashes')
             )
         ;
 

@@ -15,7 +15,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @ORM\Table(name="project")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRepository")
- * @UniqueEntity(fields="number", message="validation.constraints.project.number.unique")
+ * @UniqueEntity(fields="number", message="unique.number")
  * @Vich\Uploadable
  */
 class Project

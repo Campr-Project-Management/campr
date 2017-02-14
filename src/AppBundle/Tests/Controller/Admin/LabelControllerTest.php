@@ -47,8 +47,8 @@ class LabelControllerTest extends BaseController
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('The label title should not be blank', $crawler->html());
-        $this->assertContains('The label color should not be blank', $crawler->html());
+        $this->assertContains('The title field should not be blank', $crawler->html());
+        $this->assertContains('The color field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -68,7 +68,7 @@ class LabelControllerTest extends BaseController
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('The label color should have maximum 6 characters', $crawler->html());
+        $this->assertContains('The color field should have maximum 6 characters', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -162,7 +162,7 @@ class LabelControllerTest extends BaseController
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('The label color should not be blank', $crawler->html());
+        $this->assertContains('The color field should not be blank', $crawler->html());
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 

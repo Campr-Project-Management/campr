@@ -1,11 +1,11 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="card">
         <div class="card-header bgm-teal">
-            <h2>{{ 'admin.meeting_participant.list.title'|trans }}<small>{{ 'admin.meeting_participant.list.subtitle'|trans }}</small></h2>
+            <h2>{{ 'title.meeting_participant.list'|trans }}<small>{{ 'subtitle.meeting_participant'|trans }}</small></h2>
             <a href="{{ path('app_admin_meeting_participant_create') }}">
                 <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
             </a>
@@ -18,13 +18,13 @@
             {% endfor %}
             <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                 <strong>
-                    {{ 'admin.meeting_participant.delete.success.first'|trans }}
+                    {{ 'success.meeting_participant.delete.first'|trans({}, 'flashes') }}
                     <span id="object-id">
                         {% for flash_message in app.session.flashBag.get('success') %}
                             {{ flash_message }}
                         {% endfor %}
                     </span>
-                    {{ 'admin.meeting_participant.delete.success.second'|trans }}
+                    {{ 'success.meeting_participant.delete.second'|trans({}, 'flashes') }}
                 </strong>
             </div>
             <div class="table-responsive">
@@ -37,10 +37,10 @@
                         data-delete="app_admin_meeting_participant_delete">
                     <thead>
                     <tr>
-                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.meeting_agenda.list.table.id'|trans }}</th>
-                        <th data-column-id="meetingName">{{ 'admin.meeting_agenda.list.table.meeting'|trans }}</th>
-                        <th data-column-id="userFullName">{{ 'admin.meeting_agenda.list.table.responsible'|trans }}</th>
-                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'admin.general.placeholder.actions'|trans }}</th>
+                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'table_header_cell.id'|trans }}</th>
+                        <th data-column-id="meetingName">{{ 'table_header_cell.meeting'|trans }}</th>
+                        <th data-column-id="userFullName">{{ 'table_header_cell.responsible'|trans }}</th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'placeholder.actions'|trans }}</th>
                     </tr>
                     </thead>
                 </table>

@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Table(name="status")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\StatusRepository")
- * @UniqueEntity(fields="name", message="validation.constraints.general_field.name.unique")
+ * @UniqueEntity(fields="name", message="unique.name")
  */
 class Status
 {

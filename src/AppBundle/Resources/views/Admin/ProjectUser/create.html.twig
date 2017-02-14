@@ -1,6 +1,6 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
 
@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.project_user.create.title'|trans }}</h2>
+                    <h2>{{ 'title.project_user.create'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,7 +17,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_project_user_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_project_user_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -49,7 +49,7 @@
                                 'attr': {
                                     'class': 'selectpicker',
                                 },
-                                'label': 'admin.project_user.create.user'|trans,
+                                'label': 'label.user'|trans,
                             }
                         ) }}
                         {{ form_widget(
@@ -58,7 +58,7 @@
                                 'attr': {
                                     'class': 'selectpicker',
                                 },
-                                'label': 'admin.project_user.create.project'|trans,
+                                'label': 'label.project'|trans,
                             }
                         ) }}
                         {{ form_widget(
@@ -67,7 +67,7 @@
                                 'attr': {
                                     'class': 'selectpicker',
                                 },
-                                'label': 'admin.project_user.create.project_category'|trans,
+                                'label': 'label.project_category'|trans,
                             }
                         ) }}
                         {{ form_widget(
@@ -76,7 +76,7 @@
                                 'attr': {
                                     'class': 'selectpicker',
                                 },
-                                'label': 'admin.project_user.create.project_role'|trans,
+                                'label': 'label.project_role'|trans,
                             }
                         ) }}
                         {{ form_widget(
@@ -85,7 +85,7 @@
                                 'attr': {
                                     'class': 'selectpicker',
                                 },
-                                'label': 'admin.project_user.create.project_department'|trans,
+                                'label': 'label.project_department'|trans,
                             }
                         ) }}
                         {{ form_widget(
@@ -94,7 +94,7 @@
                                 'attr': {
                                     'class': 'selectpicker',
                                 },
-                                'label': 'admin.project_user.create.project_team'|trans,
+                                'label': 'label.project_team'|trans,
                             }
                         ) }}
                         {{ form_widget(
@@ -104,7 +104,7 @@
                                     'class': 'form-control input-sm',
                                     'toggle': true
                                 },
-                                'label': 'admin.project_user.create.show_in_resources'|trans,
+                                'label': 'label.show_in_resources'|trans,
                             }
                         ) }}
                         {{ form_widget(
@@ -114,7 +114,7 @@
                                     'class': 'form-control input-sm',
                                     'toggle': true
                                 },
-                                'label': 'admin.project_user.create.show_in_raci'|trans,
+                                'label': 'label.show_in_raci'|trans,
                             }
                         ) }}
                         {{ form_widget(
@@ -124,7 +124,7 @@
                                     'class': 'form-control input-sm',
                                     'toggle': true
                                 },
-                                'label': 'admin.project_user.create.show_in_org'|trans,
+                                'label': 'label.show_in_org'|trans,
                             }
                         ) }}
 

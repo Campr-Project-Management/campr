@@ -96,7 +96,7 @@ class ContractController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.contract.create.success', [], 'admin')
+                        ->trans('success.contract.create', [], 'flashes')
                 )
             ;
 
@@ -143,7 +143,7 @@ class ContractController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.contract.edit.success', [], 'admin')
+                        ->trans('success.contract.edit', [], 'flashes')
                 )
             ;
 
@@ -224,7 +224,7 @@ class ContractController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.contract.delete.success.general', [], 'admin')
+                    ->trans('success.contract.delete.general', [], 'flashes')
             )
         ;
 

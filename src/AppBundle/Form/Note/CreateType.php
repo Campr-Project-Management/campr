@@ -30,39 +30,39 @@ class CreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.note.title.not_blank',
+                        'message' => 'not_blank.title',
                     ]),
                 ],
             ])
             ->add('project', EntityType::class, [
                 'class' => Project::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.project.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.project',
+                'translation_domain' => 'messages',
             ])
             ->add('meeting', EntityType::class, [
                 'class' => Meeting::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.meeting.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.meeting',
+                'translation_domain' => 'messages',
             ])
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'username',
-                'placeholder' => 'admin.user.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.user',
+                'translation_domain' => 'messages',
             ])
             ->add('status', EntityType::class, [
                 'class' => Status::class,
                 'choice_label' => 'name',
-                'placeholder' => 'admin.status.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.status',
+                'translation_domain' => 'messages',
             ])
             ->add('description', TextareaType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.note.description.not_blank',
+                        'message' => 'not_blank.description',
                     ]),
                 ],
             ])

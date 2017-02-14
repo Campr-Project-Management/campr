@@ -36,18 +36,30 @@ class DefaultController extends Controller
         // TODO: move this into a request listener
         $enabled = $this->get('app.service.team')->isEnabled($request->attributes->get('subdomain'));
         if (!$enabled) {
-            throw $this->createNotFoundException('Site disabled.');
+            throw $this->createNotFoundException(
+                $this
+                ->get('translator')
+                ->trans('site.disabled', [], 'messages')
+            );
         }
 
         $jwt = $request->get('jwt');
         $token = $this->get('app.jwt_parser')->parse($jwt);
         if (!$token->verify($this->get('app.jwt_signer'), $this->getParameter('secret'))) {
-            throw $this->createNotFoundException('Invalid token.');
+            throw $this->createNotFoundException(
+                $this
+                    ->get('translator')
+                    ->trans('token.invalid', [], 'messages')
+            );
         }
 
         $redis = $this->get('redis.client');
         if ($redis->exists($jwt)) {
-            throw $this->createNotFoundException('Token already used.');
+            throw $this->createNotFoundException(
+                $this
+                    ->get('translator')
+                    ->trans('token.used', [], 'messages')
+            );
         }
         $redis->setex($jwt, 3600, time());
 
@@ -56,19 +68,31 @@ class DefaultController extends Controller
         $jti = $token->getClaim('jti');
 
         if ($redis->exists($jti)) {
-            throw $this->createNotFoundException('Token already used.');
+            throw $this->createNotFoundException(
+                $this
+                    ->get('translator')
+                    ->trans('token.used', [], 'messages')
+            );
         }
         $redis->setex($jti, 3600, time());
 
         // check the time of the
         if ($iat + 5 < time()) {
-            throw $this->createNotFoundException('Token expired.');
+            throw $this->createNotFoundException(
+                $this
+                    ->get('translator')
+                    ->trans('token.expired', [], 'messages')
+            );
         }
 
         // check issuer
         $issParts = explode('://', $iss);
         if (count($issParts) !== 2 || $issParts[1] !== $this->getParameter('domain')) {
-            throw $this->createNotFoundException('Invalid token.');
+            throw $this->createNotFoundException(
+                $this
+                    ->get('translator')
+                    ->trans('token.invalid', [], 'messages')
+            );
         }
 
         $userData = (array) $token->getClaim('user');

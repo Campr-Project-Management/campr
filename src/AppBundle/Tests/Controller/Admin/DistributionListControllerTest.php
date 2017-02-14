@@ -49,7 +49,7 @@ class DistributionListControllerTest extends BaseController
         $crawler = $this->client->submit($form);
 
         $this->assertContains('The name field should not be blank', $crawler->html());
-        $this->assertContains('You must select one project', $crawler->html());
+        $this->assertContains('The project field should not be blank. Choose one project', $crawler->html());
         $this->assertContains('The sequence field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -70,7 +70,7 @@ class DistributionListControllerTest extends BaseController
         $crawler = $this->client->submit($form);
 
         $this->assertContains('That name is taken', $crawler->html());
-        $this->assertContains('You must select one project', $crawler->html());
+        $this->assertContains('The project field should not be blank. Choose one project', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -91,7 +91,7 @@ class DistributionListControllerTest extends BaseController
         $crawler = $this->client->submit($form);
 
         $this->assertContains('The sequence field should contain numbers greater than or equal to 0', $crawler->html());
-        $this->assertContains('You must select one project', $crawler->html());
+        $this->assertContains('The project field should not be blank. Choose one project', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }

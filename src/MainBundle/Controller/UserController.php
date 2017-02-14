@@ -60,7 +60,7 @@ class UserController extends Controller
                 [
                     'token' => $user->getActivationToken(),
                     'full_name' => $user->getFullName(),
-                    'expiration_time' => $this->getParameter('activation_token_expiration'),
+                    'expiration_time' => $this->getParameter('activation_token_expiration_number'),
                 ]
             );
 
@@ -119,7 +119,7 @@ class UserController extends Controller
                         'message',
                         $this
                             ->get('translator')
-                            ->trans('activation.activated', [], 'layout')
+                            ->trans('activation.activated', [], 'flashes')
                     )
                 ;
             } else {
@@ -128,7 +128,7 @@ class UserController extends Controller
                         'message',
                         $this
                             ->get('translator')
-                            ->trans('activation.expired', [], 'layout')
+                            ->trans('activation.expired', [], 'flashes')
                     )
                 ;
                 $flashBag
@@ -136,12 +136,12 @@ class UserController extends Controller
                         'link',
                         $this
                             ->get('translator')
-                            ->trans('activation.resend', [], 'layout')
+                            ->trans('activation.resend', [], 'flashes')
                     )
                 ;
             }
         } else {
-            $message = $this->get('translator')->trans('activation.not_found', [], 'layout');
+            $message = $this->get('translator')->trans('activation.not_found', [], 'flashes');
             throw $this->createNotFoundException($message);
         }
 
@@ -185,11 +185,11 @@ class UserController extends Controller
                 [
                     'token' => $activationToken,
                     'full_name' => $user->getFullName(),
-                    'expiration_time' => $this->getParameter('activation_token_expiration'),
+                    'expiration_time' => $this->getParameter('activation_token_expiration_number'),
                 ]
             );
         } else {
-            $message = $this->get('translator')->trans('activation.not_found', [], 'layout');
+            $message = $this->get('translator')->trans('activation.not_found', [], 'flashes');
             throw $this->createNotFoundException($message);
         }
 
@@ -243,7 +243,7 @@ class UserController extends Controller
                     [
                         'token' => $resetToken,
                         'full_name' => $user->getFullName(),
-                        'expiration_time' => $this->getParameter('reset_token_expiration'),
+                        'expiration_time' => $this->getParameter('reset_token_expiration_number'),
                     ]
                 );
 
@@ -321,12 +321,12 @@ class UserController extends Controller
                         'message',
                         $this
                             ->get('translator')
-                            ->trans('reset.expired', [], 'layout')
+                            ->trans('reset.expired', [], 'flashes')
                     )
                 ;
             }
         } else {
-            $message = $this->get('translator')->trans('reset.not_found', [], 'layout');
+            $message = $this->get('translator')->trans('reset.not_found', [], 'flashes');
             throw $this->createNotFoundException($message);
         }
 
@@ -360,7 +360,7 @@ class UserController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('main.account.settings.success', [], 'main')
+                        ->trans('success.account.edit', [], 'flashes')
                 )
             ;
 

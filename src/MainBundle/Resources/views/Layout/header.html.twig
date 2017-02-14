@@ -1,42 +1,42 @@
-{% trans_default_domain 'main' %}
+{% trans_default_domain 'messages' %}
 
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation"0>
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">{{ 'main.nav.toggle'|trans }}</span>
+                <span class="sr-only">{{ 'button.toggle'|trans }}</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ path('main_homepage') }}">{{ 'main.title'|trans }}</a>
+            <a class="navbar-brand" href="{{ path('main_homepage') }}">{{ 'title.homepage_main'|trans }}</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 {% if app.user %}
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'main.nav.account.title'|trans }}<b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'menu.account'|trans }}<b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="{{ path('main_user_account') }}">{{ 'main.nav.account.settings'|trans }}</a>
+                                <a href="{{ path('main_user_account') }}">{{ 'menu.settings'|trans }}</a>
                             </li>
                             <li>
-                                <a href="{{ path('main_team_list') }}">{{ 'main.nav.account.teams'|trans }}</a>
+                                <a href="{{ path('main_team_list') }}">{{ 'menu.teams'|trans }}</a>
                             </li>
                             <li>
-                                <a href="{{ path('main_payment_method_list') }}">{{ 'main.nav.account.payment_methods'|trans }}</a>
+                                <a href="{{ path('main_payment_method_list') }}">{{ 'menu.payment_methods'|trans }}</a>
                             </li>
                             <li>
-                                <a href="{{ path('main_payment_list') }}">{{ 'main.nav.account.payments'|trans }}</a>
+                                <a href="{{ path('main_payment_list') }}">{{ 'menu.payments'|trans }}</a>
                             </li>
                         </ul>
                     </li>
-                    <li><a href="{{ path('main_logout') }}">{{ 'main.nav.logout'|trans }}</a></li>
+                    <li><a href="{{ path('main_logout') }}">{{ 'button.logout'|trans }}</a></li>
                 {% else %}
-                    <li><a href="{{ path('main_login') }}" class="btn btn-blue">{{ 'main.nav.sign_in'|trans }}</a></li>
+                    <li><a href="{{ path('main_login') }}" class="btn btn-blue">{{ 'button.sign_in'|trans }}</a></li>
                 {% endif %}
                 <li>
-                    <a href="{{ path('main_contact') }}">{{ 'main.nav.contact'|trans }}</a>
+                    <a href="{{ path('main_contact') }}">{{ 'menu.contact'|trans }}</a>
                 </li>
             </ul>
         </div>

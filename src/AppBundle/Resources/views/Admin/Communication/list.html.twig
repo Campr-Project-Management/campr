@@ -1,11 +1,11 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="card">
         <div class="card-header bgm-teal">
-            <h2>{{ 'admin.communication.list.title'|trans }}<small>{{ 'admin.communication.list.subtitle'|trans }}</small></h2>
+            <h2>{{ 'title.communication.list'|trans }}<small>{{ 'subtitle.communication'|trans }}</small></h2>
             <a href="{{ path('app_admin_communication_create') }}">
                 <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
             </a>
@@ -18,13 +18,13 @@
             {% endfor %}
             <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                 <strong>
-                    {{ 'admin.communication.delete.success.first'|trans }}
+                    {{ 'success.communication.delete.first'|trans({}, 'flashes') }}
                     <span id="object-id">
                         {% for flash_message in app.session.flashBag.get('success') %}
                             {{ flash_message }}
                         {% endfor %}
                     </span>
-                    {{ 'admin.communication.delete.success.second'|trans }}
+                    {{ 'success.communication.delete.second'|trans({}, 'flashes') }}
                 </strong>
             </div>
             <div class="table-responsive">
@@ -37,11 +37,11 @@
                         data-delete="app_admin_communication_delete">
                     <thead>
                     <tr>
-                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'admin.communication.list.table.id'|trans }}</th>
-                        <th data-column-id="meetingName">{{ 'admin.communication.list.table.meeting_name'|trans }}</th>
-                        <th data-column-id="projectName">{{ 'admin.communication.list.table.project'|trans }}</th>
-                        <th data-column-id="location">{{ 'admin.communication.list.table.location'|trans }}</th>
-                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'admin.general.placeholder.actions'|trans }}</th>
+                        <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'table_header_cell.id'|trans }}</th>
+                        <th data-column-id="meetingName">{{ 'table_header_cell.meeting'|trans }}</th>
+                        <th data-column-id="projectName">{{ 'table_header_cell.project'|trans }}</th>
+                        <th data-column-id="location">{{ 'table_header_cell.location'|trans }}</th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'placeholder.actions'|trans }}</th>
                     </tr>
                     </thead>
                 </table>

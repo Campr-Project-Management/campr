@@ -1,13 +1,13 @@
 {% extends 'AppBundle:Admin:base.html.twig' %}
 
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'messages' %}
 
 {% block body_content %}
     <div class="row">
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'admin.meeting.list.title'|trans }}<small>{{ meeting.name|default('-') }}</small></h2>
+                    <h2>{{ 'title.meeting.list'|trans }}<small>{{ meeting.name|default('-') }}</small></h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -15,13 +15,13 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_meeting_create') }}">{{ 'admin.meeting.list.add'|trans }}</a>
+                                    <a href="{{ path('app_admin_meeting_create') }}">{{ 'add.meeting'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_meeting_edit', {'id': meeting.id}) }}">{{ 'admin.general.form.button.edit'|trans }}</a>
+                                    <a href="{{ path('app_admin_meeting_edit', {'id': meeting.id}) }}">{{ 'button.edit'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_meeting_list') }}">{{ 'admin.general.form.button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_meeting_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -32,39 +32,39 @@
                         <table class="table table-striped">
                             <tbody>
                             <tr>
-                                <th>{{ 'admin.meeting.list.table.id'|trans }}</th>
+                                <th>{{ 'table_header_cell.id'|trans }}</th>
                                 <td>{{ meeting.id }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.meeting.list.table.name'|trans }}</th>
+                                <th>{{ 'table_header_cell.name'|trans }}</th>
                                 <td>{{ meeting.name|default('-') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.meeting.list.table.project'|trans }}</th>
+                                <th>{{ 'table_header_cell.project'|trans }}</th>
                                 <td>{{ meeting.project.name|default('-') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.meeting.list.table.location'|trans }}</th>
+                                <th>{{ 'table_header_cell.location'|trans }}</th>
                                 <td>{{ meeting.location|default('-') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.meeting.list.table.date'|trans }}</th>
+                                <th>{{ 'table_header_cell.date'|trans }}</th>
                                 <td>{{ meeting.date|date('d/m/Y') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.meeting.list.table.start'|trans }}</th>
+                                <th>{{ 'table_header_cell.start'|trans }}</th>
                                 <td>{{ meeting.start|date('H:i') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.meeting.list.table.end'|trans }}</th>
+                                <th>{{ 'table_header_cell.end'|trans }}</th>
                                 <td>{{ meeting.end|date('H:i') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.meeting.list.table.objectives'|trans }}</th>
+                                <th>{{ 'table_header_cell.objectives'|trans }}</th>
                                 <td>{{ meeting.obectives|default('-') }}</td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.meeting.list.table.participants'|trans }}</th>
+                                <th>{{ 'table_header_cell.participants'|trans }}</th>
                                 <td>
                                     {% for participant in meeting.meetingParticipants %}
                                         {{ participant.user.username|default('-') }}{% if not loop.last %}, {% endif %}
@@ -72,7 +72,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.meeting.list.table.agendas'|trans }}</th>
+                                <th>{{ 'table_header_cell.agendas'|trans }}</th>
                                 <td>
                                     {% for agendas in meeting.meetingAgendas %}
                                        <p>{{ agenda.topic|default('-') }}</p>
@@ -80,7 +80,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.meeting.list.table.decisions'|trans }}</th>
+                                <th>{{ 'table_header_cell.decisions'|trans }}</th>
                                 <td>
                                     {% for decision in meeting.decisions %}
                                         <p>{{ decision.title|default('-') }}</p>
@@ -88,7 +88,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.meeting.list.table.todos'|trans }}</th>
+                                <th>{{ 'table_header_cell.todos'|trans }}</th>
                                 <td>
                                     {% for todo in meeting.todos %}
                                         </p>{{ todo.title|default('-') }}</p>
@@ -96,7 +96,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.meeting.list.table.notes'|trans }}</th>
+                                <th>{{ 'table_header_cell.notes'|trans }}</th>
                                 <td>
                                     {% for note in meeting.notes %}
                                         </p>{{ participant.title|default('-') }}</p>
@@ -104,7 +104,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ 'admin.meeting.list.table.medias'|trans }}</th>
+                                <th>{{ 'table_header_cell.medias'|trans }}</th>
                                 <td>
                                     {% for media in meeting.medias %}
                                         </p>{{ media.path|default('-') }}</p>

@@ -93,7 +93,7 @@ class ProjectScopeController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_scope.create.success', [], 'admin')
+                        ->trans('success.project_scope.create', [], 'flashes')
                 )
             ;
 
@@ -138,7 +138,7 @@ class ProjectScopeController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('admin.project_scope.edit.success', [], 'admin')
+                        ->trans('success.project_scope.edit', [], 'flashes')
                 )
             ;
 
@@ -206,7 +206,7 @@ class ProjectScopeController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('admin.project_scope.delete.success.general', [], 'admin')
+                    ->trans('success.project_scope.delete.general', [], 'flashes')
             )
         ;
 

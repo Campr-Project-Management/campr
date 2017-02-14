@@ -26,7 +26,7 @@ class LabelType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.label.title.not_blank',
+                        'message' => 'not_blank.title',
                     ]),
                 ],
             ])
@@ -39,8 +39,8 @@ class LabelType extends AbstractType
                         'message' => 'validation.constraints.label.project.not_blank',
                     ]),
                 ],
-                'placeholder' => 'admin.project.choice',
-                'translation_domain' => 'admin',
+                'placeholder' => 'placeholder.project',
+                'translation_domain' => 'messages',
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
@@ -49,11 +49,11 @@ class LabelType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.label.color.not_blank',
+                        'message' => 'not_blank.color',
                     ]),
                     new Length([
                         'max' => 6,
-                        'maxMessage' => 'validation.constraints.label.color.length',
+                        'maxMessage' => 'length.color',
                     ]),
                 ],
             ])
