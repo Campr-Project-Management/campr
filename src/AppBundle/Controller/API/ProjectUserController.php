@@ -14,60 +14,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/project-user")
+ * @Route("/api/project-users")
  */
 class ProjectUserController extends ApiController
 {
     /**
-     * Get all project users.
-     *
-     * @Route("/{id}/list", name="app_api_project_user_list")
-     * @Method({"GET"})
-     *
-     * @param Project $project
-     *
-     * @return JsonResponse
-     */
-    public function listAction(Project $project)
-    {
-        return $this->createApiResponse($project->getProjectUsers());
-    }
-
-    /**
-     * Create a new Project User.
-     *
-     * @Route("/create", name="app_api_project_user_create")
-     * @Method({"POST"})
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function createAction(Request $request)
-    {
-        $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
-        $this->processForm($request, $form);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($form->getData());
-            $em->flush();
-
-            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
-        }
-
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
      * Get Project User by id.
      *
-     * @Route("/{id}", name="app_api_project_user_get")
+     * @Route("/{id}", name="app_api_project_users_get")
      * @Method({"GET"})
      *
      * @param ProjectUser $projectUser
@@ -88,8 +42,8 @@ class ProjectUserController extends ApiController
     /**
      * Edit a specific Project User.
      *
-     * @Route("/{id}/edit", name="app_api_project_user_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_project_users_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request     $request
      * @param ProjectUser $projectUser
@@ -105,7 +59,7 @@ class ProjectUserController extends ApiController
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
         $form = $this->createForm(CreateType::class, $projectUser, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -126,7 +80,7 @@ class ProjectUserController extends ApiController
     /**
      * Delete a specific Project User.
      *
-     * @Route("/{id}/delete", name="app_api_project_user_delete")
+     * @Route("/{id}", name="app_api_project_users_delete")
      * @Method({"DELETE"})
      *
      * @param ProjectUser $projectUser

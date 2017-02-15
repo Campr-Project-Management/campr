@@ -13,14 +13,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/project-role")
+ * @Route("/api/project-roles")
  */
 class ProjectRoleController extends ApiController
 {
     /**
      * Get all project roles.
      *
-     * @Route("/list", name="app_api_project_role_list")
+     * @Route(name="app_api_project_roles_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -39,7 +39,7 @@ class ProjectRoleController extends ApiController
     /**
      * Create a new Project Role.
      *
-     * @Route("/create", name="app_api_project_role_create")
+     * @Route(name="app_api_project_roles_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -70,7 +70,7 @@ class ProjectRoleController extends ApiController
     /**
      * Get Project Role by id.
      *
-     * @Route("/{id}", name="app_api_project_role_get")
+     * @Route("/{id}", name="app_api_project_roles_get")
      * @Method({"GET"})
      *
      * @param ProjectRole $projectRole
@@ -87,8 +87,8 @@ class ProjectRoleController extends ApiController
     /**
      * Edit a specific Project Role.
      *
-     * @Route("/{id}/edit", name="app_api_project_role_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_project_roles_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request     $request
      * @param ProjectRole $projectRole
@@ -100,7 +100,7 @@ class ProjectRoleController extends ApiController
         $this->denyAccessUnlessGranted(AdminVoter::EDIT, $projectRole);
 
         $form = $this->createForm(CreateType::class, $projectRole, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
             $projectRole->setUpdatedAt(new \DateTime());
@@ -123,7 +123,7 @@ class ProjectRoleController extends ApiController
     /**
      * Delete a specific Project Role.
      *
-     * @Route("/{id}/delete", name="app_api_project_role_delete")
+     * @Route("/{id}", name="app_api_project_role_delete")
      * @Method({"DELETE"})
      *
      * @param ProjectRole $projectRole
