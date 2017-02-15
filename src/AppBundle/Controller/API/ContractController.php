@@ -13,29 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/contract")
+ * @Route("/api/contracts")
  */
 class ContractController extends ApiController
 {
-    /**
-     * Retrieve all Contracts.
-     *
-     * @Route("/list", name="app_api_contract_list")
-     * @Method({"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function listAction()
-    {
-        $contracts = $this
-            ->getDoctrine()
-            ->getRepository(Contract::class)
-            ->findAll()
-        ;
-
-        return $this->createApiResponse($contracts);
-    }
-
     /**
      * Retrieve Contract information.
      *
@@ -54,44 +35,10 @@ class ContractController extends ApiController
     }
 
     /**
-     * Create a new Contract.
-     *
-     * @Route("/create", name="app_api_contract_create")
-     * @Method({"POST"})
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function createAction(Request $request)
-    {
-        $contract = new Contract();
-        $form = $this->createForm(CreateType::class, $contract, ['csrf_protection' => false]);
-        $this->processForm($request, $form);
-
-        if ($form->isValid()) {
-            $contract->setCreatedBy($this->getUser());
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($contract);
-            $em->flush();
-
-            return $this->createApiResponse($contract, Response::HTTP_CREATED);
-        }
-
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
      * Edit a specific Contract.
      *
-     * @Route("/{id}/edit", name="app_api_contract_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_contract_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request  $request
      * @param Contract $contract
@@ -103,7 +50,7 @@ class ContractController extends ApiController
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $contract->getProject());
 
         $form = $this->createForm(CreateType::class, $contract, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -124,7 +71,7 @@ class ContractController extends ApiController
     /**
      * Delete a specific Contract.
      *
-     * @Route("/{id}/delete", name="app_api_contract_delete")
+     * @Route("/{id}", name="app_api_contract_delete")
      * @Method({"DELETE"})
      *
      * @param Contract $contract
