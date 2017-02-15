@@ -19,7 +19,7 @@ class CompanyController extends ApiController
     /**
      * Get all companies.
      *
-     * @Route(name="app_api_company_list")
+     * @Route(name="app_api_company_list", options={"expose"=true})
      * @Method({"GET"})
      *
      * @return JsonResponse

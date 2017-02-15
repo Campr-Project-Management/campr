@@ -25,7 +25,7 @@ const actions = {
     getCustomers({commit}) {
         // TODO change URL to api/company/list after projectUser is fixed
         Vue.http
-            .get('api/company').then((response) => {
+            .get(Routing.generate('app_api_company_list')).then((response) => {
                 let customers = response.data;
                 commit(types.SET_CUSTOMERS, {customers});
             }, (response) => {
