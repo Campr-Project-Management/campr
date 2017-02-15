@@ -225,7 +225,6 @@ class TeamController extends Controller
         ;
 
         $userData = [
-            'id' => $user->getId(),
             'email' => $user->getEmail(),
             'username' => $user->getUsername(),
             'first_name' => $user->getFirstName(),
