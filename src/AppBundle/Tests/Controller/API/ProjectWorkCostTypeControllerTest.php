@@ -53,7 +53,7 @@ class ProjectWorkCostTypeControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-work-cost-type/list',
+                '/api/project-work-cost-types',
                 true,
                 Response::HTTP_OK,
                 [
@@ -99,7 +99,7 @@ class ProjectWorkCostTypeControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-work-cost-type/create',
+            '/api/project-work-cost-types',
             [],
             [],
             [
@@ -179,7 +179,7 @@ class ProjectWorkCostTypeControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-work-cost-type/create',
+            '/api/project-work-cost-types',
             [],
             [],
             [
@@ -239,7 +239,7 @@ class ProjectWorkCostTypeControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-work-cost-type/create',
+            '/api/project-work-cost-types',
             [],
             [],
             [
@@ -294,7 +294,7 @@ class ProjectWorkCostTypeControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-work-cost-type/create',
+            '/api/project-work-cost-types',
             [],
             [],
             [
@@ -351,7 +351,7 @@ class ProjectWorkCostTypeControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-work-cost-type/1/edit',
+            '/api/project-work-cost-types/1',
             [],
             [],
             [
@@ -414,7 +414,7 @@ class ProjectWorkCostTypeControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-work-cost-type/1/edit',
+            '/api/project-work-cost-types/1',
             [],
             [],
             [
@@ -470,7 +470,7 @@ class ProjectWorkCostTypeControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-work-cost-type/1/edit',
+            '/api/project-work-cost-types/1',
             [],
             [],
             [
@@ -528,7 +528,7 @@ class ProjectWorkCostTypeControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-work-cost-type/1/edit',
+            '/api/project-work-cost-types/1',
             [],
             [],
             [
@@ -588,7 +588,7 @@ class ProjectWorkCostTypeControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            sprintf('/api/project-work-cost-type/%d/delete', $projectWorkCostType->getId()),
+            sprintf('/api/project-work-cost-types/%d', $projectWorkCostType->getId()),
             [],
             [],
             [
@@ -660,7 +660,7 @@ class ProjectWorkCostTypeControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-work-cost-type/2',
+                '/api/project-work-cost-types/2',
                 true,
                 Response::HTTP_OK,
                 [

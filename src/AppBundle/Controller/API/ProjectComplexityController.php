@@ -13,14 +13,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/project-complexity")
+ * @Route("/api/project-complexities")
  */
 class ProjectComplexityController extends ApiController
 {
     /**
      * Get all project complexities.
      *
-     * @Route("/list", name="app_api_project_complexity_list")
+     * @Route(name="app_api_project_complexities_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -39,7 +39,7 @@ class ProjectComplexityController extends ApiController
     /**
      * Create a new Project Complexity.
      *
-     * @Route("/create", name="app_api_project_complexity_create")
+     * @Route(name="app_api_project_complexities_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -70,7 +70,7 @@ class ProjectComplexityController extends ApiController
     /**
      * Get Project Complexity by id.
      *
-     * @Route("/{id}", name="app_api_project_complexity_get")
+     * @Route("/{id}", name="app_api_project_complexities_get")
      * @Method({"GET"})
      *
      * @param ProjectComplexity $projectComplexity
@@ -87,8 +87,8 @@ class ProjectComplexityController extends ApiController
     /**
      * Edit a specific Project Complexity.
      *
-     * @Route("/{id}/edit", name="app_api_project_complexity_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_project_complexities_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request           $request
      * @param ProjectComplexity $projectComplexity
@@ -100,7 +100,7 @@ class ProjectComplexityController extends ApiController
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $projectComplexity->getProject());
 
         $form = $this->createForm(CreateType::class, $projectComplexity, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
             $projectComplexity->setUpdatedAt(new \DateTime());
@@ -123,7 +123,7 @@ class ProjectComplexityController extends ApiController
     /**
      * Delete a specific Project Complexity.
      *
-     * @Route("/{id}/delete", name="app_api_project_complexity_delete")
+     * @Route("/{id}", name="app_api_project_complexity_delete")
      * @Method({"DELETE"})
      *
      * @param ProjectComplexity $projectComplexity

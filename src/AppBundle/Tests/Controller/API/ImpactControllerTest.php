@@ -48,7 +48,7 @@ class ImpactControllerTest extends BaseController
     {
         return [
             [
-                '/api/impact/list',
+                '/api/impacts',
                 true,
                 Response::HTTP_OK,
                 [
@@ -86,7 +86,7 @@ class ImpactControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/impact/create',
+            '/api/impacts',
             [],
             [],
             [
@@ -160,7 +160,7 @@ class ImpactControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/impact/create',
+            '/api/impacts',
             [],
             [],
             [
@@ -220,7 +220,7 @@ class ImpactControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/impact/create',
+            '/api/impacts',
             [],
             [],
             [
@@ -277,7 +277,7 @@ class ImpactControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/impact/create',
+            '/api/impacts',
             [],
             [],
             [
@@ -334,7 +334,7 @@ class ImpactControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/impact/1/edit',
+            '/api/impacts/1',
             [],
             [],
             [
@@ -390,7 +390,7 @@ class ImpactControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/impact/1/edit',
+            '/api/impacts/1',
             [],
             [],
             [
@@ -446,7 +446,7 @@ class ImpactControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/impact/1/edit',
+            '/api/impacts/1',
             [],
             [],
             [
@@ -504,7 +504,7 @@ class ImpactControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/impact/1/edit',
+            '/api/impacts/1',
             [],
             [],
             [
@@ -564,7 +564,7 @@ class ImpactControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            sprintf('/api/impact/%d/delete', $impact->getId()),
+            sprintf('/api/impacts/%d', $impact->getId()),
             [],
             [],
             [
@@ -634,7 +634,7 @@ class ImpactControllerTest extends BaseController
     {
         return [
             [
-                '/api/impact/1',
+                '/api/impacts/1',
                 true,
                 Response::HTTP_OK,
                 [

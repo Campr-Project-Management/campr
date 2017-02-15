@@ -78,8 +78,8 @@ class MeetingControllerTest extends BaseController
         $form['create[location]'] = 'meeting-location';
         $form['create[objectives]'] = 'meeting-objectives';
         $form['create[date]'] = $date->format('d-m-Y');
-        $form['create[start]'] = $start->format('H:m');
-        $form['create[end]'] = $end->format('H:m');
+        $form['create[start]'] = $start->format('H:i:s');
+        $form['create[end]'] = $end->format('H:i:s');
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

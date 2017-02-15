@@ -53,7 +53,7 @@ class ProjectCategoryControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-category/list',
+                '/api/project-categories',
                 true,
                 Response::HTTP_OK,
                 [
@@ -99,7 +99,7 @@ class ProjectCategoryControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-category/create',
+            '/api/project-categories',
             [],
             [],
             [
@@ -179,7 +179,7 @@ class ProjectCategoryControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-category/create',
+            '/api/project-categories',
             [],
             [],
             [
@@ -239,7 +239,7 @@ class ProjectCategoryControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-category/create',
+            '/api/project-categories',
             [],
             [],
             [
@@ -294,7 +294,7 @@ class ProjectCategoryControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-category/create',
+            '/api/project-categories',
             [],
             [],
             [
@@ -351,7 +351,7 @@ class ProjectCategoryControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-category/1/edit',
+            '/api/project-categories/1',
             [],
             [],
             [
@@ -413,7 +413,7 @@ class ProjectCategoryControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-category/1/edit',
+            '/api/project-categories/1',
             [],
             [],
             [
@@ -469,7 +469,7 @@ class ProjectCategoryControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-category/1/edit',
+            '/api/project-categories/1',
             [],
             [],
             [
@@ -527,7 +527,7 @@ class ProjectCategoryControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-category/1/edit',
+            '/api/project-categories/1',
             [],
             [],
             [
@@ -587,7 +587,7 @@ class ProjectCategoryControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            sprintf('/api/project-category/%d/delete', $projectCategory->getId()),
+            sprintf('/api/project-categories/%d', $projectCategory->getId()),
             [],
             [],
             [
@@ -659,7 +659,7 @@ class ProjectCategoryControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-category/2',
+                '/api/project-categories/2',
                 true,
                 Response::HTTP_OK,
                 [

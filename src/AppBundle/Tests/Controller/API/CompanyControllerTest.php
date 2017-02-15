@@ -54,7 +54,7 @@ class CompanyControllerTest extends BaseController
     {
         return [
             [
-                '/api/company/list',
+                '/api/companies',
                 true,
                 Response::HTTP_OK,
                 [
@@ -94,7 +94,7 @@ class CompanyControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/company/create',
+            '/api/companies',
             [],
             [],
             [
@@ -167,7 +167,7 @@ class CompanyControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/company/create',
+            '/api/companies',
             [],
             [],
             [
@@ -226,7 +226,7 @@ class CompanyControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/company/create',
+            '/api/companies',
             [],
             [],
             [
@@ -282,7 +282,7 @@ class CompanyControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/company/1/edit',
+            '/api/companies/1',
             [],
             [],
             [
@@ -342,7 +342,7 @@ class CompanyControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/company/1/edit',
+            '/api/companies/1',
             [],
             [],
             [
@@ -398,7 +398,7 @@ class CompanyControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/company/1/edit',
+            '/api/companies/1',
             [],
             [],
             [
@@ -454,7 +454,7 @@ class CompanyControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            sprintf('/api/company/%d/delete', $company->getId()),
+            sprintf('/api/companies/%d', $company->getId()),
             [],
             [],
             [
@@ -526,7 +526,7 @@ class CompanyControllerTest extends BaseController
     {
         return [
             [
-                '/api/company/2',
+                '/api/companies/2',
                 true,
                 Response::HTTP_OK,
                 [

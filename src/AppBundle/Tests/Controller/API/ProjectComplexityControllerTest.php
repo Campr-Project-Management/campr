@@ -53,7 +53,7 @@ class ProjectComplexityControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-complexity/list',
+                '/api/project-complexities',
                 true,
                 Response::HTTP_OK,
                 [
@@ -99,7 +99,7 @@ class ProjectComplexityControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-complexity/create',
+            '/api/project-complexities',
             [],
             [],
             [
@@ -179,7 +179,7 @@ class ProjectComplexityControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-complexity/create',
+            '/api/project-complexities',
             [],
             [],
             [
@@ -239,7 +239,7 @@ class ProjectComplexityControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-complexity/create',
+            '/api/project-complexities',
             [],
             [],
             [
@@ -294,7 +294,7 @@ class ProjectComplexityControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-complexity/create',
+            '/api/project-complexities',
             [],
             [],
             [
@@ -351,7 +351,7 @@ class ProjectComplexityControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-complexity/1/edit',
+            '/api/project-complexities/1',
             [],
             [],
             [
@@ -414,7 +414,7 @@ class ProjectComplexityControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-complexity/1/edit',
+            '/api/project-complexities/1',
             [],
             [],
             [
@@ -470,7 +470,7 @@ class ProjectComplexityControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-complexity/1/edit',
+            '/api/project-complexities/1',
             [],
             [],
             [
@@ -528,7 +528,7 @@ class ProjectComplexityControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-complexity/1/edit',
+            '/api/project-complexities/1',
             [],
             [],
             [
@@ -588,7 +588,7 @@ class ProjectComplexityControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            sprintf('/api/project-complexity/%d/delete', $projectComplexity->getId()),
+            sprintf('/api/project-complexities/%d', $projectComplexity->getId()),
             [],
             [],
             [
@@ -660,7 +660,7 @@ class ProjectComplexityControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-complexity/2',
+                '/api/project-complexities/2',
                 true,
                 Response::HTTP_OK,
                 [

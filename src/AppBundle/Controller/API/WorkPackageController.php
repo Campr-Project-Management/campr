@@ -2,9 +2,11 @@
 
 namespace AppBundle\Controller\API;
 
+use AppBundle\Entity\Assignment;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Form\WorkPackage\CreateType;
 use AppBundle\Security\WorkPackageVoter;
+use AppBundle\Form\Assignment\BaseCreateType as AssignmentCreateType;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -14,15 +16,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/workpackage")
+ * @Route("/api/workpackages")
  */
 class WorkPackageController extends ApiController
 {
     /**
      * All tasks for the current user.
      *
-     * @Route("/list", name="app_api_workpackage_list")
-     * @Method({"GET", "POST"})
+     * @Route(name="app_api_workpackage_list")
+     * @Method({"GET"})
      *
      * @param Request $request
      *
@@ -30,7 +32,7 @@ class WorkPackageController extends ApiController
      */
     public function listAction(Request $request)
     {
-        $filters = $request->request->all();
+        $filters = $request->query->all();
         $user = $this->getUser();
         $wpQuery = $this
             ->getDoctrine()
@@ -72,7 +74,7 @@ class WorkPackageController extends ApiController
     /**
      * Create a new WorkPackage.
      *
-     * @Route("/create", name="app_api_workpackage_create")
+     * @Route(name="app_api_workpackage_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -103,8 +105,8 @@ class WorkPackageController extends ApiController
     /**
      * Edit a specific WorkPackage.
      *
-     * @Route("/{id}/edit", name="app_api_workpackage_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_workpackage_edit")
+     * @Method({"PATCH", "PUT"})
      *
      * @param Request     $request
      * @param WorkPackage $wp
@@ -116,7 +118,7 @@ class WorkPackageController extends ApiController
         $this->denyAccessUnlessGranted(WorkPackageVoter::EDIT, $wp);
 
         $form = $this->createForm(CreateType::class, $wp, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -137,7 +139,7 @@ class WorkPackageController extends ApiController
     /**
      * Delete a specific WorkPackage.
      *
-     * @Route("/{id}/delete", name="app_api_workpackage_delete")
+     * @Route("/{id}", name="app_api_workpackage_delete")
      * @Method({"DELETE"})
      *
      * @param WorkPackage $wp
@@ -153,5 +155,55 @@ class WorkPackageController extends ApiController
         $em->flush();
 
         return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * All aassignments for a specific WorkPackage.
+     *
+     * @Route("/{id}/assignments", name="app_api_workpackage_assignments")
+     * @Method({"GET"})
+     *
+     * @param WorkPackage $wp
+     *
+     * @return JsonResponse
+     */
+    public function assignmentsAction(WorkPackage $wp)
+    {
+        return $this->createApiResponse($wp->getAssignments());
+    }
+
+    /**
+     * Create a new Assignment.
+     *
+     * @Route("/{id}/assignments", name="app_api_workpackage_assignments_create")
+     * @Method({"POST"})
+     *
+     * @param Request     $request
+     * @param WorkPackage $wp
+     *
+     * @return JsonResponse
+     */
+    public function assignmentsCreateAction(Request $request, WorkPackage $wp)
+    {
+        $assignment = new Assignment();
+        $assignment->setWorkPackage($wp);
+
+        $form = $this->createForm(AssignmentCreateType::class, $assignment, ['csrf_protection' => false]);
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($assignment);
+            $em->flush();
+
+            return $this->createApiResponse($assignment, Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return  $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 }

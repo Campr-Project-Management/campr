@@ -12,14 +12,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/status")
+ * @Route("/api/statuses")
  */
 class StatusController extends ApiController
 {
     /**
      * Get all status.
      *
-     * @Route("/list", name="app_api_status_list")
+     * @Route(name="app_api_statuses_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -38,7 +38,7 @@ class StatusController extends ApiController
     /**
      * Create a new Status.
      *
-     * @Route("/create", name="app_api_status_create")
+     * @Route(name="app_api_statuses_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -69,7 +69,7 @@ class StatusController extends ApiController
     /**
      * Get Status by id.
      *
-     * @Route("/{id}", name="app_api_status_get")
+     * @Route("/{id}", name="app_api_statuses_get")
      * @Method({"GET"})
      *
      * @param Status $status
@@ -84,8 +84,8 @@ class StatusController extends ApiController
     /**
      * Edit a specific Status.
      *
-     * @Route("/{id}/edit", name="app_api_status_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_statuses_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request $request
      * @param Status  $status
@@ -95,7 +95,7 @@ class StatusController extends ApiController
     public function editAction(Request $request, Status $status)
     {
         $form = $this->createForm(CreateType::class, $status, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -116,7 +116,7 @@ class StatusController extends ApiController
     /**
      * Delete a specific Status.
      *
-     * @Route("/{id}/delete", name="app_api_status_delete")
+     * @Route("/{id}", name="app_api_statuses_delete")
      * @Method({"DELETE"})
      *
      * @param Status $status

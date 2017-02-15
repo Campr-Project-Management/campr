@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Assignment;
-use AppBundle\Entity\WorkPackage;
 use AppBundle\Form\Assignment\CreateType;
 use AppBundle\Security\WorkPackageVoter;
 use MainBundle\Controller\API\ApiController;
@@ -14,25 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/assignment")
+ * @Route("/api/assignments")
  */
 class AssignmentController extends ApiController
 {
-    /**
-     * All assignments for a specific WorkPackage.
-     *
-     * @Route("/{id}/list", name="app_api_assignment_list")
-     * @Method({"GET"})
-     *
-     * @param WorkPackage $wp
-     *
-     * @return JsonResponse
-     */
-    public function listAction(WorkPackage $wp)
-    {
-        return $this->createApiResponse($wp->getAssignments());
-    }
-
     /**
      * Retrieve Assignment information.
      *
@@ -55,41 +39,10 @@ class AssignmentController extends ApiController
     }
 
     /**
-     * Create a new Assignment.
-     *
-     * @Route("/create", name="app_api_assignment_create")
-     * @Method({"POST"})
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function createAction(Request $request)
-    {
-        $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
-        $this->processForm($request, $form);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($form->getData());
-            $em->flush();
-
-            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
-        }
-
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return  $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
      * Edit a specific Assignment.
      *
-     * @Route("/{id}/edit", name="app_api_assignment_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_assignment_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request    $request
      * @param Assignment $assignment
@@ -105,7 +58,7 @@ class AssignmentController extends ApiController
         $this->denyAccessUnlessGranted(WorkPackageVoter::EDIT, $wp);
 
         $form = $this->createForm(CreateType::class, $assignment, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -126,7 +79,7 @@ class AssignmentController extends ApiController
     /**
      * Delete a specific Assignment.
      *
-     * @Route("/{id}/delete", name="app_api_assignment_delete")
+     * @Route("/{id}", name="app_api_assignment_delete")
      * @Method({"DELETE"})
      *
      * @param Assignment $assignment

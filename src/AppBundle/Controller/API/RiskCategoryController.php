@@ -12,14 +12,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/risk-category")
+ * @Route("/api/risk-categories")
  */
 class RiskCategoryController extends ApiController
 {
     /**
      * Get all risk categories.
      *
-     * @Route("/list", name="app_api_risk_category_list")
+     * @Route(name="app_api_risk_categories_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -38,7 +38,7 @@ class RiskCategoryController extends ApiController
     /**
      * Create a new Risk Category.
      *
-     * @Route("/create", name="app_api_risk_category_create")
+     * @Route(name="app_api_risk_categories_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -69,7 +69,7 @@ class RiskCategoryController extends ApiController
     /**
      * Get Risk Category by id.
      *
-     * @Route("/{id}", name="app_api_risk_category_get")
+     * @Route("/{id}", name="app_api_risk_categories_get")
      * @Method({"GET"})
      *
      * @param RiskCategory $riskCategory
@@ -84,8 +84,8 @@ class RiskCategoryController extends ApiController
     /**
      * Edit a specific Risk Category.
      *
-     * @Route("/{id}/edit", name="app_api_risk_category_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_risk_categories_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request      $request
      * @param RiskCategory $riskCategory
@@ -95,7 +95,7 @@ class RiskCategoryController extends ApiController
     public function editAction(Request $request, RiskCategory $riskCategory)
     {
         $form = $this->createForm(CreateType::class, $riskCategory, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -116,7 +116,7 @@ class RiskCategoryController extends ApiController
     /**
      * Delete a specific Risk Category.
      *
-     * @Route("/{id}/delete", name="app_api_risk_category_delete")
+     * @Route("/{id}", name="app_api_risk_categories_delete")
      * @Method({"DELETE"})
      *
      * @param RiskCategory $riskCategory
