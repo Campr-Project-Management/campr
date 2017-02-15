@@ -277,6 +277,24 @@ class Project
     private $contracts;
 
     /**
+     * @var ArrayCollection|User[]
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", inversedBy="favoriteProjects")
+     * @ORM\JoinTable(
+     *     name="project_user_favorites",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="project_id")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="user_id")
+     *     }
+     * )
+     */
+    private $userFavorites;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -293,6 +311,7 @@ class Project
         $this->labels = new ArrayCollection();
         $this->contracts = new ArrayCollection();
         $this->meetings = new ArrayCollection();
+        $this->userFavorites = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->setEncryptionKey(base64_encode(random_bytes(16)));
     }
@@ -1253,5 +1272,65 @@ class Project
     public function getMeetings()
     {
         return $this->meetings;
+    }
+
+    /**
+     * Add user.
+     *
+     * @param User $user
+     *
+     * @return Project
+     */
+    public function addUserFavorite(User $user)
+    {
+        if (!$this->userFavorites->contains($user)) {
+            $this->userFavorites[] = $user;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove user.
+     *
+     * @param User $user
+     *
+     * @return Project
+     */
+    public function removeUserFavorite(User $user)
+    {
+        if ($this->userFavorites->contains($user)) {
+            $this->userFavorites->removeElement($user);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get users.
+     *
+     * @return ArrayCollection|User[]
+     */
+    public function getUserFavorites()
+    {
+        return $this->userFavorites;
+    }
+
+    /**
+     * Returns user favorite ids.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userFavorites")
+     *
+     * @return array
+     */
+    public function getUserFavoritesIds()
+    {
+        $favorites = [];
+        foreach ($this->userFavorites as $userFavorite) {
+            $favorites[] = $userFavorite->getId();
+        }
+
+        return $favorites;
     }
 }
