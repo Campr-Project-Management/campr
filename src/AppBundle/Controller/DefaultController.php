@@ -116,7 +116,6 @@ class DefaultController extends Controller
         $user->setLastName($userData['last_name']);
         $user->setPhone($userData['phone']);
         $user->setRoles($userData['roles']);
-        $user->setId($userData['id']);
         $user->setApiToken($userData['api_token']);
         $user->setWidgetSettings($userData['widget_settings']);
         $user->setAvatar($userData['avatar']);
