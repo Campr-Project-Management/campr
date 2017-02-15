@@ -2,6 +2,7 @@
 
 namespace AppBundle\Tests\Controller\API;
 
+use AppBundle\Entity\Contract;
 use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectUser;
@@ -973,6 +974,168 @@ class ProjectControllerTest extends BaseController
                     'days' => [],
                     'workPackages' => [],
                     'workPackageProjectWorkCostTypes' => [],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataForContractsAction()
+     *
+     * @param $url
+     * @param $isResponseSuccessful
+     * @param $responseStatusCode
+     * @param $responseContent
+     */
+    public function testContractsAction(
+        $url,
+        $isResponseSuccessful,
+        $responseStatusCode,
+        $responseContent
+    ) {
+        $user = $this->getUserByUsername('superadmin');
+        $token = $user->getApiToken();
+
+        $this->client->request(
+            'GET',
+            $url,
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token), ],
+            ''
+        );
+        $response = $this->client->getResponse();
+
+        $responseArray = json_decode($response->getContent(), true);
+        $responseContent[0]['updatedAt'] = $responseArray[0]['updatedAt'];
+        $responseContent[1]['updatedAt'] = $responseArray[1]['updatedAt'];
+
+        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals(json_encode($responseContent), $response->getContent());
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForContractsAction()
+    {
+        return [
+            [
+                '/api/projects/1/contracts',
+                true,
+                Response::HTTP_OK,
+                [
+                    [
+                        'project' => 1,
+                        'projectName' => 'project1',
+                        'createdBy' => 1,
+                        'createdByFullName' => 'FirstName1 LastName1',
+                        'id' => 1,
+                        'name' => 'contract1',
+                        'description' => 'contract-description1',
+                        'proposedStartDate' => '2017-01-01',
+                        'proposedEndDate' => '2017-05-01',
+                        'forecastStartDate' => null,
+                        'forecastEndDate' => null,
+                        'createdAt' => '2017-01-01 12:00:00',
+                        'updatedAt' => null,
+                    ],
+                    [
+                        'project' => 1,
+                        'projectName' => 'project1',
+                        'createdBy' => 1,
+                        'createdByFullName' => 'FirstName1 LastName1',
+                        'id' => 2,
+                        'name' => 'contract2',
+                        'description' => 'contract-description2',
+                        'proposedStartDate' => '2017-05-01',
+                        'proposedEndDate' => '2017-08-01',
+                        'forecastStartDate' => null,
+                        'forecastEndDate' => null,
+                        'createdAt' => '2017-01-01 12:00:00',
+                        'updatedAt' => null,
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataForCreateContractAction
+     *
+     * @param array $content
+     * @param $isResponseSuccessful
+     * @param $responseStatusCode
+     * @param $responseContent
+     */
+    public function testCreateContractAction(
+        array $content,
+        $isResponseSuccessful,
+        $responseStatusCode,
+        $responseContent
+    ) {
+        $user = $this->getUserByUsername('superadmin');
+        $token = $user->getApiToken();
+
+        $this->client->request(
+            'POST',
+            '/api/projects/1/contracts',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+            ],
+            json_encode($content)
+        );
+        $response = $this->client->getResponse();
+
+        $contract = json_decode($response->getContent(), true);
+        $responseContent['createdAt'] = $contract['createdAt'];
+        $responseContent['updatedAt'] = $contract['updatedAt'];
+
+        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals(json_encode($responseContent), $response->getContent());
+
+        $contract = $this
+            ->em
+            ->getRepository(Contract::class)
+            ->find($contract['id'])
+        ;
+        $this->em->remove($contract);
+        $this->em->flush();
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForCreateContractAction()
+    {
+        return [
+            [
+                [
+                    'name' => 'contract-test',
+                ],
+                true,
+                Response::HTTP_CREATED,
+                [
+                    'project' => 1,
+                    'projectName' => 'project1',
+                    'createdBy' => 1,
+                    'createdByFullName' => 'FirstName1 LastName1',
+                    'id' => 4,
+                    'name' => 'contract-test',
+                    'description' => null,
+                    'proposedStartDate' => null,
+                    'proposedEndDate' => null,
+                    'forecastStartDate' => null,
+                    'forecastEndDate' => null,
+                    'createdAt' => null,
+                    'updatedAt' => null,
                 ],
             ],
         ];
