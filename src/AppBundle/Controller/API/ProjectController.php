@@ -40,7 +40,7 @@ class ProjectController extends ApiController
      *
      * Get all projects.
      *
-     * @Route(name="app_api_project_list")
+     * @Route(name="app_api_project_list", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Request $request
@@ -105,7 +105,7 @@ class ProjectController extends ApiController
     /**
      * Get Project by id.
      *
-     * @Route("/{id}", name="app_api_project_get")
+     * @Route("/{id}", name="app_api_project_get", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Project $project
@@ -122,7 +122,7 @@ class ProjectController extends ApiController
     /**
      * Edit a specific Project.
      *
-     * @Route("/{id}", name="app_api_project_edit")
+     * @Route("/{id}", name="app_api_project_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      *
      * @param Request $request

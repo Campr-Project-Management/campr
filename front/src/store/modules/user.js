@@ -23,7 +23,7 @@ const actions = {
      */
     getUserInfo({commit}) {
         Vue.http
-        .get(root + '/api/user').then((response) => {
+        .get(root + Routing.generate('main_api_users_get')).then((response) => {
             let user = response.data;
             commit(types.SET_USER, {user});
             localStorage.setItem('id_token', user.apiToken);
