@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Calendar;
+use AppBundle\Entity\Contract;
 use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\Label;
 use AppBundle\Entity\Meeting;
@@ -15,6 +16,7 @@ use AppBundle\Entity\WorkPackageProjectWorkCostType;
 use AppBundle\Form\Label\BaseLabelType;
 use AppBundle\Form\Project\CreateType;
 use AppBundle\Form\Calendar\BaseCreateType as CalendarCreateType;
+use AppBundle\Form\Contract\BaseCreateType as ContractCreateType;
 use AppBundle\Form\DistributionList\BaseCreateType as DistributionCreateType;
 use AppBundle\Form\Meeting\BaseCreateType as MeetingCreateType;
 use AppBundle\Form\Note\BaseCreateType as NoteCreateType;
@@ -212,6 +214,58 @@ class ProjectController extends ApiController
             $em->flush();
 
             return $this->createApiResponse($calendar, Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * All Contracts for a specific Project.
+     *
+     * @Route("/{id}/contracts", name="app_api_project_contracts")
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function contractsAction(Project $project)
+    {
+        return $this->createApiResponse($project->getContracts());
+    }
+
+    /**
+     * Create a new Contract.
+     *
+     * @Route("/{id}/contracts", name="app_api_project_create_contract")
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function createContractAction(Request $request, Project $project)
+    {
+        $contract = new Contract();
+        $contract->setProject($project);
+
+        $form = $this->createForm(ContractCreateType::class, $contract, ['csrf_protection' => false]);
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $contract->setCreatedBy($this->getUser());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($contract);
+            $em->flush();
+
+            return $this->createApiResponse($contract, Response::HTTP_CREATED);
         }
 
         $errors = $this->getFormErrors($form);
