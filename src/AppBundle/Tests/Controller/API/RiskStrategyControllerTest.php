@@ -48,7 +48,7 @@ class RiskStrategyControllerTest extends BaseController
     {
         return [
             [
-                '/api/risk-strategy/list',
+                '/api/risk-strategies',
                 true,
                 Response::HTTP_OK,
                 [
@@ -86,7 +86,7 @@ class RiskStrategyControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/risk-strategy/create',
+            '/api/risk-strategies',
             [],
             [],
             [
@@ -160,7 +160,7 @@ class RiskStrategyControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/risk-strategy/create',
+            '/api/risk-strategies',
             [],
             [],
             [
@@ -220,7 +220,7 @@ class RiskStrategyControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/risk-strategy/create',
+            '/api/risk-strategies',
             [],
             [],
             [
@@ -277,7 +277,7 @@ class RiskStrategyControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/risk-strategy/create',
+            '/api/risk-strategies',
             [],
             [],
             [
@@ -334,7 +334,7 @@ class RiskStrategyControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/risk-strategy/1/edit',
+            '/api/risk-strategies/1',
             [],
             [],
             [
@@ -390,7 +390,7 @@ class RiskStrategyControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/risk-strategy/1/edit',
+            '/api/risk-strategies/1',
             [],
             [],
             [
@@ -446,7 +446,7 @@ class RiskStrategyControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/risk-strategy/1/edit',
+            '/api/risk-strategies/1',
             [],
             [],
             [
@@ -504,7 +504,7 @@ class RiskStrategyControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/risk-strategy/1/edit',
+            '/api/risk-strategies/1',
             [],
             [],
             [
@@ -564,7 +564,7 @@ class RiskStrategyControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            sprintf('/api/risk-strategy/%d/delete', $riskStrategy->getId()),
+            sprintf('/api/risk-strategies/%d', $riskStrategy->getId()),
             [],
             [],
             [
@@ -634,7 +634,7 @@ class RiskStrategyControllerTest extends BaseController
     {
         return [
             [
-                '/api/risk-strategy/1',
+                '/api/risk-strategies/1',
                 true,
                 Response::HTTP_OK,
                 [

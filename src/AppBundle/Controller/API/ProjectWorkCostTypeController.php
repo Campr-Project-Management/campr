@@ -13,14 +13,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/project-work-cost-type")
+ * @Route("/api/project-work-cost-types")
  */
 class ProjectWorkCostTypeController extends ApiController
 {
     /**
      * Get all project work cost types.
      *
-     * @Route("/list", name="app_api_project_work_cost_type_team_list")
+     * @Route(name="app_api_project_work_cost_types_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -39,7 +39,7 @@ class ProjectWorkCostTypeController extends ApiController
     /**
      * Create a new Project Work Cost Type.
      *
-     * @Route("/create", name="app_api_project_work_cost_type_create")
+     * @Route(name="app_api_project_work_cost_types_create")
      *
      * @Method({"POST"})
      *
@@ -71,7 +71,7 @@ class ProjectWorkCostTypeController extends ApiController
     /**
      * Get Project Work Cost Type by id.
      *
-     * @Route("/{id}", name="app_api_project_work_cost_type_get")
+     * @Route("/{id}", name="app_api_project_work_cost_types_get")
      * @Method({"GET"})
      *
      * @param ProjectWorkCostType $projectWorkCostType
@@ -88,8 +88,8 @@ class ProjectWorkCostTypeController extends ApiController
     /**
      * Edit a specific Project Work Cost Type.
      *
-     * @Route("/{id}/edit", name="app_api_project_work_cost_type_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_project_work_cost_types_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request             $request
      * @param ProjectWorkCostType $projectWorkCostType
@@ -101,11 +101,9 @@ class ProjectWorkCostTypeController extends ApiController
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $projectWorkCostType->getProject());
 
         $form = $this->createForm(CreateType::class, $projectWorkCostType, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
-            $projectWorkCostType->setUpdatedAt(new \DateTime());
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectWorkCostType);
             $em->flush();
@@ -124,7 +122,7 @@ class ProjectWorkCostTypeController extends ApiController
     /**
      * Delete a specific Project Work Cost Type.
      *
-     * @Route("/{id}/delete", name="app_api_project_work_cost_type_delete")
+     * @Route("/{id}", name="app_api_project_work_cost_types_delete")
      * @Method({"DELETE"})
      *
      * @param ProjectWorkCostType $projectWorkCostType

@@ -13,14 +13,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/portfolio")
+ * @Route("/api/portfolios")
  */
 class PortfolioController extends ApiController
 {
     /**
      * Get all portfolios.
      *
-     * @Route("/list", name="app_api_portfolio_list")
+     * @Route(name="app_api_portfolio_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -39,7 +39,7 @@ class PortfolioController extends ApiController
     /**
      * Create a new Portfolio.
      *
-     * @Route("/create", name="app_api_portfolio_create")
+     * @Route(name="app_api_portfolio_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -87,8 +87,8 @@ class PortfolioController extends ApiController
     /**
      * Edit a specific Portfolio.
      *
-     * @Route("/{id}/edit", name="app_api_portfolio_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_portfolio_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request   $request
      * @param Portfolio $portfolio
@@ -100,11 +100,9 @@ class PortfolioController extends ApiController
         $this->denyAccessUnlessGranted(AdminVoter::EDIT, $portfolio);
 
         $form = $this->createForm(CreateType::class, $portfolio, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
-            $portfolio->setUpdatedAt(new \DateTime());
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($portfolio);
             $em->flush();
@@ -123,7 +121,7 @@ class PortfolioController extends ApiController
     /**
      * Delete a specific Portfolio.
      *
-     * @Route("/{id}/delete", name="app_api_portfolio_delete")
+     * @Route("/{id}", name="app_api_portfolio_delete")
      * @Method({"DELETE"})
      *
      * @param Portfolio $portfolio

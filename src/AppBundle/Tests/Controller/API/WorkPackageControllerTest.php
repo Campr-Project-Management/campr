@@ -23,7 +23,7 @@ class WorkPackageControllerTest extends BaseController
         $user = $this->getUserByUsername('user4');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', '/api/workpackage/list', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request('GET', '/api/workpackages', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -135,7 +135,7 @@ class WorkPackageControllerTest extends BaseController
     {
         return [
             [
-                '/api/workpackage/3',
+                '/api/workpackages/3',
                 true,
                 Response::HTTP_OK,
                 [
@@ -187,7 +187,7 @@ class WorkPackageControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('POST', '/api/workpackage/create', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $this->client->request('POST', '/api/workpackages', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
         $response = $this->client->getResponse();
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -257,7 +257,7 @@ class WorkPackageControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('PATCH', '/api/workpackage/5/edit', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $this->client->request('PATCH', '/api/workpackages/5', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
         $response = $this->client->getResponse();
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -323,8 +323,9 @@ class WorkPackageControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('DELETE', '/api/workpackage/5/delete', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request('DELETE', '/api/workpackages/5', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
     }
@@ -338,6 +339,123 @@ class WorkPackageControllerTest extends BaseController
             [
                 true,
                 Response::HTTP_NO_CONTENT,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataForAssignmentsAction()
+     *
+     * @param $url
+     * @param $isResponseSuccessful
+     * @param $responseStatusCode
+     * @param $responseContent
+     */
+    public function testAssignmentsAction(
+        $url,
+        $isResponseSuccessful,
+        $responseStatusCode,
+        $responseContent
+    ) {
+        $user = $this->getUserByUsername('superadmin');
+        $token = $user->getApiToken();
+
+        $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $response = $this->client->getResponse();
+        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals(json_encode($responseContent), $response->getContent());
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForAssignmentsAction()
+    {
+        return [
+            [
+                '/api/workpackages/1/assignments',
+                true,
+                Response::HTTP_OK,
+                [
+                    [
+                        'workPackage' => 1,
+                        'workPackageName' => 'work-package1',
+                        'percentWorkComplete' => 0,
+                        'workPackageProjectWorkCostType' => null,
+                        'workPackageProjectWorkCostTypeName' => null,
+                        'id' => 3,
+                        'timephases' => [
+                            [
+                                'assignment' => 3,
+                                'id' => 3,
+                                'type' => 1,
+                                'unit' => 2,
+                                'value' => 'value',
+                                'startedAt' => '2017-01-01 12:00:00',
+                                'finishedAt' => '2017-01-01 15:00:00',
+                            ],
+                        ],
+                        'milestone' => 2,
+                        'confirmed' => false,
+                        'startedAt' => '2017-01-01 00:00:00',
+                        'finishedAt' => '2017-01-04 00:00:00',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataForAssignmentsCreateAction()
+     *
+     * @param array $content
+     * @param $isResponseSuccessful
+     * @param $responseStatusCode
+     * @param $responseContent
+     */
+    public function testAssignmentsCreateAction(
+        array $content,
+        $isResponseSuccessful,
+        $responseStatusCode,
+        $responseContent
+    ) {
+        $user = $this->getUserByUsername('superadmin');
+        $token = $user->getApiToken();
+
+        $this->client->request('POST', '/api/workpackages/1/assignments', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $response = $this->client->getResponse();
+        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals(json_encode($responseContent), $response->getContent());
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForAssignmentsCreateAction()
+    {
+        return [
+            [
+                [
+                    'milestone' => 1,
+                    'percentWorkComplete' => 0,
+                ],
+                true,
+                Response::HTTP_CREATED,
+                [
+                    'workPackage' => 1,
+                    'workPackageName' => 'work-package1',
+                    'percentWorkComplete' => 0,
+                    'workPackageProjectWorkCostType' => null,
+                    'workPackageProjectWorkCostTypeName' => null,
+                    'id' => 5,
+                    'timephases' => [],
+                    'milestone' => 1,
+                    'confirmed' => false,
+                    'startedAt' => null,
+                    'finishedAt' => null,
+                ],
             ],
         ];
     }

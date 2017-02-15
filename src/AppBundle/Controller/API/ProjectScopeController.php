@@ -13,14 +13,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/project-scope")
+ * @Route("/api/project-scopes")
  */
 class ProjectScopeController extends ApiController
 {
     /**
      * Get all project scopes.
      *
-     * @Route("/list", name="app_api_project_scope_list")
+     * @Route(name="app_api_project_scopes_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -39,7 +39,7 @@ class ProjectScopeController extends ApiController
     /**
      * Create a new Project Scope.
      *
-     * @Route("/create", name="app_api_project_scope_create")
+     * @Route(name="app_api_project_scopes_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -70,7 +70,7 @@ class ProjectScopeController extends ApiController
     /**
      * Get Project Scope by id.
      *
-     * @Route("/{id}", name="app_api_project_scope_get")
+     * @Route("/{id}", name="app_api_project_scopes_get")
      * @Method({"GET"})
      *
      * @param ProjectScope $projectScope
@@ -87,8 +87,8 @@ class ProjectScopeController extends ApiController
     /**
      * Edit a specific Project Scope.
      *
-     * @Route("/{id}/edit", name="app_api_project_scope_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_project_scopes_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request      $request
      * @param ProjectScope $projectScope
@@ -100,11 +100,9 @@ class ProjectScopeController extends ApiController
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $projectScope->getProject());
 
         $form = $this->createForm(CreateType::class, $projectScope, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
-            $projectScope->setUpdatedAt(new \DateTime());
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectScope);
             $em->flush();
@@ -123,7 +121,7 @@ class ProjectScopeController extends ApiController
     /**
      * Delete a specific Project Scope.
      *
-     * @Route("/{id}/delete", name="app_api_project_scope_delete")
+     * @Route("/{id}", name="app_api_project_scopes_delete")
      * @Method({"DELETE"})
      *
      * @param ProjectScope $projectScope

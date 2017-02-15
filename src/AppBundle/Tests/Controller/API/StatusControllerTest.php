@@ -48,7 +48,7 @@ class StatusControllerTest extends BaseController
     {
         return [
             [
-                '/api/status/list',
+                '/api/statuses',
                 true,
                 Response::HTTP_OK,
                 [
@@ -84,7 +84,7 @@ class StatusControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/status/create',
+            '/api/statuses',
             [],
             [],
             [
@@ -153,7 +153,7 @@ class StatusControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/status/create',
+            '/api/statuses',
             [],
             [],
             [
@@ -212,7 +212,7 @@ class StatusControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/status/create',
+            '/api/statuses',
             [],
             [],
             [
@@ -268,7 +268,7 @@ class StatusControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/status/1/edit',
+            '/api/statuses/1',
             [],
             [],
             [
@@ -323,7 +323,7 @@ class StatusControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/status/1/edit',
+            '/api/statuses/1',
             [],
             [],
             [
@@ -379,7 +379,7 @@ class StatusControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/status/1/edit',
+            '/api/statuses/1',
             [],
             [],
             [
@@ -435,7 +435,7 @@ class StatusControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            sprintf('/api/status/%d/delete', $status->getId()),
+            sprintf('/api/statuses/%d', $status->getId()),
             [],
             [],
             [
@@ -505,7 +505,7 @@ class StatusControllerTest extends BaseController
     {
         return [
             [
-                '/api/status/1',
+                '/api/statuses/1',
                 true,
                 Response::HTTP_OK,
                 [

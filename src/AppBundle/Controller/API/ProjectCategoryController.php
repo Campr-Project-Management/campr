@@ -13,14 +13,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/project-category")
+ * @Route("/api/project-categories")
  */
 class ProjectCategoryController extends ApiController
 {
     /**
      * Get all project categories.
      *
-     * @Route("/list", name="app_api_project_category_list")
+     * @Route(name="app_api_project_categories_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -39,7 +39,7 @@ class ProjectCategoryController extends ApiController
     /**
      * Create a new Project Category.
      *
-     * @Route("/create", name="app_api_project_category_create")
+     * @Route(name="app_api_project_categories_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -70,7 +70,7 @@ class ProjectCategoryController extends ApiController
     /**
      * Get Project Category by id.
      *
-     * @Route("/{id}", name="app_api_project_category_get")
+     * @Route("/{id}", name="app_api_project_categories_get")
      * @Method({"GET"})
      *
      * @param ProjectCategory $projectCategory
@@ -87,8 +87,8 @@ class ProjectCategoryController extends ApiController
     /**
      * Edit a specific Project Category.
      *
-     * @Route("/{id}/edit", name="app_api_project_category_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_project_categories_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request         $request
      * @param ProjectCategory $projectCategory
@@ -100,11 +100,9 @@ class ProjectCategoryController extends ApiController
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $projectCategory->getProject());
 
         $form = $this->createForm(CreateType::class, $projectCategory, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
-            $projectCategory->setUpdatedAt(new \DateTime());
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectCategory);
             $em->flush();
@@ -123,7 +121,7 @@ class ProjectCategoryController extends ApiController
     /**
      * Delete a specific Project Category.
      *
-     * @Route("/{id}/delete", name="app_api_project_category_delete")
+     * @Route("/{id}", name="app_api_project_categories_delete")
      * @Method({"DELETE"})
      *
      * @param ProjectCategory $projectCategory

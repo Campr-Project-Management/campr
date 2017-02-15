@@ -12,14 +12,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/project-team")
+ * @Route("/api/project-teams")
  */
 class ProjectTeamController extends ApiController
 {
     /**
      * Get all project teams.
      *
-     * @Route("/list", name="app_api_project_team_list")
+     * @Route(name="app_api_project_teams_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -38,7 +38,7 @@ class ProjectTeamController extends ApiController
     /**
      * Create a new Project Team.
      *
-     * @Route("/create", name="app_api_project_team_create")
+     * @Route(name="app_api_project_teams_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -69,7 +69,7 @@ class ProjectTeamController extends ApiController
     /**
      * Get Project Team by id.
      *
-     * @Route("/{id}", name="app_api_project_team_get")
+     * @Route("/{id}", name="app_api_project_teams_get")
      * @Method({"GET"})
      *
      * @param ProjectTeam $projectTeam
@@ -84,8 +84,8 @@ class ProjectTeamController extends ApiController
     /**
      * Edit a specific Project Team.
      *
-     * @Route("/{id}/edit", name="app_api_project_team_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_project_teams_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request     $request
      * @param ProjectTeam $projectTeam
@@ -95,11 +95,9 @@ class ProjectTeamController extends ApiController
     public function editAction(Request $request, ProjectTeam $projectTeam)
     {
         $form = $this->createForm(CreateType::class, $projectTeam, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
-            $projectTeam->setUpdatedAt(new \DateTime());
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectTeam);
             $em->flush();
@@ -118,7 +116,7 @@ class ProjectTeamController extends ApiController
     /**
      * Delete a specific Project Team.
      *
-     * @Route("/{id}/delete", name="app_api_project_team_delete")
+     * @Route("/{id}", name="app_api_project_team_delete")
      * @Method({"DELETE"})
      *
      * @param ProjectTeam $projectTeam

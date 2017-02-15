@@ -2,84 +2,13 @@
 
 namespace AppBundle\Tests\Controller\API;
 
+use AppBundle\Entity\Project;
+use AppBundle\Entity\Todo;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
 class TodoControllerTest extends BaseController
 {
-    /**
-     * @dataProvider getDataForListAction()
-     *
-     * @param $url
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
-     */
-    public function testListAction(
-        $url,
-        $isResponseSuccessful,
-        $responseStatusCode,
-        $responseContent
-    ) {
-        $user = $this->getUserByUsername('superadmin');
-        $token = $user->getApiToken();
-
-        $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
-        $response = $this->client->getResponse();
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataForListAction()
-    {
-        return [
-            [
-                '/api/todo/1/list',
-                true,
-                Response::HTTP_OK,
-                [
-                    [
-
-                        'status' => 1,
-                        'statusName' => 'status1',
-                        'meeting' => 1,
-                        'meetingName' => 'meeting1',
-                        'project' => 1,
-                        'projectName' => 'project1',
-                        'responsibility' => 4,
-                        'responsibilityFullName' => 'FirstName4 LastName4',
-                        'id' => 1,
-                        'title' => 'todo1',
-                        'description' => 'description for todo1',
-                        'showInStatusReport' => false,
-                        'date' => '2017-01-01 00:00:00',
-                        'dueDate' => '2017-05-01 00:00:00',
-                    ],
-                    [
-                        'status' => 1,
-                        'statusName' => 'status1',
-                        'meeting' => 1,
-                        'meetingName' => 'meeting1',
-                        'project' => 1,
-                        'projectName' => 'project1',
-                        'responsibility' => 4,
-                        'responsibilityFullName' => 'FirstName4 LastName4',
-                        'id' => 2,
-                        'title' => 'todo2',
-                        'description' => 'description for todo2',
-                        'showInStatusReport' => false,
-                        'date' => '2017-01-01 00:00:00',
-                        'dueDate' => '2017-05-01 00:00:00',
-                    ],
-                ],
-            ],
-        ];
-    }
-
     /**
      * @dataProvider getDataForGetAction
      *
@@ -111,7 +40,7 @@ class TodoControllerTest extends BaseController
     {
         return [
             [
-                '/api/todo/1',
+                '/api/todos/1',
                 true,
                 Response::HTTP_OK,
                 [
@@ -135,64 +64,6 @@ class TodoControllerTest extends BaseController
     }
 
     /**
-     * @dataProvider getDataForCreateAction
-     *
-     * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
-     */
-    public function testCreateAction(
-        array $content,
-        $isResponseSuccessful,
-        $responseStatusCode,
-        $responseContent
-    ) {
-        $user = $this->getUserByUsername('superadmin');
-        $token = $user->getApiToken();
-
-        $this->client->request('POST', '/api/todo/create', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
-        $response = $this->client->getResponse();
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataForCreateAction()
-    {
-        return [
-            [
-                [
-                    'title' => 'do this',
-                    'project' => 1,
-                    'description' => 'descript',
-                ],
-                true,
-                Response::HTTP_CREATED,
-                [
-                    'status' => null,
-                    'statusName' => null,
-                    'meeting' => null,
-                    'meetingName' => null,
-                    'project' => 1,
-                    'projectName' => 'project1',
-                    'responsibility' => null,
-                    'responsibilityFullName' => null,
-                    'id' => 3,
-                    'title' => 'do this',
-                    'description' => 'descript',
-                    'showInStatusReport' => false,
-                    'date' => null,
-                    'dueDate' => null,
-                ],
-            ],
-        ];
-    }
-
-    /**
      * @dataProvider getDataForEditAction
      *
      * @param array $content
@@ -209,7 +80,15 @@ class TodoControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('PATCH', '/api/todo/3/edit', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $project = $this->em->getRepository(Project::class)->find(1);
+        $todo = new Todo();
+        $todo->setProject($project);
+        $todo->setTitle('do this');
+        $todo->setDescription('descript');
+        $this->em->persist($todo);
+        $this->em->flush();
+
+        $this->client->request('PATCH', '/api/todos/3', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
         $response = $this->client->getResponse();
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -261,7 +140,7 @@ class TodoControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('DELETE', '/api/todo/3/delete', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request('DELETE', '/api/todos/3', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
