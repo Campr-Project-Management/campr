@@ -328,6 +328,15 @@ class User implements AdvancedUserInterface, \Serializable
     private $ownedMeetings;
 
     /**
+     * @var ArrayCollection|Project[]
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Project", mappedBy="userFavorites")
+     */
+    private $favoriteProjects;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -345,6 +354,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->distributionLists = new ArrayCollection();
         $this->contracts = new ArrayCollection();
         $this->ownedMeetings = new ArrayCollection();
+        $this->favoriteProjects = new ArrayCollection();
     }
 
     /**
@@ -1422,5 +1432,43 @@ class User implements AdvancedUserInterface, \Serializable
     public function getOwnedMeetings()
     {
         return $this->ownedMeetings;
+    }
+
+    /**
+     * Add favoriteProject.
+     *
+     * @param Project $favoriteProject
+     *
+     * @return User
+     */
+    public function addFavoriteProject(Project $favoriteProject)
+    {
+        $this->favoriteProjects[] = $favoriteProject;
+
+        return $this;
+    }
+
+    /**
+     * Remove favoriteProject.
+     *
+     * @param Project $favoriteProject
+     *
+     * @return User
+     */
+    public function removeFavoriteProject(Project $favoriteProject)
+    {
+        $this->favoriteProjects->removeElement($favoriteProject);
+
+        return $this;
+    }
+
+    /**
+     * Get favoriteProjects.
+     *
+     * @return ArrayCollection
+     */
+    public function getFavoriteProjects()
+    {
+        return $this->favoriteProjects;
     }
 }
