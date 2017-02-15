@@ -37,7 +37,7 @@
         {% include 'AppBundle:Admin/Layout:header.html.twig' %}
 
         <section id="main">
-            {# knp_menu_render('admin_app', {'template': 'AppBundle:Admin/Layout:sidebar.html.twig'}) #}
+            {{ knp_menu_render('admin_app', {'template': 'AppBundle:Admin/Layout:sidebar.html.twig'}) }}
 
             <section id="content">
                     <div class="container">
