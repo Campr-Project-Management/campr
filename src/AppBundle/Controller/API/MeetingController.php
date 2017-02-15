@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Meeting;
-use AppBundle\Entity\Project;
 use AppBundle\Form\Meeting\CreateType;
 use AppBundle\Security\MeetingVoter;
 use MainBundle\Controller\API\ApiController;
@@ -14,31 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/meeting")
+ * @Route("/api/meetings")
  */
 class MeetingController extends ApiController
 {
-    /**
-     * All meetings for a specific Project.
-     *
-     * @Route("/{id}/list", name="app_api_meeting_list")
-     * @Method({"GET"})
-     *
-     * @param Project $project
-     *
-     * @return JsonResponse
-     */
-    public function listAction(Project $project)
-    {
-        $meetings = $this
-            ->getDoctrine()
-            ->getRepository(Meeting::class)
-            ->findByProject($project)
-        ;
-
-        return $this->createApiResponse($meetings);
-    }
-
     /**
      * Retrieve Meeting information.
      *
@@ -57,44 +35,10 @@ class MeetingController extends ApiController
     }
 
     /**
-     * Create a new Meeting.
-     *
-     * @Route("/create", name="app_api_meeting_create")
-     * @Method({"POST"})
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function createAction(Request $request)
-    {
-        $meeting = new Meeting();
-        $meeting->setCreatedBy($this->getUser());
-
-        $form = $this->createForm(CreateType::class, $meeting, ['csrf_protection' => false]);
-        $this->processForm($request, $form);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($meeting);
-            $em->flush();
-
-            return $this->createApiResponse($meeting, Response::HTTP_CREATED);
-        }
-
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
      * Edit a specific Meeting.
      *
-     * @Route("/{id}/edit", name="app_api_meeting_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_meeting_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request $request
      * @param Meeting $meeting
@@ -106,7 +50,7 @@ class MeetingController extends ApiController
         $this->denyAccessUnlessGranted(MeetingVoter::EDIT, $meeting);
 
         $form = $this->createForm(CreateType::class, $meeting, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -127,7 +71,7 @@ class MeetingController extends ApiController
     /**
      * Delete a specific Meeting.
      *
-     * @Route("/{id}/delete", name="app_api_meeting_delete")
+     * @Route("/{id}", name="app_api_meeting_delete")
      * @Method({"DELETE"})
      *
      * @param Meeting $meeting

@@ -3,18 +3,13 @@
 namespace AppBundle\Form\DistributionList;
 
 use AppBundle\Entity\DistributionList;
-use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Project;
-use AppBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
 
-class CreateType extends AbstractType
+class CreateType extends BaseCreateType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -22,27 +17,9 @@ class CreateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        parent::buildForm($builder, $options);
+
         $builder
-            ->add('name', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.name',
-                    ]),
-                ],
-            ])
-            ->add('sequence', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.sequence',
-                    ]),
-                    new Regex([
-                        'pattern' => '/^([1-9]+\d*)$|^0$/',
-                        'message' => 'invalid.sequence',
-                    ]),
-                ],
-            ])
             ->add('project', EntityType::class, [
                 'required' => true,
                 'class' => Project::class,
@@ -54,16 +31,6 @@ class CreateType extends AbstractType
                     ]),
                 ],
                 'translation_domain' => 'messages',
-            ])
-            ->add('users', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'username',
-                'multiple' => true,
-            ])
-            ->add('meetings', EntityType::class, [
-                'class' => Meeting::class,
-                'choice_label' => 'name',
-                'multiple' => true,
             ])
         ;
     }

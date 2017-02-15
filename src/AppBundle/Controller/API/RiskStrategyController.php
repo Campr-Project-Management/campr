@@ -12,14 +12,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/risk-strategy")
+ * @Route("/api/risk-strategies")
  */
 class RiskStrategyController extends ApiController
 {
     /**
      * Get all risk strategies.
      *
-     * @Route("/list", name="app_api_risk_strategy_list")
+     * @Route(name="app_api_risk_strategies_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -38,7 +38,7 @@ class RiskStrategyController extends ApiController
     /**
      * Create a new Risk Strategy.
      *
-     * @Route("/create", name="app_api_risk_strategy_create")
+     * @Route(name="app_api_risk_strategies_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -69,7 +69,7 @@ class RiskStrategyController extends ApiController
     /**
      * Get Risk Strategy by id.
      *
-     * @Route("/{id}", name="app_api_risk_strategy_get")
+     * @Route("/{id}", name="app_api_risk_strategies_get")
      * @Method({"GET"})
      *
      * @param RiskStrategy $riskStrategy
@@ -84,8 +84,8 @@ class RiskStrategyController extends ApiController
     /**
      * Edit a specific Risk Strategy.
      *
-     * @Route("/{id}/edit", name="app_api_risk_strategy_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_risk_strategies_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request      $request
      * @param RiskStrategy $riskStrategy
@@ -95,7 +95,7 @@ class RiskStrategyController extends ApiController
     public function editAction(Request $request, RiskStrategy $riskStrategy)
     {
         $form = $this->createForm(CreateType::class, $riskStrategy, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -116,7 +116,7 @@ class RiskStrategyController extends ApiController
     /**
      * Delete a specific Risk Strategy.
      *
-     * @Route("/{id}/delete", name="app_api_risk_strategy_delete")
+     * @Route("/{id}", name="app_api_risk_strategies_delete")
      * @Method({"DELETE"})
      *
      * @param RiskStrategy $riskStrategy

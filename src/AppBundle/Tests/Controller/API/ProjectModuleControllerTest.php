@@ -54,7 +54,7 @@ class ProjectModuleControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-module/list',
+                '/api/project-modules',
                 true,
                 Response::HTTP_OK,
                 [
@@ -115,7 +115,7 @@ class ProjectModuleControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-module/create',
+            '/api/project-modules',
             [],
             [],
             [
@@ -190,7 +190,7 @@ class ProjectModuleControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-module/create',
+            '/api/project-modules',
             [],
             [],
             [
@@ -244,7 +244,7 @@ class ProjectModuleControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-module/1/edit',
+            '/api/project-modules/1',
             [],
             [],
             [
@@ -309,7 +309,7 @@ class ProjectModuleControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-module/1/edit',
+            '/api/project-modules/1',
             [],
             [],
             [
@@ -369,7 +369,7 @@ class ProjectModuleControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            sprintf('/api/project-module/%d/delete', $projectModule->getId()),
+            sprintf('/api/project-modules/%d', $projectModule->getId()),
             [],
             [],
             [
@@ -441,7 +441,7 @@ class ProjectModuleControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-module/2',
+                '/api/project-modules/2',
                 true,
                 Response::HTTP_OK,
                 [

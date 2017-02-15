@@ -12,14 +12,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/schedule")
+ * @Route("/api/schedules")
  */
 class ScheduleController extends ApiController
 {
     /**
      * Get all schedules.
      *
-     * @Route("/list", name="app_api_schedule_list")
+     * @Route(name="app_api_schedules_list")
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -38,7 +38,7 @@ class ScheduleController extends ApiController
     /**
      * Create a new Schedule.
      *
-     * @Route("/create", name="app_api_schedule_create")
+     * @Route(name="app_api_schedules_create")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -69,7 +69,7 @@ class ScheduleController extends ApiController
     /**
      * Get Schedule by id.
      *
-     * @Route("/{id}", name="app_api_schedule_get")
+     * @Route("/{id}", name="app_api_schedules_get")
      * @Method({"GET"})
      *
      * @param Schedule $schedule
@@ -84,8 +84,8 @@ class ScheduleController extends ApiController
     /**
      * Edit a specific Schedule.
      *
-     * @Route("/{id}/edit", name="app_api_schedule_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_schedules_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request  $request
      * @param Schedule $schedule
@@ -95,7 +95,7 @@ class ScheduleController extends ApiController
     public function editAction(Request $request, Schedule $schedule)
     {
         $form = $this->createForm(CreateType::class, $schedule, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -116,7 +116,7 @@ class ScheduleController extends ApiController
     /**
      * Delete a specific Schedule.
      *
-     * @Route("/{id}/delete", name="app_api_schedule_delete")
+     * @Route("/{id}", name="app_api_schedules_delete")
      * @Method({"DELETE"})
      *
      * @param Schedule $schedule

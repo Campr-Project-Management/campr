@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\API;
 
-use AppBundle\Entity\Project;
 use AppBundle\Entity\Note;
 use AppBundle\Form\Note\CreateType;
 use AppBundle\Security\ProjectVoter;
@@ -14,25 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/note")
+ * @Route("/api/notes")
  */
 class NoteController extends ApiController
 {
-    /**
-     * All notes for the current project.
-     *
-     * @Route("/{id}/list", name="app_api_note_list")
-     * @Method({"GET"})
-     *
-     * @param Project $project
-     *
-     * @return JsonResponse
-     */
-    public function listAction(Project $project)
-    {
-        return $this->createApiResponse($project->getNotes());
-    }
-
     /**
      * Retrieve Note information.
      *
@@ -55,41 +39,10 @@ class NoteController extends ApiController
     }
 
     /**
-     * Create a new Note.
-     *
-     * @Route("/create", name="app_api_note_create")
-     * @Method({"POST"})
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function createAction(Request $request)
-    {
-        $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
-        $this->processForm($request, $form);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($form->getData());
-            $em->flush();
-
-            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
-        }
-
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
      * Edit a specific Note.
      *
-     * @Route("/{id}/edit", name="app_api_note_edit")
-     * @Method({"PATCH"})
+     * @Route("/{id}", name="app_api_note_edit")
+     * @Method({"PUT", "PATCH"})
      *
      * @param Request $request
      * @param Note    $note
@@ -105,7 +58,7 @@ class NoteController extends ApiController
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
         $form = $this->createForm(CreateType::class, $note, ['csrf_protection' => false]);
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -126,7 +79,7 @@ class NoteController extends ApiController
     /**
      * Delete a specific Note.
      *
-     * @Route("/{id}/delete", name="app_api_note_delete")
+     * @Route("/{id}", name="app_api_note_delete")
      * @Method({"DELETE"})
      *
      * @param Note $note

@@ -53,7 +53,7 @@ class ProjectTeamControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-team/list',
+                '/api/project-teams',
                 true,
                 Response::HTTP_OK,
                 [
@@ -93,7 +93,7 @@ class ProjectTeamControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-team/create',
+            '/api/project-teams',
             [],
             [],
             [
@@ -168,7 +168,7 @@ class ProjectTeamControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-team/create',
+            '/api/project-teams',
             [],
             [],
             [
@@ -227,7 +227,7 @@ class ProjectTeamControllerTest extends BaseController
 
         $this->client->request(
             'POST',
-            '/api/project-team/create',
+            '/api/project-teams',
             [],
             [],
             [
@@ -281,7 +281,7 @@ class ProjectTeamControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-team/1/edit',
+            '/api/project-teams/1',
             [],
             [],
             [
@@ -341,7 +341,7 @@ class ProjectTeamControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-team/1/edit',
+            '/api/project-teams/1',
             [],
             [],
             [
@@ -397,7 +397,7 @@ class ProjectTeamControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-team/1/edit',
+            '/api/project-teams/1',
             [],
             [],
             [
@@ -455,7 +455,7 @@ class ProjectTeamControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            sprintf('/api/project-team/%d/delete', $projectTeam->getId()),
+            sprintf('/api/project-teams/%d', $projectTeam->getId()),
             [],
             [],
             [
@@ -527,7 +527,7 @@ class ProjectTeamControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-team/2',
+                '/api/project-teams/2',
                 true,
                 Response::HTTP_OK,
                 [

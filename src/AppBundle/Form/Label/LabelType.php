@@ -5,15 +5,11 @@ namespace AppBundle\Form\Label;
 use AppBundle\Entity\Label;
 use AppBundle\Entity\Project;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class LabelType extends AbstractType
+class LabelType extends BaseLabelType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -21,41 +17,20 @@ class LabelType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        parent::buildForm($builder, $options);
+
         $builder
-            ->add('title', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.title',
-                    ]),
-                ],
-            ])
             ->add('project', EntityType::class, [
                 'required' => true,
                 'class' => Project::class,
                 'choice_label' => 'name',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'validation.constraints.label.project.not_blank',
+                        'message' => 'not_blank.project',
                     ]),
                 ],
                 'placeholder' => 'placeholder.project',
                 'translation_domain' => 'messages',
-            ])
-            ->add('description', TextareaType::class, [
-                'required' => false,
-            ])
-            ->add('color', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.color',
-                    ]),
-                    new Length([
-                        'max' => 6,
-                        'maxMessage' => 'length.color',
-                    ]),
-                ],
             ])
         ;
     }
