@@ -8,6 +8,7 @@ import ProjectCreateStep3 from '../components/Projects/ProjectCreateStep3';
 import ViewProject from '../components/Projects/ViewProject.vue';
 import ProjectDashboard from '../components/Projects/ProjectDashboard.vue';
 import ProjectContract from '../components/Projects/ProjectContract.vue';
+import ProjectOrganization from '../components/Projects/ProjectOrganization.vue';
 import ViewTask from '../components/Tasks/ViewTask';
 import Tasks from '../components/Tasks/Tasks';
 
@@ -58,6 +59,11 @@ const routes = [
                 path: 'contract',
                 component: ProjectContract,
                 name: 'project-contract',
+            },
+            {
+                path: 'organization',
+                component: ProjectOrganization,
+                name: 'project-organization',
             },
         ],
     },

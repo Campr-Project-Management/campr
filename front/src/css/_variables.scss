@@ -1,5 +1,6 @@
 $mainColor: #232D4B;
 $fadeColor: #2E3D60;
+$semiDarkColor: #1E2643;
 $darkColor: #191E37;
 $middleColor: #646EA0;
 $lightColor: #8794C4;
@@ -30,4 +31,12 @@ $additionalColor5: #D87F52;
 
 .second-bg {
   background: $secondColor !important;
+}
+
+.danger-color {
+  color: $dangerColor !important;
+}
+
+.danger-border {
+  border: 1px solid $dangerColor !important;
 }
