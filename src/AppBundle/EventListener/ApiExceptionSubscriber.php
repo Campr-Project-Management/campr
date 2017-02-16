@@ -11,8 +11,19 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class ApiExceptionSubscriber implements EventSubscriberInterface
 {
+    private $debug;
+
+    public function __construct($debug)
+    {
+        $this->debug = $debug;
+    }
+
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
+        if ($this->debug) {
+            return;
+        }
+
         $request = $event->getRequest();
         if (strpos($request->getPathInfo(), '/api') !== 0) {
             return;
