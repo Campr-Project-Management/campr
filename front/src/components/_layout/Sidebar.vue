@@ -89,7 +89,7 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.organization">
+                    <router-link :to="{name: 'project-organization'}" v-bind:title="message.organization">
                         <span class="default">{{ message.organization }}</span>
                         <span class="tablet"></span>
                     </router-link>
