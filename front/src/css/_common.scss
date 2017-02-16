@@ -157,7 +157,7 @@ textarea {
     content: '';
     width: 20px;
     height: 20px;
-    border: 1px solid $lighterColor;
+    background: $middleColor;
     display: block;
     float: left;
     margin-right: 10px;
@@ -203,4 +203,91 @@ textarea {
       background: $secondColor;
     }
   }
+}
+
+.vue-switcher-theme--default.vue-switcher-color--default div:after {
+  background-color: $dangerColor !important;
+  height: 22px;
+  width: 22px;
+  margin-left: -27px;
+  top: 4px;
+}
+
+.vue-switcher--unchecked div:after {
+  left: 22px !important;
+  margin-left: -17px !important;
+}
+
+.vue-switcher-theme--default.vue-switcher-color--default.vue-switcher--unchecked div:after {
+  background-color: $secondColor !important;
+}
+
+.vue-switcher-theme--default.vue-switcher-color--default div {
+  background-color: $darkColor !important;
+  height: 30px;
+  width: 60px;
+}
+
+.vue-scrollbar__scrollbar-horizontal {
+  background: $darkColor !important;
+  height: 30px !important;
+  position: relative;
+  padding: 0 20px;
+
+  &:before, &:after {
+    cursor: pointer;
+    font-family: 'FontAwesome';
+    top: 3px;
+    font-size: 18px;
+    position: absolute;
+  }
+
+  &:before {
+    content: '\f104';
+    left: 7px;
+  }
+
+  &:after {
+    content: '\f105';
+    right: 7px;
+  }
+}
+
+.vue-scrollbar__scrollbar-vertical {
+  background: $darkColor !important;
+  padding: 30px 2px;
+  position: relative;
+  width: 14px !important;
+
+  &:before, &:after {
+    cursor: pointer;
+    font-family: 'FontAwesome';
+    font-size: 18px;
+    position: absolute;
+  }
+
+  &:before {
+    content: '\f106';
+    top: 7px;
+    left: 1px;
+  }
+
+  &:after {
+    content: '\f107';
+    bottom: 7px;
+    left: 1px;
+  }
+}
+
+.vue-scrollbar__scrollbar-horizontal .scrollbar {
+  background: $middleColor !important;
+  border-radius: 10px !important;
+  top: 10px !important;
+  height: 10px !important;
+}
+
+.vue-scrollbar__scrollbar-vertical .scrollbar {
+  background: $middleColor !important;
+  border-radius: 10px !important;
+  width: 10px !important;
 }
