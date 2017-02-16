@@ -17,56 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 class ProjectTeamController extends ApiController
 {
     /**
-     * Get all project teams.
-     *
-     * @Route(name="app_api_project_teams_list")
-     * @Method({"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function listAction()
-    {
-        $projectTeams = $this
-            ->getDoctrine()
-            ->getRepository(ProjectTeam::class)
-            ->findAll()
-        ;
-
-        return $this->createApiResponse($projectTeams);
-    }
-
-    /**
-     * Create a new Project Team.
-     *
-     * @Route(name="app_api_project_teams_create")
-     * @Method({"POST"})
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function createAction(Request $request)
-    {
-        $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
-        $this->processForm($request, $form);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($form->getData());
-            $em->flush();
-
-            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
-        }
-
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
      * Get Project Team by id.
      *
      * @Route("/{id}", name="app_api_project_teams_get")

@@ -5,6 +5,7 @@ namespace AppBundle\Tests\Controller\API;
 use AppBundle\Entity\Contract;
 use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\Project;
+use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
@@ -89,6 +90,7 @@ class ProjectControllerTest extends BaseController
                     'name' => 'project3',
                     'number' => 'project-number-3',
                     'projectUsers' => [],
+                    'projectTeams' => [],
                     'notes' => [],
                     'todos' => [],
                     'distributionLists' => [],
@@ -259,6 +261,8 @@ class ProjectControllerTest extends BaseController
         $project = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $project['updatedAt'];
         $responseContent['updatedAt'] = $project['updatedAt'];
+        $responseContent['projectTeams'][0]['updatedAt'] = $project['projectTeams'][0]['updatedAt'];
+        $responseContent['projectTeams'][1]['updatedAt'] = $project['projectTeams'][1]['updatedAt'];
         $responseContent['distributionLists'][0]['updatedAt'] = $project['distributionLists'][0]['updatedAt'];
         $responseContent['distributionLists'][1]['updatedAt'] = $project['distributionLists'][1]['updatedAt'];
         $responseContent['distributionLists'][0]['users'][0]['apiToken'] = $project['distributionLists'][0]['users'][0]['apiToken'];
@@ -367,6 +371,30 @@ class ProjectControllerTest extends BaseController
                             'showInOrg' => null,
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
+                        ],
+                    ],
+                    'projectTeams' => [
+                        [
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'parent' => null,
+                            'parentName' => null,
+                            'id' => 1,
+                            'name' => 'project-team1',
+                            'createdAt' => '2017-01-01 12:00:00',
+                            'updatedAt' => null,
+                            'children' => [],
+                        ],
+                        [
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'parent' => null,
+                            'parentName' => null,
+                            'id' => 2,
+                            'name' => 'project-team2',
+                            'createdAt' => '2017-01-01 12:00:00',
+                            'updatedAt' => null,
+                            'children' => [],
                         ],
                     ],
                     'notes' => [
@@ -815,6 +843,7 @@ class ProjectControllerTest extends BaseController
                             'updatedAt' => null,
                         ],
                     ],
+                    'projectTeams' => [],
                     'notes' => [],
                     'todos' => [],
                     'distributionLists' => [],
@@ -1917,6 +1946,157 @@ class ProjectControllerTest extends BaseController
                     'showInStatusReport' => false,
                     'date' => null,
                     'dueDate' => null,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataForProjectTeamsAction()
+     *
+     * @param $url
+     * @param $isResponseSuccessful
+     * @param $responseStatusCode
+     * @param $responseContent
+     */
+    public function testProjectTeamsAction(
+        $url,
+        $isResponseSuccessful,
+        $responseStatusCode,
+        $responseContent
+    ) {
+        $user = $this->getUserByUsername('superadmin');
+        $token = $user->getApiToken();
+
+        $this->client->request(
+            'GET',
+            $url,
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+            ],
+            ''
+        );
+        $response = $this->client->getResponse();
+        for ($i = 1; $i <= 2; ++$i) {
+            $pm = $this->em->getRepository(ProjectTeam::class)->find($i);
+            $responseContent[$i - 1]['updatedAt'] = $pm->getUpdatedAt()->format('Y-m-d H:i:s');
+        }
+
+        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals(json_encode($responseContent), $response->getContent());
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForProjectTeamsAction()
+    {
+        return [
+            [
+                '/api/projects/1/project-teams',
+                true,
+                Response::HTTP_OK,
+                [
+                    [
+                        'project' => 1,
+                        'projectName' => 'project1',
+                        'parent' => null,
+                        'parentName' => null,
+                        'id' => 1,
+                        'name' => 'project-team1',
+                        'createdAt' => '2017-01-01 12:00:00',
+                        'updatedAt' => null,
+                        'children' => [],
+                    ],
+                    [
+                        'project' => 1,
+                        'projectName' => 'project1',
+                        'parent' => null,
+                        'parentName' => null,
+                        'id' => 2,
+                        'name' => 'project-team2',
+                        'createdAt' => '2017-01-01 12:00:00',
+                        'updatedAt' => null,
+                        'children' => [],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataForCreateProjectTeamAction()
+     *
+     * @param array $content
+     * @param $isResponseSuccessful
+     * @param $responseStatusCode
+     * @param $responseContent
+     */
+    public function testCreateProjectTeamAction(
+        array $content,
+        $isResponseSuccessful,
+        $responseStatusCode,
+        $responseContent
+    ) {
+        $user = $this->getUserByUsername('superadmin');
+        $token = $user->getApiToken();
+
+        $this->client->request(
+            'POST',
+            '/api/projects/1/project-teams',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+            ],
+            json_encode($content)
+        );
+        $response = $this->client->getResponse();
+
+        $projectTeam = json_decode($response->getContent(), true);
+        $responseContent['createdAt'] = $projectTeam['createdAt'];
+        $responseContent['updatedAt'] = $projectTeam['updatedAt'];
+
+        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals(json_encode($responseContent), $response->getContent());
+
+        $projectTeam = $this
+            ->em
+            ->getRepository(ProjectTeam::class)
+            ->find($projectTeam['id'])
+        ;
+        $this->em->remove($projectTeam);
+        $this->em->flush();
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForCreateProjectTeamAction()
+    {
+        return [
+            [
+                [
+                    'name' => 'project-team3',
+                ],
+                true,
+                Response::HTTP_CREATED,
+                [
+                    'project' => 1,
+                    'projectName' => 'project1',
+                    'parent' => null,
+                    'parentName' => null,
+                    'id' => 3,
+                    'name' => 'project-team3',
+                    'createdAt' => '',
+                    'updatedAt' => null,
+                    'children' => [],
                 ],
             ],
         ];
