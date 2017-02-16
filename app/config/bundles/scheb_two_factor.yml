@@ -1,0 +1,21 @@
+scheb_two_factor:
+    trusted_computer:
+        enabled: true
+        cookie_name: trusted_computer
+        cookie_lifetime: 5184000
+        cookie_secure: false
+    exclude_pattern: ~
+    parameter_names:
+        auth_code: _auth_code
+        trusted: _trusted
+    email:
+        enabled: false
+    google:
+        enabled: true
+        server_name: Campr.biz
+        issuer: Campr
+        template: MainBundle:Default:login_google.html.twig
+    persister: scheb_two_factor.persister.doctrine
+    model_manager_name: ~
+    security_tokens:
+        - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
