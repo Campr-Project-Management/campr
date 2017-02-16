@@ -2,6 +2,7 @@
 
 namespace AppBundle\Tests\Controller\Admin;
 
+use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectTeam;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
@@ -21,6 +22,10 @@ class ProjectTeamControllerTest extends BaseController
 
         $this->assertContains('id="create_name"', $crawler->html());
         $this->assertContains('name="create[name]"', $crawler->html());
+        $this->assertContains('id="create_project"', $crawler->html());
+        $this->assertContains('name="create[project]"', $crawler->html());
+        $this->assertContains('id="create_parent"', $crawler->html());
+        $this->assertContains('name="create[parent]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -39,6 +44,7 @@ class ProjectTeamControllerTest extends BaseController
         $crawler = $this->client->submit($form);
 
         $this->assertContains('The name field should not be blank', $crawler->html());
+        $this->assertContains('The project field should not be blank. Choose one project', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -49,11 +55,20 @@ class ProjectTeamControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
+        $project = $this
+            ->em
+            ->getRepository(Project::class)
+            ->findOneBy([
+                'name' => 'project1',
+            ])
+        ;
+
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-team/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[name]'] = 'project-team1';
+        $form['create[project]'] = $project->getId();
 
         $crawler = $this->client->submit($form);
 
@@ -68,10 +83,19 @@ class ProjectTeamControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
+        $project = $this
+            ->em
+            ->getRepository(Project::class)
+            ->findOneBy([
+                'name' => 'project1',
+            ])
+        ;
+
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-team/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[name]'] = 'project-team3';
+        $form['create[project]'] = $project->getId();
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -96,9 +120,16 @@ class ProjectTeamControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
+        $project = $this
+            ->em
+            ->getRepository(Project::class)
+            ->findOneBy([
+                'name' => 'project1',
+            ])
+        ;
         $projectTeam = (new ProjectTeam())
             ->setName('project-team4')
-        ;
+            ->setProject($project);
         $this->em->persist($projectTeam);
         $this->em->flush();
 
@@ -123,6 +154,10 @@ class ProjectTeamControllerTest extends BaseController
 
         $this->assertContains('id="create_name"', $crawler->html());
         $this->assertContains('name="create[name]"', $crawler->html());
+        $this->assertContains('id="create_project"', $crawler->html());
+        $this->assertContains('name="create[project]"', $crawler->html());
+        $this->assertContains('id="create_parent"', $crawler->html());
+        $this->assertContains('name="create[parent]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 
@@ -140,10 +175,12 @@ class ProjectTeamControllerTest extends BaseController
 
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['create[name]'] = '';
+        $form['create[project]'] = '';
 
         $crawler = $this->client->submit($form);
 
         $this->assertContains('The name field should not be blank', $crawler->html());
+        $this->assertContains('The project field should not be blank. Choose one project', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -197,8 +234,8 @@ class ProjectTeamControllerTest extends BaseController
         $this->assertEquals(1, $crawler->filter('#data-table-command')->count());
         $this->assertContains('data-column-id="id"', $crawler->html());
         $this->assertContains('data-column-id="name"', $crawler->html());
+        $this->assertContains('data-column-id="projectName"', $crawler->html());
         $this->assertContains('data-column-id="createdAt"', $crawler->html());
-        $this->assertContains('data-column-id="updatedAt"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());
         $this->assertEquals(1, $crawler->filter('.zmdi-plus')->count());
 
