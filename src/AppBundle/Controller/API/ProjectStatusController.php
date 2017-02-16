@@ -20,7 +20,7 @@ class ProjectStatusController extends ApiController
     /**
      * Get all project status.
      *
-     * @Route(name="app_api_project_statuses_list")
+     * @Route(name="app_api_project_statuses_list", options={"expose"=true})
      * @Method({"GET"})
      *
      * @return JsonResponse

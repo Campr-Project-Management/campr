@@ -16,7 +16,7 @@ class ColorStatusController extends ApiController
     /**
      * All ColorStatuses.
      *
-     * @Route(name="app_api_color_status_list")
+     * @Route(name="app_api_color_status_list", options={"expose"=true})
      * @Method({"GET"})
      *
      * @return JsonResponse
