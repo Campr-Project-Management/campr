@@ -36,6 +36,26 @@
                                     <td>{{ project_team.name }}</td>
                                 </tr>
                                 <tr>
+                                    <th>{{ 'table_header_cell.project'|trans }}</th>
+                                    <td>{{ project_team.project.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'table_header_cell.parent'|trans }}</th>
+                                    <td>{{ project_team.parent.name|default('-') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'table_header_cell.children'|trans }}</th>
+                                    {% if project_team.children is not empty %}
+                                        <td>
+                                            {% for projectTeam in project_team.children %}
+                                                <p>{{ projectTeam.name }}</p>
+                                            {% endfor %}
+                                        </td>
+                                    {% else %}
+                                        <td>-</td>
+                                    {% endif %}
+                                </tr>
+                                <tr>
                                     <th>{{ 'table_header_cell.created_at'|trans }}</th>
                                     <td>
                                         {% if project_team.createdAt %}

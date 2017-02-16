@@ -120,6 +120,13 @@ class Project
     private $projectUsers;
 
     /**
+     * @var ArrayCollection|ProjectTeam[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectTeam", mappedBy="project")
+     */
+    private $projectTeams;
+
+    /**
      * @var Portfolio
      *
      * @Serializer\Exclude()
@@ -312,6 +319,7 @@ class Project
         $this->contracts = new ArrayCollection();
         $this->meetings = new ArrayCollection();
         $this->userFavorites = new ArrayCollection();
+        $this->projectTeams = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->setEncryptionKey(base64_encode(random_bytes(16)));
     }
@@ -1332,5 +1340,43 @@ class Project
         }
 
         return $favorites;
+    }
+
+    /**
+     * Add projectTeam.
+     *
+     * @param ProjectTeam $projectTeam
+     *
+     * @return Project
+     */
+    public function addProjectTeam(ProjectTeam $projectTeam)
+    {
+        $this->projectTeams[] = $projectTeam;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectTeam.
+     *
+     * @param ProjectTeam $projectTeam
+     *
+     * @return Project;
+     */
+    public function removeProjectTeam(ProjectTeam $projectTeam)
+    {
+        $this->projectTeams->removeElement($projectTeam);
+
+        return $this;
+    }
+
+    /**
+     * Get projectTeams.
+     *
+     * @return ArrayCollection|ProjectTeam[]
+     */
+    public function getProjectTeams()
+    {
+        return $this->projectTeams;
     }
 }

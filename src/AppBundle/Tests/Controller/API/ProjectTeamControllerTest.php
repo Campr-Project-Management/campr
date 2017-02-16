@@ -2,266 +2,13 @@
 
 namespace AppBundle\Tests\Controller\API;
 
+use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectTeam;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProjectTeamControllerTest extends BaseController
 {
-    /**
-     * @dataProvider getDataForListAction()
-     *
-     * @param $url
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
-     */
-    public function testListAction(
-        $url,
-        $isResponseSuccessful,
-        $responseStatusCode,
-        $responseContent
-    ) {
-        $user = $this->getUserByUsername('superadmin');
-        $token = $user->getApiToken();
-
-        $this->client->request(
-            'GET',
-            $url,
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token), ],
-            ''
-        );
-        $response = $this->client->getResponse();
-        for ($i = 1; $i <= 2; ++$i) {
-            $pm = $this->em->getRepository(ProjectTeam::class)->find($i);
-            $responseContent[$i - 1]['updatedAt'] = $pm->getUpdatedAt()->format('Y-m-d H:i:s');
-        }
-
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataForListAction()
-    {
-        return [
-            [
-                '/api/project-teams',
-                true,
-                Response::HTTP_OK,
-                [
-                    [
-                        'id' => 1,
-                        'name' => 'project-team1',
-                        'createdAt' => '2017-01-01 12:00:00',
-                        'updatedAt' => null,
-                    ],
-                    [
-                        'id' => 2,
-                        'name' => 'project-team2',
-                        'createdAt' => '2017-01-01 12:00:00',
-                        'updatedAt' => null,
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider getDataForCreateAction()
-     *
-     * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
-     */
-    public function testCreateAction(
-        array $content,
-        $isResponseSuccessful,
-        $responseStatusCode,
-        $responseContent
-    ) {
-        $user = $this->getUserByUsername('superadmin');
-        $token = $user->getApiToken();
-
-        $this->client->request(
-            'POST',
-            '/api/project-teams',
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
-            ],
-            json_encode($content)
-        );
-        $response = $this->client->getResponse();
-
-        $projectTeam = json_decode($response->getContent(), true);
-        $responseContent['createdAt'] = $projectTeam['createdAt'];
-        $responseContent['updatedAt'] = $projectTeam['updatedAt'];
-
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
-
-        $projectTeam = $this
-            ->em
-            ->getRepository(ProjectTeam::class)
-            ->find($projectTeam['id'])
-        ;
-        $this->em->remove($projectTeam);
-        $this->em->flush();
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataForCreateAction()
-    {
-        return [
-            [
-                [
-                    'name' => 'project-team3',
-                ],
-                true,
-                Response::HTTP_CREATED,
-                [
-                    'id' => 3,
-                    'name' => 'project-team3',
-                    'createdAt' => '',
-                    'updatedAt' => null,
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider getDataForNameIsUniqueOnCreateAction
-     *
-     * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
-     */
-    public function testNameIsUniqueOnCreateAction(
-        array $content,
-        $isResponseSuccessful,
-        $responseStatusCode,
-        $responseContent
-    ) {
-        $projectTeam = (new ProjectTeam())
-            ->setName('project-team3')
-        ;
-        $this->em->persist($projectTeam);
-        $this->em->flush();
-
-        $user = $this->getUserByUsername('superadmin');
-        $token = $user->getApiToken();
-
-        $this->client->request(
-            'POST',
-            '/api/project-teams',
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
-            ],
-            json_encode($content)
-        );
-        $response = $this->client->getResponse();
-
-        $this->assertEquals($isResponseSuccessful, $response->isClientError());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
-
-        $this->em->remove($projectTeam);
-        $this->em->flush();
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataForNameIsUniqueOnCreateAction()
-    {
-        return [
-            [
-                [
-                    'name' => 'project-team3',
-                ],
-                true,
-                Response::HTTP_BAD_REQUEST,
-                [
-                    'messages' => [
-                        'name' => ['That name is taken'],
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider getDataForNameNotBlankOnCreateAction
-     *
-     * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
-     */
-    public function testNameNotBlankOnCreateAction(
-        array $content,
-        $isResponseSuccessful,
-        $responseStatusCode,
-        $responseContent
-    ) {
-        $user = $this->getUserByUsername('superadmin');
-        $token = $user->getApiToken();
-
-        $this->client->request(
-            'POST',
-            '/api/project-teams',
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
-            ],
-            json_encode($content)
-        );
-        $response = $this->client->getResponse();
-
-        $this->assertEquals($isResponseSuccessful, $response->isClientError());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataForNameNotBlankOnCreateAction()
-    {
-        return [
-            [
-                [],
-                true,
-                Response::HTTP_BAD_REQUEST,
-                [
-                    'messages' => [
-                        'name' => ['The name field should not be blank'],
-                    ],
-                ],
-            ],
-        ];
-    }
-
     /**
      * @dataProvider getDataForEditAction
      *
@@ -313,10 +60,15 @@ class ProjectTeamControllerTest extends BaseController
                 true,
                 Response::HTTP_ACCEPTED,
                 [
+                    'project' => 1,
+                    'projectName' => 'project1',
+                    'parent' => null,
+                    'parentName' => null,
                     'id' => 1,
                     'name' => 'project-team1',
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
+                    'children' => [],
                 ],
             ],
         ];
@@ -379,14 +131,14 @@ class ProjectTeamControllerTest extends BaseController
     }
 
     /**
-     * @dataProvider getDataForNameNotBlankOnEditAction
+     * @dataProvider getDataForFieldsNotBlankOnEditAction
      *
      * @param array $content
      * @param $isResponseSuccessful
      * @param $responseStatusCode
      * @param $responseContent
      */
-    public function testNameNotBlankOnEditAction(
+    public function testFieldsNotBlankOnEditAction(
         array $content,
         $isResponseSuccessful,
         $responseStatusCode,
@@ -416,18 +168,20 @@ class ProjectTeamControllerTest extends BaseController
     /**
      * @return array
      */
-    public function getDataForNameNotBlankOnEditAction()
+    public function getDataForFieldsNotBlankOnEditAction()
     {
         return [
             [
                 [
                     'name' => '',
+                    'project' => '',
                 ],
                 true,
                 Response::HTTP_BAD_REQUEST,
                 [
                     'messages' => [
                         'name' => ['The name field should not be blank'],
+                        'project' => ['The project field should not be blank. Choose one project'],
                     ],
                 ],
             ],
@@ -444,9 +198,16 @@ class ProjectTeamControllerTest extends BaseController
         $isResponseSuccessful,
         $responseStatusCode
     ) {
+        $project = $this
+            ->em
+            ->getRepository(Project::class)
+            ->findOneBy([
+                'name' => 'project1',
+            ])
+        ;
         $projectTeam = (new ProjectTeam())
             ->setName('project-team3')
-        ;
+            ->setProject($project);
         $this->em->persist($projectTeam);
         $this->em->flush();
 
@@ -531,10 +292,15 @@ class ProjectTeamControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
+                    'project' => 1,
+                    'projectName' => 'project1',
+                    'parent' => null,
+                    'parentName' => null,
                     'id' => 2,
                     'name' => 'project-team2',
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
+                    'children' => [],
                 ],
             ],
         ];
