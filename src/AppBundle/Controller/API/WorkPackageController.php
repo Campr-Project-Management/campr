@@ -23,7 +23,7 @@ class WorkPackageController extends ApiController
     /**
      * All tasks for the current user.
      *
-     * @Route(name="app_api_workpackage_list")
+     * @Route(name="app_api_workpackage_list", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Request $request
@@ -57,7 +57,7 @@ class WorkPackageController extends ApiController
     /**
      * Retrieve WorkPackage information.
      *
-     * @Route("/{id}", name="app_api_workpackage_get")
+     * @Route("/{id}", name="app_api_workpackage_get", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param WorkPackage $workPackage
@@ -74,7 +74,7 @@ class WorkPackageController extends ApiController
     /**
      * Create a new WorkPackage.
      *
-     * @Route(name="app_api_workpackage_create")
+     * @Route(name="app_api_workpackage_create", options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request $request
@@ -105,7 +105,7 @@ class WorkPackageController extends ApiController
     /**
      * Edit a specific WorkPackage.
      *
-     * @Route("/{id}", name="app_api_workpackage_edit")
+     * @Route("/{id}", name="app_api_workpackage_edit", options={"expose"=true})
      * @Method({"PATCH", "PUT"})
      *
      * @param Request     $request
@@ -139,7 +139,7 @@ class WorkPackageController extends ApiController
     /**
      * Delete a specific WorkPackage.
      *
-     * @Route("/{id}", name="app_api_workpackage_delete")
+     * @Route("/{id}", name="app_api_workpackage_delete", options={"expose"=true})
      * @Method({"DELETE"})
      *
      * @param WorkPackage $wp
@@ -160,7 +160,7 @@ class WorkPackageController extends ApiController
     /**
      * All aassignments for a specific WorkPackage.
      *
-     * @Route("/{id}/assignments", name="app_api_workpackage_assignments")
+     * @Route("/{id}/assignments", name="app_api_workpackage_assignments", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param WorkPackage $wp
@@ -175,7 +175,7 @@ class WorkPackageController extends ApiController
     /**
      * Create a new Assignment.
      *
-     * @Route("/{id}/assignments", name="app_api_workpackage_assignments_create")
+     * @Route("/{id}/assignments", name="app_api_workpackage_assignments_create", options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request     $request

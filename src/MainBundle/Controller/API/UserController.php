@@ -18,7 +18,7 @@ class UserController extends ApiController
     /**
      * Retrieve User information.
      *
-     * @Route("/{id}", name="main_api_users_get")
+     * @Route("/{id}", name="main_api_users_get", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param $id
