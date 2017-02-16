@@ -17,7 +17,7 @@ class UserController extends ApiController
     /**
      * Sync user information from main website.
      *
-     * @Route("/sync", name="app_api_users_sync")
+     * @Route("/sync", name="app_api_users_sync", options={"expose"=true})
      * @Method({"GET"})
      *
      * @return JsonResponse
