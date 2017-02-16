@@ -62,7 +62,8 @@
         "guzzlehttp/guzzle": "^6.2",
         "nelmio/cors-bundle": "^1.5",
         "willdurand/js-translation-bundle": "^2.6",
-        "lexik/translation-bundle": "^4.0"
+        "lexik/translation-bundle": "^4.0",
+        "scheb/two-factor-bundle": "^2.9"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
