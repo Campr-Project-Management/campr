@@ -348,18 +348,6 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @param $id
-     *
-     * @return User
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
      * Get id.
      *
      * @return int
