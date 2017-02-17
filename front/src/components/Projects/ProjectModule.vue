@@ -372,11 +372,6 @@ export default {
         }
     }
 
-    input[type=checkbox] + label:before {
-        background: $middleColor;
-        border: none !important;
-    }
-
     .module {
         overflow: hidden;
 
