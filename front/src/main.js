@@ -4,6 +4,7 @@ import 'expose?$!expose?jQuery!jquery';
 import 'normalise.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
+import 'font-awesome/css/font-awesome.min.css';
 import router from './router';
 import store from './store';
 import {sync} from 'vuex-router-sync';
