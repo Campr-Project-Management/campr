@@ -10,6 +10,7 @@ use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Note;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectStatus;
+use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\WorkPackageProjectWorkCostType;
@@ -20,6 +21,7 @@ use AppBundle\Form\Contract\BaseCreateType as ContractCreateType;
 use AppBundle\Form\DistributionList\BaseCreateType as DistributionCreateType;
 use AppBundle\Form\Meeting\BaseCreateType as MeetingCreateType;
 use AppBundle\Form\Note\BaseCreateType as NoteCreateType;
+use AppBundle\Form\ProjectTeam\BaseCreateType as ProjectTeamCreateType;
 use AppBundle\Form\ProjectUser\BaseCreateType as ProjectUserCreateType;
 use AppBundle\Form\Todo\BaseCreateType as TodoCreateType;
 use AppBundle\Security\ProjectVoter;
@@ -475,6 +477,56 @@ class ProjectController extends ApiController
     }
 
     /**
+     * Get all project teams.
+     *
+     * @Route("/{id}/project-teams", name="app_api_project_project_teams")
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function projectTeamsAction(Project $project)
+    {
+        return $this->createApiResponse($project->getProjectTeams());
+    }
+
+    /**
+     * Create a new Project Team.
+     *
+     * @Route("/{id}/project-teams", name="app_api_project_project_team_create")
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function createProjectTeamAction(Request $request, Project $project)
+    {
+        $projectTeam = new ProjectTeam();
+        $projectTeam->setProject($project);
+
+        $form = $this->createForm(ProjectTeamCreateType::class, $projectTeam, ['csrf_protection' => false]);
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($form->getData());
+            $em->flush();
+
+            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
      * Get all project users.
      *
      * @Route("/{id}/project-users", name="app_api_project_project_users")
@@ -496,6 +548,7 @@ class ProjectController extends ApiController
      * @Method({"POST"})
      *
      * @param Request $request
+     * @param Project $project
      *
      * @return JsonResponse
      */

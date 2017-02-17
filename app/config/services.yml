@@ -192,6 +192,7 @@ services:
 
     app.subscriber.api_problem:
         class: AppBundle\EventListener\ApiExceptionSubscriber
+        arguments: ['%kernel.debug%']
         tags:
             - { name: kernel.event_subscriber }
 
