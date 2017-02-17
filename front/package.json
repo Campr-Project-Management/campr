@@ -16,6 +16,7 @@
     "bazinga-translator": "^2.6.3",
     "bootstrap": "^3.3.7",
     "exports-loader": "^0.6.3",
+    "font-awesome": "^4.7.0",
     "ion-rangeslider": "^2.1.6",
     "jquery": "^3.1.1",
     "jquery.nicescroll": "^3.6.8",
@@ -29,7 +30,9 @@
     "vue-resource": "^1.0.3",
     "vue-router": "^2.1.1",
     "vue-spinner": "^1.0.2",
+    "vue-switches": "^1.0.1",
     "vue2-dragula": "^2.4.2",
+    "vue2-scrollbar": "0.0.1",
     "vuex": "^2.0.0",
     "vuex-router-sync": "^3.0.0"
   },
