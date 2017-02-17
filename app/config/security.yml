@@ -9,7 +9,8 @@ security:
             entity:
                 class: AppBundle:User
                 property: email
-
+    access_decision_manager:
+        strategy: affirmative
     firewalls:
         login:
             pattern: ^/api/login
