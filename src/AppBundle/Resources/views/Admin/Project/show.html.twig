@@ -64,6 +64,18 @@
                                 </td>
                             </tr>
                             <tr>
+                                <th>{{ 'table_header_cell.project_teams'|trans }}</th>
+                                {% if project.projectTeams is not empty %}
+                                    <td>
+                                        {% for projectTeam in project.projectTeams %}
+                                            <p>{{ projectTeam.name }}</p>
+                                        {% endfor %}
+                                    </td>
+                                {% else %}
+                                    <td>-</td>
+                                {% endif %}
+                            </tr>
+                            <tr>
                                 <th>{{ 'table_header_cell.status'|trans }}</th>
                                 <td>
                                     {% if project.status %}
