@@ -6,6 +6,7 @@ imports:
     - { resource: bundles/ambta_doctrine_encrypt.yml }
     - { resource: bundles/vich_uploader.yml }
     - { resource: bundles/nelmio_cors.yml }
+    - { resource: bundles/scheb_two_factor.yml }
     - { resource: "@MainBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed

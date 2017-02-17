@@ -2,6 +2,7 @@
 
 namespace AppBundle\EventListener;
 
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use AppBundle\Services\UserService;
@@ -15,6 +16,7 @@ class UserListener
 {
     private $userService;
     private $encoder;
+    private $googleAuthenticator;
 
     /**
      * UserListener constructor.
@@ -22,10 +24,11 @@ class UserListener
      * @param UserService         $userService
      * @param UserPasswordEncoder $encoder
      */
-    public function __construct(UserService $userService, UserPasswordEncoder $encoder)
+    public function __construct(UserService $userService, UserPasswordEncoder $encoder, GoogleAuthenticator $googleAuthenticator)
     {
         $this->userService = $userService;
         $this->encoder = $encoder;
+        $this->googleAuthenticator = $googleAuthenticator;
     }
 
     /**
@@ -46,6 +49,7 @@ class UserListener
                 $activationToken = $this->userService->generateActivationResetToken();
                 $entity->setActivationToken($activationToken);
                 $entity->setActivationTokenCreatedAt(new \DateTime());
+                $entity->setGoogleAuthenticatorSecret($this->googleAuthenticator->generateSecret());
 
                 $uok->recomputeSingleEntityChangeSet(
                     $em->getClassMetadata(User::class),

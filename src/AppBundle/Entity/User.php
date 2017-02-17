@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
+use Scheb\TwoFactorBundle\Model\TrustedComputerInterface;
 
 /**
  * User.
@@ -31,7 +33,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")\
  * @Vich\Uploadable
  */
-class User implements AdvancedUserInterface, \Serializable
+class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, TrustedComputerInterface
 {
     const ROLE_USER = 'ROLE_USER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
@@ -337,6 +339,20 @@ class User implements AdvancedUserInterface, \Serializable
     private $favoriteProjects;
 
     /**
+     * @Serializer\Exclude()
+     *
+     * @ORM\Column(name="google_auth_secret", type="string", nullable=true)
+     */
+    private $googleAuthenticatorSecret;
+
+    /**
+     * @Serializer\Exclude()
+     *
+     * @ORM\Column(name="trusted_computers", type="json_array")
+     */
+    private $trustedComputers;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -344,6 +360,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->salt = md5(uniqid('', true));
         $this->roles = [];
         $this->widgetSettings = [];
+        $this->trustedComputers = [];
         $this->createdAt = new \DateTime();
         $this->medias = new ArrayCollection();
         $this->teams = new ArrayCollection();
@@ -1458,5 +1475,55 @@ class User implements AdvancedUserInterface, \Serializable
     public function getFavoriteProjects()
     {
         return $this->favoriteProjects;
+    }
+
+    /**
+     * Get google auth secret.
+     *
+     * @return string
+     */
+    public function getGoogleAuthenticatorSecret()
+    {
+        return $this->googleAuthenticatorSecret;
+    }
+
+    /**
+     * Set google auth secret.
+     *
+     * @param int $googleAuthenticatorSecret
+     */
+    public function setGoogleAuthenticatorSecret($googleAuthenticatorSecret)
+    {
+        $this->googleAuthenticatorSecret = $googleAuthenticatorSecret;
+    }
+
+    /**
+     * Add new trusted computer.
+     *
+     * @param $token
+     * @param \DateTime $validUntil
+     */
+    public function addTrustedComputer($token, \DateTime $validUntil)
+    {
+        $this->trustedComputers[$token] = $validUntil->format('r');
+    }
+
+    /**
+     * Check if is a trusted computer.
+     *
+     * @param $token
+     *
+     * @return bool
+     */
+    public function isTrustedComputer($token)
+    {
+        if (isset($this->trustedComputers[$token])) {
+            $now = new \DateTime();
+            $validUntil = new \DateTime($this->trustedComputers[$token]);
+
+            return $now < $validUntil;
+        }
+
+        return false;
     }
 }
