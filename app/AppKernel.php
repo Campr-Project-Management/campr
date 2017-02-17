@@ -49,6 +49,7 @@ class AppKernel extends Kernel
             new Nelmio\CorsBundle\NelmioCorsBundle(),
             new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
             new Lexik\Bundle\TranslationBundle\LexikTranslationBundle(),
+            new Scheb\TwoFactorBundle\SchebTwoFactorBundle(),
 
             //internals
             new AppBundle\AppBundle(),
