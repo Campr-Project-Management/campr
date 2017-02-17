@@ -12,9 +12,13 @@ use AppBundle\Entity\ProjectStatus;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -22,6 +26,13 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CreateType extends AbstractType
 {
+    private $tokenStorage;
+
+    public function __construct(TokenStorage $tokenStorage)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
@@ -111,6 +122,29 @@ class CreateType extends AbstractType
                 'placeholder' => 'placeholder.portfolio',
                 'translation_domain' => 'messages',
             ])
+            ->addEventListener(
+                FormEvents::PRE_SUBMIT,
+                function (FormEvent $event) {
+                    $data = $event->getData();
+                    if (array_key_exists('favorite', $data)) {
+                        $form = $event->getForm();
+                        $form->add('favorite', CheckboxType::class, ['mapped' => false])->setData($data['favorite']);
+                    }
+                }
+            )
+            ->addEventListener(
+                FormEvents::POST_SUBMIT,
+                function (FormEvent $event) {
+                    $data = $event->getData();
+                    $form = $event->getForm();
+                    if ($form->has('favorite')) {
+                        $form->get('favorite')->getData()
+                            ? $data->addUserFavorite($this->tokenStorage->getToken()->getUser())
+                            : $data->removeUserFavorite($this->tokenStorage->getToken()->getUser())
+                        ;
+                    }
+                }
+            )
         ;
     }
 
@@ -121,6 +155,7 @@ class CreateType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Project::class,
+            'allow_extra_fields' => true,
         ]);
     }
 
