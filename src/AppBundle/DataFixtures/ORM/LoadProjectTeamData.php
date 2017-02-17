@@ -17,9 +17,12 @@ class LoadProjectTeamData extends AbstractFixture implements OrderedFixtureInter
      */
     public function load(ObjectManager $manager)
     {
+        $project = $this->getReference('project1');
+
         for ($i = 1; $i <= 2; ++$i) {
             $projectTeam = (new ProjectTeam())
                 ->setName('project-team'.$i)
+                ->setProject($project)
                 ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
             ;
             $this->setReference('project-team'.$i, $projectTeam);
@@ -34,6 +37,6 @@ class LoadProjectTeamData extends AbstractFixture implements OrderedFixtureInter
      */
     public function getOrder()
     {
-        return 1;
+        return 4;
     }
 }
