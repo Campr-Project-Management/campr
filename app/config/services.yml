@@ -62,6 +62,11 @@ services:
         arguments:
             - "@doctrine.orm.entity_manager"
 
+    app.service.calendar:
+        class: AppBundle\Services\CalendarService
+        arguments:
+            - "@doctrine.orm.entity_manager"
+
     redis.client:
         class: Predis\Client
         arguments:
