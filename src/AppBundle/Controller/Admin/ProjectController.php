@@ -2,12 +2,17 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Command\RedisQueueManagerCommand;
 use AppBundle\Entity\ChatRoom;
+use AppBundle\Entity\FileSystem;
+use AppBundle\Entity\Media;
 use AppBundle\Entity\Message;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\User;
+use AppBundle\Form\Project\ImportType;
 use AppBundle\Security\ProjectVoter;
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -405,6 +410,76 @@ class ProjectController extends Controller
                 'success' => $this
                     ->get('translator')
                     ->trans('success.chat_messages.delete', [], 'flashes'),
+            ]
+        );
+    }
+
+    /**
+     * @Route("/import", name="app_admin_project_import")
+     *
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function importAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(ImportType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var File $file */
+            $file = $form->get('file')->getData();
+
+            $fileSystem = $this
+                ->getDoctrine()
+                ->getRepository(FileSystem::class)
+                ->findOneBy([
+                    'isDefault' => true,
+                ])
+            ;
+
+            $media = (new Media())
+                ->setFile($file)
+                ->setUser($this->getUser())
+                ->setPath($file->getClientOriginalName())
+                ->setMimeType($file->getMimeType())
+                ->setFileSize($file->getSize())
+                ->setFileSystem($fileSystem)
+            ;
+            $em->persist($media);
+            $em->flush();
+
+            $env = $this->getParameter('kernel.environment');
+            $redis = $this->get('redis.client');
+            $redis->rpush(RedisQueueManagerCommand::IMPORT, [
+                sprintf(
+                    '--env=%s app:project-import %d',
+                    $env,
+                    $media->getId()
+                ),
+            ]);
+
+            $this
+                ->get('session')
+                ->getFlashBag()
+                ->set(
+                    'success',
+                    $this
+                        ->get('translator')
+                        ->trans('success.project.import', [], 'flashes')
+                )
+            ;
+
+            return $this->redirectToRoute('app_admin_project_list');
+        }
+
+        return $this->render(
+            'AppBundle:Admin/Project/Partials:import.html.twig',
+            [
+                'form' => $form->createView(),
             ]
         );
     }

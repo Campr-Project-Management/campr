@@ -3,9 +3,13 @@
 namespace AppBundle\Services;
 
 use AppBundle\Entity\Assignment;
+use AppBundle\Entity\CustomField;
+use AppBundle\Entity\CustomFieldValue;
 use AppBundle\Entity\Timephase;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\WorkPackageProjectWorkCostType;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Calendar;
@@ -19,6 +23,9 @@ use AppBundle\Utils\ImportConstants;
  */
 class ImportService
 {
+    /** @var ObjectRepository */
+    private $customFieldRepo;
+
     /**
      * ImportService constructor.
      *
@@ -27,6 +34,7 @@ class ImportService
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
+        $this->customFieldRepo = $this->em->getRepository(CustomField::class);
     }
 
     /**
@@ -44,17 +52,17 @@ class ImportService
     /**
      * Import project based on xml content.
      *
+     * @param Project $project
      * @param $content
      */
-    public function importProjects($content)
+    public function importProjects(Project $project, $content)
     {
+        $projectSaveQueue = new ArrayCollection();
         $xml = new \SimpleXMLElement($content);
 
-        $project = new Project();
         foreach ($xml->children() as $tag => $element) {
             if (array_key_exists($tag, ImportConstants::PROJECT_KEY_FUNCTION)) {
                 if ($tag === ImportConstants::PROJECT_NAME_TAG) {
-                    //if ($this->em->getRepository(Project::class)->findByName((string) $element)) {
                     if ($this->em->getRepository(Project::class)->findBy(['name' => (string) $element])) {
                         return;
                     }
@@ -69,25 +77,30 @@ class ImportService
                         $project->$action((string) $element);
                     }
                 }
-            }
-
-            switch ($tag) {
-                case ImportConstants::CALENDARS_TAG:
-                    $this->importCalendars($project, (array) $element);
-                    break;
-                case ImportConstants::TASKS_TAG:
-                    $this->importWorkPackages($project, (array) $element);
-                    break;
-                case ImportConstants::RESOURCES_TAG:
-                    $this->importWorkPackageProjectWorkCostTypes((array) $element);
-                    break;
-                case ImportConstants::ASSIGNMENTS_TAG:
-                    $this->importAssignments((array) $element);
-                    break;
+            } else {
+                switch ($tag) {
+                    case ImportConstants::CALENDARS_TAG:
+                        $this->importCalendars($project, (array) $element);
+                        break;
+                    case ImportConstants::TASKS_TAG:
+                        $this->importWorkPackages($project, (array) $element);
+                        break;
+                    case ImportConstants::RESOURCES_TAG:
+                        $this->importWorkPackageProjectWorkCostTypes((array) $element);
+                        break;
+                    case ImportConstants::ASSIGNMENTS_TAG:
+                        $this->importAssignments((array) $element);
+                        break;
+                    default:
+                        if (!is_array($element)) {
+                            $this->addCustomField($tag, $element, $project, Project::class, $projectSaveQueue);
+                        }
+                }
             }
         }
         $this->em->persist($project);
         $this->em->flush();
+        $this->saveQueueItems($projectSaveQueue);
     }
 
     /**
@@ -98,6 +111,8 @@ class ImportService
      */
     public function importCalendars($project, $calendars)
     {
+        $calendarSaveQueue = new ArrayCollection();
+
         if (is_array($calendars) && is_object($calendars['Calendar'])) {
             $calendar = $calendars['Calendar'];
             $calendars['Calendar'] = [$calendar];
@@ -111,27 +126,38 @@ class ImportService
                     if (is_callable([$newCalendar, $action])) {
                         $newCalendar->$action((string) $element);
                     }
-                }
-                if ($calendarTag == ImportConstants::BASE_CALENDAR_TAG && $element != '-1') {
-                    $baseCalendar = $this
-                        ->em
-                        ->getRepository(Calendar::class)
-                        ->find((int) $element)
-                    ;
-                    if ($baseCalendar) {
-                        $newCalendar->setParent($baseCalendar);
+                } else {
+                    switch ($calendarTag) {
+                        case ImportConstants::BASE_CALENDAR_TAG:
+                            if ($element != '-1') {
+                                $baseCalendar = $this
+                                    ->em
+                                    ->getRepository(Calendar::class)
+                                    ->findOneBy([
+                                        'externalId' => (int) $element,
+                                    ])
+                                ;
+                                if ($baseCalendar) {
+                                    $newCalendar->setParent($baseCalendar);
+                                }
+                            }
+                            break;
+                        case ImportConstants::WEEKDAYS_TAG:
+                            $this->importDays($newCalendar, (array) $element);
+                            break;
+                        default:
+                            if (!is_array($element)) {
+                                $this->addCustomField($calendarTag, $element, $newCalendar, Calendar::class, $calendarSaveQueue);
+                            }
                     }
-                }
-
-                if ($calendarTag === ImportConstants::WEEKDAYS_TAG) {
-                    $this->importDays($newCalendar, (array) $element);
                 }
             }
 
             $newCalendar->setProject($project);
             $this->em->persist($newCalendar);
+            $this->em->flush();
+            $this->saveQueueItems($calendarSaveQueue);
         }
-        $this->em->flush();
     }
 
     /**
@@ -142,6 +168,8 @@ class ImportService
      */
     public function importDays($calendar, $days)
     {
+        $daySaveQueue = new ArrayCollection();
+
         if (is_array($days) && is_object($days['WeekDay'])) {
             $day = $days['WeekDay'];
             $days['WeekDay'] = [$day];
@@ -155,17 +183,24 @@ class ImportService
                     if (is_callable([$newDay, $action])) {
                         $newDay->$action((int) $element);
                     }
-                }
-
-                if ($dayTag === ImportConstants::WORKING_TIMES_TAG) {
-                    $this->importWorkingTimes($newDay, (array) $element);
+                } else {
+                    switch ($dayTag) {
+                        case ImportConstants::WORKING_TIMES_TAG:
+                            $this->importWorkingTimes($newDay, (array) $element);
+                            break;
+                        default:
+                            if (!is_array($element)) {
+                                $this->addCustomField($dayTag, $element, $newDay, Day::class, $daySaveQueue);
+                            }
+                    }
                 }
             }
 
             $newDay->setCalendar($calendar);
             $this->em->persist($newDay);
+            $this->em->flush();
+            $this->saveQueueItems($daySaveQueue);
         }
-        $this->em->flush();
     }
 
     /**
@@ -176,6 +211,8 @@ class ImportService
      */
     public function importWorkingTimes($day, $workingTimes)
     {
+        $workingTimeSaveQueue = new ArrayCollection();
+
         if (is_array($workingTimes) && is_object($workingTimes['WorkingTime'])) {
             $workingTime = $workingTimes['WorkingTime'];
             $workingTimes['WorkingTime'] = [$workingTime];
@@ -189,16 +226,26 @@ class ImportService
                     if (is_callable([$newWorkingTime, $action])) {
                         $newWorkingTime->$action(new \DateTime($element));
                     }
+                } else {
+                    switch ($workingTag) {
+                        default:
+                            if (!is_array($element)) {
+                                $this->addCustomField($workingTag, $element, $newWorkingTime, WorkingTime::class, $workingTimeSaveQueue);
+                            }
+                    }
                 }
             }
 
             $newWorkingTime->setDay($day);
             $this->em->persist($newWorkingTime);
+            $this->em->flush();
+            $this->saveQueueItems($workingTimeSaveQueue);
         }
-        $this->em->flush();
     }
 
     /**
+     * @TODO: What field should be used for our entity field "puid"
+     *
      * Import work packages (tasks) based on xml content.
      *
      * @param $project
@@ -206,6 +253,8 @@ class ImportService
      */
     public function importWorkPackages($project, $workPackages)
     {
+        $workPackageSaveQueue = new ArrayCollection();
+
         if (is_array($workPackages) && is_object($workPackages['Task'])) {
             $workPackage = $workPackages['Task'];
             $workPackages['Task'] = [$workPackage];
@@ -224,36 +273,46 @@ class ImportService
                             $newWorkPackage->$action((string) $element);
                         }
                     }
-                }
+                } else {
+                    switch ($workPackageTag) {
+                        case ImportConstants::UID:
+                            $workPackage = $this
+                                ->em
+                                ->getRepository(WorkPackage::class)
+                                ->findOneBy([
+                                    'externalId' => (int) $element,
+                                ])
+                            ;
 
-                if ($workPackageTag == ImportConstants::UID) {
-                    $workPackage = $this
-                        ->em
-                        ->getRepository(WorkPackage::class)
-                        ->find((int) $element)
-                    ;
+                            if ($workPackage) {
+                                $newWorkPackage->setParent($workPackage);
+                            }
+                            break;
+                        case ImportConstants::CALENDAR_UID_TAG:
+                            $calendar = $this
+                                ->em
+                                ->getRepository(Calendar::class)
+                                ->findOneBy([
+                                    'externalId' => (int) $element,
+                                ])
+                            ;
 
-                    if ($workPackage) {
-                        $newWorkPackage->setParent($workPackage);
-                    }
-                }
-
-                if ($workPackageTag == ImportConstants::CALENDAR_UID_TAG) {
-                    $calendar = $this
-                        ->em
-                        ->getRepository(Calendar::class)
-                        ->find((int) $element)
-                    ;
-
-                    if ($calendar) {
-                        $newWorkPackage->setCalendar($calendar);
+                            if ($calendar) {
+                                $newWorkPackage->setCalendar($calendar);
+                            }
+                            break;
+                        default:
+                            if (!is_array($element)) {
+                                $this->addCustomField($workPackageTag, $element, $newWorkPackage, WorkPackage::class, $workPackageSaveQueue);
+                            }
                     }
                 }
             }
             $newWorkPackage->setProject($project);
             $this->em->persist($newWorkPackage);
+            $this->em->flush();
+            $this->saveQueueItems($workPackageSaveQueue);
         }
-        $this->em->flush();
     }
 
     /**
@@ -263,6 +322,8 @@ class ImportService
      */
     public function importWorkPackageProjectWorkCostTypes($workPackagesProjectWorkCostTypes)
     {
+        $workPackagesProjectWorkCostTypeSaveQueue = new ArrayCollection();
+
         if (is_array($workPackagesProjectWorkCostTypes) && is_object($workPackagesProjectWorkCostTypes['Resource'])) {
             $workPackagesProjectWorkCostType = $workPackagesProjectWorkCostTypes['Resource'];
             $workPackagesProjectWorkCostTypes['Resource'] = [$workPackagesProjectWorkCostType];
@@ -281,22 +342,50 @@ class ImportService
                             $newWorkPackagesProjectWorkCostType->$action((string) $element);
                         }
                     }
-                }
+                } else {
+                    switch ($workPackageTag) {
+                        case ImportConstants::UID:
+                            $workPackage = $this
+                                ->em
+                                ->getRepository(WorkPackage::class)
+                                ->findOneBy([
+                                    'externalId' => (int) $element,
+                                ])
+                            ;
 
-                if ($workPackageTag == ImportConstants::CALENDAR_UID_TAG) {
-                    $calendar = $this
-                        ->em
-                        ->getRepository(Calendar::class)
-                        ->find((int) $element)
-                    ;
-                    if ($calendar) {
-                        $newWorkPackagesProjectWorkCostType->setCalendar($calendar);
+                            if ($workPackage) {
+                                $newWorkPackagesProjectWorkCostType->setWorkPackage($workPackage);
+                            }
+                            break;
+                        case ImportConstants::CALENDAR_UID_TAG:
+                            $calendar = $this
+                                ->em
+                                ->getRepository(Calendar::class)
+                                ->findOneBy([
+                                    'externalId' => (int) $element,
+                                ])
+                            ;
+                            if ($calendar) {
+                                $newWorkPackagesProjectWorkCostType->setCalendar($calendar);
+                            }
+                            break;
+                        default:
+                            if (!is_array($element)) {
+                                $this->addCustomField(
+                                    $workPackageTag,
+                                    $element,
+                                    $newWorkPackagesProjectWorkCostType,
+                                    WorkPackageProjectWorkCostType::class,
+                                    $workPackagesProjectWorkCostTypeSaveQueue
+                                );
+                            }
                     }
                 }
             }
             $this->em->persist($newWorkPackagesProjectWorkCostType);
+            $this->em->flush();
+            $this->saveQueueItems($workPackagesProjectWorkCostTypeSaveQueue);
         }
-        $this->em->flush();
     }
 
     /**
@@ -306,6 +395,8 @@ class ImportService
      */
     public function importAssignments($assignments)
     {
+        $assignmentSaveQueue = new ArrayCollection();
+
         if (is_array($assignments) && is_object($assignments['Assignment'])) {
             $assignment = $assignments['Assignment'];
             $assignments['Assignment'] = [$assignment];
@@ -324,39 +415,46 @@ class ImportService
                             $newAssignment->$action((string) $element);
                         }
                     }
-                }
+                } else {
+                    switch ($assignmentTag) {
+                        case ImportConstants::TASK_UID_TAG:
+                            $workPackage = $this
+                                ->em
+                                ->getRepository(WorkPackage::class)
+                                ->findOneBy([
+                                    'externalId' => (int) $element,
+                                ])
+                            ;
 
-                if ($assignmentTag == ImportConstants::TASK_UID_TAG) {
-                    $workPackage = $this
-                        ->em
-                        ->getRepository(WorkPackage::class)
-                        ->find((int) $element)
-                    ;
+                            if ($workPackage) {
+                                $newAssignment->setWorkPackage($workPackage);
+                            }
+                            break;
+                        case ImportConstants::RESOURCE_UID_TAG:
+                            $workPackageProjectWorkCostType = $this
+                                ->em
+                                ->getRepository(WorkPackageProjectWorkCostType::class)
+                                ->find((int) $element)
+                            ;
 
-                    if ($workPackage) {
-                        $newAssignment->setWorkPackage($workPackage);
+                            if ($workPackageProjectWorkCostType) {
+                                $newAssignment->setWorkPackageProjectWorkCostType($workPackageProjectWorkCostType);
+                            }
+                            break;
+                        case ImportConstants::TIMEPHASED_TAG:
+                            $this->importTimephased($newAssignment, (array) $element);
+                            break;
+                        default:
+                            if (!is_array($element)) {
+                                $this->addCustomField($assignmentTag, $element, $newAssignment, Assignment::class, $assignmentSaveQueue);
+                            }
                     }
-                }
-
-                if ($assignmentTag == ImportConstants::RESOURCE_UID_TAG) {
-                    $workPackageProjectWorkCostType = $this
-                        ->em
-                        ->getRepository(WorkPackageProjectWorkCostType::class)
-                        ->find((int) $element)
-                    ;
-
-                    if ($workPackageProjectWorkCostType) {
-                        $newAssignment->setWorkPackageProjectWorkCostType($workPackageProjectWorkCostType);
-                    }
-                }
-
-                if ($assignmentTag == ImportConstants::TIMEPHASED_TAG) {
-                    $this->importTimephased($newAssignment, (array) $element);
                 }
             }
             $this->em->persist($newAssignment);
+            $this->em->flush();
+            $this->saveQueueItems($assignmentSaveQueue);
         }
-        $this->em->flush();
     }
 
     /**
@@ -367,6 +465,8 @@ class ImportService
      */
     public function importTimephased($assignment, $timephasedData)
     {
+        $timephaseSaveQueue = new ArrayCollection();
+
         if (is_array($timephasedData) && is_string(key($timephasedData))) {
             $node = new \SimpleXMLElement('<TimephaseData></TimephaseData>');
             foreach ($timephasedData as $key => $value) {
@@ -388,10 +488,79 @@ class ImportService
                             $newTimephase->$action((string) $element);
                         }
                     }
+                } else {
+                    switch ($timephasedTag) {
+                        default:
+                            if (!is_array($element)) {
+                                $this->addCustomField($timephasedTag, $element, $newTimephase, Timephase::class, $timephaseSaveQueue);
+                            }
+                    }
                 }
             }
             $newTimephase->setAssignment($assignment);
             $this->em->persist($newTimephase);
+            $this->em->flush();
+            $this->saveQueueItems($timephaseSaveQueue);
+        }
+    }
+
+    private function addCustomField($fieldName, $value, $object, $className, $saveQueue)
+    {
+        $customField = $this->customFieldRepo->findOneByFieldNameAndClass($fieldName, $className);
+
+        if (!$customField) {
+            $customField = (new CustomField())
+                ->setClass($this->customFieldRepo->getRootEntityName($className))
+                ->setFieldName($fieldName)
+            ;
+            $this->em->persist($customField);
+            $this->em->flush();
+        }
+
+        if (!$this->updateCustomFieldValue((string) $value, $saveQueue, $object, $customField)) {
+            $customFieldValue = (new CustomFieldValue())
+                ->setCustomField($customField)
+                ->setObj($object)
+                ->setValue((string) $value)
+            ;
+
+            $this->addToSaveQueue($customFieldValue, $saveQueue);
+        }
+    }
+
+    private function updateCustomFieldValue($value, ArrayCollection $saveQueue, $object, CustomField $customField)
+    {
+        if (!$saveQueue->count()) {
+            return false;
+        }
+
+        /** @var CustomFieldValue $entity */
+        foreach ($saveQueue as $entity) {
+            if ($entity->getObj() == $object && $entity->getCustomField() == $customField) {
+                $entity->setValue($value);
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function addToSaveQueue(CustomFieldValue $customFieldValue, ArrayCollection $saveQueue)
+    {
+        $saveQueue->add($customFieldValue);
+    }
+
+    public function saveQueueItems(ArrayCollection $saveQueue)
+    {
+        if (!$saveQueue->count()) {
+            return;
+        }
+
+        foreach ($saveQueue as $entity) {
+            $entity->setObjId($entity->getObj()->getId());
+            $this->em->persist($entity);
+            $saveQueue->removeElement($entity);
         }
         $this->em->flush();
     }

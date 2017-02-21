@@ -25,6 +25,15 @@ class Timephase
     /**
      * @var int
      *
+     * @Serializer\Exclude()
+     *
+     * @ORM\Column(name="external_id", type="integer", unique=true, nullable=true)
+     */
+    private $externalId;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="type", type="integer", nullable=false)
      */
     private $type;
@@ -34,7 +43,7 @@ class Timephase
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Assignment", inversedBy="timephases")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Assignment", inversedBy="timephases", cascade={"persist"})
      * @ORM\JoinColumn(name="assignment_id")
      */
     private $assignment;
@@ -236,5 +245,29 @@ class Timephase
     public function getAssignmentWorkPackageName()
     {
         return $this->assignment ? $this->assignment->getId() : null;
+    }
+
+    /**
+     * Set externalId.
+     *
+     * @param int|null $externalId
+     *
+     * @return Timephase
+     */
+    public function setExternalId($externalId = null)
+    {
+        $this->externalId = $externalId;
+
+        return $this;
+    }
+
+    /**
+     * Get externalId.
+     *
+     * @return int|null
+     */
+    public function getExternalId()
+    {
+        return $this->externalId;
     }
 }
