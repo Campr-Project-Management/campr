@@ -34,6 +34,15 @@ class WorkPackage
     private $puid;
 
     /**
+     * @var int
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\Column(name="external_id", type="integer", unique=true, nullable=true)
+     */
+    private $externalId;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, options={"default": "WorkPackage"})
@@ -919,6 +928,7 @@ class WorkPackage
     }
 
     /**
+<<<<<<< HEAD
      * @return WorkPackageStatus|null
      */
     public function getWorkPackageStatus()
@@ -958,5 +968,29 @@ class WorkPackage
     public function getWorkPackageStatusName()
     {
         return $this->workPackageStatus ? $this->workPackageStatus->getName() : null;
+    }
+
+    /**
+     * Set externalId.
+     *
+     * @param int|null $externalId
+     *
+     * @return WorkPackage
+     */
+    public function setExternalId($externalId = null)
+    {
+        $this->externalId = $externalId;
+
+        return $this;
+    }
+
+    /**
+     * Get externalId.
+     *
+     * @return int|null
+     */
+    public function getExternalId()
+    {
+        return $this->externalId;
     }
 }

@@ -126,6 +126,7 @@ message:
     edit_labels: Edit Labels
     edit_task: Edit Task
     close_task: Close Task
+    import_project: Import project
 
 menu:
     users: Users
@@ -589,6 +590,7 @@ button:
     add_new_subtask: Add new subtask
     create_task: Create Task
     show_results: Show Results
+    import: Import
 
 checkbox:
     checked: Yes

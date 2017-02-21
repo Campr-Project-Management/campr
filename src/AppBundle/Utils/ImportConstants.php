@@ -31,6 +31,7 @@ class ImportConstants
     ];
 
     const CALENDAR_KEY_FUNCTION = [
+        'UID' => 'setExternalId',
         'Name' => 'setName',
         'IsBaseCalendar' => 'setIsBased',
         'IsBaselineCalendar' => 'setIsBaseline',
@@ -49,6 +50,7 @@ class ImportConstants
     const WORKPACKAGE_KEY_FUNCTION = [
         'CreateDate' => 'setCreatedAt',
         'UID' => 'setPuid',
+        'ID' => 'setExternalId',
         'Name' => 'setName',
         'Start' => 'setScheduledStartAt',
         'Finish' => 'setScheduledFinishAt',
@@ -61,6 +63,7 @@ class ImportConstants
         'CreationDate' => 'setCreatedAt',
         'IsCostResource' => 'setIsCostResource',
         'IsBudget' => 'setIsBudget',
+        'ID' => 'setExternalId',
     ];
 
     const ASSIGNMENT_KEY_FUNCTION = [
@@ -70,6 +73,7 @@ class ImportConstants
         'CreationDate' => 'setCreatedAt',
         'Milestone' => 'setMilestone',
         'PercentWorkComplete' => 'setPercentWorkComplete',
+        'UID' => 'setExternalId',
     ];
 
     const TIMEPHASE_KEY_FUNCTION = [
