@@ -25,6 +25,15 @@ class WorkPackageProjectWorkCostType
     private $id;
 
     /**
+     * @var int
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\Column(name="external_id", type="integer", unique=true, nullable=true)
+     */
+    private $externalId;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, options={"default": "Resource"})
@@ -676,5 +685,29 @@ class WorkPackageProjectWorkCostType
     public function getCalendarName()
     {
         return $this->calendar ? $this->calendar->getName() : null;
+    }
+
+    /**
+     * Set externalId.
+     *
+     * @param int|null $externalId
+     *
+     * @return WorkPackageProjectWorkCostType
+     */
+    public function setExternalId($externalId = null)
+    {
+        $this->externalId = $externalId;
+
+        return $this;
+    }
+
+    /**
+     * Get externalId.
+     *
+     * @return int|null
+     */
+    public function getExternalId()
+    {
+        return $this->externalId;
     }
 }

@@ -27,6 +27,13 @@
                     {{ 'success.project.delete.second'|trans({}, 'flashes') }}
                 </strong>
             </div>
+            <div>
+                <a href="{{ path('app_admin_project_import') }}">
+                    <button class="btn bgm-blue waves-effect m-t-20 m-l-25 m-b-5">
+                        {{ 'message.import_project'|trans }}
+                    </button>
+                </a>
+            </div>
             <div class="table-responsive">
                 <table
                         id="data-table-command"

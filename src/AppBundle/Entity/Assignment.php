@@ -25,6 +25,15 @@ class Assignment
     private $id;
 
     /**
+     * @var int
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\Column(name="external_id", type="integer", unique=true, nullable=true)
+     */
+    private $externalId;
+
+    /**
      * @var ArrayCollection|Timephase[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Timephase", mappedBy="assignment")
@@ -441,5 +450,29 @@ class Assignment
     public function getWorkPackageProjectWorkCostTypeName()
     {
         return $this->workPackageProjectWorkCostType ? $this->workPackageProjectWorkCostType->getName() : null;
+    }
+
+    /**
+     * Set externalId.
+     *
+     * @param int|null $externalId
+     *
+     * @return Assignment
+     */
+    public function setExternalId($externalId = null)
+    {
+        $this->externalId = $externalId;
+
+        return $this;
+    }
+
+    /**
+     * Get externalId.
+     *
+     * @return int|null
+     */
+    public function getExternalId()
+    {
+        return $this->externalId;
     }
 }

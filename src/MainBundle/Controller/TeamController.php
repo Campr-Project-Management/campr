@@ -3,6 +3,7 @@
 namespace MainBundle\Controller;
 
 use AppBundle\Command\RedisQueueManagerCommand;
+use AppBundle\Entity\FileSystem as TeamFileSystem;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamInvite;
 use AppBundle\Entity\TeamMember;
@@ -15,6 +16,7 @@ use MainBundle\Form\InviteUserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -113,6 +115,14 @@ class TeamController extends Controller
                     '--env=%s_%s doctrine:fixtures:load -n --fixtures=src/AppBundle/DataFixtures/Team',
                     str_replace('-', '_', $team->getSlug()),
                     $env
+                ),
+            ]);
+            $redis->rpush(RedisQueueManagerCommand::DEFAULT, [
+                sprintf(
+                    '--env=%s_%s app:file-system:create %s',
+                    str_replace('-', '_', $team->getSlug()),
+                    $env,
+                    $team->getSlug()
                 ),
             ]);
 
