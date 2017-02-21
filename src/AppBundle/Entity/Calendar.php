@@ -24,6 +24,15 @@ class Calendar
     private $id;
 
     /**
+     * @var int
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\Column(name="external_id", type="integer", unique=true, nullable=true)
+     */
+    private $externalId;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
@@ -331,7 +340,7 @@ class Calendar
     /**
      * Add workPackage.
      *
-     * @param WorkPackageProjectWorkCostType $workPackage
+     * @param WorkPackage $workPackage
      *
      * @return Calendar
      */
@@ -346,6 +355,8 @@ class Calendar
      * Remove workPackage.
      *
      * @param WorkPackage $workPackage
+     *
+     * @return Calendar
      */
     public function removeWorkPackage(WorkPackage $workPackage)
     {
@@ -388,5 +399,29 @@ class Calendar
     public function getParentName()
     {
         return $this->parent ? $this->parent->getName() : null;
+    }
+
+    /**
+     * Set externalId.
+     *
+     * @param int|null $externalId
+     *
+     * @return Calendar
+     */
+    public function setExternalId($externalId = null)
+    {
+        $this->externalId = $externalId;
+
+        return $this;
+    }
+
+    /**
+     * Get externalId.
+     *
+     * @return int|null
+     */
+    public function getExternalId()
+    {
+        return $this->externalId;
     }
 }
