@@ -6,7 +6,6 @@ use AppBundle\Entity\PaymentMethod;
 use MainBundle\Form\PaymentMethod\CreateType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +23,6 @@ class PaymentMethodController extends Controller
      *
      * @Route("/list", name="main_admin_payment_method_list")
      * @Method({"GET"})
-     * @Secure(roles="ROLE_SUPER_ADMIN")
      *
      * @return Response
      */
