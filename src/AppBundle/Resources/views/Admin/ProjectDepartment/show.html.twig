@@ -44,6 +44,8 @@
                                     <td>
                                         {% if project_department.projectWorkCostType %}
                                             {{ project_department.projectWorkCostType.name }}
+                                        {% else %}
+                                            -
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -53,7 +55,7 @@
                                 </tr>
                                 <tr>
                                     <th>{{ 'table_header_cell.rate'|trans }}</th>
-                                    <td>{{ project_department.rate }}</td>
+                                    <td>{{ project_department.rate|default('-') }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ 'table_header_cell.created_at'|trans }}</th>
