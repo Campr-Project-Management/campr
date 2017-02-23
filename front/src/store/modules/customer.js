@@ -23,11 +23,12 @@ const actions = {
      * @param {function} commit
      */
     getCustomers({commit}) {
-        // TODO change URL to api/company/list after projectUser is fixed
         Vue.http
-            .get(Routing.generate('app_api_company_list')).then((response) => {
-                let customers = response.data;
-                commit(types.SET_CUSTOMERS, {customers});
+            .get(Routing.generate('app_api_company_list').substr(1)).then((response) => {
+                if (response.status === 200) {
+                    let customers = response.data;
+                    commit(types.SET_CUSTOMERS, {customers});
+                }
             }, (response) => {
                 // TODO: REMOVE MOCK DATA
                 let customers = [

@@ -3,8 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use MainBundle\Security\TeamVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -21,11 +23,16 @@ class DefaultController extends Controller
      *
      * @return Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        return $this->render(
-            'AppBundle:Default:index.html.twig'
-        );
+        $this->denyAccessUnlessGranted(TeamVoter::VIEW);
+
+        $response = $this->render('AppBundle:Default:index.html.twig');
+        if ($this->getUser() && !array_key_exists('user_token', $request->cookies->all())) {
+            $response->headers->setCookie(new Cookie('user_token', $this->getUser()->getApiToken(), time() + 3600, '/', null, false, false));
+        }
+
+        return $response;
     }
 
     /**
@@ -139,5 +146,18 @@ class DefaultController extends Controller
         $this->get('security.token_storage')->setToken($upt);
 
         return $this->redirectToRoute('app_homepage', ['subdomain' => $request->attributes->get('subdomain')]);
+    }
+
+    /**
+     * Logout from team website.
+     *
+     * @Route("/logout", name="app_logout", options={"expose"=true})
+     */
+    public function logoutAction(Request $request)
+    {
+        $this->get('security.token_storage')->setToken(null);
+        $request->getSession()->invalidate();
+
+        return $this->redirectToRoute('main_homepage');
     }
 }
