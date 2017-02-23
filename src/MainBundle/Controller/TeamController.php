@@ -466,7 +466,7 @@ class TeamController extends Controller
             return $this->redirectToRoute('main_team_show', ['id' => $team->getId()]);
         }
 
-        if ($this->getUser() === $team->getUser()) {
+        if ($this->getUser() === $teamMember->getUser()) {
             $message = $this
                 ->get('translator')
                 ->trans(
