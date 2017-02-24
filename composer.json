@@ -63,7 +63,8 @@
         "nelmio/cors-bundle": "^1.5",
         "willdurand/js-translation-bundle": "^2.6",
         "lexik/translation-bundle": "^4.0",
-        "scheb/two-factor-bundle": "^2.9"
+        "scheb/two-factor-bundle": "^2.9",
+        "jsvrcek/ics-bundle": "^0.1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

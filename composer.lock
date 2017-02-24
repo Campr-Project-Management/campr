@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3d5769eb42c7c281e993a741d3d7266c",
-    "content-hash": "43fb6509ca43975ec4f2b142d689673a",
+    "hash": "d419f7070f95c1c8c047a66428dc89d3",
+    "content-hash": "38ca89cb097ef8c8f191c4ef211716dc",
     "packages": [
         {
             "name": "ambta/doctrine-encrypt-bundle",
@@ -2898,6 +2898,100 @@
                 "xml"
             ],
             "time": "2015-11-10 12:26:42"
+        },
+        {
+            "name": "jsvrcek/ics",
+            "version": "0.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jasvrcek/ICS.git",
+                "reference": "c93b8dba37b35dd0b65d7b76c7d5b8bc38ecc74c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jasvrcek/ICS/zipball/c93b8dba37b35dd0b65d7b76c7d5b8bc38ecc74c",
+                "reference": "c93b8dba37b35dd0b65d7b76c7d5b8bc38ecc74c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8 || ^5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Jsvrcek\\ICS\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Justin Svrcek",
+                    "homepage": "https://github.com/jasvrcek"
+                }
+            ],
+            "description": "abstraction layer for creating multi-byte safe RFC 5545 compliant .ics files",
+            "homepage": "https://github.com/jasvrcek/ICS",
+            "keywords": [
+                ".ics",
+                "RFC 5545",
+                "calendar",
+                "export",
+                "ical",
+                "multi-byte safe"
+            ],
+            "time": "2017-02-01 20:10:20"
+        },
+        {
+            "name": "jsvrcek/ics-bundle",
+            "version": "0.1",
+            "target-dir": "Jsvrcek/Bundle/IcsBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jasvrcek/IcsBundle.git",
+                "reference": "9cd5048bbe8239cefe1a19d9cd8cb4aabad35a5c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jasvrcek/IcsBundle/zipball/9cd5048bbe8239cefe1a19d9cd8cb4aabad35a5c",
+                "reference": "9cd5048bbe8239cefe1a19d9cd8cb4aabad35a5c",
+                "shasum": ""
+            },
+            "require": {
+                "jsvrcek/ics": "~0.1",
+                "symfony/framework-bundle": ">=2.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Jsvrcek\\Bundle\\IcsBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Justin Svrcek",
+                    "homepage": "https://github.com/jasvrcek"
+                }
+            ],
+            "description": "This bundle provides a dependency injection wrapper for the JsvrcekICS iCal library",
+            "homepage": "https://github.com/jasvrcek/IcsBundle",
+            "keywords": [
+                ".ics",
+                "RFC 5545",
+                "calendar",
+                "export",
+                "ical"
+            ],
+            "time": "2016-01-13 19:51:10"
         },
         {
             "name": "knplabs/gaufrette",

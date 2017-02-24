@@ -53,6 +53,13 @@ class WorkPackageRepository extends BaseRepository
             // TODO: Finish after we determine what is filtered here (schedule dates / schedule type)
         }
 
+        if (isset($filters['milestone'])) {
+            $qb
+                ->andWhere('wp.isKeyMilestone = :milestone')
+                ->setParameter('milestone', $filters['milestone'])
+            ;
+        }
+
         return $qb->getQuery();
     }
 }
