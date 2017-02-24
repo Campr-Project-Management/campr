@@ -2579,4 +2579,74 @@ class ProjectControllerTest extends BaseController
             ],
         ];
     }
+
+    /**
+     * @dataProvider getDataForExportCalendarsAction()
+     *
+     * @param $url
+     * @param $isResponseSuccessful
+     * @param $responseStatusCode
+     * @param $responseContent
+     */
+    public function testExportCalendarsAction(
+        $url,
+        $isResponseSuccessful,
+        $responseStatusCode,
+        $responseContentType,
+        $responseContent
+    ) {
+        $user = $this->getUserByUsername('user4');
+        $token = $user->getApiToken();
+
+        $this->client->request(
+            'GET',
+            $url,
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+            ],
+            ''
+        );
+        $response = $this->client->getResponse();
+        $content = $response->getContent();
+
+        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals($responseContentType, $response->headers->get('Content-Type'));
+        if ($isResponseSuccessful) {
+            $this->assertTrue(strpos($content, $responseContent) !== false);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForExportCalendarsAction()
+    {
+        return [
+            [
+                '/api/projects/1/export-calendars',
+                false,
+                Response::HTTP_BAD_REQUEST,
+                'application/json',
+                null,
+            ],
+            [
+                '/api/projects/1/export-calendars?type=csv',
+                true,
+                Response::HTTP_OK,
+                'text/csv; charset=UTF-8',
+                'Start Date","Start Time","End Date","End Time","All Day Event",Description,Location,Private',
+            ],
+            [
+                '/api/projects/1/export-calendars?type=ics',
+                true,
+                Response::HTTP_OK,
+                'text/calendar; charset=UTF-8',
+                'BEGIN:VCALENDAR',
+            ],
+        ];
+    }
 }
