@@ -96,17 +96,25 @@ textarea {
   text-transform: uppercase;
   text-align: center;
   height: 40px;
-  padding: 0 38px;
+  padding: 0 34px;
   line-height: 40px;
   font-size: 11px;
   border-radius: 20px;
-  display: block;
+  display: inline-block;
   width: 200px;
+  letter-spacing: 1.2px;
+  font-weight: 300;
+}
+
+.btn-auto {
+  width: auto;
 }
 
 .btn-md {
   height: 30px;
   line-height: 30px;
+  padding: 0 14px;
+  font-size: 8px;
 }
 
 .btn-empty {
@@ -228,10 +236,14 @@ textarea {
   width: 60px;
 }
 
+.vue-scrollbar__wrapper {
+  background: none;
+  padding-bottom: 20px;
+}
+
 .vue-scrollbar__scrollbar-horizontal {
   background: $darkColor !important;
   height: 30px !important;
-  position: relative;
   padding: 0 20px;
 
   &:before, &:after {
@@ -256,7 +268,6 @@ textarea {
 .vue-scrollbar__scrollbar-vertical {
   background: $darkColor !important;
   padding: 30px 2px;
-  position: relative;
   width: 14px !important;
 
   &:before, &:after {
@@ -290,4 +301,15 @@ textarea {
   background: $middleColor !important;
   border-radius: 10px !important;
   width: 10px !important;
+}
+
+.datetime-picker {
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+.datetime-picker + .calendar-icon {
+  position: absolute;
+  right: 15px;
+  top: 4px;
 }
