@@ -5,7 +5,6 @@ namespace MainBundle\Controller\Admin;
 use AppBundle\Entity\Payment;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,7 +20,6 @@ class PaymentController extends Controller
      *
      * @Route("/list", name="main_admin_payment_list")
      * @Method({"GET"})
-     * @Secure(roles="ROLE_SUPER_ADMIN")
      *
      * @return Response
      */

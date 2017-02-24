@@ -4,7 +4,6 @@ namespace MainBundle\Controller\Admin;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +24,6 @@ class UserController extends Controller
      *
      * @Route("/list", name="main_admin_user_list")
      * @Method({"GET"})
-     * @Secure(roles="ROLE_SUPER_ADMIN")
      *
      * @return Response
      */
