@@ -1,6 +1,9 @@
 @import '_variables.scss';
 
 .page-section {
+  overflow: hidden;
+  padding-bottom: 20px;
+
   &.projects, &.tasks {
     .header {
       @media screen and (max-width: 1440px) {
@@ -9,7 +12,7 @@
     }
   }
 
-  .header {
+  >.header, >div>.header {
     display: flex;
     justify-content: space-between;
 
@@ -21,7 +24,9 @@
     }
 
     h1 {
-      font-size: 20px;
+      font-size: 19px;
+      font-weight: 300;
+      letter-spacing: 2.2px;
     }
 
     h2 {
@@ -58,7 +63,7 @@
     }
   }
 
-  .content {
+  >.content {
     display: flex;
     flex-flow: row wrap;
     margin: 0 -12px;

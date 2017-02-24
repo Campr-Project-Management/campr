@@ -18,7 +18,7 @@
     </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
   @import '../../../css/_common.scss';
   @import '../../../css/_variables.scss';
 

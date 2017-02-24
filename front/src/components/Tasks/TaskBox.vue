@@ -1,12 +1,16 @@
 <template>
-    <div class="project-box box" v-bind:class="'border-color-' + task.id">
+    <div class="task-box box" v-bind:class="'border-color-' + task.id">
         <div class="header">
             <div>
+                <div class="user-info flex flex-v-center">
+                    <img src="">
+                    <p>Thomas Cici</p>
+                </div>
                 <h2>{{ task.name }}</h2>
                 <p class="task-id">#{{ task.id }}</p>
             </div>
-            <div>
-                <eye-icon :link="{name: 'task', params: { id: task.id }}"></eye-icon>
+            <div class="status-boxes">
+                <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? '#' + task.colorStatusColor : '' }"></span>
             </div>
         </div>
         <div class="content">
@@ -38,13 +42,7 @@
         <div class="nicescroll">
             {{ task.content }}
         </div>
-        <div class="info bottom flex flex-space-between">
-            <div>
-                <p class="status">Status</p>
-                <div class="status-boxes">
-                    <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? '#' + task.colorStatusColor : '' }"></span>
-                </div>
-            </div>
+        <div class="info bottom">
             <div class="icons">
                 <div class="icon-holder">
                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px" height="25px"
@@ -93,14 +91,12 @@
 
 <script>
 import BarChart from '../_common/_charts/BarChart';
-import EyeIcon from '../_common/_icons/EyeIcon';
 import 'jquery.nicescroll/jquery.nicescroll.min.js';
 import moment from 'moment';
 
 export default {
     components: {
         BarChart,
-        EyeIcon,
     },
     created() {
         window.$(document).ready(function() {
@@ -137,6 +133,12 @@ export default {
   @import '../../css/_common';
   @import '../../css/box';
   @import '../../css/box-task';
+
+  .user-info img {
+    width: 30px;
+    height: 30px;
+    margin-right: 3px;
+  }
 
   h2 {
     line-height: 15px;

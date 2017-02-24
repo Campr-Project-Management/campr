@@ -9,6 +9,12 @@ import ViewProject from '../components/Projects/ViewProject.vue';
 import ProjectDashboard from '../components/Projects/ProjectDashboard.vue';
 import ProjectContract from '../components/Projects/ProjectContract.vue';
 import ProjectOrganization from '../components/Projects/ProjectOrganization.vue';
+import TaskManagement from '../components/Projects/TaskManagement/TaskManagement.vue';
+import List from '../components/Projects/TaskManagement/List.vue';
+import View from '../components/Projects/TaskManagement/View.vue';
+import Create from '../components/Projects/TaskManagement/Create.vue';
+import AddLabel from '../components/Projects/TaskManagement/AddLabel.vue';
+import EditLabels from '../components/Projects/TaskManagement/EditLabels.vue';
 import ViewTask from '../components/Tasks/ViewTask';
 import Tasks from '../components/Tasks/Tasks';
 
@@ -64,6 +70,37 @@ const routes = [
                 path: 'organization',
                 component: ProjectOrganization,
                 name: 'project-organization',
+            },
+            {
+                path: 'task-management',
+                component: TaskManagement,
+                children: [
+                    {
+                        path: 'list',
+                        component: List,
+                        name: 'project-task-management-list',
+                    },
+                    {
+                        path: 'view/:id',
+                        component: View,
+                        name: 'project-task-management-view',
+                    },
+                    {
+                        path: 'add',
+                        component: Create,
+                        name: 'project-task-management-create',
+                    },
+                    {
+                        path: 'add-label',
+                        component: AddLabel,
+                        name: 'project-task-management-add-label',
+                    },
+                    {
+                        path: 'edit-labels',
+                        component: EditLabels,
+                        name: 'project-task-management-edit-labels',
+                    },
+                ],
             },
         ],
     },

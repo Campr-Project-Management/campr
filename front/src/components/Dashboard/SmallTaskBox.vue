@@ -1,9 +1,12 @@
 <template>
-    <div class="project-box box small-box">
+    <div class="task-box box small-box">
         <div class="header">
-            <h2>{{ task.name }}</h2>
             <div>
-              <eye-icon :link="{name: 'tasks', params: { id: task.id }}"></eye-icon>
+                <h2>{{ task.name }}</h2>
+                <p class="task-id">#{{ task.id }}</p>
+            </div>
+            <div class="status-boxes">
+                <span v-for="cs in [1,2]" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? '#' + task.colorStatusColor : '' }"></span>
             </div>
         </div>
         <div class="content flex flex-space-between">
@@ -15,18 +18,16 @@
                 </div>
             </div>
         </div>
-        <bar-chart :percentage="task.progress" :status="task.colorStatusName" v-bind:title-right="message.progress"></bar-chart>
+        <bar-chart position="right" :percentage="task.progress" :status="task.colorStatusName" v-bind:title-right="message.progress"></bar-chart>
     </div>
 </template>
 
 <script>
 import BarChart from '../_common/_charts/BarChart';
-import EyeIcon from '../_common/_icons/EyeIcon';
 
 export default {
     components: {
         BarChart,
-        EyeIcon,
     },
     props: ['task', 'colorStatuses'],
     data() {
