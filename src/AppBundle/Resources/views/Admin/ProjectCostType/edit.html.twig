@@ -10,12 +10,19 @@
             <div class="card">
                 <div class="card-header bgm-teal">
                     <h2>{{ 'title.project_cost_type.edit'|trans }}</h2>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        <li>
-                            <a href="{{ path('app_admin_project_cost_type_create') }}">{{ 'add.project_cost_type'|trans }}</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('app_admin_project_cost_type_list') }}">{{ 'button.back_to_list'|trans }}</a>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_project_cost_type_create') }}">{{ 'add.project_cost_type'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_project_cost_type_list') }}">{{ 'button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>

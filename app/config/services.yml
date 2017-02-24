@@ -7,8 +7,8 @@ parameters:
             info: "Info Campr"
             no-reply: "No Reply"
     adapters:
-        admin.filesystem.driver.choice.local: "local_adapter"
-        admin.filesystem.driver.choice.dropbox: "dropbox_adapter"
+        placeholder.driver.local: "local_adapter"
+        placeholder.driver.dropbox: "dropbox_adapter"
 
 services:
     app.service.team:

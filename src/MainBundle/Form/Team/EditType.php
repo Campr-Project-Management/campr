@@ -31,6 +31,7 @@ class EditType extends AbstractType
             ])
             ->add('slug', TextType::class, [
                 'label' => false,
+                'disabled' => true,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'not_blank.team.slug',

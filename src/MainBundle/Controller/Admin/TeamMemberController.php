@@ -8,7 +8,6 @@ use MainBundle\Form\TeamMember\CreateType;
 use MainBundle\Form\TeamMember\EditType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +25,6 @@ class TeamMemberController extends Controller
      *
      * @Route("/{team}/member/list", name="main_admin_team_member_list")
      * @Method({"GET"})
-     * @Secure(roles="ROLE_SUPER_ADMIN")
      *
      * @return Response
      */
