@@ -287,8 +287,7 @@
                         </td>
                     </tr>
                 </tbody>
-            </table>
-                <icon name="repo"></icon>
+                </table>
             </vue-scrollbar>
 
             <div class="flex flex-direction-reverse">
@@ -532,11 +531,6 @@ export default {
 
     .actions {
         margin: 54px 0 30px;
-    }
-
-    .vue-scrollbar__wrapper {
-        background: none;
-        padding-bottom: 20px;
     }
 
     .table-wrapper {
