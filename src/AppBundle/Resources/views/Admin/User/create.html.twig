@@ -111,15 +111,17 @@
                             'label': 'label.phone'|trans
                         }
                     ) }}
-                    {{ form_widget(
-                        form.avatarFile,
-                        {
-                            'attr': {
-                                'class': 'form-control',
-                            },
-                            'label': 'label.avatar'|trans
-                        }
-                    ) }}
+                    <div class="form-group">
+                        {{ form_widget(
+                            form.avatarFile,
+                            {
+                                'attr': {
+                                    'class': 'form-control',
+                                },
+                                'label': 'label.avatar'|trans
+                            }
+                        ) }}
+                    </div>
                     {% for roleChild in form.roles.children %}
                         {{ form_widget(
                             roleChild,

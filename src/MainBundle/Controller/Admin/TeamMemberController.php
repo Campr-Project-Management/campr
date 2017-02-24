@@ -4,6 +4,7 @@ namespace MainBundle\Controller\Admin;
 
 use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamMember;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use MainBundle\Form\TeamMember\CreateType;
 use MainBundle\Form\TeamMember\EditType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -25,6 +26,7 @@ class TeamMemberController extends Controller
      *
      * @Route("/{team}/member/list", name="main_admin_team_member_list")
      * @Method({"GET"})
+     * @Secure(roles={"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
      *
      * @return Response
      */

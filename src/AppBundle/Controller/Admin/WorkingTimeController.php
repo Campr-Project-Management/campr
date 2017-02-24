@@ -60,7 +60,7 @@ class WorkingTimeController extends Controller
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginateByColumn(WorkingTime::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(WorkingTime::class, 'id', $requestParams);
 
         return new JsonResponse($response);
     }

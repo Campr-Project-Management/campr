@@ -74,41 +74,61 @@
                             <tr>
                                 <th>{{ 'table_header_cell.agendas'|trans }}</th>
                                 <td>
-                                    {% for agendas in meeting.meetingAgendas %}
-                                       <p>{{ agenda.topic|default('-') }}</p>
-                                    {% endfor %}
+                                    {% if meeting.meetingAgendas|length %}
+                                        {% for agendas in meeting.meetingAgendas %}
+                                            <p>{{ agendas.topic }}</p>
+                                        {% endfor %}
+                                    {% else %}
+                                        -
+                                    {% endif %}
                                 </td>
                             </tr>
                             <tr>
                                 <th>{{ 'table_header_cell.decisions'|trans }}</th>
                                 <td>
-                                    {% for decision in meeting.decisions %}
-                                        <p>{{ decision.title|default('-') }}</p>
-                                    {% endfor %}
+                                    {% if meeting.decisions|length %}
+                                        {% for decision in meeting.decisions %}
+                                            <p>{{ decision.title }}</p>
+                                        {% endfor %}
+                                    {% else %}
+                                        -
+                                    {% endif %}
                                 </td>
                             </tr>
                             <tr>
                                 <th>{{ 'table_header_cell.todos'|trans }}</th>
                                 <td>
-                                    {% for todo in meeting.todos %}
-                                        </p>{{ todo.title|default('-') }}</p>
-                                    {% endfor %}
+                                    {% if meeting.todos|length %}
+                                        {% for todo in meeting.todos %}
+                                            <p>{{ todo.title }}</p>
+                                        {% endfor %}
+                                    {% else %}
+                                        -
+                                    {% endif %}
                                 </td>
                             </tr>
                             <tr>
                                 <th>{{ 'table_header_cell.notes'|trans }}</th>
                                 <td>
-                                    {% for note in meeting.notes %}
-                                        </p>{{ participant.title|default('-') }}</p>
-                                    {% endfor %}
+                                    {% if meeting.notes|length %}
+                                        {% for note in meeting.notes %}
+                                            <p>{{ participant.title|default('-') }}</p>
+                                        {% endfor %}
+                                    {% else %}
+                                        -
+                                    {% endif %}
                                 </td>
                             </tr>
                             <tr>
                                 <th>{{ 'table_header_cell.medias'|trans }}</th>
                                 <td>
-                                    {% for media in meeting.medias %}
-                                        </p>{{ media.path|default('-') }}</p>
-                                    {% endfor %}
+                                    {% if meeting.medias|length %}
+                                        {% for media in meeting.medias %}
+                                            <p>{{ media.path|default('-') }}</p>
+                                        {% endfor %}
+                                    {% else %}
+                                        -
+                                    {% endif %}
                                 </td>
                             </tr>
                             </tbody>
