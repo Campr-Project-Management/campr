@@ -24,9 +24,11 @@ const actions = {
      */
     getProjectStatuses({commit}) {
         Vue.http
-            .get(Routing.generate('app_api_project_statuses_list')).then((response) => {
-                let projectStatuses = response.data;
-                commit(types.SET_PROJECT_STATUSES, {projectStatuses});
+            .get(Routing.generate('app_api_project_statuses_list').substr(1)).then((response) => {
+                if (response.status === 200) {
+                    let projectStatuses = response.data;
+                    commit(types.SET_PROJECT_STATUSES, {projectStatuses});
+                }
             }, (response) => {
 
             });
