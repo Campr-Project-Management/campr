@@ -868,3 +868,8 @@ exception:
         user: Please add one user as option parameter
 
 copyright: Copyright &copy; 2015 Material Admin
+
+choices:
+    red: Red
+    yellow: Yellow
+    green: Green
