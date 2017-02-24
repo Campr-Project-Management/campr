@@ -41,7 +41,13 @@
                                 </tr>
                                 <tr>
                                     <th>{{ 'table_header_cell.workpackage_assignment'|trans }}</th>
-                                    <td>{{ timephase.assignment.workpackage.name|default('-') }} - {{ timephase.assignment.id }}</td>
+                                    <td>
+                                        {% if timephase.assignment %}
+                                            {{ timephase.assignment.workpackage.name|default('-') }} - {{ timephase.assignment.id }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>{{ 'table_header_cell.unit'|trans }}</th>
