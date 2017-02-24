@@ -76,7 +76,7 @@ class CalendarService
             }
 
             $response = new CsvResponse($data, 'project_'.$wp->getProjectName().'_events.csv');
-            
+
             return $response;
         } elseif (isset($options['type']) && $options['type'] === self::EXPORT_TYPE_ICS) {
             $data = [];
