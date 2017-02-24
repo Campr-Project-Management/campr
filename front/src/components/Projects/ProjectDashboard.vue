@@ -2,7 +2,7 @@
     <div>
         <div class="page-section">
             <div class="header flex">
-                <h1>{{ project.title }}</h1>
+                <h1>Project Dashboard</h1>
             </div>
         </div>
     </div>
