@@ -13,7 +13,9 @@
         </div>
         <div class="content">
             <small-project-box v-for="project in projects" v-bind:project="project"></small-project-box>
-            <a href="" class="new-box">{{ message.new_project }} +</a>
+            <router-link :to="{name: 'projects-create-1'}">
+                <a href="" class="new-box">{{ message.new_project }} +</a>
+            </router-link>
         </div>
     </div>
 </template>
@@ -35,10 +37,9 @@ export default {
             this.activePage = page;
         },
     },
-    watch: {
-        user: function() {
-            this.getProjects(this.activePage);
-        },
+    created() {
+        console.log(this.$store.state.task.totalItems);
+        this.getProjects(this.activePage);
     },
     computed: mapGetters({
         projects: 'projects',

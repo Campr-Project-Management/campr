@@ -12,7 +12,6 @@
             </div>
             <div class="content">
                 <task-box v-for="task in tasks" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></task-box>
-                <a href="" class="new-box">{{ message.new_task }} +</a>
             </div>
         </div>
     </div>

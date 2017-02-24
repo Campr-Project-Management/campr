@@ -28,7 +28,7 @@
                             </g>
                             </svg>
                         </span>
-                        <span class="notification-balloon">1</span>
+                        <span class="notification-balloon">{{ $store.state.project.items.totalItems + $store.state.task.items.totalItems }}</span>
                     </router-link>
                 </li>
                 <li>
@@ -46,7 +46,7 @@
                             </g>
                             </svg>
                         </span>
-                        <span class="notification-balloon">2</span>
+                        <span class="notification-balloon">{{ $store.state.project.items.totalItems }}</span>
                     </router-link>
                 </li>
                 <li>
@@ -71,6 +71,7 @@
                             </g>
                             </svg>
                         </span>
+                        <span class="notification-balloon">{{ $store.state.task.items.totalItems }}</span>
                     </router-link>
                 </li>
             </ul>
