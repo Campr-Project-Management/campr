@@ -120,6 +120,7 @@ menu:
     teams: Teams
     settings: Settings
     contact: Contact
+    admin: Admin
 
 title:
     homepage_main: Campr Main Site

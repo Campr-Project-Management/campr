@@ -52,6 +52,8 @@
                                     <td>
                                         {% if project_status.createdAt %}
                                             {{ project_status.createdAt|date('d/m/Y') }}
+                                        {% else %}
+                                            -
                                         {% endif %}
                                     </td>
                                 </tr>

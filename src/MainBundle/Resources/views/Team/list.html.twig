@@ -34,7 +34,7 @@
                     <th>{{ 'placeholder.actions'|trans }}</th>
                 </thead>
                 <tbody>
-                    {% for team in app.user.teams %}
+                    {% for team in teams %}
                         <tr>
                             <td>{{ team.id }}</td>
                             <td class="col-xs-1 thumbnail">
@@ -52,8 +52,10 @@
                                     </a>
                                 {% endif %}
                                 <a href="{{ path('main_team_show', {'id': team.id}) }}" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span></a>
-                                <a href="{{ path('main_team_edit', {'id': team.id}) }}" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
-                                <a href="{{ path('main_team_delete', {'id': team.id}) }}" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                {% if team in app.user.teams %}
+                                    <a href="{{ path('main_team_edit', {'id': team.id}) }}" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                                    <a href="{{ path('main_team_delete', {'id': team.id}) }}" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
