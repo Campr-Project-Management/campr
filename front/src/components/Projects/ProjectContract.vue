@@ -294,11 +294,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
     @import '../../css/_common';
-
-    .datetime-picker {
-        width: 100% !important;
-        box-sizing: border-box;
-    }
 </style>
 <style scoped lang="scss">
     @import '../../css/page-section';
@@ -327,12 +322,6 @@ export default {
                 margin-left: 15px;
             }
         }
-    }
-
-    .calendar-icon {
-        position: absolute;
-        right: 15px;
-        top: 4px;
     }
 
     .project-contract {
