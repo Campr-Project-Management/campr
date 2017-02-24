@@ -34,7 +34,7 @@
 
             <div class="checkbox-input clearfix">
                 <input id="project-programme" type="checkbox" name="" value="1" @click="toggleProgramme">
-                <label for="project-programme">{{ message.project_programme</label>
+                <label for="project-programme">{{ message.project_programme }}</label>
             </div>
             <div v-if="visibleProgramme">
                 <select-field title="Select Portfolio" v-bind:options="customers"></select-field>

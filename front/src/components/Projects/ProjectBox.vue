@@ -42,7 +42,7 @@
             <pencil-icon :link="{name: 'edit'}"></pencil-icon>
         </div>
         <ul class="bullets">
-            <li v-for="note in project.notes">{{ note }}</li>
+            <li v-for="note in project.notes">{{ note.title }}</li>
         </ul>
         <a href="" class="add-note">{{ message.add_project_notes }}</a>
     </div>

@@ -12,7 +12,9 @@
             </div>
             <div class="content">
                 <project-box v-for="project in projects" v-bind:project="project"></project-box>
-                <a href="" class="new-box">{{ message.new_project }} +</a>
+                <router-link :to="{name: 'projects-create-1'}">
+                    <a href="" class="new-box">{{ message.new_project }} +</a>
+                </router-link>
             </div>
         </div>
     </div>
