@@ -23,7 +23,7 @@ const actions = {
     getRecentTasks({commit}, page) {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
-            .post(Routing.generate('app_api_workpackage_list'), {'recent': true, 'page': page}).then((response) => {
+            .get(Routing.generate('app_api_workpackage_list').substr(1), {'recent': true, 'page': page}).then((response) => {
                 let tasks = response.data;
                 commit(types.SET_TASKS, {tasks});
                 commit(types.TOGGLE_LOADER, false);
@@ -38,7 +38,7 @@ const actions = {
     getTasks({commit}, page) {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
-            .post(Routing.generate('app_api_workpackage_list'), {'page': page}).then((response) => {
+            .get(Routing.generate('app_api_workpackage_list').substr(1), {'page': page}).then((response) => {
                 let tasks = response.data;
                 commit(types.SET_TASKS, {tasks});
                 commit(types.TOGGLE_LOADER, false);
@@ -52,7 +52,7 @@ const actions = {
      */
     getTaskById({commit}, id) {
         Vue.http
-            .get(Routing.generate('app_api_workpackage_get', {'id': id})).then((response) => {
+            .get(Routing.generate('app_api_workpackage_get', {'id': id}).substr(1)).then((response) => {
                 let task = response.data;
                 commit(types.SET_TASK, {task});
             }, (response) => {
