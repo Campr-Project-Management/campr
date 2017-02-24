@@ -25,18 +25,39 @@ $additionalColor5: #D87F52;
 .middle-fill {
   fill: $middleColor;
 }
+.second-fill {
+  fill: $secondColor;
+}
+.danger-fill {
+  fill: $dangerColor;
+}
 .middle-stroke {
   stroke: $middleColor;
 }
-
 .second-bg {
   background: $secondColor !important;
 }
-
+.warning-bg {
+  background: $warningColor !important;
+}
+.danger-bg {
+  background: $dangerColor !important;
+}
+.disable-bg {
+  background: #5A5A5A !important;
+}
+.second-dark-bg {
+  background: $secondDarkColor !important;
+}
+.second-color {
+  color: $secondColor !important;
+}
+.warning-color {
+  color: $warningColor !important;
+}
 .danger-color {
   color: $dangerColor !important;
 }
-
 .danger-border {
   border: 1px solid $dangerColor !important;
 }

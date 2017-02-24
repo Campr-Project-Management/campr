@@ -58,7 +58,7 @@
                 <span class="notification-balloon">5</span>
             </a>
         </div>
-        <div v-show="this.$route.name.indexOf('project-contract') != -1" class="project-title">
+        <div v-show="this.$route.name.indexOf('project-') != -1" class="project-title">
             <p>{{ message.project }}</p>
             <h4>{{ currentProjectTitle }}</h4>
         </div>
