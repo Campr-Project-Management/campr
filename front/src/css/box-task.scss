@@ -1,3 +1,9 @@
+@import './_variables';
+
+.task-box .header h2 {
+  color: $secondColor;
+}
+
 .info {
   padding-top: 18px;
 
