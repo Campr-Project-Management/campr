@@ -646,4 +646,31 @@ class ProjectController extends ApiController
 
         return $this->createApiResponse($wppwcts);
     }
+
+    /**
+     * Retrieve calendar files for users.
+     *
+     * @Route("/{id}/export-calendars", name="app_api_users_export_calendars", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function exportCalendarsAction(Request $request, Project $project)
+    {
+        if (!$this->getUser()) {
+            return $this->createApiResponse([
+                'message' => $this
+                    ->get('translator')
+                    ->trans('not_found.general', [], 'messages'),
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $filters = $request->query->all();
+        $filters['project'] = $project->getName();
+
+        return $this->get('app.service.calendar')->exportUserCalendars($filters, $this->getUser());
+    }
 }
