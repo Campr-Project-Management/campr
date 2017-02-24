@@ -35,7 +35,7 @@ const actions = {
     */
     toggleFavourite({commit}, project) {
         Vue.http
-        .patch(Routing.generate('app_api_project_edit', {'id': project.id}), {favourite: !project.favourite})
+        .patch(Routing.generate('app_api_project_edit', {'id': project.id}).substr(1), {favourite: !project.favourite})
         .then(() => {
             commit(types.TOGGLE_FAVOURITE, project);
         }, (response) => {
@@ -50,7 +50,7 @@ const actions = {
     getProjects({commit}) {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
-        .get(Routing.generate('app_api_project_list')).then((response) => {
+        .get(Routing.generate('app_api_project_list').substr(1)).then((response) => {
             let projects = response.data;
             commit(types.SET_PROJECTS, {projects});
             commit(types.TOGGLE_LOADER, false);
@@ -230,7 +230,7 @@ const actions = {
      */
     getProjectById({commit}, id) {
         Vue.http
-            .get(Routing.generate('app_api_project_get', {'id': id})).then((response) => {
+            .get(Routing.generate('app_api_project_get', {'id': id}).substr(1)).then((response) => {
                 let project = response.data;
                 commit(types.SET_PROJECT, {project});
             }, (response) => {
