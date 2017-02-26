@@ -1,0 +1,46 @@
+version: "2"
+
+volumes:
+    db-data:
+        external: false
+
+services:
+    mailcatcher:
+        image: dilibau/mailcatcher:0.6.4
+        ports:
+            - 1080:1080
+    db:
+        image: mysql:5.7
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+        volumes:
+            - db-data:/var/lib/mysql
+    redis:
+        image: redis
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        depends_on:
+            - db
+        ports:
+            - 8080:80
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+    php-fpm:
+        build: app/config/docker/php-fpm
+        environment:
+            - SYMFONY_DEBUG=true
+            - SYMFONY_ENV=dev
+        depends_on:
+            - db
+            - redis
+            - mailcatcher
+        volumes:
+            - .:/app
+    nginx:
+        build: app/config/docker/nginx
+        depends_on:
+            - php-fpm
+        volumes_from:
+            - php-fpm
+        ports:
+            - 80:80
