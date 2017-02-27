@@ -18,10 +18,8 @@ export default {
         Dropdown,
     },
     methods: mapActions(['getProjects']),
-    watch: {
-        user: function() {
-            this.getProjects();
-        },
+    created() {
+        this.getProjects();
     },
     computed: {
         ...mapGetters({

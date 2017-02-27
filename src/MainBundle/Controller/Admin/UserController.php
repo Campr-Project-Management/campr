@@ -2,6 +2,7 @@
 
 namespace MainBundle\Controller\Admin;
 
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,6 +25,7 @@ class UserController extends Controller
      *
      * @Route("/list", name="main_admin_user_list")
      * @Method({"GET"})
+     * @Secure(roles={"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
      *
      * @return Response
      */

@@ -71,22 +71,23 @@
                         }
                     ) }}
                     {{ form_widget(
-                    form.isBased,
-                    {
-                        'attr': {
-                        'class': 'form-control input-sm',
-                        'toggle': true
-                    },
-                        'label': 'admin.calendar.edit.based'|trans
-                    }
-                    ) }}
-                    {{ form_widget(
                         form.isBaseline,
                         {
                             'attr': {
                                 'class': 'form-control input-sm',
+                                'toggle': true
                             },
                             'label': 'label.baseline'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                    form.isBased,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                                'toggle': true
+                            },
+                            'label': 'label.based'|trans
                         }
                     ) }}
 

@@ -96,11 +96,12 @@ class RiskStrategyController extends Controller
      */
     public function createAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(CreateType::class);
+        $riskStrategy = new RiskStrategy();
+        $form = $this->createForm(CreateType::class, $riskStrategy);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
 
