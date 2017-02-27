@@ -101,6 +101,7 @@ services:
         tags:
             - { name: gos_web_socket.topic }
 
+### MENU BUILDER ###
     app.menu.menu_builder:
         class: AppBundle\Menu\MenuBuilder
         arguments:

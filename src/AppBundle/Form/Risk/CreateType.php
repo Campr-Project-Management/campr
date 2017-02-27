@@ -117,6 +117,8 @@ class CreateType extends AbstractType
             ->add('status', EntityType::class, [
                 'class' => Status::class,
                 'choice_label' => 'name',
+                'placeholder' => 'placeholder.status',
+                'translation_domain' => 'messages',
             ])
         ;
     }

@@ -1,7 +1,7 @@
 <template>
     <div class="project-box box small-box">
         <div class="header">
-            <h2>{{ project.title }}</h2>
+            <h2>{{ project.name }}</h2>
             <div>
                 <eye-icon :link="{name: 'project-dashboard', params: { id: project.id }}"></eye-icon>
                 <star-icon :item="project"></star-icon>
@@ -15,17 +15,17 @@
                 </p>
                 <p>
                     <span class="title">{{ message.customer }}:</span>
-                    <span class="data">{{ project.customer }}</span>
+                    <span class="data">{{ project.companyName }}</span>
                 </p>
                 <p>
                     <span class="title">{{ message.status }}:</span>
                     <span v-bind:class="{ finished: project.status === 'FINISHED' }" class="status-label btn-rounded">
-                        {{project.status === 'IN_PROGRESS' && 'In progress' || project.status === 'FINISHED' && 'Finished'}}
+                        {{project.statusName === 'IN_PROGRESS' && 'In progress' || project.statusName === 'FINISHED' && 'Finished'}}
                     </span>
                 </p>
             </div>
         </div>
-        <bar-chart :percentage="project.progress" :status="project.status" title-right="Progress"></bar-chart>
+        <bar-chart :percentage="project.progress" title-right="Progress"></bar-chart>
    </div>
 </template>
 

@@ -96,11 +96,12 @@ class ImpactController extends Controller
      */
     public function createAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(CreateType::class);
+        $impact = new Impact();
+        $form = $this->createForm(CreateType::class, $impact);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
 

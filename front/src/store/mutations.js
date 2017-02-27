@@ -5,5 +5,5 @@
  * @param {string} module
  */
 export const SET_FILTERED_ITEMS = (rootState, {filteredItems, module}) => {
-    rootState[module].filteredItems = filteredItems;
+    rootState[module].filteredItems.items = filteredItems;
 };

@@ -124,6 +124,10 @@ class MenuBuilder
             ->addChild($this->translator->trans('title.label.list', [], 'messages'), [
                 'route' => 'app_admin_label_list',
             ])->getParent()
+            ->addChild($this->translator->trans('title.contract.list', [], 'messages'), [
+                'route' => 'app_admin_contract_list',
+            ])
+            ->getParent()
             ->addChild($this->translator->trans('title.project_category.list', [], 'messages'), [
                 'route' => 'app_admin_project_category_list',
             ])->getParent()
@@ -319,11 +323,6 @@ class MenuBuilder
                 'route' => 'app_admin_distribution_list_list',
             ])
             ->setLinkAttribute('icon', 'zmdi zmdi-arrow-split')
-            ->getParent()
-            ->addChild($this->translator->trans('title.contract.list', [], 'messages'), [
-                'route' => 'app_admin_contract_list',
-            ])
-            ->setLinkAttribute('icon', 'zmdi zmdi-file-text')
             ->getParent()
         ;
 
