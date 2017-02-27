@@ -10,8 +10,8 @@ const state = {
 
 const getters = {
     task: state => state.currentItem,
-    tasks: state => state.items.items,
-    count: state => state.items.totalItems,
+    tasks: state => state.filteredItems.items,
+    count: state => state.filteredItems.totalItems,
 };
 
 const actions = {
@@ -24,9 +24,11 @@ const actions = {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
             .get(Routing.generate('app_api_workpackage_list').substr(1), {'recent': true, 'page': page}).then((response) => {
-                let tasks = response.data;
-                commit(types.SET_TASKS, {tasks});
-                commit(types.TOGGLE_LOADER, false);
+                if (response.status === 200) {
+                    let tasks = response.data;
+                    commit(types.SET_TASKS, {tasks});
+                    commit(types.TOGGLE_LOADER, false);
+                }
             }, (response) => {
             });
     },
@@ -39,9 +41,11 @@ const actions = {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
             .get(Routing.generate('app_api_workpackage_list').substr(1), {'page': page}).then((response) => {
-                let tasks = response.data;
-                commit(types.SET_TASKS, {tasks});
-                commit(types.TOGGLE_LOADER, false);
+                if (response.status === 200) {
+                    let tasks = response.data;
+                    commit(types.SET_TASKS, {tasks});
+                    commit(types.TOGGLE_LOADER, false);
+                }
             }, (response) => {
             });
     },
@@ -53,8 +57,10 @@ const actions = {
     getTaskById({commit}, id) {
         Vue.http
             .get(Routing.generate('app_api_workpackage_get', {'id': id}).substr(1)).then((response) => {
-                let task = response.data;
-                commit(types.SET_TASK, {task});
+                if (response.status === 200) {
+                    let task = response.data;
+                    commit(types.SET_TASK, {task});
+                }
             }, (response) => {
             });
     },
@@ -77,7 +83,7 @@ const mutations = {
      */
     [types.SET_TASKS](state, {tasks}) {
         state.items = tasks;
-        state.filteredItems = tasks;
+        state.filteredItems = JSON.parse(JSON.stringify(tasks));
     },
     /**
      * Sets task to state

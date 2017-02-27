@@ -5,25 +5,18 @@ import _ from 'lodash';
 const state = {
     currentItem: {},
     items: [],
+    itemsForFilter: [],
     filteredItems: [],
     filters: [],
 };
 
 const getters = {
     project: state => state.currentItem,
-    projects: state => state.items,
-    filteredProjects: state => state.filteredItems,
+    projects: state => state.filteredItems.items,
     currentProjectTitle: function(state) {
         return state.currentItem.title;
     },
-    projectsForFilter: function(state) {
-        let projectsForFilter = [{'key': '', 'label': 'All Projects'}];
-        state.items.map( function(project) {
-            projectsForFilter.push({'key': project.id, 'label': project.name});
-        });
-
-        return projectsForFilter;
-    },
+    projectsForFilter: state => state.itemsForFilter,
 };
 
 const actions = {
@@ -51,176 +44,12 @@ const actions = {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
         .get(Routing.generate('app_api_project_list').substr(1)).then((response) => {
-            let projects = response.data;
-            commit(types.SET_PROJECTS, {projects});
-            commit(types.TOGGLE_LOADER, false);
+            if (response.status === 200) {
+                let projects = response.data;
+                commit(types.SET_PROJECTS, {projects});
+                commit(types.TOGGLE_LOADER, false);
+            }
         }, (response) => {
-            let projects = [
-                {
-                    'id': 1,
-                    'title': 'Tesla SpaceX Mars Project',
-                    'description': 'Aenean mollis nulla eu leo feugiat gravida',
-                    'customer': 'Christoph Poll',
-                    'date': '2016-05-12',
-                    'status': 'IN_PROGRESS',
-                    'programme': 'Campr',
-                    'progress': 0,
-                    'task_status': 77,
-                    'costs_status': 35.67,
-                    'favourite': true,
-                    'objectives': [
-                        {
-                            'title': 'Aenean mollis nulla eu leo feugiat gravida',
-                            'content': 'Proin vitae lacinia arcu, ut tempus nulla.' +
-                            ' Suspendisse ornare enim nec enim tristique pharetra.' +
-                            ' Nam at tincidunt sapien. Proin aliquam neque ac felis ' +
-                            'congue rhoncus. Aliquam eu lorem ex. Sed quis lacus sem.' +
-                            ' Aliquam auctor felis sed tellus placerat lacinia.'},
-                        {
-                            'title': 'Integer dictum, enim quis iaculis venenatis,' +
-                            ' ipsum lorem ornare diam, aliquam rutrum neque felis vel lectus',
-                            'content': 'Suspendisse sit amet tortor tempus, vehicula odio in,' +
-                            ' posuere erat. Nam elementum porttitor justo ac cursus. Praesent' +
-                            ' blandit id lectus vel dapibus. Vestibulum suscipit turpis nec dui' +
-                            ' ultrices condimentum. Aenean et auctor eros. Suspendisse sagittis' +
-                            ' aliquam sollicitudin. Vestibulum aliquam mi tempus fringilla sagittis. ' +
-                            'Nam commodo ultricies faucibus. Proin interdum ac orci a vestibulum. Aenean' +
-                            ' ullamcorper mi et magna aliquet laoreet. Pellentesque ultrices porta dolor,' +
-                            ' non dignissim purus dapibus a. Nullam a lacinia leo, vestibulum finibus eros.',
-                        },
-                    ],
-                    'limitations': [
-                        {
-                            'content': 'Proin vitae lacinia arcu, ut tempus nulla.' +
-                            ' Suspendisse ornare enim nec enim tristique pharetra.' +
-                            ' Nam at tincidunt sapien. Proin aliquam neque ac felis ' +
-                            'congue rhoncus. Aliquam eu lorem ex. Sed quis lacus sem.' +
-                            ' Aliquam auctor felis sed tellus placerat lacinia.'},
-                        {
-                            'content': 'Suspendisse sit amet tortor tempus, vehicula odio in,' +
-                            ' posuere erat. Nam elementum porttitor justo ac cursus. Praesent' +
-                            ' blandit id lectus vel dapibus. Vestibulum suscipit turpis nec dui' +
-                            ' ultrices condimentum. Aenean et auctor eros. Suspendisse sagittis' +
-                            ' aliquam sollicitudin. Vestibulum aliquam mi tempus fringilla sagittis. ' +
-                            'Nam commodo ultricies faucibus. Proin interdum ac orci a vestibulum. Aenean' +
-                            ' ullamcorper mi et magna aliquet laoreet. Pellentesque ultrices porta dolor,' +
-                            ' non dignissim purus dapibus a. Nullam a lacinia leo, vestibulum finibus eros.',
-                        },
-                    ],
-                    'deliverables': [
-                        {
-                            'content': 'Proin vitae lacinia arcu, ut tempus nulla.' +
-                            ' Suspendisse ornare enim nec enim tristique pharetra.' +
-                            ' Nam at tincidunt sapien. Proin aliquam neque ac felis ' +
-                            'congue rhoncus. Aliquam eu lorem ex. Sed quis lacus sem.' +
-                            ' Aliquam auctor felis sed tellus placerat lacinia.'},
-                        {
-                            'content': 'Suspendisse sit amet tortor tempus, vehicula odio in,' +
-                            ' posuere erat. Nam elementum porttitor justo ac cursus. Praesent' +
-                            ' blandit id lectus vel dapibus. Vestibulum suscipit turpis nec dui' +
-                            ' ultrices condimentum. Aenean et auctor eros. Suspendisse sagittis' +
-                            ' aliquam sollicitudin. Vestibulum aliquam mi tempus fringilla sagittis. ' +
-                            'Nam commodo ultricies faucibus. Proin interdum ac orci a vestibulum. Aenean' +
-                            ' ullamcorper mi et magna aliquet laoreet. Pellentesque ultrices porta dolor,' +
-                            ' non dignissim purus dapibus a. Nullam a lacinia leo, vestibulum finibus eros.',
-                        },
-                    ],
-                    'notes': [
-                        'Lorem ipsum dolor sit amet, consectetur' +
-                        ' adipiscing elit.' +
-                        ' Duis at dolor sollicitudin, ' +
-                        'interdum nibh quis, faucibus justo. ' +
-                        'Suspendisse sed nisi id mi aliquam finibus ac sem.',
-                        'Suspendisse in massa in ligula suscipit vulputate.',
-                        'Sed finibus massa nec est rutrum malesuada' +
-                        ' a et eros.' +
-                        ' Cras volutpat leo eu lorem viverra ornare.',
-                    ],
-                },
-                {
-                    'id': 2,
-                    'title': 'Tesla SpaceX Mars Project',
-                    'description': 'Aenean mollis nulla eu leo feugiat gravida',
-                    'customer': 'Christoph Poll',
-                    'date': '2016-05-12',
-                    'status': 'IN_PROGRESS',
-                    'programme': 'Campr',
-                    'progress': 0,
-                    'task_status': 77,
-                    'costs_status': 35.67,
-                    'favourite': true,
-                    'objectives': [
-                        {
-                            'title': 'Aenean mollis nulla eu leo feugiat gravida',
-                            'content': 'Proin vitae lacinia arcu, ut tempus nulla.' +
-                            ' Suspendisse ornare enim nec enim tristique pharetra.' +
-                            ' Nam at tincidunt sapien. Proin aliquam neque ac felis ' +
-                            'congue rhoncus. Aliquam eu lorem ex. Sed quis lacus sem.' +
-                            ' Aliquam auctor felis sed tellus placerat lacinia.'},
-                        {
-                            'title': 'Integer dictum, enim quis iaculis venenatis,' +
-                            ' ipsum lorem ornare diam, aliquam rutrum neque felis vel lectus',
-                            'content': 'Suspendisse sit amet tortor tempus, vehicula odio in,' +
-                            ' posuere erat. Nam elementum porttitor justo ac cursus. Praesent' +
-                            ' blandit id lectus vel dapibus. Vestibulum suscipit turpis nec dui' +
-                            ' ultrices condimentum. Aenean et auctor eros. Suspendisse sagittis' +
-                            ' aliquam sollicitudin. Vestibulum aliquam mi tempus fringilla sagittis. ' +
-                            'Nam commodo ultricies faucibus. Proin interdum ac orci a vestibulum. Aenean' +
-                            ' ullamcorper mi et magna aliquet laoreet. Pellentesque ultrices porta dolor,' +
-                            ' non dignissim purus dapibus a. Nullam a lacinia leo, vestibulum finibus eros.',
-                        },
-                    ],
-                    'limitations': [
-                        {
-                            'content': 'Proin vitae lacinia arcu, ut tempus nulla.' +
-                            ' Suspendisse ornare enim nec enim tristique pharetra.' +
-                            ' Nam at tincidunt sapien. Proin aliquam neque ac felis ' +
-                            'congue rhoncus. Aliquam eu lorem ex. Sed quis lacus sem.' +
-                            ' Aliquam auctor felis sed tellus placerat lacinia.'},
-                        {
-                            'content': 'Suspendisse sit amet tortor tempus, vehicula odio in,' +
-                            ' posuere erat. Nam elementum porttitor justo ac cursus. Praesent' +
-                            ' blandit id lectus vel dapibus. Vestibulum suscipit turpis nec dui' +
-                            ' ultrices condimentum. Aenean et auctor eros. Suspendisse sagittis' +
-                            ' aliquam sollicitudin. Vestibulum aliquam mi tempus fringilla sagittis. ' +
-                            'Nam commodo ultricies faucibus. Proin interdum ac orci a vestibulum. Aenean' +
-                            ' ullamcorper mi et magna aliquet laoreet. Pellentesque ultrices porta dolor,' +
-                            ' non dignissim purus dapibus a. Nullam a lacinia leo, vestibulum finibus eros.',
-                        },
-                    ],
-                    'deliverables': [
-                        {
-                            'content': 'Proin vitae lacinia arcu, ut tempus nulla.' +
-                            ' Suspendisse ornare enim nec enim tristique pharetra.' +
-                            ' Nam at tincidunt sapien. Proin aliquam neque ac felis ' +
-                            'congue rhoncus. Aliquam eu lorem ex. Sed quis lacus sem.' +
-                            ' Aliquam auctor felis sed tellus placerat lacinia.'},
-                        {
-                            'content': 'Suspendisse sit amet tortor tempus, vehicula odio in,' +
-                            ' posuere erat. Nam elementum porttitor justo ac cursus. Praesent' +
-                            ' blandit id lectus vel dapibus. Vestibulum suscipit turpis nec dui' +
-                            ' ultrices condimentum. Aenean et auctor eros. Suspendisse sagittis' +
-                            ' aliquam sollicitudin. Vestibulum aliquam mi tempus fringilla sagittis. ' +
-                            'Nam commodo ultricies faucibus. Proin interdum ac orci a vestibulum. Aenean' +
-                            ' ullamcorper mi et magna aliquet laoreet. Pellentesque ultrices porta dolor,' +
-                            ' non dignissim purus dapibus a. Nullam a lacinia leo, vestibulum finibus eros.',
-                        },
-                    ],
-                    'notes': [
-                        'Lorem ipsum dolor sit amet, consectetur' +
-                        ' adipiscing elit.' +
-                        ' Duis at dolor sollicitudin, ' +
-                        'interdum nibh quis, faucibus justo. ' +
-                        'Suspendisse sed nisi id mi aliquam finibus ac sem.',
-                        'Suspendisse in massa in ligula suscipit vulputate.',
-                        'Sed finibus massa nec est rutrum malesuada' +
-                        ' a et eros.' +
-                        ' Cras volutpat leo eu lorem viverra ornare.',
-                    ],
-                },
-            ];
-            commit(types.SET_PROJECTS, {projects});
-            commit(types.TOGGLE_LOADER, false);
         });
     },
     /**
@@ -231,93 +60,11 @@ const actions = {
     getProjectById({commit}, id) {
         Vue.http
             .get(Routing.generate('app_api_project_get', {'id': id}).substr(1)).then((response) => {
-                let project = response.data;
-                commit(types.SET_PROJECT, {project});
+                if (response.status === 200) {
+                    let project = response.data;
+                    commit(types.SET_PROJECT, {project});
+                }
             }, (response) => {
-                // TODO: REMOVE MOCK DATA
-                let project = {
-                    'id': 1,
-                    'title': 'Tesla SpaceX Mars Project',
-                    'description': 'Aenean mollis nulla eu leo feugiat gravida',
-                    'customer': 'Christoph Poll',
-                    'date': '2016-05-12',
-                    'status': 'IN_PROGRESS',
-                    'programme': 'Campr',
-                    'progress': 0,
-                    'task_status': 77,
-                    'costs_status': 35.67,
-                    'favourite': true,
-                    'objectives': [
-                        {
-                            'title': 'Aenean mollis nulla eu leo feugiat gravida',
-                            'content': 'Proin vitae lacinia arcu, ut tempus nulla.' +
-                            ' Suspendisse ornare enim nec enim tristique pharetra.' +
-                            ' Nam at tincidunt sapien. Proin aliquam neque ac felis ' +
-                            'congue rhoncus. Aliquam eu lorem ex. Sed quis lacus sem.' +
-                            ' Aliquam auctor felis sed tellus placerat lacinia.'},
-                        {
-                            'title': 'Integer dictum, enim quis iaculis venenatis,' +
-                            ' ipsum lorem ornare diam, aliquam rutrum neque felis vel lectus',
-                            'content': 'Suspendisse sit amet tortor tempus, vehicula odio in,' +
-                            ' posuere erat. Nam elementum porttitor justo ac cursus. Praesent' +
-                            ' blandit id lectus vel dapibus. Vestibulum suscipit turpis nec dui' +
-                            ' ultrices condimentum. Aenean et auctor eros. Suspendisse sagittis' +
-                            ' aliquam sollicitudin. Vestibulum aliquam mi tempus fringilla sagittis. ' +
-                            'Nam commodo ultricies faucibus. Proin interdum ac orci a vestibulum. Aenean' +
-                            ' ullamcorper mi et magna aliquet laoreet. Pellentesque ultrices porta dolor,' +
-                            ' non dignissim purus dapibus a. Nullam a lacinia leo, vestibulum finibus eros.',
-                        },
-                    ],
-                    'limitations': [
-                        {
-                            'content': 'Proin vitae lacinia arcu, ut tempus nulla.' +
-                            ' Suspendisse ornare enim nec enim tristique pharetra.' +
-                            ' Nam at tincidunt sapien. Proin aliquam neque ac felis ' +
-                            'congue rhoncus. Aliquam eu lorem ex. Sed quis lacus sem.' +
-                            ' Aliquam auctor felis sed tellus placerat lacinia.'},
-                        {
-                            'content': 'Suspendisse sit amet tortor tempus, vehicula odio in,' +
-                            ' posuere erat. Nam elementum porttitor justo ac cursus. Praesent' +
-                            ' blandit id lectus vel dapibus. Vestibulum suscipit turpis nec dui' +
-                            ' ultrices condimentum. Aenean et auctor eros. Suspendisse sagittis' +
-                            ' aliquam sollicitudin. Vestibulum aliquam mi tempus fringilla sagittis. ' +
-                            'Nam commodo ultricies faucibus. Proin interdum ac orci a vestibulum. Aenean' +
-                            ' ullamcorper mi et magna aliquet laoreet. Pellentesque ultrices porta dolor,' +
-                            ' non dignissim purus dapibus a. Nullam a lacinia leo, vestibulum finibus eros.',
-                        },
-                    ],
-                    'deliverables': [
-                        {
-                            'content': 'Proin vitae lacinia arcu, ut tempus nulla.' +
-                            ' Suspendisse ornare enim nec enim tristique pharetra.' +
-                            ' Nam at tincidunt sapien. Proin aliquam neque ac felis ' +
-                            'congue rhoncus. Aliquam eu lorem ex. Sed quis lacus sem.' +
-                            ' Aliquam auctor felis sed tellus placerat lacinia.'},
-                        {
-                            'content': 'Suspendisse sit amet tortor tempus, vehicula odio in,' +
-                            ' posuere erat. Nam elementum porttitor justo ac cursus. Praesent' +
-                            ' blandit id lectus vel dapibus. Vestibulum suscipit turpis nec dui' +
-                            ' ultrices condimentum. Aenean et auctor eros. Suspendisse sagittis' +
-                            ' aliquam sollicitudin. Vestibulum aliquam mi tempus fringilla sagittis. ' +
-                            'Nam commodo ultricies faucibus. Proin interdum ac orci a vestibulum. Aenean' +
-                            ' ullamcorper mi et magna aliquet laoreet. Pellentesque ultrices porta dolor,' +
-                            ' non dignissim purus dapibus a. Nullam a lacinia leo, vestibulum finibus eros.',
-                        },
-                    ],
-                    'notes': [
-                        'Lorem ipsum dolor sit amet, consectetur' +
-                        ' adipiscing elit.' +
-                        ' Duis at dolor sollicitudin, ' +
-                        'interdum nibh quis, faucibus justo. ' +
-                        'Suspendisse sed nisi id mi aliquam finibus ac sem.',
-                        'Suspendisse in massa in ligula suscipit vulputate.',
-                        'Sed finibus massa nec est rutrum malesuada' +
-                        ' a et eros.' +
-                        ' Cras volutpat leo eu lorem viverra ornare.',
-                    ],
-                };
-                commit(types.SET_PROJECT, {project});
-                commit(types.TOGGLE_LOADER, false);
             });
     },
 };
@@ -330,7 +77,12 @@ const mutations = {
      */
     [types.SET_PROJECTS](state, {projects}) {
         state.items = projects;
-        state.filteredItems = projects;
+        state.filteredItems = JSON.parse(JSON.stringify(projects));
+        let projectsForFilter = [{'key': '', 'label': 'All Projects'}];
+        state.items.items.map( function(project) {
+            projectsForFilter.push({'key': project.id, 'label': project.name});
+        });
+        state.itemsForFilter = projectsForFilter;
     },
     /**
      * Sets project to state
