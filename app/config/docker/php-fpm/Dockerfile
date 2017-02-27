@@ -59,6 +59,11 @@ RUN apt-get install -y python-software-properties git \
     && ln -s /usr/share/npm/node_modules /usr/local/lib/node_modules \
     && npm install -g bower grunt-cli jslint karma e2e babel phantomjs-prebuilt webpack sass node-sass less scss
 
+# Certbot
+RUN cd /opt && git clone https://github.com/certbot/certbot.git \
+    && cd /opt/certbot \
+    && ./letsencrypt-auto -m radu.gribincea@trisoft.ro --agree-tos -n certificates
+
 # Clean Up
 RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/*
