@@ -12,6 +12,7 @@ parameters:
 
     mailer_transport:  smtp
     mailer_host:       127.0.0.1
+    mailer_port:       25
     mailer_user:       ~
     mailer_password:   ~
 
@@ -20,8 +21,6 @@ parameters:
 
     domain: campr.biz
 
-    #redis
-    #redis_host: 172.19.0.2
     redis_host: localhost
 
     #jwt
