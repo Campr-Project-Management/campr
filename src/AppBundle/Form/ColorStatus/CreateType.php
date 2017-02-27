@@ -31,9 +31,9 @@ class CreateType extends AbstractType
             ->add('color', ChoiceType::class, [
                 'required' => true,
                 'choices' => [
-                    'Green' => 'green',
-                    'Yellow' => 'yellow',
-                    'Red' => 'red',
+                    'choices.green' => 'green',
+                    'choices.yellow' => 'yellow',
+                    'choices.red' => 'red',
                 ],
                 'placeholder' => 'placeholder.color_status',
                 'constraints' => [

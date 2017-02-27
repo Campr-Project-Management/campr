@@ -41,11 +41,23 @@
                                 </tr>
                                 <tr>
                                     <th>{{ 'table_header_cell.from_time'|trans }}</th>
-                                    <td>{{ workingTime.fromTime|date('H:i') }}</td>
+                                    <td>
+                                        {% if workingTime.fromTime %}
+                                            {{ workingTime.fromTime|date('H:i') }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>{{ 'table_header_cell.to_time'|trans }}</th>
-                                    <td>{{ workingTime.toTime|date('H:i') }}</td>
+                                    <td>
+                                        {% if workingTime.toTime %}
+                                            {{ workingTime.toTime|date('H:i') }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
