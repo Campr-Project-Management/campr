@@ -52,12 +52,14 @@
                                 'label': 'label.name'|trans,
                             }
                         ) }}
-                        {{ form_widget(
-                            form.logoFile,
-                            {
-                                'attr': {'class': 'form-control'}
-                            }
-                        ) }}
+                        <div class="form-group">
+                            {{ form_widget(
+                                form.logoFile,
+                                {
+                                    'attr': {'class': 'form-control'}
+                                }
+                            ) }}
+                        </div>
                         {{ form_widget(
                             form.number,
                             {

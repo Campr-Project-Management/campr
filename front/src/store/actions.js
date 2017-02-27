@@ -10,9 +10,8 @@ import * as types from './mutation-types';
 export const filterItems = ({commit, rootState}, params) => {
     let filteredItems = [];
     let module = params[2];
-
     commit(types.SET_FILTERS, params);
-    rootState[module].items.map(function(item) {
+    rootState[module].items.items.map(function(item) {
         let applyFilters = true;
         Object.keys(rootState[module].filters).map(function(key) {
             if (item[key] !== rootState[module].filters[key] && rootState[module].filters[key] != '') {
