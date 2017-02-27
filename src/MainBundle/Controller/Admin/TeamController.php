@@ -3,6 +3,7 @@
 namespace MainBundle\Controller\Admin;
 
 use AppBundle\Entity\Team;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use MainBundle\Form\Team\CreateType;
 use MainBundle\Form\Team\EditType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -24,6 +25,7 @@ class TeamController extends Controller
      *
      * @Route("/list", name="main_admin_team_list")
      * @Method({"GET"})
+     * @Secure(roles={"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
      *
      * @return Response
      */

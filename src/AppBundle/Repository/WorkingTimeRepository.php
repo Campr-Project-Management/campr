@@ -9,7 +9,6 @@ class WorkingTimeRepository extends BaseRepository
         $qb = $this
             ->createQueryBuilder('q')
             ->leftJoin('q.day', 'd')
-            ->leftJoin('d.calendar', 'c')
         ;
 
         foreach ($criteria as $key => $value) {
@@ -18,7 +17,7 @@ class WorkingTimeRepository extends BaseRepository
             }
             $qb->andWhere(
                 $qb->expr()->like(
-                    'c.'.$key,
+                    'd.'.$key,
                     $qb->expr()->literal('%'.$value.'%')
                 )
             );
@@ -26,7 +25,7 @@ class WorkingTimeRepository extends BaseRepository
 
         if ($orderBy) {
             foreach ($orderBy as $key => $value) {
-                $qb->orderBy('c.'.$key, $value);
+                $qb->orderBy('q.'.$key, $value);
             }
         }
 
