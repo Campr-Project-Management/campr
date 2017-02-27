@@ -29,7 +29,7 @@ class TeamInvite
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team", inversedBy="teamInvites")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="team_id", referencedColumnName="id", nullable=false)
+     *     @ORM\JoinColumn(name="team_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      * })
      */
     private $team;
@@ -41,7 +41,7 @@ class TeamInvite
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="teamInvites")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $user;

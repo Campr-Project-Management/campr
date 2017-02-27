@@ -34,8 +34,8 @@ class TeamSlug
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team", inversedBy="teamSlugs", cascade={"remove"})
-     * @ORM\JoinColumn(name="team_id")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team", inversedBy="teamSlugs")
+     * @ORM\JoinColumn(name="team_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $team;
 
