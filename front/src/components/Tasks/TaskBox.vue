@@ -2,7 +2,7 @@
     <div class="task-box box" v-bind:class="'border-color-' + task.id">
         <div class="header">
             <div>
-                <div class="user-info flex flex-v-center">
+                <div v-if="user" class="user-info flex flex-v-center">
                     <img src="">
                     <p>Thomas Cici</p>
                 </div>
@@ -112,7 +112,7 @@ export default {
             return end.diff(start, 'days');
         },
     },
-    props: ['task', 'colorStatuses'],
+    props: ['task', 'colorStatuses', 'user'],
     data: function() {
         return {
             message: {

@@ -59,7 +59,11 @@ class ProjectController extends ApiController
             ->findByUserAndFilters($this->getUser(), $filters)
         ;
 
-        return $this->createApiResponse($projects);
+        $responseArray = [];
+        $responseArray['totalItems'] = count($projects);
+        $responseArray['items'] = $projects;
+
+        return $this->createApiResponse($responseArray);
     }
 
     /**
