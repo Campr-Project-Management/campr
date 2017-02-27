@@ -24,7 +24,7 @@ class UserListener
      * @param UserService         $userService
      * @param UserPasswordEncoder $encoder
      */
-    public function __construct(UserService $userService, UserPasswordEncoder $encoder, GoogleAuthenticator $googleAuthenticator)
+    public function __construct(UserService $userService, UserPasswordEncoder $encoder, GoogleAuthenticator $googleAuthenticator = null)
     {
         $this->userService = $userService;
         $this->encoder = $encoder;
@@ -49,7 +49,9 @@ class UserListener
                 $activationToken = $this->userService->generateActivationResetToken();
                 $entity->setActivationToken($activationToken);
                 $entity->setActivationTokenCreatedAt(new \DateTime());
-                $entity->setGoogleAuthenticatorSecret($this->googleAuthenticator->generateSecret());
+                if ($this->googleAuthenticator) {
+                    $entity->setGoogleAuthenticatorSecret($this->googleAuthenticator->generateSecret());
+                }
 
                 $uok->recomputeSingleEntityChangeSet(
                     $em->getClassMetadata(User::class),
