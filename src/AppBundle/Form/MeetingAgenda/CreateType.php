@@ -43,7 +43,7 @@ class CreateType extends AbstractType
                 'translation_domain' => 'messages',
             ])
             ->add('start', DateTimeType::class, [
-                'required' => false,
+                'required' => true,
                 'widget' => 'single_text',
                 'constraints' => [
                     new NotBlank([
@@ -52,7 +52,7 @@ class CreateType extends AbstractType
                 ],
             ])
             ->add('end', DateTimeType::class, [
-                'required' => false,
+                'required' => true,
                 'widget' => 'single_text',
                 'constraints' => [
                     new NotBlank([
@@ -61,7 +61,7 @@ class CreateType extends AbstractType
                 ],
             ])
             ->add('duration', DateTimeType::class, [
-                'required' => false,
+                'required' => true,
                 'widget' => 'single_text',
                 'constraints' => [
                     new NotBlank([
