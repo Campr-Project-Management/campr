@@ -168,7 +168,6 @@ services:
         arguments:
             - '@app.service.user'
             - '@security.password_encoder'
-            - '@?scheb_two_factor.security.google_authenticator'
         tags :
             - { name: doctrine.event_listener, event: onFlush }
 
