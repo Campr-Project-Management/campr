@@ -37,7 +37,7 @@
         <div class="tasks">
             <div class="grid-view" v-show="!boardView">
                 <div class="flex flex-row">
-                    <task-box v-bind:task="task" v-for="task in tasks"></task-box>
+                    <task-box v-bind:task="task" user="user" v-for="task in tasks"></task-box>
                 </div>
                 <div class="pagination flex flex-center" v-if="count > 0">
                     <span v-for="page in [1,2]" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>

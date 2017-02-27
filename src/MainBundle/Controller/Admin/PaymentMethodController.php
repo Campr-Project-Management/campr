@@ -3,6 +3,7 @@
 namespace MainBundle\Controller\Admin;
 
 use AppBundle\Entity\PaymentMethod;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use MainBundle\Form\PaymentMethod\CreateType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -23,6 +24,7 @@ class PaymentMethodController extends Controller
      *
      * @Route("/list", name="main_admin_payment_method_list")
      * @Method({"GET"})
+     * @Secure(roles={"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
      *
      * @return Response
      */

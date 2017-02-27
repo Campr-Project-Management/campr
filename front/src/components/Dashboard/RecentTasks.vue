@@ -6,9 +6,6 @@
                 <task-filters></task-filters>
                 <div class="separator"></div>
                 <router-link :to="{name: 'tasks'}" class="btn-rounded">{{ message.all_tasks }}</router-link>
-                <div class="pagination" v-if="count > 0">
-                    <span v-for="page in count/tasks.length" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
-                </div>
             </div>
         </div>
         <div class="content">
@@ -28,17 +25,16 @@ export default {
         SmallTaskBox,
     },
     methods: {
-        ...mapActions(['getRecentTasks', 'getColorStatuses']),
+        ...mapActions(['getRecentTasks', 'getColorStatuses', 'getProjects']),
         changePage(page) {
             this.getRecentTasks(page);
             this.activePage = page;
         },
     },
-    watch: {
-        user: function() {
-            this.getRecentTasks(this.activePage);
-            this.getColorStatuses();
-        },
+    created() {
+        this.getRecentTasks(this.activePage);
+        this.getProjects();
+        this.getColorStatuses();
     },
     computed: mapGetters({
         tasks: 'tasks',
