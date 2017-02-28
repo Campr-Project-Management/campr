@@ -110,6 +110,12 @@ message:
     invoce: Invoice for payment:
     reset_password: Please enter your email address to reset the account password. An email will be sent with instructions.
     wait: Please wait...
+    edit_task_labels: Edit Task Labels
+    new_label: New Label
+    open_tasks: Open Tasks
+    view_grid: View Grid
+    view_board: View Board
+    label_note: Note':' the Label text color is white so pick a background color that makes it easy to read the white text above it.
 
 menu:
     users: Users
@@ -557,6 +563,8 @@ button:
     previous_step: Previous Step
     start_project: Start Project
     analyze: Analyze
+    cancel: Cancel
+    create_label: Create Label
 
 checkbox:
     checked: Yes
@@ -651,6 +659,9 @@ placeholder:
     actions: Actions
     filesystem: Select filesystem
     adapter: Select driver
+    label_title: Label Title
+    label_description: Label Description
+    label_color: Label Color
 
 table_header_cell:
     id: Id

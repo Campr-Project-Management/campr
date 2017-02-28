@@ -38,13 +38,11 @@ export default {
         },
     },
     created() {
-        console.log(this.$store.state.task.totalItems);
         this.getProjects(this.activePage);
     },
     computed: mapGetters({
         projects: 'projects',
         user: 'user',
-        translator: 'translator',
     }),
     data() {
         return {
