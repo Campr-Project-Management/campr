@@ -6,6 +6,15 @@ services:
         tags:
             - { name: knp_menu.menu, alias: admin_main }
 
+### FORMS ###
+    main.form.user.account_type:
+        class: MainBundle\Form\User\AccountType
+        arguments:
+            - '@scheb_two_factor.security.google_authenticator'
+        tags:
+            - { name: form.type }
+
+
 ### VALIDATION CONSTRAINTS ###
     main.team_slug_usable_constraint:
         class: MainBundle\Validator\Constraints\TeamSlugUsableValidator
