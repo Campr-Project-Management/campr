@@ -73,7 +73,7 @@ class LabelController extends ApiController
     /**
      * Delete a specific label.
      *
-     * @Route("/{id}", name="app_api_label_delete")
+     * @Route("/{id}", name="app_api_label_delete", options={"expose"=true})
      * @Method({"DELETE"})
      *
      * @param Label $label

@@ -90,7 +90,7 @@ match:
 
 length:
     project_number: Your project number cannot be longer than 128 characters
-    color: The color field should have maximum 6 characters
+    color: The color field should have maximum 7 characters
     number: Your project number cannot be longer than 128 characters
 
 greater_than_or_equal:
