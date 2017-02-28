@@ -336,7 +336,7 @@ class ProjectController extends ApiController
     /**
      * All labels for a specific Project.
      *
-     * @Route("/{id}/labels", name="app_api_project_labels")
+     * @Route("/{id}/labels", name="app_api_project_labels", options={"expose"=true})
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -349,7 +349,7 @@ class ProjectController extends ApiController
     /**
      * Create a new Label.
      *
-     * @Route("/{id}/labels", name="app_api_project_create_label")
+     * @Route("/{id}/labels", name="app_api_project_create_label", options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request $request
