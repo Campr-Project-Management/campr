@@ -367,14 +367,14 @@ class UserController extends Controller
             return $this->redirectToRoute('main_user_account');
         }
 
-        $qrCode = $this->get('scheb_two_factor.security.google_authenticator')->getUrl($user);
-
         return $this->render(
             'MainBundle:User:account.html.twig',
             [
                 'form' => $form->createView(),
                 'user' => $user,
-                'qr_code' => $qrCode,
+                'qr_code' => $user->getGoogleAuthenticatorSecret()
+                    ? $this->get('scheb_two_factor.security.google_authenticator')->getUrl($user)
+                    : null,
             ]
         );
     }
