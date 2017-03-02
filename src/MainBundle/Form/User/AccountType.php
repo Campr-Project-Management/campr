@@ -2,11 +2,15 @@
 
 namespace MainBundle\Form\User;
 
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -18,6 +22,19 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class AccountType extends AbstractType
 {
+    private $googleAuthenticator;
+
+    /**
+     * AccountType constructor
+     * .
+     *
+     * @param GoogleAuthenticator $googleAuthenticator
+     */
+    public function __construct(GoogleAuthenticator $googleAuthenticator)
+    {
+        $this->googleAuthenticator = $googleAuthenticator;
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
@@ -92,6 +109,32 @@ class AccountType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('twoFactor', CheckboxType::class, [
+                'mapped' => false,
+            ])
+            ->addEventListener(
+                FormEvents::POST_SET_DATA,
+                function (FormEvent $event) {
+                    $user = $event->getData();
+                    $form = $event->getForm();
+                    $twoFactor = $user->getGoogleAuthenticatorSecret() ? true : false;
+                    $form->get('twoFactor')->setData($twoFactor);
+                }
+            )
+            ->addEventListener(
+                FormEvents::SUBMIT,
+                function (FormEvent $event) {
+                    $user = $event->getData();
+                    $form = $event->getForm();
+                    if ($form->get('twoFactor')->getData()) {
+                        if ($user->getGoogleAuthenticatorSecret() === null) {
+                            $user->setGoogleAuthenticatorSecret($this->googleAuthenticator->generateSecret());
+                        }
+                    } else {
+                        $user->setGoogleAuthenticatorSecret(null);
+                    }
+                }
+            )
         ;
     }
 
