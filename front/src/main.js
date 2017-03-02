@@ -60,7 +60,8 @@ Vue.use(VueCookie);
 // For dev mode hardcode your test team URL in the bellow statement.
 Vue.http.options.root = (window.location.hostname != 'localhost')
     ? window.location.protocol + '//' + window.location.hostname
-    : 'https://avengers.dev.campr.biz';
+    : 'https://dev.campr.biz'
+;
 
 Vue.http.get('translations/messages.json')
     .then((response) => {

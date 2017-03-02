@@ -36,6 +36,8 @@ services:
             - mailcatcher
         volumes:
             - .:/app
+        ports:
+            - 2080:8080
     nginx:
         build: app/config/docker/nginx
         depends_on:

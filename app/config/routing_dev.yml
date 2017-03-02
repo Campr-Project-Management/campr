@@ -13,8 +13,12 @@ _errors:
 main:
     resource: "@MainBundle/Controller/"
     type:  annotation
-    host: "%domain%"
+    host: "{domain}"
     prefix: /
+    defaults:
+        domain: "%domain%"
+    requirements:
+        domain: "localhost|nginx|%domain%"
 
 app:
     resource: "@AppBundle/Controller/"
