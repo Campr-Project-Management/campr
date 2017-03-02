@@ -195,6 +195,16 @@ class WorkPackage
     private $labels;
 
     /**
+     * @var WorkPackageStatus|null
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackageStatus", inversedBy="workPackages")
+     * @ORM\JoinColumn(name="work_package_status_id")
+     */
+    private $workPackageStatus;
+
+    /**
      * @var \DateTime
      *
      * @Serializer\Exclude()
@@ -906,5 +916,47 @@ class WorkPackage
     public function getLabels()
     {
         return $this->labels;
+    }
+
+    /**
+     * @return WorkPackageStatus|null
+     */
+    public function getWorkPackageStatus()
+    {
+        return $this->workPackageStatus;
+    }
+
+    /**
+     * @param WorkPackageStatus|null $workPackageStatus
+     */
+    public function setWorkPackageStatus(WorkPackageStatus $workPackageStatus)
+    {
+        $this->workPackageStatus = $workPackageStatus;
+    }
+
+    /**
+     * Returns WorkPackageStatus id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("workPackageStatus")
+     *
+     * @return string
+     */
+    public function getWorkPackageStatusId()
+    {
+        return $this->workPackageStatus ? $this->workPackageStatus->getId() : null;
+    }
+
+    /**
+     * Returns WorkPackageStatus name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("workPackageStatusName")
+     *
+     * @return string
+     */
+    public function getWorkPackageStatusName()
+    {
+        return $this->workPackageStatus ? $this->workPackageStatus->getName() : null;
     }
 }
