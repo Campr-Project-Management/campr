@@ -126,11 +126,19 @@
                     {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
+            <div class="control-group form-group {% if form_errors(form.twoFactor) %}has-error{% endif %}">
+                <div class="controls">
+                    <label>{{ 'label.two_factor_auth'|trans }}</label>
+                    {{ form_widget(form.twoFactor, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
             <div class="form-group">
                 <button class="btn btn-primary" type="submit">{{ 'button.save'|trans }}</button>
             </div>
             {{ form_end(form, {'render_rest': true}) }}
         </div>
-        <img src="{{ qr_code }}"/>
+        {% if qr_code %}
+            <img src="{{ qr_code }}"/>
+        {% endif %}
     </div>
 {% endblock %}
