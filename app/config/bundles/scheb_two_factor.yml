@@ -11,7 +11,7 @@ scheb_two_factor:
     email:
         enabled: false
     google:
-        enabled: false
+        enabled: true
         server_name: Campr.biz
         issuer: Campr
         template: MainBundle:Default:login_google.html.twig
