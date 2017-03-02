@@ -34,6 +34,7 @@ class TeamService
             : $mainDomain
         ;
 
+        $mainDomain = 'nginx';
         $this->httpClient = new HttpClient([
             'base_uri' => sprintf('%s://%s/api/', $scheme, $mainDomain),
             'timeout' => 5,

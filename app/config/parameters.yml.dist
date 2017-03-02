@@ -51,3 +51,8 @@ parameters:
     app.user.uri_prefix: /uploads/avatars
     app.user.avatars_path: '%kernel.root_dir%/../web/uploads/avatars'
     jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
+
+    app.certbot.binary: /opt/cerbot/letsencrypt-auto
+    app.certbot.email: radu.gribincea@trisoft.ro
+
+    app.token_duration: 5
