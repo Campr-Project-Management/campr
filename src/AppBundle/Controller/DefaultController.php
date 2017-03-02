@@ -84,7 +84,7 @@ class DefaultController extends Controller
         $redis->setex($jti, 3600, time());
 
         // check the time of the
-        if ($iat + 5 < time()) {
+        if ($iat + $this->container->getParameter('app.token_duration') < time()) {
             throw $this->createNotFoundException(
                 $this
                     ->get('translator')
