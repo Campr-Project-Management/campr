@@ -8,31 +8,31 @@
             </a>
         </div>
         <div class="form">
-            <input-field type="text" label="Task Title"></input-field>
+            <input-field v-model="title" type="text" label="Task Title"></input-field>
             <Vueditor></Vueditor>
             <hr>
             <h3 class="with-label"> Task Schedule</h3>
             <div class="flex flex-space-between dates-top">
                 <div class="input-holder right">
                     <label class="active">Base Start Date</label>
-                    <datepicker :value="date | moment('DD / MM / YYYY')" format="DD / MM / YYYY"></datepicker>
+                    <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
                     <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
                 </div>
                 <div class="input-holder right">
                     <label class="active">Base Finish Date</label>
-                    <datepicker :value="date | moment('DD / MM / YYYY')" format="DD / MM / YYYY"></datepicker>
+                    <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
                     <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
                 </div>
             </div>
             <div class="flex flex-space-between">
                 <div class="input-holder right">
                     <label class="active">Forecast Start Date</label>
-                    <datepicker :value="date | moment('DD / MM / YYYY')" format="DD / MM / YYYY"></datepicker>
+                    <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
                     <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
                 </div>
                 <div class="input-holder right">
                     <label class="active">Forecast Finish Date</label>
-                    <datepicker :value="date | moment('DD / MM / YYYY')" format="DD / MM / YYYY"></datepicker>
+                    <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
                     <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
                 </div>
             </div>
@@ -40,7 +40,7 @@
             <h3>Task Details</h3>
             <div class="flex flex-space-between">
                 <select-field title="Asignee"></select-field>
-                <select-field title="Labels"></select-field>
+                <select-field title="Labels" v-bind:options="labelsForChoice"></select-field>
             </div>
             <hr>
             <h3>Planning</h3>
@@ -57,22 +57,16 @@
             <hr>
             <h4>Status</h4>
             <div class="status-info">
-                <p><span class="second-color">Green: </span>Quisque maximus quam id nunc congue ultricies. Aliquam quis quam lectus. Suspendisse porta ipsum non justo gravida, commodo rhoncus dolor congue.
-                </p>
-                <p><span class="warning-color">Yellow: </span>Quisque maximus quam id nunc congue ultricies. Aliquam quis quam lectus. Suspendisse porta ipsum non justo gravida, commodo rhoncus dolor congue.
-                </p>
-                <p><span class="danger-color">Red: </span>Quisque maximus quam id nunc congue ultricies. Aliquam quis quam lectus. Suspendisse porta ipsum non justo gravida, commodo rhoncus dolor congue.
-                </p>
+                <p v-for="status in colorStatuses"><span v-bind:style="{ color: status.color }">{{ status.name }}</span></p>
             </div>
             <div class="status flex">
-                <div class="status-item second-bg"></div>
-                <div class="status-item warning-bg"></div>
-                <div class="status-item danger-bg"></div>
+                <div v-for="status in colorStatuses" v-bind:style="{ background: status.color }" class="status-item"></div>
             </div>
             <hr>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" class="btn-rounded btn-auto disable-bg">Cancel</a>
-                <a href="javascript:void(0)" class="btn-rounded btn-auto second-bg">Create Task</a>
+                <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto disable-bg">Cancel</router-link>
+                <a v-on:click="createTask" class="btn-rounded btn-auto second-bg">Create Task</a>
+
             </div>
         </div>
     </div>
@@ -84,6 +78,7 @@ import SelectField from '../../_common/_form-components/SelectField';
 import UploadIcon from '../../_common/_icons/UploadIcon';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import datepicker from 'vue-date-picker';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     components: {
@@ -93,6 +88,30 @@ export default {
         CalendarIcon,
         datepicker,
     },
+    methods: {
+        ...mapActions(['getColorStatuses', 'getProjectLabels', 'createNewTask']),
+        createTask: function() {
+            let data = {
+                project: this.$route.params.id,
+                name: this.title,
+                puid: '123',
+                progress: 0,
+            };
+            this.createNewTask(data);
+        },
+    },
+    created() {
+        if (!this.$store.state.colorStatus || this.$store.state.colorStatus.items.length == 0) {
+            this.getColorStatuses();
+        }
+        if (!this.$store.state.project.labelsForChoice || this.$store.state.project.labelsForChoice.length == 0) {
+            this.getProjectLabels(this.$route.params.id);
+        }
+    },
+    computed: mapGetters({
+        colorStatuses: 'colorStatuses',
+        labelsForChoice: 'labelsForChoice',
+    }),
 };
 </script>
 
