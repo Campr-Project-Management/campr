@@ -49,7 +49,7 @@ class Label
     /**
      * @var string
      *
-     * @ORM\Column(name="color", type="string", length=6)
+     * @ORM\Column(name="color", type="string", length=7)
      */
     private $color;
 
