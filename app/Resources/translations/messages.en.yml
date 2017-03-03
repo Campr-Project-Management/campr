@@ -538,6 +538,11 @@ label:
     forecast_end_date: Forecast End Date
     created_by: Created By
     two_factor_auth: Two Factor Authentication
+    todo: To do
+    in_progress: In progress
+    code_review: Code review
+    finished: Finished
+    closed: Closed
 
 button:
     sign_in: Sign In
