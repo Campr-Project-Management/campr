@@ -10,3 +10,4 @@ export const SET_TASK = 'SET_TASK';
 export const SET_FILTERS = 'SET_FILTERS';
 export const SET_FILTERED_ITEMS = 'SET_FILTERED_ITEMS';
 export const SET_CUSTOMERS = 'CUSTOMERS';
+export const SET_LABELS = 'LABELS';

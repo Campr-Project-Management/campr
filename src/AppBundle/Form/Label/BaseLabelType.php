@@ -38,7 +38,7 @@ class BaseLabelType extends AbstractType
                         'message' => 'not_blank.color',
                     ]),
                     new Length([
-                        'max' => 6,
+                        'max' => 7,
                         'maxMessage' => 'length.color',
                     ]),
                 ],
@@ -53,6 +53,7 @@ class BaseLabelType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Label::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

@@ -64,11 +64,11 @@ class LabelControllerTest extends BaseController
 
         $form = $crawler->filter('#create-form')->first()->form();
         $form['label[title]'] = 'label';
-        $form['label[color]'] = '1234567';
+        $form['label[color]'] = '12345678';
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('The color field should have maximum 6 characters', $crawler->html());
+        $this->assertContains('The color field should have maximum 7 characters', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
