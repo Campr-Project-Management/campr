@@ -37,10 +37,8 @@ export default {
             this.activePage = page;
         },
     },
-    watch: {
-        user: function() {
-            this.getProjects(this.activePage);
-        },
+    created() {
+        if (!this.$store.state.project || this.$store.state.project.items.length === 0) this.getProjects(this.activePage);
     },
     computed: mapGetters({
         projects: 'projects',
