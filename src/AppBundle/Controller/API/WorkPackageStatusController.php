@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class WorkPackageStatusController extends ApiController
 {
     /**
-     * All WorkPackageStatuses
+     * All WorkPackageStatuses.
      *
      * @Route(name="app_api_workpackage_statuses_list", options={"expose"=true})
      * @Method({"GET"})
