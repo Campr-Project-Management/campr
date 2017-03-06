@@ -19,8 +19,8 @@
                 </p>
                 <p>
                     <span class="title">{{ message.status }}:</span>
-                    <span v-bind:class="{ finished: project.status === 'FINISHED' }" class="status-label btn-rounded">
-                        {{project.statusName === 'IN_PROGRESS' && 'In progress' || project.statusName === 'FINISHED' && 'Finished'}}
+                    <span class="status-label btn-rounded btn-auto">
+                        {{ project.statusName }}
                     </span>
                 </p>
             </div>
