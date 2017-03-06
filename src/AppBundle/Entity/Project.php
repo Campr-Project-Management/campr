@@ -1379,4 +1379,22 @@ class Project
     {
         return $this->projectTeams;
     }
+
+    /**
+     * Get project progress.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("progress")
+     *
+     * @return array
+     */
+    public function getProgress()
+    {
+        $counter = 0;
+        foreach ($this->getWorkPackages() as $wp) {
+            $counter += $wp->getProgress();
+        }
+
+        return !$this->getWorkPackages()->isEmpty() ? $counter / $this->getWorkPackages()->count() : 0;
+    }
 }
