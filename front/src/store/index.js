@@ -11,6 +11,7 @@ import colorStatus from './modules/color_status';
 import projectStatus from './modules/project-status';
 import customer from './modules/customer';
 import programme from './modules/programme';
+import portfolio from './modules/portfolio';
 
 Vue.use(Vuex);
 
@@ -29,6 +30,7 @@ export default new Vuex.Store({
         projectStatus,
         customer,
         programme,
+        portfolio,
     },
     strict: debug,
 });
