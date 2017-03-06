@@ -25,10 +25,10 @@
                 <label for="project-portfolio">{{ message.project_portfolio }}</label>
             </div>
             <div v-show="visiblePortfolio">
-                <select-field title="Select Portfolio" v-bind:options="customers"></select-field>
-                <input-field type="text" v-bind:label="message.add_portfolio"></input-field>
+                <select-field title="Select Portfolio" v-bind:options="portfolios"></select-field>
+                <input-field v-model="portfolioName" type="text" v-bind:label="message.add_portfolio"></input-field>
                 <div class="flex flex-direction-reverse">
-                    <a href="" class="btn-rounded btn-right">{{ message.add_portfolio }} +</a>
+                    <a v-on:click="createPortfolio()" class="btn-rounded btn-right">{{ message.add_portfolio }} +</a>
                 </div>
             </div>
 
@@ -56,6 +56,7 @@
 <script>
 import InputField from '../_common/_form-components/InputField';
 import SelectField from '../_common/_form-components/SelectField';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     components: {
@@ -63,12 +64,25 @@ export default {
         SelectField,
     },
     methods: {
+        ...mapActions(['testCreatePort', 'getPortfolios']),
         togglePortfolio: function() {
             this.visiblePortfolio = !this.visiblePortfolio;
         },
         toggleProgramme: function() {
             this.visibleProgramme = !this.visibleProgramme;
         },
+        createPortfolio: function() {
+            let data = {
+                name: this.portfolioName,
+            };
+            this.testCreatePort(data);
+        },
+    },
+    computed: mapGetters({
+        portfolios: 'portfoliosForSelect',
+    }),
+    created() {
+        this.getPortfolios();
     },
     data: function() {
         return {
@@ -88,6 +102,7 @@ export default {
             },
             visiblePortfolio: false,
             visibleProgramme: false,
+            portfolioName: '',
         };
     },
 };
