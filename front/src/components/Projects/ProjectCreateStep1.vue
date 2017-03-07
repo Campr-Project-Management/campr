@@ -28,7 +28,7 @@
                 <select-field title="Select Portfolio" v-bind:options="portfolios"></select-field>
                 <input-field v-model="portfolioName" type="text" v-bind:label="message.add_portfolio"></input-field>
                 <div class="flex flex-direction-reverse">
-                    <a v-on:click="createPortfolio()" class="btn-rounded btn-right">{{ message.add_portfolio }} +</a>
+                    <a v-on:click="addPortfolio()" class="btn-rounded btn-right">{{ message.add_portfolio }} +</a>
                 </div>
             </div>
 
@@ -64,18 +64,18 @@ export default {
         SelectField,
     },
     methods: {
-        ...mapActions(['testCreatePort', 'getPortfolios']),
+        ...mapActions(['createPortfolio', 'getPortfolios']),
         togglePortfolio: function() {
             this.visiblePortfolio = !this.visiblePortfolio;
         },
         toggleProgramme: function() {
             this.visibleProgramme = !this.visibleProgramme;
         },
-        createPortfolio: function() {
+        addPortfolio: function() {
             let data = {
                 name: this.portfolioName,
             };
-            this.testCreatePort(data);
+            this.createPortfolio(data);
         },
     },
     computed: mapGetters({
