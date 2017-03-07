@@ -15,3 +15,4 @@ export const SET_PROGRAMMES = 'SET_PROGRAMMES';
 export const SET_LABELS = 'SET_LABELS';
 export const SET_PORTFOLIO = 'SET_PORTFOLIO';
 export const SET_PORTFOLIOS = 'SET_PORTFOLIOS';
+export const SET_CONTRACT = 'SET_CONTRACT';

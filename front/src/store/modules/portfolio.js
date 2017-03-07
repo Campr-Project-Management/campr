@@ -19,15 +19,15 @@ const actions = {
      * @param {function} commit
      * @param {array} data
      */
-    testCreatePort({commit}, data) {
-        console.log(JSON.stringify(data));
+    createPortfolio({commit}, data) {
         Vue.http
-            .post(Routing.generate('app_api_portfolio_create').substr(1), JSON.stringify(data)).then((response) => {
-                console.log(response.data);
+            .post(
+                Routing.generate('app_api_portfolio_create'),
+                JSON.stringify(data)
+            ).then((response) => {
             }, (response) => {
                 if (response.status === 400) {
                     // implement system to display errors
-                    console.log(response.data);
                 }
             });
     },
@@ -37,7 +37,7 @@ const actions = {
      */
     getPortfolios({commit}) {
         Vue.http
-            .get(Routing.generate('app_api_portfolio_list').substr(1)).then((response) => {
+            .get(Routing.generate('app_api_portfolio_list')).then((response) => {
                 if (response.status === 200) {
                     let portfolios = response.data;
                     commit(types.SET_PORTFOLIOS, {portfolios});
@@ -52,7 +52,7 @@ const actions = {
      */
     getPortfolioById({commit}, id) {
         Vue.http
-            .get(Routing.generate('app_api_portfolio_get', {'id': id}).substr(1)).then((response) => {
+            .get(Routing.generate('app_api_portfolio_get', {'id': id})).then((response) => {
                 if (response.status === 200) {
                     let portfolio = response.data;
                     commit(types.SET_PORTFOLIO, {portfolio});
