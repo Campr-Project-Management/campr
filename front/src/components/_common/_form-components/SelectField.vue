@@ -4,7 +4,7 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-            <li v-for="option in options"><a href="javascript:void(0)" v-on:click="filterItems([filter, option.key, item]), title = option.label">{{ option.label }}</a></li>
+            <li v-for="option in options"><a href="javascript:void(0)">{{ option.label }}</a></li>
         </ul>
     </div>
 </template>
