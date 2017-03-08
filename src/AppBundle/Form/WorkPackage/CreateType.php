@@ -79,12 +79,9 @@ class CreateType extends AbstractType
                 'translation_domain' => 'messages',
             ])
             ->add('progress', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'data' => 0,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.progress',
-                    ]),
                     new Regex([
                         'pattern' => '/^([1-9]+\d*)$|^0$/',
                         'message' => 'invalid.progress',

@@ -9,6 +9,7 @@ const state = {
     itemsForFilter: [],
     filteredItems: [],
     filters: [],
+    labelsForChoice: [],
 };
 
 const getters = {
@@ -19,6 +20,7 @@ const getters = {
         return state.currentItem.title;
     },
     projectsForFilter: state => state.itemsForFilter,
+    labelsForChoice: state => state.labelsForChoice,
 };
 
 const actions = {
@@ -166,6 +168,11 @@ const mutations = {
      */
     [types.SET_LABELS](state, {labels}) {
         state.items = labels;
+        let choiceLabel = [];
+        state.items.map( function(label) {
+            choiceLabel.push({'key': label.id, 'label': label.title});
+        });
+        state.labelsForChoice = choiceLabel;
     },
 };
 

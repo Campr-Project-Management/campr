@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import router from '../../router';
 
 const state = {
     currentItem: {},
@@ -62,6 +63,25 @@ const actions = {
                     commit(types.SET_TASK, {task});
                 }
             }, (response) => {
+            });
+    },
+    /**
+     * Creates a new task on project
+     * @param {function} commit
+     * @param {array} data
+     */
+    createNewTask({commit}, data) {
+        Vue.http
+            .post(
+                Routing.generate('app_api_workpackage_create').substr(1),
+                JSON.stringify(data)
+            ).then((response) => {
+                router.push({name: 'project-task-management-list'});
+            }, (response) => {
+                if (response.status === 400) {
+                    // implement system to dispay errors
+                    console.log(response.data);
+                }
             });
     },
 };

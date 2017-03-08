@@ -71,12 +71,11 @@ class WorkPackageControllerTest extends BaseController
 
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[name]'] = '';
-        $form['create[progress]'] = '';
+        $form['create[progress]'] = 0;
         $crawler = $this->client->submit($form);
 
         $this->assertContains('PUID should not be blank', $crawler->html());
         $this->assertContains('The name field should not be blank', $crawler->html());
-        $this->assertContains('The progress field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -217,13 +216,12 @@ class WorkPackageControllerTest extends BaseController
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['create[puid]'] = '';
         $form['create[name]'] = '';
-        $form['create[progress]'] = '';
+        $form['create[progress]'] = 0;
 
         $crawler = $this->client->submit($form);
 
         $this->assertContains('PUID should not be blank', $crawler->html());
         $this->assertContains('The name field should not be blank', $crawler->html());
-        $this->assertContains('The progress field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
