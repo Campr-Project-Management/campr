@@ -1,5 +1,5 @@
 <template>
-    <div class="progress-line" :id="'chart' + _uid" :data-number="percentage" v-bind:class="{ 'danger-col-bg': status === 'Not started', 'right': position === 'right' }">
+    <div class="progress-line" :id="'chart' + _uid" :data-number="percentage" v-bind:class="{ 'right': position === 'right' }">
         <div class="progress-area right flex-end">
             <p class="title-right">{{ titleRight }}</p>
             <p class="percentage">
@@ -8,13 +8,14 @@
             </p>
         </div>
         <p v-show="titleLeft" class="title-left">{{ titleLeft }}</p>
-        <div class="filled" v-bind:class="{ finished: status === 'Finished' }"></div>
+        <div class="filled" v-bind:style="{ background: color }" v-show="percentage != 0"></div>
+        <div class="zero-fill" v-bind:style="{ background: color }" v-show="percentage == 0"></div>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['percentage', 'status', 'titleLeft', 'titleRight', 'position'],
+    props: ['percentage', 'color', 'titleLeft', 'titleRight', 'position'],
     mounted() {
         const $this = window.$('#chart' + this._uid);
         let speed = 1000;
@@ -76,6 +77,11 @@ export default {
     .percentage-sign {
       align-self: flex-end;
     }
+  }
+
+  .zero-fill {
+      width: 100%;
+      height: 100%;
   }
 
   .progress-line {
