@@ -12,10 +12,10 @@
         <div class="content flex flex-space-between">
             <div class="info">
                 <p class="title">{{ task.projectName }}</p>
-                <p class="status">{{ task.colorStatusName }}</p>
+                <p class="status">{{ translate(task.workPackageStatusName) }}</p>
             </div>
         </div>
-        <bar-chart position="right" :percentage="task.progress" :status="task.colorStatusName" v-bind:title-right="message.progress"></bar-chart>
+        <bar-chart position="right" :percentage="task.progress" :color="task.colorStatusColor" v-bind:title-right="message.progress"></bar-chart>
     </div>
 </template>
 
@@ -25,6 +25,11 @@ import BarChart from '../_common/_charts/BarChart';
 export default {
     components: {
         BarChart,
+    },
+    methods: {
+        translate(text) {
+            return window.Translator.trans(text);
+        },
     },
     props: ['task', 'colorStatuses'],
     data() {
