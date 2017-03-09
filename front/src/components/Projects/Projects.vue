@@ -50,8 +50,8 @@ export default {
         return {
             activePage: 1,
             message: {
-                my_projects: window.Translator.trans('message.my_projects'),
-                new_project: window.Translator.trans('message.new_project'),
+                my_projects: Translator.trans('message.my_projects'),
+                new_project: Translator.trans('message.new_project'),
             },
         };
     },
