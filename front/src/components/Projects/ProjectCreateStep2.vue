@@ -41,20 +41,20 @@ export default {
     data: function() {
         return {
             message: {
-                project_create_wizard: window.Translator.trans('message.project_create_wizard'),
-                project_create_step2: window.Translator.trans('message.project_create_step2'),
-                project_duration: window.Translator.trans('message.project_duration'),
-                project_budget: window.Translator.trans('message.project_budget'),
-                project_involved: window.Translator.trans('message.project_involved'),
-                departments_involved: window.Translator.trans('message.departments_involved'),
-                strategical_meaning: window.Translator.trans('message.strategical_meaning'),
-                risks: window.Translator.trans('message.risks'),
-                category: window.Translator.trans('message.category'),
-                scope: window.Translator.trans('message.scope'),
+                project_create_wizard: Translator.trans('message.project_create_wizard'),
+                project_create_step2: Translator.trans('message.project_create_step2'),
+                project_duration: Translator.trans('message.project_duration'),
+                project_budget: Translator.trans('message.project_budget'),
+                project_involved: Translator.trans('message.project_involved'),
+                departments_involved: Translator.trans('message.departments_involved'),
+                strategical_meaning: Translator.trans('message.strategical_meaning'),
+                risks: Translator.trans('message.risks'),
+                category: Translator.trans('message.category'),
+                scope: Translator.trans('message.scope'),
             },
             button: {
-                previous_step: window.Translator.trans('button.previous_step'),
-                analyze: window.Translator.trans('button.analyze'),
+                previous_step: Translator.trans('button.previous_step'),
+                analyze: Translator.trans('button.analyze'),
             },
             projectDuration: 0,
         };

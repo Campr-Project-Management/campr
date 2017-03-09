@@ -1,1 +1,0 @@
-../../../web/bundles/fosjsrouting/js/router.js
