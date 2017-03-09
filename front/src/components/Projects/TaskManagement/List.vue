@@ -86,8 +86,12 @@ export default {
         VueScrollbar,
     },
     created() {
-        if (!this.$store.state.task.taskStatuses || this.$store.state.task.taskStatuses.length === 0) this.getTaskStatuses();
-        if (!this.$store.state.colorStatus || this.$store.state.colorStatus.items.length === 0) this.getColorStatuses();
+        if (!this.$store.state.task.taskStatuses || this.$store.state.task.taskStatuses.length === 0) {
+            this.getTaskStatuses();
+        }
+        if (!this.$store.state.colorStatus || this.$store.state.colorStatus.items.length === 0) {
+            this.getColorStatuses();
+        }
     },
     computed: mapGetters({
         taskStatuses: 'taskStatuses',
