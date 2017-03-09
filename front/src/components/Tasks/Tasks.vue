@@ -35,8 +35,12 @@ export default {
         },
     },
     created() {
-        if (!this.$store.state.task || this.$store.state.task.items.length === 0) this.getTasks(this.activePage);
-        if (!this.$store.state.colorStatus || this.$store.state.colorStatus.items.length === 0) this.getColorStatuses();
+        if (!this.$store.state.task || this.$store.state.task.items.length === 0) {
+            this.getTasks(this.activePage);
+        }
+        if (!this.$store.state.colorStatus || this.$store.state.colorStatus.items.length === 0) {
+            this.getColorStatuses();
+        }
     },
     computed: mapGetters({
         user: 'user',
