@@ -44,9 +44,9 @@ export default {
     data() {
         return {
             message: {
-                started_on: window.Translator.trans('message.started_on'),
-                customer: window.Translator.trans('message.customer'),
-                status: window.Translator.trans('message.status'),
+                started_on: Translator.trans('message.started_on'),
+                customer: Translator.trans('message.customer'),
+                status: Translator.trans('message.status'),
             },
         };
     },

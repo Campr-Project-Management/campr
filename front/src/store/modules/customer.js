@@ -24,7 +24,7 @@ const actions = {
      */
     getCustomers({commit}) {
         Vue.http
-            .get(Routing.generate('app_api_company_list').substr(1)).then((response) => {
+            .get(Routing.generate('app_api_company_list')).then((response) => {
                 if (response.status === 200) {
                     let customers = response.data;
                     commit(types.SET_CUSTOMERS, {customers});

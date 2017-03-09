@@ -73,18 +73,18 @@ export default {
     data: function() {
         return {
             message: {
-                project_create_wizard: window.Translator.trans('message.project_create_wizard'),
-                project_create_step1: window.Translator.trans('message.project_create_step1'),
-                project_name: window.Translator.trans('message.project_name'),
-                project_number: window.Translator.trans('message.project_number'),
-                project_logo: window.Translator.trans('message.project_logo'),
-                project_portfolio: window.Translator.trans('message.project_portfolio'),
-                add_portfolio: window.Translator.trans('message.add_portfolio'),
-                project_programme: window.Translator.trans('message.project_programme'),
-                add_programme: window.Translator.trans('message.add_programme'),
+                project_create_wizard: Translator.trans('message.project_create_wizard'),
+                project_create_step1: Translator.trans('message.project_create_step1'),
+                project_name: Translator.trans('message.project_name'),
+                project_number: Translator.trans('message.project_number'),
+                project_logo: Translator.trans('message.project_logo'),
+                project_portfolio: Translator.trans('message.project_portfolio'),
+                add_portfolio: Translator.trans('message.add_portfolio'),
+                project_programme: Translator.trans('message.project_programme'),
+                add_programme: Translator.trans('message.add_programme'),
             },
             button: {
-                next_step: window.Translator.trans('button.next_step'),
+                next_step: Translator.trans('button.next_step'),
             },
             visiblePortfolio: false,
             visibleProgramme: false,

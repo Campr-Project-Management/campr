@@ -35,7 +35,7 @@ export default {
     data() {
         return {
             message: {
-                progress: window.Translator.trans('message.progress'),
+                progress: Translator.trans('message.progress'),
             },
         };
     },
