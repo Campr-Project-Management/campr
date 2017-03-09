@@ -1,1 +1,0 @@
-../../../web/js/fos_js_routes.js
