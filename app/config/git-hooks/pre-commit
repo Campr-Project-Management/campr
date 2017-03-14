@@ -14,40 +14,6 @@ then
     exit 1
 fi
 
-jsLint=`which jslint`
-if [ $? != 0 ] || [ ! -e $jsLint ]
-then
-    echo $noErrors
-    echo "jslint must be installed globally"
-    echo "To install jslint run \"npm install -g jslint\""
-    echo "Note that you may need to run npm install with sudo, based on your system setup."
-    exit 1
-fi
-
-# run jslint
-jsFilesWithError=()
-jsModifiedFiles=`git status | grep ".js$" | grep -v 'renamed: ' | grep -v 'deleted: ' | cut -d" " -f4`
-jsRenamedFiles=`git status | grep ".js$" | grep 'renamed: ' | cut -d" " -f7`
-jsFiles=`echo $jsModifiedFiles $jsRenamedFiles |tr " " "\n" | sort -u`
-
-if [ ${#jsFiles[@]} != 0 ]; then echo "Checking JS files for standards:"; fi
-for file in $jsFiles;
-do
-    $jsLint --config . $file > /dev/null 2>&1;
-    if [ $? != 0 ]
-    then
-        echo -e "\033[0;31m\t$file\033[0m"
-        jsFilesWithError+=($file)
-    else
-        echo -e "\033[0;32m\t$file\033[0m"
-    fi
-done
-
-if [ ${#jsFilesWithError[@]} != 0 ]
-then
-    echo -e "\033[0;31mPlease fix the JS syntax errors from the files marked with red.\033[0m"
-fi
-
 # run lint:twig
 twigFilesWithError=()
 twigModifiedFiles=`git status | grep ".twig$" | grep -v 'renamed: ' | grep -v 'deleted: ' | cut -d" " -f4`

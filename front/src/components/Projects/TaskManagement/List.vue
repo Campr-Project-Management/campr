@@ -47,9 +47,9 @@
 
             <div class="board-view" v-show="boardView">
                 <div class="flex">
-                    <div class="column">
+                    <div class="column" v-for="taskStatus in taskStatuses">
                         <div class="column-header flex flex-v-center flex-space-between">
-                            <span>To do</span>
+                            <span>{{ translate(taskStatus.name) }}</span>
                             <div class="flex">
                                 <span class="notification-balloon">12</span>
                                 <span class="notification-balloon second-bg">+</span>
@@ -57,46 +57,15 @@
                         </div>
                         <vue-scrollbar class="tasks-scroll">
                             <div>
-                                <small-task-box v-bind:task="task" v-for="task in filterTasks(tasks, 'todo')"></small-task-box>
+                                <small-task-box v-bind:task="task" v-for="task in taskStatus.tasks"></small-task-box>
                             </div>
                         </vue-scrollbar>
-                    </div>
-                    <div class="column">
-                        <div class="column-header flex flex-v-center flex-space-between">
-                            <span>In Progress</span>
-                            <div class="flex">
-                                <span class="notification-balloon">12</span>
-                                <span class="notification-balloon second-bg">+</span>
-                            </div>
-                        </div>
-                        <small-task-box v-bind:task="task" v-for="task in filterTasks(tasks, 'inprogress')"></small-task-box>
-                    </div>
-                    <div class="column">
-                        <div class="column-header flex flex-v-center flex-space-between">
-                            <span>Code Review</span>
-                            <div class="flex">
-                                <span class="notification-balloon">12</span>
-                                <span class="notification-balloon second-bg">+</span>
-                            </div>
-                        </div>
-                        <small-task-box v-bind:task="task" v-for="task in filterTasks(tasks, 'codereview')"></small-task-box>
-                    </div>
-                    <div class="column">
-                        <div class="column-header flex flex-v-center flex-space-between">
-                            <span>Finished</span>
-                            <div class="flex">
-                                <span class="notification-balloon">12</span>
-                                <span class="notification-balloon second-bg">+</span>
-                            </div>
-                        </div>
-                        <small-task-box v-bind:task="task" v-for="task in filterTasks(tasks, 'finished')"></small-task-box>
                     </div>
                 </div>
 
             </div>
             </vue-scrollbar>
         </div>
-
     </div>
 </template>
 
@@ -106,6 +75,7 @@ import Dropdown from '../../_common/Dropdown';
 import TaskBox from '../../Tasks/TaskBox';
 import SmallTaskBox from '../../Dashboard/SmallTaskBox';
 import VueScrollbar from 'vue2-scrollbar';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     components: {
@@ -115,54 +85,26 @@ export default {
         SmallTaskBox,
         VueScrollbar,
     },
+    created() {
+        if (!this.$store.state.task.taskStatuses || this.$store.state.task.taskStatuses.length === 0) {
+            this.getTaskStatuses();
+        }
+        if (!this.$store.state.colorStatus || this.$store.state.colorStatus.items.length === 0) {
+            this.getColorStatuses();
+        }
+    },
+    computed: mapGetters({
+        taskStatuses: 'taskStatuses',
+        colorStatuses: 'colorStatuses',
+    }),
     methods: {
-        filterTasks(tasks, status) {
-            return tasks.filter(function(task) {
-                return task.status === status;
-            });
+        ...mapActions(['getTaskStatuses', 'getColorStatuses']),
+        translate(text) {
+            return window.Translator.trans(text);
         },
     },
     data() {
         return {
-            tasks: [
-                {
-                    'id': 1,
-                    'name': 'Tesla SpaceX Mars Project',
-                    'progress': 56,
-                    'projectName': 'plm',
-                    'content': 'Bla bla bla bla',
-                    'status': 'todo',
-                }, {
-                    'id': 2,
-                    'name': 'Tesla SpaceX Mars Project',
-                    'progress': 56,
-                    'projectName': 'plm',
-                    'content': 'Bla bla bla bla',
-                    'status': 'inprogress',
-                }, {
-                    'id': 3,
-                    'name': 'Tesla SpaceX Mars Project',
-                    'progress': 56,
-                    'projectName': 'plm',
-                    'content': 'Bla bla bla bla',
-                    'status': 'codereview',
-                }, {
-                    'id': 4,
-                    'name': 'Tesla SpaceX Mars Project',
-                    'progress': 56,
-                    'projectName': 'plm',
-                    'content': 'Bla bla bla bla',
-                    'status': 'todo',
-                }, {
-                    'id': 4,
-                    'name': 'Tesla SpaceX Mars Project',
-                    'progress': 56,
-                    'projectName': 'plm',
-                    'content': 'Bla bla bla bla',
-                    'status': 'todo',
-                },
-            ],
-            count: 2,
             boardView: true,
         };
     },
