@@ -26,7 +26,7 @@
                 </p>
                 <p>
                     <span class="title">{{ message.status }}:</span>
-                    <span v-bind:class="{ finished: project.statusName === 'Finished' }" class="status-label btn-rounded">
+                    <span v-bind:class="{ finished: project.statusName === 'Finished' }" class="status-label btn-rounded btn-auto">
                         {{ project.statusName }}
                     </span>
                 </p>

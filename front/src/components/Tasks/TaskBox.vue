@@ -10,7 +10,7 @@
                 <p class="task-id">#{{ task.id }}</p>
             </div>
             <div class="status-boxes">
-                <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? '#' + task.colorStatusColor : '' }"></span>
+                <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? task.colorStatusColor : '' }"></span>
             </div>
         </div>
         <div class="content">
@@ -25,20 +25,20 @@
                     </tr>
                     <tr class="even" v-show="task.scheduledStartAt || task.scheduledFinishAt">
                         <td>{{ message.schedule_base }}</td>
-                        <td>{{ task.scheduledStartAt }}</td>
-                        <td>{{ task.scheduledFinishAt }}</td>
+                        <td class="date">{{ task.scheduledStartAt }}</td>
+                        <td class="date">{{ task.scheduledFinishAt }}</td>
                         <td>{{ duration(task.scheduledStartAt, task.scheduledFinishAt) }}</td>
                     </tr>
                     <tr class="odd" v-show="task.forecastStartAt || task.forecastFinishAt">
                         <td>{{ message.schedule_forecast }}</td>
-                        <td>{{ task.forecastStartAt }}</td>
-                        <td>{{ task.forecastFinishAt }}</td>
+                        <td class="date">{{ task.forecastStartAt }}</td>
+                        <td class="date">{{ task.forecastFinishAt }}</td>
                         <td>{{ duration(task.forecastStartAt, task.forecastFinishAt) }}</td>
                     </tr>
                 </table>
             </div>
         </div>
-        <bar-chart :percentage="task.progress" :status="task.colorStatusName" class="bar-chart" :title-left="task.colorStatusName"></bar-chart>
+        <bar-chart :percentage="task.progress" :status="task.colorStatusName" :color="task.colorStatusColor" class="bar-chart" :title-left="translate(task.workPackageStatusName)"></bar-chart>
         <div class="nicescroll">
             {{ task.content }}
         </div>
@@ -111,6 +111,9 @@ export default {
             let end = moment(endDate);
             return end.diff(start, 'days');
         },
+        translate(text) {
+            return window.Translator.trans(text);
+        },
     },
     props: ['task', 'colorStatuses', 'user'],
     data: function() {
@@ -146,6 +149,11 @@ export default {
 
   table {
     margin: 0 -10px;
+    white-space: nowrap;
+
+    td {
+      font-size: 10px;
+    }
 
     th, td {
       padding: 3px 9px;
@@ -163,10 +171,6 @@ export default {
 
   .bar-chart {
     margin-top: 70px;
-  }
-
-  .title {
-    display: none;
   }
 
   .nicescroll {
