@@ -38,7 +38,9 @@ export default {
         },
     },
     created() {
-        this.getProjects(this.activePage);
+        if (!this.$store.state.project || this.$store.state.project.items.length === 0) {
+            this.getProjects(this.activePage);
+        }
     },
     computed: mapGetters({
         projects: 'projects',
