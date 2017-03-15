@@ -192,9 +192,9 @@ class WorkPackage
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Label")
      * @ORM\JoinTable(
-     *     name="workpackage_label",
+     *     name="work_package_label",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="workpackage_id")
+     *         @ORM\JoinColumn(name="work_package_id")
      *     },
      *     inverseJoinColumns={
      *         @ORM\JoinColumn(name="label_id")
@@ -212,6 +212,16 @@ class WorkPackage
      * @ORM\JoinColumn(name="work_package_status_id")
      */
     private $workPackageStatus;
+
+    /**
+     * @var WorkPackageCategory|null
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackageCategory", inversedBy="workPackages")
+     * @ORM\JoinColumn(name="work_package_category_id")
+     */
+    private $workPackageCategory;
 
     /**
      * @var \DateTime
@@ -991,5 +1001,47 @@ class WorkPackage
     public function getExternalId()
     {
         return $this->externalId;
+    }
+
+    /**
+     * @return WorkPackageCategory|null
+     */
+    public function getWorkPackageCategory()
+    {
+        return $this->workPackageCategory;
+    }
+
+    /**
+     * @param WorkPackageCategory|null $workPackageCategory
+     */
+    public function setWorkPackageCategory(WorkPackageCategory $workPackageCategory = null)
+    {
+        $this->workPackageCategory = $workPackageCategory;
+    }
+
+    /**
+     * Returns WorkPackageCategory id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("workPackageCategory")
+     *
+     * @return string
+     */
+    public function getWorkPackageCategoryId()
+    {
+        return $this->workPackageCategory ? $this->workPackageCategory->getId() : null;
+    }
+
+    /**
+     * Returns WorkPackageCategory name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("workPackageCategoryName")
+     *
+     * @return string
+     */
+    public function getWorkPackageCategoryName()
+    {
+        return $this->workPackageCategory ? $this->workPackageCategory->getName() : null;
     }
 }
