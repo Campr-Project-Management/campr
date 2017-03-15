@@ -26,6 +26,8 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('id="create_progress"', $crawler->html());
         $this->assertContains('name="create[progress]"', $crawler->html());
         $this->assertContains('id="create_parent"', $crawler->html());
+        $this->assertContains('name="create[workPackageCategory]"', $crawler->html());
+        $this->assertContains('id="create_workPackageCategory"', $crawler->html());
         $this->assertContains('name="create[parent]"', $crawler->html());
         $this->assertContains('id="create_colorStatus"', $crawler->html());
         $this->assertContains('name="create[colorStatus]"', $crawler->html());
@@ -170,6 +172,8 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('name="create[progress]"', $crawler->html());
         $this->assertContains('id="create_parent"', $crawler->html());
         $this->assertContains('name="create[parent]"', $crawler->html());
+        $this->assertContains('name="create[workPackageCategory]"', $crawler->html());
+        $this->assertContains('id="create_workPackageCategory"', $crawler->html());
         $this->assertContains('id="create_colorStatus"', $crawler->html());
         $this->assertContains('name="create[colorStatus]"', $crawler->html());
         $this->assertContains('id="create_responsibility"', $crawler->html());
@@ -255,6 +259,7 @@ class WorkPackageControllerTest extends BaseController
 
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['create[name]'] = 'workpackage2';
+        $form['create[workPackageCategory]'] = 1;
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -276,6 +281,7 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('data-column-id="id"', $crawler->html());
         $this->assertContains('data-column-id="puid"', $crawler->html());
         $this->assertContains('data-column-id="name"', $crawler->html());
+        $this->assertContains('data-column-id="workPackageCategoryName"', $crawler->html());
         $this->assertContains('data-column-id="responsibilityFullName"', $crawler->html());
         $this->assertContains('data-column-id="scheduledStartAt"', $crawler->html());
         $this->assertContains('data-column-id="scheduledFinishAt"', $crawler->html());
