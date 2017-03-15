@@ -86,13 +86,8 @@ task('project:apache:restart', function () {
 task('project:dizda:backup', function () {
     run('{{symfony_console}} dizda:backup:start {{symfony_console_options}}');
 });
-task('project:fos:js-routing:dump', function () {
-    run('{{symfony_console}} fos:js-routing:dump {{symfony_console_options}}');
-    run('cd {{release_path}}/front/static/js && ln -sf ../../../web/bundles/fosjsrouting/js/router.js router.js && ln -sf ../../../web/js/fos_js_routes.js fos_js_routes.js');
-});
-task('project:bazinga:js-translation:dump', function () {
-    run('{{symfony_console}} bazinga:js-translation:dump --format=js --merge-domains {{symfony_console_options}}');
-    run('cd {{release_path}}/front/static/js && ln -sf ../../../web/bundles/bazingajstranslation/js/translator.min.js translator.min.js && ln -sf ../../../web/js/translations/config.js config.js && ln -sf ../../../web/js/translations/en.js en.js && ln -sf ../../../web/js/translations/de.js de.js');
+task('project:front-js:dump', function () {
+    run('cd {{release_path}} && bin/front-static');
 });
 task('project:ln-console-env', function () {
     run('cd {{release_path}} && rm -rf app/env.php && ln -s env/env_{{env}}.php app/env.php');
@@ -168,5 +163,4 @@ after('deploy:symlink', 'project:enable-cron');
 after('deploy:symlink', 'project:build:front');
 before('project:apache:restart', 'project:apache:enable-config');
 after('project:apache:restart', 'project:supervisor:restart');
-after('deploy:assetic:dump', 'project:fos:js-routing:dump');
-after('deploy:assetic:dump', 'project:bazinga:js-translation:dump');
+before('project:build:front', 'project:front-js:dump');
