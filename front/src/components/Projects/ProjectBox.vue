@@ -67,15 +67,15 @@ export default {
     data() {
         return {
             message: {
-                new_message: window.Translator.trans('message.new_message'),
-                started_on: window.Translator.trans('message.started_on'),
-                customer: window.Translator.trans('message.customer'),
-                programme: window.Translator.trans('message.programme'),
-                status: window.Translator.trans('message.status'),
-                task_status: window.Translator.trans('message.task_status'),
-                cost_status: window.Translator.trans('message.cost_status'),
-                notes: window.Translator.trans('message.notes'),
-                add_project_notes: window.Translator.trans('message.add_project_notes'),
+                new_message: Translator.trans('message.new_message'),
+                started_on: Translator.trans('message.started_on'),
+                customer: Translator.trans('message.customer'),
+                programme: Translator.trans('message.programme'),
+                status: Translator.trans('message.status'),
+                task_status: Translator.trans('message.task_status'),
+                cost_status: Translator.trans('message.cost_status'),
+                notes: Translator.trans('message.notes'),
+                add_project_notes: Translator.trans('message.add_project_notes'),
             },
         };
     },

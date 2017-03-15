@@ -24,4 +24,16 @@ npm run e2e
 npm test
 ```
 
+## Dump translations
+
+php bin/console bazinga:js-translation:dump  --format=js --merge-domains
+
+## Dump routes
+
+php bin/console fos:js-routing:dump
+
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+## To dump translations,routes & generate symlinks in front run the following command
+
+bin/front-static

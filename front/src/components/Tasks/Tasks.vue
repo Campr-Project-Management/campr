@@ -52,8 +52,8 @@ export default {
         return {
             activePage: 1,
             message: {
-                my_tasks: window.Translator.trans('message.my_tasks'),
-                new_task: window.Translator.trans('message.new_task'),
+                my_tasks: Translator.trans('message.my_tasks'),
+                new_task: Translator.trans('message.new_task'),
             },
         };
     },
