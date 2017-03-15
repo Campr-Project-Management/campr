@@ -14,6 +14,7 @@ use Symfony\Component\Process\Process;
 class RedisQueueManagerCommand extends ContainerAwareCommand
 {
     const DEFAULT = 'default';
+    const IMPORT = 'import';
 
     const TTL = 60;
     const JOB_DELAY = 5;
@@ -122,7 +123,6 @@ class RedisQueueManagerCommand extends ContainerAwareCommand
                     $message
                 ));
             }
-
             $em->persist($commandQueueLog);
             $em->flush();
 

@@ -28,7 +28,7 @@ class FileSystem
     /**
      * @var Project
      *
-     * @ORM\ManyToOne(targetEntity="Project", inversedBy="fileSystems")
+     * @ORM\ManyToOne(targetEntity="Project", inversedBy="fileSystems", cascade={"persist"})
      * @ORM\JoinColumn(name="project_id")
      */
     private $project;
@@ -68,6 +68,13 @@ class FileSystem
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Media", mappedBy="fileSystem")
      */
     private $medias;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_default", type="boolean", nullable=false, options={"default"=0})
+     */
+    private $isDefault = false;
 
     /**
      * FileSystem constructor.
@@ -250,5 +257,29 @@ class FileSystem
     public function getMedias()
     {
         return $this->medias;
+    }
+
+    /**
+     * Set isDefault
+     *
+     * @param boolean $isDefault
+     *
+     * @return FileSystem
+     */
+    public function setIsDefault($isDefault)
+    {
+        $this->isDefault = $isDefault;
+
+        return $this;
+    }
+
+    /**
+     * Get isDefault
+     *
+     * @return boolean
+     */
+    public function getIsDefault()
+    {
+        return $this->isDefault;
     }
 }
