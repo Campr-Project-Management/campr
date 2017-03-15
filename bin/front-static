@@ -4,9 +4,9 @@ bin/console fos:js-routing:dump
 bin/console bazinga:js-translation:dump  --format=js --merge-domains
 mkdir -p front/static/js
 cd front/static/js
-ln -s ../../../web/bundles/fosjsrouting/js/router.js router.js
-ln -s ../../../web/js/fos_js_routes.js fos_js_routes.js
-ln -s ../../../web/bundles/bazingajstranslation/js/translator.min.js translator.min.js
-ln -s ../../../web/js/translations/config.js config.js
-ln -s ../../../web/js/translations/en.js en.js
-ln -s ../../../web/js/translations/de.js de.js
+ln -sf ../../../web/bundles/fosjsrouting/js/router.js router.js
+ln -sf ../../../web/js/fos_js_routes.js fos_js_routes.js
+ln -sf ../../../web/bundles/bazingajstranslation/js/translator.min.js translator.min.js
+ln -sf ../../../web/js/translations/config.js config.js
+ln -sf ../../../web/js/translations/en.js en.js
+ln -sf ../../../web/js/translations/de.js de.js

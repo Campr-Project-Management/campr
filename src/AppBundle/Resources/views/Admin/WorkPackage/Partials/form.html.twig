@@ -59,6 +59,15 @@
     }
 ) }}
 {{ form_widget(
+    form.workPackageCategory,
+    {
+        'attr': {
+            'class': 'selectpicker',
+        },
+        'label': 'label.workpackage_category'|trans
+    }
+) }}
+{{ form_widget(
     form.colorStatus,
     {
         'attr': {

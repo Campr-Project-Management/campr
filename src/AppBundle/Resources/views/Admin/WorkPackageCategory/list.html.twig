@@ -5,8 +5,8 @@
 {% block body_content %}
     <div class="card">
         <div class="card-header bgm-teal">
-            <h2>{{ 'title.workpackage.list'|trans }}<small>{{ 'subtitle.workpackage'|trans }}</small></h2>
-            <a href="{{ path('app_admin_workpackage_create') }}">
+            <h2>{{ 'title.workpackage_category.list'|trans }}<small>{{ 'subtitle.workpackage_category'|trans }}</small></h2>
+            <a href="{{ path('app_admin_workpackage_category_create') }}">
                 <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
             </a>
         </div>
@@ -18,32 +18,27 @@
             {% endfor %}
             <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                 <strong>
-                    {{ 'success.workpackage.delete.first'|trans({}, 'flashes') }}
+                    {{ 'success.workpackage_category.delete.first'|trans({}, 'flashes') }}
                     <span id="object-id">
                         {% for flash_message in app.session.flashBag.get('success') %}
                             {{ flash_message }}
                         {% endfor %}
                     </span>
-                    {{ 'success.workpackage.delete.second'|trans({}, 'flashes') }}
+                    {{ 'success.workpackage_category.delete.second'|trans({}, 'flashes') }}
                 </strong>
             </div>
             <div class="table-responsive">
                 <table
                         id="data-table-command"
                         class="table table-condensed table-striped table-vmiddle"
-                        data-url="{{ path('app_admin_workpackage_list_filtered') }}"
-                        data-show="app_admin_workpackage_show"
-                        data-edit="app_admin_workpackage_edit"
-                        data-delete="app_admin_workpackage_delete">
+                        data-url="{{ path('app_admin_workpackage_category_list_filtered') }}"
+                        data-show="app_admin_workpackage_category_show"
+                        data-edit="app_admin_workpackage_category_edit"
+                        data-delete="app_admin_workpackage_category_delete">
                     <thead>
                     <tr>
                         <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'table_header_cell.id'|trans }}</th>
-                        <th data-column-id="puid">{{ 'table_header_cell.puid'|trans }}</th>
                         <th data-column-id="name">{{ 'table_header_cell.name'|trans }}</th>
-                        <th data-column-id="workPackageCategoryName">{{ 'table_header_cell.workpackage_category'|trans }}</th>
-                        <th data-column-id="responsibilityFullName">{{ 'table_header_cell.responsible'|trans }}</th>
-                        <th data-column-id="scheduledStartAt">{{ 'table_header_cell.schedule_start'|trans }}</th>
-                        <th data-column-id="scheduledFinishAt">{{ 'table_header_cell.schedule_finish'|trans }}</th>
                         <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ 'placeholder.actions'|trans }}</th>
                     </tr>
                     </thead>
@@ -59,4 +54,3 @@
     <script src="{{ asset('bundles/app/assets/js/data_table.js') }}"></script>
     <script src="{{ asset('bundles/app/assets/js/alert_messages.js') }}"></script>
 {% endblock %}
-

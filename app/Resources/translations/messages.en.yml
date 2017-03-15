@@ -343,6 +343,10 @@ title:
         list: Contract
         create: Create Contract
         edit: Edit Contract
+    workpackage_category:
+        list: Work Package Category
+        create: Create Work Package Category
+        edit: Edit Work Package Category
 
 subtitle:
     user: List of users
@@ -390,6 +394,7 @@ subtitle:
     media: List of project files
     label: List of project labels
     contract: List of contracts
+    workpackage_category: List of work package categories
 
 label:
     username: Username
@@ -560,6 +565,8 @@ label:
     phase: Phase
     subtask_description: Subtask Description
     search_for_tasks: Search for tasks
+    default: Default
+    workpackage_category: Work Package Category
 
 button:
     sign_in: Sign In
@@ -640,6 +647,7 @@ add:
     filesystem: Add new filesystem
     label: Add new label
     contract: Add new contract
+    workpackage_category: Add new work package category
 
 placeholder:
     user: Choose one user
@@ -688,6 +696,7 @@ placeholder:
     label_title: Label Title
     label_description: Label Description
     label_color: Label Color
+    workpackage_category: Work Package Category
 
 table_header_cell:
     id: Id
@@ -840,6 +849,7 @@ table_header_cell:
     proposed_end_date: Proposed End Date
     forecast_start_date: Forecast Start Date
     forecast_end_date: Forecast End Date
+    workpackage_category: Work Package Category
 
 link:
     home: Home
