@@ -50,9 +50,9 @@ export default {
         return {
             activePage: 1,
             message: {
-                recent_projects: window.Translator.trans('message.recent_projects'),
-                all_projects: window.Translator.trans('message.all_projects'),
-                new_project: window.Translator.trans('message.new_project'),
+                recent_projects: Translator.trans('message.recent_projects'),
+                all_projects: Translator.trans('message.all_projects'),
+                new_project: Translator.trans('message.new_project'),
             },
         };
     },

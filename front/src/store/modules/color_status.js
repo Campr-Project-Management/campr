@@ -24,7 +24,7 @@ const actions = {
      */
     getColorStatuses({commit}) {
         Vue.http
-            .get(Routing.generate('app_api_color_status_list').substr(1)).then((response) => {
+            .get(Routing.generate('app_api_color_status_list')).then((response) => {
                 if (response.status === 200) {
                     let colorStatuses = response.data;
                     commit(types.SET_COLOR_STATUSES, {colorStatuses});

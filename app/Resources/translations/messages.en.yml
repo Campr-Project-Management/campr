@@ -116,6 +116,16 @@ message:
     view_grid: View Grid
     view_board: View Board
     label_note: Note':' the Label text color is white so pick a background color that makes it easy to read the white text above it.
+    create_new_task: Create New Task
+    import_task: Import Task
+    task_schedule: Task Schedule
+    task_details: Task Details
+    planning: Planning
+    subtasks: Subtasks
+    project_tasks: Project Tasks
+    edit_labels: Edit Labels
+    edit_task: Edit Task
+    close_task: Close Task
 
 menu:
     users: Users
@@ -536,6 +546,8 @@ label:
     proposed_end_date: Proposed End Date
     forecast_start_date: Forecast Start Date
     forecast_end_date: Forecast End Date
+    base_start_date: Base Start Date
+    base_end_date: Base End Date
     created_by: Created By
     two_factor_auth: Two Factor Authentication
     todo: To do
@@ -543,6 +555,10 @@ label:
     code_review: Code review
     finished: Finished
     closed: Closed
+    asignee: asignee
+    phase: Phase
+    subtask_description: Subtask Description
+    search_for_tasks: Search for tasks
 
 button:
     sign_in: Sign In
@@ -570,6 +586,9 @@ button:
     analyze: Analyze
     cancel: Cancel
     create_label: Create Label
+    add_new_subtask: Add new subtask
+    create_task: Create Task
+    show_results: Show Results
 
 checkbox:
     checked: Yes
