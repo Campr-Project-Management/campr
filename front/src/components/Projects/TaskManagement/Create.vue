@@ -1,9 +1,9 @@
 <template>
     <div class="create-task page-section">
         <div class="header flex-v-center">
-            <h1>Create New Task</h1>
+            <h1>{{ message.create_new_task }}</h1>
             <a href="javascript:void(0)" class="btn-rounded btn-auto btn-empty flex">
-                <span>Import Task</span>
+                <span>{{ message.import_task }}</span>
                 <upload-icon></upload-icon>
             </a>
         </div>
@@ -11,51 +11,51 @@
             <input-field v-model="title" type="text" label="Task Title"></input-field>
             <Vueditor></Vueditor>
             <hr>
-            <h3 class="with-label"> Task Schedule</h3>
+            <h3 class="with-label">{{ message.task_schedule }}</h3>
             <div class="flex flex-space-between dates-top">
                 <div class="input-holder right">
-                    <label class="active">Base Start Date</label>
+                    <label class="active">{{ label.base_start_date }}</label>
                     <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
                     <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
                 </div>
                 <div class="input-holder right">
-                    <label class="active">Base Finish Date</label>
+                    <label class="active">{{ label.base_end_date }}</label>
                     <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
                     <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
                 </div>
             </div>
             <div class="flex flex-space-between">
                 <div class="input-holder right">
-                    <label class="active">Forecast Start Date</label>
+                    <label class="active">{{ label.forecast_start_date }}</label>
                     <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
                     <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
                 </div>
                 <div class="input-holder right">
-                    <label class="active">Forecast Finish Date</label>
+                    <label class="active">{{ label.forecast_end_date }}</label>
                     <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
                     <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
                 </div>
             </div>
             <hr>
-            <h3>Task Details</h3>
+            <h3>{{ message.task_details }}</h3>
             <div class="flex flex-space-between">
-                <select-field title="Asignee"></select-field>
-                <select-field title="Labels" v-bind:options="labelsForChoice"></select-field>
+                <select-field v-bind:title="label.asignee"></select-field>
+                <select-field v-bind:title="label.labels" v-bind:options="labelsForChoice"></select-field>
             </div>
             <hr>
-            <h3>Planning</h3>
+            <h3>{{ message.planning }}</h3>
             <div class="flex flex-space-between">
-                <select-field title="Phase"></select-field>
-                <select-field title="Milestone"></select-field>
+                <select-field v-bind:title="label.phase"></select-field>
+                <select-field v-bind:title="label.milestone"></select-field>
             </div>
             <hr>
-            <h3>Subtasks</h3>
-            <input-field type="text" label="Subtask Description"></input-field>
+            <h3>{{ message.subtasks }}</h3>
+            <input-field type="text" v-bind:label="label.subtask_description"></input-field>
             <div class="flex flex-direction-reverse">
-                <a href="javascript:void(0)" class="btn-rounded btn-auto add-task">Add new subtask +</a>
+                <a href="javascript:void(0)" class="btn-rounded btn-auto add-task">{{ button.add_new_subtask }} +</a>
             </div>
             <hr>
-            <h4>Status</h4>
+            <h4>{{ label.status }}</h4>
             <div class="status-info">
                 <p v-for="status in colorStatuses"><span v-bind:style="{ color: status.color }">{{ status.name }}</span></p>
             </div>
@@ -64,9 +64,8 @@
             </div>
             <hr>
             <div class="flex flex-space-between">
-                <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto disable-bg">Cancel</router-link>
-                <a v-on:click="createTask" class="btn-rounded btn-auto second-bg">Create Task</a>
-
+                <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto disable-bg">{{ button.cancel }}</router-link>
+                <a v-on:click="createTask" class="btn-rounded btn-auto second-bg">{{ button.create_task }}</a>
             </div>
         </div>
     </div>
@@ -112,6 +111,35 @@ export default {
         colorStatuses: 'colorStatuses',
         labelsForChoice: 'labelsForChoice',
     }),
+    data() {
+        return {
+            message: {
+                create_new_task: Translator.trans('message.create_new_task'),
+                import_task: Translator.trans('message.import_task'),
+                task_schedule: Translator.trans('message.task_schedule'),
+                task_details: Translator.trans('message.task_details'),
+                planning: Translator.trans('message.planning'),
+                subtasks: Translator.trans('message.subtasks'),
+            },
+            label: {
+                base_start_date: Translator.trans('label.base_start_date'),
+                base_end_date: Translator.trans('label.base_end_date'),
+                forecast_start_date: Translator.trans('label.forecast_start_date'),
+                forecast_end_date: Translator.trans('label.forecast_end_date'),
+                status: Translator.trans('label.status'),
+                asignee: Translator.trans('label.asignee'),
+                labels: Translator.trans('label.labels'),
+                phase: Translator.trans('label.phase'),
+                milestone: Translator.trans('label.milestone'),
+                subtask_description: Translator.trans('label.subtask_description'),
+            },
+            button: {
+                add_new_subtask: Translator.trans('button.add_new_subtask'),
+                cancel: Translator.trans('button.cancel'),
+                create_task: Translator.trans('button.create_task'),
+            },
+        };
+    },
 };
 </script>
 

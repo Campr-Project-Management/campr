@@ -68,12 +68,12 @@ export default {
     data() {
         return {
             message: {
-                edit_task_labels: window.Translator.trans('message.edit_task_labels'),
-                new_label: window.Translator.trans('message.new_label'),
-                open_tasks: window.Translator.trans('message.open_tasks'),
-                view_grid: window.Translator.trans('message.view_grid'),
-                view_board: window.Translator.trans('message.view_board'),
-                new_task: window.Translator.trans('message.new_task'),
+                edit_task_labels: Translator.trans('message.edit_task_labels'),
+                new_label: Translator.trans('message.new_label'),
+                open_tasks: Translator.trans('message.open_tasks'),
+                view_grid: Translator.trans('message.view_grid'),
+                view_board: Translator.trans('message.view_board'),
+                new_task: Translator.trans('message.new_task'),
             },
         };
     },

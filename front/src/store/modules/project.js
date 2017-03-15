@@ -32,7 +32,7 @@ const actions = {
     */
     toggleFavourite({commit}, project) {
         Vue.http
-        .patch(Routing.generate('app_api_project_edit', {'id': project.id}).substr(1), {favourite: !project.favourite})
+        .patch(Routing.generate('app_api_project_edit', {'id': project.id}), {favourite: !project.favourite})
         .then(() => {
             commit(types.TOGGLE_FAVOURITE, project);
         }, (response) => {
@@ -47,7 +47,7 @@ const actions = {
     getProjects({commit}) {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
-        .get(Routing.generate('app_api_project_list').substr(1)).then((response) => {
+        .get(Routing.generate('app_api_project_list')).then((response) => {
             if (response.status === 200) {
                 let projects = response.data;
                 commit(types.SET_PROJECTS, {projects});
@@ -63,7 +63,7 @@ const actions = {
      */
     getProjectById({commit}, id) {
         Vue.http
-            .get(Routing.generate('app_api_project_get', {'id': id}).substr(1)).then((response) => {
+            .get(Routing.generate('app_api_project_get', {'id': id})).then((response) => {
                 if (response.status === 200) {
                     let project = response.data;
                     commit(types.SET_PROJECT, {project});
@@ -78,7 +78,7 @@ const actions = {
      */
     getProjectLabels({commit}, id) {
         Vue.http
-            .get(Routing.generate('app_api_project_labels', {'id': id}).substr(1)).then((response) => {
+            .get(Routing.generate('app_api_project_labels', {'id': id})).then((response) => {
                 if (response.status === 200) {
                     let labels = response.data;
                     commit(types.SET_LABELS, {labels});
@@ -94,7 +94,7 @@ const actions = {
     createProjectLabel({commit}, data) {
         Vue.http
             .post(
-                Routing.generate('app_api_project_create_label', {'id': data.projectId}).substr(1),
+                Routing.generate('app_api_project_create_label', {'id': data.projectId}),
                 JSON.stringify(data)
             ).then((response) => {
                 router.push({name: 'project-task-management-edit-labels'});
@@ -112,7 +112,7 @@ const actions = {
      */
     deleteProjectLabel({commit}, id) {
         Vue.http
-            .delete(Routing.generate('app_api_label_delete', {'id': id}).substr(1)).then((response) => {
+            .delete(Routing.generate('app_api_label_delete', {'id': id})).then((response) => {
                 if (response.status === 204) {
                     router.push({name: 'project-task-management-edit-labels'});
                 }

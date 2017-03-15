@@ -34,10 +34,10 @@ export default {
     data: function() {
         return {
             message: {
-                filter_by: window.Translator.trans('message.filter_by'),
-                customer: window.Translator.trans('message.customer'),
-                programme: window.Translator.trans('message.programme'),
-                status: window.Translator.trans('message.status'),
+                filter_by: Translator.trans('message.filter_by'),
+                customer: Translator.trans('message.customer'),
+                programme: Translator.trans('message.programme'),
+                status: Translator.trans('message.status'),
             },
         };
     },
