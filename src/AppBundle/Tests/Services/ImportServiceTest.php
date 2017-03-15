@@ -114,7 +114,7 @@ class ImportServiceTest extends KernelTestCase
         $this
             ->calendarRepository
             ->expects($this->any())
-            ->method('find')
+            ->method('findOneBy')
             ->willReturn(null)
         ;
         $this
@@ -154,7 +154,7 @@ class ImportServiceTest extends KernelTestCase
         $this->files = $this->finder->files()->in($this->path)->name(self::IMPORT_CALENDARS);
         foreach ($this->files as $file) {
             $content = file_get_contents($file->getRealPath());
-            $this->importService->importProjects($content);
+            $this->importService->importProjects(new Project(), $content);
         }
     }
 
@@ -174,8 +174,14 @@ class ImportServiceTest extends KernelTestCase
         ;
         $this
             ->workPackageRepository
-            ->expects($this->atLeastOnce())
-            ->method('find')
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->willReturn(null)
+        ;
+        $this
+            ->calendarRepository
+            ->expects($this->any())
+            ->method('findOneBy')
             ->willReturn(null)
         ;
         $this
@@ -203,7 +209,7 @@ class ImportServiceTest extends KernelTestCase
         $this->files = $this->finder->files()->in($this->path)->name(self::IMPORT_TASKS);
         foreach ($this->files as $file) {
             $content = file_get_contents($file->getRealPath());
-            $this->importService->importProjects($content);
+            $this->importService->importProjects(new Project(), $content);
         }
     }
 
@@ -217,13 +223,20 @@ class ImportServiceTest extends KernelTestCase
             ->method('getRepository')
             ->willReturnMap([
                 [Project::class, $this->projectRepository],
+                [WorkPackage::class, $this->workPackageRepository],
                 [Calendar::class, $this->calendarRepository],
             ])
         ;
         $this
             ->calendarRepository
-            ->expects($this->atLeastOnce())
-            ->method('find')
+            ->expects($this->any())
+            ->method('findOneBY')
+            ->willReturn(null)
+        ;
+        $this
+            ->workPackageRepository
+            ->expects($this->any())
+            ->method('findOneBY')
             ->willReturn(null)
         ;
         $this
@@ -252,7 +265,7 @@ class ImportServiceTest extends KernelTestCase
         $this->files = $this->finder->files()->in($this->path)->name(self::IMPORT_RESOURCES);
         foreach ($this->files as $file) {
             $content = file_get_contents($file->getRealPath());
-            $this->importService->importProjects($content);
+            $this->importService->importProjects(new Project(), $content);
         }
     }
 
@@ -277,13 +290,13 @@ class ImportServiceTest extends KernelTestCase
         ;
         $this
             ->workPackageRepository
-            ->expects($this->atLeastOnce())
-            ->method('find')
+            ->expects($this->any())
+            ->method('findOneBy')
             ->willReturn(null)
         ;
         $workPackageProjectWorkCostTypeRepository
-            ->expects($this->atLeastOnce())
-            ->method('find')
+            ->expects($this->any())
+            ->method('findOneBy')
             ->willReturn(null)
         ;
         $this
@@ -322,7 +335,7 @@ class ImportServiceTest extends KernelTestCase
         $this->files = $this->finder->files()->in($this->path)->name(self::IMPORT_ASSIGNMENTS);
         foreach ($this->files as $file) {
             $content = file_get_contents($file->getRealPath());
-            $this->importService->importProjects($content);
+            $this->importService->importProjects(new Project(), $content);
         }
     }
 

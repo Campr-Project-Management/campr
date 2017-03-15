@@ -127,6 +127,7 @@ success:
             general: Project successfully deleted!
             first: Project with ID
             second: successfully deleted!
+        import: Import project started. Project will be imported soon.
     chat_messages:
         delete: Messages successfully deleted!
     project_category:
