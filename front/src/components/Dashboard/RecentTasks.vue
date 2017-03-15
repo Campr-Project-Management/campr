@@ -52,9 +52,9 @@ export default {
         return {
             activePage: 1,
             message: {
-                recent_tasks: window.Translator.trans('message.recent_tasks'),
-                all_tasks: window.Translator.trans('message.all_tasks'),
-                new_task: window.Translator.trans('message.new_task'),
+                recent_tasks: Translator.trans('message.recent_tasks'),
+                all_tasks: Translator.trans('message.all_tasks'),
+                new_task: Translator.trans('message.new_task'),
             },
         };
     },

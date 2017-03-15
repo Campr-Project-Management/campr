@@ -31,10 +31,10 @@ export default {
     data: function() {
         return {
             message: {
-                filter_by: window.Translator.trans('message.filter_by'),
-                schedule: window.Translator.trans('message.schedule'),
-                status: window.Translator.trans('message.status'),
-                project: window.Translator.trans('message.project'),
+                filter_by: Translator.trans('message.filter_by'),
+                schedule: Translator.trans('message.schedule'),
+                status: Translator.trans('message.status'),
+                project: Translator.trans('message.project'),
             },
         };
     },

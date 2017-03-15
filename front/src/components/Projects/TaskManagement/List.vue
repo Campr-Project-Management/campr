@@ -2,7 +2,7 @@
     <div class="project-task-management page-section">
         <div class="header flex flex-space-between">
             <div class="flex">
-                <h1>Project Tasks</h1>
+                <h1>{{ message.project_tasks }}</h1>
                 <div class="flex flex-v-center">
                     <a class="btn-rounded btn-auto second-bg btn-md">
                         <span>Open</span>
@@ -19,19 +19,19 @@
                 </div>
             </div>
             <div class="flex flex-v-center">
-                <a href="javascript:void(0)" class="btn-rounded btn-auto" v-show="!boardView" @click="boardView=!boardView">View Board</a>
-                <a href="javascript:void(0)" class="btn-rounded btn-auto" v-show="boardView" @click="boardView=!boardView">View Grid</a>
-                <router-link :to="{name: 'project-task-management-edit-labels'}" class="btn-rounded btn-auto">Edit Labels</router-link>
-                <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">New Task</router-link>
+                <a href="javascript:void(0)" class="btn-rounded btn-auto" v-show="!boardView" @click="boardView=!boardView">{{ message.view_board }}</a>
+                <a href="javascript:void(0)" class="btn-rounded btn-auto" v-show="boardView" @click="boardView=!boardView">{{ message.view_grid }}</a>
+                <router-link :to="{name: 'project-task-management-edit-labels'}" class="btn-rounded btn-auto">{{ message.edit_labels }}</router-link>
+                <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">{{ message.new_task }}</router-link>
             </div>
         </div>
         <div class="flex">
-            <input-field type="text" label="Search for Tasks" class="search"></input-field>
+            <input-field type="text" v-bind:label="label.search_for_tasks" class="search"></input-field>
             <dropdown title="Asignee" options=""></dropdown>
             <dropdown title="Status" options=""></dropdown>
             <dropdown title="Milestone" options=""></dropdown>
             <dropdown title="Filter By" options=""></dropdown>
-            <a class="btn-rounded btn-auto">Show Results</a>
+            <a class="btn-rounded btn-auto">{{ button.show_results }}</a>
         </div>
 
         <div class="tasks">
@@ -105,6 +105,58 @@ export default {
     },
     data() {
         return {
+            message: {
+                project_tasks: Translator.trans('message.project_tasks'),
+                view_board: Translator.trans('message.view_board'),
+                view_grid: Translator.trans('message.view_grid'),
+                edit_labels: Translator.trans('message.edit_labels'),
+                new_task: Translator.trans('message.new_task'),
+            },
+            label: {
+                search_for_tasks: Translator.trans('label.search_for_tasks'),
+            },
+            button: {
+                show_results: Translator.trans('button.show_results'),
+            },
+            tasks: [
+                {
+                    'id': 1,
+                    'name': 'Tesla SpaceX Mars Project',
+                    'progress': 56,
+                    'projectName': 'plm',
+                    'content': 'Bla bla bla bla',
+                    'status': 'todo',
+                }, {
+                    'id': 2,
+                    'name': 'Tesla SpaceX Mars Project',
+                    'progress': 56,
+                    'projectName': 'plm',
+                    'content': 'Bla bla bla bla',
+                    'status': 'inprogress',
+                }, {
+                    'id': 3,
+                    'name': 'Tesla SpaceX Mars Project',
+                    'progress': 56,
+                    'projectName': 'plm',
+                    'content': 'Bla bla bla bla',
+                    'status': 'codereview',
+                }, {
+                    'id': 4,
+                    'name': 'Tesla SpaceX Mars Project',
+                    'progress': 56,
+                    'projectName': 'plm',
+                    'content': 'Bla bla bla bla',
+                    'status': 'todo',
+                }, {
+                    'id': 4,
+                    'name': 'Tesla SpaceX Mars Project',
+                    'progress': 56,
+                    'projectName': 'plm',
+                    'content': 'Bla bla bla bla',
+                    'status': 'todo',
+                },
+            ],
+            count: 2,
             boardView: true,
         };
     },

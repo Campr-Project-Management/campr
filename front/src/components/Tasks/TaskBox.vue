@@ -119,12 +119,12 @@ export default {
     data: function() {
         return {
             message: {
-                schedule: window.Translator.trans('message.schedule'),
-                start: window.Translator.trans('message.start'),
-                finish: window.Translator.trans('message.finish'),
-                duration: window.Translator.trans('message.duration'),
-                schedule_base: window.Translator.trans('message.schedule_base'),
-                schedule_forecast: window.Translator.trans('message.schedule_forecast'),
+                schedule: Translator.trans('message.schedule'),
+                start: Translator.trans('message.start'),
+                finish: Translator.trans('message.finish'),
+                duration: Translator.trans('message.duration'),
+                schedule_base: Translator.trans('message.schedule_base'),
+                schedule_forecast: Translator.trans('message.schedule_forecast'),
             },
         };
     },

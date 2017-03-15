@@ -77,8 +77,8 @@ export default {
     data: function() {
         return {
             message: {
-                hi: window.Translator.trans('message.hi'),
-                project: window.Translator.trans('message.project'),
+                hi: Translator.trans('message.hi'),
+                project: Translator.trans('message.project'),
             },
         };
     },
