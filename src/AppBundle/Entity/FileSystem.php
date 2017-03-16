@@ -260,9 +260,9 @@ class FileSystem
     }
 
     /**
-     * Set isDefault
+     * Set isDefault.
      *
-     * @param boolean $isDefault
+     * @param bool $isDefault
      *
      * @return FileSystem
      */
@@ -274,9 +274,9 @@ class FileSystem
     }
 
     /**
-     * Get isDefault
+     * Get isDefault.
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsDefault()
     {
