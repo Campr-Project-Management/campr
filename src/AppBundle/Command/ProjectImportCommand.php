@@ -2,7 +2,6 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\Media;
 use AppBundle\Entity\Project;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
