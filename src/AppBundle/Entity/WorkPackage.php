@@ -928,7 +928,6 @@ class WorkPackage
     }
 
     /**
-<<<<<<< HEAD
      * @return WorkPackageStatus|null
      */
     public function getWorkPackageStatus()

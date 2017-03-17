@@ -2,13 +2,12 @@
 
 namespace MainBundle\Controller;
 
-use AppBundle\Command\RedisQueueManagerCommand;
-use AppBundle\Entity\FileSystem as TeamFileSystem;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamInvite;
 use AppBundle\Entity\TeamMember;
 use AppBundle\Entity\User;
 use Doctrine\Common\Collections\Criteria;
+use MainBundle\Event\TeamEvent;
 use MainBundle\Form\Team\CreateType;
 use MainBundle\Form\Team\EditType;
 use MainBundle\Security\TeamVoter;
@@ -16,7 +15,6 @@ use MainBundle\Form\InviteUserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -94,37 +92,7 @@ class TeamController extends Controller
                 )
             ;
 
-            $env = $this->getParameter('kernel.environment');
-            $redis = $this->get('redis.client');
-            $redis->rpush(RedisQueueManagerCommand::DEFAULT, [
-                sprintf(
-                    '--env=%s_%s doctrine:database:create -n',
-                    str_replace('-', '_', $team->getSlug()),
-                    $env
-                ),
-            ]);
-            $redis->rpush(RedisQueueManagerCommand::DEFAULT, [
-                sprintf(
-                    '--env=%s_%s doctrine:migrations:migrate -n',
-                    str_replace('-', '_', $team->getSlug()),
-                    $env
-                ),
-            ]);
-            $redis->rpush(RedisQueueManagerCommand::DEFAULT, [
-                sprintf(
-                    '--env=%s_%s doctrine:fixtures:load -n --fixtures=src/AppBundle/DataFixtures/Team',
-                    str_replace('-', '_', $team->getSlug()),
-                    $env
-                ),
-            ]);
-            $redis->rpush(RedisQueueManagerCommand::DEFAULT, [
-                sprintf(
-                    '--env=%s_%s app:file-system:create %s',
-                    str_replace('-', '_', $team->getSlug()),
-                    $env,
-                    $team->getSlug()
-                ),
-            ]);
+            $this->get('event_dispatcher')->dispatch(TeamEvent::CREATED, new TeamEvent($team));
 
             return $this->redirectToRoute('main_team_show', ['id' => $team->getId()]);
         }
