@@ -5,6 +5,7 @@ namespace AppBundle\Form\WorkPackage;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Label;
 use AppBundle\Entity\Project;
+use AppBundle\Entity\WorkPackageCategory;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -52,6 +53,12 @@ class CreateType extends AbstractType
                 'class' => WorkPackage::class,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.workpackage',
+                'translation_domain' => 'messages',
+            ])
+            ->add('workPackageCategory', EntityType::class, [
+                'class' => WorkPackageCategory::class,
+                'choice_label' => 'name',
+                'placeholder' => 'placeholder.workpackage_category',
                 'translation_domain' => 'messages',
             ])
             ->add('colorStatus', EntityType::class, [
