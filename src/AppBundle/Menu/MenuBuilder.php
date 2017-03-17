@@ -196,6 +196,12 @@ class MenuBuilder
                 'route' => 'app_admin_workpackage_list',
             ])
             ->setAttribute('class', 'main-category')
+            ->setLinkAttribute('icon', 'zmdi zmdi-group-work')
+            ->getParent()
+            ->addChild($this->translator->trans('title.workpackage_category.list', [], 'messages'), [
+                'route' => 'app_admin_workpackage_category_list',
+            ])
+            ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-present-to-all')
             ->getParent()
             ->addChild($this->translator->trans('title.assignment.list', [], 'messages'), [
