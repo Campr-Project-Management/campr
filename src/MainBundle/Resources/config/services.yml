@@ -45,3 +45,12 @@ services:
         tags:
             - { name: security.voter }
         public: false
+
+### SUBSCRIBERS ###
+    main.team_subscriber:
+        class: MainBundle\Subscriber\TeamSubscriber
+        arguments:
+            - '%kernel.environment%'
+            - '@redis.client'
+        tags:
+            - { name: kernel.event_subscriber }
