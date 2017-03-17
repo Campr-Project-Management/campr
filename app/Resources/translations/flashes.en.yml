@@ -324,6 +324,13 @@ success:
     contact:
         message:
             sent: Message succesfully sent!
+    workpackage_category:
+        create: WorkPackageCategory successfully created!
+        edit: WorkPackageCategory successfully edited!
+        delete:
+            general: WorkPackageCategory successfully deleted!
+            first: WorkPackageCategory with ID
+            second: successfully deleted!
 
 failed:
     media:
