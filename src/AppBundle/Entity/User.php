@@ -38,6 +38,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     const ROLE_USER = 'ROLE_USER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
     const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    const GRAVATAR_BASE_URL = 'https://www.gravatar.com/avatar/';
 
     /**
      * @var int
@@ -1525,5 +1526,21 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
         }
 
         return false;
+    }
+
+    /**
+     * Get gravatar url.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("gravatar")
+     *
+     * @return string
+     */
+    public function getGravatar()
+    {
+        $email = md5(strtolower(trim($this->getEmail())));
+        $gravatarUrl = sprintf('%s%s?d=identicon', self::GRAVATAR_BASE_URL, $email);
+
+        return $gravatarUrl;
     }
 }

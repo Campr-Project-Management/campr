@@ -870,6 +870,9 @@ link:
     reports: Reports
     support: Support
     contact: Contact
+    account: Account
+    back_to_campr: Back to Campr.biz
+    logout: Logout
 
 not_found:
     general: Resource not found!
