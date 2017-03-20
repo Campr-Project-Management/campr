@@ -730,6 +730,10 @@ class ProjectControllerTest extends BaseController
         $responseContent[1]['users'][0]['apiToken'] = $responseArray[1]['users'][0]['apiToken'];
         $responseContent[0]['users'][0]['updatedAt'] = $responseArray[0]['users'][0]['updatedAt'];
         $responseContent[1]['users'][0]['updatedAt'] = $responseArray[1]['users'][0]['updatedAt'];
+        $email = md5(strtolower(trim($responseArray[0]['users'][0]['email'])));
+        $responseContent[0]['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
+        $email = md5(strtolower(trim($responseArray[1]['users'][0]['email'])));
+        $responseContent[1]['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
 
         $responseArray = json_encode($responseArray);
 
@@ -760,6 +764,7 @@ class ProjectControllerTest extends BaseController
                         'users' => [
                             [
                                 'roles' => ['ROLE_USER'],
+                                'gravatar' => '',
                                 'id' => 7,
                                 'username' => 'user10',
                                 'email' => 'user10@trisoft.ro',
@@ -801,6 +806,7 @@ class ProjectControllerTest extends BaseController
                         'users' => [
                             [
                                 'roles' => ['ROLE_USER'],
+                                'gravatar' => '',
                                 'id' => 7,
                                 'username' => 'user10',
                                 'email' => 'user10@trisoft.ro',
@@ -1636,6 +1642,10 @@ class ProjectControllerTest extends BaseController
         $responseContent['distributionLists'][1]['users'][0]['updatedAt'] = $project['distributionLists'][1]['users'][0]['updatedAt'];
         $responseContent['contracts'][0]['updatedAt'] = $project['contracts'][0]['updatedAt'];
         $responseContent['contracts'][1]['updatedAt'] = $project['contracts'][1]['updatedAt'];
+        $email = md5(strtolower(trim($project['distributionLists'][0]['users'][0]['email'])));
+        $responseContent['distributionLists'][0]['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
+        $email = md5(strtolower(trim($project['distributionLists'][1]['users'][0]['email'])));
+        $responseContent['distributionLists'][1]['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
 
         for ($i = 1; $i <= 3; ++$i) {
             $projectUser = $this->em->getRepository(ProjectUser::class)->find($i);
@@ -1862,6 +1872,7 @@ class ProjectControllerTest extends BaseController
                             'users' => [
                                 [
                                     'roles' => ['ROLE_USER'],
+                                    'gravatar' => '',
                                     'id' => 7,
                                     'username' => 'user10',
                                     'email' => 'user10@trisoft.ro',
@@ -1903,6 +1914,7 @@ class ProjectControllerTest extends BaseController
                             'users' => [
                                 [
                                     'roles' => ['ROLE_USER'],
+                                    'gravatar' => '',
                                     'id' => 7,
                                     'username' => 'user10',
                                     'email' => 'user10@trisoft.ro',
