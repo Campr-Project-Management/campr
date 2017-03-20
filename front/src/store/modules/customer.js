@@ -8,7 +8,7 @@ const state = {
 const getters = {
     customers: state => state.items,
     customersForFilter: function(state) {
-        let customersForFilter = [{'key': '', 'label': 'All Customers'}];
+        let customersForFilter = [{'key': '', 'label': Translator.trans('message.all_customers')}];
         state.items.map(function(customer) {
             customersForFilter.push({'key': customer.id, 'label': customer.name});
         });
@@ -30,22 +30,6 @@ const actions = {
                     commit(types.SET_CUSTOMERS, {customers});
                 }
             }, (response) => {
-                // TODO: REMOVE MOCK DATA
-                let customers = [
-                    {
-                        'id': 1,
-                        'name': 'Company1',
-                    },
-                    {
-                        'id': 2,
-                        'name': 'Comapny2',
-                    },
-                    {
-                        'id': 3,
-                        'name': 'Company3',
-                    },
-                ];
-                commit(types.SET_CUSTOMERS, {customers});
             });
     },
 };

@@ -202,7 +202,7 @@ class NoteController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.note.delete.general', [], 'flashes')
+                    ->trans('success.note.delete.from_edit', [], 'flashes')
             )
         ;
 

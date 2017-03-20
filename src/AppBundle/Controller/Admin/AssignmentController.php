@@ -203,7 +203,7 @@ class AssignmentController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.assignment.delete.general', [], 'flashes')
+                    ->trans('success.assignment.delete.from_edit', [], 'flashes')
             )
         ;
 

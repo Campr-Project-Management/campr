@@ -206,7 +206,7 @@ class ProjectCategoryController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.project_category.delete.general', [], 'flashes')
+                    ->trans('success.project_category.delete.from_edit', [], 'flashes')
             )
         ;
 

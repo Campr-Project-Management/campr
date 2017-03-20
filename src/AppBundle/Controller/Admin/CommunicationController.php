@@ -199,7 +199,7 @@ class CommunicationController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.communication.delete.general', [], 'flashes')
+                    ->trans('success.communication.delete.from_edit', [], 'flashes')
             )
         ;
 
