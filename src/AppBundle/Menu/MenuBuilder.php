@@ -112,6 +112,12 @@ class MenuBuilder
             ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-account');
 
+        $menu->addChild($this->translator->trans('title.programme.list', [], 'messages'), [
+                'route' => 'app_admin_programme_list',
+            ])
+            ->setAttribute('class', 'main-category')
+            ->setLinkAttribute('icon', 'zmdi zmdi-dialpad');
+
         $menu->addChild($this->translator->trans('title.project.list', [], 'messages'), [])
             ->setAttributes([
                 'class' => 'sub-menu main-category',

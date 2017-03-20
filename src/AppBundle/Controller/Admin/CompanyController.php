@@ -206,7 +206,7 @@ class CompanyController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.company.delete.general', [], 'flashes')
+                    ->trans('success.company.delete.from_edit', [], 'flashes')
             )
         ;
 

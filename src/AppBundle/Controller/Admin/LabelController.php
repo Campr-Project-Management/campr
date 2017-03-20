@@ -202,7 +202,7 @@ class LabelController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.label.delete.general', [], 'flashes')
+                    ->trans('success.label.delete.from_edit', [], 'flashes')
             )
         ;
 

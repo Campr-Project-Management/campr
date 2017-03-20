@@ -206,7 +206,7 @@ class ProjectCostTypeController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.project_cost_type.delete.general', [], 'flashes')
+                    ->trans('success.project_cost_type.delete.from_edit', [], 'flashes')
             )
         ;
 

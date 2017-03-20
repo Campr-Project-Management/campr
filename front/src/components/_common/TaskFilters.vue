@@ -2,7 +2,6 @@
     <div class="filters">
         <span class="title">{{ message.filter_by }}</span>
         <div class="dropdowns">
-            <dropdown v-bind:title="message.schedule" item="task" filter="schedule"></dropdown>
             <dropdown v-bind:title="message.status" v-bind:options="statuses" item="task" filter="colorStatusName"></dropdown>
             <dropdown v-bind:title="message.project" v-bind:options="projectsForFilter" item="task" filter="project"></dropdown>
         </div>

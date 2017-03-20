@@ -8,7 +8,7 @@ const state = {
 const getters = {
     colorStatuses: state => state.items,
     colorStatusesForFilter: function(state) {
-        let colorStatusesForFilter = [{'key': '', 'label': 'All Statuses'}];
+        let colorStatusesForFilter = [{'key': '', 'label': Translator.trans('message.all_statuses')}];
         state.items.map( function(colorStatus) {
             colorStatusesForFilter.push({'key': colorStatus.name, 'label': colorStatus.name});
         });

@@ -204,7 +204,7 @@ class ColorStatusController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.color_status.delete.general', [], 'flashes')
+                    ->trans('success.color_status.delete.from_edit', [], 'flashes')
             )
         ;
 
