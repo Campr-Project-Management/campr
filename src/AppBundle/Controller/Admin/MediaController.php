@@ -264,7 +264,7 @@ class MediaController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.media.delete.general', [], 'flashes')
+                    ->trans('success.media.delete.from_edit', [], 'flashes')
             )
         ;
 

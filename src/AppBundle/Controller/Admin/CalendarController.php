@@ -203,7 +203,7 @@ class CalendarController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.calendar.delete.general', [], 'flashes')
+                    ->trans('success.calendar.delete.from_edit', [], 'flashes')
             )
         ;
 

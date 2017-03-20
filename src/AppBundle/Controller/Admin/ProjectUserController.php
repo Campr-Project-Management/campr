@@ -206,7 +206,7 @@ class ProjectUserController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.project_user.delete.general', [], 'flashes')
+                    ->trans('success.project_user.delete.from_edit', [], 'flashes')
             )
         ;
 
