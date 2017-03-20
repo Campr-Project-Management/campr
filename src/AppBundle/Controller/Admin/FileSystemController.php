@@ -232,7 +232,7 @@ class FileSystemController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.filesystem.delete.general', [], 'flashes')
+                    ->trans('success.filesystem.delete.from_edit', [], 'flashes')
             )
         ;
 

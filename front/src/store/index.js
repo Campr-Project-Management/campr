@@ -10,6 +10,7 @@ import task from './modules/task';
 import colorStatus from './modules/color_status';
 import projectStatus from './modules/project-status';
 import customer from './modules/customer';
+import programme from './modules/programme';
 
 Vue.use(Vuex);
 
@@ -27,6 +28,7 @@ export default new Vuex.Store({
         colorStatus,
         projectStatus,
         customer,
+        programme,
     },
     strict: debug,
 });

@@ -127,6 +127,11 @@ message:
     edit_task: Edit Task
     close_task: Close Task
     import_project: Import project
+    all_programmes: All Programmes
+    all_projects_filter: All Projects
+    all_customers: All Customers
+    all_statuses: All Statuses
+    all_scheduels: All Schedules
 
 menu:
     users: Users
@@ -347,6 +352,10 @@ title:
         list: Work Package Category
         create: Create Work Package Category
         edit: Edit Work Package Category
+    programme:
+        list: Programme
+        create: Create Programme
+        edit: Edit Programme
 
 subtitle:
     user: List of users
@@ -395,6 +404,7 @@ subtitle:
     label: List of project labels
     contract: List of contracts
     workpackage_category: List of work package categories
+    programme: List of programmes
 
 label:
     username: Username
@@ -567,6 +577,7 @@ label:
     search_for_tasks: Search for tasks
     default: Default
     workpackage_category: Work Package Category
+    programme: Programme
 
 button:
     sign_in: Sign In
@@ -648,6 +659,7 @@ add:
     label: Add new label
     contract: Add new contract
     workpackage_category: Add new work package category
+    programme: Add new programme
 
 placeholder:
     user: Choose one user
@@ -697,6 +709,7 @@ placeholder:
     label_description: Label Description
     label_color: Label Color
     workpackage_category: Work Package Category
+    programme: Programme
 
 table_header_cell:
     id: Id

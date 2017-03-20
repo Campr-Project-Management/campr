@@ -302,6 +302,16 @@ class Project
     private $userFavorites;
 
     /**
+     * @var Programme|null
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Programme", inversedBy="projects")
+     * @ORM\JoinColumn(name="programme_id")
+     */
+    private $programme;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -1396,5 +1406,47 @@ class Project
         }
 
         return !$this->getWorkPackages()->isEmpty() ? $counter / $this->getWorkPackages()->count() : 0;
+    }
+
+    /**
+     * @return Programme|null
+     */
+    public function getProgramme()
+    {
+        return $this->programme;
+    }
+
+    /**
+     * @param Programme|null $programme
+     */
+    public function setProgramme(Programme $programme = null)
+    {
+        $this->programme = $programme;
+    }
+
+    /**
+     * Returns Programme id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("programme")
+     *
+     * @return int
+     */
+    public function getProgrammeId()
+    {
+        return $this->programme ? $this->programme->getId() : null;
+    }
+
+    /**
+     * Returns Programme name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("programmeName")
+     *
+     * @return string
+     */
+    public function getProgrammeName()
+    {
+        return $this->programme ? $this->programme->getName() : null;
     }
 }

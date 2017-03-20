@@ -81,6 +81,13 @@
                             }
                         ) }}
                         {{ form_widget(
+                            form.programme,
+                            {
+                                'attr': {'class': 'selectpicker'},
+                                'label': 'label.programme'|trans,
+                            }
+                        ) }}
+                        {{ form_widget(
                             form.projectComplexity,
                             {
                                 'attr': {'class': 'selectpicker'},

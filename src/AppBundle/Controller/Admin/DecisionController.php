@@ -206,7 +206,7 @@ class DecisionController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.decision.delete.general', [], 'flashes')
+                    ->trans('success.decision.delete.from_edit', [], 'flashes')
             )
         ;
 

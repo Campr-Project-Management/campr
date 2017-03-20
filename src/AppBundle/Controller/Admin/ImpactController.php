@@ -203,7 +203,7 @@ class ImpactController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.impact.delete.general', [], 'flashes')
+                    ->trans('success.impact.delete.from_edit', [], 'flashes')
             )
         ;
 

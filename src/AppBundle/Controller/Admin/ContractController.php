@@ -224,7 +224,7 @@ class ContractController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.contract.delete.general', [], 'flashes')
+                    ->trans('success.contract.delete.from_edit', [], 'flashes')
             )
         ;
 

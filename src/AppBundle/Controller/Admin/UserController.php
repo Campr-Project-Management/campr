@@ -247,7 +247,7 @@ class UserController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.user.delete.general', [], 'flashes')
+                    ->trans('success.user.delete.from_edit', [], 'flashes')
             )
         ;
 
