@@ -44,6 +44,12 @@ class UserControllerTest extends BaseController
             $responseContent['ownedDistributionLists'][1]['users'][0]['updatedAt'] = $userContent['ownedDistributionLists'][1]['users'][0]['updatedAt'];
             $responseContent['contracts'][0]['updatedAt'] = $userContent['contracts'][0]['updatedAt'];
             $responseContent['contracts'][1]['updatedAt'] = $userContent['contracts'][1]['updatedAt'];
+            $email = md5(strtolower(trim($userContent['email'])));
+            $responseContent['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
+            $email = md5(strtolower(trim($responseContent['ownedDistributionLists'][0]['users'][0]['email'])));
+            $responseContent['ownedDistributionLists'][0]['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
+            $email = md5(strtolower(trim($responseContent['ownedDistributionLists'][1]['users'][0]['email'])));
+            $responseContent['ownedDistributionLists'][1]['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
         }
 
         if (isset($responseContent['updatedAt'])) {
@@ -74,6 +80,7 @@ class UserControllerTest extends BaseController
                 Response::HTTP_OK,
                 [
                     'roles' => ['ROLE_SUPER_ADMIN'],
+                    'gravatar' => null,
                     'id' => 1,
                     'username' => 'superadmin',
                     'email' => 'superadmin@trisoft.ro',
@@ -106,6 +113,7 @@ class UserControllerTest extends BaseController
                             'users' => [
                                 [
                                     'roles' => ['ROLE_USER'],
+                                    'gravatar' => '',
                                     'id' => 7,
                                     'username' => 'user10',
                                     'email' => 'user10@trisoft.ro',
@@ -147,6 +155,7 @@ class UserControllerTest extends BaseController
                             'users' => [
                                 [
                                     'roles' => ['ROLE_USER'],
+                                    'gravatar' => '',
                                     'id' => 7,
                                     'username' => 'user10',
                                     'email' => 'user10@trisoft.ro',
@@ -256,6 +265,10 @@ class UserControllerTest extends BaseController
         if (isset($responseContent['updatedAt'])) {
             $responseContent['updatedAt'] = $user->getUpdatedAt() ? $user->getUpdatedAt()->format('Y-m-d H:i:s') : null;
         }
+        if (isset($responseContent['gravatar'])) {
+            $email = md5(strtolower(trim($user->getEmail())));
+            $responseContent['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
+        }
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
 
@@ -290,6 +303,7 @@ class UserControllerTest extends BaseController
                 Response::HTTP_ACCEPTED,
                 [
                     'roles' => ['ROLE_SUPER_ADMIN'],
+                    'gravatar' => '',
                     'id' => '',
                     'username' => 'testuser',
                     'email' => 'testuser@trisoft.ro',
