@@ -201,7 +201,7 @@ class TodoController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.todo.delete.general', [], 'flashes')
+                    ->trans('success.todo.delete.from_edit', [], 'flashes')
             )
         ;
 

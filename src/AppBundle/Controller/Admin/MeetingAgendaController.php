@@ -202,7 +202,7 @@ class MeetingAgendaController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.meeting_agenda.delete.general', [], 'flashes')
+                    ->trans('success.meeting_agenda.delete.from_edit', [], 'flashes')
             )
         ;
 

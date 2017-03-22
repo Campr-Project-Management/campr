@@ -203,7 +203,7 @@ class WorkPackageProjectWorkCostTypeController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.wppcwct.delete.general', [], 'flashes')
+                    ->trans('success.wppcwct.delete.from_edit', [], 'flashes')
             )
         ;
 

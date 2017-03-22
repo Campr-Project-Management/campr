@@ -130,7 +130,7 @@ const mutations = {
     [types.SET_PROJECTS](state, {projects}) {
         state.items = projects;
         state.filteredItems = JSON.parse(JSON.stringify(projects));
-        let projectsForFilter = [{'key': '', 'label': 'All Projects'}];
+        let projectsForFilter = [{'key': '', 'label': Translator.trans('message.all_projects_filter')}];
         state.items.items.map( function(project) {
             projectsForFilter.push({'key': project.id, 'label': project.name});
         });

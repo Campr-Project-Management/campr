@@ -203,7 +203,7 @@ class TimephaseController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.timephase.delete.general', [], 'flashes')
+                    ->trans('success.timephase.delete.from_edit', [], 'flashes')
             )
         ;
 
