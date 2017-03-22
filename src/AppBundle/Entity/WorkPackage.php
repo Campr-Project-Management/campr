@@ -10,7 +10,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * WorkPackage.
  *
- * @ORM\Table(name="work_package")
+ * @ORM\Table(name="work_package", uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="puid_project_unique", columns={"puid", "project_id"}),
+ * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\WorkPackageRepository")
  */
 class WorkPackage
@@ -59,9 +61,16 @@ class WorkPackage
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage")
-     * @ORM\JoinColumn(name="parent_id")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $parent;
+
+    /**
+     * @var ArrayCollection|WorkPackage[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="parent")
+     */
+    private $children;
 
     /**
      * @var ColorStatus|null
@@ -286,6 +295,7 @@ class WorkPackage
         $this->labels = new ArrayCollection();
         $this->dependencies = new ArrayCollection();
         $this->dependants = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     /**
@@ -1173,5 +1183,39 @@ class WorkPackage
     public function getDependants()
     {
         return $this->dependants;
+    }
+
+    /**
+     * Add child.
+     *
+     * @param WorkPackage $child
+     *
+     * @return WorkPackage
+     */
+    public function addChild(WorkPackage $child)
+    {
+        $this->children[] = $child;
+
+        return $this;
+    }
+
+    /**
+     * Remove child.
+     *
+     * @param WorkPackage $child
+     */
+    public function removeChild(WorkPackage $child)
+    {
+        $this->children->removeElement($child);
+    }
+
+    /**
+     * Get children.
+     *
+     * @return ArrayCollection|WorkPackage[]
+     */
+    public function getChildren()
+    {
+        return $this->children;
     }
 }

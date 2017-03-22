@@ -35,12 +35,7 @@ class CreateType extends AbstractType
     {
         $builder
             ->add('puid', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.puid',
-                    ]),
-                ],
+                'required' => false,
             ])
             ->add('name', TextType::class, [
                 'required' => true,

@@ -2,7 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Project;
 use AppBundle\Entity\User;
+use AppBundle\Entity\WorkPackage;
 
 class WorkPackageRepository extends BaseRepository
 {
@@ -61,5 +63,62 @@ class WorkPackageRepository extends BaseRepository
         }
 
         return $qb->getQuery();
+    }
+
+    /**
+     * @param WorkPackage|null $workPackage
+     *
+     * @return WorkPackage|null
+     */
+    public function findLastInsertedByParent(Project $project = null, WorkPackage $workPackage = null)
+    {
+        $qb = $this->createQueryBuilder('q');
+
+        if (!$workPackage) {
+            $qb->where('q.parent IS NULL');
+        } else {
+            $qb
+                ->where('q.parent = :workPackage')
+                ->setParameter('workPackage', $workPackage)
+            ;
+        }
+
+        if (!$project) {
+            $qb->andWhere('q.project IS NULL');
+        } else {
+            $qb
+                ->andWhere('q.project = :project')
+                ->setParameter('project', $project)
+            ;
+        }
+
+        return $qb
+            ->orderBy('q.puid', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findMaxPuid(Project $project = null)
+    {
+        $qb = $this
+            ->createQueryBuilder('q')
+            ->select('MAX(q.puid)')
+        ;
+
+        if (!$project) {
+            $qb->andWhere('q.project IS NULL');
+        } else {
+            $qb
+                ->andWhere('q.project = :project')
+                ->setParameter('project', $project)
+            ;
+        }
+
+        return $qb
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 }
