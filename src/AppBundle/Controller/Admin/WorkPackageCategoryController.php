@@ -203,7 +203,7 @@ class WorkPackageCategoryController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.workpackage_category.delete.general', [], 'flashes')
+                    ->trans('success.workpackage_category.delete.from_edit', [], 'flashes')
             )
         ;
 

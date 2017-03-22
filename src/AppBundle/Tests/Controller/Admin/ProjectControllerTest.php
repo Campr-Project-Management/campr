@@ -25,6 +25,8 @@ class ProjectControllerTest extends BaseController
         $this->assertContains('name="create[number]"', $crawler->html());
         $this->assertContains('id="create_logoFile_file"', $crawler->html());
         $this->assertContains('name="create[logoFile][file]"', $crawler->html());
+        $this->assertContains('id="create_programme"', $crawler->html());
+        $this->assertContains('name="create[programme]"', $crawler->html());
         $this->assertContains('id="create_company"', $crawler->html());
         $this->assertContains('name="create[company]"', $crawler->html());
         $this->assertContains('id="create_projectComplexity"', $crawler->html());
@@ -151,6 +153,8 @@ class ProjectControllerTest extends BaseController
         $this->assertContains('name="create[number]"', $crawler->html());
         $this->assertContains('id="create_logoFile_file"', $crawler->html());
         $this->assertContains('name="create[logoFile][file]"', $crawler->html());
+        $this->assertContains('id="create_programme"', $crawler->html());
+        $this->assertContains('name="create[programme]"', $crawler->html());
         $this->assertContains('id="create_company"', $crawler->html());
         $this->assertContains('name="create[company]"', $crawler->html());
         $this->assertContains('id="create_projectComplexity"', $crawler->html());

@@ -206,7 +206,7 @@ class ProjectRoleController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.project_role.delete.general', [], 'flashes')
+                    ->trans('success.project_role.delete.from_edit', [], 'flashes')
             )
         ;
 
