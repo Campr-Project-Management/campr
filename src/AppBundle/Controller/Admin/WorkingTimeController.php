@@ -203,7 +203,7 @@ class WorkingTimeController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.working_time.delete.general', [], 'flashes')
+                    ->trans('success.working_time.delete.from_edit', [], 'flashes')
             )
         ;
 

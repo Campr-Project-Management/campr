@@ -20,13 +20,13 @@
                     {% endfor %}
                     <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                         <strong>
-                            {{ 'success.status.delete.first'|trans({}, 'flashes') }}
+                            {{ 'success.status.delete.from_data_table'|trans({}, 'flashes') }}
                             <span id="object-id">
                                 {% for flash_message in app.session.flashBag.get('success') %}
                                     {{ flash_message }}
                                 {% endfor %}
                             </span>
-                            {{ 'success.status.delete.second'|trans({}, 'flashes') }}
+                            {{ 'success.delete_common'|trans({}, 'flashes') }}
                         </strong>
                     </div>
                     <div class="table-responsive">

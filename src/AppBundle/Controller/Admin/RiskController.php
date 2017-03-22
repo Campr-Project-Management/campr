@@ -202,7 +202,7 @@ class RiskController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.risk.delete.general', [], 'flashes')
+                    ->trans('success.risk.delete.from_edit', [], 'flashes')
             )
         ;
 

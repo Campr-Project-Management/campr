@@ -206,7 +206,7 @@ class ProjectDepartmentController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.project_department.delete.general', [], 'flashes')
+                    ->trans('success.project_department.delete.from_edit', [], 'flashes')
             )
         ;
 

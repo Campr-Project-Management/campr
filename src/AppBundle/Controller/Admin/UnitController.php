@@ -203,7 +203,7 @@ class UnitController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.unit.delete.general', [], 'flashes')
+                    ->trans('success.unit.delete.from_edit', [], 'flashes')
             )
         ;
 

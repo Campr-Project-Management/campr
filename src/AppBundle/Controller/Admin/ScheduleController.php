@@ -202,7 +202,7 @@ class ScheduleController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.schedule.delete.general', [], 'flashes')
+                    ->trans('success.schedule.delete.from_edit', [], 'flashes')
             )
         ;
 

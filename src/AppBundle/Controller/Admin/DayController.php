@@ -199,7 +199,7 @@ class DayController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.day.delete.general', [], 'flashes')
+                    ->trans('success.day.delete.from_edit', [], 'flashes')
             )
         ;
 

@@ -207,7 +207,7 @@ class PortfolioController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.portfolio.delete.general', [], 'flashes')
+                    ->trans('success.portfolio.delete.from_edit', [], 'flashes')
             )
         ;
 

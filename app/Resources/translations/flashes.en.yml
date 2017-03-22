@@ -1,132 +1,115 @@
 success:
+    delete_common: successfully deleted!
     account:
         edit: Your account was succesfully edited!
     assignment:
         create: Assignment successfully created!
         edit: Assignment successfully edited!
         delete:
-            general: Assignment successfully deleted!
-            first: Assignment with ID
-            second: successfully deleted!
+            from_edit: Assignment successfully deleted!
+            from_data_table: Assignment with ID
     calendar:
         create: Calendar successfully created!
         edit: Calendar successfully edited!
         delete:
-            general: Calendar successfully deleted!
-            first: Calendar with ID
-            second: successfully deleted!
+            from_edit: Calendar successfully deleted!
+            from_data_table: Calendar with ID
     color_status:
         create: Color status successfully created!
         edit: Color status successfully edited!
         delete:
-            general: Color status successfully deleted!
-            first: Color status with ID
-            second: successfully deleted!
+            from_edit: Color status successfully deleted!
+            from_data_table: Color status with ID
     communication:
         create: Communication successfully created!
         edit: Communication successfully edited!
         delete:
-            general: Communication successfully deleted!
-            first: Communication with ID
-            second: successfully deleted!
+            from_edit: Communication successfully deleted!
+            from_data_table: Communication with ID
     company:
         create: Company successfully created!
         edit: Company successfully edited!
         delete:
-            general: Company successfully deleted!
-            first: Company with ID
-            second: successfully deleted!
+            from_edit: Company successfully deleted!
+            from_data_table: Company with ID
     day:
         create: Day successfully created!
         edit: Day successfully edited!
         delete:
-            general: Day successfully deleted!
-            first: Day with ID
-            second: successfully deleted!
+            from_edit: Day successfully deleted!
+            from_data_table: Day with ID
     decision:
         create: Decision successfully created!
         edit: Decision successfully edited!
         delete:
-            general: Decision successfully deleted!
-            first: Decision with ID
-            second: successfully deleted!
+            from_edit: Decision successfully deleted!
+            from_data_table: Decision with ID
     distribution_list:
         create: Distribution list successfully created!
         edit: Distribution list successfully edited!
         delete:
-            general: Distribution list successfully deleted!
-            first: Distribution list with ID
-            second: successfully deleted!
+            from_edit: Distribution list successfully deleted!
+            from_data_table: Distribution list with ID
     filesystem:
         create: FileSystem successfully created!
         edit: File System successfully edited!
         delete:
-            general: File System successfully deleted!
-            first: File System with ID
-            second: successfully deleted!
+            from_edit: File System successfully deleted!
+            from_data_table: File System with ID
     impact:
         create: Impact successfully created!
         edit: Impact successfully edited!
         delete:
-            general: Impact successfully deleted!
-            first: Impact with ID
-            second: successfully deleted!
+            from_edit: Impact successfully deleted!
+            from_data_table: Impact with ID
     label:
         create: Label successfully created!
         edit: Label successfully edited!
         delete:
-            general: Label successfully deleted!
-            first: Label with ID
-            second: successfully deleted!
+            from_edit: Label successfully deleted!
+            from_data_table: Label with ID
     media:
         upload: Media file successfully created!
         edit: Media file successfully edited!
         delete:
-            general: Media file successfully deleted!
-            first: File with ID
-            second: successfully deleted!
+            from_edit: Media file successfully deleted!
+            from_data_table: File with ID
     meeting_agenda:
         create: Meeting agenda successfully created!
         edit: Meeting agenda successfully edited!
         delete:
-            general: Meeting agenda successfully deleted!
-            first: Meeting agenda with ID
-            second: successfully deleted!
+            from_edit: Meeting agenda successfully deleted!
+            from_data_table: Meeting agenda with ID
     meeting_participant:
         create: Meeting participant successfully created!
         edit: Meeting participant successfully edited!
         delete:
-            general: Meeting participant successfully deleted!
-            first: Meeting participant with ID
-            second: successfully deleted!
+            from_edit: Meeting participant successfully deleted!
+            from_data_table: Meeting participant with ID
     meeting:
         create: Meeting successfully created!
         edit: Meeting successfully edited!
         delete:
-            general: Meeting successfully deleted!
-            first: Meeting with ID
-            second: successfully deleted!
+            from_edit: Meeting successfully deleted!
+            from_data_table: Meeting with ID
     note:
         create: Note successfully created!
         edit: Note successfully edited!
         delete:
-            general: Note successfully deleted!
-            first: Note with ID
-            second: successfully deleted!
+            from_edit: Note successfully deleted!
+            from_data_table: Note with ID
     portfolio:
         create: Portfolio successfully created!
         edit: Portfolio successfully edited!
         delete:
-            general: Portfolio successfully deleted!
-            first: Portfolio with ID
-            second: successfully deleted!
+            from_edit: Portfolio successfully deleted!
+            from_data_table: Portfolio with ID
     project:
         create: Project successfully created!
         edit: Project successfully edited!
         delete:
-            general: Project successfully deleted!
-            first: Project with ID
-            second: successfully deleted!
+            from_edit: Project successfully deleted!
+            from_data_table: Project with ID
         import: Import project started. Project will be imported soon.
     chat_messages:
         delete: Messages successfully deleted!
@@ -134,170 +117,146 @@ success:
         create: Project category successfully created!
         edit: Project category successfully edited!
         delete:
-            general: Project category successfully deleted!
-            first: Project category with ID
-            second: successfully deleted!
+            from_edit: Project category successfully deleted!
+            from_data_table: Project category with ID
     project_complexity:
         create: Project complexity successfully created!
         edit: Project complexity successfully edited!
         delete:
-            general: Project complexity successfully deleted!
-            first: Project complexity with ID
-            second: successfully deleted!
+            from_edit: Project complexity successfully deleted!
+            from_data_table: Project complexity with ID
     project_cost_type:
         create: Project cost type successfully created!
         edit: Project cost type successfully edited!
         delete:
-            general: Project cost type successfully deleted!
-            first: Project cost type with ID
-            second: successfully deleted!
+            from_edit: Project cost type successfully deleted!
+            from_data_table: Project cost type with ID
     project_department:
         create: Project department successfully created!
         edit: Project department successfully edited!
         delete:
-            general: Project department successfully deleted!
-            first: Project department with ID
-            second: successfully edited!
+            from_edit: Project department successfully deleted!
+            from_data_table: Project department with ID
     project_module:
         create: Project module successfully created!
         edit: Project module successfully edited!
         delete:
-            general: Project module successfully deleted!
-            first: Project module with ID
-            second: successfully deleted!
+            from_edit: Project module successfully deleted!
+            from_data_table: Project module with ID
     project_role:
         create: Project role successfully created!
         edit: Project role successfully edited!
         delete:
-            general: Project role successfully deleted!
-            first: Project role with ID
-            second: successfully deleted!
+            from_edit: Project role successfully deleted!
+            from_data_table: Project role with ID
     project_scope:
         create: Project scope successfully created!
         edit: Project scope successfully edited!
         delete:
-            general: Project scope successfully deleted!
-            first: Project scope with ID
-            second: successfully deleted!
+            from_edit: Project scope successfully deleted!
+            from_data_table: Project scope with ID
     project_status:
         create: Project status successfully created!
         edit: Project status successfully edited!
         delete:
-            general: Project status successfully deleted!
-            first: Project status with ID
-            second: successfully deleted!
+            from_edit: Project status successfully deleted!
+            from_data_table: Project status with ID
     project_team:
         create: Project team successfully created!
         edit: Project team successfully edited!
         delete:
-            general: Project team successfully deleted!
-            first: Project team with ID
-            second: successfully deleted!
+            from_edit: Project team successfully deleted!
+            from_data_table: Project team with ID
     project_user:
         create: Project user successfully created!
         edit: Project user successfully edited!
         delete:
-            general: Project user successfully deleted!
-            first: Project user with ID
-            second: successfully deleted!
+            from_edit: Project user successfully deleted!
+            from_data_table: Project user with ID
     project_work_cost_type:
         create: Project work cost type successfully created!
         edit: Project work cost type successfully edited!
         delete:
-            general: Project work cost type successfully deleted!
-            first: Project work cost type with ID
-            second: successfully deleted!
+            from_edit: Project work cost type successfully deleted!
+            from_data_table: Project work cost type with ID
     raci:
         create: Raci successfully created!
         edit: Raci successfully edited!
         delete:
-            general: Raci successfully deleted!
-            first: Raci with ID
-            second: successfully deleted!
+            from_edit: Raci successfully deleted!
+            from_data_table: Raci with ID
     risk_category:
         create: Risk category successfully created!
         edit: Risk category successfully edited!
         delete:
-            general: Risk category successfully deleted!
-            first: Risk category with ID
-            second: successfully edited!
+            from_edit: Risk category successfully deleted!
+            from_data_table: Risk category with ID
     risk:
         create: Risk successfully created!
         edit: Risk successfully edited!
         delete:
-            general: Risk successfully deleted!
-            first: Risk with ID
-            second: successfully edited!
+            from_edit: Risk successfully deleted!
+            from_data_table: Risk with ID
     risk_strategy:
         create: Risk strategy successfully created!
         edit: Risk strategy successfully edited!
         delete:
-            general: Risk strategy successfully deleted!
-            first: Risk strategy with ID
-            second: successfully edited!
+            from_edit: Risk strategy successfully deleted!
+            from_data_table: Risk strategy with ID
     schedule:
         create: Schedule successfully created!
         edit: Schedule successfully edited!
         delete:
-            general: Schedule successfully deleted!
-            first: Schedule with ID
-            second: successfully deleted!
+            from_edit: Schedule successfully deleted!
+            from_data_table: Schedule with ID
     status:
         create: Status successfully created!
         edit: Status successfully edited!
         delete:
-            general: Status successfully deleted!
-            first: Status with ID
-            second: successfully deleted!
+            from_edit: Status successfully deleted!
+            from_data_table: Status with ID
     timephase:
         create: Timephase successfully created!
         edit: Timephase successfully edited!
         delete:
-            general: Timephase successfully deleted!
-            first: Timephase with ID
-            second: successfully deleted!
+            from_edit: Timephase successfully deleted!
+            from_data_table: Timephase with ID
     todo:
         create: Todo successfully created!
         edit: Todo successfully edited!
         delete:
-            general: Todo successfully deleted!
-            first: Todo with ID
-            second: successfully deleted!
+            from_edit: Todo successfully deleted!
+            from_data_table: Todo with ID
     unit:
         create: Unit successfully created!
         edit: Unit successfully edited!
         delete:
-            general: Unit successfully deleted!
-            first: Unit with ID
-            second: successfully deleted!
+            from_edit: Unit successfully deleted!
+            from_data_table: Unit with ID
     user:
         create: User successfully created!
         edit: User successfully edited!
         delete:
-            general: User successfully deleted!
-            first: User with ID
-            second: successfully deleted!
+            from_edit: User successfully deleted!
+            from_data_table: User with ID
     workpackage:
         create: WorkPackage successfully created!
         edit: WorkPackage successfully edited!
         delete:
-            general: WorkPackage successfully deleted!
-            first: WorkPackage with ID
-            second: successfully deleted!
+            from_edit: WorkPackage successfully deleted!
+            from_data_table: WorkPackage with ID
     wppcwct:
         create: Work Package Project Work Cost Type successfully created!
         edit: Work Package Project Work Cost Type successfully edited!
         delete:
-            general: Work Package Project Work Cost Type successfully deleted!
-            first: Work Package Project Work Cost Type with ID
-            second: successfully deleted!
+            from_edit: Work Package Project Work Cost Type successfully deleted!
+            from_data_table: Work Package Project Work Cost Type with ID
     working_time:
         create: Working time successfully created!
         edit: Working time successfully edited!
         delete:
-            general: Working time successfully deleted!
-            first: Working time with ID
-            second: successfully deleted!
+            from_edit: Working time successfully deleted!
+            from_data_table: Working time with ID
     team:
         create: Team successfully created!
         edit: Team successfully edited!
@@ -318,9 +277,8 @@ success:
         create: Contract successfully created!
         edit: Contract successfully edited!
         delete:
-            general: Contract successfully deleted!
-            first: Contract with ID
-            second: successfully deleted!
+            from_edit: Contract successfully deleted!
+            from_data_table: Contract with ID
     contact:
         message:
             sent: Message succesfully sent!
@@ -328,10 +286,14 @@ success:
         create: WorkPackageCategory successfully created!
         edit: WorkPackageCategory successfully edited!
         delete:
-            general: WorkPackageCategory successfully deleted!
-            first: WorkPackageCategory with ID
-            second: successfully deleted!
-
+            from_edit: WorkPackageCategory successfully deleted!
+            from_data_table: WorkPackageCategory with ID
+    programme:
+        create: Programme successfully created!
+        edit: Programme successfully edited!
+        delete:
+            from_edit: Programme successfully deleted!
+            from_data_table: Programme with ID
 failed:
     media:
         upload: File upload failed. Filesystem cannot be reached.

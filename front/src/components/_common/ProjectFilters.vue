@@ -3,7 +3,7 @@
         <span class="title">{{ message.filter_by }}</span>
         <div class="dropdowns">
             <dropdown v-bind:title="message.customer" v-bind:options="customers" item="project" filter="company"></dropdown>
-            <dropdown v-bind:title="message.programme"></dropdown>
+            <dropdown v-bind:title="message.programme" v-bind:options="programmes" item="project" filter="programme"></dropdown>
             <dropdown v-bind:title="message.status" v-bind:options="statuses" item="project" filter="status"></dropdown>
         </div>
     </div>
@@ -17,17 +17,19 @@ export default {
     components: {
         Dropdown,
     },
-    methods: mapActions(['getProjectStatuses', 'getCustomers']),
+    methods: mapActions(['getProjectStatuses', 'getCustomers', 'getProgrammes']),
     watch: {
         user: function() {
             this.getCustomers();
             this.getProjectStatuses();
+            this.getProgrammes();
         },
     },
     computed: {
         ...mapGetters({
             statuses: 'projectStatusesForFilter',
             customers: 'customersForFilter',
+            programmes: 'programmesForFilter',
             user: 'user',
         }),
     },

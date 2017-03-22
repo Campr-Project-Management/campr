@@ -206,7 +206,7 @@ class ProjectComplexityController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.project_complexity.delete.general', [], 'flashes')
+                    ->trans('success.project_complexity.delete.from_edit', [], 'flashes')
             )
         ;
 
