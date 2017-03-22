@@ -4,6 +4,7 @@ namespace AppBundle\Form\Project;
 
 use AppBundle\Entity\Company;
 use AppBundle\Entity\Portfolio;
+use AppBundle\Entity\Programme;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectCategory;
 use AppBundle\Entity\ProjectComplexity;
@@ -73,6 +74,12 @@ class CreateType extends AbstractType
                         'mimeTypesMessage' => 'invalid.image',
                     ]),
                 ],
+            ])
+            ->add('programme', EntityType::class, [
+                'class' => Programme::class,
+                'choice_label' => 'name',
+                'placeholder' => 'placeholder.programme',
+                'translation_domain' => 'messages',
             ])
             ->add('company', EntityType::class, [
                 'class' => Company::class,

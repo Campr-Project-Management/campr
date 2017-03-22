@@ -224,7 +224,7 @@ class WorkPackageController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.workpackage.delete.general', [], 'flashes')
+                    ->trans('success.workpackage.delete.from_edit', [], 'flashes')
             )
         ;
 

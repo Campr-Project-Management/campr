@@ -211,7 +211,7 @@ class DistributionListController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.distribution_list.delete.general', [], 'flashes')
+                    ->trans('success.distribution_list.delete.from_edit', [], 'flashes')
             )
         ;
 

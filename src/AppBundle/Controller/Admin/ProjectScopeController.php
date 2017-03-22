@@ -206,7 +206,7 @@ class ProjectScopeController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.project_scope.delete.general', [], 'flashes')
+                    ->trans('success.project_scope.delete.from_edit', [], 'flashes')
             )
         ;
 
