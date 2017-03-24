@@ -2,32 +2,32 @@
     <header>
         <div class="flex flex-direction-reverse">
             <div class="dropdown menu-toggler">
-            <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="17px" height="17px" viewBox="0 0 17.805 16.354" enable-background="new 0 0 17.805 16.354" xml:space="preserve">
-                    <g>
+                <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="17px" height="17px" viewBox="0 0 17.805 16.354" enable-background="new 0 0 17.805 16.354" xml:space="preserve">
                         <g>
-                            <line fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="17.805" y1="4.354" x2="2.848" y2="4.354"/>
+                            <g>
+                                <line fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="17.805" y1="4.354" x2="2.848" y2="4.354"/>
+                            </g>
+                            <g>
+                                <line fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="17.805" y1="8.354" x2="2.848" y2="8.354"/>
+                            </g>
+                            <g>
+                                <line fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="17.805" y1="12.354" x2="2.848" y2="12.354"/>
+                            </g>
+                            <g>
+                                <line fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="17.805" y1="16.354" x2="2.848" y2="16.354"/>
+                            </g>
                         </g>
-                        <g>
-                            <line fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="17.805" y1="8.354" x2="2.848" y2="8.354"/>
-                        </g>
-                        <g>
-                            <line fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="17.805" y1="12.354" x2="2.848" y2="12.354"/>
-                        </g>
-                        <g>
-                            <line fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="17.805" y1="16.354" x2="2.848" y2="16.354"/>
-                        </g>
-                    </g>
-                </svg>
-            </span>
+                    </svg>
+                </span>
                 <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
+                    <li><a href="#">{{ message.account }}</a></li>
+                    <li><a :href="routes.back_to_campr">{{ message.back_to_campr }}</a></li>
+                    <li><a :href="routes.logout">{{ message.logout }}</a></li>
                 </ul>
             </div>
             <p class="user-message">{{ message.hi }}, <span>{{ user.firstName }} {{ user.lastName }}</span></p>
-            <img class="user-avatar" :src="user.avatar" :alt="user.name"/>
+            <img class="user-avatar" :src="userAvatar" :alt="user.name"/>
             <a class="notifications" href="">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
               width="26.438px" height="24.469px" viewBox="0 0 26.438 24.469" enable-background="new 0 0 26.438 24.469" xml:space="preserve">
@@ -71,14 +71,30 @@ import {mapGetters} from 'vuex';
 export default {
     name: 'navigation',
     props: ['user'],
-    computed: mapGetters({
-        currentProjectTitle: 'currentProjectTitle',
-    }),
+    computed: {
+        ...mapGetters({
+            currentProjectTitle: 'currentProjectTitle',
+        }),
+        userAvatar: function() {
+            if (this.user.avatar === null) {
+                return this.user.gravatar;
+            }
+
+            return this.user.avatar;
+        },
+    },
     data: function() {
         return {
             message: {
                 hi: Translator.trans('message.hi'),
                 project: Translator.trans('message.project'),
+                account: Translator.trans('link.account'),
+                back_to_campr: Translator.trans('link.back_to_campr'),
+                logout: Translator.trans('link.logout'),
+            },
+            routes: {
+                logout: Routing.generate('app_logout'),
+                back_to_campr: Routing.generate('main_homepage'),
             },
         };
     },
