@@ -32,18 +32,18 @@
                     </div>
                 </div>
 
-                <input-field type="textarea" v-bind:label="message.project_description" :content="project.description"></input-field>
+                <input-field v-model="description" type="textarea" v-bind:label="message.project_description" :content="project.description"></input-field>
 
-                <input-field type="textarea" v-bind:label="message.project_start_event"></input-field>
+                <input-field v-model="startEvent" type="textarea" v-bind:label="message.project_start_event"></input-field>
 
                 <div class="flex flex-space-between dates">
                     <div class="input-holder left">
-                        <label class="active">{{ message.propsed_start_date }}</label>
+                        <label class="active">{{ message.proposed_start_date }}</label>
                         <datepicker :value="date | moment('DD / MM / YYYY')" format="DD / MM / YYYY"></datepicker>
                         <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                     </div>
                     <div class="input-holder right">
-                        <label class="active">{{ message.propsed_end_date }}</label>
+                        <label class="active">{{ message.proposed_end_date }}</label>
                         <datepicker :value="date | moment('DD / MM / YYYY')" format="DD / MM / YYYY"></datepicker>
                         <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                     </div>
@@ -157,7 +157,7 @@
                 <div class="hr"></div>
 
                 <div class="flex buttons flex-center">
-                    <a class="btn-rounded second-bg">{{ button.save }}</a>
+                    <a v-on:click="updateContract()" class="btn-rounded second-bg">{{ button.save }}</a>
                     <a class="btn-rounded second-bg flex flex-center download-pdf">
                         <p>{{ button.download_pdf }}</p>
                         <download-icon></download-icon>
@@ -190,10 +190,17 @@ export default {
         MemberBadge,
     },
     methods: {
-        ...mapActions(['getProjectById']),
+        ...mapActions(['getProjectById', 'getContractByProjectId']),
+        updateContract: function() {
+            let data = {
+                description: this.description,
+            };
+            console.log(data);
+        },
     },
     created() {
         this.getProjectById(this.$route.params.id);
+        this.getContractByProjectId(this.$route.params.id);
         const service = Vue.$dragula.$service;
         service.eventBus.$on('drop', (atrs) => {
             // TODO: Change order of elements
@@ -202,6 +209,7 @@ export default {
     },
     computed: mapGetters({
         project: 'project',
+        contract: 'contract',
     }),
     data: function() {
         return {
@@ -286,6 +294,8 @@ export default {
                     color: '#D8DAE5',
                 },
             },
+            description: '',
+            startEvent: '',
         };
     },
 };

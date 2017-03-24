@@ -20,7 +20,7 @@ class PortfolioController extends ApiController
     /**
      * Get all portfolios.
      *
-     * @Route(name="app_api_portfolio_list")
+     * @Route(name="app_api_portfolio_list", options={"expose"=true})
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -39,7 +39,7 @@ class PortfolioController extends ApiController
     /**
      * Create a new Portfolio.
      *
-     * @Route(name="app_api_portfolio_create")
+     * @Route(name="app_api_portfolio_create", options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request $request
@@ -70,7 +70,7 @@ class PortfolioController extends ApiController
     /**
      * Get Portfolio by id.
      *
-     * @Route("/{id}", name="app_api_portfolio_get")
+     * @Route("/{id}", name="app_api_portfolio_get", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Portfolio $portfolio
