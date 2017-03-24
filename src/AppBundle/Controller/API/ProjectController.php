@@ -233,7 +233,7 @@ class ProjectController extends ApiController
     /**
      * All Contracts for a specific Project.
      *
-     * @Route("/{id}/contracts", name="app_api_project_contracts")
+     * @Route("/{id}/contracts", name="app_api_project_contracts", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Project $project
