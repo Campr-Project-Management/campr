@@ -37,7 +37,7 @@ class ContractController extends ApiController
     /**
      * Edit a specific Contract.
      *
-     * @Route("/{id}", name="app_api_contract_edit")
+     * @Route("/{id}", name="app_api_contract_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      *
      * @param Request  $request
