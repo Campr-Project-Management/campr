@@ -43,6 +43,8 @@ class DistributionListControllerTest extends BaseController
         $responseContent['updatedAt'] = $distributionList['updatedAt'];
         $responseContent['users'][0]['apiToken'] = $distributionList['users'][0]['apiToken'];
         $responseContent['users'][0]['updatedAt'] = $distributionList['users'][0]['updatedAt'];
+        $email = md5(strtolower(trim($distributionList['users'][0]['email'])));
+        $responseContent['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -72,6 +74,7 @@ class DistributionListControllerTest extends BaseController
                     'users' => [
                         [
                             'roles' => ['ROLE_USER'],
+                            'gravatar' => '',
                             'id' => 7,
                             'username' => 'user10',
                             'email' => 'user10@trisoft.ro',
@@ -368,6 +371,8 @@ class DistributionListControllerTest extends BaseController
         $responseContent['updatedAt'] = $distributionList['updatedAt'];
         $responseContent['users'][0]['apiToken'] = $distributionList['users'][0]['apiToken'];
         $responseContent['users'][0]['updatedAt'] = $distributionList['users'][0]['updatedAt'];
+        $email = md5(strtolower(trim($distributionList['users'][0]['email'])));
+        $responseContent['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -395,6 +400,7 @@ class DistributionListControllerTest extends BaseController
                     'users' => [
                         [
                             'roles' => ['ROLE_USER'],
+                            'gravatar' => '',
                             'id' => 7,
                             'username' => 'user10',
                             'email' => 'user10@trisoft.ro',

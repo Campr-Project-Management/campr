@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="main_homepage")
+     * @Route("/", name="main_homepage", options={"expose"=true})
      */
     public function indexAction()
     {
