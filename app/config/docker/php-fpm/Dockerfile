@@ -28,6 +28,8 @@ RUN apt-get update && apt-get install -y \
         openssl \
         curl \
         bzip2 \
+        libfontconfig1 \
+        libfontconfig1-dev \
     && docker-php-ext-install -j$(nproc) iconv mcrypt \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd \
@@ -57,7 +59,7 @@ RUN apt-get install -y python-software-properties git \
     # && ln -s /usr/bin/nodejs /usr/bin/node \
     && rm -rf /usr/local/lib/node_modules \
     && ln -s /usr/share/npm/node_modules /usr/local/lib/node_modules \
-    && npm install -g bower grunt-cli jslint karma e2e babel phantomjs-prebuilt webpack sass node-sass less scss
+    && npm install -g node-gyp bower grunt-cli jslint karma e2e babel phantomjs-prebuilt webpack sass node-sass less scss
 
 # Certbot
 RUN cd /opt && git clone https://github.com/certbot/certbot.git \
