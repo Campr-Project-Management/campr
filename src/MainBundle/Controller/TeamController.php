@@ -215,7 +215,6 @@ class TeamController extends Controller
             'facebook' => $user->getFacebook(),
             'twitter' => $user->getTwitter(),
             'instagram' => $user->getInstagram(),
-            'twitter' => $user->getTwitter(),
             'gplus' => $user->getGplus(),
             'linked_in' => $user->getLinkedIn(),
             'medium' => $user->getMedium(),
