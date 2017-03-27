@@ -73,6 +73,7 @@ class WorkPackageControllerTest extends BaseController
                             'isKeyMilestone' => false,
                             'assignments' => [],
                             'labels' => [],
+                            'type' => 1,
                         ],
                         [
                             'responsibility' => 4,
@@ -105,6 +106,7 @@ class WorkPackageControllerTest extends BaseController
                             'isKeyMilestone' => false,
                             'assignments' => [],
                             'labels' => [],
+                            'type' => 0,
                         ],
                     ],
                 ],
@@ -177,6 +179,7 @@ class WorkPackageControllerTest extends BaseController
                     'isKeyMilestone' => false,
                     'assignments' => [],
                     'labels' => [],
+                    'type' => 1,
                 ],
             ],
         ];
@@ -217,6 +220,7 @@ class WorkPackageControllerTest extends BaseController
                     'puid' => '555',
                     'name' => 'task',
                     'progress' => 0,
+                    'type' => 2,
                 ],
                 true,
                 Response::HTTP_CREATED,
@@ -251,6 +255,7 @@ class WorkPackageControllerTest extends BaseController
                     'isKeyMilestone' => false,
                     'assignments' => [],
                     'labels' => [],
+                    'type' => 2,
                 ],
             ],
         ];
@@ -325,6 +330,7 @@ class WorkPackageControllerTest extends BaseController
                     'isKeyMilestone' => false,
                     'assignments' => [],
                     'labels' => [],
+                    'type' => 2,
                 ],
             ],
         ];

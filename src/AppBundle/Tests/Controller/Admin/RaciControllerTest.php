@@ -57,6 +57,7 @@ class RaciControllerTest extends BaseController
 
         $workPackage = (new WorkPackage())
             ->setPuid('puid4')
+            ->setType(WorkPackage::TYPE_PHASE)
             ->setName('workpackage4')
         ;
         $this->em->persist($workPackage);
@@ -103,6 +104,7 @@ class RaciControllerTest extends BaseController
         $this->assertNotNull($this->user, 'User not found');
 
         $workPackage = (new WorkPackage())
+            ->setType(WorkPackage::TYPE_PHASE)
             ->setPuid('puid4')
             ->setName('workpackage4')
         ;
