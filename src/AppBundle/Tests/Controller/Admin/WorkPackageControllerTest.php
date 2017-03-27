@@ -59,6 +59,10 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('name="create[isKeyMilestone]"', $crawler->html());
         $this->assertContains('id="create_labels"', $crawler->html());
         $this->assertContains('name="create[labels][]"', $crawler->html());
+        $this->assertContains('id="create_dependencies"', $crawler->html());
+        $this->assertContains('name="create[dependencies][]"', $crawler->html());
+        $this->assertContains('id="create_dependants"', $crawler->html());
+        $this->assertContains('name="create[dependants][]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -210,6 +214,10 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('name="create[isKeyMilestone]"', $crawler->html());
         $this->assertContains('id="create_labels"', $crawler->html());
         $this->assertContains('name="create[labels][]"', $crawler->html());
+        $this->assertContains('id="create_dependencies"', $crawler->html());
+        $this->assertContains('name="create[dependencies][]"', $crawler->html());
+        $this->assertContains('id="create_dependants"', $crawler->html());
+        $this->assertContains('name="create[dependants][]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 
