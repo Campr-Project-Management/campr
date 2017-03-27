@@ -9,6 +9,7 @@ use AppBundle\Entity\WorkPackageCategory;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -48,6 +49,21 @@ class CreateType extends AbstractType
                         'message' => 'not_blank.name',
                     ]),
                 ],
+            ])
+            ->add('type', ChoiceType::class, [
+                'required' => true,
+                'choices' => [
+                    'choices.phase' => WorkPackage::TYPE_PHASE,
+                    'choices.milestone' => WorkPackage::TYPE_MILESTONE,
+                    'choices.task' => WorkPackage::TYPE_TASK,
+                ],
+                'placeholder' => 'placeholder.type',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'not_blank.type',
+                    ]),
+                ],
+                'translation_domain' => 'messages',
             ])
             ->add('parent', EntityType::class, [
                 'class' => WorkPackage::class,
