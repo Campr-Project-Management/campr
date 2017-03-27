@@ -1,4 +1,4 @@
-FROM php:7.1.0-fpm
+FROM php:7.0-fpm
 
 # PHP Modules
 COPY php-ini-overrides.ini /usr/local/etc/php/conf.d/php-ini-overrides.ini
