@@ -15,6 +15,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class WorkPackage
 {
+    const TYPE_PHASE = 0;
+    const TYPE_MILESTONE = 1;
+    const TYPE_TASK = 2;
+
     /**
      * @var int
      *
@@ -222,6 +226,13 @@ class WorkPackage
      * @ORM\JoinColumn(name="work_package_category_id")
      */
     private $workPackageCategory;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="type", type="integer", nullable=false)
+     */
+    private $type;
 
     /**
      * @var \DateTime
@@ -1043,5 +1054,23 @@ class WorkPackage
     public function getWorkPackageCategoryName()
     {
         return $this->workPackageCategory ? $this->workPackageCategory->getName() : null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
     }
 }
