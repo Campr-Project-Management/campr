@@ -710,6 +710,7 @@ placeholder:
     label_color: Label Color
     workpackage_category: Work Package Category
     programme: Programme
+    type: Type
 
 table_header_cell:
     id: Id
@@ -937,3 +938,6 @@ choices:
     red: Red
     yellow: Yellow
     green: Green
+    phase: Phase
+    milestone: Milestone
+    task: Task
