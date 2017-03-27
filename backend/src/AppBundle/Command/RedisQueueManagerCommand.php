@@ -15,6 +15,7 @@ class RedisQueueManagerCommand extends ContainerAwareCommand
 {
     const DEFAULT = 'default';
     const IMPORT = 'import';
+    const AUTOMAILER = 'automailer';
 
     const TTL = 60;
     const JOB_DELAY = 5;
