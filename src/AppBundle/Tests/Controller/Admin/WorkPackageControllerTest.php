@@ -23,6 +23,8 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('name="create[puid]"', $crawler->html());
         $this->assertContains('id="create_name"', $crawler->html());
         $this->assertContains('name="create[name]"', $crawler->html());
+        $this->assertContains('id="create_type"', $crawler->html());
+        $this->assertContains('name="create[type]"', $crawler->html());
         $this->assertContains('id="create_progress"', $crawler->html());
         $this->assertContains('name="create[progress]"', $crawler->html());
         $this->assertContains('id="create_parent"', $crawler->html());
@@ -78,6 +80,7 @@ class WorkPackageControllerTest extends BaseController
 
         $this->assertContains('PUID should not be blank', $crawler->html());
         $this->assertContains('The name field should not be blank', $crawler->html());
+        $this->assertContains('The type field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -94,6 +97,7 @@ class WorkPackageControllerTest extends BaseController
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[puid]'] = 'puid';
         $form['create[name]'] = 'workpackage';
+        $form['create[type]'] = WorkPackage::TYPE_TASK;
         $form['create[progress]'] = '-2';
 
         $crawler = $this->client->submit($form);
@@ -114,6 +118,7 @@ class WorkPackageControllerTest extends BaseController
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[puid]'] = 'puid3';
         $form['create[name]'] = 'workpackage3';
+        $form['create[type]'] = WorkPackage::TYPE_TASK;
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -139,6 +144,7 @@ class WorkPackageControllerTest extends BaseController
         $this->assertNotNull($this->user, 'User not found');
 
         $workPackage = (new WorkPackage())
+            ->setType(WorkPackage::TYPE_TASK)
             ->setPuid('puid4')
             ->setName('workpackage4')
         ;
@@ -168,6 +174,8 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('name="create[puid]"', $crawler->html());
         $this->assertContains('id="create_name"', $crawler->html());
         $this->assertContains('name="create[name]"', $crawler->html());
+        $this->assertContains('id="create_type"', $crawler->html());
+        $this->assertContains('name="create[type]"', $crawler->html());
         $this->assertContains('id="create_progress"', $crawler->html());
         $this->assertContains('name="create[progress]"', $crawler->html());
         $this->assertContains('id="create_parent"', $crawler->html());

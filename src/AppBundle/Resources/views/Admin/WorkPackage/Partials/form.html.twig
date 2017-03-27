@@ -41,6 +41,15 @@
     }
 ) }}
 {{ form_widget(
+    form.type,
+    {
+        'attr': {
+            'class': 'selectpicker',
+        },
+        'label': 'label.type'|trans
+    }
+) }}
+{{ form_widget(
     form.progress,
     {
         'attr': {
