@@ -23,6 +23,16 @@ class TeamRepository extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
+    /**
+     * @param string $slug
+     *
+     * @return null|Team
+     */
+    public function findOneBySlug(string $slug)
+    {
+        return $this->findOneBy(['slug' => $slug]);
+    }
+
     public function findByTeamMember(User $user)
     {
         $qb = $this->createQueryBuilder('t');

@@ -44,15 +44,6 @@ class Project
     private $number;
 
     /**
-     * @var string
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\Column(name="encryption_key", type="string", length=128, nullable=true)
-     */
-    private $encryptionKey;
-
-    /**
      * @var Company
      *
      * @Serializer\Exclude()
@@ -331,7 +322,6 @@ class Project
         $this->userFavorites = new ArrayCollection();
         $this->projectTeams = new ArrayCollection();
         $this->createdAt = new \DateTime();
-        $this->setEncryptionKey(base64_encode(random_bytes(16)));
     }
 
     /**
@@ -893,20 +883,6 @@ class Project
     }
 
     /**
-     * Set encryptionKey.
-     *
-     * @param string $encryptionKey
-     *
-     * @return Project
-     */
-    public function setEncryptionKey($encryptionKey)
-    {
-        $this->encryptionKey = $encryptionKey;
-
-        return $this;
-    }
-
-    /**
      * Remove fileSystem.
      *
      * @param FileSystem $fileSystem
@@ -990,16 +966,6 @@ class Project
     public function getMessages()
     {
         return $this->messages;
-    }
-
-    /**
-     * Get encryptionKey.
-     *
-     * @return string
-     */
-    public function getEncryptionKey()
-    {
-        return $this->encryptionKey;
     }
 
     /**
