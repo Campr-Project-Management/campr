@@ -130,12 +130,22 @@ class Team
      */
     private $teamInvites;
 
+    /**
+     * @var string
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\Column(name="encryption_key", type="string", length=128, nullable=true)
+     */
+    private $encryptionKey;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->teamMembers = new ArrayCollection();
         $this->teamSlugs = new ArrayCollection();
         $this->teamInvites = new ArrayCollection();
+        $this->encryptionKey = hash('sha512', random_bytes(64));
     }
 
     public function __toString()
@@ -499,5 +509,15 @@ class Team
     public function getUserFullName()
     {
         return $this->user ? $this->user->getFullName() : null;
+    }
+
+    /**
+     * Get encryptionKey.
+     *
+     * @return string
+     */
+    public function getEncryptionKey(): string
+    {
+        return $this->encryptionKey;
     }
 }
