@@ -82,7 +82,6 @@ class WorkPackageControllerTest extends BaseController
         $form['create[progress]'] = 0;
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('PUID should not be blank', $crawler->html());
         $this->assertContains('The name field should not be blank', $crawler->html());
         $this->assertContains('The type field should not be blank', $crawler->html());
 
@@ -99,7 +98,7 @@ class WorkPackageControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[puid]'] = 'puid';
+        $form['create[puid]'] = '10';
         $form['create[name]'] = 'workpackage';
         $form['create[type]'] = WorkPackage::TYPE_TASK;
         $form['create[progress]'] = '-2';
@@ -120,8 +119,8 @@ class WorkPackageControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[puid]'] = 'puid3';
-        $form['create[name]'] = 'workpackage3';
+        $form['create[puid]'] = '10';
+        $form['create[name]'] = 'workpackage10';
         $form['create[type]'] = WorkPackage::TYPE_TASK;
 
         $this->client->submit($form);
@@ -129,16 +128,6 @@ class WorkPackageControllerTest extends BaseController
 
         $this->client->followRedirect();
         $this->assertContains('WorkPackage successfully created!', $this->client->getResponse()->getContent());
-
-        $workPackage = $this
-            ->em
-            ->getRepository(WorkPackage::class)
-            ->findOneBy([
-                'puid' => 'puid3',
-            ])
-        ;
-        $this->em->remove($workPackage);
-        $this->em->flush();
     }
 
     public function testDeleteAction()
@@ -149,8 +138,8 @@ class WorkPackageControllerTest extends BaseController
 
         $workPackage = (new WorkPackage())
             ->setType(WorkPackage::TYPE_TASK)
-            ->setPuid('puid4')
-            ->setName('workpackage4')
+            ->setPuid('11')
+            ->setName('workpackage11')
         ;
         $this->em->persist($workPackage);
         $this->em->flush();
@@ -240,7 +229,6 @@ class WorkPackageControllerTest extends BaseController
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('PUID should not be blank', $crawler->html());
         $this->assertContains('The name field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());

@@ -27,7 +27,7 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
             $finishAt = new \DateTime(sprintf('+%d days', $i * 2));
 
             $workPackage = (new WorkPackage())
-                ->setPuid('puid'.$i)
+                ->setPuid($i)
                 ->setName('work-package'.$i)
                 ->setType(WorkPackage::TYPE_TASK)
                 ->setContent('content'.$i)
@@ -39,10 +39,11 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
             ;
             $this->setReference('work-package'.$i, $workPackage);
             $manager->persist($workPackage);
+            $manager->flush();
         }
 
         $workPackage = (new WorkPackage())
-            ->setPuid('1234')
+            ->setPuid($i)
             ->setName('work-package3')
             ->setType(WorkPackage::TYPE_MILESTONE)
             ->setContent('content')
@@ -53,8 +54,10 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
             ->setProject($project)
         ;
         $manager->persist($workPackage);
+        $manager->flush();
+
         $workPackage = (new WorkPackage())
-            ->setPuid('123456')
+            ->setPuid($i + 1)
             ->setName('work-package4')
             ->setType(WorkPackage::TYPE_PHASE)
             ->setContent('content4')
@@ -65,6 +68,7 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
             ->setProject($project)
         ;
         $manager->persist($workPackage);
+        $manager->flush();
 
         $manager->flush();
     }
