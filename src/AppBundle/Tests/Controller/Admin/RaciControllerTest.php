@@ -56,9 +56,9 @@ class RaciControllerTest extends BaseController
         $this->assertNotNull($this->user, 'User not found');
 
         $workPackage = (new WorkPackage())
-            ->setPuid('puid4')
+            ->setPuid('1')
             ->setType(WorkPackage::TYPE_PHASE)
-            ->setName('workpackage4')
+            ->setName('workpackage10')
         ;
         $this->em->persist($workPackage);
         $this->em->flush();
@@ -84,17 +84,6 @@ class RaciControllerTest extends BaseController
             ])
         ;
         $this->em->remove($raci);
-
-        $workPackage = $this
-            ->em
-            ->getRepository(WorkPackage::class)
-            ->findOneBy([
-                'puid' => 'puid4',
-            ])
-        ;
-        $this->em->remove($workPackage);
-
-        $this->em->flush();
     }
 
     public function testDeleteAction()
@@ -105,8 +94,8 @@ class RaciControllerTest extends BaseController
 
         $workPackage = (new WorkPackage())
             ->setType(WorkPackage::TYPE_PHASE)
-            ->setPuid('puid4')
-            ->setName('workpackage4')
+            ->setPuid('2')
+            ->setName('workpackage11')
         ;
         $this->em->persist($workPackage);
 
@@ -126,16 +115,6 @@ class RaciControllerTest extends BaseController
 
         $this->client->followRedirect();
         $this->assertContains('Raci successfully deleted!', $this->client->getResponse()->getContent());
-
-        $workPackage = $this
-            ->em
-            ->getRepository(WorkPackage::class)
-            ->findOneBy([
-                'puid' => 'puid4',
-            ])
-        ;
-        $this->em->remove($workPackage);
-        $this->em->flush();
     }
 
     public function testFormIsDisplayedOnEditPage()
