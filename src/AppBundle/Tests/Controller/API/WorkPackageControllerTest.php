@@ -74,6 +74,8 @@ class WorkPackageControllerTest extends BaseController
                             'assignments' => [],
                             'labels' => [],
                             'type' => 1,
+                            'dependencies' => [],
+                            'dependants' => [],
                         ],
                         [
                             'responsibility' => 4,
@@ -107,6 +109,8 @@ class WorkPackageControllerTest extends BaseController
                             'assignments' => [],
                             'labels' => [],
                             'type' => 0,
+                            'dependencies' => [],
+                            'dependants' => [],
                         ],
                     ],
                 ],
@@ -180,6 +184,8 @@ class WorkPackageControllerTest extends BaseController
                     'assignments' => [],
                     'labels' => [],
                     'type' => 1,
+                    'dependencies' => [],
+                    'dependants' => [],
                 ],
             ],
         ];
@@ -256,6 +262,8 @@ class WorkPackageControllerTest extends BaseController
                     'assignments' => [],
                     'labels' => [],
                     'type' => 2,
+                    'dependencies' => [],
+                    'dependants' => [],
                 ],
             ],
         ];
@@ -331,6 +339,8 @@ class WorkPackageControllerTest extends BaseController
                     'assignments' => [],
                     'labels' => [],
                     'type' => 2,
+                    'dependencies' => [],
+                    'dependants' => [],
                 ],
             ],
         ];
