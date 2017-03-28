@@ -202,6 +202,11 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    app.listener.work_package:
+        class: AppBundle\EventListener\WorkPackageListener
+        tags :
+            - { name: doctrine.event_listener, event: onFlush }
+
 ### EXTENSIONS ###
     app.app_extension:
         class: AppBundle\Twig\AppExtension
