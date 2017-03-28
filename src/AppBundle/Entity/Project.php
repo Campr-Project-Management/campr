@@ -303,6 +303,27 @@ class Project
     private $programme;
 
     /**
+     * @var ArrayCollection|ProjectObjective[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectObjective", mappedBy="project")
+     */
+    private $projectObjectives;
+
+    /**
+     * @var ArrayCollection|ProjectLimitation[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectLimitation", mappedBy="project")
+     */
+    private $projectLimitations;
+
+    /**
+     * @var ArrayCollection|ProjectDeliverable[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectDeliverable", mappedBy="project")
+     */
+    private $projectDeliverables;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -321,6 +342,9 @@ class Project
         $this->meetings = new ArrayCollection();
         $this->userFavorites = new ArrayCollection();
         $this->projectTeams = new ArrayCollection();
+        $this->projectObjectives = new ArrayCollection();
+        $this->projectLimitations = new ArrayCollection();
+        $this->projectDeliverables = new ArrayCollection();
         $this->createdAt = new \DateTime();
     }
 
@@ -1414,5 +1438,119 @@ class Project
     public function getProgrammeName()
     {
         return $this->programme ? $this->programme->getName() : null;
+    }
+
+    /**
+     * Add projectObjective.
+     *
+     * @param ProjectObjective $projectObjective
+     *
+     * @return Project
+     */
+    public function addProjectObjective(ProjectObjective $projectObjective)
+    {
+        $this->projectObjectives[] = $projectObjective;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectObjective.
+     *
+     * @param ProjectObjective $projectObjective
+     *
+     * @return Project
+     */
+    public function removeProjectObjective(ProjectObjective $projectObjective)
+    {
+        $this->projectObjectives->removeElement($projectObjective);
+
+        return $this;
+    }
+
+    /**
+     * Get projectObjectives.
+     *
+     * @return ArrayCollection
+     */
+    public function getProjectObjectives()
+    {
+        return $this->projectObjectives;
+    }
+
+    /**
+     * Add projectLimitation.
+     *
+     * @param ProjectLimitation $projectLimitation
+     *
+     * @return Project
+     */
+    public function addProjectLimitation(ProjectLimitation $projectLimitation)
+    {
+        $this->projectLimitations[] = $projectLimitation;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectLimitation.
+     *
+     * @param ProjectObjective $projectObjective
+     *
+     * @return Project
+     */
+    public function removeProjectLimitation(ProjectLimitation $projectLimitation)
+    {
+        $this->projectLimitations->removeElement($projectLimitation);
+
+        return $this;
+    }
+
+    /**
+     * Get projectLimitations.
+     *
+     * @return ArrayCollection
+     */
+    public function getProjectLimitations()
+    {
+        return $this->projectLimitations;
+    }
+
+    /**
+     * Add projectDeliverable.
+     *
+     * @param ProjectDeliverable $projectDeliverable
+     *
+     * @return Project
+     */
+    public function addProjectDeliverable(ProjectDeliverable $projectDeliverable)
+    {
+        $this->projectDeliverables[] = $projectDeliverable;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectDeliverable.
+     *
+     * @param ProjectDeliverable $projectDeliverable
+     *
+     * @return Project
+     */
+    public function removeProjectDeliverable(ProjectDeliverable $projectDeliverable)
+    {
+        $this->projectDeliverables->removeElement($projectDeliverable);
+
+        return $this;
+    }
+
+    /**
+     * Get projectDeliverables.
+     *
+     * @return ArrayCollection
+     */
+    public function getProjectDeliverables()
+    {
+        return $this->projectDeliverables;
     }
 }
