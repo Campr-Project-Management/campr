@@ -254,7 +254,7 @@ class ProjectController extends ApiController
     /**
      * Create a new Contract.
      *
-     * @Route("/{id}/contracts", name="app_api_project_create_contract")
+     * @Route("/{id}/contracts", name="app_api_project_create_contract", options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request $request
@@ -712,13 +712,12 @@ class ProjectController extends ApiController
      */
     public function createObjectiveAction(Request $request, Project $project)
     {
-        $projectObjective = new ProjectObjective();
-        $projectObjective->setProject($project);
-
-        $form = $this->createForm(ProjectObjectiveCreateType::class, $projectObjective, ['csrf_protection' => false]);
+        $form = $this->createForm(ProjectObjectiveCreateType::class, new ProjectObjective(), ['csrf_protection' => false]);
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
+            $projectObjective = $form->getData();
+            $projectObjective->setProject($project);
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectObjective);
             $em->flush();
@@ -762,13 +761,12 @@ class ProjectController extends ApiController
      */
     public function createLimitationAction(Request $request, Project $project)
     {
-        $projectLimitation = new ProjectLimitation();
-        $projectLimitation->setProject($project);
-
-        $form = $this->createForm(ProjectLimitationCreateType::class, $projectLimitation, ['csrf_protection' => false]);
+        $form = $this->createForm(ProjectLimitationCreateType::class, new ProjectLimitation(), ['csrf_protection' => false]);
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
+            $projectLimitation = $form->getData();
+            $projectLimitation->setProject($project);
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectLimitation);
             $em->flush();
@@ -812,13 +810,12 @@ class ProjectController extends ApiController
      */
     public function createDeliverableAction(Request $request, Project $project)
     {
-        $projectDeliverable = new ProjectDeliverable();
-        $projectDeliverable->setProject($project);
-
-        $form = $this->createForm(ProjectDeliverableCreateType::class, $projectDeliverable, ['csrf_protection' => false]);
+        $form = $this->createForm(ProjectDeliverableCreateType::class, new ProjectDeliverable(), ['csrf_protection' => false]);
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
+            $projectDeliverable = $form->getData();
+            $projectDeliverable->setProject($project);
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectDeliverable);
             $em->flush();
@@ -832,5 +829,32 @@ class ProjectController extends ApiController
         ];
 
         return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * All project resources costs.
+     *
+     * @Route("/{id}/resources", name="app_api_project_resources", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function resourcesAction(Project $project)
+    {
+        return $this->createApiResponse(
+            [
+                'internal' => $this
+                    ->getDoctrine()
+                    ->getRepository(WorkPackageProjectWorkCostType::class)
+                    ->costsByProject($project),
+                'external' => $this
+                    ->getDoctrine()
+                    ->getRepository(WorkPackageProjectWorkCostType::class)
+                    ->costsByProject($project, false),
+            ],
+            Response::HTTP_OK
+        );
     }
 }

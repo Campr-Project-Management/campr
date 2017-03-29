@@ -20,7 +20,7 @@ class ProjectDeliverableController extends ApiController
     /**
      * Retrieve ProjectDeliverable information.
      *
-     * @Route("/{id}", name="app_api_project_deliverable_get")
+     * @Route("/{id}", name="app_api_project_deliverable_get", requirements={"id": "\d+"})
      * @Method({"GET"})
      *
      * @param ProjectDeliverable $projectDeliverable
@@ -37,7 +37,7 @@ class ProjectDeliverableController extends ApiController
     /**
      * Edit a specific ProjectDeliverable.
      *
-     * @Route("/{id}", name="app_api_project_deliverable_edit", options={"expose"=true})
+     * @Route("/{id}", name="app_api_project_deliverable_edit", options={"expose"=true}, requirements={"id": "\d+"})
      * @Method({"PUT", "PATCH"})
      *
      * @param Request            $request
@@ -71,7 +71,7 @@ class ProjectDeliverableController extends ApiController
     /**
      * Delete a specific ProjectDeliverable.
      *
-     * @Route("/{id}", name="app_api_project_deliverable_delete")
+     * @Route("/{id}", name="app_api_project_deliverable_delete", requirements={"id": "\d+"})
      * @Method({"DELETE"})
      *
      * @param ProjectDeliverable $projectDeliverable
@@ -85,6 +85,27 @@ class ProjectDeliverableController extends ApiController
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectDeliverable);
         $em->flush();
+
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Reorder project deliverables.
+     *
+     * @Route("/reorder", name="app_api_project_deliverable_reorder", options={"expose"=true})
+     * @Method("PATCH")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function reorderAction(Request $request)
+    {
+        $this
+            ->getDoctrine()
+            ->getRepository(ProjectDeliverable::class)
+            ->updateSequences($request->request->all())
+        ;
 
         return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
