@@ -4,16 +4,16 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "": "src/"
+            "": "backend/src/"
         },
         "classmap": [
-            "app/AppKernel.php",
-            "app/AppCache.php"
+            "backend/app/AppKernel.php",
+            "backend/app/AppCache.php"
         ]
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "backend/tests/"
         }
     },
     "repositories": {
@@ -93,15 +93,19 @@
             "if [ -d .git/hooks ]; then bash bin/install/git-hooks; fi"
         ]
     },
+    "config": {
+        "vendor-dir": "backend/vendor"
+    },
     "extra": {
-        "symfony-app-dir": "app",
+        "symfony-app-dir": "backend/app",
         "symfony-bin-dir": "bin",
         "symfony-var-dir": "var",
         "symfony-web-dir": "web",
-        "symfony-tests-dir": "tests",
+        "symfony-tests-dir": "backend/tests",
         "symfony-assets-install": "relative",
         "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
-        }
+            "file": "backend/app/config/parameters.yml"
+        },
+        "branch-alias": null
     }
 }

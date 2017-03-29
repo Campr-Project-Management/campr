@@ -1,7 +1,0 @@
-# setting MAILTO to not send emails
-MAILTO=""
-
-#
-# cron for root user
-#
-*/1 * * * * root /usr/bin/php /var/www/qa.campr.biz/current/app/console automailer:spool:send >> /var/www/qa.campr.biz/current/var/logs/automailer.log
