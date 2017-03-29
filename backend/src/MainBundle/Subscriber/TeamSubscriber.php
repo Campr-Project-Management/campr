@@ -70,5 +70,13 @@ class TeamSubscriber implements EventSubscriberInterface
                 $team->getSlug()
             ),
         ]);
+        $this->redis->rpush(RedisQueueManagerCommand::DEFAULT, [
+            sprintf(
+                '--env=%s_%s fos:js-routing:dump --target=web/static/js/fos_js_routes_%s.js',
+                str_replace('-', '_', $team->getSlug()),
+                $this->env,
+                $team->getSlug()
+            ),
+        ]);
     }
 }
