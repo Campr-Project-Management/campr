@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d419f7070f95c1c8c047a66428dc89d3",
-    "content-hash": "38ca89cb097ef8c8f191c4ef211716dc",
+    "hash": "871964fb94d0ce03345f569fd2a137b8",
+    "content-hash": "56e04c8d66e3fe7fd91b0cd42ef90b32",
     "packages": [
         {
             "name": "ambta/doctrine-encrypt-bundle",
