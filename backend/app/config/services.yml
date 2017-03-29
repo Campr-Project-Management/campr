@@ -309,3 +309,15 @@ services:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: validator.constraint_validator }
+
+### ROUTING ###
+    app.routing.loader:
+        class: AppBundle\Routing\Loader
+        public: false
+        arguments:
+            - '@file_locator'
+            - '@sensio_framework_extra.routing.loader.annot_class'
+            - '%kernel.team_slug%'
+            - '%kernel.environment%'
+        tags:
+            - { name: routing.loader }
