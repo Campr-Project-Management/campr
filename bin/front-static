@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-bin/console fos:js-routing:dump
-bin/console bazinga:js-translation:dump  --format=js --merge-domains
-mkdir -p front/static/js
-cd front/static/js
+bin/console assets:install --symlink web
+bin/console assets:dump web
+bin/console fos:js-routing:dump --target=web/js/fos_js_routes.js
+bin/console bazinga:js-translation:dump  --format=js --merge-domains web/js/translations
+mkdir -p frontend/static/js
+cd frontend/static/js
 ln -sf ../../../web/bundles/fosjsrouting/js/router.js router.js
 ln -sf ../../../web/js/fos_js_routes.js fos_js_routes.js
 ln -sf ../../../web/bundles/bazingajstranslation/js/translator.min.js translator.min.js
