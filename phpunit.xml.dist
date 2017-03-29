@@ -20,11 +20,11 @@
 
     <filter>
         <whitelist>
-            <directory>src</directory>
+            <directory>backend/src</directory>
             <exclude>
-                <directory>src/*Bundle/Resources</directory>
-                <directory>src/*/*Bundle/Resources</directory>
-                <directory>src/*/Bundle/*Bundle/Resources</directory>
+                <directory>backend/src/*Bundle/Resources</directory>
+                <directory>backend/src/*/*Bundle/Resources</directory>
+                <directory>backend/src/*/Bundle/*Bundle/Resources</directory>
             </exclude>
         </whitelist>
     </filter>
