@@ -36,7 +36,7 @@ parameters:
     front.per_page: 12
 
     #misc
-    router.request_context.scheme: https
+    router.request_context.scheme: http
     activation_token_expiration: P1D
     activation_token_expiration_number: 1
     reset_token_expiration: P1D
