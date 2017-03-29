@@ -42,6 +42,7 @@ class ProjectUserControllerTest extends BaseController
 
         $projectUser = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $projectUser['updatedAt'];
+        $responseContent['userAvatar'] = $projectUser['userAvatar'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -63,6 +64,11 @@ class ProjectUserControllerTest extends BaseController
                 [
                     'user' => 3,
                     'userFullName' => 'FirstName3 LastName3',
+                    'userFacebook' => null,
+                    'userTwitter' => null,
+                    'userLinkedIn' => null,
+                    'userGplus' => null,
+                    'userEmail' =>"user3@trisoft.ro",
                     'project' => 1,
                     'projectName' => 'project1',
                     'projectCategory' => 1,
@@ -79,6 +85,7 @@ class ProjectUserControllerTest extends BaseController
                     'showInOrg' => null,
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => '',
+                    'userAvatar' => '',
                 ],
             ],
         ];
@@ -238,6 +245,7 @@ class ProjectUserControllerTest extends BaseController
         $response = $this->client->getResponse();
         $projectUser = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $projectUser['updatedAt'];
+        $responseContent['userAvatar'] = $projectUser['userAvatar'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -257,6 +265,11 @@ class ProjectUserControllerTest extends BaseController
                 [
                     'user' => 4,
                     'userFullName' => 'FirstName4 LastName4',
+                    'userFacebook' => null,
+                    'userTwitter' => null,
+                    'userLinkedIn' => null,
+                    'userGplus' => null,
+                    'userEmail' =>"user4@trisoft.ro",
                     'project' => 1,
                     'projectName' => 'project1',
                     'projectCategory' => 2,
@@ -273,6 +286,7 @@ class ProjectUserControllerTest extends BaseController
                     'showInOrg' => null,
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
+                    'userAvatar' => '',
                 ],
             ],
         ];

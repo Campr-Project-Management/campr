@@ -3,6 +3,7 @@
 namespace MainBundle\EventListener;
 
 use AppBundle\Entity\Project;
+use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Team;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -51,6 +52,15 @@ class ImageSerializeListener
             case $object instanceof Team:
             case $object instanceof Project:
                 $visitor->addData('logo', $this->getUri($object, 'logoFile'));
+                break;
+            case $object instanceof ProjectUser:
+                if ($object->getUser() instanceof User) {
+                    if ($object->getUser()->getAvatar()) {
+                        $visitor->addData('userAvatar', $this->getUri($object->getUser(), 'avatarFile'));
+                    } else {
+                        $visitor->addData('userAvatar', $object->getUser()->getGravatar());
+                    }
+                }
                 break;
         }
     }
