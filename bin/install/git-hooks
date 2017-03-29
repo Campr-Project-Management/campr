@@ -4,7 +4,7 @@
 chmod 755 .git/hooks/*
 
 # copy them over
-cp app/config/git-hooks/* .git/hooks/
+cp config/git-hooks/* .git/hooks/
 
 # make sure they can be executed
 chmod 755 .git/hooks/*
