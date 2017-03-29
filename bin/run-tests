@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 rm -rf web/uploads/tests
-mkdir -p src/AppBundle/Tests/Resources/files/ && touch src/AppBundle/Tests/Resources/files/file.txt
+mkdir -p backend/src/AppBundle/Tests/Resources/files/ && touch backend/src/AppBundle/Tests/Resources/files/file.txt
 bin/console doctrine:database:drop --if-exists --force --env=test
 bin/console doctrine:database:create --env=test
 bin/console doctrine:migrations:migrate --no-interaction --env=test
-bin/console doctrine:fixtures:load --append --fixtures=src/AppBundle/DataFixtures/ORM/ --no-interaction --env=test
+bin/console doctrine:fixtures:load --append --fixtures=backend/src/AppBundle/DataFixtures/ORM/ --no-interaction --env=test
 bin/console cache:clear --env=test
-vendor/bin/phpunit -c . src
-rm -rf src/AppBundle/Tests/Resources/files/
+backend/vendor/bin/phpunit -c . backend/src
+rm -rf backend/src/AppBundle/Tests/Resources/files/
