@@ -20,7 +20,7 @@ class ProjectObjectiveController extends ApiController
     /**
      * Retrieve ProjectObjective information.
      *
-     * @Route("/{id}", name="app_api_project_objective_get")
+     * @Route("/{id}", name="app_api_project_objective_get", requirements={"id": "\d+"})
      * @Method({"GET"})
      *
      * @param ProjectObjective $projectObjective
@@ -37,7 +37,7 @@ class ProjectObjectiveController extends ApiController
     /**
      * Edit a specific ProjectObjective.
      *
-     * @Route("/{id}", name="app_api_project_objective_edit", options={"expose"=true})
+     * @Route("/{id}", name="app_api_project_objective_edit", options={"expose"=true}, requirements={"id": "\d+"})
      * @Method({"PUT", "PATCH"})
      *
      * @param Request          $request
@@ -71,7 +71,7 @@ class ProjectObjectiveController extends ApiController
     /**
      * Delete a specific ProjectObjective.
      *
-     * @Route("/{id}", name="app_api_project_objective_delete")
+     * @Route("/{id}", name="app_api_project_objective_delete", requirements={"id": "\d+"})
      * @Method({"DELETE"})
      *
      * @param ProjectObjective $projectObjective
@@ -85,6 +85,27 @@ class ProjectObjectiveController extends ApiController
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectObjective);
         $em->flush();
+
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Reorder project objectives.
+     *
+     * @Route("/reorder", name="app_api_project_objective_reorder", options={"expose"=true})
+     * @Method("PATCH")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function reorderAction(Request $request)
+    {
+        $this
+            ->getDoctrine()
+            ->getRepository(ProjectObjective::class)
+            ->updateSequences($request->request->all())
+        ;
 
         return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
