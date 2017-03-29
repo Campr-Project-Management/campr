@@ -6,10 +6,10 @@ exec 1>&2
 noErrors="Unable to make commits without checking the code for errors!"
 
 # check that cs fixer is installed, otherwise deny commits
-if [ ! -e vendor/fabpot/php-cs-fixer/php-cs-fixer ]
+if [ ! -e backend/vendor/fabpot/php-cs-fixer/php-cs-fixer ]
 then
     echo $noErrors
-    echo "php-cs-fixer must be installed in vendor/fabpot/php-cs-fixer/php-cs-fixer"
+    echo "php-cs-fixer must be installed in backend/vendor/fabpot/php-cs-fixer/php-cs-fixer"
     echo "in order to install it, run \"composer install --dev\""
     exit 1
 fi
@@ -72,7 +72,7 @@ if [ ! -z "$phpFiles" ]; then echo -e "Checking PHP coding standards:"; fi
 
 for file in $phpFiles;
 do
-    vendor/fabpot/php-cs-fixer/php-cs-fixer fix -vvv --level=symfony --dry-run $file > /dev/null 2>&1;
+    backend/vendor/fabpot/php-cs-fixer/php-cs-fixer fix -vvv --level=symfony --dry-run $file > /dev/null 2>&1;
     if [ $? != 0 ]
     then
         echo -e "\033[0;31m\t$file\033[0m"
