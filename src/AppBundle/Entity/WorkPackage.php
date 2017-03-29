@@ -10,11 +10,17 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * WorkPackage.
  *
- * @ORM\Table(name="work_package")
+ * @ORM\Table(name="work_package", uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="puid_project_unique", columns={"puid", "project_id"}),
+ * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\WorkPackageRepository")
  */
 class WorkPackage
 {
+    const TYPE_PHASE = 0;
+    const TYPE_MILESTONE = 1;
+    const TYPE_TASK = 2;
+
     /**
      * @var int
      *
@@ -55,9 +61,16 @@ class WorkPackage
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage")
-     * @ORM\JoinColumn(name="parent_id")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $parent;
+
+    /**
+     * @var ArrayCollection|WorkPackage[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="parent")
+     */
+    private $children;
 
     /**
      * @var ColorStatus|null
@@ -224,6 +237,36 @@ class WorkPackage
     private $workPackageCategory;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="type", type="integer", nullable=false)
+     */
+    private $type;
+
+    /**
+     * @var ArrayCollection|WorkPackage[]
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="dependants")
+     * @ORM\JoinTable(
+     *     name="work_package_dependency",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="dependency_id")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="dependant_id")
+     *     }
+     * )
+     */
+    private $dependencies;
+
+    /**
+     * @var ArrayCollection|WorkPackage[]
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="dependencies")
+     */
+    private $dependants;
+
+    /**
      * @var \DateTime
      *
      * @Serializer\Exclude()
@@ -250,6 +293,9 @@ class WorkPackage
         $this->createdAt = new \DateTime();
         $this->assignments = new ArrayCollection();
         $this->labels = new ArrayCollection();
+        $this->dependencies = new ArrayCollection();
+        $this->dependants = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     /**
@@ -1043,5 +1089,133 @@ class WorkPackage
     public function getWorkPackageCategoryName()
     {
         return $this->workPackageCategory ? $this->workPackageCategory->getName() : null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Add dependency.
+     *
+     * @param WorkPackage $workPackage
+     *
+     * @return WorkPackage
+     */
+    public function addDependency(WorkPackage $workPackage)
+    {
+        $this->dependencies[] = $workPackage;
+
+        return $this;
+    }
+
+    /**
+     * Remove dependency.
+     *
+     * @param WorkPackage $workPackage
+     *
+     * @return WorkPackage
+     */
+    public function removeDependency(WorkPackage $workPackage)
+    {
+        $this->dependencies->removeElement($workPackage);
+
+        return $this;
+    }
+
+    /**
+     * Get dependencies.
+     *
+     * @return ArrayCollection
+     */
+    public function getDependencies()
+    {
+        return $this->dependencies;
+    }
+
+    /**
+     * Add dependant.
+     *
+     * @param WorkPackage $workPackage
+     *
+     * @return WorkPackage
+     */
+    public function addDependant(WorkPackage $workPackage)
+    {
+        $this->dependants[] = $workPackage;
+
+        return $this;
+    }
+
+    /**
+     * Remove dependant.
+     *
+     * @param WorkPackage $workPackage
+     *
+     * @return WorkPackage
+     */
+    public function removeDependant(WorkPackage $workPackage)
+    {
+        $this->dependants->removeElement($workPackage);
+
+        return $this;
+    }
+
+    /**
+     * Get dependants.
+     *
+     * @return ArrayCollection
+     */
+    public function getDependants()
+    {
+        return $this->dependants;
+    }
+
+    /**
+     * Add child.
+     *
+     * @param WorkPackage $child
+     *
+     * @return WorkPackage
+     */
+    public function addChild(WorkPackage $child)
+    {
+        $this->children[] = $child;
+
+        return $this;
+    }
+
+    /**
+     * Remove child.
+     *
+     * @param WorkPackage $child
+     */
+    public function removeChild(WorkPackage $child)
+    {
+        $this->children->removeElement($child);
+    }
+
+    /**
+     * Get children.
+     *
+     * @return ArrayCollection|WorkPackage[]
+     */
+    public function getChildren()
+    {
+        return $this->children;
     }
 }

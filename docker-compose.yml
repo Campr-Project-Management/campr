@@ -38,7 +38,7 @@ services:
             - .:/app
         ports:
             - 2080:8080
-    nginx:
+    dev.campr.biz:
         build: app/config/docker/nginx
         depends_on:
             - php-fpm

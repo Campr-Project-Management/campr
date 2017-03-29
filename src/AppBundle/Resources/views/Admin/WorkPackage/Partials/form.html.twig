@@ -41,6 +41,15 @@
     }
 ) }}
 {{ form_widget(
+    form.type,
+    {
+        'attr': {
+            'class': 'selectpicker',
+        },
+        'label': 'label.type'|trans
+    }
+) }}
+{{ form_widget(
     form.progress,
     {
         'attr': {
@@ -93,6 +102,26 @@
         },
         'label': 'label.project'|trans
     }
+) }}
+{{ form_widget(
+    form.dependencies,
+    {
+        'attr': {
+            'class': 'selectpicker',
+            'multiple': '',
+        },
+        'label': 'label.dependencies'|trans,
+    }
+) }}
+{{ form_widget(
+    form.dependants,
+    {
+        'attr': {
+            'class': 'selectpicker',
+            'multiple': '',
+        },
+        'label': 'label.dependants'|trans,
+}
 ) }}
 {{ form_widget(
     form.labels,
