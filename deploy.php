@@ -4,9 +4,8 @@ require 'recipe/symfony3.php';
 
 // Set configurations
 set('repository', 'git@lab.trisoft.ro:campr/campr.git');
-set('shared_files', ['app/config/parameters.yml']);
-set('shared_dirs', ['var/logs', 'vendor', 'web/uploads']);
-set('writable_dirs', ['var/cache', 'var/logs']);
+set('shared_dirs', ['var/logs', 'backend/vendor', 'web/uploads', 'frontend/node_modules']);
+set('writable_dirs', ['var/cache', '../../shared/var/logs', '../../shared/web/uploads']);
 set('http_user', 'www-data');
 
 // Set options
@@ -51,7 +50,7 @@ env('bin/mysql', function () {
 server('prod1', '138.201.187.161')
     ->user('root')
     ->stage('prod')
-    ->pemFile(__DIR__.'/app/config/deploy/prod.key')
+    ->pemFile(__DIR__.'/config/deploy/prod.key')
     ->env('env', 'prod')
     ->env('branch', 'production')
     ->env('domain', 'campr.biz')
@@ -62,7 +61,7 @@ server('prod1', '138.201.187.161')
 server('qa1', '138.201.187.161')
     ->user('root')
     ->stage('qa')
-    ->pemFile(__DIR__.'/app/config/deploy/qa.key')
+    ->pemFile(__DIR__.'/config/deploy/qa.key')
     ->env('env', 'qa')
     ->env('branch', 'master')
     ->env('domain', 'qa.campr.biz')
@@ -90,10 +89,10 @@ task('project:front-js:dump', function () {
     run('cd {{release_path}} && bin/front-static');
 });
 task('project:ln-console-env', function () {
-    run('cd {{release_path}} && rm -rf app/env.php && ln -s env/env_{{env}}.php app/env.php');
+    run('cd {{release_path}}/backend && rm -rf app/env.php && ln -s env/env_{{env}}.php app/env.php');
 });
 task('project:copy-parameters', function () {
-    run('cp {{release_path}}/app/config/parameters_{{env}}.yml.dist {{release_path}}/app/config/parameters.yml');
+    run('cp {{release_path}}/backend/app/config/parameters_{{env}}.yml.dist {{release_path}}/backend/app/config/parameters.yml');
 });
 task('project:enable-cron', function () {
     run('sudo rm -rf /etc/cron.d/{{cron_domain}} && sudo cp {{release_path}}/app/config/cron/{{env}} /etc/cron.d/{{cron_domain}} && sudo service cron restart');
