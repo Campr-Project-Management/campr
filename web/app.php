@@ -6,7 +6,7 @@ use Symfony\Component\ClassLoader\ApcClassLoader;
 /*
  * @var Composer\Autoload\ClassLoader
  */
-$loader = require __DIR__.'/../app/autoload.php';
+$loader = require __DIR__.'/../backend/app/autoload.php';
 include_once __DIR__.'/../var/bootstrap.php.cache';
 
 $loader = new ApcClassLoader('campr', $loader);
