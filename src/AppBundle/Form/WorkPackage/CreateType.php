@@ -9,6 +9,7 @@ use AppBundle\Entity\WorkPackageCategory;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -34,12 +35,7 @@ class CreateType extends AbstractType
     {
         $builder
             ->add('puid', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.puid',
-                    ]),
-                ],
+                'required' => false,
             ])
             ->add('name', TextType::class, [
                 'required' => true,
@@ -48,6 +44,21 @@ class CreateType extends AbstractType
                         'message' => 'not_blank.name',
                     ]),
                 ],
+            ])
+            ->add('type', ChoiceType::class, [
+                'required' => true,
+                'choices' => [
+                    'choices.phase' => WorkPackage::TYPE_PHASE,
+                    'choices.milestone' => WorkPackage::TYPE_MILESTONE,
+                    'choices.task' => WorkPackage::TYPE_TASK,
+                ],
+                'placeholder' => 'placeholder.type',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'not_blank.type',
+                    ]),
+                ],
+                'translation_domain' => 'messages',
             ])
             ->add('parent', EntityType::class, [
                 'class' => WorkPackage::class,
@@ -134,27 +145,56 @@ class CreateType extends AbstractType
             ->add('isKeyMilestone', CheckboxType::class)
         ;
 
-        $labelModifier = function (FormInterface $form, $project = null) {
+        $formModifier = function (FormInterface $form, $project = null, $wpId = null) {
             $form->add('labels', EntityType::class, [
                 'class' => Label::class,
                 'choice_label' => 'title',
                 'multiple' => true,
                 'query_builder' => function (EntityRepository $er) use ($project) {
-                    return $er
-                        ->createQueryBuilder('l')
-                        ->where('l.project = :project')
+                    $qb = $er->createQueryBuilder('l');
+
+                    return $qb
+                        ->where(
+                            $qb->expr()->orX(
+                                $qb->expr()->eq('l.project', ':project'),
+                                $qb->expr()->isNull('l.project')
+                            )
+                        )
                         ->setParameter('project', $project)
                     ;
                 },
             ]);
+            $dependencyFieldOptions = [
+                'class' => WorkPackage::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'query_builder' => function (EntityRepository $er) use ($project, $wpId) {
+                    $qb = $er->createQueryBuilder('wp');
+                    $qb->where(
+                            $qb->expr()->orX(
+                                $qb->expr()->eq('wp.project', ':project'),
+                                $qb->expr()->isNull('wp.project')
+                            )
+                        )
+                        ->setParameter('project', $project)
+                    ;
+                    if ($wpId) {
+                        $qb->andWhere('wp.id != :wpId')->setParameter('wpId', $wpId);
+                    }
+
+                    return $qb;
+                },
+            ];
+            $form->add('dependencies', EntityType::class, $dependencyFieldOptions);
+            $form->add('dependants', EntityType::class, $dependencyFieldOptions);
         };
 
         $builder
             ->addEventListener(
                 FormEvents::PRE_SET_DATA,
-                function (FormEvent $event) use ($labelModifier) {
+                function (FormEvent $event) use ($formModifier) {
                     $data = $event->getData();
-                    $labelModifier($event->getForm(), $data->getProject());
+                    $formModifier($event->getForm(), $data->getProject(), $data->getId());
                 }
             )
         ;
@@ -163,9 +203,11 @@ class CreateType extends AbstractType
             ->get('project')
             ->addEventListener(
                 FormEvents::POST_SUBMIT,
-                function (FormEvent $event) use ($labelModifier) {
-                    $data = $event->getForm()->getData();
-                    $labelModifier($event->getForm()->getParent(), $data);
+                function (FormEvent $event) use ($formModifier) {
+                    $form = $event->getForm();
+                    $project = $form->getData();
+                    $wpId = $form->getParent()->getData()->getId();
+                    $formModifier($event->getForm()->getParent(), $project, $wpId);
                 }
             )
         ;
