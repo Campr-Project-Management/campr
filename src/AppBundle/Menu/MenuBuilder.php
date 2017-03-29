@@ -134,6 +134,15 @@ class MenuBuilder
                 'route' => 'app_admin_contract_list',
             ])
             ->getParent()
+            ->addChild($this->translator->trans('title.project_objective.list', [], 'messages'), [
+                'route' => 'app_admin_project_objective_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.project_limitation.list', [], 'messages'), [
+                'route' => 'app_admin_project_limitation_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.project_deliverable.list', [], 'messages'), [
+                'route' => 'app_admin_project_deliverable_list',
+            ])->getParent()
             ->addChild($this->translator->trans('title.project_category.list', [], 'messages'), [
                 'route' => 'app_admin_project_category_list',
             ])->getParent()
