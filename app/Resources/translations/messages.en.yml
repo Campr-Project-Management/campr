@@ -356,6 +356,18 @@ title:
         list: Programme
         create: Create Programme
         edit: Edit Programme
+    project_objective:
+        list: Project Objective
+        create: Create Project Objective
+        edit: Edit Project Objective
+    project_limitation:
+        list: Project Limitation
+        create: Create Project Limitation
+        edit: Edit Project Limitation
+    project_deliverable:
+        list: Project Deliverable
+        create: Create Project Deliverable
+        edit: Edit Project Deliverable
 
 subtitle:
     user: List of users
@@ -405,6 +417,9 @@ subtitle:
     contract: List of contracts
     workpackage_category: List of work package categories
     programme: List of programmes
+    project_objective: List of project objectives
+    project_limitation: List of project limitations
+    project_deliverable: List of project deliverables
 
 label:
     username: Username
@@ -580,6 +595,7 @@ label:
     programme: Programme
     dependencies: Dependencies
     dependants: Dependants
+    contract: Contract
 
 button:
     sign_in: Sign In
@@ -662,6 +678,9 @@ add:
     contract: Add new contract
     workpackage_category: Add new work package category
     programme: Add new programme
+    project_objective: Add new project objective
+    project_limitation: Add new project limitation
+    project_deliverable: Add new project deliverable
 
 placeholder:
     user: Choose one user
@@ -694,6 +713,7 @@ placeholder:
     company: Choose one company
     decision: Choose one decision
     distribution_list: Choose one distribution list
+    contract: Choose one contract
     driver:
         local: Local
         dropbox: Dropbox
@@ -866,6 +886,7 @@ table_header_cell:
     forecast_start_date: Forecast Start Date
     forecast_end_date: Forecast End Date
     workpackage_category: Work Package Category
+    contract: Contract
 
 link:
     home: Home
