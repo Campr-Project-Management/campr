@@ -9,6 +9,9 @@ use AppBundle\Entity\Label;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Note;
 use AppBundle\Entity\Project;
+use AppBundle\Entity\ProjectDeliverable;
+use AppBundle\Entity\ProjectLimitation;
+use AppBundle\Entity\ProjectObjective;
 use AppBundle\Entity\ProjectStatus;
 use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
@@ -24,6 +27,9 @@ use AppBundle\Form\Note\BaseCreateType as NoteCreateType;
 use AppBundle\Form\ProjectTeam\BaseCreateType as ProjectTeamCreateType;
 use AppBundle\Form\ProjectUser\BaseCreateType as ProjectUserCreateType;
 use AppBundle\Form\Todo\BaseCreateType as TodoCreateType;
+use AppBundle\Form\ProjectObjective\CreateType as ProjectObjectiveCreateType;
+use AppBundle\Form\ProjectDeliverable\CreateType as ProjectDeliverableCreateType;
+use AppBundle\Form\ProjectLimitation\CreateType as ProjectLimitationCreateType;
 use AppBundle\Security\ProjectVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -676,5 +682,155 @@ class ProjectController extends ApiController
         $filters['project'] = $project->getName();
 
         return $this->get('app.service.calendar')->exportUserCalendars($filters, $this->getUser());
+    }
+
+    /**
+     * All project objectives for a specific Project.
+     *
+     * @Route("/{id}/objectives", name="app_api_project_objectives", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function objectivesAction(Project $project)
+    {
+        return $this->createApiResponse($project->getProjectObjectives());
+    }
+
+    /**
+     * Create a new ProjectObjective.
+     *
+     * @Route("/{id}/objectives", name="app_api_project_create_objective", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function createObjectiveAction(Request $request, Project $project)
+    {
+        $projectObjective = new ProjectObjective();
+        $projectObjective->setProject($project);
+
+        $form = $this->createForm(ProjectObjectiveCreateType::class, $projectObjective, ['csrf_protection' => false]);
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($projectObjective);
+            $em->flush();
+
+            return $this->createApiResponse($projectObjective, Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * All project limitations for a specific Project.
+     *
+     * @Route("/{id}/limitations", name="app_api_project_limitations", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function limitationsAction(Project $project)
+    {
+        return $this->createApiResponse($project->getProjectLimitations());
+    }
+
+    /**
+     * Create a new ProjectLimitation.
+     *
+     * @Route("/{id}/limitations", name="app_api_project_create_limitation", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function createLimitationAction(Request $request, Project $project)
+    {
+        $projectLimitation = new ProjectLimitation();
+        $projectLimitation->setProject($project);
+
+        $form = $this->createForm(ProjectLimitationCreateType::class, $projectLimitation, ['csrf_protection' => false]);
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($projectLimitation);
+            $em->flush();
+
+            return $this->createApiResponse($projectLimitation, Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * All project deliverables for a specific Project.
+     *
+     * @Route("/{id}/deliverables", name="app_api_project_deliverables", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function deliverablesAction(Project $project)
+    {
+        return $this->createApiResponse($project->getProjectDeliverables());
+    }
+
+    /**
+     * Create a new ProjectDeliverable.
+     *
+     * @Route("/{id}/deliverables", name="app_api_project_create_deliverable", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function createDeliverableAction(Request $request, Project $project)
+    {
+        $projectDeliverable = new ProjectDeliverable();
+        $projectDeliverable->setProject($project);
+
+        $form = $this->createForm(ProjectDeliverableCreateType::class, $projectDeliverable, ['csrf_protection' => false]);
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($projectDeliverable);
+            $em->flush();
+
+            return $this->createApiResponse($projectDeliverable, Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -64,6 +65,27 @@ class Contract
     private $project;
 
     /**
+     * @var ArrayCollection|ProjectObjective[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectObjective", mappedBy="contract")
+     */
+    private $projectObjectives;
+
+    /**
+     * @var ArrayCollection|ProjectLimitation[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectLimitation", mappedBy="contract")
+     */
+    private $projectLimitations;
+
+    /**
+     * @var ArrayCollection|ProjectDeliverable[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectDeliverable", mappedBy="contract")
+     */
+    private $projectDeliverables;
+
+    /**
      * @var \DateTime|null
      *
      * @Serializer\Type("DateTime<'Y-m-d'>")
@@ -123,6 +145,9 @@ class Contract
      */
     public function __construct()
     {
+        $this->projectObjectives = new ArrayCollection();
+        $this->projectLimitations = new ArrayCollection();
+        $this->projectDeliverables = new ArrayCollection();
         $this->createdAt = new \DateTime();
     }
 
@@ -426,5 +451,119 @@ class Contract
     public function getCreatedByFullName()
     {
         return $this->createdBy ? $this->createdBy->getFullName() : null;
+    }
+
+    /**
+     * Add projectObjective.
+     *
+     * @param ProjectObjective $projectObjective
+     *
+     * @return Contract
+     */
+    public function addProjectObjective(ProjectObjective $projectObjective)
+    {
+        $this->projectObjectives[] = $projectObjective;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectObjective.
+     *
+     * @param ProjectObjective $projectObjective
+     *
+     * @return Contract
+     */
+    public function removeProjectObjective(ProjectObjective $projectObjective)
+    {
+        $this->projectObjectives->removeElement($projectObjective);
+
+        return $this;
+    }
+
+    /**
+     * Get projectObjectives.
+     *
+     * @return ArrayCollection
+     */
+    public function getProjectObjectives()
+    {
+        return $this->projectObjectives;
+    }
+
+    /**
+     * Add projectLimitation.
+     *
+     * @param ProjectLimitation $projectLimitation
+     *
+     * @return Contract
+     */
+    public function addProjectLimitation(ProjectLimitation $projectLimitation)
+    {
+        $this->projectLimitations[] = $projectLimitation;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectLimitation.
+     *
+     * @param ProjectObjective $projectObjective
+     *
+     * @return Contract
+     */
+    public function removeProjectLimitation(ProjectLimitation $projectLimitation)
+    {
+        $this->projectLimitations->removeElement($projectLimitation);
+
+        return $this;
+    }
+
+    /**
+     * Get projectLimitations.
+     *
+     * @return ArrayCollection
+     */
+    public function getProjectLimitations()
+    {
+        return $this->projectLimitations;
+    }
+
+    /**
+     * Add projectDeliverable.
+     *
+     * @param ProjectDeliverable $projectDeliverable
+     *
+     * @return Contract
+     */
+    public function addProjectDeliverable(ProjectDeliverable $projectDeliverable)
+    {
+        $this->projectDeliverables[] = $projectDeliverable;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectDeliverable.
+     *
+     * @param ProjectDeliverable $projectDeliverable
+     *
+     * @return Contract
+     */
+    public function removeProjectDeliverable(ProjectDeliverable $projectDeliverable)
+    {
+        $this->projectDeliverables->removeElement($projectDeliverable);
+
+        return $this;
+    }
+
+    /**
+     * Get projectDeliverables.
+     *
+     * @return ArrayCollection
+     */
+    public function getProjectDeliverables()
+    {
+        return $this->projectDeliverables;
     }
 }
