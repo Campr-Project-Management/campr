@@ -71,6 +71,15 @@
                             }
                         ) }}
                         {{ form_widget(
+                            form.projectStartEvent,
+                            {
+                                'attr': {
+                                    'class': 'form-control input-sm',
+                                },
+                                'label': 'label.project_start_event'|trans
+                            }
+                        ) }}
+                        {{ form_widget(
                             form.proposedStartDate,
                             {
                                 'attr': {

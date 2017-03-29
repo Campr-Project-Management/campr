@@ -307,6 +307,7 @@ class ProjectControllerTest extends BaseController
         $project = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $project['updatedAt'];
         $responseContent['projectUsers'][0]['updatedAt'] = $project['projectUsers'][0]['updatedAt'];
+        $responseContent['projectUsers'][0]['userAvatar'] = $project['projectUsers'][0]['userAvatar'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -347,6 +348,11 @@ class ProjectControllerTest extends BaseController
                         [
                             'user' => 6,
                             'userFullName' => 'FirstName6 LastName6',
+                            'userFacebook' => null,
+                            'userTwitter' => null,
+                            'userLinkedIn' => null,
+                            'userGplus' => null,
+                            'userEmail' =>"user6@trisoft.ro",
                             'project' => 2,
                             'projectName' => 'project2',
                             'projectCategory' => 2,
@@ -363,6 +369,7 @@ class ProjectControllerTest extends BaseController
                             'showInOrg' => null,
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
+                            'userAvatar' => '',
                         ],
                     ],
                     'projectTeams' => [],
@@ -593,6 +600,7 @@ class ProjectControllerTest extends BaseController
                         'id' => 1,
                         'name' => 'contract1',
                         'description' => 'contract-description1',
+                        'projectStartEvent' => null,
                         'projectObjectives' => [],
                         'projectLimitations' => [],
                         'projectDeliverables' => [],
@@ -611,6 +619,7 @@ class ProjectControllerTest extends BaseController
                         'id' => 2,
                         'name' => 'contract2',
                         'description' => 'contract-description2',
+                        'projectStartEvent' => null,
                         'projectObjectives' => [],
                         'projectLimitations' => [],
                         'projectDeliverables' => [],
@@ -693,6 +702,7 @@ class ProjectControllerTest extends BaseController
                     'id' => 4,
                     'name' => 'contract-test',
                     'description' => null,
+                    'projectStartEvent' => null,
                     'projectObjectives' => [],
                     'projectLimitations' => [],
                     'projectDeliverables' => [],
@@ -1664,7 +1674,9 @@ class ProjectControllerTest extends BaseController
 
         for ($i = 1; $i <= 3; ++$i) {
             $projectUser = $this->em->getRepository(ProjectUser::class)->find($i);
+            $email = md5(strtolower(trim($projectUser->getUser()->getEmail())));
             $responseContent['projectUsers'][$i - 1]['updatedAt'] = $projectUser->getUpdatedAt()->format('Y-m-d H:i:s');
+            $responseContent['projectUsers'][$i - 1]['userAvatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
         }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
@@ -1708,6 +1720,11 @@ class ProjectControllerTest extends BaseController
                         [
                             'user' => 3,
                             'userFullName' => 'FirstName3 LastName3',
+                            'userFacebook' => null,
+                            'userTwitter' => null,
+                            'userLinkedIn' => null,
+                            'userGplus' => null,
+                            'userEmail' =>"user3@trisoft.ro",
                             'project' => 1,
                             'projectName' => 'project1',
                             'projectCategory' => 1,
@@ -1724,10 +1741,16 @@ class ProjectControllerTest extends BaseController
                             'showInOrg' => null,
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
+                            'userAvatar' => '',
                         ],
                         [
                             'user' => 4,
                             'userFullName' => 'FirstName4 LastName4',
+                            'userFacebook' => null,
+                            'userTwitter' => null,
+                            'userLinkedIn' => null,
+                            'userGplus' => null,
+                            'userEmail' =>"user4@trisoft.ro",
                             'project' => 1,
                             'projectName' => 'project1',
                             'projectCategory' => 2,
@@ -1744,10 +1767,16 @@ class ProjectControllerTest extends BaseController
                             'showInOrg' => null,
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
+                            'userAvatar' => '',
                         ],
                         [
                             'user' => 5,
                             'userFullName' => 'FirstName5 LastName5',
+                            'userFacebook' => null,
+                            'userTwitter' => null,
+                            'userLinkedIn' => null,
+                            'userGplus' => null,
+                            'userEmail' =>"user5@trisoft.ro",
                             'project' => 1,
                             'projectName' => 'project1',
                             'projectCategory' => 1,
@@ -1764,6 +1793,7 @@ class ProjectControllerTest extends BaseController
                             'showInOrg' => null,
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
+                            'userAvatar' => '',
                         ],
                     ],
                     'projectTeams' => [
@@ -1974,6 +2004,7 @@ class ProjectControllerTest extends BaseController
                             'id' => 1,
                             'name' => 'contract1',
                             'description' => 'contract-description1',
+                            'projectStartEvent' => null,
                             'projectObjectives' => [],
                             'projectLimitations' => [],
                             'projectDeliverables' => [],
@@ -1992,6 +2023,7 @@ class ProjectControllerTest extends BaseController
                             'id' => 2,
                             'name' => 'contract2',
                             'description' => 'contract-description2',
+                            'projectStartEvent' => null,
                             'projectObjectives' => [],
                             'projectLimitations' => [],
                             'projectDeliverables' => [],
@@ -2195,6 +2227,7 @@ class ProjectControllerTest extends BaseController
         $responseArray = json_decode($response->getContent(), true);
         for ($i = 0; $i < 3; ++$i) {
             $responseContent[$i]['updatedAt'] = $responseArray[$i]['updatedAt'];
+            $responseContent[$i]['userAvatar'] = $responseArray[$i]['userAvatar'];
         }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
@@ -2216,6 +2249,11 @@ class ProjectControllerTest extends BaseController
                     [
                         'user' => 3,
                         'userFullName' => 'FirstName3 LastName3',
+                        'userFacebook' => null,
+                        'userTwitter' => null,
+                        'userLinkedIn' => null,
+                        'userGplus' => null,
+                        'userEmail' =>"user3@trisoft.ro",
                         'project' => 1,
                         'projectName' => 'project1',
                         'projectCategory' => 1,
@@ -2232,10 +2270,16 @@ class ProjectControllerTest extends BaseController
                         'showInOrg' => null,
                         'createdAt' => '2017-01-01 12:00:00',
                         'updatedAt' => null,
+                        'userAvatar' => '',
                     ],
                     [
                         'user' => 4,
                         'userFullName' => 'FirstName4 LastName4',
+                        'userFacebook' => null,
+                        'userTwitter' => null,
+                        'userLinkedIn' => null,
+                        'userGplus' => null,
+                        'userEmail' =>"user4@trisoft.ro",
                         'project' => 1,
                         'projectName' => 'project1',
                         'projectCategory' => 2,
@@ -2252,10 +2296,16 @@ class ProjectControllerTest extends BaseController
                         'showInOrg' => null,
                         'createdAt' => '2017-01-01 12:00:00',
                         'updatedAt' => null,
+                        'userAvatar' => '',
                     ],
                     [
                         'user' => 5,
                         'userFullName' => 'FirstName5 LastName5',
+                        'userFacebook' => null,
+                        'userTwitter' => null,
+                        'userLinkedIn' => null,
+                        'userGplus' => null,
+                        'userEmail' =>"user5@trisoft.ro",
                         'project' => 1,
                         'projectName' => 'project1',
                         'projectCategory' => 1,
@@ -2272,6 +2322,7 @@ class ProjectControllerTest extends BaseController
                         'showInOrg' => null,
                         'createdAt' => '2017-01-01 12:00:00',
                         'updatedAt' => null,
+                        'userAvatar' => '',
                     ],
                 ],
             ],
@@ -2311,6 +2362,7 @@ class ProjectControllerTest extends BaseController
         $projectUser = json_decode($response->getContent(), true);
         $responseContent['createdAt'] = $projectUser['createdAt'];
         $responseContent['updatedAt'] = $projectUser['updatedAt'];
+        $responseContent['userAvatar'] = $projectUser['userAvatar'];
         $responseContent['id'] = $projectUser['id'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
@@ -2341,6 +2393,11 @@ class ProjectControllerTest extends BaseController
                 [
                     'user' => 6,
                     'userFullName' => 'FirstName6 LastName6',
+                    'userFacebook' => null,
+                    'userTwitter' => null,
+                    'userLinkedIn' => null,
+                    'userGplus' => null,
+                    'userEmail' =>"user6@trisoft.ro",
                     'project' => 1,
                     'projectName' => 'project1',
                     'projectCategory' => null,
@@ -2357,6 +2414,7 @@ class ProjectControllerTest extends BaseController
                     'showInOrg' => false,
                     'createdAt' => '',
                     'updatedAt' => null,
+                    'userAvatar' => '',
                 ],
             ],
         ];

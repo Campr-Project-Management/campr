@@ -3,7 +3,7 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Contract;
-use AppBundle\Form\Contract\CreateType;
+use AppBundle\Form\Contract\BaseCreateType;
 use AppBundle\Security\ProjectVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -49,7 +49,7 @@ class ContractController extends ApiController
     {
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $contract->getProject());
 
-        $form = $this->createForm(CreateType::class, $contract, ['csrf_protection' => false]);
+        $form = $this->createForm(BaseCreateType::class, $contract, ['csrf_protection' => false]);
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
