@@ -20,6 +20,7 @@ class Version20170327210712 extends AbstractMigration
 
         $this->addSql('ALTER TABLE work_package DROP FOREIGN KEY FK_BA3DFB7727ACA70');
         $this->addSql('ALTER TABLE work_package ADD CONSTRAINT FK_BA3DFB7727ACA70 FOREIGN KEY (parent_id) REFERENCES work_package (id) ON DELETE CASCADE');
+        $this->addSql('UPDATE work_package SET puid = id');
         $this->addSql('CREATE UNIQUE INDEX puid_project_unique ON work_package (puid, project_id)');
     }
 
