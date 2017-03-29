@@ -22,7 +22,7 @@ main:
 
 app:
     resource: "@AppBundle/Controller/"
-    type: annotation
+    type: app
     host: "{subdomain}.%domain%"
     defaults:
         subdomain: "%kernel.team_slug%"
