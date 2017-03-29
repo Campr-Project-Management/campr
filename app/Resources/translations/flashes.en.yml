@@ -294,6 +294,24 @@ success:
         delete:
             from_edit: Programme successfully deleted!
             from_data_table: Programme with ID
+    project_objective:
+        create: Project Objective successfully created!
+        edit: Project Objective successfully edited!
+        delete:
+            from_edit: Project Objective successfully deleted!
+            from_data_table: Project Objective with ID
+    project_limitation:
+        create: Project Limitation successfully created!
+        edit: Project Limitation successfully edited!
+        delete:
+            from_edit: Project Limitation successfully deleted!
+            from_data_table: Project Objective with ID
+    project_deliverable:
+        create: Project Deliverable successfully created!
+        edit: Project Deliverable successfully edited!
+        delete:
+            from_edit: Project Deliverable successfully deleted!
+            from_data_table: Project Deliverable with ID
 failed:
     media:
         upload: File upload failed. Filesystem cannot be reached.
