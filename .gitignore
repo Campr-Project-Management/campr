@@ -8,11 +8,8 @@
 !/var/logs
 /var/logs/*
 !var/logs/.gitkeep
-!/var/sessions
-/var/sessions/*
-!var/sessions/.gitkeep
 !var/SymfonyRequirements.php
-/vendor/
+/backend/vendor/
 /web/bundles/
 /web/uploads/
 /web/static/
@@ -21,12 +18,12 @@ Vagrantfile
 .vagrant
 /web/assets/admin/vendors/bower_components/
 .DS_Store
-/front/node_modules
+/frontend/node_modules
 /app/config/parameters_test.yml
 /src/AppBundle/Resources/views/Default/index.html.twig
 /src/AppBundle/Tests/Resources/
 /src/AppBundle/Resources/docs/cache/
 /src/AppBundle/Resources/docs/build/
-/front/static/js/
+/frontend/static/js/
 /web/js/
 /web/app_dev.php
