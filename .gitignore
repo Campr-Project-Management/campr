@@ -19,11 +19,11 @@ Vagrantfile
 /web/assets/admin/vendors/bower_components/
 .DS_Store
 /frontend/node_modules
-/app/config/parameters_test.yml
-/src/AppBundle/Resources/views/Default/index.html.twig
-/src/AppBundle/Tests/Resources/
-/src/AppBundle/Resources/docs/cache/
-/src/AppBundle/Resources/docs/build/
+/backend/app/config/parameters_test.yml
+/backend/src/AppBundle/Resources/views/Default/index.html.twig
+/backend/src/AppBundle/Tests/Resources/
+/backend/src/AppBundle/Resources/docs/cache/
+/backend/src/AppBundle/Resources/docs/build/
 /frontend/static/js/
 /web/js/
 /web/app_dev.php
