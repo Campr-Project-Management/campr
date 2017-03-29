@@ -19,7 +19,7 @@ before_script:
 test:phpunit:
   stage: test
   script:
-    - backend/vendor/bin/phpunit -c . src
+    - backend/vendor/bin/phpunit -c . backend/src
 
 after_script:
   - rm -rf backend/src/AppBundle/Tests/Resources/files/
