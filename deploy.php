@@ -98,7 +98,7 @@ task('project:enable-cron', function () {
     run('sudo rm -rf /etc/cron.d/{{cron_domain}} && sudo cp {{release_path}}/app/config/cron/{{env}} /etc/cron.d/{{cron_domain}} && sudo service cron restart');
 });
 task('project:apache:enable-config', function () {
-    run('if [ -L /etc/apache2/sites-enabled/{{domain}}.conf ]; then sudo rm -rf /etc/apache2/sites-enabled/{{domain}}.conf; fi && sudo ln -s {{release_path}}/app/config/apache/{{env}}.conf /etc/apache2/sites-enabled/{{domain}}.conf');
+    run('if [ -L /etc/apache2/sites-enabled/{{domain}}.conf ]; then sudo rm -rf /etc/apache2/sites-enabled/{{domain}}.conf; fi && sudo ln -s {{release_path}}/config/apache/{{env}}.conf /etc/apache2/sites-enabled/{{domain}}.conf');
 });
 task('database:cleanup', function () {
     if (input()->getOption('reset-db')) {
