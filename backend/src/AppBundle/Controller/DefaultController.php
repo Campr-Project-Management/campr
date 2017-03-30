@@ -28,6 +28,16 @@ class DefaultController extends Controller
         $this->denyAccessUnlessGranted(TeamVoter::VIEW);
 
         $response = $this->render('AppBundle:Default:index.html.twig');
+        $routeParams = $request->attributes->get('_route_params');
+        if (isset($routeParams['subdomain'])) {
+            $content = $response->getContent();
+            $content = str_replace(
+                '/static/js/fos_js_routes.js',
+                '/static/js/fos_js_routes_'.$routeParams['subdomain'].'.js',
+                $content
+            );
+            $response->setContent($content);
+        }
         if ($this->getUser() && !array_key_exists('user_token', $request->cookies->all())) {
             $response->headers->setCookie(new Cookie('user_token', $this->getUser()->getApiToken(), time() + 3600, '/', null, false, false));
         }
