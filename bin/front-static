@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 bin/console assets:install --symlink web
-bin/console assets:dump web
+bin/console assetic:dump web
 bin/console fos:js-routing:dump --target=web/js/fos_js_routes.js
 bin/console bazinga:js-translation:dump  --format=js --merge-domains web/js/translations
 mkdir -p frontend/static/js
