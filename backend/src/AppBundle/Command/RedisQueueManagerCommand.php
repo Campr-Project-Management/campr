@@ -62,7 +62,7 @@ class RedisQueueManagerCommand extends ContainerAwareCommand
     {
         /** @var \Predis\Client $redis */
         $redis = $this->getContainer()->get('redis.client');
-        $wd = $this->getContainer()->getParameter('kernel.root_dir').'/..';
+        $wd = $this->getContainer()->getParameter('kernel.root_dir').'/../..';
 
         /** @var EntityManagerInterface $em */
         $em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
@@ -105,7 +105,7 @@ class RedisQueueManagerCommand extends ContainerAwareCommand
             $commandQueueLog->setQueueCount($count);
 
             $process = new Process(
-                sprintf('%s app/console %s', PHP_BINARY, $message),
+                sprintf('%s bin/console %s', PHP_BINARY, $message),
                 $wd,
                 null,
                 null,
