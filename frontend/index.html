@@ -6,20 +6,6 @@
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
         <script src="/static/js/router.js"></script>
         <script src="/static/js/fos_js_routes.js"></script>
-        <script>
-            var host = window.location.host.toLowerCase(),
-                parts,
-                script;
-            if (host.indexOf('www.') === 0) {
-                host = host.substr(4);
-            }
-            parts = host.split('.');
-            if (parts.length === 4 || (parts.length === 3 && ['dev', 'qa'].indexOf(parts[0]) === -1)) {
-                script = document.createElement('script');
-                script.src = '/static/js/fos_js_routes_' + parts[0] + '.js';
-                document.head.appendChild(script);
-            }
-        </script>
         <script src="/static/js/translator.min.js"></script>
         <script src="/static/js/config.js"></script>
         <script src="/static/js/en.js"></script>
