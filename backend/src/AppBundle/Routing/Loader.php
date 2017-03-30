@@ -34,10 +34,6 @@ class Loader extends AnnotationDirectoryLoader
         }
         $this->loaded = true;
 
-        if ($this->teamSlug === 'team') {
-            $this->teamSlug = null;
-        }
-
         if ($this->teamSlug !== 'team' || $this->env === 'test') {
             return parent::load($resource, 'annotation');
         }
