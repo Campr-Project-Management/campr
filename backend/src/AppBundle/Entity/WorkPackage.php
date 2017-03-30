@@ -250,10 +250,10 @@ class WorkPackage
      * @ORM\JoinTable(
      *     name="work_package_dependency",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="dependency_id")
+     *         @ORM\JoinColumn(name="dependant_id")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="dependant_id")
+     *         @ORM\JoinColumn(name="dependency_id")
      *     }
      * )
      */
