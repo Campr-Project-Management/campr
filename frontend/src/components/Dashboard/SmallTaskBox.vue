@@ -2,7 +2,11 @@
     <div class="task-box box small-box">
         <div class="header">
             <div>
-                <h2>{{ task.name }}</h2>
+                <h2>
+                    <router-link :to="{name: 'task', params: { id: task.id }}">
+                        {{ task.name }}
+                    </router-link>
+                </h2>
                 <p class="task-id">#{{ task.id }}</p>
             </div>
             <div class="status-boxes">
