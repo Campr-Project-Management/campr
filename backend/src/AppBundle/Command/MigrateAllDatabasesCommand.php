@@ -23,7 +23,7 @@ class MigrateAllDatabasesCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $wd = $this->getContainer()->getParameter('kernel.root_dir').'/..';
+        $wd = $this->getContainer()->getParameter('kernel.root_dir').'/../..';
         $env = $this->getContainer()->get('kernel')->getEnvironment();
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
 
@@ -33,7 +33,7 @@ class MigrateAllDatabasesCommand extends ContainerAwareCommand
             $env
         );
         $process = new Process(
-            sprintf('%s app/console %s', PHP_BINARY, $command),
+            sprintf('%s bin/console %s', PHP_BINARY, $command),
             $wd,
             null,
             null,
@@ -64,7 +64,7 @@ class MigrateAllDatabasesCommand extends ContainerAwareCommand
                 $env
             );
             $process = new Process(
-                sprintf('%s app/console %s', PHP_BINARY, $command),
+                sprintf('%s bin/console %s', PHP_BINARY, $command),
                 $wd,
                 null,
                 null,
