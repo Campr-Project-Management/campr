@@ -76,9 +76,9 @@ task('deploy:assetic:dump', function () {
     run('{{symfony_console}} assetic:dump {{symfony_console_options}}');
 })->desc('Dump assets');
 task('project:supervisor:restart', function () {
-    run('sudo /etc/init.d/supervisor stop');
-    run('sudo systemctl daemon-reload');
-    run('sudo /etc/init.d/supervisor start');
+    run('sudo service supervisor stop');
+    sleep(2);
+    run('sudo service supervisor start');
 });
 task('project:apache:restart', function () {
     run('sudo service apache2 restart');
@@ -96,7 +96,7 @@ task('project:copy-parameters', function () {
     run('cp {{release_path}}/backend/app/config/parameters_{{env}}.yml.dist {{release_path}}/backend/app/config/parameters.yml');
 });
 task('project:enable-cron', function () {
-    run('sudo rm -rf /etc/cron.d/{{cron_domain}} && sudo cp {{release_path}}/app/config/cron/{{env}} /etc/cron.d/{{cron_domain}} && sudo service cron restart');
+    run('sudo rm -rf /etc/cron.d/{{cron_domain}} && sudo cp {{release_path}}/config/cron/{{env}} /etc/cron.d/{{cron_domain}} && sudo service cron restart');
 });
 task('project:apache:enable-config', function () {
     run('if [ -L /etc/apache2/sites-enabled/{{domain}}.conf ]; then sudo rm -rf /etc/apache2/sites-enabled/{{domain}}.conf; fi && sudo ln -s {{release_path}}/config/apache/{{env}}.conf /etc/apache2/sites-enabled/{{domain}}.conf');
