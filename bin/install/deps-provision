@@ -170,9 +170,9 @@ sudo pip install supervisor --pre
 sudo mkdir /etc/supervisor
 sudo mkdir /etc/supervisor/conf.d
 sudo mkdir /var/log/supervisor
-sudo ln -s $CURRENTDIR/app/config/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
-sudo ln -s $CURRENTDIR/app/config/supervisor/initscript /etc/init.d/supervisor
-sudo ln -s $CURRENTDIR/app/config/supervisor/$ENV.conf /etc/supervisor/conf.d/$ENV.conf
+sudo ln -s $CURRENTDIR/config/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+sudo ln -s $CURRENTDIR/config/supervisor/initscript /etc/init.d/supervisor
+sudo ln -s $CURRENTDIR/config/supervisor/$ENV.conf /etc/supervisor/conf.d/$ENV.conf
 sudo update-rc.d supervisor defaults
 
 #jslint

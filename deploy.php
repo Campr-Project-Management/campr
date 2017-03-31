@@ -4,6 +4,7 @@ require 'recipe/symfony3.php';
 
 // Set configurations
 set('repository', 'git@lab.trisoft.ro:campr/campr.git');
+set('shared_files', []);
 set('shared_dirs', ['var/logs', 'backend/vendor', 'web/uploads', 'frontend/node_modules']);
 set('writable_dirs', ['var/cache', '../../shared/var/logs', '../../shared/web/uploads']);
 set('http_user', 'www-data');
