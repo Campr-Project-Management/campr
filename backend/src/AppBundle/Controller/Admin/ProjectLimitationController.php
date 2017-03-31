@@ -114,7 +114,7 @@ class ProjectLimitationController extends Controller
      * @Route("/{id}/edit", options={"expose"=true}, name="app_admin_project_limitation_edit")
      * @Method({"GET", "POST"})
      *
-     * @param Request  $request
+     * @param Request           $request
      * @param ProjectLimitation $projectLimitation
      *
      * @return Response|RedirectResponse
@@ -186,7 +186,7 @@ class ProjectLimitationController extends Controller
      * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_limitation_delete")
      * @Method({"GET"})
      *
-     * @param Request  $request
+     * @param Request           $request
      * @param ProjectLimitation $projectLimitation
      *
      * @return RedirectResponse|JsonResponse

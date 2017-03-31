@@ -40,7 +40,7 @@ class ProjectDeliverableController extends ApiController
      * @Route("/{id}", name="app_api_project_deliverable_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      *
-     * @param Request  $request
+     * @param Request            $request
      * @param ProjectDeliverable $projectDeliverable
      *
      * @return JsonResponse
