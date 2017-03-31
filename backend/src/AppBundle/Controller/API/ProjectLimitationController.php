@@ -40,7 +40,7 @@ class ProjectLimitationController extends ApiController
      * @Route("/{id}", name="app_api_project_limitation_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      *
-     * @param Request  $request
+     * @param Request           $request
      * @param ProjectLimitation $projectLimitation
      *
      * @return JsonResponse
