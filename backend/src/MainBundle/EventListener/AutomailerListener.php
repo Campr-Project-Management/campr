@@ -10,7 +10,7 @@ use Predis\Client;
 
 /**
  * Class AutomailerListener
- * Creates a queue for automailer spool
+ * Creates a queue for automailer spool.
  */
 class AutomailerListener
 {
@@ -60,7 +60,7 @@ class AutomailerListener
             $this->redis->rpush(RedisQueueManagerCommand::AUTOMAILER, [
                 sprintf(
                     'automailer:spool:send --env=%s',
-                    $this->subdomain . '_' . $this->env
+                    $this->subdomain.'_'.$this->env
                 ),
             ]);
         }

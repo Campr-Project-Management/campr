@@ -52,7 +52,7 @@ class DumpRoutesCommand extends ContainerAwareCommand
             }
         } else {
             $this->runCommand(sprintf('fos:js-routing:dump --env=%s --target=web/static/js/fos_js_routes.js', $env));
-            $slugs = $this->findSlugs();
+            $slugs = $this->getSlugs();
             foreach ($slugs as $slug) {
                 $this->runCommand(sprintf(
                     'fos:js-routing:dump --env=%2$s_%1$s --target=web/static/js/fos_js_routes_%2$s.js',
@@ -79,6 +79,7 @@ class DumpRoutesCommand extends ContainerAwareCommand
             ->prepare('SELECT slug FROM `team`')
         ;
         $stmt->execute();
+
         return array_column($stmt->fetchAll(), 'slug');
     }
 }

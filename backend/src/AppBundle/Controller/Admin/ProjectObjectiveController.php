@@ -114,7 +114,7 @@ class ProjectObjectiveController extends Controller
      * @Route("/{id}/edit", options={"expose"=true}, name="app_admin_project_objective_edit")
      * @Method({"GET", "POST"})
      *
-     * @param Request  $request
+     * @param Request          $request
      * @param ProjectObjective $projectObjective
      *
      * @return Response|RedirectResponse
@@ -186,7 +186,7 @@ class ProjectObjectiveController extends Controller
      * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_project_objective_delete")
      * @Method({"GET"})
      *
-     * @param Request  $request
+     * @param Request          $request
      * @param ProjectObjective $projectObjective
      *
      * @return RedirectResponse|JsonResponse
