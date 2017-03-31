@@ -77,6 +77,7 @@ task('deploy:assetic:dump', function () {
 })->desc('Dump assets');
 task('project:supervisor:restart', function () {
     run('sudo service supervisor stop');
+    run('sudo systemctl daemon-reload');
     sleep(2);
     run('sudo service supervisor start');
 });
@@ -120,8 +121,8 @@ task('server:provision', function () {
         writeln('<info>Skipping...</info>');
     }
 });
-task('project:build:front', function () {
-    run('cd {{release_path}}/front && npm install && npm run build');
+task('project:build:frontend', function () {
+    run('cd {{release_path}}/frontend && npm install && npm run build');
 });
 task('hivebot:deploy-whois', function () {
     env('localUser', sprintf(
@@ -160,7 +161,7 @@ before('database:migrate', 'database:cleanup');
 after('deploy:symlink', 'database:migrate');
 after('deploy:symlink', 'project:apache:restart');
 after('deploy:symlink', 'project:enable-cron');
-after('deploy:symlink', 'project:build:front');
+after('deploy:symlink', 'project:build:frontend');
 before('project:apache:restart', 'project:apache:enable-config');
 after('project:apache:restart', 'project:supervisor:restart');
-before('project:build:front', 'project:front-js:dump');
+before('project:build:frontend', 'project:front-js:dump');
