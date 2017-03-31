@@ -40,7 +40,7 @@ class ProjectObjectiveController extends ApiController
      * @Route("/{id}", name="app_api_project_objective_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      *
-     * @param Request  $request
+     * @param Request          $request
      * @param ProjectObjective $projectObjective
      *
      * @return JsonResponse

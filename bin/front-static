@@ -3,7 +3,7 @@
 bin/console assets:install --symlink web
 bin/console assetic:dump web
 bin/console fos:js-routing:dump --target=web/js/fos_js_routes.js
-bin/console bazinga:js-translation:dump  --format=js --merge-domains web/js/translations
+bin/console bazinga:js-translation:dump  --format=js --merge-domains web/js
 mkdir -p frontend/static/js
 cd frontend/static/js
 ln -sf ../../../web/bundles/fosjsrouting/js/router.js router.js
