@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * ProjectObjective.

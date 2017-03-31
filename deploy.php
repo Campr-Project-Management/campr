@@ -87,8 +87,11 @@ task('project:apache:restart', function () {
 task('project:dizda:backup', function () {
     run('{{symfony_console}} dizda:backup:start {{symfony_console_options}}');
 });
-task('project:front-js:dump', function () {
+task('project:front-static', function () {
     run('cd {{release_path}} && bin/front-static');
+});
+task('project:front:dump-routes', function () {
+    run('cd {{release_path}} && bin/console app:dump-routes');
 });
 task('project:ln-console-env', function () {
     run('cd {{release_path}}/backend && rm -rf app/env.php && ln -s env/env_{{env}}.php app/env.php');
@@ -164,4 +167,5 @@ after('deploy:symlink', 'project:enable-cron');
 after('deploy:symlink', 'project:build:frontend');
 before('project:apache:restart', 'project:apache:enable-config');
 after('project:apache:restart', 'project:supervisor:restart');
-before('project:build:frontend', 'project:front-js:dump');
+before('project:build:frontend', 'project:front-static');
+after('project:build:frontend', 'project:front:dump-routes');
