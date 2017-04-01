@@ -28,7 +28,9 @@ let config = {
     // 'abbr' is optional when equals to 'val';
     fontName: [
         {val: '', abbr: ''},
-        {val: 'arial black'}, {val: 'times new roman'}, {val: 'Courier New'},
+        {val: 'arial black'},
+        {val: 'times new roman'},
+        {val: 'Courier New'},
     ],
 
     // the font-size select's options
@@ -56,8 +58,7 @@ Vue.use(require('vue-moment'));
 Vue.use(VueCharts);
 Vue.use(VueCookie);
 
-let token = Vue.cookie.get('user_token') ? Vue.cookie.get('user_token') : 'ae45f7534d57f545a66cd0f66c95f7283bc4c065';
-Vue.http.headers.common['Authorization'] = 'Bearer ' + token;
+Vue.http.headers.common['Authorization'] = 'Bearer ' + window.user.api_token;
 new Vue({
     router,
     store,
