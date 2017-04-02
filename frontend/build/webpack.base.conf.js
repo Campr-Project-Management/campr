@@ -26,7 +26,7 @@ module.exports = {
       'vue$': 'vue/dist/vue',
       'src': path.resolve(__dirname, '../src'),
       'assets': path.resolve(__dirname, '../src/assets'),
-      'components': path.resolve(__dirname, '../src/components')
+      'components': path.resolve(__dirname, '../src/components'),
     }
   },
   resolveLoader: {
@@ -71,7 +71,7 @@ module.exports = {
         }
       },
       {
-        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        test: /\.(woff2?|eot|ttf|otf|svg)(\?.*)?$/,
         loader: 'url',
         query: {
           limit: 10000,

@@ -2,7 +2,7 @@
     <div class="project-create-wrapper">
         <div class="page-section project-create step-1">
             <h1>{{ message.project_create_wizard }}</h1>
-            <h2>{{ message.project_create_step1 }}</h2>
+            <h2>{{ message.project_create_step1 }}</h2>            
 
             <input-field type="text" v-bind:label="message.project_name"></input-field>
             <input-field type="text" v-bind:label="message.project_number"></input-field>
@@ -142,7 +142,7 @@ export default {
   }
 
   .btn-rounded {
-      padding: 0;
+      //padding: 0;
   }
 
   .checkbox-input {
