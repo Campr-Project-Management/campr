@@ -4,6 +4,8 @@ script=`readlink -f $0`
 binDir=`dirname $script`
 dir=`dirname $binDir`
 
+cd $dir
+
 bin/console assets:install --symlink web
 bin/console assetic:dump web
 bin/console app:dump-routes
