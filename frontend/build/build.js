@@ -18,11 +18,13 @@ var spinner = ora('building for production...');
 spinner.start();
 
 var assetsPath = path.join(config.build.assetsRoot, config.build.assetsSubDirectory);
-// first, copy everything over; to overwrite symlinks
-cp('-R', assetsPath+'/*', 'static');
-rm('-rf', assetsPath);
-mkdir('-p', assetsPath);
-cp('-R', 'static/*', assetsPath);
+ls('static/js').map(function (file) {
+  var filePath = 'static/js/' + file;
+  if (test('-L', filePath)) {
+    return;
+  }
+  cp(filePath, assetsPath);
+});
 
 webpack(webpackConfig, function (err, stats) {
   spinner.stop();
