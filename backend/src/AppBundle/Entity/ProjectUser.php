@@ -444,6 +444,71 @@ class ProjectUser
     }
 
     /**
+     * Returns user facebook.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userFacebook")
+     *
+     * @return string
+     */
+    public function getUserFacebook()
+    {
+        return $this->user ? $this->user->getFacebook() : null;
+    }
+
+    /**
+     * Returns user twitter.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userTwitter")
+     *
+     * @return string
+     */
+    public function getUserTwitter()
+    {
+        return $this->user ? $this->user->getTwitter() : null;
+    }
+
+    /**
+     * Returns user linkedin.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userLinkedIn")
+     *
+     * @return string
+     */
+    public function getUserLinkedIn()
+    {
+        return $this->user ? $this->user->getLinkedIn() : null;
+    }
+
+    /**
+     * Returns user gplus.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userGplus")
+     *
+     * @return string
+     */
+    public function getUserGplus()
+    {
+        return $this->user ? $this->user->getGplus() : null;
+    }
+
+    /**
+     * Returns user email.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userEmail")
+     *
+     * @return string
+     */
+    public function getUserEmail()
+    {
+        return $this->user ? $this->user->getEmail() : null;
+    }
+
+    /**
      * Returns project id.
      *
      * @Serializer\VirtualProperty()

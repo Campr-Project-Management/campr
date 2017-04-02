@@ -31,20 +31,18 @@
                         </a>
                     </div>
                 </div>
-
-                <input-field v-model="description" type="textarea" v-bind:label="message.project_description" :content="project.description"></input-field>
-
-                <input-field v-model="startEvent" type="textarea" v-bind:label="message.project_start_event"></input-field>
+                <input-field v-model="description" type="textarea" v-bind:label="message.project_description" :content="contract.description"></input-field>
+                <input-field v-model="projectStartEvent" type="textarea" v-bind:label="message.project_start_event" :content="contract.projectStartEvent"></input-field>
 
                 <div class="flex flex-space-between dates">
                     <div class="input-holder left">
                         <label class="active">{{ message.proposed_start_date }}</label>
-                        <datepicker :value="date | moment('DD / MM / YYYY')" format="DD / MM / YYYY"></datepicker>
+                        <datepicker v-model="proposedStartDate" format="dd - MM - yyyy" :value="contract.proposedStartDate"></datepicker>
                         <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                     </div>
                     <div class="input-holder right">
                         <label class="active">{{ message.proposed_end_date }}</label>
-                        <datepicker :value="date | moment('DD / MM / YYYY')" format="DD / MM / YYYY"></datepicker>
+                        <datepicker v-model="proposedEndDate" format="dd - MM - yyyy" :value="contract.proposedEndDate"></datepicker>
                         <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                     </div>
                 </div>
@@ -52,12 +50,12 @@
                 <div class="flex flex-space-between dates right">
                     <div class="input-holder left">
                         <label class="active">{{ message.forecast_start_date }}</label>
-                        <datepicker :value="date | moment('DD / MM / YYYY')" format="DD / MM / YYYY"></datepicker>
+                        <datepicker v-model="forecastStartDate" format="dd - MM - yyyy" :value="contract.forecastStartDate"></datepicker>
                         <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                     </div>
                     <div class="input-holder right">
                         <label class="active">{{ message.forecast_end_date }}</label>
-                        <datepicker :value="date | moment('DD / MM / YYYY')" format="DD / MM / YYYY" class="red"></datepicker>
+                        <datepicker v-model="forecastEndDate" format="dd - MM - yyyy" :value="contract.forecastEndDate"></datepicker>
                         <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
                     </div>
                 </div>
@@ -67,42 +65,28 @@
                         <h1>{{ message.project_objectives }}</h1>
                     </div>
                 </div>
+
                 <div v-dragula="colOne" drake="objectives">
-                    <drag-box v-for="(item, index) in project.objectives" v-bind:item="item" v-bind:index="index"></drag-box>
+                    <drag-box v-for="(item, index) in project.projectObjectives" v-bind:item="item" v-bind:index="index" type="objective"></drag-box>
                 </div>
                 <div class="hr small"></div>
-                <input-field type="text" v-bind:label="message.new_objective_title"></input-field>
-                <input-field type="textarea" v-bind:label="message.new_objective_description"></input-field>
+                <input-field v-model="objectiveTitle" type="text" v-bind:label="message.new_objective_title"></input-field>
+                <input-field v-model="objectiveDescription" type="textarea" v-bind:label="message.new_objective_description"></input-field>
                 <div class="flex flex-direction-reverse">
-                    <a class="btn-rounded" href="">{{ message.add_objective }} +</a>
+                    <a v-on:click="createProjectObjective()" class="btn-rounded">{{ message.add_objective }} +</a>
                 </div>
-
-                <div class="header">
-                    <div class="flex">
-                        <h1>{{ message.project_limitations }}</h1>
-                    </div>
-                </div>
-                <div v-dragula="colOne" drake="limitations">
-                    <drag-box v-for="(item, index) in project.limitations" v-bind:item="item" v-bind:index="index"></drag-box>
-                </div>
-                <div class="hr small"></div>
-                <input-field type="text" v-bind:label="message.new_project_limitation"></input-field>
-                <div class="flex flex-direction-reverse">
-                    <a class="btn-rounded" href="">{{ message.add_limitation }} +</a>
-                </div>
-
                 <div class="header">
                     <div class="flex">
                         <h1>{{ message.project_deliverables }}</h1>
                     </div>
                 </div>
                 <div v-dragula="colOne" drake="deliverables">
-                    <drag-box v-for="(item, index) in project.deliverables" v-bind:item="item" v-bind:index="index"></drag-box>
+                    <drag-box v-for="(item, index) in project.projectDeliverables" v-bind:item="item" v-bind:index="index" type="deliverable"></drag-box>
                 </div>
                 <div class="hr small"></div>
-                <input-field type="text" v-bind:label="message.new_project_deliverable"></input-field>
+                <input-field v-model="deliverableDescription" type="text" v-bind:label="message.new_project_deliverable"></input-field>
                 <div class="flex flex-direction-reverse">
-                    <a class="btn-rounded" href="kk">{{ message.add_deliverable }} +</a>
+                    <a v-on:click="createProjectDeliverable()" class="btn-rounded">{{ message.add_deliverable }} +</a>
                 </div>
             </div>
 
@@ -112,52 +96,47 @@
                     <a class="btn-rounded btn-md btn-empty">{{ message.edit_sponsors_managers }}</a>
                 </div>
                 <div class="flex flex-row flex-center members-big">
-                    <member-badge size="big"></member-badge>
-                    <member-badge size="big"></member-badge>
-                    <member-badge size="big"></member-badge>
+                    <member-badge v-for="(item, index) in sponsorsManagers" v-bind:item="item" size="big"></member-badge>
                 </div>
-
-                <div class="header">
-                    <h2>{{ message.team_members }}</h2>
-                    <a class="btn-rounded btn-md btn-empty">{{ message.edit_team_members }}</a>
-                </div>
-                <div class="flex flex-row flex-center members-small">
-                    <member-badge size="small"></member-badge>
-                    <member-badge size="small"></member-badge>
-                    <member-badge size="small"></member-badge>
-                    <member-badge size="small"></member-badge>
-                    <member-badge size="small"></member-badge>
-                    <member-badge size="small"></member-badge>
-                </div>
-
                 <div class="header">
                     <div class="flex">
-                        <h2>{{ message.project_resources }}</h2>
+                        <h1>{{ message.project_limitations }}</h1>
+                    </div>
+                </div>
+                <div v-dragula="colOne" drake="limitations">
+                    <drag-box v-for="(item, index) in project.projectLimitations" v-bind:item="item" v-bind:index="index" type="limitation"></drag-box>
+                </div>
+                <div class="hr small"></div>
+                <input-field v-model="limitationDescription" type="text" v-bind:label="message.new_project_limitation"></input-field>
+                <div class="flex flex-direction-reverse">
+                    <a v-on:click="createProjectLimitation()" class="btn-rounded">{{ message.add_limitation }} +</a>
+                </div>
+                <div class="header">
+                    <div class="flex">
+                        <h2>{{ message.internal_resources }}</h2>
                     </div>
                 </div>
                 <vue-chart
                         chart-type="ColumnChart"
                         :columns="columns"
-                        :rows="rows"
+                        :rows="rowsInternal"
                         :options="options"
                 ></vue-chart>
 
                 <div class="header">
                     <div class="flex">
-                        <h2>{{ message.project_costs }}</h2>
+                        <h2>{{ message.external_resources }}</h2>
                     </div>
                 </div>
                 <vue-chart
                         chart-type="ColumnChart"
                         :columns="columns"
-                        :rows="rows"
+                        :rows="rowsExternal"
                         :options="options"
                 ></vue-chart>
-
                 <div class="hr"></div>
-
                 <div class="flex buttons flex-center">
-                    <a v-on:click="updateContract()" class="btn-rounded second-bg">{{ button.save }}</a>
+                    <a v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ button.save }}</a>
                     <a class="btn-rounded second-bg flex flex-center download-pdf">
                         <p>{{ button.download_pdf }}</p>
                         <download-icon></download-icon>
@@ -177,7 +156,9 @@ import CalendarIcon from '../_common/_icons/CalendarIcon';
 import DownloadIcon from '../_common/_icons/DownloadIcon';
 import EyeIcon from '../_common/_icons/EyeIcon';
 import MemberBadge from '../_common/MemberBadge';
-import datepicker from 'vue-date-picker';
+import datepicker from 'vuejs-datepicker';
+import moment from 'moment';
+import router from '../../router';
 
 export default {
     components: {
@@ -189,27 +170,147 @@ export default {
         EyeIcon,
         MemberBadge,
     },
+    watch: {
+        contract(value) {
+            this.proposedStartDate = new Date(this.contract.proposedStartDate);
+            this.proposedEndDate = new Date(this.contract.proposedEndDate);
+            this.forecastStartDate = new Date(this.contract.forecastStartDate);
+            this.forecastEndDate = new Date(this.contract.forecastEndDate);
+        },
+        project(value) {
+            this.rowsInternal = [
+                [
+                    Translator.trans('message.total'),
+                    parseInt(this.projectResources.internal.base),
+                    parseInt(this.projectResources.internal.change),
+                    parseInt(this.projectResources.internal.actual),
+                    parseInt(this.projectResources.internal.remaining),
+                    parseInt(this.projectResources.internal.forecast),
+                ],
+            ];
+            this.rowsExternal = [
+                [
+                    Translator.trans('message.total'),
+                    parseInt(this.projectResources.external.base),
+                    parseInt(this.projectResources.external.change),
+                    parseInt(this.projectResources.external.actual),
+                    parseInt(this.projectResources.external.remaining),
+                    parseInt(this.projectResources.external.forecast),
+                ],
+            ];
+            this.options.vAxis.maxValue = Math.max(
+                parseInt(this.projectResources.internal.base),
+                parseInt(this.projectResources.internal.change),
+                parseInt(this.projectResources.internal.actual),
+                parseInt(this.projectResources.internal.remaining),
+                parseInt(this.projectResources.internal.forecast),
+                parseInt(this.projectResources.external.base),
+                parseInt(this.projectResources.external.change),
+                parseInt(this.projectResources.external.actual),
+                parseInt(this.projectResources.external.remaining),
+                parseInt(this.projectResources.external.forecast)
+            );
+        },
+    },
     methods: {
-        ...mapActions(['getProjectById', 'getContractByProjectId']),
-        updateContract: function() {
+        ...mapActions(['getProjectById', 'getContractByProjectId', 'updateContract',
+            'createContract', 'createObjective', 'createLimitation', 'createDeliverable',
+            'editObjective', 'editLimitation', 'editDeliverable', 'reorderObjectives',
+            'reorderLimitations', 'reorderDeliverables', 'getProjectResourcesForGraph',
+        ]),
+        updateProjectContract: function() {
             let data = {
+                projectId: this.$route.params.id,
+                name: this.project.name + '-contract',
                 description: this.description,
+                projectStartEvent: this.projectStartEvent,
+                proposedStartDate: moment(this.proposedStartDate).format('DD-MM-YYYY'),
+                proposedEndDate: moment(this.proposedEndDate).format('DD-MM-YYYY'),
+                forecastStartDate: moment(this.forecastStartDate).format('DD-MM-YYYY'),
+                forecastEndDate: moment(this.forecastEndDate).format('DD-MM-YYYY'),
             };
-            console.log(data);
+            if (this.contract.id) {
+                data.id = this.contract.id;
+                this.updateContract(data);
+            } else {
+                this.createContract(data);
+            }
+            router.push({name: 'project-dashboard'});
+        },
+        createProjectObjective: function() {
+            let data = {
+                projectId: this.$route.params.id,
+                title: this.objectiveTitle,
+                description: this.objectiveDescription,
+                sequence: this.project.projectObjectives.length,
+            };
+            this.createObjective(data);
+        },
+        createProjectLimitation: function() {
+            let data = {
+                projectId: this.$route.params.id,
+                description: this.limitationDescription,
+                sequence: this.project.projectLimitations.length,
+            };
+            this.createLimitation(data);
+        },
+        createProjectDeliverable: function() {
+            let data = {
+                projectId: this.$route.params.id,
+                description: this.deliverableDescription,
+                sequence: this.project.projectDeliverables.length,
+            };
+            this.createDeliverable(data);
+        },
+        reorderSequences: function(values, dragIndex, dropIndex) {
+            let data = [];
+            data.push({id: values[dragIndex].id, sequence: values[dropIndex].sequence});
+            if (dropIndex > dragIndex) {
+                for (let i = dragIndex + 1; i <= dropIndex; i++) {
+                    data.push({
+                        id: values[i].id,
+                        sequence: values[i-1].sequence,
+                    });
+                }
+            } else {
+                for (let i = dragIndex - 1; i >= dropIndex; i--) {
+                    data.push({
+                        id: values[i].id,
+                        sequence: values[i+1].sequence,
+                    });
+                }
+            }
+            return data;
         },
     },
     created() {
         this.getProjectById(this.$route.params.id);
         this.getContractByProjectId(this.$route.params.id);
+        this.getProjectResourcesForGraph(this.$route.params.id);
         const service = Vue.$dragula.$service;
-        service.eventBus.$on('drop', (atrs) => {
-            // TODO: Change order of elements
-            console.log(atrs);
+        let vm = this;
+        service.eventBus.$on('dropModel', function(args) {
+            switch(args.name) {
+            case 'objectives':
+                vm.reorderObjectives(vm.reorderSequences(vm.project.projectObjectives, args.dragIndex, args.dropIndex));
+                break;
+            case 'limitations':
+                vm.reorderLimitations(vm.reorderSequences(vm.project.projectLimitations, args.dragIndex, args.dropIndex));
+                break;
+            case 'deliverables':
+                vm.reorderDeliverables(vm.reorderSequences(vm.project.projectDeliverables, args.dragIndex, args.dropIndex));
+                break;
+            default:
+                break;
+            }
+            vm.getProjectById(vm.$route.params.id);
         });
     },
     computed: mapGetters({
         project: 'project',
         contract: 'contract',
+        sponsorsManagers: 'sponsorsManagers',
+        projectResources: 'projectResources',
     }),
     data: function() {
         return {
@@ -217,10 +318,10 @@ export default {
                 project_contract: Translator.trans('message.project_contract'),
                 project_description: Translator.trans('message.project_description'),
                 project_start_event: Translator.trans('message.project_start_event'),
-                proposed_start_date: Translator.trans('message.proposed_start_date'),
-                proposed_end_date: Translator.trans('message.proposed_end_date'),
-                forecast_start_date: Translator.trans('message.forecast_start_date'),
-                forecast_end_date: Translator.trans('message.forecast_end_date'),
+                proposed_start_date: Translator.trans('label.proposed_start_date'),
+                proposed_end_date: Translator.trans('label.proposed_end_date'),
+                forecast_start_date: Translator.trans('label.forecast_start_date'),
+                forecast_end_date: Translator.trans('label.forecast_end_date'),
                 project_objectives: Translator.trans('message.project_objectives'),
                 new_objective_title: Translator.trans('message.new_objective_title'),
                 new_objective_description: Translator.trans('message.new_objective_description'),
@@ -233,10 +334,16 @@ export default {
                 add_deliverable: Translator.trans('message.add_deliverable'),
                 sponsors_managers: Translator.trans('message.sponsors_managers'),
                 edit_sponsors_managers: Translator.trans('message.edit_sponsors_managers'),
-                team_members: Translator.trans('message.team_members'),
-                edit_team_members: Translator.trans('message.edit_team_members'),
-                project_resources: Translator.trans('message.project_resources'),
-                project_costs: Translator.trans('message.project_costs'),
+                internal_resources: Translator.trans('message.internal_resources'),
+                external_resources: Translator.trans('message.external_resources'),
+                total: Translator.trans('message.total'),
+            },
+            label: {
+                base: Translator.trans('label.base'),
+                change: Translator.trans('label.change'),
+                actual: Translator.trans('label.actual'),
+                remaining: Translator.trans('label.remaining'),
+                frorecast: Translator.trans('label.forecast'),
             },
             button: {
                 save: Translator.trans('button.save'),
@@ -244,58 +351,66 @@ export default {
             },
             columns: [{
                 'type': 'string',
-                'label': Translator.trans('message.year'),
+                'label': Translator.trans('message.total'),
             }, {
                 'type': 'number',
-                'label': Translator.trans('message.sales'),
+                'label': Translator.trans('label.base'),
             }, {
                 'type': 'number',
-                'label': 'Column2',
+                'label': Translator.trans('label.change'),
             }, {
                 'type': 'number',
-                'label': 'Column3',
+                'label': Translator.trans('label.actual'),
             }, {
                 'type': 'number',
-                'label': Translator.trans('message.expenses'),
+                'label': Translator.trans('label.remaining'),
+            }, {
+                'type': 'number',
+                'label': Translator.trans('label.forecast'),
             }],
-            rows: [
-                ['2004', 1000, 400, 400, 99],
-                ['2005', 1170, 460, 500, 800],
-                ['2006', 660, 1120, 400, 1600],
-                ['2007', 1030, 540, 400, 67],
+            rowsInternal: [
+                [
+                    Translator.trans('message.total'), 0, 0, 0, 0, 0,
+                ],
+            ],
+            rowsExternal: [
+                [Translator.trans('message.total'), 0, 0, 0, 0, 0],
             ],
             options: {
                 title: Translator.trans('message.resource_chart'),
                 hAxis: {
-                    title: Translator.trans('message.year'),
-                    minValue: '2004',
-                    maxValue: '2007',
                     textStyle: {
                         color: '#D8DAE5',
                     },
                 },
                 vAxis: {
                     title: '',
-                    minValue: 300,
-                    maxValue: 1200,
+                    minValue: 0,
+                    maxValue: 0,
                     textStyle: {
                         color: '#D8DAE5',
                     },
                 },
                 width: '100%',
-                height: 300,
+                height: 350,
                 curveType: 'function',
-                colors: ['#5FC3A5', '#646EA0', '#2E3D60', '#D8DAE5'],
+                colors: ['#5FC3A5', '#A05555', '#646EA0', '#2E3D60', '#D8DAE5'],
                 backgroundColor: '#191E37',
                 titleTextStyle: {
                     color: '#D8DAE5',
+                },
+                legend: {
+                    position: 'bottom',
+                    maxLines: 5,
                 },
                 legendTextStyle: {
                     color: '#D8DAE5',
                 },
             },
-            description: '',
-            startEvent: '',
+            proposedStartDate: new Date(),
+            proposedEndDate: new Date(),
+            forecastStartDate: new Date(),
+            forecastEndDate: new Date(),
         };
     },
 };

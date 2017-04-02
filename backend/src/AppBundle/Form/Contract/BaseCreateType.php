@@ -31,6 +31,9 @@ class BaseCreateType extends AbstractType
             ->add('description', TextareaType::class, [
                 'required' => false,
             ])
+            ->add('projectStartEvent', TextareaType::class, [
+                'required' => false,
+            ])
             ->add('proposedStartDate', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
@@ -60,6 +63,7 @@ class BaseCreateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'allow_extra_fields' => true,
             'data_class' => Contract::class,
         ]);
     }

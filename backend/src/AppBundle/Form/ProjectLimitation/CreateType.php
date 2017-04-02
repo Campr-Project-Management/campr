@@ -34,9 +34,6 @@ class CreateType extends AbstractType
             ->add('sequence', TextType::class, [
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.sequence',
-                    ]),
                     new Regex([
                         'pattern' => '/^([1-9]+\d*)$|^0$/',
                         'message' => 'invalid.sequence',
@@ -44,12 +41,14 @@ class CreateType extends AbstractType
                 ],
             ])
             ->add('project', EntityType::class, [
+                'required' => false,
                 'class' => Project::class,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.project',
                 'translation_domain' => 'messages',
             ])
             ->add('contract', EntityType::class, [
+                'required' => false,
                 'class' => Contract::class,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.contract',
@@ -65,6 +64,7 @@ class CreateType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ProjectLimitation::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

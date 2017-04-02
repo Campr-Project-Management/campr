@@ -45,6 +45,13 @@ class Contract
     private $description;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="project_start_event", type="text", nullable=true)
+     */
+    private $projectStartEvent;
+
+    /**
      * @var User
      *
      * @Serializer\Exclude()
@@ -207,6 +214,24 @@ class Contract
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProjectStartEvent()
+    {
+        return $this->projectStartEvent;
+    }
+
+    /**
+     * @param string $projectStartEvent
+     */
+    public function setProjectStartEvent($projectStartEvent)
+    {
+        $this->projectStartEvent = $projectStartEvent;
+
+        return $this;
     }
 
     /**

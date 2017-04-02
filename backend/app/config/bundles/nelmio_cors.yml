@@ -15,4 +15,4 @@ nelmio_cors:
                 - 'http://%domain%:2080'
                 - 'https://%domain%:2080'
             allow_headers: ['Authorization', 'Content-Type', 'X-Requested-With']
-            allow_methods: ['OPTIONS', 'POST', 'PUT', 'GET', 'DELETE']
+            allow_methods: ['OPTIONS', 'POST', 'PUT', 'PATCH', 'GET', 'DELETE']
