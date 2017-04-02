@@ -1,9 +1,9 @@
 <template>
     <div class="member-badge" v-bind:class="size">
-        <img src="" />
-        <div class="name">{{ name }}</div>
-        <div class="title">{{ title }}</div>
-        <social-links size="16px" facebook="http://www.facebook.com" twitter="http://www.twitter.com" linkedin="http://www.linkedin.com" gplus="http://www.google.com" email="test@test.com"></social-links>
+        <img v-bind:src="item.userAvatar" />
+        <div class="name">{{ item.userFullName }}</div>
+        <div class="title">{{ item.projectRoleName }}</div>
+        <social-links size="16px" v-bind:facebook="item.userFacebook" v-bind:twitter="item.userTwitter" v-bind:linkedin="item.userLinkedIn" v-bind:gplus="item.userGplus" v-bind:email="item.userEmail"></social-links>
     </div>
 </template>
 
@@ -11,7 +11,7 @@
 import SocialLinks from '../_common/SocialLinks';
 
 export default {
-    props: ['size', 'name', 'title'],
+    props: ['size', 'item'],
     components: {
         SocialLinks,
     },

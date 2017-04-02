@@ -306,6 +306,7 @@ class Project
      * @var ArrayCollection|ProjectObjective[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectObjective", mappedBy="project")
+     * @ORM\OrderBy({"sequence" = "ASC"})
      */
     private $projectObjectives;
 
@@ -313,6 +314,7 @@ class Project
      * @var ArrayCollection|ProjectLimitation[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectLimitation", mappedBy="project")
+     * @ORM\OrderBy({"sequence" = "ASC"})
      */
     private $projectLimitations;
 
@@ -320,6 +322,7 @@ class Project
      * @var ArrayCollection|ProjectDeliverable[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectDeliverable", mappedBy="project")
+     * @ORM\OrderBy({"sequence" = "ASC"})
      */
     private $projectDeliverables;
 

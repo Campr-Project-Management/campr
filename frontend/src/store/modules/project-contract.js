@@ -11,15 +11,32 @@ const getters = {
 
 const actions = {
     /**
+     * Create project contract
+     * @param {function} commit
+     * @param {array} data
+     */
+    createContract({commit}, data) {
+        Vue.http
+            .post(
+                Routing.generate('app_api_project_create_contract', {'id': data.projectId}),
+                JSON.stringify(data)
+            ).then((response) => {
+            }, (response) => {
+                if (response.status === 400) {
+                    // implement system to display errors
+                }
+            });
+    },
+    /**
      * Edit contract
      * @param {function} commit
      * @param {array} data
      * @param {number} id
      */
-    EditContract({commit}, data, id) {
+    updateContract({commit}, data) {
         Vue.http
             .patch(
-                Routing.generate('app_api_contract_edit', {'id': id}),
+                Routing.generate('app_api_contract_edit', {'id': data.id}),
                 JSON.stringify(data)
             ).then((response) => {
             }, (response) => {
@@ -37,7 +54,10 @@ const actions = {
         Vue.http
             .get(Routing.generate('app_api_project_contracts', {'id': id})).then((response) => {
                 if (response.status === 200) {
-                    let contract = response.data;
+                    let contract = {};
+                    if (response.data.length > 0) {
+                        contract = response.data[0];
+                    }
                     commit(types.SET_CONTRACT, {contract});
                 }
             }, (response) => {
