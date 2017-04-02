@@ -1,88 +1,92 @@
 <template>
-    <div class="task-box box" v-bind:class="'border-color-' + task.id">
-        <div class="header">
-            <div>
-                <div v-if="user" class="user-info flex flex-v-center">
-                    <img src="">
-                    <p>Thomas Cici</p>
+    <div class="task-box-wrapper">
+        <div class="task-box box" v-bind:class="'border-color-' + task.id">
+            <div class="task-box-header">
+                <div>
+                    <div v-if="user" class="user-info flex flex-v-center">
+                        <img class="user-avatar" src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="user.name"/>
+                        <p>user.firstName user.lastName</p>
+                    </div>
+                    <h2><router-link to="" class="simple-link">{{ task.name }}</router-link></h2>
+                    <p class="task-id">#{{ task.id }}</p>
                 </div>
-                <h2>{{ task.name }}</h2>
-                <p class="task-id">#{{ task.id }}</p>
-            </div>
-            <div class="status-boxes">
-                <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? task.colorStatusColor : '' }"></span>
-            </div>
-        </div>
-        <div class="content">
-            <div class="info">
-                <p class="title">{{ task.projectName }}</p>
-                <table>
-                    <tr>
-                        <th>{{ message.schedule }}</th>
-                        <th>{{ message.start }}</th>
-                        <th>{{ message.finish }}</th>
-                        <th>{{ message.duration }}</th>
-                    </tr>
-                    <tr class="even" v-show="task.scheduledStartAt || task.scheduledFinishAt">
-                        <td>{{ message.schedule_base }}</td>
-                        <td class="date">{{ task.scheduledStartAt }}</td>
-                        <td class="date">{{ task.scheduledFinishAt }}</td>
-                        <td>{{ duration(task.scheduledStartAt, task.scheduledFinishAt) }}</td>
-                    </tr>
-                    <tr class="odd" v-show="task.forecastStartAt || task.forecastFinishAt">
-                        <td>{{ message.schedule_forecast }}</td>
-                        <td class="date">{{ task.forecastStartAt }}</td>
-                        <td class="date">{{ task.forecastFinishAt }}</td>
-                        <td>{{ duration(task.forecastStartAt, task.forecastFinishAt) }}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <bar-chart :percentage="task.progress" :status="task.colorStatusName" :color="task.colorStatusColor" class="bar-chart" :title-left="translate(task.workPackageStatusName)"></bar-chart>
-        <div class="nicescroll">
-            {{ task.content }}
-        </div>
-        <div class="info bottom">
-            <div class="icons">
-                <div class="icon-holder">
-                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px" height="25px"
-                       viewBox="0 0 17.3 24.3" style="enable-background:new 0 0 17.3 24.3;" xml:space="preserve">
-                    <path id="XMLID_1674_" class="st0" d="M200.8,632.3v-6.8c0-0.5-0.1-1.5-1.1-1.5"/>
-                    <g id="XMLID_1672_">
-                        <g id="XMLID_1673_">
-                            <path id="XMLID_1_" class="st0" d="M7.5,21.4c-2.2,0-3.7-1.7-3.7-4.1V8.7c0-3,2.1-5.3,4.9-5.3s4.9,2.3,4.9,5.3V15
-                              c0,0.4-0.3,0.8-0.8,0.8c-0.4,0-0.8-0.3-0.8-0.8V8.7c0-2.2-1.4-3.8-3.4-3.8S5.3,6.5,5.3,8.7v8.6c0,1.3,0.7,2.6,2.3,2.6
-                              s2.3-1.3,2.3-2.6v-6.8C9.8,10.1,9.7,9,8.6,9s-1.1,1-1.1,1.5v5.6c0,0.4-0.3,0.8-0.8,0.8c-0.4,0-0.8-0.3-0.8-0.8v-5.6
-                              c0-1.8,1.1-3,2.6-3s2.6,1.2,2.6,3v6.8C11.3,19.7,9.7,21.4,7.5,21.4z"/>
-                        </g>
-                    </g>
-                    </svg>
-                    <span class="number">0</span>
+                <div class="status-boxes">
+                    <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? task.colorStatusColor : '' }"></span>
                 </div>
+            </div>
+            <div class="content">
+                <div class="info">
+                    <div class="plan">
+                        <a href="#path-to-phase" title="View phase.name">{{ task.phase }}</a> > <a href="#path-to-milestone" title="View milestone.name">{{ task.milestone }}</a>
+                    </div>
+                    <div class="task-range-slider">
+                        <div class="task-range-slider-title">Schedule</div>
+                        <task-range-slider class="base" id="scheduleBase" message="Base" min="20170301" max="20170307" from="20170301" to="20170305" type="double"></task-range-slider>
+                        <task-range-slider class="forecast" id="scheduleForecast" message="Forecast" min="20170301" max="20170307" from="20170301" to="20170307" type="double"></task-range-slider>
+                        <task-range-slider class="actual" id="scheduleActual" message="Actual" min="20170301" max="20170307" from="20170302" to="20170304" type="double"></task-range-slider>
+                    </div>
+                    <div class="task-range-slider">
+                        <div class="task-range-slider-title">Costs</div>
+                        <task-range-slider class="base" id="costsBase" message="Base" min="0" max="10000" from="10000" type="single"></task-range-slider>
+                        <task-range-slider class="forecast" id="costsBase" message="Forecast" min="0" max="10000" from="9000" type="single"></task-range-slider>
+                        <task-range-slider class="actual" id="costsBase" message="Actual" min="0" max="10000" from="7500" type="single"></task-range-slider>
+                    </div>
+                </div>
+            </div>
+            <bar-chart :percentage="task.progress" :status="task.colorStatusName" :color="task.colorStatusColor" class="bar-chart" :title-left="'' + translate(task.workPackageStatusName)"></bar-chart>
+            <div class="nicescroll">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dapibus mi ac diam gravida, ac bibendum quam commodo. In ut nunc augue. Aliquam erat volutpat. Nam dignissim sodales pellentesque. Etiam efficitur quam nibh, sit amet imperdiet ex congue a. Integer sit amet mauris vitae ligula maximus lobortis. Vestibulum a quam vel lectus placerat auctor feugiat a quam. Vivamus aliquet a urna at dapibus. Proin et nisl magna.
 
-                <div class="icon-holder">
-                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px" height="25px"
-                       viewBox="0 0 28.2 24.5" style="enable-background:new 0 0 28.2 24.5;" xml:space="preserve">
-                    <path id="XMLID_1148_" class="st0" d="M23.8,3.4H4.1c-0.2,0-0.4,0.2-0.4,0.4v13.7c0,0.2,0.2,0.4,0.4,0.4h5.6v3
-                      c0,0.4,0.5,0.6,0.7,0.3l3.3-3.3h10.1c0.2,0,0.4-0.2,0.4-0.4V3.9C24.3,3.6,24.1,3.4,23.8,3.4z M8.4,7.7h7.7c0.2,0,0.4,0.2,0.4,0.4
-                      c0,0.2-0.2,0.4-0.4,0.4H8.4C8.2,8.6,8,8.4,8,8.1C8,7.9,8.2,7.7,8.4,7.7z M19.5,13.7H8.4c-0.2,0-0.4-0.2-0.4-0.4
-                      c0-0.2,0.2-0.4,0.4-0.4h11.1c0.2,0,0.4,0.2,0.4,0.4C20,13.5,19.8,13.7,19.5,13.7z M19.5,11.1H8.4c-0.2,0-0.4-0.2-0.4-0.4
-                      c0-0.2,0.2-0.4,0.4-0.4h11.1c0.2,0,0.4,0.2,0.4,0.4C20,10.9,19.8,11.1,19.5,11.1z"/>
-                    </svg>
-                    <span class="number">2</span>
-                </div>
-                <div class="icon-holder">
-                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px" height="25px"
-                       viewBox="0 0 26.4 26.4" style="enable-background:new 0 0 26.4 26.4;" xml:space="preserve">
-                    <g id="XMLID_493_">
-                      <path id="XMLID_499_" class="st0" d="M22.3,4.2c-0.3-0.3-0.8-0.2-1.1,0.1L11.7,16l-3.4-3.4c-0.3-0.3-0.8-0.3-1.1,0
-                        c-0.3,0.3-0.3,0.8,0,1.1l4,4c0.2,0.2,0.4,0.2,0.6,0.2c0.2,0,0.5-0.1,0.6-0.3l10-12.4C22.7,5,22.6,4.5,22.3,4.2z"/>
-                      <path id="XMLID_496_" class="st0" d="M19.4,11.6c-0.4,0-0.8,0.4-0.8,0.8v8H5.8V7.6h9.6c0.4,0,0.8-0.4,0.8-0.8
-                        c0-0.4-0.4-0.8-0.8-0.8H5C4.5,6,4.2,6.4,4.2,6.8v14.4C4.2,21.7,4.5,22,5,22h14.4c0.4,0,0.8-0.4,0.8-0.8v-8.8
-                        C20.2,12,19.8,11.6,19.4,11.6z"/>
-                    </g>
-                    </svg>
-                    <span class="number">2</span>
+                Nullam mollis nibh vitae sem gravida ultrices. Curabitur nec placerat enim, ac elementum quam. Curabitur ultrices neque a orci lacinia bibendum. Cras massa leo, malesuada et elit sed, hendrerit dictum ante. Sed eget hendrerit metus. Morbi nisi mauris, feugiat in nisl sit amet, convallis commodo turpis. In fermentum lectus sollicitudin volutpat sodales.
+
+                Nunc elit eros, mattis at augue a, porta posuere magna. Duis gravida commodo metus nec sagittis. Sed lacus dui, suscipit vitae pretium non, bibendum sit amet eros. Nam pulvinar rhoncus felis, eu finibus odio sodales bibendum. Etiam vel ligula est. Nulla suscipit ligula ut dui ullamcorper, at malesuada nisl accumsan. Donec porttitor eleifend risus vel tempus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras iaculis rutrum lectus quis auctor.
+
+                Maecenas risus tellus, blandit in placerat quis, rhoncus sit amet sapien. Sed at mauris ac lectus bibendum tempus. Proin vel eros ut felis luctus rutrum ac in ante. Vivamus iaculis, nisl id tincidunt pretium, nunc elit gravida dui, at feugiat ligula nisi eget enim. Sed rhoncus cursus purus in dapibus. Nulla finibus, mauris ut dictum placerat, ipsum dui elementum elit, a hendrerit libero leo ultrices tellus. Etiam aliquam tortor magna, at tincidunt nunc interdum ultrices. Fusce et cursus leo, sit amet pellentesque leo. Etiam quis sem risus. Vivamus sollicitudin aliquam lorem facilisis sagittis. Nulla tempus arcu tincidunt, venenatis sapien ut, consequat justo. Phasellus semper tincidunt pellentesque.
+
+                Ut porttitor enim mauris, at aliquet justo vehicula ut. Nunc viverra accumsan ipsum, vel ultrices nulla pulvinar at. Nam mi nunc, feugiat eget molestie sed, semper non mi. Nunc egestas massa in erat elementum consectetur ut id tellus. Duis condimentum ex condimentum neque volutpat euismod. Integer elementum pretium libero, vel rutrum metus pretium at. Ut vehicula, erat sed mattis pharetra, risus nulla fermentum ligula, id posuere velit velit non arcu. Fusce vitae ex a eros gravida tempus. Sed auctor viverra fermentum.
+            </div>
+            <div class="info bottom">
+                <div class="icons">
+                    <div class="icon-holder">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px" height="25px"
+                        viewBox="0 0 17.3 24.3" style="enable-background:new 0 0 17.3 24.3;" xml:space="preserve">
+                        <path id="XMLID_1674_" class="st0" d="M200.8,632.3v-6.8c0-0.5-0.1-1.5-1.1-1.5"/>
+                        <g id="XMLID_1672_">
+                            <g id="XMLID_1673_">
+                                <path id="XMLID_1_" class="st0" d="M7.5,21.4c-2.2,0-3.7-1.7-3.7-4.1V8.7c0-3,2.1-5.3,4.9-5.3s4.9,2.3,4.9,5.3V15
+                                c0,0.4-0.3,0.8-0.8,0.8c-0.4,0-0.8-0.3-0.8-0.8V8.7c0-2.2-1.4-3.8-3.4-3.8S5.3,6.5,5.3,8.7v8.6c0,1.3,0.7,2.6,2.3,2.6
+                                s2.3-1.3,2.3-2.6v-6.8C9.8,10.1,9.7,9,8.6,9s-1.1,1-1.1,1.5v5.6c0,0.4-0.3,0.8-0.8,0.8c-0.4,0-0.8-0.3-0.8-0.8v-5.6
+                                c0-1.8,1.1-3,2.6-3s2.6,1.2,2.6,3v6.8C11.3,19.7,9.7,21.4,7.5,21.4z"/>
+                            </g>
+                        </g>
+                        </svg>
+                        <span class="number">0</span>
+                    </div>
+
+                    <div class="icon-holder">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px" height="25px"
+                        viewBox="0 0 28.2 24.5" style="enable-background:new 0 0 28.2 24.5;" xml:space="preserve">
+                        <path id="XMLID_1148_" class="st0" d="M23.8,3.4H4.1c-0.2,0-0.4,0.2-0.4,0.4v13.7c0,0.2,0.2,0.4,0.4,0.4h5.6v3
+                        c0,0.4,0.5,0.6,0.7,0.3l3.3-3.3h10.1c0.2,0,0.4-0.2,0.4-0.4V3.9C24.3,3.6,24.1,3.4,23.8,3.4z M8.4,7.7h7.7c0.2,0,0.4,0.2,0.4,0.4
+                        c0,0.2-0.2,0.4-0.4,0.4H8.4C8.2,8.6,8,8.4,8,8.1C8,7.9,8.2,7.7,8.4,7.7z M19.5,13.7H8.4c-0.2,0-0.4-0.2-0.4-0.4
+                        c0-0.2,0.2-0.4,0.4-0.4h11.1c0.2,0,0.4,0.2,0.4,0.4C20,13.5,19.8,13.7,19.5,13.7z M19.5,11.1H8.4c-0.2,0-0.4-0.2-0.4-0.4
+                        c0-0.2,0.2-0.4,0.4-0.4h11.1c0.2,0,0.4,0.2,0.4,0.4C20,10.9,19.8,11.1,19.5,11.1z"/>
+                        </svg>
+                        <span class="number">2</span>
+                    </div>
+                    <div class="icon-holder">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px" height="25px"
+                        viewBox="0 0 26.4 26.4" style="enable-background:new 0 0 26.4 26.4;" xml:space="preserve">
+                        <g id="XMLID_493_">
+                        <path id="XMLID_499_" class="st0" d="M22.3,4.2c-0.3-0.3-0.8-0.2-1.1,0.1L11.7,16l-3.4-3.4c-0.3-0.3-0.8-0.3-1.1,0
+                            c-0.3,0.3-0.3,0.8,0,1.1l4,4c0.2,0.2,0.4,0.2,0.6,0.2c0.2,0,0.5-0.1,0.6-0.3l10-12.4C22.7,5,22.6,4.5,22.3,4.2z"/>
+                        <path id="XMLID_496_" class="st0" d="M19.4,11.6c-0.4,0-0.8,0.4-0.8,0.8v8H5.8V7.6h9.6c0.4,0,0.8-0.4,0.8-0.8
+                            c0-0.4-0.4-0.8-0.8-0.8H5C4.5,6,4.2,6.4,4.2,6.8v14.4C4.2,21.7,4.5,22,5,22h14.4c0.4,0,0.8-0.4,0.8-0.8v-8.8
+                            C20.2,12,19.8,11.6,19.4,11.6z"/>
+                        </g>
+                        </svg>
+                        <span class="number">2</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -93,10 +97,12 @@
 import BarChart from '../_common/_charts/BarChart';
 import 'jquery.nicescroll/jquery.nicescroll.min.js';
 import moment from 'moment';
+import TaskRangeSlider from '../_common/_task-components/TaskRangeSlider';
 
 export default {
     components: {
         BarChart,
+        TaskRangeSlider,
     },
     created() {
         window.$(document).ready(function() {
@@ -116,18 +122,6 @@ export default {
         },
     },
     props: ['task', 'colorStatuses', 'user'],
-    data: function() {
-        return {
-            message: {
-                schedule: Translator.trans('message.schedule'),
-                start: Translator.trans('message.start'),
-                finish: Translator.trans('message.finish'),
-                duration: Translator.trans('message.duration'),
-                schedule_base: Translator.trans('message.schedule_base'),
-                schedule_forecast: Translator.trans('message.schedule_forecast'),
-            },
-        };
-    },
 };
 </script>
 
@@ -136,12 +130,6 @@ export default {
   @import '../../css/_common';
   @import '../../css/box';
   @import '../../css/box-task';
-
-  .user-info img {
-    width: 30px;
-    height: 30px;
-    margin-right: 3px;
-  }
 
   h2 {
     line-height: 15px;
@@ -170,12 +158,13 @@ export default {
   }
 
   .bar-chart {
-    margin-top: 70px;
+    margin-top: 40px;
   }
 
   .nicescroll {
-    margin-top: 20px;
-    height: 180px;
+    margin: 20px 0;
+    padding-right: 10px;
+    max-height: 100px;
     overflow: hidden;
   }
 

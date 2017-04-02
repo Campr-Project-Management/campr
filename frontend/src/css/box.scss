@@ -5,9 +5,8 @@
   background: $darkColor;
   padding: 20px;
   color: $lighterColor;
-  width: 394px;
   letter-spacing: 1px;
-  margin: 0 12.5px 30px;
+  margin: 0 0 30px;
 
   &.border-color-1 {
     border-bottom: 4px solid $additionalColor1;
@@ -32,7 +31,7 @@
   .header {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid $mainColor;
+    border-bottom: 1px solid $middleColor;
     padding-bottom: 13px;
 
     h2 {
