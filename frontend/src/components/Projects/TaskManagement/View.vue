@@ -96,7 +96,11 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
+    @import '../../../css/page-section';
+    @import '../../../css/_variables';
+    @import '../../../css/_mixins';
+
     .table {
         display: table;
         width: 100%;
@@ -107,12 +111,6 @@ export default {
         display: table-cell;
         vertical-align: middle;
     }
-</style>
-
-<style scoped lang="scss">
-    @import '../../../css/page-section';
-    @import '../../../css/_variables';
-    @import '../../../css/_mixins';
 
     .btn-rounded {
         margin-left: 10px;
