@@ -6,7 +6,6 @@ use AppBundle\Entity\User;
 use MainBundle\Security\TeamVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -30,16 +29,24 @@ class DefaultController extends Controller
         $response = $this->render('AppBundle:Default:index.html.twig');
         $routeParams = $request->attributes->get('_route_params');
         if (isset($routeParams['subdomain'])) {
+            $userData = $this->renderView(':partials:user_data.html.twig', [
+                'user' => [
+                    'api_token' => $this->getUser()->getApiToken(),
+                ],
+            ]);
             $content = $response->getContent();
             $content = str_replace(
-                '/static/js/fos_js_routes.js',
-                '/static/js/fos_js_routes_'.$routeParams['subdomain'].'.js',
+                [
+                    '/static/js/fos_js_routes.js',
+                    '<head>',
+                ],
+                [
+                    '/static/js/fos_js_routes_'.$routeParams['subdomain'].'.js',
+                    '<head>'.$userData,
+                ],
                 $content
             );
             $response->setContent($content);
-        }
-        if ($this->getUser() && !array_key_exists('user_token', $request->cookies->all())) {
-            $response->headers->setCookie(new Cookie('user_token', $this->getUser()->getApiToken(), time() + 3600, '/', null, false, false));
         }
 
         return $response;
