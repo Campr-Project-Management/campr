@@ -12,6 +12,9 @@
             </div>
             <div class="content">
                 <task-box v-for="task in tasks" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></task-box>
+                <router-link :to="{name: 'task-new'}">
+                    <a href="" class="new-box">{{ message.new_project }} +</a>
+                </router-link>
             </div>
         </div>
     </div>

@@ -36,12 +36,10 @@
 
         <div class="tasks">
             <div class="grid-view" v-show="!boardView">
-                <div class="flex flex-row">
-                    <task-box v-bind:task="task" user="user" v-for="task in tasks"></task-box>
-                </div>
-                <div class="pagination flex flex-center" v-if="count > 0">
-                    <span v-for="page in [1,2]" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
-                </div>
+                <task-box v-bind:task="task" user="user" :colorStatuses="colorStatuses" v-for="task in tasks"></task-box>
+            </div>
+            <div class="pagination flex flex-center" v-if="count > 0">
+                <span v-for="page in [1,2]" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
             </div>
             <vue-scrollbar class="categories-scroll">
 
@@ -122,37 +120,42 @@ export default {
                 {
                     'id': 1,
                     'name': 'Tesla SpaceX Mars Project',
-                    'progress': 56,
-                    'projectName': 'plm',
-                    'content': 'Bla bla bla bla',
+                    'progress': 33,
+                    'phase': 'Phase 1',
+                    'milestone': 'Milestone 1.2',
+                    'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet felis blandit eros dapibus aliquam.',
                     'status': 'todo',
                 }, {
                     'id': 2,
                     'name': 'Tesla SpaceX Mars Project',
-                    'progress': 56,
-                    'projectName': 'plm',
-                    'content': 'Bla bla bla bla',
+                    'progress': 75,
+                    'phase': 'Phase 3',
+                    'milestone': 'Milestone 3.2',
+                    'content': 'Suspendisse tempus efficitur posuere. Phasellus laoreet neque ligula, sed laoreet neque lacinia et.',
                     'status': 'inprogress',
                 }, {
                     'id': 3,
                     'name': 'Tesla SpaceX Mars Project',
-                    'progress': 56,
-                    'projectName': 'plm',
-                    'content': 'Bla bla bla bla',
+                    'progress': 10,
+                    'phase': 'Phase 3',
+                    'milestone': 'Milestone 3.3',
+                    'content': 'Mauris sapien nisi, placerat at elit ut, gravida auctor eros.',
                     'status': 'codereview',
                 }, {
                     'id': 4,
                     'name': 'Tesla SpaceX Mars Project',
-                    'progress': 56,
-                    'projectName': 'plm',
-                    'content': 'Bla bla bla bla',
+                    'progress': 100,
+                    'phase': 'Phase 2',
+                    'milestone': 'Milestone 2.3.5',
+                    'content': '',
                     'status': 'todo',
                 }, {
                     'id': 4,
                     'name': 'Tesla SpaceX Mars Project',
-                    'progress': 56,
-                    'projectName': 'plm',
-                    'content': 'Bla bla bla bla',
+                    'progress': 68,
+                    'phase': 'Phase 5',
+                    'milestone': 'Milestone 5.1.2',
+                    'content': 'Praesent rutrum libero nec lectus ultrices, ac rhoncus risus rhoncus.',
                     'status': 'todo',
                 },
             ],
@@ -228,6 +231,20 @@ export default {
         max-height: 400px;
         padding-right: 40px;
         margin-bottom: 10px;
+    }
+
+    .grid-view {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+
+    .task-box-wrapper{
+        width: 25%;
+        padding-right: 15px;
+        padding-left: 15px;
     }
 
     .task-box {
