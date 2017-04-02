@@ -1,3 +1,4 @@
+'use strict';
 let merge = require('webpack-merge'),
     prodEnv = require('./prod.env'),
     fs = require('fs');

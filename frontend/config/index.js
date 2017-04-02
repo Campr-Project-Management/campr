@@ -1,4 +1,5 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
+'use strict';
 let path = require('path');
 
 module.exports = {
