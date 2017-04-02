@@ -9,6 +9,7 @@ bin/console assetic:dump web
 bin/console app:dump-routes
 bin/console fos:js-routing:dump --target=web/js/fos_js_routes.js
 bin/console bazinga:js-translation:dump  --format=js --merge-domains web/js
+rm -rfv frontend/static/js
 mkdir -p frontend/static/js
 for file in web/static/js/fos_js_routes*.js;
 do
@@ -18,9 +19,8 @@ do
     echo $sl
     ln -s "${dir}/${file}" "${sl}"
 done
-cd frontend/static/js
-ln -sf ../../../web/bundles/fosjsrouting/js/router.js router.js
-ln -sf ../../../web/bundles/bazingajstranslation/js/translator.min.js translator.min.js
-ln -sf ../../../web/js/translations/config.js config.js
-ln -sf ../../../web/js/translations/en.js en.js
-ln -sf ../../../web/js/translations/de.js de.js
+ln -sf "${dir}/web/bundles/fosjsrouting/js/router.js" "${dir}/frontend/static/js/router.js"
+ln -sf "${dir}/web/bundles/bazingajstranslation/js/translator.min.js" "${dir}/frontend/static/js/translator.min.js"
+ln -sf "${dir}/web/js/translations/config.js" "${dir}/frontend/static/js/config.js"
+ln -sf "${dir}/web/js/translations/en.js" "${dir}/frontend/static/js/en.js"
+ln -sf "${dir}/web/js/translations/de.js" "${dir}/frontend/static/js/de.js"
