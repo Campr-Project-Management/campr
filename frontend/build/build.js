@@ -23,7 +23,7 @@ ls('static/js').map(function (file) {
   if (test('-e', assetsPath + '/js/' + file)) {
     return;
   }
-  cp(filePath, assetsPath);
+  cp(filePath, assetsPath + '/js/');
 });
 
 webpack(webpackConfig, function (err, stats) {
