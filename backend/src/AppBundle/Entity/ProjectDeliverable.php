@@ -111,7 +111,7 @@ class ProjectDeliverable
     /**
      * @param Contract $contract
      */
-    public function setContract(Contract $contract)
+    public function setContract(Contract $contract = null)
     {
         $this->contract = $contract;
 
@@ -129,7 +129,7 @@ class ProjectDeliverable
     /**
      * @param Project $project
      */
-    public function setProject(Project $project)
+    public function setProject(Project $project = null)
     {
         $this->project = $project;
 
