@@ -1,26 +1,5 @@
 let _ = require('lodash');
 
-/*
-
- $userData = $this->renderView(':partials:user_data.html.twig', [
-     'user' => [
-        'api_token' => $this->getUser()->getApiToken(),
-     ],
- ]);
- $content = $response->getContent();
- $content = str_replace(
-     [
-         '/static/js/fos_js_routes.js',
-         '<head>',
-     ],
-     [
-         '/static/js/fos_js_routes_'.$routeParams['subdomain'].'.js',
-         '<head>'.$userData,
-     ],
-     $content
- );
- $response->setContent($content);
- */
 class DevLoader
 {
     constructor(options) {
