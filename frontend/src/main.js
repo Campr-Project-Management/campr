@@ -12,7 +12,7 @@ import App from './App';
 import VueResource from 'vue-resource';
 import {Vue2Dragula} from 'vue2-dragula';
 import Vueditor from 'vueditor';
-import 'vueditor/dist/css/vueditor.min.css';
+import './css/vueditor.css';
 import VueCookie from 'vue-cookie';
 
 Vue.use(VueResource);
@@ -21,7 +21,7 @@ let config = {
     // buttons on the toolbar, you can use '|' or 'divider' as the separator
     toolbar: [
         'bold', 'italic', 'underline',
-        'insertOrderedList', 'insertUnorderedList',
+        'insertOrderedList', 'insertUnorderedList', 'links', 'picture',
     ],
 
     // the font-family select's options, 'val' refer to the actual css value, 'abbr' refer to the option's text
@@ -50,6 +50,8 @@ let config = {
 
     // your file upload url, the return result must be a string refer to the uploaded image, leave it empty will end up with local preview
     fileuploadUrl: '',
+
+    classList: ['campr-editor'],
 };
 Vue.use(Vueditor, config);
 
@@ -65,4 +67,3 @@ new Vue({
     template: '<App/>',
     components: {App},
 }).$mount('#app');
-
