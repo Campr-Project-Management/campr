@@ -7,7 +7,7 @@
                 <span class="percentage-sign">%</span>
             </p>
         </div>
-        <p v-show="titleLeft" class="title-left">{{ titleLeft }}</p>
+        <p v-show="titleLeft" class="title-left"><span>Status: </span> {{ titleLeft }}</p>
         <div class="filled" v-bind:style="{ background: color }" v-show="percentage != 0"></div>
         <div class="zero-fill" v-bind:style="{ background: color }" v-show="percentage == 0"></div>
     </div>
@@ -45,7 +45,7 @@ export default {
     letter-spacing: 0.7px;
     right: 0;
     position: absolute;
-    top: -60px;
+    bottom: 16px;
 
     &.right {
       width: 60px;
@@ -113,8 +113,15 @@ export default {
 
   .title-left {
     position: absolute;
-    top: -32px;
+    bottom: 14px;
     font-size: 9px;
     text-transform: uppercase;
+    letter-spacing: 1.9px;
+    font-weight: 900;
+
+    span {
+      font-weight: 300;
+      color: $lightColor;
+    }
   }
 </style>

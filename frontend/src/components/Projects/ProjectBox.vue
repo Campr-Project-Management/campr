@@ -4,7 +4,7 @@
           <span>{{ message.new_message }}</span>
         </span>
         <div class="header">
-            <h2>{{ project.name }}</h2>
+            <h2><router-link :to="{name: 'project-dashboard', params: { id: project.id }}">{{ project.name }}</router-link></h2>
             <div>
               <eye-icon :link="{name: 'project-dashboard', params: { id: project.id }}"></eye-icon>
               <star-icon :item="project"></star-icon>
