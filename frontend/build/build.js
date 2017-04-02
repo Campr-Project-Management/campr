@@ -20,7 +20,7 @@ spinner.start();
 var assetsPath = path.join(config.build.assetsRoot, config.build.assetsSubDirectory);
 ls('static/js').map(function (file) {
   var filePath = 'static/js/' + file;
-  if (test('-e', assetsPath + '/' + file)) {
+  if (test('-e', assetsPath + '/js/' + file)) {
     return;
   }
   cp(filePath, assetsPath);
