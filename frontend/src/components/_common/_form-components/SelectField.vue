@@ -21,6 +21,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
     @import '../../../css/_variables.scss';
+    @import '../../../css/_mixins.scss';
 
     .btn-primary {
         background: $darkColor;
@@ -38,6 +39,9 @@ export default {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-size: 11px;
+        letter-spacing: 1.5px;
+        @include transition(all, 0.2s, ease-in);
 
         @media screen and (max-width: 1440px) {
             width: 120px;
@@ -48,10 +52,17 @@ export default {
             margin-top: 4px;
             position: absolute;
         }
+
+        &:focus {
+            background: $middleColor;
+            color: $lighterColor;
+            outline: 0;
+        }
+        
     }
 
     .btn-primary.active, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
-        background-color: $darkColor;
-        border-color: $darkColor;
+        background: $middleColor;
+        color: $lighterColor;
     }
 </style>
