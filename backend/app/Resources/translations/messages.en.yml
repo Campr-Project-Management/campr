@@ -51,6 +51,7 @@ message:
     new_objective_title: New Objective Title
     new_objective_description: New Objective Description
     add_objective: Add new objective
+    edit_objective: Edit objective
     project_limitations: Project Limitations
     new_project_limitation: New Project Limitation
     add_limitation: Add new limitation
@@ -132,6 +133,9 @@ message:
     all_customers: All Customers
     all_statuses: All Statuses
     all_scheduels: All Schedules
+    internal_resources: Internal Resources
+    external_resources: External Resources
+    total: Total
 
 menu:
     users: Users

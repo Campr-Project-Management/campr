@@ -20,7 +20,7 @@ class ProjectLimitationController extends ApiController
     /**
      * Retrieve ProjectLimitation information.
      *
-     * @Route("/{id}", name="app_api_project_limitation_get")
+     * @Route("/{id}", name="app_api_project_limitation_get", requirements={"id": "\d+"})
      * @Method({"GET"})
      *
      * @param ProjectLimitation $projectLimitation
@@ -37,7 +37,7 @@ class ProjectLimitationController extends ApiController
     /**
      * Edit a specific ProjectLimitation.
      *
-     * @Route("/{id}", name="app_api_project_limitation_edit", options={"expose"=true})
+     * @Route("/{id}", name="app_api_project_limitation_edit", options={"expose"=true}, requirements={"id": "\d+"})
      * @Method({"PUT", "PATCH"})
      *
      * @param Request           $request
@@ -71,7 +71,7 @@ class ProjectLimitationController extends ApiController
     /**
      * Delete a specific ProjectLimitation.
      *
-     * @Route("/{id}", name="app_api_project_limitation_delete")
+     * @Route("/{id}", name="app_api_project_limitation_delete", requirements={"id": "\d+"})
      * @Method({"DELETE"})
      *
      * @param ProjectLimitation $projectLimitation
@@ -85,6 +85,27 @@ class ProjectLimitationController extends ApiController
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectLimitation);
         $em->flush();
+
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Reorder project limitationss.
+     *
+     * @Route("/reorder", name="app_api_project_limitation_reorder", options={"expose"=true})
+     * @Method("PATCH")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function reorderAction(Request $request)
+    {
+        $this
+            ->getDoctrine()
+            ->getRepository(ProjectLimitation::class)
+            ->updateSequences($request->request->all())
+        ;
 
         return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }

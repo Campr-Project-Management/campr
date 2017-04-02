@@ -21,6 +21,8 @@ const getters = {
     },
     projectsForFilter: state => state.itemsForFilter,
     labelsForChoice: state => state.labelsForChoice,
+    sponsorsManagers: state => state.sponsorsManagers,
+    projectResources: state => state.projectResources,
 };
 
 const actions = {
@@ -67,6 +69,7 @@ const actions = {
                 if (response.status === 200) {
                     let project = response.data;
                     commit(types.SET_PROJECT, {project});
+                    commit(types.SET_MEMBERS, {project});
                 }
             }, (response) => {
             });
@@ -115,6 +118,180 @@ const actions = {
             .delete(Routing.generate('app_api_label_delete', {'id': id})).then((response) => {
                 if (response.status === 204) {
                     router.push({name: 'project-task-management-edit-labels'});
+                }
+            }, (response) => {
+            });
+    },
+    /**
+     * Creates a new objective on project
+     * @param {function} commit
+     * @param {array} data
+     */
+    createObjective({commit}, data) {
+        Vue.http
+            .post(
+                Routing.generate('app_api_project_create_objective', {'id': data.projectId}),
+                JSON.stringify(data)
+            ).then((response) => {
+                let objective = response.data;
+                commit(types.ADD_PROJECT_OBJECTIVE, {objective});
+            }, (response) => {
+                if (response.status === 400) {
+                    console.log(response.data);
+                }
+            });
+    },
+    /**
+     * Edit a project objective
+     * @param {function} commit
+     * @param {array} data
+     */
+    editObjective({commit}, data) {
+        Vue.http
+            .patch(
+                Routing.generate('app_api_project_objective_edit', {'id': data.itemId}),
+                JSON.stringify(data)
+            ).then((response) => {
+            }, (response) => {
+                if (response.status === 400) {
+                    console.log(response.data);
+                }
+            });
+    },
+    /**
+     * Reorder project objectives
+     * @param {function} commit
+     * @param {array} data
+     */
+    reorderObjectives({commit}, data) {
+        Vue.http
+            .patch(
+                Routing.generate('app_api_project_objective_reorder'),
+                JSON.stringify(data)
+            ).then((response) => {
+            }, (response) => {
+                if (response.status === 400) {
+                    console.log(response.data);
+                }
+            });
+    },
+    /**
+     * Creates a new limitation on project
+     * @param {function} commit
+     * @param {array} data
+     */
+    createLimitation({commit}, data) {
+        Vue.http
+            .post(
+                Routing.generate('app_api_project_create_limitation', {'id': data.projectId}),
+                JSON.stringify(data)
+            ).then((response) => {
+                let limitation = response.data;
+                commit(types.ADD_PROJECT_LIMITATION, {limitation});
+            }, (response) => {
+                if (response.status === 400) {
+                    console.log(response.data);
+                }
+            });
+    },
+    /**
+     * Reorder project limitations
+     * @param {function} commit
+     * @param {array} data
+     */
+    reorderLimitations({commit}, data) {
+        Vue.http
+            .patch(
+                Routing.generate('app_api_project_limitation_reorder'),
+                JSON.stringify(data)
+            ).then((response) => {
+            }, (response) => {
+                if (response.status === 400) {
+                    console.log(response.data);
+                }
+            });
+    },
+    /**
+     * Edit a project limitation
+     * @param {function} commit
+     * @param {array} data
+     */
+    editLimitation({commit}, data) {
+        Vue.http
+            .patch(
+                Routing.generate('app_api_project_limitation_edit', {'id': data.itemId}),
+                JSON.stringify(data)
+            ).then((response) => {
+            }, (response) => {
+                if (response.status === 400) {
+                    console.log(response.data);
+                }
+            });
+    },
+    /**
+     * Creates a new deliverable on project
+     * @param {function} commit
+     * @param {array} data
+     */
+    createDeliverable({commit}, data) {
+        Vue.http
+            .post(
+                Routing.generate('app_api_project_create_deliverable', {'id': data.projectId}),
+                JSON.stringify(data)
+            ).then((response) => {
+                let deliverable = response.data;
+                commit(types.ADD_PROJECT_DELIVERABLE, {deliverable});
+            }, (response) => {
+                if (response.status === 400) {
+                    console.log(response.data);
+                }
+            });
+    },
+    /**
+     * Edit a project deliverable
+     * @param {function} commit
+     * @param {array} data
+     */
+    editDeliverable({commit}, data) {
+        Vue.http
+            .patch(
+                Routing.generate('app_api_project_deliverable_edit', {'id': data.itemId}),
+                JSON.stringify(data)
+            ).then((response) => {
+            }, (response) => {
+                if (response.status === 400) {
+                    console.log(response.data);
+                }
+            });
+    },
+    /**
+     * Reorder project derivables
+     * @param {function} commit
+     * @param {array} data
+     */
+    reorderDeliverables({commit}, data) {
+        Vue.http
+            .patch(
+                Routing.generate('app_api_project_deliverable_reorder'),
+                JSON.stringify(data)
+            ).then((response) => {
+            }, (response) => {
+                if (response.status === 400) {
+                    console.log(response.data);
+                }
+            });
+    },
+    /**
+     * Gets project resources values for graphic
+     * @param {function} commit
+     * @param {number} id
+     */
+    getProjectResourcesForGraph({commit}, id) {
+        Vue.http
+            .get(Routing.generate('app_api_project_resources', {'id': id})).then((response) => {
+                if (response.status === 200) {
+                    let resources = response.data;
+                    commit(types.SET_PROJECT_RESOURCES, {resources});
                 }
             }, (response) => {
             });
@@ -173,6 +350,52 @@ const mutations = {
             choiceLabel.push({'key': label.id, 'label': label.title});
         });
         state.labelsForChoice = choiceLabel;
+    },
+    /**
+     * Add project objective
+     * @param {Object} state
+     * @param {array} objective
+     */
+    [types.ADD_PROJECT_OBJECTIVE](state, {objective}) {
+        state.currentItem.projectObjectives.push(objective);
+    },
+    /**
+     * Add project limitation
+     * @param {Object} state
+     * @param {array} limitation
+     */
+    [types.ADD_PROJECT_LIMITATION](state, {limitation}) {
+        state.currentItem.projectLimitations.push(limitation);
+    },
+    /**
+     * Add project deliverable
+     * @param {Object} state
+     * @param {array} deliverable
+     */
+    [types.ADD_PROJECT_DELIVERABLE](state, {deliverable}) {
+        state.currentItem.projectDeliverables.push(deliverable);
+    },
+    /**
+     * set project member
+     * @param {Object} state
+     * @param {Object} project
+     */
+    [types.SET_MEMBERS](state, {project}) {
+        let sponsorsManagers = [];
+        project.projectUsers.map( function(projectUser) {
+            if (projectUser.projectRoleName !== 'ROLE_TEAM_MEMBER') {
+                sponsorsManagers.push(projectUser);
+            }
+        });
+        state.sponsorsManagers = sponsorsManagers;
+    },
+    /**
+     * set project resources
+     * @param {Object} state
+     * @param {Object} resources
+     */
+    [types.SET_PROJECT_RESOURCES](state, {resources}) {
+        state.projectResources = resources;
     },
 };
 

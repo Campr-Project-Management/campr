@@ -67,6 +67,7 @@ class ContractControllerTest extends BaseController
                     'id' => 1,
                     'name' => 'contract1',
                     'description' => 'contract-description1',
+                    'projectStartEvent' => null,
                     'projectObjectives' => [],
                     'projectLimitations' => [],
                     'projectDeliverables' => [],
@@ -132,7 +133,6 @@ class ContractControllerTest extends BaseController
                 [
                     'messages' => [
                         'name' => ['The name field should not be blank'],
-                        'project' => ['The project field should not be blank. Choose one project'],
                     ],
                 ],
             ],
@@ -309,6 +309,7 @@ class ContractControllerTest extends BaseController
                     'id' => 2,
                     'name' => 'contract2',
                     'description' => 'contract-description2',
+                    'projectStartEvent' => null,
                     'projectObjectives' => [],
                     'projectLimitations' => [],
                     'projectDeliverables' => [],
