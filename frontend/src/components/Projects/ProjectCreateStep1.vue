@@ -108,12 +108,9 @@ export default {
 };
 </script>
 
-<style lang="scss">
-    @import '../../css/project-create';
-</style>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+  @import '../../css/project-create';
   @import '../../css/_common';
 
   .avatar {

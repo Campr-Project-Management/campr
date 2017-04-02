@@ -61,6 +61,11 @@ export default {
   @import '../../css/_common.scss';
   @import '../../css/box';
 
+  .box {
+      width: 394px;
+      margin: 0 12.5px 30px;
+  }
+
   .info {
     padding-top: 16px;
 
