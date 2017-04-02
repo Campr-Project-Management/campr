@@ -1,18 +1,25 @@
 #!/usr/bin/env bash
 
+script=`readlink -f $0`
+binDir=`dirname $script`
+dir=`dirname $binDir`
+
 bin/console assets:install --symlink web
 bin/console assetic:dump web
 bin/console app:dump-routes
 bin/console fos:js-routing:dump --target=web/js/fos_js_routes.js
 bin/console bazinga:js-translation:dump  --format=js --merge-domains web/js
 mkdir -p frontend/static/js
-cd frontend/static/js
-ln -sf ../../../web/bundles/fosjsrouting/js/router.js router.js
-for file in ../../../web/static/js/fos_js_routes*.js;
+for file in web/static/js/fos_js_routes*.js;
 do
     base=`basename $file`
-    ln -sf $file $base
+    sl="${dir}/frontend/static/js/${base}"
+    rm -fv $sl
+    echo $sl
+    ln -s "${dir}/${file}" "${sl}"
 done
+cd frontend/static/js
+ln -sf ../../../web/bundles/fosjsrouting/js/router.js router.js
 ln -sf ../../../web/bundles/bazingajstranslation/js/translator.min.js translator.min.js
 ln -sf ../../../web/js/translations/config.js config.js
 ln -sf ../../../web/js/translations/en.js en.js
