@@ -9,7 +9,7 @@ const getters = {
     colorStatuses: state => state.items,
     colorStatusesForFilter: function(state) {
         let colorStatusesForFilter = [{'key': '', 'label': Translator.trans('message.all_statuses')}];
-        state.items.map( function(colorStatus) {
+        state.items.map(function(colorStatus) {
             colorStatusesForFilter.push({'key': colorStatus.name, 'label': colorStatus.name});
         });
 
@@ -26,7 +26,7 @@ const actions = {
         Vue.http
             .get(Routing.generate('app_api_color_status_list')).then((response) => {
                 if (response.status === 200) {
-                    let colorStatuses = response;
+                    let colorStatuses = response.data;
                     commit(types.SET_COLOR_STATUSES, {colorStatuses});
                 }
             }, (response) => {

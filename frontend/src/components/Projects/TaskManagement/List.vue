@@ -167,8 +167,10 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
+<style scoped lang="scss">
     @import '../../../css/_common';
+    @import '../../../css/page-section';
+    @import '../../../css/_variables';
 
     .vue-scrollbar__scrollbar-vertical {
         padding: 30px 10px !important;
@@ -178,11 +180,6 @@ export default {
     .vue-scrollbar__scrollbar-vertical:before, .vue-scrollbar__scrollbar-vertical:after {
         left: 9px;
     }
-</style>
-
-<style scoped lang="scss">
-    @import '../../../css/page-section';
-    @import '../../../css/_variables';
 
     .search {
         width: 420px;

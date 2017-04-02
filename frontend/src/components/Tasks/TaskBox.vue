@@ -130,6 +130,14 @@ export default {
   @import '../../css/_common';
   @import '../../css/box';
   @import '../../css/box-task';
+  @import '../../css/_variables';
+
+  .nicescroll-cursors {
+      border: none !important;
+      border-radius: 0 !important;
+      width: 2px !important;
+      background: $middleColor !important;
+  }
 
   h2 {
     line-height: 15px;
@@ -178,15 +186,3 @@ export default {
     padding-top: 0;
   }
 </style>
-
-<style lang="scss">
-  @import '../../css/_variables';
-
-  .nicescroll-cursors {
-    border: none !important;
-    border-radius: 0 !important;
-    width: 2px !important;
-    background: $middleColor !important;
-  }
-</style>
-
