@@ -1,3 +1,4 @@
+'use strict';
 let merge = require('webpack-merge');
 let devEnv = require('./dev.env');
 
