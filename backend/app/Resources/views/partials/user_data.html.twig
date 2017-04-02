@@ -1,0 +1,5 @@
+{% if app.user is object %}
+<script type="text/javascript">
+    var user = {{ user|json_encode|raw }};
+</script>
+{% endif %}
