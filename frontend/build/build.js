@@ -19,7 +19,7 @@ spinner.start();
 
 var assetsPath = path.join(config.build.assetsRoot, config.build.assetsSubDirectory);
 // first, copy everything over; to overwrite symlinks
-cp('-R', assetsPath, 'static/*');
+cp('-R', assetsPath+'/*', 'static');
 rm('-rf', assetsPath);
 mkdir('-p', assetsPath);
 cp('-R', 'static/*', assetsPath);
