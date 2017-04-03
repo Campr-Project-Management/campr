@@ -59,7 +59,7 @@ RUN apt-get install -y python-software-properties git \
     # && ln -s /usr/bin/nodejs /usr/bin/node \
     && rm -rf /usr/local/lib/node_modules \
     && ln -s /usr/share/npm/node_modules /usr/local/lib/node_modules \
-    && npm install -g node-gyp bower grunt-cli jslint karma e2e babel phantomjs-prebuilt webpack sass node-sass less scss
+    && npm install -g node-gyp bower grunt-cli jslint karma e2e babel-cli phantomjs-prebuilt webpack sass node-sass less scss
 
 # Certbot
 RUN cd /opt && git clone https://github.com/certbot/certbot.git \
