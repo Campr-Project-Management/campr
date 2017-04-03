@@ -3,7 +3,7 @@ let merge = require('webpack-merge'),
     prodEnv = require('./prod.env'),
     fs = require('fs');
 
-if (env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
     let devLocalConfigFile = __dirname + '/dev.local.js';
     if (fs.existsSync(devLocalConfigFile)) {
         let devLocalConfig = require('./dev.local');

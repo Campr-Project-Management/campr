@@ -305,7 +305,7 @@ import {mapGetters, mapActions} from 'vuex';
 import MemberBadge from '../_common/MemberBadge';
 import SocialLinks from '../_common/SocialLinks';
 import InputField from '../_common/_form-components/InputField';
-import Switches from 'vue-switches';
+import Switches from '../3rdparty/vue-switches';
 import VueScrollbar from 'vue2-scrollbar';
 import Modal from '../_common/Modal';
 import 'vue2-scrollbar/dist/style/vue2-scrollbar.css';
