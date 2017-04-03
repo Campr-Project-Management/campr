@@ -3,6 +3,7 @@
 namespace AppBundle\Tests\Controller\Admin;
 
 use AppBundle\Entity\Project;
+use AppBundle\Entity\ProjectUser;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -111,6 +112,15 @@ class ProjectControllerTest extends BaseController
             ->getRepository(Project::class)
             ->findOneByName('project3')
         ;
+        $projectUser = $this
+            ->em
+            ->getRepository(ProjectUser::class)
+            ->findOneBy([
+                'user' => $this->user,
+                'project' => $project,
+            ])
+        ;
+        $this->em->remove($projectUser);
         $this->em->remove($project);
         $this->em->flush();
     }

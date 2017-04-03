@@ -207,6 +207,13 @@ services:
         tags :
             - { name: doctrine.event_listener, event: onFlush }
 
+    app.listener.project:
+        class: AppBundle\EventListener\ProjectListener
+        tags :
+            - { name: doctrine.event_listener, event: prePersist }
+        arguments:
+            - '@security.token_storage'
+
 ### EXTENSIONS ###
     app.app_extension:
         class: AppBundle\Twig\AppExtension
