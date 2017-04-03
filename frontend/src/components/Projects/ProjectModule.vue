@@ -318,7 +318,7 @@
                 </svg>
             </div>
             <div class="checkbox-input clearfix" v-bind:class="{'inactive': inactive}">
-              <input :id="id" type="checkbox" name="" value="1" :checked="inactive ? false : true" @click="toggleActivation()">
+              <input :id="id" type="checkbox" name="" value="1" :checked="!inactive" v-on:click="updateValue">
               <label :for="id"></label>
             </div>
         </div>
@@ -338,8 +338,8 @@ export default {
         toggleContent() {
             this.contentVisible = !this.contentVisible;
         },
-        toggleActivation() {
-            this.inactive = !this.inactive;
+        updateValue: function(e) {
+            this.$emit('input', e.target.checked);
         },
     },
     data: function() {

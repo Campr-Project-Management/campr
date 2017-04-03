@@ -10,11 +10,13 @@ const state = {
     filteredItems: [],
     filters: [],
     labelsForChoice: [],
+    loading: false,
 };
 
 const getters = {
     project: state => state.currentItem,
     projects: state => state.filteredItems.items,
+    projectLoading: state => state.loading,
     labels: state => state.items,
     currentProjectTitle: function(state) {
         return state.currentItem.title;
@@ -296,6 +298,27 @@ const actions = {
             }, (response) => {
             });
     },
+    /**
+     * Creates a new project
+     * @param {function} commit
+     * @param {array} data
+     */
+    createProject({commit}, data) {
+        commit(types.SET_PROJECT_LOADING, {loading: true});
+        Vue.http
+            .post(
+                Routing.generate('app_api_project_create'),
+                data
+            ).then((response) => {
+                if (response.status === 201) {
+                    let project = response.data;
+                    commit(types.SET_PROJECT, {project});
+                }
+                commit(types.SET_PROJECT_LOADING, {loading: false});
+            }, (response) => {
+                commit(types.SET_PROJECT_LOADING, {loading: false});
+            });
+    },
 };
 
 const mutations = {
@@ -350,6 +373,9 @@ const mutations = {
             choiceLabel.push({'key': label.id, 'label': label.title});
         });
         state.labelsForChoice = choiceLabel;
+    },
+    [types.SET_PROJECT_LOADING](state, {loading}) {
+        state.loading = loading;
     },
     /**
      * Add project objective
