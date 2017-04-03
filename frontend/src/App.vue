@@ -12,7 +12,7 @@
 import Navigation from './components/_layout/Navigation';
 import Sidebar from './components/_layout/Sidebar';
 import {mapActions, mapGetters} from 'vuex';
-import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
+import {PulseLoader} from 'vue-spinner/dist/vue-spinner.min.js';
 
 export default {
     name: 'app',

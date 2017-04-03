@@ -372,7 +372,7 @@ import SelectField from '../../_common/_form-components/SelectField';
 import UploadIcon from '../../_common/_icons/UploadIcon';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import datepicker from 'vuejs-datepicker';
-import Switches from 'vue-switches';
+import Switches from '../../3rdparty/vue-switches';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
