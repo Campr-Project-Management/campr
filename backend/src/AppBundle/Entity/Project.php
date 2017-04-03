@@ -327,6 +327,22 @@ class Project
     private $projectDeliverables;
 
     /**
+     * @var array
+     *
+     * @ORM\Column(name="configuration", type="json_array", nullable=true)
+     */
+    private $configuration;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectModule", mappedBy="project", cascade={"persist"})
+     */
+    private $projectModules;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -349,6 +365,7 @@ class Project
         $this->projectLimitations = new ArrayCollection();
         $this->projectDeliverables = new ArrayCollection();
         $this->createdAt = new \DateTime();
+        $this->projectModules = new ArrayCollection();
     }
 
     /**
@@ -1498,7 +1515,7 @@ class Project
     /**
      * Remove projectLimitation.
      *
-     * @param ProjectObjective $projectObjective
+     * @param ProjectLimitation $projectLimitation
      *
      * @return Project
      */
@@ -1555,5 +1572,68 @@ class Project
     public function getProjectDeliverables()
     {
         return $this->projectDeliverables;
+    }
+
+    /**
+     * Get configuration.
+     *
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
+
+    /**
+     * Set configuration.
+     *
+     * @param array $configuration
+     *
+     * @return Project
+     */
+    public function setConfiguration($configuration)
+    {
+        $this->configuration = $configuration;
+
+        return $this;
+    }
+
+    /**
+     * Add projectModule.
+     *
+     * @param ProjectModule $projectModule
+     *
+     * @return Project
+     */
+    public function addProjectModule(ProjectModule $projectModule)
+    {
+        $projectModule->setProject($this);
+        $this->projectModules->add($projectModule);
+
+        return $this;
+    }
+
+    /**
+     * Remove projectModule.
+     *
+     * @param ProjectModule $projectModule
+     *
+     * @return Project
+     */
+    public function removeProjectModule(ProjectModule $projectModule)
+    {
+        $this->projectDeliverables->removeElement($projectModule);
+
+        return $this;
+    }
+
+    /**
+     * Get projectModules.
+     *
+     * @return ArrayCollection
+     */
+    public function getProjectModules()
+    {
+        return $this->projectModules;
     }
 }

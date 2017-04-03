@@ -56,6 +56,8 @@ not_blank:
     payment_method: Please enter a payment method name!
     subject: Please enter a subject!
     message: Please enter a message!
+    module: The module name should not be blank.
+    configuration: Project configuration should not be blank.
 
 not_null:
     driver: You must select a driver
@@ -77,6 +79,7 @@ invalid:
     rate: The rate field should contain positive numbers with precision 10 and 2 decimals at most
     image: Uploaded file must be an image!
     slug: The slug is invalid. Slug must start/end only with alphanumeric values and contain alphanumeric or '-' characters
+    module: Invalid module name provided
 
 used:
     team:
