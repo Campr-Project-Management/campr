@@ -55,9 +55,11 @@ message:
     project_limitations: Project Limitations
     new_project_limitation: New Project Limitation
     add_limitation: Add new limitation
+    edit_limitation: Edit limitation
     project_deliverables: Project Deliverables
     new_project_deliverable: New Project Deliverable
     add_deliverable: Add new deliverable
+    edit_deliverable: Edit deliverable
     sponsors_managers: Sponsors & Managers
     edit_sponsors_managers: Edit Sponsors & Managers
     team_members: Team Members
