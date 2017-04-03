@@ -172,10 +172,10 @@ export default {
     },
     watch: {
         contract(value) {
-            this.proposedStartDate = new Date(this.contract.proposedStartDate);
-            this.proposedEndDate = new Date(this.contract.proposedEndDate);
-            this.forecastStartDate = new Date(this.contract.forecastStartDate);
-            this.forecastEndDate = new Date(this.contract.forecastEndDate);
+            this.proposedStartDate = this.contract.proposedStartDate ? Date(this.contract.proposedStartDate) : new Date();
+            this.proposedEndDate = this.contract.proposedEndDate ? new Date(this.contract.proposedEndDate) : new Date();
+            this.forecastStartDate = this.contract.forecastStartDate ? new Date(this.contract.forecastStartDate) : new Date();
+            this.forecastEndDate = this.contract.forecastEndDate ? new Date(this.contract.forecastEndDate) : new Date();
         },
         project(value) {
             this.rowsInternal = [
