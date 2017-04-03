@@ -20,7 +20,7 @@ class ProjectCategoryController extends ApiController
     /**
      * Get all project categories.
      *
-     * @Route(name="app_api_project_categories_list")
+     * @Route(name="app_api_project_categories_list", options={"expose"=true})
      * @Method({"GET"})
      *
      * @return JsonResponse

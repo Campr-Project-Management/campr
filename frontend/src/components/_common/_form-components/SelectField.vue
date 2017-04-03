@@ -1,20 +1,22 @@
 <template>
     <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ title }}
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ currentOption ? currentOption.label : title }}
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-            <li v-for="option in options"><a href="javascript:void(0)">{{ option.label }}</a></li>
+            <li v-for="option in options"><a href="javascript:void(0)" v-on:click="updateValue(option)">{{ option.label }}</a></li>
         </ul>
     </div>
 </template>
 
 <script>
-import {mapActions} from 'vuex';
-
 export default {
-    props: ['title', 'filter', 'options', 'item'],
-    methods: mapActions(['filterItems']),
+    props: ['title', 'options', 'currentOption'],
+    methods: {
+        updateValue: function(value) {
+            this.$emit('input', value);
+        },
+    },
 };
 </script>
 

@@ -34,23 +34,6 @@ class ProjectModuleControllerTest extends BaseController
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testFormValidationOnCreatePage()
-    {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
-
-        /** @var Crawler $crawler */
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-module/create');
-
-        $form = $crawler->filter('#create-form')->first()->form();
-        $crawler = $this->client->submit($form);
-
-        $this->assertContains('The module field should not be blank', $crawler->html());
-
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-    }
-
     public function testCreateAction()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
@@ -60,7 +43,7 @@ class ProjectModuleControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-module/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[module]'] = 'project-module3';
+        $form['create[module]'] = 'todos';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -72,7 +55,7 @@ class ProjectModuleControllerTest extends BaseController
             ->em
             ->getRepository(ProjectModule::class)
             ->findOneBy([
-                'module' => 'project-module3',
+                'module' => 'todos',
             ])
         ;
         $this->em->remove($projectModule);
@@ -86,7 +69,7 @@ class ProjectModuleControllerTest extends BaseController
         $this->assertNotNull($this->user, 'User not found');
 
         $projectModule = (new ProjectModule())
-            ->setModule('project-module4')
+            ->setModule('plan')
             ->setIsEnabled(true)
         ;
         $this->em->persist($projectModule);
@@ -127,25 +110,6 @@ class ProjectModuleControllerTest extends BaseController
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testFormValidationOnEditPage()
-    {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
-
-        /** @var Crawler $crawler */
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-module/1/edit');
-
-        $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[module]'] = '';
-
-        $crawler = $this->client->submit($form);
-
-        $this->assertContains('The module field should not be blank', $crawler->html());
-
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-    }
-
     public function testEditAction()
     {
         $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
@@ -155,7 +119,7 @@ class ProjectModuleControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-module/2/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[module]'] = 'project-module2';
+        $form['create[module]'] = 'project_contract';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

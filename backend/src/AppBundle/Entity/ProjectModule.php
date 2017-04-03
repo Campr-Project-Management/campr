@@ -28,7 +28,7 @@ class ProjectModule
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="projectModules", cascade={"persist"})
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      */
     private $project;

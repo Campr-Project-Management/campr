@@ -151,7 +151,7 @@ class ProjectModuleControllerTest extends BaseController
         return [
             [
                 [
-                    'module' => 'project-module4',
+                    'module' => 'project_contract',
                     'isEnabled' => 1,
                 ],
                 true,
@@ -160,7 +160,7 @@ class ProjectModuleControllerTest extends BaseController
                     'project' => null,
                     'projectName' => null,
                     'id' => 4,
-                    'module' => 'project-module4',
+                    'module' => 'project_contract',
                     'isEnabled' => true,
                     'isRequired' => false,
                     'isPrint' => false,
@@ -271,7 +271,7 @@ class ProjectModuleControllerTest extends BaseController
         return [
             [
                 [
-                    'module' => 'project-module1',
+                    'module' => 'project_organization',
                 ],
                 true,
                 Response::HTTP_ACCEPTED,
@@ -279,7 +279,7 @@ class ProjectModuleControllerTest extends BaseController
                     'project' => 1,
                     'projectName' => 'project1',
                     'id' => 1,
-                    'module' => 'project-module1',
+                    'module' => 'project_organization',
                     'isEnabled' => true,
                     'isRequired' => null,
                     'isPrint' => null,
