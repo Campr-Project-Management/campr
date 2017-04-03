@@ -20,7 +20,7 @@ class ProjectScopeController extends ApiController
     /**
      * Get all project scopes.
      *
-     * @Route(name="app_api_project_scopes_list")
+     * @Route(name="app_api_project_scopes_list", options={"expose"=true})
      * @Method({"GET"})
      *
      * @return JsonResponse

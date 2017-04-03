@@ -2,14 +2,16 @@
 
 namespace AppBundle\Form\ProjectModule;
 
+use AppBundle\Entity\Enum\ProjectModuleTypeEnum;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectModule;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CreateType extends AbstractType
@@ -21,11 +23,16 @@ class CreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('module', TextType::class, [
+            ->add('module', ChoiceType::class, [
                 'required' => true,
+                'choices' => array_keys(ProjectModuleTypeEnum::ELEMENTS),
                 'constraints' => [
                     new NotBlank([
                         'message' => 'not_blank.module',
+                    ]),
+                    new Choice([
+                        'choices' => array_keys(ProjectModuleTypeEnum::ELEMENTS),
+                        'message' => 'invalid.module',
                     ]),
                 ],
             ])

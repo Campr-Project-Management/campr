@@ -10,10 +10,12 @@ use AppBundle\Entity\ProjectCategory;
 use AppBundle\Entity\ProjectComplexity;
 use AppBundle\Entity\ProjectScope;
 use AppBundle\Entity\ProjectStatus;
+use AppBundle\Form\ProjectModule\CreateType as ProjectModuleCreateType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -128,6 +130,12 @@ class CreateType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.portfolio',
                 'translation_domain' => 'messages',
+            ])
+            ->add('configuration')
+            ->add('projectModules', CollectionType::class, [
+                'entry_type' => ProjectModuleCreateType::class,
+                'allow_add' => true,
+                'by_reference' => false,
             ])
             ->addEventListener(
                 FormEvents::PRE_SUBMIT,
