@@ -75,7 +75,7 @@ class ProjectController extends ApiController
     /**
      * Create a new Project.
      *
-     * @Route(name="app_api_project_create")
+     * @Route(name="app_api_project_create", options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request $request
@@ -87,6 +87,8 @@ class ProjectController extends ApiController
         $project = new Project();
         $form = $this->createForm(CreateType::class, $project, ['csrf_protection' => false]);
         $this->processForm($request, $form);
+
+        $project->setLogoFile($request->files->get('logoFile'));
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();

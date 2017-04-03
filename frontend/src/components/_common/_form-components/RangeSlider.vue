@@ -3,14 +3,14 @@
         <div class="heading flex flex-space-between">
             <span class="title">{{ title }}</span>
             <span class="value">
-                <span class="text">{{ minPrefix}}</span><span class="from number">{{ min }}</span><span class="text">{{ minSuffix }}</span>
+                <span class="text">{{ minPrefix}}</span><span class="from number">{{ from }}</span><span class="text">{{ minSuffix }}</span>
                 <span v-show="type == 'double'">
-                - <span class="text">{{ maxPrefix }}</span><span class="to number">{{ max }}</span><span class="text">{{ maxSuffix }}</span>
+                - <span class="text">{{ maxPrefix }}</span><span class="to number">{{ to }}</span><span class="text">{{ maxSuffix }}</span>
                 </span>
             </span>
         </div>
 
-        <input type="text" class="range" :id="'slider' + _uid" ref="slider" v-model="project"/>
+        <input type="text" class="range" v-bind:id="'slider' + _uid" ref="slider" />
     </div>
 </template>
 
@@ -20,28 +20,45 @@ import 'ion-rangeslider/css/ion.rangeSlider.css';
 import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
 
 export default {
-    props: ['title', 'min', 'max', 'type', 'minPrefix', 'minSuffix', 'maxPrefix', 'maxSuffix', 'values'],
+    props: ['title', 'min', 'max', 'type', 'minPrefix', 'minSuffix', 'maxPrefix', 'maxSuffix', 'values', 'value'],
+    computed: {
+        from: function() {
+            if (!this.value) {
+                return this.min;
+            }
+            const values = this.value.split(';');
+            return values[0];
+        },
+        to: function() {
+            if (!this.value) {
+                return this.from;
+            }
+            const values = this.value.split(';');
+            return values.length > 1 ? values[1] : this.max;
+        },
+    },
     mounted() {
         const $this = window.$('#slider' + this._uid);
-        this.values = this.values ? this.values.split(',') : '';
+        const values = this.values ? this.values.split(',') : '';
+        const vm = this;
 
         $this.ionRangeSlider({
             type: this.type,
             min: this.min,
             max: this.max,
-            from: this.min,
-            to: this.max,
-            values: this.values,
+            from: isNaN(parseFloat(this.from, 10)) ? values.indexOf(this.from) : this.from,
+            to: isNaN(parseFloat(this.to, 10)) ? values.indexOf(this.to) : this.to,
+            values: values,
         });
 
-        $('.range').on('change', function(data) {
-            let $this = $(this);
-            let value = $this.prop('value').split(';');
-            let $sliderHolder = $this.parent('.slider-holder');
-
-            $sliderHolder.find('.from').text(value[0]);
-            $sliderHolder.find('.to').text(value[1]);
+        $this.on('change', function(e) {
+            vm.updateValue(e.target.value);
         });
+    },
+    methods: {
+        updateValue: function(value) {
+            this.$emit('input', value);
+        },
     },
 };
 </script>
