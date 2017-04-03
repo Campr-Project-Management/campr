@@ -14,9 +14,11 @@ import {Vue2Dragula} from 'vue2-dragula';
 import Vueditor from 'vueditor';
 import './css/vueditor.css';
 import VueCookie from 'vue-cookie';
+import VeeValidate from 'vee-validate';
 
 Vue.use(VueResource);
 Vue.use(Vue2Dragula);
+Vue.use(VeeValidate);
 let config = {
     // buttons on the toolbar, you can use '|' or 'divider' as the separator
     toolbar: [

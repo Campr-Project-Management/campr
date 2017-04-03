@@ -38,7 +38,7 @@ class ProgrammeController extends ApiController
     /**
      * Create a new Programme.
      *
-     * @Route(name="app_api_programmes_create")
+     * @Route(name="app_api_programmes_create", options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request $request
@@ -69,7 +69,7 @@ class ProgrammeController extends ApiController
     /**
      * Get Programme by id.
      *
-     * @Route("/{id}", name="app_api_programmes_get")
+     * @Route("/{id}", name="app_api_programmes_get", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Programme $programme
@@ -116,7 +116,7 @@ class ProgrammeController extends ApiController
     /**
      * Delete a specific Programme.
      *
-     * @Route("/{id}", name="app_api_programmes_delete")
+     * @Route("/{id}", name="app_api_programmes_delete", options={"expose"=true})
      * @Method({"DELETE"})
      *
      * @param Programme $programme

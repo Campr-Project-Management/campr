@@ -13,6 +13,8 @@ import customer from './modules/customer';
 import programme from './modules/programme';
 import portfolio from './modules/portfolio';
 import projectContract from './modules/project-contract';
+import projectCategory from './modules/project-category';
+import projectScope from './modules/project-scope';
 
 Vue.use(Vuex);
 
@@ -33,6 +35,8 @@ export default new Vuex.Store({
         programme,
         portfolio,
         projectContract,
+        projectCategory,
+        projectScope,
     },
     strict: debug,
 });

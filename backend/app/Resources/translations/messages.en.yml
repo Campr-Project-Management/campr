@@ -12,7 +12,7 @@ message:
     project_dashboard: Project Dashboard
     contract: Contract
     organization: Organization
-    plant: Plan
+    plan: Plan
     task_management: Task Management
     phases_milestones: Phases & Milestones
     costs: Costs
@@ -136,6 +136,8 @@ message:
     internal_resources: Internal Resources
     external_resources: External Resources
     total: Total
+    select_portfolio: Select Portfolio
+    select_programme: Select Programme
 
 menu:
     users: Users
