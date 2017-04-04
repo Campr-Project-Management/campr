@@ -51,4 +51,42 @@ export default {
   @import '../../css/_common.scss';
   @import '../../css/box';
   @import '../../css/box-task';
+
+  .box {
+      width: 394px;
+      margin: 0 12.5px 30px;
+  }
+
+  .info {
+      padding-top: 16px;
+
+      p {
+          margin: 0 0 6px 0;
+      }
+
+      .title {
+          color: $middleColor;
+          text-transform: uppercase;
+          font-size: 12px;
+      }
+
+      .data {
+          font-size: 11px;
+          letter-spacing: 0.5px;
+          margin-left: 6px;
+      }
+
+      .status-label {
+          padding: 0 19px;
+          margin-left: 5px;
+          font-size: 8px;
+          height: 23px;
+          line-height: 23px;
+          display: inline-block;
+
+          &.finished {
+              background: $secondColor;
+          }
+      }
+  }
 </style>
