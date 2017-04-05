@@ -343,6 +343,15 @@ class Project
     private $projectModules;
 
     /**
+     * @var ArrayCollection|WorkPackageStatus[]
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackageStatus", mappedBy="project")
+     */
+    private $workPackageStatuses;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -366,6 +375,7 @@ class Project
         $this->projectDeliverables = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->projectModules = new ArrayCollection();
+        $this->workPackageStatuses = new ArrayCollection();
     }
 
     /**
@@ -1635,5 +1645,39 @@ class Project
     public function getProjectModules()
     {
         return $this->projectModules;
+    }
+
+    /**
+     * Add workPackageStatus.
+     *
+     * @param WorkPackageStatus $workPackageStatus
+     *
+     * @return Project
+     */
+    public function addWorkPackageStatus(WorkPackageStatus $workPackageStatus)
+    {
+        $this->workPackageStatuses[] = $workPackageStatus;
+
+        return $this;
+    }
+
+    /**
+     * Remove workPackageStatus.
+     *
+     * @param WorkPackageStatus $workPackageStatus
+     */
+    public function removeWorkPackageStatus(WorkPackageStatus $workPackageStatus)
+    {
+        $this->workPackageStatuses->removeElement($workPackageStatus);
+    }
+
+    /**
+     * Get workPackageStatuses.
+     *
+     * @return ArrayCollection|WorkPackageStatus[]
+     */
+    public function getWorkPackageStatuses()
+    {
+        return $this->workPackageStatuses;
     }
 }
