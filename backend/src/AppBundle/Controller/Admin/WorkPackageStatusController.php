@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Entity\WorkPackageStatus;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use MainBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -9,21 +10,20 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\RiskStrategy;
-use AppBundle\Form\RiskStrategy\CreateType;
+use AppBundle\Form\WorkPackageStatus\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * RiskStrategy admin controller.
+ * WorkPackageStatus admin controller.
  *
- * @Route("/admin/risk-strategy")
+ * @Route("/admin/workpackage-status")
  */
-class RiskStrategyController extends BaseController
+class WorkPackageStatusController extends BaseController
 {
     /**
-     * List all RiskStrategy controller.
+     * List all WorkPackageStatus entities.
      *
-     * @Route("/list", name="app_admin_risk_strategy_list")
+     * @Route("/list", name="app_admin_workpackage_status_list")
      * @Method({"GET"})
      * @Secure(roles="ROLE_SUPER_ADMIN")
      *
@@ -31,24 +31,24 @@ class RiskStrategyController extends BaseController
      */
     public function listAction()
     {
-        $strategies = $this
+        $workPackageStatuses = $this
             ->getDoctrine()
-            ->getRepository(RiskStrategy::class)
+            ->getRepository(WorkPackageStatus::class)
             ->findAll()
         ;
 
         return $this->render(
-            'AppBundle:Admin/RiskStrategy:list.html.twig',
+            'AppBundle:Admin/WorkPackageStatus:list.html.twig',
             [
-                'strategies' => $strategies,
+                'workPackageStatuses' => $workPackageStatuses,
             ]
         );
     }
 
     /**
-     * Lists all RiskStrategy entities filtered and paginated.
+     * Lists all WorkPackageStatus entities filtered and paginated.
      *
-     * @Route("/list/filtered", name="app_admin_risk_strategy_list_filtered", options={"expose"=true})
+     * @Route("/list/filtered", name="app_admin_workpackage_status_list_filtered", options={"expose"=true})
      * @Method("POST")
      *
      * @param Request $request
@@ -59,49 +59,48 @@ class RiskStrategyController extends BaseController
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginateByColumn(RiskStrategy::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(WorkPackageStatus::class, 'name', $requestParams);
 
         return $this->createApiResponse($response);
     }
 
     /**
-     * Displays RiskStrategy entity.
+     * Displays WorkPackageStatus entity.
      *
-     * @Route("/{id}/show", name="app_admin_risk_strategy_show", options={"expose"=true})
+     * @Route("/{id}/show", name="app_admin_workpackage_status_show", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param RiskStrategy $strategy
+     * @param WorkPackageStatus $workPackageStatus
      *
      * @return Response
      */
-    public function showAction(RiskStrategy $strategy)
+    public function showAction(WorkPackageStatus $workPackageStatus)
     {
         return $this->render(
-            'AppBundle:Admin/RiskStrategy:show.html.twig',
+            'AppBundle:Admin/WorkPackageStatus:show.html.twig',
             [
-                'strategy' => $strategy,
+                'workPackageStatus' => $workPackageStatus,
             ]
         );
     }
 
     /**
-     * Creates a new RiskStrategy entity.
+     * Create a new WorkPackageStatus entity.
      *
-     * @Route("/create", name="app_admin_risk_strategy_create")
+     * @Route("/create", name="app_admin_workpackage_status_create")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
      *
-     * @return Response|JsonResponse
+     * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
-        $riskStrategy = new RiskStrategy();
-        $form = $this->createForm(CreateType::class, $riskStrategy);
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(CreateType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
 
@@ -112,15 +111,15 @@ class RiskStrategyController extends BaseController
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('success.risk_strategy.create', [], 'flashes')
+                        ->trans('success.workpackage_status.create', [], 'flashes')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_risk_strategy_list');
+            return $this->redirectToRoute('app_admin_workpackage_status_list');
         }
 
         return $this->render(
-            'AppBundle:Admin/RiskStrategy:create.html.twig',
+            'AppBundle:Admin/WorkPackageStatus:create.html.twig',
             [
                 'form' => $form->createView(),
             ]
@@ -128,24 +127,24 @@ class RiskStrategyController extends BaseController
     }
 
     /**
-     * Displays a form to edit an existing RiskStrategy entity.
+     * Displays a form to edit an existing WorkPackageStatus entity.
      *
-     * @Route("/{id}/edit", name="app_admin_risk_strategy_edit", options={"expose"=true})
+     * @Route("/{id}/edit", name="app_admin_workpackage_status_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Request      $request
-     * @param RiskStrategy $riskStrategy
+     * @param Request           $request
+     * @param WorkPackageStatus $workPackageStatus
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Request $request, RiskStrategy $riskStrategy)
+    public function editAction(Request $request, WorkPackageStatus $workPackageStatus)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(CreateType::class, $riskStrategy);
+        $form = $this->createForm(CreateType::class, $workPackageStatus);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($riskStrategy);
+            $em->persist($workPackageStatus);
             $em->flush();
 
             $this
@@ -155,37 +154,37 @@ class RiskStrategyController extends BaseController
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('success.risk_strategy.edit', [], 'flashes')
+                        ->trans('success.workpackage_status.edit', [], 'flashes')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_risk_strategy_list');
+            return $this->redirectToRoute('app_admin_workpackage_show');
         }
 
         return $this->render(
-            'AppBundle:Admin/RiskStrategy:edit.html.twig',
+            'AppBundle:Admin/WorkPackageStatus:edit.html.twig',
             [
-                'id' => $riskStrategy->getId(),
+                'id' => $workPackageStatus->getId(),
                 'form' => $form->createView(),
             ]
         );
     }
 
     /**
-     * Deletes a specific RiskStrategy entity.
+     * Deletes a specific WorkPackageStatus entity.
      *
-     * @Route("/{id}/delete", name="app_admin_risk_strategy_delete", options={"expose"=true})
+     * @Route("/{id}/delete", name="app_admin_workpackage_status_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request      $request
-     * @param RiskStrategy $riskStrategy
+     * @param Request           $request
+     * @param WorkPackageStatus $workPackageStatus
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(Request $request, RiskStrategy $riskStrategy)
+    public function deleteAction(Request $request, WorkPackageStatus $workPackageStatus)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($riskStrategy);
+        $em->remove($workPackageStatus);
         $em->flush();
 
         if ($request->isXmlHttpRequest()) {
@@ -203,10 +202,10 @@ class RiskStrategyController extends BaseController
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.risk_strategy.delete.from_edit', [], 'flashes')
+                    ->trans('success.workpackage_status.delete.from_edit', [], 'flashes')
             )
         ;
 
-        return $this->redirectToRoute('app_admin_risk_strategy_list');
+        return $this->redirectToRoute('app_admin_workpackage_status_list');
     }
 }
