@@ -2,35 +2,14 @@
 
 namespace MainBundle\Controller\API;
 
-use JMS\Serializer\SerializationContext;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use MainBundle\Controller\BaseController;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-abstract class ApiController extends Controller
+abstract class ApiController extends BaseController
 {
-    protected function createApiResponse($data, $statusCode = Response::HTTP_OK)
-    {
-        if (empty($data)) {
-            return new JsonResponse('', JsonResponse::HTTP_NO_CONTENT);
-        }
-
-        $serializedData = $this
-            ->container
-            ->get('jms_serializer')
-            ->toArray(
-                $data,
-                (new SerializationContext())->setSerializeNull(true)
-            )
-        ;
-
-        return new JsonResponse($serializedData, $statusCode);
-    }
-
     protected function getFormErrors(Form $form)
     {
         $errors = [];
