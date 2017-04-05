@@ -36,6 +36,7 @@
     "vue-resource": "^1.0.3",
     "vue-router": "^2.1.1",
     "vue-spinner": "^1.0.2",
+    "vue-typeahead": "^2.3.1",
     "vue2-dragula": "^2.4.2",
     "vue2-scrollbar": "0.0.1",
     "vueditor": "^0.2.4",

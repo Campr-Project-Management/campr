@@ -117,6 +117,13 @@ class ProjectUser
     private $showInOrg;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="company", type="string", length=128, nullable=true)
+     */
+    private $company;
+
+    /**
      * @var \DateTime
      *
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
@@ -418,6 +425,22 @@ class ProjectUser
     }
 
     /**
+     * @return string
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * @param string $company
+     */
+    public function setCompany($company)
+    {
+        $this->company = $company;
+    }
+
+    /**
      * Returns user id.
      *
      * @Serializer\VirtualProperty()
@@ -506,6 +529,19 @@ class ProjectUser
     public function getUserEmail()
     {
         return $this->user ? $this->user->getEmail() : null;
+    }
+
+    /**
+     * Returns user phone.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userPhone")
+     *
+     * @return string
+     */
+    public function getUserPhone()
+    {
+        return $this->user ? $this->user->getPhone() : null;
     }
 
     /**
