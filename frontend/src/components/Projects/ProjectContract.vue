@@ -172,7 +172,7 @@ export default {
     },
     watch: {
         contract(value) {
-            this.proposedStartDate = this.contract.proposedStartDate ? Date(this.contract.proposedStartDate) : new Date();
+            this.proposedStartDate = this.contract.proposedStartDate ? new Date(this.contract.proposedStartDate) : new Date();
             this.proposedEndDate = this.contract.proposedEndDate ? new Date(this.contract.proposedEndDate) : new Date();
             this.forecastStartDate = this.contract.forecastStartDate ? new Date(this.contract.forecastStartDate) : new Date();
             this.forecastEndDate = this.contract.forecastEndDate ? new Date(this.contract.forecastEndDate) : new Date();
@@ -181,34 +181,34 @@ export default {
             this.rowsInternal = [
                 [
                     Translator.trans('message.total'),
-                    parseInt(this.projectResources.internal.base),
-                    parseInt(this.projectResources.internal.change),
-                    parseInt(this.projectResources.internal.actual),
-                    parseInt(this.projectResources.internal.remaining),
-                    parseInt(this.projectResources.internal.forecast),
+                    parseInt(this.projectResources.internal.base || 0, 10),
+                    parseInt(this.projectResources.internal.change || 0, 10),
+                    parseInt(this.projectResources.internal.actual || 0, 10),
+                    parseInt(this.projectResources.internal.remaining || 0, 10),
+                    parseInt(this.projectResources.internal.forecast || 0, 10),
                 ],
             ];
             this.rowsExternal = [
                 [
                     Translator.trans('message.total'),
-                    parseInt(this.projectResources.external.base),
-                    parseInt(this.projectResources.external.change),
-                    parseInt(this.projectResources.external.actual),
-                    parseInt(this.projectResources.external.remaining),
-                    parseInt(this.projectResources.external.forecast),
+                    parseInt(this.projectResources.external.base || 0, 10),
+                    parseInt(this.projectResources.external.change || 0, 10),
+                    parseInt(this.projectResources.external.actual || 0, 10),
+                    parseInt(this.projectResources.external.remaining || 0, 10),
+                    parseInt(this.projectResources.external.forecast || 0, 10),
                 ],
             ];
             this.options.vAxis.maxValue = Math.max(
-                parseInt(this.projectResources.internal.base),
-                parseInt(this.projectResources.internal.change),
-                parseInt(this.projectResources.internal.actual),
-                parseInt(this.projectResources.internal.remaining),
-                parseInt(this.projectResources.internal.forecast),
-                parseInt(this.projectResources.external.base),
-                parseInt(this.projectResources.external.change),
-                parseInt(this.projectResources.external.actual),
-                parseInt(this.projectResources.external.remaining),
-                parseInt(this.projectResources.external.forecast)
+                parseInt(this.projectResources.internal.base || 0, 10),
+                parseInt(this.projectResources.internal.change || 0, 10),
+                parseInt(this.projectResources.internal.actual || 0, 10),
+                parseInt(this.projectResources.internal.remaining || 0, 10),
+                parseInt(this.projectResources.internal.forecast || 0, 10),
+                parseInt(this.projectResources.external.base || 0, 10),
+                parseInt(this.projectResources.external.change || 0, 10),
+                parseInt(this.projectResources.external.actual || 0, 10),
+                parseInt(this.projectResources.external.remaining || 0, 10),
+                parseInt(this.projectResources.external.forecast || 0, 10)
             );
         },
     },
