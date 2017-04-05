@@ -1,4 +1,7 @@
 message:
+    displaying: Displaying
+    results_out_of: results out of
+    edit_project_organization: Edit Project Organization
     dashboard: Dashboard
     filter_by: Filter By
     customer: Customer
@@ -153,6 +156,7 @@ message:
     capex_subtotal: Capex Subtotal
     opex_subtotal: Opex Subtotal
     attachments: Attachments
+    view_team: View Team
 
 menu:
     users: Users
@@ -656,8 +660,11 @@ label:
     duration_in_days: Duration in Days
     select_successors: Select Successors
     select_predecessors: Select Predecessors
+    distribution_list_title: Distribution List Title
 
 button:
+    show_selected: Show Selected
+    create_distribution: Create Distribution List
     sign_in: Sign In
     login: Login
     logout: Logout
@@ -700,6 +707,7 @@ checkbox:
 add:
     resource: Add new resource
     cost: Add new cost
+    new_team_members: Add New Team Members
     user: Add new user
     status: Add new status
     schedule: Add new schedule
@@ -751,6 +759,8 @@ add:
     project_deliverable: Add new project deliverable
 
 placeholder:
+    search_resources: Search for resources
+    search_members: Seach For Members
     user: Choose one user
     sponsor: Choose one sponsor
     manager: Choose one manager
@@ -809,6 +819,13 @@ placeholder:
 table_header_cell:
     rate: Rate
     quantity: Quantity
+    raci: Raci
+    org: Org
+    distribution_lists: Distribution Lists
+    subteam: Subteam
+    contact: Contact
+    department: Department
+    role: Role
     resource: Resource
     id: Id
     puid: Puid
@@ -1034,6 +1051,8 @@ exception:
         user: Please add one user as option parameter
 
 copyright: Copyright &copy; 2015 Material Admin
+
+bad_request: Bad request!
 
 choices:
     red: Red
