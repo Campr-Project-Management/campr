@@ -5,10 +5,10 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\Contract;
 use AppBundle\Security\ProjectVoter;
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use MainBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Form\Contract\CreateType as ContractCreateType;
@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @Route("/admin/contract")
  */
-class ContractController extends Controller
+class ContractController extends BaseController
 {
     /**
      * Lists all Contract entities.
@@ -63,7 +63,7 @@ class ContractController extends Controller
         $dataTableService = $this->get('app.service.data_table');
         $response = $dataTableService->paginateByColumn(Contract::class, 'name', $requestParams);
 
-        return new JsonResponse($response);
+        return $this->createApiResponse($response);
     }
 
     /**

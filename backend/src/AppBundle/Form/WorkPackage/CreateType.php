@@ -6,6 +6,7 @@ use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Label;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\WorkPackageCategory;
+use AppBundle\Entity\WorkPackageStatus;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -59,6 +60,18 @@ class CreateType extends AbstractType
                     ]),
                 ],
                 'translation_domain' => 'messages',
+            ])
+            ->add('workPackageStatus', EntityType::class, [
+                'class' => WorkPackageStatus::class,
+                'choice_label' => 'name',
+                'placeholder' => 'placeholder.status',
+                'query_builder' => function (EntityRepository $er) {
+                    $qb = $er->createQueryBuilder('q');
+
+                    return $qb->where($qb->expr()->isNull('q.project'));
+                },
+                'translation_domain' => 'messages',
+                'choice_translation_domain' => 'messages',
             ])
             ->add('parent', EntityType::class, [
                 'class' => WorkPackage::class,
