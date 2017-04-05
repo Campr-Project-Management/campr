@@ -87,7 +87,7 @@ class DataTableService
         $response = [
             'current' => intval($requestParams['current']),
             'rowCount' => intval($requestParams['rowCount']),
-            'rows' => json_decode($this->serializer->serialize($entries, 'json')),
+            'rows' => $entries,
             'total' => intval($entriesNumber),
         ];
 
