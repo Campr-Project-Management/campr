@@ -360,6 +360,10 @@ title:
         list: Work Package Category
         create: Create Work Package Category
         edit: Edit Work Package Category
+    workpackage_status:
+        list: Work Package Status
+        create: Create Work Package Status
+        edit: Edit Work Package Status
     programme:
         list: Programme
         create: Create Programme
@@ -424,6 +428,7 @@ subtitle:
     label: List of project labels
     contract: List of contracts
     workpackage_category: List of work package categories
+    workpackage_status: List of work package statuses
     programme: List of programmes
     project_objective: List of project objectives
     project_limitation: List of project limitations
@@ -523,6 +528,7 @@ label:
     is_enterprise: Enterprise
     is_cost_resource: Cost resource
     is_budget: Budget
+    is_visible: Visible
     start: Start
     end: End
     duration: Duration
@@ -600,6 +606,7 @@ label:
     search_for_tasks: Search for tasks
     default: Default
     workpackage_category: Work Package Category
+    workpackage_status: Work Package Status
     programme: Programme
     dependencies: Dependencies
     dependants: Dependants
@@ -685,6 +692,7 @@ add:
     label: Add new label
     contract: Add new contract
     workpackage_category: Add new work package category
+    workpackage_status: Add new work package status
     programme: Add new programme
     project_objective: Add new project objective
     project_limitation: Add new project limitation
@@ -739,6 +747,7 @@ placeholder:
     label_description: Label Description
     label_color: Label Color
     workpackage_category: Work Package Category
+    workpackage_status: Work Package Status
     programme: Programme
     type: Type
 
@@ -829,6 +838,7 @@ table_header_cell:
     is_enterprise: Is Enterprise
     is_cost_resource: Is Cost Resource
     is_budget: Is Budget
+    visible: Visible
     topic: Topic
     start: Start
     end: End
@@ -894,6 +904,7 @@ table_header_cell:
     forecast_start_date: Forecast Start Date
     forecast_end_date: Forecast End Date
     workpackage_category: Work Package Category
+    workpackage_status: Work Package Status
     contract: Contract
 
 link:

@@ -5,10 +5,10 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\ProjectDeliverable;
 use AppBundle\Security\ProjectVoter;
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use MainBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Form\ProjectDeliverable\CreateType;
@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @Route("/admin/project-deliverable")
  */
-class ProjectDeliverableController extends Controller
+class ProjectDeliverableController extends BaseController
 {
     /**
      * Lists all ProjectDeliverable entities.
@@ -63,7 +63,7 @@ class ProjectDeliverableController extends Controller
         $dataTableService = $this->get('app.service.data_table');
         $response = $dataTableService->paginateByColumn(ProjectDeliverable::class, 'description', $requestParams);
 
-        return new JsonResponse($response);
+        return $this->createApiResponse($response);
     }
 
     /**
