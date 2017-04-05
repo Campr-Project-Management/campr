@@ -315,7 +315,7 @@ class ProjectController extends ApiController
     /**
      * Create a new DistributionList.
      *
-     * @Route("/{id}/distribution-lists", name="app_api_project_distribution_list_create")
+     * @Route("/{id}/distribution-lists", name="app_api_project_distribution_list_create", options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request $request
@@ -325,15 +325,14 @@ class ProjectController extends ApiController
      */
     public function createDistributionListAction(Request $request, Project $project)
     {
-        $distributionList = new DistributionList();
-        $distributionList->setCreatedBy($this->getUser());
-        $distributionList->setProject($project);
-
-        $form = $this->createForm(DistributionCreateType::class, $distributionList, ['csrf_protection' => false]);
+        $form = $this->createForm(DistributionCreateType::class, new DistributionList(), ['csrf_protection' => false]);
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $distributionList = $form->getData();
+            $distributionList->setCreatedBy($this->getUser());
+            $distributionList->setProject($project);
             $em->persist($distributionList);
             $em->flush();
 
@@ -555,9 +554,33 @@ class ProjectController extends ApiController
      *
      * @return JsonResponse
      */
-    public function projectUsersAction(Project $project)
+    public function projectUsersAction(Request $request, Project $project)
     {
-        return $this->createApiResponse($project->getProjectUsers());
+        $filters = $request->query->all();
+        if (empty($filters)) {
+            return $this->createApiResponse($project->getProjectUsers());
+        }
+
+        $usersQuery = $this
+            ->getDoctrine()
+            ->getRepository(ProjectUser::class)
+            ->getQueryByUserFullName($filters)
+        ;
+
+        $pageSize = $this->getParameter('front.per_page');
+        $currentPage = isset($filters['page']) ? $filters['page'] : 1;
+        $paginator = new Paginator($usersQuery);
+        if (!isset($filters['search'])) {
+            $paginator
+                ->getQuery()
+                ->setFirstResult($pageSize * ($currentPage - 1))
+                ->setMaxResults($pageSize)
+            ;
+        }
+        $responseArray['totalItems'] = count($paginator);
+        $responseArray['items'] = $paginator->getIterator()->getArrayCopy();
+
+        return $this->createApiResponse($responseArray);
     }
 
     /**
