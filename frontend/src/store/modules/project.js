@@ -24,7 +24,7 @@ const getters = {
     projectsForFilter: state => state.itemsForFilter,
     labelsForChoice: state => state.labelsForChoice,
     sponsorsManagers: state => state.sponsorsManagers,
-    projectResources: state => state.projectResources,
+    projectResources: (state) => _.merge({internal: {}, external: {}}, state.projectResources),
 };
 
 const actions = {
