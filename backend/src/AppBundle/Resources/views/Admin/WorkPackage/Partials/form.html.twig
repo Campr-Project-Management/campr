@@ -50,6 +50,15 @@
     }
 ) }}
 {{ form_widget(
+    form.workPackageStatus,
+    {
+        'attr': {
+            'class': 'selectpicker',
+        },
+        'label': 'label.status'|trans
+    }
+) }}
+{{ form_widget(
     form.progress,
     {
         'attr': {

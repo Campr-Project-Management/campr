@@ -3,9 +3,9 @@
 namespace AppBundle\Controller\Admin;
 
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use MainBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @Route("/admin/todo")
  */
-class TodoController extends Controller
+class TodoController extends BaseController
 {
     /**
      * List all Todo entities.
@@ -61,7 +61,7 @@ class TodoController extends Controller
         $dataTableService = $this->get('app.service.data_table');
         $response = $dataTableService->paginateByColumn(Todo::class, 'title', $requestParams);
 
-        return new JsonResponse($response);
+        return $this->createApiResponse($response);
     }
 
     /**
