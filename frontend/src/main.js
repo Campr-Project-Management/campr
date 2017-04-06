@@ -15,6 +15,7 @@ import Vueditor from 'vueditor';
 import './css/vueditor.css';
 import VueCookie from 'vue-cookie';
 import VeeValidate from 'vee-validate';
+import './util/Translator';
 
 Vue.use(VueResource);
 Vue.use(Vue2Dragula);
