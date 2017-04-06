@@ -9,57 +9,11 @@ $secondColor: #5FC3A5;
 $secondDarkColor: #197252;
 $warningColor: #CCBA54;
 $dangerColor: #C87369;
-$white: #ffffff;
-$gray: #5a5a5a;
+$whiteColor: #ffffff;
+$grayColor: #5a5a5a;
 
 $additionalColor1: #E2C94D;
 $additionalColor2: #E04FCC;
 $additionalColor3: #50C9DD;
 $additionalColor4: #5EDD50;
 $additionalColor5: #D87F52;
-
-.lighter-fill {
-  fill: $lighterColor;
-}
-.lighter-stroke {
-  stroke: $lighterColor;
-}
-.middle-fill {
-  fill: $middleColor;
-}
-.second-fill {
-  fill: $secondColor;
-}
-.danger-fill {
-  fill: $dangerColor;
-}
-.middle-stroke {
-  stroke: $middleColor;
-}
-.second-bg {
-  background: $secondColor !important;
-}
-.warning-bg {
-  background: $warningColor !important;
-}
-.danger-bg {
-  background: $dangerColor !important;
-}
-.disable-bg {
-  background: #5A5A5A !important;
-}
-.second-dark-bg {
-  background: $secondDarkColor !important;
-}
-.second-color {
-  color: $secondColor !important;
-}
-.warning-color {
-  color: $warningColor !important;
-}
-.danger-color {
-  color: $dangerColor !important;
-}
-.danger-border {
-  border: 1px solid $dangerColor !important;
-}
