@@ -91,6 +91,19 @@ export default {
         background: $secondColor !important;
         border: 2px solid $secondDarkColor !important;
     }
+
+    .task-sidebar {
+        .irs-line {
+            background: $middleColor !important;
+            border: none !important;
+        }
+
+        .irs-bar,
+        .irs-bar-edge {
+            background: $secondColor !important;
+            border: none !important;
+        }
+    }
 </style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
