@@ -28,7 +28,7 @@
     height: 189px;
   }
 
-  .header {
+  .box-header {
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid $middleColor;
@@ -78,20 +78,21 @@ table {
 
   .tag {
     position: absolute;
-    top: -1px;
-    left: -1px;
-    border: 17px solid transparent;
+    top: -2px;
+    left: -2px;
+    border: 20px solid transparent;
     border-left-color: $secondColor;
     border-top-color: $secondColor;
 
     span {
       position: absolute;
-      font-size: 7px;
-      top: -10px;
+      font-size: 9px;
+      top: -11px;
       transform: rotate(-45deg);
-      left: -14px;
+      left: -17px;
       text-transform: uppercase;
       color: $secondDarkColor;
+      font-weight: 500;
     }
   }
 }

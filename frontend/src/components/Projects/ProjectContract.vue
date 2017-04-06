@@ -461,7 +461,7 @@ export default {
         }
 
         &.right {
-            padding-top: 50px;
+            padding-top: 55px;
             padding-left: 15px;
         }
     }
