@@ -1,0 +1,75 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'title.workpackage_status.list'|trans }}<small>{{ workPackageStatus.name }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_workpackage_status_create') }}">{{ 'add.workpackage_status'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_workpackage_status_edit', {'id': workPackageStatus.id}) }}">{{ 'button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_workpackage_status_list') }}">{{ 'button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body m-t-10 card-padding">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <th>{{ 'table_header_cell.id'|trans }}</th>
+                                <td>{{ workPackageStatus.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.name'|trans }}</th>
+                                <td>{{ workPackageStatus.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.sequence'|trans }}</th>
+                                <td>{{ workPackageStatus.sequence }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.project'|trans }}</th>
+                                <td>{{ workPackageStatus.project.name|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.visible'|trans }}</th>
+                                <td>
+                                    {% if workPackageStatus.visible %}
+                                        <span class="c-green">{{ 'message.yes'|trans }}</span>
+                                    {% else %}
+                                        <span class="c-red">{{ 'message.no'|trans }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.created_at'|trans }}</th>
+                                <td>{{ workPackageStatus.createdAt|date('d/m/Y') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.updated_at'|trans }}</th>
+                                <td>{{ workPackageStatus.updatedAt|date('d/m/Y') }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

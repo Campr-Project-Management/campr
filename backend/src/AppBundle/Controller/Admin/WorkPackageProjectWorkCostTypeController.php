@@ -3,9 +3,9 @@
 namespace AppBundle\Controller\Admin;
 
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use MainBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @Route("/admin/workpackage-projectworkcost")
  */
-class WorkPackageProjectWorkCostTypeController extends Controller
+class WorkPackageProjectWorkCostTypeController extends BaseController
 {
     /**
      * List all WorkPackageProjectWorkCostType entities.
@@ -38,7 +38,7 @@ class WorkPackageProjectWorkCostTypeController extends Controller
         ;
 
         return $this->render(
-            'AppBundle:Admin\WorkPackageProjectWorkCostType:list.html.twig',
+            'AppBundle:Admin/WorkPackageProjectWorkCostType:list.html.twig',
             [
                 'workProjectTypes' => $workProjectTypes,
             ]
@@ -61,7 +61,7 @@ class WorkPackageProjectWorkCostTypeController extends Controller
         $dataTableService = $this->get('app.service.data_table');
         $response = $dataTableService->paginateByColumn(WorkPackageProjectWorkCostType::class, 'name', $requestParams);
 
-        return new JsonResponse($response);
+        return $this->createApiResponse($response);
     }
 
     /**
@@ -119,7 +119,7 @@ class WorkPackageProjectWorkCostTypeController extends Controller
         }
 
         return $this->render(
-            'AppBundle:Admin\WorkPackageProjectWorkCostType:create.html.twig',
+            'AppBundle:Admin/WorkPackageProjectWorkCostType:create.html.twig',
             [
                 'form' => $form->createView(),
             ]
@@ -163,7 +163,7 @@ class WorkPackageProjectWorkCostTypeController extends Controller
         }
 
         return $this->render(
-            'AppBundle:Admin\WorkPackageProjectWorkCostType:edit.html.twig',
+            'AppBundle:Admin/WorkPackageProjectWorkCostType:edit.html.twig',
             [
                 'id' => $workProjectType->getId(),
                 'form' => $form->createView(),

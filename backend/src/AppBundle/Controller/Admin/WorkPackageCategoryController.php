@@ -4,10 +4,10 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\WorkPackageCategory;
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use MainBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Form\WorkPackageCategory\CreateType;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @Route("/admin/workpackage-category")
  */
-class WorkPackageCategoryController extends Controller
+class WorkPackageCategoryController extends BaseController
 {
     /**
      * Lists all WorkPackageCategory entities.
@@ -62,7 +62,7 @@ class WorkPackageCategoryController extends Controller
         $dataTableService = $this->get('app.service.data_table');
         $response = $dataTableService->paginateByColumn(WorkPackageCategory::class, 'name', $requestParams);
 
-        return new JsonResponse($response);
+        return $this->createApiResponse($response);
     }
 
     /**
