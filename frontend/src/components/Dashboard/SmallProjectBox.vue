@@ -1,6 +1,6 @@
 <template>
     <div class="project-box box small-box">
-        <div class="header">
+        <div class="box-header">
             <h2>
                 <router-link :to="{name: 'project-dashboard', params: { id: project.id }}">
                     {{ project.name }}
@@ -83,6 +83,8 @@ export default {
       font-size: 11px;
       letter-spacing: 0.5px;
       margin-left: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
     }
 
     .status-label {

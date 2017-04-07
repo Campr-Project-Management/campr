@@ -2,6 +2,22 @@
  * vueditor v0.2.4
  * https://github.com/hifarer/Vueditor.git
  */
+.vueditor-holder {
+    position: relative;
+}
+
+.vueditor-header {
+    position: absolute;
+    color: #8794C4;
+    top: 16px;
+    left: 20px;
+    z-index: 2;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;  
+    font-weight: 400; 
+}
+
 .vueditor {
     border: none !important;
     background: #191E37;

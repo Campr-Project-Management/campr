@@ -65,8 +65,104 @@ h2 {
     }
 }
 
+.lighter-fill {
+  fill: $lighterColor;
+}
+.lighter-stroke {
+  stroke: $lighterColor;
+}
+.middle-fill {
+  fill: $middleColor;
+}
+.second-fill {
+  fill: $secondColor;
+}
+.danger-fill {
+  fill: $dangerColor;
+}
+.middle-stroke {
+  stroke: $middleColor;
+}
+.second-bg {
+  background: $secondColor !important;
+}
+.warning-bg {
+  background: $warningColor !important;
+}
+.danger-bg {
+  background: $dangerColor !important;
+}
+.disable-bg {
+  background: #5A5A5A !important;
+}
+.second-dark-bg {
+  background: $secondDarkColor !important;
+}
+.second-color {
+  color: $secondColor !important;
+}
+.warning-color {
+  color: $warningColor !important;
+}
+.danger-color {
+  color: $dangerColor !important;
+}
+.danger-border {
+  border: 1px solid $dangerColor !important;
+}
+
+.margintop20 {
+  margin-top: 20px;
+}
+
+.table {
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+
+.cell {
+    display: table-cell;
+    vertical-align: middle;
+
+    &.align-top {
+      vertical-align: top;
+    }
+}
+
+img {
+  max-width: 100%;
+}
+
 .input-holder {
   position: relative;
+
+  label {
+    font-weight: 400;
+    text-transform: uppercase;
+    cursor: text;
+    position: absolute;
+    left: 20px;
+    top: 14px;
+    color: $lightColor;
+    font-size: 11px;
+    display: inline-block;
+    letter-spacing: 1.5px;
+    @include transition(all, 0.2s, ease-in);
+
+    &.active{
+      top: -15px;
+      left: 20px;
+      font-style: oblique;
+      font-size: 0.8em;
+    }
+  }
+
+  .calendar-icon {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+  }
 }
 
 input[type=text],
@@ -88,8 +184,8 @@ textarea {
   }
 
   &[disabled]{
-    background-color: $gray;
-    color: lighten($gray, 25%);
+    background-color: $grayColor;
+    color: lighten($grayColor, 25%);
     pointer-events: none;
   }
 }
@@ -97,27 +193,6 @@ textarea {
 textarea {
   min-height: 100px;
   resize: none;
-}
-
-.input-holder label {
-  font-weight: 400;
-  text-transform: uppercase;
-  cursor: text;
-  position: absolute;
-  left: 20px;
-  top: 14px;
-  color: $lightColor;
-  font-size: 11px;
-  display: inline-block;
-  letter-spacing: 1.5px;
-  @include transition(all, 0.2s, ease-in);
-
-  &.active{
-    top: -15px;
-    left: 20px;
-    font-style: oblique;
-    font-size: 0.8em;
-  }
 }
 
 .btn-rounded {
@@ -133,6 +208,7 @@ textarea {
   width: 200px;
   letter-spacing: 1.2px;
   font-weight: 400;
+  border: none;
   @include transition(all, 0.2s, ease-in);
 
   &:hover,
@@ -143,7 +219,7 @@ textarea {
   }
 
   &.second-bg {
-    color: $white;
+    color: $whiteColor;
 
     &:hover,
     &:active,
@@ -158,16 +234,58 @@ textarea {
   width: auto;
 }
 
+.btn-notification {
+    position: relative;
+    padding-right: 33px;
+    height: 30px;
+    font-size: 10px;
+    line-height: 30px;
+
+    .notification-balloon {
+        display: block;
+        position: absolute;
+        margin: 0;
+        right: 5px;
+        top: -1px;
+    }
+
+    &.active {
+        background-color: $middleColor;
+
+        .notification-balloon {
+            background-color: $mainColor;
+            color: $lighterColor; 
+        }
+    }
+}
+
 .btn-md {
   height: 30px;
   line-height: 30px;
   padding: 0 14px;
   font-size: 8px;
+
+  .icon {
+    width: 10px;
+    height: 10px;
+    margin-left: 5px;
+    position: relative;
+    top: 2px;
+
+    svg {
+      width: 10px;
+      height: 10px;
+    }
+  }
 }
 
 .btn-empty {
   background: transparent;
   border: 1px solid $middleColor;
+
+  svg {
+    fill: $lighterColor;
+  }
 
   &:hover,
   &:active,
@@ -177,7 +295,37 @@ textarea {
   }
 }
 
+.btn-icon {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    @include transition(all, 0.2s, ease-in);
+  }
+
+  &:hover,
+  &:focus {
+    outline: 0;
+
+    svg {
+      @include opacity(0.8);
+    }
+  }
+}
+
+&.btn-disabled {
+  pointer-events: none;
+  border-color: $grayColor;
+  color: $grayColor;
+}
+
 .simple-link {
+  padding: 0;
+  border: none;
+  background-color: transparent;
   font-weight: 700;
   color: $secondColor;
   @include transition(color, 0.2s, ease-in);
@@ -335,7 +483,7 @@ hr {
 }
 
 .vue-switcher-theme--default.vue-switcher-color--default div:after {
-  background-color: $dangerColor !important;
+  background-color: $secondColor !important;
   height: 22px;
   width: 22px;
   margin-left: -27px;
@@ -348,13 +496,38 @@ hr {
 }
 
 .vue-switcher-theme--default.vue-switcher-color--default.vue-switcher--unchecked div:after {
-  background-color: $secondColor !important;
+  background-color: $dangerColor !important;
 }
 
 .vue-switcher-theme--default.vue-switcher-color--default div {
   background-color: $darkColor !important;
   height: 30px;
   width: 60px;
+}
+
+.task-sidebar {
+    .vue-switcher-theme--default.vue-switcher-color--default {
+        div {
+            height: 20px;
+            width: 40px;
+
+            &:after {
+                height: 14px;
+                width: 14px;
+                margin-left: -18px;
+                top: 3px;
+            }
+        }
+
+        &.vue-switcher--unchecked {
+            div {
+                &:after {
+                    left: 22px !important;
+                    margin-left: -18px !important;
+                }
+            }
+        }
+    }
 }
 
 .vue-scrollbar__wrapper {
@@ -448,4 +621,85 @@ hr {
     display: table;
     clear: both;
   }
+}
+
+.table {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 1.8px;
+
+  >thead {
+    >tr {
+      >th {
+        border-bottom: none;
+        background: $darkColor;
+        text-transform: uppercase;
+        vertical-align: middle;
+        height: 60px;        
+        padding: 8px 30px;
+        padding-bottom: 0;
+        font-weight: 400;
+        border: none;
+
+        th {
+            padding: 8px 30px;
+        }
+
+        p {
+          padding: 8px 0;
+
+          &.small {
+            size: 8px;
+          }
+        }
+
+        &.no-padding {
+          padding: 0;
+        }
+      }
+    }
+  }
+
+  >tbody {
+    >tr {
+      >td {
+        border: none;
+        vertical-align: middle;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: 8px 30px;
+      }
+    }
+  }
+
+  >tbody>tr:nth-of-type(odd) {
+    background: $mainColor;
+  }
+
+  >tbody>tr:nth-of-type(even) {
+    background: $semiDarkColor;
+  }
+
+  tr.column-warning {
+    td {
+      color: $warningColor;
+    }
+  }
+
+  tr.column-alert {
+    td {
+      color: $dangerColor;
+    }
+  }
+
+  .avatar img {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+  }
+}
+
+.vue-scrollbar__wrapper {
+  background-color: transparent !important;
 }
