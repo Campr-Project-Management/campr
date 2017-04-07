@@ -12,11 +12,11 @@ use AppBundle\Entity\User;
 use AppBundle\Form\Project\ImportType;
 use AppBundle\Security\ProjectVoter;
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use MainBundle\Controller\API\ApiController;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Project;
@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @Route("/admin/project")
  */
-class ProjectController extends Controller
+class ProjectController extends ApiController
 {
     /**
      * Lists all Project entities.
@@ -72,7 +72,9 @@ class ProjectController extends Controller
         $dataTableService = $this->get('app.service.data_table');
         $response = $dataTableService->paginateByColumn(Project::class, 'name', $requestParams);
 
-        return new JsonResponse($response);
+        //dump($response);die;
+        return $this->createApiResponse($response);
+        //return new JsonResponse($response);
     }
 
     /**

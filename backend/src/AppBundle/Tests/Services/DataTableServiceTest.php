@@ -57,13 +57,6 @@ class DataTableServiceTest extends \PHPUnit_Framework_TestCase
     {
         $self = $this;
 
-        $this
-            ->serializer
-            ->expects($this->once())
-            ->method('serialize')
-            ->willReturn(null)
-        ;
-
         $repository = $this
             ->getMockBuilder($repositoryObjectName)
             ->disableOriginalConstructor()
@@ -100,7 +93,7 @@ class DataTableServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(1, $result['current'], 'Current do not match');
         $this->assertSame(10, $result['rowCount'], 'Row count do not match');
-        $this->assertSame(null, $result['rows'], 'Rows do not match');
+        $this->assertSame(array(), $result['rows'], 'Rows do not match');
         $this->assertSame(1, $result['total'], 'Current total do not match');
     }
 

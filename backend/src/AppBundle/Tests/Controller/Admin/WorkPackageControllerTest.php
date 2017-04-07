@@ -25,6 +25,8 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('name="create[name]"', $crawler->html());
         $this->assertContains('id="create_type"', $crawler->html());
         $this->assertContains('name="create[type]"', $crawler->html());
+        $this->assertContains('id="create_workPackageStatus"', $crawler->html());
+        $this->assertContains('name="create[workPackageStatus]"', $crawler->html());
         $this->assertContains('id="create_progress"', $crawler->html());
         $this->assertContains('name="create[progress]"', $crawler->html());
         $this->assertContains('id="create_parent"', $crawler->html());
@@ -167,6 +169,8 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('name="create[name]"', $crawler->html());
         $this->assertContains('id="create_type"', $crawler->html());
         $this->assertContains('name="create[type]"', $crawler->html());
+        $this->assertContains('id="create_workPackageStatus"', $crawler->html());
+        $this->assertContains('name="create[workPackageStatus]"', $crawler->html());
         $this->assertContains('id="create_progress"', $crawler->html());
         $this->assertContains('name="create[progress]"', $crawler->html());
         $this->assertContains('id="create_parent"', $crawler->html());
