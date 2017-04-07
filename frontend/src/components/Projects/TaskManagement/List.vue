@@ -1,18 +1,19 @@
 <template>
     <div class="project-task-management page-section">
+        <!-- /// Tasks List Header /// -->
         <div class="header flex flex-space-between">
             <div class="flex">
                 <h1>{{ message.project_tasks }}</h1>
                 <div class="flex flex-v-center">
-                    <a class="btn-rounded btn-auto second-bg btn-md">
+                    <a class="btn-rounded btn-auto btn-empty btn-notification active">
                         <span>Open</span>
-                        <span class="notification-balloon second-dark-bg">12</span>
+                        <span class="notification-balloon">12</span>
                     </a>
-                    <a class="btn-rounded btn-auto btn-empty btn-md">
+                    <a class="btn-rounded btn-auto btn-empty btn-notification">
                         <span>Closed</span>
                         <span class="notification-balloon">12</span>
                     </a>
-                    <a class="btn-rounded btn-auto btn-empty btn-md">
+                    <a class="btn-rounded btn-auto btn-empty btn-notification">
                         <span>All</span>
                         <span class="notification-balloon">12</span>
                     </a>
@@ -25,6 +26,9 @@
                 <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">{{ message.new_task }}</router-link>
             </div>
         </div>
+        <!-- /// End Tasks List Header /// -->
+
+        <!-- /// Tasks Filters /// -->
         <div class="flex">
             <input-field type="text" v-bind:label="label.search_for_tasks" class="search"></input-field>
             <dropdown title="Asignee" options=""></dropdown>
@@ -33,16 +37,21 @@
             <dropdown title="Filter By" options=""></dropdown>
             <a class="btn-rounded btn-auto">{{ button.show_results }}</a>
         </div>
+        <!-- /// End Tasks Filters /// -->
 
+        <!-- /// Tasks List /// -->
         <div class="tasks">
+            <!-- /// Tasks Grid View /// -->
             <div class="grid-view" v-show="!boardView">
                 <task-box v-bind:task="task" user="user" :colorStatuses="colorStatuses" v-for="task in tasks"></task-box>
             </div>
             <div class="pagination flex flex-center" v-if="count > 0">
                 <span v-for="page in [1,2]" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
             </div>
-            <vue-scrollbar class="categories-scroll">
+            <!-- /// End Tasks Grid View /// -->
 
+            <!-- /// Tasks Board View /// -->
+            <vue-scrollbar class="categories-scroll">
             <div class="board-view" v-show="boardView">
                 <div class="flex">
                     <div class="column" v-for="taskStatus in taskStatuses">
@@ -63,7 +72,9 @@
 
             </div>
             </vue-scrollbar>
+            <!-- /// End Tasks Board View /// -->
         </div>
+        <!-- /// End Tasks List /// -->
     </div>
 </template>
 
