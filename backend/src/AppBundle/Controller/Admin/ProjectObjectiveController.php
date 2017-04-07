@@ -5,10 +5,10 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\ProjectObjective;
 use AppBundle\Security\ProjectVoter;
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use MainBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Form\ProjectObjective\CreateType;
@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @Route("/admin/project-objective")
  */
-class ProjectObjectiveController extends Controller
+class ProjectObjectiveController extends BaseController
 {
     /**
      * Lists all Contract entities.
@@ -63,7 +63,7 @@ class ProjectObjectiveController extends Controller
         $dataTableService = $this->get('app.service.data_table');
         $response = $dataTableService->paginateByColumn(ProjectObjective::class, 'title', $requestParams);
 
-        return new JsonResponse($response);
+        return $this->createApiResponse($response);
     }
 
     /**

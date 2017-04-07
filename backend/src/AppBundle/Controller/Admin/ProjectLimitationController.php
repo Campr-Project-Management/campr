@@ -5,10 +5,10 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\ProjectLimitation;
 use AppBundle\Security\ProjectVoter;
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use MainBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Form\ProjectLimitation\CreateType;
@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @Route("/admin/project-limitation")
  */
-class ProjectLimitationController extends Controller
+class ProjectLimitationController extends BaseController
 {
     /**
      * Lists all ProjectLimitation entities.
@@ -63,7 +63,7 @@ class ProjectLimitationController extends Controller
         $dataTableService = $this->get('app.service.data_table');
         $response = $dataTableService->paginateByColumn(ProjectLimitation::class, 'description', $requestParams);
 
-        return new JsonResponse($response);
+        return $this->createApiResponse($response);
     }
 
     /**
