@@ -1,7 +1,6 @@
 @import '_variables.scss';
 
 .page-section {
-  overflow: hidden;
   padding-bottom: 20px;
 
   &.projects, &.tasks {
@@ -12,7 +11,7 @@
     }
   }
 
-  >.header {
+  .header {
     display: flex;
     justify-content: space-between;
 
@@ -65,6 +64,5 @@
   >.content {
     display: flex;
     flex-flow: row wrap;
-    margin: 0 -12px;
   }
 }
