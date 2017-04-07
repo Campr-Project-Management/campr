@@ -24,6 +24,13 @@ class WorkPackageStatusControllerTest extends BaseController
 
         $this->client->request('GET', '/api/workpackage-statuses', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
+
+        $content = json_decode($response->getContent(), true);
+
+        for ($i = 0; $i < sizeof($responseContent); ++$i) {
+            $responseContent[$i]['createdAt'] = $content[$i]['createdAt'];
+        }
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -40,41 +47,146 @@ class WorkPackageStatusControllerTest extends BaseController
                 Response::HTTP_OK,
                 [
                     [
+                        'project' => null,
+                        'projectName' => null,
                         'id' => 1,
                         'name' => 'label.todo',
                         'sequence' => 0,
                         'visible' => true,
                         'workPackages' => [],
+                        'createdAt' => null,
                     ],
                     [
+                        'project' => null,
+                        'projectName' => null,
                         'id' => 2,
                         'name' => 'label.in_progress',
                         'sequence' => 1,
                         'visible' => true,
                         'workPackages' => [],
+                        'createdAt' => null,
                     ],
                     [
+                        'project' => null,
+                        'projectName' => null,
                         'id' => 3,
                         'name' => 'label.code_review',
                         'sequence' => 2,
                         'visible' => true,
                         'workPackages' => [],
+                        'createdAt' => null,
                     ],
                     [
+                        'project' => null,
+                        'projectName' => null,
                         'id' => 4,
                         'name' => 'label.finished',
                         'sequence' => 3,
                         'visible' => true,
                         'workPackages' => [],
+                        'createdAt' => null,
                     ],
                     [
+                        'project' => null,
+                        'projectName' => null,
                         'id' => 5,
                         'name' => 'label.closed',
                         'sequence' => -1,
                         'visible' => false,
                         'workPackages' => [],
+                        'createdAt' => null,
                     ],
                 ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataForCreateAction
+     *
+     * @param array $content
+     * @param $isResponseSuccessful
+     * @param $responseStatusCode
+     * @param $responseContent
+     */
+    public function testCreateAction(
+        array $content,
+        $isResponseSuccessful,
+        $responseStatusCode,
+        $responseContent
+    ) {
+        $user = $this->getUserByUsername('superadmin');
+        $token = $user->getApiToken();
+
+        $this->client->request('POST', '/api/workpackage-statuses', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $response = $this->client->getResponse();
+
+        $content = json_decode($response->getContent(), true);
+        $responseContent['createdAt'] = $content['createdAt'];
+
+        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals(json_encode($responseContent), $response->getContent());
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForCreateAction()
+    {
+        return [
+            [
+                [
+                    'name' => 'workpackage-status',
+                    'sequence' => 1,
+                    'visible' => true,
+                    'project' => 1,
+                ],
+                true,
+                Response::HTTP_CREATED,
+                [
+                    'project' => 1,
+                    'projectName' => 'project1',
+                    'id' => 6,
+                    'name' => 'workpackage-status',
+                    'sequence' => 1,
+                    'visible' => true,
+                    'workPackages' => [],
+                    'createdAt' => null,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataForDeleteAction()
+     *
+     * @param $isResponseSuccessful
+     * @param $responseStatusCode
+     */
+    public function testDeleteAction(
+        $isResponseSuccessful,
+        $responseStatusCode
+    ) {
+        $user = $this->getUserByUsername('superadmin');
+        $token = $user->getApiToken();
+
+        $this->client->request('DELETE', '/api/workpackage-statuses/6', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $response = $this->client->getResponse();
+
+        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForDeleteAction()
+    {
+        return [
+            [
+                true,
+                Response::HTTP_NO_CONTENT,
             ],
         ];
     }
