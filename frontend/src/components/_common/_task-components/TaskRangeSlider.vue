@@ -33,7 +33,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
   @import '../../../css/_variables.scss';
 
   .task-range-slider {

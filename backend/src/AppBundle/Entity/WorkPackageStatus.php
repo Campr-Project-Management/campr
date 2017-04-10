@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * WorkPackageStatus.
@@ -56,9 +58,40 @@ class WorkPackageStatus
      */
     private $workPackages;
 
+    /**
+     * @var Project
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="workPackageStatuses")
+     * @ORM\JoinColumn(name="project_id", nullable=true)
+     */
+    private $project;
+
+    /**
+     * @var \DateTime
+     *
+     * @Serializer\Type("DateTime<'Y-m-d'>")
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @Serializer\Exclude()
+     * @Gedmo\Timestampable(on="update")
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     */
+    private $updatedAt;
+
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
         $this->workPackages = new ArrayCollection();
+        $this->visible = true;
     }
 
     /**
@@ -79,10 +112,14 @@ class WorkPackageStatus
 
     /**
      * @param string $name
+     *
+     * @return WorkPackageStatus
      */
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -95,10 +132,14 @@ class WorkPackageStatus
 
     /**
      * @param int $sequence
+     *
+     * @return WorkPackageStatus
      */
     public function setSequence($sequence)
     {
         $this->sequence = $sequence;
+
+        return $this;
     }
 
     /**
@@ -151,5 +192,103 @@ class WorkPackageStatus
     public function getWorkPackages()
     {
         return $this->workPackages;
+    }
+
+    /**
+     * Set project.
+     *
+     * @param Project $project
+     *
+     * @return WorkPackageStatus
+     */
+    public function setProject(Project $project = null)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get project.
+     *
+     * @return Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * Set createdAt.
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return WorkPackageStatus
+     */
+    public function setCreatedAt(\DateTime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt.
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt.
+     *
+     * @param \DateTime $updatedAt
+     *
+     * @return WorkPackageStatus
+     */
+    public function setUpdatedAt(\DateTime $updatedAt = null)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt.
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Returns Project id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("project")
+     *
+     * @return string
+     */
+    public function getProjectId()
+    {
+        return $this->project ? $this->project->getId() : null;
+    }
+
+    /**
+     * Returns Project name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectName")
+     *
+     * @return string
+     */
+    public function getProjectName()
+    {
+        return $this->project ? $this->project->getName() : null;
     }
 }
