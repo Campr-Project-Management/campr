@@ -220,12 +220,15 @@
                         <th>Contact</th>
                         <th class="center">Raci</th>
                         <th class="center">Org</th>
-                        <th colspan="2" class="center">
-                            <p>Distribution Lists</p>
-                            <p class="small">
-                                <span>TP Meeting</span>
-                                <span>EK Meeting</span>
-                            </p>
+                        <th colspan="2" class="no-padding">
+                            <table>
+                                <tr>
+                                    <th class="center" colspan="2">Distribution Lists</th>
+                                <tr>
+                                    <th class="center">TP Meeting</th>
+                                    <th class="center">EK Meeting</th>
+                                </tr>
+                            </table>
                         </th>
                     </tr>
                 </thead>
@@ -535,50 +538,5 @@ export default {
 
     .table-wrapper {
         padding-bottom: 40px;
-    }
-
-    .table {
-        margin-bottom: 0;
-        font-size: 10px;
-        font-weight: 400;
-        letter-spacing: 1.8px;
-
-        >tbody>tr:nth-of-type(odd) {
-            background: $mainColor;
-        }
-
-        >tbody>tr:nth-of-type(even) {
-            background: $semiDarkColor;
-        }
-
-        th {
-            border-bottom: none;
-            background: $darkColor;
-            text-transform: uppercase;
-            vertical-align: middle;
-            height: 60px;
-            padding-top: 0;
-            padding-bottom: 0;
-            font-weight: 400;
-
-            p {
-                padding: 8px 0;
-
-                &.small {
-                    size: 8px;
-                }
-            }
-        }
-
-        td {
-            border-top: none;
-            vertical-align: middle;
-        }
-
-        .avatar img {
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-        }
     }
 </style>

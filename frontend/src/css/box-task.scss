@@ -1,9 +1,13 @@
 @import './_variables';
 
 .task-box {
-  .task-box-header {
+  .box-header {
     border-bottom: 1px solid $middleColor;
     padding-bottom: 15px;
+
+    > div {
+      width: 100%;
+    }
 
     h2 {
       color: $secondColor;
@@ -11,12 +15,10 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1.6px;
-      margin:0 0 5px;
+      margin:8px 0 5px;
     }
 
     .user-info {
-      margin-bottom: 8px;
-
       .user-avatar {
         width: 30px;
         height: 30px;
@@ -62,5 +64,12 @@
     margin-right: 2px;
     @include border-radius(50%);
     background: $mainColor;
+    cursor: pointer;
+    @include opacity(1);
+    @include transition(opacity, 0.2s, ease-in);
+
+    &:hover {
+      @include opacity(0.8);
+    }
   }
 }

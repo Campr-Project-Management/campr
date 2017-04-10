@@ -245,6 +245,12 @@ success:
         delete:
             from_edit: WorkPackage successfully deleted!
             from_data_table: WorkPackage with ID
+    workpackage_status:
+        create: Work Package Status successfully created!
+        edit: Work Package successfully edited!
+        delete:
+            from_edit: Work Package successfully deleted!
+            form_data_table: Work Package with ID
     wppcwct:
         create: Work Package Project Work Cost Type successfully created!
         edit: Work Package Project Work Cost Type successfully edited!
