@@ -17,6 +17,7 @@ option('reset-db', null, \Symfony\Component\Console\Input\InputOption::VALUE_NON
 option('key', 'k', \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Override private key');
 
 // Set environment
+set('use_relative_symlink', false);
 set('deploy_path', '/var/www/{{domain}}');
 set('env_vars', 'SYMFONY_ENV={{env}}');
 set('release_path', function () {
@@ -39,9 +40,16 @@ set('bin/php', function () {
     return sprintf('%s -dmemory_limit=-1', $php);
 });
 set('bin/composer', function () {
-    run('cd {{release_path}} && wget -q https://getcomposer.org/composer.phar && chmod +x composer.phar');
+    if (commandExist('composer')) {
+        $composer = run('which composer')->toString();
+        run('sudo composer self-update');
+    }
+    if (empty($composer)) {
+        run('cd {{release_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}');
+        $composer = '{{bin/php}} {{release_path}}/composer.phar';
+    }
 
-    return '{{bin/php}} {{release_path}}/composer.phar';
+    return $composer;
 });
 set('cron_domain', function () {
     return strtr(get('domain'), ['.' => '_']);
@@ -176,6 +184,9 @@ task('project:enable-cron', function () {
 task('project:apache:enable-config', function () {
     run('if [ -L /etc/apache2/sites-enabled/{{domain}}.conf ]; then sudo rm -rf /etc/apache2/sites-enabled/{{domain}}.conf; fi && sudo ln -s {{release_path}}/config/apache/{{env}}.conf /etc/apache2/sites-enabled/{{domain}}.conf');
 });
+task('project:supervisor:enable-config', function () {
+    run('if [ -L /etc/supervisor/conf.d/{{domain}}.conf ]; then sudo rm -rf /etc/supervisor/conf.d/{{domain}}.conf; fi && sudo ln -s {{release_path}}/config/supervisor/{{env}}.conf /etc/supervisor/conf.d/{{domain}}.conf');
+});
 task('database:cleanup', function () {
     if (input()->getOption('reset-db')) {
         run('{{symfony_console}} doctrine:database:drop --force {{symfony_console_options}}');
@@ -211,7 +222,7 @@ task('hivebot:deploy-failed', function () {
     run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"failed\", \"env\":\"{{env}}\", \"branch\":\"{{branch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\"}" https://hive.trisoft.ro/api/deploy');
 });
 task('hivebot:deploy-success', function () {
-    run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"success\", \"env\":\"{{env}}\", \"branch\":\"{{branch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\", \"in\":\"{{deployTime}}\"}" https://hive.trisoft.ro/api/deploy');
+    run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"success\", \"env\":\"{{env}}\", \"branch\":\"{{branch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\", \"in\":\"{{runTime}}\"}" https://hive.trisoft.ro/api/deploy');
 });
 task('run:start-time', function () {
     set('startTime', time());
@@ -246,7 +257,6 @@ task('deploy', [
     'deploy:assets',
     'project:ln-console-env',
     'deploy:vendors',
-    'project:fos:js-routing:dump',
     'deploy:writable',
     'deploy:symlink',
     'project:front-static',
@@ -254,7 +264,6 @@ task('deploy', [
     'deploy:cache:warmup',
     'database:cleanup',
     'database:migrate',
-    'project:php:restart',
     'project:apache:enable-config',
     'project:apache:restart',
     'project:supervisor:enable-config',
