@@ -3,7 +3,7 @@
         <span class="tag">
           <span>{{ message.new_message }}</span>
         </span>
-        <div class="header">
+        <div class="box-header">
             <h2><router-link :to="{name: 'project-dashboard', params: { id: project.id }}">{{ project.name }}</router-link></h2>
             <div>
               <eye-icon :link="{name: 'project-dashboard', params: { id: project.id }}"></eye-icon>

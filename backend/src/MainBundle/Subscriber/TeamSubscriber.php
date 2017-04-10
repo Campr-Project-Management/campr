@@ -57,7 +57,7 @@ class TeamSubscriber implements EventSubscriberInterface
         ]);
         $this->redis->rpush(RedisQueueManagerCommand::DEFAULT, [
             sprintf(
-                '--env=%s_%s doctrine:fixtures:load -n --fixtures=backend/src/AppBundle/DataFixtures/Team',
+                '--env=%s_%s doctrine:fixtures:load --append --fixtures=backend/src/AppBundle/DataFixtures/Team --no-interaction',
                 str_replace('-', '_', $team->getSlug()),
                 $this->env
             ),

@@ -1,5 +1,5 @@
 <template>
-    <div class="calendar-icon">
+    <div class="calendar-icon icon">
         <svg version="1.1" id="Layer_1" width="30px" height="30px" fill="transparent" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                viewBox="0 0 26.3 26.5" style="enable-background:new 0 0 26.3 26.5;" xml:space="preserve">
             <g id="XMLID_149_">

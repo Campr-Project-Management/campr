@@ -47,7 +47,9 @@ export default {
 
   body {
     font-size: 12px;
+    line-height: 1.5em;
   }
+
   .v-spinner {
     display: flex;
     align-items: center;
@@ -60,6 +62,7 @@ export default {
     background: $mainColor;
     z-index: 99;
   }
+  
   .tablet {
     display: none;
   }
@@ -93,7 +96,7 @@ export default {
     color: $mainColor;
     position: absolute;
     text-align: center;
-    line-height: 20px;
+    line-height: 22px;
 
     @media screen and (max-width: 768px) {
       width: 16px;

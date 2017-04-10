@@ -13,39 +13,61 @@
             <!-- /// End Task Title /// -->
 
             <!-- /// Task Description /// -->
-            <div class="vueditor-header">Task Description</div>
-            <Vueditor></Vueditor>
-            <div cass="vueditor-footer clearfix">
-                <div class="pull-right">
-                    
+            <div class="vueditor-holder">
+                <div class="vueditor-header">Task Description</div>
+                <Vueditor></Vueditor>
+                <div cass="vueditor-footer clearfix">
+                    <div class="pull-right">
+                        
+                    </div>
                 </div>
             </div>
             <!-- /// End Task Description /// -->
 
-            <hr class="double"> 
+            <hr class="double">
+
+            <!-- /// Task Planning /// -->
+            <h3>{{ message.planning }}</h3>
+            <div class="row">
+                <div class="form-group last-form-group">
+                    <div class="col-md-6"><select-field v-bind:title="label.phase"></select-field></div>
+                    <div class="col-md-6"><select-field v-bind:title="label.milestone"></select-field></div>
+                </div>
+            </div>
+            <!-- /// End Task Planning /// -->
+
+            <hr> 
+
+            <!-- /// Task Schedule /// -->
+            <h3 class="with-label">{{ message.task_schedule }}</h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="radio-input">
+                        <input id="manual-schedule" type="radio" name="schedule-planning" value="manual" @click="toggleManualSchedule" :checked="visibleManualSchedule === true">
+                        <label for="manual-schedule">Manual Schedule</label>
+                        <input id="automatic-schedule" type="radio" name="schedule-planning" value="automatic" @click="toggleAutomaticSchedule" :checked="visibleAutomaticSchedule === true">
+                        <label for="automatic-schedule">Automatic Schedule</label>
+                    </div>
+                </div>
+            </div>
 
             <!-- /// Task Manual Schedule /// -->
-            <h3 class="with-label">{{ message.task_schedule }}</h3>
-            <div class="checkbox-input clearfix">
-                <input id="manual-schedule" type="checkbox" name="" value="" @click="toggleManualSchedule" :checked="visibleManualSchedule === true">
-                <label for="manual-schedule">Manual Schedule</label>
-            </div>
-            <span class="note">Define Base Start and Base Finish dates as well as Forecast Start and Forecast Finish dates.</span>
             <div v-show="visibleManualSchedule">
+                <span class="note">Define Base Start and Base Finish dates as well as Forecast Start and Forecast Finish dates.</span>
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-6">
                             <div class="input-holder right">
                                 <label class="active">{{ label.base_start_date }}</label>
                                 <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
-                                <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
+                                <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-holder right">
                                 <label class="active">{{ label.base_end_date }}</label>
                                 <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
-                                <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
+                                <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                             </div>
                         </div>
                     </div>
@@ -56,14 +78,14 @@
                             <div class="input-holder right">
                                 <label class="active">{{ label.forecast_start_date }}</label>
                                 <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
-                                <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
+                                <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                             </div>    
                         </div>
                         <div class="col-md-6">
                             <div class="input-holder right">
                                 <label class="active">{{ label.forecast_end_date }}</label>
                                 <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
-                                <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
+                                <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                             </div>
                         </div>
                     </div>
@@ -71,30 +93,19 @@
             </div>           
             <!-- /// End Task Manual Schedule /// -->
 
-            <hr>  
-
-            <!-- /// Task Automatic Schedule /// -->
-            <div class="checkbox-input clearfix">
-                <input id="automatic-schedule" type="checkbox" name="" value="" @click="toggleAutomaticSchedule" :checked="visibleAutomaticSchedule === true">
-                <label for="automatic-schedule">Automatic Schedule</label>
-            </div>
-            <span class="note">Define a Predecessor or a Successor for this task, enter a time period, and the Base Start and Base Finish dates will be calculated automatically.</span>
+            <!-- /// Task Automatic Schedule /// -->            
             <div v-show="visibleAutomaticSchedule">
-                <div class="form-group">
-                    <div class="radio-input">
-                        <input id="automatic-schedule-predecessor" type="radio" name="automatic-schedule-planning" value="task-has-predecessor" @click="togglePredecessor" :checked="visiblePredecessor === true">
-                        <label for="automatic-schedule-predecessor">Task has Predecessor</label>
-                        <input id="automatic-schedule-successor" type="radio" name="automatic-schedule-planning" value="task-has-successor" @click="toggleSuccessor" :checked="visibleSuccessor === true">
-                        <label for="automatic-schedule-successor">Task has Successor</label>
-                    </div>
-                </div>
-                <div v-show="visiblePredecessor">
+                <span class="note">Define a Predecessor or a Successor for this task, enter a time period, and the Base Start and Base Finish dates will be calculated automatically.</span>
+                <div>
                     <div class="row">
                         <div class="form-group">
-                            <div class="col-md-6">
-                                <select-field v-bind:title="'Select Predecessor'"></select-field>
+                            <div class="col-md-4">
+                                <select-field v-bind:title="'Select Predecessors'"></select-field>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <select-field v-bind:title="'Select Successors'"></select-field>
+                            </div>
+                            <div class="col-md-4">
                                 <input-field type="text" v-bind:label="'Duration in days'"></input-field>
                             </div>
                         </div>
@@ -102,10 +113,10 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <span class="title">Base Start Date: </span>
+                                <span class="title">Base Start Date: <b>27.04.2017</b></span>
                             </div>
                             <div class="col-md-6">
-                                <span class="title">Base Finish Date: </span>
+                                <span class="title">Base Finish Date: <b>31.04.2017</b></span>
                             </div>
                         </div>
                     </div>
@@ -115,54 +126,14 @@
                                 <div class="input-holder right">
                                     <label class="active">Forecast Start Date</label>
                                     <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
-                                    <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
+                                    <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                                 </div>    
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">Forecast Finish Date</label>
                                     <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
-                                    <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div v-show="visibleSuccessor">
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-6">
-                                <select-field v-bind:title="'Select Successor'"></select-field>
-                            </div>
-                            <div class="col-md-6">
-                                <input-field type="text" v-bind:label="'Duration in days'"></input-field>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-6">
-                                <span class="title">Base Start Date: </span>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="title">Base Finish Date: </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group last-form-group">    
-                            <div class="col-md-6">
-                                <div class="input-holder right">
-                                    <label class="active">Forecast Start Date</label>
-                                    <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
-                                    <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
-                                </div>    
-                            </div>
-                            <div class="col-md-6">
-                                <div class="input-holder right">
-                                    <label class="active">Forecast Finish Date</label>
-                                    <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
-                                    <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
+                                    <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                                 </div>
                             </div>
                         </div>
@@ -273,18 +244,17 @@
             <h4>CAPEX</h4>
             <div class="row">
                 <div class="form-group last-form-group">
-                    <div class="col-md-6">
-                        <div class="flex flex-space-between">
+                    <div class="col-md-12">
+                        <div class="flex flex-v-center">
                             <switches v-model="test" :selected="true"></switches>
                             <span class="note no-margin-bottom"><b>Note:</b>  If an External Cost is not set up as CAPEX,it will automatically be set up as OPEX.</span> 
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="pull-right">
-                            <a ef="javascript:void(0)" class="btn-rounded btn-auto">Add new external cost +</a>
-                        </div>
-                    </div>
                 </div>
+            </div>
+            <hr>
+            <div class="flex flex-direction-reverse">
+                <a ef="javascript:void(0)" class="btn-rounded btn-auto">Add new external cost +</a>
             </div>
             <hr>
             <div class="row">
@@ -316,41 +286,52 @@
 
             <!-- /// Task Details /// -->
             <h3>{{ message.task_details }}</h3>
-            <div class="flex flex-space-between">
-                <select-field v-bind:title="label.asignee"></select-field>
-                <select-field v-bind:title="label.labels" v-bind:options="labelsForChoice"></select-field>
+            <div class="row">
+                <div class="form-group last-form-group">
+                    <div class="col-md-4"><select-field v-bind:title="label.asignee"></select-field></div>
+                    <div class="col-md-4"><select-field v-bind:title="'Status'"></select-field></div>
+                    <div class="col-md-4"><select-field v-bind:title="label.labels" v-bind:options="labelsForChoice"></select-field></div>
+                </div> 
             </div>
             <!-- /// End Task Details /// -->
 
             <hr class="double">
 
-            <!-- /// Task Planning /// -->
-            <h3>{{ message.planning }}</h3>
-            <div class="flex flex-space-between">
-                <select-field v-bind:title="label.phase"></select-field>
-                <select-field v-bind:title="label.milestone"></select-field>
-            </div>
-            <!-- /// End Task Planning /// -->
-
-            <hr class="double">
-
             <!-- /// Subtasks /// -->
             <h3>{{ message.subtasks }}</h3>
-            <input-field type="text" v-bind:label="label.subtask_description"></input-field>
-            <div class="flex flex-direction-reverse">
-                <a ef="javascript:void(0)" class="btn-rounded btn-auto add-task">{{ button.add_new_subtask }} +</a>
+            <div class="row">
+                <div class="form-group last-form-group">
+                    <div class="col-md-12">
+                        <input-field type="text" v-bind:label="label.subtask_description"></input-field>
+                        <div class="flex flex-direction-reverse">
+                            <a ef="javascript:void(0)" class="btn-rounded btn-auto add-task">{{ button.add_new_subtask }} +</a>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- /// End Subtasks /// -->
 
             <hr class="double">
 
             <!-- /// Task Condition /// -->
-            <h3>{{ label.status }}</h3>
-            <div class="status-info">
-                <p v-for="status in colorStatuses"><span v-bind:style="{ color: status.color }">{{ status.name }}</span></p>
-            </div>
-            <div class="status flex">
-                <div v-for="status in colorStatuses" v-bind:style="{ background: status.color }" class="status-item"></div>
+            <h3>Condition</h3>
+            <!-- Original vue syntax: <p v-for="status in colorStatuses"><span v-bind:style="{ color: status.color }">{{ status.name }}</span> Add condition description here</p>-->
+            <p>
+                <b class="caps second-color">Green:</b> Quisque maximus quam id nunc congue ultricies. Aliquam quis quam lectus. Suspendisse porta ipsum non 	justo gravida, commodo rhoncus dolor congue.
+            </p>
+            <p>
+                <b class="caps warning-color">Yellow:</b> Aliquam ullamcorper sapien sed leo tincidunt hendrerit.
+            </p>
+            <p>
+                <b class="caps danger-color">Red:</b> Etiam a tellus non purus dignissim molestie ac in nulla. Vestibulum orci nisi, venenatis a sagittis eget, molestie 	quis orci. Morbi fermentum ut metus id porttitor.
+            </p>
+            <div class="flex flex-space-between flex-v-center margintop20">
+                <div class="status-boxes flex flex-v-center">
+                    <!-- Original vue syntax: <div v-for="status in colorStatuses" v-bind:style="{ background: status.color }" class="status-box"></div>-->
+                    <div class="status-box" style="background-color:#5FC3A5"></div>
+                    <div class="status-box" style="background-color:#191E37"></div>
+                    <div class="status-box" style="background-color:#191E37"></div>
+                </div>
             </div>
             <!-- /// End Task Condition /// -->
 
@@ -403,14 +384,6 @@ export default {
             this.visibleAutomaticSchedule = !this.visibleAutomaticSchedule;
             this.visibleManualSchedule = !this.visibleManualSchedule;
         },
-        togglePredecessor: function() {
-            this.visiblePredecessor = !this.visiblePredecessor;
-            this.visibleSuccessor = !this.visibleSuccessor;
-        },
-        toggleSuccessor: function() {
-            this.visibleSuccessor = !this.visibleSuccessor;
-            this.visiblePredecessor = !this.visiblePredecessor;
-        },
     },
     created() {
         if (!this.$store.state.colorStatus || this.$store.state.colorStatus.items.length == 0) {
@@ -453,8 +426,6 @@ export default {
             },
             visibleManualSchedule: true,
             visibleAutomaticSchedule: false,
-            visiblePredecessor: true,
-            visibleSuccessor: false,
         };
     },
 };
@@ -464,7 +435,6 @@ export default {
 <style scoped lang="scss">
     @import '../../../css/_variables';
     @import '../../../css/page-section';
-    @import '../../../css/_common';
 
     .download-icon {
         line-height: 50px;
@@ -476,10 +446,6 @@ export default {
         text-transform: uppercase;
         font-size: 12px;
         letter-spacing: 1.6px;
-    }
-
-    .dropdown, .datetime-picker {
-        width: 400px !important;
     }
 
     .create-task {
@@ -498,11 +464,15 @@ export default {
         }
     }
 
+    p {
+        margin-bottom: 20px;
+    }
+
     .dates-top {
         margin-bottom: 20px;
     }
 
-    .status-item {
+    .condition-item {
         width: 30px;
         height: 30px;
         border-radius: 50%;
@@ -519,7 +489,7 @@ export default {
         margin-top: 20px;
     }
 
-    .status-info {
+    .condition-info {
         font-weight: 300;
         font-size: 10px;
 
@@ -534,7 +504,7 @@ export default {
         }
     }
 
-    .status {
+    .condition {
         margin-top: 22px;
     }
 
@@ -561,5 +531,13 @@ export default {
 
     .vue-switcher {
         margin: 3px 10px 0 0;
+    }
+
+    .status-boxes {
+        .status-box {
+            width: 30px;
+            height: 30px;
+            margin-right: 5px;
+        }
     }
 </style>

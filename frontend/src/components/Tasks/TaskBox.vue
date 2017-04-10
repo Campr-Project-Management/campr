@@ -1,17 +1,19 @@
 <template>
     <div class="task-box-wrapper">
         <div class="task-box box" v-bind:class="'border-color-' + task.id">
-            <div class="task-box-header">
+            <div class="box-header">
                 <div>
-                    <div v-if="user" class="user-info flex flex-v-center">
-                        <img class="user-avatar" src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="user.name"/>
-                        <p>user.firstName user.lastName</p>
+                    <div class="flex flex-space-between">
+                        <div v-if="user" class="user-info flex flex-v-center">
+                            <img class="user-avatar" src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="user.name"/>
+                            <p>user.firstName user.lastName</p>
+                        </div>
+                        <div class="status-boxes flex flex-v-center">
+                            <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? task.colorStatusColor : '' }"></span>
+                        </div>
                     </div>
                     <h2><router-link to="" class="simple-link">{{ task.name }}</router-link></h2>
                     <p class="task-id">#{{ task.id }}</p>
-                </div>
-                <div class="status-boxes">
-                    <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? task.colorStatusColor : '' }"></span>
                 </div>
             </div>
             <div class="content">
@@ -126,11 +128,11 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-  @import '../../css/_common';
+<style lang="scss">
+  @import '../../css/_variables';
+  @import '../../css/_mixins';
   @import '../../css/box';
   @import '../../css/box-task';
-  @import '../../css/_variables';
 
   .nicescroll-cursors {
       border: none !important;
@@ -165,7 +167,7 @@ export default {
     fill: $middleColor;
   }
 
-  .bar-chart {
+  .progress-line.bar-chart {
     margin-top: 40px;
   }
 
