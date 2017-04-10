@@ -1,7 +1,7 @@
 {
   "version": "8",
   "hosts": {
-    "diagnostax": {
+    "campr": {
       "url": "https://campr.io.trisoft.ro",
       "accessKey": "campr",
       "secretKey": "4p4W6OOfg1Fhl5vc",
