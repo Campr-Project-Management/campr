@@ -5,3 +5,4 @@ MAILTO=""
 # cron for root user
 #
 */1 * * * * root /usr/bin/php /var/www/campr.biz/current/bin/console automailer:spool:send >> /var/www/campr.biz/current/var/logs/automailer.log
+0 */12 * * * root /usr/bin/php /var/www/campr.biz/current/bin/dep --file=/var/www/campr.biz/current/deploy.php project:backup prod-local -vvv >> /var/www/campr.biz/current/var/logs/project_backup.log
