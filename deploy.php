@@ -1,5 +1,7 @@
 <?php
 
+namespace Deployer;
+
 require 'recipe/symfony3.php';
 
 // Set configurations
@@ -12,66 +14,138 @@ set('http_user', 'www-data');
 // Set options
 option('provision', null, \Symfony\Component\Console\Input\InputOption::VALUE_NONE, 'Run provision scripts on the server');
 option('reset-db', null, \Symfony\Component\Console\Input\InputOption::VALUE_NONE, 'Recreates empty DB on the server');
+option('key', 'k', \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Override private key');
 
 // Set environment
-env('deploy_path', '/var/www/{{domain}}');
-env('env_vars', 'SYMFONY_ENV={{env}}');
-env('release_path', function () {
+set('deploy_path', '/var/www/{{domain}}');
+set('env_vars', 'SYMFONY_ENV={{env}}');
+set('release_path', function () {
     return str_replace("\n", '', run('if [ -L {{deploy_path}}/release ]; then readlink {{deploy_path}}/release; else readlink {{deploy_path}}/current; fi'));
 });
-env('symfony_console', function () {
-    return sprintf('%s %s/%s%s', env('bin/php'), env('release_path'), trim(get('bin_dir'), '/'), '/console');
+set('symfony_console', function () {
+    return sprintf('%s %s/%s%s', get('bin/php'), get('release_path'), trim(get('bin_dir'), '/'), '/console');
 });
-env('symfony_console_options', function () {
+set('symfony_console_options', function () {
     return sprintf(
        '--env=%s%s %s',
-       env('env'),
-       env('env') === 'prod' ? ' --no-debug' : '',
+       get('env'),
+       get('env') === 'prod' ? ' --no-debug' : '',
        '--no-interaction'
    );
 });
-env('bin/php', function () {
+set('bin/php', function () {
     $php = run('which php')->toString();
 
     return sprintf('%s -dmemory_limit=-1', $php);
 });
-env('bin/composer', function () {
+set('bin/composer', function () {
     run('cd {{release_path}} && wget -q https://getcomposer.org/composer.phar && chmod +x composer.phar');
 
     return '{{bin/php}} {{release_path}}/composer.phar';
 });
-env('cron_domain', function () {
-    return strtr(env('domain'), ['.' => '_']);
+set('cron_domain', function () {
+    return strtr(get('domain'), ['.' => '_']);
 });
-env('bin/mysql', function () {
+set('bin/mysql', function () {
     return '`which mysql` -u{{mysql_user}} -p{{mysql_password}} {{mysql_database}}';
+});
+set('bin/mysqldump', function () {
+    return sprintf('`which mysqldump` -u{{mysql_user}}%s {{mysql_database}} --routines', empty(get('mysql_password')) ? '' : ' -p{{mysql_password}}');
+});
+set('bin/mc', function () {
+    return '{{release_path}}/bin/mc --config-folder={{release_path}}/config/minio/';
+});
+set('database_backup_path', function () {
+    return sprintf('campr/{{domain}}/%s/%s/%s/release_{{release_name}}/{{domain}}_%s_release_{{release_name}}.sql', date('Y'), date('m'), date('d'), date('YmdHis'));
+});
+set('database_rollback_path', function () {
+    return sprintf('/tmp/{{domain}}_%s_release_{{release_name}}.sql', date('YmdHis'));
+});
+set('assets_backup_path', function () {
+    return 'campr/{{domain}}/assets';
 });
 
 // Configure servers
-server('prod1', '138.201.187.161')
+server('prod', '138.201.187.161')
     ->user('root')
     ->stage('prod')
-    ->pemFile(__DIR__.'/config/deploy/prod.key')
-    ->env('env', 'prod')
-    ->env('branch', 'production')
-    ->env('domain', 'campr.biz')
-    ->env('mysql_user', 'root')
-    ->env('mysql_password', 'campr')
-    ->env('mysql_database', 'campr')
+    ->pemFile(null)
+    ->set('pemFile', __DIR__.'/config/deploy/prod.key')
+    ->set('env', 'prod')
+    ->set('branch', 'production')
+    ->set('domain', 'campr.biz')
+    ->set('mysql_user', 'root')
+    ->set('mysql_password', 'campr')
+    ->set('mysql_database', 'campr')
 ;
-server('qa1', '138.201.187.161')
+server('qa', '138.201.187.161')
     ->user('root')
     ->stage('qa')
-    ->pemFile(__DIR__.'/config/deploy/qa.key')
-    ->env('env', 'qa')
-    ->env('branch', 'master')
-    ->env('domain', 'qa.campr.biz')
-    ->env('mysql_user', 'root')
-    ->env('mysql_password', 'campr')
-    ->env('mysql_database', 'campr')
+    ->pemFile(null)
+    ->set('pemFile', __DIR__.'/config/deploy/qa.key')
+    ->set('env', 'qa')
+    ->set('branch', 'master')
+    ->set('domain', 'qa.campr.biz')
+    ->set('mysql_user', 'root')
+    ->set('mysql_password', 'campr')
+    ->set('mysql_database', 'campr')
 ;
 
 // Set tasks
+task('pemFile', function () {
+    \Deployer\Task\Context::get()
+        ->getServer()
+        ->getConfiguration()
+        ->setPemFile(
+            !empty(\Deployer\Task\Context::get()->getInput()->getOption('key'))
+                ? \Deployer\Task\Context::get()->getInput()->getOption('key')
+                : (has('pemFile') ? get('pemFile') : null)
+        )
+    ;
+
+    $bash = 'if [ "`pgrep gnome-keyring-daemon`" ];
+    then
+        echo "true";
+    elif [ "`echo $SSH_AGENT_PID`" ]; 
+    then 
+        if [ "`ps -p $SSH_AGENT_PID | grep $SSH_AGENT_PID`" ]; 
+        then 
+            echo "true"; 
+        fi; 
+    fi';
+
+    if (runLocally($bash)->toBool()) {
+        writeln('<info>SSH Agent detected, using it.</info>');
+        \Deployer\Task\Context::get()
+            ->getServer()
+            ->getConfiguration()
+            ->setAuthenticationMethod(\Deployer\Server\Configuration::AUTH_BY_AGENT)
+        ;
+    }
+})->setPrivate()->onlyOn(['qa', 'prod']);
+task('ifconfig', function () {
+    run('cd {{release_path}}; ifconfig');
+});
+task('open:ports', function () {
+    run('netstat -ntlp | grep LISTEN');
+});
+task('rtop', function () {
+    runLocally(sprintf('rtop -i {{pemFile}} %s@%s 1', \Deployer\Task\Context::get()->getServer()->getConfiguration()->getUser(), \Deployer\Task\Context::get()->getServer()->getConfiguration()->getHost()));
+})->desc('Server metrics retrieved each 1 sec')->onlyOn(['qa', 'prod']);
+task('project:backup', function () {
+    run('{{bin/mc}} mb campr/{{domain}}');
+    run('{{bin/mysqldump}} | {{bin/mc}} pipe {{database_backup_path}}');
+    run('echo "created" | {{bin/mc}} pipe {{assets_backup_path}}/.create');
+    run('if [ -d /var/www/{{domain}}/shared/web/uploads ]; then {{bin/mc}} mirror --quiet /var/www/{{domain}}/shared/web/uploads {{assets_backup_path}}; fi');
+    run('{{bin/mc}} rm --force {{assets_backup_path}}/.create');
+})->onlyOn(['qa', 'prod', 'prod-local', 'qa-local']);
+task('database:backup', function () {
+    run('{{bin/mc}} mb campr/{{domain}}');
+    run('{{bin/mysqldump}} | {{bin/mc}} pipe {{database_backup_path}}');
+})->onlyOn(['qa', 'prod', 'prod-local', 'qa-local']);
+task('database:rollback', function () {
+    run('{{bin/mc}} cp {{database_backup_path}} {{database_rollback_path}}; {{bin/mysql}} < {{database_rollback_path}}');
+})->onlyOn(['qa', 'prod']);
 task('deploy:assetic:dump', function () {
     run('{{symfony_console}} assetic:dump {{symfony_console_options}}');
 })->desc('Dump assets');
@@ -83,9 +157,6 @@ task('project:supervisor:restart', function () {
 });
 task('project:apache:restart', function () {
     run('sudo service apache2 restart');
-});
-task('project:dizda:backup', function () {
-    run('{{symfony_console}} dizda:backup:start {{symfony_console_options}}');
 });
 task('project:front-static', function () {
     run('cd {{release_path}} && bin/front-static');
@@ -128,7 +199,7 @@ task('project:build:frontend', function () {
     run('cd {{release_path}}/frontend && npm install && npm run build');
 });
 task('hivebot:deploy-whois', function () {
-    env('localUser', sprintf(
+    set('localUser', sprintf(
         '%s',
         runLocally('git config --get user.name')
     ));
@@ -142,30 +213,60 @@ task('hivebot:deploy-failed', function () {
 task('hivebot:deploy-success', function () {
     run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"success\", \"env\":\"{{env}}\", \"branch\":\"{{branch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\", \"in\":\"{{deployTime}}\"}" https://hive.trisoft.ro/api/deploy');
 });
-task('deploy:start-time', function () {
+task('run:start-time', function () {
     set('startTime', time());
-});
-task('deploy:end-time', function () {
-    env('deployTime', time() - get('startTime'));
-});
+})->setPrivate();
+task('run:end-time', function () {
+    set('runTime', time() - get('startTime'));
+})->setPrivate();
+task('onStart', [
+    'run:start-time',
+    'pemFile',
+])->setPrivate();
+task('onEnd', function () {
+    if (!has('runTime')) {
+        set('runTime', time() - get('startTime'));
+    }
+    writeln(sprintf('<info>Finished in %s sec!</info>', get('runTime')));
+})->setPrivate();
 
 // Set flows
-//before('deploy:symlink', 'project:dizda:backup');
+task('deploy', [
+    'hivebot:deploy-whois',
+    'hivebot:deploy-start',
+    'deploy:prepare',
+    'server:provision',
+    'deploy:lock',
+    'deploy:release',
+    'deploy:update_code',
+    'project:backup',
+    'project:copy-parameters',
+    'deploy:create_cache_dir',
+    'deploy:shared',
+    'deploy:assets',
+    'project:ln-console-env',
+    'deploy:vendors',
+    'project:fos:js-routing:dump',
+    'deploy:writable',
+    'deploy:symlink',
+    'project:front-static',
+    'project:build:frontend',
+    'deploy:cache:warmup',
+    'database:cleanup',
+    'database:migrate',
+    'project:php:restart',
+    'project:apache:enable-config',
+    'project:apache:restart',
+    'project:supervisor:enable-config',
+    'project:supervisor:restart',
+    'project:enable-cron',
+    'cleanup',
+    'deploy:unlock',
+    'run:end-time',
+    'hivebot:deploy-success',
+]);
 
-before('deploy', 'deploy:start-time');
-before('hivebot:deploy-success', 'deploy:end-time');
-before('hivebot:deploy-start', 'hivebot:deploy-whois');
-before('deploy:prepare', 'hivebot:deploy-start');
-after('success', 'hivebot:deploy-success');
-after('deploy:prepare', 'server:provision');
-after('deploy:vendors', 'project:copy-parameters');
-before('deploy:vendors', 'project:ln-console-env');
-before('database:migrate', 'database:cleanup');
-after('deploy:symlink', 'database:migrate');
-after('deploy:symlink', 'project:apache:restart');
-after('deploy:symlink', 'project:enable-cron');
-after('deploy:symlink', 'project:build:frontend');
-before('project:apache:restart', 'project:apache:enable-config');
-after('project:apache:restart', 'project:supervisor:restart');
-before('project:build:frontend', 'project:front-static');
-//after('project:build:frontend', 'project:front:dump-routes');
+task('deploy:failed', [
+    'deploy:unlock',
+    'hivebot:deploy-failed',
+])->setPrivate();
