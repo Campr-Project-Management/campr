@@ -6,7 +6,7 @@
                     <div class="flex flex-space-between">
                         <div v-if="user" class="user-info flex flex-v-center">
                             <img class="user-avatar" src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="user.name"/>
-                            <p>user.firstName user.lastName</p>
+                            <p>{{ task.responsibilityFullName }}</p>
                         </div>
                         <div class="status-boxes flex flex-v-center">
                             <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? task.colorStatusColor : '' }"></span>
