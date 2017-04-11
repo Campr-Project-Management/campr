@@ -91,6 +91,13 @@ class Media
     private $fileSize;
 
     /**
+     * @var WorkPackage[]|ArrayCollection
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="medias")
+     * @Serializer\Exclude()
+     */
+    private $workPackages;
+
+    /**
      * @var \DateTime
      *
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
@@ -106,6 +113,7 @@ class Media
     {
         $this->createdAt = new \DateTime();
         $this->meetings = new ArrayCollection();
+        $this->workPackages = new ArrayCollection();
     }
 
     /**
@@ -370,5 +378,39 @@ class Media
     public function getMeetings()
     {
         return $this->meetings;
+    }
+
+    /**
+     * @param WorkPackage $workPackage
+     *
+     * @return Media
+     */
+    public function addWorkPackage(WorkPackage $workPackage)
+    {
+        $this->workPackages[] = $workPackage;
+        $workPackage->addMedia($this);
+
+        return $this;
+    }
+
+    /**
+     * @param WorkPackage $workPackage
+     *
+     * @return Media
+     */
+    public function removeWorkPackage(WorkPackage $workPackage)
+    {
+        $this->workPackages->removeElement($workPackage);
+        $workPackage->removeMedia($this);
+
+        return $this;
+    }
+
+    /**
+     * @return WorkPackage[]|ArrayCollection
+     */
+    public function getWorkPackages()
+    {
+        return $this->workPackages;
     }
 }

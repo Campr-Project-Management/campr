@@ -10,6 +10,42 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 abstract class ApiController extends BaseController
 {
+    /**
+     * MAKE SURE TO USE static WHEN REFERENCING THESE!!!
+     *
+     * Read about late static binding if you have questions.
+     */
+    const ENTITY_CLASS = '';
+    const FORM_CLASS = '';
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    protected function getRepository()
+    {
+        $this->assertClassExists(static::ENTITY_CLASS);
+
+        return $this
+            ->getDoctrine()
+            ->getRepository(static::ENTITY_CLASS)
+        ;
+    }
+
+    /**
+     * Creates and returns a Form instance from the type of the form.
+     *
+     * @param mixed $data    The initial data for the form
+     * @param array $options Options for the form
+     *
+     * @return Form
+     */
+    protected function getForm($data = null, array $options = array())
+    {
+        $this->assertClassExists(static::ENTITY_CLASS);
+
+        return $this->createForm(static::FORM_CLASS, $data, $options);
+    }
+
     protected function getFormErrors(Form $form)
     {
         $errors = [];
@@ -20,7 +56,7 @@ abstract class ApiController extends BaseController
 
         foreach ($form->all() as $key => $childForm) {
             if ($childForm instanceof Form) {
-                $childErrors = self::getFormErrors($childForm);
+                $childErrors = $this->getFormErrors($childForm);
                 if (count($childErrors)) {
                     $errors[$childForm->getName()] = $childErrors;
                 }
