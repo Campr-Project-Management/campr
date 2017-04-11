@@ -5,6 +5,7 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\User;
 use AppBundle\Entity\WorkPackage;
+use AppBundle\Entity\WorkPackageStatus;
 
 class WorkPackageRepository extends BaseRepository
 {
@@ -53,6 +54,56 @@ class WorkPackageRepository extends BaseRepository
 
         if (isset($filters['schedule'])) {
             // TODO: Finish after we determine what is filtered here (schedule dates / schedule type)
+        }
+
+        if (isset($filters['milestone'])) {
+            $qb
+                ->andWhere('wp.isKeyMilestone = :milestone')
+                ->setParameter('milestone', $filters['milestone'])
+            ;
+        }
+
+        return $qb->getQuery();
+    }
+
+    /**
+     * Return all project workpackages filtered.
+     *
+     * @param Project           $project
+     * @param array             $filters
+     * @param WorkPackageStatus $workPackageStatus
+     *
+     * @return array
+     */
+    public function findByProject(Project $project, $filters = [], WorkPackageStatus $workPackageStatus = null)
+    {
+        $qb = $this
+            ->createQueryBuilder('wp')
+            ->innerJoin('wp.project', 'p')
+            ->where('p.id = :project')
+            ->setParameter('project', $project)
+        ;
+
+        if (isset($workPackageStatus)) {
+            $qb
+                ->andWhere('wp.workPackageStatus = :workPackageStatus')
+                ->setParameter('workPackageStatus', $workPackageStatus)
+            ;
+        }
+
+        if (isset($filters['status'])) {
+            $qb
+                ->innerJoin('wp.workPackageStatus', 'wps')
+                ->andWhere('wps.name = :statusName')
+                ->setParameter('statusName', $filters['status'])
+            ;
+        }
+
+        if (isset($filters['type'])) {
+            $qb
+                ->andWhere('wp.type = :type')
+                ->setParameter('type', $filters['type'])
+            ;
         }
 
         if (isset($filters['milestone'])) {
