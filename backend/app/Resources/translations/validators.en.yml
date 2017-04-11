@@ -58,6 +58,8 @@ not_blank:
     message: Please enter a message!
     module: The module name should not be blank.
     configuration: Project configuration should not be blank.
+    rate: The rate should not be blank.
+    quantity: The quantity should not be blank.
 
 not_null:
     driver: You must select a driver
