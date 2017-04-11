@@ -21,12 +21,15 @@ class CreateType extends AbstractType
         $builder
             ->add('project', EntityType::class, [
                 'class' => Project::class,
+                'choice_label' => 'name',
             ])
             ->add('workPackage', EntityType::class, [
                 'class' => WorkPackage::class,
+                'choice_label' => 'name',
             ])
             ->add('resource', EntityType::class, [
                 'class' => Resource::class,
+                'choice_label' => 'name',
             ])
             ->add('name', TextType::class)
             ->add('type', IntegerType::class)

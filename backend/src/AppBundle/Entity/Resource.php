@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ResourceRepository")
  * @ORM\Table(name="resource")
  * @UniqueEntity(fields={"name"}, message="unique.name")
  */

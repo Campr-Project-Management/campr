@@ -1,0 +1,136 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'title.cost.edit'|trans }}</h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_cost_create') }}">{{ 'add.cost'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_cost_list') }}">{{ 'button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body m-t-0 card-padding">
+                    {{ form_start(
+                        form,
+                        {
+                            'method': 'POST',
+                            'action': path('app_admin_cost_edit', {'id': id}),
+                            'attr': {
+                                'id': 'edit-form',
+                                'class': 'form-horizontal',
+                                'novalidate': 'novalidate',
+                            },
+                        }
+                    ) }}
+                    {% if form.vars.valid == false %}
+                        <div class="alert alert-danger">
+                            {% for field in form.children %}
+                                {{ form_errors(field) }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {{ form_widget(
+                        form.project,
+                        {
+                            'attr': {'class': 'selectpicker'},
+                            'label': 'label.project'|trans,
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.workPackage,
+                        {
+                            'attr': {'class': 'selectpicker'},
+                            'label': 'label.workpackage'|trans,
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.resource,
+                        {
+                            'attr': {'class': 'selectpicker'},
+                            'label': 'label.resource'|trans,
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.name,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'label.name'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.type,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'label.type'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.rate,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'label.rate'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.quantity,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'label.quantity'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.unit,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'label.unit'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.duration,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'label.duration'|trans
+                        }
+                    ) }}
+
+                    {% include 'AppBundle:Admin/Layout/Partials:form_edit_buttons.html.twig'
+                        with {
+                            'delete_path': 'app_admin_cost_delete',
+                            'id': id,
+                        }
+                    %}
+                    {{ form_end(form, {'render_rest': false}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

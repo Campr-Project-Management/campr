@@ -380,8 +380,18 @@ title:
         list: Project Deliverable
         create: Create Project Deliverable
         edit: Edit Project Deliverable
+    resource:
+        list: Resource
+        create: Create Resource
+        edit: Edit Resource
+    cost:
+        list: Cost
+        create: Create Cost
+        edit: Edit Cost
 
 subtitle:
+    resource: List of resources
+    cost: List of costs
     user: List of users
     status: List of statuses
     schedule: List of schedules
@@ -435,6 +445,8 @@ subtitle:
     project_deliverable: List of project deliverables
 
 label:
+    resource: Resource
+    quantity: Quantity
     username: Username
     email: Email
     password:
@@ -648,6 +660,8 @@ checkbox:
     unchecked: No
 
 add:
+    resource: Add new resource
+    cost: Add new cost
     user: Add new user
     status: Add new status
     schedule: Add new schedule
@@ -752,6 +766,9 @@ placeholder:
     type: Type
 
 table_header_cell:
+    rate: Rate
+    quantity: Quantity
+    resource: Resource
     id: Id
     puid: Puid
     username: Username
