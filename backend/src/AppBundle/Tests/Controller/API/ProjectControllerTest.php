@@ -390,6 +390,7 @@ class ProjectControllerTest extends BaseController
                     'distributionLists' => [],
                     'statusUpdatedAt' => null,
                     'approvedAt' => null,
+                    'costs' => [],
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
                     'contracts' => [],
@@ -2007,6 +2008,7 @@ class ProjectControllerTest extends BaseController
                     ],
                     'statusUpdatedAt' => null,
                     'approvedAt' => null,
+                    'costs' => [],
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
                     'contracts' => [
