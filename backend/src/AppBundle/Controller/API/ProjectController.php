@@ -16,7 +16,9 @@ use AppBundle\Entity\ProjectStatus;
 use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Todo;
+use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\WorkPackageProjectWorkCostType;
+use AppBundle\Entity\WorkPackageStatus;
 use AppBundle\Form\Label\BaseLabelType;
 use AppBundle\Form\Project\CreateType;
 use AppBundle\Form\Calendar\BaseCreateType as CalendarCreateType;
@@ -31,6 +33,7 @@ use AppBundle\Form\ProjectObjective\CreateType as ProjectObjectiveCreateType;
 use AppBundle\Form\ProjectDeliverable\CreateType as ProjectDeliverableCreateType;
 use AppBundle\Form\ProjectLimitation\CreateType as ProjectLimitationCreateType;
 use AppBundle\Security\ProjectVoter;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -858,5 +861,69 @@ class ProjectController extends ApiController
             ],
             Response::HTTP_OK
         );
+    }
+
+    /**
+     * All workpackages for a specific Project ordered by workpackage statuses.
+     *
+     * @Route("/{id}/workpackages", name="app_api_projects_workpackages", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function workpackagesAction(Project $project, Request $request)
+    {
+        $filters = $request->query->all();
+        $pageSize = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+
+        if (isset($filters['status'])) {
+            $wpQuery = $this
+                ->getDoctrine()
+                ->getRepository(WorkPackage::class)
+                ->findByProject($project, $filters)
+            ;
+
+            $currentPage = isset($filters['page']) ? $filters['page'] : 1;
+            $paginator = new Paginator($wpQuery);
+            $paginator->getQuery()
+                ->setFirstResult($pageSize * ($currentPage - 1))
+                ->setMaxResults($pageSize)
+            ;
+
+            $responseArray['totalItems'] = count($paginator);
+            $responseArray['items'] = $paginator->getIterator()->getArrayCopy();
+        } else {
+            $workPackageStatuses = $this
+                ->getDoctrine()
+                ->getRepository(WorkPackageStatus::class)
+                ->findBy([
+                    'project' => null,
+                ])
+            ;
+
+            foreach ($workPackageStatuses as $workPackageStatus) {
+                $wpQuery = $this
+                    ->getDoctrine()
+                    ->getRepository(WorkPackage::class)
+                    ->findByProject($project, $filters, $workPackageStatus)
+                ;
+
+                $currentPage = 1;
+                $paginator = new Paginator($wpQuery);
+                $paginator->getQuery()
+                    ->setFirstResult($pageSize * ($currentPage - 1))
+                    ->setMaxResults($pageSize)
+                ;
+                $responseArray[$workPackageStatus->getId()] = [
+                    'totalItems' => count($paginator),
+                    'items' => $paginator->getIterator()->getArrayCopy(),
+                ];
+            }
+        }
+
+        return $this->createApiResponse($responseArray);
     }
 }
