@@ -209,6 +209,7 @@ textarea {
   letter-spacing: 1.2px;
   font-weight: 400;
   border: none;
+  cursor: pointer;
   @include transition(all, 0.2s, ease-in);
 
   &:hover,
@@ -336,6 +337,22 @@ textarea {
   }
 }
 
+.small-link {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  color: $middleColor;
+  font-size: 10px;
+  text-transform: uppercase;
+  display: inline-block;
+  @include transition(color, 0.2s, ease-in);
+
+  &:hover,
+  &:active {
+    color: $lightColor;
+  }
+}
+
 .datetime-picker {
   &.red input {
     background: $dangerColor;
@@ -377,6 +394,10 @@ hr {
 
   &.double {
     border-top: 4px double $darkColor;
+  }
+
+  &.nomarginbottom {
+    margin-bottom: 0;
   }
 }
 
