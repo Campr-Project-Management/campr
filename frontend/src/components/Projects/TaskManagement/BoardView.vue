@@ -4,7 +4,7 @@
             <div class="flex">
             <div class="column" v-for="taskStatus in taskStatuses">
                 <div class="column-header flex flex-v-center flex-space-between">
-                <span>{{ translate(taskStatus.name) }}</span>
+                <span>{{ translateText(taskStatus.name) }}</span>
                 <div class="flex">
                     <span class="notification-balloon">12</span>
                     <span class="notification-balloon second-bg">+</span>
@@ -41,7 +41,7 @@ export default {
     }),
     methods: {
         ...mapActions(['getTaskStatuses']),
-        translate(text) {
+        translateText(text) {
             return this.translate(text);
         },
     },
