@@ -8,6 +8,7 @@ const state = {
     filteredItems: [],
     filters: [],
     taskStatuses: [],
+    tasksByStatuses: [],
 };
 
 const getters = {
@@ -15,6 +16,7 @@ const getters = {
     tasks: state => state.filteredItems.items,
     count: state => state.filteredItems.totalItems,
     taskStatuses: state => state.taskStatuses,
+    tasksByStatuses: state => state.tasksByStatuses,
 };
 
 const actions = {
@@ -53,6 +55,60 @@ const actions = {
             });
     },
     /**
+     * Gets tasks ordered by statuses from the API and
+     * commits SET_TASKS_BY_STATUSES mutations
+     * @param {function} commit
+     * @param {number} project
+     */
+    getTasksByStatuses({commit}, project) {
+        commit(types.TOGGLE_LOADER, true);
+        Vue.http
+            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
+                params: {
+                    'type': 2,
+                    'pageSize': 8,
+                },
+            })
+            .then((response) => {
+                console.log('Tasks');
+                if (response.status === 200) {
+                    let tasksByStatuses = response.data;
+                    commit(types.SET_TASKS_BY_STATUSES, {tasksByStatuses});
+                    commit(types.TOGGLE_LOADER, false);
+                }
+            }, (response) => {
+            });
+    },
+    /**
+     * Gets tasks ordered by one status from the API and
+     * commits SET_TASKS_BY_STATUS mutations
+     * @param {function} commit
+     * @param {number} project
+     * @param {number} status
+     * @param {number} page
+     */
+    getTasksByStatus({commit}, {project, status, page}) {
+        console.log('Params: ', project, status, page);
+        commit(types.TOGGLE_LOADER, true);
+        Vue.http
+            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
+                params: {
+                    status,
+                    'type': 2,
+                    'page': page,
+                    'pageSize': 8,
+                },
+            })
+            .then((response) => {
+                if (response.status === 200) {
+                    let tasksByStatus = response.data;
+                    commit(types.SET_TASKS_BY_STATUS, {tasksByStatus, status});
+                    commit(types.TOGGLE_LOADER, false);
+                }
+            }, (response) => {
+            });
+    },
+    /**
      * Gets task statuses from the API and commits SET_TASK_STATUSES mutation
      * @param {function} commit
      */
@@ -60,6 +116,7 @@ const actions = {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
             .get(Routing.generate('app_api_workpackage_statuses_list')).then((response) => {
+                console.log('Statuses');
                 if (response.status === 200) {
                     let taskStatuses = response.data;
                     commit(types.SET_TASK_STATUSES, {taskStatuses});
@@ -124,9 +181,26 @@ const mutations = {
         state.filteredItems = JSON.parse(JSON.stringify(tasks));
     },
     /**
+     * Sets tasks ordered by statuses to state
+     * @param {Object} state
+     * @param {array} tasksByStatuses
+     */
+    [types.SET_TASKS_BY_STATUSES](state, {tasksByStatuses}) {
+        state.tasksByStatuses = tasksByStatuses;
+    },
+    /**
+     * Sets tasks filtered by status to state
+     * @param {Object} state
+     * @param {array} tasksByStatus
+     * @param {number} status
+     */
+    [types.SET_TASKS_BY_STATUS](state, {tasksByStatus, status}) {
+        state.tasksByStatuses[status].items.concat(tasksByStatus);
+    },
+    /**
      * Sets task statuses to state
      * @param {Object} state
-     * @param {array} tasks
+     * @param {array} taskStatuses
      */
     [types.SET_TASK_STATUSES](state, {taskStatuses}) {
         state.taskStatuses = taskStatuses;
