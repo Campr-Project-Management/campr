@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -52,6 +53,20 @@ class Label
      * @ORM\Column(name="color", type="string", length=7)
      */
     private $color;
+
+    /**
+     * @var ArrayCollection|DistributionList[]
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="labels")
+     */
+    private $workPackages;
+
+    public function __construct()
+    {
+        $this->workPackages = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -126,6 +141,40 @@ class Label
     }
 
     /**
+     * Add workpackage.
+     *
+     * @param WorkPackage $workPackage
+     *
+     * @return User
+     */
+    public function addWorkPackage(WorkPackage $workPackage)
+    {
+        $this->workPackages[] = $workPackage;
+
+        return $this;
+    }
+
+    /**
+     * Remove workpackage.
+     *
+     * @param WorkPackage $workPackage
+     */
+    public function removeWorkPackage(WorkPackage $workPackage)
+    {
+        $this->workPackages->removeElement($workPackage);
+    }
+
+    /**
+     * Get workpackages.
+     *
+     * @return ArrayCollection|WorkPackage[]
+     */
+    public function getWorkPackages()
+    {
+        return $this->workPackages;
+    }
+
+    /**
      * Returns project id.
      *
      * @Serializer\VirtualProperty()
@@ -149,5 +198,25 @@ class Label
     public function getProjectName()
     {
         return $this->project ? $this->project->getName() : null;
+    }
+
+    /**
+     * Returns number of workpackages.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("openWorkPackagesNumber")
+     *
+     * @return string
+     */
+    public function getOpenWorkPackagesNumber()
+    {
+        $count = 0;
+        foreach ($this->workPackages as $wp ) {
+            if ($wp->getWorkPackageStatusId() && $wp->getWorkPackageStatusId() !== WorkPackageStatus::CLOSED) {
+                $count++;
+            }
+        }
+
+        return $count;
     }
 }
