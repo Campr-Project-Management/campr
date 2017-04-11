@@ -267,6 +267,42 @@ class WorkPackage
     private $dependants;
 
     /**
+     * @var Media[]|ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Media", inversedBy="workPackages")
+     * @ORM\JoinTable(
+     *     name="work_package_media",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="work_package_id", onDelete="CASCADE")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="media_id", onDelete="CASCADE")
+     *     }
+     * )
+     */
+    private $medias;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="automatic_schedule", type="boolean", options={"default"=false})
+     */
+    private $automaticSchedule = false;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="duration", type="string", length=64, nullable=true)
+     */
+    private $duration;
+
+    /**
+     * @var Cost[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Cost", mappedBy="workPackage")
+     */
+    private $costs;
+
+    /**
      * @var \DateTime
      *
      * @Serializer\Exclude()
@@ -296,6 +332,8 @@ class WorkPackage
         $this->dependencies = new ArrayCollection();
         $this->dependants = new ArrayCollection();
         $this->children = new ArrayCollection();
+        $this->medias = new ArrayCollection();
+        $this->costs = new ArrayCollection();
     }
 
     /**
@@ -1217,5 +1255,101 @@ class WorkPackage
     public function getChildren()
     {
         return $this->children;
+    }
+
+    /**
+     * @param Media $media
+     *
+     * @return WorkPackage
+     */
+    public function addMedia(Media $media)
+    {
+        $this->medias[] = $media;
+
+        return $this;
+    }
+
+    /**
+     * @param Media $media
+     *
+     * @return WorkPackage
+     */
+    public function removeMedia(Media $media)
+    {
+        $this->medias->removeElement($media);
+
+        return $this;
+    }
+
+    /**
+     * @return Media[]|ArrayCollection
+     */
+    public function getMedias()
+    {
+        return $this->medias;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAutomaticSchedule(): bool
+    {
+        return $this->automaticSchedule;
+    }
+
+    /**
+     * @param bool $automaticSchedule
+     */
+    public function setAutomaticSchedule(bool $automaticSchedule)
+    {
+        $this->automaticSchedule = $automaticSchedule;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDuration(): string
+    {
+        return $this->duration;
+    }
+
+    /**
+     * @param string $duration
+     */
+    public function setDuration(string $duration)
+    {
+        $this->duration = $duration;
+    }
+
+    /**
+     * @param Cost $cost
+     *
+     * @return WorkPackage
+     */
+    public function addCost(Cost $cost)
+    {
+        $this->costs[] = $cost;
+
+        return $this;
+    }
+
+    /**
+     * @param Cost $cost
+     *
+     * @return WorkPackage
+     */
+    public function removeCost(Cost $cost)
+    {
+        $this->costs->removeElement($cost);
+
+        return $this;
+    }
+
+    /**
+     * @return Cost[]|ArrayCollection
+     */
+    public function getCosts()
+    {
+        return $this->costs;
     }
 }
