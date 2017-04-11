@@ -41,7 +41,7 @@ abstract class ApiController extends BaseController
      */
     protected function getForm($data = null, array $options = array())
     {
-        $this->assertClassExists(static::ENTITY_CLASS);
+        $this->assertClassExists(static::FORM_CLASS);
 
         return $this->createForm(static::FORM_CLASS, $data, $options);
     }
