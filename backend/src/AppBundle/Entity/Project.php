@@ -249,6 +249,12 @@ class Project
     private $meetings;
 
     /**
+     * @var Cost[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Cost", mappedBy="project")
+     */
+    private $costs;
+
+    /**
      * @var \DateTime
      *
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
@@ -376,6 +382,7 @@ class Project
         $this->createdAt = new \DateTime();
         $this->projectModules = new ArrayCollection();
         $this->workPackageStatuses = new ArrayCollection();
+        $this->costs = new ArrayCollection();
     }
 
     /**
@@ -1679,5 +1686,37 @@ class Project
     public function getWorkPackageStatuses()
     {
         return $this->workPackageStatuses;
+    }
+
+    /**
+     * @param Cost $cost
+     *
+     * @return Project
+     */
+    public function addCost(Cost $cost)
+    {
+        $this->costs[] = $cost;
+
+        return $this;
+    }
+
+    /**
+     * @param Cost $cost
+     *
+     * @return Project
+     */
+    public function removeCost(Cost $cost)
+    {
+        $this->costs->removeElement($cost);
+
+        return $this;
+    }
+
+    /**
+     * @return Cost[]|ArrayCollection
+     */
+    public function getCosts()
+    {
+        return $this->costs;
     }
 }
