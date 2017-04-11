@@ -215,6 +215,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+  @import '../../css/_mixins';
   @import '../../css/project-create';
   @import '../../css/_common';
 
@@ -222,6 +223,7 @@ export default {
       margin: 28px auto;
       display: block;
       height: 122px;
+      @include border-radius(50%);
   }
 
   .input-holder {
