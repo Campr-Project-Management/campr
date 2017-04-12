@@ -178,6 +178,20 @@ class MenuBuilder
             ])->getParent()
         ;
 
+        $menu->addChild($this->translator->trans('title.resource.list', [], 'messages'), [
+            'route' => 'app_admin_resource_list',
+        ])
+            ->setAttribute('class', 'main-category')
+            ->setLinkAttribute('icon', 'zmdi zmdi-badge-check')
+        ;
+
+        $menu->addChild($this->translator->trans('title.cost.list', [], 'messages'), [
+            'route' => 'app_admin_cost_list',
+        ])
+            ->setAttribute('class', 'main-category')
+            ->setLinkAttribute('icon', 'zmdi zmdi-money')
+        ;
+
         $menu->addChild($this->translator->trans('title.calendar.list', [], 'messages'), [])
             ->setAttributes([
                 'class' => 'sub-menu main-category',
