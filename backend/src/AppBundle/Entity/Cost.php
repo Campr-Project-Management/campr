@@ -16,6 +16,9 @@ class Cost
     const TYPE_INTERNAL = 0;
     const TYPE_EXTERNAL = 1;
 
+    const EXPENSE_TYPE_CAPEX = 0;
+    const EXPENSE_TYPE_OPEX = 1;
+
     /**
      * @var int
      * @ORM\Id()
@@ -68,6 +71,12 @@ class Cost
      * @Assert\NotBlank(message="not_blank.type")
      */
     private $type = self::TYPE_INTERNAL;
+
+    /**
+     * @var int|null
+     * @ORM\Column(name="expense_type", type="integer", nullable=true)
+     */
+    private $expenseType;
 
     /**
      * @var float
@@ -180,6 +189,26 @@ class Cost
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @param int|null $expenseType
+     *
+     * @return Cost
+     */
+    public function setExpenseType($expenseType)
+    {
+        $this->expenseType = $expenseType;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getExpenseType()
+    {
+        return $this->expenseType;
     }
 
     /**
