@@ -3,12 +3,13 @@
         <div class="board-view">
             {{ tasksByStatus }}
             <div class="flex">
-                <board-tasks-column
+                <div v-for="taskStatus in taskStatuses" v-if="taskStatuses && tasksByStatuses && taskStatus && tasksByStatuses[taskStatus.id]">
+                    <board-tasks-column
                         v-bind:tasks="tasksByStatuses[taskStatus.id].items"
                         v-bind:tasksNumber="tasksByStatuses[taskStatus.id].totalItems"
-                        v-bind:status="taskStatus"
-                        v-for="taskStatus in taskStatuses">
-                </board-tasks-column>
+                        v-bind:status="taskStatus">
+                    </board-tasks-column>
+                </div>
             </div>
         </div>
     </vue-scrollbar>
@@ -31,16 +32,6 @@ export default {
         if (!this.$store.state.task.taskStatuses || this.$store.state.task.taskStatuses.length === 0) {
             this.getTaskStatuses();
         }
-
-        /* let flag = true;
-        while(flag) {
-            if (this.tasksByStatuses) {
-                if (!this.$store.state.task.taskStatuses || this.$store.state.task.taskStatuses.length === 0) {
-                    this.getTaskStatuses();
-                }
-                flag = false;
-            }
-        }*/
     },
     computed: {
         ...mapGetters({
