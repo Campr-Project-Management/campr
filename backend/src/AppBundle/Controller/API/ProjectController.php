@@ -544,7 +544,7 @@ class ProjectController extends ApiController
     /**
      * Get all project users.
      *
-     * @Route("/{id}/project-users", name="app_api_project_project_users")
+     * @Route("/{id}/project-users", name="app_api_project_project_users", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Project $project
@@ -981,5 +981,26 @@ class ProjectController extends ApiController
         ];
 
         return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * All project work packages.
+     *
+     * @Route("/{id}/work-packages", name="app_api_project_work_packages", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function workPackagesAction(Project $project)
+    {
+        $workPackages = $this
+            ->getDoctrine()
+            ->getRepository(WorkPackage::class)
+            ->findByProject($project)
+        ;
+
+        return $this->createApiResponse($workPackages);
     }
 }
