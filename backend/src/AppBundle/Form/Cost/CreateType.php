@@ -5,6 +5,7 @@ namespace AppBundle\Form\Cost;
 use AppBundle\Entity\Cost;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Resource;
+use AppBundle\Entity\Unit;
 use AppBundle\Entity\WorkPackage;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -32,7 +33,9 @@ class CreateType extends AbstractType
             ->add('type', IntegerType::class)
             ->add('rate', NumberType::class)
             ->add('quantity', NumberType::class)
-            ->add('unit', NumberType::class)
+            ->add('unit', EntityType::class, [
+                'class' => Unit::class,
+            ])
             ->add('duration', TextType::class)
         ;
     }
