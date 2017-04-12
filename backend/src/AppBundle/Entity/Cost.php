@@ -8,7 +8,7 @@ use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CostRepository")
  * @ORM\Table(name="cost")
  */
 class Cost
@@ -410,6 +410,17 @@ class Cost
     }
 
     /**
+     * @Serializer\SerializedName("projectName")
+     * @Serializer\VirtualProperty()
+     *
+     * @return int|null
+     */
+    public function getProjectName()
+    {
+        return $this->getProject() ? $this->getProject()->getName() : null;
+    }
+
+    /**
      * @Serializer\SerializedName("resource")
      * @Serializer\VirtualProperty()
      *
@@ -421,6 +432,17 @@ class Cost
     }
 
     /**
+     * @Serializer\SerializedName("resourceName")
+     * @Serializer\VirtualProperty()
+     *
+     * @return int|null
+     */
+    public function getResourceName()
+    {
+        return $this->getResource() ? $this->getResource()->getName() : null;
+    }
+
+    /**
      * @Serializer\SerializedName("workPackage")
      * @Serializer\VirtualProperty()
      *
@@ -429,5 +451,16 @@ class Cost
     public function getWorkPackageId()
     {
         return $this->getWorkPackage() ? $this->getWorkPackage()->getId() : null;
+    }
+
+    /**
+     * @Serializer\SerializedName("workPackageName")
+     * @Serializer\VirtualProperty()
+     *
+     * @return int|null
+     */
+    public function getWorkPackageName()
+    {
+        return $this->getWorkPackage() ? $this->getWorkPackage()->getName() : null;
     }
 }
