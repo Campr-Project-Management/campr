@@ -28,4 +28,3 @@
       fill: $middleColor;
   }
 </style>
-d
