@@ -8,6 +8,18 @@ success:
         delete:
             from_edit: Assignment successfully deleted!
             from_data_table: Assignment with ID
+    resource:
+        create: Resource successfully created!
+        edit: Resource successfully edited!
+        delete:
+            from_edit: Resource successfully deleted!
+            from_data_table: Resource with ID
+    cost:
+        create: Cost successfully created!
+        edit: Cost successfully edited!
+        delete:
+            from_edit: Cost successfully deleted!
+            from_data_table: Cost with ID
     calendar:
         create: Calendar successfully created!
         edit: Calendar successfully edited!

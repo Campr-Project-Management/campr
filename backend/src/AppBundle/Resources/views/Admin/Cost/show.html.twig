@@ -1,0 +1,81 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'title.cost.list'|trans }}</h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_cost_create') }}">{{ 'add.cost'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_cost_edit', {'id': cost.id}) }}">{{ 'button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_cost_list') }}">{{ 'button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body m-t-10 card-padding">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <th>{{ 'table_header_cell.id'|trans }}</th>
+                                <td>{{ cost.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.project'|trans }}</th>
+                                <td>{{ cost.projectName|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.workpackage'|trans }}</th>
+                                <td>{{ cost.workPackageName|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.resource'|trans }}</th>
+                                <td>{{ cost.resourceName|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.name'|trans }}</th>
+                                <td>{{ cost.name|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.type'|trans }}</th>
+                                <td>{{ cost.type|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.rate'|trans }}</th>
+                                <td>{{ cost.rate|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.quantity'|trans }}</th>
+                                <td>{{ cost.quantity|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.unit'|trans }}</th>
+                                <td>{{ cost.unit|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.duration'|trans }}</th>
+                                <td>{{ cost.duration|default('-') }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
