@@ -121,4 +121,69 @@ class WorkPackageRepository extends BaseRepository
             ->getSingleScalarResult()
         ;
     }
+
+    public function findPhasesByProject(Project $project)
+    {
+        return $this->findBy(
+            [
+                'project' => $project,
+                'type' => WorkPackage::TYPE_PHASE,
+            ],
+            [
+                'puid' => 'ASC',
+            ]
+        );
+    }
+
+    public function findMilestonesByProject(Project $project)
+    {
+        return $this->findBy(
+            [
+                'project' => $project,
+                'type' => WorkPackage::TYPE_MILESTONE,
+            ],
+            [
+                'puid' => 'ASC',
+            ]
+        );
+    }
+
+    public function findMilestonesByPhase(WorkPackage $phase)
+    {
+        return $this->findBy(
+            [
+                'project' => $phase->getProject(),
+                'type' => WorkPackage::TYPE_MILESTONE,
+            ],
+            [
+                'puid' => 'ASC',
+            ]
+        );
+    }
+
+    public function findTasksByProject(Project $project)
+    {
+        return $this->findBy(
+            [
+                'project' => $project,
+                'type' => WorkPackage::TYPE_TASK,
+            ],
+            [
+                'puid' => 'ASC',
+            ]
+        );
+    }
+
+    public function findTasksByMilestone(WorkPackage $milestone)
+    {
+        return $this->findBy(
+            [
+                'project' => $milestone->getProject(),
+                'type' => WorkPackage::TYPE_TASK,
+            ],
+            [
+                'puid' => 'ASC',
+            ]
+        );
+    }
 }
