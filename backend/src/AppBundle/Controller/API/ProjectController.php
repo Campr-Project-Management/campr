@@ -17,6 +17,7 @@ use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\WorkPackage;
+use AppBundle\Entity\Unit;
 use AppBundle\Entity\WorkPackageProjectWorkCostType;
 use AppBundle\Form\Label\BaseLabelType;
 use AppBundle\Form\Project\CreateType;
@@ -31,6 +32,7 @@ use AppBundle\Form\Todo\BaseCreateType as TodoCreateType;
 use AppBundle\Form\ProjectObjective\CreateType as ProjectObjectiveCreateType;
 use AppBundle\Form\ProjectDeliverable\CreateType as ProjectDeliverableCreateType;
 use AppBundle\Form\ProjectLimitation\CreateType as ProjectLimitationCreateType;
+use AppBundle\Form\Unit\CreateType as UnitCreateType;
 use AppBundle\Security\ProjectVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -914,8 +916,7 @@ class ProjectController extends ApiController
         $repo = $this
             ->getDoctrine()
             ->getManager()
-            ->getRepository(WorkPackage::class)
-        ;
+            ->getRepository(WorkPackage::class);
 
         $filters = $request->query->get('filters', []);
 
@@ -933,5 +934,52 @@ class ProjectController extends ApiController
         }
 
         return $this->createApiResponse($repo->findTasksByProject($project));
+    }
+
+    /**
+     * All project units.
+     *
+     * @Route("/{id}/units", name="app_api_project_units", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function unitsAction(Project $project)
+    {
+        return $this->createApiResponse($project->getUnits());
+    }
+
+    /**
+     * Create a new Unit.
+     *
+     * @Route("/{id}/units", name="app_api_project_create_unit", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function createUnitAction(Request $request, Project $project)
+    {
+        $form = $this->createForm(UnitCreateType::class, new Unit());
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $unit = $form->getData();
+            $unit->setProject($project);
+            $this->persistAndFlush($unit);
+
+            return $this->createApiResponse($unit, Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 }
