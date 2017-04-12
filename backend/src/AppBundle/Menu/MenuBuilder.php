@@ -104,21 +104,29 @@ class MenuBuilder
 
     public function createAdminAppMenu(FactoryInterface $factory)
     {
-        $menu = $factory->createItem('root')->setChildrenAttribute('class', 'main-menu sidebar-main-menu');
+        $menu = $factory
+            ->createItem('root')
+            ->setChildrenAttribute('class', 'main-menu sidebar-main-menu')
+        ;
 
-        $menu->addChild($this->translator->trans('title.user.list', [], 'messages'), [
+        $menu
+            ->addChild($this->translator->trans('title.user.list', [], 'messages'), [
                 'route' => 'app_admin_user_list',
             ])
             ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-account');
+            ->setLinkAttribute('icon', 'zmdi zmdi-account')
+        ;
 
-        $menu->addChild($this->translator->trans('title.programme.list', [], 'messages'), [
+        $menu
+            ->addChild($this->translator->trans('title.programme.list', [], 'messages'), [
                 'route' => 'app_admin_programme_list',
             ])
             ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-dialpad');
+            ->setLinkAttribute('icon', 'zmdi zmdi-dialpad')
+        ;
 
-        $menu->addChild($this->translator->trans('title.project.list', [], 'messages'), [])
+        $menu
+            ->addChild($this->translator->trans('title.project.list', [], 'messages'), [])
             ->setAttributes([
                 'class' => 'sub-menu main-category',
                 'dropdown' => true,
@@ -178,21 +186,24 @@ class MenuBuilder
             ])->getParent()
         ;
 
-        $menu->addChild($this->translator->trans('title.resource.list', [], 'messages'), [
-            'route' => 'app_admin_resource_list',
-        ])
+        $menu
+            ->addChild($this->translator->trans('title.resource.list', [], 'messages'), [
+                'route' => 'app_admin_resource_list',
+            ])
             ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-badge-check')
         ;
 
-        $menu->addChild($this->translator->trans('title.cost.list', [], 'messages'), [
-            'route' => 'app_admin_cost_list',
-        ])
+        $menu
+            ->addChild($this->translator->trans('title.cost.list', [], 'messages'), [
+                'route' => 'app_admin_cost_list',
+            ])
             ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-money')
         ;
 
-        $menu->addChild($this->translator->trans('title.calendar.list', [], 'messages'), [])
+        $menu
+            ->addChild($this->translator->trans('title.calendar.list', [], 'messages'), [])
             ->setAttributes([
                 'class' => 'sub-menu main-category',
                 'dropdown' => true,
@@ -209,7 +220,8 @@ class MenuBuilder
             ])->getParent()
         ;
 
-        $menu->addChild($this->translator->trans('title.portfolio.list', [], 'messages'), [
+        $menu
+            ->addChild($this->translator->trans('title.portfolio.list', [], 'messages'), [
                 'route' => 'app_admin_portfolio_list',
             ])
             ->setAttribute('class', 'main-category')
@@ -289,7 +301,8 @@ class MenuBuilder
             ->getParent()
         ;
 
-        $menu->addChild($this->translator->trans('title.risk.list', [], 'messages'), [])
+        $menu
+            ->addChild($this->translator->trans('title.risk.list', [], 'messages'), [])
             ->setAttributes([
                 'class' => 'sub-menu main-category',
                 'dropdown' => true,
@@ -306,7 +319,8 @@ class MenuBuilder
             ])->getParent()
         ;
 
-        $menu->addChild($this->translator->trans('title.status.list', [], 'messages'), [
+        $menu
+            ->addChild($this->translator->trans('title.status.list', [], 'messages'), [
                 'route' => 'app_admin_status_list',
             ])
             ->setAttribute('class', 'main-category')
@@ -326,7 +340,8 @@ class MenuBuilder
             ->getParent()
         ;
 
-        $menu->addChild($this->translator->trans('title.meeting.list', [], 'messages'), [])
+        $menu
+            ->addChild($this->translator->trans('title.meeting.list', [], 'messages'), [])
             ->setAttributes([
                 'class' => 'sub-menu main-category',
                 'dropdown' => true,
@@ -343,7 +358,8 @@ class MenuBuilder
             ])->getParent()
         ;
 
-        $menu->addChild($this->translator->trans('title.note.list', [], 'messages'), [
+        $menu
+            ->addChild($this->translator->trans('title.note.list', [], 'messages'), [
                 'route' => 'app_admin_note_list',
             ])
             ->setAttribute('class', 'main-category')
