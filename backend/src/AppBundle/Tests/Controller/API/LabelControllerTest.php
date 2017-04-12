@@ -69,6 +69,7 @@ class LabelControllerTest extends BaseController
                 [
                     'project' => 2,
                     'projectName' => 'project2',
+                    'openWorkPackagesNumber' => 0,
                     'id' => 3,
                     'title' => 'new-label',
                     'description' => 'descript',
@@ -168,6 +169,7 @@ class LabelControllerTest extends BaseController
                 [
                     'project' => 1,
                     'projectName' => 'project1',
+                    'openWorkPackagesNumber' => 0,
                     'id' => 1,
                     'title' => 'label-title1',
                     'description' => null,

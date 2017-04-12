@@ -11,6 +11,7 @@ const state = {
     filters: [],
     labelsForChoice: [],
     loading: false,
+    label: {},
 };
 
 const getters = {
@@ -25,6 +26,7 @@ const getters = {
     labelsForChoice: state => state.labelsForChoice,
     sponsorsManagers: state => state.sponsorsManagers,
     projectResources: (state) => _.merge({internal: {}, external: {}}, state.projectResources),
+    label: state => state.label,
 };
 
 const actions = {
@@ -92,6 +94,21 @@ const actions = {
             });
     },
     /**
+     * Gets a specific project label
+     * @param {function} commit
+     * @param {number} id
+     */
+    getProjectLabel({commit}, id) {
+        Vue.http
+            .get(Routing.generate('app_api_label_get', {'id': id})).then((response) => {
+                if (response.status === 200) {
+                    let label = response.data;
+                    commit(types.SET_LABEL, {label});
+                }
+            }, (response) => {
+            });
+    },
+    /**
      * Creates a new label on project
      * @param {function} commit
      * @param {array} data
@@ -111,6 +128,24 @@ const actions = {
             });
     },
     /**
+     * Edit a project label
+     * @param {function} commit
+     * @param {array} data
+     */
+    editProjectLabel({commit}, data) {
+        Vue.http
+            .patch(
+                Routing.generate('app_api_label_edit', {'id': data.labelId}),
+                JSON.stringify(data)
+            ).then((response) => {
+                router.push({name: 'project-task-management-edit-labels'});
+            }, (response) => {
+                if (response.status === 400) {
+                    console.log(response.data);
+                }
+            });
+    },
+    /**
      * Delete a label
      * @param {function} commit
      * @param {int} id
@@ -119,7 +154,6 @@ const actions = {
         Vue.http
             .delete(Routing.generate('app_api_label_delete', {'id': id})).then((response) => {
                 if (response.status === 204) {
-                    router.push({name: 'project-task-management-edit-labels'});
                 }
             }, (response) => {
             });
@@ -422,6 +456,14 @@ const mutations = {
      */
     [types.SET_PROJECT_RESOURCES](state, {resources}) {
         state.projectResources = resources;
+    },
+    /**
+     * set project label
+     * @param {Object} state
+     * @param {Object} label
+     */
+    [types.SET_LABEL](state, {label}) {
+        state.label = label;
     },
 };
 

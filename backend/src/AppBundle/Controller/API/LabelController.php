@@ -20,7 +20,7 @@ class LabelController extends ApiController
     /**
      * Get Label by id.
      *
-     * @Route("/{id}", name="app_api_label_get")
+     * @Route("/{id}", name="app_api_label_get", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Label $label
@@ -35,7 +35,7 @@ class LabelController extends ApiController
     /**
      * Edit a specific label.
      *
-     * @Route("/{id}", name="app_api_label_edit")
+     * @Route("/{id}", name="app_api_label_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      *
      * @param Request $request

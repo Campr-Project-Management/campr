@@ -42,6 +42,7 @@ class LabelType extends BaseLabelType
     {
         $resolver->setDefaults([
             'data_class' => Label::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }
