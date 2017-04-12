@@ -207,89 +207,6 @@ class WorkPackageControllerTest extends BaseController
     }
 
     /**
-     * @dataProvider getDataForCreateAction
-     *
-     * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
-     */
-    public function testCreateAction(
-        array $content,
-        $isResponseSuccessful,
-        $responseStatusCode,
-        $responseContent
-    ) {
-        $user = $this->getUserByUsername('superadmin');
-        $token = $user->getApiToken();
-
-        $this->client->request('POST', '/api/workpackages', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
-        $response = $this->client->getResponse();
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataForCreateAction()
-    {
-        return [
-            [
-                [
-                    'puid' => '5',
-                    'name' => 'task',
-                    'progress' => 0,
-                    'type' => 2,
-                ],
-                true,
-                Response::HTTP_CREATED,
-                [
-                    'responsibility' => null,
-                    'responsibilityFullName' => null,
-                    'parent' => null,
-                    'parentName' => null,
-                    'colorStatus' => null,
-                    'colorStatusName' => null,
-                    'colorStatusColor' => null,
-                    'project' => null,
-                    'projectName' => null,
-                    'calendar' => null,
-                    'calendarName' => null,
-                    'workPackageStatus' => null,
-                    'workPackageStatusName' => null,
-                    'workPackageCategory' => null,
-                    'workPackageCategoryName' => null,
-                    'id' => 5,
-                    'puid' => '1',
-                    'name' => 'task',
-                    'children' => [],
-                    'progress' => 0,
-                    'scheduledStartAt' => null,
-                    'scheduledFinishAt' => null,
-                    'forecastStartAt' => null,
-                    'forecastFinishAt' => null,
-                    'actualStartAt' => null,
-                    'actualFinishAt' => null,
-                    'content' => null,
-                    'results' => null,
-                    'isKeyMilestone' => false,
-                    'assignments' => [],
-                    'labels' => [],
-                    'type' => 2,
-                    'dependencies' => [],
-                    'dependants' => [],
-                    'medias' => [],
-                    'automaticSchedule' => false,
-                    'duration' => null,
-                    'costs' => [],
-                ],
-            ],
-        ];
-    }
-
-    /**
      * @dataProvider getDataForEditAction
      *
      * @param array $content
@@ -334,8 +251,8 @@ class WorkPackageControllerTest extends BaseController
                     'colorStatus' => 2,
                     'colorStatusName' => 'color-status2',
                     'colorStatusColor' => 'green',
-                    'project' => null,
-                    'projectName' => null,
+                    'project' => 1,
+                    'projectName' => 'project1',
                     'calendar' => null,
                     'calendarName' => null,
                     'workPackageStatus' => null,
@@ -343,7 +260,7 @@ class WorkPackageControllerTest extends BaseController
                     'workPackageCategory' => null,
                     'workPackageCategoryName' => null,
                     'id' => 5,
-                    'puid' => '1',
+                    'puid' => '5',
                     'name' => 'task123',
                     'children' => [],
                     'progress' => 0,

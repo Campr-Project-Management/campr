@@ -8,9 +8,7 @@ use AppBundle\Entity\Project;
 use AppBundle\Entity\WorkPackageCategory;
 use AppBundle\Entity\WorkPackageStatus;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -18,7 +16,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\WorkPackage;
@@ -26,7 +23,7 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\ColorStatus;
 use Symfony\Component\Validator\Constraints\Regex;
 
-class CreateType extends AbstractType
+class CreateType extends BaseType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -34,32 +31,11 @@ class CreateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        parent::buildForm($builder, $options);
+
         $builder
             ->add('puid', TextType::class, [
                 'required' => false,
-            ])
-            ->add('name', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.name',
-                    ]),
-                ],
-            ])
-            ->add('type', ChoiceType::class, [
-                'required' => true,
-                'choices' => [
-                    'choices.phase' => WorkPackage::TYPE_PHASE,
-                    'choices.milestone' => WorkPackage::TYPE_MILESTONE,
-                    'choices.task' => WorkPackage::TYPE_TASK,
-                ],
-                'placeholder' => 'placeholder.type',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.type',
-                    ]),
-                ],
-                'translation_domain' => 'messages',
             ])
             ->add('workPackageStatus', EntityType::class, [
                 'class' => WorkPackageStatus::class,

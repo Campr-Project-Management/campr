@@ -33,6 +33,7 @@ use AppBundle\Form\ProjectObjective\CreateType as ProjectObjectiveCreateType;
 use AppBundle\Form\ProjectDeliverable\CreateType as ProjectDeliverableCreateType;
 use AppBundle\Form\ProjectLimitation\CreateType as ProjectLimitationCreateType;
 use AppBundle\Form\Unit\CreateType as UnitCreateType;
+use AppBundle\Form\WorkPackage\ApiCreateType;
 use AppBundle\Security\ProjectVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -910,6 +911,7 @@ class ProjectController extends ApiController
 
     /**
      * @Route("/{id}/tasks", name="app_api_project_tasks", options={"expose"=true})
+     * @Method({"GET"})
      */
     public function tasksAction(Request $request, Project $project)
     {
@@ -934,6 +936,38 @@ class ProjectController extends ApiController
         }
 
         return $this->createApiResponse($repo->findTasksByProject($project));
+    }
+
+    /**
+     * Create a new WorkPackage.
+     *
+     * @Route("/{id}/tasks", name="app_api_project_tasks_create", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function createTaskAction(Request $request, Project $project)
+    {
+        $form = $this->createForm(ApiCreateType::class, new WorkPackage());
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $wp = $form->getData();
+            $wp->setProject($project);
+            $this->persistAndFlush($wp);
+
+            return $this->createApiResponse($wp, Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
