@@ -30,7 +30,7 @@ class Unit
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="units")
      * @ORM\JoinColumn(name="project_id")
      */
     private $project;
@@ -52,12 +52,16 @@ class Unit
     /**
      * @var \DateTime
      *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
 
     /**
      * @var \DateTime|null
+     *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @Gedmo\Timestampable(on="update")
      *
@@ -201,6 +205,19 @@ class Unit
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * Returns project id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("project")
+     *
+     * @return string
+     */
+    public function getProjectId()
+    {
+        return $this->project ? $this->project->getId() : null;
     }
 
     /**
