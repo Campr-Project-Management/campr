@@ -358,6 +358,13 @@ class Project
     private $workPackageStatuses;
 
     /**
+     * @var ArrayCollection|Unit[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Unit", mappedBy="project")
+     */
+    private $units;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -383,6 +390,7 @@ class Project
         $this->projectModules = new ArrayCollection();
         $this->workPackageStatuses = new ArrayCollection();
         $this->costs = new ArrayCollection();
+        $this->units = new ArrayCollection();
     }
 
     /**
@@ -1718,5 +1726,37 @@ class Project
     public function getCosts()
     {
         return $this->costs;
+    }
+
+    /**
+     * @param Unit $unit
+     *
+     * @return Project
+     */
+    public function addUnit(Unit $unit)
+    {
+        $this->units[] = $unit;
+
+        return $this;
+    }
+
+    /**
+     * @param Unit $unit
+     *
+     * @return Project
+     */
+    public function removeUnit(Unit $unit)
+    {
+        $this->units->removeElement($unit);
+
+        return $this;
+    }
+
+    /**
+     * @return Unit[]|ArrayCollection
+     */
+    public function getUnits()
+    {
+        return $this->units;
     }
 }
