@@ -203,7 +203,7 @@ class WorkPackage
     /**
      * @var ArrayCollection|Label[]
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Label")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Label", inversedBy="workPackages")
      * @ORM\JoinTable(
      *     name="work_package_label",
      *     joinColumns={
