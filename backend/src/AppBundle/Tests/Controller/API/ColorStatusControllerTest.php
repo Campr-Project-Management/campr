@@ -42,12 +42,14 @@ class ColorStatusControllerTest extends BaseController
                     [
                         'id' => 1,
                         'name' => 'color-status1',
+                        'description' => null,
                         'color' => 'green',
                         'sequence' => 1,
                     ],
                     [
                         'id' => 2,
                         'name' => 'color-status2',
+                        'description' => null,
                         'color' => 'green',
                         'sequence' => 2,
                     ],
