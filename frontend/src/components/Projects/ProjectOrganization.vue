@@ -83,7 +83,7 @@
         </div>
 
         <div class="team-graph">
-            <member-badge class="lead" size="big" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>
+            <member-badge class="lead" size="big" name="Nelson Carr" title="Project Manager, Global Operations" user-avatar="//placehold.it/50x50"></member-badge>
             <div class="flex flex-space-between">
                 <div>
                     <member-badge size="big" class="lead" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>
@@ -201,7 +201,7 @@
                 </div>
             </div>
             <div class="flex">
-                <a href="" class="btn-rounded second-bg">Add New Team Members</a>
+                <router-link :to="{name: 'project-organization-create-member'}" class="btn-rounded btn-auto second-bg">Add New Team Member</router-link>
                 <a href="javascript:void(0)" class="btn-rounded btn-empty" @click="showModal = true">Create Distribution List</a>
             </div>
         </div>
