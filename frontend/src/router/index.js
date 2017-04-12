@@ -96,6 +96,11 @@ const routes = [
                         name: 'project-task-management-add-label',
                     },
                     {
+                        path: 'edit-label/:labelId',
+                        component: AddLabel,
+                        name: 'project-task-management-edit-label',
+                    },
+                    {
                         path: 'edit-labels',
                         component: EditLabels,
                         name: 'project-task-management-edit-labels',

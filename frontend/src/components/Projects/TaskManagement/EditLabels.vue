@@ -12,25 +12,27 @@
         <div class="label-list">
             <div v-for="label in labels" class="flex flex-space-between label-row">
                 <div class="flex">
-                    <div class="label-icon" v-bind:style="{ background: label.color }">{{ label.title }}</div>
+                    <div class="label-icon" :style="{ background: label.color }">{{ label.title }}</div>
                     <div class="description">{{ label.description }}</div>
-                    <div class="tasks">3 {{ message.open_tasks }}</div>
+                    <div class="tasks">{{ label.openWorkPackagesNumber }} {{ message.open_tasks }}</div>
                 </div>
                 <div class="actions">
-                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                    viewBox="0 0 28.5 29.8" style="enable-background:new 0 0 28.5 29.8;" xml:space="preserve">
-                        <g id="XMLID_1677_">
-                          <path id="XMLID_1681_" class="second-fill" d="M5.5,22.8c0,0.1,0,0.3,0.1,0.4c0.1,0.1,0.2,0.1,0.4,0.1c0,0,5-1.2,5-1.2l-4.3-4.3
-                            C6.7,17.8,5.5,22.8,5.5,22.8z"/>
+                    <router-link :to="{name: 'project-task-management-edit-label', params: { id: 1, labelId: label.id }}">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        viewBox="0 0 28.5 29.8" style="enable-background:new 0 0 28.5 29.8;" xml:space="preserve">
+                            <g id="XMLID_1677_">
+                              <path id="XMLID_1681_" class="second-fill" d="M5.5,22.8c0,0.1,0,0.3,0.1,0.4c0.1,0.1,0.2,0.1,0.4,0.1c0,0,5-1.2,5-1.2l-4.3-4.3
+                                C6.7,17.8,5.5,22.8,5.5,22.8z"/>
 
-                            <rect id="XMLID_1680_" x="19.3" y="6" transform="matrix(-0.7074 0.7069 -0.7069 -0.7074 40.0807 1.5692)" class="second-fill" width="0.8" height="6.1"/>
+                                <rect id="XMLID_1680_" x="19.3" y="6" transform="matrix(-0.7074 0.7069 -0.7069 -0.7074 40.0807 1.5692)" class="second-fill" width="0.8" height="6.1"/>
 
-                            <rect id="XMLID_1679_" x="7.4" y="11.6" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 34.5063 15.0131)" class="second-fill" width="13.5" height="6.1"/>
-                          <path id="XMLID_1678_" class="second-fill" d="M22.7,10.4l0.3-0.3c0.7-0.7,0.7-1.9,0-2.7l-1.6-1.6C21,5.5,20.5,5.3,20,5.3
-                            c-0.5,0-1,0.2-1.3,0.6l-0.3,0.3L22.7,10.4z"/>
-                        </g>
-                    </svg>
-                    <a v-on:click="deleteLabel(label.id)">
+                                <rect id="XMLID_1679_" x="7.4" y="11.6" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 34.5063 15.0131)" class="second-fill" width="13.5" height="6.1"/>
+                              <path id="XMLID_1678_" class="second-fill" d="M22.7,10.4l0.3-0.3c0.7-0.7,0.7-1.9,0-2.7l-1.6-1.6C21,5.5,20.5,5.3,20,5.3
+                                c-0.5,0-1,0.2-1.3,0.6l-0.3,0.3L22.7,10.4z"/>
+                            </g>
+                        </svg>
+                    </router-link>
+                    <a @click="deleteLabel(label.id)">
                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                            viewBox="0 0 28.5 29.8" style="enable-background:new 0 0 28.5 29.8;" xml:space="preserve">
                             <g id="XMLID_1682_">
@@ -45,7 +47,6 @@
                 </div>
             </div>
         </div>
-        <router-link :to="{name: 'project-task-management-add-label'}" class="btn-rounded second-bg btn-auto">{{ message.new_label }}</router-link>
     </div>
 </template>
 
@@ -57,6 +58,7 @@ export default {
         ...mapActions(['getProjectLabels', 'deleteProjectLabel']),
         deleteLabel: function(id) {
             this.deleteProjectLabel(id);
+            this.getProjectLabels(this.$route.params.id);
         },
     },
     created() {
@@ -68,12 +70,12 @@ export default {
     data() {
         return {
             message: {
-                edit_task_labels: Translator.trans('message.edit_task_labels'),
-                new_label: Translator.trans('message.new_label'),
-                open_tasks: Translator.trans('message.open_tasks'),
-                view_grid: Translator.trans('message.view_grid'),
-                view_board: Translator.trans('message.view_board'),
-                new_task: Translator.trans('message.new_task'),
+                edit_task_labels: this.translate('message.edit_task_labels'),
+                new_label: this.translate('message.new_label'),
+                open_tasks: this.translate('message.open_tasks'),
+                view_grid: this.translate('message.view_grid'),
+                view_board: this.translate('message.view_board'),
+                new_task: this.translate('message.new_task'),
             },
         };
     },

@@ -1006,6 +1006,7 @@ class ProjectControllerTest extends BaseController
                     [
                         'project' => 1,
                         'projectName' => 'project1',
+                        'openWorkPackagesNumber' => 0,
                         'id' => 1,
                         'title' => 'label-title1',
                         'description' => null,
@@ -1014,6 +1015,7 @@ class ProjectControllerTest extends BaseController
                     [
                         'project' => 1,
                         'projectName' => 'project1',
+                        'openWorkPackagesNumber' => 0,
                         'id' => 2,
                         'title' => 'label-title2',
                         'description' => null,
@@ -1078,6 +1080,7 @@ class ProjectControllerTest extends BaseController
                 [
                     'project' => 2,
                     'projectName' => 'project2',
+                    'openWorkPackagesNumber' => 0,
                     'id' => null,
                     'title' => 'label-title',
                     'description' => null,
