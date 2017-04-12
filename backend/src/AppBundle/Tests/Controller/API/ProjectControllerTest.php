@@ -2067,7 +2067,7 @@ class ProjectControllerTest extends BaseController
                         [
                             'project' => 1,
                             'projectName' => 'project1',
-                            'id' =>1,
+                            'id' => 1,
                             'name' => 'unit1',
                             'sequence' => 1,
                             'createdAt' => '',
@@ -2810,6 +2810,89 @@ class ProjectControllerTest extends BaseController
                 Response::HTTP_OK,
                 'text/calendar; charset=UTF-8',
                 'BEGIN:VCALENDAR',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataForCreateTaskAction
+     *
+     * @param array $content
+     * @param $isResponseSuccessful
+     * @param $responseStatusCode
+     * @param $responseContent
+     */
+    public function testCreateTaskAction(
+        array $content,
+        $isResponseSuccessful,
+        $responseStatusCode,
+        $responseContent
+    ) {
+        $user = $this->getUserByUsername('superadmin');
+        $token = $user->getApiToken();
+
+        $this->client->request('POST', '/api/projects/1/tasks', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $response = $this->client->getResponse();
+        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals(json_encode($responseContent), $response->getContent());
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForCreateTaskAction()
+    {
+        return [
+            [
+                [
+                    'puid' => '5',
+                    'name' => 'task',
+                    'progress' => 0,
+                    'type' => 2,
+                ],
+                true,
+                Response::HTTP_CREATED,
+                [
+                    'responsibility' => null,
+                    'responsibilityFullName' => null,
+                    'parent' => null,
+                    'parentName' => null,
+                    'colorStatus' => null,
+                    'colorStatusName' => null,
+                    'colorStatusColor' => null,
+                    'project' => 1,
+                    'projectName' => 'project1',
+                    'calendar' => null,
+                    'calendarName' => null,
+                    'workPackageStatus' => null,
+                    'workPackageStatusName' => null,
+                    'workPackageCategory' => null,
+                    'workPackageCategoryName' => null,
+                    'id' => 5,
+                    'puid' => '5',
+                    'name' => 'task',
+                    'children' => [],
+                    'progress' => 0,
+                    'scheduledStartAt' => null,
+                    'scheduledFinishAt' => null,
+                    'forecastStartAt' => null,
+                    'forecastFinishAt' => null,
+                    'actualStartAt' => null,
+                    'actualFinishAt' => null,
+                    'content' => null,
+                    'results' => null,
+                    'isKeyMilestone' => false,
+                    'assignments' => [],
+                    'labels' => [],
+                    'type' => 2,
+                    'dependencies' => [],
+                    'dependants' => [],
+                    'medias' => [],
+                    'automaticSchedule' => false,
+                    'duration' => null,
+                    'costs' => [],
+                ],
             ],
         ];
     }
