@@ -28,11 +28,13 @@ export default {
             this.getTasks();
         }
     },
-    computed: mapGetters({
-        colorStatuses: 'colorStatuses',
-        tasks: 'tasks',
-
-    }),
+    computed: {
+        ...mapGetters({
+            colorStatuses: 'colorStatuses',
+            tasks: 'tasks',
+        }),
+        count: () => this.tasks.items.length,
+    },
     methods: {
         ...mapActions(['getColorStatuses', 'getTasks']),
     },
