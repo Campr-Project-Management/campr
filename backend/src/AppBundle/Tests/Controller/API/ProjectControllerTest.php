@@ -398,6 +398,7 @@ class ProjectControllerTest extends BaseController
                     'projectLimitations' => [],
                     'projectDeliverables' => [],
                     'configuration' => [],
+                    'units' => [],
                     'logo' => null,
                 ],
             ],
@@ -1689,6 +1690,10 @@ class ProjectControllerTest extends BaseController
         $responseContent['distributionLists'][0]['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
         $email = md5(strtolower(trim($project['distributionLists'][1]['users'][0]['email'])));
         $responseContent['distributionLists'][1]['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
+        $responseContent['units'][0]['createdAt'] = $project['units'][0]['createdAt'];
+        $responseContent['units'][1]['createdAt'] = $project['units'][1]['createdAt'];
+        $responseContent['units'][0]['updatedAt'] = $project['units'][0]['updatedAt'];
+        $responseContent['units'][1]['updatedAt'] = $project['units'][1]['updatedAt'];
 
         for ($i = 1; $i <= 3; ++$i) {
             $projectUser = $this->em->getRepository(ProjectUser::class)->find($i);
@@ -2058,6 +2063,26 @@ class ProjectControllerTest extends BaseController
                     'projectLimitations' => [],
                     'projectDeliverables' => [],
                     'configuration' => [],
+                    'units' => [
+                        [
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'id' =>1,
+                            'name' => 'unit1',
+                            'sequence' => 1,
+                            'createdAt' => '',
+                            'updatedAt' => '',
+                        ],
+                        [
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'id' => 2,
+                            'name' => 'unit2',
+                            'sequence' => 2,
+                            'createdAt' => '',
+                            'updatedAt' => '',
+                        ],
+                    ],
                     'logo' => null,
                 ],
             ],
