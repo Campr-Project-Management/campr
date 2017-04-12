@@ -70,7 +70,6 @@ const actions = {
                 },
             })
             .then((response) => {
-                console.log('Tasks');
                 if (response.status === 200) {
                     let tasksByStatuses = response.data;
                     commit(types.SET_TASKS_BY_STATUSES, {tasksByStatuses});
@@ -88,7 +87,6 @@ const actions = {
      * @param {number} page
      */
     getTasksByStatus({commit}, {project, status, page}) {
-        console.log('Params: ', project, status, page);
         commit(types.TOGGLE_LOADER, true);
         Vue.http
             .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
@@ -116,7 +114,6 @@ const actions = {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
             .get(Routing.generate('app_api_workpackage_statuses_list')).then((response) => {
-                console.log('Statuses');
                 if (response.status === 200) {
                     let taskStatuses = response.data;
                     commit(types.SET_TASK_STATUSES, {taskStatuses});
