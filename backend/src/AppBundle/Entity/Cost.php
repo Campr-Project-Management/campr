@@ -84,8 +84,11 @@ class Cost
     private $quantity;
 
     /**
-     * @var float
-     * @ORM\Column(name="unit", type="decimal", precision=9, scale=2, nullable=true)
+     * @var Unit|null
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Unit")
+     * @ORM\JoinColumns({
+     *     @ORM\JoinColumn(name="unit_id", referencedColumnName="id")
+     * })
      */
     private $unit;
 
@@ -230,11 +233,11 @@ class Cost
     /**
      * Set unit.
      *
-     * @param string $unit
+     * @param Unit $unit
      *
      * @return Cost
      */
-    public function setUnit($unit)
+    public function setUnit(Unit $unit = null)
     {
         $this->unit = $unit;
 
@@ -244,7 +247,7 @@ class Cost
     /**
      * Get unit.
      *
-     * @return string
+     * @return Unit|null
      */
     public function getUnit()
     {
