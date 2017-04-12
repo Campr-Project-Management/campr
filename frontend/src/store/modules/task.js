@@ -192,6 +192,7 @@ const mutations = {
      * @param {number} status
      */
     [types.SET_TASKS_BY_STATUS](state, {tasksByStatus, status}) {
+        console.log('action', {tasksByStatus, status});
         state.tasksByStatuses[status].items.concat(tasksByStatus);
     },
     /**

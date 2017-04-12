@@ -3,14 +3,14 @@
         <div class="column-header flex flex-v-center flex-space-between">
             <span>{{ status.name }}</span>
             <div class="flex">
-                <span class="notification-balloon">{{ tasksNumber }}</span>
+                <span class="notification-balloon"><div v-if="tasksByStatuses[status.id]">{{ tasksByStatuses[status.id].totalItems }}</div><div v-else>...</div></span>
                 <span class="notification-balloon second-bg">+</span>
             </div>
         </div>
         <vue-scrollbar class="tasks-scroll">
             <div>
                 <small-task-box v-if="tasksByStatuses[status.id]" v-bind:task="task" v-for="task in tasksByStatuses[status.id].items"></small-task-box>
-                <!--<infinite-loading :on-infinite="onInfinite" ref="infiniteLoading"></infinite-loading>-->
+                <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading"></infinite-loading>
            </div>
         </vue-scrollbar>
     </div>
@@ -39,7 +39,7 @@ export default {
         onInfinite() {
             this.getTasksByStatus({
                 project: this.project,
-                status: this.status.name,
+                status: this.status.id,
                 page: this.page,
             });
             this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
