@@ -9,7 +9,7 @@
         </div>
         <vue-scrollbar class="tasks-scroll">
             <div>
-                <small-task-box v-bind:task="task" v-for="task in tasks"></small-task-box>
+                <small-task-box v-if="tasksByStatuses[status.id]" v-bind:task="task" v-for="task in tasksByStatuses[status.id].items"></small-task-box>
                 <!--<infinite-loading :on-infinite="onInfinite" ref="infiniteLoading"></infinite-loading>-->
            </div>
         </vue-scrollbar>
@@ -23,7 +23,7 @@ import VueScrollbar from 'vue2-scrollbar';
 import InfiniteLoading from 'vue-infinite-loading';
 
 export default {
-    props: ['status', 'tasks', 'tasksNumber'],
+    props: ['status'],
     components: {
         SmallTaskBox,
         VueScrollbar,
