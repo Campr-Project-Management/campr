@@ -17,6 +17,7 @@ import AddLabel from '../components/Projects/TaskManagement/AddLabel.vue';
 import EditLabels from '../components/Projects/TaskManagement/EditLabels.vue';
 import ViewTask from '../components/Tasks/ViewTask';
 import Tasks from '../components/Tasks/Tasks';
+import MemberCreate from '../components/Projects/Organization/MemberCreate.vue';
 
 Vue.use(VueRouter);
 
@@ -70,6 +71,11 @@ const routes = [
                 path: 'organization',
                 component: ProjectOrganization,
                 name: 'project-organization',
+            },
+            {
+                path: 'organization/member-create',
+                component: MemberCreate,
+                name: 'project-organization-create-member',
             },
             {
                 path: 'task-management',
