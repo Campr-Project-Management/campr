@@ -16,6 +16,7 @@ use AppBundle\Entity\ProjectStatus;
 use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Todo;
+use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\WorkPackageProjectWorkCostType;
 use AppBundle\Form\Label\BaseLabelType;
 use AppBundle\Form\Project\CreateType;
@@ -845,6 +846,7 @@ class ProjectController extends ApiController
      */
     public function resourcesAction(Project $project)
     {
+        // @TODO: replace with \AppBundle\Entity\Resource AND \AppBundle\Entity\Cost
         return $this->createApiResponse(
             [
                 'internal' => $this
@@ -858,5 +860,78 @@ class ProjectController extends ApiController
             ],
             Response::HTTP_OK
         );
+    }
+
+    /**
+     * @Route("/{id}/phases", name="app_api_project_phases", options={"expose"=true})
+     */
+    public function phasesAction(Project $project)
+    {
+        $phases = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(WorkPackage::class)
+            ->findPhasesByProject($project)
+        ;
+
+        return $this->createApiResponse($phases);
+    }
+
+    /**
+     * @Route("/{id}/milestones", name="app_api_project_milestones", options={"expose"=true})
+     */
+    public function milestonesAction(Request $request, Project $project)
+    {
+        $repo = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(WorkPackage::class)
+        ;
+
+        $filters = $request->query->get('filters', []);
+
+        if (isset($filters['phase'])) {
+            $phase = $repo->findOneBy([
+                'id' => $filters['phase'],
+                'type' => WorkPackage::TYPE_PHASE,
+            ]);
+
+            if (!$phase) {
+                throw $this->createNotFoundException();
+            }
+
+            return $this->createApiResponse($repo->findMilestonesByPhase($phase));
+        }
+
+        return $this->createApiResponse($repo->findMilestonesByProject($project));
+    }
+
+    /**
+     * @Route("/{id}/tasks", name="app_api_project_tasks", options={"expose"=true})
+     */
+    public function tasksAction(Request $request, Project $project)
+    {
+        $repo = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(WorkPackage::class)
+        ;
+
+        $filters = $request->query->get('filters', []);
+
+        if (isset($filters['milestone'])) {
+            $milestone = $repo->findOneBy([
+                'id' => $filters['milestone'],
+                'type' => WorkPackage::TYPE_MILESTONE,
+            ]);
+
+            if (!$milestone) {
+                throw $this->createNotFoundException();
+            }
+
+            return $this->createApiResponse($repo->findTasksByMilestone($milestone));
+        }
+
+        return $this->createApiResponse($repo->findTasksByProject($project));
     }
 }
