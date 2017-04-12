@@ -5,21 +5,21 @@
             <div class="flex flex-v-center">
                 <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{ message.view_grid }}</router-link>
                 <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{ message.view_board }}</router-link>
-                <router-link :to="{name: 'project-task-management-add-label'}" class="btn-rounded btn-auto second-bg">{{ message.new_label }}</router-link>
                 <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">{{ message.new_task }}</router-link>
             </div>
         </div>
         <div class="form">
-            <input-field v-model="title" type="text" label="message.label_title"></input-field>
-            <input-field v-model="description" type="textarea" label="message.label_description"></input-field>
+            <input-field v-model="title" type="text" v-bind:content="title" v-bind:label="message.label_title"></input-field>
+            <input-field v-model="description" type="textarea" v-bind:content="description" v-bind:label="message.label_description"></input-field>
             <div class="color">
-                <input-field v-model="color" type="text" label="message.label_color" :content="color" :css="css"></input-field>
-                <sketch-picker v-model="colors" @change-color="onChange"></sketch-picker>
+                <input-field @click.native="toggleSketch" v-model="color" type="text" v-bind:label="message.label_color" :content="color" :css="css"></input-field>
+                <sketch-picker v-show="showSketch" v-model="colors" @change-color="onChange"></sketch-picker>
             </div>
             <p class="note">{{ message.label_note }}</p>
             <div class="flex flex-space-between actions">
                 <router-link :to="{name: 'project-task-management-edit-labels'}" class="btn-rounded btn-auto disable-bg">{{  button.cancel }}</router-link>
-                <a v-on:click="createLabel" class="btn-rounded btn-auto">{{ button.create_label }}</a>
+                <a v-if="!isEdit" @click="createLabel" class="btn-rounded btn-auto">{{ button.create_label }}</a>
+                <a v-if="isEdit" @click="editLabel" class="btn-rounded btn-auto">{{ button.edit_label }}</a>
             </div>
         </div>
     </div>
@@ -28,18 +28,36 @@
 <script>
 import InputField from '../../_common/_form-components/InputField';
 import {Sketch} from 'vue-color';
-import {mapActions} from 'vuex';
+import {mapGetters, mapActions} from 'vuex';
 
 export default {
     components: {
         InputField,
         'sketch-picker': Sketch,
     },
+    created() {
+        if (this.$route.params.labelId) this.getProjectLabel(this.$route.params.labelId);
+    },
+    computed: mapGetters({
+        label: 'label',
+    }),
+    watch: {
+        label(value) {
+            this.title = this.label.title;
+            this.description = this.label.description;
+            this.color = this.label.color;
+            this.colors.hex = this.label.color;
+            this.css = 'background: ' + this.label.color;
+        },
+    },
     methods: {
-        ...mapActions(['createProjectLabel']),
+        ...mapActions(['createProjectLabel', 'getProjectLabel', 'editProjectLabel']),
         onChange(color) {
             this.color = color.hex;
             this.css = 'background: ' + color.hex;
+        },
+        toggleSketch() {
+            this.showSketch = !this.showSketch;
         },
         createLabel: function() {
             let data = {
@@ -50,25 +68,39 @@ export default {
             };
             this.createProjectLabel(data);
         },
+        editLabel: function() {
+            let data = {
+                labelId: this.$route.params.labelId,
+                title: this.title,
+                description: this.description,
+                color: this.color,
+            };
+            this.editProjectLabel(data);
+        },
     },
     data() {
         return {
-            color: '#194d33',
+            color: '',
+            title: '',
+            description: '',
+            showSketch: false,
             message: {
-                add_new_label: Translator.trans('message.add.label'),
-                new_label: Translator.trans('message.new_label'),
-                view_grid: Translator.trans('message.view_grid'),
-                view_board: Translator.trans('message.view_board'),
-                new_task: Translator.trans('message.new_task'),
-                label_title: Translator.trans('placeholder.label_title'),
-                label_description: Translator.trans('placeholder.label_description'),
-                label_color: Translator.trans('placeholder.label_color'),
-                label_note: Translator.trans('message.label_note'),
+                add_new_label: this.translate('add.label'),
+                new_label: this.translate('message.new_label'),
+                view_grid: this.translate('message.view_grid'),
+                view_board: this.translate('message.view_board'),
+                new_task: this.translate('message.new_task'),
+                label_title: this.translate('placeholder.label_title'),
+                label_description: this.translate('placeholder.label_description'),
+                label_color: this.translate('placeholder.label_color'),
+                label_note: this.translate('message.label_note'),
             },
             button: {
-                cancel: window.Translator.trans('button.cancel'),
-                create_label: window.Translator.trans('button.create_label'),
+                cancel: this.translate('button.cancel'),
+                create_label: this.translate('button.create_label'),
+                edit_label: this.translate('button.edit_label'),
             },
+            isEdit: this.$route.params.labelId,
             css: 'background: #194D33',
             colors: {
                 hex: '#194d33',
