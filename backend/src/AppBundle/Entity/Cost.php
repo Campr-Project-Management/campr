@@ -60,8 +60,7 @@ class Cost
 
     /**
      * @var string
-     * @ORM\Column(name="name", type="string", length=128, nullable=false)
-     * @Assert\NotBlank(message="not_blank.name")
+     * @ORM\Column(name="name", type="string", length=128, nullable=true)
      */
     private $name;
 
