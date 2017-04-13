@@ -31,6 +31,13 @@ class ColorStatus
     /**
      * @var string
      *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="color", type="string", length=7)
      */
     private $color;
@@ -122,5 +129,21 @@ class ColorStatus
     public function getSequence()
     {
         return $this->sequence;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
     }
 }

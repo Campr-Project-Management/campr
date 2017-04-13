@@ -1,6 +1,6 @@
 <template>
     <div class="input-holder">
-        <input v-on:input="updateValue($event.target.value)" v-if="type == 'text'" type="text" class="float-label" :id="'input' + _uid" :value="content" :style="css">
+        <input v-on:input="updateValue($event.target.value)" v-if="type == 'text'" type="text" class="float-label" :id="'input' + _uid" :value="content" :disabled="disabled" :style="css">
         <textarea v-on:input="updateValue($event.target.value)" v-if="type == 'textarea'" class="float-label" :id="'input' + _uid" :value="content"></textarea>
         <label v-bind:class="{ 'active': content }">{{ label }}</label>
     </div>

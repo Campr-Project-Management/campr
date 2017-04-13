@@ -300,6 +300,7 @@ textarea {
   border: none;
   background-color: transparent;
   padding: 0;
+  display: inline-block;
 
   svg {
     width: 16px;
@@ -494,11 +495,18 @@ hr {
     border-radius: 50%;
     margin-left: 10px;
     text-align: center;
-    line-height: 30px;
+    line-height: 32px;
     cursor: pointer;
+    @include transition(background-color, 0.2s, ease-in);
+
+    &:hover {
+      background: darken($middleColor, 15%);
+    }
 
     &.active {
       background: $secondColor;
+      color: $darkColor;
+      pointer-events: none;
     }
   }
 }
@@ -649,6 +657,7 @@ hr {
   font-size: 10px;
   font-weight: 400;
   letter-spacing: 1.8px;
+  table-layout: fixed;
 
   >thead {
     >tr {
@@ -690,6 +699,14 @@ hr {
         text-transform: uppercase;
         letter-spacing: 0.1em;
         padding: 8px 30px;
+
+        .btn-icon {
+          margin-right: 5px;
+
+          &:last-child{
+            margin-right: 0;
+          }
+        }
       }
     }
   }
@@ -723,4 +740,47 @@ hr {
 
 .vue-scrollbar__wrapper {
   background-color: transparent !important;
+}
+
+.tooltip {
+  display: none;
+  @include opacity(0);
+  @include transition(opacity, 0.2s, ease-in);
+  pointer-events: none;
+  z-index: 10000;        
+
+  .tooltip-content {
+    background-color: $secondColor;
+    color: $darkColor;
+    font-size: 10px;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    @include border-radius(3px);
+  }
+
+  &.tooltip-open-transitionend {
+    display: block;
+  }
+
+  &.tooltip-after-open {
+    @include opacity(1);
+  }
+
+  &.tooltip-target-attached-top {
+    padding-bottom: 5px;
+
+    &:after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 5px 5px 0 5px;
+      border-color: $secondColor transparent transparent transparent;
+      bottom: 0;
+      left: 50%;
+      margin-left: -5px;
+    }
+  }
 }
