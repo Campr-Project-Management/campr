@@ -6,6 +6,7 @@ use AppBundle\Entity\Project;
 use AppBundle\Entity\User;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\WorkPackageStatus;
+use Doctrine\ORM\Query;
 
 class WorkPackageRepository extends BaseRepository
 {
@@ -171,5 +172,120 @@ class WorkPackageRepository extends BaseRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
+    }
+
+    public function findPhasesByProject(Project $project)
+    {
+        return $this->findBy(
+            [
+                'project' => $project,
+                'type' => WorkPackage::TYPE_PHASE,
+            ],
+            [
+                'puid' => 'ASC',
+            ]
+        );
+    }
+
+    public function findMilestonesByProject(Project $project)
+    {
+        return $this->findBy(
+            [
+                'project' => $project,
+                'type' => WorkPackage::TYPE_MILESTONE,
+            ],
+            [
+                'puid' => 'ASC',
+            ]
+        );
+    }
+
+    public function findMilestonesByPhase(WorkPackage $phase)
+    {
+        return $this->findBy(
+            [
+                'project' => $phase->getProject(),
+                'type' => WorkPackage::TYPE_MILESTONE,
+            ],
+            [
+                'puid' => 'ASC',
+            ]
+        );
+    }
+
+    public function findTasksByProject(Project $project)
+    {
+        return $this->findBy(
+            [
+                'project' => $project,
+                'type' => WorkPackage::TYPE_TASK,
+            ],
+            [
+                'puid' => 'ASC',
+            ]
+        );
+    }
+
+    public function findTasksByMilestone(WorkPackage $milestone)
+    {
+        return $this->findBy(
+            [
+                'project' => $milestone->getProject(),
+                'type' => WorkPackage::TYPE_TASK,
+            ],
+            [
+                'puid' => 'ASC',
+            ]
+        );
+    }
+
+    /**
+     * Return all project workpackages filtered.
+     *
+     * @param Project           $project
+     * @param array             $filters
+     * @param WorkPackageStatus $workPackageStatus
+     *
+     * @return Query
+     */
+    public function getQueryByProjectFiltersAndWorkPackage(Project $project, WorkPackageStatus $workPackageStatus = null, $filters = []): Query
+    {
+        $qb = $this
+            ->createQueryBuilder('wp')
+            ->innerJoin('wp.project', 'p')
+            ->where('p.id = :project')
+            ->setParameter('project', $project)
+        ;
+
+        if (isset($workPackageStatus)) {
+            $qb
+                ->andWhere('wp.workPackageStatus = :workPackageStatus')
+                ->setParameter('workPackageStatus', $workPackageStatus)
+            ;
+        }
+
+        if (isset($filters['status'])) {
+            $qb
+                ->innerJoin('wp.workPackageStatus', 'wps')
+                ->andWhere('wps.name = :statusName')
+                ->setParameter('statusName', $filters['status'])
+            ;
+        }
+
+        if (isset($filters['type'])) {
+            $qb
+                ->andWhere('wp.type = :type')
+                ->setParameter('type', $filters['type'])
+            ;
+        }
+
+        if (isset($filters['milestone'])) {
+            $qb
+                ->andWhere('wp.isKeyMilestone = :milestone')
+                ->setParameter('milestone', $filters['milestone'])
+            ;
+        }
+
+        return $qb->getQuery();
     }
 }

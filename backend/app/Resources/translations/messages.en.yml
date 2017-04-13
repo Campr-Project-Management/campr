@@ -140,6 +140,19 @@ message:
     total: Total
     select_portfolio: Select Portfolio
     select_programme: Select Programme
+    manual_schedule: Manual Schedule
+    automatic_schedule: Automatic Schedule
+    manual_schedule_note: Define Base Start and Base Finish dates as well as Forecast Start and Forecast Finish dates.
+    automatic_schedule_note: Define a Predecessor or a Successor for this task, enter a time period, and the Base Start and Base Finish dates will be calculated automatically.
+    internal_costs: Internal Costs
+    project_currency: Project Currency
+    external_costs: External Costs
+    note: Note:
+    opex_capex_note: If an External Cost is not set up as CAPEX,it will automatically be set up as OPEX.
+    capex: Capex
+    capex_subtotal: Capex Subtotal
+    opex_subtotal: Opex Subtotal
+    attachments: Attachments
 
 menu:
     users: Users
@@ -623,6 +636,25 @@ label:
     dependencies: Dependencies
     dependants: Dependants
     contract: Contract
+    task_title: Task Title
+    task_description: Task Description
+    resource: Resource
+    daily_rate: Daily Rate
+    qty: Qty.
+    days: Days
+    internal_cost_subtotal: Subtotal
+    forecast_total: Forecast Total
+    actual_total: Actual Total
+    cost_description: Cost Description
+    external_cost_qty: Qty.
+    external_cost_unit_rate: Unit Rate
+    external_cost_total: Base Total
+    custom: Custom
+    external_costs_forecast: Forecast
+    external_costs_atual: Actual
+    duration_in_days: Duration in Days
+    select_successors: Select Successors
+    select_predecessors: Select Predecessors
 
 button:
     sign_in: Sign In
@@ -654,6 +686,9 @@ button:
     create_task: Create Task
     show_results: Show Results
     import: Import
+    add_internal_cost: Add internal cost
+    add_external_cost: Add external cost
+    add_attachment: Add attachment
 
 checkbox:
     checked: Yes

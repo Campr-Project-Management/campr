@@ -34,6 +34,7 @@ class CreateType extends AbstractType
             ])
             ->add('name', TextType::class)
             ->add('type', IntegerType::class)
+            ->add('expenseType', IntegerType::class)
             ->add('rate', NumberType::class)
             ->add('quantity', NumberType::class)
             ->add('unit', EntityType::class, [
