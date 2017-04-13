@@ -16,6 +16,7 @@ import './css/vueditor.css';
 import VueCookie from 'vue-cookie';
 import VeeValidate from 'vee-validate';
 import './util/Translator';
+import VTooltip from 'v-tooltip';
 
 Vue.use(VueResource);
 Vue.use(Vue2Dragula);
@@ -70,3 +71,5 @@ new Vue({
     template: '<App/>',
     components: {App},
 }).$mount('#app');
+
+Vue.use(VTooltip);
