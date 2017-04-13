@@ -78,8 +78,11 @@
             </div>
         </modal>
 
-        <div class="header">
+        <div class="header flex flex-space-between">
             <h1>Project Organization</h1>
+            <div class="flex flex-v-center">
+                <router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto second-bg">Edit Project Organization</router-link>
+            </div>
         </div>
 
         <div class="team-graph">
