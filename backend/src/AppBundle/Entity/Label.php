@@ -211,9 +211,9 @@ class Label
     public function getOpenWorkPackagesNumber()
     {
         $count = 0;
-        foreach ($this->workPackages as $wp ) {
+        foreach ($this->workPackages as $wp) {
             if ($wp->getWorkPackageStatusId() && $wp->getWorkPackageStatusId() !== WorkPackageStatus::CLOSED) {
-                $count++;
+                ++$count;
             }
         }
 

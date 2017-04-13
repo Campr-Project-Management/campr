@@ -72,37 +72,6 @@ class WorkPackageController extends ApiController
     }
 
     /**
-     * Create a new WorkPackage.
-     *
-     * @Route(name="app_api_workpackage_create", options={"expose"=true})
-     * @Method({"POST"})
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function createAction(Request $request)
-    {
-        $form = $this->createForm(CreateType::class, new WorkPackage(), ['csrf_protection' => false]);
-        $this->processForm($request, $form);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($form->getData());
-            $em->flush();
-
-            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
-        }
-
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
      * Edit a specific WorkPackage.
      *
      * @Route("/{id}", name="app_api_workpackage_edit", options={"expose"=true})

@@ -20,7 +20,7 @@ class ProjectDepartmentController extends ApiController
     /**
      * Get all project departments.
      *
-     * @Route(name="app_api_project_departments_list")
+     * @Route(name="app_api_project_departments_list", options={"expose"=true})
      * @Method({"GET"})
      *
      * @return JsonResponse

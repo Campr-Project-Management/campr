@@ -1,18 +1,16 @@
 <?php
 
-namespace AppBundle\Form\Unit;
+namespace AppBundle\Form\WorkPackage;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use AppBundle\Entity\Unit;
-use AppBundle\Entity\Project;
-use Symfony\Component\Validator\Constraints\Regex;
+use AppBundle\Entity\WorkPackage;
 
-class CreateType extends AbstractType
+class BaseType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -21,12 +19,6 @@ class CreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('project', EntityType::class, [
-                'class' => Project::class,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.project',
-                'translation_domain' => 'messages',
-            ])
             ->add('name', TextType::class, [
                 'required' => true,
                 'constraints' => [
@@ -35,18 +27,20 @@ class CreateType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('sequence', TextType::class, [
+            ->add('type', ChoiceType::class, [
                 'required' => true,
-                'data' => 0,
+                'choices' => [
+                    'choices.phase' => WorkPackage::TYPE_PHASE,
+                    'choices.milestone' => WorkPackage::TYPE_MILESTONE,
+                    'choices.task' => WorkPackage::TYPE_TASK,
+                ],
+                'placeholder' => 'placeholder.type',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'not_blank.sequence',
-                    ]),
-                    new Regex([
-                        'pattern' => '/^([1-9]+\d*)$|^0$/',
-                        'message' => 'invalid.sequence',
+                        'message' => 'not_blank.type',
                     ]),
                 ],
+                'translation_domain' => 'messages',
             ])
         ;
     }
@@ -57,7 +51,7 @@ class CreateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Unit::class,
+            'data_class' => WorkPackage::class,
             'csrf_protection' => false,
         ]);
     }
