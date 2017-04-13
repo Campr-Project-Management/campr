@@ -231,3 +231,17 @@ export default {
     },
 };
 </script>
+
+<style scoped lang="scss">
+    .title {
+        position: relative;
+        top: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 700;
+    }
+
+    .vue-switcher {
+        margin: 3px 10px 0 0;
+    }
+</style>    

@@ -1,0 +1,97 @@
+@import './_variables';
+
+.project-box-wrapper {
+    width: 25%;
+    padding-right: 15px;
+    padding-left: 15px;
+} 
+
+.project-box {
+    .box-header {
+        border-bottom: 1px solid $middleColor;
+        padding-bottom: 15px;
+
+        h2 {
+            color: $secondColor;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            margin:8px 0 5px;
+        }
+
+        .favourite {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    } 
+}
+
+.info {
+    padding-top: 16px;
+
+    p {
+        margin: 0 0 6px 0;
+    }
+
+    .title {
+        color: $middleColor;
+        text-transform: uppercase;
+        font-size: 12px;
+    }
+
+    .data {
+        font-size: 11px;
+        letter-spacing: 0.5px;
+        margin-left: 6px;
+    }
+
+    .status-label {
+        padding: 0 19px;
+        margin-left: 5px;
+        font-size: 8px;
+        height: 23px;
+        line-height: 23px;
+        display: inline-block;
+
+        &.finished {
+        background: $secondColor;
+        }
+    }
+}
+
+.content-bottom {
+    margin-top: 21px;
+}
+
+.left {
+    margin-right: 10px;
+}
+.right {
+    margin-left: 10px;
+}
+
+.notes-title {
+    margin-top: 12px;
+    font-weight: 300;
+    height: 32px;
+
+    span {
+        line-height: 32px;
+    }
+}
+
+.bullets {
+    font-weight: 300;
+    font-size: 11px;
+    margin-top: 4px;
+
+    li {
+        margin-bottom: 10px;
+    }
+}
+
+.add-note {
+    color: $secondColor;
+}
