@@ -87,12 +87,13 @@ const actions = {
      * Creates a new task on project
      * @param {function} commit
      * @param {array} data
+     * @param {Number} projectId
      */
     createNewTask({commit}, data) {
         Vue.http
             .post(
-                Routing.generate('app_api_workpackage_create'),
-                JSON.stringify(data)
+                Routing.generate('app_api_project_tasks_create', {'id': data.projectId}),
+                data.data
             ).then((response) => {
                 router.push({name: 'project-task-management-list'});
             }, (response) => {
