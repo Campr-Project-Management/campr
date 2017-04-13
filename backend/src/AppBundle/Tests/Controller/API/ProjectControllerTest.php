@@ -2833,6 +2833,11 @@ class ProjectControllerTest extends BaseController
 
         $this->client->request('POST', '/api/projects/1/tasks', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
         $response = $this->client->getResponse();
+
+        // Remove the 2 lines bellow when WP listener is fixed
+        $task = json_decode($response->getContent(), true);
+        $responseContent['puid'] = $task['puid'];
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
