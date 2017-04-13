@@ -1,60 +1,95 @@
 <template>
-    <div class="create-task page-section">
-        <div class="header flex-v-center">
-            <h1>{{ message.create_new_task }}</h1>
-            <a class="btn-rounded btn-auto btn-empty flex">
-                <span>{{ message.import_task }}</span>
-                <upload-icon></upload-icon>
-            </a>
-        </div>
-        <div class="form">
-            <input-field type="text" v-bind:label="label.task_title" v-model="title" v-bind:content="title" />
-
-            <div class="vueditor-holder">
-                <div class="vueditor-header">{{ label.task_description }}</div>
-                <Vueditor ref="description" />
-                <div cass="vueditor-footer clearfix">
-                    <div class="pull-right"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="create-task page-section">
+                <!-- /// Header /// -->
+                <div class="header flex-v-center">
+                    <div>
+                        <router-link :to="{name: 'project-task-management-list'}" class="small-link">
+                            <i class="fa fa-angle-left"></i>
+                            Back to Task Management
+                        </router-link>
+                        <h1>{{ message.create_new_task }}</h1>
+                    </div>
+                    <a class="btn-rounded btn-auto btn-empty flex">
+                        <span>{{ message.import_task }}</span>
+                        <upload-icon></upload-icon>
+                    </a>
                 </div>
-            </div>
+                <!-- /// End Header /// -->
 
-            <hr class="double">
+                <div class="form">
+                    <!-- /// Task Name /// -->
+                    <input-field type="text" v-bind:label="label.task_title" v-model="title" v-bind:content="title" />
+                    <!-- /// End Task Name /// -->
 
-            <planning v-model="planning" />
+                    <!-- /// Task Description /// -->
+                    <div class="vueditor-holder">
+                        <div class="vueditor-header">{{ label.task_description }}</div>
+                        <Vueditor ref="description" />
+                        <div cass="vueditor-footer clearfix">
+                            <div class="pull-right"></div>
+                        </div>
+                    </div>
+                    <!-- /// End Task Description /// -->
 
-            <hr>
+                    <hr class="double">
 
-            <schedule v-model="schedule" />
+                    <!-- /// Task Planning /// -->
+                    <planning v-model="planning" />
+                    <!-- /// End Task Planning /// -->
 
-            <hr class="double">
+                    <hr>
 
-            <internal-costs v-model="internalCosts" />
+                    <!-- /// Task Schedule /// -->
+                    <schedule v-model="schedule" />
+                    <!-- /// End Task Schedule /// -->
 
-            <hr class="double">
+                    <hr class="double">
 
-            <external-costs v-model="externalCosts" />
+                    <!-- /// Task Internal Costs /// -->
+                    <internal-costs v-model="internalCosts" />
+                    <!-- /// End Task Internal Costs /// -->
 
-            <hr class="double">
+                    <hr class="double">
 
-            <task-details v-model="details" />
+                    <!-- /// Task External Costs /// -->
+                    <external-costs v-model="externalCosts" />
+                    <!-- /// End Task External Costs /// -->
 
-            <hr class="double">
+                    <hr class="double">
 
-            <subtasks v-model="subtasks" />
+                    <!-- /// Task Details /// -->
+                    <task-details v-model="details" />
+                    <!-- /// End Task Details /// -->
 
-            <hr class="double">
+                    <hr class="double">
 
-            <attachments v-model="attachments" />
+                    <!-- /// SubTasks /// -->
+                    <subtasks v-model="subtasks" />
+                    <!-- /// End SubTasks /// -->
 
-            <hr class="double">
+                    <hr class="double">
 
-            <condition v-model="statusColor" v-bind:selectedStatusColor="statusColor" />
+                    <!-- /// Task Attachments /// -->
+                    <attachments v-model="attachments" />
+                    <!-- /// End Task Attachments /// -->
 
-            <hr class="double">
+                    <hr class="double">
 
-            <div class="flex flex-space-between">
-                <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto disable-bg">{{ button.cancel }}</router-link>
-                <a v-on:click="createTask" class="btn-rounded btn-auto second-bg">{{ button.create_task }}</a>
+                    <!-- /// Task Condition /// -->
+                    <condition v-model="statusColor" v-bind:selectedStatusColor="statusColor" />
+                    <!-- /// End Task Condition /// -->
+
+                    <hr class="double">
+
+                    <!-- /// Actions /// -->
+                    <div class="flex flex-space-between">
+                        <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto disable-bg">{{ button.cancel }}</router-link>
+                        <a v-on:click="createTask" class="btn-rounded btn-auto second-bg">{{ button.create_task }}</a>
+                    </div>
+                    <!-- /// End Actions /// -->
+                </div>
             </div>
         </div>
     </div>
@@ -149,112 +184,12 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
+<style scoped lang="scss">
     @import '../../../css/_variables';
     @import '../../../css/page-section';
 
     .download-icon {
         line-height: 50px;
         margin-left: 6px;
-    }
-
-    .title {
-        line-height: 41px;
-        text-transform: uppercase;
-        font-size: 12px;
-        letter-spacing: 1.6px;
-    }
-
-    .create-task {
-        max-width: 820px;
-    }
-
-    h3 {
-        font-size: 16px;
-        text-transform: uppercase;
-        font-weight: 300;
-        letter-spacing: 1.6px;
-        margin-bottom: 15px;
-
-        &.with-label {
-            margin-bottom: 25px;
-        }
-    }
-
-    p {
-        margin-bottom: 20px;
-    }
-
-    .dates-top {
-        margin-bottom: 20px;
-    }
-
-    .condition-item {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        margin-right: 10px;
-    }
-
-    h4 {
-        text-transform: uppercase;
-        font-size: 12px;
-        letter-spacing: 1.6px;
-    }
-
-    .add-task {
-        margin-top: 20px;
-    }
-
-    .condition-info {
-        font-weight: 300;
-        font-size: 10px;
-
-        span {
-            text-transform: uppercase;
-            letter-spacing: 1.6px;
-        }
-
-        p {
-            letter-spacing: 0.3px;
-            margin-bottom: 8px;
-        }
-    }
-
-    .condition {
-        margin-top: 22px;
-    }
-
-    .note {
-        display: block;
-        font-size: 0.875em;
-        margin: 10px 0 20px;
-
-        &.blue-note {
-            margin: 0 0 20px;
-            color: $middleColor;
-        }
-
-        &.no-margin-bottom {
-            margin: 10px 0 0;
-        }
-    }
-
-    .radio-list {
-        label {
-            margin: 10px 0 10px 10px;
-        }
-    }
-
-    .vue-switcher {
-        margin: 3px 10px 0 0;
-    }
-
-    .status-boxes {
-        .status-box {
-            width: 30px;
-            height: 30px;
-            margin-right: 5px;
-        }
     }
 </style>

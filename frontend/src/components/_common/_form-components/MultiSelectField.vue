@@ -1,19 +1,21 @@
 <template>
-    <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-            {{ title }}
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right">
-            <li v-for="option in processedOptions">
-                <a href="javascript:void(0)" v-on:click="updateValue(option)">
-                    {{ option.label }}
-                </a>
-            </li>
-        </ul>
-        <p v-for="option in selectedOptions">
+    <div>
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                {{ title }}
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+                <li v-for="option in processedOptions">
+                    <a href="javascript:void(0)" v-on:click="updateValue(option)">
+                        {{ option.label }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <p v-for="option in selectedOptions" class="multiselect-option">
             {{ option.label }}
-            <a v-on:click="removeSelectedOption(option)">x</a>
+            <a v-on:click="removeSelectedOption(option)"> <i class="fa fa-times"></i></a>
         </p>
     </div>
 </template>
@@ -55,6 +57,7 @@ export default {
         text-transform: uppercase;
         height: 40px;
         font-size: 11px;
+        letter-spacing: 0.1em;
         border-radius: 1px;
         text-align: left;
         padding-left: 20px;
@@ -72,8 +75,8 @@ export default {
         }
 
         .caret {
-            right: 8px;
-            margin-top: 4px;
+            right: 20px;
+            top: 18px;
             position: absolute;
         }
 
@@ -88,5 +91,27 @@ export default {
     .btn-primary.active, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
         background: $middleColor;
         color: $lighterColor;
+    }
+
+    .multiselect-option {
+        padding: 11px 20px 9px;
+        background-color: $fadeColor;
+        margin-top: 3px;
+        color: $secondColor;
+        position: relative;
+
+        i.fa {
+            position: absolute;
+            right: 20px;
+            top: 13px;
+            color: $dangerColor;
+            cursor: pointer;
+            @include transition(opacity, 0.2s, ease-in);
+
+            &:hover,
+            &:active {
+                @include opacity(0.8);
+            }
+        }
     }
 </style>

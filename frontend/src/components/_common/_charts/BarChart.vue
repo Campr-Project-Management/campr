@@ -1,15 +1,17 @@
 <template>
-    <div class="progress-line" :id="'chart' + _uid" :data-number="percentage" v-bind:class="{ 'right': position === 'right' }">
-        <div class="progress-area right flex-end">
-            <p class="title-right">{{ titleRight }}</p>
-            <p class="percentage">
-                <span class="number">0</span>
-                <span class="percentage-sign">%</span>
-            </p>
-        </div>
-        <p v-show="titleLeft" class="title-left"><span>Status: </span> {{ titleLeft }}</p>
-        <div class="filled" v-bind:style="{ background: color }" v-show="percentage != 0"></div>
-        <div class="zero-fill" v-bind:style="{ background: color }" v-show="percentage == 0"></div>
+    <div class="bar-chart">
+      <div class="progress-line" :id="'chart' + _uid" :data-number="percentage" v-bind:class="{ 'right': position === 'right' }">
+          <div class="progress-area">
+              <p class="title-right">{{ titleRight }}</p>
+              <p class="percentage">
+                  <span class="number">0</span>
+                  <span class="percentage-sign">%</span>
+              </p>
+          </div>
+          <p v-show="titleLeft" class="title-left"><span>Status: </span> {{ titleLeft }}</p>
+          <div class="filled" v-bind:style="{ background: color }" v-show="percentage != 0"></div>
+          <div class="zero-fill" v-bind:style="{ background: color }" v-show="percentage == 0"></div>
+      </div>
     </div>
 </template>
 
@@ -40,26 +42,29 @@ export default {
 <style scoped lang="scss">
   @import '../../../css/_variables.scss';
 
+  .bar-chart {
+      position: relative;
+  }
+
   .progress-area {
     letter-spacing: 0.7px;
-    right: 0;
     position: absolute;
-    bottom: 16px;
-
-    &.right {
-      width: 60px;
-    }
+    text-align: right;
+    right: 0;
+    bottom: 13px;
+    margin-bottom: 0;
 
     .title-right {
       font-size: 8px;
       text-transform: uppercase;
       font-weight: 600;
       min-height: 11px;
+      margin-bottom: 0;
     }
 
     .percentage {
       color: $middleColor;
-      margin-top: 2px;
+      margin: 0;
       display: flex;
     }
 
@@ -75,6 +80,13 @@ export default {
 
     .percentage-sign {
       align-self: flex-end;
+      font-size: 10px; 
+    }
+  }
+
+  .recent-tasks {
+    .progress-area {
+      bottom: -2px;
     }
   }
 
@@ -88,15 +100,9 @@ export default {
     width: 100%;
     height: 8px;
     background: $mainColor;
-    position: relative;
 
     &.right {
       width: 75%;
-
-      .progress-area {
-        top: -30px;
-        right: -87px;
-      }
     }
 
     .filled {

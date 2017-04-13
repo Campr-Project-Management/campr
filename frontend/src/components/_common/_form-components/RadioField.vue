@@ -28,3 +28,11 @@ export default {
     },
 };
 </script>
+
+<style scoped lang="scss">
+    .radio-list {
+        label {
+            margin: 10px 10px 10px 0;
+        }
+    }
+</style> 
