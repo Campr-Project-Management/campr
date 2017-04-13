@@ -27,6 +27,8 @@ class WorkPackageListener
      */
     public function onFlush(OnFlushEventArgs $event)
     {
+        // Disabled due to a bug. WorkPackage constructor PUID set.
+        return;
         $this->em = $event->getEntityManager();
         $this->repository = $this->em->getRepository(WorkPackage::class);
         $this->conn = $this->em->getConnection();

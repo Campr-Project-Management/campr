@@ -953,12 +953,13 @@ class ProjectController extends ApiController
      */
     public function createTaskAction(Request $request, Project $project)
     {
-        $form = $this->createForm(ApiCreateType::class, new WorkPackage());
+        $wp = new WorkPackage();
+        $form = $this->createForm(ApiCreateType::class, $wp);
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
-            $wp = $form->getData();
             $wp->setProject($project);
+            $wp->setPuid(microtime(true) * 1000000); // remove when listener is fixed
             $this->persistAndFlush($wp);
 
             return $this->createApiResponse($wp, Response::HTTP_CREATED);
