@@ -15,6 +15,12 @@ const getters = {
 
         return projectStatusesForFilter;
     },
+    projectStatusesForSelect: state => state.items.map(projectStatus => {
+        return {
+            'key': projectStatus.id,
+            'label': projectStatus.name,
+        };
+    }),
 };
 
 const actions = {

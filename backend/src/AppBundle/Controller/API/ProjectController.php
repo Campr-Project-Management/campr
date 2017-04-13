@@ -17,6 +17,7 @@ use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\WorkPackage;
+use AppBundle\Entity\Unit;
 use AppBundle\Entity\WorkPackageProjectWorkCostType;
 use AppBundle\Entity\WorkPackageStatus;
 use AppBundle\Form\Label\BaseLabelType;
@@ -32,6 +33,8 @@ use AppBundle\Form\Todo\BaseCreateType as TodoCreateType;
 use AppBundle\Form\ProjectObjective\CreateType as ProjectObjectiveCreateType;
 use AppBundle\Form\ProjectDeliverable\CreateType as ProjectDeliverableCreateType;
 use AppBundle\Form\ProjectLimitation\CreateType as ProjectLimitationCreateType;
+use AppBundle\Form\Unit\CreateType as UnitCreateType;
+use AppBundle\Form\WorkPackage\ApiCreateType;
 use AppBundle\Security\ProjectVoter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use MainBundle\Controller\API\ApiController;
@@ -544,7 +547,7 @@ class ProjectController extends ApiController
     /**
      * Get all project users.
      *
-     * @Route("/{id}/project-users", name="app_api_project_project_users")
+     * @Route("/{id}/project-users", name="app_api_project_project_users", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Project $project
@@ -848,6 +851,7 @@ class ProjectController extends ApiController
      */
     public function resourcesAction(Project $project)
     {
+        // @TODO: replace with \AppBundle\Entity\Resource AND \AppBundle\Entity\Cost
         return $this->createApiResponse(
             [
                 'internal' => $this
@@ -864,17 +868,168 @@ class ProjectController extends ApiController
     }
 
     /**
-     * All workpackages for a specific Project ordered by workpackage statuses.
-     *
-     * @Route("/{id}/workpackages", name="app_api_projects_workpackages", options={"expose"=true})
+     * @Route("/{id}/phases", name="app_api_project_phases", options={"expose"=true})
+     */
+    public function phasesAction(Project $project)
+    {
+        $phases = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(WorkPackage::class)
+            ->findPhasesByProject($project)
+        ;
+
+        return $this->createApiResponse($phases);
+    }
+
+    /**
+     * @Route("/{id}/milestones", name="app_api_project_milestones", options={"expose"=true})
+     */
+    public function milestonesAction(Request $request, Project $project)
+    {
+        $repo = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(WorkPackage::class)
+        ;
+
+        $filters = $request->query->get('filters', []);
+
+        if (isset($filters['phase'])) {
+            $phase = $repo->findOneBy([
+                'id' => $filters['phase'],
+                'type' => WorkPackage::TYPE_PHASE,
+            ]);
+
+            if (!$phase) {
+                throw $this->createNotFoundException();
+            }
+
+            return $this->createApiResponse($repo->findMilestonesByPhase($phase));
+        }
+
+        return $this->createApiResponse($repo->findMilestonesByProject($project));
+    }
+
+    /**
+     * @Route("/{id}/tasks", name="app_api_project_tasks", options={"expose"=true})
      * @Method({"GET"})
+     */
+    public function tasksAction(Request $request, Project $project)
+    {
+        $repo = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(WorkPackage::class);
+
+        $filters = $request->query->get('filters', []);
+
+        if (isset($filters['milestone'])) {
+            $milestone = $repo->findOneBy([
+                'id' => $filters['milestone'],
+                'type' => WorkPackage::TYPE_MILESTONE,
+            ]);
+
+            if (!$milestone) {
+                throw $this->createNotFoundException();
+            }
+
+            return $this->createApiResponse($repo->findTasksByMilestone($milestone));
+        }
+
+        return $this->createApiResponse($repo->findTasksByProject($project));
+    }
+
+    /**
+     * Create a new WorkPackage.
      *
-     * @param Project $project
+     * @Route("/{id}/tasks", name="app_api_project_tasks_create", options={"expose"=true})
+     * @Method({"POST"})
+     *
      * @param Request $request
+     * @param Project $project
      *
      * @return JsonResponse
      */
-    public function workpackagesAction(Project $project, Request $request)
+    public function createTaskAction(Request $request, Project $project)
+    {
+        $form = $this->createForm(ApiCreateType::class, new WorkPackage());
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $wp = $form->getData();
+            $wp->setProject($project);
+            $this->persistAndFlush($wp);
+
+            return $this->createApiResponse($wp, Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * All project units.
+     *
+     * @Route("/{id}/units", name="app_api_project_units", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function unitsAction(Project $project)
+    {
+        return $this->createApiResponse($project->getUnits());
+    }
+
+    /**
+     * Create a new Unit.
+     *
+     * @Route("/{id}/units", name="app_api_project_create_unit", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function createUnitAction(Request $request, Project $project)
+    {
+        $form = $this->createForm(UnitCreateType::class, new Unit());
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $unit = $form->getData();
+            $unit->setProject($project);
+            $this->persistAndFlush($unit);
+
+            return $this->createApiResponse($unit, Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * All project work packages.
+     *
+     * @Route("/{id}/work-packages", name="app_api_project_work_packages", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function workPackagesAction(Request $request, Project $project)
     {
         $filters = $request->query->all();
         $pageSize = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
@@ -883,7 +1038,7 @@ class ProjectController extends ApiController
             $wpQuery = $this
                 ->getDoctrine()
                 ->getRepository(WorkPackage::class)
-                ->findByProject($project, $filters)
+                ->getQueryByProjectFiltersAndWorkPackage($project, $filters)
             ;
 
             $currentPage = isset($filters['page']) ? $filters['page'] : 1;
@@ -908,7 +1063,7 @@ class ProjectController extends ApiController
                 $wpQuery = $this
                     ->getDoctrine()
                     ->getRepository(WorkPackage::class)
-                    ->findByProject($project, $filters, $workPackageStatus)
+                    ->getQueryByProjectFiltersAndWorkPackage($project, $filters, $workPackageStatus)
                 ;
 
                 $currentPage = 1;

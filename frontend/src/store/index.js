@@ -15,6 +15,12 @@ import portfolio from './modules/portfolio';
 import projectContract from './modules/project-contract';
 import projectCategory from './modules/project-category';
 import projectScope from './modules/project-scope';
+import workPackage from './modules/work-package';
+import projectDepartment from './modules/project-department';
+import projectUser from './modules/project-user';
+import projectUnit from './modules/project-unit';
+import projectMilestone from './modules/project-milestone';
+import projectPhase from './modules/project-phase';
 
 Vue.use(Vuex);
 
@@ -37,6 +43,12 @@ export default new Vuex.Store({
         projectContract,
         projectCategory,
         projectScope,
+        workPackage,
+        projectDepartment,
+        projectUser,
+        projectUnit,
+        projectMilestone,
+        projectPhase,
     },
     strict: debug,
 });
