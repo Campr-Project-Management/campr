@@ -1,21 +1,15 @@
 <template>
     <vue-scrollbar class="categories-scroll">
         <div class="board-view">
+            {{ tasksByStatus }}
             <div class="flex">
-            <div class="column" v-for="taskStatus in taskStatuses">
-                <div class="column-header flex flex-v-center flex-space-between">
-                <span>{{ translateText(taskStatus.name) }}</span>
-                <div class="flex">
-                    <span class="notification-balloon">12</span>
-                    <span class="notification-balloon second-bg">+</span>
+                <div v-for="taskStatus in taskStatuses" v-if="taskStatuses && tasksByStatuses && taskStatus && tasksByStatuses[taskStatus.id]">
+                    <board-tasks-column
+                        v-bind:tasks="tasksByStatuses[taskStatus.id].items"
+                        v-bind:tasksNumber="tasksByStatuses[taskStatus.id].totalItems"
+                        v-bind:status="taskStatus">
+                    </board-tasks-column>
                 </div>
-                </div>
-                <vue-scrollbar class="tasks-scroll">
-                    <div>
-                        <small-task-box v-bind:task="task" v-for="task in taskStatus.tasks"></small-task-box>
-                    </div>
-                </vue-scrollbar>
-            </div>
             </div>
         </div>
     </vue-scrollbar>
@@ -23,27 +17,30 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex';
-import SmallTaskBox from '../../Dashboard/SmallTaskBox';
+import BoardTasksColumn from './BoardTasksColumn';
 import VueScrollbar from 'vue2-scrollbar';
 
 export default {
     components: {
-        SmallTaskBox,
+        BoardTasksColumn,
         VueScrollbar,
     },
     created() {
+        let project = this.$route.params.id;
+        this.getTasksByStatuses(project);
+
         if (!this.$store.state.task.taskStatuses || this.$store.state.task.taskStatuses.length === 0) {
             this.getTaskStatuses();
         }
     },
-    computed: mapGetters({
-        taskStatuses: 'taskStatuses',
-    }),
+    computed: {
+        ...mapGetters({
+            tasksByStatuses: 'tasksByStatuses',
+            taskStatuses: 'taskStatuses',
+        }),
+    },
     methods: {
-        ...mapActions(['getTaskStatuses']),
-        translateText(text) {
-            return this.translate(text);
-        },
+        ...mapActions(['getTaskStatuses', 'getTasksByStatuses']),
     },
 };
 </script>
