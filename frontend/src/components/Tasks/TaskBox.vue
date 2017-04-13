@@ -2,18 +2,14 @@
     <div class="task-box-wrapper">
         <div class="task-box box" v-bind:class="'border-color-' + task.id">
             <div class="box-header">
-                <div>
-                    <div class="flex flex-space-between">
-                        <div v-if="user" class="user-info flex flex-v-center">
-                            <img class="user-avatar" src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="user.name"/>
-                            <p>{{ task.responsibilityFullName }}</p>
-                        </div>
-                        <div class="status-boxes flex flex-v-center">
-                            <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? task.colorStatusColor : '' }"></span>
-                        </div>
-                    </div>
-                    <h2><router-link to="" class="simple-link">{{ task.name }}</router-link></h2>
-                    <p class="task-id">#{{ task.id }}</p>
+                <div v-if="user" class="user-info flex flex-v-center">
+                    <img class="user-avatar" src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="user.name"/>
+                    <p>{{ task.responsibilityFullName }}</p>
+                </div>
+                <h2><router-link to="" class="simple-link">{{ task.name }}</router-link></h2>
+                <p class="task-id">#{{ task.id }}</p>
+                <div class="status-boxes">
+                    <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? task.colorStatusColor : '' }"></span>
                 </div>
             </div>
             <div class="content">
@@ -35,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <bar-chart :percentage="task.progress" :status="task.colorStatusName" :color="task.colorStatusColor" class="bar-chart" :title-left="'' + translate(task.workPackageStatusName)"></bar-chart>
+            <bar-chart :percentage="task.progress" :status="task.colorStatusName" :color="task.colorStatusColor" :title-left="'' + translate(task.workPackageStatusName)"></bar-chart>
             <div class="nicescroll">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dapibus mi ac diam gravida, ac bibendum quam commodo. In ut nunc augue. Aliquam erat volutpat. Nam dignissim sodales pellentesque. Etiam efficitur quam nibh, sit amet imperdiet ex congue a. Integer sit amet mauris vitae ligula maximus lobortis. Vestibulum a quam vel lectus placerat auctor feugiat a quam. Vivamus aliquet a urna at dapibus. Proin et nisl magna.
 
@@ -156,11 +152,6 @@ export default {
     th, td {
       padding: 3px 9px;
     }
-  }
-
-  .task-id {
-    color: $middleColor;
-    font-size: 11px;
   }
 
   .st0 {

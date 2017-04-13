@@ -14,6 +14,12 @@
   .dropdowns {
     display: flex;
 
+    .dropdown {
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
     @media screen and (max-width: 1024px) {
       margin-left: 0;
     }
@@ -21,6 +27,10 @@
 
   .dropdown, .title {
     margin-right: 20px;
+  }
+
+  .dropdown {
+    min-width: 200px;
   }
 
   .title {

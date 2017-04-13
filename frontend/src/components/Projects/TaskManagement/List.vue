@@ -42,9 +42,6 @@
         <!-- /// Tasks List /// -->
         <div class="tasks">
             <BoardView v-show="boardView"></BoardView>
-            <div class="pagination flex flex-center" v-if="count > 0">
-                <span v-for="page in [1,2]" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
-            </div>
             <GridView v-show="!boardView"></GridView>
         </div>
         <!-- /// End Tasks List /// -->
