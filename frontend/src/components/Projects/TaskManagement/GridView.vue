@@ -33,7 +33,7 @@ export default {
             colorStatuses: 'colorStatuses',
             tasks: 'tasks',
         }),
-        count: () => this.task.items.length,
+        count: () => this.tasks.items.length,
     },
     methods: {
         ...mapActions(['getColorStatuses', 'getTasks']),
