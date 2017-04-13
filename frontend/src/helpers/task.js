@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const createFormData = (data) => {
     let formData = new FormData();
 
@@ -5,10 +7,10 @@ export const createFormData = (data) => {
     formData.append('name', data.name);
     formData.append('type', data.type);
     formData.append('content', data.description);
-    formData.append('labels[0]', data.details.label);
-    formData.append('parent', data.planning.milestone);
-    formData.append('responsibility', data.details.assignee);
-    formData.append('colorStatus', data.statusColor);
+    formData.append('labels[]', data.details.label.key);
+    formData.append('parent', data.planning.milestone.key);
+    formData.append('responsibility', data.details.assignee.key);
+    formData.append('colorStatus', data.statusColor.id);
 
     // Attachments
     if (data.attachments.length) {
@@ -38,10 +40,10 @@ export const createFormData = (data) => {
     }
 
     // Schedule Data
-    formData.append('scheduledStartAt', data.schedule.baseStartDate);
-    formData.append('scheduledFinishAt', data.schedule.baseEndDate);
-    formData.append('forecastStartAt', data.schedule.forecastStartDate);
-    formData.append('forecastFinishAt', data.planning.forecastEndDate);
+    formData.append('scheduledStartAt', moment(data.schedule.baseStartDate).format('DD-MM-YYYY'));
+    formData.append('scheduledFinishAt', moment(data.schedule.baseEndDate).format('DD-MM-YYYY'));
+    formData.append('forecastStartAt', moment(data.schedule.forecastStartDate).format('DD-MM-YYYY'));
+    formData.append('forecastFinishAt', moment(data.planning.forecastEndDate).format('DD-MM-YYYY'));
     data.schedule.successors.map(successor => formData.append('dependants[]', successor));
     data.schedule.predecessors.map(predecessor => formData.append('dependencies[]', predecessor));
 

@@ -110,9 +110,13 @@ export default {
                 planning: this.planning,
                 attachments: this.attachments,
                 details: this.details,
+                statusColor: this.statusColor,
             };
 
-            this.createNewTask(createFormData(data));
+            this.createNewTask({
+                data: createFormData(data),
+                projectId: this.$route.params.id,
+            });
         },
     },
     data() {
