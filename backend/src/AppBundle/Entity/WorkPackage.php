@@ -790,6 +790,9 @@ class WorkPackage
     public function setProject(Project $project = null)
     {
         $this->project = $project;
+        foreach ($this->getChildren() as $child) {
+            $child->setProject($project);
+        }
 
         return $this;
     }
@@ -1234,6 +1237,7 @@ class WorkPackage
     public function addChild(WorkPackage $child)
     {
         $child->setParent($this);
+        $child->setProject($this->getProject());
         $this->children[] = $child;
 
         return $this;
