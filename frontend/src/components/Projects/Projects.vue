@@ -3,17 +3,18 @@
         <div class="page-section projects">
             <div class="header">
                 <h1>{{ message.my_projects }}</h1>
-                <div class="flex">
+                <div class="flex filters-container">
                     <project-filters></project-filters>
-                    <div class="pagination" v-if="count > 0">
+                    <div class="separator" v-if="count > 0"></div>
+                    <div class="pagination flex flex-v-center" v-if="count > 0">
                         <span v-for="page in count/projects.length" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
                     </div>
                 </div>
             </div>
-            <div class="content">
+            <div class="grid-view">
                 <project-box v-for="project in projects" v-bind:project="project"></project-box>
-                <router-link :to="{name: 'projects-create-1'}">
-                    <a href="" class="new-box">{{ message.new_project }} +</a>
+                <router-link :to="{name: 'projects-create-1'}" class="new-box">
+                    {{ message.new_project }} +
                 </router-link>
             </div>
         </div>
@@ -60,5 +61,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import '../../css/page-section';
+    .filters-container {
+        margin: 20px 0;
+
+        .pagination {
+            margin: 0;
+        }
+    }
 </style>

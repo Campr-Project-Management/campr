@@ -54,15 +54,37 @@ h2 {
   font-weight: 300;
 }
 
+h3 {
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: 300;
+  letter-spacing: 1.6px;
+  margin-bottom: 15px;
+
+  &.with-label {
+    margin-bottom: 25px;
+  }
+}
+
+h4 {
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 1.6px;
+}
+
+p {
+  margin-bottom: 20px;
+}
+
 .clearfix {
-    &:before,
-    &:after {
-        content: "";
-        display: table;
-    }
-    &:after {
-        clear: both;
-    }
+  &:before,
+  &:after {
+    content: "";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
 }
 
 .lighter-fill {
@@ -128,6 +150,11 @@ h2 {
     &.align-top {
       vertical-align: top;
     }
+}
+
+.caps {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 img {
@@ -485,6 +512,14 @@ hr {
   }
 }
 
+.grid-view {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
 .pagination {
   display: flex;
 
@@ -507,6 +542,10 @@ hr {
       background: $secondColor;
       color: $darkColor;
       pointer-events: none;
+    }
+
+    &:first-child {
+      margin-left: 0;
     }
   }
 }
@@ -782,5 +821,20 @@ hr {
       left: 50%;
       margin-left: -5px;
     }
+  }
+}
+
+.note {
+  display: block;
+  font-size: 0.875em;
+  margin: 10px 0 20px;
+
+  &.blue-note {
+    margin: -10px 0 20px;
+    color: $middleColor;
+  }
+
+  &.no-margin-bottom {
+    margin: 10px 0 0;
   }
 }
