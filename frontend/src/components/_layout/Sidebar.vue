@@ -44,7 +44,7 @@
                                   l-1.8-1.8C16.5,13.1,16.7,12,16.9,11.4z"/>
                                 <circle id="XMLID_824_" class="st0" cx="10.4" cy="10.2" r="3.5"/>
                             </g>
-                            </svg>
+                              </svg>
                         </span>
                         <span class="notification-balloon">{{ $store.state.project.items.totalItems }}</span>
                     </router-link>
@@ -95,84 +95,84 @@
                         <span class="tablet"></span>
                     </router-link>
                 </li>
-                <li>
-                    <router-link to="todo" v-bind:title="message.plan">
-                        <span class="default">{{ message.plan }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
+                <!--<li>-->
+                    <!--<router-link to="todo" v-bind:title="message.plan">-->
+                        <!--<span class="default">{{ message.plan }}</span>-->
+                        <!--<span class="tablet"></span>-->
+                    <!--</router-link>-->
+                <!--</li>-->
                 <li>
                     <router-link :to="{name: 'project-task-management-list'}" v-bind:title="message.task_management">
                         <span class="default">{{ message.task_management }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
-                <li>
-                    <router-link to="todo" v-bind:title="message.phases_milestones">
-                        <span class="default">{{ message.phases_milestones }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link to="todo" v-bind:title="message.costs">
-                        <span class="default">{{ message.costs }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link to="todo" v-bind:title="message.resources">
-                        <span class="default">{{ message.resources }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link to="todo" v-bind:title="message.risks_oportunities">
-                        <span class="default">{{ message.risks_oportunities }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link to="todo" v-bind:title="message.communication">
-                        <span class="default">{{ message.comunication }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link to="todo" v-bind:title="message.control_measures">
-                        <span class="default">{{ message.control_measures }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link to="todo" v-bind:title="message.status_report">
-                        <span class="default">{{ message.status_report }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link to="todo" v-bind:title="message.meetings">
-                        <span class="default">{{ message.meetings }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link to="todo" v-bind:title="message.todos">
-                        <span class="default">{{ message.todos }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link to="todo" v-bind:title="message.notes">
-                        <span class="default">{{ message.notes }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link to="todo" v-bind:title="message.close_down_project">
-                        <span class="default">{{ message.close_down_project }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
+                <!--<li>-->
+                    <!--<router-link to="todo" v-bind:title="message.phases_milestones">-->
+                        <!--<span class="default">{{ message.phases_milestones }}</span>-->
+                        <!--<span class="tablet"></span>-->
+                    <!--</router-link>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<router-link to="todo" v-bind:title="message.costs">-->
+                        <!--<span class="default">{{ message.costs }}</span>-->
+                        <!--<span class="tablet"></span>-->
+                    <!--</router-link>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<router-link to="todo" v-bind:title="message.resources">-->
+                        <!--<span class="default">{{ message.resources }}</span>-->
+                        <!--<span class="tablet"></span>-->
+                    <!--</router-link>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<router-link to="todo" v-bind:title="message.risks_oportunities">-->
+                        <!--<span class="default">{{ message.risks_oportunities }}</span>-->
+                        <!--<span class="tablet"></span>-->
+                    <!--</router-link>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<router-link to="todo" v-bind:title="message.communication">-->
+                        <!--<span class="default">{{ message.comunication }}</span>-->
+                        <!--<span class="tablet"></span>-->
+                    <!--</router-link>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<router-link to="todo" v-bind:title="message.control_measures">-->
+                        <!--<span class="default">{{ message.control_measures }}</span>-->
+                        <!--<span class="tablet"></span>-->
+                    <!--</router-link>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<router-link to="todo" v-bind:title="message.status_report">-->
+                        <!--<span class="default">{{ message.status_report }}</span>-->
+                        <!--<span class="tablet"></span>-->
+                    <!--</router-link>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<router-link to="todo" v-bind:title="message.meetings">-->
+                        <!--<span class="default">{{ message.meetings }}</span>-->
+                        <!--<span class="tablet"></span>-->
+                    <!--</router-link>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<router-link to="todo" v-bind:title="message.todos">-->
+                        <!--<span class="default">{{ message.todos }}</span>-->
+                        <!--<span class="tablet"></span>-->
+                    <!--</router-link>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<router-link to="todo" v-bind:title="message.notes">-->
+                        <!--<span class="default">{{ message.notes }}</span>-->
+                        <!--<span class="tablet"></span>-->
+                    <!--</router-link>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<router-link to="todo" v-bind:title="message.close_down_project">-->
+                        <!--<span class="default">{{ message.close_down_project }}</span>-->
+                        <!--<span class="tablet"></span>-->
+                    <!--</router-link>-->
+                <!--</li>-->
             </ul>
         </nav>
     </aside>
