@@ -139,6 +139,13 @@ services:
         tags:
             - { name: form.type }
 
+    app.form.workpackage.upload_media_type:
+            class: AppBundle\Form\WorkPackage\UploadMediaType
+            arguments:
+                - "@security.token_storage"
+            tags:
+                - { name: form.type }
+
 ### LISTENERS ###
     # gedmo listeners are found here
     # https://github.com/Atlantic18/DoctrineExtensions/blob/a3d7ad1cf41f397104bc16d99c0a91fd7b2e6d38/doc/symfony2.md
