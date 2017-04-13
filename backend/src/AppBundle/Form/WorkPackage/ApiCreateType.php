@@ -23,16 +23,19 @@ class ApiCreateType extends CreateType
             ->add('costs', CollectionType::class, [
                 'entry_type' => CostCreateType::class,
                 'allow_add' => true,
+                'allow_delete' => true,
                 'by_reference' => false,
             ])
             ->add('children', CollectionType::class, [
                 'entry_type' => WorkPackageBaseType::class,
                 'allow_add' => true,
+                'allow_delete' => true,
                 'by_reference' => false,
             ])
             ->add('medias', CollectionType::class, [
                 'entry_type' => UploadMediaType::class,
                 'allow_add' => true,
+                'allow_delete' => true,
                 'by_reference' => false,
             ])
         ;
