@@ -2,347 +2,60 @@
     <div class="create-task page-section">
         <div class="header flex-v-center">
             <h1>{{ message.create_new_task }}</h1>
-            <a ef="javascript:void(0)" class="btn-rounded btn-auto btn-empty flex">
+            <a class="btn-rounded btn-auto btn-empty flex">
                 <span>{{ message.import_task }}</span>
                 <upload-icon></upload-icon>
             </a>
         </div>
         <div class="form">
-            <!-- /// Task Title /// -->
-            <input-field v-model="title" type="text" label="Task Title"></input-field>
-            <!-- /// End Task Title /// -->
+            <input-field type="text" v-bind:label="label.task_title" v-model="title" v-bind:content="title" />
 
-            <!-- /// Task Description /// -->
             <div class="vueditor-holder">
-                <div class="vueditor-header">Task Description</div>
-                <Vueditor></Vueditor>
+                <div class="vueditor-header">{{ label.task_description }}</div>
+                <Vueditor ref="description" />
                 <div cass="vueditor-footer clearfix">
-                    <div class="pull-right">
-                        
-                    </div>
+                    <div class="pull-right"></div>
                 </div>
             </div>
-            <!-- /// End Task Description /// -->
 
             <hr class="double">
 
-            <!-- /// Task Planning /// -->
-            <h3>{{ message.planning }}</h3>
-            <div class="row">
-                <div class="form-group last-form-group">
-                    <div class="col-md-6"><select-field v-bind:title="label.phase"></select-field></div>
-                    <div class="col-md-6"><select-field v-bind:title="label.milestone"></select-field></div>
-                </div>
-            </div>
-            <!-- /// End Task Planning /// -->
+            <planning v-model="planning" />
 
-            <hr> 
-
-            <!-- /// Task Schedule /// -->
-            <h3 class="with-label">{{ message.task_schedule }}</h3>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="radio-input">
-                        <input id="manual-schedule" type="radio" name="schedule-planning" value="manual" @click="toggleManualSchedule" :checked="visibleManualSchedule === true">
-                        <label for="manual-schedule">Manual Schedule</label>
-                        <input id="automatic-schedule" type="radio" name="schedule-planning" value="automatic" @click="toggleAutomaticSchedule" :checked="visibleAutomaticSchedule === true">
-                        <label for="automatic-schedule">Automatic Schedule</label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- /// Task Manual Schedule /// -->
-            <div v-show="visibleManualSchedule">
-                <span class="note">Define Base Start and Base Finish dates as well as Forecast Start and Forecast Finish dates.</span>
-                <div class="row">
-                    <div class="form-group">
-                        <div class="col-md-6">
-                            <div class="input-holder right">
-                                <label class="active">{{ label.base_start_date }}</label>
-                                <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
-                                <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="input-holder right">
-                                <label class="active">{{ label.base_end_date }}</label>
-                                <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
-                                <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group last-form-group">    
-                        <div class="col-md-6">
-                            <div class="input-holder right">
-                                <label class="active">{{ label.forecast_start_date }}</label>
-                                <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
-                                <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
-                            </div>    
-                        </div>
-                        <div class="col-md-6">
-                            <div class="input-holder right">
-                                <label class="active">{{ label.forecast_end_date }}</label>
-                                <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
-                                <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>           
-            <!-- /// End Task Manual Schedule /// -->
-
-            <!-- /// Task Automatic Schedule /// -->            
-            <div v-show="visibleAutomaticSchedule">
-                <span class="note">Define a Predecessor or a Successor for this task, enter a time period, and the Base Start and Base Finish dates will be calculated automatically.</span>
-                <div>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-4">
-                                <select-field v-bind:title="'Select Predecessors'"></select-field>
-                            </div>
-                            <div class="col-md-4">
-                                <select-field v-bind:title="'Select Successors'"></select-field>
-                            </div>
-                            <div class="col-md-4">
-                                <input-field type="text" v-bind:label="'Duration in days'"></input-field>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-6">
-                                <span class="title">Base Start Date: <b>27.04.2017</b></span>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="title">Base Finish Date: <b>31.04.2017</b></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group last-form-group">    
-                            <div class="col-md-6">
-                                <div class="input-holder right">
-                                    <label class="active">Forecast Start Date</label>
-                                    <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
-                                </div>    
-                            </div>
-                            <div class="col-md-6">
-                                <div class="input-holder right">
-                                    <label class="active">Forecast Finish Date</label>
-                                    <datepicker :value="date | moment('DD-MM-YYYY')" format="DD-MM-YYYY"></datepicker>
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>           
-            <!-- /// End Task Automatic Schedule /// -->
-
-            <hr class="double"> 
-
-            <!-- /// Task Internal Costs /// -->
-            <h3>Internal Costs</h3>
-            <span class="note blue-note">Project Currency: <i class="fa fa-dollar"></i> USD</span>
-            <div class="row">
-                <div class="form-group">
-                    <div class="col-md-6">
-                        <select-field v-bind:title="'Resource'"></select-field>    
-                    </div>
-                    <div class="col-md-2">
-                        <input-field type="text" v-bind:label="'Daily Rate'" disabled></input-field>
-                    </div>
-                    <div class="col-md-2">
-                        <input-field type="text" v-bind:label="'Qty.'"></input-field>
-                    </div>
-                    <div class="col-md-2">
-                        <input-field type="text" v-bind:label="'Days'"></input-field>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group last-form-group">                
-                    <div class="col-md-6">                    
-                        <span class="title">Base Start Date: <b><i class="fa fa-dollar"></i> 0</b></span>        
-                    </div>
-                    <div class="col-md-6">
-                        <div class="pull-right">
-                            <a ef="javascript:void(0)" class="btn-rounded btn-auto">Add new internal cost +</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <hr>
-            <div class="row">
-                <div class="form-group last-form-group">                
-                    <div class="col-md-4">                    
-                        <span class="title">Base Total: <b><i class="fa fa-dollar"></i> 0</b></span>        
-                    </div>
-                    <div class="col-md-4">
-                        <input-field type="text" v-bind:label="'Forecast'"></input-field>
-                    </div>
-                    <div class="col-md-4">
-                        <input-field type="text" v-bind:label="'Actual'"></input-field>
-                    </div>
-                </div>
-            </div>
-            <!-- /// End Task Internal Costs /// -->
+
+            <schedule v-model="schedule" />
 
             <hr class="double">
 
-            <!-- /// Task External Costs /// -->
-            <h3>External Costs</h3>
-            <span class="note blue-note">Project Currency: <i class="fa fa-dollar"></i> USD</span>
-            <div class="row">
-                <div class="form-group">
-                    <div class="col-md-10">
-                        <input-field type="text" v-bind:label="'Description'"></input-field>  
-                    </div>
-                    <div class="col-md-2">                    
-                        <input-field type="text" v-bind:label="'Qty.'"></input-field>        
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group last-form-group">
-                    <div class="col-md-8">    
-                        <span class="title pull-left">Default Unit: </span>                     
-                        <div class="radio-input radio-list clearfix">                            
-                            <input id="default-unit-g" type="radio" name="default-units" value="g">
-                            <label for="default-unit-g">g</label>
-                            <input id="default-unit-kg" type="radio" name="default-units" value="kg">
-                            <label for="default-unit-kg">Kg</label>
-                            <input id="default-unit-ton" type="radio" name="default-units" value="ton">
-                            <label for="default-unit-ton">Ton</label>
-                            <input id="default-unit-litre" type="radio" name="default-units" value="litre">
-                            <label for="default-unit-litre">l</label>
-                            <input id="default-unit-meter" type="radio" name="default-units" value="meter">
-                            <label for="default-unit-meter">m</label>
-                            <input id="default-unit-square-meter" type="radio" name="default-units" value="square-meter">
-                            <label for="default-unit-square-meter">m <sup>2</sup></label>
-                        </div>
-                    </div>
-                    <div class="col-md-2">                        
-                        <input-field type="text" v-bind:label="'Custom'"></input-field>
-                    </div>
-                    <div class="col-md-2">                        
-                        <input-field type="text" v-bind:label="'Unit Rate'"></input-field>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group last-form-group">                
-                    <div class="col-md-12">                    
-                        <span class="title">Total: <b><i class="fa fa-dollar"></i> 0</b></span>        
-                    </div>
-                </div>
-            </div>
-            <hr>
-            <h4>CAPEX</h4>
-            <div class="row">
-                <div class="form-group last-form-group">
-                    <div class="col-md-12">
-                        <div class="flex flex-v-center">
-                            <switches v-model="test" :selected="true"></switches>
-                            <span class="note no-margin-bottom"><b>Note:</b>  If an External Cost is not set up as CAPEX,it will automatically be set up as OPEX.</span> 
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr>
-            <div class="flex flex-direction-reverse">
-                <a ef="javascript:void(0)" class="btn-rounded btn-auto">Add new external cost +</a>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="form-group">                
-                    <div class="col-md-4">                    
-                        <span class="title">CAPEX Subtotal: <b><i class="fa fa-dollar"></i> 0</b></span>        
-                    </div>
-                    <div class="col-md-4">                    
-                        <span class="title">OPEX Subtotal: <b><i class="fa fa-dollar"></i> 0</b></span>        
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group last-form-group">                
-                    <div class="col-md-4">                    
-                        <span class="title">Base Total: <b><i class="fa fa-dollar"></i> 0</b></span>        
-                    </div>
-                    <div class="col-md-4">
-                        <input-field type="text" v-bind:label="'Forecast'"></input-field>
-                    </div>
-                    <div class="col-md-4">
-                        <input-field type="text" v-bind:label="'Actual'"></input-field>
-                    </div>
-                </div>
-            </div>
-            <!-- /// end Task External Costs /// -->
-
-            <hr class="double"> 
-
-            <!-- /// Task Details /// -->
-            <h3>{{ message.task_details }}</h3>
-            <div class="row">
-                <div class="form-group last-form-group">
-                    <div class="col-md-4"><select-field v-bind:title="label.asignee"></select-field></div>
-                    <div class="col-md-4"><select-field v-bind:title="'Status'"></select-field></div>
-                    <div class="col-md-4"><select-field v-bind:title="label.labels" v-bind:options="labelsForChoice"></select-field></div>
-                </div> 
-            </div>
-            <!-- /// End Task Details /// -->
+            <internal-costs v-model="internalCosts" />
 
             <hr class="double">
 
-            <!-- /// Subtasks /// -->
-            <h3>{{ message.subtasks }}</h3>
-            <div class="row">
-                <div class="form-group last-form-group">
-                    <div class="col-md-12">
-                        <input-field type="text" v-bind:label="label.subtask_description"></input-field>
-                        <div class="flex flex-direction-reverse">
-                            <a ef="javascript:void(0)" class="btn-rounded btn-auto add-task">{{ button.add_new_subtask }} +</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /// End Subtasks /// -->
+            <external-costs v-model="externalCosts" />
 
             <hr class="double">
 
-            <!-- /// Task Condition /// -->
-            <h3>Condition</h3>
-            <!-- Original vue syntax: <p v-for="status in colorStatuses"><span v-bind:style="{ color: status.color }">{{ status.name }}</span> Add condition description here</p>-->
-            <p>
-                <b class="caps second-color">Green:</b> Quisque maximus quam id nunc congue ultricies. Aliquam quis quam lectus. Suspendisse porta ipsum non 	justo gravida, commodo rhoncus dolor congue.
-            </p>
-            <p>
-                <b class="caps warning-color">Yellow:</b> Aliquam ullamcorper sapien sed leo tincidunt hendrerit.
-            </p>
-            <p>
-                <b class="caps danger-color">Red:</b> Etiam a tellus non purus dignissim molestie ac in nulla. Vestibulum orci nisi, venenatis a sagittis eget, molestie 	quis orci. Morbi fermentum ut metus id porttitor.
-            </p>
-            <div class="flex flex-space-between flex-v-center margintop20">
-                <div class="status-boxes flex flex-v-center">
-                    <!-- Original vue syntax: <div v-for="status in colorStatuses" v-bind:style="{ background: status.color }" class="status-box"></div>-->
-                    <div class="status-box" style="background-color:#5FC3A5"></div>
-                    <div class="status-box" style="background-color:#191E37"></div>
-                    <div class="status-box" style="background-color:#191E37"></div>
-                </div>
-            </div>
-            <!-- /// End Task Condition /// -->
+            <task-details v-model="details" />
 
             <hr class="double">
 
-            <!-- /// Task Actions /// -->
+            <subtasks v-model="subtasks" />
+
+            <hr class="double">
+
+            <attachments v-model="attachments" />
+
+            <hr class="double">
+
+            <condition v-model="statusColor" v-bind:selectedStatusColor="statusColor" />
+
+            <hr class="double">
+
             <div class="flex flex-space-between">
                 <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto disable-bg">{{ button.cancel }}</router-link>
                 <a v-on:click="createTask" class="btn-rounded btn-auto second-bg">{{ button.create_task }}</a>
             </div>
-            <!-- /// End Task Actions /// -->
         </div>
     </div>
 </template>
@@ -352,9 +65,18 @@ import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
 import UploadIcon from '../../_common/_icons/UploadIcon';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
+import Schedule from './Create/Schedule';
+import InternalCosts from './Create/InternalCosts';
+import ExternalCosts from './Create/ExternalCosts';
+import Subtasks from './Create/Subtasks';
+import Planning from './Create/Planning';
+import Condition from './Create/Condition';
+import TaskDetails from './Create/Details';
+import Attachments from './Create/Attachments';
 import datepicker from 'vuejs-datepicker';
 import Switches from '../../3rdparty/vue-switches';
-import {mapActions, mapGetters} from 'vuex';
+import {mapActions} from 'vuex';
+import {createFormData} from '../../../helpers/task';
 
 export default {
     components: {
@@ -364,75 +86,66 @@ export default {
         CalendarIcon,
         datepicker,
         Switches,
+        Schedule,
+        InternalCosts,
+        ExternalCosts,
+        Subtasks,
+        Planning,
+        Condition,
+        TaskDetails,
+        Attachments,
     },
     methods: {
-        ...mapActions(['getColorStatuses', 'getProjectLabels', 'createNewTask']),
+        ...mapActions(['createNewTask']),
         createTask: function() {
             let data = {
                 project: this.$route.params.id,
                 name: this.title,
-                puid: '123',
-                progress: 0,
+                type: 2,
+                description: this.$refs.description.getContent(),
+                schedule: this.schedule,
+                internalCosts: this.internalCosts,
+                externalCosts: this.externalCosts,
+                subtasks: this.subtasks,
+                planning: this.planning,
+                attachments: this.attachments,
+                details: this.details,
             };
-            this.createNewTask(data);
-        },
-        toggleManualSchedule: function() {
-            this.visibleManualSchedule = !this.visibleManualSchedule;
-            this.visibleAutomaticSchedule = !this.visibleAutomaticSchedule;
-        },
-        toggleAutomaticSchedule: function() {
-            this.visibleAutomaticSchedule = !this.visibleAutomaticSchedule;
-            this.visibleManualSchedule = !this.visibleManualSchedule;
+
+            this.createNewTask(createFormData(data));
         },
     },
-    created() {
-        if (!this.$store.state.colorStatus || this.$store.state.colorStatus.items.length == 0) {
-            this.getColorStatuses();
-        }
-        if (!this.$store.state.project.labelsForChoice || this.$store.state.project.labelsForChoice.length == 0) {
-            this.getProjectLabels(this.$route.params.id);
-        }
-    },
-    computed: mapGetters({
-        colorStatuses: 'colorStatuses',
-        labelsForChoice: 'labelsForChoice',
-    }),
     data() {
         return {
             message: {
-                create_new_task: Translator.trans('message.create_new_task'),
-                import_task: Translator.trans('message.import_task'),
-                task_schedule: Translator.trans('message.task_schedule'),
-                task_details: Translator.trans('message.task_details'),
-                planning: Translator.trans('message.planning'),
-                subtasks: Translator.trans('message.subtasks'),
+                create_new_task: this.translate('message.create_new_task'),
+                import_task: this.translate('message.import_task'),
+                task_details: this.translate('message.task_details'),
             },
             label: {
-                base_start_date: Translator.trans('label.base_start_date'),
-                base_end_date: Translator.trans('label.base_end_date'),
-                forecast_start_date: Translator.trans('label.forecast_start_date'),
-                forecast_end_date: Translator.trans('label.forecast_end_date'),
-                status: Translator.trans('label.status'),
-                asignee: Translator.trans('label.asignee'),
-                labels: Translator.trans('label.labels'),
-                phase: Translator.trans('label.phase'),
-                milestone: Translator.trans('label.milestone'),
-                subtask_description: Translator.trans('label.subtask_description'),
+                task_title: this.translate('label.task_title'),
+                task_description: this.translate('label.task_description'),
             },
             button: {
-                add_new_subtask: Translator.trans('button.add_new_subtask'),
-                cancel: Translator.trans('button.cancel'),
-                create_task: Translator.trans('button.create_task'),
+                cancel: this.translate('button.cancel'),
+                create_task: this.translate('button.create_task'),
             },
-            visibleManualSchedule: true,
-            visibleAutomaticSchedule: false,
+            schedule: {},
+            title: '',
+            internalCosts: [],
+            externalCosts: {},
+            subtasks: [],
+            planning: {},
+            attachments: [],
+            details: {},
+            statusColor: {},
         };
     },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style lang="scss">
     @import '../../../css/_variables';
     @import '../../../css/page-section';
 
