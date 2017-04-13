@@ -60,18 +60,23 @@
             <h4>{{ message.capex }}</h4>
             <div class="row">
                 <div class="form-group last-form-group">
-                    <div class="col-md-12">
+                    <div class="col-md-10">
                         <div class="flex flex-v-center">
                             <switches v-model="cost.capex" v-bind:selected="cost.capex"></switches>
                             <span class="note no-margin-bottom"><b>{{ message.note }}</b> {{ message.opex_capex_note }}</span>
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <div class="flex flex-direction-reverse">
+                            <span v-on:click="deleteExternalCost(index);"><delete-icon /></span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <hr>
-            <div class="flex flex-direction-reverse" v-if="index === (processedExternalCosts.length - 1)">
-                <a v-on:click="addExternalCost()" class="btn-rounded btn-auto">{{ button.add_external_cost }} +</a>
-            </div>
+        </div>
+        <div class="flex flex-direction-reverse">
+            <a v-on:click="addExternalCost()" class="btn-rounded btn-auto">{{ button.add_external_cost }} +</a>
         </div>
         <hr>
         <div class="row">
@@ -119,6 +124,7 @@ import InputField from '../../../_common/_form-components/InputField';
 import SelectField from '../../../_common/_form-components/SelectField';
 import RadioField from '../../../_common/_form-components/RadioField';
 import Switches from '../../../3rdparty/vue-switches';
+import DeleteIcon from '../../../_common/_icons/DeleteIcon';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
@@ -127,6 +133,7 @@ export default {
         SelectField,
         RadioField,
         Switches,
+        DeleteIcon,
     },
     methods: {
         ...mapActions(['getProjectUnits']),
@@ -140,6 +147,12 @@ export default {
                 customUnit: '',
                 selectedUnit: 'custom',
             });
+        },
+        deleteExternalCost: function(index) {
+            this.externalCosts.items = [
+                ...this.externalCosts.items.slice(0, index),
+                ...this.externalCosts.items.slice(index + 1),
+            ];
         },
     },
     watch: {

@@ -1,41 +1,44 @@
 <template>
     <div>
         <h3>{{ message.subtasks }}</h3>
-        <input-field
-            type="text"
-            v-bind:label="label.subtask_description"
-            v-model="subtaskDescription"
-            v-bind:content="subtaskDescription" />
+        <div class="row" v-for="subtask, index in subtasks">
+            <div class="form-group col-md-11">
+                <input-field
+                    type="text"
+                    v-bind:label="label.subtask_description"
+                    v-model="subtask.description"
+                    v-bind:content="subtask.description" />
+            </div>
+            <div class="col-md-1">
+                <span v-on:click="deleteSubtask(index);"><delete-icon /></span>
+            </div>
+        </div>
         <div class="flex flex-direction-reverse">
             <a v-on:click="addSubtask()" class="btn-rounded btn-auto add-task">{{ button.add_new_subtask }} +</a>
-        </div>
-
-        <div class="row" v-for="subtask in subtasks">
-            <div class="form-group">
-                <div class="col-md-12">
-                    <span class="title"><b><i class="fa fa-square-o"></i> {{ subtask.description }}</b></span>
-                </div>
-            </div>
         </div>
     </div>
 </template>
 
 <script>
 import InputField from '../../../_common/_form-components/InputField';
+import DeleteIcon from '../../../_common/_icons/DeleteIcon';
 
 export default {
     components: {
         InputField,
+        DeleteIcon,
     },
     methods: {
         addSubtask: function() {
-            if (!this.subtaskDescription.length) {
-                return;
-            }
             this.subtasks.push({
-                description: this.subtaskDescription,
+                description: '',
             });
-            this.subtaskDescription = '';
+        },
+        deleteSubtask: function(index) {
+            this.subtasks = [
+                ...this.subtasks.slice(0, index),
+                ...this.subtasks.slice(index + 1),
+            ];
         },
     },
     watch: {
@@ -55,7 +58,6 @@ export default {
                 add_new_subtask: this.translate('button.add_new_subtask'),
             },
             subtasks: [],
-            subtaskDescription: '',
         };
     },
 };
