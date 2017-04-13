@@ -25,15 +25,24 @@
             </div>
             <div class="row">
                 <div class="form-group last-form-group">
-                    <div class="col-md-6">                    
+                    <div class="col-md-6">
                         <span class="title">
                             {{ label.internal_cost_subtotal }} <b><i class="fa fa-dollar"></i> {{ cost.total }}</b>
                         </span>
                     </div>
-                    <div class="col-md-6" v-if="index === (processedInternalCosts.length - 1)">
+                    <div class="col-md-6">
                         <div class="pull-right">
-                            <a v-on:click="addInternalCost" class="btn-rounded btn-auto">{{ button.add_internal_cost }} +</a>
+                            <span v-on:click="deleteInternalCost(index);"><delete-icon /></span>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group last-form-group">
+                <div class="col-md-12">
+                    <div class="pull-right">
+                        <a v-on:click="addInternalCost" class="btn-rounded btn-auto">{{ button.add_internal_cost }} +</a>
                     </div>
                 </div>
             </div>
@@ -66,12 +75,14 @@
 <script>
 import InputField from '../../../_common/_form-components/InputField';
 import SelectField from '../../../_common/_form-components/SelectField';
+import DeleteIcon from '../../../_common/_icons/DeleteIcon';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
     components: {
         InputField,
         SelectField,
+        DeleteIcon,
     },
     methods: {
         ...mapActions(['getProjectDepartments']),
@@ -81,6 +92,12 @@ export default {
                 qty: 1,
                 days: 1,
             });
+        },
+        deleteInternalCost: function(index) {
+            this.internalCosts.items = [
+                ...this.internalCosts.items.slice(0, index),
+                ...this.internalCosts.items.slice(index + 1),
+            ];
         },
     },
     created() {
