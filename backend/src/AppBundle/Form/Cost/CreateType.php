@@ -7,16 +7,26 @@ use AppBundle\Entity\Project;
 use AppBundle\Entity\Resource;
 use AppBundle\Entity\Unit;
 use AppBundle\Entity\WorkPackage;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateType extends AbstractType
 {
+    private $em;
+
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -41,6 +51,31 @@ class CreateType extends AbstractType
                 'class' => Unit::class,
             ])
             ->add('duration', TextType::class)
+            ->add('customUnit', TextType::class, ['mapped' => false])
+        ;
+
+        $builder
+            ->addEventListener(
+                FormEvents::POST_SUBMIT,
+                function (FormEvent $event) {
+                    $form = $event->getForm();
+                    $cost = $form->getData();
+                    $customValue = $form->get('customUnit')->getData();
+                    if ($customValue) {
+                        $repo = $this->em->getRepository(Unit::class);
+                        $maxSequence = $repo->findMaxSequence();
+                        $customUnit = $repo->findOneByName($customValue);
+                        if (!$customUnit) {
+                            $customUnit = new Unit();
+                            $customUnit->setName($customValue);
+                            $customUnit->setSequence($maxSequence + 1);
+                            $this->em->persist($customUnit);
+                            $this->em->flush();
+                        }
+                        $cost->setUnit($customUnit);
+                    }
+                }
+            )
         ;
     }
 
