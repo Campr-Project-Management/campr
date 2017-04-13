@@ -68,7 +68,7 @@ class WorkPackage
     /**
      * @var ArrayCollection|WorkPackage[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="parent", cascade={"persist"})
      */
     private $children;
 
@@ -84,7 +84,7 @@ class WorkPackage
 
     /**
      * @var int
-     * @ORM\Column(name="progress", type="integer", options={"default": 0})
+     * @ORM\Column(name="progress", type="integer", options={"default"=0})
      */
     private $progress = 0;
 
@@ -298,7 +298,7 @@ class WorkPackage
 
     /**
      * @var Cost[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Cost", mappedBy="workPackage")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Cost", mappedBy="workPackage", cascade={"persist"})
      */
     private $costs;
 
@@ -403,7 +403,7 @@ class WorkPackage
      */
     public function setProgress($progress)
     {
-        $this->progress = $progress;
+        $this->progress = (int) $progress;
 
         return $this;
     }
@@ -813,6 +813,7 @@ class WorkPackage
      */
     public function addAssignment(Assignment $assignment)
     {
+        $assignment->setWorkPackage($this);
         $this->assignments[] = $assignment;
 
         return $this;
@@ -1232,6 +1233,7 @@ class WorkPackage
      */
     public function addChild(WorkPackage $child)
     {
+        $child->setParent($this);
         $this->children[] = $child;
 
         return $this;
@@ -1328,6 +1330,8 @@ class WorkPackage
      */
     public function addCost(Cost $cost)
     {
+        $cost->setWorkPackage($this);
+        $cost->setProject($this->getProject());
         $this->costs[] = $cost;
 
         return $this;
