@@ -518,6 +518,27 @@ hr {
   justify-content: flex-start;
   margin-right: -15px;
   margin-left: -15px;
+
+  .task-box-wrapper,
+  .project-box-wrapper {
+    width: 25%;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  @media (max-width:1500px) {
+    .task-box-wrapper,
+    .project-box-wrapper {
+      width: 33.3333333%;
+    }
+  }
+
+  @media (max-width:1280px) {
+    .task-box-wrapper,
+    .project-box-wrapper {
+      width: 50%;
+    }
+  }
 }
 
 .pagination {
