@@ -50,7 +50,7 @@
                         <div class="input-holder right">
                             <label class="active">{{ label.forecast_start_date }}</label>
                             <datepicker v-model="schedule.forecastStartDate" format="dd-MM-yyyy" />
-                            <calendar-icon fill="middle-fill" stroke="lighter-stroke" />
+                            <calendar-icon fill="middle-fill" stroke="middle-stroke" />
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -95,7 +95,7 @@
                             <div class="input-holder right">
                                 <label class="active">{{ label.forecast_start_date }}</label>
                                 <datepicker v-model="schedule.forecastStartDate" format="dd-MM-yyyy" />
-                                <calendar-icon fill="middle-fill" stroke="lighter-stroke" />
+                                <calendar-icon fill="middle-fill" stroke="middle-stroke" />
                             </div>
                         </div>
                         <div class="col-md-6">

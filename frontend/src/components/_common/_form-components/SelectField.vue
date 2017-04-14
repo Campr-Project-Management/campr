@@ -33,16 +33,15 @@ export default {
         text-transform: uppercase;
         height: 40px;
         font-size: 11px;
+        line-height: 43px;
+        letter-spacing: 0.1em;
         border-radius: 1px;
         text-align: left;
-        padding-left: 20px;
-        padding-right: 22px;
+        padding: 0 35px 0 20px;
         position: relative;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size: 11px;
-        letter-spacing: 1.5px;
         @include transition(all, 0.2s, ease-in);
 
         @media screen and (max-width: 1440px) {
@@ -50,8 +49,8 @@ export default {
         }
 
         .caret {
-            right: 8px;
-            margin-top: 4px;
+            right: 20px;
+            top: 18px;
             position: absolute;
         }
 
