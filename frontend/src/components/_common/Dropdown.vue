@@ -21,6 +21,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
   @import '../../css/_variables';
+  @import '../../css/_mixins';
 
   .btn-primary {
     background: $darkColor;
@@ -29,23 +30,29 @@ export default {
     width: 200px;
     text-transform: uppercase;
     height: 40px;
-    font-size: 10px;
-    border-radius: 1px;
+    padding: 0 35px 0 20px;
+    font-size: 11px;
+    line-height: 43px;
+    letter-spacing: 0.1em;
     text-align: left;
-    padding-right: 22px;
     position: relative;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    @include border-radius(0);
 
     @media screen and (max-width: 1440px) {
       width: 120px;
     }
 
     .caret {
-      right: 8px;
-      margin-top: 4px;
+      right: 20px;
+      top: 18px;
       position: absolute;
+    }
+
+    &:focus {
+      outline: 0;
     }
   }
 

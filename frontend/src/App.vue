@@ -39,6 +39,7 @@ export default {
 
 <style lang="scss">
   @import 'css/_variables.scss';
+  @import 'css/_mixins.scss';
 
   html, body {
     margin: 0;
@@ -108,23 +109,36 @@ export default {
   .dropdown-menu {
     color: $lightColor;
     background: $darkColor;
+    width: 100%;
+    margin: 0;
+    @include border-radius(0);
+    border-top: 1px solid $fadeColor;
+    box-shadow: 0 0 8px -2px $blackColor;
+    padding: 0;
 
-    li a {
-      color: inherit;
-    }
+    li {
+      a {
+        display: block;
+        color: inherit;
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        padding: 14px 12px 11px;
 
-    a:hover {
-      color: $lighterColor;
-      background: $mainColor;
+        &:hover {
+          color: $lighterColor;
+          background-color: $middleColor;
+        }
+      }
     }
   }
 
   .new-box {
-    height: 189px;
-    width: 394px;
+    height: 198px;
+    width: 25%;
     border: 1px dashed #5FC3A5;
     text-align: center;
-    line-height: 189px;
+    line-height: 198px;
     text-transform: uppercase;
     display: block;
     color: $secondColor;

@@ -1,20 +1,24 @@
 <template>
     <div>
-        <div class="page-section tasks">
+        <div class="page-section">
             <div class="header">
                 <h1>{{ message.my_tasks }}</h1>
-                <div class="flex">
+                <div class="flex filters-container">
                     <task-filters></task-filters>
-                    <div class="pagination" v-if="count > 0">
+                    <div class="separator"></div>
+                    <div class="pagination flex flex-v-center" v-if="count > 0">
                         <span v-for="page in count/tasks.length" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
                     </div>
                 </div>
             </div>
-            <div class="content">
+            <div class="grid-view">
                 <task-box v-for="task in tasks" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></task-box>
                 <router-link :to="{name: 'task-new'}">
                     <a href="" class="new-box">{{ message.new_project }} +</a>
                 </router-link>
+            </div>
+            <div class="pagination flex flex-center" v-if="count > 0">
+                <span v-for="page in count/tasks.length" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
             </div>
         </div>
     </div>
@@ -65,5 +69,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import '../../css/page-section';
+    .filters-container {
+        margin: 20px 0;
+
+        .pagination {
+            margin: 0;
+        }
+    }
 </style>
