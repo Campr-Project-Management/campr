@@ -4,7 +4,7 @@
         <div class="header flex flex-space-between">
             <div class="flex">
                 <h1>{{ message.project_tasks }}</h1>
-                <div class="flex flex-v-center">
+                <!--<div class="flex flex-v-center" v-if="!boardView">
                     <a class="btn-rounded btn-auto btn-empty btn-notification active">
                         <span>Open</span>
                         <span class="notification-balloon">12</span>
@@ -17,7 +17,7 @@
                         <span>All</span>
                         <span class="notification-balloon">12</span>
                     </a>
-                </div>
+                </div>-->
             </div>
             <div class="flex flex-v-center">
                 <a href="javascript:void(0)" class="btn-rounded btn-auto" v-show="!boardView" @click="boardView=!boardView">{{ message.view_board }}</a>
@@ -32,8 +32,7 @@
         <div class="flex">
             <input-field type="text" v-bind:label="label.search_for_tasks" class="search"></input-field>
             <dropdown title="Asignee" options=""></dropdown>
-            <dropdown title="Status" options=""></dropdown>
-            <dropdown title="Milestone" options=""></dropdown>
+            <dropdown v-if="!boardView" title="Status" options=""></dropdown>
             <dropdown title="Filter By" options=""></dropdown>
             <a class="btn-rounded btn-auto">{{ button.show_results }}</a>
         </div>

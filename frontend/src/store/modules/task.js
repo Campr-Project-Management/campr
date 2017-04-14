@@ -9,6 +9,7 @@ const state = {
     filters: [],
     taskStatuses: [],
     tasksByStatuses: [],
+    users: [],
 };
 
 const getters = {
@@ -63,10 +64,10 @@ const actions = {
     getTasksByStatuses({commit}, project) {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
-            .get(Routing.generate('app_api_project_workpackages', {'id': project}), {
+            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
                 params: {
                     'type': 2,
-                    'pageSize': 8,
+                    'pageSize': 2,
                 },
             })
             .then((response) => {
@@ -86,23 +87,24 @@ const actions = {
      * @param {number} status
      * @param {number} page
      */
-    getTasksByStatus({commit}, {project, status, page}) {
+    getTasksByStatus({commit}, {project, status, statusId, page, callback}) {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
-            .get(Routing.generate('app_api_project_workpackages', {'id': project}), {
+            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
                 params: {
                     status,
                     'type': 2,
                     'page': page,
-                    'pageSize': 8,
+                    'pageSize': 2,
                 },
             })
             .then((response) => {
                 if (response.status === 200) {
                     let tasksByStatus = response.data;
-                    commit(types.SET_TASKS_BY_STATUS, {tasksByStatus, status});
+                    commit(types.SET_TASKS_BY_STATUS, {tasksByStatus, statusId});
                     commit(types.TOGGLE_LOADER, false);
                 }
+                callback();
             }, (response) => {
             });
     },
@@ -157,6 +159,16 @@ const actions = {
                 }
             });
     },
+    getUsers({commit}) {
+        Vue.http
+            .get(Routing.generate('app_api_workpackage_get')).then((response) => {
+                if (response.status === 200) {
+                    let task = response.data;
+                    commit(types.SET_TASK, {task});
+                }
+            }, (response) => {
+            });
+    },
 };
 
 const mutations = {
@@ -192,9 +204,8 @@ const mutations = {
      * @param {array} tasksByStatus
      * @param {number} status
      */
-    [types.SET_TASKS_BY_STATUS](state, {tasksByStatus, status}) {
-        console.log('action', {tasksByStatus, status});
-        state.tasksByStatuses[status].items.concat(tasksByStatus);
+    [types.SET_TASKS_BY_STATUS](state, {tasksByStatus, statusId}) {
+        state.tasksByStatuses[statusId].items = state.tasksByStatuses[statusId].items.concat(tasksByStatus.items);
     },
     /**
      * Sets task statuses to state
