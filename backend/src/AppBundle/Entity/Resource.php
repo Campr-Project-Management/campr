@@ -25,6 +25,23 @@ class Resource
     private $id;
 
     /**
+     * @var Project|null
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="resources")
+     * @ORM\JoinColumns({
+     *     @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     * })
+     * @Serializer\Exclude()
+     */
+    private $project;
+
+    /**
+     * @var float
+     * @ORM\Column(name="rate", type="decimal", precision=9, scale=2)
+     * @Assert\NotBlank(message="not_blank.rate")
+     */
+    private $rate;
+
+    /**
      * @var string
      * @ORM\Column(name="name", type="string", length=128, nullable=false)
      * @Assert\NotBlank(message="not_blank.name")
@@ -152,6 +169,68 @@ class Resource
     public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Project|null
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * @param Project|null $project
+     *
+     * @return resource
+     */
+    public function setProject(Project $project = null)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectId")
+     *
+     * @return int|null
+     */
+    public function getProjectId()
+    {
+        return $this->project ? $this->project->getId() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectName")
+     *
+     * @return string|null
+     */
+    public function getProjectName()
+    {
+        return $this->project ? (string) $this->project : null;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRate()
+    {
+        return $this->rate;
+    }
+
+    /**
+     * @param float $rate
+     *
+     * @return resource
+     */
+    public function setRate($rate)
+    {
+        $this->rate = $rate;
 
         return $this;
     }
