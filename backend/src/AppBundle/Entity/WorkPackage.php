@@ -334,6 +334,7 @@ class WorkPackage
         $this->children = new ArrayCollection();
         $this->medias = new ArrayCollection();
         $this->costs = new ArrayCollection();
+        $this->puid = microtime(true) * 1000000;
     }
 
     /**
