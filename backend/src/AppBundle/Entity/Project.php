@@ -365,6 +365,12 @@ class Project
     private $units;
 
     /**
+     * @var ArrayCollection|resource[]
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Resource", mappedBy="project")
+     */
+    private $resources;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -391,6 +397,12 @@ class Project
         $this->workPackageStatuses = new ArrayCollection();
         $this->costs = new ArrayCollection();
         $this->units = new ArrayCollection();
+        $this->resources = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return (string) $this->name;
     }
 
     /**
@@ -1758,5 +1770,39 @@ class Project
     public function getUnits()
     {
         return $this->units;
+    }
+
+    /**
+     * @param resource $resource
+     *
+     * @return Project
+     */
+    public function addResource(Resource $resource)
+    {
+        $this->resources[] = $resource;
+        $resource->setProject($this);
+
+        return $this;
+    }
+
+    /**
+     * @param resource $resource
+     *
+     * @return Project
+     */
+    public function removeResource(Resource $resource)
+    {
+        $this->resources->removeElement($resource);
+        $resource->setProject(null);
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection|resource[]
+     */
+    public function getResources()
+    {
+        return $this->resources;
     }
 }

@@ -181,34 +181,34 @@ export default {
             this.rowsInternal = [
                 [
                     Translator.trans('message.total'),
-                    parseInt(this.projectResources.internal.base || 0, 10),
-                    parseInt(this.projectResources.internal.change || 0, 10),
-                    parseInt(this.projectResources.internal.actual || 0, 10),
-                    parseInt(this.projectResources.internal.remaining || 0, 10),
-                    parseInt(this.projectResources.internal.forecast || 0, 10),
+                    parseInt(this.projectResourcesForGraph.internal.base || 0, 10),
+                    parseInt(this.projectResourcesForGraph.internal.change || 0, 10),
+                    parseInt(this.projectResourcesForGraph.internal.actual || 0, 10),
+                    parseInt(this.projectResourcesForGraph.internal.remaining || 0, 10),
+                    parseInt(this.projectResourcesForGraph.internal.forecast || 0, 10),
                 ],
             ];
             this.rowsExternal = [
                 [
                     Translator.trans('message.total'),
-                    parseInt(this.projectResources.external.base || 0, 10),
-                    parseInt(this.projectResources.external.change || 0, 10),
-                    parseInt(this.projectResources.external.actual || 0, 10),
-                    parseInt(this.projectResources.external.remaining || 0, 10),
-                    parseInt(this.projectResources.external.forecast || 0, 10),
+                    parseInt(this.projectResourcesForGraph.external.base || 0, 10),
+                    parseInt(this.projectResourcesForGraph.external.change || 0, 10),
+                    parseInt(this.projectResourcesForGraph.external.actual || 0, 10),
+                    parseInt(this.projectResourcesForGraph.external.remaining || 0, 10),
+                    parseInt(this.projectResourcesForGraph.external.forecast || 0, 10),
                 ],
             ];
             this.options.vAxis.maxValue = Math.max(
-                parseInt(this.projectResources.internal.base || 0, 10),
-                parseInt(this.projectResources.internal.change || 0, 10),
-                parseInt(this.projectResources.internal.actual || 0, 10),
-                parseInt(this.projectResources.internal.remaining || 0, 10),
-                parseInt(this.projectResources.internal.forecast || 0, 10),
-                parseInt(this.projectResources.external.base || 0, 10),
-                parseInt(this.projectResources.external.change || 0, 10),
-                parseInt(this.projectResources.external.actual || 0, 10),
-                parseInt(this.projectResources.external.remaining || 0, 10),
-                parseInt(this.projectResources.external.forecast || 0, 10)
+                parseInt(this.projectResourcesForGraph.internal.base || 0, 10),
+                parseInt(this.projectResourcesForGraph.internal.change || 0, 10),
+                parseInt(this.projectResourcesForGraph.internal.actual || 0, 10),
+                parseInt(this.projectResourcesForGraph.internal.remaining || 0, 10),
+                parseInt(this.projectResourcesForGraph.internal.forecast || 0, 10),
+                parseInt(this.projectResourcesForGraph.external.base || 0, 10),
+                parseInt(this.projectResourcesForGraph.external.change || 0, 10),
+                parseInt(this.projectResourcesForGraph.external.actual || 0, 10),
+                parseInt(this.projectResourcesForGraph.external.remaining || 0, 10),
+                parseInt(this.projectResourcesForGraph.external.forecast || 0, 10)
             );
         },
     },
@@ -310,7 +310,7 @@ export default {
         project: 'project',
         contract: 'contract',
         sponsorsManagers: 'sponsorsManagers',
-        projectResources: 'projectResources',
+        projectResourcesForGraph: 'projectResourcesForGraph',
     }),
     data: function() {
         return {
