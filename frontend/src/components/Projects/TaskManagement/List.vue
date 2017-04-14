@@ -147,7 +147,7 @@ export default {
     }
 
     @media (max-width:1500px) {
-        .serch {
+        .search {
             width: auto;
         }
     }
