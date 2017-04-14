@@ -63,7 +63,7 @@ const actions = {
     getTasksByStatuses({commit}, project) {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
-            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
+            .get(Routing.generate('app_api_project_workpackages', {'id': project}), {
                 params: {
                     'type': 2,
                     'pageSize': 8,
@@ -89,7 +89,7 @@ const actions = {
     getTasksByStatus({commit}, {project, status, page}) {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
-            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
+            .get(Routing.generate('app_api_project_workpackages', {'id': project}), {
                 params: {
                     status,
                     'type': 2,
