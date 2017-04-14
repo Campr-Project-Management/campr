@@ -90,6 +90,12 @@ export default {
     }
   }
 
+  .column {
+    .progress-area {
+      bottom: -2px;
+    }
+  }
+
   .zero-fill {
       width: 100%;
       height: 100%;

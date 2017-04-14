@@ -110,7 +110,7 @@ export default {
     }
 
     .search {
-        width: 420px;
+        width: 25%;
     }
 
     .btn-rounded {
@@ -144,5 +144,11 @@ export default {
     .task-box {
         margin-left: 0;
         margin-right: 0;
+    }
+
+    @media (max-width:1500px) {
+        .serch {
+            width: auto;
+        }
     }
 </style>
