@@ -85,7 +85,7 @@ export default {
         DeleteIcon,
     },
     methods: {
-        ...mapActions(['getProjectDepartments']),
+        ...mapActions(['getProjectDepartments', 'getProjectResources']),
         addInternalCost: function() {
             this.internalCosts.items.push({
                 resource: '',
@@ -106,11 +106,12 @@ export default {
         }
 
         this.getProjectDepartments(this.$route.params.id);
+        this.getProjectResources(this.$route.params.id);
     },
     computed: {
         ...mapGetters({
             resources: 'projectDepartments',
-            resourcesForSelect: 'projectDepartmentsForSelect',
+            resourcesForSelect: 'projectResourcesForSelect',
         }),
         baseTotal: function() {
             return this.processedInternalCosts.reduce((prev, next) => {
@@ -160,6 +161,7 @@ export default {
                 forecast: 0,
                 actual: 0,
             },
+            resources: [],
         };
     },
 };

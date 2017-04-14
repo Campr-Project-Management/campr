@@ -12,6 +12,8 @@ const state = {
     labelsForChoice: [],
     loading: false,
     label: {},
+    resources: [],
+    projectResourcesForGraph: {},
 };
 
 const getters = {
@@ -25,7 +27,13 @@ const getters = {
     projectsForFilter: state => state.itemsForFilter,
     labelsForChoice: state => state.labelsForChoice,
     sponsorsManagers: state => state.sponsorsManagers,
-    projectResources: (state) => _.merge({internal: {}, external: {}}, state.projectResources),
+    projectResourcesForGraph: (state) => _.merge(
+        {
+            internal: {},
+            external: {},
+        },
+        state.projectResourcesForGraph
+    ),
     label: state => state.label,
 };
 
@@ -46,6 +54,7 @@ const actions = {
             commit(types.TOGGLE_FAVOURITE, project);
         });
     },
+
     /**
      * Gets projects from the API and commits SET_PROJECTS mutation
      * @param {function} commit
@@ -62,6 +71,7 @@ const actions = {
         }, (response) => {
         });
     },
+
     /**
      * Gets a project by ID from the API and commits SET_PROJECT mutation
      * @param {function} commit
@@ -78,6 +88,7 @@ const actions = {
             }, (response) => {
             });
     },
+
     /**
      * Gets all project labels from the API and commits SET_LABELS mutation
      * @param {function} commit
@@ -93,6 +104,7 @@ const actions = {
             }, (response) => {
             });
     },
+
     /**
      * Gets a specific project label
      * @param {function} commit
@@ -108,6 +120,7 @@ const actions = {
             }, (response) => {
             });
     },
+
     /**
      * Creates a new label on project
      * @param {function} commit
@@ -127,6 +140,7 @@ const actions = {
                 }
             });
     },
+
     /**
      * Edit a project label
      * @param {function} commit
@@ -145,6 +159,7 @@ const actions = {
                 }
             });
     },
+
     /**
      * Delete a label
      * @param {function} commit
@@ -158,6 +173,7 @@ const actions = {
             }, (response) => {
             });
     },
+
     /**
      * Creates a new objective on project
      * @param {function} commit
@@ -177,6 +193,7 @@ const actions = {
                 }
             });
     },
+
     /**
      * Edit a project objective
      * @param {function} commit
@@ -194,6 +211,7 @@ const actions = {
                 }
             });
     },
+
     /**
      * Reorder project objectives
      * @param {function} commit
@@ -211,6 +229,7 @@ const actions = {
                 }
             });
     },
+
     /**
      * Creates a new limitation on project
      * @param {function} commit
@@ -230,6 +249,7 @@ const actions = {
                 }
             });
     },
+
     /**
      * Reorder project limitations
      * @param {function} commit
@@ -247,6 +267,7 @@ const actions = {
                 }
             });
     },
+
     /**
      * Edit a project limitation
      * @param {function} commit
@@ -264,6 +285,7 @@ const actions = {
                 }
             });
     },
+
     /**
      * Creates a new deliverable on project
      * @param {function} commit
@@ -283,6 +305,7 @@ const actions = {
                 }
             });
     },
+
     /**
      * Edit a project deliverable
      * @param {function} commit
@@ -300,6 +323,7 @@ const actions = {
                 }
             });
     },
+
     /**
      * Reorder project derivables
      * @param {function} commit
@@ -317,6 +341,7 @@ const actions = {
                 }
             });
     },
+
     /**
      * Gets project resources values for graphic
      * @param {function} commit
@@ -324,14 +349,15 @@ const actions = {
      */
     getProjectResourcesForGraph({commit}, id) {
         Vue.http
-            .get(Routing.generate('app_api_project_resources', {'id': id})).then((response) => {
+            .get(Routing.generate('app_api_project_resources_graph', {'id': id})).then((response) => {
                 if (response.status === 200) {
                     let resources = response.data;
-                    commit(types.SET_PROJECT_RESOURCES, {resources});
+                    commit(types.SET_PROJECT_RESOURCES_GRAPH, {resources});
                 }
             }, (response) => {
             });
     },
+
     /**
      * Creates a new project
      * @param {function} commit
@@ -370,6 +396,7 @@ const mutations = {
         });
         state.itemsForFilter = projectsForFilter;
     },
+
     /**
      * Sets project to state
      * @param {Object} state
@@ -378,6 +405,7 @@ const mutations = {
     [types.SET_PROJECT](state, {project}) {
         state.currentItem = project;
     },
+
     /**
      * Toggles projects favourite property
      * @param {Object} state
@@ -387,6 +415,7 @@ const mutations = {
         let stateProject = _.find(state.items, {id: project.id});
         stateProject.favourite = !project.favourite;
     },
+
     /**
      * Sets filters to state
      * @param {Object} state
@@ -395,6 +424,7 @@ const mutations = {
     [types.SET_FILTERS](state, filter) {
         state.filters[filter[0]] = filter[1];
     },
+
     /**
      * Sets labels
      * @param {Object} state
@@ -408,9 +438,11 @@ const mutations = {
         });
         state.labelsForChoice = choiceLabel;
     },
+
     [types.SET_PROJECT_LOADING](state, {loading}) {
         state.loading = loading;
     },
+
     /**
      * Add project objective
      * @param {Object} state
@@ -419,6 +451,7 @@ const mutations = {
     [types.ADD_PROJECT_OBJECTIVE](state, {objective}) {
         state.currentItem.projectObjectives.push(objective);
     },
+
     /**
      * Add project limitation
      * @param {Object} state
@@ -427,6 +460,7 @@ const mutations = {
     [types.ADD_PROJECT_LIMITATION](state, {limitation}) {
         state.currentItem.projectLimitations.push(limitation);
     },
+
     /**
      * Add project deliverable
      * @param {Object} state
@@ -435,6 +469,7 @@ const mutations = {
     [types.ADD_PROJECT_DELIVERABLE](state, {deliverable}) {
         state.currentItem.projectDeliverables.push(deliverable);
     },
+
     /**
      * set project member
      * @param {Object} state
@@ -449,14 +484,16 @@ const mutations = {
         });
         state.sponsorsManagers = sponsorsManagers;
     },
+
     /**
      * set project resources
      * @param {Object} state
      * @param {Object} resources
      */
-    [types.SET_PROJECT_RESOURCES](state, {resources}) {
-        state.projectResources = resources;
+    [types.SET_PROJECT_RESOURCES_GRAPH](state, {resources}) {
+        state.projectResourcesForGraph = resources;
     },
+
     /**
      * set project label
      * @param {Object} state
