@@ -125,6 +125,7 @@ import Switches from '../../../3rdparty/vue-switches';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
+    props: ['editSchedule'],
     components: {
         InputField,
         MultiSelectField,
@@ -159,6 +160,9 @@ export default {
                 this.$emit('input', value);
             },
             deep: true,
+        },
+        editSchedule(value) {
+            this.schedule = this.editSchedule;
         },
     },
     created() {
@@ -212,16 +216,7 @@ export default {
             visibleAutomaticSchedule: false,
             visiblePredecessor: true,
             visibleSuccessor: false,
-            schedule: {
-                baseStartDate: new Date(),
-                baseEndDate: new Date(),
-                forecastStartDate: new Date(),
-                forecastEndDate: new Date(),
-                automatic: false,
-                successors: [],
-                predecessors: [],
-                durationInDays: 0,
-            },
+            schedule: [],
         };
     },
 };

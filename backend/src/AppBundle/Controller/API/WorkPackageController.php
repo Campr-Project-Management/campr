@@ -4,7 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Assignment;
 use AppBundle\Entity\WorkPackage;
-use AppBundle\Form\WorkPackage\CreateType;
+use AppBundle\Form\WorkPackage\ApiCreateType;
 use AppBundle\Security\WorkPackageVoter;
 use AppBundle\Form\Assignment\BaseCreateType as AssignmentCreateType;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -75,7 +75,7 @@ class WorkPackageController extends ApiController
      * Edit a specific WorkPackage.
      *
      * @Route("/{id}", name="app_api_workpackage_edit", options={"expose"=true})
-     * @Method({"PATCH", "PUT"})
+     * @Method({"PATCH", "PUT", "POST"})
      *
      * @param Request     $request
      * @param WorkPackage $wp
@@ -86,7 +86,7 @@ class WorkPackageController extends ApiController
     {
         $this->denyAccessUnlessGranted(WorkPackageVoter::EDIT, $wp);
 
-        $form = $this->createForm(CreateType::class, $wp, ['csrf_protection' => false]);
+        $form = $this->createForm(ApiCreateType::class, $wp, ['csrf_protection' => false, 'method' => $request->getMethod()]);
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {

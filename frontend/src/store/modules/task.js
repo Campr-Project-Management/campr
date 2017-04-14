@@ -158,17 +158,53 @@ const actions = {
                 Routing.generate('app_api_project_tasks_create', {'id': data.projectId}),
                 data.data
             ).then((response) => {
-                router.push({name: 'project-task-management-list'});
+                router.push({
+                    name: 'project-task-management-edit',
+                    params: {
+                        id: data.projectId,
+                        taskId: response.data.id,
+                    },
+                });
             }, (response) => {
                 if (response.status === 400) {
-                    // implement system to dispay errors
+                    // implement system to display errors
                     console.log(response.data);
                 }
             });
     },
+
+    /**
+     * Edit an existing task
+     * @param {function} commit
+     * @param {array} data
+     */
+    editTask({commit}, data) {
+        Vue.http
+            .post(
+                Routing.generate('app_api_workpackage_edit', {'id': data.taskId}),
+                data.data
+            ).then(
+            (response) => {
+                if (response.status === 200) {
+                    alert('Saved!');
+                } else {
+                    alert(response.status);
+                }
+            },
+            (response) => {
+                alert('Validation issues');
+                if (response.status === 400) {
+                    // implement system to dispay errors
+                    // console.log(response.data);
+                }
+            }
+        );
+    },
+
     setFilters({commit}, filters) {
         commit(types.SET_TASKS_FILTERS, filters);
     },
+
     resetTasks({commit}, project) {
         commit(types.TOGGLE_LOADER, true);
         commit(types.RESET_TASKS);
