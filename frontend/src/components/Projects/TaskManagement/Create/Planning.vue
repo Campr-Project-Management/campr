@@ -82,7 +82,5 @@ export default {
 </script>
 
 <style lang="scss">
-    .dropdown-toggle {
-        width: 100% !important;
-    }
+
 </style>

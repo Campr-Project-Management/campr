@@ -1,25 +1,29 @@
 <template>
-    <div class="task-box box small-box">
-        <div class="header">
-            <div>
-                <h2>
-                    <router-link :to="{name: 'task', params: { id: task.id }}">
-                        {{ task.name }}
-                    </router-link>
-                </h2>
-                <p class="task-id">#{{ task.id }}</p>
+    <div class="task-box-wrapper">
+        <div class="task-box box small-box">
+            <div class="box-header">
+                <div>
+                    <h2>
+                        <router-link :to="{name: 'task', params: { id: task.id }}">
+                            {{ task.name }}
+                        </router-link>
+                    </h2>
+                    <p class="task-id">#{{ task.id }}</p>
+                </div>
+                <div class="status-boxes">
+                    <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? task.colorStatusColor : '' }"></span>
+                </div>
             </div>
-            <div class="status-boxes">
-                <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? task.colorStatusColor : '' }"></span>
-            </div>
-        </div>
-        <div class="content flex flex-space-between">
             <div class="info">
-                <p class="title">{{ task.projectName }}</p>
-                <p class="status">{{ translate(task.workPackageStatusName) }}</p>
+                <div class="plan">
+                    <a href="#path-to-phase" title="View phase.name">{{ task.projectName }}</a> > <a href="#path-to-phase" title="View phase.name">Phase</a> > <a href="#path-to-milestone" title="View milestone.name">Milestone</a>
+                </div>
+            </div>
+            <div class="status">
+                <p><span>Status:</span> {{ translate(task.workPackageStatusName) }}</p>
+                <bar-chart position="right" :percentage="task.progress" :color="task.colorStatusColor" v-bind:title-right="message.progress"></bar-chart>
             </div>
         </div>
-        <bar-chart position="right" :percentage="task.progress" :color="task.colorStatusColor" v-bind:title-right="message.progress"></bar-chart>
     </div>
 </template>
 
@@ -48,14 +52,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import '../../css/_common.scss';
+  @import '../../css/_variables.scss';
+  @import '../../css/_mixins.scss';
   @import '../../css/box';
   @import '../../css/box-task';
-
-  .box {
-      width: 394px;
-      margin: 0 12.5px 30px;
-  }
 
   .info {
       padding-top: 16px;

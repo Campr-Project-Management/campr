@@ -5,7 +5,13 @@
 
                <!-- /// Task Title and Label /// -->
                 <div class="header">
-                    <h1>Build Self-Landing Rocket Legs</h1> 
+                    <div>
+                        <router-link :to="{name: 'project-task-management-list'}" class="small-link">
+                            <i class="fa fa-angle-left"></i>
+                            Back to Task Management
+                        </router-link>
+                        <h1>Build Self-Landing Rocket Legs</h1>                     
+                    </div>
 
                     <div class="task-label" :style="'background-color:#e04fcc'">
                         High Priority
@@ -14,13 +20,13 @@
                 <!-- /// End Task Title and Label /// -->
 
                 <!-- /// Task Status /// -->
-                <div class="task-status table">
-                    <div class="cell">
+                <div class="task-status flex flex-v-center">
+                    <div>
                         <span class="small">Status:</span>
                         <div class="task-status-box">In Progress</div>
                         <a href="#open-status-edit-modal" class="simple-link small">Edit</a>
                     </div>
-                    <div class="cell">
+                    <div>
                         <div class="task-status-info">
                             <b>#244</b>
                             Created on 25.02.2017 by
