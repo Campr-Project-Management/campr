@@ -84,7 +84,11 @@
                                 v-model="schedule.successors" />
                         </div>
                         <div class="col-md-4">
-                            <input-field type="text" v-bind:label="label.duration_in_days"></input-field>
+                            <input-field
+                                type="text"
+                                v-bind:label="label.duration_in_days"
+                                v-bind:content="schedule.durationInDays"
+                                v-model="schedule.durationInDays" />
                         </div>
                     </div>
                 </div>
@@ -133,10 +137,12 @@ export default {
         toggleManualSchedule: function() {
             this.visibleManualSchedule = !this.visibleManualSchedule;
             this.visibleAutomaticSchedule = !this.visibleManualSchedule;
+            this.automatic = this.visibleAutomaticSchedule;
         },
         toggleAutomaticSchedule: function() {
             this.visibleAutomaticSchedule = !this.visibleAutomaticSchedule;
             this.visibleManualSchedule = !this.visibleAutomaticSchedule;
+            this.automatic = this.visibleAutomaticSchedule;
         },
         togglePredecessor: function() {
             this.visiblePredecessor = !this.visiblePredecessor;
@@ -206,14 +212,15 @@ export default {
             visibleAutomaticSchedule: false,
             visiblePredecessor: true,
             visibleSuccessor: false,
-            durationInDays: 0,
             schedule: {
                 baseStartDate: new Date(),
                 baseEndDate: new Date(),
                 forecastStartDate: new Date(),
                 forecastEndDate: new Date(),
+                automatic: false,
                 successors: [],
                 predecessors: [],
+                durationInDays: 0,
             },
         };
     },
