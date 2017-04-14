@@ -10,8 +10,8 @@
         <!--<vue-scrollbar class="tasks-scroll">
         </vue-scrollbar>-->
         <div>
-                <small-task-box v-if="tasksByStatuses[status.id]" v-bind:task="task" v-for="task in tasksByStatuses[status.id].items"></small-task-box>
-                <infinite-loading :status="status.id" :on-infinite="onInfinite" v-bind:ref="'infiniteLoading' + status.id"></infinite-loading>
+            <small-task-box v-if="tasksByStatuses[status.id]" v-bind:task="task" v-for="task in tasksByStatuses[status.id].items"></small-task-box>
+            <infinite-loading :status="status.id" :on-infinite="onInfinite" v-bind:ref="'infiniteLoading' + status.id"></infinite-loading>
         </div>
     </div>
 </template>
