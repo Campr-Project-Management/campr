@@ -2,6 +2,24 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 import router from '../../router';
 
+// const item = {
+//     'totalItems': 1,
+//     'items': [{
+//         'id': 7,
+//         'puid': '2',
+//         'name': '1WorkPackageqqq',
+//         'progress': 100,
+//     },
+//     {
+//         'id': 7,
+//         'puid': '2',
+//         'name': '1WorkPackageqqq',
+//         'progress': 100,
+//     },
+//     ],
+// };
+
+
 const state = {
     currentItem: {},
     items: [],
@@ -66,7 +84,7 @@ const actions = {
             .get(Routing.generate('app_api_project_workpackages', {'id': project}), {
                 params: {
                     'type': 2,
-                    'pageSize': 8,
+                    'pageSize': 2,
                 },
             })
             .then((response) => {
@@ -86,7 +104,7 @@ const actions = {
      * @param {number} status
      * @param {number} page
      */
-    getTasksByStatus({commit}, {project, status, page}) {
+    getTasksByStatus({commit}, {project, status, statusId, page, callback}) {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
             .get(Routing.generate('app_api_project_workpackages', {'id': project}), {
@@ -94,15 +112,16 @@ const actions = {
                     status,
                     'type': 2,
                     'page': page,
-                    'pageSize': 8,
+                    'pageSize': 2,
                 },
             })
             .then((response) => {
                 if (response.status === 200) {
                     let tasksByStatus = response.data;
-                    commit(types.SET_TASKS_BY_STATUS, {tasksByStatus, status});
+                    commit(types.SET_TASKS_BY_STATUS, {tasksByStatus, statusId});
                     commit(types.TOGGLE_LOADER, false);
                 }
+                callback();
             }, (response) => {
             });
     },
@@ -192,9 +211,8 @@ const mutations = {
      * @param {array} tasksByStatus
      * @param {number} status
      */
-    [types.SET_TASKS_BY_STATUS](state, {tasksByStatus, status}) {
-        console.log('action', {tasksByStatus, status});
-        state.tasksByStatuses[status].items.concat(tasksByStatus);
+    [types.SET_TASKS_BY_STATUS](state, {tasksByStatus, statusId}) {
+        state.tasksByStatuses[statusId].items = state.tasksByStatuses[statusId].items.concat(tasksByStatus.items);
     },
     /**
      * Sets task statuses to state
