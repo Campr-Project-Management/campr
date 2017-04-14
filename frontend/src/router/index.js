@@ -103,6 +103,11 @@ const routes = [
                         name: 'project-task-management-create',
                     },
                     {
+                        path: 'edit/:taskId',
+                        component: Create,
+                        name: 'project-task-management-edit',
+                    },
+                    {
                         path: 'add-label',
                         component: AddLabel,
                         name: 'project-task-management-add-label',
