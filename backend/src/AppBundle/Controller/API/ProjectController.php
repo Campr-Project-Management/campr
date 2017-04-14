@@ -1023,7 +1023,7 @@ class ProjectController extends ApiController
     /**
      * All project work packages.
      *
-     * @Route("/{id}/work-packages", name="app_api_project_work_packages", options={"expose"=true})
+     * @Route("/{id}/work-packages", name="app_api_projects_workpackages", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Project $project
