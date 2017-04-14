@@ -3,16 +3,16 @@
         <div class="column-header flex flex-v-center flex-space-between">
             <span>{{ status.name }}</span>
             <div class="flex">
-                <span class="notification-balloon"><div v-if="tasksByStatuses[status.id]">{{ tasksByStatuses[status.id].totalItems }}</div><div v-else>...</div></span>
+                <span class="notification-balloon">{{ tasksByStatuses[status.id].totalItems }}</span>
                 <span class="notification-balloon second-bg">+</span>
             </div>
         </div>
-        <vue-scrollbar class="tasks-scroll">
-            <div>
+        <!--<vue-scrollbar class="tasks-scroll">
+        </vue-scrollbar>-->
+        <div>
                 <small-task-box v-if="tasksByStatuses[status.id]" v-bind:task="task" v-for="task in tasksByStatuses[status.id].items"></small-task-box>
-                <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading"></infinite-loading>
-           </div>
-        </vue-scrollbar>
+                <infinite-loading :status="status.id" :on-infinite="onInfinite" v-bind:ref="'infiniteLoading' + status.id"></infinite-loading>
+        </div>
     </div>
 </template>
 
@@ -37,12 +37,21 @@ export default {
     methods: {
         ...mapActions(['getTasksByStatus']),
         onInfinite() {
+            const infiniteLoadingRef = 'infiniteLoading' + this.status.id;
+            this.page++;
             this.getTasksByStatus({
                 project: this.project,
-                status: this.status.id,
+                status: this.status.name,
+                statusId: this.status.id,
                 page: this.page,
+                callback: () => {
+                    this.$refs[infiniteLoadingRef].$emit('$InfiniteLoading:loaded');
+                    if(this.tasksByStatuses[this.status.id].items.length >= this.tasksByStatuses[this.status.id].totalItems) {
+                        // every task has been loaded in the store (length of array equals to totalItems)
+                        this.$refs[infiniteLoadingRef].$emit('$InfiniteLoading:complete');
+                    }
+                },
             });
-            this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
         },
         translate(text) {
             return this.translate(text);
