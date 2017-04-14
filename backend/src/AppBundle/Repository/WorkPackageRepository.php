@@ -248,7 +248,7 @@ class WorkPackageRepository extends BaseRepository
      *
      * @return Query
      */
-    public function getQueryByProjectFiltersAndWorkPackage(Project $project, WorkPackageStatus $workPackageStatus = null, $filters = [])
+    public function getQueryByProjectFiltersAndWorkPackage(Project $project, $filters = [], WorkPackageStatus $workPackageStatus = null)
     {
         $qb = $this
             ->createQueryBuilder('wp')

@@ -3,7 +3,12 @@
         <img v-bind:src="item.userAvatar" />
         <div class="name">{{ item.userFullName }}</div>
         <div class="title">{{ item.projectRoleName }}</div>
-        <social-links size="16px" v-bind:facebook="item.userFacebook" v-bind:twitter="item.userTwitter" v-bind:linkedin="item.userLinkedIn" v-bind:gplus="item.userGplus" v-bind:email="item.userEmail"></social-links>
+        <social-links size="16px"
+            v-bind:facebook="item.userFacebook"
+            v-bind:twitter="item.userTwitter"
+            v-bind:linkedin="item.userLinkedIn"
+            v-bind:gplus="item.userGplus"
+            v-bind:email="item.userEmail"></social-links>
     </div>
 </template>
 
