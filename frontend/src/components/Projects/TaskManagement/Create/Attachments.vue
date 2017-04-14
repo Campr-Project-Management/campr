@@ -44,7 +44,7 @@ export default {
     },
     watch: {
         attachments: function(value) {
-            this.$emit('input', attachments);
+            this.$emit('input', value);
         },
     },
     data: function() {

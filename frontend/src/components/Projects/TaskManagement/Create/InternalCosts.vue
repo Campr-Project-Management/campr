@@ -13,7 +13,7 @@
                             v-bind:currentOption="cost.resource" />
                     </div>
                     <div class="col-md-2">
-                        <input-field type="text" v-bind:label="label.daily_rate" v-bind:content="cost.rate" disabled />
+                        <input-field type="text" v-bind:label="label.daily_rate" v-model="cost.rate" v-bind:content="cost.rate" />
                     </div>
                     <div class="col-md-2">
                         <input-field type="text" v-bind:label="label.qty" v-model="cost.qty" v-bind:content="cost.qty" />
@@ -91,6 +91,7 @@ export default {
                 resource: '',
                 qty: 1,
                 days: 1,
+                rate: 0,
             });
         },
         deleteInternalCost: function(index) {
@@ -120,8 +121,7 @@ export default {
         },
         processedInternalCosts: function() {
             return this.internalCosts.items.map(item => {
-                item.total = item.resource ? item.resource.rate * item.qty * item.days : 0;
-                item.rate = item.resource ? item.resource.rate : 0;
+                item.total = item.rate * item.qty * item.days;
                 return item;
             });
         },
