@@ -23,7 +23,7 @@ abstract class BaseController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $em->persist($obj);
-        $em->flush($obj);
+        $em->flush();
     }
 
     protected function assertClassExists(string $class)

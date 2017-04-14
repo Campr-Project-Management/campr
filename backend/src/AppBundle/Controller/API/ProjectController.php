@@ -994,7 +994,14 @@ class ProjectController extends ApiController
      */
     public function unitsAction(Project $project)
     {
-        return $this->createApiResponse($project->getUnits());
+        $units = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(Unit::class)
+            ->findByProject($project, true)
+        ;
+
+        return $this->createApiResponse($units);
     }
 
     /**

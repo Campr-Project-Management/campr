@@ -684,6 +684,7 @@ button:
     create_label: Create Label
     add_new_subtask: Add new subtask
     create_task: Create Task
+    edit_task: Edit Task
     show_results: Show Results
     import: Import
     add_internal_cost: Add internal cost

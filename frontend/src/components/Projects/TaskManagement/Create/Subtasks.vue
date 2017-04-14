@@ -24,6 +24,7 @@ import InputField from '../../../_common/_form-components/InputField';
 import DeleteIcon from '../../../_common/_icons/DeleteIcon';
 
 export default {
+    props: ['editSubtasks'],
     components: {
         InputField,
         DeleteIcon,
@@ -44,6 +45,9 @@ export default {
     watch: {
         subtasks: function(value) {
             this.$emit('input', value);
+        },
+        editSubtasks(value) {
+            this.subtasks = this.editSubtasks;
         },
     },
     data() {

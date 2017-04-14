@@ -34,6 +34,7 @@ import SelectField from '../../../_common/_form-components/SelectField';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
+    props: ['editDetails'],
     components: {
         SelectField,
     },
@@ -58,6 +59,9 @@ export default {
                 this.$emit('input', value);
             },
             deep: true,
+        },
+        editDetails(value) {
+            this.details = this.editDetails;
         },
     },
     data: function() {
