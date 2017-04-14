@@ -21,6 +21,7 @@ import projectUser from './modules/project-user';
 import projectUnit from './modules/project-unit';
 import projectMilestone from './modules/project-milestone';
 import projectPhase from './modules/project-phase';
+import projectResources from './modules/project-resources';
 
 Vue.use(Vuex);
 
@@ -49,6 +50,7 @@ export default new Vuex.Store({
         projectUnit,
         projectMilestone,
         projectPhase,
+        projectResources,
     },
     strict: debug,
 });
