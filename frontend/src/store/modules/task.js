@@ -2,24 +2,6 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 import router from '../../router';
 
-// const item = {
-//     'totalItems': 1,
-//     'items': [{
-//         'id': 7,
-//         'puid': '2',
-//         'name': '1WorkPackageqqq',
-//         'progress': 100,
-//     },
-//     {
-//         'id': 7,
-//         'puid': '2',
-//         'name': '1WorkPackageqqq',
-//         'progress': 100,
-//     },
-//     ],
-// };
-
-
 const state = {
     currentItem: {},
     items: [],
@@ -27,6 +9,7 @@ const state = {
     filters: [],
     taskStatuses: [],
     tasksByStatuses: [],
+    users: [],
 };
 
 const getters = {
@@ -81,7 +64,7 @@ const actions = {
     getTasksByStatuses({commit}, project) {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
-            .get(Routing.generate('app_api_project_workpackages', {'id': project}), {
+            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
                 params: {
                     'type': 2,
                     'pageSize': 2,
@@ -107,7 +90,7 @@ const actions = {
     getTasksByStatus({commit}, {project, status, statusId, page, callback}) {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
-            .get(Routing.generate('app_api_project_workpackages', {'id': project}), {
+            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
                 params: {
                     status,
                     'type': 2,
@@ -174,6 +157,16 @@ const actions = {
                     // implement system to dispay errors
                     console.log(response.data);
                 }
+            });
+    },
+    getUsers({commit}) {
+        Vue.http
+            .get(Routing.generate('app_api_workpackage_get')).then((response) => {
+                if (response.status === 200) {
+                    let task = response.data;
+                    commit(types.SET_TASK, {task});
+                }
+            }, (response) => {
             });
     },
 };
