@@ -840,16 +840,25 @@ class ProjectController extends ApiController
     }
 
     /**
+     * @Route("/{id}/resources", name="app_api_project_resources", options={"expose"=true})
+     * @Method({"GET"})
+     */
+    public function resourcesAction(Project $project)
+    {
+        return $this->createApiResponse($project->getResources());
+    }
+
+    /**
      * All project resources costs.
      *
-     * @Route("/{id}/resources", name="app_api_project_resources", options={"expose"=true})
+     * @Route("/{id}/resources-graph", name="app_api_project_resources_graph", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Project $project
      *
      * @return JsonResponse
      */
-    public function resourcesAction(Project $project)
+    public function resourcesGraphAction(Project $project)
     {
         // @TODO: replace with \AppBundle\Entity\Resource AND \AppBundle\Entity\Cost
         return $this->createApiResponse(

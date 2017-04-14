@@ -23,7 +23,7 @@ const actions = {
      */
     getWorkPackages({commit}, projectId) {
         Vue.http
-            .get(Routing.generate('app_api_project_work_packages', {'id': projectId})).then((response) => {
+            .get(Routing.generate('app_api_project_tasks', {'id': projectId})).then((response) => {
                 if (response.status === 200) {
                     let workPackages = response.data;
                     commit(types.SET_WORK_PACKAGES, {workPackages});

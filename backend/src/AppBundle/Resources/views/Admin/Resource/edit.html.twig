@@ -56,6 +56,26 @@
                         }
                     ) }}
 
+                    {{ form_widget(
+                        form.project,
+                        {
+                            'attr': {
+                            'class': 'form-control input-sm',
+                        },
+                            'label': 'label.project'|trans
+                        }
+                    ) }}
+
+                    {{ form_widget(
+                        form.rate,
+                        {
+                            'attr': {
+                            'class': 'form-control input-sm',
+                        },
+                            'label': 'label.rate'|trans
+                        }
+                    ) }}
+
                     {% include 'AppBundle:Admin/Layout/Partials:form_edit_buttons.html.twig'
                         with {
                             'delete_path': 'app_admin_resource_delete',
