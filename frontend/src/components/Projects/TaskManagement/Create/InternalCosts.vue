@@ -164,3 +164,23 @@ export default {
     },
 };
 </script>
+
+<style scoped lang="scss">
+    .note {
+        padding-left: 10px;
+        margin: 0;
+
+        &.blue-note {
+            margin: -10px 0 20px;
+            padding-left: 0;
+        }
+    }
+
+    .title {
+        position: relative;
+        top: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 700;
+    }
+</style> 

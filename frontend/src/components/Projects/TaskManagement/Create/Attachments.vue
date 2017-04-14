@@ -7,27 +7,25 @@
             name="attachments"
             style="display: none;"
             v-on:change="updateAttachments" />
-        <div class="flex flex-center">
-            <a class="btn-rounded btn-empty btn-md" v-on:click="openFileSelection">{{ button.add_attachment }}</a>
-        </div>
-        <div class="flex flex-row">
+        <div class="attachments">
             <div v-for="attachment in attachments" class="attachment">
-                <span v-on:click="deleteAttachment(attachment);"><delete-icon /></span>
-                <upload-placeholder />
-                <p class="attachment-name">{{ attachment.name }}</p>
+                <view-icon />
+                <span class="attachment-name">{{ attachment.name }}</span>
+                <i class="fa fa-times" v-on:click="deleteAttachment(attachment);"></i>
             </div>
+        </div>
+        <div class="text-center">
+            <a class="btn-rounded btn-empty btn-md" v-on:click="openFileSelection">{{ button.add_attachment }}</a>
         </div>
     </div>
 </template>
 
 <script>
-import UploadPlaceholder from '../../../_common/_form-components/UploadPlaceholder';
-import DeleteIcon from '../../../_common/_icons/DeleteIcon';
+import ViewIcon from '../../../_common/_icons/ViewIcon';
 
 export default {
     components: {
-        UploadPlaceholder,
-        DeleteIcon,
+        ViewIcon,
     },
     methods: {
         openFileSelection: function() {
@@ -63,24 +61,44 @@ export default {
 };
 </script>
 
-<style type="scss">
-.avatar {
-    margin: 20px;
-}
+<style lang="scss">
+    @import '../../../../css/_variables';
+    @import '../../../../css/_mixins';
+    
+    .attachments {
+        margin: 0 0 20px;
+    }
 
-.attachment {
-    width: 205px;
-}
+    .attachment {
+        padding: 10px 20px;
+        background-color: $fadeColor;
+        margin-top: 3px;
+        color: $secondColor;
+        position: relative;
 
-.attachment-name {
-    word-wrap: break-word;
-    width: 80%;
-    margin: 10%;
-}
-.delete-icon {
-    width: 20px;
-    height: 20px;
-    float: right;
-    margin-top: 5px;
-}
+        .view-icon {
+            display: inline;
+            margin-right: 10px;
+            position: relative;
+            top: 3px;
+
+            svg {
+                width: 18px;
+            }
+        }
+
+        i.fa {
+            position: absolute;
+            right: 20px;
+            top: 16px;
+            color: $dangerColor;
+            cursor: pointer;
+            @include transition(opacity, 0.2s, ease-in);
+
+            &:hover,
+            &:active {
+                @include opacity(0.8);
+            }
+        }
+    }
 </style>

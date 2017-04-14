@@ -5,16 +5,13 @@
             <div class="full-filters">
                 <project-filters></project-filters>
                 <div class="separator"></div>
-                <router-link :to="{name: 'projects'}" class="btn-rounded">{{ message.all_projects }}</router-link>
-                <div class="pagination" v-if="count > 0">
-                    <span v-for="page in count/projects.length" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
-                </div>
+                <router-link :to="{name: 'projects'}" class="btn-rounded btn-auto">{{ message.all_projects }}</router-link>
             </div>
         </div>
-        <div class="content">
+        <div class="grid-view">
             <small-project-box v-for="project in projects" v-bind:project="project"></small-project-box>
-            <router-link :to="{name: 'projects-create-1'}">
-                <a href="" class="new-box">{{ message.new_project }} +</a>
+            <router-link :to="{name: 'projects-create-1'}" class="new-box">
+                {{ message.new_project }} +
             </router-link>
         </div>
     </div>
@@ -59,12 +56,5 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-    @import '../../css/_common';
-    @import '../../css/page-section';
-
-  .projects {
-    margin-bottom: 32px;
-  }
 </style>

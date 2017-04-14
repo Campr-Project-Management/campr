@@ -1,14 +1,14 @@
 <template>
-    <div class="page-section tasks">
+    <div class="page-section tasks recent-tasks">
         <div class="header">
             <h1>{{ message.recent_tasks }}</h1>
             <div class="full-filters">
                 <task-filters></task-filters>
                 <div class="separator"></div>
-                <router-link :to="{name: 'tasks'}" class="btn-rounded">{{ message.all_tasks }}</router-link>
+                <router-link :to="{name: 'tasks'}" class="btn-rounded btn-auto">{{ message.all_tasks }}</router-link>
             </div>
         </div>
-        <div class="content">
+        <div class="grid-view">
             <small-task-box v-for="task in tasks" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></small-task-box>
         </div>
     </div>
@@ -61,8 +61,5 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import '../../css/_common';
-  @import '../../css/page-section';
 </style>

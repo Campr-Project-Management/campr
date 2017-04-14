@@ -1,13 +1,15 @@
 @import './_variables';
+    
+.task-box-wrapper {
+    width: 25%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
 
 .task-box {
   .box-header {
     border-bottom: 1px solid $middleColor;
     padding-bottom: 15px;
-
-    > div {
-      width: 100%;
-    }
 
     h2 {
       color: $secondColor;
@@ -26,11 +28,24 @@
         margin-right: 5px;  
       }
     }
+
+    .status-boxes,
+    .favourite {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    .task-id {
+      color: $middleColor;
+      font-size: 11px;
+      margin: 0;
+    }
   } 
 }
 
 .info {
-  padding-top: 18px;
+  padding: 18px 0 5px;
 
   .plan {
     margin-bottom: 15px;
@@ -46,30 +61,37 @@
       }
     }
   }
-  .status {
+}
+
+.status {
+  p {
     text-transform: uppercase;
     margin-bottom: 8px;
     font-size: 8px;
-    height: 12px;
     line-height: 12px;
+
+    span {
+      color: $middleColor;
+    }
   }
 }
 
-.status-boxes {
-  display: flex;
+.status-box {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-left: 2px;
+  @include border-radius(50%);
+  background: $mainColor;
+  cursor: pointer;
+  @include opacity(1);
+  @include transition(opacity, 0.2s, ease-in);
 
-  .status-box {
-    width: 20px;
-    height: 20px;
-    margin-right: 2px;
-    @include border-radius(50%);
-    background: $mainColor;
-    cursor: pointer;
-    @include opacity(1);
-    @include transition(opacity, 0.2s, ease-in);
+  &:first-child {
+    margin-left: 0;
+  }
 
-    &:hover {
-      @include opacity(0.8);
-    }
+  &:hover {
+    @include opacity(0.8);
   }
 }

@@ -2,6 +2,7 @@
     <div class="create-task page-section">
         <div class="row">
             <div class="col-md-6">
+                <!-- /// Header /// -->
                 <div class="header">
                     <div>
                         <router-link :to="{name: 'project-organization'}" class="small-link">
@@ -11,6 +12,8 @@
                         <h1>Create new team member</h1>
                     </div>
                 </div>
+                <!-- /// End Header /// -->
+
                 <div class="form">
                     <!-- /// Member Avatar /// -->
                     <input id="avatar" type="file" name="avatar" style="display: none;" accept="image/*" v-on:change="updateAvatar"> 
@@ -223,16 +226,6 @@ export default {
     @import '../../../css/_variables';
     @import '../../../css/_mixins';
     @import '../../../css/page-section';
-
-    .header {
-        .small-link {
-            margin: 20px 0 0;
-        }
-
-        .small-link + h1 {
-            padding: 10px 0 30px;
-        }
-    }
 
     .avatar {
         margin: 0 auto 20px;
