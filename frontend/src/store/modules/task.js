@@ -87,22 +87,25 @@ const actions = {
      * @param {number} status
      * @param {number} page
      */
-    getTasksByStatus({commit}, {project, status, statusId, page, callback}) {
-        commit(types.TOGGLE_LOADER, true);
+    getTasksByStatus({commit}, {project, statusId, page, callback, projectUser, colorStatus, searchString}) {
+        // commit(types.TOGGLE_LOADER, true);
         Vue.http
             .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
                 params: {
-                    status,
+                    'status': statusId,
                     'type': 2,
                     'page': page,
                     'pageSize': 2,
+                    projectUser,
+                    colorStatus,
+                    searchString,
                 },
             })
             .then((response) => {
                 if (response.status === 200) {
                     let tasksByStatus = response.data;
                     commit(types.SET_TASKS_BY_STATUS, {tasksByStatus, statusId});
-                    commit(types.TOGGLE_LOADER, false);
+                    // commit(types.TOGGLE_LOADER, false);
                 }
                 callback();
             }, (response) => {
@@ -157,16 +160,6 @@ const actions = {
                     // implement system to dispay errors
                     console.log(response.data);
                 }
-            });
-    },
-    getUsers({commit}) {
-        Vue.http
-            .get(Routing.generate('app_api_workpackage_get')).then((response) => {
-                if (response.status === 200) {
-                    let task = response.data;
-                    commit(types.SET_TASK, {task});
-                }
-            }, (response) => {
             });
     },
 };

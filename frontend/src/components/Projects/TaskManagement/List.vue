@@ -31,9 +31,11 @@
         <!-- /// Tasks Filters /// -->
         <div class="flex">
             <input-field type="text" v-bind:label="label.search_for_tasks" class="search"></input-field>
-            <dropdown title="Asignee" options=""></dropdown>
+            <dropdown item="items" title="Asignee" :options="users"></dropdown>
             <dropdown v-if="!boardView" title="Status" options=""></dropdown>
-            <dropdown title="Filter By" options=""></dropdown>
+            <dropdown item="task" title="Condition" :options="conditions"></dropdown>
+            <!--To be added after disscusion about milestones-->
+            <!--<dropdown title="Milestone" options=""></dropdown>-->
             <a class="btn-rounded btn-auto">{{ button.show_results }}</a>
         </div>
         <!-- /// End Tasks Filters /// -->
@@ -53,6 +55,7 @@ import Dropdown from '../../_common/Dropdown';
 import GridView from './GridView';
 import BoardView from './BoardView';
 import {mapActions, mapGetters} from 'vuex';
+import Vue from 'vue';
 
 export default {
     components: {
@@ -65,12 +68,35 @@ export default {
         if (!this.$store.state.task.taskStatuses || this.$store.state.task.taskStatuses.length === 0) {
             this.getTaskStatuses();
         }
+        let project = this.$route.params.id;
+        this.getUsers(project);
+        this.getConditions();
     },
     computed: mapGetters({
         taskStatuses: 'taskStatuses',
     }),
     methods: {
         ...mapActions(['getTaskStatuses']),
+        getUsers: function(statusId) {
+            Vue.http
+            .get(Routing.generate('app_api_project_project_users', {id: statusId})).then((response) => {
+                if (response.status === 200) {
+                    this.users = response.data.map((item) => ({label: item.userFullName, key: item.id}));
+                    console.log('users', this.users);
+                }
+            }, (response) => {
+            });
+        },
+        getConditions: function() {
+            Vue.http
+            .get(Routing.generate('app_api_color_status_list')).then((response) => {
+                if (response.status === 200) {
+                    this.conditions = response.data.map((item) => ({label: item.name, key: item.id}));
+                    console.log('conditions', this.conditions);
+                }
+            }, (response) => {
+            });
+        },
     },
     data() {
         return {
@@ -89,6 +115,8 @@ export default {
             },
             count: 2,
             boardView: true,
+            users: [],
+            conditions: [],
         };
     },
 };
