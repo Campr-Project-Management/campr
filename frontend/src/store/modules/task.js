@@ -10,6 +10,7 @@ const state = {
     taskStatuses: [],
     tasksByStatuses: [],
     users: [],
+    tasksFilters: [],
 };
 
 const getters = {
@@ -87,8 +88,11 @@ const actions = {
      * @param {number} status
      * @param {number} page
      */
-    getTasksByStatus({commit}, {project, statusId, page, callback, projectUser, colorStatus, searchString}) {
+    getTasksByStatus({commit, state}, {project, statusId, page, callback}) {
         // commit(types.TOGGLE_LOADER, true);
+        const projectUser = state.tasksFilters.assignee;
+        const colorStatus = state.tasksFilters.condition;
+        const searchString = state.tasksFilters.searchString;
         Vue.http
             .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
                 params: {
@@ -162,6 +166,36 @@ const actions = {
                 }
             });
     },
+    setFilters({commit}, filters) {
+        commit(types.SET_TASKS_FILTERS, filters);
+    },
+    resetTasks({commit}, project) {
+        commit(types.TOGGLE_LOADER, true);
+        commit(types.RESET_TASKS);
+
+        const projectUser = state.tasksFilters.assignee;
+        const colorStatus = state.tasksFilters.condition;
+        const searchString = state.tasksFilters.searchString;
+
+        Vue.http
+            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
+                params: {
+                    'type': 2,
+                    'pageSize': 2,
+                    projectUser,
+                    colorStatus,
+                    searchString,
+                },
+            })
+            .then((response) => {
+                if (response.status === 200) {
+                    let tasksByStatuses = response.data;
+                    commit(types.SET_TASKS_BY_STATUSES, {tasksByStatuses});
+                    commit(types.TOGGLE_LOADER, false);
+                }
+            }, (response) => {
+            });
+    },
 };
 
 const mutations = {
@@ -223,6 +257,12 @@ const mutations = {
      */
     [types.SET_FILTERS](state, filter) {
         state.filters[filter[0]] = filter[1];
+    },
+    [types.SET_TASKS_FILTERS](state, filters) {
+        state.tasksFilters = filters;
+    },
+    [types.RESET_TASKS](state) {
+        state.tasksByStatuses = [];
     },
 };
 
