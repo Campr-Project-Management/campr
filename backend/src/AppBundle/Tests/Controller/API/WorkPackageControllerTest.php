@@ -25,6 +25,13 @@ class WorkPackageControllerTest extends BaseController
 
         $this->client->request('GET', '/api/workpackages', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
+
+        $content = json_decode($response->getContent(), true);
+        $tasks = $content['items'];
+        for ($i = 0; $i < sizeof($tasks); ++$i) {
+            $responseContent['items'][$i]['responsibilityAvatar'] = $tasks[$i]['responsibilityAvatar'];
+        }
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -45,6 +52,7 @@ class WorkPackageControllerTest extends BaseController
                         [
                             'responsibility' => 4,
                             'responsibilityFullName' => 'FirstName4 LastName4',
+                            'responsibilityAvatar' => null,
                             'parent' => null,
                             'parentName' => null,
                             'colorStatus' => 2,
@@ -85,6 +93,7 @@ class WorkPackageControllerTest extends BaseController
                         [
                             'responsibility' => 4,
                             'responsibilityFullName' => 'FirstName4 LastName4',
+                            'responsibilityAvatar' => null,
                             'parent' => null,
                             'parentName' => null,
                             'colorStatus' => 2,
@@ -147,6 +156,10 @@ class WorkPackageControllerTest extends BaseController
 
         $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
+
+        $task = json_decode($response->getContent(), true);
+        $responseContent['responsibilityAvatar'] = $task['responsibilityAvatar'];
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -165,6 +178,7 @@ class WorkPackageControllerTest extends BaseController
                 [
                     'responsibility' => 4,
                     'responsibilityFullName' => 'FirstName4 LastName4',
+                    'responsibilityAvatar' => null,
                     'parent' => null,
                     'parentName' => null,
                     'colorStatus' => 2,
@@ -251,6 +265,7 @@ class WorkPackageControllerTest extends BaseController
                 [
                     'responsibility' => null,
                     'responsibilityFullName' => null,
+                    'responsibilityAvatar' => null,
                     'parent' => null,
                     'parentName' => null,
                     'colorStatus' => 2,
