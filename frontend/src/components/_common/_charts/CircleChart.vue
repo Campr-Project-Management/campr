@@ -5,11 +5,11 @@
           <circle cx="50" cy="50" r="49" class="full" stroke-width="1" fill="transparent"/>
       </svg>
       <div class="text">
-          <p class="title">{{ title }}</p>
-          <p class="flex">
-              <span class="percentage">0</span>
-              <span class="percentage-sign flex-end">%</span>
-          </p>
+          <div class="title">{{ title }}</div>
+          <div class="flex flex-align-end">
+              <div class="percentage">0</div>
+              <div class="percentage-sign flex-end">%</div>
+          </div>
       </div>
   </div>
 </template>
@@ -83,6 +83,7 @@ export default {
       margin: 0;
       transform: translate(-50%, -50%);
       color: rgb(216, 218, 229);
+      line-height: 1em;
 
       .title {
         text-transform: uppercase;
@@ -93,14 +94,36 @@ export default {
       .percentage {
         font-weight: 700;
         font-size: 34px;
-        line-height: 38px;
-        height: 33px;
+        line-height: 34px;
       }
 
       .percentage-sign {
         color: $middleColor;
         font-size: 12px;
+        line-height: 22px;
       }
+    }
+  }
+
+  .widget.task-status-widget {
+    @media (min-width:1024px) {
+      .chart {
+        .text {
+            .title {
+                font-size: 16px;
+            }
+
+            .percentage {
+            font-size: 85px;
+            line-height: 85px;
+            }
+
+            .percentage-sign {
+                font-size: 16px;
+                line-height: 50px;
+            }
+        }
+        }
     }
   }
 </style>
