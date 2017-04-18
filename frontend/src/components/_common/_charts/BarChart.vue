@@ -135,4 +135,10 @@ export default {
       color: $lightColor;
     }
   }
+
+  .widget {
+    .progress-line {
+      background-color: $darkColor;
+    }
+  }
 </style>
