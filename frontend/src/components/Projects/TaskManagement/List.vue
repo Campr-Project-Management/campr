@@ -32,7 +32,7 @@
         <div class="flex">
             <input-field v-model="searchString" type="text" v-bind:label="label.search_for_tasks" class="search"></input-field>
             <dropdown :selectedValue="selectAsignee" title="Asignee" :options="users"></dropdown>
-            <dropdown :selectedValue="selectStatus" v-if="!boardView" title="Status" options=""></dropdown>
+            <dropdown :selectedValue="selectStatus" v-if="!boardView" title="Status" :options="statusesLabel"></dropdown>
             <dropdown :selectedValue="selectCondition" title="Condition" :options="conditions"></dropdown>
             <!--To be added after disscusion about milestones-->
             <!--<dropdown title="Milestone" options=""></dropdown>-->
@@ -76,9 +76,12 @@ export default {
         ...mapGetters({
             taskStatuses: 'taskStatuses',
         }),
+        statusesLabel: function() {
+            return this.taskStatuses.map(item => ({label: item.name, key: item.id}));
+        },
     },
     methods: {
-        ...mapActions(['getTaskStatuses', 'getTasksByStatus', 'setFilters', 'resetTasks']),
+        ...mapActions(['getTaskStatuses', 'getTasksByStatus', 'setFilters', 'resetTasks', 'getAllTasksGrid']),
         getUsers: function(statusId) {
             Vue.http
             .get(Routing.generate('app_api_project_project_users', {id: statusId})).then((response) => {
@@ -122,6 +125,7 @@ export default {
 
             this.setFilters(filters);
             this.resetTasks(project);
+            this.getAllTasksGrid({project, page: 1});
         },
     },
     data() {
