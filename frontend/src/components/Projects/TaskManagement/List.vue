@@ -77,7 +77,9 @@ export default {
             taskStatuses: 'taskStatuses',
         }),
         statusesLabel: function() {
-            return this.taskStatuses.map(item => ({label: item.name, key: item.id}));
+            let statuses = this.taskStatuses.map(item => ({label: item.name, key: item.id}));
+            statuses.unshift({label: 'Status', key: null});
+            return statuses;
         },
     },
     methods: {
