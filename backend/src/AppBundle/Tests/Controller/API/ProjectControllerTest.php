@@ -2863,6 +2863,7 @@ class ProjectControllerTest extends BaseController
                 [
                     'responsibility' => null,
                     'responsibilityFullName' => null,
+                    'responsibilityAvatar' => null,
                     'parent' => null,
                     'parentName' => null,
                     'colorStatus' => null,

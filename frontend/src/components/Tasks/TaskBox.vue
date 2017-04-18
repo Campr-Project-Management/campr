@@ -2,8 +2,8 @@
     <div class="task-box-wrapper">
         <div class="task-box box" v-bind:class="'border-color-' + task.id">
             <div class="box-header">
-                <div v-if="user" class="user-info flex flex-v-center">
-                    <img class="user-avatar" src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="user.name"/>
+                <div v-if="task.responsibility" class="user-info flex flex-v-center">
+                    <img class="user-avatar" :src="task.responsibilityAvatar" :alt="user.name"/>
                     <p>{{ task.responsibilityFullName }}</p>
                 </div>
                 <h2><router-link to="" class="simple-link">{{ task.name }}</router-link></h2>
