@@ -31,9 +31,9 @@
         <!-- /// Tasks Filters /// -->
         <div class="flex">
             <input-field type="text" v-bind:label="label.search_for_tasks" class="search"></input-field>
-            <dropdown item="items" title="Asignee" :options="users"></dropdown>
+            <dropdown :selectedValue="selectAsignee" title="Asignee" :options="users"></dropdown>
             <dropdown v-if="!boardView" title="Status" options=""></dropdown>
-            <dropdown :selectedValue="selectCondition" item="task" title="Condition" :options="conditions"></dropdown>
+            <dropdown :selectedValue="selectCondition" title="Condition" :options="conditions"></dropdown>
             <!--To be added after disscusion about milestones-->
             <!--<dropdown title="Milestone" options=""></dropdown>-->
             <a @click="filterTasks" class="btn-rounded btn-auto">{{ button.show_results }}</a>
@@ -99,6 +99,9 @@ export default {
         },
         selectCondition: function(condition) {
             this.conditionFilter = condition;
+        },
+        selectAsignee: function(asignee) {
+            this.asigneeFilter = asignee;
         },
         filterTasks: function() {
             const project = this.$route.params.id;
