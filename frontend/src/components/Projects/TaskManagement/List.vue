@@ -33,7 +33,7 @@
             <input-field type="text" v-bind:label="label.search_for_tasks" class="search"></input-field>
             <dropdown item="items" title="Asignee" :options="users"></dropdown>
             <dropdown v-if="!boardView" title="Status" options=""></dropdown>
-            <dropdown item="task" title="Condition" :options="conditions"></dropdown>
+            <dropdown :selectedValue="selectCondition" item="task" title="Condition" :options="conditions"></dropdown>
             <!--To be added after disscusion about milestones-->
             <!--<dropdown title="Milestone" options=""></dropdown>-->
             <a class="btn-rounded btn-auto">{{ button.show_results }}</a>
@@ -72,9 +72,21 @@ export default {
         this.getUsers(project);
         this.getConditions();
     },
-    computed: mapGetters({
-        taskStatuses: 'taskStatuses',
-    }),
+    computed: {
+        ...mapGetters({
+            taskStatuses: 'taskStatuses',
+        }),
+        filteredTasks: function() {
+            this.tasks.map(item => {
+                if (this.conditionFilter && item.type !== this.conditionFilter) {
+                    return undefined;
+                }
+                if (this.asigneeFilter && item.responsability !== this.asigneeFilter) {
+                    return undefined;
+                }
+            });
+        },
+    },
     methods: {
         ...mapActions(['getTaskStatuses']),
         getUsers: function(statusId) {
@@ -82,7 +94,6 @@ export default {
             .get(Routing.generate('app_api_project_project_users', {id: statusId})).then((response) => {
                 if (response.status === 200) {
                     this.users = response.data.map((item) => ({label: item.userFullName, key: item.id}));
-                    console.log('users', this.users);
                 }
             }, (response) => {
             });
@@ -92,10 +103,12 @@ export default {
             .get(Routing.generate('app_api_color_status_list')).then((response) => {
                 if (response.status === 200) {
                     this.conditions = response.data.map((item) => ({label: item.name, key: item.id}));
-                    console.log('conditions', this.conditions);
                 }
             }, (response) => {
             });
+        },
+        selectCondition: function(condition) {
+            this.conditionFilter = condition;
         },
     },
     data() {
@@ -117,6 +130,8 @@ export default {
             boardView: true,
             users: [],
             conditions: [],
+            conditionFilter: null,
+            asigneeFilter: null,
         };
     },
 };
