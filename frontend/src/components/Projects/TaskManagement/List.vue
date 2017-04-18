@@ -33,10 +33,10 @@
             <input-field type="text" v-bind:label="label.search_for_tasks" class="search"></input-field>
             <dropdown item="items" title="Asignee" :options="users"></dropdown>
             <dropdown v-if="!boardView" title="Status" options=""></dropdown>
-            <dropdown item="task" title="Condition" :options="conditions"></dropdown>
+            <dropdown :selectedValue="selectCondition" item="task" title="Condition" :options="conditions"></dropdown>
             <!--To be added after disscusion about milestones-->
             <!--<dropdown title="Milestone" options=""></dropdown>-->
-            <a class="btn-rounded btn-auto">{{ button.show_results }}</a>
+            <a @click="filterTasks" class="btn-rounded btn-auto">{{ button.show_results }}</a>
         </div>
         <!-- /// End Tasks Filters /// -->
 
@@ -72,17 +72,18 @@ export default {
         this.getUsers(project);
         this.getConditions();
     },
-    computed: mapGetters({
-        taskStatuses: 'taskStatuses',
-    }),
+    computed: {
+        ...mapGetters({
+            taskStatuses: 'taskStatuses',
+        }),
+    },
     methods: {
-        ...mapActions(['getTaskStatuses']),
+        ...mapActions(['getTaskStatuses', 'getTasksByStatus', 'setFilters', 'resetTasks']),
         getUsers: function(statusId) {
             Vue.http
             .get(Routing.generate('app_api_project_project_users', {id: statusId})).then((response) => {
                 if (response.status === 200) {
                     this.users = response.data.map((item) => ({label: item.userFullName, key: item.id}));
-                    console.log('users', this.users);
                 }
             }, (response) => {
             });
@@ -92,10 +93,21 @@ export default {
             .get(Routing.generate('app_api_color_status_list')).then((response) => {
                 if (response.status === 200) {
                     this.conditions = response.data.map((item) => ({label: item.name, key: item.id}));
-                    console.log('conditions', this.conditions);
                 }
             }, (response) => {
             });
+        },
+        selectCondition: function(condition) {
+            this.conditionFilter = condition;
+        },
+        filterTasks: function() {
+            const project = this.$route.params.id;
+
+            const filters = {};
+            filters.condition = this.conditionFilter ? this.conditionFilter : undefined;
+            filters.asignee = this.asigneeFilter ? this.asigneeFilter : undefined;
+            this.setFilters(filters);
+            this.resetTasks(project);
         },
     },
     data() {
@@ -117,6 +129,8 @@ export default {
             boardView: true,
             users: [],
             conditions: [],
+            conditionFilter: null,
+            asigneeFilter: null,
         };
     },
 };
