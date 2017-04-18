@@ -36,7 +36,7 @@
             <dropdown :selectedValue="selectCondition" item="task" title="Condition" :options="conditions"></dropdown>
             <!--To be added after disscusion about milestones-->
             <!--<dropdown title="Milestone" options=""></dropdown>-->
-            <a class="btn-rounded btn-auto">{{ button.show_results }}</a>
+            <a @click="filterTasks" class="btn-rounded btn-auto">{{ button.show_results }}</a>
         </div>
         <!-- /// End Tasks Filters /// -->
 
@@ -76,19 +76,9 @@ export default {
         ...mapGetters({
             taskStatuses: 'taskStatuses',
         }),
-        filteredTasks: function() {
-            this.tasks.map(item => {
-                if (this.conditionFilter && item.type !== this.conditionFilter) {
-                    return undefined;
-                }
-                if (this.asigneeFilter && item.responsability !== this.asigneeFilter) {
-                    return undefined;
-                }
-            });
-        },
     },
     methods: {
-        ...mapActions(['getTaskStatuses']),
+        ...mapActions(['getTaskStatuses', 'getTasksByStatus', 'setFilters', 'resetTasks']),
         getUsers: function(statusId) {
             Vue.http
             .get(Routing.generate('app_api_project_project_users', {id: statusId})).then((response) => {
@@ -109,6 +99,15 @@ export default {
         },
         selectCondition: function(condition) {
             this.conditionFilter = condition;
+        },
+        filterTasks: function() {
+            const project = this.$route.params.id;
+
+            const filters = {};
+            filters.condition = this.conditionFilter ? this.conditionFilter : undefined;
+            filters.asignee = this.asigneeFilter ? this.asigneeFilter : undefined;
+            this.setFilters(filters);
+            this.resetTasks(project);
         },
     },
     data() {
