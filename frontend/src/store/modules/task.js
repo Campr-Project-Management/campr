@@ -170,7 +170,6 @@ const actions = {
         commit(types.SET_TASKS_FILTERS, filters);
     },
     resetTasks({commit}, project) {
-        commit(types.TOGGLE_LOADER, true);
         commit(types.RESET_TASKS);
 
         const projectUser = state.tasksFilters.assignee;
@@ -191,7 +190,6 @@ const actions = {
                 if (response.status === 200) {
                     let tasksByStatuses = response.data;
                     commit(types.SET_TASKS_BY_STATUSES, {tasksByStatuses});
-                    commit(types.TOGGLE_LOADER, false);
                 }
             }, (response) => {
             });
