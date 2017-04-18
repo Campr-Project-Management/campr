@@ -30,9 +30,9 @@
 
         <!-- /// Tasks Filters /// -->
         <div class="flex">
-            <input-field type="text" v-bind:label="label.search_for_tasks" class="search"></input-field>
+            <input-field v-model="searchString" type="text" v-bind:label="label.search_for_tasks" class="search"></input-field>
             <dropdown :selectedValue="selectAsignee" title="Asignee" :options="users"></dropdown>
-            <dropdown v-if="!boardView" title="Status" options=""></dropdown>
+            <dropdown :selectedValue="selectStatus" v-if="!boardView" title="Status" options=""></dropdown>
             <dropdown :selectedValue="selectCondition" title="Condition" :options="conditions"></dropdown>
             <!--To be added after disscusion about milestones-->
             <!--<dropdown title="Milestone" options=""></dropdown>-->
@@ -84,6 +84,7 @@ export default {
             .get(Routing.generate('app_api_project_project_users', {id: statusId})).then((response) => {
                 if (response.status === 200) {
                     this.users = response.data.map((item) => ({label: item.userFullName, key: item.id}));
+                    this.users.unshift({label: 'Asignee', key: null});
                 }
             }, (response) => {
             });
@@ -93,6 +94,7 @@ export default {
             .get(Routing.generate('app_api_color_status_list')).then((response) => {
                 if (response.status === 200) {
                     this.conditions = response.data.map((item) => ({label: item.name, key: item.id}));
+                    this.conditions.unshift({label: 'Condition', key: null});
                 }
             }, (response) => {
             });
@@ -103,12 +105,21 @@ export default {
         selectAsignee: function(asignee) {
             this.asigneeFilter = asignee;
         },
+        selectStatus: function(status) {
+            this.statusFilter = status;
+        },
+        setSearchString: function(search) {
+            this.searchString = search;
+        },
         filterTasks: function() {
             const project = this.$route.params.id;
 
             const filters = {};
             filters.condition = this.conditionFilter ? this.conditionFilter : undefined;
             filters.asignee = this.asigneeFilter ? this.asigneeFilter : undefined;
+            filters.searchString = this.searchString ? this.searchString : undefined;
+            filters.status = this.statusFilter ? this.statusFilter : undefined;
+
             this.setFilters(filters);
             this.resetTasks(project);
         },
@@ -134,6 +145,8 @@ export default {
             conditions: [],
             conditionFilter: null,
             asigneeFilter: null,
+            statusFilter: null,
+            searchString: null,
         };
     },
 };
