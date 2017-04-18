@@ -25,6 +25,18 @@
   flex-direction: row-reverse;
 }
 
+.flex-align-start {
+  align-items: flex-start;
+}
+
+.flex-align-end {
+  align-items: flex-end;
+}
+
+.flex-start {
+  align-self: flex-start;
+}
+
 .flex-end {
   align-self: flex-end;
 }
@@ -254,6 +266,17 @@ textarea {
     &:focus {
       outline:0;
       background-color: darken($secondColor, 15%) !important;
+    }
+  }
+
+  &.danger-bg {
+    color: $whiteColor;
+
+    &:hover,
+    &:active,
+    &:focus {
+      outline:0;
+      background-color: darken($dangerColor, 15%) !important;
     }
   }
 }
