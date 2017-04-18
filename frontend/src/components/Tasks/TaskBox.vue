@@ -19,9 +19,9 @@
                     </div>
                     <div class="task-range-slider">
                         <div class="task-range-slider-title">Schedule</div>
-                        <task-range-slider class="base" id="scheduleBase" message="Base" min="20170301" max="20170307" from="20170301" to="20170305" type="double"></task-range-slider>
-                        <task-range-slider class="forecast" id="scheduleForecast" message="Forecast" min="20170301" max="20170307" from="20170301" to="20170307" type="double"></task-range-slider>
-                        <task-range-slider class="actual" id="scheduleActual" message="Actual" min="20170301" max="20170307" from="20170302" to="20170304" type="double"></task-range-slider>
+                        <task-range-slider class="base" id="scheduleBase" message="Base" min="2017-01-01" max="2017-12-31" v-bind:from="task.scheduledStartAt" v-bind:to="task.scheduledFinishAt" type="double"></task-range-slider>
+                        <task-range-slider class="forecast" id="scheduleForecast" message="Forecast" min="2017-01-01" max="2017-12-31" v-bind:from="task.forecastStartAt" v-bind:to="task.forecastFinishAt" type="double"></task-range-slider>
+                        <task-range-slider class="actual" id="scheduleActual" message="Actual" min="2017-01-01" max="2017-12-31" v-bind:from="task.actualStartAt" v-bind:to="task.actualFinishAt" type="double"></task-range-slider>
                     </div>
                     <div class="task-range-slider">
                         <div class="task-range-slider-title">Costs</div>
@@ -32,17 +32,7 @@
                 </div>
             </div>
             <bar-chart :percentage="task.progress" :status="task.colorStatusName" :color="task.colorStatusColor" :title-left="'' + translate(task.workPackageStatusName)"></bar-chart>
-            <div class="nicescroll">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dapibus mi ac diam gravida, ac bibendum quam commodo. In ut nunc augue. Aliquam erat volutpat. Nam dignissim sodales pellentesque. Etiam efficitur quam nibh, sit amet imperdiet ex congue a. Integer sit amet mauris vitae ligula maximus lobortis. Vestibulum a quam vel lectus placerat auctor feugiat a quam. Vivamus aliquet a urna at dapibus. Proin et nisl magna.
-
-                Nullam mollis nibh vitae sem gravida ultrices. Curabitur nec placerat enim, ac elementum quam. Curabitur ultrices neque a orci lacinia bibendum. Cras massa leo, malesuada et elit sed, hendrerit dictum ante. Sed eget hendrerit metus. Morbi nisi mauris, feugiat in nisl sit amet, convallis commodo turpis. In fermentum lectus sollicitudin volutpat sodales.
-
-                Nunc elit eros, mattis at augue a, porta posuere magna. Duis gravida commodo metus nec sagittis. Sed lacus dui, suscipit vitae pretium non, bibendum sit amet eros. Nam pulvinar rhoncus felis, eu finibus odio sodales bibendum. Etiam vel ligula est. Nulla suscipit ligula ut dui ullamcorper, at malesuada nisl accumsan. Donec porttitor eleifend risus vel tempus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras iaculis rutrum lectus quis auctor.
-
-                Maecenas risus tellus, blandit in placerat quis, rhoncus sit amet sapien. Sed at mauris ac lectus bibendum tempus. Proin vel eros ut felis luctus rutrum ac in ante. Vivamus iaculis, nisl id tincidunt pretium, nunc elit gravida dui, at feugiat ligula nisi eget enim. Sed rhoncus cursus purus in dapibus. Nulla finibus, mauris ut dictum placerat, ipsum dui elementum elit, a hendrerit libero leo ultrices tellus. Etiam aliquam tortor magna, at tincidunt nunc interdum ultrices. Fusce et cursus leo, sit amet pellentesque leo. Etiam quis sem risus. Vivamus sollicitudin aliquam lorem facilisis sagittis. Nulla tempus arcu tincidunt, venenatis sapien ut, consequat justo. Phasellus semper tincidunt pellentesque.
-
-                Ut porttitor enim mauris, at aliquet justo vehicula ut. Nunc viverra accumsan ipsum, vel ultrices nulla pulvinar at. Nam mi nunc, feugiat eget molestie sed, semper non mi. Nunc egestas massa in erat elementum consectetur ut id tellus. Duis condimentum ex condimentum neque volutpat euismod. Integer elementum pretium libero, vel rutrum metus pretium at. Ut vehicula, erat sed mattis pharetra, risus nulla fermentum ligula, id posuere velit velit non arcu. Fusce vitae ex a eros gravida tempus. Sed auctor viverra fermentum.
-            </div>
+            <div class="nicescroll">{{ task.content }}</div>
             <div class="info bottom">
                 <div class="icons">
                     <div class="icon-holder">
