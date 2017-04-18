@@ -1,10 +1,10 @@
 <template>
     <div class="task-slider-holder">
-        <div class="slider-tooltip from-tooltip">
-            {{ this.message }} Start: {{ this.from }}
+        <div v-show="toTooltip" class="slider-tooltip to-tooltip">
+            {{ this.message }} Finish: {{ this.to }}
         </div>
-        <div class="slider-tooltip to-tooltip">
-            {{ this.message }} Finnish: {{ this.to }}
+        <div v-show="fromTooltip" class="slider-tooltip from-tooltip">
+            {{ this.message }} Start: {{ this.from }}
         </div>
         <input type="text" class="range" :id="'slider' + _uid" ref="slider"/>
     </div>
@@ -14,21 +14,33 @@
 import 'ion-rangeslider/js/ion.rangeSlider.js';
 import 'ion-rangeslider/css/ion.rangeSlider.css';
 import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
+import moment from 'moment';
 
 export default {
     props: ['message', 'min', 'max', 'from', 'to', 'type'],
     mounted() {
         const $this = window.$('#slider' + this._uid);
-
         $this.ionRangeSlider({
             type: this.type,
-            min: this.min,
-            max: this.max,
-            from: this.from,
-            to: this.to,
+            min: +moment(this.min),
+            max: +moment(this.max),
+            from: +moment(this.from),
+            to: +moment(this.to),
             from_fixed: true,
             to_fixed: true,
         });
+        $this.prev().find('.irs-slider.from').hover(() => {
+            this.fromTooltip = !this.fromTooltip;
+        });
+        $this.prev().find('.irs-slider.to').hover(() => {
+            this.toTooltip = !this.toTooltip;
+        });
+    },
+    data() {
+        return {
+            fromTooltip: false,
+            toTooltip: false,
+        };
     },
 };
 </script>
