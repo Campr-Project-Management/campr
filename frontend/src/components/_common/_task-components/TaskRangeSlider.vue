@@ -22,10 +22,10 @@ export default {
         const $this = window.$('#slider' + this._uid);
         $this.ionRangeSlider({
             type: this.type,
-            min: +moment(this.min),
-            max: +moment(this.max),
-            from: +moment(this.from),
-            to: +moment(this.to),
+            min: +moment(this.min, 'YYYY-MM-DD'),
+            max: +moment(this.max, 'YYYY-MM-DD'),
+            from: +moment(this.from, 'YYYY-MM-DD'),
+            to: +moment(this.to, 'YYYY-MM-DD'),
             from_fixed: true,
             to_fixed: true,
         });
