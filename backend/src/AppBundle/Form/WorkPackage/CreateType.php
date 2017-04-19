@@ -35,9 +35,6 @@ class CreateType extends BaseType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('puid', TextType::class, [
-                'required' => false,
-            ])
             ->add('workPackageStatus', EntityType::class, [
                 'class' => WorkPackageStatus::class,
                 'choice_label' => 'name',
