@@ -59,6 +59,7 @@ class RaciControllerTest extends BaseController
             ->setPuid('1')
             ->setType(WorkPackage::TYPE_PHASE)
             ->setName('workpackage10')
+            ->setDuration(0)
         ;
         $this->em->persist($workPackage);
         $this->em->flush();
@@ -96,6 +97,7 @@ class RaciControllerTest extends BaseController
             ->setType(WorkPackage::TYPE_PHASE)
             ->setPuid('2')
             ->setName('workpackage11')
+            ->setDuration(0)
         ;
         $this->em->persist($workPackage);
 
