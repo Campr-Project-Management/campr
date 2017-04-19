@@ -88,7 +88,11 @@ class WorkPackageController extends ApiController
         $this->denyAccessUnlessGranted(WorkPackageVoter::EDIT, $wp);
 
         $form = $this->createForm(ApiCreateType::class, $wp, ['csrf_protection' => false, 'method' => $request->getMethod()]);
-        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
+        $this->processForm(
+            $request,
+            $form,
+            in_array($request->getMethod(), [Request::METHOD_PUT, Request::METHOD_POST])
+        );
 
         // @TODO: Make filesystem selection dynamic
         $em = $this->getDoctrine()->getManager();
