@@ -1,7 +1,7 @@
 <template>
     <div class="column">
         <div class="column-header flex flex-v-center flex-space-between">
-            <span>{{ status.name }}</span>
+            <span>{{ translateText(status.name) }}</span>
             <div class="flex">
                 <span class="notification-balloon">{{ tasksByStatuses[status.id].totalItems }}</span>
                 <span class="notification-balloon second-bg">+</span>
@@ -53,14 +53,14 @@ export default {
                 },
             });
         },
-        translate(text) {
+        translateText(text) {
             return this.translate(text);
         },
     },
     data: function() {
         return {
-            'page': 1,
-            'project': this.$route.params.id,
+            page: 1,
+            project: this.$route.params.id,
         };
     },
 };

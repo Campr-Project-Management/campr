@@ -4,7 +4,7 @@
             <div class="box-header">
                 <div>
                     <h2>
-                        <router-link :to="{name: 'task', params: { id: task.id }}">
+                        <router-link :to="{name: 'project-task-management-edit', params: { id: task.project, taskId: task.id }}">
                             {{ task.name }}
                         </router-link>
                     </h2>
