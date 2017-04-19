@@ -10,6 +10,8 @@ const state = {
     taskStatuses: [],
     tasksByStatuses: [],
     users: [],
+    tasksFilters: [],
+    allTasks: [],
 };
 
 const getters = {
@@ -18,6 +20,7 @@ const getters = {
     count: state => state.filteredItems.totalItems,
     taskStatuses: state => state.taskStatuses,
     tasksByStatuses: state => state.tasksByStatuses,
+    allTasks: state => state.allTasks,
 };
 
 const actions = {
@@ -87,22 +90,28 @@ const actions = {
      * @param {number} status
      * @param {number} page
      */
-    getTasksByStatus({commit}, {project, status, statusId, page, callback}) {
-        commit(types.TOGGLE_LOADER, true);
+    getTasksByStatus({commit, state}, {project, statusId, page, callback}) {
+        // commit(types.TOGGLE_LOADER, true);
+        const projectUser = state.tasksFilters.assignee;
+        const colorStatus = state.tasksFilters.condition;
+        const searchString = state.tasksFilters.searchString;
         Vue.http
             .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
                 params: {
-                    status,
+                    'status': statusId,
                     'type': 2,
                     'page': page,
                     'pageSize': 2,
+                    projectUser,
+                    colorStatus,
+                    searchString,
                 },
             })
             .then((response) => {
                 if (response.status === 200) {
                     let tasksByStatus = response.data;
                     commit(types.SET_TASKS_BY_STATUS, {tasksByStatus, statusId});
-                    commit(types.TOGGLE_LOADER, false);
+                    // commit(types.TOGGLE_LOADER, false);
                 }
                 callback();
             }, (response) => {
@@ -160,7 +169,7 @@ const actions = {
                 });
             }, (response) => {
                 if (response.status === 400) {
-                    // implement system to dispay errors
+                    // implement system to display errors
                     console.log(response.data);
                 }
             });
@@ -197,10 +206,80 @@ const actions = {
 
     getUsers({commit}) {
         Vue.http
-            .get(Routing.generate('app_api_workpackage_get')).then((response) => {
+            .post(
+                Routing.generate('app_api_workpackage_edit', {'id': data.taskId}),
+                data.data
+            ).then(
+            (response) => {
                 if (response.status === 200) {
-                    let task = response.data;
-                    commit(types.SET_TASK, {task});
+                    alert('Saved!');
+                } else {
+                    alert(response.status);
+                }
+            },
+            (response) => {
+                alert('Validation issues');
+                if (response.status === 400) {
+                    // implement system to dispay errors
+                    // console.log(response.data);
+                }
+            }
+        );
+    },
+
+    setFilters({commit}, filters) {
+        commit(types.SET_TASKS_FILTERS, filters);
+    },
+
+    resetTasks({commit}, project) {
+        commit(types.RESET_TASKS);
+
+        const projectUser = state.tasksFilters.assignee;
+        const colorStatus = state.tasksFilters.condition;
+        const searchString = state.tasksFilters.searchString;
+
+        Vue.http
+            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
+                params: {
+                    'type': 2,
+                    'pageSize': 2,
+                    projectUser,
+                    colorStatus,
+                    searchString,
+                },
+            })
+            .then((response) => {
+                if (response.status === 200) {
+                    let tasksByStatuses = response.data;
+                    commit(types.SET_TASKS_BY_STATUSES, {tasksByStatuses});
+                }
+            }, (response) => {
+            });
+    },
+    getAllTasksGrid({commit, state}, {project, page}) {
+        const projectUser = state.tasksFilters.assignee;
+        const colorStatus = state.tasksFilters.condition;
+        const searchString = state.tasksFilters.searchString;
+        const status = state.tasksFilters.status;
+
+        Vue.http
+            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
+                params: {
+                    'type': 2,
+                    'page': page,
+                    'pageSize': 4,
+                    projectUser,
+                    colorStatus,
+                    searchString,
+                    'isGrid': true,
+                    status,
+                },
+            })
+            .then((response) => {
+                if (response.status === 200) {
+                    let tasks = response.data;
+                    commit(types.SET_ALL_TASKS, tasks);
+                    // commit(types.TOGGLE_LOADER, false);
                 }
             }, (response) => {
             });
@@ -266,6 +345,15 @@ const mutations = {
      */
     [types.SET_FILTERS](state, filter) {
         state.filters[filter[0]] = filter[1];
+    },
+    [types.SET_TASKS_FILTERS](state, filters) {
+        state.tasksFilters = filters;
+    },
+    [types.RESET_TASKS](state) {
+        state.tasksByStatuses = [];
+    },
+    [types.SET_ALL_TASKS](state, tasks) {
+        state.allTasks = tasks;
     },
 };
 

@@ -49,6 +49,7 @@ class CreateType extends AbstractType
             ->add('quantity', NumberType::class)
             ->add('unit', EntityType::class, [
                 'class' => Unit::class,
+                'choice_label' => 'name',
             ])
             ->add('duration', TextType::class)
             ->add('customUnit', TextType::class, ['mapped' => false])

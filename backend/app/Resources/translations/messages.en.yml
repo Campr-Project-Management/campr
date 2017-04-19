@@ -690,6 +690,7 @@ button:
     add_internal_cost: Add internal cost
     add_external_cost: Add external cost
     add_attachment: Add attachment
+    edit_label: Edit Label
 
 checkbox:
     checked: Yes

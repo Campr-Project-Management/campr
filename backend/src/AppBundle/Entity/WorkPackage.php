@@ -895,6 +895,26 @@ class WorkPackage
     }
 
     /**
+     * Returns responsibility avatar.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibilityAvatar")
+     *
+     * @return string
+     */
+    public function getResponsibilityAvatar()
+    {
+        if ($this->responsibility) {
+            return $this->responsibility->getAvatar() ?
+                $this->responsibility->getAvatar() :
+                $this->responsibility->getGravatar()
+            ;
+        }
+
+        return null;
+    }
+
+    /**
      * Set project.
      *
      * @param Project $project

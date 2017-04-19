@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div class="grid-view">
-            <task-box v-bind:task="task" user="user" :colorStatuses="colorStatuses" v-for="task in tasks">
+        <div class="grid-view" v-if="allTasks">
+            <task-box v-bind:task="task" user="user" :colorStatuses="colorStatuses" v-for="task in allTasks.items">
             </task-box>
         </div>
-        <div class="pagination flex flex-center" v-if="tasks && count > 0">
-            <span v-for="page in count/tasks.length" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
+        <div class="pagination flex flex-center" v-if="allTasks && allTasks.totalItems > 0">
+            <span v-for="page in pages" v-bind:class="{'active': page == activePage}" @click="getTaskPerPage(page)">{{ page }}</span>
         </div>
     </div>
 </template>
@@ -22,21 +22,35 @@ export default {
         if (!this.$store.state.colorStatus || this.$store.state.colorStatus.items.length === 0) {
             this.getColorStatuses();
         };
-        if (!this.tasks || this.tasks.length === 0) {
-            this.getTasks();
+        if (!this.allTasks.length || this.allTasks.totalItems === 0) {
+            this.getTaskPerPage(1);
         };
     },
     computed: {
         ...mapGetters({
             colorStatuses: 'colorStatuses',
-            tasks: 'tasks',
+            allTasks: 'allTasks',
         }),
-        count: function() {
-            return this.tasks ? this.tasks.length : 0;
+        pages: function() {
+            return Math.ceil(this.allTasks.totalItems/this.tasksPerPage);
         },
     },
     methods: {
-        ...mapActions(['getColorStatuses', 'getTasks']),
+        ...mapActions(['getColorStatuses', 'getAllTasksGrid']),
+        changePage: function(page) {
+            this.activePage = page;
+        },
+        getTaskPerPage: function(page) {
+            const project = this.$route.params.id;
+            this.getAllTasksGrid({project, page});
+            this.activePage = page;
+        },
+    },
+    data() {
+        return {
+            activePage: 1,
+            tasksPerPage: 4,
+        };
     },
 };
 </script>
