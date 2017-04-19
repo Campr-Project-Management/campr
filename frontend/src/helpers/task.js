@@ -55,7 +55,7 @@ export const createFormData = (data) => {
         let costIndex = i + data.externalCosts.items.length;
         formData.append('costs[' + costIndex + '][resource]', data.internalCosts.items[i].resource.key);
         formData.append('costs[' + costIndex + '][quantity]', data.internalCosts.items[i].quantity);
-        formData.append('costs[' + costIndex + '][duration]', data.internalCosts.items[i].duration);
+        formData.append('costs[' + costIndex + '][duration]', data.internalCosts.items[i].duration || 0);
         formData.append('costs[' + costIndex + '][rate]', data.internalCosts.items[i].rate);
         formData.append('costs[' + costIndex + '][type]', 0);
     }
