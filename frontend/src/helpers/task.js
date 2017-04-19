@@ -11,8 +11,8 @@ export const createFormData = (data) => {
     if (data.details.label) {
         formData.append('labels[]', data.details.label.key);
     }
-    if (data.planning.milestone) {
-        formData.append('parent', data.planning.milestone.key);
+    if (data.planning.phase) {
+        formData.append('parent', data.planning.phase.key);
     }
     if (data.details.assignee) {
         formData.append('responsibility', data.details.assignee.key);
