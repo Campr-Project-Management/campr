@@ -1,10 +1,10 @@
 <template>
     <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ title }}
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ activeTitle }}
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-            <li v-for="option in options"><a href="javascript:void(0)" v-on:click="filterItems([filter, option.key, item]), title = option.label, selectedValue(option.key)">{{ option.label }}</a></li>
+            <li v-for="option in options"><a href="javascript:void(0)" v-on:click="filterItems([filter, option.key, item]), customTitle = option.label, selectedValue(option.key)">{{ option.label }}</a></li>
         </ul>
     </div>
 </template>
@@ -15,6 +15,16 @@ import {mapActions} from 'vuex';
 export default {
     props: ['title', 'filter', 'options', 'item', 'selectedValue'],
     methods: mapActions(['filterItems']),
+    data: function() {
+        return {
+            customTitle: null,
+        };
+    },
+    computed: {
+        activeTitle: function() {
+            return this.customTitle ? this.customTitle : this.title;
+        },
+    },
 };
 </script>
 
