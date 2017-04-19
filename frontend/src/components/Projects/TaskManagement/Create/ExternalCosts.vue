@@ -51,7 +51,7 @@
                 <div class="form-group last-form-group">
                     <div class="col-md-12">
                         <span class="title">
-                            {{ label.external_cost_total }} <b><i class="fa fa-dollar"></i> {{ cost.total }}</b>
+                            {{ label.external_cost_total }} <b><i class="fa fa-dollar"></i> {{ baseTotal }}</b>
                         </span>
                     </div>
                 </div>
@@ -155,7 +155,7 @@ export default {
             ];
         },
         itemTotal(item) {
-            return item.rate * item.quantity;
+            return !isNaN(item.rate * item.quantity) ? item.rate * item.quantity : 0;
         },
     },
     watch: {
@@ -218,7 +218,7 @@ export default {
                 external_cost_description: this.translate('label.cost_description'),
                 external_cost_qty: this.translate('label.external_cost_qty'),
                 external_cost_unit_rate: this.translate('label.external_cost_unit_rate'),
-                external_cost_total: this.translate('label.total'),
+                external_cost_total: this.translate('message.total'),
                 external_cost_forecast: this.translate('label.forecast'),
                 external_cost_actual: this.translate('label.actual'),
             },

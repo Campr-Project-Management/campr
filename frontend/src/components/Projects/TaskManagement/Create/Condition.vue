@@ -2,7 +2,8 @@
     <div>
         <h3>{{ message.condition }}</h3>
         <p v-for="status in colorStatuses" class="condition-info">
-            <span class="caps" v-bind:style="{ color: status.color }">{{ status.name }}:</span> Add description field to color status
+            <span class="caps" v-bind:style="{ color: status.color }">{{ status.name }}:</span>
+            {{ status.description }}
         </p>
         <div class="flex flex-space-between flex-v-center margintop20">
             <div class="status-boxes flex flex-v-center">
