@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Assignment;
+use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Form\WorkPackage\ApiCreateType;
 use AppBundle\Security\WorkPackageVoter;
@@ -89,12 +90,49 @@ class WorkPackageController extends ApiController
         $form = $this->createForm(ApiCreateType::class, $wp, ['csrf_protection' => false, 'method' => $request->getMethod()]);
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
+        // @TODO: Make filesystem selection dynamic
+        $em = $this->getDoctrine()->getManager();
+        $fileSystem = $wp
+            ->getProject()
+            ->getFileSystems()
+            ->filter(function (FileSystem $fs) {
+                return $fs->getDriver() === FileSystem::LOCAL_ADAPTER;
+            })
+            ->first()
+        ;
+
+        if (!$fileSystem) {
+            $fileSystem = $em
+                ->getRepository(FileSystem::class)
+                ->findOneBy([
+                    'driver' => FileSystem::LOCAL_ADAPTER,
+                ])
+            ;
+            if (!$fileSystem) {
+                return $this->createApiResponse(
+                    [
+                        'messages' => [
+                            'Filesystem is missing. Please contact us.',
+                        ],
+                    ],
+                    Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+            }
+        }
+
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            foreach ($wp->getMedias() as $media) {
+                $media->setFileSystem($fileSystem);
+            }
             $em->persist($wp);
             $em->flush();
 
-            return $this->createApiResponse($wp, Response::HTTP_ACCEPTED);
+            return $this->createApiResponse(
+                $wp,
+                $request->isMethod(Request::METHOD_POST)
+                    ? Response::HTTP_OK
+                    : Response::HTTP_ACCEPTED
+            );
         }
 
         $errors = $this->getFormErrors($form);

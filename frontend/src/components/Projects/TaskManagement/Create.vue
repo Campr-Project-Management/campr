@@ -37,7 +37,7 @@
                     <hr class="double">
 
                     <!-- /// Task Planning /// -->
-                    <planning v-model="planning" />
+                    <planning v-model="planning" v-bind:editPlanning="planning" />
                     <!-- /// End Task Planning /// -->
 
                     <hr>
@@ -49,13 +49,13 @@
                     <hr class="double">
 
                     <!-- /// Task Internal Costs /// -->
-                    <internal-costs v-model="internalCosts" />
+                    <internal-costs v-model="internalCosts" v-on:input="setInternalCosts" />
                     <!-- /// End Task Internal Costs /// -->
 
                     <hr class="double">
 
                     <!-- /// Task External Costs /// -->
-                    <external-costs v-model="externalCosts" />
+                    <external-costs v-model="externalCosts" v-on:input="setExternalCosts" />
                     <!-- /// End Task External Costs /// -->
 
                     <hr class="double">
@@ -67,13 +67,14 @@
                     <hr class="double">
 
                     <!-- /// SubTasks /// -->
-                    <subtasks v-model="subtasks" v-bind:editSubtasks='subtasks' />
+                    <subtasks v-model="subtasks" v-bind:editSubtasks="subtasks" />
                     <!-- /// End SubTasks /// -->
 
                     <hr class="double">
 
                     <!-- /// Task Attachments /// -->
-                    <attachments v-model="attachments" />
+                    <!--<attachments v-model="medias" v-bind:editMedias="medias" />-->
+                    <attachments v-on:input="setMedias" v-bind:editMedias="medias" />
                     <!-- /// End Task Attachments /// -->
 
                     <hr class="double">
@@ -114,6 +115,7 @@ import datepicker from 'vuejs-datepicker';
 import Switches from '../../3rdparty/vue-switches';
 import {mapGetters, mapActions} from 'vuex';
 import {createFormData} from '../../../helpers/task';
+import _ from 'lodash';
 
 export default {
     components: {
@@ -145,7 +147,7 @@ export default {
                 externalCosts: this.externalCosts,
                 subtasks: this.subtasks,
                 planning: this.planning,
-                attachments: this.attachments,
+                medias: this.medias,
                 details: this.details,
                 statusColor: this.statusColor,
             };
@@ -166,7 +168,7 @@ export default {
                 externalCosts: this.externalCosts,
                 subtasks: this.subtasks,
                 planning: this.planning,
-                attachments: this.attachments,
+                medias: this.medias,
                 details: this.details,
                 statusColor: this.statusColor,
             };
@@ -175,13 +177,27 @@ export default {
                 taskId: this.$route.params.taskId,
             });
         },
+        // event methods
+        setInternalCosts(value) {
+            this.internalCosts = value;
+        },
+        setExternalCosts(value) {
+            this.externalCosts = value;
+        },
+        setMedias(value) {
+            this.medias = value;
+        },
     },
     created() {
-        if (this.$route.params.taskId) this.getTaskById(this.$route.params.taskId);
+        if (this.$route.params.taskId) {
+            this.getTaskById(this.$route.params.taskId);
+        }
     },
-    computed: mapGetters({
-        task: 'task',
-    }),
+    computed: {
+        ...mapGetters({
+            task: 'task',
+        }),
+    },
     watch: {
         task(value) {
             this.title = this.task.name;
@@ -191,19 +207,35 @@ export default {
                 baseEndDate: new Date(this.task.scheduledFinishAt),
                 forecastStartDate: new Date(this.task.forecastStartAt),
                 forecastEndDate: new Date(this.task.forecastFinishAt),
-                automatic: false,
-                successors: [],
-                predecessors: [],
-                durationInDays: 0,
+                automatic: this.task.automaticSchedule,
+                successors: this.task.dependants.map((item) => {
+                    return {
+                        key: item.id,
+                        label: item.name,
+                    };
+                }),
+                predecessors: this.task.dependencies.map((item) => {
+                    return {
+                        key: item.id,
+                        label: item.name,
+                    };
+                }),
+                durationInDays: this.task.duration,
             };
             this.statusColor = {
                 id: this.task.colorStatus,
                 name: this.task.colorStatusName,
             };
             this.details = {
-                assignee: this.task.responsibility ? {key: this.task.responsibility, label: this.task.responsibilityFullName} : '',
-                status: this.task.workPackageStatus ? {key: this.task.workPackageStatus, label: this.task.workPackageStatusName} : '',
-                labels: {},
+                assignee: this.task.responsibility
+                    ? {key: this.task.responsibility, label: this.task.responsibilityFullName}
+                    : null,
+                status: this.task.workPackageStatus
+                    ? {key: this.task.workPackageStatus, label: this.task.workPackageStatusName}
+                    : null,
+                label: this.task.label
+                    ? {key: this.task.label, label: this.task.labelName}
+                    : null,
             };
             let children = [];
             this.task.children.map(function(child) {
@@ -212,25 +244,60 @@ export default {
                 });
             });
             this.subtasks = children;
+
+            if (!this.planning) {
+                this.planning = {};
+            }
+            if (this.task.milestone) {
+                this.planning.milestone = {
+                    key: this.task.milestone.toString(),
+                    label: this.task.milestoneName,
+                };
+            }
+
+            if (this.task.phase) {
+                this.planning.phase = {
+                    key: this.task.phase.toString(),
+                    label: this.task.phaseName,
+                };
+            }
+
             let internal = [];
             let external = [];
-            // let external = {items: []};
             this.task.costs.map(function(cost) {
                 if (cost.type === 0) {
-                    internal.push(
-                        {resource: cost.resource ? cost.resource : '', qty: cost.quantity, days: cost.duration, rate: cost.rate}
-                    );
-                } else {
-                    external.push(
+                    internal.push(_.merge(
+                        {},
+                        cost,
                         {
-                            description: cost.name, qty: cost.quantity, unitRate: cost.rate,
-                            capex: cost.expenseType === 0 ? 1 : 0, opex: cost.expenseType === 1 ? 1 : 0, customUnit: '', selectedUnit: cost.unit.name,
+                            resource: cost.resource
+                                ? {
+                                    label: cost.resourceName,
+                                    key: cost.resource.toString(),
+                                }
+                                : null,
+                            selectedResource: cost.resource
+                                ? {
+                                    label: cost.resourceName,
+                                    key: cost.resource.toString(),
+                                }
+                                : null,
                         }
-                    );
+                    ));
+                } else {
+                    external.push(_.merge(
+                        {},
+                        cost,
+                        {
+                            selectedUnit: cost.unit && cost.unit.id ? cost.unit.id.toString() : null,
+                        }
+                    ));
                 }
             });
             this.internalCosts.items = internal;
             this.externalCosts.items = external;
+
+            this.medias = this.task.medias;
         },
     },
     data() {
@@ -273,8 +340,11 @@ export default {
                 actual: 0,
             },
             subtasks: [],
-            planning: {},
-            attachments: [],
+            planning: {
+                phase: null,
+                milestone: null,
+            },
+            medias: [],
             details: {},
             statusColor: {},
         };

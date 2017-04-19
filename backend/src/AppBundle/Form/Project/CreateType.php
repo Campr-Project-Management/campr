@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Project;
 
 use AppBundle\Entity\Company;
+use AppBundle\Entity\Label;
 use AppBundle\Entity\Portfolio;
 use AppBundle\Entity\Programme;
 use AppBundle\Entity\Project;
@@ -82,6 +83,13 @@ class CreateType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.programme',
                 'translation_domain' => 'messages',
+            ])
+            ->add('label', EntityType::class, [
+                'class' => Label::class,
+                'choice_label' => 'label',
+                'placeholder' => 'placeholder.label',
+                'translation_domain' => 'messages',
+                'required' => false,
             ])
             ->add('company', EntityType::class, [
                 'class' => Company::class,

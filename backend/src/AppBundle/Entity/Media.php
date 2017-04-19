@@ -339,8 +339,12 @@ class Media
      *
      * @return Media
      */
-    public function setFile(File $file)
+    public function setFile($file)
     {
+        if (!($file instanceof File)) {
+            return;
+        }
+
         $this->file = $file;
 
         return $this;

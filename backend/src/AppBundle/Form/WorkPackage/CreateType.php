@@ -9,6 +9,7 @@ use AppBundle\Entity\WorkPackageCategory;
 use AppBundle\Entity\WorkPackageStatus;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -49,11 +50,55 @@ class CreateType extends BaseType
                 'translation_domain' => 'messages',
                 'choice_translation_domain' => 'messages',
             ])
+            ->add('phase', EntityType::class, [
+                'required' => false,
+                'class' => WorkPackage::class,
+                'choice_label' => 'name',
+                'placeholder' => 'placeholder.phase',
+                'translation_domain' => 'messages',
+                'query_builder' => function (EntityRepository $er) {
+                    $qb = $er->createQueryBuilder('p');
+                    $qb->where(
+                        $qb
+                            ->expr()
+                            ->eq('p.type', WorkPackage::TYPE_PHASE)
+                    );
+
+                    return $qb;
+                },
+            ])
+            ->add('milestone', EntityType::class, [
+                'required' => false,
+                'class' => WorkPackage::class,
+                'choice_label' => 'name',
+                'placeholder' => 'placeholder.milestone',
+                'translation_domain' => 'messages',
+                'query_builder' => function (EntityRepository $er) {
+                    $qb = $er->createQueryBuilder('m');
+                    $qb->where(
+                        $qb
+                            ->expr()
+                            ->eq('m.type', WorkPackage::TYPE_MILESTONE)
+                    );
+
+                    return $qb;
+                },
+            ])
             ->add('parent', EntityType::class, [
                 'class' => WorkPackage::class,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.workpackage',
                 'translation_domain' => 'messages',
+                'query_builder' => function (EntityRepository $er) {
+                    $qb = $er->createQueryBuilder('m');
+                    $qb->where(
+                        $qb
+                            ->expr()
+                            ->eq('m.type', WorkPackage::TYPE_TASK)
+                    );
+
+                    return $qb;
+                },
             ])
             ->add('workPackageCategory', EntityType::class, [
                 'class' => WorkPackageCategory::class,
@@ -132,6 +177,8 @@ class CreateType extends BaseType
                 'required' => false,
             ])
             ->add('isKeyMilestone', CheckboxType::class)
+            ->add('duration', IntegerType::class)
+            ->add('automaticSchedule', CheckboxType::class)
         ;
 
         $formModifier = function (FormInterface $form, $project = null, $wpId = null) {
@@ -173,6 +220,7 @@ class CreateType extends BaseType
 
                     return $qb;
                 },
+                'by_reference' => false,
             ];
             $form->add('dependencies', EntityType::class, $dependencyFieldOptions);
             $form->add('dependants', EntityType::class, $dependencyFieldOptions);
