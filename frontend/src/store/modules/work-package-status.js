@@ -11,7 +11,7 @@ const getters = {
         return state.items.map((item) => {
             return {
                 key: item.id,
-                label: item.name,
+                label: Vue.translate(item.name),
             };
         });
     },
