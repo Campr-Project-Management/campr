@@ -10,16 +10,32 @@
                             v-bind:title="label.resource"
                             v-bind:options="resourcesForSelect"
                             v-model="cost.resource"
-                            v-bind:currentOption="cost.resource" />
+                            v-bind:currentOption="cost.selectedResource"
+                            v-on:input="setCostProperty('resource', index, $event)" />
                     </div>
                     <div class="col-md-2">
-                        <input-field type="text" v-bind:label="label.daily_rate" v-model="cost.rate" v-bind:content="cost.rate" />
+                        <input-field
+                            type="text"
+                            v-bind:label="label.daily_rate"
+                            v-model="cost.rate"
+                            v-bind:content="cost.rate" />
+                        <!--v-on:input="setCostProperty('rate', index, $event)"-->
                     </div>
                     <div class="col-md-2">
-                        <input-field type="text" v-bind:label="label.qty" v-model="cost.qty" v-bind:content="cost.qty" />
+                        <input-field
+                            type="text"
+                            v-bind:label="label.qty"
+                            v-model="cost.quantity"
+                            v-bind:content="cost.quantity" />
+                        <!--v-on:input="setCostProperty('quantity', index, $event)"-->
                     </div>
                     <div class="col-md-2">
-                        <input-field type="text" v-bind:label="label.days" v-model="cost.days" v-bind:content="cost.days" />
+                        <input-field
+                            type="text"
+                            v-bind:label="label.days"
+                            v-model="cost.duration"
+                            v-bind:content="cost.duration" />
+                        <!--v-on:input="setCostProperty('duration', index, $event)"-->
                     </div>
                 </div>
             </div>
@@ -50,7 +66,7 @@
         <hr>
         <div class="row">
             <div class="form-group last-form-group">                
-                <div class="col-md-4">                    
+                <div class="col-md-4">
                     <span class="title">{{ message.base_total }} <b><i class="fa fa-dollar"></i> {{ baseTotal }}</b></span>        
                 </div>
                 <div class="col-md-4">
@@ -89,8 +105,8 @@ export default {
         addInternalCost: function() {
             this.internalCosts.items.push({
                 resource: '',
-                qty: 1,
-                days: 1,
+                quantity: 1,
+                duration: 1,
                 rate: 0,
             });
         },
@@ -99,6 +115,16 @@ export default {
                 ...this.internalCosts.items.slice(0, index),
                 ...this.internalCosts.items.slice(index + 1),
             ];
+        },
+        itemTotal(item) {
+            return item.rate * item.quantity * item.duration;
+        },
+        setCostProperty(property, index, value) {
+            this.internalCosts.items[index][property] = value;
+            if (property === 'resource') {
+                this.internalCosts.items[index].selectedResource = value;
+            }
+            this.$emit('input', this.internalCosts);
         },
     },
     created() {
@@ -116,12 +142,12 @@ export default {
         }),
         baseTotal: function() {
             return this.processedInternalCosts.reduce((prev, next) => {
-                return prev + next.total;
+                return prev + this.itemTotal(next);
             }, 0);
         },
         processedInternalCosts: function() {
             return this.internalCosts.items.map(item => {
-                item.total = item.rate * item.qty * item.days;
+                item.total = this.itemTotal(item);
                 return item;
             });
         },

@@ -22,6 +22,7 @@ import projectUnit from './modules/project-unit';
 import projectMilestone from './modules/project-milestone';
 import projectPhase from './modules/project-phase';
 import projectResources from './modules/project-resources';
+import workPackageStatus from './modules/work-package-status';
 
 Vue.use(Vuex);
 
@@ -51,6 +52,7 @@ export default new Vuex.Store({
         projectMilestone,
         projectPhase,
         projectResources,
+        workPackageStatus,
     },
     strict: debug,
 });

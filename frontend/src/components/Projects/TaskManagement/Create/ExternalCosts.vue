@@ -9,15 +9,15 @@
                         <input-field
                             type="text"
                             v-bind:label="label.external_cost_description"
-                            v-model="cost.description"
-                            v-bind:content="cost.description" />
+                            v-model="cost.name"
+                            v-bind:content="cost.name" />
                     </div>
                     <div class="col-md-2">
                         <input-field
                             type="text"
                             v-bind:label="label.external_cost_qty"
-                            v-model="cost.qty"
-                            v-bind:content="cost.qty" />
+                            v-model="cost.quantity"
+                            v-bind:content="cost.quantity" />
                     </div>
                 </div>
             </div>
@@ -42,8 +42,8 @@
                         <input-field
                             type="text"
                             v-bind:label="label.external_cost_unit_rate"
-                            v-model="cost.unitRate"
-                            v-bind:content="cost.unitRate" />
+                            v-model="cost.rate"
+                            v-bind:content="cost.rate" />
                     </div>
                 </div>
             </div>
@@ -154,6 +154,9 @@ export default {
                 ...this.externalCosts.items.slice(index + 1),
             ];
         },
+        itemTotal(item) {
+            return item.rate * item.quantity;
+        },
     },
     watch: {
         externalCosts: {
@@ -169,7 +172,7 @@ export default {
         }),
         baseTotal: function() {
             return this.processedExternalCosts.reduce((prev, next) => {
-                return prev + next.total;
+                return prev + this.itemTotal(next);
             }, 0);
         },
         opexSubtotal: function() {
@@ -184,9 +187,9 @@ export default {
         },
         processedExternalCosts: function() {
             return this.externalCosts.items.map(item => {
-                item.total = item.qty * item.unitRate;
-                item.unit = item.selectedUnit !== 'custom' ? item.selectedUnit : item.customUnit;
-                item.opex = !item.capex;
+                item.total = this.itemTotal(item);
+//                item.unit = item.selectedUnit !== 'custom' ? item.selectedUnit : item.customUnit;
+//                item.opex = !item.capex;
                 return item;
             });
         },

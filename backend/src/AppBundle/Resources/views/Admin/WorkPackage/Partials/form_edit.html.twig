@@ -77,6 +77,24 @@
     }
 ) }}
 {{ form_widget(
+    form.phase,
+    {
+        'attr': {
+        'class': 'selectpicker',
+    },
+        'label': 'label.phase'|trans
+    }
+) }}
+{{ form_widget(
+    form.milestone,
+    {
+        'attr': {
+        'class': 'selectpicker',
+    },
+        'label': 'label.milestone'|trans
+    }
+) }}
+{{ form_widget(
     form.parent,
     {
         'attr': {
