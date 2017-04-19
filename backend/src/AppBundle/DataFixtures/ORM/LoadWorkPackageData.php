@@ -36,6 +36,7 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
                 ->setResponsibility($user5)
                 ->setColorStatus($colorStatus)
                 ->setProject($project)
+                ->setDuration(0)
             ;
             $this->setReference('work-package'.$i, $workPackage);
             $manager->persist($workPackage);
@@ -52,6 +53,7 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
             ->setResponsibility($user4)
             ->setColorStatus($colorStatus)
             ->setProject($project)
+            ->setDuration(0)
         ;
         $manager->persist($workPackage);
         $manager->flush();
@@ -66,6 +68,7 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
             ->setResponsibility($user4)
             ->setColorStatus($colorStatus)
             ->setProject($project)
+            ->setDuration(0)
         ;
         $manager->persist($workPackage);
         $manager->flush();
