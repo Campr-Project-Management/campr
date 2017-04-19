@@ -5,6 +5,7 @@ namespace AppBundle\Controller\API;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Contract;
 use AppBundle\Entity\DistributionList;
+use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\Label;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Note;
@@ -163,9 +164,6 @@ class ProjectController extends ApiController
             $em->flush();
 
             return $this->createApiResponse($project, Response::HTTP_ACCEPTED);
-        } else {
-            dump($request->request->get('label'));
-            dump($form->get('label')->getData());
         }
 
         $errors = $this->getFormErrors($form);
@@ -969,12 +967,45 @@ class ProjectController extends ApiController
         $form = $this->createForm(ApiCreateType::class, $wp);
         $this->processForm($request, $form);
 
+        // @TODO: Make filesystem selection dynamic
+        $em = $this->getDoctrine()->getManager();
+        $fileSystem = $project
+            ->getFileSystems()
+            ->filter(function (FileSystem $fs) {
+                return $fs->getDriver() === FileSystem::LOCAL_ADAPTER;
+            })
+            ->first()
+        ;
+
+        if (!$fileSystem) {
+            $fileSystem = $em
+                ->getRepository(FileSystem::class)
+                ->findOneBy([
+                    'driver' => FileSystem::LOCAL_ADAPTER,
+                ])
+            ;
+            if (!$fileSystem) {
+                return $this->createApiResponse(
+                    [
+                        'messages' => [
+                            'Filesystem is missing. Please contact us.',
+                        ],
+                    ],
+                    Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+            }
+        }
+
         if ($form->isValid()) {
+            foreach ($wp->getMedias() as $media) {
+                $media->setFileSystem($fileSystem);
+            }
             $wp->setProject($project);
             $wp->setPuid(microtime(true) * 1000000); // remove when listener is fixed
             $this->persistAndFlush($wp);
 
-            return $this->createApiResponse($wp, Response::HTTP_CREATED);
+            // VueJS sucks at interpreting 201 as a success
+            return $this->createApiResponse($wp, Response::HTTP_OK);
         }
 
         $errors = $this->getFormErrors($form);
@@ -1054,7 +1085,7 @@ class ProjectController extends ApiController
         $filters = $request->query->all();
         $pageSize = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
 
-        if (isset($filters['status'])) {
+        if (isset($filters['status']) || isset($filters['isGrid'])) {
             $wpQuery = $this
                 ->getDoctrine()
                 ->getRepository(WorkPackage::class)

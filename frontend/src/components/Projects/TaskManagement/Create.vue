@@ -290,6 +290,9 @@ export default {
                         cost,
                         {
                             selectedUnit: cost.unit && cost.unit.id ? cost.unit.id.toString() : null,
+                            capex: cost.expenseType === 0 ? 1 : 0,
+                            opex: cost.expenseType === 1 ? 1 : 0,
+                            customUnit: '',
                         }
                     ));
                 }

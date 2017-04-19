@@ -30,11 +30,13 @@
 
         <!-- /// Tasks Filters /// -->
         <div class="flex">
-            <input-field type="text" v-bind:label="label.search_for_tasks" class="search"></input-field>
-            <dropdown title="Asignee" options=""></dropdown>
-            <dropdown v-if="!boardView" title="Status" options=""></dropdown>
-            <dropdown title="Filter By" options=""></dropdown>
-            <a class="btn-rounded btn-auto">{{ button.show_results }}</a>
+            <input-field v-model="searchString" type="text" v-bind:label="label.search_for_tasks" class="search"></input-field>
+            <dropdown :selectedValue="selectAsignee" title="Asignee" :options="users"></dropdown>
+            <dropdown :selectedValue="selectStatus" v-if="!boardView" title="Status" :options="statusesLabel"></dropdown>
+            <dropdown :selectedValue="selectCondition" title="Condition" :options="conditions"></dropdown>
+            <!--To be added after disscusion about milestones-->
+            <!--<dropdown title="Milestone" options=""></dropdown>-->
+            <a @click="filterTasks" class="btn-rounded btn-auto">{{ button.show_results }}</a>
         </div>
         <!-- /// End Tasks Filters /// -->
 
@@ -53,6 +55,7 @@ import Dropdown from '../../_common/Dropdown';
 import GridView from './GridView';
 import BoardView from './BoardView';
 import {mapActions, mapGetters} from 'vuex';
+import Vue from 'vue';
 
 export default {
     components: {
@@ -65,12 +68,67 @@ export default {
         if (!this.$store.state.task.taskStatuses || this.$store.state.task.taskStatuses.length === 0) {
             this.getTaskStatuses();
         }
+        let project = this.$route.params.id;
+        this.getUsers(project);
+        this.getConditions();
     },
-    computed: mapGetters({
-        taskStatuses: 'taskStatuses',
-    }),
+    computed: {
+        ...mapGetters({
+            taskStatuses: 'taskStatuses',
+        }),
+        statusesLabel: function() {
+            let statuses = this.taskStatuses.map(item => ({label: item.name, key: item.id}));
+            statuses.unshift({label: 'Status', key: null});
+            return statuses;
+        },
+    },
     methods: {
-        ...mapActions(['getTaskStatuses']),
+        ...mapActions(['getTaskStatuses', 'getTasksByStatus', 'setFilters', 'resetTasks', 'getAllTasksGrid']),
+        getUsers: function(statusId) {
+            Vue.http
+            .get(Routing.generate('app_api_project_project_users', {id: statusId})).then((response) => {
+                if (response.status === 200) {
+                    this.users = response.data.map((item) => ({label: item.userFullName, key: item.id}));
+                    this.users.unshift({label: 'Asignee', key: null});
+                }
+            }, (response) => {
+            });
+        },
+        getConditions: function() {
+            Vue.http
+            .get(Routing.generate('app_api_color_status_list')).then((response) => {
+                if (response.status === 200) {
+                    this.conditions = response.data.map((item) => ({label: item.name, key: item.id}));
+                    this.conditions.unshift({label: 'Condition', key: null});
+                }
+            }, (response) => {
+            });
+        },
+        selectCondition: function(condition) {
+            this.conditionFilter = condition;
+        },
+        selectAsignee: function(asignee) {
+            this.asigneeFilter = asignee;
+        },
+        selectStatus: function(status) {
+            this.statusFilter = status;
+        },
+        setSearchString: function(search) {
+            this.searchString = search;
+        },
+        filterTasks: function() {
+            const project = this.$route.params.id;
+
+            const filters = {};
+            filters.condition = this.conditionFilter ? this.conditionFilter : undefined;
+            filters.asignee = this.asigneeFilter ? this.asigneeFilter : undefined;
+            filters.searchString = this.searchString ? this.searchString : undefined;
+            filters.status = this.statusFilter ? this.statusFilter : undefined;
+
+            this.setFilters(filters);
+            this.resetTasks(project);
+            this.getAllTasksGrid({project, page: 1});
+        },
     },
     data() {
         return {
@@ -89,6 +147,12 @@ export default {
             },
             count: 2,
             boardView: true,
+            users: [],
+            conditions: [],
+            conditionFilter: null,
+            asigneeFilter: null,
+            statusFilter: null,
+            searchString: null,
         };
     },
 };

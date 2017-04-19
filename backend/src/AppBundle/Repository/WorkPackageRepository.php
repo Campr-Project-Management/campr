@@ -264,11 +264,18 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
+        if (isset($filters['searchString'])) {
+            $qb
+                ->andWhere('wp.name LIKE :searchString')
+                ->setParameter('searchString', '%'.$filters['searchString'].'%')
+            ;
+        }
+
         if (isset($filters['status'])) {
             $qb
                 ->innerJoin('wp.workPackageStatus', 'wps')
-                ->andWhere('wps.name = :statusName')
-                ->setParameter('statusName', $filters['status'])
+                ->andWhere('wps.id = :statusId')
+                ->setParameter('statusId', $filters['status'])
             ;
         }
 
@@ -276,6 +283,20 @@ class WorkPackageRepository extends BaseRepository
             $qb
                 ->andWhere('wp.type = :type')
                 ->setParameter('type', $filters['type'])
+            ;
+        }
+
+        if (isset($filters['projectUser'])) {
+            $qb
+                ->andWhere('wp.responsibility = :projectUser')
+                ->setParameter('projectUser', $filters['projectUser'])
+            ;
+        }
+
+        if (isset($filters['colorStatus'])) {
+            $qb
+                ->andWhere('wp.colorStatus = :colorStatus')
+                ->setParameter('colorStatus', $filters['colorStatus'])
             ;
         }
 
