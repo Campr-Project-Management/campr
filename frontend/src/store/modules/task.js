@@ -11,6 +11,7 @@ const state = {
     tasksByStatuses: [],
     users: [],
     tasksFilters: [],
+    allTasks: [],
 };
 
 const getters = {
@@ -19,6 +20,7 @@ const getters = {
     count: state => state.filteredItems.totalItems,
     taskStatuses: state => state.taskStatuses,
     tasksByStatuses: state => state.tasksByStatuses,
+    allTasks: state => state.allTasks,
 };
 
 const actions = {
@@ -206,7 +208,6 @@ const actions = {
     },
 
     resetTasks({commit}, project) {
-        commit(types.TOGGLE_LOADER, true);
         commit(types.RESET_TASKS);
 
         const projectUser = state.tasksFilters.assignee;
@@ -227,7 +228,34 @@ const actions = {
                 if (response.status === 200) {
                     let tasksByStatuses = response.data;
                     commit(types.SET_TASKS_BY_STATUSES, {tasksByStatuses});
-                    commit(types.TOGGLE_LOADER, false);
+                }
+            }, (response) => {
+            });
+    },
+    getAllTasksGrid({commit, state}, {project, page}) {
+        const projectUser = state.tasksFilters.assignee;
+        const colorStatus = state.tasksFilters.condition;
+        const searchString = state.tasksFilters.searchString;
+        const status = state.tasksFilters.status;
+
+        Vue.http
+            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
+                params: {
+                    'type': 2,
+                    'page': page,
+                    'pageSize': 4,
+                    projectUser,
+                    colorStatus,
+                    searchString,
+                    'isGrid': true,
+                    status,
+                },
+            })
+            .then((response) => {
+                if (response.status === 200) {
+                    let tasks = response.data;
+                    commit(types.SET_ALL_TASKS, tasks);
+                    // commit(types.TOGGLE_LOADER, false);
                 }
             }, (response) => {
             });
@@ -299,6 +327,9 @@ const mutations = {
     },
     [types.RESET_TASKS](state) {
         state.tasksByStatuses = [];
+    },
+    [types.SET_ALL_TASKS](state, tasks) {
+        state.allTasks = tasks;
     },
 };
 
