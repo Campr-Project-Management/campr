@@ -163,6 +163,8 @@ export default {
         },
         editSchedule(value) {
             this.schedule = this.editSchedule;
+            this.visibleAutomaticSchedule = this.schedule.automatic;
+            this.visibleManualSchedule = !this.schedule.automatic;
         },
     },
     created() {
@@ -216,7 +218,16 @@ export default {
             visibleAutomaticSchedule: false,
             visiblePredecessor: true,
             visibleSuccessor: false,
-            schedule: [],
+            schedule: {
+                baseStartDate: new Date(),
+                baseEndDate: new Date(),
+                forecastStartDate: new Date(),
+                forecastEndDate: new Date(),
+                automatic: false,
+                successors: [],
+                predecessors: [],
+                durationInDays: 0,
+            },
         };
     },
 };

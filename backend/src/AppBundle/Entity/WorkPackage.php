@@ -59,6 +59,28 @@ class WorkPackage
      * @var WorkPackage
      *
      * @Serializer\Exclude()
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage")
+     * @ORM\JoinColumns({
+     *     @ORM\JoinColumn(name="phase_id", referencedColumnName="id")
+     * })
+     */
+    private $phase;
+
+    /**
+     * @var WorkPackage
+     *
+     * @Serializer\Exclude()
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage")
+     * @ORM\JoinColumns({
+     *     @ORM\JoinColumn(name="milestone_id", referencedColumnName="id")
+     * })
+     */
+    private $milestone;
+
+    /**
+     * @var WorkPackage
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
@@ -68,7 +90,7 @@ class WorkPackage
     /**
      * @var ArrayCollection|WorkPackage[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="parent", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
      */
     private $children;
 
@@ -262,14 +284,14 @@ class WorkPackage
     /**
      * @var ArrayCollection|WorkPackage[]
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="dependencies")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="dependencies", cascade={"all"})
      */
     private $dependants;
 
     /**
      * @var Media[]|ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Media", inversedBy="workPackages")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Media", inversedBy="workPackages", cascade={"all"})
      * @ORM\JoinTable(
      *     name="work_package_media",
      *     joinColumns={
@@ -335,6 +357,11 @@ class WorkPackage
         $this->medias = new ArrayCollection();
         $this->costs = new ArrayCollection();
         $this->puid = microtime(true) * 1000000;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->name;
     }
 
     /**
@@ -681,6 +708,92 @@ class WorkPackage
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @param WorkPackage|null $workPackage
+     *
+     * @return WorkPackage
+     */
+    public function setPhase(WorkPackage $workPackage = null)
+    {
+        $this->phase = $workPackage;
+        foreach ($this->getChildren() as $child) {
+            $child->setPhase($workPackage);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return WorkPackage|null
+     */
+    public function getPhase()
+    {
+        return $this->phase;
+    }
+
+    /**
+     * @return int|null
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("phase")
+     */
+    public function getPhaseId()
+    {
+        return $this->phase ? $this->phase->getId() : null;
+    }
+
+    /**
+     * @return string|null
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("phaseName")
+     */
+    public function getPhaseName()
+    {
+        return $this->phase ? (string) $this->phase : null;
+    }
+
+    /**
+     * @param WorkPackage|null $workPackage
+     *
+     * @return WorkPackage
+     */
+    public function setMilestone(WorkPackage $workPackage = null)
+    {
+        $this->milestone = $workPackage;
+        foreach ($this->getChildren() as $child) {
+            $child->setMilestone($workPackage);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return WorkPackage
+     */
+    public function getMilestone()
+    {
+        return $this->milestone;
+    }
+
+    /**
+     * @return int|null
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("milestone")
+     */
+    public function getMilestoneId()
+    {
+        return $this->milestone ? $this->milestone->getId() : null;
+    }
+
+    /**
+     * @return string|null
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("milestoneName")
+     */
+    public function getMilestoneName()
+    {
+        return $this->milestone ? (string) $this->milestone : null;
     }
 
     /**
@@ -1047,6 +1160,32 @@ class WorkPackage
     }
 
     /**
+     * @return null|int
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("label")
+     */
+    public function getLabelId()
+    {
+        return $this->labels && $this->labels->count()
+            ? $this->labels->first()->getId()
+            : null
+        ;
+    }
+
+    /**
+     * @return string
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("labelName")
+     */
+    public function getLabelName()
+    {
+        return $this->labels && $this->labels->count()
+            ? (string) $this->labels->first()
+            : null
+        ;
+    }
+
+    /**
      * @return WorkPackageStatus|null
      */
     public function getWorkPackageStatus()
@@ -1220,6 +1359,7 @@ class WorkPackage
     public function addDependant(WorkPackage $workPackage)
     {
         $this->dependants[] = $workPackage;
+        $workPackage->addDependency($this);
 
         return $this;
     }
@@ -1234,6 +1374,7 @@ class WorkPackage
     public function removeDependant(WorkPackage $workPackage)
     {
         $this->dependants->removeElement($workPackage);
+        $workPackage->removeDependency($this);
 
         return $this;
     }
@@ -1257,9 +1398,12 @@ class WorkPackage
      */
     public function addChild(WorkPackage $child)
     {
+        $child->setPhase($this->getPhase());
+        $child->setMilestone($this->getMilestone());
         $child->setParent($this);
         $child->setProject($this->getProject());
         $this->children[] = $child;
+        $child->setType(static::TYPE_TASK);
 
         return $this;
     }
@@ -1335,7 +1479,7 @@ class WorkPackage
     /**
      * @return string
      */
-    public function getDuration(): string
+    public function getDuration()
     {
         return $this->duration;
     }
@@ -1343,7 +1487,7 @@ class WorkPackage
     /**
      * @param string $duration
      */
-    public function setDuration(string $duration)
+    public function setDuration($duration)
     {
         $this->duration = $duration;
     }

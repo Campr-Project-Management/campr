@@ -4,7 +4,7 @@
             <div class="box-header">
                 <div>
                     <h2>
-                        <router-link :to="{name: 'task', params: { id: task.id }}">
+                        <router-link :to="{name: 'project-task-management-edit', params: { id: task.project, taskId: task.id }}">
                             {{ task.name }}
                         </router-link>
                     </h2>
@@ -16,7 +16,15 @@
             </div>
             <div class="info">
                 <div class="plan">
-                    <a href="#path-to-phase" title="View phase.name">{{ task.projectName }}</a> > <a href="#path-to-phase" title="View phase.name">Phase</a> > <a href="#path-to-milestone" title="View milestone.name">Milestone</a>
+                    <a href="#path-to-phase" title="View phase.name">{{ task.projectName }}</a>
+                    <span v-show="task.phaseName">
+                        >
+                        <a href="#path-to-phase" title="View phase.name">{{ task.phaseName }}</a>
+                    </span>
+                    <span v-show="task.milestoneName">
+                        >
+                        <a href="#path-to-milestone" title="View milestone.name">{{ task.milestoneName }}</a>
+                    </span>
                 </div>
             </div>
             <div class="status">
