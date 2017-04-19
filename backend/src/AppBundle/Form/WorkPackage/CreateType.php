@@ -137,6 +137,16 @@ class CreateType extends BaseType
                     ]),
                 ],
             ])
+            ->add('duration', TextType::class, [
+                'required' => false,
+                'data' => 0,
+                'constraints' => [
+                    new Regex([
+                        'pattern' => '/^([1-9]+\d*)$|^0$/',
+                        'message' => 'invalid.duration',
+                    ]),
+                ],
+            ])
             ->add('scheduledStartAt', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',

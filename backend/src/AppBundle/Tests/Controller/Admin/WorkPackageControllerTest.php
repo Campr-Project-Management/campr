@@ -19,8 +19,6 @@ class WorkPackageControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage/create');
 
-        $this->assertContains('id="create_puid"', $crawler->html());
-        $this->assertContains('name="create[puid]"', $crawler->html());
         $this->assertContains('id="create_name"', $crawler->html());
         $this->assertContains('name="create[name]"', $crawler->html());
         $this->assertContains('id="create_type"', $crawler->html());
@@ -29,6 +27,8 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('name="create[workPackageStatus]"', $crawler->html());
         $this->assertContains('id="create_progress"', $crawler->html());
         $this->assertContains('name="create[progress]"', $crawler->html());
+        $this->assertContains('id="create_duration"', $crawler->html());
+        $this->assertContains('name="create[duration]"', $crawler->html());
         $this->assertContains('id="create_parent"', $crawler->html());
         $this->assertContains('name="create[workPackageCategory]"', $crawler->html());
         $this->assertContains('id="create_workPackageCategory"', $crawler->html());
@@ -80,6 +80,7 @@ class WorkPackageControllerTest extends BaseController
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[name]'] = '';
         $form['create[progress]'] = 0;
+        $form['create[duration]'] = 0;
         $crawler = $this->client->submit($form);
 
         $this->assertContains('The name field should not be blank', $crawler->html());
@@ -98,10 +99,10 @@ class WorkPackageControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[puid]'] = '10';
         $form['create[name]'] = 'workpackage';
         $form['create[type]'] = WorkPackage::TYPE_TASK;
         $form['create[progress]'] = '-2';
+        $form['create[duration]'] = '0';
 
         $crawler = $this->client->submit($form);
 
@@ -119,9 +120,9 @@ class WorkPackageControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[puid]'] = '10';
         $form['create[name]'] = 'workpackage10';
         $form['create[type]'] = WorkPackage::TYPE_TASK;
+        $form['create[duration]'] = '0';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -140,6 +141,7 @@ class WorkPackageControllerTest extends BaseController
             ->setType(WorkPackage::TYPE_TASK)
             ->setPuid('11')
             ->setName('workpackage11')
+            ->setDuration(0)
         ;
         $this->em->persist($workPackage);
         $this->em->flush();
@@ -163,8 +165,6 @@ class WorkPackageControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage/1/edit');
 
-        $this->assertContains('id="create_puid"', $crawler->html());
-        $this->assertContains('name="create[puid]"', $crawler->html());
         $this->assertContains('id="create_name"', $crawler->html());
         $this->assertContains('name="create[name]"', $crawler->html());
         $this->assertContains('id="create_type"', $crawler->html());
@@ -173,6 +173,8 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('name="create[workPackageStatus]"', $crawler->html());
         $this->assertContains('id="create_progress"', $crawler->html());
         $this->assertContains('name="create[progress]"', $crawler->html());
+        $this->assertContains('id="create_duration"', $crawler->html());
+        $this->assertContains('name="create[duration]"', $crawler->html());
         $this->assertContains('id="create_parent"', $crawler->html());
         $this->assertContains('name="create[parent]"', $crawler->html());
         $this->assertContains('name="create[workPackageCategory]"', $crawler->html());
@@ -223,9 +225,9 @@ class WorkPackageControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage/1/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[puid]'] = '';
         $form['create[name]'] = '';
         $form['create[progress]'] = 0;
+        $form['create[duration]'] = 0;
 
         $crawler = $this->client->submit($form);
 
