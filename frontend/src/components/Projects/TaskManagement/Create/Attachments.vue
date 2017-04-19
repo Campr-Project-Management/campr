@@ -50,7 +50,6 @@ export default {
             newFiles.push(files[0]);
 
             this.$emit('input', newFiles);
-            console.log(newFiles);
         },
         deleteMedia: function(index) {
             let newFiles = [
@@ -68,15 +67,6 @@ export default {
         editMedias(value) {
             this.medias = this.editMedias;
         },
-//        medias(value) {
-//            this.$emit('input', value);
-//        },
-//        medias: {
-//            handler: function(value) {
-//                this.$emit('input', value);
-//            },
-//            deep: true,
-//        },
     },
     data: function() {
         return {
