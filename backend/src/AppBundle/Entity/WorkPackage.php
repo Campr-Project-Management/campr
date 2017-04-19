@@ -314,7 +314,7 @@ class WorkPackage
     /**
      * @var string
      *
-     * @ORM\Column(name="duration", type="string", length=64, nullable=true)
+     * @ORM\Column(name="duration", type="integer", nullable=false, options={"default"=0})
      */
     private $duration;
 
@@ -1488,7 +1488,7 @@ class WorkPackage
     }
 
     /**
-     * @param string $duration
+     * @param $duration
      */
     public function setDuration($duration)
     {
