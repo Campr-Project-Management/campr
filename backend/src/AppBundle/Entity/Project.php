@@ -240,11 +240,22 @@ class Project
     private $labels;
 
     /**
+     * @var null|Label
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Label")
+     * @ORM\JoinColumns({
+     *     @ORM\JoinColumn(name="label_id", referencedColumnName="id", onDelete="SET NULL")
+     * })
+     * @Serializer\Exclude()
+     */
+    private $label;
+
+    /**
      * @var ArrayCollection|Message[]
      *
      * @Serializer\Exclude()
      *
-     ** @ORM\OneToMany(targetEntity="AppBundle\Entity\Meeting", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Meeting", mappedBy="project")
      */
     private $meetings;
 
@@ -1265,6 +1276,50 @@ class Project
     public function getLabels()
     {
         return $this->labels;
+    }
+
+    /**
+     * @param Label|null $label
+     *
+     * @return Project
+     */
+    public function setLabel(Label $label = null)
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * @return Label|null
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("label")
+     */
+    public function getLabelId()
+    {
+        return $this->label
+            ? $this->label->getId()
+            : null
+        ;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("labelName")
+     */
+    public function getLabelName()
+    {
+        return $this->label
+            ? (string) $this->label
+            : null
+        ;
     }
 
     /**

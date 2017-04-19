@@ -13,14 +13,14 @@
                 <div class="col-md-4">
                     <select-field
                         v-bind:title="label.status"
-                        v-bind:options="statusesForSelect"
+                        v-bind:options="workPackageStatusesForSelect"
                         v-model="details.status"
                         v-bind:currentOption="details.status" />
                 </div>
                 <div class="col-md-4">
                     <select-field
                         v-bind:title="label.labels"
-                        v-bind:options="labelsForChoice"
+                        v-bind:options="labelsForSelect"
                         v-model="details.label"
                         v-bind:currentOption="details.label" />
                 </div>
@@ -39,19 +39,26 @@ export default {
         SelectField,
     },
     methods: {
-        ...mapActions(['getProjectLabels', 'getProjectStatuses', 'getProjectUsers']),
+        ...mapActions([
+            'getProjectLabels',
+            'getWorkPackageStatuses',
+            'getWorkPackageStatusesForSelect',
+            'getProjectUsers',
+        ]),
     },
     computed: {
         ...mapGetters({
-            labelsForChoice: 'labelsForChoice',
-            statusesForSelect: 'projectStatusesForSelect',
+            labelsForSelect: 'labelsForChoice',
+            workPackageStatusesForSelect: 'workPackageStatusesForSelect',
             assigneesForSelect: 'projectUsersForSelect',
         }),
     },
     created() {
         this.getProjectLabels(this.$route.params.id);
-        this.getProjectStatuses();
+        this.getWorkPackageStatuses();
         this.getProjectUsers(this.$route.params.id);
+
+        this.details = this.editDetails;
     },
     watch: {
         details: {
@@ -75,9 +82,9 @@ export default {
                 status: this.translate('label.status'),
             },
             details: {
-                status: '',
-                assignee: '',
-                label: '',
+                status: null,
+                assignee: null,
+                label: null,
             },
         };
     },

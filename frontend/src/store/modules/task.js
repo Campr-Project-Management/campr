@@ -186,6 +186,30 @@ const actions = {
                 Routing.generate('app_api_workpackage_edit', {'id': data.taskId}),
                 data.data
             ).then(
+                (response) => {
+                    // router.push({name: 'project-task-management-list'});
+                    if (response.status === 200) {
+                        alert('Saved!');
+                    } else {
+                        alert(response.status);
+                    }
+                },
+                (response) => {
+                    alert('Validation issues');
+                    if (response.status === 400) {
+                        // implement system to dispay errors
+                        // console.log(response.data);
+                    }
+                }
+            );
+    },
+
+    getUsers({commit}) {
+        Vue.http
+            .post(
+                Routing.generate('app_api_workpackage_edit', {'id': data.taskId}),
+                data.data
+            ).then(
             (response) => {
                 if (response.status === 200) {
                     alert('Saved!');

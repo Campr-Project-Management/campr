@@ -6,12 +6,12 @@
             type="file"
             name="attachments"
             style="display: none;"
-            v-on:change="updateAttachments" />
+            v-on:change="updateMedias" />
         <div class="attachments">
-            <div v-for="attachment in attachments" class="attachment">
+            <div v-for="media, index in medias" class="attachment">
                 <view-icon />
-                <span class="attachment-name">{{ attachment.name }}</span>
-                <i class="fa fa-times" v-on:click="deleteAttachment(attachment);"></i>
+                <span class="attachment-name">{{ media.name || media.path }}</span>
+                <i class="fa fa-times" v-on:click="deleteMedia(index);"></i>
             </div>
         </div>
         <div class="text-center">
@@ -24,6 +24,12 @@
 import ViewIcon from '../../../_common/_icons/ViewIcon';
 
 export default {
+    props: {
+        editMedias: {
+            'type': Array,
+            'default': [],
+        },
+    },
     components: {
         ViewIcon,
     },
@@ -31,21 +37,46 @@ export default {
         openFileSelection: function() {
             document.getElementById('attachments').click();
         },
-        updateAttachments: function(e) {
+        updateMedias: function(e) {
             let files = e.target.files || e.dataTransfer.files;
             if (!files.length) {
                 return;
             }
-            this.attachments.push(files[0]);
+
+            let newFiles = [];
+            this.medias.map((item) => {
+                newFiles.push(item);
+            });
+            newFiles.push(files[0]);
+
+            this.$emit('input', newFiles);
+            console.log(newFiles);
         },
-        deleteAttachment: function(value) {
-            this.attachments = this.attachments.filter(attachment => attachment.name !== value.name);
+        deleteMedia: function(index) {
+            let newFiles = [
+                ...this.medias.slice(0, index),
+                ...this.medias.slice(index + 1),
+            ];
+
+            this.$emit('input', newFiles);
         },
     },
+    created() {
+        this.medias = this.editMedias;
+    },
     watch: {
-        attachments: function(value) {
-            this.$emit('input', value);
+        editMedias(value) {
+            this.medias = this.editMedias;
         },
+//        medias(value) {
+//            this.$emit('input', value);
+//        },
+//        medias: {
+//            handler: function(value) {
+//                this.$emit('input', value);
+//            },
+//            deep: true,
+//        },
     },
     data: function() {
         return {
@@ -55,7 +86,7 @@ export default {
             message: {
                 attachments: this.translate('message.attachments'),
             },
-            attachments: [],
+            medias: [],
         };
     },
 };
