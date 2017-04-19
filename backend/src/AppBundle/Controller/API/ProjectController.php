@@ -1044,7 +1044,7 @@ class ProjectController extends ApiController
         $filters = $request->query->all();
         $pageSize = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
 
-        if (isset($filters['status'])) {
+        if (isset($filters['status']) || isset($filters['isGrid'])) {
             $wpQuery = $this
                 ->getDoctrine()
                 ->getRepository(WorkPackage::class)
