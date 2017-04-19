@@ -9,7 +9,7 @@ const getters = {
     projectUsers: state => state.items,
     projectUsersForSelect: state => state.items.map(item => {
         return {
-            'key': item.id,
+            'key': item.user,
             'label': item.userFullName,
         };
     }),
