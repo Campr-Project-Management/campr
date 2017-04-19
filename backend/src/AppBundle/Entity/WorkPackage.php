@@ -1416,6 +1416,9 @@ class WorkPackage
     public function removeChild(WorkPackage $child)
     {
         $this->children->removeElement($child);
+        $child->setParent(null);
+        $child->setMilestone(null);
+        $child->setPhase(null);
     }
 
     /**
