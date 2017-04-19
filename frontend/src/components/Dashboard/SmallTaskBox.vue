@@ -16,7 +16,15 @@
             </div>
             <div class="info">
                 <div class="plan">
-                    <a href="#path-to-phase" title="View phase.name">{{ task.projectName }}</a> > <a href="#path-to-phase" title="View phase.name">Phase</a> > <a href="#path-to-milestone" title="View milestone.name">Milestone</a>
+                    <a href="#path-to-phase" title="View phase.name">{{ task.projectName }}</a>
+                    <span v-show="task.phaseName">
+                        >
+                        <a href="#path-to-phase" title="View phase.name">{{ task.phaseName }}</a>
+                    </span>
+                    <span v-show="task.milestoneName">
+                        >
+                        <a href="#path-to-milestone" title="View milestone.name">{{ task.milestoneName }}</a>
+                    </span>
                 </div>
             </div>
             <div class="status">
