@@ -793,6 +793,7 @@ placeholder:
     actions: Actions
     filesystem: Select filesystem
     adapter: Select driver
+    labe: Label
     label_title: Label Title
     label_description: Label Description
     label_color: Label Color
@@ -800,6 +801,8 @@ placeholder:
     workpackage_status: Work Package Status
     programme: Programme
     type: Type
+    milestone: Milestone
+    phase: Phase
 
 table_header_cell:
     rate: Rate
@@ -916,6 +919,7 @@ table_header_cell:
     day: Calendar - Day
     from_time: From Time
     to_time: To Time
+    phase: Phase
     milestone: Milestone
     percent_complete: Percent Complete
     confirmed: Confirmed

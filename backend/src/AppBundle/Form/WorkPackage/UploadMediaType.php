@@ -35,9 +35,9 @@ class UploadMediaType extends AbstractType
                 'data_class' => File::class,
                 'constraints' => [
                     new FileConstaint(),
-                    new NotBlank([
-                        'message' => 'not_blank.file',
-                    ]),
+//                    new NotBlank([
+//                        'message' => 'not_blank.file',
+//                    ]),
                 ],
             ])
             ->addEventListener(

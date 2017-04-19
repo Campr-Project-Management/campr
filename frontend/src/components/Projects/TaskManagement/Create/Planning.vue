@@ -27,6 +27,8 @@ import SelectField from '../../../_common/_form-components/SelectField';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
+//    props: ['phase', 'milestone'],
+    props: ['editPlanning'],
     components: {
         SelectField,
     },
@@ -36,24 +38,28 @@ export default {
     created() {
         this.getProjectPhases(this.$route.params.id);
         this.getProjectMilestones(this.$route.params.id);
+
+        this.planning = this.editPlanning;
     },
     computed: {
         ...mapGetters({
-            initialProjectMilestonesForSelect: 'projectMilestonesForSelect',
+//            initialProjectMilestonesForSelect: 'projectMilestonesForSelect',
+            projectMilestonesForSelect: 'projectMilestonesForSelect',
             projectPhasesForSelect: 'projectPhasesForSelect',
         }),
-        projectMilestonesForSelect: function() {
-            if (!this.planning.phase) {
-                return this.initialProjectMilestonesForSelect;
-            }
-            let milestones = new Set(this.initialProjectMilestonesForSelect.filter(item => {
-                return item.parent === parseInt(this.planning.phase.key, 10);
-            }));
-            if (this.planning.milestone && !milestones.has(this.planning.milestone)) {
-                this.planning.milestone = '';
-            }
-            return Array.from(milestones);
-        },
+        // @TODO: re-enable this after the milestones and phases modules are implemented
+//        projectMilestonesForSelect: function() {
+//            if (!this.planning.phase) {
+//                return this.initialProjectMilestonesForSelect;
+//            }
+//            let milestones = new Set(this.initialProjectMilestonesForSelect.filter(item => {
+//                return item.parent === parseInt(this.planning.phase.key, 10);
+//            }));
+//            if (this.planning.milestone && !milestones.has(this.planning.milestone)) {
+//                this.planning.milestone = '';
+//            }
+//            return Array.from(milestones);
+//        },
     },
     watch: {
         planning: {
@@ -73,14 +79,10 @@ export default {
                 milestone: this.translate('label.milestone'),
             },
             planning: {
-                phase: '',
-                milestone: '',
+                phase: null,
+                milestone: null,
             },
         };
     },
 };
 </script>
-
-<style lang="scss">
-
-</style>

@@ -163,6 +163,8 @@ export default {
         },
         editSchedule(value) {
             this.schedule = this.editSchedule;
+            this.visibleAutomaticSchedule = this.schedule.automatic;
+            this.visibleManualSchedule = !this.schedule.automatic;
         },
     },
     created() {
