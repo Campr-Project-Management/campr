@@ -348,7 +348,11 @@ export default {
                 milestone: null,
             },
             medias: [],
-            details: {},
+            details: {
+                status: null,
+                assignee: null,
+                label: null,
+            },
             statusColor: {},
         };
     },

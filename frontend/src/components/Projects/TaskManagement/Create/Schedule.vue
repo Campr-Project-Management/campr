@@ -218,7 +218,16 @@ export default {
             visibleAutomaticSchedule: false,
             visiblePredecessor: true,
             visibleSuccessor: false,
-            schedule: [],
+            schedule: {
+                baseStartDate: new Date(),
+                baseEndDate: new Date(),
+                forecastStartDate: new Date(),
+                forecastEndDate: new Date(),
+                automatic: false,
+                successors: [],
+                predecessors: [],
+                durationInDays: 0,
+            },
         };
     },
 };
