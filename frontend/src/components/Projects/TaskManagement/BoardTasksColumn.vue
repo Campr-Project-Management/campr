@@ -7,12 +7,12 @@
                 <span class="notification-balloon second-bg">+</span>
             </div>
         </div>
-        <!--<vue-scrollbar class="tasks-scroll">
-        </vue-scrollbar>-->
-        <div>
-            <small-task-box v-if="tasksByStatuses[status.id]" v-bind:task="task" v-for="task in tasksByStatuses[status.id].items"></small-task-box>
-            <infinite-loading :status="status.id" :on-infinite="onInfinite" v-bind:ref="'infiniteLoading' + status.id"></infinite-loading>
-        </div>
+        <vue-scrollbar class="tasks-scroll">
+            <div>
+                <small-task-box v-if="tasksByStatuses[status.id]" v-bind:task="task" v-for="task in tasksByStatuses[status.id].items"></small-task-box>
+                <infinite-loading :status="status.id" :on-infinite="onInfinite" v-bind:ref="'infiniteLoading' + status.id"></infinite-loading>
+            </div>
+        </vue-scrollbar>
     </div>
 </template>
 
