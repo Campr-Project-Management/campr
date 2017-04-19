@@ -163,6 +163,9 @@ class ProjectController extends ApiController
             $em->flush();
 
             return $this->createApiResponse($project, Response::HTTP_ACCEPTED);
+        } else {
+            dump($request->request->get('label'));
+            dump($form->get('label')->getData());
         }
 
         $errors = $this->getFormErrors($form);

@@ -73,6 +73,10 @@ abstract class ApiController extends BaseController
             throw new BadRequestHttpException();
         }
 
+        if ($request->files->count()) {
+            $data = array_merge_recursive($data, $request->files->all());
+        }
+
         $form->submit($data, $clearMissing);
     }
 }
