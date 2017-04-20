@@ -160,13 +160,15 @@ const actions = {
                 Routing.generate('app_api_project_tasks_create', {'id': data.projectId}),
                 data.data
             ).then((response) => {
-                router.push({
-                    name: 'project-task-management-edit',
-                    params: {
-                        id: data.projectId,
-                        taskId: response.data.id,
-                    },
-                });
+                router.push({name: 'project-task-management-list'});
+                // @TODO: use this redirect when we figure out why this is getting broken
+                // router.push({
+                //     name: 'project-task-management-edit',
+                //     params: {
+                //         id: data.projectId,
+                //         taskId: response.data.id,
+                //     },
+                // });
             }, (response) => {
                 if (response.status === 400) {
                     // implement system to display errors
