@@ -316,7 +316,7 @@ class WorkPackage
      *
      * @ORM\Column(name="duration", type="integer", nullable=false, options={"default"=0})
      */
-    private $duration;
+    private $duration = 0;
 
     /**
      * @var Cost[]|ArrayCollection
