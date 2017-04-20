@@ -486,6 +486,7 @@ label:
     color_status: Color Status
     responsible: Responsible
     progress: Progress
+    duration: Duration
     project: Project
     label: Label
     labels: Labels
