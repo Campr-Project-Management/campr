@@ -59,6 +59,15 @@
     }
 ) }}
 {{ form_widget(
+    form.duration,
+    {
+        'attr': {
+            'class': 'form-control input-sm',
+        },
+        'label': 'label.duration'|trans,
+    }
+) }}
+{{ form_widget(
     form.phase,
     {
         'attr': {

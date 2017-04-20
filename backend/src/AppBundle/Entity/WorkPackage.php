@@ -1493,6 +1493,8 @@ class WorkPackage
     public function setDuration($duration)
     {
         $this->duration = (int) $duration;
+
+        return $this;
     }
 
     /**
