@@ -78,6 +78,7 @@ invalid:
     sequence: The sequence field should contain numbers greater than or equal to 0
     email: Invalid email provided
     progress: The progress field should contain numbers greater than or equal to 0
+    duration: The duration field should contain numbers greater than or equal to 0
     rate: The rate field should contain positive numbers with precision 10 and 2 decimals at most
     image: Uploaded file must be an image!
     slug: The slug is invalid. Slug must start/end only with alphanumeric values and contain alphanumeric or '-' characters
