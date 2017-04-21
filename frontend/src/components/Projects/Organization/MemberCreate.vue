@@ -31,37 +31,25 @@
 
                     <hr class="double">
 
-                    <!-- /// Member Name & Role /// -->
-                    <div class="row">
-                        <div class="form-group last-form-group">
-                            <div class="col-md-6"><input-field v-model="name" type="text" v-bind:label="label.name"></input-field></div>
-                            <div class="col-md-6">
-                                <select-field v-bind:title="label.role"></select-field>
-                                <a class="btn-rounded btn-empty btn-md btn-auto margintop20">Add another role</a>
-                            </div>
-                        </div>
-                    </div> 
-                    <!-- /// End Member Name & Role /// --> 
-
-                    <hr class="double">
 
                     <!-- /// Member Name & Role /// -->
                     <div class="row">
                         <div class="form-group">
-                            <div class="col-md-6"><input-field v-model="name" type="text" v-bind:label="label.name"></input-field></div>
+                            <div class="col-md-6"><input-field v-model="input.name" type="text" v-bind:label="label.name"></input-field></div>
                             <div class="col-md-6">
-                                <select-field v-bind:title="label.role"></select-field>
+                                <select-field :options='dataOptions' v-bind:title="label.role" v-model="input.selectedRole" :currentOption="input.selectedRole">
+                                </select-field>
                                 <a class="btn-rounded btn-empty btn-md btn-auto margintop20">Add another role</a>
                             </div>
                         </div>
                         <div class="form-group last-form-group">
-                            <div class="col-md-4"><input-field v-model="name" type="text" v-bind:label="label.company"></input-field></div>
+                            <div class="col-md-4"><input-field v-model="input.company" type="text" v-bind:label="label.company"></input-field></div>
                             <div class="col-md-4">
-                                <select-field v-bind:title="label.department"></select-field>
+                                <select-field :options='dataOptions' v-bind:title="label.department" v-model="input.department" :currentOption="input.department"></select-field>
                                 <a class="btn-rounded btn-empty btn-md btn-auto margintop20">Add another department</a>
                             </div>
                             <div class="col-md-4">
-                                <select-field v-bind:title="label.subteam"></select-field>
+                                <select-field :options='dataOptions' v-bind:title="label.subteam" v-model="input.subteam" :currentOption="input.subteam"></select-field>
                                 <a class="btn-rounded btn-empty btn-md btn-auto margintop20">Add another subteam</a>
                             </div>
                         </div>
@@ -157,7 +145,7 @@
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
                         <router-link :to="{name: 'project-organization'}" class="btn-rounded btn-auto disable-bg">{{ button.cancel }}</router-link>
-                        <a v-on:click="createTask" class="btn-rounded btn-auto second-bg">{{ button.save_member }}</a>
+                        <a v-on:click="saveMember" class="btn-rounded btn-auto second-bg">{{ button.save_member }}</a>
                     </div>
                     <!-- /// Actions /// -->
                 </div> 
@@ -171,6 +159,7 @@ import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
 import Switches from '../../3rdparty/vue-switches';
 import AvatarPlaceholder from '../../_common/_form-components/AvatarPlaceholder';
+import {mapActions} from 'vuex';
 
 export default {
     components: {
@@ -180,6 +169,7 @@ export default {
         AvatarPlaceholder,
     },
     methods: {
+        ...mapActions(['createNewOrganizationMember']),
         openAvatarFileSelection() {
             document.getElementById('avatar').click();
         },
@@ -194,6 +184,14 @@ export default {
                 vm.avatar = e.target.result;
             };
             reader.readAsDataURL(files[0]);
+        },
+        saveMember() {
+            const member = {
+                'name': this.input.name,
+                'role': this.input.selectedRole.id,
+                'department': this.input.department.id,
+            };
+            this.createNewOrganizationMember(member);
         },
     },
     data: function() {
@@ -216,6 +214,27 @@ export default {
                 save_member: 'Save Member',
             },
             avatar: '',
+            dataOptions: [
+                {
+                    label: 'Admin',
+                    id: 1,
+                },
+                {
+                    label: 'User',
+                    id: 2,
+                },
+                {
+                    label: 'Developer',
+                    id: 3,
+                },
+            ],
+            input: {
+                selectedRole: null,
+                name: '',
+                department: null,
+                company: '',
+                subteam: null,
+            },
         };
     },
 };
