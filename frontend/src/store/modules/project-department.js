@@ -37,7 +37,7 @@ const mutations = {
      */
     [types.SET_PROJECT_DEPARTMENTS](state, {projectDepartments}) {
         state.items = projectDepartments;
-        let itemsForSelect = [];
+        let itemsForSelect = [{'key': null, 'label': Translator.trans('placeholder.department'), 'rate': 0}];
         state.items.map((item) => {
             itemsForSelect.push({'key': item.id, 'label': item.name, 'rate': item.rate});
         });

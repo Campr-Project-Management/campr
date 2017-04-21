@@ -1,4 +1,7 @@
 message:
+    back_to_organization: Back to Project Organization
+    create_new_team_member: Create new team member
+    add_avatar_image: Add avatar image
     displaying: Displaying
     results_out_of: results out of
     edit_project_organization: Edit Project Organization
@@ -663,6 +666,10 @@ label:
     distribution_list_title: Distribution List Title
 
 button:
+    save_member: Save Member
+    add_another_role: Add another role
+    add_another_department: Add another department
+    add_another_subteam: Add another subteam
     show_selected: Show Selected
     create_distribution: Create Distribution List
     sign_in: Sign In
@@ -788,7 +795,7 @@ placeholder:
     calendar: Choose calendar
     day: Choose one day
     assignment: Choose one assignment
-    company: Choose one company
+    company_choose: Choose one company
     decision: Choose one decision
     distribution_list: Choose one distribution list
     contract: Choose one contract
@@ -815,6 +822,16 @@ placeholder:
     type: Type
     milestone: Milestone
     phase: Phase
+    role: Role
+    company: Company
+    department: Department
+    subteam: Subteam
+    email: Email
+    phone: Phone
+    facebook: Facebook
+    twitter: Twitter
+    linked_in: Linked In
+    gplus: Google Plus
 
 table_header_cell:
     rate: Rate
