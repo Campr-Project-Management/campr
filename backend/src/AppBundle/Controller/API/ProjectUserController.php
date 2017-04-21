@@ -4,7 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectUser;
-use AppBundle\Form\ProjectUser\CreateType;
+use AppBundle\Form\ProjectUser\BaseCreateType;
 use AppBundle\Security\ProjectVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -42,7 +42,7 @@ class ProjectUserController extends ApiController
     /**
      * Edit a specific Project User.
      *
-     * @Route("/{id}", name="app_api_project_users_edit")
+     * @Route("/{id}", name="app_api_project_users_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      *
      * @param Request     $request
@@ -58,7 +58,7 @@ class ProjectUserController extends ApiController
         }
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
-        $form = $this->createForm(CreateType::class, $projectUser, ['csrf_protection' => false]);
+        $form = $this->createForm(BaseCreateType::class, $projectUser, ['csrf_protection' => false]);
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {

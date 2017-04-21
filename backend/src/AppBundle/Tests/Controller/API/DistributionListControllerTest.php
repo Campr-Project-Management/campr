@@ -209,7 +209,7 @@ class DistributionListControllerTest extends BaseController
             [
                 [
                     'name' => '',
-                    'sequence' => '',
+                    'sequence' => 1,
 
                 ],
                 true,
@@ -217,7 +217,6 @@ class DistributionListControllerTest extends BaseController
                 [
                     'messages' => [
                         'name' => ['The name field should not be blank'],
-                        'sequence' => ['The sequence field should not be blank'],
                     ],
                 ],
             ],

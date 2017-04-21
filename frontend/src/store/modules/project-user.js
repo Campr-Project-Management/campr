@@ -19,15 +19,29 @@ const actions = {
     /**
      * Get all project users
      * @param {function} commit
-     * @param {Number} projectId
+     * @param {Number} data
      */
-    getProjectUsers({commit}, projectId) {
+    getProjectUsers({commit}, data) {
         Vue.http
-            .get(Routing.generate('app_api_project_project_users', {'id': projectId})).then((response) => {
+            .get(Routing.generate('app_api_project_project_users', data)).then((response) => {
                 if (response.status === 200) {
                     let projectUsers = response.data;
                     commit(types.SET_PROJECT_USERS, {projectUsers});
                 }
+            }, (response) => {
+            });
+    },
+    /**
+     * Update project user
+     * @param {function} commit
+     * @param {array} data
+     */
+    updateProjectUser({commit}, data) {
+        Vue.http
+            .patch(
+                Routing.generate('app_api_project_users_edit', {'id': data.id}),
+                JSON.stringify(data)
+            ).then((response) => {
             }, (response) => {
             });
     },

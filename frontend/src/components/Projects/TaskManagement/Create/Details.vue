@@ -56,7 +56,7 @@ export default {
     created() {
         this.getProjectLabels(this.$route.params.id);
         this.getWorkPackageStatuses();
-        this.getProjectUsers(this.$route.params.id);
+        this.getProjectUsers({id: this.$route.params.id});
 
         this.details = this.editDetails;
     },
