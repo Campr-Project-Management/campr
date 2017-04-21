@@ -20,7 +20,7 @@ class ProjectRoleController extends ApiController
     /**
      * Get all project roles.
      *
-     * @Route(name="app_api_project_roles_list")
+     * @Route(name="app_api_project_roles_list", options={"expose"=true})
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -39,7 +39,7 @@ class ProjectRoleController extends ApiController
     /**
      * Create a new Project Role.
      *
-     * @Route(name="app_api_project_roles_create")
+     * @Route(name="app_api_project_roles_create", options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request $request
@@ -87,7 +87,7 @@ class ProjectRoleController extends ApiController
     /**
      * Edit a specific Project Role.
      *
-     * @Route("/{id}", name="app_api_project_roles_edit")
+     * @Route("/{id}", name="app_api_project_roles_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      *
      * @param Request     $request
@@ -123,7 +123,7 @@ class ProjectRoleController extends ApiController
     /**
      * Delete a specific Project Role.
      *
-     * @Route("/{id}", name="app_api_project_role_delete")
+     * @Route("/{id}", name="app_api_project_role_delete", options={"expose"=true})
      * @Method({"DELETE"})
      *
      * @param ProjectRole $projectRole
