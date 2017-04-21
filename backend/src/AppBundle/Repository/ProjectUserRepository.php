@@ -38,4 +38,27 @@ class ProjectUserRepository extends BaseRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function getQueryByUserFullName($filters)
+    {
+        $qb = $this->createQueryBuilder('q')->leftJoin('q.user', 'u');
+
+        if (isset($filters['search'])) {
+            $qb
+                ->where(
+                    $qb->expr()->orX(
+                        $qb->expr()->like('u.firstName', ':searchString'),
+                        $qb->expr()->like('u.lastName', ':searchString')
+                    )
+                )
+                ->setParameter('searchString', '%'.$filters['search'].'%')
+            ;
+        }
+
+        if (isset($filters['users']) && !empty($filters['users'])) {
+            $qb->andWhere($qb->expr()->in('q.id', $filters['users']));
+        }
+
+        return $qb->getQuery();
+    }
 }

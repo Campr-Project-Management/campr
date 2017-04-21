@@ -17,12 +17,13 @@ import projectCategory from './modules/project-category';
 import projectScope from './modules/project-scope';
 import workPackage from './modules/work-package';
 import projectDepartment from './modules/project-department';
-import projectUser from './modules/project-user';
 import projectUnit from './modules/project-unit';
 import projectMilestone from './modules/project-milestone';
 import projectPhase from './modules/project-phase';
 import projectResources from './modules/project-resources';
 import workPackageStatus from './modules/work-package-status';
+import projectUser from './modules/project-user';
+import distributionList from './modules/distribution-list';
 
 Vue.use(Vuex);
 
@@ -35,6 +36,7 @@ export default new Vuex.Store({
     modules: {
         loader,
         user,
+        distributionList,
         project,
         task,
         colorStatus,

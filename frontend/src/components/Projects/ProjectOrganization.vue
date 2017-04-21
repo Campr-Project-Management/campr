@@ -1,112 +1,55 @@
 <template>
     <div class="project-organization page-section">
-
         <modal v-if="showModal" @close="showModal = false">
-            <p class="modal-title">Add New Distribution List</p>
-            <input-field type="text" label="Distribution List Title"></input-field>
-
-            <div class="search">
-                <input-field type="text" label="Search For Resources"></input-field>
-                <div class="results team" v-if="results">
-                    <vue-scrollbar class="scroll-list">
-                        <div class="members">
-                            <div class="member flex">
-                                <div class="checkbox-input clearfix" v-bind:class="{'inactive': inactive}">
-                                    <input id="toggle-active" type="checkbox" name="" value="1" :checked="inactive ? false : true" @click="toggleActivation()">
-                                    <label for="toggle-active"></label>
-                                </div>
-                                <img src="">
-                                <div class="info">
-                                    <p class="title">Alexander Martins</p>
-                                    <p class="description">Symfony Developer - Tchnical Services</p>
-                                </div>
-                            </div>
-                            <div class="member flex">
-                                <div class="checkbox-input clearfix" v-bind:class="{'inactive': inactive}">
-                                    <input id="toggle-active" type="checkbox" name="" value="1" :checked="inactive ? false : true" @click="toggleActivation()">
-                                    <label for="toggle-active"></label>
-                                </div>
-                                <img src="">
-                                <div class="info">
-                                    <p class="title">Alexander Martins</p>
-                                    <p class="description">Symfony Developer - Tchnical Services</p>
-                                </div>
-                            </div>
-                            <div class="member flex">
-                                <div class="checkbox-input clearfix" v-bind:class="{'inactive': inactive}">
-                                    <input id="toggle-active" type="checkbox" name="" value="1" :checked="inactive ? false : true" @click="toggleActivation()">
-                                    <label for="toggle-active"></label>
-                                </div>
-                                <img src="">
-                                <div class="info">
-                                    <p class="title">Alexander Martins</p>
-                                    <p class="description">Symfony Developer - Tchnical Services</p>
-                                </div>
-                            </div>
-                        </div>
-                    </vue-scrollbar>
-                    <div class="footer">
-                        <p>Selected: <span>Michael Martins</span></p>
-                        <div class="flex flex-space-between">
-                            <a href="javascript:void(0)" class="cancel">Cancel</a>
-                            <a href="javascript:void(0)" class="show">Show Selected</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            <p class="modal-title">{{ message.add_distribution_list }}</p>
+            <input-field v-model="distributionTitle" type="text" v-bind:label="label.distribution_list_title"></input-field>
+            <member-search v-model="selectedDistribution" v-bind:placeholder="placeholder.search_resources"></member-search>
+            <br />
             <div class="members main-list">
-                <div class="member flex">
-                    <img src="">
+                <div class="member flex"  v-for="item in distributionList">
+                    <img v-bind:src="item.userAvatar">
                     <div class="info">
-                        <p class="title">Alexander Martins</p>
-                        <p class="description">Symfony Developer - Tchnical Services</p>
-                    </div>
-                </div>
-                <div class="member flex">
-                    <img src="">
-                    <div class="info">
-                        <p class="title">Alexander Martins</p>
-                        <p class="description">Symfony Developer - Tchnical Services</p>
+                        <p class="title">{{ item.userFullName }}</p>
+                        <p class="description">{{ item.projectRoleName }}</p>
                     </div>
                 </div>
             </div>
 
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" class="btn-rounded btn-empty danger-color danger-border">Cancel</a>
-                <a href="javascript:void(0)" class="btn-rounded">Create Distribution List +</a>
+                <a href="javascript:void(0)" @click="showModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ button.cancel }}</a>
+                <a href="javascript:void(0)" @click="createDistributionList()" class="btn-rounded">{{ button.create_distribution }} +</a>
             </div>
         </modal>
 
         <div class="header flex flex-space-between">
-            <h1>Project Organization</h1>
+            <h1>{{ message.project_organization }}</h1>
             <div class="flex flex-v-center">
-                <router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto second-bg">Edit Project Organization</router-link>
+                <router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto second-bg">{{ message.edit_project_organization }}</router-link>
             </div>
         </div>
 
         <div class="team-graph">
-            <member-badge class="lead" size="big" name="Nelson Carr" title="Project Manager, Global Operations" user-avatar="//placehold.it/50x50"></member-badge>
+            <!--<member-badge class="lead" size="big" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
             <div class="flex flex-space-between">
                 <div>
-                    <member-badge size="big" class="lead" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>
+                    <!--<member-badge size="big" class="lead" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
                     <div class="flex">
                         <div>
-                            <member-badge size="small" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>
+                            <!--<member-badge size="small" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
                             <a href="" class="btn-rounded btn-empty btn-small">
-                                View Team
+                                {{ message.view_team }}
                             </a>
                         </div>
                         <div>
-                            <member-badge size="small" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>
+                            <!--<member-badge size="small" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
                             <a href="" class="btn-rounded btn-empty btn-small">
-                                View Team
+                                {{ message.view_team }}
                             </a>
                         </div>
                         <div class="member-badge-wrapper">
-                            <member-badge size="small" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>
-                            <a href="javascript:void(0)" class="btn-rounded btn-empty btn-small" @click="toggleTeam()" v-bind:class="{'show-team': showTeam}">
-                                View Team
+                            <!--<member-badge size="small" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
+                            <a href="javascript:void(0)" class="btn-rounded btn-empty btn-small" @click="toggleTeam()" :class="{'show-team': showTeam}">
+                                {{ message.view_team }}
                                 <i class="fa fa-angle-down" v-show="!showTeam"></i>
                                 <i class="fa fa-angle-up" v-show="showTeam"></i>
                             </a>
@@ -132,80 +75,32 @@
                     </div>
                 </div>
                 <div>
-                    <member-badge size="big" class="lead" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>
+                    <!--<member-badge size="big" class="lead" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
                     <div class="flex">
                         <div>
-                            <member-badge size="small" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>
+                            <!--<member-badge size="small" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
                             <a href="" class="btn-rounded btn-empty btn-small">
-                                View Team
+                                {{ message.view_team }}
                             </a>
                         </div>
                         <div>
-                            <member-badge size="small" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>
+                            <!--<member-badge size="small" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
                             <a href="" class="btn-rounded btn-empty btn-small">
-                                View Team
+                                {{ message.view_team }}
                             </a>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <member-badge size="big" class="lead" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>
+                    <!--<member-badge size="big" class="lead" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
                 </div>
             </div>
         </div>
         <div class="flex flex-space-between actions">
-            <div class="search">
-                <input-field type="text" label="Search for team members"></input-field>
-                <div class="results team">
-                    <vue-scrollbar class="scroll-list">
-                        <div class="members">
-                            <div class="member flex">
-                                <div class="checkbox-input clearfix" v-bind:class="{'inactive': inactive}">
-                                    <input id="toggle-active" type="checkbox" name="" value="1" :checked="inactive ? false : true" @click="toggleActivation()">
-                                    <label for="toggle-active"></label>
-                                </div>
-                                <img src="">
-                                <div class="info">
-                                    <p class="title">Alexander Martins</p>
-                                    <p class="description">Symfony Developer - Tchnical Services</p>
-                                </div>
-                            </div>
-                            <div class="member flex">
-                                <div class="checkbox-input clearfix" v-bind:class="{'inactive': inactive}">
-                                    <input id="toggle-active" type="checkbox" name="" value="1" :checked="inactive ? false : true" @click="toggleActivation()">
-                                    <label for="toggle-active"></label>
-                                </div>
-                                <img src="">
-                                <div class="info">
-                                    <p class="title">Alexander Martins</p>
-                                    <p class="description">Symfony Developer - Tchnical Services</p>
-                                </div>
-                            </div>
-                            <div class="member flex">
-                                <div class="checkbox-input clearfix" v-bind:class="{'inactive': inactive}">
-                                    <input id="toggle-active" type="checkbox" name="" value="1" :checked="inactive ? false : true" @click="toggleActivation()">
-                                    <label for="toggle-active"></label>
-                                </div>
-                                <img src="">
-                                <div class="info">
-                                    <p class="title">Alexander Martins</p>
-                                    <p class="description">Symfony Developer - Tchnical Services</p>
-                                </div>
-                            </div>
-                        </div>
-                    </vue-scrollbar>
-                    <div class="footer">
-                        <p>Selected: <span>Michael Martins</span></p>
-                        <div class="flex flex-space-between">
-                            <a href="" class="cancel">Cancel</a>
-                            <a href="" class="show">Show Selected</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <member-search v-model="gridList" v-bind:placeholder="placeholder.search_members"></member-search>
             <div class="flex">
-                <router-link :to="{name: 'project-organization-create-member'}" class="btn-rounded btn-auto second-bg">Add New Team Member</router-link>
-                <a href="javascript:void(0)" class="btn-rounded btn-empty" @click="showModal = true">Create Distribution List</a>
+                <router-link :to="{name: 'project-organization-create-member'}" class="btn-rounded btn-auto second-bg">{{ message.add_new_team_members }}</router-link>
+                <a href="javascript:void(0)" class="btn-rounded btn-empty" @click="showModal = true">{{ button.create_distribution }}</a>
             </div>
         </div>
         <div class="team-list">
@@ -214,82 +109,50 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th class="center">Resources</th>
-                        <th>Company</th>
-                        <th>Name</th>
-                        <th>Role</th>
-                        <th>Subteam</th>
-                        <th>Department</th>
-                        <th>Contact</th>
-                        <th class="center">Raci</th>
-                        <th class="center">Org</th>
-                        <th colspan="2" class="no-padding">
+                        <th class="center">{{ table_header_cell.resource }}</th>
+                        <th>{{ table_header_cell.company }}</th>
+                        <th>{{ table_header_cell.name }}</th>
+                        <th>{{ table_header_cell.role }}</th>
+                        <th>{{ table_header_cell.subteam }}</th>
+                        <th>{{ table_header_cell.department }}</th>
+                        <th>{{ table_header_cell.contact }}</th>
+                        <th class="center">{{ table_header_cell.raci }}</th>
+                        <th class="center">{{ table_header_cell.org }}</th>
+                        <th :colspan="project.distributionLists.length" class="no-padding">
                             <table>
                                 <tr>
-                                    <th class="center" colspan="2">Distribution Lists</th>
+                                    <th class="center" :colspan="project.distributionLists.length">{{ table_header_cell.distribution_lists }}</th>
                                 <tr>
-                                    <th class="center">TP Meeting</th>
-                                    <th class="center">EK Meeting</th>
+                                    <th class="center" v-for="dl in project.distributionLists">{{ dl.name }}</th>
                                 </tr>
                             </table>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr v-for="item in projectUsers.items">
                         <td class="avatar center">
-                            <img src="" />
+                            <img :src="item.userAvatar" />
                         </td>
                         <td class="center">
-                            <switches v-model="test" :selected="true"></switches>
+                            <switches @click.native="updateUserOption(item, 'resource')" v-model="showInResources" :selected="item.showInResources"></switches>
                         </td>
-                        <td>John Doe</td>
-                        <td>Heraeus</td>
-                        <td>Project Manager</td>
-                        <td>PMO</td>
-                        <td>GMP</td>
+                        <td>{{ item.company }}</td>
+                        <td>{{ item.userFullName }}</td>
+                        <td>{{ item.projectRoleName }}</td>
+                        <td>{{ item.projecTeamName }}</td>
+                        <td>{{ item.projectDepartmentName }}</td>
                         <td>
-                            <social-links align="left" size="20px" facebook="http://www.facebook.com" twitter="http://www.twitter.com" linkedin="http://www.linkedin.com" gplus="http://www.google.com" email="test@test.com" phone="1234 56 78"></social-links>
+                            <social-links align="left" size="20px" v-bind:facebook="item.userFacebook" v-bind:twitter="item.userTwitter" v-bind:linkedin="item.userLinkedIn" v-bind:gplus="item.userGplus" v-bind:email="item.userEmail" v-bind:phone="item.userPhone"></social-links>
                         </td>
                         <td class="center">
-                            <switches v-model="test" :selected="true"></switches>
+                            <switches @click.native="updateUserOption(item, 'raci')" v-model="showInRaci" :selected="item.showInRaci"></switches>
                         </td>
                         <td class="center">
-                            <switches v-model="test" :selected="true"></switches>
+                            <switches @click.native="updateUserOption(item, 'org')" v-model="showInOrg" :selected="item.showInOrg"></switches>
                         </td>
-                        <td class="center">
-                            <switches v-model="test" :selected="true"></switches>
-                        </td>
-                        <td class="center">
-                            <switches v-model="test" :selected="true"></switches>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="avatar center">
-                            <img src="" />
-                        </td>
-                        <td class="center">
-                            <switches v-model="test" :selected="true"></switches>
-                        </td>
-                        <td>John Doe</td>
-                        <td>Heraeus</td>
-                        <td>Project Manager</td>
-                        <td>PMO</td>
-                        <td>GMP</td>
-                        <td>
-                            <social-links align="left" size="20px" facebook="http://www.facebook.com" twitter="http://www.twitter.com" linkedin="http://www.linkedin.com" gplus="http://www.google.com" email="test@test.com" phone="123 456 78"></social-links>
-                        </td>
-                        <td class="center">
-                            <switches v-model="test" :selected="true"></switches>
-                        </td>
-                        <td class="center">
-                            <switches v-model="test" :selected="true"></switches>
-                        </td>
-                        <td class="center">
-                            <switches v-model="test" :selected="true"></switches>
-                        </td>
-                        <td class="center">
-                            <switches v-model="test" :selected="true"></switches>
+                        <td class="center" v-for="dl in project.distributionLists">
+                            <switches @click.native="updateDistribution(item, dl)" v-model="inDistribution" :selected="inDistributionList(item.id, dl)"></switches>
                         </td>
                     </tr>
                 </tbody>
@@ -297,10 +160,10 @@
             </vue-scrollbar>
 
             <div class="flex flex-direction-reverse">
-                <div class="pagination" v-if="count > 0">
-                    <span v-for="page in count/2" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
+                <div class="pagination" v-if="pages > 0">
+                    <span v-for="page in pages" :class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
                 </div>
-                <span class="pagination-info">Displaying 10 results out of 43</span>
+                <span class="pagination-info">{{ message.displaying }} {{ projectUsers.items.length }} {{ message.results_out_of }} {{ projectUsers.totalItems }}</span>
             </div>
         </div>
     </div>
@@ -311,6 +174,7 @@ import {mapGetters, mapActions} from 'vuex';
 import MemberBadge from '../_common/MemberBadge';
 import SocialLinks from '../_common/SocialLinks';
 import InputField from '../_common/_form-components/InputField';
+import MemberSearch from '../_common/MemberSearch';
 import Switches from '../3rdparty/vue-switches';
 import VueScrollbar from 'vue2-scrollbar';
 import Modal from '../_common/Modal';
@@ -324,35 +188,139 @@ export default {
         Switches,
         Modal,
         VueScrollbar,
+        MemberSearch,
     },
     methods: {
-        ...mapActions(['getProjectById']),
+        ...mapActions(['getProjectById', 'createDistribution', 'updateProjectUser', 'getProjectUsers', 'addToDistribution', 'removeFromDistribution']),
         changePage(page) {
             this.activePage = page;
+            this.getProjectUsers({id: this.$route.params.id, page: page, users: this.gridList});
         },
         toggleTeam() {
             this.showTeam = !this.showTeam;
         },
-        toggleActivation() {
-            this.inactive = !this.inactive;
+        toggleActivation(item) {
+            item.checked = !item.checked;
+        },
+        createDistributionList() {
+            let data = {
+                name: this.distributionTitle,
+                sequence: 0,
+                position: 0,
+                projectId: this.$route.params.id,
+                users: this.selectedDistribution,
+            };
+            this.createDistribution(data);
+            this.showModal = false;
+            this.distributionList = [];
+        },
+        inDistributionList(userId, distribution) {
+            for (let i = 0; i < distribution.users.length; i++) {
+                if (distribution.users[i].id == userId) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        updateUserOption(item, value) {
+            switch(value) {
+            case 'raci':
+                this.updateProjectUser({
+                    id: item.id,
+                    showInRaci: this.showInRaci,
+                });
+                break;
+            case 'org':
+                this.updateProjectUser({
+                    id: item.id,
+                    showInOrg: this.showInOrg,
+                });
+            case 'resource':
+                this.updateProjectUser({
+                    id: item.id,
+                    showInResources: this.showInResources,
+                });
+                break;
+            };
+        },
+        updateDistribution(item, distribution) {
+            this.inDistribution
+                ? this.addToDistribution({id: distribution.id, user: item.id})
+                : this.removeFromDistribution({id: distribution.id, user: item.id})
+            ;
         },
     },
     created() {
         this.getProjectById(this.$route.params.id);
+        this.getProjectUsers({id: this.$route.params.id, page: this.page});
     },
     computed: mapGetters({
         project: 'project',
+        projectUsers: 'projectUsers',
     }),
     data: function() {
         return {
-            'test': 1,
-            'inactive': 1,
-            'count': 4,
-            'page': 1,
-            'activePage': 1,
-            'showTeam': false,
-            'showModal': false,
+            message: {
+                add_distribution_list: this.translate('add.distribution_list'),
+                add_new_team_members: this.translate('add.new_team_members'),
+                project_organization: this.translate('message.project_organization'),
+                view_team: this.translate('message.view_team'),
+                displaying: this.translate('message.displaying'),
+                results_out_of: this.translate('message.results_out_of'),
+                edit_project_organization: this.translate('message.edit_project_organization'),
+            },
+            table_header_cell: {
+                resource: this.translate('table_header_cell.resource'),
+                company: this.translate('table_header_cell.company'),
+                name: this.translate('table_header_cell.name'),
+                role: this.translate('table_header_cell.role'),
+                subteam: this.translate('table_header_cell.subteam'),
+                department: this.translate('table_header_cell.department'),
+                contact: this.translate('table_header_cell.contact'),
+                raci: this.translate('table_header_cell.raci'),
+                org: this.translate('table_header_cell.org'),
+                distribution_lists: this.translate('table_header_cell.distribution_lists'),
+            },
+            label: {
+                distribution_list_title: this.translate('label.distribution_list_title'),
+            },
+            placeholder: {
+                search_resources: this.translate('placeholder.search_resources'),
+                search_members: this.translate('placeholder.search_members'),
+            },
+            button: {
+                cancel: this.translate('button.cancel'),
+                create_distribution: this.translate('button.create_distribution'),
+            },
+            selectedDistribution: [],
+            distributionList: [],
+            gridList: [],
+            showInRaci: '',
+            showInOrg: '',
+            showInResources: '',
+            inDistribution: '',
+            pages: 0,
+            page: 1,
+            activePage: 1,
+            showTeam: false,
+            showModal: false,
         };
+    },
+    watch: {
+        projectUsers(value) {
+            this.pages = this.projectUsers.totalItems / this.projectUsers.items.length;
+        },
+        gridList(value) {
+            this.getProjectUsers({id: this.$route.params.id, users: this.gridList});
+        },
+        selectedDistribution(value) {
+            let distribution = [];
+            let selected = this.selectedDistribution;
+            this.project.projectUsers.map(function(user) {
+                if (selected.indexOf(user.id) > -1) distribution.push(user);
+            });
+            this.distributionList = distribution;
+        },
     },
 };
 </script>
