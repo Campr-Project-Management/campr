@@ -5,14 +5,13 @@ namespace AppBundle\Form\ProjectDepartment;
 use AppBundle\Entity\ProjectDepartment;
 use AppBundle\Entity\ProjectWorkCostType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 
-class CreateType extends AbstractType
+class CreateType extends BaseType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -20,15 +19,9 @@ class CreateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        parent::buildForm($builder, $options);
+
         $builder
-            ->add('name', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.name',
-                    ]),
-                ],
-            ])
             ->add('abbreviation', TextType::class, [
                 'required' => true,
                 'constraints' => [
