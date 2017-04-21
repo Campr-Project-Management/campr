@@ -379,6 +379,23 @@ const actions = {
                 commit(types.SET_PROJECT_LOADING, {loading: false});
             });
     },
+    /**
+     * Creates a new distribution list
+     * @param {function} commit
+     * @param {array} data
+     */
+    createDistribution({commit}, data) {
+        Vue.http
+            .post(
+                Routing.generate('app_api_project_distribution_list_create', {'id': data.projectId}),
+                JSON.stringify(data)
+            ).then((response) => {
+            }, (response) => {
+                if (response.status === 400) {
+                    console.log(response.data);
+                }
+            });
+    },
 };
 
 const mutations = {

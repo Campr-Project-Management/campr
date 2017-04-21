@@ -72,6 +72,7 @@ class BaseCreateType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ProjectUser::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

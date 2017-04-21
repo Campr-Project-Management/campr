@@ -33,9 +33,6 @@ class BaseCreateType extends AbstractType
             ->add('sequence', TextType::class, [
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.sequence',
-                    ]),
                     new Regex([
                         'pattern' => '/^([1-9]+\d*)$|^0$/',
                         'message' => 'invalid.sequence',
@@ -62,6 +59,7 @@ class BaseCreateType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => DistributionList::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }
