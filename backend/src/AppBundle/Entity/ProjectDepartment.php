@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -81,11 +82,21 @@ class ProjectDepartment
     private $updatedAt;
 
     /**
+     * @var ArrayCollection|ProjectUser[]
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectUser", mappedBy="projectDepartment", cascade={"persist"})
+     */
+    private $projectUsers;
+
+    /**
      * ProjectDepartment constructor.
      */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->projectUsers = new ArrayCollection();
     }
 
     /**
@@ -267,6 +278,41 @@ class ProjectDepartment
     }
 
     /**
+     * Add projectUser.
+     *
+     * @param ProjectUser $projectUser
+     *
+     * @return ProjectDepartment
+     */
+    public function addProjectUser(ProjectUser $projectUser)
+    {
+        $projectUser->setProjectDepartment($this);
+        $this->projectUsers[] = $projectUser;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectUser.
+     *
+     * @param ProjectUser $projectUser
+     */
+    public function removeProjectUser(ProjectUser $projectUser)
+    {
+        $this->projectUsers->removeElement($projectUser);
+    }
+
+    /**
+     * Get projectUsers.
+     *
+     * @return ArrayCollection|ProjectUser[]
+     */
+    public function getProjectUsers()
+    {
+        return $this->projectUsers;
+    }
+
+    /**
      * Returns projectWorkCostType id.
      *
      * @Serializer\VirtualProperty()
@@ -290,5 +336,38 @@ class ProjectDepartment
     public function getProjectWorkCostTypeName()
     {
         return $this->projectWorkCostType ? $this->projectWorkCostType->getName() : null;
+    }
+
+    /**
+     * Returns department managers.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("managers")
+     *
+     * @return string
+     */
+    public function getProjectDepartmentManagers()
+    {
+        $managers = [];
+        foreach ($this->projectUsers as $projectUser) {
+            if ($projectUser->getProjectRoleName() === ProjectRole::ROLE_MANAGER) {
+                $managers[] = $projectUser;
+            }
+        }
+
+        return $managers;
+    }
+
+    /**
+     * Returns department managers.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("membersCount")
+     *
+     * @return string
+     */
+    public function getDepartmentMembersCount()
+    {
+        return $this->projectUsers->count();
     }
 }

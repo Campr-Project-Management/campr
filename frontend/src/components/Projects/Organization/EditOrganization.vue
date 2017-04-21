@@ -1,5 +1,27 @@
 <template>
     <div class="create-task page-section">
+        <modal v-if="showEditDepartmentModal" @close="showEditDepartmentModal = false">
+            <p class="modal-title">{{ translateText('message.edit_department') }}</p>
+            <input-field v-model="editDepartmentName" :content="editDepartmentName" type="text" v-bind:label="translateText('label.department_name')"></input-field>
+            <multi-select-field
+                    v-bind:title="translateText('label.select_managers')"
+                    v-bind:options="managersForSelect"
+                    v-bind:selectedOptions="editDepartmentManagers"
+                    v-model="editDepartmentManagers" />
+            <br />
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showEditDepartmentModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="editSelectedDepartment()" class="btn-rounded">{{ translateText('button.edit_department') }} +</a>
+            </div>
+        </modal>
+        <modal v-if="showDeleteDepartmentModal" @close="showDeleteDepartmentModal = false">
+            <p class="modal-title">{{ translateText('message.delete_department') }}</p>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showDeleteDepartmentModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteSelectedDepartment()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+            </div>
+        </modal>
+
         <div class="row">
             <div class="col-md-6">
                 <div class="header">
@@ -98,8 +120,8 @@
                         <input-field v-model="title" type="text" label="New Role"></input-field>
                     </div>
                     <div class="flex flex-space-between">
-                        <a v-on:click="createTask" class="btn-rounded btn-auto second-bg">Save</a>
-                        <a v-on:click="createTask" class="btn-rounded btn-auto">Add new role +</a>
+                        <a @click="" class="btn-rounded btn-auto second-bg">Save</a>
+                        <a @click="" class="btn-rounded btn-auto">Add new role +</a>
                     </div>
                     <!-- /// End Add new Role /// -->
                 </div>
@@ -107,199 +129,43 @@
                 <hr class="double">
 
                 <!-- /// Departments /// -->
-                <h3>Departments</h3> 
+                <h3>{{ translateText('message.departments') }}</h3>
                 <vue-scrollbar class="table-wrapper">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Department Name</th>
-                                <th>Managers</th>
-                                <th>Np. of Members</th>
-                                <th>Created on</th>
-                                <th>Actions</th>
+                                <th>{{ translateText('table_header_cell.department_name') }}</th>
+                                <th>{{ translateText('table_header_cell.managers') }}</th>
+                                <th>{{ translateText('table_header_cell.no_of_members') }}</th>
+                                <th>{{ translateText('table_header_cell.created_at') }}</th>
+                                <th>{{ translateText('table_header_cell.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>GMP</td>
+                            <tr v-for="department in projectDepartments.items">
+                                <td>{{ department.name }}</td>
                                 <td class="avatar">
-                                    <div class="avatar-image" v-tooltip.top-center="'Nelson Carr'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg"/>
-                                    </div>
-                                    <div class="avatar-image" v-tooltip.top-center="'Alicia Keys'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/10.jpg"/>
+                                    <div v-for="manager in department.managers">
+                                        <div class="avatar-image" v-tooltip.top-center="manager.userFullName">
+                                            <img v-bind:src="manager.userAvatar"/>
+                                        </div>
                                     </div>
                                 </td>
-                                <td>12</td>
-                                <td>23.03.2017</td>
+                                <td>{{ department.membersCount }}</td>
+                                <td>{{ moment(department.createdAt).format('DD.MM.YYYY') }}</td>
                                 <td>
-                                    <router-link :to="{name: ''}" class="btn-icon"><view-icon fill="second-fill"></view-icon></router-link>
-                                    <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Global Operations</td>
-                                <td class="avatar">
-                                    <div class="avatar-image" v-tooltip.top-center="'David Gilmore'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/40.jpg"/>
-                                    </div>
-                                </td>
-                                <td>10</td>
-                                <td>15.02.2017</td>
-                                <td>
-                                    <router-link :to="{name: ''}" class="btn-icon"><view-icon fill="second-fill"></view-icon></router-link>
-                                    <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Operations BTF</td>
-                                <td class="avatar">
-                                    <div class="avatar-image" v-tooltip.top-center="'Simona Wang'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/60.jpg"/>
-                                    </div>
-                                </td>
-                                <td>2</td>
-                                <td>02.02.2017</td>
-                                <td>
-                                    <router-link :to="{name: ''}" class="btn-icon"><view-icon fill="second-fill"></view-icon></router-link>
-                                    <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Operations KOH</td>
-                                <td class="avatar">
-                                    <div class="avatar-image" v-tooltip.top-center="'Uvuvwevwevwe Onyetenyevwe Ugwemubwem Ossas'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/49.jpg"/>
-                                    </div>
-                                    <div class="avatar-image" v-tooltip.top-center="'David Gilmore'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/20.jpg"/>
-                                    </div>
-                                    <div class="avatar-image" v-tooltip.top-center="'David Gilmore'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/44.jpg"/>
-                                    </div>
-                                </td>
-                                <td>10</td>
-                                <td>05.01.2017</td>
-                                <td>
-                                    <router-link :to="{name: ''}" class="btn-icon"><view-icon fill="second-fill"></view-icon></router-link>
-                                    <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Technical Services</td>
-                                <td class="avatar">
-                                    <div class="avatar-image" v-tooltip.top-center="'Danielle Morton'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/10.jpg"/>
-                                    </div>
-                                </td>
-                                <td>18</td>
-                                <td>15.05.2016</td>
-                                <td>
-                                    <router-link :to="{name: ''}" class="btn-icon"><view-icon fill="second-fill"></view-icon></router-link>
-                                    <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Purchasing KOH</td>
-                                <td class="avatar">
-                                    <div class="avatar-image" v-tooltip.top-center="'Andrea Millovichi'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/64.jpg"/>
-                                    </div>
-                                </td>
-                                <td>3</td>
-                                <td>25.04.2016</td>
-                                <td>
-                                    <router-link :to="{name: ''}" class="btn-icon"><view-icon fill="second-fill"></view-icon></router-link>
-                                    <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>QM</td>
-                                <td class="avatar">
-                                    <div class="avatar-image" v-tooltip.top-center="'Andrew Willow'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/20.jpg"/>
-                                    </div>
-                                    <div class="avatar-image" v-tooltip.top-center="'Danielle Morton'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/10.jpg"/>
-                                    </div>
-                                </td>
-                                <td>8</td>
-                                <td>02.12.2015</td>
-                                <td>
-                                    <router-link :to="{name: ''}" class="btn-icon"><view-icon fill="second-fill"></view-icon></router-link>
-                                    <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Reuko</td>
-                                <td class="avatar">
-                                    <div class="avatar-image" v-tooltip.top-center="'Radu Ionescu'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/61.jpg"/>
-                                    </div>
-                                </td>
-                                <td>15</td>
-                                <td>18.09.2015</td>
-                                <td>
-                                    <router-link :to="{name: ''}" class="btn-icon"><view-icon fill="second-fill"></view-icon></router-link>
-                                    <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>JC Eckardt</td>
-                                <td class="avatar">
-                                    <div class="avatar-image" v-tooltip.top-center="'Danielle Morton'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/10.jpg"/>
-                                    </div>
-                                </td>
-                                <td>1</td>
-                                <td>22.06.2015</td>
-                                <td>
-                                    <router-link :to="{name: ''}" class="btn-icon"><view-icon fill="second-fill"></view-icon></router-link>
-                                    <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>EHS BTF</td>
-                                <td class="avatar">
-                                    <div class="avatar-image" v-tooltip.top-center="'Danielle Morton'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/10.jpg"/>
-                                    </div>
-                                    <div class="avatar-image" v-tooltip.top-center="'David Gilmore'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/44.jpg"/>
-                                    </div>
-                                    <div class="avatar-image" v-tooltip.top-center="'Uvuvwevwevwe Onyetenyevwe Ugwemubwem Ossas'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/49.jpg"/>
-                                    </div>
-                                    <div class="avatar-image" v-tooltip.top-center="'David Gilmore'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/20.jpg"/>
-                                    </div>
-                                </td>
-                                <td>52</td>
-                                <td>12.01.2015</td>
-                                <td>
-                                    <router-link :to="{name: ''}" class="btn-icon"><view-icon fill="second-fill"></view-icon></router-link>
-                                    <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
+                                    <button @click="initEditDepartmentModal(department)" data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
+                                    <button @click="initDeleteDepartmentModal(department)" data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </vue-scrollbar>
-                <div class="flex flex-direction-reverse">                    
-                    <div class="pagination flex flex-center">
-                        <span class="active">1</span>
-                        <span class="">2</span>
-                    </div>    
-                    <span class="pagination-info">Displaying 10 results out of 12</span>                
+                <div class="flex flex-direction-reverse">
+                    <div class="pagination flex flex-center" v-if="departmentPages > 1">
+                        <span v-for="page in departmentPages" :class="{'active': page == activeDepartmentPage}" @click="changeDepartmentPage(page)">{{ page }}</span>
+                    </div>
+                    <span class="pagination-info">Displaying {{ projectDepartments.items.length }} results out of {{ projectDepartments.totalItems }}</span>
                 </div>
                 <!-- /// End Departments /// -->
 
@@ -308,10 +174,10 @@
                 <div class="form">
                     <!-- /// Add new Department /// -->
                     <div class="form-group">
-                        <input-field v-model="title" type="text" label="New Department"></input-field>
+                        <input-field v-model="departmentName" type="text" v-bind:label="translateText('placeholder.new_department')"></input-field>
                     </div>
                     <div class="flex flex-direction-reverse">
-                        <a v-on:click="createTask" class="btn-rounded btn-auto">Add new Department +</a>
+                        <a @click="createNewDepartment()" class="btn-rounded btn-auto">{{ translateText('button.add_new_department') }} +</a>
                     </div>
                     <!-- /// End Add new Department /// -->
                 </div>
@@ -342,97 +208,6 @@
                                 <td>12</td>
                                 <td>GMP</td>
                                 <td>
-                                    <router-link :to="{name: ''}" class="btn-icon"><view-icon fill="second-fill"></view-icon></router-link>
-                                    <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Operations</td>
-                                <td class="avatar">
-                                    <div class="avatar-image" v-tooltip.top-center="'David Gilmore'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/40.jpg"/>
-                                    </div>
-                                </td>
-                                <td>10</td>
-                                <td>Global Operations</td>
-                                <td>
-                                    <router-link :to="{name: ''}" class="btn-icon"><view-icon fill="second-fill"></view-icon></router-link>
-                                    <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Project Management</td>
-                                <td class="avatar">
-                                    <div class="avatar-image" v-tooltip.top-center="'Simona Wang'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/60.jpg"/>
-                                    </div>
-                                </td>
-                                <td>2</td>
-                                <td>Global Operations</td>
-                                <td>
-                                    <router-link :to="{name: ''}" class="btn-icon"><view-icon fill="second-fill"></view-icon></router-link>
-                                    <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>EHS</td>
-                                <td class="avatar">
-                                    <div class="avatar-image" v-tooltip.top-center="'Uvuvwevwevwe Onyetenyevwe Ugwemubwem Ossas'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/49.jpg"/>
-                                    </div>
-                                </td>
-                                <td>10</td>
-                                <td>Operations KOH</td>
-                                <td>
-                                    <router-link :to="{name: ''}" class="btn-icon"><view-icon fill="second-fill"></view-icon></router-link>
-                                    <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>QM</td>
-                                <td class="avatar">
-                                    <div class="avatar-image" v-tooltip.top-center="'Danielle Morton'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/10.jpg"/>
-                                    </div>
-                                </td>
-                                <td>6</td>
-                                <td>Technical Services</td>
-                                <td>
-                                    <router-link :to="{name: ''}" class="btn-icon"><view-icon fill="second-fill"></view-icon></router-link>
-                                    <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Marketing</td>
-                                <td class="avatar">
-                                    <div class="avatar-image" v-tooltip.top-center="'Andrea Millovichi'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/64.jpg"/>
-                                    </div>
-                                </td>
-                                <td>1</td>
-                                <td>Purchasing KOH</td>
-                                <td>
-                                    <router-link :to="{name: ''}" class="btn-icon"><view-icon fill="second-fill"></view-icon></router-link>
-                                    <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Engineering</td>
-                                <td class="avatar">
-                                    <div class="avatar-image" v-tooltip.top-center="'Andrew Willow'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/20.jpg"/>
-                                    </div>
-                                </td>
-                                <td>8</td>
-                                <td>Techincal Services</td>
-                                <td>
-                                    <router-link :to="{name: ''}" class="btn-icon"><view-icon fill="second-fill"></view-icon></router-link>
                                     <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
                                 </td>
@@ -441,16 +216,14 @@
                     </table>
                 </vue-scrollbar>
                 <!-- /// End Subteams /// -->
-
                 <hr>
-                
                 <div class="form">
                     <!-- /// Add new Subteam /// -->
                     <div class="form-group">
                         <input-field v-model="title" type="text" label="New Subteam"></input-field>
                     </div>
                     <div class="flex flex-direction-reverse">
-                        <a v-on:click="createTask" class="btn-rounded btn-auto">Add new Subteam +</a>
+                        <a @click="" class="btn-rounded btn-auto">Add new Subteam +</a>
                     </div>
                     <!-- /// End Add new Subteam /// -->
                 </div>
@@ -466,6 +239,10 @@ import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import VTooltip from 'v-tooltip';
 import VueScrollbar from 'vue2-scrollbar';
+import {mapGetters, mapActions} from 'vuex';
+import moment from 'moment';
+import Modal from '../../_common/Modal';
+import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 
 export default {
     components: {
@@ -475,15 +252,91 @@ export default {
         DeleteIcon,
         VTooltip,
         VueScrollbar,
+        Modal,
+        MultiSelectField,
+    },
+    methods: {
+        ...mapActions(['getProjectDepartments', 'createDepartment', 'editDepartment', 'deleteDepartment', 'getProjectUsers']),
+        moment: function(date) {
+            return moment(date);
+        },
+        translateText(text) {
+            return this.translate(text);
+        },
+        changeDepartmentPage(page) {
+            this.activeDepartmentPage = page;
+            this.getProjectDepartments({projectId: this.$route.params.id, page: page});
+        },
+        createNewDepartment() {
+            let data = {
+                name: this.departmentName,
+                sequence: this.projectDepartments.items.length,
+                rate: 0,
+                abbreviation: this.departmentName.toLowerCase(),
+            };
+            this.createDepartment(data);
+        },
+        initEditDepartmentModal(department) {
+            this.showEditDepartmentModal = true;
+            this.editDepartmentId = department.id;
+            this.editDepartmentName = department.name;
+            this.editDepartmentManagers = [];
+            department.managers.map(manager => {
+                this.editDepartmentManagers.push({key: manager.id, label: manager.userFullName});
+            });
+        },
+        initDeleteDepartmentModal(department) {
+            this.showDeleteDepartmentModal = true;
+            this.deleteDepartmentId = department.id;
+        },
+        editSelectedDepartment() {
+            let data = {
+                id: this.editDepartmentId,
+                name: this.editDepartmentName,
+                projectUsers: this.editDepartmentManagers.map(manager => {
+                    return manager.key;
+                }),
+            };
+            this.editDepartment(data);
+            this.showEditDepartmentModal = false;
+        },
+        deleteSelectedDepartment() {
+            this.showDeleteDepartmentModal = false;
+            this.deleteDepartment(this.deleteDepartmentId);
+        },
+    },
+    created() {
+        this.getProjectDepartments({projectId: this.$route.params.id, page: this.departmentPage});
+        this.getProjectUsers({id: this.$route.params.id});
+    },
+    computed: {
+        ...mapGetters({
+            projectDepartments: 'projectDepartments',
+            managersForSelect: 'managersForSelect',
+        }),
     },
     data() {
         return {
+            departmentPage: 1,
+            activeDepartmentPage: 1,
+            departmentPages: 0,
+            departmentName: '',
+            showEditDepartmentModal: false,
+            editdepartmentId: '',
+            editDepartmentName: '',
+            showDeleteDepartmentModal: false,
+            editDepartmentManagers: [],
             message: {
                 back_to_organization: 'Back to Project Organization',
                 edit_organization: 'Edit Project Organization',
                 distribution_lists: 'Distribution Lists',
             },
         };
+    },
+    watch: {
+        projectDepartments(value) {
+            this.departmentPages = Math.ceil(this.projectDepartments.totalItems / this.projectDepartments.pageSize);
+        },
     },
 };
 </script>
@@ -493,6 +346,29 @@ export default {
     @import '../../../css/_variables';
     @import '../../../css/_mixins';
     @import '../../../css/page-section';
+
+    .modal {
+        .modal-title {
+            text-transform: uppercase;
+            text-align: center;
+            font-size: 18px;
+            letter-spacing: 1.8px;
+            font-weight: 300;
+            margin-bottom: 40px;
+        }
+
+        .input-holder {
+            margin-bottom: 30px;
+        }
+
+        .main-list .member {
+            border-top: 1px solid $darkColor;
+        }
+
+        .results {
+            width: 600px;
+        }
+    }
 
     .header {
         .small-link {
