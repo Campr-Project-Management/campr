@@ -105,6 +105,7 @@
         </div>
         <div class="team-list">
             <vue-scrollbar class="table-wrapper">
+                <div class="scroll-wrapper">
                 <table class="table table-striped">
                 <thead>
                     <tr>
@@ -157,6 +158,7 @@
                     </tr>
                 </tbody>
                 </table>
+                </div>
             </vue-scrollbar>
 
             <div class="flex flex-direction-reverse">
@@ -510,6 +512,12 @@ export default {
     }
 
     .table-wrapper {
+        width: 100%;
         padding-bottom: 40px;
+    }
+
+    .scroll-wrapper {
+        display: inline-block;
+        white-space: nowrap;
     }
 </style>
