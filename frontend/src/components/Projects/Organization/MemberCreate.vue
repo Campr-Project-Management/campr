@@ -37,20 +37,27 @@
                         <div class="form-group">
                             <div class="col-md-6"><input-field v-model="input.name" type="text" v-bind:label="label.name"></input-field></div>
                             <div class="col-md-6">
-                                <select-field :options='dataOptions' v-bind:title="label.role" v-model="input.selectedRole" :currentOption="input.selectedRole">
-                                </select-field>
-                                <a class="btn-rounded btn-empty btn-md btn-auto margintop20">Add another role</a>
+                                <div v-for='(item, index) in input.selectedRoles'>
+                                    <select-field :options='dataOptions' v-bind:title="label.role" v-model="input.selectedRoles[index]" :currentOption="input.selectedRoles[index]">
+                                    </select-field>
+                                </div>
+                                <a @click="addRoleField" class="btn-rounded btn-empty btn-md btn-auto margintop20">Add another role</a>
                             </div>
                         </div>
                         <div class="form-group last-form-group">
                             <div class="col-md-4"><input-field v-model="input.company" type="text" v-bind:label="label.company"></input-field></div>
                             <div class="col-md-4">
-                                <select-field :options='dataOptions' v-bind:title="label.department" v-model="input.department" :currentOption="input.department"></select-field>
-                                <a class="btn-rounded btn-empty btn-md btn-auto margintop20">Add another department</a>
+                                <div v-for="(item, index) in input.departments">
+                                    <select-field :options='dataOptions' v-bind:title="label.department" v-model="input.departments[index]" :currentOption="input.departments[index]"></select-field>
+                                </div>
+                                <a @click="addDepartmentField" class="btn-rounded btn-empty btn-md btn-auto margintop20">Add another department</a>
                             </div>
                             <div class="col-md-4">
-                                <select-field :options='dataOptions' v-bind:title="label.subteam" v-model="input.subteam" :currentOption="input.subteam"></select-field>
-                                <a class="btn-rounded btn-empty btn-md btn-auto margintop20">Add another subteam</a>
+                                <div v-for='(item, index) in input.subteam'>
+                                    <select-field :options='dataOptions' v-bind:title="label.subteam" v-model="input.subteam[index]" :currentOption="input.subteam[index]">
+                                    </select-field>
+                                </div>
+                                <a @click='addSubteamField' class="btn-rounded btn-empty btn-md btn-auto margintop20">Add another subteam</a>
                             </div>
                         </div>
                     </div> 
@@ -63,21 +70,21 @@
                         <div class="col-md-4">
                             <h3>Resources</h3>
                             <div class="flex flex-v-center">
-                                <switches v-model="test" :selected="false"></switches>
+                                <switches v-model="input.resource" :selected="false"></switches>
                             </div>
                             <hr class="nomarginbottom">
                         </div>
                         <div class="col-md-4">
                             <h3>Raci</h3>
                             <div class="flex flex-v-center">
-                                <switches v-model="test" :selected="false"></switches>
+                                <switches v-model="input.raci" :selected="false"></switches>
                             </div>
                             <hr class="nomarginbottom">
                         </div>
                         <div class="col-md-4">
                             <h3>Org</h3>
                             <div class="flex flex-v-center">
-                                <switches v-model="test" :selected="false"></switches>
+                                <switches v-model="input.org" :selected="false"></switches>
                             </div>
                             <hr class="nomarginbottom">
                         </div>
@@ -90,13 +97,13 @@
                         <div class="col-md-4">
                             <h4>TP Meeting</h4>
                             <div class="flex flex-v-center">
-                                <switches v-model="test" :selected="false"></switches>
+                                <switches v-model="input.tpMeeting" :selected="false"></switches>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <h4>EK Meeting</h4>
                             <div class="flex flex-v-center">
-                                <switches v-model="test" :selected="false"></switches>
+                                <switches v-model="input.ekMeeting" :selected="false"></switches>
                             </div>
                         </div>
                     </div>
@@ -109,32 +116,32 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <input-field v-model="name" type="text" v-bind:label="label.email"></input-field>
+                                <input-field v-model="input.email" type="text" v-bind:label="label.email"></input-field>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-6">
-                                <input-field v-model="name" type="text" v-bind:label="label.phone"></input-field>
+                                <input-field v-model="input.phone" type="text" v-bind:label="label.phone"></input-field>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-6">
-                                <input-field v-model="name" type="text" v-bind:label="label.facebook"></input-field>
+                                <input-field v-model="input.phone" type="text" v-bind:label="label.facebook"></input-field>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-6">
-                                <input-field v-model="name" type="text" v-bind:label="label.twitter"></input-field>
+                                <input-field v-model="input.twitter" type="text" v-bind:label="label.twitter"></input-field>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-6">
-                                <input-field v-model="name" type="text" v-bind:label="label.linkedIn"></input-field>
+                                <input-field v-model="input.linkedIn" type="text" v-bind:label="label.linkedIn"></input-field>
                             </div>
                         </div>
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
-                                <input-field v-model="name" type="text" v-bind:label="label.googlePlus"></input-field>
+                                <input-field v-model="input.googlePlus" type="text" v-bind:label="label.googlePlus"></input-field>
                             </div>
                         </div>
                     </div>
@@ -188,10 +195,19 @@ export default {
         saveMember() {
             const member = {
                 'name': this.input.name,
-                'role': this.input.selectedRole.id,
-                'department': this.input.department.id,
+                'role': this.input.selectedRoles[0].id,
+                'department': this.input.departments[0].id,
             };
             this.createNewOrganizationMember(member);
+        },
+        addRoleField() {
+            this.input.selectedRoles.push(null);
+        },
+        addSubteamField() {
+            this.input.subteam.push(null);
+        },
+        addDepartmentField() {
+            this.input.departments.push(null);
         },
     },
     data: function() {
@@ -229,11 +245,22 @@ export default {
                 },
             ],
             input: {
-                selectedRole: null,
+                selectedRoles: [null],
                 name: '',
-                department: null,
+                departments: [null],
                 company: '',
-                subteam: null,
+                subteam: [null],
+                resource: false,
+                raci: false,
+                org: false,
+                tpMeeting: false,
+                ekMeeting: false,
+                email: '',
+                phone: '',
+                facebook: '',
+                twitter: '',
+                linkedIn: '',
+                googlePlus: '',
             },
         };
     },
