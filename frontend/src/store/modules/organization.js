@@ -20,7 +20,6 @@ const actions = {
      */
     createNewOrganizationMember({commit}, member) {
         // Vue.http
-        console.log('meber create', member);
     },
 };
 
