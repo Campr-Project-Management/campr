@@ -278,11 +278,17 @@ class ProjectController extends ApiController
         ;
 
         $names = [];
+        /** @var ProjectUser $projectUser */
         foreach ($projectUsers as $projectUser) {
             $user = $projectUser->getUser();
             $info['id'] = $user->getId();
             $info['username'] = $user->getUsername();
-            $info['role'] = $projectUser->getProjectRoleName();
+            $info['roles'] = [];
+
+            foreach ($projectUser->getProjectRoles() as $projectRole) {
+                $info['roles'][] = $projectRole->getName();
+            }
+
             $names[] = $info;
         }
 
