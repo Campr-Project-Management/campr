@@ -1,0 +1,16 @@
+{% extends 'MainBundle:Email:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% block subject %}
+    {{ 'email.subject.user.register'|trans }}
+{% endblock %}
+
+{% block message %}
+    <p>{{ 'email.general.hello'|trans }} {{ username }},
+    <p>{{ 'email.message.user.credential'|trans }}:</p>
+    <p>{{ 'email.general.email'|trans }}: {{ email }}</p>
+    <p>{{ 'email.general.password'|trans }}: {{ password }}</p>
+    <p>{{ 'email.message.user.register'|trans }} <a href="{{ url('main_user_activate', {'token': token}) }}">{{ 'email.general.link'|trans }}</a></p>
+    <p>{{ 'email.expiration.user.activation'|transchoice(expiration_time, {'%expiration_time%': expiration_time}) }}</p>
+{% endblock %}

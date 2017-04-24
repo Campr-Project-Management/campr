@@ -360,17 +360,17 @@ class ProjectControllerTest extends BaseController
                     [
                         'id' => 3,
                         'username' => 'user3',
-                        'role' => 'manager',
+                        'roles' => ['manager'],
                     ],
                     [
                         'id' => 4,
                         'username' => 'user4',
-                        'role' => 'sponsor',
+                        'roles' => ['sponsor'],
                     ],
                     [
                         'id' => 5,
                         'username' => 'user5',
-                        'role' => 'team-member',
+                        'roles' => [],
                     ],
                 ],
             ],

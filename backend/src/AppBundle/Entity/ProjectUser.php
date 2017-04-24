@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -60,28 +61,40 @@ class ProjectUser
     private $projectCategory;
 
     /**
-     * @var ProjectRole|null
+     * @var ProjectRole[]|ArrayCollection
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectRole")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_role_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ProjectRole", inversedBy="projectUsers", cascade={"all"})
+     * @ORM\JoinTable(
+     *     name="project_user_project_role",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="project_user_id", onDelete="CASCADE")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="project_role_id", onDelete="CASCADE")
+     *     }
+     * )
      */
-    private $projectRole;
+    private $projectRoles;
 
     /**
-     * @var ProjectDepartment
+     * @var ProjectDepartment[]|ArrayCollection
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectDepartment", inversedBy="projectUsers")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_department_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ProjectDepartment", inversedBy="projectUsers", cascade={"all"})
+     * @ORM\JoinTable(
+     *     name="project_user_project_department",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="project_user_id", onDelete="CASCADE")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="project_department_id", onDelete="CASCADE")
+     *     }
+     * )
      */
-    private $projectDepartment;
+    private $projectDepartments;
 
     /**
      * @var ProjectTeam
@@ -148,6 +161,8 @@ class ProjectUser
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->projectRoles = new ArrayCollection();
+        $this->projectDepartments = new ArrayCollection();
     }
 
     /**
@@ -353,54 +368,6 @@ class ProjectUser
     }
 
     /**
-     * Set projectRole.
-     *
-     * @param ProjectRole $projectRole
-     *
-     * @return ProjectUser
-     */
-    public function setProjectRole(ProjectRole $projectRole = null)
-    {
-        $this->projectRole = $projectRole;
-
-        return $this;
-    }
-
-    /**
-     * Get projectRole.
-     *
-     * @return ProjectRole
-     */
-    public function getProjectRole()
-    {
-        return $this->projectRole;
-    }
-
-    /**
-     * Set projectDepartment.
-     *
-     * @param ProjectDepartment $projectDepartment
-     *
-     * @return ProjectUser
-     */
-    public function setProjectDepartment(ProjectDepartment $projectDepartment = null)
-    {
-        $this->projectDepartment = $projectDepartment;
-
-        return $this;
-    }
-
-    /**
-     * Get projectDepartment.
-     *
-     * @return ProjectDepartment
-     */
-    public function getProjectDepartment()
-    {
-        return $this->projectDepartment;
-    }
-
-    /**
      * Set projectTeam.
      *
      * @param ProjectTeam $projectTeam
@@ -434,10 +401,14 @@ class ProjectUser
 
     /**
      * @param string $company
+     *
+     * @return ProjectUser
      */
     public function setCompany($company)
     {
         $this->company = $company;
+
+        return $this;
     }
 
     /**
@@ -597,55 +568,45 @@ class ProjectUser
     }
 
     /**
-     * Returns projectRole id.
+     * Returns projectRoles id.
      *
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("projectRole")
+     * @Serializer\SerializedName("projectRoles")
      *
      * @return string
      */
-    public function getProjectRoleId()
+    public function getProjectRolesId()
     {
-        return $this->projectRole ? $this->projectRole->getId() : null;
+        $projectRolesId = [];
+
+        if ($this->projectRoles->count()) {
+            foreach ($this->projectRoles as $projectRole) {
+                $projectRolesId[] = $projectRole->getId();
+            }
+        }
+
+        return $projectRolesId;
     }
 
     /**
-     * Returns projectRole name.
+     * Returns projectDepartments id.
      *
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("projectRoleName")
+     * @Serializer\SerializedName("projectDepartments")
      *
      * @return string
      */
-    public function getProjectRoleName()
+    public function getProjectDepartmentsId()
     {
-        return $this->projectRole ? $this->projectRole->getName() : null;
-    }
+        $projectDepartmentsId = [];
 
-    /**
-     * Returns projectDepartment id.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("projectDepartment")
-     *
-     * @return string
-     */
-    public function getProjectDepartmentId()
-    {
-        return $this->projectDepartment ? $this->projectDepartment->getId() : null;
-    }
+        if ($this->projectDepartments->count()) {
+            foreach ($this->projectDepartments as $projectDepartment) {
+                $projectDepartmentsId[] = $projectDepartment->getId();
+            }
+        }
 
-    /**
-     * Returns projectDepartment name.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("projectDepartmentName")
-     *
-     * @return string
-     */
-    public function getProjectDepartmentName()
-    {
-        return $this->projectDepartment ? $this->projectDepartment->getName() : null;
+        return $projectDepartmentsId;
     }
 
     /**
@@ -672,5 +633,73 @@ class ProjectUser
     public function getProjectTeamName()
     {
         return $this->projectTeam ? $this->projectTeam->getName() : null;
+    }
+
+    /**
+     * Add projectRole.
+     *
+     * @param ProjectRole $projectRole
+     *
+     * @return ProjectUser
+     */
+    public function addProjectRole(ProjectRole $projectRole)
+    {
+        $this->projectRoles[] = $projectRole;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectRole.
+     *
+     * @param ProjectRole $projectRole
+     */
+    public function removeProjectRole(ProjectRole $projectRole)
+    {
+        $this->projectRoles->removeElement($projectRole);
+    }
+
+    /**
+     * Get projectRoles.
+     *
+     * @return ArrayCollection|ProjectRole[]
+     */
+    public function getProjectRoles()
+    {
+        return $this->projectRoles;
+    }
+
+    /**
+     * Add projectDepartment.
+     *
+     * @param ProjectDepartment $projectDepartment
+     *
+     * @return ProjectUser
+     */
+    public function addProjectDepartment(ProjectDepartment $projectDepartment)
+    {
+        $this->projectDepartments[] = $projectDepartment;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectDepartment.
+     *
+     * @param ProjectDepartment $projectDepartment
+     */
+    public function removeProjectDepartment(ProjectDepartment $projectDepartment)
+    {
+        $this->projectDepartments->removeElement($projectDepartment);
+    }
+
+    /**
+     * Get projectDepartments.
+     *
+     * @return ArrayCollection|ProjectRole[]
+     */
+    public function getProjectDepartments()
+    {
+        return $this->projectDepartments;
     }
 }

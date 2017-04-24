@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
@@ -70,12 +71,23 @@ class ProjectRole
     private $updatedAt;
 
     /**
+     * @var ProjectUser[]|ArrayCollection
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ProjectUser", mappedBy="projectRoles")
+     * @Serializer\Exclude()
+     */
+    private $projectUsers;
+
+    /**
      * ProjectRole constructor.
      */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->isLead = false;
+        $this->projectUsers = new ArrayCollection();
     }
 
     /**
@@ -206,5 +218,39 @@ class ProjectRole
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Add projectUser.
+     *
+     * @param ProjectUser $projectUser
+     *
+     * @return ProjectRole
+     */
+    public function addProjectUser(ProjectUser $projectUser)
+    {
+        $this->projectUsers[] = $projectUser;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectUser.
+     *
+     * @param ProjectUser $projectUser
+     */
+    public function removeProjectUser(ProjectUser $projectUser)
+    {
+        $this->projectUsers->removeElement($projectUser);
+    }
+
+    /**
+     * Get projectUsers.
+     *
+     * @return ArrayCollection|ProjectUser[]
+     */
+    public function getProjectUsers()
+    {
+        return $this->projectUsers;
     }
 }
