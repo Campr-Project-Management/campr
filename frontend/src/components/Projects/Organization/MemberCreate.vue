@@ -36,12 +36,18 @@
                         <div class="form-group last-form-group">
                             <div class="col-md-6"><input-field v-model="name" type="text" v-bind:label="translateText('placeholder.name')"></input-field></div>
                             <div class="col-md-6">
-                                <select-field
+                                <!--<select-field
                                         v-bind:title="translateText('placeholder.role')"
                                         v-bind:options="projectRolesForSelect"
                                         v-model="role"
                                         v-bind:currentOption="role" />
-                                <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_role') }}</a>
+                                <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_role') }}</a>-->
+                            <multi-select-field
+                                        v-bind:title="translateText('placeholder.role')"
+                                        v-bind:options="dataOptions"
+                                        v-bind:selectedOptions="input.selectedRoles"
+                                        v-model="input.selectedRoles" />
+                            <a class="btn-rounded btn-empty btn-md btn-auto margintop20">Add another role</a>
                             </div>
                         </div>
                     </div> 
@@ -54,7 +60,7 @@
                         <div class="form-group last-form-group">
                             <div class="col-md-4"><input-field v-model="company" type="text" v-bind:label="translateText('placeholder.company')"></input-field></div>
                             <div class="col-md-4">
-                                <select-field
+                                <!--<select-field
                                         v-bind:title="translateText('placeholder.department')"
                                         v-bind:options="projectDepartmentsForSelect"
                                         v-model="department"
@@ -62,7 +68,20 @@
                                 <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_department') }}</a>
                             </div>
                             <div class="col-md-4">
-                                <select-field v-bind:title="translateText('placeholder.subteam')"></select-field>
+                                <select-field v-bind:title="translateText('placeholder.subteam')"></select-field>-->
+                            <multi-select-field
+                                        v-bind:title="label.department"
+                                        v-bind:options="dataOptions"
+                                        v-bind:selectedOptions="input.departments"
+                                        v-model="input.departments" />
+                            <a class="btn-rounded btn-empty btn-md btn-auto margintop20">Add another department</a>
+                            </div>
+                            <div class="col-md-4">
+                            <multi-select-field
+                                        v-bind:title="label.subteam"
+                                        v-bind:options="dataOptions"
+                                        v-bind:selectedOptions="input.subteams"
+                                        v-model="input.subteams" />
                                 <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_subteam') }}</a>
                             </div>
                         </div>
@@ -164,6 +183,7 @@
 <script>
 import {mapGetters, mapActions} from 'vuex';
 import InputField from '../../_common/_form-components/InputField';
+import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import SelectField from '../../_common/_form-components/SelectField';
 import Switches from '../../3rdparty/vue-switches';
 import AvatarPlaceholder from '../../_common/_form-components/AvatarPlaceholder';
@@ -174,6 +194,7 @@ export default {
         SelectField,
         Switches,
         AvatarPlaceholder,
+        MultiSelectField,
     },
     methods: {
         ...mapActions(['createNewOrganizationMember', 'getProjectById', 'getProjectRoles', 'getProjectDepartments']),
@@ -252,6 +273,38 @@ export default {
             linkedIn: '',
             gplus: '',
             distribution: [],
+            dataOptions: [
+                {
+                    label: 'Admin',
+                    key: 1,
+                },
+                {
+                    label: 'User',
+                    key: 2,
+                },
+                {
+                    label: 'Developer',
+                    key: 3,
+                },
+            ],
+            input: {
+                selectedRoles: [],
+                name: '',
+                departments: [],
+                company: '',
+                subteams: [],
+                resource: false,
+                raci: false,
+                org: false,
+                tpMeeting: false,
+                ekMeeting: false,
+                email: '',
+                phone: '',
+                facebook: '',
+                twitter: '',
+                linkedIn: '',
+                googlePlus: '',
+            },
         };
     },
 };
