@@ -142,8 +142,10 @@
                             </tr>
                         </thead>
                         <tbody>
+
                             <tr v-for="department in projectDepartments.items">
                                 <td>{{ department.name }}</td>
+
                                 <td class="avatar">
                                     <div v-for="manager in department.managers">
                                         <div class="avatar-image" v-tooltip.top-center="manager.userFullName">
@@ -166,6 +168,7 @@
                         <span v-for="page in departmentPages" :class="{'active': page == activeDepartmentPage}" @click="changeDepartmentPage(page)">{{ page }}</span>
                     </div>
                     <span class="pagination-info">Displaying {{ projectDepartments.items.length }} results out of {{ projectDepartments.totalItems }}</span>
+
                 </div>
                 <!-- /// End Departments /// -->
 
@@ -233,6 +236,7 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex';
 import InputField from '../../_common/_form-components/InputField';
 import ViewIcon from '../../_common/_icons/ViewIcon';
 import EditIcon from '../../_common/_icons/EditIcon';
@@ -315,6 +319,18 @@ export default {
             managersForSelect: 'managersForSelect',
         }),
     },
+    methods: {
+        ...mapActions(['getOrganizationDepartments']),
+    },
+    computed: {
+        ...mapGetters({
+            organizationDepartmentsForSelect: 'organizationDepartmentsForSelect',
+            organizationDepartments: 'organizationDepartments',
+        }),
+    },
+    created() {
+        this.getOrganizationDepartments(this.$route.params.id);
+    },
     data() {
         return {
             departmentPage: 1,
@@ -330,6 +346,8 @@ export default {
                 back_to_organization: 'Back to Project Organization',
                 edit_organization: 'Edit Project Organization',
                 distribution_lists: 'Distribution Lists',
+                displaying: this.translate('message.displaying'),
+                results_out_of: this.translate('message.results_out_of'),
             },
         };
     },
