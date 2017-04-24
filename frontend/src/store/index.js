@@ -24,6 +24,7 @@ import projectResources from './modules/project-resources';
 import workPackageStatus from './modules/work-package-status';
 import projectUser from './modules/project-user';
 import distributionList from './modules/distribution-list';
+import organization from './modules/organization';
 
 Vue.use(Vuex);
 
@@ -55,6 +56,7 @@ export default new Vuex.Store({
         projectPhase,
         projectResources,
         workPackageStatus,
+        organization,
     },
     strict: debug,
 });
