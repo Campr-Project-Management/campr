@@ -105,6 +105,7 @@
         </div>
         <div class="team-list">
             <vue-scrollbar class="table-wrapper">
+                <div class="scroll-wrapper">
                 <table class="table table-striped">
                 <thead>
                     <tr>
@@ -118,7 +119,7 @@
                         <th>{{ table_header_cell.contact }}</th>
                         <th class="center">{{ table_header_cell.raci }}</th>
                         <th class="center">{{ table_header_cell.org }}</th>
-                        <th :colspan="project.distributionLists.length" class="no-padding">
+                        <th v-if='project.distributionLists' :colspan="project.distributionLists.length" class="no-padding">
                             <table>
                                 <tr>
                                     <th class="center" :colspan="project.distributionLists.length">{{ table_header_cell.distribution_lists }}</th>
@@ -157,13 +158,16 @@
                     </tr>
                 </tbody>
                 </table>
+                </div>
             </vue-scrollbar>
 
             <div class="flex flex-direction-reverse">
                 <div class="pagination" v-if="pages > 0">
                     <span v-for="page in pages" :class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
                 </div>
-                <span class="pagination-info">{{ message.displaying }} {{ projectUsers.items.length }} {{ message.results_out_of }} {{ projectUsers.totalItems }}</span>
+                <div v-if='projectUsers.items'>
+                    <span class="pagination-info">{{ message.displaying }} {{ projectUsers.items.length }} {{ message.results_out_of }} {{ projectUsers.totalItems }}</span>
+                </div>
             </div>
         </div>
     </div>
@@ -508,6 +512,12 @@ export default {
     }
 
     .table-wrapper {
+        width: 100%;
         padding-bottom: 40px;
+    }
+
+    .scroll-wrapper {
+        display: inline-block;
+        white-space: nowrap;
     }
 </style>
