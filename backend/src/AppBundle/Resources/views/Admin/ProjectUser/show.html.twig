@@ -64,8 +64,10 @@
                                 <tr>
                                     <th>{{ 'table_header_cell.project_role'|trans }}</th>
                                     <td>
-                                        {% if project_user.projectRole %}
-                                            {{ project_user.projectRole.name }}
+                                        {% if project_user.projectRoles %}
+                                            {% for projectRole in project_user.projectRoles %}
+                                                {{ projectRole.name }}
+                                            {% endfor %}
                                         {% else %}
                                             -
                                         {% endif %}
@@ -74,8 +76,10 @@
                                 <tr>
                                     <th>{{ 'table_header_cell.project_department'|trans }}</th>
                                     <td>
-                                        {% if project_user.projectDepartment %}
-                                            {{ project_user.projectDepartment.name }}
+                                        {% if project_user.projectDepartments %}
+                                            {% for projectDepartment in project_user.projectDepartments %}
+                                                {{ projectDepartment.name }}
+                                            {% endfor %}
                                         {% else %}
                                             -
                                         {% endif %}

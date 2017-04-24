@@ -82,11 +82,12 @@ class ProjectDepartment
     private $updatedAt;
 
     /**
-     * @var ArrayCollection|ProjectUser[]
+     * @var ProjectUser[]|ArrayCollection
      *
      * @Serializer\Exclude()
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectUser", mappedBy="projectDepartment", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ProjectUser", mappedBy="projectRoles")
+     * @Serializer\Exclude()
      */
     private $projectUsers;
 
@@ -359,7 +360,7 @@ class ProjectDepartment
     }
 
     /**
-     * Returns department managers.
+     * Returns department members count.
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("membersCount")
