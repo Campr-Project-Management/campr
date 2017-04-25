@@ -11,10 +11,8 @@ use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Note;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectDeliverable;
-use AppBundle\Entity\ProjectDepartment;
 use AppBundle\Entity\ProjectLimitation;
 use AppBundle\Entity\ProjectObjective;
-use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\ProjectStatus;
 use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
@@ -45,9 +43,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use GuzzleHttp\Client as HttpClient;
 use AppBundle\Entity\User;
 
 /**
@@ -566,6 +562,7 @@ class ProjectController extends ApiController
             return $this->createApiResponse($project->getProjectUsers());
         }
 
+        $filters['project'] = $project;
         $usersQuery = $this
             ->getDoctrine()
             ->getRepository(ProjectUser::class)
@@ -637,73 +634,15 @@ class ProjectController extends ApiController
     public function createTeamMemberAction(Request $request, Project $project)
     {
         $data = $request->request->all();
+        $data['project'] = $project;
         $currentHost = $request->getHttpHost();
-        $baseHost = $this->container->getParameter('domain');
+        $baseHost = $this->getParameter('domain');
         $subdomain = str_replace('.'.$baseHost, '', $currentHost);
 
-        $data['firstName'] = 'FirstName';
-        $data['lastName'] = 'LastName';
-        $data['plainPassword'] = bin2hex(random_bytes(6));
-        $data['salt'] = md5(uniqid('', true));
+        $response = $this->get('app.service.user')->createTeamMember($subdomain, $data, $this->getUser()->getApiToken());
+        $code = $response instanceof ProjectUser ? JsonResponse::HTTP_CREATED : JsonResponse::HTTP_BAD_REQUEST;
 
-        $user = new User();
-        $encoder = $this->container->get('security.password_encoder');
-        $password = $encoder
-            ->encodePassword($user, $data['plainPassword'])
-        ;
-        $data['password'] = $password;
-
-        $req = $this->teamMemberCreateRequest($subdomain, $data);
-
-        $body = $req->getBody();
-        $reqBody = '';
-        while (!$body->eof()) {
-            $reqBody .= $body->read(1024);
-        }
-        $reqBody = json_decode($reqBody, true);
-
-        if ($req->getStatusCode() === Response::HTTP_CREATED) {
-            $user = (new User())
-                ->setUsername($data['name'])
-                ->setFirstName($data['firstName'])
-                ->setLastName($data['lastName'])
-                ->setEmail($data['email'])
-                ->setPhone(isset($data['phone']) ? $data['phone'] : null)
-                ->setPassword($data['password'])
-                ->setSalt($data['salt'])
-                ->setApiToken($reqBody['apiToken'])
-                ->setFacebook(isset($data['facebook']) ? $data['facebook'] : null)
-                ->setTwitter(isset($data['twitter']) ? $data['twitter'] : null)
-                ->setLinkedIn(isset($data['linkedIn']) ? $data['linkedIn'] : null)
-                ->setGplus(isset($data['gplus']) ? $data['gplus'] : null)
-            ;
-
-            $projectUser = (new ProjectUser())
-                ->setUser($user)
-                ->setProject($project)
-                ->setCompany(isset($data['company']) ? $data['company'] : null)
-                ->setShowInResources(isset($data['showInResources']) ? $data['showInResources'] : false)
-                ->setShowInOrg(isset($data['showInOrg']) ? $data['showInOrg'] : false)
-                ->setShowInRaci(isset($data['showInRaci']) ? $data['showInRaci'] : false)
-            ;
-
-            if (isset($data['role'])) {
-                $this->addRolesToProjectUser($projectUser, $data['role']);
-            }
-
-            if (isset($data['department'])) {
-                $this->addDepartmentsToProjectUser($projectUser, $data['department']);
-            }
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->persist($projectUser);
-            $em->flush();
-
-            return $this->createApiResponse($projectUser, JsonResponse::HTTP_CREATED);
-        }
-
-        return $this->createApiResponse($reqBody, JsonResponse::HTTP_BAD_REQUEST);
+        return $this->createApiResponse($response, $code);
     }
 
     /**
@@ -1242,129 +1181,5 @@ class ProjectController extends ApiController
         }
 
         return $this->createApiResponse($responseArray);
-    }
-
-    private function teamMemberCreateRequest($subdomain, $data)
-    {
-        $requestStack = new RequestStack();
-        $mainDomain = $this->getParameter('domain');
-
-        $scheme = $requestStack->getMasterRequest()
-            ? $requestStack->getMasterRequest()->getScheme()
-            : 'http'
-        ;
-
-        $httpClient = new HttpClient([
-            'base_uri' => sprintf('%s://%s/api/', $scheme, $mainDomain),
-            'timeout' => 10,
-            'curl' => [
-                CURLOPT_SSL_VERIFYHOST => false,
-                CURLOPT_SSL_VERIFYPEER => false,
-            ],
-        ]);
-
-        $uri = $this
-            ->container
-            ->get('router')
-            ->generate('main_api_team_members_create')
-        ;
-
-        $req = $httpClient->request(
-            Request::METHOD_POST,
-            $uri,
-            [
-                'http_errors' => false,
-                'headers' => [
-                    'Authorization' => sprintf('bearer %s', $this->getUser()->getApiToken()),
-                ],
-                'multipart' => [
-                    [
-                        'name' => 'username',
-                        'contents' => $data['name'],
-                    ],
-                    [
-                        'name' => 'email',
-                        'contents' => $data['email'],
-                    ],
-                    [
-                        'name' => 'plainPassword',
-                        'contents' => $data['plainPassword'],
-                    ],
-                    [
-                        'name' => 'firstName',
-                        'contents' => $data['firstName'],
-                    ],
-                    [
-                        'name' => 'lastName',
-                        'contents' => $data['lastName'],
-                    ],
-                    [
-                        'name' => 'phone',
-                        'contents' => $data['phone'],
-                    ],
-                    [
-                        'name' => 'facebook',
-                        'contents' => isset($data['facebook']) ? $data['facebook'] : null,
-                    ],
-                    [
-                        'name' => 'twitter',
-                        'contents' => isset($data['twitter']) ? $data['twitter'] : null,
-                    ],
-                    [
-                        'name' => 'linkedin',
-                        'contents' => isset($data['linkedIn']) ? $data['linkedIn'] : null,
-                    ],
-                    [
-                        'name' => 'gplus',
-                        'contents' => isset($data['gplus']) ? $data['gplus'] : null,
-                    ],
-                    [
-                        'name' => 'teamSlug',
-                        'contents' => $subdomain,
-                    ],
-                    [
-                        'name' => 'password',
-                        'contents' => $data['password'],
-                    ],
-                    [
-                        'name' => 'salt',
-                        'contents' => $data['salt'],
-                    ],
-                ],
-            ]);
-
-        return $req;
-    }
-
-    private function addRolesToProjectUser(ProjectUser $projectUser, array $roles)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        foreach ($roles as $roleId) {
-            $projectRole = $em
-                ->getRepository(ProjectRole::class)
-                ->find($roleId)
-            ;
-
-            if ($projectUser) {
-                $projectUser->addProjectRole($projectRole);
-            }
-        }
-    }
-
-    private function addDepartmentsToProjectUser(ProjectUser $projectUser, array $departments)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        foreach ($departments as $departmentId) {
-            $projectDepartment = $em
-                ->getRepository(ProjectDepartment::class)
-                ->find($departmentId)
-            ;
-
-            if ($projectDepartment) {
-                $projectUser->addProjectDepartment($projectDepartment);
-            }
-        }
     }
 }

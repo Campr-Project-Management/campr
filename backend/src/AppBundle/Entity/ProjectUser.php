@@ -670,6 +670,24 @@ class ProjectUser
     }
 
     /**
+     * Has role.
+     *
+     * @param $role
+     *
+     * @return bool
+     */
+    public function hasProjectRole($role)
+    {
+        foreach ($this->projectRoles as $projectRole) {
+            if ($projectRole->getName() === $role) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Add projectDepartment.
      *
      * @param ProjectDepartment $projectDepartment
@@ -679,6 +697,7 @@ class ProjectUser
     public function addProjectDepartment(ProjectDepartment $projectDepartment)
     {
         $this->projectDepartments[] = $projectDepartment;
+        $projectDepartment->addProjectUser($this);
 
         return $this;
     }
@@ -691,6 +710,9 @@ class ProjectUser
     public function removeProjectDepartment(ProjectDepartment $projectDepartment)
     {
         $this->projectDepartments->removeElement($projectDepartment);
+        $projectDepartment->removeProjectUser($this);
+
+        return $this;
     }
 
     /**
@@ -701,5 +723,23 @@ class ProjectUser
     public function getProjectDepartments()
     {
         return $this->projectDepartments;
+    }
+
+    /**
+     * Returns project role names.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectRoleNames")
+     *
+     * @return string
+     */
+    public function getProjectRoleNames()
+    {
+        $roleNames = [];
+        foreach ($this->getProjectRoles() as $projectRole) {
+            $roleNames[] = $projectRole->getName();
+        }
+
+        return $roleNames;
     }
 }

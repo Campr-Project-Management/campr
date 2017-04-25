@@ -71,7 +71,7 @@ const mutations = {
     [types.SET_MANAGERS](state, {projectUsers}) {
         let managers = [];
         projectUsers.map(function(projectUser) {
-            if (projectUser.projectRoleName === 'ROLE_MANAGER') {
+            if (projectUser.projectRoleNames.indexOf('ROLE_MANAGER') !== -1) {
                 managers.push(projectUser);
             }
         });

@@ -86,7 +86,7 @@ class ProjectDepartment
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ProjectUser", mappedBy="projectRoles")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ProjectUser", mappedBy="projectDepartments")
      * @Serializer\Exclude()
      */
     private $projectUsers;
@@ -287,7 +287,6 @@ class ProjectDepartment
      */
     public function addProjectUser(ProjectUser $projectUser)
     {
-        $projectUser->setProjectDepartment($this);
         $this->projectUsers[] = $projectUser;
 
         return $this;
@@ -351,7 +350,7 @@ class ProjectDepartment
     {
         $managers = [];
         foreach ($this->projectUsers as $projectUser) {
-            if ($projectUser->getProjectRoleName() === ProjectRole::ROLE_MANAGER) {
+            if ($projectUser->hasProjectRole(ProjectRole::ROLE_MANAGER)) {
                 $managers[] = $projectUser;
             }
         }

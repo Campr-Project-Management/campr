@@ -3,8 +3,11 @@
 namespace AppBundle\Tests\Services;
 
 use AppBundle\Services\UserService;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 class UserServiceTest extends KernelTestCase
 {
@@ -22,8 +25,23 @@ class UserServiceTest extends KernelTestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
+        $em = $this
+            ->getMockBuilder(EntityManager::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $userPassEncoder = $this
+            ->getMockBuilder(UserPasswordEncoder::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $router = $this
+            ->getMockBuilder(Router::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
-        $this->userService = new UserService($requestStack, $domain);
+        $this->userService = new UserService($requestStack, $domain, $em, $userPassEncoder, $router);
     }
 
     public function testGenerateActivationResetToken()
