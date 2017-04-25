@@ -40,8 +40,6 @@ class ProjectDepartmentController extends ApiController
             ;
 
             $paginator = new Paginator($query);
-            $paginator->getQuery();
-
             $responseArray['totalItems'] = count($paginator);
             $responseArray['pageSize'] = $pageSize;
             $responseArray['items'] = $paginator->getIterator()->getArrayCopy();
