@@ -321,15 +321,26 @@ export default {
     },
     methods: {
         ...mapActions(['getOrganizationDepartments']),
+        changeDepartmentPage: function(page) {
+            this.activeDepartmentPage = page;
+            this.getOrganizationDepartments(this.$route.params.id, page);
+        },
+        changeSubteamPage: function(page) {
+            this.activeSubteamPage = page;
+            this.getOrganizationSubteams(this.$route.params.id, page);
+        },
     },
     computed: {
         ...mapGetters({
             organizationDepartmentsForSelect: 'organizationDepartmentsForSelect',
             organizationDepartments: 'organizationDepartments',
         }),
+        departmentPages: function() {
+            return this.organizationDepartments.totalItems / this.departmentsPerPage;
+        },
     },
     created() {
-        this.getOrganizationDepartments(this.$route.params.id);
+        this.getOrganizationDepartments(this.$route.params.id, 1);
     },
     data() {
         return {
@@ -349,6 +360,8 @@ export default {
                 displaying: this.translate('message.displaying'),
                 results_out_of: this.translate('message.results_out_of'),
             },
+            departmentsPerPage: 6,
+            activeDepartmentPage: 1,
         };
     },
     watch: {
