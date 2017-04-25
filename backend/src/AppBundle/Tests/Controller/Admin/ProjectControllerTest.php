@@ -370,7 +370,7 @@ class ProjectControllerTest extends BaseController
                     [
                         'id' => 5,
                         'username' => 'user5',
-                        'roles' => [],
+                        'roles' => ['team-member'],
                     ],
                 ],
             ],

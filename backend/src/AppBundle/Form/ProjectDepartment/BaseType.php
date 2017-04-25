@@ -30,6 +30,7 @@ class BaseType extends AbstractType
             ])
             ->add('projectUsers', EntityType::class, [
                 'class' => ProjectUser::class,
+                'choice_label' => 'id',
                 'multiple' => true,
             ])
         ;
