@@ -38,34 +38,115 @@ const actions = {
      */
     getOrganizationDepartments({commit}, organization) {
         // // mock data in place of api call
-        const departments = [
-            {
-                name: 'Global Operations',
-                managers: [
-                    {
-                        name: 'Nelson Carr',
-                        avatar: 'http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg',
-                    },
-                    {
-                        name: 'Alicia Keys',
-                        avatar: 'http://dev.campr.biz/uploads/avatars/10.jpg',
-                    },
-                ],
-                nrMembers: 12,
-                created: '23.03.2017',
-            },
-            {
-                name: 'GMP',
-                managers: [
-                    {
-                        name: 'David Gilmore',
-                        avatar: 'http://dev.campr.biz/uploads/avatars/40.jpg',
-                    },
-                ],
-                nrMembers: 10,
-                created: '15.02.2017',
-            },
-        ];
+        const departments = {
+            items: [
+                {
+                    name: 'Global Operations',
+                    managers: [
+                        {
+                            name: 'Nelson Carr',
+                            avatar: 'http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg',
+                        },
+                        {
+                            name: 'Alicia Keys',
+                            avatar: 'http://dev.campr.biz/uploads/avatars/10.jpg',
+                        },
+                    ],
+                    nrMembers: 12,
+                    created: '23.03.2017',
+                },
+                {
+                    name: 'GMP',
+                    managers: [
+                        {
+                            name: 'David Gilmore',
+                            avatar: 'http://dev.campr.biz/uploads/avatars/40.jpg',
+                        },
+                    ],
+                    nrMembers: 10,
+                    created: '15.02.2017',
+                },
+                {
+                    name: 'Global Operations',
+                    managers: [
+                        {
+                            name: 'Nelson Carr',
+                            avatar: 'http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg',
+                        },
+                        {
+                            name: 'Alicia Keys',
+                            avatar: 'http://dev.campr.biz/uploads/avatars/10.jpg',
+                        },
+                    ],
+                    nrMembers: 12,
+                    created: '23.03.2017',
+                },
+                {
+                    name: 'GMP',
+                    managers: [
+                        {
+                            name: 'David Gilmore',
+                            avatar: 'http://dev.campr.biz/uploads/avatars/40.jpg',
+                        },
+                    ],
+                    nrMembers: 10,
+                    created: '15.02.2017',
+                },
+                {
+                    name: 'Global Operations',
+                    managers: [
+                        {
+                            name: 'Nelson Carr',
+                            avatar: 'http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg',
+                        },
+                        {
+                            name: 'Alicia Keys',
+                            avatar: 'http://dev.campr.biz/uploads/avatars/10.jpg',
+                        },
+                    ],
+                    nrMembers: 12,
+                    created: '23.03.2017',
+                },
+                {
+                    name: 'GMP',
+                    managers: [
+                        {
+                            name: 'David Gilmore',
+                            avatar: 'http://dev.campr.biz/uploads/avatars/40.jpg',
+                        },
+                    ],
+                    nrMembers: 10,
+                    created: '15.02.2017',
+                },
+                {
+                    name: 'Global Operations',
+                    managers: [
+                        {
+                            name: 'Nelson Carr',
+                            avatar: 'http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg',
+                        },
+                        {
+                            name: 'Alicia Keys',
+                            avatar: 'http://dev.campr.biz/uploads/avatars/10.jpg',
+                        },
+                    ],
+                    nrMembers: 12,
+                    created: '23.03.2017',
+                },
+                {
+                    name: 'GMP',
+                    managers: [
+                        {
+                            name: 'David Gilmore',
+                            avatar: 'http://dev.campr.biz/uploads/avatars/40.jpg',
+                        },
+                    ],
+                    nrMembers: 10,
+                    created: '15.02.2017',
+                },
+            ],
+            totalItems: 12,
+        };
         // // mock data in place of api call
         commit(types.SET_ORGANIZATION_DEPARTMENT, {departments});
     },
