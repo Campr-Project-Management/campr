@@ -2,46 +2,25 @@
 
 namespace AppBundle\Services;
 
-use GuzzleHttp\Client as HttpClient;
 use Predis\Client as RedisClient;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class TeamService
+class TeamService extends BaseClientService
 {
-    private $httpClient;
-
     private $redisClient;
-
-    private $mainDomain;
 
     private $requestDomain;
 
-    public function __construct(
-        RequestStack $requestStack,
-        RedisClient $redis,
-        $mainDomain
-    ) {
-        $this->redisClient = $redis;
-        $this->mainDomain = $mainDomain;
+    public function __construct(RequestStack $requestStack, $mainDomain, RedisClient $redis)
+    {
+        parent::__construct($requestStack, $mainDomain);
 
-        $scheme = $requestStack->getMasterRequest()
-            ? $requestStack->getMasterRequest()->getScheme()
-            : 'http'
-        ;
+        $this->redisClient = $redis;
 
         $this->requestDomain = $requestStack->getMasterRequest()
             ? $requestStack->getMasterRequest()
             : $mainDomain
         ;
-
-        $this->httpClient = new HttpClient([
-            'base_uri' => sprintf('%s://%s/api/', $scheme, $mainDomain),
-            'timeout' => 5,
-            'curl' => [
-                CURLOPT_SSL_VERIFYHOST => false,
-                CURLOPT_SSL_VERIFYPEER => false,
-            ],
-        ]);
     }
 
     public function isEnabled($slug)
