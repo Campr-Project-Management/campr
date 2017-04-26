@@ -586,7 +586,7 @@ class ProjectController extends ApiController
     /**
      * Create a new Project User.
      *
-     * @Route("/{id}/project-users", name="app_api_project_project_user_create")
+     * @Route("/{id}/project-users", name="app_api_project_project_user_create", options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request $request

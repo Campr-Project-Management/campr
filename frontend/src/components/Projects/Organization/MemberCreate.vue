@@ -7,16 +7,16 @@
                     <div>
                         <router-link :to="{name: 'project-organization'}" class="small-link">
                             <i class="fa fa-angle-left"></i>
-                            Back to Project Organization
+                            {{ translateText('message.back_to_organization') }}
                         </router-link>
-                        <h1>Create new team member</h1>
+                        <h1>{{ translateText('message.create_new_team_member') }}</h1>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
 
                 <div class="form">
                     <!-- /// Member Avatar /// -->
-                    <input id="avatar" type="file" name="avatar" style="display: none;" accept="image/*" v-on:change="updateAvatar"> 
+                    <input id="avatar" type="file" name="avatar" style="display: none;" accept="image/*" @change="updateAvatar">
 
                     <div v-if="!avatar">
                         <avatar-placeholder />
@@ -25,39 +25,45 @@
                         <img :src="avatar" class="avatar" />
                     </div>
                     <div class="flex flex-center">
-                        <a class="btn-rounded btn-empty btn-auto" v-on:click="openAvatarFileSelection">Add avatar image</a>
+                        <a class="btn-rounded btn-empty btn-auto" @click="openAvatarFileSelection">{{ translateText('message.add_avatar_image') }}</a>
                     </div>
                     <!-- /// End Member Avatar /// -->
 
                     <hr class="double">
 
+                    <!-- /// Member Name & Role /// -->
+                    <div class="row">
+                        <div class="form-group last-form-group">
+                            <div class="col-md-6"><input-field v-model="name" type="text" v-bind:label="translateText('placeholder.name')"></input-field></div>
+                            <div class="col-md-6">
+                                <select-field
+                                        v-bind:title="translateText('placeholder.role')"
+                                        v-bind:options="projectRolesForSelect"
+                                        v-model="role"
+                                        v-bind:currentOption="role" />
+                                <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_role') }}</a>
+                            </div>
+                        </div>
+                    </div> 
+                    <!-- /// End Member Name & Role /// --> 
+
+                    <hr class="double">
 
                     <!-- /// Member Name & Role /// -->
                     <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-6"><input-field v-model="input.name" type="text" v-bind:label="label.name"></input-field></div>
-                            <div class="col-md-6">
-                                <div v-for='(item, index) in input.selectedRoles'>
-                                    <select-field :options='dataOptions' v-bind:title="label.role" v-model="input.selectedRoles[index]" :currentOption="input.selectedRoles[index]">
-                                    </select-field>
-                                </div>
-                                <a @click="addRoleField" class="btn-rounded btn-empty btn-md btn-auto margintop20">Add another role</a>
-                            </div>
-                        </div>
                         <div class="form-group last-form-group">
-                            <div class="col-md-4"><input-field v-model="input.company" type="text" v-bind:label="label.company"></input-field></div>
+                            <div class="col-md-4"><input-field v-model="company" type="text" v-bind:label="translateText('placeholder.company')"></input-field></div>
                             <div class="col-md-4">
-                                <div v-for="(item, index) in input.departments">
-                                    <select-field :options='dataOptions' v-bind:title="label.department" v-model="input.departments[index]" :currentOption="input.departments[index]"></select-field>
-                                </div>
-                                <a @click="addDepartmentField" class="btn-rounded btn-empty btn-md btn-auto margintop20">Add another department</a>
+                                <select-field
+                                        v-bind:title="translateText('placeholder.department')"
+                                        v-bind:options="projectDepartmentsForSelect"
+                                        v-model="department"
+                                        v-bind:currentOption="department" />
+                                <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_department') }}</a>
                             </div>
                             <div class="col-md-4">
-                                <div v-for='(item, index) in input.subteam'>
-                                    <select-field :options='dataOptions' v-bind:title="label.subteam" v-model="input.subteam[index]" :currentOption="input.subteam[index]">
-                                    </select-field>
-                                </div>
-                                <a @click='addSubteamField' class="btn-rounded btn-empty btn-md btn-auto margintop20">Add another subteam</a>
+                                <select-field v-bind:title="translateText('placeholder.subteam')"></select-field>
+                                <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_subteam') }}</a>
                             </div>
                         </div>
                     </div> 
@@ -68,23 +74,23 @@
                     <!-- /// Member Settings /// -->
                     <div class="row">
                         <div class="col-md-4">
-                            <h3>Resources</h3>
+                            <h3>{{ translateText('message.resources') }}</h3>
                             <div class="flex flex-v-center">
-                                <switches v-model="input.resource" :selected="false"></switches>
+                                <switches v-model="resource" :selected="false"></switches>
                             </div>
                             <hr class="nomarginbottom">
                         </div>
                         <div class="col-md-4">
-                            <h3>Raci</h3>
+                            <h3>{{ translateText('table_header_cell.raci') }}</h3>
                             <div class="flex flex-v-center">
-                                <switches v-model="input.raci" :selected="false"></switches>
+                                <switches v-model="raci" :selected="false"></switches>
                             </div>
                             <hr class="nomarginbottom">
                         </div>
                         <div class="col-md-4">
-                            <h3>Org</h3>
+                            <h3>{{ translateText('table_header_cell.org') }}</h3>
                             <div class="flex flex-v-center">
-                                <switches v-model="input.org" :selected="false"></switches>
+                                <switches v-model="org" :selected="false"></switches>
                             </div>
                             <hr class="nomarginbottom">
                         </div>
@@ -92,18 +98,12 @@
                     <!-- /// End Member Settings /// -->
 
                     <!-- /// Distribution Lists /// -->
-                    <h3>Distribution Lists</h3>
+                    <h3>{{ translateText('table_header_cell.distribution_lists') }}</h3>
                     <div class="row">
-                        <div class="col-md-4">
-                            <h4>TP Meeting</h4>
+                        <div class="col-md-4" v-for="dl in project.distributionLists">
+                            <h4>{{ dl.name }}</h4>
                             <div class="flex flex-v-center">
-                                <switches v-model="input.tpMeeting" :selected="false"></switches>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <h4>EK Meeting</h4>
-                            <div class="flex flex-v-center">
-                                <switches v-model="input.ekMeeting" :selected="false"></switches>
+                                <switches v-model="distribution[dl.id]" :selected="false"></switches>
                             </div>
                         </div>
                     </div>
@@ -112,36 +112,36 @@
                     <hr class="double">
 
                     <!-- /// Member Contact Info /// -->
-                    <h3>Contact</h3>
+                    <h3>{{ translateText('table_header_cell.contact') }}</h3>
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <input-field v-model="input.email" type="text" v-bind:label="label.email"></input-field>
+                                <input-field v-model="email" type="text" v-bind:label="translateText('placeholder.email')"></input-field>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-6">
-                                <input-field v-model="input.phone" type="text" v-bind:label="label.phone"></input-field>
+                                <input-field v-model="phone" type="text" v-bind:label="translateText('placeholder.phone')"></input-field>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-6">
-                                <input-field v-model="input.phone" type="text" v-bind:label="label.facebook"></input-field>
+                                <input-field v-model="facebook" type="text" v-bind:label="translateText('placeholder.facebook')"></input-field>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-6">
-                                <input-field v-model="input.twitter" type="text" v-bind:label="label.twitter"></input-field>
+                                <input-field v-model="twitter" type="text" v-bind:label="translateText('placeholder.twitter')"></input-field>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-6">
-                                <input-field v-model="input.linkedIn" type="text" v-bind:label="label.linkedIn"></input-field>
+                                <input-field v-model="linkedIn" type="text" v-bind:label="translateText('placeholder.linked_in')"></input-field>
                             </div>
                         </div>
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
-                                <input-field v-model="input.googlePlus" type="text" v-bind:label="label.googlePlus"></input-field>
+                                <input-field v-model="gplus" type="text" v-bind:label="translateText('placeholder.gplus')"></input-field>
                             </div>
                         </div>
                     </div>
@@ -151,8 +151,8 @@
 
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
-                        <router-link :to="{name: 'project-organization'}" class="btn-rounded btn-auto disable-bg">{{ button.cancel }}</router-link>
-                        <a v-on:click="saveMember" class="btn-rounded btn-auto second-bg">{{ button.save_member }}</a>
+                        <router-link :to="{name: 'project-organization'}" class="btn-rounded btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
+                        <a @click="saveMember" class="btn-rounded btn-auto second-bg">{{ translateText('button.save_member') }}</a>
                     </div>
                     <!-- /// Actions /// -->
                 </div> 
@@ -162,11 +162,11 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex';
 import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
 import Switches from '../../3rdparty/vue-switches';
 import AvatarPlaceholder from '../../_common/_form-components/AvatarPlaceholder';
-import {mapActions} from 'vuex';
 
 export default {
     components: {
@@ -176,7 +176,7 @@ export default {
         AvatarPlaceholder,
     },
     methods: {
-        ...mapActions(['createNewOrganizationMember']),
+        ...mapActions(['createNewOrganizationMember', 'getProjectById', 'getProjectRoles', 'getProjectDepartments']),
         openAvatarFileSelection() {
             document.getElementById('avatar').click();
         },
@@ -191,77 +191,67 @@ export default {
                 vm.avatar = e.target.result;
             };
             reader.readAsDataURL(files[0]);
+            this.avatarFile = files[0];
+        },
+        translateText(text) {
+            return this.translate(text);
         },
         saveMember() {
-            const member = {
-                'name': this.input.name,
-                'role': this.input.selectedRoles[0].id,
-                'department': this.input.departments[0].id,
-            };
-            this.createNewOrganizationMember(member);
-        },
-        addRoleField() {
-            this.input.selectedRoles.push(null);
-        },
-        addSubteamField() {
-            this.input.subteam.push(null);
-        },
-        addDepartmentField() {
-            this.input.departments.push(null);
+            let list = [];
+            this.distribution.map(function(item, index) {
+                if (item) {
+                    list.push(index);
+                }
+            });
+            let formData = new FormData();
+            formData.append('name', this.name);
+            formData.append('role', this.role.key);
+            formData.append('company', this.company);
+            formData.append('department', this.department.key);
+            formData.append('showInResources', this.resource);
+            formData.append('showInRaci', this.raci);
+            formData.append('showInOrg', this.org);
+            formData.append('email', this.email);
+            formData.append('phone', this.phone);
+            formData.append('facebook', this.facebook);
+            formData.append('twitter', this.twitter);
+            formData.append('linkedIn', this.linkedIn);
+            formData.append('gplus', this.gplus);
+            formData.append('distribution', list);
+            formData.append('avatar[file]', this.avatarFile instanceof window.File? this.avatarFile : '');
+
+            console.log(list);
+            // TODO: add function that calls the API for create new team member
         },
     },
+    created() {
+        this.getProjectById(this.$route.params.id);
+        this.getProjectRoles();
+        this.getProjectDepartments(this.$route.params.id);
+    },
+    computed: mapGetters({
+        project: 'project',
+        projectRolesForSelect: 'projectRolesForSelect',
+        projectDepartmentsForSelect: 'projectDepartmentsForSelect',
+    }),
     data: function() {
         return {
-            label: {
-                name: 'Name',
-                role: 'Role',
-                company: 'Company',
-                department: 'Department',
-                subteam: 'Subteam',
-                email: 'Email',
-                phone: 'Phone',
-                facebook: 'Facebook',
-                twitter: 'Twitter',
-                linkedIn: 'LinkedIn',
-                googlePlus: 'Google Plus',
-            },
-            button: {
-                cancel: 'Cancel',
-                save_member: 'Save Member',
-            },
             avatar: '',
-            dataOptions: [
-                {
-                    label: 'Admin',
-                    id: 1,
-                },
-                {
-                    label: 'User',
-                    id: 2,
-                },
-                {
-                    label: 'Developer',
-                    id: 3,
-                },
-            ],
-            input: {
-                selectedRoles: [null],
-                name: '',
-                departments: [null],
-                company: '',
-                subteam: [null],
-                resource: false,
-                raci: false,
-                org: false,
-                tpMeeting: false,
-                ekMeeting: false,
-                email: '',
-                phone: '',
-                facebook: '',
-                twitter: '',
-                linkedIn: '',
-                googlePlus: '',
-            },
+            avatarFile: '',
+            name: '',
+            company: '',
+            department: '',
+            role: '',
+            resource: '',
+            raci: '',
+            org: '',
+            email: '',
+            phone: '',
+            facebook: '',
+            twitter: '',
+            linkedIn: '',
+            gplus: '',
+            distribution: [],
         };
     },
 };
