@@ -86,7 +86,7 @@ class CreateType extends AbstractType
             ->add('company', EntityType::class, [
                 'class' => Company::class,
                 'choice_label' => 'name',
-                'placeholder' => 'placeholder.company',
+                'placeholder' => 'placeholder.company_choose',
                 'translation_domain' => 'messages',
             ])
             ->add('projectComplexity', EntityType::class, [
