@@ -227,7 +227,7 @@ export default {
     created() {
         this.getProjectById(this.$route.params.id);
         this.getProjectRoles();
-        this.getProjectDepartments(this.$route.params.id);
+        this.getProjectDepartments();
     },
     computed: mapGetters({
         project: 'project',
