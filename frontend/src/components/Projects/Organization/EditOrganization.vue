@@ -96,7 +96,7 @@
                     <div class="pagination flex flex-center" v-if="departmentPages > 1">
                         <span v-for="page in departmentPages" :class="{'active': page == activeDepartmentPage}" @click="changeDepartmentPage(page)">{{ page }}</span>
                     </div>
-                    <span class="pagination-info">Displaying {{ projectDepartments.items.length }} results out of {{ projectDepartments.totalItems }}</span>
+                    <span class="pagination-info" v-if="projectDepartments && projectDepartments.items">Displaying {{ projectDepartments.items.length }} results out of {{ projectDepartments.totalItems }}</span>
 
                 </div>
                 <!-- /// End Departments /// -->
@@ -172,7 +172,6 @@ import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import VTooltip from 'v-tooltip';
 import VueScrollbar from 'vue2-scrollbar';
-import {mapGetters, mapActions} from 'vuex';
 import moment from 'moment';
 import Modal from '../../_common/Modal';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
@@ -188,18 +187,18 @@ export default {
         VueScrollbar,
         Modal,
         MultiSelectField,
+        OrganizationDistributionItem,
     },
     methods: {
         ...mapActions(['getProjectDepartments', 'createDepartment', 'editDepartment', 'deleteDepartment', 'getProjectUsers']),
         moment: function(date) {
             return moment(date);
         },
-        translateText(text) {
+        translateText: function(text) {
             return this.translate(text);
         },
-        changeDepartmentPage(page) {
+        changeDepartmentPage: function(page) {
             this.activeDepartmentPage = page;
-            this.getProjectDepartments({projectId: this.$route.params.id, page: page});
         },
         createNewDepartment() {
             let data = {
@@ -248,30 +247,6 @@ export default {
             projectDepartments: 'projectDepartments',
             managersForSelect: 'managersForSelect',
         }),
-        OrganizationDistributionItem,
-    },
-    methods: {
-        ...mapActions(['getOrganizationDepartments']),
-        changeDepartmentPage: function(page) {
-            this.activeDepartmentPage = page;
-            this.getOrganizationDepartments(this.$route.params.id, page);
-        },
-        changeSubteamPage: function(page) {
-            this.activeSubteamPage = page;
-            this.getOrganizationSubteams(this.$route.params.id, page);
-        },
-    },
-    computed: {
-        ...mapGetters({
-            organizationDepartmentsForSelect: 'organizationDepartmentsForSelect',
-            organizationDepartments: 'organizationDepartments',
-        }),
-        departmentPages: function() {
-            return this.organizationDepartments.totalItems / this.departmentsPerPage;
-        },
-    },
-    created() {
-        this.getOrganizationDepartments(this.$route.params.id, 1);
     },
     data() {
         return {
@@ -292,7 +267,6 @@ export default {
                 results_out_of: this.translate('message.results_out_of'),
             },
             departmentsPerPage: 6,
-            activeDepartmentPage: 1,
             distributionHierarchy: {
                 name: 'Project Sponsor',
                 children: [
