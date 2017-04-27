@@ -165,6 +165,11 @@ class ProjectUser
         $this->projectDepartments = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return (string) $this->getUser()->getFullName();
+    }
+
     /**
      * Get id.
      *
@@ -697,7 +702,6 @@ class ProjectUser
     public function addProjectDepartment(ProjectDepartment $projectDepartment)
     {
         $this->projectDepartments[] = $projectDepartment;
-        $projectDepartment->addProjectUser($this);
 
         return $this;
     }
@@ -710,7 +714,6 @@ class ProjectUser
     public function removeProjectDepartment(ProjectDepartment $projectDepartment)
     {
         $this->projectDepartments->removeElement($projectDepartment);
-        $projectDepartment->removeProjectUser($this);
 
         return $this;
     }

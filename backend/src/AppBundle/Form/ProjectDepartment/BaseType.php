@@ -6,6 +6,7 @@ use AppBundle\Entity\ProjectDepartment;
 use AppBundle\Entity\ProjectUser;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,10 +29,14 @@ class BaseType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('projectUsers', EntityType::class, [
-                'class' => ProjectUser::class,
-                'choice_label' => 'id',
-                'multiple' => true,
+            ->add('projectUsers', CollectionType::class, [
+                'entry_type' => EntityType::class,
+                'entry_options' => [
+                    'class' => ProjectUser::class,
+                ],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
             ])
         ;
     }
