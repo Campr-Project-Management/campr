@@ -118,8 +118,7 @@ class ProjectVoter extends Voter
         ;
 
         return $projectUser
-            && $projectUser->getProjectRole()
-            && $projectUser->getProjectRoleName() !== ProjectRole::ROLE_SPONSOR
+            && $projectUser->hasProjectRole(ProjectRole::ROLE_SPONSOR)
         ;
     }
 
@@ -140,8 +139,7 @@ class ProjectVoter extends Voter
         ;
 
         return $projectUser
-            && $projectUser->getProjectRole()
-            && $projectUser->getProjectRoleName() === ProjectRole::ROLE_MANAGER
+            && $projectUser->hasProjectRole(ProjectRole::ROLE_MANAGER)
         ;
     }
 }
