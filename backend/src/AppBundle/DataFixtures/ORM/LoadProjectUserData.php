@@ -28,8 +28,8 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
             ->setUser($user)
             ->setProject($project)
             ->setProjectCategory($projectCategory)
-            ->setProjectRole($projectRole)
-            ->setProjectDepartment($projectDepartment)
+            ->addProjectRole($projectRole)
+            ->addProjectDepartment($projectDepartment)
             ->setProjectTeam($projectTeam)
             ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
         ;
@@ -46,8 +46,8 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
             ->setUser($user)
             ->setProject($project)
             ->setProjectCategory($projectCategory)
-            ->setProjectRole($projectRole)
-            ->setProjectDepartment($projectDepartment)
+            ->addProjectRole($projectRole)
+            ->addProjectDepartment($projectDepartment)
             ->setProjectTeam($projectTeam)
             ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
         ;
@@ -64,8 +64,8 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
             ->setUser($user)
             ->setProject($project)
             ->setProjectCategory($projectCategory)
-            ->setProjectRole($projectRole)
-            ->setProjectDepartment($projectDepartment)
+            ->addProjectRole($projectRole)
+            ->addProjectDepartment($projectDepartment)
             ->setProjectTeam($projectTeam)
             ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
         ;
@@ -82,8 +82,8 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
             ->setUser($user)
             ->setProject($project)
             ->setProjectCategory($projectCategory)
-            ->setProjectRole($projectRole)
-            ->setProjectDepartment($projectDepartment)
+            ->addProjectRole($projectRole)
+            ->addProjectDepartment($projectDepartment)
             ->setProjectTeam($projectTeam)
             ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
         ;

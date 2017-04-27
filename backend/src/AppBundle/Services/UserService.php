@@ -2,34 +2,36 @@
 
 namespace AppBundle\Services;
 
+use AppBundle\Entity\DistributionList;
+use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\User;
-use GuzzleHttp\Client as HttpClient;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 /**
  * Class UserService
  * Service used to handle user related actions.
  */
-class UserService
+class UserService extends BaseClientService
 {
-    private $httpClient;
+    private $em;
 
-    public function __construct(RequestStack $requestStack, $mainDomain)
+    private $encoder;
+
+    private $router;
+
+    public function __construct(RequestStack $requestStack, $mainDomain, EntityManager $em, UserPasswordEncoder $encoder, Router $router)
     {
-        $scheme = $requestStack->getMasterRequest()
-            ? $requestStack->getMasterRequest()->getScheme()
-            : 'http'
-        ;
+        parent::__construct($requestStack, $mainDomain);
 
-        $this->httpClient = new HttpClient([
-            'base_uri' => sprintf('%s://%s/api/', $scheme, $mainDomain),
-            'timeout' => 5,
-            'curl' => [
-                CURLOPT_SSL_VERIFYHOST => false,
-                CURLOPT_SSL_VERIFYPEER => false,
-            ],
-        ]);
+        $this->em = $em;
+        $this->encoder = $encoder;
+        $this->router = $router;
     }
 
     /**
@@ -89,5 +91,199 @@ class UserService
         $user->setAvatar($data['avatar']);
 
         return $user;
+    }
+
+    /**
+     * @param $subdomain
+     * @param $data
+     *
+     * @return ProjectUser|string
+     */
+    public function createTeamMember($subdomain, $data, $token)
+    {
+        $data['firstName'] = 'FirstName';
+        $data['lastName'] = 'LastName';
+        $data['plainPassword'] = bin2hex(random_bytes(6));
+        $data['salt'] = md5(uniqid('', true));
+
+        $user = new User();
+        $data['password'] = $this->encoder->encodePassword($user, $data['plainPassword']);
+
+        $req = $this->teamMemberCreateRequest($subdomain, $data, $token);
+        $body = $req->getBody();
+        $reqBody = '';
+        while (!$body->eof()) {
+            $reqBody .= $body->read(1024);
+        }
+        $reqBody = json_decode($reqBody, true);
+        if ($req->getStatusCode() !== Response::HTTP_CREATED) {
+            return $reqBody;
+        }
+
+        $user = (new User())
+            ->setUsername($data['name'])
+            ->setFirstName($data['firstName'])
+            ->setLastName($data['lastName'])
+            ->setEmail($data['email'])
+            ->setPhone(isset($data['phone']) ? $data['phone'] : null)
+            ->setPassword($data['password'])
+            ->setSalt($data['salt'])
+            ->setApiToken($reqBody['apiToken'])
+            ->setFacebook(isset($data['facebook']) ? $data['facebook'] : null)
+            ->setTwitter(isset($data['twitter']) ? $data['twitter'] : null)
+            ->setLinkedIn(isset($data['linkedIn']) ? $data['linkedIn'] : null)
+            ->setGplus(isset($data['gplus']) ? $data['gplus'] : null)
+        ;
+
+        $projectUser = (new ProjectUser())
+            ->setUser($user)
+            ->setProject($data['project'])
+            ->setCompany(isset($data['company']) ? $data['company'] : null)
+            ->setShowInResources(isset($data['showInResources']) ? $data['showInResources'] : false)
+            ->setShowInOrg(isset($data['showInOrg']) ? $data['showInOrg'] : false)
+            ->setShowInRaci(isset($data['showInRaci']) ? $data['showInRaci'] : false)
+        ;
+
+        if (isset($data['roles'])) {
+            $this->addRolesToProjectUser($projectUser, $data['roles']);
+        }
+
+        if (isset($data['departments'])) {
+            $this->addDepartmentsToProjectUser($projectUser, $data['departments']);
+        }
+        if (isset($data['distributions'])) {
+            $this->addUserToDistributionLists($user, $data['distributions']);
+        }
+
+        $this->em->persist($user);
+        $this->em->persist($projectUser);
+        $this->em->flush();
+
+        return $projectUser;
+    }
+
+    private function teamMemberCreateRequest($subdomain, $data, $token)
+    {
+        $uri = $this->router->generate('main_api_team_members_create');
+        $req = $this->httpClient->request(
+            Request::METHOD_POST,
+            $uri,
+            [
+                'http_errors' => false,
+                'headers' => [
+                    'Authorization' => sprintf('Bearer %s', $token),
+                ],
+                'multipart' => [
+                    [
+                        'name' => 'username',
+                        'contents' => $data['name'],
+                    ],
+                    [
+                        'name' => 'email',
+                        'contents' => $data['email'],
+                    ],
+                    [
+                        'name' => 'plainPassword',
+                        'contents' => $data['plainPassword'],
+                    ],
+                    [
+                        'name' => 'firstName',
+                        'contents' => $data['firstName'],
+                    ],
+                    [
+                        'name' => 'lastName',
+                        'contents' => $data['lastName'],
+                    ],
+                    [
+                        'name' => 'phone',
+                        'contents' => isset($data['phone']) ? $data['phone'] : null,
+                    ],
+                    [
+                        'name' => 'facebook',
+                        'contents' => isset($data['facebook']) ? $data['facebook'] : null,
+                    ],
+                    [
+                        'name' => 'twitter',
+                        'contents' => isset($data['twitter']) ? $data['twitter'] : null,
+                    ],
+                    [
+                        'name' => 'linkedin',
+                        'contents' => isset($data['linkedIn']) ? $data['linkedIn'] : null,
+                    ],
+                    [
+                        'name' => 'gplus',
+                        'contents' => isset($data['gplus']) ? $data['gplus'] : null,
+                    ],
+                    [
+                        'name' => 'teamSlug',
+                        'contents' => $subdomain,
+                    ],
+                    [
+                        'name' => 'password',
+                        'contents' => $data['password'],
+                    ],
+                    [
+                        'name' => 'salt',
+                        'contents' => $data['salt'],
+                    ],
+                ],
+            ])
+        ;
+
+        return $req;
+    }
+
+    /**
+     * @param ProjectUser $projectUser
+     * @param array       $roles
+     */
+    private function addRolesToProjectUser(ProjectUser $projectUser, array $roles)
+    {
+        foreach ($roles as $roleId) {
+            $projectRole = $this
+                ->em
+                ->getRepository(ProjectRole::class)
+                ->find($roleId)
+            ;
+
+            if ($projectRole) {
+                $projectUser->addProjectRole($projectRole);
+            }
+        }
+    }
+
+    /**
+     * @param ProjectUser $projectUser
+     * @param array       $departments
+     */
+    private function addDepartmentsToProjectUser(ProjectUser $projectUser, array $departments)
+    {
+        foreach ($departments as $departmentId) {
+            $projectDepartment = $this
+                ->em
+                ->getRepository(ProjectDepartment::class)
+                ->find($departmentId)
+            ;
+
+            if ($projectDepartment) {
+                $projectUser->addProjectDepartment($projectDepartment);
+            }
+        }
+    }
+
+    private function addUserToDistributionLists(User $user, array $distributionLists)
+    {
+        foreach ($distributionLists as $distributionListId) {
+            $distributionList = $this
+                ->em
+                ->getRepository(DistributionList::class)
+                ->find($distributionListId)
+            ;
+
+            if ($distributionList) {
+                $distributionList->addUser($user);
+                $this->em->persist($distributionList);
+            }
+        }
     }
 }

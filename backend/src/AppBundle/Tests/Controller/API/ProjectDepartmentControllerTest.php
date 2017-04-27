@@ -38,7 +38,7 @@ class ProjectDepartmentControllerTest extends BaseController
         $response = $this->client->getResponse();
         for ($i = 1; $i <= 2; ++$i) {
             $pd = $this->em->getRepository(ProjectDepartment::class)->find($i);
-            $responseContent[$i - 1]['updatedAt'] = $pd->getUpdatedAt()->format('Y-m-d H:i:s');
+            $responseContent['items'][$i - 1]['updatedAt'] = $pd->getUpdatedAt()->format('Y-m-d H:i:s');
         }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
@@ -57,27 +57,33 @@ class ProjectDepartmentControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    [
-                        'projectWorkCostType' => 1,
-                        'projectWorkCostTypeName' => 'project-work-cost-type1',
-                        'id' => 1,
-                        'name' => 'project-department1',
-                        'abbreviation' => 'pd1',
-                        'sequence' => 1,
-                        'rate' => null,
-                        'createdAt' => '2017-01-01 12:00:00',
-                        'updatedAt' => null,
-                    ],
-                    [
-                        'projectWorkCostType' => 2,
-                        'projectWorkCostTypeName' => 'project-work-cost-type2',
-                        'id' => 2,
-                        'name' => 'project-department2',
-                        'abbreviation' => 'pd2',
-                        'sequence' => 2,
-                        'rate' => null,
-                        'createdAt' => '2017-01-01 12:00:00',
-                        'updatedAt' => null,
+                    'items' => [
+                        [
+                            'projectWorkCostType' => 1,
+                            'projectWorkCostTypeName' => 'project-work-cost-type1',
+                            'managers' => [],
+                            'membersCount' => 2,
+                            'id' => 1,
+                            'name' => 'project-department1',
+                            'abbreviation' => 'pd1',
+                            'sequence' => 1,
+                            'rate' => null,
+                            'createdAt' => '2017-01-01 12:00:00',
+                            'updatedAt' => null,
+                        ],
+                        [
+                            'projectWorkCostType' => 2,
+                            'projectWorkCostTypeName' => 'project-work-cost-type2',
+                            'managers' => [],
+                            'membersCount' => 2,
+                            'id' => 2,
+                            'name' => 'project-department2',
+                            'abbreviation' => 'pd2',
+                            'sequence' => 2,
+                            'rate' => null,
+                            'createdAt' => '2017-01-01 12:00:00',
+                            'updatedAt' => null,
+                        ],
                     ],
                 ],
             ],
@@ -148,6 +154,8 @@ class ProjectDepartmentControllerTest extends BaseController
                 [
                     'projectWorkCostType' => null,
                     'projectWorkCostTypeName' => null,
+                    'managers' => [],
+                    'membersCount' => 0,
                     'id' => 3,
                     'name' => 'project-department3',
                     'abbreviation' => 'pd3',
@@ -327,6 +335,8 @@ class ProjectDepartmentControllerTest extends BaseController
                 [
                     'projectWorkCostType' => 1,
                     'projectWorkCostTypeName' => 'project-work-cost-type1',
+                    'managers' => [],
+                    'membersCount' => 2,
                     'id' => 1,
                     'name' => 'project-department1',
                     'abbreviation' => 'pd1',
@@ -391,65 +401,6 @@ class ProjectDepartmentControllerTest extends BaseController
                 [
                     'messages' => [
                         'name' => ['The name field should not be blank'],
-                        'abbreviation' => ['The abbreviation should not be blank'],
-                        'sequence' => ['The sequence field should not be blank'],
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider getDataForSequenceIsNumberOnEditAction
-     *
-     * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
-     */
-    public function testSequenceIsNumberOnEditAction(
-        array $content,
-        $isResponseSuccessful,
-        $responseStatusCode,
-        $responseContent
-    ) {
-        $user = $this->getUserByUsername('superadmin');
-        $token = $user->getApiToken();
-
-        $this->client->request(
-            'PATCH',
-            '/api/project-departments/1',
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
-            ],
-            json_encode($content)
-        );
-        $response = $this->client->getResponse();
-
-        $this->assertEquals($isResponseSuccessful, $response->isClientError());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataForSequenceIsNumberOnEditAction()
-    {
-        return [
-            [
-                [
-                    'name' => 'project-department1',
-                    'sequence' => 'project-department',
-                ],
-                true,
-                Response::HTTP_BAD_REQUEST,
-                [
-                    'messages' => [
-                        'sequence' => ['The sequence field should contain numbers greater than or equal to 0'],
                     ],
                 ],
             ],
@@ -557,6 +508,8 @@ class ProjectDepartmentControllerTest extends BaseController
                 [
                     'projectWorkCostType' => 2,
                     'projectWorkCostTypeName' => 'project-work-cost-type2',
+                    'managers' => [],
+                    'membersCount' => 2,
                     'id' => 2,
                     'name' => 'project-department2',
                     'abbreviation' => 'pd2',

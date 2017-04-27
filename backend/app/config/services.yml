@@ -11,12 +11,16 @@ parameters:
         placeholder.driver.dropbox: "dropbox_adapter"
 
 services:
+    app.service.base_client:
+        abstract: true
+        arguments:
+            - "@request_stack"
+            - "%domain%"
+
     app.service.team:
         class: AppBundle\Services\TeamService
-        arguments:
-            - '@request_stack'
-            - '@redis.client'
-            - '%domain%'
+        parent: app.service.base_client
+        arguments: ["@redis.client"]
 
     app.jwt_signer:
         class: Lcobucci\JWT\Signer\Hmac\Sha512
@@ -36,9 +40,8 @@ services:
 
     app.service.user:
         class: AppBundle\Services\UserService
-        arguments:
-            - '@request_stack'
-            - '%domain%'
+        parent: app.service.base_client
+        arguments: ["@doctrine.orm.entity_manager", "@security.password_encoder", "@router"]
 
     app.service.request_parser:
         class: AppBundle\Services\RequestParserService
@@ -180,7 +183,6 @@ services:
     app.listener.user:
         class: AppBundle\EventListener\UserListener
         arguments:
-            - '@app.service.user'
             - '@security.password_encoder'
         tags :
             - { name: doctrine.event_listener, event: onFlush }

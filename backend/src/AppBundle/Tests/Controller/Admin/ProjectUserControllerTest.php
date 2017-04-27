@@ -26,10 +26,10 @@ class ProjectUserControllerTest extends BaseController
         $this->assertContains('name="create[project]"', $crawler->html());
         $this->assertContains('id="create_projectCategory"', $crawler->html());
         $this->assertContains('name="create[projectCategory]"', $crawler->html());
-        $this->assertContains('id="create_projectRole"', $crawler->html());
-        $this->assertContains('name="create[projectRole]"', $crawler->html());
-        $this->assertContains('id="create_projectDepartment"', $crawler->html());
-        $this->assertContains('name="create[projectDepartment]"', $crawler->html());
+        $this->assertContains('id="create_projectRoles"', $crawler->html());
+        $this->assertContains('name="create[projectRoles][]"', $crawler->html());
+        $this->assertContains('id="create_projectDepartments"', $crawler->html());
+        $this->assertContains('name="create[projectDepartments][]"', $crawler->html());
         $this->assertContains('id="create_projectTeam"', $crawler->html());
         $this->assertContains('name="create[projectTeam]"', $crawler->html());
         $this->assertContains('id="create_showInResources"', $crawler->html());
@@ -161,10 +161,10 @@ class ProjectUserControllerTest extends BaseController
         $this->assertContains('name="create[project]"', $crawler->html());
         $this->assertContains('id="create_projectCategory"', $crawler->html());
         $this->assertContains('name="create[projectCategory]"', $crawler->html());
-        $this->assertContains('id="create_projectRole"', $crawler->html());
-        $this->assertContains('name="create[projectRole]"', $crawler->html());
-        $this->assertContains('id="create_projectDepartment"', $crawler->html());
-        $this->assertContains('name="create[projectDepartment]"', $crawler->html());
+        $this->assertContains('id="create_projectRoles"', $crawler->html());
+        $this->assertContains('name="create[projectRoles][]"', $crawler->html());
+        $this->assertContains('id="create_projectDepartments"', $crawler->html());
+        $this->assertContains('name="create[projectDepartments][]"', $crawler->html());
         $this->assertContains('id="create_projectTeam"', $crawler->html());
         $this->assertContains('name="create[projectTeam]"', $crawler->html());
         $this->assertContains('id="create_showInResources"', $crawler->html());
@@ -264,8 +264,6 @@ class ProjectUserControllerTest extends BaseController
         $this->assertContains('data-column-id="userFullName"', $crawler->html());
         $this->assertContains('data-column-id="projectName"', $crawler->html());
         $this->assertContains('data-column-id="projectCategoryName"', $crawler->html());
-        $this->assertContains('data-column-id="projectRoleName"', $crawler->html());
-        $this->assertContains('data-column-id="projectDepartmentName"', $crawler->html());
         $this->assertContains('data-column-id="projectTeamName"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());
         $this->assertEquals(1, $crawler->filter('.zmdi-plus')->count());

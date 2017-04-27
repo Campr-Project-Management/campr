@@ -2,6 +2,8 @@ message:
     back_to_organization: Back to Project Organization
     create_new_team_member: Create new team member
     add_avatar_image: Add avatar image
+    delete_department: Are you sure you want to delete selected department?
+    edit_department: Edit Department
     displaying: Displaying
     results_out_of: results out of
     edit_project_organization: Edit Project Organization
@@ -160,6 +162,7 @@ message:
     opex_subtotal: Opex Subtotal
     attachments: Attachments
     view_team: View Team
+    departments: Departments
 
 menu:
     users: Users
@@ -465,6 +468,8 @@ subtitle:
     project_deliverable: List of project deliverables
 
 label:
+    select_managers: Select Managers
+    department_name: Department Name
     resource: Resource
     quantity: Quantity
     username: Username
@@ -670,6 +675,8 @@ button:
     add_another_role: Add another role
     add_another_department: Add another department
     add_another_subteam: Add another subteam
+    edit_department: Edit Department
+    add_new_department: Add New Department
     show_selected: Show Selected
     create_distribution: Create Distribution List
     sign_in: Sign In
@@ -766,6 +773,7 @@ add:
     project_deliverable: Add new project deliverable
 
 placeholder:
+    new_department: New Department
     search_resources: Search for resources
     search_members: Seach For Members
     user: Choose one user
@@ -834,6 +842,10 @@ placeholder:
     gplus: Google Plus
 
 table_header_cell:
+    actions:
+    no_of_members: No. of Members
+    managers: Managers
+    department_name: Department Name
     rate: Rate
     quantity: Quantity
     raci: Raci
@@ -856,8 +868,8 @@ table_header_cell:
     project_complexity: Project Complexity
     project_category: Project Category
     project_scope: Project Scope
-    project_role: Project Role
-    project_department: Project Department
+    project_role: Project Roles
+    project_department: Project Departments
     project_team: Project Team
     project_teams: Project Teams
     project_work_cost_type: Project Work Cost Type
@@ -1031,6 +1043,7 @@ email:
             register: To activate your account click the following
             activation: Your activation code has been reseted. To activate your account click on the following
             reset: To reset your password click on the following
+            credential: Your credentials are
         invoice: You have your invoice for payment %payment% attached in this email.
         contact: Message
         team_member:
@@ -1048,6 +1061,8 @@ email:
     general:
         link: link
         hello: Hello
+        email: Email
+        password: Password
 
 authentication:
     account_disabled: Account disabled

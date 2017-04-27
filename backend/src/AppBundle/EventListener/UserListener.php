@@ -4,7 +4,6 @@ namespace AppBundle\EventListener;
 
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use AppBundle\Services\UserService;
 use AppBundle\Entity\User;
 
 /**
@@ -13,18 +12,15 @@ use AppBundle\Entity\User;
  */
 class UserListener
 {
-    private $userService;
     private $encoder;
 
     /**
      * UserListener constructor.
      *
-     * @param UserService         $userService
      * @param UserPasswordEncoder $encoder
      */
-    public function __construct(UserService $userService, UserPasswordEncoder $encoder)
+    public function __construct(UserPasswordEncoder $encoder)
     {
-        $this->userService = $userService;
         $this->encoder = $encoder;
     }
 
@@ -43,7 +39,7 @@ class UserListener
                     ->encodePassword($entity, $entity->getPlainPassword())
                 ;
                 $entity->setPassword($password);
-                $activationToken = $this->userService->generateActivationResetToken();
+                $activationToken = substr(md5(microtime()), rand(0, 26), 6);
                 $entity->setActivationToken($activationToken);
                 $entity->setActivationTokenCreatedAt(new \DateTime());
                 $uok->recomputeSingleEntityChangeSet(

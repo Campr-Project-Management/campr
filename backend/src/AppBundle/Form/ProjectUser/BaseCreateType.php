@@ -41,15 +41,17 @@ class BaseCreateType extends AbstractType
                 'placeholder' => 'placeholder.project_category',
                 'translation_domain' => 'messages',
             ])
-            ->add('projectRole', EntityType::class, [
+            ->add('projectRoles', EntityType::class, [
                 'class' => ProjectRole::class,
                 'choice_label' => 'name',
+                'multiple' => true,
                 'placeholder' => 'placeholder.project_role',
                 'translation_domain' => 'messages',
             ])
-            ->add('projectDepartment', EntityType::class, [
+            ->add('projectDepartments', EntityType::class, [
                 'class' => ProjectDepartment::class,
                 'choice_label' => 'name',
+                'multiple' => true,
                 'placeholder' => 'placeholder.project_department',
                 'translation_domain' => 'messages',
             ])
