@@ -60,6 +60,7 @@ not_blank:
     configuration: Project configuration should not be blank.
     rate: The rate should not be blank.
     quantity: The quantity should not be blank.
+    project_role: The project role should not be blank.
 
 not_null:
     driver: You must select a driver

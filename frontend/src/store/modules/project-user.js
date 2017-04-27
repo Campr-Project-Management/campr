@@ -13,6 +13,12 @@ const getters = {
             'label': item.userFullName,
         };
     }),
+    managersForSelect: state => state.managers.map(item => {
+        return {
+            'key': item.id,
+            'label': item.userFullName,
+        };
+    }),
 };
 
 const actions = {
@@ -27,6 +33,7 @@ const actions = {
                 if (response.status === 200) {
                     let projectUsers = response.data;
                     commit(types.SET_PROJECT_USERS, {projectUsers});
+                    commit(types.SET_MANAGERS, {projectUsers});
                 }
             }, (response) => {
             });
@@ -55,6 +62,20 @@ const mutations = {
      */
     [types.SET_PROJECT_USERS](state, {projectUsers}) {
         state.items = projectUsers;
+    },
+    /**
+     * Set project managers
+     * @param {Object} state
+     * @param {Object} projectUsers
+     */
+    [types.SET_MANAGERS](state, {projectUsers}) {
+        let managers = [];
+        projectUsers.map(function(projectUser) {
+            if (projectUser.projectRoleNames.indexOf('ROLE_MANAGER') !== -1) {
+                managers.push(projectUser);
+            }
+        });
+        state.managers = managers;
     },
 };
 
