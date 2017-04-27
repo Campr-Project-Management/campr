@@ -44,6 +44,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use AppBundle\Entity\User;
 
 /**
  * @Route("/api/projects")
@@ -561,6 +562,7 @@ class ProjectController extends ApiController
             return $this->createApiResponse($project->getProjectUsers());
         }
 
+        $filters['project'] = $project;
         $usersQuery = $this
             ->getDoctrine()
             ->getRepository(ProjectUser::class)
@@ -616,6 +618,31 @@ class ProjectController extends ApiController
         ];
 
         return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * Create a new Team Member.
+     *
+     * @Route("/{id}/team-members", name="app_api_project_team_member_create")
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function createTeamMemberAction(Request $request, Project $project)
+    {
+        $data = $request->request->all();
+        $data['project'] = $project;
+        $currentHost = $request->getHttpHost();
+        $baseHost = $this->getParameter('domain');
+        $subdomain = str_replace('.'.$baseHost, '', $currentHost);
+
+        $response = $this->get('app.service.user')->createTeamMember($subdomain, $data, $this->getUser()->getApiToken());
+        $code = $response instanceof ProjectUser ? JsonResponse::HTTP_CREATED : JsonResponse::HTTP_BAD_REQUEST;
+
+        return $this->createApiResponse($response, $code);
     }
 
     /**
