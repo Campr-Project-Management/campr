@@ -39,8 +39,8 @@
                             <multi-select-field
                                         v-bind:title="translateText('placeholder.role')"
                                         v-bind:options="projectRolesForSelect"
-                                        v-bind:selectedOptions="input.selectedRoles"
-                                        v-model="input.selectedRoles" />
+                                        v-bind:selectedOptions="selectedRoles"
+                                        v-model="selectedRoles" />
                             <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_role') }}</a>
                             </div>
                         </div>
@@ -57,16 +57,16 @@
                             <multi-select-field
                                         v-bind:title="translateText('placeholder.department')"
                                         v-bind:options="projectDepartmentsForSelect"
-                                        v-bind:selectedOptions="input.departments"
-                                        v-model="input.departments" />
+                                        v-bind:selectedOptions="departments"
+                                        v-model="departments" />
                             <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_department') }}</a>
                             </div>
                             <div class="col-md-4">
                             <multi-select-field
                                         v-bind:title="translateText('placeholder.subteam')"
                                         v-bind:options="dataOptions"
-                                        v-bind:selectedOptions="input.subteams"
-                                        v-model="input.subteams" />
+                                        v-bind:selectedOptions="subteams"
+                                        v-model="subteams" />
                                 <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_subteam') }}</a>
                             </div>
                         </div>
@@ -182,7 +182,7 @@ export default {
         MultiSelectField,
     },
     methods: {
-        ...mapActions(['createNewOrganizationMember', 'getProjectById', 'getProjectRoles', 'getProjectDepartments']),
+        ...mapActions(['createNewOrganizationMember', 'getProjectById', 'getProjectRoles', 'getProjectDepartments', 'saveProjectUser']),
         openAvatarFileSelection() {
             document.getElementById('avatar').click();
         },
@@ -209,25 +209,28 @@ export default {
                     list.push(index);
                 }
             });
-            let formData = new FormData();
-            formData.append('name', this.name);
-            formData.append('role', this.role.key);
-            formData.append('company', this.company);
-            formData.append('department', this.department.key);
-            formData.append('showInResources', this.resource);
-            formData.append('showInRaci', this.raci);
-            formData.append('showInOrg', this.org);
-            formData.append('email', this.email);
-            formData.append('phone', this.phone);
-            formData.append('facebook', this.facebook);
-            formData.append('twitter', this.twitter);
-            formData.append('linkedIn', this.linkedIn);
-            formData.append('gplus', this.gplus);
-            formData.append('distribution', list);
-            formData.append('avatar[file]', this.avatarFile instanceof window.File? this.avatarFile : '');
-
-            console.log(list);
-            // TODO: add function that calls the API for create new team member
+            const data = {
+                'name': this.name,
+                'role': this.role.key,
+                'company': this.company,
+                'department': this.department.key,
+                'showInResources': this.resource,
+                'showInRaci': this.raci,
+                'showInOrg': this.org,
+                'email': this.email,
+                'phone': this.phone,
+                'facebook': this.facebook,
+                'twitter': this.twitter,
+                'linkedIn': this.linkedIn,
+                'gplus': this.gplus,
+                'distribution': list,
+                'avatar[file]': this.avatarFile instanceof window.File? this.avatarFile : '',
+                'projectId': this.$route.params.id,
+                'selectedRoles': this.selectedRoles.filter((item) => item.key).map((item) => item.key),
+                'departments': this.departments.filter((item) => item.key).map((item) => item.key),
+                'subteams': this.subteams.filter((item) => item.key).map((item) => item.key),
+            };
+            this.saveProjectUser(data);
         },
     },
     created() {
@@ -272,24 +275,9 @@ export default {
                     key: 3,
                 },
             ],
-            input: {
-                selectedRoles: [],
-                name: '',
-                departments: [],
-                company: '',
-                subteams: [],
-                resource: false,
-                raci: false,
-                org: false,
-                tpMeeting: false,
-                ekMeeting: false,
-                email: '',
-                phone: '',
-                facebook: '',
-                twitter: '',
-                linkedIn: '',
-                googlePlus: '',
-            },
+            selectedRoles: [],
+            departments: [],
+            subteams: [],
         };
     },
 };
