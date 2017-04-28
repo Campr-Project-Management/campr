@@ -10,6 +10,7 @@ class RequestListener
     {
         $request = $event->getRequest();
         $headers = $request->headers->all();
+        $files = $request->files->all();
 
         if (isset($headers['content-type'])
             && (in_array('application/json;charset=UTF-8', $headers['content-type'])
@@ -18,6 +19,10 @@ class RequestListener
             if ($content = $request->getContent()) {
                 $request->request->replace(json_decode($content, true));
             }
+        }
+
+        if (!empty($files)) {
+            $request->request->set('files', $files);
         }
     }
 }

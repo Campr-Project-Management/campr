@@ -6,6 +6,7 @@ use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -101,14 +102,6 @@ class UserService extends BaseClientService
      */
     public function createTeamMember($subdomain, $data, $token)
     {
-        $data['firstName'] = 'FirstName';
-        $data['lastName'] = 'LastName';
-        $data['plainPassword'] = bin2hex(random_bytes(6));
-        $data['salt'] = md5(uniqid('', true));
-
-        $user = new User();
-        $data['password'] = $this->encoder->encodePassword($user, $data['plainPassword']);
-
         $req = $this->teamMemberCreateRequest($subdomain, $data, $token);
         $body = $req->getBody();
         $reqBody = '';
@@ -119,20 +112,22 @@ class UserService extends BaseClientService
         if ($req->getStatusCode() !== Response::HTTP_CREATED) {
             return $reqBody;
         }
-
+        $avatar = explode('/', $reqBody['avatar']);
         $user = (new User())
-            ->setUsername($data['name'])
-            ->setFirstName($data['firstName'])
-            ->setLastName($data['lastName'])
-            ->setEmail($data['email'])
-            ->setPhone(isset($data['phone']) ? $data['phone'] : null)
-            ->setPassword($data['password'])
-            ->setSalt($data['salt'])
+            ->setUsername($reqBody['username'])
+            ->setFirstName($reqBody['firstName'])
+            ->setLastName($reqBody['lastName'])
+            ->setEmail($reqBody['email'])
+            ->setPhone($reqBody['phone'])
+            ->setRoles($reqBody['roles'])
+            ->setPlainPassword(microtime(true))
             ->setApiToken($reqBody['apiToken'])
-            ->setFacebook(isset($data['facebook']) ? $data['facebook'] : null)
-            ->setTwitter(isset($data['twitter']) ? $data['twitter'] : null)
-            ->setLinkedIn(isset($data['linkedIn']) ? $data['linkedIn'] : null)
-            ->setGplus(isset($data['gplus']) ? $data['gplus'] : null)
+            ->setFacebook($reqBody['facebook'])
+            ->setTwitter($reqBody['twitter'])
+            ->setLinkedIn($reqBody['linkedIn'])
+            ->setGplus($reqBody['gplus'])
+            ->setWidgetSettings($reqBody['widgetSettings'])
+            ->setAvatar(!empty($avatar) ? end($avatar) : null)
         ;
 
         $projectUser = (new ProjectUser())
@@ -165,71 +160,59 @@ class UserService extends BaseClientService
     private function teamMemberCreateRequest($subdomain, $data, $token)
     {
         $uri = $this->router->generate('main_api_team_members_create');
-        $req = $this->httpClient->request(
-            Request::METHOD_POST,
+        $multipart = [
+            [
+                'name' => 'username',
+                'contents' => $data['name'],
+            ],
+            [
+                'name' => 'email',
+                'contents' => $data['email'],
+            ],
+            [
+                'name' => 'phone',
+                'contents' => isset($data['phone']) ? $data['phone'] : null,
+            ],
+            [
+                'name' => 'facebook',
+                'contents' => isset($data['facebook']) ? $data['facebook'] : null,
+            ],
+            [
+                'name' => 'twitter',
+                'contents' => isset($data['twitter']) ? $data['twitter'] : null,
+            ],
+            [
+                'name' => 'linkedin',
+                'contents' => isset($data['linkedIn']) ? $data['linkedIn'] : null,
+            ],
+            [
+                'name' => 'gplus',
+                'contents' => isset($data['gplus']) ? $data['gplus'] : null,
+            ],
+            [
+                'name' => 'teamSlug',
+                'contents' => $subdomain,
+            ],
+        ];
+        if ($data['files']['avatar']) {
+            /** @var UploadedFile $file */
+            $file = $data['files']['avatar'];
+            $multipart[] = [
+                'name' => 'avatarFile[file]',
+                'contents' => file_get_contents($file->getRealPath()),
+                'filename' => $file->getClientOriginalName(),
+            ];
+        }
+        $req = $this->httpClient->post(
             $uri,
             [
                 'http_errors' => false,
                 'headers' => [
                     'Authorization' => sprintf('Bearer %s', $token),
                 ],
-                'multipart' => [
-                    [
-                        'name' => 'username',
-                        'contents' => $data['name'],
-                    ],
-                    [
-                        'name' => 'email',
-                        'contents' => $data['email'],
-                    ],
-                    [
-                        'name' => 'plainPassword',
-                        'contents' => $data['plainPassword'],
-                    ],
-                    [
-                        'name' => 'firstName',
-                        'contents' => $data['firstName'],
-                    ],
-                    [
-                        'name' => 'lastName',
-                        'contents' => $data['lastName'],
-                    ],
-                    [
-                        'name' => 'phone',
-                        'contents' => isset($data['phone']) ? $data['phone'] : null,
-                    ],
-                    [
-                        'name' => 'facebook',
-                        'contents' => isset($data['facebook']) ? $data['facebook'] : null,
-                    ],
-                    [
-                        'name' => 'twitter',
-                        'contents' => isset($data['twitter']) ? $data['twitter'] : null,
-                    ],
-                    [
-                        'name' => 'linkedin',
-                        'contents' => isset($data['linkedIn']) ? $data['linkedIn'] : null,
-                    ],
-                    [
-                        'name' => 'gplus',
-                        'contents' => isset($data['gplus']) ? $data['gplus'] : null,
-                    ],
-                    [
-                        'name' => 'teamSlug',
-                        'contents' => $subdomain,
-                    ],
-                    [
-                        'name' => 'password',
-                        'contents' => $data['password'],
-                    ],
-                    [
-                        'name' => 'salt',
-                        'contents' => $data['salt'],
-                    ],
-                ],
+                'multipart' => $multipart,
             ])
         ;
-
         return $req;
     }
 
