@@ -5,12 +5,12 @@ namespace MainBundle\Controller\API;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamMember;
 use AppBundle\Entity\User;
+use AppBundle\Form\User\ApiCreateType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use AppBundle\Form\User\CreateType;
 
 /**
  * @Route("/api/team-members")
@@ -29,31 +29,19 @@ class TeamMemberController extends ApiController
      */
     public function createAction(Request $request)
     {
+        if ($this->container->has('profiler')) {
+            $this->container->get('profiler')->disable();
+        }
         $data = $request->request->all();
-        $user = new User();
-
-        $form = $this->createForm(CreateType::class, $user, ['csrf_protection' => false]);
+        $form = $this->createForm(ApiCreateType::class, new User(), ['csrf_protection' => false]);
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $activationToken = $this->get('app.service.user')->generateActivationResetToken();
-
-            $user
-                ->setActivationToken($activationToken)
-                ->setActivationTokenCreatedAt(new \DateTime())
-                ->setPassword($data['password'])
-                ->setSalt($data['salt'])
-                ->setFacebook(isset($data['facebook']) ? $data['facebook'] : null)
-                ->setTwitter(isset($data['twitter']) ? $data['twitter'] : null)
-                ->setLinkedIn(isset($data['linkedIn']) ? $data['linkedIn'] : null)
-                ->setGplus(isset($data['gplus']) ? $data['gplus'] : null)
-            ;
+            $user = $form->getData();
             $team = $em
                 ->getRepository(Team::class)
-                ->findOneBy([
-                    'slug' => $data['teamSlug'],
-                ])
+                ->findOneBySlug($data['teamSlug'])
             ;
             $teamMember = (new TeamMember())
                 ->setUser($user)
@@ -74,7 +62,7 @@ class TeamMemberController extends ApiController
                     'token' => $user->getActivationToken(),
                     'username' => $user->getUsername(),
                     'email' => $user->getEmail(),
-                    'password' => $user->getPassword(),
+                    'password' => $user->getPlainPassword(),
                     'expiration_time' => $this->getParameter('activation_token_expiration_number'),
                 ]
             );
