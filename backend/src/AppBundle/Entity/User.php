@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
@@ -354,6 +355,12 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     private $trustedComputers;
 
     /**
+     * @var SubteamMember[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SubteamMember", mappedBy="user", cascade={"all"})
+     */
+    private $subteamMembers;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -373,6 +380,12 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
         $this->contracts = new ArrayCollection();
         $this->ownedMeetings = new ArrayCollection();
         $this->favoriteProjects = new ArrayCollection();
+        $this->subteamMembers = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getFullName();
     }
 
     /**
@@ -1542,5 +1555,37 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
         $gravatarUrl = sprintf('%s%s?d=identicon', self::GRAVATAR_BASE_URL, $email);
 
         return $gravatarUrl;
+    }
+
+    /**
+     * @param SubteamMember $subteamMember
+     *
+     * @return User
+     */
+    public function addSubteamMember(SubteamMember $subteamMember)
+    {
+        $this->subteamMembers[] = $subteamMember;
+
+        return $this;
+    }
+
+    /**
+     * @param SubteamMember $subteamMember
+     *
+     * @return User
+     */
+    public function removeSubteamMember(SubteamMember $subteamMember)
+    {
+        $this->subteamMembers[] = $subteamMember;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SubteamMember[]
+     */
+    public function getSubteamMembers()
+    {
+        return $this->subteamMembers;
     }
 }
