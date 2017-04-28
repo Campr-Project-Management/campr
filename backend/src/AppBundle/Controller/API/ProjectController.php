@@ -16,6 +16,7 @@ use AppBundle\Entity\ProjectObjective;
 use AppBundle\Entity\ProjectStatus;
 use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
+use AppBundle\Entity\Subteam;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\Unit;
@@ -30,6 +31,7 @@ use AppBundle\Form\Meeting\BaseCreateType as MeetingCreateType;
 use AppBundle\Form\Note\BaseCreateType as NoteCreateType;
 use AppBundle\Form\ProjectTeam\BaseCreateType as ProjectTeamCreateType;
 use AppBundle\Form\ProjectUser\BaseCreateType as ProjectUserCreateType;
+use AppBundle\Form\Subteam\CreateType as SubteamCreateType;
 use AppBundle\Form\Todo\BaseCreateType as TodoCreateType;
 use AppBundle\Form\ProjectObjective\CreateType as ProjectObjectiveCreateType;
 use AppBundle\Form\ProjectDeliverable\CreateType as ProjectDeliverableCreateType;
@@ -1181,5 +1183,31 @@ class ProjectController extends ApiController
         }
 
         return $this->createApiResponse($responseArray);
+    }
+
+    /**
+     * @Route("/{id}/subteam", name="app_api_project_create_subteam")
+     * @Method({"POST"})
+     */
+    public function createSubteamAction(Request $request, Project $project)
+    {
+        $subteam = new Subteam();
+        $form = $this->createForm(SubteamCreateType::class, $subteam, ['csrf_protection' => false]);
+
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $subteam->setProject($project);
+            $this->persistAndFlush($subteam);
+
+            return $this->createApiResponse($subteam, JsonResponse::HTTP_CREATED);
+        }
+
+        return $this->createApiResponse(
+            [
+                'messages' => $this->getFormErrors($form),
+            ],
+            JsonResponse::HTTP_BAD_REQUEST
+        );
     }
 }
