@@ -382,6 +382,12 @@ class Project
     private $resources;
 
     /**
+     * @var Subteam[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Subteam", mappedBy="project", orphanRemoval=true, cascade={"all"})
+     */
+    private $subteams;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -409,6 +415,7 @@ class Project
         $this->costs = new ArrayCollection();
         $this->units = new ArrayCollection();
         $this->resources = new ArrayCollection();
+        $this->subteams = new ArrayCollection();
     }
 
     public function __toString()
