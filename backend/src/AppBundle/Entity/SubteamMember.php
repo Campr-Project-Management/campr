@@ -51,12 +51,44 @@ class SubteamMember
      * @Serializer\Exclude()
      */
     private $subteamRoles;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_lead", type="boolean", options={"default": false})
+     */
+    private $isLead = false;
+
     /**
      * Constructor.
      */
     public function __construct()
     {
-        $this->subteamRoles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->subteamRoles = new ArrayCollection();
+    }
+
+    /**
+     * Set isLead.
+     *
+     * @param bool $isLead
+     *
+     * @return SubteamMember
+     */
+    public function setIsLead($isLead)
+    {
+        $this->isLead = $isLead;
+
+        return $this;
+    }
+
+    /**
+     * Get isLead.
+     *
+     * @return bool
+     */
+    public function getIsLead()
+    {
+        return $this->isLead;
     }
 
     /**
