@@ -87,7 +87,6 @@ class ProjectDepartment
      * @Serializer\Exclude()
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ProjectUser", mappedBy="projectDepartments")
-     * @Serializer\Exclude()
      */
     private $projectUsers;
 
@@ -288,6 +287,7 @@ class ProjectDepartment
     public function addProjectUser(ProjectUser $projectUser)
     {
         $this->projectUsers[] = $projectUser;
+        $projectUser->addProjectDepartment($this);
 
         return $this;
     }
@@ -300,6 +300,9 @@ class ProjectDepartment
     public function removeProjectUser(ProjectUser $projectUser)
     {
         $this->projectUsers->removeElement($projectUser);
+        $projectUser->removeProjectDepartment($this);
+
+        return $this;
     }
 
     /**
