@@ -623,7 +623,7 @@ class ProjectController extends ApiController
     /**
      * Create a new Team Member.
      *
-     * @Route("/{id}/team-members", name="app_api_project_team_member_create")
+     * @Route("/{id}/team-members", name="app_api_project_team_member_create", options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request $request
