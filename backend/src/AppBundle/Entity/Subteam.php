@@ -40,7 +40,7 @@ class Subteam
      * @var Project
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="subteams")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="proect_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      * })
      * @Serializer\Exclude()
      */
@@ -51,6 +51,23 @@ class Subteam
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\SubteamMember", mappedBy="subteam", orphanRemoval=true, cascade={"all"})
      */
     private $subteamMembers;
+
+    /**
+     * @var Subteam
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Subteam", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $parent;
+
+    /**
+     * @var ArrayCollection|Subteam[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Subteam", mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $children;
 
     /**
      * @return string
@@ -64,7 +81,8 @@ class Subteam
      */
     public function __construct()
     {
-        $this->subteamMembers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->subteamMembers = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     /**
@@ -75,6 +93,64 @@ class Subteam
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set parent.
+     *
+     * @param Subteam $parent
+     *
+     * @return Subteam
+     */
+    public function setParent(Subteam $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent.
+     *
+     * @return Subteam
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Add child.
+     *
+     * @param Subteam $child
+     *
+     * @return Subteam
+     */
+    public function addChild(Subteam $child)
+    {
+        $this->children[] = $child;
+
+        return $this;
+    }
+
+    /**
+     * Remove child.
+     *
+     * @param Subteam $child
+     */
+    public function removeChild(Subteam $child)
+    {
+        $this->children->removeElement($child);
+    }
+
+    /**
+     * Get children.
+     *
+     * @return ArrayCollection|Subteam[]
+     */
+    public function getChildren()
+    {
+        return $this->children;
     }
 
     /**
