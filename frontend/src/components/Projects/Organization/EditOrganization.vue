@@ -37,9 +37,28 @@
                 <div class="form">
                     <!-- /// Roles /// -->
                     <h3>{{message.distribution_lists}}</h3>                
-                    <ul class="roles-hierarchy">
+                    <!--<ul class="roles-hierarchy">
                         <organization-distribution-item :item='distributionHierarchy'></organization-distribution-item>
-                    </ul>
+                    </ul>-->
+                    <div class="dd" id="domenu-0" style="margin-left: 20%;">
+                        <!--<button class="dd-new-item">+</button>-->
+                        <li class="dd-item-blueprint">
+                        <div class="dd-handle dd3-handle">Drag</div>
+                        <div class="dd3-content">
+                            <span class="item-name">[item_name]</span>
+                            <div class="dd-button-container">
+                            <button class="item-remove" data-confirm-class="item-remove-confirm">&times;</button>
+                            </div>
+                            <div class="dd-edit-box" style="display: none;">
+                            <input type="text" name="title" autocomplete="off" placeholder="Item"
+                                    data-placeholder="Any nice idea for the title?"
+                                    v-bind:data-default-value="departmentPage">
+                            <i class="end-edit">save</i>
+                            </div>
+                        </div>
+                        </li>
+                        <ol class="dd-list"></ol>
+                    </div>
                     <!-- /// End Roles /// -->
 
                     <hr>
@@ -50,7 +69,7 @@
                     </div>
                     <div class="flex flex-space-between">
                         <a @click="" class="btn-rounded btn-auto second-bg">Save</a>
-                        <a @click="" class="btn-rounded btn-auto">Add new role +</a>
+                        <a @click="addNewItemDistribution({title})" class="btn-rounded btn-auto">Add new role +</a>
                     </div>
                     <!-- /// End Add new Role /// -->
                 </div>
@@ -176,6 +195,8 @@ import moment from 'moment';
 import Modal from '../../_common/Modal';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import OrganizationDistributionItem from './OrganizationDistributionItem';
+import 'domenu';
+import 'domenu/jquery.domenu-0.99.77.css';
 
 export default {
     components: {
@@ -237,6 +258,20 @@ export default {
             this.showDeleteDepartmentModal = false;
             this.deleteDepartment(this.deleteDepartmentId);
         },
+        addDistributionData() {
+            const distData = this.distributionHierarchy;
+            $('#domenu-0').domenu({'data': JSON.stringify(distData)}).parseJson();
+        },
+        addNewItemDistribution(item) {
+            $('#domenu-0').domenu().createNewListItem(item);
+        },
+    },
+    mounted: function() {
+        $('#domenu-0').domenu({
+            data: '[]',
+        }).parseJson();
+
+        this.addDistributionData();
     },
     created() {
         this.getProjectDepartments({projectId: this.$route.params.id, page: this.departmentPage});
@@ -267,17 +302,21 @@ export default {
                 results_out_of: this.translate('message.results_out_of'),
             },
             departmentsPerPage: 6,
-            distributionHierarchy: {
-                name: 'Project Sponsor',
+            distributionHierarchy: [{
+                title: 'Project Sponsor',
+                id: 1,
                 children: [
                     {
-                        name: 'Project Manager',
+                        title: 'Project Manager',
+                        id: 2,
                         children: [
                             {
-                                name: 'Team Leader',
+                                title: 'Team Leader',
+                                id: 3,
                                 children: [
                                     {
-                                        name: 'Team Member',
+                                        title: 'Team Member',
+                                        id: 4,
                                         children: [],
                                     },
                                 ],
@@ -285,11 +324,12 @@ export default {
                         ],
                     },
                     {
-                        name: 'Coach',
+                        title: 'Coach',
+                        id: 5,
                         children: [],
                     },
                 ],
-            },
+            }],
         };
     },
     watch: {

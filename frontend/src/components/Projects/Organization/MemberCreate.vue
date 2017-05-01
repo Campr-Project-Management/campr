@@ -224,7 +224,7 @@ export default {
                 'linkedIn': this.linkedIn,
                 'gplus': this.gplus,
                 'distribution': list,
-                'avatar[file]': this.avatarFile instanceof window.File? this.avatarFile : '',
+                'avatar[file]': this.avatarFile instanceof window.File ? this.avatarFile : '',
                 'projectId': this.$route.params.id,
                 'selectedRoles': this.selectedRoles.filter((item) => item.key).map((item) => item.key),
                 'departments': this.departments.filter((item) => item.key).map((item) => item.key),

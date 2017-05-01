@@ -22,9 +22,6 @@
 export default {
     props: ['item'],
     name: 'organization-distribution-item',
-    created() {
-        console.log('eeee', this.item);
-    },
 };
 
 </script>
