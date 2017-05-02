@@ -52,6 +52,14 @@ const actions = {
             }, (response) => {
             });
     },
+    saveProjectUser({commit}, userData, projectId) {
+        Vue.http
+            .post(
+                Routing.generate('app_api_project_team_member_create', {'id': userData.projectId}),
+                JSON.stringify(userData)
+            ).then((response) => {
+            });
+    },
 };
 
 const mutations = {
