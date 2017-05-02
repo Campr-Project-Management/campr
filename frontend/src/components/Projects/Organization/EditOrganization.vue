@@ -37,80 +37,28 @@
                 <div class="form">
                     <!-- /// Roles /// -->
                     <h3>{{message.distribution_lists}}</h3>                
-                    <ul class="roles-hierarchy">
-                        <li>
-                            <span class="role">
-                                Project Sponsor
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
-                                    <g>
-                                        <path d="M6.5,5.5L2.3,1.3H4c0.4,0,0.7-0.3,0.7-0.7S4.4,0,4,0H0.7C0.3,0,0,0.3,0,0.7V4 c0,0.4,0.3,0.7,0.7,0.7S1.3,4.4,1.3,4V2.3l4.2,4.2c0.3,0.3,0.7,0.3,0.9,0C6.7,6.2,6.7,5.8,6.5,5.5z"/>
-                                        <path d="M9.5,5.5l4.2-4.2H12c-0.4,0-0.7-0.3-0.7-0.7S11.6,0,12,0h3.3C15.7,0,16,0.3,16,0.7V4 c0,0.4-0.3,0.7-0.7,0.7c-0.4,0-0.7-0.3-0.7-0.7V2.3l-4.2,4.2c-0.3,0.3-0.7,0.3-0.9,0C9.3,6.2,9.3,5.8,9.5,5.5z"/>
-                                        <path d="M5.5,9.5l-4.2,4.2V12c0-0.4-0.3-0.7-0.7-0.7S0,11.6,0,12v3.3C0,15.7,0.3,16,0.7,16H4 c0.4,0,0.7-0.3,0.7-0.7c0-0.4-0.3-0.7-0.7-0.7H2.3l4.2-4.2c0.3-0.3,0.3-0.7,0-0.9C6.2,9.3,5.8,9.3,5.5,9.5z"/>
-                                        <path d="M10.5,9.5l4.2,4.2V12c0-0.4,0.3-0.7,0.7-0.7c0.4,0,0.7,0.3,0.7,0.7v3.3 c0,0.4-0.3,0.7-0.7,0.7H12c-0.4,0-0.7-0.3-0.7-0.7c0-0.4,0.3-0.7,0.7-0.7h1.7l-4.2-4.2c-0.3-0.3-0.3-0.7,0-0.9 C9.8,9.3,10.2,9.3,10.5,9.5z"/>
-                                    </g>
-                                </svg>
-                            </span>
-                            <ul>
-                                <li>
-                                    <span class="role">
-                                        Project Manager
-                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
-                                            <g>
-                                                <path d="M6.5,5.5L2.3,1.3H4c0.4,0,0.7-0.3,0.7-0.7S4.4,0,4,0H0.7C0.3,0,0,0.3,0,0.7V4 c0,0.4,0.3,0.7,0.7,0.7S1.3,4.4,1.3,4V2.3l4.2,4.2c0.3,0.3,0.7,0.3,0.9,0C6.7,6.2,6.7,5.8,6.5,5.5z"/>
-                                                <path d="M9.5,5.5l4.2-4.2H12c-0.4,0-0.7-0.3-0.7-0.7S11.6,0,12,0h3.3C15.7,0,16,0.3,16,0.7V4 c0,0.4-0.3,0.7-0.7,0.7c-0.4,0-0.7-0.3-0.7-0.7V2.3l-4.2,4.2c-0.3,0.3-0.7,0.3-0.9,0C9.3,6.2,9.3,5.8,9.5,5.5z"/>
-                                                <path d="M5.5,9.5l-4.2,4.2V12c0-0.4-0.3-0.7-0.7-0.7S0,11.6,0,12v3.3C0,15.7,0.3,16,0.7,16H4 c0.4,0,0.7-0.3,0.7-0.7c0-0.4-0.3-0.7-0.7-0.7H2.3l4.2-4.2c0.3-0.3,0.3-0.7,0-0.9C6.2,9.3,5.8,9.3,5.5,9.5z"/>
-                                                <path d="M10.5,9.5l4.2,4.2V12c0-0.4,0.3-0.7,0.7-0.7c0.4,0,0.7,0.3,0.7,0.7v3.3 c0,0.4-0.3,0.7-0.7,0.7H12c-0.4,0-0.7-0.3-0.7-0.7c0-0.4,0.3-0.7,0.7-0.7h1.7l-4.2-4.2c-0.3-0.3-0.3-0.7,0-0.9 C9.8,9.3,10.2,9.3,10.5,9.5z"/>
-                                            </g>
-                                        </svg>
-                                    </span>
-
-                                    <ul>
-                                        <li>
-                                            <span class="role">
-                                                Team Leader
-                                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
-                                                    <g>
-                                                        <path d="M6.5,5.5L2.3,1.3H4c0.4,0,0.7-0.3,0.7-0.7S4.4,0,4,0H0.7C0.3,0,0,0.3,0,0.7V4 c0,0.4,0.3,0.7,0.7,0.7S1.3,4.4,1.3,4V2.3l4.2,4.2c0.3,0.3,0.7,0.3,0.9,0C6.7,6.2,6.7,5.8,6.5,5.5z"/>
-                                                        <path d="M9.5,5.5l4.2-4.2H12c-0.4,0-0.7-0.3-0.7-0.7S11.6,0,12,0h3.3C15.7,0,16,0.3,16,0.7V4 c0,0.4-0.3,0.7-0.7,0.7c-0.4,0-0.7-0.3-0.7-0.7V2.3l-4.2,4.2c-0.3,0.3-0.7,0.3-0.9,0C9.3,6.2,9.3,5.8,9.5,5.5z"/>
-                                                        <path d="M5.5,9.5l-4.2,4.2V12c0-0.4-0.3-0.7-0.7-0.7S0,11.6,0,12v3.3C0,15.7,0.3,16,0.7,16H4 c0.4,0,0.7-0.3,0.7-0.7c0-0.4-0.3-0.7-0.7-0.7H2.3l4.2-4.2c0.3-0.3,0.3-0.7,0-0.9C6.2,9.3,5.8,9.3,5.5,9.5z"/>
-                                                        <path d="M10.5,9.5l4.2,4.2V12c0-0.4,0.3-0.7,0.7-0.7c0.4,0,0.7,0.3,0.7,0.7v3.3 c0,0.4-0.3,0.7-0.7,0.7H12c-0.4,0-0.7-0.3-0.7-0.7c0-0.4,0.3-0.7,0.7-0.7h1.7l-4.2-4.2c-0.3-0.3-0.3-0.7,0-0.9 C9.8,9.3,10.2,9.3,10.5,9.5z"/>
-                                                    </g>
-                                                </svg>
-                                            </span>
-                                            <ul>
-                                                <li>
-                                                    <span class="role">
-                                                        Team Member
-                                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
-                                                            <g>
-                                                                <path d="M6.5,5.5L2.3,1.3H4c0.4,0,0.7-0.3,0.7-0.7S4.4,0,4,0H0.7C0.3,0,0,0.3,0,0.7V4 c0,0.4,0.3,0.7,0.7,0.7S1.3,4.4,1.3,4V2.3l4.2,4.2c0.3,0.3,0.7,0.3,0.9,0C6.7,6.2,6.7,5.8,6.5,5.5z"/>
-                                                                <path d="M9.5,5.5l4.2-4.2H12c-0.4,0-0.7-0.3-0.7-0.7S11.6,0,12,0h3.3C15.7,0,16,0.3,16,0.7V4 c0,0.4-0.3,0.7-0.7,0.7c-0.4,0-0.7-0.3-0.7-0.7V2.3l-4.2,4.2c-0.3,0.3-0.7,0.3-0.9,0C9.3,6.2,9.3,5.8,9.5,5.5z"/>
-                                                                <path d="M5.5,9.5l-4.2,4.2V12c0-0.4-0.3-0.7-0.7-0.7S0,11.6,0,12v3.3C0,15.7,0.3,16,0.7,16H4 c0.4,0,0.7-0.3,0.7-0.7c0-0.4-0.3-0.7-0.7-0.7H2.3l4.2-4.2c0.3-0.3,0.3-0.7,0-0.9C6.2,9.3,5.8,9.3,5.5,9.5z"/>
-                                                                <path d="M10.5,9.5l4.2,4.2V12c0-0.4,0.3-0.7,0.7-0.7c0.4,0,0.7,0.3,0.7,0.7v3.3 c0,0.4-0.3,0.7-0.7,0.7H12c-0.4,0-0.7-0.3-0.7-0.7c0-0.4,0.3-0.7,0.7-0.7h1.7l-4.2-4.2c-0.3-0.3-0.3-0.7,0-0.9 C9.8,9.3,10.2,9.3,10.5,9.5z"/>
-                                                            </g>
-                                                        </svg>
-                                                    </span>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <span class="role">
-                                        Coach
-                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
-                                            <g>
-                                                <path d="M6.5,5.5L2.3,1.3H4c0.4,0,0.7-0.3,0.7-0.7S4.4,0,4,0H0.7C0.3,0,0,0.3,0,0.7V4 c0,0.4,0.3,0.7,0.7,0.7S1.3,4.4,1.3,4V2.3l4.2,4.2c0.3,0.3,0.7,0.3,0.9,0C6.7,6.2,6.7,5.8,6.5,5.5z"/>
-                                                <path d="M9.5,5.5l4.2-4.2H12c-0.4,0-0.7-0.3-0.7-0.7S11.6,0,12,0h3.3C15.7,0,16,0.3,16,0.7V4 c0,0.4-0.3,0.7-0.7,0.7c-0.4,0-0.7-0.3-0.7-0.7V2.3l-4.2,4.2c-0.3,0.3-0.7,0.3-0.9,0C9.3,6.2,9.3,5.8,9.5,5.5z"/>
-                                                <path d="M5.5,9.5l-4.2,4.2V12c0-0.4-0.3-0.7-0.7-0.7S0,11.6,0,12v3.3C0,15.7,0.3,16,0.7,16H4 c0.4,0,0.7-0.3,0.7-0.7c0-0.4-0.3-0.7-0.7-0.7H2.3l4.2-4.2c0.3-0.3,0.3-0.7,0-0.9C6.2,9.3,5.8,9.3,5.5,9.5z"/>
-                                                <path d="M10.5,9.5l4.2,4.2V12c0-0.4,0.3-0.7,0.7-0.7c0.4,0,0.7,0.3,0.7,0.7v3.3 c0,0.4-0.3,0.7-0.7,0.7H12c-0.4,0-0.7-0.3-0.7-0.7c0-0.4,0.3-0.7,0.7-0.7h1.7l-4.2-4.2c-0.3-0.3-0.3-0.7,0-0.9 C9.8,9.3,10.2,9.3,10.5,9.5z"/>
-                                            </g>
-                                        </svg>
-                                    </span>
-                                </li>
-                            </ul>
+                    <!--<ul class="roles-hierarchy">
+                        <organization-distribution-item :item='distributionHierarchy'></organization-distribution-item>
+                    </ul>-->
+                    <div class="dd" id="domenu-0" style="margin-left: 20%;">
+                        <!--<button class="dd-new-item">+</button>-->
+                        <li class="dd-item-blueprint">
+                        <div class="dd-handle dd3-handle">Drag</div>
+                        <div class="dd3-content">
+                            <span class="item-name">[item_name]</span>
+                            <div class="dd-button-container">
+                            <button class="item-remove" data-confirm-class="item-remove-confirm">&times;</button>
+                            </div>
+                            <div class="dd-edit-box" style="display: none;">
+                            <input type="text" name="title" autocomplete="off" placeholder="Item"
+                                    data-placeholder="Any nice idea for the title?"
+                                    v-bind:data-default-value="departmentPage">
+                            <i class="end-edit">save</i>
+                            </div>
+                        </div>
                         </li>
-                    </ul>
+                        <ol class="dd-list"></ol>
+                    </div>
                     <!-- /// End Roles /// -->
 
                     <hr>
@@ -121,7 +69,7 @@
                     </div>
                     <div class="flex flex-space-between">
                         <a @click="" class="btn-rounded btn-auto second-bg">Save</a>
-                        <a @click="" class="btn-rounded btn-auto">Add new role +</a>
+                        <a @click="addNewItemDistribution({title})" class="btn-rounded btn-auto">Add new role +</a>
                     </div>
                     <!-- /// End Add new Role /// -->
                 </div>
@@ -142,8 +90,10 @@
                             </tr>
                         </thead>
                         <tbody>
+
                             <tr v-for="department in projectDepartments.items">
                                 <td>{{ department.name }}</td>
+
                                 <td class="avatar">
                                     <div v-for="manager in department.managers">
                                         <div class="avatar-image" v-tooltip.top-center="manager.userFullName">
@@ -165,7 +115,8 @@
                     <div class="pagination flex flex-center" v-if="departmentPages > 1">
                         <span v-for="page in departmentPages" :class="{'active': page == activeDepartmentPage}" @click="changeDepartmentPage(page)">{{ page }}</span>
                     </div>
-                    <span class="pagination-info">Displaying {{ projectDepartments.items.length }} results out of {{ projectDepartments.totalItems }}</span>
+                    <span class="pagination-info" v-if="projectDepartments && projectDepartments.items">Displaying {{ projectDepartments.items.length }} results out of {{ projectDepartments.totalItems }}</span>
+
                 </div>
                 <!-- /// End Departments /// -->
 
@@ -233,16 +184,19 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex';
 import InputField from '../../_common/_form-components/InputField';
 import ViewIcon from '../../_common/_icons/ViewIcon';
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import VTooltip from 'v-tooltip';
 import VueScrollbar from 'vue2-scrollbar';
-import {mapGetters, mapActions} from 'vuex';
 import moment from 'moment';
 import Modal from '../../_common/Modal';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
+import OrganizationDistributionItem from './OrganizationDistributionItem';
+import 'domenu';
+import 'domenu/jquery.domenu-0.99.77.css';
 
 export default {
     components: {
@@ -254,18 +208,18 @@ export default {
         VueScrollbar,
         Modal,
         MultiSelectField,
+        OrganizationDistributionItem,
     },
     methods: {
         ...mapActions(['getProjectDepartments', 'createDepartment', 'editDepartment', 'deleteDepartment', 'getProjectUsers']),
         moment: function(date) {
             return moment(date);
         },
-        translateText(text) {
+        translateText: function(text) {
             return this.translate(text);
         },
-        changeDepartmentPage(page) {
+        changeDepartmentPage: function(page) {
             this.activeDepartmentPage = page;
-            this.getProjectDepartments({projectId: this.$route.params.id, page: page});
         },
         createNewDepartment() {
             let data = {
@@ -304,6 +258,20 @@ export default {
             this.showDeleteDepartmentModal = false;
             this.deleteDepartment(this.deleteDepartmentId);
         },
+        addDistributionData() {
+            const distData = this.distributionHierarchy;
+            $('#domenu-0').domenu({'data': JSON.stringify(distData)}).parseJson();
+        },
+        addNewItemDistribution(item) {
+            $('#domenu-0').domenu().createNewListItem(item);
+        },
+    },
+    mounted: function() {
+        $('#domenu-0').domenu({
+            data: '[]',
+        }).parseJson();
+
+        this.addDistributionData();
     },
     created() {
         this.getProjectDepartments({projectId: this.$route.params.id, page: this.departmentPage});
@@ -330,7 +298,38 @@ export default {
                 back_to_organization: 'Back to Project Organization',
                 edit_organization: 'Edit Project Organization',
                 distribution_lists: 'Distribution Lists',
+                displaying: this.translate('message.displaying'),
+                results_out_of: this.translate('message.results_out_of'),
             },
+            departmentsPerPage: 6,
+            distributionHierarchy: [{
+                title: 'Project Sponsor',
+                id: 1,
+                children: [
+                    {
+                        title: 'Project Manager',
+                        id: 2,
+                        children: [
+                            {
+                                title: 'Team Leader',
+                                id: 3,
+                                children: [
+                                    {
+                                        title: 'Team Member',
+                                        id: 4,
+                                        children: [],
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        title: 'Coach',
+                        id: 5,
+                        children: [],
+                    },
+                ],
+            }],
         };
     },
     watch: {
@@ -392,47 +391,6 @@ export default {
         text-transform: uppercase;
         font-size: 12px;
         letter-spacing: 1.6px;
-    }
-
-    ul.roles-hierarchy {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-
-        li {
-            span.role {
-                display: block;
-                background-color: $darkColor;
-                font-size: 12px;
-                text-transform: uppercase;
-                letter-spacing: 0.1em;
-                color: $lightColor;
-                line-height: 1em;
-                padding: 17px 56px 13px 20px;
-                position: relative;
-                cursor: grab;
-                margin-bottom: 20px;
-
-                svg {
-                    width: 16px;
-                    height: 16px;
-                    fill: $lightColor;
-                    position: absolute;
-                    right: 20px;
-                    top: 13px;
-                }
-
-                &:active {
-                    cursor: grabbing;
-                }
-            }
-
-            ul {
-                li {
-                    padding-left: 30px;
-                }
-            }
-        }
     }
 
     .table {
