@@ -9,9 +9,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
- * @Route("/api/subteam")
+ * @Route("/api/subteams")
  */
 class SubteamController extends ApiController
 {
@@ -19,16 +20,30 @@ class SubteamController extends ApiController
     const FORM_CLASS = CreateType::class;
 
     /**
-     * @Route("", name="app_api_subteam")
+     * @Route("", name="app_api_subteam", options={"expose"=true})
      * @Method({"GET"})
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        return $this->createApiResponse($this->getRepository()->findAll());
+        $filters = $request->query->all();
+        if (isset($filters['page'])) {
+            $pageSize = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+            $query = $this->getRepository()->getQueryFiltered($pageSize, $filters);
+            $paginator = new Paginator($query);
+            $responseArray['totalItems'] = count($paginator);
+            $responseArray['pageSize'] = $pageSize;
+            $responseArray['items'] = $paginator->getIterator()->getArrayCopy();
+
+            return $this->createApiResponse($responseArray);
+        }
+
+        return $this->createApiResponse([
+            'items' => $this->getRepository()->findAll(),
+        ]);
     }
 
     /**
-     * @Route("/{id}", name="app_api_subteam_edit")
+     * @Route("/{id}", name="app_api_subteam_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      */
     public function editAction(Request $request, Subteam $subteam)
@@ -52,8 +67,8 @@ class SubteamController extends ApiController
     }
 
     /**
-     * @Route("/{id}", name="app_api_subteam_delete")
-     * @Method({"GET"})
+     * @Route("/{id}", name="app_api_subteam_delete", options={"expose"=true})
+     * @Method({"DELETE"})
      */
     public function deleteAction(Subteam $subteam)
     {

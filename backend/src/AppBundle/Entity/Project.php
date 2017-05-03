@@ -1867,4 +1867,42 @@ class Project
     {
         return $this->resources;
     }
+
+    /**
+     * Add Subteam.
+     *
+     * @param Subteam $subteam
+     *
+     * @return Project
+     */
+    public function addSubteam(Subteam $subteam)
+    {
+        $this->subteams[] = $subteam;
+
+        return $this;
+    }
+
+    /**
+     * Remove subteams.
+     *
+     * @param WorkPackage $workPackage
+     *
+     * @return Project
+     */
+    public function removeSubteam(Subteam $subteam)
+    {
+        $this->subteams->removeElement($subteam);
+
+        return $this;
+    }
+
+    /**
+     * Get subteams.
+     *
+     * @return ArrayCollection
+     */
+    public function getSubteams()
+    {
+        return $this->subteams;
+    }
 }

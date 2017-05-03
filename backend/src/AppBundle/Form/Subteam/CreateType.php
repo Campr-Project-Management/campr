@@ -34,6 +34,7 @@ class CreateType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Subteam::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }
