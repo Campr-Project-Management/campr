@@ -25,6 +25,7 @@ import workPackageStatus from './modules/work-package-status';
 import projectUser from './modules/project-user';
 import distributionList from './modules/distribution-list';
 import projectRole from './modules/project-role';
+import subteam from './modules/subteam';
 
 Vue.use(Vuex);
 
@@ -57,6 +58,7 @@ export default new Vuex.Store({
         projectResources,
         workPackageStatus,
         projectRole,
+        subteam,
     },
     strict: debug,
 });
