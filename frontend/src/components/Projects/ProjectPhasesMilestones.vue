@@ -16,7 +16,7 @@
                 <h1>Project Phases</h1>
             </div>
             <div class="flex flex-v-center">
-                <router-link :to="{name: 'project-phases-milestones-create-phase'}" class="btn-rounded btn-auto second-bg">Add New Phase</router-link>
+                <router-link :to="{name: 'project-phases-create-phase'}" class="btn-rounded btn-auto second-bg">Add New Phase</router-link>
             </div>
         </div>
         <div class="full-filters flex flex-direction-reverse">
@@ -391,7 +391,7 @@
                 <h1>Project Milestones</h1>
             </div>
             <div class="flex flex-v-center">
-                <router-link :to="{name: 'project-phases-milestones-create-milestone'}" class="btn-rounded btn-auto second-bg">Add New Milestone</router-link>
+                <router-link :to="{name: 'project-milestones-create-milestone'}" class="btn-rounded btn-auto second-bg">Add New Milestone</router-link>
             </div>
         </div>
         <div class="full-filters flex flex-direction-reverse">

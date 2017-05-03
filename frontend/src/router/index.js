@@ -20,8 +20,8 @@ import Tasks from '../components/Tasks/Tasks';
 import MemberCreate from '../components/Projects/Organization/MemberCreate.vue';
 import EditOrganization from '../components/Projects/Organization/EditOrganization.vue';
 import ProjectPhasesMilestones from '../components/Projects/ProjectPhasesMilestones.vue';
-import PhaseCreate from '../components/Projects/PhasesAndMilestones/PhaseCreate.vue';
-import MilestoneCreate from '../components/Projects/PhasesAndMilestones/MilestoneCreate.vue';
+import PhaseCreate from '../components/Projects/Phases/PhaseCreate.vue';
+import MilestoneCreate from '../components/Projects/Milestones/MilestoneCreate.vue';
 
 Vue.use(VueRouter);
 
@@ -130,17 +130,17 @@ const routes = [
             {
                 path: 'phases-and-milestones',
                 component: ProjectPhasesMilestones,
-                name: 'project-phases-milestones',
+                name: 'project-phases-and-milestones',
             },
             {
                 path: 'phases-and-milestones/create-phase',
                 component: PhaseCreate,
-                name: 'project-phases-milestones-create-phase',
+                name: 'project-phases-create-phase',
             },
             {
                 path: 'phases-and-milestones/create-milestone',
                 component: MilestoneCreate,
-                name: 'project-phases-milestones-create-milestone',
+                name: 'project-milestones-create-milestone',
             },
         ],
     },
