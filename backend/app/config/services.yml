@@ -187,6 +187,11 @@ services:
         tags :
             - { name: doctrine.event_listener, event: onFlush }
 
+    app.listener.project_user:
+        class: AppBundle\EventListener\ProjectUserListener
+        tags :
+            - { name: doctrine.event_listener, event: onFlush }
+
     app.listener.media:
         class: AppBundle\EventListener\MediaListener
         arguments:
