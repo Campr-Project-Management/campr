@@ -22,6 +22,14 @@ class Version20170405143150 extends AbstractMigration
         $this->addSql('UPDATE work_package_status SET created_at = CURRENT_TIMESTAMP WHERE created_at IS NULL ');
         $this->addSql('ALTER TABLE work_package_status ADD CONSTRAINT FK_640F3F0C166D1F9C FOREIGN KEY (project_id) REFERENCES project (id)');
         $this->addSql('CREATE INDEX IDX_640F3F0C166D1F9C ON work_package_status (project_id)');
+        $this->addSql('INSERT INTO `work_package_status` (`id`, `name`, `sequence`, `visible`, `created_at`, `updated_at`)
+            VALUES 
+            (1, \'label.todo\', 0, 1, \'2017-01-01\', \'2017-01-01\'),
+            (2, \'label.in_progress\', 1, 1, \'2017-01-01\', \'2017-01-01\'),
+            (3, \'label.code_review\', 2, 1, \'2017-01-01\', \'2017-01-01\'),
+            (4, \'label.finished\', 3, 1, \'2017-01-01\', \'2017-01-01\'),
+            (5, \'label.closed\', -1, 0, \'2017-01-01\', \'2017-01-01\')
+        ');
     }
 
     /**
