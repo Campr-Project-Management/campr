@@ -30,6 +30,7 @@ class SubteamMemberType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => SubteamMember::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

@@ -1186,7 +1186,7 @@ class ProjectController extends ApiController
     }
 
     /**
-     * @Route("/{id}/subteam", name="app_api_project_create_subteam")
+     * @Route("/{id}/subteams", name="app_api_project_create_subteam", options={"expose"=true})
      * @Method({"POST"})
      */
     public function createSubteamAction(Request $request, Project $project)

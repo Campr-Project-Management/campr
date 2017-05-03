@@ -1,5 +1,6 @@
 <template>
     <div class="create-task page-section">
+        <!-- /// DEPARTMENT MODALS /// -->
         <modal v-if="showEditDepartmentModal" @close="showEditDepartmentModal = false">
             <p class="modal-title">{{ translateText('message.edit_department') }}</p>
             <input-field v-model="editDepartmentName" :content="editDepartmentName" type="text" v-bind:label="translateText('label.department_name')"></input-field>
@@ -19,6 +20,29 @@
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showDeleteDepartmentModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
                 <a href="javascript:void(0)" @click="deleteSelectedDepartment()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+            </div>
+        </modal>
+
+        <!-- /// SUBTEAM MODALS /// -->
+        <modal v-if="showEditSubteamModal" @close="showEditSubteamModal = false">
+            <p class="modal-title">{{ translateText('message.edit_subteam') }}</p>
+            <input-field v-model="editSubteamName" :content="editSubteamName" type="text" v-bind:label="translateText('label.subteam_name')"></input-field>
+            <multi-select-field
+                    v-bind:title="translateText('label.select_users')"
+                    v-bind:options="projectUsersForSelect"
+                    v-bind:selectedOptions="editSubteamMembers"
+                    v-model="editSubteamMembers" />
+            <br />
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showEditSubteamModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="editSelectedSubteam()" class="btn-rounded">{{ translateText('button.edit_subteam') }} +</a>
+            </div>
+        </modal>
+        <modal v-if="showDeleteSubteamModal" @close="showDeleteSubteamModal = false">
+            <p class="modal-title">{{ translateText('message.delete_subteam') }}</p>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showDeleteSubteamModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteSelectedSubteam()" class="btn-rounded">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
 
@@ -115,7 +139,7 @@
                     <div class="pagination flex flex-center" v-if="departmentPages > 1">
                         <span v-for="page in departmentPages" :class="{'active': page == activeDepartmentPage}" @click="changeDepartmentPage(page)">{{ page }}</span>
                     </div>
-                    <span class="pagination-info" v-if="projectDepartments && projectDepartments.items">Displaying {{ projectDepartments.items.length }} results out of {{ projectDepartments.totalItems }}</span>
+                    <span class="pagination-info" v-if="projectDepartments && projectDepartments.items">{{ translateText('message.displaying') }} {{ projectDepartments.items.length }} {{ translateText('message.results_out_of') }} {{ projectDepartments.totalItems }}</span>
 
                 </div>
                 <!-- /// End Departments /// -->
@@ -136,45 +160,53 @@
                 <hr class="double">
 
                 <!-- /// Subteams /// -->
-                <h3>Subteams</h3> 
+                <h3>{{ translateText('title.subteams') }}</h3>
                 <vue-scrollbar class="table-wrapper">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Subteam Name</th>
-                                <th>Team Leader</th>
-                                <th>Np. of Members</th>
-                                <th>Department</th>
-                                <th>Actions</th>
+                                <th>{{ translateText('table_header_cell.subteam_name') }}</th>
+                                <th>{{ translateText('table_header_cell.team_leader') }}</th>
+                                <th>{{ translateText('table_header_cell.no_of_members') }}</th>
+                                <th>{{ translateText('table_header_cell.department') }}</th>
+                                <th>{{ translateText('table_header_cell.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>PMO</td>
+                            <tr v-for="subteam in subteams.items">
+                                <td>{{ subteam.name }}</td>
                                 <td class="avatar">
-                                    <div class="avatar-image" v-tooltip.top-center="'Nelson Carr'">
-                                        <img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg"/>
+                                    <div v-for="member in subteam.subteamMembers">
+                                        <div v-if="member.isLead" class="avatar-image" v-tooltip.top-center="member.userName">
+                                            <img v-bind:src="member.userAvatar"/>
+                                        </div>
                                     </div>
                                 </td>
-                                <td>12</td>
-                                <td>GMP</td>
+                                <td>{{ subteam.subteamMembers.length }}</td>
+                                <td>-</td>
                                 <td>
-                                    <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
+                                    <button @click="initEditSubteamModal(subteam)" data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
+                                    <button @click="initDeleteSubteamModal(subteam)" data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </vue-scrollbar>
+                <div class="flex flex-direction-reverse">
+                    <div class="pagination flex flex-center" v-if="subteamPages > 1">
+                        <span v-for="page in subteamPages" :class="{'active': page == activeSubteamPage}" @click="changeSubteamPage(page)">{{ page }}</span>
+                    </div>
+                    <span class="pagination-info" v-if="subteams && subteams.items">{{ translateText('message.displaying') }} {{ subteams.items.length }} {{ translateText('message.results_out_of') }} {{ subteams.totalItems }}</span>
+                </div>
                 <!-- /// End Subteams /// -->
                 <hr>
                 <div class="form">
                     <!-- /// Add new Subteam /// -->
                     <div class="form-group">
-                        <input-field v-model="title" type="text" label="New Subteam"></input-field>
+                        <input-field v-model="subteamName" type="text" v-bind:label="translateText('label.new_subteam')"></input-field>
                     </div>
                     <div class="flex flex-direction-reverse">
-                        <a @click="" class="btn-rounded btn-auto">Add new Subteam +</a>
+                        <a @click="createNewSubteam()" class="btn-rounded btn-auto">{{ translateText('button.add_new_subteam') }} +</a>
                     </div>
                     <!-- /// End Add new Subteam /// -->
                 </div>
@@ -211,7 +243,11 @@ export default {
         OrganizationDistributionItem,
     },
     methods: {
-        ...mapActions(['getProjectDepartments', 'createDepartment', 'editDepartment', 'deleteDepartment', 'getProjectUsers']),
+        ...mapActions([
+            'getProjectDepartments', 'createDepartment', 'editDepartment',
+            'deleteDepartment', 'getProjectUsers', 'getSubteams', 'createSubteam',
+            'editSubteam', 'deleteSubteam',
+        ]),
         moment: function(date) {
             return moment(date);
         },
@@ -220,6 +256,9 @@ export default {
         },
         changeDepartmentPage: function(page) {
             this.activeDepartmentPage = page;
+        },
+        changeSubteamPage: function(page) {
+            this.activeSubteamPage = page;
         },
         createNewDepartment() {
             let data = {
@@ -265,6 +304,41 @@ export default {
         addNewItemDistribution(item) {
             $('#domenu-0').domenu().createNewListItem(item);
         },
+        initEditSubteamModal(subteam) {
+            this.showEditSubteamModal = true;
+            this.editSubteamId = subteam.id;
+            this.editSubteamName = subteam.name;
+            this.editSubteamMembers = [];
+            subteam.subteamMembers.map(member => {
+                this.editSubteamMembers.push({key: member.id, label: member.userName});
+            });
+        },
+        initDeleteSubteamModal(subteam) {
+            this.showDeleteSubteamModal = true;
+            this.deleteSubteamId = subteam.id;
+        },
+        createNewSubteam() {
+            let data = {
+                name: this.subteamName,
+                project: this.$route.params.id,
+            };
+            this.createSubteam(data);
+        },
+        editSelectedSubteam() {
+            let data = {
+                id: this.editSubteamId,
+                name: this.editSubteamName,
+                subteamMembers: this.editSubteamMembers.map(member => {
+                    return {'user': member.key};
+                }),
+            };
+            this.editSubteam(data);
+            this.showEditSubteamModal = false;
+        },
+        deleteSelectedSubteam() {
+            this.showDeleteSubteamModal = false;
+            this.deleteSubteam(this.deleteSubteamId);
+        },
     },
     mounted: function() {
         $('#domenu-0').domenu({
@@ -276,11 +350,14 @@ export default {
     created() {
         this.getProjectDepartments({projectId: this.$route.params.id, page: this.departmentPage});
         this.getProjectUsers({id: this.$route.params.id});
+        this.getSubteams({project: this.$route.params.id, page: this.subteamPage});
     },
     computed: {
         ...mapGetters({
             projectDepartments: 'projectDepartments',
             managersForSelect: 'managersForSelect',
+            projectUsersForSelect: 'projectUsersForSelect',
+            subteams: 'subteams',
         }),
     },
     data() {
@@ -294,6 +371,14 @@ export default {
             editDepartmentName: '',
             showDeleteDepartmentModal: false,
             editDepartmentManagers: [],
+            subteamPage: 1,
+            subteamName: '',
+            deleteSubteamId: '',
+            showEditSubteamModal: false,
+            showDeleteSubteamModal: false,
+            editSubteamMembers: [],
+            subteamPages: 0,
+            activeSubteamPage: 1,
             message: {
                 back_to_organization: 'Back to Project Organization',
                 edit_organization: 'Edit Project Organization',
