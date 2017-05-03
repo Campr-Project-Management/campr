@@ -64,9 +64,9 @@
                             <div class="col-md-4">
                             <multi-select-field
                                         v-bind:title="translateText('placeholder.subteam')"
-                                        v-bind:options="dataOptions"
-                                        v-bind:selectedOptions="subteams"
-                                        v-model="subteams" />
+                                        v-bind:options="subteamsForSelect"
+                                        v-bind:selectedOptions="selectedSubteams"
+                                        v-model="selectedSubteams" />
                                 <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_subteam') }}</a>
                             </div>
                         </div>
@@ -182,7 +182,7 @@ export default {
         MultiSelectField,
     },
     methods: {
-        ...mapActions(['createNewOrganizationMember', 'getProjectById', 'getProjectRoles', 'getProjectDepartments', 'saveProjectUser']),
+        ...mapActions(['createNewOrganizationMember', 'getProjectById', 'getProjectRoles', 'getProjectDepartments', 'saveProjectUser', 'getSubteams']),
         openAvatarFileSelection() {
             document.getElementById('avatar').click();
         },
@@ -224,7 +224,7 @@ export default {
                 'linkedIn': this.linkedIn,
                 'gplus': this.gplus,
                 'distribution': list,
-                'avatar[file]': this.avatarFile instanceof window.File ? this.avatarFile : '',
+                'avatar': this.avatarFile instanceof window.File ? this.avatarFile : '',
                 'projectId': this.$route.params.id,
                 'selectedRoles': this.selectedRoles.filter((item) => item.key).map((item) => item.key),
                 'departments': this.departments.filter((item) => item.key).map((item) => item.key),
@@ -237,11 +237,13 @@ export default {
         this.getProjectById(this.$route.params.id);
         this.getProjectRoles();
         this.getProjectDepartments();
+        this.getSubteams();
     },
     computed: mapGetters({
         project: 'project',
         projectRolesForSelect: 'projectRolesForSelect',
         projectDepartmentsForSelect: 'projectDepartmentsForSelect',
+        subteamsForSelect: 'subteamsForSelect',
     }),
     data: function() {
         return {
@@ -261,23 +263,10 @@ export default {
             linkedIn: '',
             gplus: '',
             distribution: [],
-            dataOptions: [
-                {
-                    label: 'Admin',
-                    key: 1,
-                },
-                {
-                    label: 'User',
-                    key: 2,
-                },
-                {
-                    label: 'Developer',
-                    key: 3,
-                },
-            ],
             selectedRoles: [],
             departments: [],
             subteams: [],
+            selectedSubteams: [],
         };
     },
 };
