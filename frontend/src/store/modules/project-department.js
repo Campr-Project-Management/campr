@@ -4,6 +4,7 @@ import * as types from '../mutation-types';
 const state = {
     items: [],
     itemsForSelect: [],
+    itemsForMultiSelect: [],
     loading: false,
 };
 
@@ -11,6 +12,7 @@ const getters = {
     projectDepartments: state => state.items,
     projectDepartmentsForSelect: state => state.itemsForSelect,
     projectDepartmentsLoading: state => state.loading,
+    projectDepartmentsForMultiSelect: state => state.itemsForMultiSelect,
 };
 
 const actions = {
@@ -85,10 +87,13 @@ const mutations = {
     [types.SET_PROJECT_DEPARTMENTS](state, {projectDepartments}) {
         state.items = projectDepartments;
         let itemsForSelect = [{'key': null, 'label': Translator.trans('placeholder.department'), 'rate': 0}];
+        let itemsForMultiSelect = [];
         state.items.items.map((item) => {
             itemsForSelect.push({'key': item.id, 'label': item.name, 'rate': item.rate});
+            itemsForMultiSelect.push({'key': item.id, 'label': item.name, 'rate': item.rate});
         });
         state.itemsForSelect = itemsForSelect;
+        state.itemsForMultiSelect = itemsForMultiSelect;
     },
     /**
      * @param {Object} state
