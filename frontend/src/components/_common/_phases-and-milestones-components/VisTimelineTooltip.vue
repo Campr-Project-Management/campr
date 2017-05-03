@@ -71,16 +71,28 @@ export default {
     line-height: 15px;
   }
 
-  table {
-    margin: 0 -10px;
-    white-space: nowrap;
+  .table-small {
+    margin: 0;
+
+    > thead {
+        > tr {
+            > th {
+                height: 30px;
+                padding: 8px 15px;
+            }
+        }
+    }
+
+    > tbody {
+        > tr {
+            > td {
+                padding: 8px 15px;
+            }
+        }
+    }
 
     td {
       font-size: 10px;
-    }
-
-    th, td {
-      padding: 3px 9px;
     }
   }
 
