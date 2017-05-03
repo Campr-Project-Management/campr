@@ -51,7 +51,7 @@
                             <div class="col-md-6">
                                 <multi-select-field
                                         v-bind:title="translateText('placeholder.role')"
-                                        v-bind:options="projectRolesForSelect"
+                                        v-bind:options="projectRolesForMultiSelect"
                                         v-bind:selectedOptions="selectedRoles"
                                         v-model="selectedRoles" />
                                 <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_role') }}</a>
@@ -69,7 +69,7 @@
                             <div class="col-md-4">
                             <multi-select-field
                                         v-bind:title="translateText('placeholder.department')"
-                                        v-bind:options="projectDepartmentsForSelect"
+                                        v-bind:options="projectDepartmentsForMultiSelect"
                                         v-bind:selectedOptions="departments"
                                         v-model="departments" />
                             <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_department') }}</a>
@@ -255,8 +255,8 @@ export default {
     },
     computed: mapGetters({
         project: 'project',
-        projectRolesForSelect: 'projectRolesForSelect',
-        projectDepartmentsForSelect: 'projectDepartmentsForSelect',
+        projectRolesForMultiSelect: 'projectRolesForMultiSelect',
+        projectDepartmentsForMultiSelect: 'projectDepartmentsForMultiSelect',
         subteamsForSelect: 'subteamsForSelect',
     }),
     data: function() {
