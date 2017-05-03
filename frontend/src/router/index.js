@@ -19,6 +19,9 @@ import ViewTask from '../components/Tasks/ViewTask';
 import Tasks from '../components/Tasks/Tasks';
 import MemberCreate from '../components/Projects/Organization/MemberCreate.vue';
 import EditOrganization from '../components/Projects/Organization/EditOrganization.vue';
+import ProjectPhasesMilestones from '../components/Projects/ProjectPhasesMilestones.vue';
+import PhaseCreate from '../components/Projects/PhasesAndMilestones/PhaseCreate.vue';
+import MilestoneCreate from '../components/Projects/PhasesAndMilestones/MilestoneCreate.vue';
 
 Vue.use(VueRouter);
 
@@ -123,6 +126,21 @@ const routes = [
                         name: 'project-task-management-edit-labels',
                     },
                 ],
+            },
+            {
+                path: 'phases-and-milestones',
+                component: ProjectPhasesMilestones,
+                name: 'project-phases-milestones',
+            },
+            {
+                path: 'phases-and-milestones/create-phase',
+                component: PhaseCreate,
+                name: 'project-phases-milestones-create-phase',
+            },
+            {
+                path: 'phases-and-milestones/create-milestone',
+                component: MilestoneCreate,
+                name: 'project-phases-milestones-create-milestone',
             },
         ],
     },
