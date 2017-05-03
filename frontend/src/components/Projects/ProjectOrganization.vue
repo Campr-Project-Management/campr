@@ -29,25 +29,20 @@
         </div>
 
         <div class="team-graph">
-            <!--<member-badge class="lead" size="big" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
             <div class="flex flex-space-between">
                 <div>
-                    <!--<member-badge size="big" class="lead" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
                     <div class="flex">
                         <div>
-                            <!--<member-badge size="small" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
                             <a href="" class="btn-rounded btn-empty btn-small">
                                 {{ message.view_team }}
                             </a>
                         </div>
                         <div>
-                            <!--<member-badge size="small" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
                             <a href="" class="btn-rounded btn-empty btn-small">
                                 {{ message.view_team }}
                             </a>
                         </div>
                         <div class="member-badge-wrapper">
-                            <!--<member-badge size="small" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
                             <a href="javascript:void(0)" class="btn-rounded btn-empty btn-small" @click="toggleTeam()" :class="{'show-team': showTeam}">
                                 {{ message.view_team }}
                                 <i class="fa fa-angle-down" v-show="!showTeam"></i>
@@ -67,24 +62,18 @@
                     </div>
                 </div>
                 <div>
-                    <!--<member-badge size="big" class="lead" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
                     <div class="flex">
                         <div>
-                            <!--<member-badge size="small" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
                             <a href="" class="btn-rounded btn-empty btn-small">
                                 {{ message.view_team }}
                             </a>
                         </div>
                         <div>
-                            <!--<member-badge size="small" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
                             <a href="" class="btn-rounded btn-empty btn-small">
                                 {{ message.view_team }}
                             </a>
                         </div>
                     </div>
-                </div>
-                <div>
-                    <!--<member-badge size="big" class="lead" name="Nelson Carr" title="Project Manager, Global Operations"></member-badge>-->
                 </div>
             </div>
         </div>
@@ -98,62 +87,63 @@
         <div class="team-list">
             <vue-scrollbar class="table-wrapper">
                 <div class="scroll-wrapper">
-                <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th class="center">{{ table_header_cell.resource }}</th>
-                        <th>{{ table_header_cell.company }}</th>
-                        <th>{{ table_header_cell.name }}</th>
-                        <th>{{ table_header_cell.role }}</th>
-                        <th>{{ table_header_cell.subteam }}</th>
-                        <th>{{ table_header_cell.department }}</th>
-                        <th>{{ table_header_cell.contact }}</th>
-                        <th class="center">{{ table_header_cell.raci }}</th>
-                        <th class="center">{{ table_header_cell.org }}</th>
-                        <th v-if='project.distributionLists' :colspan="project.distributionLists.length" class="no-padding">
-                            <table>
-                                <tr>
-                                    <th class="center" :colspan="project.distributionLists.length">{{ table_header_cell.distribution_lists }}</th>
-                                <tr>
-                                    <th class="center" v-for="dl in project.distributionLists">{{ dl.name }}</th>
-                                </tr>
-                            </table>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="item in projectUsers.items">
-                        <td class="avatar center">
-                            <img :src="item.userAvatar" />
-                        </td>
-                        <td class="center">
-                            <switches @click.native="updateUserOption(item, 'resource')" v-model="showInResources" :selected="item.showInResources"></switches>
-                        </td>
-                        <td>{{ item.company }}</td>
-                        <td>{{ item.userFullName }}</td>
-                        <td>{{ item.projectRoleName }}</td>
-                        <td>{{ item.projecTeamName }}</td>
-                        <td>{{ item.projectDepartmentName }}</td>
-                        <td>
-                            <social-links align="left" size="20px" v-bind:facebook="item.userFacebook" v-bind:twitter="item.userTwitter" v-bind:linkedin="item.userLinkedIn" v-bind:gplus="item.userGplus" v-bind:email="item.userEmail" v-bind:phone="item.userPhone"></social-links>
-                        </td>
-                        <td class="center">
-                            <switches @click.native="updateUserOption(item, 'raci')" v-model="showInRaci" :selected="item.showInRaci"></switches>
-                        </td>
-                        <td class="center">
-                            <switches @click.native="updateUserOption(item, 'org')" v-model="showInOrg" :selected="item.showInOrg"></switches>
-                        </td>
-                        <td class="center" v-for="dl in project.distributionLists">
-                            <switches @click.native="updateDistribution(item, dl)" v-model="inDistribution" :selected="inDistributionList(item.id, dl)"></switches>
-                        </td>
-                    </tr>
-                </tbody>
-                </table>
+                    <table class="table table-striped table-responsive">
+                        <thead>
+                            <tr>
+                                <th class="avatar"></th>
+                                <th class="text-center switchers">{{ table_header_cell.resource }}</th>
+                                <th>{{ table_header_cell.company }}</th>
+                                <th>{{ table_header_cell.name }}</th>
+                                <th>{{ table_header_cell.role }}</th>
+                                <th>{{ table_header_cell.subteam }}</th>
+                                <th>{{ table_header_cell.department }}</th>
+                                <th>{{ table_header_cell.contact }}</th>
+                                <th class="text-center switchers">{{ table_header_cell.raci }}</th>
+                                <th class="text-center switchers">{{ table_header_cell.org }}</th>
+                                <th v-if='project.distributionLists' :colspan="project.distributionLists.length" class="no-padding">
+                                    <table>
+                                        <tr>
+                                            <th class="text-center " :colspan="project.distributionLists.length">{{ table_header_cell.distribution_lists }}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center switchers" v-for="dl in project.distributionLists">{{ dl.name }}</th>
+                                        </tr>
+                                    </table>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in projectUsers.items">
+                                <td class="avatar text-center">
+                                    <div class="user-avatar-wrapper"><img :src="item.userAvatar" /></div>
+                                </td>
+                                <td class="text-center switchers">
+                                    <switches @click.native="updateUserOption(item, 'resource')" v-model="showInResources" :selected="item.showInResources"></switches>
+                                </td>
+                                <td>{{ item.company }}</td>
+                                <td>{{ item.userFullName }}</td>
+                                <td>{{ item.projectRoleName }}</td>
+                                <td>{{ item.projecTeamName }}</td>
+                                <td>{{ item.projectDepartmentName }}</td>
+                                <td>
+                                    <social-links align="left" size="20px" v-bind:facebook="item.userFacebook" v-bind:twitter="item.userTwitter" v-bind:linkedin="item.userLinkedIn" v-bind:gplus="item.userGplus" v-bind:email="item.userEmail" v-bind:phone="item.userPhone"></social-links>
+                                </td>
+                                <td class="text-center switchers">
+                                    <switches @click.native="updateUserOption(item, 'raci')" v-model="showInRaci" :selected="item.showInRaci"></switches>
+                                </td>
+                                <td class="text-center switchers">
+                                    <switches @click.native="updateUserOption(item, 'org')" v-model="showInOrg" :selected="item.showInOrg"></switches>
+                                </td>
+                                <td class="text-center switchers" v-for="dl in project.distributionLists">
+                                    <switches @click.native="updateDistribution(item, dl)" v-model="inDistribution" :selected="inDistributionList(item.id, dl)"></switches>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </vue-scrollbar>
 
-            <div class="flex flex-direction-reverse">
+            <div class="flex flex-direction-reverse flex-v-center">
                 <div class="pagination" v-if="pages > 0">
                     <span v-for="page in pages" :class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
                 </div>
@@ -462,11 +452,6 @@ export default {
         margin: 0 auto 13px;
     }
 
-    .pagination-info {
-        text-transform: uppercase;
-        margin-top: 27px;
-    }
-
     .team-graph {
         width: 70%;
         margin: 0 auto;
@@ -478,10 +463,6 @@ export default {
 
     .team-list {
         overflow: hidden;
-    }
-
-    .center {
-        text-align: center;
     }
 
     .btn-rounded {
@@ -506,10 +487,5 @@ export default {
     .table-wrapper {
         width: 100%;
         padding-bottom: 40px;
-    }
-
-    .scroll-wrapper {
-        display: inline-block;
-        white-space: nowrap;
-    }
+    }    
 </style>
