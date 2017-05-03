@@ -22,14 +22,6 @@ class Version20170302171458 extends AbstractMigration
         $this->addSql('ALTER TABLE work_package ADD work_package_status_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE work_package ADD CONSTRAINT FK_BA3DFB7A73A0B9D FOREIGN KEY (work_package_status_id) REFERENCES work_package_status (id)');
         $this->addSql('CREATE INDEX IDX_BA3DFB7A73A0B9D ON work_package (work_package_status_id)');
-        $this->addSql('INSERT INTO `work_package_status` (`id`, `name`, `sequence`, `visible`)
-            VALUES 
-            (1, \'label.todo\', 0, 1),
-            (2, \'label.in_progress\', 1, 1),
-            (3, \'label.code_review\', 2, 1),
-            (4, \'label.finished\', 3, 1),
-            (5, \'label.closed\', -1, 0)
-        ');
     }
 
     /**
