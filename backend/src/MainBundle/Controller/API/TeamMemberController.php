@@ -29,52 +29,83 @@ class TeamMemberController extends ApiController
      */
     public function createAction(Request $request)
     {
-        if ($this->container->has('profiler')) {
-            $this->container->get('profiler')->disable();
-        }
-        $data = $request->request->all();
-        $form = $this->createForm(ApiCreateType::class, new User(), ['csrf_protection' => false]);
+        $user = new User();
+        $form = $this->createForm(ApiCreateType::class, $user, ['csrf_protection' => false]);
         $this->processForm($request, $form);
-
         if ($form->isValid()) {
+            $translator = $this->get('translator');
             $em = $this->getDoctrine()->getManager();
-            $user = $form->getData();
-            $team = $em
-                ->getRepository(Team::class)
-                ->findOneBySlug($data['teamSlug'])
-            ;
-            $teamMember = (new TeamMember())
-                ->setUser($user)
-                ->setTeam($team)
-                ->setRoles([User::ROLE_USER])
-            ;
+            $existingUser = $em->getRepository(User::class)->findOneBy([
+                'email' => $user->getEmail(),
+            ]);
+            $subDomain = $form->get('subdomain')->getData();
+            $team = $em->getRepository(Team::class)->findOneBySlug($subDomain);
+            if (!$team) {
+                return $this->createApiResponse(
+                    [
+                        'messages' => [
+                            $translator->trans('not_found.team', [], 'messages'),
+                        ],
+                    ],
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
 
-            $em->persist($user);
-            $em->persist($teamMember);
-            $em->flush();
+            // @TODO: implement notification to send to new users to activate
+            // @TODO: implement notification to existing users that they were added to a team
+            if ($existingUser) {
+                if (!$existingUser->hasTeam($team)) {
+                    $teamMember = new TeamMember();
+                    $teamMember->setTeam($team);
+                    $teamMember->setRoles($user->getRoles());
+                    $existingUser->addTeamMember($teamMember);
+                    $em->persist($existingUser);
+                    $em->flush();
+                    $user = $existingUser;
 
-            $mailerService = $this->get('app.service.mailer');
-            $mailerService->sendEmail(
-                'MainBundle:Email:create_team_member.html.twig',
-                'info',
-                $user->getEmail(),
-                [
-                    'token' => $user->getActivationToken(),
-                    'username' => $user->getUsername(),
-                    'email' => $user->getEmail(),
-                    'password' => $user->getPlainPassword(),
-                    'expiration_time' => $this->getParameter('activation_token_expiration_number'),
-                ]
-            );
+                    $mailerService = $this->get('app.service.mailer');
+                    $mailerService->sendEmail(
+                        'MainBundle:Email:create_team_member.html.twig',
+                        'info',
+                        $user->getEmail(),
+                        [
+                            'token' => $user->getActivationToken(),
+                            'username' => $user->getUsername(),
+                            'email' => $user->getEmail(),
+                            'password' => $user->getPlainPassword(),
+                            'expiration_time' => $this->getParameter('activation_token_expiration_number'),
+                        ]
+                    );
+                } else {
+                    return $this->createApiResponse(
+                        [
+                            'messages' => [
+                                $translator->trans('exception.user.already_member_of_team', [], 'messages'),
+                            ],
+                        ],
+                        Response::HTTP_BAD_REQUEST
+                    );
+                }
+            } else {
+                $teamMember = new TeamMember();
+                $user->setRoles([
+                    User::ROLE_USER,
+                ]);
+                $teamMember->setTeam($team);
+                $teamMember->setRoles($user->getRoles());
+                $user->addTeamMember($teamMember);
+                $em->persist($user);
+                $em->flush();
+            }
 
-            return $this->createApiResponse($user, Response::HTTP_CREATED);
+            return $this->createApiResponse($user);
         }
 
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+        return $this->createApiResponse(
+            [
+                'messages' => $this->getFormErrors($form),
+            ],
+            Response::HTTP_BAD_REQUEST
+        );
     }
 }
