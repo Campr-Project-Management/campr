@@ -26,9 +26,9 @@
 </template>
 
 <script>
-import PencilIcon from '../_common/_icons/PencilIcon';
-import DragIcon from '../_common/_icons/DragIcon';
-import InputField from '../_common/_form-components/InputField';
+import PencilIcon from '../../_common/_icons/PencilIcon';
+import DragIcon from '../../_common/_icons/DragIcon';
+import InputField from '../../_common/_form-components/InputField';
 
 export default {
     props: ['item', 'index', 'type'],
@@ -96,8 +96,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-    @import '../../css/_common';
-    @import '../../css/_variables';
+    @import '../../../css/_common';
+    @import '../../../css/_variables';
 
     .box.gu-transit {
         border: 1px solid $lighterColor;

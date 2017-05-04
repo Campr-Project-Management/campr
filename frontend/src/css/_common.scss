@@ -3,6 +3,7 @@
 
 .flex {
   display: flex !important;
+  flex-wrap: wrap;
 }
 
 .flex-row {
@@ -149,6 +150,10 @@ p {
   margin-top: 20px;
 }
 
+.margintop30 {
+  margin-top: 30px;
+}
+
 .table {
     display: table;
     width: 100%;
@@ -182,7 +187,7 @@ img {
     cursor: text;
     position: absolute;
     left: 20px;
-    top: 14px;
+    top: 12px;
     color: $lightColor;
     font-size: 11px;
     display: inline-block;
@@ -489,6 +494,10 @@ hr {
     line-height: 20px;
     font-weight: 300;
     letter-spacing: 1.7px;
+
+    &.no-margin-bottom {
+      margin-bottom: 0;
+    }
   }
 }
 
@@ -594,6 +603,13 @@ hr {
   }
 }
 
+.pagination-info {
+  text-transform: uppercase;
+  margin-right: 15px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
 .vue-switcher-theme--default.vue-switcher-color--default div:after {
   background-color: $secondColor !important;
   height: 22px;
@@ -655,7 +671,7 @@ hr {
   &:before, &:after {
     cursor: pointer;
     font-family: 'FontAwesome';
-    top: 3px;
+    top: 6px;
     font-size: 18px;
     position: absolute;
   }
@@ -674,25 +690,24 @@ hr {
 .vue-scrollbar__scrollbar-vertical {
   background: $darkColor !important;
   padding: 30px 2px;
-  width: 14px !important;
+  width: 30px !important;
 
   &:before, &:after {
     cursor: pointer;
     font-family: 'FontAwesome';
     font-size: 18px;
     position: absolute;
+    left: 9px;
   }
 
   &:before {
     content: '\f106';
     top: 7px;
-    left: 1px;
   }
 
   &:after {
     content: '\f107';
     bottom: 7px;
-    left: 1px;
   }
 }
 
@@ -707,6 +722,16 @@ hr {
   background: $middleColor !important;
   border-radius: 10px !important;
   width: 10px !important;
+  left: 8px;
+}
+
+.scroll-wrapper {
+    display: inline-block;
+    white-space: nowrap;
+
+    .table {
+        width: auto;
+    }
 }
 
 .datetime-picker {
@@ -740,7 +765,6 @@ hr {
   font-size: 10px;
   font-weight: 400;
   letter-spacing: 1.8px;
-  table-layout: fixed;
 
   >thead {
     >tr {
@@ -750,7 +774,7 @@ hr {
         text-transform: uppercase;
         vertical-align: middle;
         height: 60px;        
-        padding: 8px 30px;
+        padding: 0 30px;
         padding-bottom: 0;
         font-weight: 400;
         border: none;
@@ -765,10 +789,6 @@ hr {
           &.small {
             size: 8px;
           }
-        }
-
-        &.no-padding {
-          padding: 0;
         }
       }
     }
@@ -814,10 +834,39 @@ hr {
     }
   }
 
+  tr {
+    th, td { 
+      &.avatar {
+        padding: 0;
+        width: 46px;
+
+        .user-avatar-wrapper {
+          width: 46px;
+          padding: 0 30px;
+          box-sizing: content-box;
+        }
+      }
+
+      &.switchers {
+        width: 60px;
+      }        
+
+      &.no-padding {
+        padding: 0;
+      }    
+    }
+  }
+
   .avatar img {
     width: 46px;
     height: 46px;
-    border-radius: 50%;
+    @include border-radius(50%);
+  }
+
+  .small-avatar img {
+    width: 30px;
+    height: 30px;
+    @include border-radius(50%);
   }
 }
 
@@ -830,7 +879,10 @@ hr {
   @include opacity(0);
   @include transition(opacity, 0.2s, ease-in);
   pointer-events: none;
-  z-index: 10000;        
+  z-index: 10000; 
+  max-width: 220px;
+  text-align: center;
+  margin-top: 8px;       
 
   .tooltip-content {
     background-color: $secondColor;
@@ -862,6 +914,23 @@ hr {
       border-width: 5px 5px 0 5px;
       border-color: $secondColor transparent transparent transparent;
       bottom: 0;
+      left: 50%;
+      margin-left: -5px;
+    }
+  }
+
+  &.tooltip-target-attached-bottom {
+    padding-top: 5px;
+
+    &:after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 5px 5px 5px;
+      border-color: transparent transparent $secondColor transparent;
+      top: 0;
       left: 50%;
       margin-left: -5px;
     }
