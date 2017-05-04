@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import _ from 'lodash';
+import router from '../../router';
 
 const state = {
     items: [],
@@ -52,13 +54,44 @@ const actions = {
             }, (response) => {
             });
     },
-    saveProjectUser({commit}, userData, projectId) {
-        Vue.http
+    saveProjectUser({commit}, userData) {
+        const arrayItems = [
+            'distributionLists',
+            'roles',
+            'departments',
+            'subteams',
+        ];
+        const keys = Object.keys(userData);
+        const data = new FormData();
+        keys.map((key) => {
+            if (arrayItems.indexOf(key) === -1) {
+                data.append(key, userData[key]);
+            } else {
+                if (_.isArray(userData[key])) {
+                    userData[key].forEach((item) => {
+                        data.append(key + '[]', + item);
+                    });
+                }
+            }
+        });
+
+        const cb = (response) => {
+            if ([200, 201].indexOf(response.status) !== -1) {
+                router.push({
+                    name: 'project-organization',
+                });
+            } else {
+                alert('Something went wrong!');
+            }
+        };
+
+        Vue
+            .http
             .post(
-                Routing.generate('app_api_project_team_member_create', {'id': userData.projectId}),
-                JSON.stringify(userData)
-            ).then((response) => {
-            });
+                Routing.generate('app_api_project_team_member_create', {'id': userData.project}),
+                data
+            )
+            .then(cb, cb);
     },
 };
 
@@ -78,6 +111,9 @@ const mutations = {
      */
     [types.SET_MANAGERS](state, {projectUsers}) {
         let managers = [];
+        if (!_.isArray(projectUsers)) {
+            projectUsers = [];
+        }
         projectUsers.map(function(projectUser) {
             if (projectUser.projectRoleNames.indexOf('ROLE_MANAGER') !== -1) {
                 managers.push(projectUser);
