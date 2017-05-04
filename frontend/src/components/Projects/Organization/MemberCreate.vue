@@ -34,17 +34,30 @@
                     <!-- /// Member Name & Role /// -->
                     <div class="row">
                         <div class="form-group last-form-group">
-                            <div class="col-md-6"><input-field v-model="name" type="text" v-bind:label="translateText('placeholder.name')"></input-field></div>
                             <div class="col-md-6">
-                                <select-field
+                                <input-field v-model="firstName" type="text" v-bind:label="translateText('placeholder.first_name')"></input-field>
+                            </div>
+                            <div class="col-md-6">
+                                <input-field v-model="lastName" type="text" v-bind:label="translateText('placeholder.last_name')"></input-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="double">
+
+                    <div class="row">
+                        <div class="form-group last-form-group">
+                            <div class="col-md-6"><input-field v-model="username" type="text" v-bind:label="translateText('placeholder.username')"></input-field></div>
+                            <div class="col-md-6">
+                                <multi-select-field
                                         v-bind:title="translateText('placeholder.role')"
                                         v-bind:options="projectRolesForSelect"
-                                        v-model="role"
-                                        v-bind:currentOption="role" />
+                                        v-bind:selectedOptions="selectedRoles"
+                                        v-model="selectedRoles" />
                                 <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_role') }}</a>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <!-- /// End Member Name & Role /// --> 
 
                     <hr class="double">
@@ -54,15 +67,19 @@
                         <div class="form-group last-form-group">
                             <div class="col-md-4"><input-field v-model="company" type="text" v-bind:label="translateText('placeholder.company')"></input-field></div>
                             <div class="col-md-4">
-                                <select-field
+                            <multi-select-field
                                         v-bind:title="translateText('placeholder.department')"
                                         v-bind:options="projectDepartmentsForSelect"
-                                        v-model="department"
-                                        v-bind:currentOption="department" />
-                                <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_department') }}</a>
+                                        v-bind:selectedOptions="departments"
+                                        v-model="departments" />
+                            <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_department') }}</a>
                             </div>
                             <div class="col-md-4">
-                                <select-field v-bind:title="translateText('placeholder.subteam')"></select-field>
+                            <multi-select-field
+                                        v-bind:title="translateText('placeholder.subteam')"
+                                        v-bind:options="subteamsForSelect"
+                                        v-bind:selectedOptions="selectedSubteams"
+                                        v-model="selectedSubteams" />
                                 <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_subteam') }}</a>
                             </div>
                         </div>
@@ -164,6 +181,7 @@
 <script>
 import {mapGetters, mapActions} from 'vuex';
 import InputField from '../../_common/_form-components/InputField';
+import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import SelectField from '../../_common/_form-components/SelectField';
 import Switches from '../../3rdparty/vue-switches';
 import AvatarPlaceholder from '../../_common/_form-components/AvatarPlaceholder';
@@ -174,9 +192,10 @@ export default {
         SelectField,
         Switches,
         AvatarPlaceholder,
+        MultiSelectField,
     },
     methods: {
-        ...mapActions(['createNewOrganizationMember', 'getProjectById', 'getProjectRoles', 'getProjectDepartments']),
+        ...mapActions(['createNewOrganizationMember', 'getProjectById', 'getProjectRoles', 'getProjectDepartments', 'saveProjectUser', 'getSubteams']),
         openAvatarFileSelection() {
             document.getElementById('avatar').click();
         },
@@ -198,47 +217,55 @@ export default {
         },
         saveMember() {
             let list = [];
-            this.distribution.map(function(item, index) {
+            this.distribution.forEach((item, index) => {
                 if (item) {
                     list.push(index);
                 }
             });
-            let formData = new FormData();
-            formData.append('name', this.name);
-            formData.append('role', this.role.key);
-            formData.append('company', this.company);
-            formData.append('department', this.department.key);
-            formData.append('showInResources', this.resource);
-            formData.append('showInRaci', this.raci);
-            formData.append('showInOrg', this.org);
-            formData.append('email', this.email);
-            formData.append('phone', this.phone);
-            formData.append('facebook', this.facebook);
-            formData.append('twitter', this.twitter);
-            formData.append('linkedIn', this.linkedIn);
-            formData.append('gplus', this.gplus);
-            formData.append('distribution', list);
-            formData.append('avatar[file]', this.avatarFile instanceof window.File? this.avatarFile : '');
 
-            console.log(list);
-            // TODO: add function that calls the API for create new team member
+            const data = {
+                'firstName': this.firstName,
+                'lastName': this.lastName,
+                'username': this.username,
+                'company': this.company,
+                'showInResources': this.resource,
+                'showInRaci': this.raci,
+                'showInOrg': this.org,
+                'email': this.email,
+                'phone': this.phone,
+                'facebook': this.facebook,
+                'twitter': this.twitter,
+                'linkedIn': this.linkedIn,
+                'gplus': this.gplus,
+                'avatarFile[file]': this.avatarFile instanceof window.File ? this.avatarFile : '',
+                'project': this.$route.params.id,
+                'distributionLists': list,
+                'roles': this.selectedRoles.filter((item) => item.key).map((item) => item.key),
+                'departments': this.departments.filter((item) => item.key).map((item) => item.key),
+                'subteams': this.subteams.filter((item) => item.key).map((item) => item.key),
+            };
+            this.saveProjectUser(data);
         },
     },
     created() {
         this.getProjectById(this.$route.params.id);
         this.getProjectRoles();
         this.getProjectDepartments();
+        this.getSubteams();
     },
     computed: mapGetters({
         project: 'project',
         projectRolesForSelect: 'projectRolesForSelect',
         projectDepartmentsForSelect: 'projectDepartmentsForSelect',
+        subteamsForSelect: 'subteamsForSelect',
     }),
     data: function() {
         return {
             avatar: '',
             avatarFile: '',
-            name: '',
+            firstName: '',
+            lastName: '',
+            username: '',
             company: '',
             department: '',
             role: '',
@@ -252,6 +279,10 @@ export default {
             linkedIn: '',
             gplus: '',
             distribution: [],
+            selectedRoles: [],
+            departments: [],
+            subteams: [],
+            selectedSubteams: [],
         };
     },
 };

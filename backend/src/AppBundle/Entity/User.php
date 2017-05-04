@@ -215,7 +215,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      *
      * @Serializer\Exclude()
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamMember", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamMember", mappedBy="user", cascade={"all"}, orphanRemoval=true)
      */
     private $teamMembers;
 
@@ -356,9 +356,15 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
 
     /**
      * @var SubteamMember[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SubteamMember", mappedBy="user", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SubteamMember", mappedBy="user", cascade={"all"}, orphanRemoval=true)
      */
     private $subteamMembers;
+
+    /**
+     * @var ProjectUser[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectUser", mappedBy="user", cascade={"all"}, orphanRemoval=true)
+     */
+    private $projectUsers;
 
     /**
      * User constructor.
@@ -381,6 +387,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
         $this->ownedMeetings = new ArrayCollection();
         $this->favoriteProjects = new ArrayCollection();
         $this->subteamMembers = new ArrayCollection();
+        $this->projectUsers = new ArrayCollection();
     }
 
     public function __toString()
@@ -1017,6 +1024,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function addTeamMember(TeamMember $teamMember)
     {
         $this->teamMembers[] = $teamMember;
+        $teamMember->setUser($this);
 
         return $this;
     }
@@ -1031,6 +1039,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function removeTeamMember(TeamMember $teamMember)
     {
         $this->teamMembers->removeElement($teamMember);
+        $teamMember->setUser(null);
 
         return $this;
     }
@@ -1043,6 +1052,22 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function getTeamMembers()
     {
         return $this->teamMembers;
+    }
+
+    /**
+     * @param Team $team
+     *
+     * @return bool
+     */
+    public function hasTeam(Team $team): bool
+    {
+        foreach ($this->teamMembers as $teamMember) {
+            if ($teamMember->getTeam() === $team) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -1565,6 +1590,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function addSubteamMember(SubteamMember $subteamMember)
     {
         $this->subteamMembers[] = $subteamMember;
+        $subteamMember->setUser($this);
 
         return $this;
     }
@@ -1577,6 +1603,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function removeSubteamMember(SubteamMember $subteamMember)
     {
         $this->subteamMembers[] = $subteamMember;
+        $subteamMember->setUser(null);
 
         return $this;
     }
@@ -1587,5 +1614,71 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function getSubteamMembers()
     {
         return $this->subteamMembers;
+    }
+
+    /**
+     * @param ProjectUser $projectUser
+     *
+     * @return User
+     */
+    public function addProjectUser(ProjectUser $projectUser)
+    {
+        $this->projectUsers[] = $projectUser;
+        $projectUser->setUser($this);
+
+        return $this;
+    }
+
+    /**
+     * @param ProjectUser $projectUser
+     *
+     * @return User
+     */
+    public function removeProjectUser(ProjectUser $projectUser)
+    {
+        $this->projectUsers->removeElement($projectUser);
+        $projectUser->setUser(null);
+
+        return $this;
+    }
+
+    /**
+     * @return ProjectUser[]|ArrayCollection
+     */
+    public function getProjectUsers()
+    {
+        return $this->projectUsers;
+    }
+
+    public function addSubteam(Subteam $subteam)
+    {
+        foreach ($this->subteamMembers as $subteamMember) {
+            if ($subteamMember->getSubteam() === $subteam) {
+                return;
+            }
+        }
+
+        $subteamMember = new SubteamMember();
+        $subteamMember->setSubteam($subteam);
+        $this->addSubteamMember($subteamMember);
+    }
+
+    public function removeSubteam(Subteam $subteam)
+    {
+        foreach ($this->subteamMembers as $subteamMember) {
+            if ($subteamMember->getSubteam() === $subteam) {
+                $this->removeSubteamMember($subteamMember);
+            }
+        }
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getSubteams()
+    {
+        return $this->subteamMembers->map(function (SubteamMember $subteamMember) {
+            return $subteamMember->getSubteam();
+        });
     }
 }

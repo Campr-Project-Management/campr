@@ -1,4 +1,6 @@
 message:
+    delete_subteam: Delete Subteam
+    edit_subteam: Edit Subteam
     back_to_organization: Back to Project Organization
     create_new_team_member: Create new team member
     add_avatar_image: Add avatar image
@@ -176,6 +178,7 @@ menu:
     admin: Admin
 
 title:
+    subteams: Subteams
     homepage_main: Campr Main Site
     homepage: Campr Admin
     header: Campr Administration
@@ -468,8 +471,11 @@ subtitle:
     project_deliverable: List of project deliverables
 
 label:
+    select_users: Select Users
+    subteam_name: Subteam Name
     select_managers: Select Managers
     department_name: Department Name
+    new_subteam: New Subteam
     resource: Resource
     quantity: Quantity
     username: Username
@@ -671,7 +677,9 @@ label:
     distribution_list_title: Distribution List Title
 
 button:
+    edit_subteam: Edit Subteam
     save_member: Save Member
+    add_new_subteam: Add new Subteam
     add_another_role: Add another role
     add_another_department: Add another department
     add_another_subteam: Add another subteam
@@ -773,6 +781,9 @@ add:
     project_deliverable: Add new project deliverable
 
 placeholder:
+    first_name: First Name
+    last_name: Last Name
+    username: Username
     new_department: New Department
     search_resources: Search for resources
     search_members: Seach For Members
@@ -842,7 +853,9 @@ placeholder:
     gplus: Google Plus
 
 table_header_cell:
-    actions:
+    subteam_name: Subteam Name
+    team_leader: Team Leader
+    actions: Actions
     no_of_members: No. of Members
     managers: Managers
     department_name: Department Name
@@ -1026,6 +1039,7 @@ not_found:
     general: Resource not found!
     user: User not found
     email_user: Requested user email not found
+    team: Team not found
 
 email:
     subject:
@@ -1078,6 +1092,9 @@ site:
     disabled: Site disabled.
 
 exception:
+    user:
+        already_member_of_team: This user is already a part of this team.
+        unable_to_create: Unable to create user.
     add:
         team: Please add one team as option parameter
         user: Please add one user as option parameter

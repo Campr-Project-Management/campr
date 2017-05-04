@@ -2,7 +2,12 @@
 
 namespace AppBundle\Form\User;
 
+use AppBundle\Entity\DistributionList;
+use AppBundle\Entity\ProjectDepartment;
+use AppBundle\Entity\Subteam;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormEvent;
@@ -71,20 +76,58 @@ class ApiCreateType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('subdomain', TextType::class, [
+                'required' => false,
+                'mapped' => false,
+            ])
+            ->add('distributionLists', EntityType::class, [
+                'class' => DistributionList::class,
+                'multiple' => true,
+            ])
+            ->add('subteams', EntityType::class, [
+                'class' => Subteam::class,
+                'multiple' => true,
+            ])
+            ->add('departments', EntityType::class, [
+                'class' => ProjectDepartment::class,
+                'multiple' => true,
+                'mapped' => false,
+            ])
+            ->add('showInResources', CheckboxType::class, [
+                'mapped' => false,
+            ])
+            ->add('showInRaci', CheckboxType::class, [
+                'mapped' => false,
+            ])
+            ->add('showInOrg', CheckboxType::class, [
+                'mapped' => false,
+            ])
         ;
 
-        $builder
-            ->addEventListener(
-                FormEvents::SUBMIT,
-                function (FormEvent $event) {
-                    $user = $event->getData();
-                    $user->setRoles([User::ROLE_USER]); 
-                    $user->setFirstName('FirstName');
-                    $user->setLastName('LastName');
-                    $user->setPlainPassword(bin2hex(random_bytes(6)));
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT,
+            function (FormEvent $event) {
+                $data = $event->getData();
+                if (isset($data['subdomain']) && !empty($data['subdomain'])) {
+                    $form = $event->getForm();
+                    $form->remove('distributionLists');
+                    $form->remove('subteams');
+                    $form->remove('departments');
+                    $form->remove('showInResources');
+                    $form->remove('showInRaci');
+                    $form->remove('showInOrg');
                 }
-            )
-        ;
+            }
+        );
+
+        $builder->addEventListener(
+            FormEvents::SUBMIT,
+            function (FormEvent $event) {
+                $user = $event->getData();
+                $user->setRoles([User::ROLE_USER]);
+                $user->setPlainPassword(bin2hex(random_bytes(6)));
+            }
+        );
     }
 
     /**
