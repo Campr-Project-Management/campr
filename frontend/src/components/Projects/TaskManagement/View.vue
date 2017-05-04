@@ -433,7 +433,7 @@
                     <!-- /// Task Assignee /// -->
                     <h3>Asignee</h3>
                     <div class="row">
-                        <div class="col-md-8 col-sm-6">
+                        <div class="col-md-8">
                             <div class="user-avatar flex flex-v-center"> 
                                 <div><img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="'Nelson Carr'"/></div>
                                 <div>
@@ -442,7 +442,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 col-sm-6">
+                        <div class="col-md-4">
                             <select-field v-bind:title="'Change Assignee'"></select-field>    
                         </div>
                     </div>
@@ -463,10 +463,10 @@
                             v-model="projectCompletion"
                             v-bind:value="projectCompletion" />
                         </div>
-                        <div class="col-md-8 col-sm-6">
+                        <div class="col-md-8">
                             <h4>In Progress</h4>
                         </div>
-                        <div class="col-md-4 col-sm-6">
+                        <div class="col-md-4">
                             <select-field v-bind:title="'Change Status'"></select-field>    
                         </div>
                     </div>
@@ -518,7 +518,7 @@
                     <!-- /// Task Labels /// -->
                     <h3>Labels</h3>
                     <div class="row">
-                        <div class="col-md-8 col-sm-6">
+                        <div class="col-md-8">
                             <div class="task-label-holder flex flex-v-center">
                                 <div class="task-label" :style="'background-color:#e04fcc'">
                                     High Priority
@@ -532,7 +532,7 @@
                                 </button> 
                             </div>
                         </div>
-                        <div class="col-md-4 col-sm-6">
+                        <div class="col-md-4">
                             <select-field v-bind:title="'Add Label'"></select-field>
                         </div>
                     </div>                        
@@ -543,7 +543,7 @@
                     <!-- /// Participants /// -->
                     <h3>Participants</h3>
                     <div class="row">
-                        <div class="col-md-8 col-sm-6">
+                        <div class="col-md-8">
                             <div class="flex flex-v-center">
                                 <div class="user-avatar" v-tooltip.bottom-center="'Nelson Carr'"> 
                                     <img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="'Nelson Carr'"/>
@@ -556,7 +556,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 col-sm-6">
+                        <div class="col-md-4">
                             <select-field v-bind:title="'Invite Members'"></select-field>
                         </div>
                     </div>                        
