@@ -781,6 +781,9 @@ add:
     project_deliverable: Add new project deliverable
 
 placeholder:
+    first_name: First Name
+    last_name: Last Name
+    username: Username
     new_department: New Department
     search_resources: Search for resources
     search_members: Seach For Members
@@ -1036,6 +1039,7 @@ not_found:
     general: Resource not found!
     user: User not found
     email_user: Requested user email not found
+    team: Team not found
 
 email:
     subject:
@@ -1088,6 +1092,9 @@ site:
     disabled: Site disabled.
 
 exception:
+    user:
+        already_member_of_team: This user is already a part of this team.
+        unable_to_create: Unable to create user.
     add:
         team: Please add one team as option parameter
         user: Please add one user as option parameter
