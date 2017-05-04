@@ -78,8 +78,8 @@
                             <multi-select-field
                                         v-bind:title="translateText('placeholder.subteam')"
                                         v-bind:options="subteamsForSelect"
-                                        v-bind:selectedOptions="selectedSubteams"
-                                        v-model="selectedSubteams" />
+                                        v-bind:selectedOptions="subteams"
+                                        v-model="subteams" />
                                 <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_subteam') }}</a>
                             </div>
                         </div>
@@ -282,7 +282,6 @@ export default {
             selectedRoles: [],
             departments: [],
             subteams: [],
-            selectedSubteams: [],
         };
     },
 };

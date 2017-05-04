@@ -1059,7 +1059,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      *
      * @return bool
      */
-    public function hasTeam(Team $team): bool
+    public function hasTeam(Team $team)
     {
         foreach ($this->teamMembers as $teamMember) {
             if ($teamMember->getTeam() === $team) {
