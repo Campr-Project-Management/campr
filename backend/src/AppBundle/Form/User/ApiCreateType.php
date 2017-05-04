@@ -37,6 +37,22 @@ class ApiCreateType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('firstName', TextType::class, [
+                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'not_blank.first_name',
+                    ]),
+                ],
+            ])
+            ->add('lastName', TextType::class, [
+                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'not_blank.last_name',
+                    ]),
+                ],
+            ])
             ->add('email', EmailType::class, [
                 'required' => true,
                 'constraints' => [
