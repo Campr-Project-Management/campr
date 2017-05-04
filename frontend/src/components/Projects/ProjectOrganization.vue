@@ -54,20 +54,12 @@
                                 <i class="fa fa-angle-up" v-show="showTeam"></i>
                             </a>
                             <div class="team" v-show="showTeam">
-                                <div class="member flex">
-                                    <img src="">
+                                <div class="member flex" v-for="user in projectUsers.items">
+                                    <img :src="user.userAvatar">
                                     <div class="info">
-                                        <p class="title">Alexander Martins</p>
-                                        <p class="description">Symfony Developer - Tchnical Services</p>
-                                        <social-links align="left" size="16px" facebook="http://www.facebook.com" twitter="http://www.twitter.com" linkedin="http://www.linkedin.com" gplus="http://www.google.com" email="test@test.com" phone="1234 56 78"></social-links>
-                                    </div>
-                                </div>
-                                <div class="member flex">
-                                    <img src="">
-                                    <div class="info">
-                                        <p class="title">Alexander Martins</p>
-                                        <p class="description">Symfony Developer - Tchnical Services</p>
-                                        <social-links align="left" size="16px" facebook="http://www.facebook.com" twitter="http://www.twitter.com" linkedin="http://www.linkedin.com" gplus="http://www.google.com" email="test@test.com" phone="1234 56 78"></social-links>
+                                        <p class="title">{{user.userFullName}}</p>
+                                        <p class="description">{{user.projectRoleName}}</p>
+                                        <social-links align="left" size="16px" v-bind:facebook="user.userFacebook" v-bind:twitter="user.userTwitter" v-bind:linkedin="user.userLinkedIn" v-bind:gplus="user.userGplus" v-bind:email="user.userEmail" v-bind:phone="user.userPhone"></social-links>
                                     </div>
                                 </div>
                             </div>

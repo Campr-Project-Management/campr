@@ -51,12 +51,44 @@ class SubteamMember
      * @Serializer\Exclude()
      */
     private $subteamRoles;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_lead", type="boolean", options={"default": false})
+     */
+    private $isLead = false;
+
     /**
      * Constructor.
      */
     public function __construct()
     {
-        $this->subteamRoles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->subteamRoles = new ArrayCollection();
+    }
+
+    /**
+     * Set isLead.
+     *
+     * @param bool $isLead
+     *
+     * @return SubteamMember
+     */
+    public function setIsLead($isLead)
+    {
+        $this->isLead = $isLead;
+
+        return $this;
+    }
+
+    /**
+     * Get isLead.
+     *
+     * @return bool
+     */
+    public function getIsLead()
+    {
+        return $this->isLead;
     }
 
     /**
@@ -72,11 +104,11 @@ class SubteamMember
     /**
      * Set user.
      *
-     * @param \AppBundle\Entity\User $user
+     * @param User $user
      *
      * @return SubteamMember
      */
-    public function setUser(\AppBundle\Entity\User $user)
+    public function setUser(User $user)
     {
         $this->user = $user;
 
@@ -86,7 +118,7 @@ class SubteamMember
     /**
      * Get user.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {
@@ -96,11 +128,11 @@ class SubteamMember
     /**
      * Set subteam.
      *
-     * @param \AppBundle\Entity\Subteam $subteam
+     * @param Subteam $subteam
      *
      * @return SubteamMember
      */
-    public function setSubteam(\AppBundle\Entity\Subteam $subteam)
+    public function setSubteam(Subteam $subteam)
     {
         $this->subteam = $subteam;
 
@@ -110,7 +142,7 @@ class SubteamMember
     /**
      * Get subteam.
      *
-     * @return \AppBundle\Entity\Subteam
+     * @return Subteam
      */
     public function getSubteam()
     {
@@ -120,11 +152,11 @@ class SubteamMember
     /**
      * Add subteamRole.
      *
-     * @param \AppBundle\Entity\SubteamRole $subteamRole
+     * @param SubteamRole $subteamRole
      *
      * @return SubteamMember
      */
-    public function addSubteamRole(\AppBundle\Entity\SubteamRole $subteamRole)
+    public function addSubteamRole(SubteamRole $subteamRole)
     {
         $this->subteamRoles[] = $subteamRole;
 
@@ -134,9 +166,9 @@ class SubteamMember
     /**
      * Remove subteamRole.
      *
-     * @param \AppBundle\Entity\SubteamRole $subteamRole
+     * @param SubteamRole $subteamRole
      */
-    public function removeSubteamRole(\AppBundle\Entity\SubteamRole $subteamRole)
+    public function removeSubteamRole(SubteamRole $subteamRole)
     {
         $this->subteamRoles->removeElement($subteamRole);
     }
