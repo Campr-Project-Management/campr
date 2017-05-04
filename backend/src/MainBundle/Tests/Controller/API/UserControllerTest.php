@@ -138,6 +138,7 @@ class UserControllerTest extends BaseController
                                     'contracts' => [],
                                     'ownedMeetings' => [],
                                     'subteamMembers' => [],
+                                    'projectUsers' => [],
                                     'avatar' => null,
                                 ],
                             ],
@@ -181,6 +182,7 @@ class UserControllerTest extends BaseController
                                     'contracts' => [],
                                     'ownedMeetings' => [],
                                     'subteamMembers' => [],
+                                    'projectUsers' => [],
                                     'avatar' => null,
                                 ],
                             ],
@@ -231,6 +233,7 @@ class UserControllerTest extends BaseController
                     ],
                     'ownedMeetings' => [],
                     'subteamMembers' => [],
+                    'projectUsers' => [],
                     'avatar' => null,
                 ],
             ],
@@ -256,11 +259,7 @@ class UserControllerTest extends BaseController
 
         $this->client->request('PATCH', '/api/users', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
         $response = $this->client->getResponse();
-        if ($responseStatusCode === Response::HTTP_BAD_REQUEST) {
-            $this->assertEquals($isResponseSuccessful, $response->isClientError());
-        } else {
-            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        }
+        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
 
         $user = $this->getUserByUsername('testuser');
@@ -296,7 +295,7 @@ class UserControllerTest extends BaseController
                         'second' => 'pass11',
                     ],
                 ],
-                true,
+                false,
                 Response::HTTP_BAD_REQUEST,
                 [
                     'messages' => [
@@ -339,6 +338,7 @@ class UserControllerTest extends BaseController
                     'contracts' => [],
                     'ownedMeetings' => [],
                     'subteamMembers' => [],
+                    'projectUsers' => [],
                     'avatar' => null,
                 ],
             ],
