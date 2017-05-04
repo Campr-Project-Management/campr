@@ -107,12 +107,12 @@
                         <span class="tablet"></span>
                     </router-link>
                 </li>
-                <!--<li>-->
-                    <!--<router-link to="todo" v-bind:title="message.phases_milestones">-->
-                        <!--<span class="default">{{ message.phases_milestones }}</span>-->
-                        <!--<span class="tablet"></span>-->
-                    <!--</router-link>-->
-                <!--</li>-->
+                <li>
+                    <router-link :to="{name: 'project-phases-and-milestones'}" v-bind:title="message.phases_milestones">
+                        <span class="default">{{ message.phases_milestones }}</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
                 <!--<li>-->
                     <!--<router-link to="todo" v-bind:title="message.costs">-->
                         <!--<span class="default">{{ message.costs }}</span>-->
