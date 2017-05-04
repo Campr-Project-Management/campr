@@ -693,21 +693,6 @@ class ProjectController extends ApiController
             ],
             JsonResponse::HTTP_BAD_REQUEST
         );
-
-//        $data = $request->request->all();
-//        $data['project'] = $project;
-////        $currentHost = $request->getHttpHost();
-////        $baseHost = $this->getParameter('domain');
-//        $subdomain = $this->get('kernel')->getTeamSlug();
-////        $subdomain = str_replace('.'.$baseHost, '', $currentHost);
-
-//        $response = $this
-//            ->get('app.service.user')
-//            ->createTeamMember($subdomain, $data, $this->getUser()->getApiToken())
-//        ;
-//        $code = $response instanceof ProjectUser ? JsonResponse::HTTP_CREATED : JsonResponse::HTTP_BAD_REQUEST;
-
-//        return $this->createApiResponse($response, $code);
     }
 
     /**

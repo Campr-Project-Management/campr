@@ -15,7 +15,7 @@ class RequestListener
         }
     }
 
-    private function isJsonRequest(Request $request): bool
+    private function isJsonRequest(Request $request)
     {
         $contentType = $request->headers->get('content-type');
         if (empty($contentType)) {
@@ -31,6 +31,6 @@ class RequestListener
             return false;
         }
 
-        return (bool) preg_match('/^{[^}]*}$/', $request->getContent());
+        return is_array(json_decode($request->getContent(), true));
     }
 }
