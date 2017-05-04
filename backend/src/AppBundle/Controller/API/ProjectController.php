@@ -37,6 +37,7 @@ use AppBundle\Form\ProjectObjective\CreateType as ProjectObjectiveCreateType;
 use AppBundle\Form\ProjectDeliverable\CreateType as ProjectDeliverableCreateType;
 use AppBundle\Form\ProjectLimitation\CreateType as ProjectLimitationCreateType;
 use AppBundle\Form\Unit\CreateType as UnitCreateType;
+use AppBundle\Form\User\ApiCreateType as UserApiCreateType;
 use AppBundle\Form\WorkPackage\ApiCreateType;
 use AppBundle\Security\ProjectVoter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -635,16 +636,63 @@ class ProjectController extends ApiController
      */
     public function createTeamMemberAction(Request $request, Project $project)
     {
-        $data = $request->request->all();
-        $data['project'] = $project;
-        $currentHost = $request->getHttpHost();
-        $baseHost = $this->getParameter('domain');
-        $subdomain = str_replace('.'.$baseHost, '', $currentHost);
+        $user = new User();
+        $form = $this->createForm(UserApiCreateType::class, $user, ['csrf_protection' => false]);
+        $this->processForm($request, $form);
 
-        $response = $this->get('app.service.user')->createTeamMember($subdomain, $data, $this->getUser()->getApiToken());
-        $code = $response instanceof ProjectUser ? JsonResponse::HTTP_CREATED : JsonResponse::HTTP_BAD_REQUEST;
+        if ($form->isValid()) {
+            // @TODO: refactor to use a form and model
+            $projectUser = new ProjectUser();
+            $projectUser->setProject($project);
+            $projectUser->setShowInOrg($form->get('showInOrg')->getData());
+            $projectUser->setShowInRaci($form->get('showInRaci')->getData());
+            $projectUser->setShowInResources($form->get('showInResources')->getData());
+            $user->addProjectUser($projectUser);
 
-        return $this->createApiResponse($response, $code);
+            $request->request->set(
+                'subdomain',
+                $this->getParameter('kernel.team_slug')
+            );
+
+            $departments = $form->get('departments')->getData();
+            foreach ($projectUser->getProjectDepartments() as $projectDepartment) {
+                $projectUser->removeProjectDepartment($projectDepartment);
+            }
+            foreach ($departments as $department) {
+                $projectUser->addProjectDepartment($department);
+            }
+
+            $res = $this
+                ->get('app.service.user')
+                ->createTeamMember($request)
+            ;
+
+            if ($res) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+            } else {
+                return $this->createApiResponse(
+                    [
+                        'messages' => [
+                            $this
+                                ->get('translator')
+                                ->trans('exception.user.unable_to_create', [], 'messages'),
+                        ],
+                    ],
+                    Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+            }
+
+            return $this->createApiResponse($user, Response::HTTP_CREATED);
+        }
+
+        return $this->createApiResponse(
+            [
+                'messages' => $this->getFormErrors($form),
+            ],
+            JsonResponse::HTTP_BAD_REQUEST
+        );
     }
 
     /**

@@ -34,17 +34,30 @@
                     <!-- /// Member Name & Role /// -->
                     <div class="row">
                         <div class="form-group last-form-group">
-                            <div class="col-md-6"><input-field v-model="name" type="text" v-bind:label="translateText('placeholder.name')"></input-field></div>
                             <div class="col-md-6">
-                            <multi-select-field
+                                <input-field v-model="firstName" type="text" v-bind:label="translateText('placeholder.first_name')"></input-field>
+                            </div>
+                            <div class="col-md-6">
+                                <input-field v-model="lastName" type="text" v-bind:label="translateText('placeholder.last_name')"></input-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="double">
+
+                    <div class="row">
+                        <div class="form-group last-form-group">
+                            <div class="col-md-6"><input-field v-model="username" type="text" v-bind:label="translateText('placeholder.username')"></input-field></div>
+                            <div class="col-md-6">
+                                <multi-select-field
                                         v-bind:title="translateText('placeholder.role')"
                                         v-bind:options="projectRolesForSelect"
                                         v-bind:selectedOptions="selectedRoles"
                                         v-model="selectedRoles" />
-                            <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_role') }}</a>
+                                <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_role') }}</a>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <!-- /// End Member Name & Role /// --> 
 
                     <hr class="double">
@@ -65,8 +78,8 @@
                             <multi-select-field
                                         v-bind:title="translateText('placeholder.subteam')"
                                         v-bind:options="subteamsForSelect"
-                                        v-bind:selectedOptions="selectedSubteams"
-                                        v-model="selectedSubteams" />
+                                        v-bind:selectedOptions="subteams"
+                                        v-model="subteams" />
                                 <a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_subteam') }}</a>
                             </div>
                         </div>
@@ -204,16 +217,17 @@ export default {
         },
         saveMember() {
             let list = [];
-            this.distribution.map(function(item, index) {
+            this.distribution.forEach((item, index) => {
                 if (item) {
                     list.push(index);
                 }
             });
+
             const data = {
-                'name': this.name,
-                'role': this.role.key,
+                'firstName': this.firstName,
+                'lastName': this.lastName,
+                'username': this.username,
                 'company': this.company,
-                'department': this.department.key,
                 'showInResources': this.resource,
                 'showInRaci': this.raci,
                 'showInOrg': this.org,
@@ -223,10 +237,10 @@ export default {
                 'twitter': this.twitter,
                 'linkedIn': this.linkedIn,
                 'gplus': this.gplus,
-                'distribution': list,
-                'avatar': this.avatarFile instanceof window.File ? this.avatarFile : '',
-                'projectId': this.$route.params.id,
-                'selectedRoles': this.selectedRoles.filter((item) => item.key).map((item) => item.key),
+                'avatarFile[file]': this.avatarFile instanceof window.File ? this.avatarFile : '',
+                'project': this.$route.params.id,
+                'distributionLists': list,
+                'roles': this.selectedRoles.filter((item) => item.key).map((item) => item.key),
                 'departments': this.departments.filter((item) => item.key).map((item) => item.key),
                 'subteams': this.subteams.filter((item) => item.key).map((item) => item.key),
             };
@@ -249,7 +263,9 @@ export default {
         return {
             avatar: '',
             avatarFile: '',
-            name: '',
+            firstName: '',
+            lastName: '',
+            username: '',
             company: '',
             department: '',
             role: '',
@@ -266,7 +282,6 @@ export default {
             selectedRoles: [],
             departments: [],
             subteams: [],
-            selectedSubteams: [],
         };
     },
 };
