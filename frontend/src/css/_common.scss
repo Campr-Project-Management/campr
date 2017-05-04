@@ -494,6 +494,10 @@ hr {
     line-height: 20px;
     font-weight: 300;
     letter-spacing: 1.7px;
+
+    &.no-margin-bottom {
+      margin-bottom: 0;
+    }
   }
 }
 
