@@ -2,6 +2,7 @@
 
 namespace AppBundle\EventListener;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 class RequestListener
@@ -9,15 +10,28 @@ class RequestListener
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
-        $headers = $request->headers->all();
 
-        if (isset($headers['content-type'])
-            && (in_array('application/json;charset=UTF-8', $headers['content-type'])
-                || in_array('application/json', $headers['content-type']))
-        ) {
-            if ($content = $request->getContent()) {
-                $request->request->replace(json_decode($content, true));
-            }
+        if ($this->isJsonRequest($request)) {
+            $request->request->replace(json_decode($request->getContent(), true));
         }
+    }
+
+    private function isJsonRequest(Request $request): bool
+    {
+        $contentType = $request->headers->get('content-type');
+        if (empty($contentType)) {
+            return false;
+        }
+
+        $temp = explode(';', $contentType);
+        if (empty($temp[0])) {
+            return false;
+        }
+
+        if (strtolower($temp[0]) !== 'application/json') {
+            return false;
+        }
+
+        return (bool) preg_match('/^{[^}]*}$/', $request->getContent());
     }
 }
