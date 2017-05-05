@@ -980,16 +980,28 @@ class ProjectController extends ApiController
     /**
      * @Route("/{id}/phases", name="app_api_project_phases", options={"expose"=true})
      */
-    public function phasesAction(Project $project)
+    public function phasesAction(Request $request, Project $project)
     {
-        $phases = $this
+        $filters = $request->query->all();
+        $repo = $this
             ->getDoctrine()
             ->getManager()
             ->getRepository(WorkPackage::class)
-            ->findPhasesByProject($project)
         ;
+        if (isset($filters['page'])) {
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+            $filters['type'] = WorkPackage::TYPE_PHASE;
+            $result = $repo->getQueryByProjectAndFilters($project, $filters)->getResult();
+            $responseArray['totalItems'] = count($result);
+            $responseArray['pageSize'] = $filters['pageSize'];
+            $responseArray['items'] = $result;
 
-        return $this->createApiResponse($phases);
+            return $this->createApiResponse($responseArray);
+        }
+
+        return $this->createApiResponse([
+            'items' => $repo->findPhasesByProject($project),
+        ]);
     }
 
     /**
@@ -997,28 +1009,26 @@ class ProjectController extends ApiController
      */
     public function milestonesAction(Request $request, Project $project)
     {
+        $filters = $request->query->all();
         $repo = $this
             ->getDoctrine()
             ->getManager()
             ->getRepository(WorkPackage::class)
         ;
+        if (isset($filters['page'])) {
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+            $filters['type'] = WorkPackage::TYPE_MILESTONE;
+            $result = $repo->getQueryByProjectAndFilters($project, $filters)->getResult();
+            $responseArray['totalItems'] = count($result);
+            $responseArray['pageSize'] = $filters['pageSize'];
+            $responseArray['items'] = $result;
 
-        $filters = $request->query->get('filters', []);
-
-        if (isset($filters['phase'])) {
-            $phase = $repo->findOneBy([
-                'id' => $filters['phase'],
-                'type' => WorkPackage::TYPE_PHASE,
-            ]);
-
-            if (!$phase) {
-                throw $this->createNotFoundException();
-            }
-
-            return $this->createApiResponse($repo->findMilestonesByPhase($phase));
+            return $this->createApiResponse($responseArray);
         }
 
-        return $this->createApiResponse($repo->findMilestonesByProject($project));
+        return $this->createApiResponse([
+            'items' => $repo->findMilestonesByProject($project),
+        ]);
     }
 
     /**
@@ -1189,7 +1199,7 @@ class ProjectController extends ApiController
             $wpQuery = $this
                 ->getDoctrine()
                 ->getRepository(WorkPackage::class)
-                ->getQueryByProjectFiltersAndWorkPackage($project, $filters)
+                ->getQueryByProjectAndFilters($project, $filters)
             ;
 
             $currentPage = isset($filters['page']) ? $filters['page'] : 1;
@@ -1211,10 +1221,11 @@ class ProjectController extends ApiController
             ;
 
             foreach ($workPackageStatuses as $workPackageStatus) {
+                $filters['workPackageStatus'] = $workPackageStatus;
                 $wpQuery = $this
                     ->getDoctrine()
                     ->getRepository(WorkPackage::class)
-                    ->getQueryByProjectFiltersAndWorkPackage($project, $filters, $workPackageStatus)
+                    ->getQueryByProjectAndFilters($project, $filters)
                 ;
 
                 $currentPage = 1;

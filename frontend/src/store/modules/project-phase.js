@@ -8,7 +8,7 @@ const state = {
 const getters = {
     projectPhases: state => state.items,
     projectPhasesForSelect: state => {
-        return state.items.map(item => {
+        return state.items.items.map(item => {
             return {
                 'key': item.id,
                 'label': item.name,
