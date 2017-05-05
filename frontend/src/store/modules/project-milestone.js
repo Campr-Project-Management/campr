@@ -8,7 +8,7 @@ const state = {
 const getters = {
     projectMilestones: state => state.items,
     projectMilestonesForSelect: state => {
-        return state.items.map(item => {
+        return state.items.items.map(item => {
             return {
                 'key': item.id,
                 'label': item.name,
