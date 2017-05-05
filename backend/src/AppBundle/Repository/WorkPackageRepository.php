@@ -248,7 +248,7 @@ class WorkPackageRepository extends BaseRepository
      *
      * @return Query
      */
-    public function getQueryByProjectFiltersAndWorkPackage(Project $project, $filters = [], WorkPackageStatus $workPackageStatus = null)
+    public function getQueryByProjectAndFilters(Project $project, $filters = [])
     {
         $qb = $this
             ->createQueryBuilder('wp')
@@ -257,10 +257,17 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('project', $project)
         ;
 
-        if (isset($workPackageStatus)) {
+        if (isset($filters['phase'])) {
+            $qb
+                ->andWhere('wp.phase = :phase')
+                ->setParameter('phase', $filters['phase'])
+            ;
+        }
+
+        if (isset($filters['status'])) {
             $qb
                 ->andWhere('wp.workPackageStatus = :workPackageStatus')
-                ->setParameter('workPackageStatus', $workPackageStatus)
+                ->setParameter('workPackageStatus', $filters['status'])
             ;
         }
 
@@ -268,14 +275,6 @@ class WorkPackageRepository extends BaseRepository
             $qb
                 ->andWhere('wp.name LIKE :searchString')
                 ->setParameter('searchString', '%'.$filters['searchString'].'%')
-            ;
-        }
-
-        if (isset($filters['status'])) {
-            $qb
-                ->innerJoin('wp.workPackageStatus', 'wps')
-                ->andWhere('wps.id = :statusId')
-                ->setParameter('statusId', $filters['status'])
             ;
         }
 
@@ -305,6 +304,12 @@ class WorkPackageRepository extends BaseRepository
                 ->andWhere('wp.isKeyMilestone = :milestone')
                 ->setParameter('milestone', $filters['milestone'])
             ;
+        }
+
+        if (isset($filters['pageSize']) && isset($filters['page'])) {
+            $qb
+                ->setFirstResult($filters['pageSize'] * ($filters['page'] - 1))
+                ->setMaxResults($filters['pageSize']);
         }
 
         return $qb->getQuery();
