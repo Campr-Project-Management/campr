@@ -3,6 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Entity\Project;
+use AppBundle\Entity\WorkPackage;
+use AppBundle\Entity\User as UserEntity;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use MainBundle\Security\TeamVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -176,5 +180,44 @@ class DefaultController extends Controller
         $request->getSession()->invalidate();
 
         return $this->redirectToRoute('main_homepage');
+    }
+    
+    /**
+     * The dashboard page where the user's lands whe going first time int admin tool
+     *
+     * @Route("/dashboard", name="app_dashboard")
+     * @Secure(roles="ROLE_SUPER_ADMIN")
+     *
+     * @return Response
+     *
+     */
+    public function dashboardAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $noProjects = $em
+            ->getRepository(Project::class)
+            ->countTotal();        
+        ;
+
+        $noTasks = $em
+            ->getRepository(WorkPackage::class)
+            ->countTotalByType(WorkPackage::TYPE_TASK);
+        ;
+
+        $noUsers = $em
+            ->getRepository(UserEntity::class)
+            ->countTotal();
+        ;
+
+        return $this->render(
+            'AppBundle:Default:dashboard.html.twig',
+            [
+                'no_projects' => $noProjects,
+                'no_tasks' => $noTasks,
+                'no_users' => $noUsers,
+            ]
+        );
+        
     }
 }
