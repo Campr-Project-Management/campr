@@ -9,7 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @Route("/api/subteams")
@@ -27,18 +26,17 @@ class SubteamController extends ApiController
     {
         $filters = $request->query->all();
         if (isset($filters['page'])) {
-            $pageSize = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
-            $query = $this->getRepository()->getQueryFiltered($pageSize, $filters);
-            $paginator = new Paginator($query);
-            $responseArray['totalItems'] = count($paginator);
-            $responseArray['pageSize'] = $pageSize;
-            $responseArray['items'] = $paginator->getIterator()->getArrayCopy();
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+            $result = $this->getRepository()->getQueryFiltered($filters)->getResult();
+            $responseArray['totalItems'] = count($result);
+            $responseArray['pageSize'] = $filters['pageSize'];
+            $responseArray['items'] = $result;
 
             return $this->createApiResponse($responseArray);
         }
 
         return $this->createApiResponse([
-            'items' => $this->getRepository()->findAll(),
+            'items' => $this->getRepository()->getQueryFiltered($filters)->getResult(),
         ]);
     }
 

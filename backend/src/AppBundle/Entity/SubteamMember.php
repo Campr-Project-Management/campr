@@ -194,7 +194,7 @@ class SubteamMember
 
     /**
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("userName")
+     * @Serializer\SerializedName("userFullName")
      */
     public function getUserName()
     {
@@ -217,5 +217,101 @@ class SubteamMember
     public function getSubteamName()
     {
         return $this->subteam ? (string) $this->subteam : null;
+    }
+
+    /**
+     * Returns user facebook.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userFacebook")
+     *
+     * @return string
+     */
+    public function getUserFacebook()
+    {
+        return $this->user ? $this->user->getFacebook() : null;
+    }
+
+    /**
+     * Returns user twitter.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userTwitter")
+     *
+     * @return string
+     */
+    public function getUserTwitter()
+    {
+        return $this->user ? $this->user->getTwitter() : null;
+    }
+
+    /**
+     * Returns user linkedin.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userLinkedIn")
+     *
+     * @return string
+     */
+    public function getUserLinkedIn()
+    {
+        return $this->user ? $this->user->getLinkedIn() : null;
+    }
+
+    /**
+     * Returns user gplus.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userGplus")
+     *
+     * @return string
+     */
+    public function getUserGplus()
+    {
+        return $this->user ? $this->user->getGplus() : null;
+    }
+
+    /**
+     * Returns user email.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userEmail")
+     *
+     * @return string
+     */
+    public function getUserEmail()
+    {
+        return $this->user ? $this->user->getEmail() : null;
+    }
+
+    /**
+     * Returns user phone.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userPhone")
+     *
+     * @return string
+     */
+    public function getUserPhone()
+    {
+        return $this->user ? $this->user->getPhone() : null;
+    }
+
+    /**
+     * Returns subteam role names.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("subteamRoleNames")
+     *
+     * @return string
+     */
+    public function getSubteamRoleNames()
+    {
+        $roleNames = [];
+        foreach ($this->getSubteamRoles() as $subteamRole) {
+            $roleNames[] = $subteamRole->getName();
+        }
+
+        return $roleNames;
     }
 }

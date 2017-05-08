@@ -14,7 +14,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ button.cancel }}</a>
                 <a href="javascript:void(0)" @click="createDistributionList()" class="btn-rounded">{{ button.create_distribution }} +</a>
@@ -29,49 +28,32 @@
         </div>
 
         <div class="team-graph">
-            <div class="flex flex-space-between">
+            <member-badge v-for="(item, index) in projectSponsors" v-bind:item="item" size="big"></member-badge>
+            <div class="flex flex-space-between" v-for="subteam in subteams.items">
                 <div>
+                    <div class="member-badge-wrapper" v-for="subteamMember in subteam.subteamMembers">
+                        <member-badge v-if="subteamMember.isLead" v-bind:item="subteamMember" size="big"></member-badge>
+                    </div>
                     <div class="flex">
-                        <div>
-                            <a href="" class="btn-rounded btn-empty btn-small">
+                        <div v-for="child in subteam.children">
+                            <div class="member-badge-wrapper" v-for="member in child.subteamMembers">
+                                <member-badge v-if="member.isLead" v-bind:item="member" size="small"></member-badge>
+                            </div>
+                            <a href="javascript:void(0)" class="btn-rounded btn-empty btn-small" @click="toggleTeam(child.id)" :class="{'show-team': showTeam[child.id]}">
                                 {{ message.view_team }}
+                                <i class="fa fa-angle-down" v-show="!showTeam[child.id]"></i>
+                                <i class="fa fa-angle-up" v-show="showTeam[child.id]"></i>
                             </a>
-                        </div>
-                        <div>
-                            <a href="" class="btn-rounded btn-empty btn-small">
-                                {{ message.view_team }}
-                            </a>
-                        </div>
-                        <div class="member-badge-wrapper">
-                            <a href="javascript:void(0)" class="btn-rounded btn-empty btn-small" @click="toggleTeam()" :class="{'show-team': showTeam}">
-                                {{ message.view_team }}
-                                <i class="fa fa-angle-down" v-show="!showTeam"></i>
-                                <i class="fa fa-angle-up" v-show="showTeam"></i>
-                            </a>
-                            <div class="team" v-show="showTeam">
-                                <div class="member flex" v-for="user in projectUsers.items">
+                            <div class="team" v-show="showTeam[child.id]">
+                                <div class="member flex" v-for="user in child.subteamMembers">
                                     <img :src="user.userAvatar">
                                     <div class="info">
-                                        <p class="title">{{user.userFullName}}</p>
-                                        <p class="description">{{user.projectRoleName}}</p>
+                                        <p class="title">{{ user.userFullName }}</p>
+                                        <p class="description" v-for="role in user.subteamRoleNames">{{ role }}</p>
                                         <social-links align="left" size="16px" v-bind:facebook="user.userFacebook" v-bind:twitter="user.userTwitter" v-bind:linkedin="user.userLinkedIn" v-bind:gplus="user.userGplus" v-bind:email="user.userEmail" v-bind:phone="user.userPhone"></social-links>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex">
-                        <div>
-                            <a href="" class="btn-rounded btn-empty btn-small">
-                                {{ message.view_team }}
-                            </a>
-                        </div>
-                        <div>
-                            <a href="" class="btn-rounded btn-empty btn-small">
-                                {{ message.view_team }}
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -177,13 +159,15 @@ export default {
         MemberSearch,
     },
     methods: {
-        ...mapActions(['getProjectById', 'createDistribution', 'updateProjectUser', 'getProjectUsers', 'addToDistribution', 'removeFromDistribution']),
+        ...mapActions(['getProjectById', 'createDistribution', 'updateProjectUser',
+            'getProjectUsers', 'addToDistribution', 'removeFromDistribution', 'getSubteams',
+        ]),
         changePage(page) {
             this.activePage = page;
             this.getProjectUsers({id: this.$route.params.id, page: page, users: this.gridList});
         },
-        toggleTeam() {
-            this.showTeam = !this.showTeam;
+        toggleTeam(id) {
+            this.showTeam = Object.assign({}, this.showTeam, {[id]: !this.showTeam[id]});
         },
         toggleActivation(item) {
             item.checked = !item.checked;
@@ -239,10 +223,13 @@ export default {
     created() {
         this.getProjectById(this.$route.params.id);
         this.getProjectUsers({id: this.$route.params.id, page: this.page});
+        this.getSubteams({project: this.$route.params.id, parent: false});
     },
     computed: mapGetters({
         project: 'project',
         projectUsers: 'projectUsers',
+        projectSponsors: 'projectSponsors',
+        subteams: 'subteams',
     }),
     data: function() {
         return {
@@ -288,7 +275,7 @@ export default {
             pages: 0,
             page: 1,
             activePage: 1,
-            showTeam: false,
+            showTeam: {},
             showModal: false,
         };
     },
