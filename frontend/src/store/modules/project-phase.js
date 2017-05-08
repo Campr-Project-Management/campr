@@ -94,6 +94,7 @@ const mutations = {
      * @param {array} phases
      */
     [types.SET_PROJECT_PHASES](state, {phases}) {
+        console.log('set itms', phases);
         state.items = phases;
     },
     /**
