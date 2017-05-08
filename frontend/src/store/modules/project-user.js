@@ -5,10 +5,12 @@ import router from '../../router';
 
 const state = {
     items: [],
+    sponsors: [],
 };
 
 const getters = {
     projectUsers: state => state.items,
+    projectSponsors: state => state.sponsors,
     projectUsersForSelect: state => state.items.map(item => {
         return {
             'key': item.user,
@@ -36,6 +38,7 @@ const actions = {
                     let projectUsers = response.data;
                     commit(types.SET_PROJECT_USERS, {projectUsers});
                     commit(types.SET_MANAGERS, {projectUsers});
+                    commit(types.SET_SPONSORS, {projectUsers});
                 }
             }, (response) => {
             });
@@ -111,15 +114,32 @@ const mutations = {
      */
     [types.SET_MANAGERS](state, {projectUsers}) {
         let managers = [];
-        if (!_.isArray(projectUsers)) {
-            projectUsers = [];
+        if (!_.isArray(projectUsers.items)) {
+            projectUsers.items = [];
         }
-        projectUsers.map(function(projectUser) {
+        projectUsers.items.map(function(projectUser) {
             if (projectUser.projectRoleNames.indexOf('ROLE_MANAGER') !== -1) {
                 managers.push(projectUser);
             }
         });
         state.managers = managers;
+    },
+    /**
+     * Set project sponsors
+     * @param {Object} state
+     * @param {Object} projectUsers
+     */
+    [types.SET_SPONSORS](state, {projectUsers}) {
+        let sponsors = [];
+        if (!_.isArray(projectUsers.items)) {
+            projectUsers.items = [];
+        }
+        projectUsers.items.map(function(projectUser) {
+            if (projectUser.projectRoleNames.indexOf('ROLE_SPONSOR') !== -1) {
+                sponsors.push(projectUser);
+            }
+        });
+        state.sponsors = sponsors;
     },
 };
 
