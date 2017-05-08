@@ -414,6 +414,7 @@ title:
         list: Cost
         create: Create Cost
         edit: Edit Cost
+    dashboard: Dashboard
 
 subtitle:
     resource: List of resources
@@ -469,6 +470,7 @@ subtitle:
     project_objective: List of project objectives
     project_limitation: List of project limitations
     project_deliverable: List of project deliverables
+    dashboard: Welcome to the admin area!
 
 label:
     select_users: Select Users
@@ -675,6 +677,10 @@ label:
     select_successors: Select Successors
     select_predecessors: Select Predecessors
     distribution_list_title: Distribution List Title
+    dashboard:
+        no_projects: Number of projects
+        no_tasks: Number of tasks
+        no_users: Number of users
 
 button:
     edit_subteam: Edit Subteam
