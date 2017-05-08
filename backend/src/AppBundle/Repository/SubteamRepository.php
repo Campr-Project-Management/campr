@@ -9,7 +9,7 @@ class SubteamRepository extends BaseRepository
      *
      * @return Query
      */
-    public function getQueryFiltered($pageSize, $filters)
+    public function getQueryFiltered($filters)
     {
         $qb = $this->createQueryBuilder('s');
 
@@ -20,10 +20,19 @@ class SubteamRepository extends BaseRepository
             ;
         }
 
-        return $qb
-            ->setFirstResult($pageSize * ($filters['page'] - 1))
-            ->setMaxResults($pageSize)
-            ->getQuery()
-        ;
+        if (isset($filters['parent'])) {
+            if (!filter_var($filters['parent'], FILTER_VALIDATE_BOOLEAN)) {
+                $qb->andWhere($qb->expr()->isNull('s.parent'));
+            }
+        }
+
+        if (isset($filters['pageSize']) && isset($filters['page'])) {
+            $qb
+                ->setFirstResult($filters['pageSize'] * ($filters['page'] - 1))
+                ->setMaxResults($filters['pageSize'])
+            ;
+        }
+
+        return $qb->getQuery();
     }
 }
