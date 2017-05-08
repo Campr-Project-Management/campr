@@ -2,7 +2,8 @@
     <div class="member-badge" v-bind:class="size">
         <img v-bind:src="item.userAvatar" />
         <div class="name">{{ item.userFullName }}</div>
-        <div class="title">{{ item.projectRoleName }}</div>
+        <div class="title" v-for="role in item.projectRoleNames">{{ role }}</div>
+        <div class="title" v-for="role in item.subteamRoleNames">{{ role }}</div>
         <social-links size="16px"
             v-bind:facebook="item.userFacebook"
             v-bind:twitter="item.userTwitter"
