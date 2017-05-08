@@ -36,7 +36,7 @@ class ProjectRoleControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
-        for ($i = 1; $i <= 4; ++$i) {
+        for ($i = 5; $i <= 8; ++$i) {
             $pr = $this->em->getRepository(ProjectRole::class)->find($i);
             $responseContent[$i - 1]['updatedAt'] = $pr->getUpdatedAt()->format('Y-m-d H:i:s');
         }
@@ -59,6 +59,38 @@ class ProjectRoleControllerTest extends BaseController
                 [
                     [
                         'id' => 1,
+                        'name' => 'roles.project_sponsor',
+                        'sequence' => 1,
+                        'isLead' => false,
+                        'createdAt' => '2017-01-01 00:00:00',
+                        'updatedAt' => null,
+                    ],
+                    [
+                        'id' => 2,
+                        'name' => 'roles.project_manager',
+                        'sequence' => 2,
+                        'isLead' => false,
+                        'createdAt' => '2017-01-01 00:00:00',
+                        'updatedAt' => null,
+                    ],
+                    [
+                        'id' => 3,
+                        'name' => 'roles.team_member',
+                        'sequence' => 3,
+                        'isLead' => false,
+                        'createdAt' => '2017-01-01 00:00:00',
+                        'updatedAt' => null,
+                    ],
+                    [
+                        'id' => 4,
+                        'name' => 'roles.team_leader',
+                        'sequence' => 4,
+                        'isLead' => false,
+                        'createdAt' => '2017-01-01 00:00:00',
+                        'updatedAt' => null,
+                    ],
+                    [
+                        'id' => 5,
                         'name' => 'manager',
                         'sequence' => 1,
                         'isLead' => false,
@@ -66,7 +98,7 @@ class ProjectRoleControllerTest extends BaseController
                         'updatedAt' => null,
                     ],
                     [
-                        'id' => 2,
+                        'id' => 6,
                         'name' => 'sponsor',
                         'sequence' => 1,
                         'isLead' => false,
@@ -74,7 +106,7 @@ class ProjectRoleControllerTest extends BaseController
                         'updatedAt' => null,
                     ],
                     [
-                        'id' => 3,
+                        'id' => 7,
                         'name' => 'team-member',
                         'sequence' => 2,
                         'isLead' => false,
@@ -82,7 +114,7 @@ class ProjectRoleControllerTest extends BaseController
                         'updatedAt' => null,
                     ],
                     [
-                        'id' => 4,
+                        'id' => 8,
                         'name' => 'team-participant',
                         'sequence' => 2,
                         'isLead' => false,
@@ -155,7 +187,7 @@ class ProjectRoleControllerTest extends BaseController
                 true,
                 Response::HTTP_CREATED,
                 [
-                    'id' => 5,
+                    'id' => 9,
                     'name' => 'project-role',
                     'sequence' => 1,
                     'isLead' => false,
@@ -364,7 +396,7 @@ class ProjectRoleControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-roles/1',
+            '/api/project-roles/5',
             [],
             [],
             [
@@ -396,7 +428,7 @@ class ProjectRoleControllerTest extends BaseController
                 true,
                 Response::HTTP_ACCEPTED,
                 [
-                    'id' => 1,
+                    'id' => 5,
                     'name' => 'manager',
                     'sequence' => 1,
                     'isLead' => false,
@@ -426,7 +458,7 @@ class ProjectRoleControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-roles/1',
+            '/api/project-roles/5',
             [],
             [],
             [
@@ -482,7 +514,7 @@ class ProjectRoleControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-roles/1',
+            '/api/project-roles/5',
             [],
             [],
             [
@@ -540,7 +572,7 @@ class ProjectRoleControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/project-roles/1',
+            '/api/project-roles/5',
             [],
             [],
             [
@@ -672,11 +704,11 @@ class ProjectRoleControllerTest extends BaseController
     {
         return [
             [
-                '/api/project-roles/2',
+                '/api/project-roles/6',
                 true,
                 Response::HTTP_OK,
                 [
-                    'id' => 2,
+                    'id' => 6,
                     'name' => 'sponsor',
                     'sequence' => 1,
                     'isLead' => false,
