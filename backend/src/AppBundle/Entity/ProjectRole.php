@@ -17,10 +17,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class ProjectRole
 {
-    const ROLE_SPONSOR = 'ROLE_SPONSOR';
-    const ROLE_MANAGER = 'ROLE_MANAGER';
-    const ROLE_TEAM_MEMBER = 'ROLE_TEAM_MEMBER';
-    const ROLE_TEAM_LEADER = 'ROLE_TEAM_LEADER';
+    const ROLE_SPONSOR = 'roles.project_sponsor';
+    const ROLE_MANAGER = 'roles.project_manager';
+    const ROLE_TEAM_MEMBER = 'roles.team_member';
+    const ROLE_TEAM_LEADER = 'roles.team_leader';
 
     /**
      * @var int

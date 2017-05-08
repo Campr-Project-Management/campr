@@ -3,6 +3,9 @@ import * as types from '../mutation-types';
 import _ from 'lodash';
 import router from '../../router';
 
+const ROLE_SPONSOR = 'roles.project_sponsor';
+const ROLE_MANAGER = 'roles.project_manager';
+
 const state = {
     items: [],
     sponsors: [],
@@ -118,7 +121,7 @@ const mutations = {
             projectUsers.items = [];
         }
         projectUsers.items.map(function(projectUser) {
-            if (projectUser.projectRoleNames.indexOf('ROLE_MANAGER') !== -1) {
+            if (projectUser.projectRoleNames.indexOf(ROLE_MANAGER) !== -1) {
                 managers.push(projectUser);
             }
         });
@@ -135,7 +138,7 @@ const mutations = {
             projectUsers.items = [];
         }
         projectUsers.items.map(function(projectUser) {
-            if (projectUser.projectRoleNames.indexOf('ROLE_SPONSOR') !== -1) {
+            if (projectUser.projectRoleNames.indexOf(ROLE_SPONSOR) !== -1) {
                 sponsors.push(projectUser);
             }
         });

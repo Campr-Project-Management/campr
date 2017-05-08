@@ -1,9 +1,9 @@
 <template>
     <div class="project-organization page-section">
         <modal v-if="showModal" @close="showModal = false">
-            <p class="modal-title">{{ message.add_distribution_list }}</p>
-            <input-field v-model="distributionTitle" type="text" v-bind:label="label.distribution_list_title"></input-field>
-            <member-search v-model="selectedDistribution" v-bind:placeholder="placeholder.search_resources"></member-search>
+            <p class="modal-title">{{ translateText('message.add_distribution_list') }}</p>
+            <input-field v-model="distributionTitle" type="text" v-bind:label="translateText('label.distribution_list_title')"></input-field>
+            <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.search_resources')"></member-search>
             <br />
             <div class="members main-list">
                 <div class="member flex"  v-for="item in distributionList">
@@ -15,15 +15,15 @@
                 </div>
             </div>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ button.cancel }}</a>
-                <a href="javascript:void(0)" @click="createDistributionList()" class="btn-rounded">{{ button.create_distribution }} +</a>
+                <a href="javascript:void(0)" @click="showModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="createDistributionList()" class="btn-rounded">{{ translateText('button.create_distribution') }} +</a>
             </div>
         </modal>
 
         <div class="header flex flex-space-between">
-            <h1>{{ message.project_organization }}</h1>
+            <h1>{{ translateText('message.project_organization') }}</h1>
             <div class="flex flex-v-center">
-                <router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto second-bg">{{ message.edit_project_organization }}</router-link>
+                <router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto second-bg">{{ translateText('message.edit_project_organization') }}</router-link>
             </div>
         </div>
 
@@ -40,7 +40,7 @@
                                 <member-badge v-if="member.isLead" v-bind:item="member" size="small"></member-badge>
                             </div>
                             <a href="javascript:void(0)" class="btn-rounded btn-empty btn-small" @click="toggleTeam(child.id)" :class="{'show-team': showTeam[child.id]}">
-                                {{ message.view_team }}
+                                {{ translateText('message.view_team') }}
                                 <i class="fa fa-angle-down" v-show="!showTeam[child.id]"></i>
                                 <i class="fa fa-angle-up" v-show="showTeam[child.id]"></i>
                             </a>
@@ -60,10 +60,10 @@
             </div>
         </div>
         <div class="flex flex-space-between actions">
-            <member-search v-model="gridList" v-bind:placeholder="placeholder.search_members"></member-search>
+            <member-search v-model="gridList" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
             <div class="flex">
-                <router-link :to="{name: 'project-organization-create-member'}" class="btn-rounded btn-auto second-bg">{{ message.add_new_team_members }}</router-link>
-                <a href="javascript:void(0)" class="btn-rounded btn-empty" @click="showModal = true">{{ button.create_distribution }}</a>
+                <router-link :to="{name: 'project-organization-create-member'}" class="btn-rounded btn-auto second-bg">{{ translateText('button.add_new_team_members') }}</router-link>
+                <a href="javascript:void(0)" class="btn-rounded btn-empty" @click="showModal = true">{{ translateText('button.create_distribution') }}</a>
             </div>
         </div>
         <div class="team-list">
@@ -73,19 +73,19 @@
                         <thead>
                             <tr>
                                 <th class="avatar"></th>
-                                <th class="text-center switchers">{{ table_header_cell.resource }}</th>
-                                <th>{{ table_header_cell.company }}</th>
-                                <th>{{ table_header_cell.name }}</th>
-                                <th>{{ table_header_cell.role }}</th>
-                                <th>{{ table_header_cell.subteam }}</th>
-                                <th>{{ table_header_cell.department }}</th>
-                                <th>{{ table_header_cell.contact }}</th>
-                                <th class="text-center switchers">{{ table_header_cell.raci }}</th>
-                                <th class="text-center switchers">{{ table_header_cell.org }}</th>
+                                <th class="text-center switchers">{{ translateText('table_header_cell.resource') }}</th>
+                                <th>{{ translateText('table_header_cell.company') }}</th>
+                                <th>{{ translateText('table_header_cell.name') }}</th>
+                                <th>{{ translateText('table_header_cell.role') }}</th>
+                                <th>{{ translateText('table_header_cell.subteam') }}</th>
+                                <th>{{ translateText('table_header_cell.department') }}</th>
+                                <th>{{ translateText('table_header_cell.contact') }}</th>
+                                <th class="text-center switchers">{{ translateText('table_header_cell.raci') }}</th>
+                                <th class="text-center switchers">{{ translateText('table_header_cell.org') }}</th>
                                 <th v-if='project.distributionLists' :colspan="project.distributionLists.length" class="no-padding">
                                     <table>
                                         <tr>
-                                            <th class="text-center " :colspan="project.distributionLists.length">{{ table_header_cell.distribution_lists }}</th>
+                                            <th class="text-center " :colspan="project.distributionLists.length">{{ translateText('table_header_cell.distribution_lists') }}</th>
                                         </tr>
                                         <tr>
                                             <th class="text-center switchers" v-for="dl in project.distributionLists">{{ dl.name }}</th>
@@ -104,7 +104,9 @@
                                 </td>
                                 <td>{{ item.company }}</td>
                                 <td>{{ item.userFullName }}</td>
-                                <td>{{ item.projectRoleName }}</td>
+                                <td>
+                                    <span v-for="role in item.projectRoleNames">{{ translateText(role) }}</span>
+                                </td>
                                 <td>{{ item.projecTeamName }}</td>
                                 <td>{{ item.projectDepartmentName }}</td>
                                 <td>
@@ -130,7 +132,7 @@
                     <span v-for="page in pages" :class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
                 </div>
                 <div v-if='projectUsers.items'>
-                    <span class="pagination-info">{{ message.displaying }} {{ projectUsers.items.length }} {{ message.results_out_of }} {{ projectUsers.totalItems }}</span>
+                    <span class="pagination-info">{{ translateText('message.displaying') }} {{ projectUsers.items.length }} {{ translateText('message.results_out_of') }} {{ projectUsers.totalItems }}</span>
                 </div>
             </div>
         </div>
@@ -162,6 +164,9 @@ export default {
         ...mapActions(['getProjectById', 'createDistribution', 'updateProjectUser',
             'getProjectUsers', 'addToDistribution', 'removeFromDistribution', 'getSubteams',
         ]),
+        translateText: function(text) {
+            return this.translate(text);
+        },
         changePage(page) {
             this.activePage = page;
             this.getProjectUsers({id: this.$route.params.id, page: page, users: this.gridList});
@@ -233,38 +238,6 @@ export default {
     }),
     data: function() {
         return {
-            message: {
-                add_distribution_list: this.translate('add.distribution_list'),
-                add_new_team_members: this.translate('add.new_team_members'),
-                project_organization: this.translate('message.project_organization'),
-                view_team: this.translate('message.view_team'),
-                displaying: this.translate('message.displaying'),
-                results_out_of: this.translate('message.results_out_of'),
-                edit_project_organization: this.translate('message.edit_project_organization'),
-            },
-            table_header_cell: {
-                resource: this.translate('table_header_cell.resource'),
-                company: this.translate('table_header_cell.company'),
-                name: this.translate('table_header_cell.name'),
-                role: this.translate('table_header_cell.role'),
-                subteam: this.translate('table_header_cell.subteam'),
-                department: this.translate('table_header_cell.department'),
-                contact: this.translate('table_header_cell.contact'),
-                raci: this.translate('table_header_cell.raci'),
-                org: this.translate('table_header_cell.org'),
-                distribution_lists: this.translate('table_header_cell.distribution_lists'),
-            },
-            label: {
-                distribution_list_title: this.translate('label.distribution_list_title'),
-            },
-            placeholder: {
-                search_resources: this.translate('placeholder.search_resources'),
-                search_members: this.translate('placeholder.search_members'),
-            },
-            button: {
-                cancel: this.translate('button.cancel'),
-                create_distribution: this.translate('button.create_distribution'),
-            },
             selectedDistribution: [],
             distributionList: [],
             gridList: [],
