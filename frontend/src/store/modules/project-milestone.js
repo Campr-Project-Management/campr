@@ -5,6 +5,7 @@ import router from '../../router';
 const state = {
     items: [],
     currentItem: {},
+    totalItems: 0,
 };
 
 const getters = {
@@ -27,9 +28,16 @@ const actions = {
      * @param {function} commit
      * @param {Number} projectId
      */
-    getProjectMilestones({commit}, projectId) {
+    getProjectMilestones({commit}, projectId, {page}) {
         Vue.http
-            .get(Routing.generate('app_api_project_milestones', {'id': projectId})).then((response) => {
+            .get(Routing.generate('app_api_project_milestones', {'id': projectId}),
+            {
+                params: {
+                    'page': page,
+                    'pageSize': 4,
+                },
+            },
+            ).then((response) => {
                 if (response.status === 200) {
                     let milestones = response.data;
                     commit(types.SET_PROJECT_MILESTONES, {milestones});
@@ -96,6 +104,7 @@ const mutations = {
      */
     [types.SET_PROJECT_MILESTONES](state, {milestones}) {
         state.items = milestones;
+        state.totalItems = totalItems;
     },
     /**
      * Sets project milestone to state
