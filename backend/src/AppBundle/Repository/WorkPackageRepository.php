@@ -314,4 +314,23 @@ class WorkPackageRepository extends BaseRepository
 
         return $qb->getQuery();
     }
+
+    /**
+     * counts all workpackages for a give type
+     *
+     * @param int $type
+     *
+     * @return int
+     */
+    public function countTotalByType($type)
+    {
+        return $this
+            ->createQueryBuilder('wp')
+            ->select('COUNT(wp.id)')
+            ->andWhere('wp.type = :type')
+            ->setParameter('type', $type)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
 }
