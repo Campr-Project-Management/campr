@@ -1,4 +1,6 @@
 message:
+    edit_organization: Edit Organization
+    project_roles: Project Roles
     delete_subteam: Delete Subteam
     edit_subteam: Edit Subteam
     back_to_organization: Back to Project Organization
@@ -179,6 +181,7 @@ menu:
 
 title:
     subteams: Subteams
+    add_distribution_list: Add Distribution List
     homepage_main: Campr Main Site
     homepage: Campr Admin
     header: Campr Administration
@@ -677,6 +680,7 @@ label:
     distribution_list_title: Distribution List Title
 
 button:
+    add_new_team_members: Add New Team Members
     edit_subteam: Edit Subteam
     save_member: Save Member
     add_new_subteam: Add new Subteam
@@ -1110,3 +1114,9 @@ choices:
     phase: Phase
     milestone: Milestone
     task: Task
+
+roles:
+    project_sponsor: Project Manager
+    project_manager: Project Manager
+    team_leader: Team Leader
+    team_member: Team Member
