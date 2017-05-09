@@ -194,24 +194,24 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $noProjects = $em
+        $numberOfProjects = $em
             ->getRepository(Project::class)
             ->countTotal();
 
-        $noTasks = $em
+        $numberOfTasks = $em
             ->getRepository(WorkPackage::class)
             ->countTotalByType(WorkPackage::TYPE_TASK);
 
-        $noUsers = $em
+        $numberOfUsers = $em
             ->getRepository(UserEntity::class)
             ->countTotal();
 
         return $this->render(
             'AppBundle:Default:dashboard.html.twig',
             [
-                'no_projects' => $noProjects,
-                'no_tasks' => $noTasks,
-                'no_users' => $noUsers,
+                'number_of_projects' => $numberOfProjects,
+                'number_of_tasks' => $numberOfTasks,
+                'number_of_users' => $numberOfUsers,
             ]
         );
     }
