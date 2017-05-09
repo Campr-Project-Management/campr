@@ -339,6 +339,8 @@ class ProjectControllerTest extends BaseController
                 [
                     'company' => null,
                     'companyName' => null,
+                    'projectSponsorName' => null,
+                    'projectManagerName' => null,
                     'projectComplexity' => 2,
                     'projectComplexityName' => 'project-complexity2',
                     'projectCategory' => 2,
@@ -1731,6 +1733,8 @@ class ProjectControllerTest extends BaseController
                 [
                     'company' => null,
                     'companyName' => null,
+                    'projectSponsorName' => null,
+                    'projectManagerName' => null,
                     'projectComplexity' => 1,
                     'projectComplexityName' => 'project-complexity1',
                     'projectCategory' => 1,
