@@ -181,15 +181,14 @@ class DefaultController extends Controller
 
         return $this->redirectToRoute('main_homepage');
     }
-    
+
     /**
-     * The dashboard page where the user's lands whe going first time int admin tool
+     * The dashboard page where the user's lands whe going first time int admin tool.
      *
      * @Route("/dashboard", name="app_dashboard", options={"expose"=true})
      * @Secure(roles="ROLE_SUPER_ADMIN")
      *
      * @return Response
-     *
      */
     public function dashboardAction(Request $request)
     {
@@ -197,18 +196,15 @@ class DefaultController extends Controller
 
         $noProjects = $em
             ->getRepository(Project::class)
-            ->countTotal();        
-        ;
+            ->countTotal();
 
         $noTasks = $em
             ->getRepository(WorkPackage::class)
             ->countTotalByType(WorkPackage::TYPE_TASK);
-        ;
 
         $noUsers = $em
             ->getRepository(UserEntity::class)
             ->countTotal();
-        ;
 
         return $this->render(
             'AppBundle:Default:dashboard.html.twig',
@@ -218,6 +214,5 @@ class DefaultController extends Controller
                 'no_users' => $noUsers,
             ]
         );
-        
     }
 }
