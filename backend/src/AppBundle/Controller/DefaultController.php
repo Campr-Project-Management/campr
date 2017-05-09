@@ -185,7 +185,7 @@ class DefaultController extends Controller
     /**
      * The dashboard page where the user's lands whe going first time int admin tool
      *
-     * @Route("/dashboard", name="app_dashboard")
+     * @Route("/dashboard", name="app_dashboard", options={"expose"=true})
      * @Secure(roles="ROLE_SUPER_ADMIN")
      *
      * @return Response
