@@ -628,6 +628,44 @@ class Project
     }
 
     /**
+     * Returns project manager's name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectManagerName")
+     *
+     * @return string
+     */
+    public function getProjectManagerName()
+    {
+        foreach ($this->projectUsers as $projectUser) {
+            if ($projectUser->hasProjectRole(ProjectRole::ROLE_MANAGER)) {
+                return $projectUser->__toString();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns project sponsor's name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectSponsorName")
+     *
+     * @return string
+     */
+    public function getProjectSponsorName()
+    {
+        foreach ($this->projectUsers as $projectUser) {
+            if ($projectUser->hasProjectRole(ProjectRole::ROLE_SPONSOR)) {
+                return $projectUser->__toString();
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Set projectComplexity.
      *
      * @param ProjectComplexity $projectComplexity
