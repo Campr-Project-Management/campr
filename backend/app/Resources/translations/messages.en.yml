@@ -1034,6 +1034,7 @@ table_header_cell:
 link:
     home: Home
     dashboad: Dashboard
+    admin_dashboard: Admin Tool
     reports: Reports
     support: Support
     contact: Contact

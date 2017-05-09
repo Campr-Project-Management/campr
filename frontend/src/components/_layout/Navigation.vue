@@ -23,6 +23,7 @@
                 <ul class="dropdown-menu dropdown-menu-right">
                     <li><a href="#">{{ message.account }}</a></li>
                     <li><a :href="routes.back_to_campr">{{ message.back_to_campr }}</a></li>
+                    <li><a :href="routes.admin_dashboard">{{ message.admin_dashboard }}</a></li>
                     <li><a :href="routes.logout">{{ message.logout }}</a></li>
                 </ul>
             </div>
@@ -91,10 +92,12 @@ export default {
                 account: Translator.trans('link.account'),
                 back_to_campr: Translator.trans('link.back_to_campr'),
                 logout: Translator.trans('link.logout'),
+                admin_dashboard: Translator.trans('link.admin_dashboard'),
             },
             routes: {
                 logout: Routing.generate('app_logout'),
                 back_to_campr: Routing.generate('main_homepage'),
+                admin_dashboard: Routing.generate('app_dashboard'),
             },
         };
     },
