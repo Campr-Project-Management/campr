@@ -52,15 +52,15 @@
                     <div>
                         <router-link :to="{name: 'project-organization'}" class="small-link">
                             <i class="fa fa-angle-left"></i>
-                            {{message.back_to_organization}}
+                            {{ translateText('message.back_to_organization') }}
                         </router-link>
-                        <h1>{{message.edit_organization}}</h1>
+                        <h1>{{ translateText('message.edit_organization') }}</h1>
                     </div>
                 </div>
 
                 <div class="form">
                     <!-- /// Roles /// -->
-                    <h3>{{message.distribution_lists}}</h3>                
+                    <h3>{{ translateText('message.project_roles') }}</h3>
                     <!--<ul class="roles-hierarchy">
                         <organization-distribution-item :item='distributionHierarchy'></organization-distribution-item>
                     </ul>-->
@@ -379,13 +379,6 @@ export default {
             editSubteamMembers: [],
             subteamPages: 0,
             activeSubteamPage: 1,
-            message: {
-                back_to_organization: 'Back to Project Organization',
-                edit_organization: 'Edit Project Organization',
-                distribution_lists: 'Distribution Lists',
-                displaying: this.translate('message.displaying'),
-                results_out_of: this.translate('message.results_out_of'),
-            },
             departmentsPerPage: 6,
             distributionHierarchy: [{
                 title: 'Project Sponsor',
