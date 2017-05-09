@@ -678,9 +678,9 @@ label:
     select_predecessors: Select Predecessors
     distribution_list_title: Distribution List Title
     dashboard:
-        no_projects: Number of projects
-        no_tasks: Number of tasks
-        no_users: Number of users
+        number_of_projects: Number of projects
+        number_of_tasks: Number of tasks
+        number_of_users: Number of users
 
 button:
     edit_subteam: Edit Subteam
