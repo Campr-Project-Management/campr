@@ -22,6 +22,14 @@
                         <span class="data">{{ project.companyName }}</span>
                     </p>
                     <p>
+                        <span class="title">{{ message.project_manager }}</span>
+                        <span class="data">{{ project.projectManagerName }}</span>
+                    </p>
+                    <p>
+                        <span class="title">{{ message.project_sponsor }}</span>
+                        <span class="data">{{ project.projectSponsorName }}</span>
+                    </p>
+                    <p>
                         <span class="title">{{ message.status }}:</span>
                         <span class="status-label btn-rounded btn-auto">
                             {{ project.statusName }}
@@ -50,6 +58,8 @@ export default {
                 started_on: Translator.trans('message.started_on'),
                 customer: Translator.trans('message.customer'),
                 status: Translator.trans('message.status'),
+                project_manager: Translator.trans('message.project_manager'),
+                project_sponsor: Translator.trans('message.project_sponsor'),
             },
         };
     },
