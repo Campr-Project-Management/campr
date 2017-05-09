@@ -2,8 +2,8 @@
     <div class="member-badge" v-bind:class="size">
         <img v-bind:src="item.userAvatar" />
         <div class="name">{{ item.userFullName }}</div>
-        <div class="title" v-for="role in item.projectRoleNames">{{ role }}</div>
-        <div class="title" v-for="role in item.subteamRoleNames">{{ role }}</div>
+        <div class="title" v-for="role in item.projectRoleNames">{{ translateText(role) }}</div>
+        <div class="title" v-for="role in item.subteamRoleNames">{{ translateText(role) }}</div>
         <social-links size="16px"
             v-bind:facebook="item.userFacebook"
             v-bind:twitter="item.userTwitter"
@@ -20,6 +20,11 @@ export default {
     props: ['size', 'item'],
     components: {
         SocialLinks,
+    },
+    methods: {
+        translateText: function(text) {
+            return this.translate(text);
+        },
     },
 };
 </script>
