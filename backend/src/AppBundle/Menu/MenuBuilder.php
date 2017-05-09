@@ -116,7 +116,7 @@ class MenuBuilder
             ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-account')
         ;
-        
+
         $menu
             ->addChild($this->translator->trans('title.user.list', [], 'messages'), [
                 'route' => 'app_admin_user_list',

@@ -316,7 +316,7 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
-     * counts all workpackages for a give type
+     * counts all workpackages for a give type.
      *
      * @param int $type
      *
