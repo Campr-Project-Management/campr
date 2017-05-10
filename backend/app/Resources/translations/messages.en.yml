@@ -681,6 +681,10 @@ label:
     code_review: Code review
     finished: Finished
     closed: Closed
+    open: Open
+    pending: Pending
+    ongoing: Ongoing
+    completed: Completed
     asignee: asignee
     phase: Phase
     subtask_description: Subtask Description
