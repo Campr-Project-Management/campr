@@ -50,7 +50,7 @@ class WorkPackageStatusControllerTest extends BaseController
                         'project' => null,
                         'projectName' => null,
                         'id' => 1,
-                        'name' => 'label.todo',
+                        'name' => 'label.open',
                         'sequence' => 0,
                         'visible' => true,
                         'workPackages' => [],
@@ -60,7 +60,7 @@ class WorkPackageStatusControllerTest extends BaseController
                         'project' => null,
                         'projectName' => null,
                         'id' => 2,
-                        'name' => 'label.in_progress',
+                        'name' => 'label.pending',
                         'sequence' => 1,
                         'visible' => true,
                         'workPackages' => [],
@@ -70,7 +70,7 @@ class WorkPackageStatusControllerTest extends BaseController
                         'project' => null,
                         'projectName' => null,
                         'id' => 3,
-                        'name' => 'label.code_review',
+                        'name' => 'label.ongoing',
                         'sequence' => 2,
                         'visible' => true,
                         'workPackages' => [],
@@ -80,19 +80,9 @@ class WorkPackageStatusControllerTest extends BaseController
                         'project' => null,
                         'projectName' => null,
                         'id' => 4,
-                        'name' => 'label.finished',
+                        'name' => 'label.completed',
                         'sequence' => 3,
                         'visible' => true,
-                        'workPackages' => [],
-                        'createdAt' => null,
-                    ],
-                    [
-                        'project' => null,
-                        'projectName' => null,
-                        'id' => 5,
-                        'name' => 'label.closed',
-                        'sequence' => -1,
-                        'visible' => false,
                         'workPackages' => [],
                         'createdAt' => null,
                     ],
@@ -147,7 +137,7 @@ class WorkPackageStatusControllerTest extends BaseController
                 [
                     'project' => 1,
                     'projectName' => 'project1',
-                    'id' => 6,
+                    'id' => 5,
                     'name' => 'workpackage-status',
                     'sequence' => 1,
                     'visible' => true,
@@ -171,7 +161,7 @@ class WorkPackageStatusControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('DELETE', '/api/workpackage-statuses/6', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request('DELETE', '/api/workpackage-statuses/5', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());

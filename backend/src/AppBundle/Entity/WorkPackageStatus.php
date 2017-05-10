@@ -15,11 +15,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class WorkPackageStatus
 {
-    const TODO = 1;
-    const IN_PROGRESS = 2;
-    const CODE_REVIEW = 3;
-    const FINISHED = 4;
-    const CLOSED = 5;
+    const OPEN = 1;
+    const PENDING = 2;
+    const ONGOING = 3;
+    const COMPLETED = 4;
 
     /**
      * @var int

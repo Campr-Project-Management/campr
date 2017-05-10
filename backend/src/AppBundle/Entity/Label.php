@@ -217,7 +217,7 @@ class Label
     {
         $count = 0;
         foreach ($this->workPackages as $wp) {
-            if ($wp->getWorkPackageStatusId() && $wp->getWorkPackageStatusId() !== WorkPackageStatus::CLOSED) {
+            if ($wp->getWorkPackageStatusId() && $wp->getWorkPackageStatusId() !== WorkPackageStatus::COMPLETED) {
                 ++$count;
             }
         }
