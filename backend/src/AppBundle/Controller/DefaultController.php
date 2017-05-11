@@ -3,6 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Entity\Project;
+use AppBundle\Entity\WorkPackage;
+use AppBundle\Entity\User as UserEntity;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use MainBundle\Security\TeamVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -176,5 +180,39 @@ class DefaultController extends Controller
         $request->getSession()->invalidate();
 
         return $this->redirectToRoute('main_homepage');
+    }
+
+    /**
+     * The dashboard page where the user's lands whe going first time int admin tool.
+     *
+     * @Route("/dashboard", name="app_dashboard", options={"expose"=true})
+     * @Secure(roles="ROLE_SUPER_ADMIN")
+     *
+     * @return Response
+     */
+    public function dashboardAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $numberOfProjects = $em
+            ->getRepository(Project::class)
+            ->countTotal();
+
+        $numberOfTasks = $em
+            ->getRepository(WorkPackage::class)
+            ->countTotalByType(WorkPackage::TYPE_TASK);
+
+        $numberOfUsers = $em
+            ->getRepository(UserEntity::class)
+            ->countTotal();
+
+        return $this->render(
+            'AppBundle:Default:dashboard.html.twig',
+            [
+                'number_of_projects' => $numberOfProjects,
+                'number_of_tasks' => $numberOfTasks,
+                'number_of_users' => $numberOfUsers,
+            ]
+        );
     }
 }

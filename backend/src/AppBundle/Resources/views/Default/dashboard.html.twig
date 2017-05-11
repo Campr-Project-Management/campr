@@ -1,0 +1,18 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% block body_content %}
+<h2>{{'subtitle.dashboard'|trans}}</h2>
+<ul>
+    <li>
+        {{'label.dashboard.number_of_projects'|trans}}: <a href="{{ path('app_admin_project_list') }}">{{number_of_projects}} </a>
+    </li>
+    <li>
+        {{'label.dashboard.number_of_tasks'|trans}}: <a href="{{path('app_admin_workpackage_list')}}">{{number_of_tasks}}</a>
+    </li>
+    <li>
+        {{'label.dashboard.number_of_users'|trans}}: <a href="{{path('app_admin_user_list')}}"> {{number_of_users}} </a>
+    </li>
+</ul>
+{% endblock %}
