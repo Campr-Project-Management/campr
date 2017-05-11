@@ -25,6 +25,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CreateType extends AbstractType
@@ -78,18 +79,26 @@ class CreateType extends AbstractType
                 ],
             ])
             ->add('programme', EntityType::class, [
+                'required' => false,
                 'class' => Programme::class,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.programme',
                 'translation_domain' => 'messages',
             ])
             ->add('company', EntityType::class, [
+                'required' => true,
+                'constraints' => [
+                    new NotNull([
+                        'message' => 'not_null.company',
+                   ]),
+                ],
                 'class' => Company::class,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.company_choose',
                 'translation_domain' => 'messages',
             ])
             ->add('projectComplexity', EntityType::class, [
+                'required' => false,
                 'class' => ProjectComplexity::class,
                 'choice_label' => 'name',
                 'query_builder' => function (EntityRepository $er) use ($self, $entity) {
@@ -99,6 +108,7 @@ class CreateType extends AbstractType
                 'translation_domain' => 'messages',
             ])
             ->add('projectCategory', EntityType::class, [
+                'required' => false,
                 'class' => ProjectCategory::class,
                 'choice_label' => 'name',
                 'query_builder' => function (EntityRepository $er) use ($self, $entity) {
@@ -108,6 +118,7 @@ class CreateType extends AbstractType
                 'translation_domain' => 'messages',
             ])
             ->add('projectScope', EntityType::class, [
+                'required' => false,
                 'class' => ProjectScope::class,
                 'choice_label' => 'name',
                 'query_builder' => function (EntityRepository $er) use ($self, $entity) {
@@ -117,6 +128,7 @@ class CreateType extends AbstractType
                 'translation_domain' => 'messages',
             ])
             ->add('status', EntityType::class, [
+                'required' => false,
                 'class' => ProjectStatus::class,
                 'choice_label' => 'name',
                 'query_builder' => function (EntityRepository $er) use ($self, $entity) {
@@ -126,6 +138,7 @@ class CreateType extends AbstractType
                 'translation_domain' => 'messages',
             ])
             ->add('portfolio', EntityType::class, [
+                'required' => false,
                 'class' => Portfolio::class,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.portfolio',
@@ -133,6 +146,7 @@ class CreateType extends AbstractType
             ])
             ->add('configuration')
             ->add('projectModules', CollectionType::class, [
+                'required' => false,
                 'entry_type' => ProjectModuleCreateType::class,
                 'allow_add' => true,
                 'by_reference' => false,
