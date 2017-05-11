@@ -61,6 +61,13 @@ not_blank:
     rate: The rate should not be blank.
     quantity: The quantity should not be blank.
     project_role: The project role should not be blank.
+    subteam:
+        name: The subteam name should not be blank.
+    subteam_member:
+        user: You must select a user.
+        subteam: You must select a subteam.
+    subteam_role:
+        name: The subteam role name must not be empty.
 
 not_null:
     driver: You must select a driver
