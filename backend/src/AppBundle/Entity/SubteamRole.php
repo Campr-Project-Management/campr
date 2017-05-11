@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SubteamRoleRepository")
  * @ORM\Table(name="subteam_role")
  */
 class SubteamRole
@@ -25,7 +25,7 @@ class SubteamRole
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=128, nullable=false)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="not_blank.subteam_role.name")
      */
     private $name;
 

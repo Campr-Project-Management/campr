@@ -418,6 +418,18 @@ title:
         create: Create Cost
         edit: Edit Cost
     dashboard: Dashboard
+    subteam:
+        list: Subteam
+        create: Create Subteam
+        edit: Edit Subteam
+    subteam_role:
+        list: Subteam Role
+        create: Create Subteam Role
+        edit: Edit Subteam Role
+    subteam_member:
+        list: Subteam Member
+        create: Create Subteam Member
+        edit: Edit Subteam Member
 
 subtitle:
     resource: List of resources
@@ -474,6 +486,9 @@ subtitle:
     project_limitation: List of project limitations
     project_deliverable: List of project deliverables
     dashboard: Welcome to the admin area!
+    subteam: List of subteams
+    subteam_role: List of subteam roles
+    subteam_member: List of subteam members
 
 label:
     select_users: Select Users
@@ -684,6 +699,9 @@ label:
         number_of_projects: Number of projects
         number_of_tasks: Number of tasks
         number_of_users: Number of users
+    subteam_members: Subteam Members
+    subteam: Subteam
+    subteam_roles: Subteam Roles
 
 button:
     add_new_team_members: Add New Team Members
@@ -695,6 +713,9 @@ button:
     add_another_subteam: Add another subteam
     edit_department: Edit Department
     add_new_department: Add New Department
+    add_subteam_member: Add subteam member
+    add_subteam_child: Add subteam
+    add_subteam_role: Add role
     show_selected: Show Selected
     create_distribution: Create Distribution List
     sign_in: Sign In
@@ -789,6 +810,9 @@ add:
     project_objective: Add new project objective
     project_limitation: Add new project limitation
     project_deliverable: Add new project deliverable
+    subteam: Add new subteam
+    subteam_role: Add new subteam role
+    subteam_member: Add new subteam member
 
 placeholder:
     first_name: First Name
@@ -855,6 +879,7 @@ placeholder:
     company: Company
     department: Department
     subteam: Subteam
+    subteam_role: Subteam Role
     email: Email
     phone: Phone
     facebook: Facebook
@@ -1034,6 +1059,9 @@ table_header_cell:
     workpackage_category: Work Package Category
     workpackage_status: Work Package Status
     contract: Contract
+    subteam_members: Subteam Members
+    subteam_roles: Subteam Roles
+    subteam_parent: Subteam parent
 
 link:
     home: Home
