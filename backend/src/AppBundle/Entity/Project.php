@@ -628,6 +628,25 @@ class Project
     }
 
     /**
+     * Returns the project manager's id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectManager")
+     *
+     * @return int
+     */
+    public function getProjectManagerId()
+    {
+        foreach ($this->projectUsers as $projectUser) {
+            if ($projectUser->hasProjectRole(ProjectRole::ROLE_MANAGER)) {
+                return $projectUser->getUserId();
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Returns project manager's name.
      *
      * @Serializer\VirtualProperty()
@@ -646,6 +665,24 @@ class Project
         return null;
     }
 
+    /**
+     * Returns the project sponsor's id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectSponsor")
+     *
+     * @return int
+     */
+    public function getProjectSponsorId()
+    {
+        foreach ($this->projectUsers as $projectUser) {
+            if ($projectUser->hasProjectRole(ProjectRole::ROLE_SPONSOR)) {
+                return $projectUser->getUserId();
+            }
+        }
+
+        return null;
+    }
     /**
      * Returns project sponsor's name.
      *
