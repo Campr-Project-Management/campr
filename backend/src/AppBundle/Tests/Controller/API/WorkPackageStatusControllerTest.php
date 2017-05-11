@@ -86,6 +86,16 @@ class WorkPackageStatusControllerTest extends BaseController
                         'workPackages' => [],
                         'createdAt' => null,
                     ],
+                    [
+                        'project' => null,
+                        'projectName' => null,
+                        'id' => 5,
+                        'name' => 'label.closed',
+                        'sequence' => -1,
+                        'visible' => false,
+                        'workPackages' => [],
+                        'createdAt' => null,
+                    ],
                 ],
             ],
         ];
@@ -137,7 +147,7 @@ class WorkPackageStatusControllerTest extends BaseController
                 [
                     'project' => 1,
                     'projectName' => 'project1',
-                    'id' => 5,
+                    'id' => 6,
                     'name' => 'workpackage-status',
                     'sequence' => 1,
                     'visible' => true,
@@ -161,7 +171,7 @@ class WorkPackageStatusControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('DELETE', '/api/workpackage-statuses/5', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request('DELETE', '/api/workpackage-statuses/6', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
