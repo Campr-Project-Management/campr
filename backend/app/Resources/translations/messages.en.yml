@@ -4,6 +4,16 @@ message:
     delete_subteam: Delete Subteam
     edit_subteam: Edit Subteam
     back_to_organization: Back to Project Organization
+    back_to_phases_and_milestones: Back to Phases & Milestones
+    create_new_phase: Create new phase
+    create_new_milestone: Create new milestone
+    automatic_phase_schedule_note: Calculated based on the Start Date of the first Task/Milestone and the Finish Date of the last Task/Milestone added to this phase.
+    manual_phase_schedule_note_first: Add manual dates for Base and Forecast schedule.
+    manual_phase_schedule_note_second: Base Start Date and Base Finish Date are overwritten by the automatically calculated dates.
+    details: Details
+    start_date: Start Date
+    finish_date: Finish Date
+    milestone_schedule_note: Base Due Date will be recalculated based on the Tasks dedicated to this Milestone.
     create_new_team_member: Create new team member
     add_avatar_image: Add avatar image
     delete_department: Are you sure you want to delete selected department?
@@ -474,6 +484,8 @@ subtitle:
     project_deliverable: List of project deliverables
 
 label:
+    phase_is_subphase: This is a subphase
+    parent_phase: Select parent phase
     select_users: Select Users
     subteam_name: Subteam Name
     select_managers: Select Managers
@@ -640,6 +652,9 @@ label:
     forecast_end_date: Forecast End Date
     base_start_date: Base Start Date
     base_end_date: Base End Date
+    base_due_date: Base Due Date
+    forecast_due_date: Forecast Due Date
+    select_phase: Select Phase
     created_by: Created By
     two_factor_auth: Two Factor Authentication
     todo: To do
@@ -681,6 +696,10 @@ label:
 
 button:
     add_new_team_members: Add New Team Members
+    create_phase: Create Phase
+    create_milestone: Create Milestone
+    edit_phase: Edit Phase
+    edit_milestone: Edit Milestone
     edit_subteam: Edit Subteam
     save_member: Save Member
     add_new_subteam: Add new Subteam
@@ -785,6 +804,10 @@ add:
     project_deliverable: Add new project deliverable
 
 placeholder:
+    phase_title: Phase Title
+    phase_description: Phase Description
+    milestone_title: Milestone Title
+    milestone_description: Milestone Description
     first_name: First Name
     last_name: Last Name
     username: Username
@@ -1116,7 +1139,7 @@ choices:
     task: Task
 
 roles:
-    project_sponsor: Project Manager
+    project_sponsor: Project Sponsor
     project_manager: Project Manager
     team_leader: Team Leader
     team_member: Team Member
