@@ -39,6 +39,8 @@ use AppBundle\Form\ProjectLimitation\CreateType as ProjectLimitationCreateType;
 use AppBundle\Form\Unit\CreateType as UnitCreateType;
 use AppBundle\Form\User\ApiCreateType as UserApiCreateType;
 use AppBundle\Form\WorkPackage\ApiCreateType;
+use AppBundle\Form\WorkPackage\MilestoneType;
+use AppBundle\Form\WorkPackage\PhaseType;
 use AppBundle\Security\ProjectVoter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use MainBundle\Controller\API\ApiController;
@@ -979,6 +981,7 @@ class ProjectController extends ApiController
 
     /**
      * @Route("/{id}/phases", name="app_api_project_phases", options={"expose"=true})
+     * @Method({"GET"})
      */
     public function phasesAction(Request $request, Project $project)
     {
@@ -1005,7 +1008,33 @@ class ProjectController extends ApiController
     }
 
     /**
+     * @Route("/{id}/phases", name="app_api_project_phases_create", options={"expose"=true})
+     * @Method({"POST"})
+     */
+    public function createPhaseAction(Request $request, Project $project)
+    {
+        $form = $this->createForm(PhaseType::class, new WorkPackage(), ['csrf_protection' => false]);
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $phase = $form->getData();
+            $phase->setProject($project);
+            $this->persistAndFlush($phase);
+
+            return $this->createApiResponse($phase, Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
      * @Route("/{id}/milestones", name="app_api_project_milestones", options={"expose"=true})
+     * @Method({"GET"})
      */
     public function milestonesAction(Request $request, Project $project)
     {
@@ -1029,6 +1058,31 @@ class ProjectController extends ApiController
         return $this->createApiResponse([
             'items' => $repo->findMilestonesByProject($project),
         ]);
+    }
+
+    /**
+     * @Route("/{id}/milestones", name="app_api_project_milestones_create", options={"expose"=true})
+     * @Method({"POST"})
+     */
+    public function createMilestoneAction(Request $request, Project $project)
+    {
+        $form = $this->createForm(MilestoneType::class, new WorkPackage(), ['csrf_protection' => false]);
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $milestone = $form->getData();
+            $milestone->setProject($project);
+            $this->persistAndFlush($milestone);
+
+            return $this->createApiResponse($milestone, Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
