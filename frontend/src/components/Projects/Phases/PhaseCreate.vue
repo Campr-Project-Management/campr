@@ -7,41 +7,41 @@
                     <div>
                         <router-link :to="{name: 'project-phases-and-milestones'}" class="small-link">
                             <i class="fa fa-angle-left"></i>
-                            {{message.back_to_phases_and_milestones}}
+                            {{ translateText('message.back_to_phases_and_milestones') }}
                         </router-link>
-                        <h1>{{message.create_new_phase}}</h1>
+                        <h1>{{ translateText('message.create_new_phase') }}</h1>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
 
                 <div class="form">
                     <!-- /// Phase Name /// -->
-                    <input-field type="text" v-bind:label="label.phase_title" v-model="title" v-bind:content="title" />
+                    <input-field type="text" v-bind:label="translateText('placeholder.phase_title')" v-model="name" v-bind:content="name" />
                     <!-- /// End Phase Name /// -->
 
                     <!-- /// Phase Description /// -->
                     <div class="vueditor-holder">
-                        <div class="vueditor-header">{{message.phase_description}}</div>
-                        <Vueditor ref="description" />
+                        <div class="vueditor-header">{{ translateText('placeholder.phase_description') }}</div>
+                        <Vueditor ref="content" />
                     </div>
                     <!-- /// End Phase Description /// -->
 
                     <hr class="double">
 
                     <!-- /// Phase Schedule /// -->
-                    <h3>{{message.schedule}}</h3>
-                    <h4>{{ message.automatic_schedule }}</h4>
-                    <span class="note">{{message.automatic_phase_schedule_note}}</span>
+                    <h3>{{ translateText('message.schedule') }}</h3>
+                    <h4>{{ translateText('message.automatic_schedule') }}</h4>
+                    <span class="note">{{ translateText('message.automatic_phase_schedule_note') }}</span>
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
                                 <span class="title">
-                                    {{message.start_date}}: -</b>
+                                    <b>{{ translateText('message.start_date') }}: -</b>
                                 </span>
                             </div>
                             <div class="col-md-6">
                                 <span class="title">
-                                    {{message.finish_date}}: -</b>
+                                    <b> {{ translateText('message.finish_date') }}: -</b>
                                 </span>
                             </div>
                         </div>
@@ -49,21 +49,21 @@
 
                     <hr>
 
-                    <h4>{{ message.manual_schedule }}</h4>
-                    <span class="note no-margin-bottom">{{message.manual_phase_schedule_note_1}}</span>
-                    <span class="note"><b>{{message.note}}:</b> {{message.manual_phase_schedule_note_2}}</span>
+                    <h4>{{ translateText('message.manual_schedule') }}</h4>
+                    <span class="note no-margin-bottom">{{ translateText('message.manual_phase_schedule_note_first') }}</span>
+                    <span class="note"><b>{{ translateText('message.note') }}:</b> {{ translateText('message.manual_phase_schedule_note_second') }}</span>
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
                                 <div class="input-holder right">
-                                    <label class="active">{{ label.base_start_date }}</label>
+                                    <label class="active">{{ translateText('label.base_start_date') }}</label>
                                     <datepicker v-model="schedule.baseStartDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill" stroke="middle-stroke" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
-                                    <label class="active">{{ label.base_end_date }}</label>
+                                    <label class="active">{{ translateText('label.base_end_date') }}</label>
                                     <datepicker v-model="schedule.baseEndDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill" stroke="middle-stroke" />
                                 </div>
@@ -74,14 +74,14 @@
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
                                 <div class="input-holder right">
-                                    <label class="active">{{ label.forecast_start_date }}</label>
+                                    <label class="active">{{ translateText('label.forecast_start_date') }}</label>
                                     <datepicker v-model="schedule.forecastStartDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill" stroke="middle-stroke" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
-                                    <label class="active">{{ label.forecast_end_date }}</label>
+                                    <label class="active">{{ translateText('label.forecast_end_date') }}</label>
                                     <datepicker v-model="schedule.forecastEndDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill" stroke="middle-stroke" />
                                 </div>
@@ -93,20 +93,20 @@
                     <hr class="double">
 
                     <!-- /// Phase Details /// -->
-                    <h3>{{message.details}}</h3>
+                    <h3>{{ translateText('message.details') }}</h3>
 
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
                                 <select-field
-                                    v-bind:title="label.responsible"
-                                    v-bind:options="responsibleForSelect"
+                                    v-bind:title="translateText('label.responsible')"
+                                    v-bind:options="projectUsersForSelect"
                                     v-model="details.responsible"
                                     v-bind:currentOption="details.responsible" />
                             </div>
                             <div class="col-md-6">
                                 <select-field
-                                    v-bind:title="label.status"
+                                    v-bind:title="translateText('label.status')"
                                     v-bind:options="workPackageStatusesForSelect"
                                     v-model="details.status"
                                     v-bind:currentOption="details.status" />
@@ -122,12 +122,17 @@
                         <div class="col-md-12">
                             <div class="checkbox-input clearfix">
                                 <input id="is-subphase" type="checkbox" v-model="visibleSubphase">
-                                <label for="is-subphase" class="no-margin-bottom">{{label.phase_is_subphase}}</label>
+                                <label for="is-subphase" class="no-margin-bottom">{{ translateText('label.phase_is_subphase') }}</label>
                             </div>
                         </div>
                         <div class="col-md-6 margintop20" v-if="visibleSubphase">
                             <div class="form-group last-form-group">
-                                <select-field v-bind:title="label.parent_phase" />
+                                <select-field
+                                    v-bind:title="translateText('label.parent_phase')"
+                                    v-if="projectPhases.items && projectPhases.items.length > 0"
+                                    v-bind:options="projectPhasesForSelect"
+                                    v-model="details.parent"
+                                    v-bind:currentOption="details.parent"/>
                             </div>
                         </div>
                     </div>
@@ -137,8 +142,10 @@
 
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
-                        <router-link :to="{name: 'project-phases-and-milestones'}" class="btn-rounded btn-auto disable-bg">{{ button.cancel }}</router-link>
-                        <a href="#" class="btn-rounded btn-auto second-bg">{{button.create_phase}}</a>
+                        <router-link :to="{name: 'project-phases-and-milestones'}" class="btn-rounded btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
+                        <a v-if="!isEdit" @click="createNewPhase()" class="btn-rounded btn-auto second-bg">{{ translateText('button.create_phase') }}</a>
+                        <a v-if="isEdit" @click="editPhase()" class="btn-rounded btn-auto">{{ translateText('button.edit_phase') }}</a>
+
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
@@ -148,10 +155,12 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex';
 import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
 import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
+import moment from 'moment';
 
 export default {
     components: {
@@ -161,54 +170,103 @@ export default {
         CalendarIcon,
     },
     methods: {
+        ...mapActions([
+            'getProjectUsers', 'getWorkPackageStatuses', 'getProjectPhases',
+            'createProjectPhase', 'getProjectPhase', 'editProjectPhase',
+        ]),
         visibleSubphase: function() {
             this.visibleSubphase = !this.visibleSubphase;
         },
+        translateText: function(text) {
+            return this.translate(text);
+        },
+        createNewPhase: function() {
+            let data = {
+                project: this.$route.params.id,
+                name: this.name,
+                type: 0,
+                content: this.$refs.content.getContent(),
+                scheduledStartAt: moment(this.schedule.baseStartDate).format('DD-MM-YYYY'),
+                scheduledFinishAt: moment(this.schedule.baseEndDate).format('DD-MM-YYYY'),
+                forecastStartAt: moment(this.schedule.forecastStartDate).format('DD-MM-YYYY'),
+                forecastFinishAt: moment(this.schedule.forecastEndDate).format('DD-MM-YYYY'),
+                responsibility: this.details.responsible ? this.details.responsible.key : null,
+                workPackageStatus: this.details.status ? this.details.status.key: null,
+                parent: this.visibleSubphase ? this.details.parent ? this.details.parent.key : null : null,
+            };
+            this.createProjectPhase(data);
+        },
+        editPhase: function() {
+            let data = {
+                id: this.$route.params.phaseId,
+                name: this.name,
+                type: 0,
+                content: this.$refs.content.getContent(),
+                scheduledStartAt: moment(this.schedule.baseStartDate).format('DD-MM-YYYY'),
+                scheduledFinishAt: moment(this.schedule.baseEndDate).format('DD-MM-YYYY'),
+                forecastStartAt: moment(this.schedule.forecastStartDate).format('DD-MM-YYYY'),
+                forecastFinishAt: moment(this.schedule.forecastEndDate).format('DD-MM-YYYY'),
+                responsibility: this.details.responsible ? this.details.responsible.key : null,
+                workPackageStatus: this.details.status ? this.details.status.key: null,
+                parent: this.visibleSubphase ? this.details.parent ? this.details.parent.key : null : null,
+            };
+            this.editProjectPhase(data);
+        },
+    },
+    computed: mapGetters({
+        projectUsersForSelect: 'projectUsersForSelect',
+        workPackageStatusesForSelect: 'workPackageStatusesForSelect',
+        projectPhases: 'projectPhases',
+        projectPhasesForSelect: 'projectPhasesForSelect',
+        phase: 'phase',
+    }),
+    watch: {
+        phase(value) {
+            this.name = this.phase.name;
+            this.$refs.content.setContent(this.phase.content);
+            this.schedule.baseStartDate = new Date(this.phase.scheduledStartAt);
+            this.schedule.baseEndDate = new Date(this.phase.scheduledFinishAt);
+            this.schedule.forecastStartDate = new Date(this.phase.forecastStartAt);
+            this.schedule.forecastEndDate = new Date(this.phase.forecastFinishAt);
+            this.details.status = this.phase.workPackageStatus
+                ? {key: this.phase.workPackageStatus, label: this.translateText(this.phase.workPackageStatusName)}
+                : null
+            ;
+            this.details.responsible = this.phase.responsibility
+                ? {key: this.phase.responsibility, label: this.translateText(this.phase.responsibilityFullName)}
+                : null
+            ;
+            if (this.phase.parent) {
+                this.visibleSubphase = true;
+                this.details.parent = {key: this.phase.parent, label: this.translateText(this.phase.parentName)};
+            }
+        },
+    },
+    created() {
+        this.getProjectUsers({id: this.$route.params.id});
+        this.getWorkPackageStatuses();
+        this.getProjectPhases(this.$route.params.id);
+        if (this.$route.params.phaseId) {
+            this.getProjectPhase(this.$route.params.phaseId);
+        }
     },
     data() {
         return {
-            message: {
-                back_to_phases_and_milestones: this.translate('Back to Phases &amp; Milestones'),
-                create_new_phase: this.translate('Create new Phase'),
-                phase_description: this.translate('Phase Description'),
-                schedule: this.translate('message.schedule'),
-                manual_schedule: this.translate('message.manual_schedule'),
-                manual_phase_schedule_note_1: this.translate('Add manual dates for Base and Forecast schedule.'),
-                note: this.translate('Note'),
-                manual_phase_schedule_note_2: this.translate('Base Start Date and Base Finish Date are overwritten by the automatically calculated dates.'),
-                automatic_schedule: this.translate('message.automatic_schedule'),
-                automatic_phase_schedule_note: this.translate(`Calculated based on the Start Date of the first Task/Milestone and
-                 the Finish Date of the last Task/Milestone added to this phase.`),
-                start_date: this.translate('Start Date'),
-                finish_date: this.translate('Finish Date'),
-                details: this.translate('Details'),
-            },
-            label: {
-                phase_title: this.translate('Phase Title'),
-                base_start_date: this.translate('label.base_start_date'),
-                base_end_date: this.translate('label.base_end_date'),
-                forecast_start_date: this.translate('label.forecast_start_date'),
-                forecast_end_date: this.translate('label.forecast_end_date'),
-                responsible: this.translate('label.responsible'),
-                status: this.translate('label.status'),
-                phase_is_subphase: this.translate('This is a subphase'),
-                parent_phase: this.translate('Select parent phase'),
-            },
+            name: '',
+            content: '',
             schedule: {
                 baseStartDate: new Date(),
                 baseEndDate: new Date(),
                 forecastStartDate: new Date(),
                 forecastEndDate: new Date(),
             },
-            button: {
-                cancel: this.translate('button.cancel'),
-                create_phase: this.translate('Create Phase'),
-            },
             details: {
                 status: null,
                 responsible: null,
+                parent: null,
             },
             visibleSubphase: false,
+            isEdit: this.$route.params.phaseId,
         };
     },
 };

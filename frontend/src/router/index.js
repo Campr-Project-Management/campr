@@ -138,9 +138,19 @@ const routes = [
                 name: 'project-phases-create-phase',
             },
             {
+                path: 'phases-and-milestones/edit-phase/:phaseId',
+                component: PhaseCreate,
+                name: 'project-phases-edit-phase',
+            },
+            {
                 path: 'phases-and-milestones/create-milestone',
                 component: MilestoneCreate,
                 name: 'project-milestones-create-milestone',
+            },
+            {
+                path: 'phases-and-milestones/edit-milestone/:milestoneId',
+                component: MilestoneCreate,
+                name: 'project-phases-edit-milestone',
             },
         ],
     },
