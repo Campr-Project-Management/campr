@@ -417,6 +417,7 @@ title:
         list: Cost
         create: Create Cost
         edit: Edit Cost
+    dashboard: Dashboard
 
 subtitle:
     resource: List of resources
@@ -472,6 +473,7 @@ subtitle:
     project_objective: List of project objectives
     project_limitation: List of project limitations
     project_deliverable: List of project deliverables
+    dashboard: Welcome to the admin area!
 
 label:
     select_users: Select Users
@@ -678,6 +680,10 @@ label:
     select_successors: Select Successors
     select_predecessors: Select Predecessors
     distribution_list_title: Distribution List Title
+    dashboard:
+        number_of_projects: Number of projects
+        number_of_tasks: Number of tasks
+        number_of_users: Number of users
 
 button:
     add_new_team_members: Add New Team Members
@@ -1032,6 +1038,7 @@ table_header_cell:
 link:
     home: Home
     dashboad: Dashboard
+    admin_dashboard: Admin Tool
     reports: Reports
     support: Support
     contact: Contact
