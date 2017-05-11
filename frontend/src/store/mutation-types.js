@@ -55,3 +55,5 @@ export const SET_SUBTEAMS = 'SET_SUBTEAMS';
 export const ADD_SUBTEAM = 'ADD_SUBTEAM';
 export const EDIT_SUBTEAM = 'EDIT_SUBTEAM';
 export const DELETE_SUBTEAM = 'DELETE_SUBTEAM';
+export const SET_PHASE = 'SET_PHASE';
+export const SET_MILESTONE = 'SET_MILESTONE';
