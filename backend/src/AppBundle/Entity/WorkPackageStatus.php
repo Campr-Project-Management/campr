@@ -19,6 +19,7 @@ class WorkPackageStatus
     const PENDING = 2;
     const ONGOING = 3;
     const COMPLETED = 4;
+    const CLOSED = 5;
 
     /**
      * @var int
