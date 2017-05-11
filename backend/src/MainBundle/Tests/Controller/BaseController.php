@@ -2,6 +2,9 @@
 
 namespace MainBundle\Tests\Controller;
 
+use AppBundle\Entity\Subteam;
+use AppBundle\Entity\SubteamMember;
+use AppBundle\Entity\SubteamRole;
 use AppBundle\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -106,6 +109,69 @@ class BaseController extends WebTestCase
     public function logout()
     {
         $this->client->request(Request::METHOD_GET, '\logout');
+    }
+
+    /**
+     * @param string $name
+     * @param string $description
+     *
+     * @return Subteam
+     */
+    public function createSubteam($name, $description)
+    {
+        $subteam = new Subteam();
+        $subteam
+            ->setName($name)
+            ->setDescription($description)
+        ;
+        $this->em->persist($subteam);
+        $this->em->flush();
+
+        return $subteam;
+    }
+
+    /**
+     * @param User    $user
+     * @param Subteam $subteam
+     *
+     * @return SubteamMember
+     */
+    public function createSubteamMember(User $user, Subteam $subteam)
+    {
+        $subteamMember = new SubteamMember();
+        $subteamMember
+            ->setUser($user)
+            ->setSubteam($subteam)
+        ;
+        $this->em->persist($subteamMember);
+        $this->em->flush();
+
+        return $subteamMember;
+    }
+
+    /**
+     * @param string                $name
+     * @param string                $description
+     * @param array|SubteamMember[] $subteamMembers
+     *
+     * @return SubteamRole
+     */
+    public function createSubteamRole($name, $description = '', $subteamMembers = [])
+    {
+        $subteamRole = new SubteamRole();
+        $subteamRole
+            ->setName($name)
+            ->setDescription($description)
+        ;
+
+        foreach ($subteamMembers as $subteamMember) {
+            $subteamRole->addSubteamMember($subteamMember);
+        }
+
+        $this->em->persist($subteamRole);
+        $this->em->flush();
+
+        return $subteamRole;
     }
 
     /**

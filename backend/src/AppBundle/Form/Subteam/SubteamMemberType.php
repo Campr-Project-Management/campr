@@ -18,11 +18,17 @@ class SubteamMemberType extends AbstractType
             ->add('user', EntityType::class, [
                 'class' => User::class,
                 'required' => true,
+                'attr' => [
+                    'class' => 'selectpicker',
+                ],
             ])
             ->add('subteamRoles', EntityType::class, [
                 'class' => SubteamRole::class,
                 'required' => true,
                 'multiple' => true,
+                'attr' => [
+                    'class' => 'selectpicker',
+                ],
             ])
         ;
     }

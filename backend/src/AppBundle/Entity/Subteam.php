@@ -26,7 +26,7 @@ class Subteam
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=128, nullable=false)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="not_blank.subteam.name")
      */
     private $name;
 
@@ -47,7 +47,7 @@ class Subteam
     private $project;
 
     /**
-     * @var SubteamRole[]|ArrayCollection
+     * @var SubteamMember[]|ArrayCollection
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\SubteamMember", mappedBy="subteam", orphanRemoval=true, cascade={"all"})
      */
     private $subteamMembers;
