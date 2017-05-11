@@ -29,7 +29,7 @@ class SubteamMember
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      * })
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="not_blank.subteam_member.user")
      * @Serializer\Exclude()
      */
     private $user;
@@ -41,6 +41,7 @@ class SubteamMember
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="subteam_id", referencedColumnName="id", nullable=false)
      * })
+     * @Assert\NotBlank(message="not_blank.subteam_member.subteam")
      * @Serializer\Exclude()
      */
     private $subteam;
@@ -65,6 +66,14 @@ class SubteamMember
     public function __construct()
     {
         $this->subteamRoles = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return (string) $this->user->getFullName();
     }
 
     /**
@@ -108,7 +117,7 @@ class SubteamMember
      *
      * @return SubteamMember
      */
-    public function setUser(User $user)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -132,7 +141,7 @@ class SubteamMember
      *
      * @return SubteamMember
      */
-    public function setSubteam(Subteam $subteam)
+    public function setSubteam(Subteam $subteam = null)
     {
         $this->subteam = $subteam;
 

@@ -330,6 +330,25 @@ success:
         delete:
             from_edit: Project Deliverable successfully deleted!
             from_data_table: Project Deliverable with ID
+    subteam:
+        create: Subteam successfully created!
+        edit: Subteam successfully edited!
+        delete:
+            from_edit: Subteam successfully deleted!
+            from_data_table: Subteam with ID
+    subteam_role:
+        create: Subteam Role successfully created!
+        edit: Subteam Role successfully edited!
+        delete:
+            from_edit: Subteam Role successfully deleted!
+            from_data_table: Subteam Role with ID
+    subteam_member:
+        create: Subteam Member successfully created!
+        edit: Subteam Member successfully edited!
+        delete:
+            from_edit: Subteam Member successfully deleted!
+            from_data_table: Subteam Member with ID
+
 failed:
     media:
         upload: File upload failed. Filesystem cannot be reached.
