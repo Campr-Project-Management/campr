@@ -4,6 +4,7 @@ namespace AppBundle\Tests\Controller\Admin;
 
 use AppBundle\Entity\Note;
 use AppBundle\Entity\Project;
+use AppBundle\Entity\Company;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,10 +69,17 @@ class NoteControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
+        $company = (new Company())
+            ->setName('company4')
+        ;
+        $this->em->persist($company);
+
         $project = (new Project())
             ->setName('project4')
             ->setNumber('project-number-4')
+            ->setCompany($company)
         ;
+
         $this->em->persist($project);
         $this->em->flush();
 
@@ -104,7 +112,18 @@ class NoteControllerTest extends BaseController
                 'number' => 'project-number-4',
             ])
         ;
+
         $this->em->remove($project);
+
+        $company = $this
+            ->em
+            ->getRepository(Company::class)
+            ->findOneBy([
+                'name' => 'company4',
+            ])
+        ;
+        $this->em->remove($company);
+
         $this->em->flush();
     }
 
@@ -114,9 +133,15 @@ class NoteControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
+        $company = (new Company())
+            ->setName('company4')
+        ;
+        $this->em->persist($company);
+
         $project = (new Project())
             ->setName('project4')
             ->setNumber('project-number-4')
+            ->setCompany($company)
         ;
         $this->em->persist($project);
 
@@ -146,6 +171,16 @@ class NoteControllerTest extends BaseController
             ])
         ;
         $this->em->remove($project);
+
+        $company = $this
+            ->em
+            ->getRepository(Company::class)
+            ->findOneBy([
+                'name' => 'company4',
+            ])
+        ;
+        $this->em->remove($company);
+
         $this->em->flush();
     }
 
