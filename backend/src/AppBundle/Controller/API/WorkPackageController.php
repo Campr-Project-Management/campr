@@ -6,6 +6,8 @@ use AppBundle\Entity\Assignment;
 use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Form\WorkPackage\ApiCreateType;
+use AppBundle\Form\WorkPackage\MilestoneType;
+use AppBundle\Form\WorkPackage\PhaseType;
 use AppBundle\Security\WorkPackageVoter;
 use AppBundle\Form\Assignment\BaseCreateType as AssignmentCreateType;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -137,6 +139,66 @@ class WorkPackageController extends ApiController
                     ? Response::HTTP_OK
                     : Response::HTTP_ACCEPTED
             );
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * Edit a specific WorkPackage.
+     *
+     * @Route("/phase/{id}", name="app_api_workpackage_phase_edit", options={"expose"=true})
+     * @Method({"PATCH", "PUT"})
+     *
+     * @param Request     $request
+     * @param WorkPackage $phase
+     *
+     * @return JsonResponse
+     */
+    public function editPhaseAction(Request $request, WorkPackage $phase)
+    {
+        $form = $this->createForm(PhaseType::class, $phase, ['csrf_protection' => false]);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
+
+        if ($form->isValid()) {
+            $this->persistAndFlush($phase);
+
+            return $this->createApiResponse($phase, Response::HTTP_ACCEPTED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * Edit a specific WorkPackage.
+     *
+     * @Route("/milestone/{id}", name="app_api_workpackage_milestone_edit", options={"expose"=true})
+     * @Method({"PATCH", "PUT"})
+     *
+     * @param Request     $request
+     * @param WorkPackage $milestone
+     *
+     * @return JsonResponse
+     */
+    public function editMilestoneAction(Request $request, WorkPackage $milestone)
+    {
+        $form = $this->createForm(MilestoneType::class, $milestone, ['csrf_protection' => false]);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
+
+        if ($form->isValid()) {
+            $this->persistAndFlush($milestone);
+
+            return $this->createApiResponse($milestone, Response::HTTP_ACCEPTED);
         }
 
         $errors = $this->getFormErrors($form);
