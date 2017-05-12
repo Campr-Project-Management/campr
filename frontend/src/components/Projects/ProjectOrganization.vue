@@ -28,36 +28,40 @@
         </div>
 
         <div class="team-graph">
-            <member-badge v-for="(item, index) in projectSponsors" v-bind:item="item" size="big"></member-badge>
-            <div class="flex flex-space-between" v-for="subteam in subteams.items">
-                <div>
-                    <div class="member-badge-wrapper" v-for="subteamMember in subteam.subteamMembers">
-                        <member-badge v-if="subteamMember.isLead" v-bind:item="subteamMember" size="big"></member-badge>
-                    </div>
-                    <div class="flex">
-                        <div v-for="child in subteam.children">
-                            <div class="member-badge-wrapper" v-for="member in child.subteamMembers">
-                                <member-badge v-if="member.isLead" v-bind:item="member" size="small"></member-badge>
+            <vue-scrollbar class="team-graph-wrapper">
+                <div class="scroll-wrapper">
+                    <member-badge v-for="(item, index) in projectSponsors" v-bind:item="item" size="big first-member-badge"></member-badge>
+                    <div class="flex flex-center " v-for="subteam in subteams.items">
+                        <div class="member-block">
+                            <div class="member-badge-wrapper" v-for="subteamMember in subteam.subteamMembers">
+                                <member-badge v-if="subteamMember.isLead" v-bind:item="subteamMember" size="big"></member-badge>
                             </div>
-                            <a href="javascript:void(0)" class="btn-rounded btn-empty btn-small" @click="toggleTeam(child.id)" :class="{'show-team': showTeam[child.id]}">
-                                {{ translateText('message.view_team') }}
-                                <i class="fa fa-angle-down" v-show="!showTeam[child.id]"></i>
-                                <i class="fa fa-angle-up" v-show="showTeam[child.id]"></i>
-                            </a>
-                            <div class="team" v-show="showTeam[child.id]">
-                                <div class="member flex" v-for="user in child.subteamMembers">
-                                    <img :src="user.userAvatar">
-                                    <div class="info">
-                                        <p class="title">{{ user.userFullName }}</p>
-                                        <p class="description" v-for="role in user.subteamRoleNames">{{ role }}</p>
-                                        <social-links align="left" size="16px" v-bind:facebook="user.userFacebook" v-bind:twitter="user.userTwitter" v-bind:linkedin="user.userLinkedIn" v-bind:gplus="user.userGplus" v-bind:email="user.userEmail" v-bind:phone="user.userPhone"></social-links>
+                            <div class="flex flex-center">
+                                <div v-for="child in subteam.children" class="member-block">
+                                    <div class="member-badge-wrapper" v-for="member in child.subteamMembers">
+                                        <member-badge v-if="member.isLead" v-bind:item="member" size="small"></member-badge>
+                                    </div>
+                                    <a href="javascript:void(0)" class="btn-rounded btn-empty btn-small" @click="toggleTeam(child.id)" :class="{'show-team': showTeam[child.id]}">
+                                        {{ translateText('message.view_team') }}
+                                        <i class="fa fa-angle-down" v-show="!showTeam[child.id]"></i>
+                                        <i class="fa fa-angle-up" v-show="showTeam[child.id]"></i>
+                                    </a>
+                                    <div class="team" v-show="showTeam[child.id]">
+                                        <div class="member flex" v-for="user in child.subteamMembers">
+                                            <div class="avatar" v-bind:style="{ backgroundImage: 'url(' + user.userAvatar + ')' }"></div>
+                                            <div class="info">
+                                                <p class="title">{{ user.userFullName }}</p>
+                                                <p class="description" v-for="role in user.subteamRoleNames">{{ role }}</p>
+                                                <social-links align="left" size="16px" v-bind:facebook="user.userFacebook" v-bind:twitter="user.userTwitter" v-bind:linkedin="user.userLinkedIn" v-bind:gplus="user.userGplus" v-bind:email="user.userEmail" v-bind:phone="user.userPhone"></social-links>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>          
                     </div>
                 </div>
-            </div>
+            </vue-scrollbar>
         </div>
         <div class="flex flex-space-between actions">
             <member-search v-model="gridList" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
@@ -148,7 +152,7 @@ import MemberSearch from '../_common/MemberSearch';
 import Switches from '../3rdparty/vue-switches';
 import VueScrollbar from 'vue2-scrollbar';
 import Modal from '../_common/Modal';
-import 'vue2-scrollbar/dist/style/vue2-scrollbar.css';
+// import 'vue2-scrollbar/dist/style/vue2-scrollbar.css';
 
 export default {
     components: {
@@ -289,6 +293,7 @@ export default {
 
 <style scoped lang="scss">
     @import '../../css/_variables';
+    @import '../../css/_mixins';
 
     .modal {
         .modal-title {
@@ -313,8 +318,76 @@ export default {
         }
     }
 
-    .st0 {
-        stroke: $lighterColor;
+    .project-organization {
+        overflow-x: hidden;
+    }
+
+    .team-graph {
+        margin: 0 auto;
+        text-align: center;
+        width: 100%;
+        max-width: 100%;
+
+        .vue-scrollbar__wrapper {
+            padding-bottom: 50px;
+            overflow: inherit;
+        }
+
+        .flex-center {       
+            position: relative;     
+            margin-top: 45px;
+
+            &:after {
+                content: '';
+                width: 1px;
+                height: 30px;
+                background-color: $middleColor;
+                position: absolute;
+                top: -70px;
+                left: 50%;
+            }
+
+            &.social-links {
+                margin-top: 5px;
+
+                &:after {
+                    display: none;
+                }
+            }
+        }
+
+        .member-block {
+            position: relative;
+
+            &:before {
+                content: '';
+                width: 100%;
+                height: 1px;
+                background-color: $middleColor;
+                position: absolute;
+                top: -40px;
+                left: 0;
+            }
+
+            &:first-child {
+                &:before {
+                    width: 50%;
+                    left: 50%;
+                }
+            }
+
+            &:last-child {
+                &:before {
+                    width: 50%;
+                }
+            }
+
+            &:only-child {
+                &:before {
+                    display: none;
+                }
+            }
+        }
     }
 
     .search {
@@ -370,51 +443,48 @@ export default {
         padding: 0 20px;
         max-height: 400px;
         z-index: 10;
-        box-shadow: 0 0 8px -2px #000;
-    }
+        box-shadow: 0 0 10px 0 $darkColor;
 
-    .member {
-        padding: 20px 0;
-        border-top: 1px solid $mainColor;
+        .member {
+            padding: 15px 0;
+            border-top: 1px solid $mainColor;
 
-        &:first-child {
-            border-bottom: none;
+            .avatar {
+                width: 46px;
+                height: 46px;
+                @include border-radius(50%);
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center center;
+            }
+
+            .info {
+                text-transform: uppercase;
+                padding: 0 0 0 10px;    
+
+                .title {
+                    font-size: 10px;
+                    color: $lighterColor;
+                    letter-spacing: 1.5px;
+                    text-align: left;
+                }
+
+                .description {
+                    font-size: 8px;
+                    color: $middleColor;
+                    letter-spacing: 1.2px;
+                    text-align: left;
+                }
+            }
+
+            .social-links {
+                margin-top: 0;
+            }
+
+            &:first-child {
+                border-top: none;
+            }
         }
-    }
-
-    img {
-        width: 46px;
-        height: 46px;
-    }
-
-    .info {
-        text-transform: uppercase;
-        padding-left: 10px;
-    }
-
-    .title {
-        font-size: 10px;
-        color: $lighterColor;
-        letter-spacing: 1.5px;
-    }
-
-    .description {
-        font-size: 8px;
-        color: $middleColor;
-        letter-spacing: 1.2px;
-    }
-
-    .social-links {
-        margin-top: 5px;
-    }
-
-    .member-badge.small {
-        margin: 0 auto 13px;
-    }
-
-    .team-graph {
-        width: 70%;
-        margin: 0 auto;
     }
 
     .lead {
@@ -441,7 +511,7 @@ export default {
     }
 
     .actions {
-        margin: 54px 0 30px;
+        margin: 30px 0;
     }
 
     .table-wrapper {
