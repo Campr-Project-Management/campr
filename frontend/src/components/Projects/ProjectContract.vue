@@ -96,7 +96,7 @@
                     <a class="btn-rounded btn-md btn-empty">{{ message.edit_sponsors_managers }}</a>
                 </div>
                 <div class="flex flex-row flex-center members-big">
-                    <member-badge v-for="(item, index) in sponsorsManagers" v-bind:item="item" size="big"></member-badge>
+                    <member-badge v-for="(item, index) in sponsorsManagers" v-bind:item="item" size="small"></member-badge>
                 </div>
                 <div class="header">
                     <div class="flex">

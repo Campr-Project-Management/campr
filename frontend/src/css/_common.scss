@@ -3,7 +3,6 @@
 
 .flex {
   display: flex !important;
-  flex-wrap: wrap;
 }
 
 .flex-row {
@@ -40,6 +39,10 @@
 
 .flex-end {
   align-self: flex-end;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
 }
 
 .uppercase {
