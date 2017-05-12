@@ -92,17 +92,17 @@
 
             <div class="page-side right">
                 <div class="header">
-                    <h2 @click="toggleSponsorsManagers()">{{ translateText('message.sponsors_managers') }}
-                        <i class="fa fa-angle-down" v-if="showSponsorsManagers"></i>
-                        <i class="fa fa-angle-up" v-if="!showSponsorsManagers"></i>
+                    <h2 class="clickable" @click="toggleSponsorsManagers()">{{ translateText('message.sponsors_managers') }}
+                        <i class="fa fa-angle-up" v-if="showSponsorsManagers"></i>
+                        <i class="fa fa-angle-down" v-if="!showSponsorsManagers"></i>
                     </h2>
                     <router-link :to="{name: 'project-organization'}">
                         <a class="btn-rounded btn-md btn-empty">{{ translateText('message.view_team') }}</a>
                     </router-link>
                 </div>
                 <div class="flex flex-row flex-center members-big" v-if="showSponsorsManagers">
-                    <member-badge v-for="item in projectSponsors" v-bind:item="item" size="big"></member-badge>
-                    <member-badge v-for="item in projectManagers" v-bind:item="item" size="big"></member-badge>
+                    <member-badge v-for="item in projectSponsors" v-bind:item="item" size="small"></member-badge>
+                    <member-badge v-for="item in projectManagers" v-bind:item="item" size="small"></member-badge>
                 </div>
                 <div class="header">
                     <div class="flex">
