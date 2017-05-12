@@ -227,8 +227,8 @@ export default {
                         vertical: 5,
                     },
                 },
-                min: '2016, 1, 1',
-                max: '2018, 12, 20',
+                min: '2017, 1, 1',
+                max: '2017, 12, 20',
                 zoomMax: 31536000000000,
                 zoomMin: 315360000,
                 order: function(a, b) {

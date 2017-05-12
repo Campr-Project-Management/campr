@@ -1,6 +1,6 @@
 <template>
     <div class="member-badge" v-bind:class="size">
-        <img v-bind:src="item.userAvatar" />
+        <div class="avatar" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
         <div class="name">{{ item.userFullName }}</div>
         <div class="title" v-for="role in item.projectRoleNames">{{ translateText(role) }}</div>
         <div class="title" v-for="role in item.subteamRoleNames">{{ translateText(role) }}</div>
@@ -32,12 +32,25 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
     @import '../../css/_variables';
+    @import '../../css/_mixins';
 
     .member-badge {
         text-align: center;
+        display: inline-block;
+        margin: 0 30px 30px;
+
+        .avatar {
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%;
+            @include border-radius(50%);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
 
         .social-links {
-            margin-top: 15px;
+            margin-top: 5px;
 
             a {
                 margin: 0 3px;
@@ -58,26 +71,11 @@ export default {
             color: $middleColor;
         }
 
-        img {
-            border-radius: 50%;
-        }
-
         &.small {
-            margin: 0 15px 13px;
+            margin: 0 30px 10px;
             width: 112px;
 
-            img {
-                width: 100%;
-                height: 112px
-            }
-
-            .title {
-                margin-top: 11px;
-            }
-
             .social-links {
-                margin-top: 10px;
-
                 a {
                     margin: 0 1px;
                 }
@@ -85,13 +83,23 @@ export default {
         }
 
         &.big {
-            margin: 0 14px 15px;
-            width: 254px;
+            width: 252px;
+        }
 
-            img {
-                width: 100%;
-                height: 252px;
+        &.first-member-badge {
+            &:before {
+                display: none;
             }
+        }
+
+        &:before {
+            content: '';
+            width: 1px;
+            height: 30px;
+            background-color: $middleColor;
+            position: absolute;
+            top: -40px;
+            left: 50%;
         }
     }
 </style>
