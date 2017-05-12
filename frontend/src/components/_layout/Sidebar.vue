@@ -299,6 +299,7 @@ export default {
           display: block;
           padding: 8px 10px;
           border-radius: 15px;
+          letter-spacing: 0.1em;
 
           &.router-link-active, &:hover {
             color: $lighterColor;
