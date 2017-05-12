@@ -4,7 +4,7 @@
             <div class="page-side left">
                 <div class="header">
                     <div class="flex">
-                        <h1>{{ message.project_contract }}</h1>
+                        <h1>{{ translateText('message.project_contract') }}</h1>
                         <a href="#" class="pdf">
                             <svg version="1.1" id="Layer_1" width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                 viewBox="0 0 23.1 23.5" style="enable-background:new 0 0 23.1 23.5;" xml:space="preserve">
@@ -31,17 +31,17 @@
                         </a>
                     </div>
                 </div>
-                <input-field v-model="description" type="textarea" v-bind:label="message.project_description" :content="contract.description"></input-field>
-                <input-field v-model="projectStartEvent" type="textarea" v-bind:label="message.project_start_event" :content="contract.projectStartEvent"></input-field>
+                <input-field v-model="description" type="textarea" v-bind:label="translateText('message.project_description')" :content="contract.description"></input-field>
+                <input-field v-model="projectStartEvent" type="textarea" v-bind:label="translateText('message.project_start_event')" :content="contract.projectStartEvent"></input-field>
 
                 <div class="flex flex-space-between dates">
                     <div class="input-holder left">
-                        <label class="active">{{ message.proposed_start_date }}</label>
+                        <label class="active">{{ translateText('label.proposed_start_date') }}</label>
                         <datepicker v-model="proposedStartDate" format="dd - MM - yyyy" :value="contract.proposedStartDate"></datepicker>
                         <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                     </div>
                     <div class="input-holder right">
-                        <label class="active">{{ message.proposed_end_date }}</label>
+                        <label class="active">{{ translateText('label.proposed_end_date') }}</label>
                         <datepicker v-model="proposedEndDate" format="dd - MM - yyyy" :value="contract.proposedEndDate"></datepicker>
                         <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                     </div>
@@ -49,12 +49,12 @@
 
                 <div class="flex flex-space-between dates right">
                     <div class="input-holder left">
-                        <label class="active">{{ message.forecast_start_date }}</label>
+                        <label class="active">{{ translateText('label.forecast_start_date') }}</label>
                         <datepicker v-model="forecastStartDate" format="dd - MM - yyyy" :value="contract.forecastStartDate"></datepicker>
                         <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                     </div>
                     <div class="input-holder right">
-                        <label class="active">{{ message.forecast_end_date }}</label>
+                        <label class="active">{{ translateText('label.forecast_end_date') }}</label>
                         <datepicker v-model="forecastEndDate" format="dd - MM - yyyy" :value="contract.forecastEndDate"></datepicker>
                         <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
                     </div>
@@ -62,7 +62,7 @@
 
                 <div class="header">
                     <div class="flex">
-                        <h1>{{ message.project_objectives }}</h1>
+                        <h1>{{ translateText('message.project_objectives') }}</h1>
                     </div>
                 </div>
 
@@ -70,50 +70,56 @@
                     <drag-box v-for="(item, index) in project.projectObjectives" v-bind:item="item" v-bind:index="index" type="objective"></drag-box>
                 </div>
                 <div class="hr small"></div>
-                <input-field v-model="objectiveTitle" type="text" v-bind:label="message.new_objective_title"></input-field>
-                <input-field v-model="objectiveDescription" type="textarea" v-bind:label="message.new_objective_description"></input-field>
+                <input-field v-model="objectiveTitle" type="text" v-bind:label="translateText('message.new_objective_title')"></input-field>
+                <input-field v-model="objectiveDescription" type="textarea" v-bind:label="translateText('message.new_objective_description')"></input-field>
                 <div class="flex flex-direction-reverse">
-                    <a v-on:click="createProjectObjective()" class="btn-rounded">{{ message.add_objective }} +</a>
+                    <a v-on:click="createProjectObjective()" class="btn-rounded">{{ translateText('message.add_objective') }} +</a>
                 </div>
                 <div class="header">
                     <div class="flex">
-                        <h1>{{ message.project_deliverables }}</h1>
+                        <h1>{{ translateText('message.project_deliverables') }}</h1>
                     </div>
                 </div>
                 <div v-dragula="colOne" drake="deliverables">
                     <drag-box v-for="(item, index) in project.projectDeliverables" v-bind:item="item" v-bind:index="index" type="deliverable"></drag-box>
                 </div>
                 <div class="hr small"></div>
-                <input-field v-model="deliverableDescription" type="text" v-bind:label="message.new_project_deliverable"></input-field>
+                <input-field v-model="deliverableDescription" type="text" v-bind:label="translateText('message.new_project_deliverable')"></input-field>
                 <div class="flex flex-direction-reverse">
-                    <a v-on:click="createProjectDeliverable()" class="btn-rounded">{{ message.add_deliverable }} +</a>
+                    <a v-on:click="createProjectDeliverable()" class="btn-rounded">{{ translateText('message.add_deliverable') }} +</a>
                 </div>
             </div>
 
             <div class="page-side right">
                 <div class="header">
-                    <h2>{{ message.sponsors_managers }}</h2>
-                    <a class="btn-rounded btn-md btn-empty">{{ message.edit_sponsors_managers }}</a>
+                    <h2 @click="toggleSponsorsManagers()">{{ translateText('message.sponsors_managers') }}
+                        <i class="fa fa-angle-down" v-if="showSponsorsManagers"></i>
+                        <i class="fa fa-angle-up" v-if="!showSponsorsManagers"></i>
+                    </h2>
+                    <router-link :to="{name: 'project-organization'}">
+                        <a class="btn-rounded btn-md btn-empty">{{ translateText('message.view_team') }}</a>
+                    </router-link>
                 </div>
-                <div class="flex flex-row flex-center members-big">
-                    <member-badge v-for="(item, index) in sponsorsManagers" v-bind:item="item" size="big"></member-badge>
+                <div class="flex flex-row flex-center members-big" v-if="showSponsorsManagers">
+                    <member-badge v-for="item in projectSponsors" v-bind:item="item" size="big"></member-badge>
+                    <member-badge v-for="item in projectManagers" v-bind:item="item" size="big"></member-badge>
                 </div>
                 <div class="header">
                     <div class="flex">
-                        <h1>{{ message.project_limitations }}</h1>
+                        <h1>{{ translateText('message.project_limitations') }}</h1>
                     </div>
                 </div>
                 <div v-dragula="colOne" drake="limitations">
                     <drag-box v-for="(item, index) in project.projectLimitations" v-bind:item="item" v-bind:index="index" type="limitation"></drag-box>
                 </div>
                 <div class="hr small"></div>
-                <input-field v-model="limitationDescription" type="text" v-bind:label="message.new_project_limitation"></input-field>
+                <input-field v-model="limitationDescription" type="text" v-bind:label="translateText('message.new_project_limitation')"></input-field>
                 <div class="flex flex-direction-reverse">
-                    <a v-on:click="createProjectLimitation()" class="btn-rounded">{{ message.add_limitation }} +</a>
+                    <a v-on:click="createProjectLimitation()" class="btn-rounded">{{ translateText('message.add_limitation') }} +</a>
                 </div>
                 <div class="header">
                     <div class="flex">
-                        <h2>{{ message.internal_resources }}</h2>
+                        <h2>{{ translateText('message.internal_resources') }}</h2>
                     </div>
                 </div>
                 <vue-chart
@@ -125,7 +131,7 @@
 
                 <div class="header">
                     <div class="flex">
-                        <h2>{{ message.external_resources }}</h2>
+                        <h2>{{ translateText('message.external_resources') }}</h2>
                     </div>
                 </div>
                 <vue-chart
@@ -136,9 +142,9 @@
                 ></vue-chart>
                 <div class="hr"></div>
                 <div class="flex buttons flex-center">
-                    <a v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ button.save }}</a>
+                    <a v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
                     <a class="btn-rounded second-bg flex flex-center download-pdf">
-                        <p>{{ button.download_pdf }}</p>
+                        <p>{{ translateText('button.download_pdf') }}</p>
                         <download-icon></download-icon>
                     </a>
                 </div>
@@ -180,7 +186,7 @@ export default {
         project(value) {
             this.rowsInternal = [
                 [
-                    Translator.trans('message.total'),
+                    this.translateText('message.total'),
                     parseInt(this.projectResourcesForGraph.internal.base || 0, 10),
                     parseInt(this.projectResourcesForGraph.internal.change || 0, 10),
                     parseInt(this.projectResourcesForGraph.internal.actual || 0, 10),
@@ -190,7 +196,7 @@ export default {
             ];
             this.rowsExternal = [
                 [
-                    Translator.trans('message.total'),
+                    this.translateText('message.total'),
                     parseInt(this.projectResourcesForGraph.external.base || 0, 10),
                     parseInt(this.projectResourcesForGraph.external.change || 0, 10),
                     parseInt(this.projectResourcesForGraph.external.actual || 0, 10),
@@ -217,7 +223,14 @@ export default {
             'createContract', 'createObjective', 'createLimitation', 'createDeliverable',
             'editObjective', 'editLimitation', 'editDeliverable', 'reorderObjectives',
             'reorderLimitations', 'reorderDeliverables', 'getProjectResourcesForGraph',
+            'getProjectUsers',
         ]),
+        translateText: function(text) {
+            return this.translate(text);
+        },
+        toggleSponsorsManagers: function() {
+            this.showSponsorsManagers = !this.showSponsorsManagers;
+        },
         updateProjectContract: function() {
             let data = {
                 projectId: this.$route.params.id,
@@ -287,6 +300,7 @@ export default {
         this.getProjectById(this.$route.params.id);
         this.getContractByProjectId(this.$route.params.id);
         this.getProjectResourcesForGraph(this.$route.params.id);
+        this.getProjectUsers({id: this.$route.params.id});
         const service = Vue.$dragula.$service;
         let vm = this;
         service.eventBus.$on('dropModel', function(args) {
@@ -309,46 +323,12 @@ export default {
     computed: mapGetters({
         project: 'project',
         contract: 'contract',
-        sponsorsManagers: 'sponsorsManagers',
         projectResourcesForGraph: 'projectResourcesForGraph',
+        projectSponsors: 'projectSponsors',
+        projectManagers: 'projectManagers',
     }),
     data: function() {
         return {
-            message: {
-                project_contract: Translator.trans('message.project_contract'),
-                project_description: Translator.trans('message.project_description'),
-                project_start_event: Translator.trans('message.project_start_event'),
-                proposed_start_date: Translator.trans('label.proposed_start_date'),
-                proposed_end_date: Translator.trans('label.proposed_end_date'),
-                forecast_start_date: Translator.trans('label.forecast_start_date'),
-                forecast_end_date: Translator.trans('label.forecast_end_date'),
-                project_objectives: Translator.trans('message.project_objectives'),
-                new_objective_title: Translator.trans('message.new_objective_title'),
-                new_objective_description: Translator.trans('message.new_objective_description'),
-                add_objective: Translator.trans('message.add_objective'),
-                project_limitations: Translator.trans('message.project_limitations'),
-                new_project_limitation: Translator.trans('message.new_project_limitation'),
-                add_limitation: Translator.trans('message.add_limitation'),
-                project_deliverables: Translator.trans('message.project_deliverables'),
-                new_project_deliverable: Translator.trans('message.new_project_deliverable'),
-                add_deliverable: Translator.trans('message.add_deliverable'),
-                sponsors_managers: Translator.trans('message.sponsors_managers'),
-                edit_sponsors_managers: Translator.trans('message.edit_sponsors_managers'),
-                internal_resources: Translator.trans('message.internal_resources'),
-                external_resources: Translator.trans('message.external_resources'),
-                total: Translator.trans('message.total'),
-            },
-            label: {
-                base: Translator.trans('label.base'),
-                change: Translator.trans('label.change'),
-                actual: Translator.trans('label.actual'),
-                remaining: Translator.trans('label.remaining'),
-                frorecast: Translator.trans('label.forecast'),
-            },
-            button: {
-                save: Translator.trans('button.save'),
-                donwload_pdf: Translator.trans('button.download_pdf'),
-            },
             columns: [{
                 'type': 'string',
                 'label': Translator.trans('message.total'),
@@ -411,6 +391,7 @@ export default {
             proposedEndDate: new Date(),
             forecastStartDate: new Date(),
             forecastEndDate: new Date(),
+            showSponsorsManagers: false,
         };
     },
 };
