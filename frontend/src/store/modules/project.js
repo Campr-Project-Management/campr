@@ -26,7 +26,6 @@ const getters = {
     },
     projectsForFilter: state => state.itemsForFilter,
     labelsForChoice: state => state.labelsForChoice,
-    sponsorsManagers: state => state.sponsorsManagers,
     projectResourcesForGraph: (state) => _.merge(
         {
             internal: {},
@@ -39,19 +38,19 @@ const getters = {
 
 const actions = {
     /**
-    * Calls edit project API to set 'favourite' property
-    * and commits TOGGLE_FAVOURITE mutation
+    * Calls edit project API to set 'favorite' property
+    * and commits TOGGLE_FAVORITE mutation
     * @param {function} commit
-    * @param {Object} project
+    * @param {array} data
     */
-    toggleFavourite({commit}, project) {
+    toggleFavorite({commit}, data) {
         Vue.http
-        .patch(Routing.generate('app_api_project_edit', {'id': project.id}), {favourite: !project.favourite})
+        .patch(Routing.generate('app_api_project_edit', {id: data.project.id}), {favorite: data.favorite})
         .then(() => {
-            commit(types.TOGGLE_FAVOURITE, project);
+            commit(types.TOGGLE_FAVORITE, data.project);
         }, (response) => {
             // TODO: REMOVE MOCK ACTION
-            commit(types.TOGGLE_FAVOURITE, project);
+            commit(types.TOGGLE_FAVORITE, data.project);
         });
     },
 
@@ -83,7 +82,6 @@ const actions = {
                 if (response.status === 200) {
                     let project = response.data;
                     commit(types.SET_PROJECT, {project});
-                    commit(types.SET_MEMBERS, {project});
                 }
             }, (response) => {
             });
@@ -428,9 +426,9 @@ const mutations = {
      * @param {Object} state
      * @param {Object} project
      */
-    [types.TOGGLE_FAVOURITE](state, project) {
-        let stateProject = _.find(state.items, {id: project.id});
-        stateProject.favourite = !project.favourite;
+    [types.TOGGLE_FAVORITE](state, project) {
+        let stateProject = _.find(state.items.items, {id: project.id});
+        stateProject.favorite = !project.favorite;
     },
 
     /**
@@ -485,21 +483,6 @@ const mutations = {
      */
     [types.ADD_PROJECT_DELIVERABLE](state, {deliverable}) {
         state.currentItem.projectDeliverables.push(deliverable);
-    },
-
-    /**
-     * set project member
-     * @param {Object} state
-     * @param {Object} project
-     */
-    [types.SET_MEMBERS](state, {project}) {
-        let sponsorsManagers = [];
-        project.projectUsers.map( function(projectUser) {
-            if (projectUser.projectRoleName !== 'ROLE_TEAM_MEMBER') {
-                sponsorsManagers.push(projectUser);
-            }
-        });
-        state.sponsorsManagers = sponsorsManagers;
     },
 
     /**
