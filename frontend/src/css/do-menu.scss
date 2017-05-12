@@ -1,0 +1,354 @@
+@import '_variables.scss';
+@import '_mixins.scss';
+
+.dd {
+  position: relative;
+  display: inline-block;
+  margin: -20px 0 0;
+  padding: 0;
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+  list-style: none;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.dd-edit-box {
+  height: 40px;
+  position: relative;
+
+  input,
+  textarea {
+    height: 40px;
+    border: none;
+    background: transparent;
+    text-overflow: ellipsis;
+    outline: none;
+    font-size: 12px;
+    width: 100%;
+    color: $lighterColor;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+
+    &:hover,
+    &:focus {
+      background-color: transparent;
+    }
+
+    &::selection {
+      color: $lighterColor;
+      background-color: $middleColor;
+    }
+  }
+
+  i {
+    background: $secondColor;
+    color: darken($secondColor, 25%);
+    font-size:10px;
+    font-weight: 700;
+    line-height: 10px;
+    padding: 6px 8px 5px 10px;
+    right: -55px;
+    top: 10px;
+    cursor: pointer;
+    position: absolute;
+    @include border-radius(4px);
+    @include transition(all, 0.2s, ease);
+
+    &:hover {
+      background: darken($secondColor, 10%);
+      color: darken($secondColor, 35%);
+    }
+  }
+}
+
+.dd-button-container {
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  padding: 0;
+  top: 0px;
+  right: 0px;
+  text-align: center;
+
+  .item-remove {
+    height: 40px;
+    width: 40px;
+    background-color: transparent;
+    background-image: none;
+    border: none;
+    text-shadow: none;
+    @include box-shadow(0, 0, 0, rgba(0,0,0,0), false);
+    @include transition(all, 0.2s, ease);
+    @include border-radius(0);
+
+    svg {
+      fill: $dangerColor;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 16px;
+      height: 16px;
+      margin-top: -8px;
+      margin-left: -8px;                         
+    }
+
+    &:hover {
+      background-color: rgba($lightColor, 0.25);
+    }
+  }
+}
+
+.dd-item-blueprint {
+  display: none;
+}
+
+.dd > .dd-list {
+  min-height: 60px;
+}
+
+.dd-list {
+  display:    block;
+  position:   relative;
+  margin:     0;
+  padding:    0;
+  list-style: none;
+}
+
+.dd-list .dd-list {
+  left: 30px;
+  margin-right: 30px;
+}
+
+.dd-collapsed .dd-list {
+  display: none;
+}
+
+.dd-item,
+.dd-empty,
+.dd-placeholder {
+  display: block;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  min-height: 40px;
+  font-size: 12px;
+  line-height: 43px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $lightColor;
+}
+
+.dd-handle {
+  cursor: move;
+  display: block;
+  text-decoration: none;
+  width: 40px;
+  height: 40px;
+  @include transition(all, 0.2s, ease);
+
+  svg {
+      fill: $middleColor;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 16px;
+      height: 16px;
+      margin-top: -8px;
+      margin-left: -8px;                    
+  }
+
+  &:before {
+      display: none;
+  }
+
+  &:hover {
+      background: rgba($lightColor, 0.25);
+  }
+}
+
+.dd-item > button {
+  display:     inline-block;
+  position:    relative;
+  cursor:      pointer;
+  float:       left;
+  width:       24px;
+  height:      20px;
+  margin:      5px 5px 5px 30px;
+  padding:     0;
+  white-space: nowrap;
+  overflow:    hidden;
+  border:      0;
+  background:  transparent;
+  font-size:   12px;
+  line-height: 1;
+  text-align:  center;
+  font-weight: bold;
+  color:       black;
+}
+
+.dd.domenu .dd-new-item {
+  background: transparent;
+  border: 1px dotted $middleColor;
+  width: 100%;
+  height: 40px;
+  font-size: 12px;
+  color: $lightColor;
+  outline: none;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.dd-item .item-remove,
+.dd-item .item-remove-confirm,
+.dd-item .item-add {
+  outline: none;
+}
+
+.dd-item {
+  .dd-button-container {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    top: 0px;
+    right: 0px;
+    overflow: visible;
+    display:  none;
+
+    .item-remove {
+      cursor: pointer;
+      height: 40px;
+      width: 40px;
+      background-color: transparent;
+      border: none;
+      box-shadow: none;
+      @include transition(all, 0.2s, ease);
+
+      svg {
+        fill: $dangerColor;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 16px;
+        height: 16px;
+        margin-top: -8px;
+        margin-left: -8px;                         
+      }
+
+      &:hover {
+        background-color: rgba($lightColor, 0.25);
+      }
+
+      &.item-remove-confirm {
+        background-color: rgba($secondColor, 0.25);
+
+        svg {
+          fill: $secondColor;
+        }
+      }
+    }
+  }
+}
+
+.dd-placeholder,
+.dd-empty {
+  margin: 20px 0 0;
+  padding: 0;
+  min-height: 40px;
+  background: rgba($darkColor, 0.25);
+  border: 1px dashed $middleColor;
+}
+
+.dd-empty {
+  border:              1px dashed #bbb;
+  min-height:          100px;
+  background-color:    #e5e5e5;
+  background-image:    -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
+                       -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+  background-image:    -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
+                       -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+  background-image:    linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
+                       linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+  background-size:     60px 60px;
+  background-position: 0 0, 30px 30px;
+}
+
+.dd-dragel {
+  height: 40px;
+  position: absolute;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.dd3-content {
+  display: block;
+  height: 40px;
+  margin: 20px 0 0;
+  padding: 0 60px 0 50px;
+  text-decoration: none;
+  background: $darkColor;
+  color: $lightColor;        
+  font-weight: 300;
+  border: none;
+  @include transition(all, 0.2s, ease);
+
+  .item-name {
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  &:hover,
+  &:active,
+  &:focus {
+    background: darken($darkColor, 2%);
+    outline: 0;
+  }
+}
+
+.dd3-handle {
+  position: absolute;
+  margin: 0;
+  left: 0;
+  top: 0;
+  cursor: move;
+  width: 40px;
+  height: 40px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-indent: 100%;
+  background: transparent;
+  border: none;
+  @include border-radius(0);
+  padding: 0;
+  @include transition(all, 0.2s, ease);
+
+  svg {
+    fill: $middleColor;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    margin-top: -8px;
+    margin-left: -8px;                    
+  }
+
+  &:hover {
+    background: rgba($lightColor, 0.25);
+  }
+}
+
+.dd-dragel > .dd3-item > .dd3-content {
+  margin: 0;
+}
+
+.dd-dragel > .dd-item .dd-handle {
+  margin-top: 0;
+}
+
+.dd3-content:hover .dd-button-container {
+  display: block;
+}
