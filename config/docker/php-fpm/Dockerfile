@@ -66,5 +66,3 @@ RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-RUN setfacl -R -m u:www-data:rwx -m g:www-data:rwx /app \
-    && setfacl -dR -m u:www-data:rwx -m g:www-data:rwx /app
