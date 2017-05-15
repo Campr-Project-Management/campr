@@ -2,7 +2,9 @@
 
 namespace AppBundle\Form\SubteamRole;
 
+use AppBundle\Entity\SubteamMember;
 use AppBundle\Entity\SubteamRole;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -19,6 +21,14 @@ class CreateType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
+            ])
+            ->add('subteamMembers', EntityType::class, [
+                'class' => SubteamMember::class,
+                'required' => true,
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'selectpicker',
+                ],
             ])
         ;
     }
