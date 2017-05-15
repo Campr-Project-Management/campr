@@ -9,12 +9,14 @@ const ROLE_MANAGER = 'roles.project_manager';
 const state = {
     items: [],
     sponsors: [],
+    managers: [],
 };
 
 const getters = {
     projectUsers: state => state.items,
     projectSponsors: state => state.sponsors,
-    projectUsersForSelect: state => state.items.map(item => {
+    projectManagers: state => state.managers,
+    projectUsersForSelect: state => state.items.items.map(item => {
         return {
             'key': item.user,
             'label': item.userFullName,
