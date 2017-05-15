@@ -210,6 +210,7 @@ import MilestoneFilters from '../_common/_phases-and-milestones-components/Miles
 import EditIcon from '../_common/_icons/EditIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
 import ViewIcon from '../_common/_icons/ViewIcon';
+import Vue from 'vue';
 
 export default {
     components: {
@@ -302,6 +303,7 @@ export default {
                         start: new Date(item.scheduledStartAt),
                         end: new Date(item.scheduledFinishAt),
                         value: item.workPackageStatus,
+                        title: renderTooltip(item),
                     };
                 }));
             }
@@ -314,6 +316,7 @@ export default {
                         content: item.name,
                         start: new Date(item.scheduledFinishAt),
                         value: item.workPackageStatus,
+                        title: renderTooltip(item),
                     };
                 }));
             }
@@ -327,6 +330,62 @@ export default {
         };
     },
 };
+
+/**
+ * Render tooltip based of arguments
+ * @param {Object} item
+ * @return {string}
+ */
+function renderTooltip(item) {
+    return `<div>
+        <div class="task-box box">
+            <div class="box-header">
+                <div class="user-info flex flex-v-center">
+                    <img class="user-avatar" src="` + item.responsibilityAvatar + `" alt="Phase responsable:` + item.responsibilityFullName + `"/>
+                    <p>` + item.responsibilityFullName + `</p>
+                </div>
+                <h2><router-link to="" class="simple-link">` + item.name + `</router-link></h2>
+                <p class="task-id">`+ item.id +`</p>
+            </div>
+            <div class="content">
+                <table class="table table-small">
+                    <thead>
+                        <tr>
+                            <th>Schedule</th>
+                            <th>Start</th>
+                            <th>Finish</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Base</td>
+                            <td>` + (item.scheduledStartAt ? item.scheduledStartAt : '-') + `</td>
+                            <td>` + (item.scheduledFinishAt ? item.scheduledFinishAt : '-') + `</td>
+                            <td>2</td>
+                        </tr>
+                        <tr class="column-warning">
+                            <td>Forecast</td>
+                            <td>` + (item.forecastStartAt? item.forecastStartAt : '-') + `</td>
+                            <td>` + (item.forecastFinishedAt? item.forecastFinishedAt: '-') + `</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>Actual</td>
+                            <td>` + (item.actualStartAt? item.actualStartAt : '-') + `</td>
+                            <td>` + (item.actualFinishAt? item.actualFinishAt : '-') + `</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="status">
+                <p><span>Status:</span> ` + Vue.translate(item.workPackageStatusName) +`</p>
+                <bar-chart position="right" :percentage="85" :color="Green" v-bind:title-right="green"></bar-chart>
+            </div>
+        </div>
+    </div>`;
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
