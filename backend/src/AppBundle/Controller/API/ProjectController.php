@@ -564,7 +564,9 @@ class ProjectController extends ApiController
     {
         $filters = $request->query->all();
         if (empty($filters)) {
-            return $this->createApiResponse($project->getProjectUsers());
+            return $this->createApiResponse(
+                ['items' => $project->getProjectUsers()]
+            );
         }
 
         $filters['project'] = $project;
