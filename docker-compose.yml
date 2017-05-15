@@ -26,7 +26,8 @@ services:
         environment:
             - MYSQL_ROOT_PASSWORD=root
     php-fpm:
-        build: config/docker/php-fpm
+        # build: config/docker/php-fpm
+        image: lab.trisoft.ro:4567/campr/campr/php-fpm-7.0
         environment:
             - SYMFONY_DEBUG=true
             - SYMFONY_ENV=dev
@@ -39,7 +40,8 @@ services:
         ports:
             - 2080:8080
     dev.campr.biz:
-        build: config/docker/nginx
+        # build: config/docker/nginx
+        image: lab.trisoft.ro:4567/campr/campr/nginx-dev
         depends_on:
             - php-fpm
         volumes_from:
