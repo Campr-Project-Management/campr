@@ -222,18 +222,25 @@ export default {
         ViewIcon,
     },
     created() {
-        this.getProjectPhases({projectId: this.$route.params.id,
+        this.getProjectPhases({
+            projectId: this.$route.params.id,
             apiParams: {
                 page: 1,
             },
         });
-        this.getProjectMilestones(this.$route.params.id, {page: 1});
+        this.getProjectMilestones(
+            this.$route.params.id,
+            {
+                page: 1,
+            },
+        );
     },
     methods: {
         ...mapActions(['getProjectPhases', 'getProjectMilestones', 'setPhasesFiters', 'setMilestonesFiters']),
         changePhasePage: function(page) {
             this.phasesActivePage = page;
-            this.getProjectPhases({projectId: this.$route.params.id,
+            this.getProjectPhases({
+                projectId: this.$route.params.id,
                 apiParams: {
                     page: page,
                 },
@@ -241,7 +248,8 @@ export default {
         },
         changeMilestonesPage: function(page) {
             this.milestoneActivePage = page;
-            this.getProjectMilestones(this.$route.params.id,
+            this.getProjectMilestones(
+                this.$route.params.id,
                 {
                     page: page,
                 },
