@@ -36,15 +36,18 @@ const actions = {
             paramObject.params.pageSize = 4;
         }
 
-        if (state.filters && state.filters.startDate)
+        if (state.filters && state.filters.startDate) {
             paramObject.params.startDate = state.filters.startDate;
-        if (state.filters && state.filters.endDate)
+        }
+        if (state.filters && state.filters.endDate) {
             paramObject.params.endDate = state.filters.endDate;
-        if (state.filters && state.filters.status)
+        }
+        if (state.filters && state.filters.status) {
             paramObject.params.status = state.filters.status;
-        if (state.filters && state.filters.responsible)
+        }
+        if (state.filters && state.filters.responsible) {
             paramObject.params.esponsible = state.filters.responsible;
-
+        }
         Vue.http
             .get(Routing.generate('app_api_project_phases', {'id': projectId}),
                 paramObject,
