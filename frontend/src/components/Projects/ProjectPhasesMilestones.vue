@@ -7,7 +7,7 @@
         <!-- /// End P&M Header /// --> 
 
         <!-- /// P&M Timeline /// -->
-        <vis-timeline></vis-timeline>
+        <vis-timeline :pmData="pmData"></vis-timeline>
         <!-- /// End P&M Timeline /// -->    
 
         <!-- /// Phases Header /// -->
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="full-filters flex flex-direction-reverse">
-            <phase-filters></phase-filters>
+            <phase-filters :selectEndDate="setPhaseFilterEndDate" :selectStartDate="setPhaseFilterStartDate" :selectResponsible="setPhaseFilterResponsible" :selectStatus="setPhasesFilterStatus"></phase-filters>
         </div>
         <!-- /// End Phases Header /// -->
 
@@ -74,293 +74,41 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td class="small-cell">7</td>
-                                <td>Phase 7</td>
+                        <tbody v-if="projectPhases.items && projectPhases.items.length > 0">
+                            <tr v-for='phase in projectPhases.items'>
+                                <td class="small-cell">{{phase.id}}</td>
+                                <td>{{phase.name}}</td>
                                 <td class="no-padding">
                                     <table class="table inner-table">
-                                        <tr>
-                                            <td class="text-center">11.11.2017</td>
-                                            <td class="text-center">20.12.2017</td>
-                                            <td class="text-center">39</td>
+                                        <tr v-if="phase.baseSchedule">
+                                            <td class="text-center">{{phase.baseSchedule.start}}</td>
+                                            <td class="text-center">{{phase.baseSchedule.finish}}</td>
+                                            <td class="text-center">{{phase.baseSchedule.duration}}</td>
                                         </tr>
                                     </table>
                                 </td>
                                 <td class="no-padding">
                                     <table class="table inner-table">
-                                        <tr>
-                                            <td class="text-center">11.11.2017</td>
-                                            <td class="text-center">20.12.2017</td>
-                                            <td class="text-center">39</td>
+                                        <tr v-if="phase.forecastSchedule">
+                                            <td class="text-center">{{phase.forecastSchedule.start}}</td>
+                                            <td class="text-center">{{phase.forecastSchedule.finish}}</td>
+                                            <td class="text-center">{{phase.forecastSchedule.duration}}</td>
                                         </tr>
                                     </table>
                                 </td>
                                 <td class="no-padding">
                                     <table class="table inner-table">
-                                        <tr>
-                                            <td class="text-center">-</td>
-                                            <td class="text-center">-</td>
-                                            <td class="text-center">-</td>
+                                        <tr v-if="phase.actualSchedule">
+                                            <td class="text-center">{{phase.actualSchedule.start}}</td>
+                                            <td class="text-center">{{phase.actualSchedule.finish}}</td>
+                                            <td class="text-center">{{phase.actualSchedule.duration}}</td>
                                         </tr>
                                     </table> 
                                 </td> 
-                                <td>Pending</td>
+                                <td>{{phase.status}}</td>
                                 <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: Sandy Fanning-Choi'"> 
-                                        <img src="http://dev.campr.biz/uploads/avatars/60.jpg"/>
-                                    </div>                                    
-                                </td>
-                                <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
-                                    <a gref="#" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="small-cell">6</td>
-                                <td>Phase 6</td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr>
-                                            <td class="text-center">19.09.2017</td>
-                                            <td class="text-center">10.11.2017</td>
-                                            <td class="text-center">22</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr>
-                                            <td class="text-center">19.09.2017</td>
-                                            <td class="text-center">10.11.2017</td>
-                                            <td class="text-center">22</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr>
-                                            <td class="text-center">-</td>
-                                            <td class="text-center">-</td>
-                                            <td class="text-center">-</td>
-                                        </tr>
-                                    </table> 
-                                </td> 
-                                <td>Pending</td>
-                                <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: Maria Anthony'"> 
-                                        <img src="http://dev.campr.biz/uploads/avatars/10.jpg"/>
-                                    </div>                                    
-                                </td>
-                                <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
-                                    <a gref="#" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="small-cell">5</td>
-                                <td>Phase 5</td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr>
-                                            <td class="text-center">19.08.2017</td>
-                                            <td class="text-center">18.09.2017</td>
-                                            <td class="text-center">30</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr>
-                                            <td class="text-center">19.08.2017</td>
-                                            <td class="text-center">18.09.2017</td>
-                                            <td class="text-center">30</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr>
-                                            <td class="text-center">-</td>
-                                            <td class="text-center">-</td>
-                                            <td class="text-center">-</td>
-                                        </tr>
-                                    </table> 
-                                </td> 
-                                <td>Pending</td>
-                                <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: Adrianna Chekz'"> 
-                                        <img src="http://dev.campr.biz/uploads/avatars/64.jpg"/>
-                                    </div>                                    
-                                </td>
-                                <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
-                                    <a gref="#" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="small-cell">4</td>
-                                <td>Phase 4</td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr>
-                                            <td class="text-center">17.06.2017</td>
-                                            <td class="text-center">18.08.2017</td>
-                                            <td class="text-center">62</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr>
-                                            <td class="text-center">17.06.2017</td>
-                                            <td class="text-center">18.08.2017</td>
-                                            <td class="text-center">62</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr class="column-alert">
-                                            <td class="text-center">17.06.2017</td>
-                                            <td class="text-center">-</td>
-                                            <td class="text-center">-</td>
-                                        </tr>
-                                    </table> 
-                                </td> 
-                                <td>Ongoing</td>
-                                <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: Bill Connors'"> 
-                                        <img src="http://dev.campr.biz/uploads/avatars/41.jpg"/>
-                                    </div>                                    
-                                </td>
-                                <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
-                                    <a gref="#" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="small-cell">3</td>
-                                <td>Phase 3</td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr>
-                                            <td class="text-center">16.03.2017</td>
-                                            <td class="text-center">15.06.2017</td>
-                                            <td class="text-center">92</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr class="column-warning">
-                                            <td class="text-center">20.03.2017</td>
-                                            <td class="text-center">15.06.2017</td>
-                                            <td class="text-center">82</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr class="column-warning">
-                                            <td class="text-center">20.03.2017</td>
-                                            <td class="text-center">15.06.2017</td>
-                                            <td class="text-center">82</td>
-                                        </tr>
-                                    </table> 
-                                </td> 
-                                <td class="warning-color">On Hold</td>
-                                <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: Neil Wattson'"> 
-                                        <img src="http://dev.campr.biz/uploads/avatars/40.jpg"/>
-                                    </div>                                    
-                                </td>
-                                <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
-                                    <a gref="#" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="small-cell">2</td>
-                                <td>Phase 2</td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr>
-                                            <td class="text-center">01.03.2017</td>
-                                            <td class="text-center">15.03.2017</td>
-                                            <td class="text-center">14</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr>
-                                            <td class="text-center">01.03.2017</td>
-                                            <td class="text-center">15.03.2017</td>
-                                            <td class="text-center">14</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr>
-                                            <td class="text-center">01.03.2017</td>
-                                            <td class="text-center">15.03.2017</td>
-                                            <td class="text-center">14</td>
-                                        </tr>
-                                    </table> 
-                                </td> 
-                                <td class="second-color">Finished</td>
-                                <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: Jean Down'"> 
-                                        <img src="http://dev.campr.biz/uploads/avatars/44.jpg"/>
-                                    </div>                                    
-                                </td>
-                                <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
-                                    <a gref="#" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="small-cell">1</td>
-                                <td>Phase 1</td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr>
-                                            <td class="text-center">01.01.2017</td>
-                                            <td class="text-center">28.02.2017</td>
-                                            <td class="text-center">58</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr>
-                                            <td class="text-center">01.01.2017</td>
-                                            <td class="text-center">28.02.2017</td>
-                                            <td class="text-center">58</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="no-padding">
-                                    <table class="table inner-table">
-                                        <tr class="column-alert">
-                                            <td class="text-center">01.01.2017</td>
-                                            <td class="text-center">03.03.2017</td>
-                                            <td class="text-center">61</td>
-                                        </tr>
-                                    </table> 
-                                </td> 
-                                <td class="second-color">Finished</td>
-                                <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: Mobutu Seseseco'"> 
-                                        <img src="http://dev.campr.biz/uploads/avatars/49.jpg"/>
+                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: ' + phase.responsibilityFullName"> 
+                                        <img :src="phase.responsibilityAvatar"/>
                                     </div>                                    
                                 </td>
                                 <td>
@@ -374,12 +122,12 @@
                 </div>
             </vue-scrollbar>
 
-            <div class="flex flex-direction-reverse flex-v-center">
-                <div class="pagination">
-                    <span class="active">1</span>
+            <div v-if="projectPhases && projectPhases.items" class="flex flex-direction-reverse flex-v-center">
+                <div class="pagination flex flex-center" v-if="projectPhases && projectPhases.totalItems > 0">
+                    <span v-for="page in phasesPages" v-bind:class="{'active': page == phasesActivePage}" @click="changePhasePage(page)">{{ page }}</span>
                 </div>
                 <div>
-                    <span class="pagination-info">Displaying 7 results out of 7</span>
+                    <span class="pagination-info">Displaying {{projectPhases.items.length}} results out of {{projectPhases.totalItems}}</span>
                 </div>
             </div>
         </div>
@@ -395,7 +143,7 @@
             </div>
         </div>
         <div class="full-filters flex flex-direction-reverse">
-            <milestone-filters></milestone-filters>
+            <milestone-filters :selectDueDate="setMilestonesFilterDueDue" :selectPhase="setMilestonesFilterPhase" :selectResponsible="setMilestonesFilterResponsible" :selectStatus="setMilestonesFilterStatus"></milestone-filters>
         </div>
         <!-- /// End Milestones Header /// -->
 
@@ -416,179 +164,17 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td class="small-cell">35</td>
-                                <td>QM Strategy Defined</td>
-                                <td>15.06.2017</td>
-                                <td>15.06.2017</td>
-                                <td>-</td>
-                                <td>OK</td>
+                        <tbody v-if="projectMilestones.items && projectMilestones.items.length">
+                            <tr v-for="milestone in projectMilestones.items">
+                                <td class="small-cell">{{milestone.id}}</td>
+                                <td>{{milestone.name}}</td>
+                                <td>{{milestone.baseDueDate}}</td>
+                                <td>{{milestone.forecastDueDate}}</td>
+                                <td>{{milestone.actualDueDate}}</td>
+                                <td>{{milestone.status}}</td>
                                 <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: Sandy Fanning-Choi'"> 
-                                        <img src="http://dev.campr.biz/uploads/avatars/60.jpg"/>
-                                    </div>                                    
-                                </td>
-                                <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
-                                    <a gref="#" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="small-cell">34</td>
-                                <td>Customer Communication Strategy</td>
-                                <td>01.05.2017</td>
-                                <td>01.05.2017</td>
-                                <td>-</td>
-                                <td>OK</td>
-                                <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: Sandy Fanning-Choi'"> 
-                                        <img src="http://dev.campr.biz/uploads/avatars/60.jpg"/>
-                                    </div>                                    
-                                </td>
-                                <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
-                                    <a gref="#" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="small-cell">33</td>
-                                <td>HR Requirements Defined</td>
-                                <td>22.05.2017</td>
-                                <td>22.05.2017</td>
-                                <td>-</td>
-                                <td class="warning-color">On Hold</td>
-                                <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: Sandy Fanning-Choi'"> 
-                                        <img src="http://dev.campr.biz/uploads/avatars/60.jpg"/>
-                                    </div>                                    
-                                </td>
-                                <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
-                                    <a gref="#" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="small-cell">32</td>
-                                <td>Ressource Plan Finalized</td>
-                                <td>18.04.2017</td>
-                                <td>18.04.2017</td>
-                                <td class="danger-color">03.05.2017</td>
-                                <td class="danger-color">Overdue</td>
-                                <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: Sandy Fanning-Choi'"> 
-                                        <img src="http://dev.campr.biz/uploads/avatars/60.jpg"/>
-                                    </div>                                    
-                                </td>
-                                <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
-                                    <a gref="#" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="small-cell">31</td>
-                                <td>Relocation Strategy Defined</td>
-                                <td>10.03.2017</td>
-                                <td>10.03.2017</td>
-                                <td>10.03.2017</td>
-                                <td class="second-color">Reached</td>
-                                <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: Sandy Fanning-Choi'"> 
-                                        <img src="http://dev.campr.biz/uploads/avatars/60.jpg"/>
-                                    </div>                                    
-                                </td>
-                                <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
-                                    <a gref="#" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="small-cell">30</td>
-                                <td>Relocation Strategy Defined</td>
-                                <td>10.03.2017</td>
-                                <td>10.03.2017</td>
-                                <td>10.03.2017</td>
-                                <td class="second-color">Reached</td>
-                                <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: Sandy Fanning-Choi'"> 
-                                        <img src="http://dev.campr.biz/uploads/avatars/60.jpg"/>
-                                    </div>                                    
-                                </td>
-                                <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
-                                    <a gref="#" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="small-cell">29</td>
-                                <td>Relocation Strategy Defined</td>
-                                <td>10.03.2017</td>
-                                <td>10.03.2017</td>
-                                <td>10.03.2017</td>
-                                <td class="second-color">Reached</td>
-                                <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: Sandy Fanning-Choi'"> 
-                                        <img src="http://dev.campr.biz/uploads/avatars/60.jpg"/>
-                                    </div>                                    
-                                </td>
-                                <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
-                                    <a gref="#" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="small-cell">28</td>
-                                <td>Relocation Strategy Defined</td>
-                                <td>10.03.2017</td>
-                                <td>10.03.2017</td>
-                                <td>10.03.2017</td>
-                                <td class="second-color">Reached</td>
-                                <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: Sandy Fanning-Choi'"> 
-                                        <img src="http://dev.campr.biz/uploads/avatars/60.jpg"/>
-                                    </div>                                    
-                                </td>
-                                <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
-                                    <a gref="#" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="small-cell">27</td>
-                                <td>Relocation Strategy Defined</td>
-                                <td>10.03.2017</td>
-                                <td>10.03.2017</td>
-                                <td>10.03.2017</td>
-                                <td class="second-color">Reached</td>
-                                <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: Sandy Fanning-Choi'"> 
-                                        <img src="http://dev.campr.biz/uploads/avatars/60.jpg"/>
-                                    </div>                                    
-                                </td>
-                                <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
-                                    <a gref="#" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="small-cell">26</td>
-                                <td>Relocation Strategy Brainstorming</td>
-                                <td>02.03.2017</td>
-                                <td>02.03.2017</td>
-                                <td>02.03.2017</td>
-                                <td class="second-color">Reached</td>
-                                <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: Sandy Fanning-Choi'"> 
-                                        <img src="http://dev.campr.biz/uploads/avatars/60.jpg"/>
+                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: ' + milestone.responsibilityFullName"> 
+                                        <img :src="milestone.responsibilityAvatar">
                                     </div>                                    
                                 </td>
                                 <td>
@@ -602,14 +188,12 @@
                 </div>
             </vue-scrollbar>
 
-            <div class="flex flex-direction-reverse flex-v-center">
-                <div class="pagination">
-                    <span class="">1</span>
-                    <span class="active">2</span>
-                    <span class="">1</span>
+            <div v-if="projectMilestones && projectMilestones.items"  class="flex flex-direction-reverse flex-v-center">
+                <div class="pagination flex flex-center" v-if="projectMilestones && projectMilestones.totalItems > 0">
+                    <span v-for="page in milestonesPages" v-bind:class="{'active': page == milestoneActivePage}" @click="changeMilestonePage(page)">{{ page }}</span>
                 </div>
                 <div>
-                    <span class="pagination-info">Displaying 10 results out of 21</span>
+                    <span class="pagination-info">Displaying {{projectMilestones.items.length}} results out of {{projectMilestones.totalItems}}</span>
                 </div>
             </div>
         </div>
@@ -618,6 +202,7 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex';
 import VueScrollbar from 'vue2-scrollbar';
 import VisTimeline from '../_common/_phases-and-milestones-components/VisTimeline';
 import PhaseFilters from '../_common/_phases-and-milestones-components/PhaseFilters';
@@ -635,6 +220,111 @@ export default {
         EditIcon,
         DeleteIcon,
         ViewIcon,
+    },
+    created() {
+        this.getProjectPhases({
+            projectId: this.$route.params.id,
+            apiParams: {
+                page: 1,
+            },
+        });
+        this.getProjectMilestones(
+            this.$route.params.id,
+            {
+                page: 1,
+            },
+        );
+    },
+    methods: {
+        ...mapActions(['getProjectPhases', 'getProjectMilestones', 'setPhasesFiters', 'setMilestonesFiters']),
+        changePhasePage: function(page) {
+            this.phasesActivePage = page;
+            this.getProjectPhases({
+                projectId: this.$route.params.id,
+                apiParams: {
+                    page: page,
+                },
+            });
+        },
+        changeMilestonesPage: function(page) {
+            this.milestoneActivePage = page;
+            this.getProjectMilestones(
+                this.$route.params.id,
+                {
+                    page: page,
+                },
+            );
+        },
+        setPhasesFilterStatus: function(value) {
+            this.setPhasesFiters({status: value});
+        },
+        setPhaseFilterResponsible: function(value) {
+            this.setPhasesFiters({responsible: value});
+        },
+        setMilestonesFilterStatus: function(value) {
+            this.setMilestonesFiters({status: value});
+        },
+        setMilestonesFilterResponsible: function(value) {
+            this.setMilestonesFiters({responsible: value});
+        },
+        setMilestonesFilterPhase: function(value) {
+            this.setMilestonesFiters({phase: value});
+        },
+        setMilestonesFilterDueDue: function(value) {
+            this.setMilestonesFiters({dueDate: value});
+        },
+        setPhaseFilterStartDate: function(value) {
+            this.setPhasesFiters({startDate: value});
+        },
+        setPhaseFilterEndDate: function(value) {
+            this.setPhasesFiters({endDate: value});
+        },
+    },
+    computed: {
+        ...mapGetters({
+            projectPhases: 'projectPhases',
+            projectMilestones: 'projectMilestones',
+        }),
+        phasesPages: function() {
+            return Math.ceil(this.projectPhases.totalItems / 4);
+        },
+        milestonesPages: function() {
+            return Math.ceil(this.projectMilestones.totalItems / 4);
+        },
+        pmData: function() {
+            let items = [];
+            if (this.projectPhases && this.projectPhases.items) {
+                items = items.concat(this.projectPhases.items.map((item) => {
+                    return {
+                        id: item.id,
+                        group: 0,
+                        content: item.name,
+                        start: new Date(item.scheduledStartAt),
+                        end: new Date(item.scheduledFinishAt),
+                        value: item.workPackageStatus,
+                    };
+                }));
+            }
+
+            if (this.projectMilestones && this.projectMilestones.items) {
+                items = items.concat(this.projectMilestones.items.map((item) => {
+                    return {
+                        id: item.id,
+                        group: 1,
+                        content: item.name,
+                        start: new Date(item.scheduledFinishAt),
+                        value: item.workPackageStatus,
+                    };
+                }));
+            }
+            return items;
+        },
+    },
+    data() {
+        return {
+            phasesActivePage: 0,
+            milestonesActivePage: 0,
+        };
     },
 };
 </script>

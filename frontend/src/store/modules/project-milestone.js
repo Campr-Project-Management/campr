@@ -5,6 +5,9 @@ import router from '../../router';
 const state = {
     items: [],
     currentItem: {},
+    totalItems: 0,
+    filters: {},
+    currentItem: {},
 };
 
 const getters = {
@@ -26,16 +29,88 @@ const actions = {
      * Get all project milestones
      * @param {function} commit
      * @param {Number} projectId
+     * @param {Object} apiParams
      */
-    getProjectMilestones({commit}, projectId) {
+    getProjectMilestones({commit, state}, projectId, apiParams) {
+        let paramObject = {params: {}};
+        if (apiParams && apiParams.page) {
+            paramObject.params.page = apiParams.page;
+        }
+
+        if (state.filters.status) {
+            paramObject.params.status = state.filters.status;
+        }
+
+        if (state.filters.responsible) {
+            paramObject.params.status = state.filters.responsible;
+        }
+
+        if (state.filters.phase) {
+            paramObject.params.status = state.filters.phase;
+        }
+
         Vue.http
-            .get(Routing.generate('app_api_project_milestones', {'id': projectId})).then((response) => {
+            .get(Routing.generate('app_api_project_milestones', {'id': projectId}),
+                paramObject,
+            ).then((response) => {
                 if (response.status === 200) {
                     let milestones = response.data;
                     commit(types.SET_PROJECT_MILESTONES, {milestones});
                 }
             }, (response) => {
             });
+    },
+    /**
+     * Create project milestone
+     * @param {function} commit
+     * @param {array}    data
+     */
+    createProjectMilestone({commit}, data) {
+        Vue.http
+            .post(
+                Routing.generate('app_api_project_milestones_create', {id: data.project}),
+                JSON.stringify(data)
+            ).then((response) => {
+                if (response.status === 201) {
+                    router.push({name: 'project-phases-and-milestones'});
+                }
+            }, (response) => {
+            });
+    },
+    /**
+     * Edit project milestone
+     * @param {function} commit
+     * @param {array}    data
+     */
+    editProjectMilestone({commit}, data) {
+        Vue.http
+            .patch(
+                Routing.generate('app_api_workpackage_milestone_edit', {id: data.id}),
+                JSON.stringify(data)
+            ).then((response) => {
+                if (response.status === 202) {
+                    router.push({name: 'project-phases-and-milestones'});
+                }
+            }, (response) => {
+            });
+    },
+    /**
+     * Gets project milestone
+     * @param {function} commit
+     * @param {number} id
+     */
+    getProjectMilestone({commit}, id) {
+        Vue.http
+            .get(Routing.generate('app_api_workpackage_get', {'id': id})).then((response) => {
+                if (response.status === 200) {
+                    let milestone = response.data;
+                    commit(types.SET_MILESTONE, {milestone});
+                }
+            }, (response) => {
+            });
+    },
+    setMilestonesFiters({commit}, filters) {
+        commit(types.SET_MILESTONES_FILTERS, {filters});
     },
     /**
      * Create project milestone
@@ -96,6 +171,9 @@ const mutations = {
      */
     [types.SET_PROJECT_MILESTONES](state, {milestones}) {
         state.items = milestones;
+    },
+    [types.SET_MILESTONES_FILTERS](state, {filters}) {
+        state.filters = Object.assign({}, state.filters, filters);
     },
     /**
      * Sets project milestone to state
