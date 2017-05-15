@@ -7,6 +7,7 @@ import vis from 'vis';
 import VisTimelineTooltip from './VisTimelineTooltip';
 
 export default {
+    props: ['pmData'],
     components: {
         vis,
         VisTimelineTooltip,
@@ -17,7 +18,6 @@ export default {
                 {id: 0, content: 'Phases', value: 1},
                 {id: 1, content: 'Milestones', value: 2},
             ],
-
             items: [
                 {
                     id: 0,
@@ -74,62 +74,6 @@ export default {
                             </div>`,
                 },
                 {
-                    id: 1,
-                    group: 0,
-                    content: 'Phase 2',
-                    value: '82',
-                    start: new Date(2017, 2, 1),
-                    end: new Date(2017, 3, 15),
-                },
-                {
-                    id: 2,
-                    group: 0,
-                    content: 'Phase 3',
-                    value: '0',
-                    start: new Date(2017, 3, 16),
-                    end: new Date(2017, 4, 25),
-                },
-                {
-                    id: 3,
-                    group: 0,
-                    content: 'Phase 4',
-                    value: '0',
-                    start: new Date(2017, 4, 26),
-                    end: new Date(2017, 6, 25),
-                },
-                {
-                    id: 4,
-                    group: 0,
-                    content: 'Phase 5',
-                    value: '0',
-                    start: new Date(2017, 6, 26),
-                    end: new Date(2017, 8, 10),
-                },
-                {
-                    id: 5,
-                    group: 0,
-                    content: 'Phase 6',
-                    value: '0',
-                    start: new Date(2017, 8, 1),
-                    end: new Date(2017, 9, 31),
-                },
-                {
-                    id: 6,
-                    group: 0,
-                    content: 'Phase 7',
-                    value: '0',
-                    start: new Date(2017, 10, 1),
-                    end: new Date(2017, 10, 18),
-                },
-                {
-                    id: 7,
-                    group: 0,
-                    content: 'Phase 8',
-                    value: '0',
-                    start: new Date(2017, 10, 19),
-                    end: new Date(2017, 11, 20),
-                },
-                {
                     id: 8,
                     group: 1,
                     content: 'Milestone 1',
@@ -174,51 +118,29 @@ export default {
                                 </div>
                             </div>`,
                 },
-                {
-                    id: 13,
-                    group: 1,
-                    content: 'Milestone 6',
-                    start: new Date(2017, 2, 1),
-                    className: 'reached',
-                },
-                {
-                    id: 14,
-                    group: 1,
-                    content: 'Milestone 6',
-                    start: new Date(2017, 3, 17),
-                    className: 'ok',
-                },
-                {
-                    id: 9,
-                    group: 1,
-                    content: 'Milestone 2',
-                    start: new Date(2017, 3, 22),
-                    className: 'overdue',
-                },
-                {
-                    id: 10,
-                    group: 1,
-                    content: 'Milestone 3',
-                    start: new Date(2017, 5, 10),
-                    className: 'on-hold',
-                },
-                {
-                    id: 11,
-                    group: 1,
-                    content: 'Milestone 4',
-                    start: new Date(2017, 6, 30),
-                    className: 'ok',
-                },
-                {
-                    id: 12,
-                    group: 1,
-                    content: 'Milestone 5',
-                    start: new Date(2017, 7, 10),
-                    className: 'ok',
-                },
             ],
-
-            options: {
+            container: '',
+            timeline: null,
+        };
+    },
+    computed: {
+        visOptions: function() {
+            let min = new Date();
+            let max = new Date(0);
+            this.pmData.map((item) => {
+                if (min > item.start) {
+                    min = new Date(item.start);
+                }
+                if (max < item.start) {
+                    max = new Date(item.start);
+                }
+                if (max < item.end) {
+                    max = new Date(item.end);
+                }
+            });
+            min.setFullYear(min.getFullYear() - 2);
+            max.setFullYear(max.getFullYear() + 1);
+            return {
                 width: '100%',
                 horizontalScroll: true,
                 margin: {
@@ -227,8 +149,8 @@ export default {
                         vertical: 5,
                     },
                 },
-                min: '2017, 1, 1',
-                max: '2017, 12, 20',
+                min: min,
+                max: max,
                 zoomMax: 31536000000000,
                 zoomMin: 315360000,
                 order: function(a, b) {
@@ -245,14 +167,20 @@ export default {
                     let percentage = item.value + '%';
                     return `<span class="timeline-status"><span style="width:` + percentage + `"></span>`;
                 },
-            },
-            container: '',
-            timeline: null,
-        };
+            };
+        },
+    },
+    watch: {
+        pmData: function() {
+            if(this.timeline) {
+                this.timeline.destroy();
+            }
+            this.timeline = new vis.Timeline(this.container, this.pmData, this.groups, this.visOptions);
+        },
     },
     mounted() {
         this.container = document.getElementById('vis');
-        this.timeline = new vis.Timeline(this.container, this.items, this.groups, this.options);
+        this.timeline = new vis.Timeline(this.container, this.pmData, this.groups, this.visOptions);
     },
 };
 </script>
