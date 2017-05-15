@@ -22,7 +22,7 @@
                     </p>
                     <p>
                         <span class="title">{{ message.programme }}:</span>
-                        <span class="data"> {{ project.programme }}</span>
+                        <span class="data"> {{ project.programmeName }}</span>
                     </p>
                     <p>
                         <span class="title">{{ message.status }}:</span>
