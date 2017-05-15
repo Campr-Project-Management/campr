@@ -111,7 +111,7 @@ class MenuBuilder
 
         $menu
             ->addChild($this->translator->trans('title.dashboard', [], 'messages'), [
-                'route' => 'app_dashboard',
+                'route' => 'app_admin_dashboard',
             ])
             ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-account')
