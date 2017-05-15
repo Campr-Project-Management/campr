@@ -33,17 +33,21 @@ const actions = {
      */
     getProjectMilestones({commit, state}, projectId, apiParams) {
         let paramObject = {params: {}};
-        if (apiParams && apiParams.page)
+        if (apiParams && apiParams.page) {
             paramObject.params.page = apiParams.page;
+        }
 
-        if (state.filters.status)
+        if (state.filters.status) {
             paramObject.params.status = state.filters.status;
+        }
 
-        if (state.filters.responsible)
+        if (state.filters.responsible) {
             paramObject.params.status = state.filters.responsible;
+        }
 
-        if (state.filters.phase)
+        if (state.filters.phase) {
             paramObject.params.status = state.filters.phase;
+        }
 
         Vue.http
             .get(Routing.generate('app_api_project_milestones', {'id': projectId}),
