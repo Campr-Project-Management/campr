@@ -62,6 +62,7 @@ export default {
             margin-top: 17px;
             text-transform: uppercase;
             letter-spacing: 2.1px;
+            line-height: 1.1em;
         }
 
         .title {
