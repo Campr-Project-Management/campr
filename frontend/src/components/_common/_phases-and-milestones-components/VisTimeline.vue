@@ -128,8 +128,9 @@ export default {
             let min = new Date();
             let max = new Date(0);
             this.pmData.map((item) => {
-                if (min > item.start)
+                if (min > item.start) {
                     min = new Date(item.start);
+                }
                 if (max < item.start) {
                     max = new Date(item.start);
                 }
@@ -171,8 +172,9 @@ export default {
     },
     watch: {
         pmData: function() {
-            if(this.timeline)
+            if(this.timeline) {
                 this.timeline.destroy();
+            }
             this.timeline = new vis.Timeline(this.container, this.pmData, this.groups, this.visOptions);
         },
     },

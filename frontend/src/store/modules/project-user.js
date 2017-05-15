@@ -17,14 +17,16 @@ const getters = {
     projectSponsors: state => state.sponsors,
     projectManagers: state => state.managers,
     projectUsersForSelect: state => {
-        if (state.items && state.items.items)
+        if (state.items && state.items.items) {
             return state.items.items.map(item => {
                 return {
                     'key': item.user,
                     'label': item.userFullName,
                 };
             });
-        else return [];
+        } else {
+            return [];
+        }
     },
     managersForSelect: state => state.managers.map(item => {
         return {
