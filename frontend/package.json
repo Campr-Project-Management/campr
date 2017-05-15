@@ -27,6 +27,7 @@
     "reset-css": "^2.2.0",
     "v-tooltip": "^1.1.6",
     "vee-validate": "^2.0.0-beta.25",
+    "vis": "^4.19.1",
     "vue": "^2.1.4",
     "vue-charts": "^0.2.1",
     "vue-color": "^2.0.6",
