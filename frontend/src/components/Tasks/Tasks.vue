@@ -2,20 +2,13 @@
     <div>
         <div class="page-section">
             <div class="header">
-                <h1>{{ message.my_tasks }}</h1>
+                <h1>{{ translateText('message.my_tasks') }}</h1>
                 <div class="flex filters-container">
                     <task-filters></task-filters>
-                    <div class="separator"></div>
-                    <div class="pagination flex flex-v-center" v-if="count > 0">
-                        <span v-for="page in count/tasks.length" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
-                    </div>
                 </div>
             </div>
             <div class="grid-view">
                 <task-box v-for="task in tasks" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></task-box>
-                <router-link :to="{name: 'task-new'}">
-                    <a href="" class="new-box">{{ message.new_project }} +</a>
-                </router-link>
             </div>
             <div class="pagination flex flex-center" v-if="count > 0">
                 <span v-for="page in count/tasks.length" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
@@ -40,6 +33,9 @@ export default {
             this.getTasks(page);
             this.activePage = page;
         },
+        translateText: function(text) {
+            return this.translate(text);
+        },
     },
     created() {
         if (!this.$store.state.task || this.$store.state.task.items.length === 0) {
@@ -58,10 +54,6 @@ export default {
     data() {
         return {
             activePage: 1,
-            message: {
-                my_tasks: Translator.trans('message.my_tasks'),
-                new_task: Translator.trans('message.new_task'),
-            },
         };
     },
 };

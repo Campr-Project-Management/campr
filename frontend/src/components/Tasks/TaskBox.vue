@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <bar-chart :percentage="task.progress" :status="task.colorStatusName" :color="task.colorStatusColor" :title-left="'' + translate(task.workPackageStatusName)"></bar-chart>
+            <bar-chart :percentage="task.progress" :status="task.colorStatusName" :color="task.colorStatusColor" :title-left="'' + translateText(task.workPackageStatusName)"></bar-chart>
             <div class="nicescroll">{{ task.content }}</div>
             <div class="info bottom">
                 <div class="icons">
@@ -105,8 +105,8 @@ export default {
             let end = moment(endDate);
             return end.diff(start, 'days');
         },
-        translate(text) {
-            return window.Translator.trans(text);
+        translateText: function(text) {
+            return this.translate(text);
         },
     },
     props: ['task', 'colorStatuses', 'user'],
