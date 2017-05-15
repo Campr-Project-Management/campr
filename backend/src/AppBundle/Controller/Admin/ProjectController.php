@@ -72,9 +72,7 @@ class ProjectController extends ApiController
         $dataTableService = $this->get('app.service.data_table');
         $response = $dataTableService->paginateByColumn(Project::class, 'name', $requestParams);
 
-        //dump($response);die;
         return $this->createApiResponse($response);
-        //return new JsonResponse($response);
     }
 
     /**
