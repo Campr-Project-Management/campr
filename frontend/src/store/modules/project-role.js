@@ -14,6 +14,13 @@ const getters = {
         });
         return projectRolesSelect;
     },
+    projectRolesForMultiSelect: state => {
+        let projectRolesSelect = [];
+        state.items.map(function(item) {
+            projectRolesSelect.push({'key': item.id, 'label': item.name});
+        });
+        return projectRolesSelect;
+    },
 };
 
 const actions = {
