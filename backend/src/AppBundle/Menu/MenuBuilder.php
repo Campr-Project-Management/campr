@@ -195,6 +195,24 @@ class MenuBuilder
         ;
 
         $menu
+            ->addChild($this->translator->trans('title.subteam.list', [], 'messages'), [])
+            ->setAttributes([
+                'class' => 'sub-menu main-category',
+                'dropdown' => true,
+            ])
+            ->setLinkAttribute('icon', 'zmdi zmdi-folder-outline')
+            ->addChild($this->translator->trans('title.subteam.list', [], 'messages'), [
+                'route' => 'app_admin_subteam_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.subteam_role.list', [], 'messages'), [
+                'route' => 'app_admin_subteam_role_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.subteam_member.list', [], 'messages'), [
+                'route' => 'app_admin_subteam_member_list',
+            ])->getParent()
+        ;
+
+        $menu
             ->addChild($this->translator->trans('title.resource.list', [], 'messages'), [
                 'route' => 'app_admin_resource_list',
             ])
