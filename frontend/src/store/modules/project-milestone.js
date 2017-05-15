@@ -6,6 +6,7 @@ const state = {
     items: [],
     currentItem: {},
     totalItems: 0,
+    filters: {},
 };
 
 const getters = {
@@ -27,16 +28,25 @@ const actions = {
      * Get all project milestones
      * @param {function} commit
      * @param {Number} projectId
+     * @param {Object} apiParams
      */
-    getProjectMilestones({commit}, projectId, {page}) {
+    getProjectMilestones({commit, state}, projectId, apiParams) {
+        let paramObject = {params: {}};
+        if (apiParams && apiParams.page)
+            paramObject.params.page = apiParams.page;
+
+        if (state.filters.status)
+            paramObject.params.status = state.filters.status;
+
+        if (state.filters.responsible)
+            paramObject.params.status = state.filters.responsible;
+
+        if (state.filters.phase)
+            paramObject.params.status = state.filters.phase;
+
         Vue.http
             .get(Routing.generate('app_api_project_milestones', {'id': projectId}),
-            {
-                params: {
-                    'page': page,
-                    'pageSize': 4,
-                },
-            },
+                paramObject,
             ).then((response) => {
                 if (response.status === 200) {
                     let milestones = response.data;
@@ -94,6 +104,9 @@ const actions = {
             }, (response) => {
             });
     },
+    setMilestonesFiters({commit}, filters) {
+        commit(types.SET_MILESTONES_FILTERS, {filters});
+    },
 };
 
 const mutations = {
@@ -104,7 +117,9 @@ const mutations = {
      */
     [types.SET_PROJECT_MILESTONES](state, {milestones}) {
         state.items = milestones;
-        state.totalItems = totalItems;
+    },
+    [types.SET_MILESTONES_FILTERS](state, {filters}) {
+        state.filters = Object.assign({}, state.filters, filters);
     },
     /**
      * Sets project milestone to state

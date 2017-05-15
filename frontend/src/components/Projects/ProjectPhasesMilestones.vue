@@ -7,7 +7,7 @@
         <!-- /// End P&M Header /// --> 
 
         <!-- /// P&M Timeline /// -->
-        <vis-timeline></vis-timeline>
+        <vis-timeline :pmData="pmData"></vis-timeline>
         <!-- /// End P&M Timeline /// -->    
 
         <!-- /// Phases Header /// -->
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="full-filters flex flex-direction-reverse">
-            <phase-filters></phase-filters>
+            <phase-filters :selectEndDate="setPhaseFilterEndDate" :selectStartDate="setPhaseFilterStartDate" :selectResponsible="setPhaseFilterResponsible" :selectStatus="setPhasesFilterStatus"></phase-filters>
         </div>
         <!-- /// End Phases Header /// -->
 
@@ -74,8 +74,8 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody v-if="projectPhases && projectPhases.length > 0">
-                            <tr v-for='phase in projectPhases'>
+                        <tbody v-if="projectPhases.items && projectPhases.items.length > 0">
+                            <tr v-for='phase in projectPhases.items'>
                                 <td class="small-cell">{{phase.id}}</td>
                                 <td>{{phase.name}}</td>
                                 <td class="no-padding">
@@ -122,12 +122,12 @@
                 </div>
             </vue-scrollbar>
 
-            <div class="flex flex-direction-reverse flex-v-center">
-                <div class="pagination">
-                    <span class="active">1</span>
+            <div v-if="projectPhases && projectPhases.items" class="flex flex-direction-reverse flex-v-center">
+                <div class="pagination flex flex-center" v-if="projectPhases && projectPhases.totalItems > 0">
+                    <span v-for="page in phasesPages" v-bind:class="{'active': page == phasesActivePage}" @click="changePhasePage(page)">{{ page }}</span>
                 </div>
                 <div>
-                    <span class="pagination-info">Displaying 7 results out of 7</span>
+                    <span class="pagination-info">Displaying {{projectPhases.items.length}} results out of {{projectPhases.totalItems}}</span>
                 </div>
             </div>
         </div>
@@ -143,7 +143,7 @@
             </div>
         </div>
         <div class="full-filters flex flex-direction-reverse">
-            <milestone-filters></milestone-filters>
+            <milestone-filters :selectDueDate="setMilestonesFilterDueDue" :selectPhase="setMilestonesFilterPhase" :selectResponsible="setMilestonesFilterResponsible" :selectStatus="setMilestonesFilterStatus"></milestone-filters>
         </div>
         <!-- /// End Milestones Header /// -->
 
@@ -164,8 +164,8 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody v-if="projectMilestones && projectMilestones.length">
-                            <tr v-for="milestone in projectMilestones">
+                        <tbody v-if="projectMilestones.items && projectMilestones.items.length">
+                            <tr v-for="milestone in projectMilestones.items">
                                 <td class="small-cell">{{milestone.id}}</td>
                                 <td>{{milestone.name}}</td>
                                 <td>{{milestone.baseDueDate}}</td>
@@ -188,14 +188,12 @@
                 </div>
             </vue-scrollbar>
 
-            <div class="flex flex-direction-reverse flex-v-center">
-                <div class="pagination">
-                    <span class="">1</span>
-                    <span class="active">2</span>
-                    <span class="">1</span>
+            <div v-if="projectMilestones && projectMilestones.items"  class="flex flex-direction-reverse flex-v-center">
+                <div class="pagination flex flex-center" v-if="projectMilestones && projectMilestones.totalItems > 0">
+                    <span v-for="page in milestonesPages" v-bind:class="{'active': page == milestoneActivePage}" @click="changeMilestonePage(page)">{{ page }}</span>
                 </div>
                 <div>
-                    <span class="pagination-info">Displaying 10 results out of 21</span>
+                    <span class="pagination-info">Displaying {{projectMilestones.items.length}} results out of {{projectMilestones.totalItems}}</span>
                 </div>
             </div>
         </div>
@@ -224,63 +222,100 @@ export default {
         ViewIcon,
     },
     created() {
-        this.getProjectPhases(this.$route.params.id);
-        this.getProjectMilestones(this.$route.params.id);
-        setTimeout(() => {
-            console.log('pp', this.projectMilestones, this.projectMilestones.length);
-        }, 5000);
+        this.getProjectPhases({projectId: this.$route.params.id,
+            apiParams: {
+                page: 1,
+            },
+        });
+        this.getProjectMilestones(this.$route.params.id, {page: 1});
     },
     methods: {
-        ...mapActions(['getProjectPhases', 'getProjectMilestones']),
+        ...mapActions(['getProjectPhases', 'getProjectMilestones', 'setPhasesFiters', 'setMilestonesFiters']),
+        changePhasePage: function(page) {
+            this.phasesActivePage = page;
+            this.getProjectPhases({projectId: this.$route.params.id,
+                apiParams: {
+                    page: page,
+                },
+            });
+        },
+        changeMilestonesPage: function(page) {
+            this.milestoneActivePage = page;
+            this.getProjectMilestones(this.$route.params.id,
+                {
+                    page: page,
+                },
+            );
+        },
+        setPhasesFilterStatus: function(value) {
+            this.setPhasesFiters({status: value});
+        },
+        setPhaseFilterResponsible: function(value) {
+            this.setPhasesFiters({responsible: value});
+        },
+        setMilestonesFilterStatus: function(value) {
+            this.setMilestonesFiters({status: value});
+        },
+        setMilestonesFilterResponsible: function(value) {
+            this.setMilestonesFiters({responsible: value});
+        },
+        setMilestonesFilterPhase: function(value) {
+            this.setMilestonesFiters({phase: value});
+        },
+        setMilestonesFilterDueDue: function(value) {
+            this.setMilestonesFiters({dueDate: value});
+        },
+        setPhaseFilterStartDate: function(value) {
+            this.setPhasesFiters({startDate: value});
+        },
+        setPhaseFilterEndDate: function(value) {
+            this.setPhasesFiters({endDate: value});
+        },
     },
-    computed: mapGetters({
-        projectPhases: 'projectPhases',
-        projectMilestones: 'projectMilestones',
-    }),
+    computed: {
+        ...mapGetters({
+            projectPhases: 'projectPhases',
+            projectMilestones: 'projectMilestones',
+        }),
+        phasesPages: function() {
+            return Math.ceil(this.projectPhases.totalItems / 4);
+        },
+        milestonesPages: function() {
+            return Math.ceil(this.projectMilestones.totalItems / 4);
+        },
+        pmData: function() {
+            let items = [];
+            if (this.projectPhases && this.projectPhases.items) {
+                items = items.concat(this.projectPhases.items.map((item) => {
+                    return {
+                        id: item.id,
+                        group: 0,
+                        content: item.name,
+                        start: new Date(item.scheduledStartAt),
+                        end: new Date(item.scheduledFinishAt),
+                        value: item.workPackageStatus,
+                    };
+                }));
+            }
+
+            if (this.projectMilestones && this.projectMilestones.items) {
+                items = items.concat(this.projectMilestones.items.map((item) => {
+                    return {
+                        id: item.id,
+                        group: 1,
+                        content: item.name,
+                        start: new Date(item.scheduledFinishAt),
+                        value: item.workPackageStatus,
+                    };
+                }));
+            }
+            return items;
+        },
+    },
     data() {
         return {
             phasesActivePage: 0,
             milestonesActivePage: 0,
-            // projectPhases: [
-            //     {
-            //         id: 1,
-            //         name: 'phase 8',
-            //         baseSchedule: {
-            //             start: '11.12.2017',
-            //             finish: '12.12.2018',
-            //             duration: '89',
-            //         },
-            //         forecastSchedule: {
-            //             start: '09.12.2017',
-            //             finish: '12.12.2018',
-            //             duration: '89',
-            //         },
-            //         actualSchedule: {
-            //             start: '10.12.2017',
-            //             finish: '11.12.2018',
-            //             duration: '89',
-            //         },
-            //         status: 'Pending',
-            //         responsible: {
-            //             name: 'John',
-            //             avatar: 'http://dev.campr.biz/uploads/avatars/60.jpg',
-            //         },
-            //     },
-            // ],
-            // projectMilestones: [
-            //     {
-            //         id: 2,
-            //         name: 'Milestone 3',
-            //         baseDueDate: '01.01.2018',
-            //         forecastDueDate: '03.01.2018',
-            //         actualDueDate: '10.01.2018',
-            //         status: 'Reached',
-            //         responsible: {
-            //             name: 'John',
-            //             avatar: 'http://dev.campr.biz/uploads/avatars/60.jpg',
-            //         },
-            //     },
-            // ],
         };
     },
 };
