@@ -1,7 +1,12 @@
 message:
+    project_phases: Project Phases
+    phase_responsible: Phase Responsble:
+    milestone_responsible: Milestone Responsble:
     edit_organization: Edit Organization
     project_roles: Project Roles
     delete_subteam: Delete Subteam
+    delete_phase: Delete Phase
+    delete_milestone: Delete Milestone
     edit_subteam: Edit Subteam
     back_to_organization: Back to Project Organization
     back_to_phases_and_milestones: Back to Phases & Milestones
@@ -721,6 +726,8 @@ label:
     subteam_roles: Subteam Roles
 
 button:
+    add_new_phase: Add New Phase
+    add_new_milestone: Add New Milestone
     add_new_team_members: Add New Team Members
     create_phase: Create Phase
     create_milestone: Create Milestone
@@ -913,6 +920,12 @@ placeholder:
     gplus: Google Plus
 
 table_header_cell:
+    base_due_date: Base Due Date
+    forecast_due_date: Forecast Due Date
+    actual_due_date: Actual Due Date
+    base_schedule: Base Schedule
+    forecast_schedule: Forecast Schedule
+    actual_schedule: Actual Schedule
     subteam_name: Subteam Name
     team_leader: Team Leader
     actions: Actions
@@ -1018,6 +1031,7 @@ table_header_cell:
     visible: Visible
     topic: Topic
     start: Start
+    finish: Finish
     end: End
     remark: Remark
     is_present: Is Present

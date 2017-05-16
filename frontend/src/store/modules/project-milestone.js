@@ -28,10 +28,9 @@ const actions = {
     /**
      * Get all project milestones
      * @param {function} commit
-     * @param {Number} projectId
      * @param {Object} apiParams
      */
-    getProjectMilestones({commit, state}, projectId, apiParams) {
+    getProjectMilestones({commit, state}, {projectId, apiParams}) {
         let paramObject = {params: {}};
         if (apiParams && apiParams.page) {
             paramObject.params.page = apiParams.page;
@@ -109,57 +108,22 @@ const actions = {
             }, (response) => {
             });
     },
+    /**
+     * Delete project phase
+     * @param {function} commit
+     * @param {integer} id
+     */
+    deleteProjectMilestone({commit}, id) {
+        Vue.http
+            .delete(
+                Routing.generate('app_api_workpackage_delete', {id: id})
+            ).then((response) => {
+                commit(types.DELETE_PROJECT_MILESTONE, {id});
+            }, (response) => {
+            });
+    },
     setMilestonesFiters({commit}, filters) {
         commit(types.SET_MILESTONES_FILTERS, {filters});
-    },
-    /**
-     * Create project milestone
-     * @param {function} commit
-     * @param {array}    data
-     */
-    createProjectMilestone({commit}, data) {
-        Vue.http
-            .post(
-                Routing.generate('app_api_project_milestones_create', {id: data.project}),
-                JSON.stringify(data)
-            ).then((response) => {
-                if (response.status === 201) {
-                    router.push({name: 'project-phases-and-milestones'});
-                }
-            }, (response) => {
-            });
-    },
-    /**
-     * Edit project milestone
-     * @param {function} commit
-     * @param {array}    data
-     */
-    editProjectMilestone({commit}, data) {
-        Vue.http
-            .patch(
-                Routing.generate('app_api_workpackage_milestone_edit', {id: data.id}),
-                JSON.stringify(data)
-            ).then((response) => {
-                if (response.status === 202) {
-                    router.push({name: 'project-phases-and-milestones'});
-                }
-            }, (response) => {
-            });
-    },
-    /**
-     * Gets project milestone
-     * @param {function} commit
-     * @param {number} id
-     */
-    getProjectMilestone({commit}, id) {
-        Vue.http
-            .get(Routing.generate('app_api_workpackage_get', {'id': id})).then((response) => {
-                if (response.status === 200) {
-                    let milestone = response.data;
-                    commit(types.SET_MILESTONE, {milestone});
-                }
-            }, (response) => {
-            });
     },
 };
 
@@ -182,6 +146,17 @@ const mutations = {
      */
     [types.SET_MILESTONE](state, {milestone}) {
         state.currentItem = milestone;
+    },
+    /**
+     * Delete project milestone
+     * @param {Object} state
+     * @param {integer} id
+     */
+    [types.DELETE_PROJECT_MILESTONE](state, {id}) {
+        state.items.items = state.items.items.filter((item) => {
+            return item.id !== id ? true : false;
+        });
+        state.items.totalItems--;
     },
 };
 
