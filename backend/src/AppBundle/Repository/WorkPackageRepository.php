@@ -306,6 +306,27 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
+        if (isset($filters['startDate'])) {
+            $qb
+                ->andWhere('wp.actualStartAt >= :startDate')
+                ->setParameter('startDate', $filters['startDate'])
+            ;
+        }
+
+        if (isset($filters['endDate'])) {
+            $qb
+                ->andWhere('wp.actualFinishAt <= :endDate')
+                ->setParameter('actualFinishAt', $filters['endDate'])
+            ;
+        }
+
+        if (isset($filters['dueDate'])) {
+            $qb
+                ->andWhere('wp.actualFinishAt = :dueDate')
+                ->setParameter('actualFinishAt', $filters['dueDate'])
+            ;
+        }
+
         if (isset($filters['pageSize']) && isset($filters['page'])) {
             $qb
                 ->setFirstResult($filters['pageSize'] * ($filters['page'] - 1))
