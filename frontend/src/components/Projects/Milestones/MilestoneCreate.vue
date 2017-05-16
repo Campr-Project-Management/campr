@@ -192,7 +192,7 @@ export default {
     created() {
         this.getProjectUsers({id: this.$route.params.id});
         this.getWorkPackageStatuses();
-        this.getProjectPhases(this.$route.params.id);
+        this.getProjectPhases({projectId: this.$route.params.id});
         if (this.$route.params.milestoneId) {
             this.getProjectMilestone(this.$route.params.milestoneId);
         }
