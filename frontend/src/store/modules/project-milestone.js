@@ -41,11 +41,11 @@ const actions = {
         }
 
         if (state.filters.responsible) {
-            paramObject.params.status = state.filters.responsible;
+            paramObject.params.responsible = state.filters.responsible;
         }
 
         if (state.filters.phase) {
-            paramObject.params.status = state.filters.phase;
+            paramObject.params.phase = state.filters.phase;
         }
 
         Vue.http
