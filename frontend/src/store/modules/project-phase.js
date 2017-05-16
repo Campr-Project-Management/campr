@@ -49,7 +49,7 @@ const actions = {
             paramObject.params.status = state.filters.status;
         }
         if (state.filters && state.filters.responsible) {
-            paramObject.params.esponsible = state.filters.responsible;
+            paramObject.params.responsible = state.filters.responsible;
         }
         Vue.http
             .get(Routing.generate('app_api_project_phases', {'id': projectId}),
