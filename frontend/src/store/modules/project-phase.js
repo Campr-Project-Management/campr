@@ -7,13 +7,17 @@ const state = {
     currentItem: {},
     filters: {},
     currentItem: {},
+    allItems: [],
 };
 
 const getters = {
     projectPhases: state => state.items,
     phase: state => state.currentItem,
     projectPhasesForSelect: state => {
-        return state.items.items.map(item => {
+        if (state.allItems.items === undefined) {
+            return [];
+        }
+        return state.allItems.items.map(item => {
             return {
                 'key': item.id,
                 'label': item.name,
@@ -33,7 +37,6 @@ const actions = {
         let paramObject = {params: {}};
         if (apiParams && apiParams.page !== undefined) {
             paramObject.params.page = apiParams.page;
-            paramObject.params.pageSize = 4;
         }
 
         if (state.filters && state.filters.startDate) {
@@ -54,7 +57,11 @@ const actions = {
             ).then((response) => {
                 if (response.status === 200) {
                     let phases = response.data;
-                    commit(types.SET_PROJECT_PHASES, {phases});
+                    if (apiParams === undefined) {
+                        commit(types.SET_PROJECT_ALL_PHASES, {phases});
+                    } else {
+                        commit(types.SET_PROJECT_PHASES, {phases});
+                    }
                 }
             }, (response) => {
             });
@@ -158,6 +165,20 @@ const actions = {
             }, (response) => {
             });
     },
+    /**
+     * Delete project phase
+     * @param {function} commit
+     * @param {integer} id
+     */
+    deleteProjectPhase({commit}, id) {
+        Vue.http
+            .delete(
+                Routing.generate('app_api_workpackage_delete', {id: id})
+            ).then((response) => {
+                commit(types.DELETE_PROJECT_PHASE, {id});
+            }, (response) => {
+            });
+    },
 };
 
 const mutations = {
@@ -181,12 +202,23 @@ const mutations = {
         state.filters = Object.assign({}, state.filters, filters);
     },
     /**
-     * Sets project phase to state
+     * Sets all project phases
      * @param {Object} state
-     * @param {Object} phase
+     * @param {Object} phases
      */
-    [types.SET_PHASE](state, {phase}) {
-        state.currentItem = phase;
+    [types.SET_PROJECT_ALL_PHASES](state, {phases}) {
+        state.allItems = phases;
+    },
+    /**
+     * Delete project phase
+     * @param {Object} state
+     * @param {integer} id
+     */
+    [types.DELETE_PROJECT_PHASE](state, {id}) {
+        state.items.items = state.items.items.filter((item) => {
+            return item.id !== id ? true : false;
+        });
+        state.items.totalItems--;
     },
 };
 
