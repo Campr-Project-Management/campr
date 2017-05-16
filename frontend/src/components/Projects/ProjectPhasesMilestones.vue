@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="full-filters flex flex-direction-reverse">
-            <phase-filters :selectResponsible="setPhaseFilterResponsible" :selectStatus="setPhasesFilterStatus"></phase-filters>
+            <phase-filters :selectStartDate="setPhaseFilterStart" :selectEndDate="setPhaseFilterEnd" :selectResponsible="setPhaseFilterResponsible" :selectStatus="setPhasesFilterStatus"></phase-filters>
         </div>
         <!-- /// End Phases Header /// -->
 
@@ -161,7 +161,7 @@
             </div>
         </div>
         <div class="full-filters flex flex-direction-reverse">
-            <milestone-filters :selectDueDate="setMilestonesFilterDueDue" :selectPhase="setMilestonesFilterPhase" :selectResponsible="setMilestonesFilterResponsible" :selectStatus="setMilestonesFilterStatus"></milestone-filters>
+            <milestone-filters :selectDueDate="setMilestonesFilterDueDate" :selectPhase="setMilestonesFilterPhase" :selectResponsible="setMilestonesFilterResponsible" :selectStatus="setMilestonesFilterStatus"></milestone-filters>
         </div>
         <!-- /// End Milestones Header /// -->
 
@@ -317,6 +317,18 @@ export default {
         setMilestonesFilterPhase: function(value) {
             this.setMilestonesFiters({phase: value});
             this.refreshMilestonesData();
+        },
+        setMilestonesFilterDueDate: function(value) {
+            this.setMilestonesFiters({dueDate: value});
+            this.refreshMilestonesData();
+        },
+        setPhaseFilterStart: function(value) {
+            this.setPhasesFiters({startDate: value});
+            this.refreshPhasesData();
+        },
+        setPhaseFilterEnd: function(value) {
+            this.setPhasesFiters({endDate: value});
+            this.refreshPhasesData();
         },
         refreshPhasesData: function() {
             this.getProjectPhases({

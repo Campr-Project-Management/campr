@@ -48,6 +48,10 @@ const actions = {
             paramObject.params.phase = state.filters.phase;
         }
 
+        if (state.filters.dueDate) {
+            paramObject.params.actualFinishAt = state.filters.dueDate.getTime();
+        }
+
         Vue.http
             .get(Routing.generate('app_api_project_milestones', {'id': projectId}),
                 paramObject,
