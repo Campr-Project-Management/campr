@@ -51,6 +51,12 @@ const actions = {
         if (state.filters && state.filters.responsible) {
             paramObject.params.responsible = state.filters.responsible;
         }
+        if (state.filters && state.filters.startDate) {
+            paramObject.params.startDate = state.filters.startDate.getTime();
+        }
+        if (state.filters && state.filters.endDate) {
+            paramObject.params.actualFinishAt = state.filters.endDate.getTime();
+        }
         Vue.http
             .get(Routing.generate('app_api_project_phases', {'id': projectId}),
                 paramObject,

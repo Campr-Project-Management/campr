@@ -23,7 +23,7 @@ import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 
 export default {
-    props: ['selectStatus', 'selectResponsible', 'selectPhase'],
+    props: ['selectStatus', 'selectResponsible', 'selectPhase', 'selectDueDate'],
     created() {
         this.getTaskStatuses();
         this.getProjectUsers({id: this.$route.params.id});
@@ -59,6 +59,12 @@ export default {
         return {
             dueDate: '',
         };
+    },
+    watch: {
+        dueDate: function(value) {
+            this.dueDate = value;
+            this.selectDueDate(value);
+        },
     },
 };
 </script>
