@@ -7,6 +7,7 @@ use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\SubteamMember;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Team;
+use AppBundle\Entity\WorkPackage;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
@@ -61,6 +62,15 @@ class ImageSerializeListener
                         $visitor->addData('userAvatar', $this->getUri($object->getUser(), 'avatarFile'));
                     } else {
                         $visitor->addData('userAvatar', $object->getUser()->getGravatar());
+                    }
+                }
+                break;
+            case $object instanceof WorkPackage:
+                if ($object->getResponsibility() instanceof User) {
+                    if ($object->getResponsibility()->getAvatar()) {
+                        $visitor->addData('responsibilityAvatar', $this->getUri($object->getResponsibility(), 'avatarFile'));
+                    } else {
+                        $visitor->addData('responsibilityAvatar', $object->getResponsibility()->getGravatar());
                     }
                 }
                 break;
