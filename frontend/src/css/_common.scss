@@ -136,6 +136,9 @@ p {
 .second-dark-bg {
   background: $secondDarkColor !important;
 }
+.middle-color {
+  color: $middleColor !important;
+}
 .second-color {
   color: $secondColor !important;
 }
@@ -317,7 +320,7 @@ textarea {
 
         .notification-balloon {
             background-color: $mainColor;
-            color: $lighterColor; 
+            color: $lighterColor;
         }
     }
 }
@@ -780,7 +783,7 @@ hr {
         background: $darkColor;
         text-transform: uppercase;
         vertical-align: middle;
-        height: 60px;        
+        height: 60px;
         padding: 0 30px;
         padding-bottom: 0;
         font-weight: 400;
@@ -842,7 +845,7 @@ hr {
   }
 
   tr {
-    th, td { 
+    th, td {
       &.avatar {
         padding: 0;
         width: 46px;
@@ -856,11 +859,11 @@ hr {
 
       &.switchers {
         width: 60px;
-      }        
+      }
 
       &.no-padding {
         padding: 0;
-      }    
+      }
     }
   }
 
@@ -886,10 +889,10 @@ hr {
   @include opacity(0);
   @include transition(opacity, 0.2s, ease-in);
   pointer-events: none;
-  z-index: 10000; 
+  z-index: 10000;
   max-width: 220px;
   text-align: center;
-  margin-top: 8px;       
+  margin-top: 8px;
 
   .tooltip-content {
     background-color: $secondColor;
