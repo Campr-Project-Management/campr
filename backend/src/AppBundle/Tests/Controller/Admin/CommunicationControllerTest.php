@@ -5,6 +5,7 @@ namespace AppBundle\Tests\Controller\Admin;
 use AppBundle\Entity\Communication;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Schedule;
+use AppBundle\Entity\Company;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,9 +67,16 @@ class CommunicationControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
+        $company = $this
+            ->em
+            ->getRepository(Company::class)
+            ->find(1)
+        ;
+
         $project = (new Project())
             ->setName('project4')
             ->setNumber('project-number-4')
+            ->setCompany($company)
         ;
         $this->em->persist($project);
 
@@ -128,10 +136,18 @@ class CommunicationControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
+        $company = $this
+            ->em
+            ->getRepository(Company::class)
+            ->find(1)
+        ;
+
         $project = (new Project())
             ->setName('project4')
             ->setNumber('project-number-4')
+            ->setCompany($company)
         ;
+
         $this->em->persist($project);
 
         $schedule = (new Schedule())
