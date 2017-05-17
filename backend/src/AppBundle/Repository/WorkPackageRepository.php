@@ -316,15 +316,19 @@ class WorkPackageRepository extends BaseRepository
         if (isset($filters['endDate'])) {
             $qb
                 ->andWhere('wp.actualFinishAt <= :endDate')
-                ->setParameter('actualFinishAt', $filters['endDate'])
+                ->setParameter('endDate', $filters['endDate'])
             ;
         }
 
         if (isset($filters['dueDate'])) {
             $qb
                 ->andWhere('wp.actualFinishAt = :dueDate')
-                ->setParameter('actualFinishAt', $filters['dueDate'])
+                ->setParameter('dueDate', $filters['dueDate'])
             ;
+        }
+
+        if (isset($filters['orderBy']) && isset($filters['order'])) {
+            $qb->orderBy('wp.'.$filters['orderBy'], $filters['order']);
         }
 
         if (isset($filters['pageSize']) && isset($filters['page'])) {

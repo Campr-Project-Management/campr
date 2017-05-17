@@ -5,6 +5,7 @@ import router from '../../router';
 const state = {
     items: [],
     currentItem: {},
+    phaseWorkPackages: [],
     filters: {},
     currentItem: {},
     allItems: [],
@@ -13,6 +14,7 @@ const state = {
 const getters = {
     projectPhases: state => state.items,
     phase: state => state.currentItem,
+    phaseWorkPackages: state => state.phaseWorkPackages,
     projectPhasesForSelect: state => {
         if (state.allItems.items === undefined) {
             return [];
@@ -50,12 +52,6 @@ const actions = {
         }
         if (state.filters && state.filters.responsible) {
             paramObject.params.responsible = state.filters.responsible;
-        }
-        if (state.filters && state.filters.startDate) {
-            paramObject.params.startDate = state.filters.startDate.getTime();
-        }
-        if (state.filters && state.filters.endDate) {
-            paramObject.params.actualFinishAt = state.filters.endDate.getTime();
         }
         Vue.http
             .get(Routing.generate('app_api_project_phases', {'id': projectId}),
@@ -185,6 +181,24 @@ const actions = {
             }, (response) => {
             });
     },
+    /**
+     * Gets phase workpackages
+     * @param {function} commit
+     * @param {array} data
+     */
+    getPhaseWorkpackages({commit}, data) {
+        Vue.http
+            .get(
+                Routing.generate('app_api_phase_workpackages_get', {'id': data.id}),
+                JSON.stringify(data)
+            ).then((response) => {
+                if (response.status === 200) {
+                    let workPackages = response.data;
+                    commit(types.SET_PHASE_WORKPACKAGES, {workPackages});
+                }
+            }, (response) => {
+            });
+    },
 };
 
 const mutations = {
@@ -225,6 +239,14 @@ const mutations = {
             return item.id !== id ? true : false;
         });
         state.items.totalItems--;
+    },
+    /**
+     * Set phase workpackages
+     * @param {Object} state
+     * @param {integer} workPackages
+     */
+    [types.SET_PHASE_WORKPACKAGES](state, {workPackages}) {
+        state.phaseWorkPackages = workPackages;
     },
 };
 
