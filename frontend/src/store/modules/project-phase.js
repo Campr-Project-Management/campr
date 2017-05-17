@@ -26,6 +26,7 @@ const getters = {
             };
         });
     },
+    allProjectPhases: state => state.allItems,
 };
 
 const actions = {
