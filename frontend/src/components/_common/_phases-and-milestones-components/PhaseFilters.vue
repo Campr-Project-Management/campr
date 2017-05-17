@@ -27,7 +27,7 @@ import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 
 export default {
-    props: ['selectStatus', 'selectResponsible'],
+    props: ['selectStatus', 'selectResponsible', 'selectStartDate', 'selectEndDate'],
     created() {
         this.getTaskStatuses();
         this.getProjectUsers({id: this.$route.params.id});
@@ -62,6 +62,16 @@ export default {
             startDate: '',
             endDate: '',
         };
+    },
+    watch: {
+        startDate: function(value) {
+            this.selectStartDate(value);
+            this.startDate = value;
+        },
+        endDate: function(value) {
+            this.selectEndDate(value);
+            this.endDate = value;
+        },
     },
 };
 </script>

@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="full-filters flex flex-direction-reverse">
-            <phase-filters :selectResponsible="setPhaseFilterResponsible" :selectStatus="setPhasesFilterStatus"></phase-filters>
+            <phase-filters :selectStartDate="setPhaseFilterStart" :selectEndDate="setPhaseFilterEnd" :selectResponsible="setPhaseFilterResponsible" :selectStatus="setPhasesFilterStatus"></phase-filters>
         </div>
         <!-- /// End Phases Header /// -->
 
@@ -161,7 +161,7 @@
             </div>
         </div>
         <div class="full-filters flex flex-direction-reverse">
-            <milestone-filters :selectDueDate="setMilestonesFilterDueDue" :selectPhase="setMilestonesFilterPhase" :selectResponsible="setMilestonesFilterResponsible" :selectStatus="setMilestonesFilterStatus"></milestone-filters>
+            <milestone-filters :selectDueDate="setMilestonesFilterDueDate" :selectPhase="setMilestonesFilterPhase" :selectResponsible="setMilestonesFilterResponsible" :selectStatus="setMilestonesFilterStatus"></milestone-filters>
         </div>
         <!-- /// End Milestones Header /// -->
 
@@ -276,21 +276,11 @@ export default {
         },
         changePhasePage: function(page) {
             this.phasesActivePage = page;
-            this.getProjectPhases({
-                projectId: this.$route.params.id,
-                apiParams: {
-                    page: page,
-                },
-            });
+            this.refreshPhasesData();
         },
         changeMilestonesPage: function(page) {
-            this.milestoneActivePage = page;
-            this.getProjectMilestones({
-                projectId: this.$route.params.id,
-                apiParams: {
-                    page: page,
-                },
-            });
+            this.milestonesActivePage = page;
+            this.refreshMilestonesData();
         },
         initDeletePhaseModal(phase) {
             this.showDeletePhaseModal = true;
@@ -310,18 +300,51 @@ export default {
         },
         setPhasesFilterStatus: function(value) {
             this.setPhasesFiters({status: value});
+            this.refreshPhasesData();
         },
         setPhaseFilterResponsible: function(value) {
             this.setPhasesFiters({responsible: value});
+            this.refreshPhasesData();
         },
         setMilestonesFilterStatus: function(value) {
             this.setMilestonesFiters({status: value});
+            this.refreshMilestonesData();
         },
         setMilestonesFilterResponsible: function(value) {
             this.setMilestonesFiters({responsible: value});
+            this.refreshMilestonesData();
         },
         setMilestonesFilterPhase: function(value) {
             this.setMilestonesFiters({phase: value});
+            this.refreshMilestonesData();
+        },
+        setMilestonesFilterDueDate: function(value) {
+            this.setMilestonesFiters({dueDate: value});
+            this.refreshMilestonesData();
+        },
+        setPhaseFilterStart: function(value) {
+            this.setPhasesFiters({startDate: value});
+            this.refreshPhasesData();
+        },
+        setPhaseFilterEnd: function(value) {
+            this.setPhasesFiters({endDate: value});
+            this.refreshPhasesData();
+        },
+        refreshPhasesData: function() {
+            this.getProjectPhases({
+                projectId: this.$route.params.id,
+                apiParams: {
+                    page: this.phasesActivePage,
+                },
+            });
+        },
+        refreshMilestonesData: function() {
+            this.getProjectMilestones({
+                projectId: this.$route.params.id,
+                apiParams: {
+                    page: this.milestonesActivePage,
+                },
+            });
         },
     },
     computed: {
@@ -368,8 +391,8 @@ export default {
     },
     data() {
         return {
-            phasesActivePage: 0,
-            milestonesActivePage: 0,
+            phasesActivePage: 1,
+            milestonesActivePage: 1,
             projectId: this.$route.params.id,
             showDeleteMilestoneModal: false,
             showDeletePhaseModal: false,
