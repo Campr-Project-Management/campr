@@ -128,7 +128,9 @@
                                     </div>                                    
                                 </td>
                                 <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
+                                    <router-link :to="{name: 'project-phases-view-phase', params: { id: projectId, phaseId: phase.id } }">
+                                        <a href="javascript:void(0)" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
+                                    </router-link>
                                     <router-link :to="{name: 'project-phases-edit-phase', params: { id: projectId, phaseId: phase.id } }">
                                         <a href="javascript:void(0)" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
                                     </router-link>
@@ -196,7 +198,9 @@
                                     </div>                                    
                                 </td>
                                 <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
+                                    <router-link :to="{name: 'project-phases-view-milestone', params: { id: projectId, milestoneId: milestone.id } }">
+                                        <a href="javascript:void(0)" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
+                                    </router-link>
                                     <router-link :to="{name: 'project-phases-edit-milestone', params: { id: projectId, milestoneId: milestone.id } }">
                                         <a href="javascript:void(0)" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
                                     </router-link>
@@ -319,15 +323,15 @@ export default {
             this.refreshMilestonesData();
         },
         setMilestonesFilterDueDate: function(value) {
-            this.setMilestonesFiters({dueDate: value});
+            this.setMilestonesFiters({dueDate: moment(value).format('YYYY-MM-DD')});
             this.refreshMilestonesData();
         },
         setPhaseFilterStart: function(value) {
-            this.setPhasesFiters({startDate: value});
+            this.setPhasesFiters({startDate: moment(value).format('YYYY-MM-DD')});
             this.refreshPhasesData();
         },
         setPhaseFilterEnd: function(value) {
-            this.setPhasesFiters({endDate: value});
+            this.setPhasesFiters({endDate: moment(value).format('YYYY-MM-DD')});
             this.refreshPhasesData();
         },
         refreshPhasesData: function() {

@@ -75,6 +75,31 @@ class WorkPackageController extends ApiController
     }
 
     /**
+     * Retrieve phase workpackages.
+     *
+     * @Route("/{id}/by-phase", name="app_api_phase_workpackages_get", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param WorkPackage $phase
+     * @param Request     $request
+     *
+     * @return JsonResponse
+     */
+    public function byPhaseAction(Request $request, WorkPackage $phase)
+    {
+        $filters = $request->query->all();
+        $filters['phase'] = $phase;
+
+        return $this->createApiResponse(
+            $this
+                ->getDoctrine()
+                ->getRepository(WorkPackage::class)
+                ->getQueryByProjectAndFilters($phase->getProject(), $filters)
+                ->getResult()
+        );
+    }
+
+    /**
      * Edit a specific WorkPackage.
      *
      * @Route("/{id}", name="app_api_workpackage_edit", options={"expose"=true})

@@ -1,5 +1,14 @@
 <template>
     <div class="row">
+        <div class="page-section">
+            <modal v-if="showDeleteModal" @close="showDeleteModal = false">
+                <p class="modal-title">{{ translateText('message.delete_milestone') }}</p>
+                <div class="flex flex-space-between">
+                    <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="deleteMilestone()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                </div>
+            </modal>
+        </div>
         <div class="col-md-6">
             <div class="view-milestone page-section">
                 <!-- /// Header /// -->
@@ -10,38 +19,21 @@
                                 <i class="fa fa-angle-left"></i>
                                 {{ translateText('message.back_to_phases_and_milestones') }}
                             </router-link>
-                            <h1 class="title">Phase 3.1</h1>
+                            <h1 class="title">{{ milestone.name }}</h1>
 
-                            <router-link :to="{name: 'project-phases-and-milestones'}" class="parent-phase router-link-active uppercase middle-color">
-                                {{ translateText('message.parent_phase') }}
-                                <span class="second-color">Phase 3</span>
+                            <router-link v-if="milestone.phaseName" :to="{name: 'project-phases-view-phase', params:{id: projectId, phaseId: milestone.phase}}" class="parent-phase router-link-active uppercase middle-color">
+                                {{ translateText('message.parent_phaze') }}
+                                <span class="second-color">{{ milestone.phaseName }}</span>
                             </router-link>
                         </div>
-                    </div>
-
-                    <div class="flex flex-v-center">
-                        <router-link :to="{name: 'project-phases-and-milestones'}" class="btn-rounded btn-auto second-bg">
-                            {{ translateText('button.edit_milestone') }}
-                        </router-link>
-                        <router-link :to="{name: 'project-phases-and-milestones'}" class="btn-rounded btn-auto danger-bg">
-                            {{ translateText('button.delete_milestone') }}
-                        </router-link>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
 
                 <!-- /// Content /// -->
                 <div class="milestone-content">
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris id ante eu velit suscipit elementum. Curabitur dolor tellus, lacinia nec massa eu, ullamcorper consequat nulla. Nulla facilisi. Phasellus ac odio odio. Phasellus pharetra ornare velit a auctor. Nam ac lectus enim. Sed elementum placerat elit in blandit. Praesent et augue convallis, finibus tellus nec, condimentum ex. Donec viverra volutpat mauris ut interdum.
-                    </p>
-
-                    <p>
-                        In sit amet pharetra mauris, vel facilisis tellus. Curabitur sed tempor turpis. Nullam tincidunt magna vel odio malesuada lacinia. Phasellus mollis lobortis metus non bibendum. Cras ante ipsum, iaculis ut massa eget, tincidunt auctor nulla. Donec interdum lacus ac lacus euismod vehicula. Sed sed fringilla magna. Nam quis tincidunt ante. Nam ac est nunc. Curabitur eros nisi, sollicitudin sit amet tempor id, rutrum quis nunc. Sed ac leo ipsum.
-                    </p>
-
+                    {{ milestone.content }}
                     <hr>
-
                     <h3>{{ translateText('message.schedule') }}</h3>
 
                     <div class="table-wrapper">
@@ -49,21 +41,21 @@
                             <thead>
                                 <tr>
                                     <th>{{ translateText('message.schedule') }}</th>
-                                    <th>{{ translateText('button.due_date') }}</th>
+                                    <th>{{ translateText('table_header_cell.due_date') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Base</td>
-                                    <td>25.05.2017</td>
+                                    <td>{{ translateText('table_header_cell.base') }}</td>
+                                    <td>{{ milestone.scheduledFinishAt }}</td>
                                 </tr>
-                                <tr class="column-warning">
-                                    <td>Automatic</td>
-                                    <td>25.05.2017</td>
+                                <tr>
+                                    <td>{{ translateText('table_header_cell.forecast') }}</td>
+                                    <td>{{ milestone.forecastFinishAt }}</td>
                                 </tr>
-                                <tr class="column-alert">
-                                    <td>Actual</td>
-                                    <td>25.05.2017</td>
+                                <tr>
+                                    <td>{{ translateText('table_header_cell.actual') }}</td>
+                                    <td>{{ milestone.actualFinishAt }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -73,21 +65,21 @@
 
                     <div class="row responsible-status">
                         <div class="col-md-6">
-                            <h3>{{ translateText('message.responsible') }}</h3>
+                            <h3>{{ translateText('label.responsible') }}</h3>
                             <div class="user-info">
-                                <img class="user-avatar" src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" alt=""/>
+                                <img class="user-avatar" :src="milestone.responsibilityAvatar" alt=""/>
                                 <span class="uppercase">
-                                    John Doe
+                                    {{ milestone.responsibilityFullName }}
                                     <router-link :to="{name: 'project-phases-and-milestones'}" class="second-color">
-                                        @john.doe
+                                        @{{ milestone.responsibilityFullName }}
                                     </router-link>
                                 </span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <h3>{{ translateText('message.status') }}</h3>
-                            <div class="status warning-color uppercase">
-                                <span class="danger-color">overdue</span>
+                            <div class="status uppercase">
+                                <span>{{ translateText(milestone.workPackageStatusName) }}</span>
                             </div>
                         </div>
                     </div>
@@ -99,14 +91,11 @@
                         <router-link :to="{name: 'project-phases-and-milestones'}" class="btn-rounded btn-auto disable-bg">
                             {{ translateText('button.cancel') }}
                         </router-link>
-
-                        <div>
-                            <router-link :to="{name: 'project-phases-and-milestones'}" class="btn-rounded btn-auto second-bg">
+                        <div class="flex flex-v-center">
+                            <router-link :to="{name: 'project-phases-edit-milestone', params: { id: projectId, phaseId: milestone.id } }" class="btn-rounded btn-auto second-bg">
                                 {{ translateText('button.edit_milestone') }}
                             </router-link>
-                            <router-link :to="{name: 'project-phases-and-milestones'}" class="btn-rounded btn-auto danger-bg">
-                                {{ translateText('button.delete_milestone') }}
-                            </router-link>
+                            <button @click="showDeleteModal = true" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_milestone') }}</button>
                         </div>
                     </div>
                     <!-- /// End Actions /// -->
@@ -118,17 +107,77 @@
 </template>
 
 <script>
-    export default {
-        methods: {
-            translateText(text) {
-                return this.translate(text);
-            },
+import {mapGetters, mapActions} from 'vuex';
+import moment from 'moment';
+import Modal from '../../_common/Modal';
+import router from '../../../router';
+
+export default {
+    components: {
+        Modal,
+        router,
+    },
+    methods: {
+        ...mapActions(['getProjectMilestone', 'deleteProjectMilestone']),
+        translateText(text) {
+            return this.translate(text);
         },
-    };
+        getDuration: function(startDate, endDate) {
+            let end = moment(endDate);
+            let start = moment(startDate);
+
+            return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') : '-';
+        },
+        deleteMilestone: function() {
+            this.showDeleteModal = false;
+            this.deleteProjectMilestone(this.$route.params.milestoneId);
+            router.push({name: 'project-phases-and-milestones', params: {id: this.projectId}});
+        },
+    },
+    computed: mapGetters({
+        milestone: 'milestone',
+    }),
+    created() {
+        if (this.$route.params.milestoneId) {
+            this.getProjectMilestone(this.$route.params.milestoneId);
+        }
+    },
+    data() {
+        return {
+            projectId: this.$route.params.id,
+            showDeleteModal: false,
+        };
+    },
+};
 </script>
 
 <style scoped lang="scss">
+    @import '../../../css/page-section';
+
     .btn-rounded {
         margin-left: 20px;
+    }
+
+    .modal {
+        .modal-title {
+            text-transform: uppercase;
+            text-align: center;
+            font-size: 18px;
+            letter-spacing: 1.8px;
+            font-weight: 300;
+            margin-bottom: 40px;
+        }
+
+        .input-holder {
+            margin-bottom: 30px;
+        }
+
+        .main-list .member {
+            border-top: 1px solid $darkColor;
+        }
+
+        .results {
+            width: 600px;
+        }
     }
 </style>

@@ -98,7 +98,7 @@ const routes = [
                         name: 'project-task-management-list',
                     },
                     {
-                        path: 'view/:id',
+                        path: 'view/:taskId',
                         component: View,
                         name: 'project-task-management-view',
                     },
