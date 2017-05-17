@@ -681,11 +681,11 @@ label:
     select_phase: Select Phase
     created_by: Created By
     two_factor_auth: Two Factor Authentication
-    todo: To do
-    in_progress: In progress
-    code_review: Code review
-    finished: Finished
     closed: Closed
+    open: Open
+    pending: Pending
+    ongoing: Ongoing
+    completed: Completed
     asignee: asignee
     phase: Phase
     subtask_description: Subtask Description
