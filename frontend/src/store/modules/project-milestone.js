@@ -49,7 +49,7 @@ const actions = {
         }
 
         if (state.filters.dueDate) {
-            paramObject.params.actualFinishAt = state.filters.dueDate.getTime();
+            paramObject.params.dueDate = state.filters.dueDate;
         }
 
         Vue.http
