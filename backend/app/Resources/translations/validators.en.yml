@@ -72,6 +72,7 @@ not_blank:
 not_null:
     driver: You must select a driver
     filesystem: You must select a filesystem
+    company: You must select a company
 
 unique:
     name: That name is taken
