@@ -13,6 +13,7 @@ const state = {
     users: [],
     tasksFilters: [],
     allTasks: [],
+    requests: {},
 };
 
 const getters = {
@@ -22,6 +23,7 @@ const getters = {
     taskStatuses: state => state.taskStatuses,
     tasksByStatuses: state => state.tasksByStatuses,
     allTasks: state => state.allTasks,
+    requests: state => state.requests,
 };
 
 const actions = {
@@ -71,7 +73,7 @@ const actions = {
             .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
                 params: {
                     'type': 2,
-                    'pageSize': 2,
+                    'pageSize': 1,
                 },
             })
             .then((response) => {
@@ -102,7 +104,7 @@ const actions = {
                     'status': statusId,
                     'type': 2,
                     'page': page,
-                    'pageSize': 2,
+                    'pageSize': 1,
                     projectUser,
                     colorStatus,
                     searchString,
@@ -173,7 +175,6 @@ const actions = {
             }, (response) => {
                 if (response.status === 400) {
                     // implement system to display errors
-                    console.log(response.data);
                 }
             });
     },
@@ -329,6 +330,7 @@ const mutations = {
      */
     [types.SET_TASKS_BY_STATUS](state, {tasksByStatus, statusId}) {
         state.tasksByStatuses[statusId].items = state.tasksByStatuses[statusId].items.concat(tasksByStatus.items);
+        state.tasksByStatuses[statusId].totalItems = tasksByStatus.totalItems;
     },
     /**
      * Sets task statuses to state

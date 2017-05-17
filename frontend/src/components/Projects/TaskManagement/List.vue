@@ -88,7 +88,7 @@ export default {
             Vue.http
             .get(Routing.generate('app_api_project_project_users', {id: statusId})).then((response) => {
                 if (response.status === 200) {
-                    this.users = response.data.map((item) => ({label: item.userFullName, key: item.id}));
+                    this.users = response.data.items.map((item) => ({label: item.userFullName, key: item.id}));
                     this.users.unshift({label: 'Asignee', key: null});
                 }
             }, (response) => {
