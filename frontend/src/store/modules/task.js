@@ -202,7 +202,6 @@ const actions = {
                     alert('Validation issues');
                     if (response.status === 400) {
                         // implement system to dispay errors
-                        // console.log(response.data);
                     }
                 }
             );
