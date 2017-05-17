@@ -5,6 +5,7 @@ namespace AppBundle\Tests\Controller\Admin;
 use AppBundle\Entity\Media;
 use AppBundle\Entity\FileSystem as FileSystemEntity;
 use AppBundle\Entity\Project;
+use AppBundle\Entity\Company;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
@@ -84,10 +85,16 @@ class MediaControllerTest extends BaseController
         $fd->fwrite('Test document');
         $fd->fflush();
 
+        $company = (new Company())
+            ->setName('company4')
+        ;
+
         $project = (new Project())
             ->setName('project4')
             ->setNumber('project-number-4')
+            ->setCompany($company)
         ;
+
         $fileSystem = (new FileSystemEntity())
             ->setName('fs_test')
             ->setProject($project)
@@ -95,6 +102,7 @@ class MediaControllerTest extends BaseController
             ->setConfig(['path' => $container->getParameter('media_upload_folder_test').'/fs'])
         ;
 
+        $this->em->persist($company);
         $this->em->persist($project);
         $this->em->persist($fileSystem);
 
@@ -130,6 +138,15 @@ class MediaControllerTest extends BaseController
         ;
         $this->em->remove($project);
 
+        $company = $this
+            ->em
+            ->getRepository(Company::class)
+            ->findOneBy([
+                'name' => 'company4',
+            ])
+        ;
+        $this->em->remove($company);
+
         $fileSystem = $this
             ->em
             ->getRepository(FileSystemEntity::class)
@@ -157,9 +174,14 @@ class MediaControllerTest extends BaseController
 
         $container = self::$kernel->getContainer();
 
+        $company = (new Company())
+            ->setName('company4')
+        ;
+
         $project = (new Project())
             ->setName('project4')
             ->setNumber('project-number-4')
+            ->setCompany($company)
         ;
         $fileSystem = (new FileSystemEntity())
             ->setName('fs_test')
@@ -216,6 +238,15 @@ class MediaControllerTest extends BaseController
             ])
         ;
         $this->em->remove($project);
+
+        $company = $this
+            ->em
+            ->getRepository(Company::class)
+            ->findOneBy([
+                'name' => 'company4',
+            ])
+        ;
+        $this->em->remove($company);
 
         $fileSystem = $this
             ->em
