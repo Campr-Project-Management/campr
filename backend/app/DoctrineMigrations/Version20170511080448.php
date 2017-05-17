@@ -18,6 +18,7 @@ class Version20170511080448 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
+        $this->addSql('UPDATE project SET company_id = (SELECT id FROM company ORDER BY RAND() LIMIT 1) WHERE company_id IS NULL');
         $this->addSql('ALTER TABLE project CHANGE company_id company_id INT NOT NULL');
     }
 
