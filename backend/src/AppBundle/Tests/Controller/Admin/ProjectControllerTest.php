@@ -4,6 +4,7 @@ namespace AppBundle\Tests\Controller\Admin;
 
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectUser;
+use AppBundle\Entity\Company;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -100,6 +101,7 @@ class ProjectControllerTest extends BaseController
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[name]'] = 'project3';
         $form['create[number]'] = 'project-number-3';
+        $form['create[company]'] = 1;
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -131,9 +133,16 @@ class ProjectControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
+        $company = $this
+            ->em
+            ->getRepository(Company::class)
+            ->find(1)
+        ;
+
         $project = (new Project())
             ->setName('project4')
             ->setNumber('project-number-4')
+            ->setCompany($company)
         ;
         $this->em->persist($project);
         $this->em->flush();
