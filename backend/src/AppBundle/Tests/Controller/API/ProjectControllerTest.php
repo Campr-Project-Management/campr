@@ -823,6 +823,7 @@ class ProjectControllerTest extends BaseController
                         'users' => [
                             [
                                 'roles' => ['ROLE_USER'],
+                                'isAdmin' => false,
                                 'gravatar' => '',
                                 'id' => 7,
                                 'username' => 'user10',
@@ -867,6 +868,7 @@ class ProjectControllerTest extends BaseController
                         'users' => [
                             [
                                 'roles' => ['ROLE_USER'],
+                                'isAdmin' => false,
                                 'gravatar' => '',
                                 'id' => 7,
                                 'username' => 'user10',
@@ -1987,6 +1989,7 @@ class ProjectControllerTest extends BaseController
                             'users' => [
                                 [
                                     'roles' => ['ROLE_USER'],
+                                    'isAdmin' => false,
                                     'gravatar' => '',
                                     'id' => 7,
                                     'username' => 'user10',
@@ -2031,6 +2034,7 @@ class ProjectControllerTest extends BaseController
                             'users' => [
                                 [
                                     'roles' => ['ROLE_USER'],
+                                    'isAdmin' => false,
                                     'gravatar' => '',
                                     'id' => 7,
                                     'username' => 'user10',
