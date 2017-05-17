@@ -45,6 +45,7 @@ export default {
                 statusId: this.status.id,
                 page: this.page,
                 callback: () => {
+                    // console.log(this.tasksByStatuses[this.status.id].items, tasksByStatuses[this.status.id].totalItems);
                     this.$refs[infiniteLoadingRef].$emit('$InfiniteLoading:loaded');
                     if(this.tasksByStatuses[this.status.id].items.length >= this.tasksByStatuses[this.status.id].totalItems) {
                         // every task has been loaded in the store (length of array equals to totalItems)
