@@ -3,7 +3,7 @@
         <div class="task-box box" v-bind:class="'border-color-' + task.id">
             <div class="box-header">
                 <div v-if="task.responsibility" class="user-info flex flex-v-center">
-                    <img class="user-avatar" :src="task.responsibilityAvatar" :alt="user.name"/>
+                    <img class="user-avatar" :src="task.responsibilityAvatar" :alt="task.responsibilityFullName"/>
                     <p>{{ task.responsibilityFullName }}</p>
                 </div>
                 <h2><router-link to="" class="simple-link">{{ task.name }}</router-link></h2>
@@ -14,8 +14,10 @@
             </div>
             <div class="content">
                 <div class="info">
-                    <div class="plan">
-                        <a href="#path-to-phase" title="View phase.name">{{ task.phase }}</a> > <a href="#path-to-milestone" title="View milestone.name">{{ task.milestone }}</a>
+                    <div class="plan" v-if="task.phase || task.milestone">
+                        <a href="#path-to-phase" title="View phase.name" v-if="task.phase">{{ task.phaseName }}</a>
+                        <span v-if="task.phase && task.milestone"> > </span>
+                        <a href="#path-to-milestone" title="View milestone.name" v-if="task.milestone">{{ task.milestoneName }}</a>
                     </div>
                     <div class="task-range-slider">
                         <div class="task-range-slider-title">Schedule</div>
