@@ -5,6 +5,7 @@ import router from '../../router';
 const state = {
     currentItem: {},
     items: [],
+    totalItems: 0,
     filteredItems: [],
     filters: [],
     taskStatuses: [],
@@ -16,8 +17,8 @@ const state = {
 
 const getters = {
     task: state => state.currentItem,
-    tasks: state => state.filteredItems.items,
-    count: state => state.filteredItems.totalItems,
+    tasks: state => state.items,
+    count: state => state.totalItems,
     taskStatuses: state => state.taskStatuses,
     tasksByStatuses: state => state.tasksByStatuses,
     allTasks: state => state.allTasks,
@@ -32,7 +33,7 @@ const actions = {
     getRecentTasks({commit}, page) {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
-            .get(Routing.generate('app_api_workpackage_list'), {'recent': true, 'page': page}).then((response) => {
+            .get(Routing.generate('app_api_workpackage_list', {'recent': true, 'page': page})).then((response) => {
                 if (response.status === 200) {
                     let tasks = response.data;
                     commit(types.SET_TASKS, {tasks});
@@ -49,7 +50,7 @@ const actions = {
     getTasks({commit}, page) {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
-            .get(Routing.generate('app_api_workpackage_list'), {'page': page}).then((response) => {
+            .get(Routing.generate('app_api_workpackage_list', {'page': page})).then((response) => {
                 if (response.status === 200) {
                     let tasks = response.data;
                     commit(types.SET_TASKS, {tasks});
@@ -304,7 +305,12 @@ const mutations = {
      * @param {array} tasks
      */
     [types.SET_TASKS](state, {tasks}) {
-        state.items = tasks;
+        // state.items = {
+        //     items: tasks.items,
+        //     totalNumber: tasks.totalNumber,
+        // };
+        state.items = tasks.items;
+        state.totalItems = tasks.totalItems;
         state.filteredItems = JSON.parse(JSON.stringify(tasks));
     },
     /**
