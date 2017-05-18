@@ -17,16 +17,17 @@ const getters = {
     projectSponsors: state => state.sponsors,
     projectManagers: state => state.managers,
     projectUsersForSelect: state => {
+        let usersSelect = [];
         if (state.items && state.items.items) {
-            return state.items.items.map(item => {
+            usersSelect = state.items.items.map(item => {
                 return {
                     'key': item.user,
                     'label': item.userFullName,
                 };
             });
-        } else {
-            return [];
         }
+        usersSelect.unshift({label: Vue.translate('label.responsible'), key: null});
+        return usersSelect;
     },
     managersForSelect: state => state.managers.map(item => {
         return {
