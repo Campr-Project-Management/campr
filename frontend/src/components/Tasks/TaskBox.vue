@@ -28,8 +28,8 @@
                     <div class="task-range-slider">
                         <div class="task-range-slider-title">Costs</div>
                         <task-range-slider class="base" id="costsBase" message="Base" min="0" max="10000" from="10000" type="single"></task-range-slider>
-                        <task-range-slider class="forecast" id="costsBase" message="Forecast" min="0" max="10000" from="9000" type="single"></task-range-slider>
-                        <task-range-slider class="actual" id="costsBase" message="Actual" min="0" max="10000" from="7500" type="single"></task-range-slider>
+                        <task-range-slider class="forecast" id="costsForecast" message="Forecast" min="0" max="10000" from="9000" type="single"></task-range-slider>
+                        <task-range-slider class="actual" id="costsActual" message="Actual" min="0" max="10000" from="7500" type="single"></task-range-slider>
                     </div>
                 </div>
             </div>
