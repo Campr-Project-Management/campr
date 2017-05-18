@@ -53,6 +53,9 @@ export default {
         emitOnMount: {
             default: true,
         },
+        modelChanged: {
+            default: null,
+        },
     },
 
     data() {
@@ -69,6 +72,9 @@ export default {
 
     watch: {
         enabled(val) {
+            if(this.modelChanged) {
+                this.modelChanged(val);
+            }
             this.$emit('input', val);
         },
 
