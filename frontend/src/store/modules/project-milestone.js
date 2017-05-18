@@ -7,7 +7,7 @@ const state = {
     currentItem: {},
     totalItems: 0,
     filters: {},
-    currentItem: {},
+    allItems: [],
 };
 
 const getters = {
@@ -22,6 +22,7 @@ const getters = {
             };
         });
     },
+    allProjectMilestones: state => state.allItems,
 };
 
 const actions = {
@@ -59,6 +60,9 @@ const actions = {
                 if (response.status === 200) {
                     let milestones = response.data;
                     commit(types.SET_PROJECT_MILESTONES, {milestones});
+                    if (!apiParams) {
+                        commit(types.SET_ALL_PROJECT_MILESTONES, {milestones});
+                    }
                 }
             }, (response) => {
             });
@@ -161,6 +165,9 @@ const mutations = {
             return item.id !== id ? true : false;
         });
         state.items.totalItems--;
+    },
+    [types.SET_ALL_PROJECT_MILESTONES](state, {milestones}) {
+        state.allItems = milestones;
     },
 };
 
