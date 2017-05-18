@@ -1,4 +1,7 @@
 message:
+    parent_phase: Parent Phase
+    first_task: First Task
+    last_task: Last Task
     project_phases: Project Phases
     phase_responsible: Phase Responsble:
     milestone_responsible: Milestone Responsble:
@@ -726,6 +729,8 @@ label:
     subteam_roles: Subteam Roles
 
 button:
+    delete_phase: Delete Phase
+    delete_milestone: Delete Milestone
     add_new_phase: Add New Phase
     add_new_milestone: Add New Milestone
     add_new_team_members: Add New Team Members
@@ -920,6 +925,7 @@ placeholder:
     gplus: Google Plus
 
 table_header_cell:
+    automatic: Automatic
     base_due_date: Base Due Date
     forecast_due_date: Forecast Due Date
     actual_due_date: Actual Due Date
@@ -1081,6 +1087,7 @@ table_header_cell:
     parent: Parent
     children: Children
     duration: Duration
+    duration_in_days: Duration in days
     lead_checked: Is Lead
     lead_not_checked: Is Not Lead
     payment_method: Payment Method
