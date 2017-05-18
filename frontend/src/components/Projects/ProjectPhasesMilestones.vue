@@ -262,6 +262,9 @@ export default {
                 page: 1,
             },
         });
+        this.getProjectMilestones({
+            projectId: this.$route.params.id,
+        });
     },
     methods: {
         ...mapActions([
@@ -355,6 +358,8 @@ export default {
         ...mapGetters({
             projectPhases: 'projectPhases',
             projectMilestones: 'projectMilestones',
+            allProjectMilestones: 'allProjectMilestones',
+            allProjectPhases: 'allProjectPhases',
         }),
         phasesPages: function() {
             return Math.ceil(this.projectPhases.totalItems / 4);
@@ -364,8 +369,8 @@ export default {
         },
         pmData: function() {
             let items = [];
-            if (this.projectPhases && this.projectPhases.items) {
-                items = items.concat(this.projectPhases.items.map((item) => {
+            if (this.allProjectPhases && this.allProjectPhases.items) {
+                items = items.concat(this.allProjectPhases.items.map((item) => {
                     return {
                         id: item.id,
                         group: 0,
@@ -378,8 +383,8 @@ export default {
                 }));
             }
 
-            if (this.projectMilestones && this.projectMilestones.items) {
-                items = items.concat(this.projectMilestones.items.map((item) => {
+            if (this.allProjectMilestones && this.allProjectMilestones.items) {
+                items = items.concat(this.allProjectMilestones.items.map((item) => {
                     return {
                         id: item.id,
                         group: 1,
