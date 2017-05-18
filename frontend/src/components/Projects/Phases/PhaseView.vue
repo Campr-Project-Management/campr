@@ -1,5 +1,14 @@
 <template>
     <div class="row">
+        <div class="page-section">
+            <modal v-if="showDeleteModal" @close="showDeleteModal = false">
+                <p class="modal-title">{{ translateText('message.delete_phase') }}</p>
+                <div class="flex flex-space-between">
+                    <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="deletePhase()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                </div>
+            </modal>
+        </div>
         <div class="col-md-6">
             <div class="view-phase page-section">
                 <!-- /// Header /// -->
@@ -10,89 +19,72 @@
                                 <i class="fa fa-angle-left"></i>
                                 {{ translateText('message.back_to_phases_and_milestones') }}
                             </router-link>
-                            <h1 class="title">Phase 3.1</h1>
+                            <h1 class="title">{{ phase.name }}</h1>
 
-                            <router-link :to="{name: 'project-phases-and-milestones'}" class="parent-phase router-link-active uppercase middle-color">
+                            <router-link v-if="phase.parent" :to="{name: 'project-phases-view-phase', params:{id: projectId, phaseId: phase.parent}}" class="parent-phase router-link-active uppercase middle-color">
                                 {{ translateText('message.parent_phaze') }}
-                                <span class="second-color">Phase 3</span>
+                                <span class="second-color">{{ phase.parentName }}</span>
                             </router-link>
                         </div>
-                    </div>
-
-                    <div class="flex flex-v-center">
-                        <router-link :to="{name: 'project-phases-and-milestones'}" class="btn-rounded btn-auto second-bg">
-                            {{ translateText('button.edit_phase') }}
-                        </router-link>
-                        <router-link :to="{name: 'project-phases-and-milestones'}" class="btn-rounded btn-auto danger-bg">
-                            {{ translateText('button.delete_phase') }}
-                        </router-link>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
 
                 <!-- /// Content /// -->
                 <div class="phase-content">
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris id ante eu velit suscipit elementum. Curabitur dolor tellus, lacinia nec massa eu, ullamcorper consequat nulla. Nulla facilisi. Phasellus ac odio odio. Phasellus pharetra ornare velit a auctor. Nam ac lectus enim. Sed elementum placerat elit in blandit. Praesent et augue convallis, finibus tellus nec, condimentum ex. Donec viverra volutpat mauris ut interdum.
-                    </p>
-
-                    <p>
-                        In sit amet pharetra mauris, vel facilisis tellus. Curabitur sed tempor turpis. Nullam tincidunt magna vel odio malesuada lacinia. Phasellus mollis lobortis metus non bibendum. Cras ante ipsum, iaculis ut massa eget, tincidunt auctor nulla. Donec interdum lacus ac lacus euismod vehicula. Sed sed fringilla magna. Nam quis tincidunt ante. Nam ac est nunc. Curabitur eros nisi, sollicitudin sit amet tempor id, rutrum quis nunc. Sed ac leo ipsum.
-                    </p>
-
+                    {{ phase.content }}
                     <hr>
-
                     <h3>{{ translateText('message.schedule') }}</h3>
 
                     <div class="table-wrapper">
                         <table class="table table-striped table-responsive">
                             <thead>
                                 <tr>
-                                    <th>{{ translateText('message.schedule') }}</th>
-                                    <th>{{ translateText('message.start') }}</th>
-                                    <th>{{ translateText('button.finish') }}</th>
-                                    <th>{{ translateText('button.duration_in_days') }}</th>
+                                    <th>{{ translateText('table_header_cell.schedule') }}</th>
+                                    <th>{{ translateText('table_header_cell.start') }}</th>
+                                    <th>{{ translateText('table_header_cell.finish') }}</th>
+                                    <th>{{ translateText('table_header_cell.duration_in_days') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Automatic</td>
-                                    <td>25.05.2017</td>
-                                    <td>25.06.2017</td>
-                                    <td>60</td>
+                                <tr v-if="phase.automaticSchedule">
+                                    <td>{{ translateText('table_header_cell.automatic') }}</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
                                 </tr>
                                 <tr>
-                                    <td>Automatic</td>
-                                    <td>25.05.2017</td>
-                                    <td>25.06.2017</td>
-                                    <td>60</td>
-                                </tr>
-                                <tr class="column-warning">
-                                    <td>Automatic</td>
-                                    <td>25.05.2017</td>
-                                    <td>25.06.2017</td>
-                                    <td>60</td>
+                                    <td>{{ translateText('table_header_cell.base') }}</td>
+                                    <td>{{ phase.scheduledStartAt }}</td>
+                                    <td>{{ phase.scheduledFinishAt }}</td>
+                                    <td>{{ getDuration(phase.scheduledStartAt, phase.scheduledFinishAt) }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Automatic</td>
-                                    <td>25.05.2017</td>
-                                    <td>25.06.2017</td>
-                                    <td>60</td>
+                                    <td>{{ translateText('table_header_cell.forecast') }}</td>
+                                    <td>{{ phase.forecastStartAt }}</td>
+                                    <td>{{ phase.forecastFinishAt }}</td>
+                                    <td>{{ getDuration(phase.forecastStartAt, phase.forecastFinishAt) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ translateText('table_header_cell.actual') }}</td>
+                                    <td>{{ phase.actualStartAt }}</td>
+                                    <td>{{ phase.actualFinishAt }}</td>
+                                    <td>{{ getDuration(phase.actualStartAt, phase.actualFinishAt) }}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <h3>
+                    <h3 v-if="phaseWorkPackages.length > 0">
                         {{ translateText('message.first_task') }}:
-                        <router-link :to="{name: 'project-phases-and-milestones'}" class="second-color uppercase">
-                            <strong>Build self landing legs</strong>
+                        <router-link :to="{name: 'project-task-management-view', params: { id: projectId, taskId: phaseWorkPackages[0].id }}" class="second-color uppercase">
+                            <strong>{{ phaseWorkPackages[0].name }}</strong>
                         </router-link>
                     </h3>
-                    <h3>
+                    <h3 v-if="phaseWorkPackages.length > 1">
                         {{ translateText('message.last_task') }}:
-                        <router-link :to="{name: 'project-phases-and-milestones'}" class="second-color uppercase">
-                            <strong>Auto landing final test</strong>
+                        <router-link :to="{name: 'project-task-management-view', params: { id: projectId, taskId: phaseWorkPackages[phaseWorkPackages.length-1].id }}" class="second-color uppercase">
+                            <strong>{{ phaseWorkPackages[phaseWorkPackages.length-1].name }}</strong>
                         </router-link>
                     </h3>
 
@@ -100,21 +92,21 @@
 
                     <div class="row responsible-status">
                         <div class="col-md-6">
-                            <h3>{{ translateText('message.responsible') }}</h3>
+                            <h3>{{ translateText('label.responsible') }}</h3>
                             <div class="user-info">
-                                <img class="user-avatar" src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" alt=""/>
+                                <img class="user-avatar" :src="phase.responsibilityAvatar" alt=""/>
                                 <span class="uppercase">
-                                    John Doe
+                                    {{ phase.responsibilityFullName }}
                                     <router-link :to="{name: 'project-phases-and-milestones'}" class="second-color">
-                                        @john.doe
+                                        @{{ phase.responsibilityFullName }}
                                     </router-link>
                                 </span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <h3>{{ translateText('message.status') }}</h3>
-                            <div class="status warning-color uppercase">
-                                <span>on hold</span>
+                            <div class="status uppercase">
+                                <span>{{ translateText(phase.workPackageStatusName) }}</span>
                             </div>
                         </div>
                     </div>
@@ -126,14 +118,11 @@
                         <router-link :to="{name: 'project-phases-and-milestones'}" class="btn-rounded btn-auto disable-bg">
                             {{ translateText('button.cancel') }}
                         </router-link>
-
-                        <div>
-                            <router-link :to="{name: 'project-phases-and-milestones'}" class="btn-rounded btn-auto second-bg">
+                        <div class="flex flex-v-center">
+                            <router-link :to="{name: 'project-phases-edit-phase', params: { id: projectId, phaseId: phase.id } }" class="btn-rounded btn-auto second-bg">
                                 {{ translateText('button.edit_phase') }}
                             </router-link>
-                            <router-link :to="{name: 'project-phases-and-milestones'}" class="btn-rounded btn-auto danger-bg">
-                                {{ translateText('button.delete_phase') }}
-                            </router-link>
+                            <button @click="showDeleteModal = true" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_phase') }}</button>
                         </div>
                     </div>
                     <!-- /// End Actions /// -->
@@ -145,17 +134,84 @@
 </template>
 
 <script>
-    export default {
-        methods: {
-            translateText(text) {
-                return this.translate(text);
-            },
+import {mapGetters, mapActions} from 'vuex';
+import moment from 'moment';
+import Modal from '../../_common/Modal';
+import router from '../../../router';
+
+export default {
+    components: {
+        Modal,
+        router,
+    },
+    methods: {
+        ...mapActions(['getProjectPhase', 'deleteProjectPhase', 'getPhaseWorkpackages']),
+        translateText(text) {
+            return this.translate(text);
         },
-    };
+        getDuration: function(startDate, endDate) {
+            let end = moment(endDate);
+            let start = moment(startDate);
+
+            return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') : '-';
+        },
+        deletePhase: function() {
+            this.showDeleteModal = false;
+            this.deleteProjectPhase(this.$route.params.phaseId);
+            router.push({name: 'project-phases-and-milestones', params: {id: this.projectId}});
+        },
+    },
+    computed: mapGetters({
+        phase: 'phase',
+        phaseWorkPackages: 'phaseWorkPackages',
+    }),
+    created() {
+        if (this.$route.params.phaseId) {
+            this.getProjectPhase(this.$route.params.phaseId);
+            this.getPhaseWorkpackages({
+                id: this.$route.params.phaseId,
+                type: 2,
+                orderBy: 'scheduledStartAt',
+                order: 'ASC',
+            });
+        }
+    },
+    data() {
+        return {
+            projectId: this.$route.params.id,
+            showDeleteModal: false,
+        };
+    },
+};
 </script>
 
 <style scoped lang="scss">
+    @import '../../../css/page-section';
+
     .btn-rounded {
         margin-left: 20px;
+    }
+
+    .modal {
+        .modal-title {
+            text-transform: uppercase;
+            text-align: center;
+            font-size: 18px;
+            letter-spacing: 1.8px;
+            font-weight: 300;
+            margin-bottom: 40px;
+        }
+
+        .input-holder {
+            margin-bottom: 30px;
+        }
+
+        .main-list .member {
+            border-top: 1px solid $darkColor;
+        }
+
+        .results {
+            width: 600px;
+        }
     }
 </style>
