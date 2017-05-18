@@ -269,7 +269,7 @@ export default {
     methods: {
         ...mapActions([
             'getProjectPhases', 'getProjectMilestones',
-            'setPhasesFiters', 'setMilestonesFiters', 'deleteProjectPhase',
+            'setPhasesFilters', 'setMilestonesFilters', 'deleteProjectPhase',
             'deleteProjectMilestone',
         ]),
         getDuration: function(startDate, endDate) {
@@ -306,35 +306,35 @@ export default {
             this.deleteProjectMilestone(this.milestoneId);
         },
         setPhasesFilterStatus: function(value) {
-            this.setPhasesFiters({status: value});
+            this.setPhasesFilters({status: value});
             this.refreshPhasesData();
         },
         setPhaseFilterResponsible: function(value) {
-            this.setPhasesFiters({responsible: value});
+            this.setPhasesFilters({responsible: value});
             this.refreshPhasesData();
         },
         setMilestonesFilterStatus: function(value) {
-            this.setMilestonesFiters({status: value});
+            this.setMilestonesFilters({status: value});
             this.refreshMilestonesData();
         },
         setMilestonesFilterResponsible: function(value) {
-            this.setMilestonesFiters({responsible: value});
+            this.setMilestonesFilters({responsible: value});
             this.refreshMilestonesData();
         },
         setMilestonesFilterPhase: function(value) {
-            this.setMilestonesFiters({phase: value});
+            this.setMilestonesFilters({phase: value});
             this.refreshMilestonesData();
         },
         setMilestonesFilterDueDate: function(value) {
-            this.setMilestonesFiters({dueDate: moment(value).format('YYYY-MM-DD')});
+            this.setMilestonesFilters({dueDate: value ? moment(value).format('YYYY-MM-DD') : null});
             this.refreshMilestonesData();
         },
         setPhaseFilterStart: function(value) {
-            this.setPhasesFiters({startDate: moment(value).format('YYYY-MM-DD')});
+            this.setPhasesFilters({startDate: value ? moment(value).format('YYYY-MM-DD') : null});
             this.refreshPhasesData();
         },
         setPhaseFilterEnd: function(value) {
-            this.setPhasesFiters({endDate: moment(value).format('YYYY-MM-DD')});
+            this.setPhasesFilters({endDate: value ? moment(value).format('YYYY-MM-DD') : null});
             this.refreshPhasesData();
         },
         refreshPhasesData: function() {

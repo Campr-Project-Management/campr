@@ -5,7 +5,7 @@
             <div class="flex flex-space-between dates">
                 <div class="input-holder right">
                     <label class="active">{{ translateText('label.due_date') }}</label>
-                    <datepicker v-model="dueDate" format="dd - MM - yyyy" :value="dueDate"></datepicker>
+                    <datepicker @cleared="clearDueDate()" v-bind:clear-button="true" v-model="dueDate" format="dd - MM - yyyy" :value="dueDate"></datepicker>
                     <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                 </div>
             </div>
@@ -53,6 +53,9 @@ export default {
         ...mapActions(['getTaskStatuses', 'getProjectUsers', 'getProjectPhases']),
         translateText: function(text) {
             return this.translate(text);
+        },
+        clearDueDate: function() {
+            this.dueDate = null;
         },
     },
     data() {
