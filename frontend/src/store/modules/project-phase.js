@@ -16,15 +16,17 @@ const getters = {
     phase: state => state.currentItem,
     phaseWorkPackages: state => state.phaseWorkPackages,
     projectPhasesForSelect: state => {
-        if (state.allItems.items === undefined) {
-            return [];
+        let phaseSelect = [];
+        if (state.allItems && state.allItems.items) {
+            phaseSelect = state.allItems.items.map(item => {
+                return {
+                    'key': item.id,
+                    'label': item.name,
+                };
+            });
         }
-        return state.allItems.items.map(item => {
-            return {
-                'key': item.id,
-                'label': item.name,
-            };
-        });
+        phaseSelect.unshift({label: Vue.translate('label.phase'), key: null});
+        return phaseSelect;
     },
 };
 
@@ -51,7 +53,7 @@ const actions = {
             paramObject.params.status = state.filters.status;
         }
         if (state.filters && state.filters.responsible) {
-            paramObject.params.responsible = state.filters.responsible;
+            paramObject.params.projectUser = state.filters.responsible;
         }
         Vue.http
             .get(Routing.generate('app_api_project_phases', {'id': projectId}),
@@ -115,7 +117,7 @@ const actions = {
             }, (response) => {
             });
     },
-    setPhasesFiters({commit}, filters) {
+    setPhasesFilters({commit}, filters) {
         commit(types.SET_PHASES_FILTERS, {filters});
     },
     /**
