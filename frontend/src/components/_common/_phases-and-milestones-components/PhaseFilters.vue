@@ -5,17 +5,17 @@
             <div class="flex flex-space-between dates">
                 <div class="input-holder left">
                     <label class="active">{{ translateText('message.start_date') }}</label>
-                    <datepicker v-model="startDate" format="dd - MM - yyyy" :value="startDate"></datepicker>
+                    <datepicker @cleared="clearStart()" v-bind:clear-button="true"  v-model="startDate" format="dd - MM - yyyy" :value="startDate"></datepicker>
                     <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                 </div>
                 <div class="input-holder left">
                     <label class="active">{{ translateText('message.finish_date') }}</label>
-                    <datepicker v-model="endDate" format="dd - MM - yyyy" :value="endDate"></datepicker>
+                    <datepicker @cleared="clearEnd()" v-bind:clear-button="true" v-model="endDate" format="dd - MM - yyyy" :value="endDate"></datepicker>
                     <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                 </div>
             </div>
-            <dropdown :selectedValue="selectedStatusValue" filter="status" item="phase" :title="'Status'" :options="statusesLabel"></dropdown>
-            <dropdown :selectedValue="selectResponsible" v-bind:title="'Responsible'" item="phase" filter="responsible" :options="projectUsersForSelect"></dropdown>
+            <dropdown :selectedValue="selectedStatusValue" filter="status" item="phase" :title="translateText('message.status')" :options="statusesLabel"></dropdown>
+            <dropdown :selectedValue="selectedResponsible" filter="responsible" item="phase" :title="translateText('label.responsible')" :options="projectUsersForSelect"></dropdown>
         </div>
     </div>
 </template>
@@ -44,7 +44,7 @@ export default {
         }),
         statusesLabel: function() {
             let statuses = this.taskStatuses.map(item => ({label: this.translate(item.name), key: item.id}));
-            statuses.unshift({label: 'Status', key: null});
+            statuses.unshift({label: this.translate('message.status'), key: null});
             return statuses;
         },
     },
@@ -53,8 +53,17 @@ export default {
         selectedStatusValue: function(value) {
             this.selectStatus(value);
         },
+        selectedResponsible: function(value) {
+            this.selectResponsible(value);
+        },
         translateText: function(text) {
             return this.translate(text);
+        },
+        clearStart: function() {
+            this.startDate = null;
+        },
+        clearEnd: function() {
+            this.endDate = null;
         },
     },
     data() {
