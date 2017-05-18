@@ -42,7 +42,7 @@ const actions = {
         }
 
         if (state.filters.responsible) {
-            paramObject.params.responsible = state.filters.responsible;
+            paramObject.params.projectUser = state.filters.responsible;
         }
 
         if (state.filters.phase) {
@@ -130,7 +130,7 @@ const actions = {
             }, (response) => {
             });
     },
-    setMilestonesFiters({commit}, filters) {
+    setMilestonesFilters({commit}, filters) {
         commit(types.SET_MILESTONES_FILTERS, {filters});
     },
 };
