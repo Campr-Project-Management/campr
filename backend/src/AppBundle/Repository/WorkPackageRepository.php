@@ -26,6 +26,13 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('user', $user)
         ;
 
+        if (isset($filters['type'])) {
+            $qb
+                ->andWhere('wp.type = :type')
+                ->setParameter('type', $filters['type'])
+            ;
+        }
+
         if (isset($filters['recent'])) {
             $startDate = new \DateTime('first day of this month');
             $endDate = new \DateTime('last day of this month');
@@ -340,6 +347,25 @@ class WorkPackageRepository extends BaseRepository
         return $qb->getQuery();
     }
 
+    public function getForProjectSchedule(Project $project)
+    {
+        $baseStart = $this->getQueryByProjectAndFilters($project, ['orderBy' => 'scheduledStartAt', 'order' => 'ASC'])->getResult();
+        $baseFinish = $this->getQueryByProjectAndFilters($project, ['orderBy' => 'scheduledFinishAt', 'order' => 'DESC'])->getResult();
+        $forecastStart = $this->getQueryByProjectAndFilters($project, ['orderBy' => 'forecastStartAt', 'order' => 'ASC'])->getResult();
+        $forecastFinish = $this->getQueryByProjectAndFilters($project, ['orderBy' => 'forecastFinishAt', 'order' => 'DESC'])->getResult();
+        $actualStart = $this->getQueryByProjectAndFilters($project, ['orderBy' => 'actualStartAt', 'order' => 'ASC'])->getResult();
+        $actualFinish = $this->getQueryByProjectAndFilters($project, ['orderBy' => 'actualFinishAt', 'order' => 'DESC'])->getResult();
+
+        return [
+            'base_start' => !empty($baseStart) ? $baseStart[0] : null,
+            'base_finish' => !empty($baseFinish) ? $baseFinish[0] : null,
+            'forecast_start' => !empty($forecastStart) ? $forecastStart[0] : null,
+            'forecast_finish' => !empty($forecastFinish) ? $forecastFinish[0] : null,
+            'actual_start' => !empty($actualStart) ? $actualStart[0] : null,
+            'actual_finish' => !empty($actualFinish) ? $actualFinish[0] : null,
+        ];
+    }
+
     /**
      * counts all workpackages for a give type.
      *
@@ -347,15 +373,29 @@ class WorkPackageRepository extends BaseRepository
      *
      * @return int
      */
-    public function countTotalByType($type)
+    public function countTotalByTypeProjectAndStatus($type, Project $project = null, WorkPackageStatus $status = null)
     {
-        return $this
+        $qb = $this
             ->createQueryBuilder('wp')
             ->select('COUNT(wp.id)')
             ->andWhere('wp.type = :type')
             ->setParameter('type', $type)
-            ->getQuery()
-            ->getSingleScalarResult()
         ;
+
+        if ($project) {
+            $qb
+                ->andWhere('wp.project = :project')
+                ->setParameter('project', $project)
+            ;
+        }
+
+        if ($status) {
+            $qb
+                ->andWhere('wp.workPackageStatus = :status')
+                ->setParameter('status', $status)
+            ;
+        }
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 }
