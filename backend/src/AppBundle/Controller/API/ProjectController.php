@@ -1117,6 +1117,37 @@ class ProjectController extends ApiController
     }
 
     /**
+     * @Route("/{id}/schedule", name="app_api_project_schedule", options={"expose"=true})
+     * @Method({"GET"})
+     */
+    public function scheduleAction(Project $project)
+    {
+        return $this->createApiResponse(
+            $this
+                ->getDoctrine()
+                ->getRepository(WorkPackage::class)
+                ->getForProjectSchedule($project)
+        );
+    }
+
+    /**
+     * @Route("/{id}/tasks-status", name="app_api_project_tasks_status", options={"expose"=true})
+     * @Method({"GET"})
+     */
+    public function tasksStatusAction(Project $project)
+    {
+        $response = [];
+        $statuses = $this->getDoctrine()->getRepository(WorkPackageStatus::class)->findAll();
+        $wpRepo = $this->getDoctrine()->getRepository(WorkPackage::class);
+        $response['message.total_tasks'] = $wpRepo->countTotalByTypeProjectAndStatus(WorkPackage::TYPE_TASK, $project);
+        foreach ($statuses as $status) {
+            $response[$status->getName()] = $wpRepo->countTotalByTypeProjectAndStatus(WorkPackage::TYPE_TASK, $project, $status);
+        }
+
+        return $this->createApiResponse($response);
+    }
+
+    /**
      * Create a new WorkPackage.
      *
      * @Route("/{id}/tasks", name="app_api_project_tasks_create", options={"expose"=true})
