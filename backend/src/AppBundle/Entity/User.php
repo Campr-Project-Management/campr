@@ -702,7 +702,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      *
      * @return bool
      */
-    public function getIsAdmin()
+    public function isAdmin()
     {
         return $this->hasRole(self::ROLE_ADMIN) || $this->hasRole(self::ROLE_SUPER_ADMIN);
     }
