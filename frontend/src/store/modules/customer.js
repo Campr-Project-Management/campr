@@ -7,6 +7,14 @@ const state = {
 
 const getters = {
     customers: state => state.items,
+    customersForSelect: function(state) {
+        let customersForSelect = [];
+        state.items.map(function(customer) {
+            customersForSelect.push({'key': customer.id, 'label': customer.name});
+        });
+
+        return customersForSelect;
+    },
     customersForFilter: function(state) {
         let customersForFilter = [{'key': '', 'label': Translator.trans('message.all_customers')}];
         state.items.map(function(customer) {
