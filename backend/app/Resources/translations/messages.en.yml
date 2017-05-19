@@ -172,6 +172,7 @@ message:
     total: Total
     select_portfolio: Select Portfolio
     select_programme: Select Programme
+    select_customer: Select Customer
     manual_schedule: Manual Schedule
     automatic_schedule: Automatic Schedule
     manual_schedule_note: Define Base Start and Base Finish dates as well as Forecast Start and Forecast Finish dates.
