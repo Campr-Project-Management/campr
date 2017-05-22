@@ -2,14 +2,14 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    items: [],
+    colorStatuses: [],
 };
 
 const getters = {
-    colorStatuses: state => state.items,
+    colorStatuses: state => state.colorStatuses,
     colorStatusesForFilter: function(state) {
         let colorStatusesForFilter = [{'key': '', 'label': Translator.trans('message.all_statuses')}];
-        state.items.map(function(colorStatus) {
+        state.colorStatuses.map(function(colorStatus) {
             colorStatusesForFilter.push({'key': colorStatus.name, 'label': colorStatus.name});
         });
 
@@ -42,7 +42,7 @@ const mutations = {
      * @param {array} colorStatuses
      */
     [types.SET_COLOR_STATUSES](state, {colorStatuses}) {
-        state.items = colorStatuses;
+        state.colorStatuses = colorStatuses;
     },
 };
 

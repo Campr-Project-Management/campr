@@ -40,7 +40,7 @@ const mutations = {
      * @param {array} work packages
      */
     [types.SET_WORK_PACKAGES](state, {workPackages}) {
-        state.items = workPackages;
+        state.items = workPackages.items;
         let tasks = state.items.filter(item => item.type === 2);
         let tasksForSelect = [];
         tasks.map(item => tasksForSelect.push({'key': item.id, 'label': item.name}));
