@@ -49,7 +49,7 @@ export default {
     data() {
         return {
             activePage: 1,
-            tasksPerPage: 4,
+            tasksPerPage: 8,
         };
     },
 };
