@@ -44,7 +44,10 @@ class WorkPackageController extends ApiController
         ;
 
         $pageSize = $this->getParameter('front.per_page');
-        $currentPage = isset($filters['page']) ? $filters['page'] : 1;
+        $currentPage = isset($filters['page']) ? intval($filters['page']) : 1;
+        if ($currentPage < 1) {
+            $currentPage = 1;
+        }
         $paginator = new Paginator($wpQuery);
         $paginator->getQuery()
             ->setFirstResult($pageSize * ($currentPage - 1))
