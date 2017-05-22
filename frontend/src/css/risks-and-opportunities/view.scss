@@ -1,0 +1,356 @@
+.header-buttons {
+    margin: 17px 0 0;
+    text-align: right;
+
+    a {
+        margin-left: 10px;
+    }
+}  
+
+.range-slider-wrapper {
+    position: relative;
+
+    .slider-indicator {
+        position: absolute;
+        bottom: -18px;
+        left: 0;
+        width: 100%;
+        height: 18px;
+    }
+}
+
+.light-color {
+    b {
+        color: $lighterColor;
+    }
+}
+
+.ro-grid-wrapper {
+    margin-top: 30px;
+}
+
+.ro-grid-header {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    left: 0;
+
+    .big-header {
+        color: $lightColor;
+        font-size: 0.875em;
+    }
+
+    .small-header {
+        width: 25%;
+        font-size: 0.75em;
+        float: left;
+        white-space: nowrap;
+    }
+
+    &.vertical-axis-header {
+        @include rotate(-90);
+        @include transform-origin(left top);
+        top: calc(100% - 67px);
+        width: calc(100% - 97px);
+
+        .big-header {
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid $darkerColor;
+        }
+    }
+
+    &.horizontal-axis-header {
+        bottom: 0;
+        padding: 0 30px 0 67px;
+
+        .big-header {
+            padding-top: 10px;
+            margin-top: 10px;
+            border-top: 1px solid $darkerColor;
+        }
+    }
+}
+
+.ro-grid {
+    width: 80%;
+    margin: 0 auto;
+    padding: 0 30px 67px 67px;
+    position: relative;
+}
+
+.ro-grid-item {
+    width: 24%;
+    height: 0;
+    padding-bottom: 24%;
+    @include border-radius(50%);
+    margin: 0.5%;
+    float: left;
+    font-size: 3em;
+    font-weight: bold;
+    color: $mainColor;
+    text-align: center;
+    white-space: nowrap;
+    position: relative;
+    pointer-events: none;
+    @include transition(background-color, 0.2s, ease);
+
+    span {
+        display: inline-block;
+        vertical-align: middle;
+        width: 100%;
+        height: 30px;
+        line-height: 35px;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        margin-top: -15px;
+    }
+
+    &.medium {
+        background-color: $warningColor;
+    }
+
+    &.high {
+        background-color: $dangerColor;
+    }
+
+    &.very-high {
+        background-color: $dangerDarkColor;
+    }
+
+    &.low {
+        background-color: $secondColor;
+    }
+
+    &.very-low {
+        background-color: $secondDarkColor;
+    }
+
+    &.active {
+        @include box-shadow(0, 0, 60px, $darkColor);
+        z-index: 10;
+
+        &:after {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: -5px;
+            width: calc(100% + 10px);
+            height: calc(100% + 10px);
+            border: 10px solid $lighterColor;
+            @include border-radius(50%);
+        }
+    }
+}
+
+.ro-summary {
+    margin-top: 60px;
+    padding-bottom: 30px;
+    font-size: 1.333em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+
+    p {
+        line-height: 1.5em;
+        color: $lightColor;
+
+        b {
+            color: $lighterColor;
+        }
+    }
+
+    .text-left {
+        p {
+            padding-left: 15px;
+        }
+    }
+}    
+
+.measure-vueditor-holder {
+    .vueditor {
+        margin-top: 0;
+    }
+}
+
+.user-avatar {
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+
+    img {
+        width: 30px;
+        height: 30px;
+        @include border-radius(50%);
+        margin: 0 10px 0 0;  
+        display: inline-block;
+        position: relative;
+        top: -2px;
+    }
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+.comment {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 4px double $darkerColor;
+
+    .comments {
+        padding-left: 45px;
+
+        .comment {
+            margin: 30px 0 0;
+            padding: 30px 0 0;
+            border-top: 1px solid $darkerColor;
+            border-bottom: none;
+        }
+    }
+
+    .comment-buttons {
+        text-align: right;
+
+        .btn {
+            margin: 10px 0 0 10px;
+        }
+    }
+
+    .comment-body {
+        padding: 10px 0 0 45px;
+
+        ul {
+            list-style-type: disc;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        ol {
+            list-style-type: decimal;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        img {
+            @include box-shadow(0, 0, 20px, $darkColor);
+        }
+
+        .title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .cost {
+            text-transform: uppercase;
+            color: $lightColor;
+            letter-spacing: 0.1em;
+
+            b {
+                color: $lighterColor;
+            }
+        }
+
+        p {
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .comment-footer {
+        padding: 30px 0 0 45px;
+
+        .icon {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            position: relative;
+            top: 3px;
+        }
+
+        ul.comment-attachments {
+            display: inline-block;
+            margin: 0;
+            list-style: none;
+            padding: 0;
+
+            li {
+                display: inline;
+                margin: 0 0 0 10px;
+                padding: 0 0 0 10px;
+                border-left: 1px solid $lighterColor;
+
+                a {
+                    color: $secondColor;
+                    @include transition(color, 0.2s, ease);
+
+                    &:hover {
+                        color: $secondDarkColor;
+                    }
+                }
+
+                &:first-child {
+                    padding: 0;
+                    border: none;
+                }
+            }
+        }
+    }
+}
+
+.new-comment {
+    .footer-buttons {
+        margin-top: 15px;
+    }
+}
+
+.ro-details {
+    .ro-info {
+        border-right: 1px solid $darkerColor;
+        padding: 0 30px;
+        float: left;
+
+        p {
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            color: $lightColor;
+
+            b {
+                color: $lighterColor;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        &:first-child {
+            padding-left: 0;
+        }
+
+        &:last-child {
+            padding-right: 0;
+            border-right: none;
+        }
+    }
+}
+
+.status-info {
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+
+    .user-avatar {
+        img {
+            margin: 0 10px;
+        }
+    }
+}
