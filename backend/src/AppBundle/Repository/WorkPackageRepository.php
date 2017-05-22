@@ -26,6 +26,13 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('user', $user)
         ;
 
+        if (isset($filters['type'])) {
+            $qb
+                ->andWhere('wp.type = :type')
+                ->setParameter('type', $filters['type'])
+            ;
+        }
+
         if (isset($filters['recent'])) {
             $startDate = new \DateTime('first day of this month');
             $endDate = new \DateTime('last day of this month');
@@ -213,30 +220,99 @@ class WorkPackageRepository extends BaseRepository
         );
     }
 
-    public function findTasksByProject(Project $project)
-    {
+    public function findTasksByProject(
+        Project $project,
+        $orderBy = [],
+        $limit = null,
+        $offset = null
+    ) {
+        if (!$orderBy) {
+            $orderBy = [
+                'puid' => 'ASC',
+            ];
+        }
+
         return $this->findBy(
             [
                 'project' => $project,
                 'type' => WorkPackage::TYPE_TASK,
             ],
-            [
-                'puid' => 'ASC',
-            ]
+            $orderBy,
+            $limit,
+            $offset
         );
     }
 
-    public function findTasksByMilestone(WorkPackage $milestone)
+    public function countTasksByProject(Project $project)
     {
+        $qb = $this
+            ->createQueryBuilder('wp')
+            ->select('COUNT(DISTINCT wp.id)')
+        ;
+
+        $qb->where(
+            $qb->expr()->eq(
+                'wp.project',
+                $project
+            )
+        );
+
+        $qb->where(
+            $qb->expr()->eq(
+                'wp.type',
+                WorkPackage::TYPE_TASK
+            )
+        );
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function findTasksByMilestone(
+        WorkPackage $milestone,
+        $orderBy = [],
+        $limit = null,
+        $offset = null
+    ) {
+        if (!$orderBy) {
+            $orderBy = [
+                'puid' => 'ASC',
+            ];
+        }
+
         return $this->findBy(
             [
                 'project' => $milestone->getProject(),
+                'milestone' => $milestone,
                 'type' => WorkPackage::TYPE_TASK,
             ],
-            [
-                'puid' => 'ASC',
-            ]
+            $orderBy,
+            $limit,
+            $offset
         );
+    }
+
+    public function countTasksByMilestone(WorkPackage $milestone)
+    {
+        $qb = $this
+            ->createQueryBuilder('wp')
+            ->select('COUNT(DISTINCT wp.id)')
+        ;
+
+        $qb->where(
+            $qb->expr()->eq(
+                'wp.project',
+                $milestone->getProject()
+            )
+        );
+
+        $qb->where(
+            $qb->expr()->eq(
+                'wp.type',
+                WorkPackage::TYPE_TASK
+            )
+        );
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
     /**
@@ -306,6 +382,31 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
+        if (isset($filters['startDate'])) {
+            $qb
+                ->andWhere('wp.actualStartAt >= :startDate')
+                ->setParameter('startDate', $filters['startDate'])
+            ;
+        }
+
+        if (isset($filters['endDate'])) {
+            $qb
+                ->andWhere('wp.actualFinishAt <= :endDate')
+                ->setParameter('endDate', $filters['endDate'])
+            ;
+        }
+
+        if (isset($filters['dueDate'])) {
+            $qb
+                ->andWhere('wp.actualFinishAt = :dueDate')
+                ->setParameter('dueDate', $filters['dueDate'])
+            ;
+        }
+
+        if (isset($filters['orderBy']) && isset($filters['order'])) {
+            $qb->orderBy('wp.'.$filters['orderBy'], $filters['order']);
+        }
+
         if (isset($filters['pageSize']) && isset($filters['page'])) {
             $qb
                 ->setFirstResult($filters['pageSize'] * ($filters['page'] - 1))
@@ -315,6 +416,49 @@ class WorkPackageRepository extends BaseRepository
         return $qb->getQuery();
     }
 
+    public function getScheduleForProjectSchedule(Project $project)
+    {
+        $baseStart = $this
+            ->getQueryByProjectAndFilters($project, ['orderBy' => 'scheduledStartAt', 'order' => 'ASC'])
+            ->setMaxResults(1)
+            ->getResult()
+        ;
+        $baseFinish = $this
+            ->getQueryByProjectAndFilters($project, ['orderBy' => 'scheduledFinishAt', 'order' => 'DESC'])
+            ->setMaxResults(1)
+            ->getResult()
+        ;
+        $forecastStart = $this
+            ->getQueryByProjectAndFilters($project, ['orderBy' => 'forecastStartAt', 'order' => 'ASC'])
+            ->setMaxResults(1)
+            ->getResult()
+        ;
+        $forecastFinish = $this
+            ->getQueryByProjectAndFilters($project, ['orderBy' => 'forecastFinishAt', 'order' => 'DESC'])
+            ->setMaxResults(1)
+            ->getResult()
+        ;
+        $actualStart = $this
+            ->getQueryByProjectAndFilters($project, ['orderBy' => 'actualStartAt', 'order' => 'ASC'])
+            ->setMaxResults(1)
+            ->getResult()
+        ;
+        $actualFinish = $this
+            ->getQueryByProjectAndFilters($project, ['orderBy' => 'actualFinishAt', 'order' => 'DESC'])
+            ->setMaxResults(1)
+            ->getResult()
+        ;
+
+        return [
+            'base_start' => !empty($baseStart) ? $baseStart[0] : null,
+            'base_finish' => !empty($baseFinish) ? $baseFinish[0] : null,
+            'forecast_start' => !empty($forecastStart) ? $forecastStart[0] : null,
+            'forecast_finish' => !empty($forecastFinish) ? $forecastFinish[0] : null,
+            'actual_start' => !empty($actualStart) ? $actualStart[0] : null,
+            'actual_finish' => !empty($actualFinish) ? $actualFinish[0] : null,
+        ];
+    }
+
     /**
      * counts all workpackages for a give type.
      *
@@ -322,15 +466,29 @@ class WorkPackageRepository extends BaseRepository
      *
      * @return int
      */
-    public function countTotalByType($type)
+    public function countTotalByTypeProjectAndStatus($type, Project $project = null, WorkPackageStatus $status = null)
     {
-        return $this
+        $qb = $this
             ->createQueryBuilder('wp')
             ->select('COUNT(wp.id)')
             ->andWhere('wp.type = :type')
             ->setParameter('type', $type)
-            ->getQuery()
-            ->getSingleScalarResult()
         ;
+
+        if ($project) {
+            $qb
+                ->andWhere('wp.project = :project')
+                ->setParameter('project', $project)
+            ;
+        }
+
+        if ($status) {
+            $qb
+                ->andWhere('wp.workPackageStatus = :status')
+                ->setParameter('status', $status)
+            ;
+        }
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 }

@@ -5,6 +5,7 @@ import router from '../../router';
 const state = {
     currentItem: {},
     items: [],
+    totalItems: 0,
     filteredItems: [],
     filters: [],
     taskStatuses: [],
@@ -12,15 +13,17 @@ const state = {
     users: [],
     tasksFilters: [],
     allTasks: [],
+    requests: {},
 };
 
 const getters = {
     task: state => state.currentItem,
-    tasks: state => state.filteredItems.items,
-    count: state => state.filteredItems.totalItems,
+    tasks: state => state.items,
+    count: state => state.totalItems,
     taskStatuses: state => state.taskStatuses,
     tasksByStatuses: state => state.tasksByStatuses,
     allTasks: state => state.allTasks,
+    requests: state => state.requests,
 };
 
 const actions = {
@@ -31,8 +34,29 @@ const actions = {
      */
     getRecentTasks({commit}, page) {
         commit(types.TOGGLE_LOADER, true);
+        if (page === undefined) {
+            page = 1;
+        }
         Vue.http
-            .get(Routing.generate('app_api_workpackage_list'), {'recent': true, 'page': page}).then((response) => {
+            .get(Routing.generate('app_api_workpackage_list', {recent: true, page: page, type: 2})).then((response) => {
+                if (response.status === 200) {
+                    let tasks = response.data;
+                    commit(types.SET_TASKS, {tasks});
+                    commit(types.TOGGLE_LOADER, false);
+                }
+            }, (response) => {
+            });
+    },
+    getRecentTasksByProject({commit}, projectId) {
+        commit(types.TOGGLE_LOADER, true);
+        let params = {
+            id: projectId,
+            sort: 'updatedAt',
+            order: 'desc',
+            limit: 6,
+        };
+        Vue.http
+            .get(Routing.generate('app_api_project_tasks', params)).then((response) => {
                 if (response.status === 200) {
                     let tasks = response.data;
                     commit(types.SET_TASKS, {tasks});
@@ -49,7 +73,7 @@ const actions = {
     getTasks({commit}, page) {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
-            .get(Routing.generate('app_api_workpackage_list'), {'page': page}).then((response) => {
+            .get(Routing.generate('app_api_workpackage_list', {page: page, type: 2})).then((response) => {
                 if (response.status === 200) {
                     let tasks = response.data;
                     commit(types.SET_TASKS, {tasks});
@@ -70,7 +94,7 @@ const actions = {
             .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
                 params: {
                     'type': 2,
-                    'pageSize': 2,
+                    'pageSize': 1,
                 },
             })
             .then((response) => {
@@ -101,7 +125,7 @@ const actions = {
                     'status': statusId,
                     'type': 2,
                     'page': page,
-                    'pageSize': 2,
+                    'pageSize': 1,
                     projectUser,
                     colorStatus,
                     searchString,
@@ -172,7 +196,6 @@ const actions = {
             }, (response) => {
                 if (response.status === 400) {
                     // implement system to display errors
-                    console.log(response.data);
                 }
             });
     },
@@ -200,7 +223,6 @@ const actions = {
                     alert('Validation issues');
                     if (response.status === 400) {
                         // implement system to dispay errors
-                        // console.log(response.data);
                     }
                 }
             );
@@ -304,7 +326,12 @@ const mutations = {
      * @param {array} tasks
      */
     [types.SET_TASKS](state, {tasks}) {
-        state.items = tasks;
+        // state.items = {
+        //     items: tasks.items,
+        //     totalNumber: tasks.totalNumber,
+        // };
+        state.items = tasks.items;
+        state.totalItems = tasks.totalItems;
         state.filteredItems = JSON.parse(JSON.stringify(tasks));
     },
     /**
@@ -323,6 +350,7 @@ const mutations = {
      */
     [types.SET_TASKS_BY_STATUS](state, {tasksByStatus, statusId}) {
         state.tasksByStatuses[statusId].items = state.tasksByStatuses[statusId].items.concat(tasksByStatus.items);
+        state.tasksByStatuses[statusId].totalItems = tasksByStatus.totalItems;
     },
     /**
      * Sets task statuses to state

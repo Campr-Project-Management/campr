@@ -8,6 +8,12 @@
             <input-field type="text" v-bind:label="message.project_number" v-model="projectNumber" v-bind:content="projectNumber" />
             <input id="projectLogo" type="file" name="projectLogo" style="display: none;" accept="image/*" v-on:change="updateProjectLogo"> 
 
+            <select-field
+                v-bind:title="message.select_customer"
+                v-bind:options="customers"
+                v-model="selectedCompany"
+                v-bind:currentOption="selectedCompany" />
+               
             <div v-if="!projectLogo">
                 <upload-placeholder />
             </div>
@@ -84,7 +90,7 @@ export default {
         UploadPlaceholder,
     },
     methods: {
-        ...mapActions(['createPortfolio', 'getPortfolios', 'createProgramme', 'getProgrammes']),
+        ...mapActions(['createPortfolio', 'getPortfolios', 'createProgramme', 'getProgrammes', 'getCustomers']),
         togglePortfolio: function() {
             this.visiblePortfolio = !this.visiblePortfolio;
         },
@@ -107,6 +113,7 @@ export default {
                 'visibleProgramme': this.visibleProgramme,
                 'selectedPortfolio': this.selectedPortfolio,
                 'selectedProgramme': this.selectedProgramme,
+                'selectedCompany': this.selectedCompany,
             };
             localStorage.setItem(FIRST_STEP_LOCALSTORAGE_KEY, JSON.stringify(stepData));
         },
@@ -146,15 +153,18 @@ export default {
         portfolioLoading: 'portfolioLoading',
         programmes: 'programmesForSelect',
         programmeLoading: 'programmeLoading',
+        customers: 'customersForSelect',
     }),
     created() {
         this.validator = new Validator({
             projectName: 'required|alpha|min:3',
+            selectedCompany: 'required',
         });
         this.$set(this, 'errors', this.validator.errorBag);
 
         this.getPortfolios();
         this.getProgrammes();
+        this.getCustomers();
     },
     watch: {
         projectName(value) {
@@ -194,6 +204,7 @@ export default {
                 add_programme: Translator.trans('message.add_programme'),
                 select_portfolio: Translator.trans('message.select_portfolio'),
                 select_programme: Translator.trans('message.select_programme'),
+                select_customer: Translator.trans('message.select_customer'),
             },
             button: {
                 next_step: Translator.trans('button.next_step'),
@@ -207,6 +218,7 @@ export default {
             programmeName: stepData ? stepData.programmeName : '',
             selectedPortfolio: stepData ? stepData.selectedPortfolio : '',
             selectedProgramme: stepData ? stepData.selectedProgramme : '',
+            selectedCompany: stepData ? stepData.selectedCompany: '',
             errors: null,
         };
     },
@@ -227,7 +239,7 @@ export default {
   }
 
   .input-holder {
-      margin-top: 30px;
+      margin-bottom: 30px;
   }
 
   .btn-empty {

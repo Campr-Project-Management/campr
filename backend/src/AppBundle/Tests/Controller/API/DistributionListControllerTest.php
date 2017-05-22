@@ -74,6 +74,7 @@ class DistributionListControllerTest extends BaseController
                     'users' => [
                         [
                             'roles' => ['ROLE_USER'],
+                            'isAdmin' => false,
                             'gravatar' => '',
                             'id' => 7,
                             'username' => 'user10',
@@ -401,6 +402,7 @@ class DistributionListControllerTest extends BaseController
                     'users' => [
                         [
                             'roles' => ['ROLE_USER'],
+                            'isAdmin' => false,
                             'gravatar' => '',
                             'id' => 7,
                             'username' => 'user10',

@@ -64,4 +64,53 @@
     display: flex;
     flex-flow: row wrap;
   }
+
+  &.view-phase,
+  &.view-milestone {
+    .header {
+      .small-link+h1 {
+        padding: 0;
+      }
+
+      .btn-rounded {
+        margin-top: 10px;
+      }
+    }
+
+    .phase-content,
+    .milestone-content {
+      padding: 10px 0;
+
+      p {
+        margin-bottom: 10px;
+      }
+
+      .table {
+        td {
+          padding-top: 25px;
+          padding-bottom: 25px;
+        }
+      }
+    }
+
+    .responsible-status {
+      h3 {
+        margin-top: 0;
+      }
+
+      .user-info {
+        img {
+          width: 30px;
+          height: 30px;
+          border-radius: 15px;
+          margin-right: 10px;
+        }
+      }
+
+      .status {
+        height: 30px;
+        line-height: 30px;
+      }
+    }
+  }
 }

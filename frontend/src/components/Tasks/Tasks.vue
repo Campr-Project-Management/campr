@@ -11,7 +11,7 @@
                 <task-box v-for="task in tasks" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></task-box>
             </div>
             <div class="pagination flex flex-center" v-if="count > 0">
-                <span v-for="page in count/tasks.length" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
+                <span v-for="page in pageCount" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
             </div>
         </div>
     </div>
@@ -45,14 +45,28 @@ export default {
             this.getColorStatuses();
         }
     },
-    computed: mapGetters({
-        user: 'user',
-        tasks: 'tasks',
-        count: 'count',
-        colorStatuses: 'colorStatuses',
-    }),
+    computed: {
+        ...mapGetters({
+            user: 'user',
+            tasks: 'tasks',
+            count: 'count',
+            colorStatuses: 'colorStatuses',
+        }),
+        pageCount: function() {
+            if (!this.tasks.length) {
+                return [1];
+            }
+            let pages = Math.ceil(this.count / 12);
+            let out = [];
+            for (let c = 1; c <= pages; c++) {
+                out.push(c);
+            }
+            return out;
+        },
+    },
     data() {
         return {
+            items: [],
             activePage: 1,
         };
     },
