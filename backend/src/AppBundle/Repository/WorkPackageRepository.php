@@ -220,30 +220,99 @@ class WorkPackageRepository extends BaseRepository
         );
     }
 
-    public function findTasksByProject(Project $project)
-    {
+    public function findTasksByProject(
+        Project $project,
+        $orderBy = [],
+        $limit = null,
+        $offset = null
+    ) {
+        if (!$orderBy) {
+            $orderBy = [
+                'puid' => 'ASC',
+            ];
+        }
+
         return $this->findBy(
             [
                 'project' => $project,
                 'type' => WorkPackage::TYPE_TASK,
             ],
-            [
-                'puid' => 'ASC',
-            ]
+            $orderBy,
+            $limit,
+            $offset
         );
     }
 
-    public function findTasksByMilestone(WorkPackage $milestone)
+    public function countTasksByProject(Project $project)
     {
+        $qb = $this
+            ->createQueryBuilder('wp')
+            ->select('COUNT(DISTINCT wp.id)')
+        ;
+
+        $qb->where(
+            $qb->expr()->eq(
+                'wp.project',
+                $project
+            )
+        );
+
+        $qb->where(
+            $qb->expr()->eq(
+                'wp.type',
+                WorkPackage::TYPE_TASK
+            )
+        );
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function findTasksByMilestone(
+        WorkPackage $milestone,
+        $orderBy = [],
+        $limit = null,
+        $offset = null
+    ) {
+        if (!$orderBy) {
+            $orderBy = [
+                'puid' => 'ASC',
+            ];
+        }
+
         return $this->findBy(
             [
                 'project' => $milestone->getProject(),
+                'milestone' => $milestone,
                 'type' => WorkPackage::TYPE_TASK,
             ],
-            [
-                'puid' => 'ASC',
-            ]
+            $orderBy,
+            $limit,
+            $offset
         );
+    }
+
+    public function countTasksByMilestone(WorkPackage $milestone)
+    {
+        $qb = $this
+            ->createQueryBuilder('wp')
+            ->select('COUNT(DISTINCT wp.id)')
+        ;
+
+        $qb->where(
+            $qb->expr()->eq(
+                'wp.project',
+                $milestone->getProject()
+            )
+        );
+
+        $qb->where(
+            $qb->expr()->eq(
+                'wp.type',
+                WorkPackage::TYPE_TASK
+            )
+        );
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
     /**
@@ -347,14 +416,38 @@ class WorkPackageRepository extends BaseRepository
         return $qb->getQuery();
     }
 
-    public function getForProjectSchedule(Project $project)
+    public function getScheduleForProjectSchedule(Project $project)
     {
-        $baseStart = $this->getQueryByProjectAndFilters($project, ['orderBy' => 'scheduledStartAt', 'order' => 'ASC'])->getResult();
-        $baseFinish = $this->getQueryByProjectAndFilters($project, ['orderBy' => 'scheduledFinishAt', 'order' => 'DESC'])->getResult();
-        $forecastStart = $this->getQueryByProjectAndFilters($project, ['orderBy' => 'forecastStartAt', 'order' => 'ASC'])->getResult();
-        $forecastFinish = $this->getQueryByProjectAndFilters($project, ['orderBy' => 'forecastFinishAt', 'order' => 'DESC'])->getResult();
-        $actualStart = $this->getQueryByProjectAndFilters($project, ['orderBy' => 'actualStartAt', 'order' => 'ASC'])->getResult();
-        $actualFinish = $this->getQueryByProjectAndFilters($project, ['orderBy' => 'actualFinishAt', 'order' => 'DESC'])->getResult();
+        $baseStart = $this
+            ->getQueryByProjectAndFilters($project, ['orderBy' => 'scheduledStartAt', 'order' => 'ASC'])
+            ->setMaxResults(1)
+            ->getResult()
+        ;
+        $baseFinish = $this
+            ->getQueryByProjectAndFilters($project, ['orderBy' => 'scheduledFinishAt', 'order' => 'DESC'])
+            ->setMaxResults(1)
+            ->getResult()
+        ;
+        $forecastStart = $this
+            ->getQueryByProjectAndFilters($project, ['orderBy' => 'forecastStartAt', 'order' => 'ASC'])
+            ->setMaxResults(1)
+            ->getResult()
+        ;
+        $forecastFinish = $this
+            ->getQueryByProjectAndFilters($project, ['orderBy' => 'forecastFinishAt', 'order' => 'DESC'])
+            ->setMaxResults(1)
+            ->getResult()
+        ;
+        $actualStart = $this
+            ->getQueryByProjectAndFilters($project, ['orderBy' => 'actualStartAt', 'order' => 'ASC'])
+            ->setMaxResults(1)
+            ->getResult()
+        ;
+        $actualFinish = $this
+            ->getQueryByProjectAndFilters($project, ['orderBy' => 'actualFinishAt', 'order' => 'DESC'])
+            ->setMaxResults(1)
+            ->getResult()
+        ;
 
         return [
             'base_start' => !empty($baseStart) ? $baseStart[0] : null,
