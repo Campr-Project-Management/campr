@@ -1325,21 +1325,15 @@ class ProjectController extends ApiController
         $pageSize = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
 
         if (isset($filters['status']) || isset($filters['isGrid'])) {
-            $wpQuery = $this
+            $wpRepo = $this
                 ->getDoctrine()
                 ->getRepository(WorkPackage::class)
-                ->getQueryByProjectAndFilters($project, $filters)
             ;
 
-            $currentPage = isset($filters['page']) ? $filters['page'] : 1;
-            $paginator = new Paginator($wpQuery);
-            $paginator->getQuery()
-                ->setFirstResult($pageSize * ($currentPage - 1))
-                ->setMaxResults($pageSize)
-            ;
+            $paginator = new Paginator($wpRepo->getQueryByProjectAndFiltersSortedByStatus($project, $filters));
 
-            $responseArray['totalItems'] = count($paginator);
-            $responseArray['items'] = $paginator->getIterator()->getArrayCopy();
+            $responseArray['totalItems'] = $paginator->count();
+            $responseArray['items'] = $wpRepo->getQueryByProjectAndFiltersSortedByStatus($project, $filters)->getResult();
         } else {
             $workPackageStatuses = $this
                 ->getDoctrine()
@@ -1350,7 +1344,7 @@ class ProjectController extends ApiController
             ;
 
             foreach ($workPackageStatuses as $workPackageStatus) {
-                $filters['workPackageStatus'] = $workPackageStatus;
+                $filters['status'] = $workPackageStatus;
                 $wpQuery = $this
                     ->getDoctrine()
                     ->getRepository(WorkPackage::class)
