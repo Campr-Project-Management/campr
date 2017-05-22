@@ -231,8 +231,10 @@ export default {
         updateDistributionItem(item, distribution) {
             const self = this;
             return function(value) {
-                value ? self.addToDistribution({id: distribution.id, user: item.user})
-                : self.removeFromDistribution({id: distribution.id, user: item.user});
+                value 
+                    ? self.addToDistribution({id: distribution.id, user: item.user})
+                    : self.removeFromDistribution({id: distribution.id, user: item.user})
+                ;
             };
         },
     },
