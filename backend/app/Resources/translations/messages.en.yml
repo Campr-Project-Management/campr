@@ -49,9 +49,22 @@ message:
     create_new_risk: Create New Risk
     create_new_opportunity: Create New Opportunity
     back_to_risks_and_opportunities: Back to Risks & Opportunities
+    total_tasks: Total tasks
+    project_status: Project Status
+    project_schedule: Project Schedule
+    approved_on: Approved On
+    project_summary: Project Summary
+    parent_phase: Parent Phase
+    first_task: First Task
+    last_task: Last Task
+    project_phases: Project Phases
+    phase_responsible: Phase Responsble:
+    milestone_responsible: Milestone Responsble:
     edit_organization: Edit Organization
     project_roles: Project Roles
     delete_subteam: Delete Subteam
+    delete_phase: Delete Phase
+    delete_milestone: Delete Milestone
     edit_subteam: Edit Subteam
     back_to_organization: Back to Project Organization
     back_to_phases_and_milestones: Back to Phases & Milestones
@@ -75,6 +88,7 @@ message:
     filter_by: Filter By
     customer: Customer
     project_manager: Project Manager
+    project_managers: Project Manager(s)
     project_sponsor: Sponsor
     programme: Programme
     status: Status
@@ -214,6 +228,7 @@ message:
     total: Total
     select_portfolio: Select Portfolio
     select_programme: Select Programme
+    select_customer: Select Customer
     manual_schedule: Manual Schedule
     automatic_schedule: Automatic Schedule
     manual_schedule_note: Define Base Start and Base Finish dates as well as Forecast Start and Forecast Finish dates.
@@ -729,11 +744,11 @@ label:
     select_phase: Select Phase
     created_by: Created By
     two_factor_auth: Two Factor Authentication
-    todo: To do
-    in_progress: In progress
-    code_review: Code review
-    finished: Finished
     closed: Closed
+    open: Open
+    pending: Pending
+    ongoing: Ongoing
+    completed: Completed
     asignee: asignee
     phase: Phase
     subtask_description: Subtask Description
@@ -774,7 +789,18 @@ label:
     subteam_roles: Subteam Roles
 
 button:
+<<<<<<< HEAD
     add_new_measure: Add New Measure +
+=======
+    view_all_tasks: View all tasks
+    view_tasks_board: View tasks board
+    print_project_handbook: Print Project Handbook
+    close_project: Close Project
+    delete_phase: Delete Phase
+    delete_milestone: Delete Milestone
+    add_new_phase: Add New Phase
+    add_new_milestone: Add New Milestone
+>>>>>>> 118ebd0e5343d6f600f5c2c89c4442060a4f037c
     add_new_team_members: Add New Team Members
     create_phase: Create Phase
     create_milestone: Create Milestone
@@ -977,6 +1003,13 @@ placeholder:
     gplus: Google Plus
 
 table_header_cell:
+    automatic: Automatic
+    base_due_date: Base Due Date
+    forecast_due_date: Forecast Due Date
+    actual_due_date: Actual Due Date
+    base_schedule: Base Schedule
+    forecast_schedule: Forecast Schedule
+    actual_schedule: Actual Schedule
     subteam_name: Subteam Name
     team_leader: Team Leader
     actions: Actions
@@ -1082,6 +1115,7 @@ table_header_cell:
     visible: Visible
     topic: Topic
     start: Start
+    finish: Finish
     end: End
     remark: Remark
     is_present: Is Present
@@ -1131,6 +1165,7 @@ table_header_cell:
     parent: Parent
     children: Children
     duration: Duration
+    duration_in_days: Duration in days
     lead_checked: Is Lead
     lead_not_checked: Is Not Lead
     payment_method: Payment Method

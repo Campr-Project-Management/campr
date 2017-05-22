@@ -2,95 +2,136 @@
     <div>
         <div class="page-section">
             <div class="header flex">
-                <h1>Project Dashboard</h1>
+                <h1>{{ translateText('message.project_dashboard') }}</h1>
             </div>
 
             <div class="content widget-grid">
                 <!-- /// Project Summary Widget /// -->
                 <div class="widget project-summary-widget">
                     <div class="widget-content">
-                        <h4 class="widget-title">Project Summary</h4>
+                        <h4 class="widget-title">{{ translateText('message.project_summary') }}</h4>
                         <ul class="widget-list">
                             <li>
-                                <span>Project Name:</span>
-                                <b>Tesla-SpaceX Mars Project</b>
+                                <span>{{ translateText('message.project_name') }}:</span>
+                                <b v-if="project.name">{{ project.name }}</b>
+                                <b v-else>-</b>
                             </li>
                             <li>
-                                <span>Project No.:</span>
-                                <b>#22</b>
+                                <span>{{ translateText('message.project_number') }}:</span>
+                                <b v-if="project.number">#{{ project.number }}</b>
+                                <b v-else>-</b>
                             </li>
                             <li>
-                                <span>Portfolio:</span>
-                                <b>Tesla Projects</b>
+                                <span>{{ translateText('label.portfolio') }}:</span>
+                                <b v-if="project.portfolioName">{{ project.portfolioName }}</b>
+                                <b v-else>-</b>
                             </li>
                             <li>
-                                <span>Programme:</span>
-                                <b>Space Colonization</b>
+                                <span>{{ translateText('label.programme') }}:</span>
+                                <b v-if="project.programmeName">{{ project.programmeName }}</b>
+                                <b v-else>-</b>
                             </li>
                             <li>
-                                <span>Customer:</span>
-                                <b>SpaceX</b>
+                                <span>{{ translateText('message.customer') }}:</span>
+                                <b v-if="project.company">{{ project.companyName }}</b>
+                                <b v-else>-</b>
                             </li>
                             <li>
-                                <span>Approved on:</span>
-                                <b>10.02.2016</b>
+                                <span>{{ translateText('message.approved_on') }}:</span>
+                                <b v-if="project.approvedAt">{{ project.approvedAt }}</b>
+                                <b v-else>-</b>
                             </li>
                             <li>
-                                <span>Project Sponsor:</span>
-                                <b>Elon Musk</b>
+                                <span>{{ translateText('message.project_sponsor') }}:</span>
+                                <b v-if="projectSponsors" v-for="(sponsor, index) in projectSponsors">
+                                    {{ sponsor.userFullName }}
+                                    <span v-if="index != projectSponsors.length - 1">, </span>
+                                </b>
+                                <b v-else>-</b>
                             </li>
                             <li>
-                                <span>Project Manager(s):</span>
-                                <b>Christoph Pohl, Manuel Weiler, Radu TopalA </b>
+                                <span>{{ translateText('message.project_managers') }}:</span>
+                                <b v-if="projectManagers" v-for="(manager, index) in projectManagers">
+                                    {{ manager.userFullName }}
+                                    <span v-if="index != projectSponsors.length - 1">, </span>
+                                </b>
+                                <b v-else>-</b>
                             </li>
                         </ul>
 
-                        <h4 class="widget-title">Project Schedule</h4>
+                        <h4 class="widget-title">{{ translateText('message.project_schedule') }}</h4>
                         <table class="table table-small">
                             <thead>
                                 <tr>
-                                    <th>Schedule</th>
-                                    <th>Start</th>
-                                    <th>Finish</th>
-                                    <th>Duration</th>
+                                    <th>{{ translateText('message.schedule') }}</th>
+                                    <th>{{ translateText('message.start') }}</th>
+                                    <th>{{ translateText('message.finish') }}</th>
+                                    <th>{{ translateText('message.duration') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Base</td>
-                                    <td>10.02.2017</td>
-                                    <td>30.05.2018</td>
-                                    <td>841</td>
+                                    <td>{{ translateText('table_header_cell.base') }}</td>
+                                    <td v-if="tasksForSchedule.base_start && tasksForSchedule.base_start.scheduledStartAt">
+                                        {{ tasksForSchedule.base_start.scheduledStartAt }}
+                                    </td>
+                                    <td v-else>-</td>
+                                    <td v-if="tasksForSchedule.base_finish && tasksForSchedule.base_finish.scheduledFinishAt">
+                                        {{ tasksForSchedule.base_finish.scheduledFinishAt }}
+                                    </td>
+                                    <td v-else>-</td>
+                                    <td  v-if="tasksForSchedule.base_start && tasksForSchedule.base_finish">
+                                        {{ getDuration(tasksForSchedule.base_start.scheduledStartAt, tasksForSchedule.base_finish.scheduledFinishAt) }}
+                                    </td>
+                                    <td v-else>-</td>
                                 </tr>
                                 <tr>
-                                    <td>Forecast</td>
-                                    <td>10.02.2018</td>
-                                    <td>30.01.2018</td>
-                                    <td>721</td>
+                                    <td>{{ translateText('table_header_cell.forecast') }}</td>
+                                    <td v-if="tasksForSchedule.forecast_start && tasksForSchedule.forecast_start.forecastStartAt">
+                                        {{ tasksForSchedule.forecast_start.forecastStartAt }}
+                                    </td>
+                                    <td v-else>-</td>
+                                    <td v-if="tasksForSchedule.forecast_finish && tasksForSchedule.forecast_finish.forecastFinishAt">
+                                        {{ tasksForSchedule.forecast_finish.forecastFinishAt }}
+                                    </td>
+                                    <td v-else>-</td>
+                                    <td  v-if="tasksForSchedule.forecast_start && tasksForSchedule.forecast_finish">
+                                        {{ getDuration(tasksForSchedule.forecast_start.forecastStartAt, tasksForSchedule.forecast_finish.forecastFinishAt) }}
+                                    </td>
+                                    <td v-else>-</td>
                                 </tr>
                                 <tr>
-                                    <td>Actual</td>
-                                    <td>10.02.2018</td>
-                                    <td>-</td>
-                                    <td>-</td>
+                                    <td>{{ translateText('table_header_cell.actual') }}</td>
+                                    <td v-if="tasksForSchedule.actual_start && tasksForSchedule.actual_start.actualStartAt">
+                                        {{ tasksForSchedule.actual_start.actualStartAt }}
+                                    </td>
+                                    <td v-else>-</td>
+                                    <td v-if="tasksForSchedule.actual_finish && tasksForSchedule.actual_finish.actualFinishAt">
+                                        {{ tasksForSchedule.actual_finish.actualFinishAt }}
+                                    </td>
+                                    <td v-else>-</td>
+                                    <td  v-if="tasksForSchedule.actual_start && tasksForSchedule.actual_finish">
+                                        {{ getDuration(tasksForSchedule.actual_start.actualStartAt, tasksForSchedule.actual_finish.actualFinishAt) }}
+                                    </td>
+                                    <td v-else>-</td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="flex flex-direction-reverse margintop20">
-                            <a href="#path-to-close-project" class="btn-rounded btn-md btn-auto danger-bg">Close Project</a>
+                            <a href="#path-to-close-project" class="btn-rounded btn-md btn-auto danger-bg">{{ translateText('button.close_project') }}</a>
                         </div>
                         <hr>
-                        <h4 class="widget-title">Team Members - <b class="second-color">62</b></h4>
+                        <h4 class="widget-title">{{ translateText('message.team_members') }} - <b class="second-color" v-if="project.projectUsers">{{ project.projectUsers.length }}</b></h4>
                         <router-link :to="{name: 'project-organization'}" class="btn-rounded btn-md btn-empty btn-auto">View entire team</router-link>
                         <hr>
-                        <h4 class="widget-title">Team Members - <b style="color:#5FC3A5;">Green</b> <b style="color:#CCBA54;">Yellow</b> <b style="color:#C87369;">Red</b></h4>
+                        <h4 class="widget-title">{{ translateText('message.project_status') }} - <b style="color:#5FC3A5;">Green</b> <b style="color:#CCBA54;">Yellow</b> <b style="color:#C87369;">Red</b></h4>
                         <div class="status-boxes flex flex-v-center">
                             <div class="status-box" style="background-color:#5FC3A5"></div>
                             <div class="status-box" style=""></div>
                             <div class="status-box" style=""></div>
                         </div>
                         <hr>
-                        <button type="button" class="btn-rounded btn-md btn-empty btn-auto">Print Project Handbook</button>
+                        <button type="button" class="btn-rounded btn-md btn-empty btn-auto">{{ translateText('button.print_project_handbook') }}</button>
                     </div>
                 </div>
                 <!-- /// End Project Summary Widget /// -->
@@ -98,13 +139,13 @@
                 <!-- /// Recent Tasks Widget /// -->
                 <div class="widget recent-tasks-widget">
                     <div class="widget-content">
-                        <h4 class="widget-title">Project Summary</h4>
+                        <h4 class="widget-title">{{ translateText('message.project_summary') }}</h4>
                         <div>
-                            <small-task-box v-for="task in tasks" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></small-task-box>    
+                            <small-task-box v-for="task in tasks" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></small-task-box>
                         </div>
                         <div class="margintop20 buttons">
-                            <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-md btn-empty btn-auto">View all tasks</router-link>
-                            <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-md btn-empty btn-auto">View task boards</router-link>
+                            <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-md btn-empty btn-auto">{{ translateText('button.view_all_tasks') }}</router-link>
+                            <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-md btn-empty btn-auto">{{ translateText('button.view_tasks_board') }}</router-link>
                         </div>
                     </div>
                 </div>
@@ -113,43 +154,15 @@
                 <!-- /// Task Status Widget /// -->
                 <div class="widget task-status-widget">
                     <div class="widget-content">
-                        <h4 class="widget-title">Task Status</h4>
+                        <h4 class="widget-title">{{ translateText('message.task_status') }}</h4>
                         <ul class="widget-list">
-                            <li>
-                                <span>Total Tasks:</span>
-                                <b>185</b>
-                            </li>
-                            <li>
-                                <span>Open Tasks:</span>
-                                <b>45</b>
-                            </li>
-                            <li>
-                                <span>Closed Tasks:</span>
-                                <b>120</b>
-                            </li>
-                            <li>
-                                <span>Idle:</span>
-                                <b>20</b>
-                            </li>
-                            <li>
-                                <span><b>To Do:</b></span>
-                                <b>27</b>
-                            </li>
-                            <li>
-                                <span><b>In Progress:</b></span>
-                                <b>10</b>
-                            </li>
-                            <li>
-                                <span><b>Code Review:</b></span>
-                                <b>5</b>
-                            </li>
-                            <li>
-                                <span><b>Finished:</b></span>
-                                <b>120</b>
+                            <li v-for="(item, index) in projectTasksStatus">
+                                <span>{{ translateText(index) }}:</span>
+                                <b>{{ item }}</b>
                             </li>
                         </ul>
                         <div class="task-status">
-                            <circle-chart :percentage="project.task_status" v-bind:title="message.task_status" class="left"></circle-chart>
+                            <circle-chart :percentage="project.task_status" v-bind:title="translateText('message.task_status')" class="left"></circle-chart>
                         </div>
                     </div>
                 </div>
@@ -163,28 +176,50 @@
 import {mapGetters, mapActions} from 'vuex';
 import CircleChart from '../_common/_charts/CircleChart';
 import SmallTaskBox from '../Dashboard/SmallTaskBox';
+import moment from 'moment';
 
 export default {
     components: {
         CircleChart,
         SmallTaskBox,
+        moment,
     },
-    methods: mapActions(['getProjectById', 'getRecentTasks']),
+    methods: {
+        ...mapActions(['getProjectById', 'getRecentTasksByProject', 'getProjectUsers', 'getTasksForSchedule', 'getColorStatuses', 'getTasksStatus']),
+        translateText: function(text) {
+            return this.translate(text);
+        },
+        getDuration: function(startDate, endDate) {
+            let end = moment(endDate);
+            let start = moment(startDate);
+
+            return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') : '-';
+        },
+    },
     created() {
         this.getProjectById(this.$route.params.id);
+        this.getTasksForSchedule(this.$route.params.id);
+        this.getProjectUsers({id: this.$route.params.id});
+        this.getTasksStatus(this.$route.params.id);
         if (!this.$store.state.task || this.$store.state.task.items.length === 0) {
-            this.getRecentTasks(this.activePage);
+            this.getRecentTasksByProject(this.activePage);
+        }
+        if (!this.$store.state.colorStatus || this.$store.state.colorStatus.items.length === 0) {
+            this.getColorStatuses();
         }
     },
     computed: mapGetters({
         project: 'project',
         tasks: 'tasks',
+        colorStatuses: 'colorStatuses',
+        projectSponsors: 'projectSponsors',
+        projectManagers: 'projectManagers',
+        tasksForSchedule: 'tasksForSchedule',
+        projectTasksStatus: 'projectTasksStatus',
     }),
     data() {
         return {
-            message: {
-                task_status: Translator.trans('message.task_status'),
-            },
+            activePage: 1,
         };
     },
 };

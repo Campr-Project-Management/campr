@@ -4,6 +4,7 @@ namespace AppBundle\Tests\Controller\Admin;
 
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectUser;
+use AppBundle\Entity\Company;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,9 +68,15 @@ class ProjectUserControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
+        $company = (new Company())
+            ->setName('company4')
+        ;
+        $this->em->persist($company);
+
         $project = (new Project())
             ->setName('project4')
             ->setNumber('project-number-4')
+            ->setCompany($company)
         ;
         $this->em->persist($project);
         $this->em->flush();
@@ -104,6 +111,15 @@ class ProjectUserControllerTest extends BaseController
         ;
         $this->em->remove($project);
 
+        $company = $this
+            ->em
+            ->getRepository(Company::class)
+            ->findOneBy([
+                'name' => 'company4',
+            ])
+        ;
+        $this->em->remove($company);
+
         $this->em->flush();
     }
 
@@ -113,9 +129,15 @@ class ProjectUserControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
+        $company = (new Company())
+            ->setName('company4')
+        ;
+        $this->em->persist($company);
+
         $project = (new Project())
             ->setName('project4')
             ->setNumber('project-number-4')
+            ->setCompany($company)
         ;
         $this->em->persist($project);
 
@@ -143,6 +165,16 @@ class ProjectUserControllerTest extends BaseController
             ])
         ;
         $this->em->remove($project);
+
+        $company = $this
+            ->em
+            ->getRepository(Company::class)
+            ->findOneBy([
+                'name' => 'company4',
+            ])
+        ;
+        $this->em->remove($company);
+
         $this->em->flush();
     }
 
@@ -206,9 +238,15 @@ class ProjectUserControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
+        $company = (new Company())
+            ->setName('company4')
+        ;
+        $this->em->persist($company);
+
         $project = (new Project())
             ->setName('project4')
             ->setNumber('project-number-4')
+            ->setCompany($company)
         ;
         $this->em->persist($project);
 
@@ -247,6 +285,16 @@ class ProjectUserControllerTest extends BaseController
             ])
         ;
         $this->em->remove($project);
+
+        $company = $this
+            ->em
+            ->getRepository(Company::class)
+            ->findOneBy([
+                'name' => 'company4',
+            ])
+        ;
+        $this->em->remove($company);
+
         $this->em->flush();
     }
 

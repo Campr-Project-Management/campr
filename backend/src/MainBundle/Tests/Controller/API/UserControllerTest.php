@@ -80,6 +80,7 @@ class UserControllerTest extends BaseController
                 Response::HTTP_OK,
                 [
                     'roles' => ['ROLE_SUPER_ADMIN'],
+                    'isAdmin' => true,
                     'gravatar' => null,
                     'id' => 1,
                     'username' => 'superadmin',
@@ -113,6 +114,7 @@ class UserControllerTest extends BaseController
                             'users' => [
                                 [
                                     'roles' => ['ROLE_USER'],
+                                    'isAdmin' => false,
                                     'gravatar' => '',
                                     'id' => 7,
                                     'username' => 'user10',
@@ -157,6 +159,7 @@ class UserControllerTest extends BaseController
                             'users' => [
                                 [
                                     'roles' => ['ROLE_USER'],
+                                    'isAdmin' => false,
                                     'gravatar' => '',
                                     'id' => 7,
                                     'username' => 'user10',
@@ -313,6 +316,7 @@ class UserControllerTest extends BaseController
                 Response::HTTP_ACCEPTED,
                 [
                     'roles' => ['ROLE_SUPER_ADMIN'],
+                    'isAdmin' => true,
                     'gravatar' => '',
                     'id' => '',
                     'username' => 'testuser',

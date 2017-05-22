@@ -245,7 +245,7 @@ export default {
     created() {
         this.getProjectUsers({id: this.$route.params.id});
         this.getWorkPackageStatuses();
-        this.getProjectPhases(this.$route.params.id);
+        this.getProjectPhases({projectId: this.$route.params.id});
         if (this.$route.params.phaseId) {
             this.getProjectPhase(this.$route.params.phaseId);
         }

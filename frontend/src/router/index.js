@@ -21,7 +21,9 @@ import MemberCreate from '../components/Projects/Organization/MemberCreate.vue';
 import EditOrganization from '../components/Projects/Organization/EditOrganization.vue';
 import ProjectPhasesMilestones from '../components/Projects/ProjectPhasesMilestones.vue';
 import PhaseCreate from '../components/Projects/Phases/PhaseCreate.vue';
+import PhaseView from '../components/Projects/Phases/PhaseView.vue';
 import MilestoneCreate from '../components/Projects/Milestones/MilestoneCreate.vue';
+import MilestoneView from '../components/Projects/Milestones/MilestoneView.vue';
 import ProjectRisksOpportunities from '../components/Projects/ProjectRisksOpportunities.vue';
 import RiskCreate from '../components/Projects/Risks/RiskCreate.vue';
 import OpportunityCreate from '../components/Projects/Opportunities/OpportunityCreate.vue';
@@ -101,7 +103,7 @@ const routes = [
                         name: 'project-task-management-list',
                     },
                     {
-                        path: 'view/:id',
+                        path: 'view/:taskId',
                         component: View,
                         name: 'project-task-management-view',
                     },
@@ -148,6 +150,11 @@ const routes = [
                 name: 'project-phases-edit-phase',
             },
             {
+                path: 'phases-and-milestones/phase/:phaseId',
+                component: PhaseView,
+                name: 'project-phases-view-phase',
+            },
+            {
                 path: 'phases-and-milestones/create-milestone',
                 component: MilestoneCreate,
                 name: 'project-milestones-create-milestone',
@@ -181,6 +188,11 @@ const routes = [
                 path: 'risks-and-opportunities/view-opportunity',
                 component: OpportunityView,
                 name: 'project-opportunities-view-opportunity',
+            },
+            {
+                path: 'phases-and-milestones/milestone/:milestoneId',
+                component: MilestoneView,
+                name: 'project-phases-view-milestone',
             },
         ],
     },
