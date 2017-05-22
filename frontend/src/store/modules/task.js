@@ -35,7 +35,7 @@ const actions = {
     getRecentTasks({commit}, page) {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
-            .get(Routing.generate('app_api_workpackage_list', {'recent': true, 'page': page})).then((response) => {
+            .get(Routing.generate('app_api_workpackage_list', {recent: true, page: page, type: 2})).then((response) => {
                 if (response.status === 200) {
                     let tasks = response.data;
                     commit(types.SET_TASKS, {tasks});
@@ -52,7 +52,7 @@ const actions = {
     getTasks({commit}, page) {
         commit(types.TOGGLE_LOADER, true);
         Vue.http
-            .get(Routing.generate('app_api_workpackage_list', {'page': page})).then((response) => {
+            .get(Routing.generate('app_api_workpackage_list', {page: page, type: 2})).then((response) => {
                 if (response.status === 200) {
                     let tasks = response.data;
                     commit(types.SET_TASKS, {tasks});

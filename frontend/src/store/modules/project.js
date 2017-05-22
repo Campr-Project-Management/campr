@@ -14,6 +14,8 @@ const state = {
     label: {},
     resources: [],
     projectResourcesForGraph: {},
+    tasksForSchedule: {},
+    projectTasksStatus: {},
 };
 
 const getters = {
@@ -34,6 +36,8 @@ const getters = {
         state.projectResourcesForGraph
     ),
     label: state => state.label,
+    tasksForSchedule: state => state.tasksForSchedule,
+    projectTasksStatus: state => state.projectTasksStatus,
 };
 
 const actions = {
@@ -394,6 +398,36 @@ const actions = {
                 }
             });
     },
+    /**
+     * Gets basic tasks to determine the project schedule
+     * @param {function} commit
+     * @param {number} id
+     */
+    getTasksForSchedule({commit}, id) {
+        Vue.http
+            .get(Routing.generate('app_api_project_schedule', {'id': id})).then((response) => {
+                if (response.status === 200) {
+                    let tasks = response.data;
+                    commit(types.SET_TASKS_FOR_SCHEDULE, {tasks});
+                }
+            }, (response) => {
+            });
+    },
+    /**
+     * Gets the project tasks status
+     * @param {function} commit
+     * @param {number} id
+     */
+    getTasksStatus({commit}, id) {
+        Vue.http
+            .get(Routing.generate('app_api_project_tasks_status', {'id': id})).then((response) => {
+                if (response.status === 200) {
+                    let tasksStatus = response.data;
+                    commit(types.SET_PROJECT_TASKS_STATUS, {tasksStatus});
+                }
+            }, (response) => {
+            });
+    },
 };
 
 const mutations = {
@@ -501,6 +535,24 @@ const mutations = {
      */
     [types.SET_LABEL](state, {label}) {
         state.label = label;
+    },
+
+    /**
+     * Set project tasks for schedule
+     * @param {Object} state
+     * @param {array} tasks
+     */
+    [types.SET_TASKS_FOR_SCHEDULE](state, {tasks}) {
+        state.tasksForSchedule = tasks;
+    },
+
+    /**
+     * Set project tasks status
+     * @param {Object} state
+     * @param {array} tasksStatus
+     */
+    [types.SET_PROJECT_TASKS_STATUS](state, {tasksStatus}) {
+        state.projectTasksStatus = tasksStatus;
     },
 };
 
