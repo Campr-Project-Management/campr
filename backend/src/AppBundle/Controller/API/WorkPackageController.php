@@ -44,7 +44,10 @@ class WorkPackageController extends ApiController
         ;
 
         $pageSize = $this->getParameter('front.per_page');
-        $currentPage = isset($filters['page']) ? $filters['page'] : 1;
+        $currentPage = isset($filters['page']) ? intval($filters['page']) : 1;
+        if ($currentPage < 1) {
+            $currentPage = 1;
+        }
         $paginator = new Paginator($wpQuery);
         $paginator->getQuery()
             ->setFirstResult($pageSize * ($currentPage - 1))
@@ -72,6 +75,31 @@ class WorkPackageController extends ApiController
         $this->denyAccessUnlessGranted(WorkPackageVoter::VIEW, $workPackage);
 
         return $this->createApiResponse($workPackage);
+    }
+
+    /**
+     * Retrieve phase workpackages.
+     *
+     * @Route("/{id}/by-phase", name="app_api_phase_workpackages_get", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param WorkPackage $phase
+     * @param Request     $request
+     *
+     * @return JsonResponse
+     */
+    public function byPhaseAction(Request $request, WorkPackage $phase)
+    {
+        $filters = $request->query->all();
+        $filters['phase'] = $phase;
+
+        return $this->createApiResponse(
+            $this
+                ->getDoctrine()
+                ->getRepository(WorkPackage::class)
+                ->getQueryByProjectAndFilters($phase->getProject(), $filters)
+                ->getResult()
+        );
     }
 
     /**

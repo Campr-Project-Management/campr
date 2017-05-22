@@ -131,8 +131,7 @@ class WorkPackageVoter extends Voter
         ;
 
         return ($projectUser
-            && $projectUser->getProjectRole()
-            && $projectUser->getProjectRoleName() === ProjectRole::ROLE_MANAGER)
+            && $projectUser->hasProjectRole(ProjectRole::ROLE_MANAGER))
             || $user === $wp->getResponsibility()
         ;
     }

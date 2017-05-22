@@ -7,7 +7,7 @@ const state = {
     currentItem: {},
     totalItems: 0,
     filters: {},
-    currentItem: {},
+    allItems: [],
 };
 
 const getters = {
@@ -22,16 +22,16 @@ const getters = {
             };
         });
     },
+    allProjectMilestones: state => state.allItems,
 };
 
 const actions = {
     /**
      * Get all project milestones
      * @param {function} commit
-     * @param {Number} projectId
      * @param {Object} apiParams
      */
-    getProjectMilestones({commit, state}, projectId, apiParams) {
+    getProjectMilestones({commit, state}, {projectId, apiParams}) {
         let paramObject = {params: {}};
         if (apiParams && apiParams.page) {
             paramObject.params.page = apiParams.page;
@@ -42,11 +42,15 @@ const actions = {
         }
 
         if (state.filters.responsible) {
-            paramObject.params.status = state.filters.responsible;
+            paramObject.params.projectUser = state.filters.responsible;
         }
 
         if (state.filters.phase) {
-            paramObject.params.status = state.filters.phase;
+            paramObject.params.phase = state.filters.phase;
+        }
+
+        if (state.filters.dueDate) {
+            paramObject.params.dueDate = state.filters.dueDate;
         }
 
         Vue.http
@@ -56,6 +60,9 @@ const actions = {
                 if (response.status === 200) {
                     let milestones = response.data;
                     commit(types.SET_PROJECT_MILESTONES, {milestones});
+                    if (!apiParams) {
+                        commit(types.SET_ALL_PROJECT_MILESTONES, {milestones});
+                    }
                 }
             }, (response) => {
             });
@@ -109,57 +116,22 @@ const actions = {
             }, (response) => {
             });
     },
-    setMilestonesFiters({commit}, filters) {
+    /**
+     * Delete project phase
+     * @param {function} commit
+     * @param {integer} id
+     */
+    deleteProjectMilestone({commit}, id) {
+        Vue.http
+            .delete(
+                Routing.generate('app_api_workpackage_delete', {id: id})
+            ).then((response) => {
+                commit(types.DELETE_PROJECT_MILESTONE, {id});
+            }, (response) => {
+            });
+    },
+    setMilestonesFilters({commit}, filters) {
         commit(types.SET_MILESTONES_FILTERS, {filters});
-    },
-    /**
-     * Create project milestone
-     * @param {function} commit
-     * @param {array}    data
-     */
-    createProjectMilestone({commit}, data) {
-        Vue.http
-            .post(
-                Routing.generate('app_api_project_milestones_create', {id: data.project}),
-                JSON.stringify(data)
-            ).then((response) => {
-                if (response.status === 201) {
-                    router.push({name: 'project-phases-and-milestones'});
-                }
-            }, (response) => {
-            });
-    },
-    /**
-     * Edit project milestone
-     * @param {function} commit
-     * @param {array}    data
-     */
-    editProjectMilestone({commit}, data) {
-        Vue.http
-            .patch(
-                Routing.generate('app_api_workpackage_milestone_edit', {id: data.id}),
-                JSON.stringify(data)
-            ).then((response) => {
-                if (response.status === 202) {
-                    router.push({name: 'project-phases-and-milestones'});
-                }
-            }, (response) => {
-            });
-    },
-    /**
-     * Gets project milestone
-     * @param {function} commit
-     * @param {number} id
-     */
-    getProjectMilestone({commit}, id) {
-        Vue.http
-            .get(Routing.generate('app_api_workpackage_get', {'id': id})).then((response) => {
-                if (response.status === 200) {
-                    let milestone = response.data;
-                    commit(types.SET_MILESTONE, {milestone});
-                }
-            }, (response) => {
-            });
     },
 };
 
@@ -182,6 +154,20 @@ const mutations = {
      */
     [types.SET_MILESTONE](state, {milestone}) {
         state.currentItem = milestone;
+    },
+    /**
+     * Delete project milestone
+     * @param {Object} state
+     * @param {integer} id
+     */
+    [types.DELETE_PROJECT_MILESTONE](state, {id}) {
+        state.items.items = state.items.items.filter((item) => {
+            return item.id !== id ? true : false;
+        });
+        state.items.totalItems--;
+    },
+    [types.SET_ALL_PROJECT_MILESTONES](state, {milestones}) {
+        state.allItems = milestones;
     },
 };
 

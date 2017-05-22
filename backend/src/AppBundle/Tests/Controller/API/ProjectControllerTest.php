@@ -7,6 +7,7 @@ use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
+use AppBundle\Entity\Company;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -224,6 +225,7 @@ class ProjectControllerTest extends BaseController
                 [
                     'name' => '',
                     'number' => '',
+                    'company' => null,
                 ],
                 true,
                 Response::HTTP_BAD_REQUEST,
@@ -231,6 +233,7 @@ class ProjectControllerTest extends BaseController
                     'messages' => [
                         'name' => ['The name field should not be blank'],
                         'number' => ['The number field should not be blank'],
+                        'company' => ['You must select a company'],
                     ],
                 ],
             ],
@@ -247,9 +250,16 @@ class ProjectControllerTest extends BaseController
         $isResponseSuccessful,
         $responseStatusCode
     ) {
+        $company = $this
+            ->em
+            ->getRepository(Company::class)
+            ->find(1)
+        ;
+
         $project = (new Project())
             ->setName('project3')
             ->setNumber('project-number-3')
+            ->setCompany($company)
         ;
         $this->em->persist($project);
         $this->em->flush();
@@ -337,8 +347,8 @@ class ProjectControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'company' => null,
-                    'companyName' => null,
+                    'company' => 2,
+                    'companyName' => 'company2',
                     'projectManager' => null,
                     'projectManagerName' => null,
                     'projectSponsor' => null,
@@ -813,6 +823,7 @@ class ProjectControllerTest extends BaseController
                         'users' => [
                             [
                                 'roles' => ['ROLE_USER'],
+                                'isAdmin' => false,
                                 'gravatar' => '',
                                 'id' => 7,
                                 'username' => 'user10',
@@ -857,6 +868,7 @@ class ProjectControllerTest extends BaseController
                         'users' => [
                             [
                                 'roles' => ['ROLE_USER'],
+                                'isAdmin' => false,
                                 'gravatar' => '',
                                 'id' => 7,
                                 'username' => 'user10',
@@ -1546,9 +1558,16 @@ class ProjectControllerTest extends BaseController
         $responseStatusCode,
         $responseContent
     ) {
+        $company = $this
+            ->em
+            ->getRepository(Company::class)
+            ->find(1)
+        ;
+
         $project = (new Project())
             ->setName('project3')
             ->setNumber('project-number-3')
+            ->setCompany($company)
         ;
         $this->em->persist($project);
         $this->em->flush();
@@ -1588,12 +1607,19 @@ class ProjectControllerTest extends BaseController
                     'name' => 'project3',
                     'number' => 'project-number-3',
                     'configuration' => '',
+                    'company' => [
+                        'id' => 1,
+                        'name' => 'company1',
+                        'createdAt' => '2017-01-01 12:00:00',
+                        'updatedAt' => null,
+                    ],
                 ],
                 true,
                 Response::HTTP_BAD_REQUEST,
                 [
                     'messages' => [
                         'number' => ['That number is taken'],
+                        'company' => ['This value is not valid.'],
                     ],
                 ],
             ],
@@ -1649,6 +1675,7 @@ class ProjectControllerTest extends BaseController
                     'messages' => [
                         'name' => ['The name field should not be blank'],
                         'number' => ['The number field should not be blank'],
+                        'company' => ['You must select a company'],
                     ],
 
                 ],
@@ -1733,8 +1760,8 @@ class ProjectControllerTest extends BaseController
                 true,
                 Response::HTTP_ACCEPTED,
                 [
-                    'company' => null,
-                    'companyName' => null,
+                    'company' => 1,
+                    'companyName' => 'company1',
                     'projectManager' => null,
                     'projectManagerName' => null,
                     'projectSponsor' => null,
@@ -1962,6 +1989,7 @@ class ProjectControllerTest extends BaseController
                             'users' => [
                                 [
                                     'roles' => ['ROLE_USER'],
+                                    'isAdmin' => false,
                                     'gravatar' => '',
                                     'id' => 7,
                                     'username' => 'user10',
@@ -2006,6 +2034,7 @@ class ProjectControllerTest extends BaseController
                             'users' => [
                                 [
                                     'roles' => ['ROLE_USER'],
+                                    'isAdmin' => false,
                                     'gravatar' => '',
                                     'id' => 7,
                                     'username' => 'user10',
@@ -2900,7 +2929,6 @@ class ProjectControllerTest extends BaseController
                     'milestoneName' => null,
                     'responsibility' => null,
                     'responsibilityFullName' => null,
-                    'responsibilityAvatar' => null,
                     'parent' => null,
                     'parentName' => null,
                     'colorStatus' => null,

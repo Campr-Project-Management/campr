@@ -91,6 +91,8 @@ export default {
 
             formData.append('name', firstStepData.projectName);
             formData.append('number', firstStepData.projectNumber);
+            formData.append('company', firstStepData.selectedCompany.key);
+
             if (firstStepData.projectLogo) {
                 formData.append('logoFile', convertImageToBlog(firstStepData.projectLogo));
             }
