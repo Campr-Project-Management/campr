@@ -291,7 +291,7 @@ const actions = {
                 params: {
                     'type': 2,
                     'page': page,
-                    'pageSize': 4,
+                    'pageSize': 8,
                     projectUser,
                     colorStatus,
                     searchString,
