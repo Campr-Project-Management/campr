@@ -103,6 +103,9 @@ p {
   }
 }
 
+.light-fill {
+  fill: $lightColor;
+}
 .lighter-fill {
   fill: $lighterColor;
 }
@@ -138,6 +141,9 @@ p {
 }
 .second-color {
   color: $secondColor !important;
+}
+.light-color {
+  color: $lightColor !important;
 }
 .warning-color {
   color: $warningColor !important;
@@ -353,6 +359,7 @@ textarea {
   &:hover,
   &:active,
   &:focus {
+    color: $lighterColor;
     outline:0;
     background-color: fade-out($middleColor,0.8);
   }
@@ -453,10 +460,10 @@ textarea {
 }
 
 hr {
-  border-top: 1px solid $darkColor;
+  border-top: 1px solid $darkerColor;
 
   &.double {
-    border-top: 4px double $darkColor;
+    border-top: 4px double $darkerColor;
   }
 
   &.nomarginbottom {
@@ -888,8 +895,7 @@ hr {
   pointer-events: none;
   z-index: 10000; 
   max-width: 220px;
-  text-align: center;
-  margin-top: 8px;       
+  text-align: center;      
 
   .tooltip-content {
     background-color: $secondColor;
@@ -911,6 +917,7 @@ hr {
 
   &.tooltip-target-attached-top {
     padding-bottom: 5px;
+    margin-top: -8px;
 
     &:after {
       content: "";
@@ -928,6 +935,7 @@ hr {
 
   &.tooltip-target-attached-bottom {
     padding-top: 5px;
+    margin-top: 8px; 
 
     &:after {
       content: "";
