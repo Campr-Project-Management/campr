@@ -185,7 +185,7 @@ export default {
         moment,
     },
     methods: {
-        ...mapActions(['getProjectById', 'getRecentTasks', 'getProjectUsers', 'getTasksForSchedule', 'getColorStatuses', 'getTasksStatus']),
+        ...mapActions(['getProjectById', 'getRecentTasksByProject', 'getProjectUsers', 'getTasksForSchedule', 'getColorStatuses', 'getTasksStatus']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -202,7 +202,7 @@ export default {
         this.getProjectUsers({id: this.$route.params.id});
         this.getTasksStatus(this.$route.params.id);
         if (!this.$store.state.task || this.$store.state.task.items.length === 0) {
-            this.getRecentTasks(this.activePage);
+            this.getRecentTasksByProject(this.activePage);
         }
         if (!this.$store.state.colorStatus || this.$store.state.colorStatus.items.length === 0) {
             this.getColorStatuses();
