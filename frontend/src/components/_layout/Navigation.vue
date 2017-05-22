@@ -23,7 +23,7 @@
                 <ul class="dropdown-menu dropdown-menu-right">
                     <li><a href="#">{{ message.account }}</a></li>
                     <li><a :href="routes.back_to_campr">{{ message.back_to_campr }}</a></li>
-                    <li><a :href="routes.admin_dashboard">{{ message.admin_dashboard }}</a></li>
+                    <li v-if="showDashboard"><a :href="routes.admin_dashboard">{{ message.admin_dashboard }}</a></li>
                     <li><a :href="routes.logout">{{ message.logout }}</a></li>
                 </ul>
             </div>
@@ -99,6 +99,7 @@ export default {
                 back_to_campr: Routing.generate('main_homepage'),
                 admin_dashboard: Routing.generate('app_admin_dashboard'),
             },
+            showDashboard: this.user.isAdmin,
         };
     },
 };
