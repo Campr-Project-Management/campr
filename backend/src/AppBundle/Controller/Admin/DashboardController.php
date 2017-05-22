@@ -35,7 +35,7 @@ class DashboardController extends Controller
 
         $numberOfTasks = $em
             ->getRepository(WorkPackage::class)
-            ->countTotalByType(WorkPackage::TYPE_TASK)
+            ->countTotalByTypeProjectAndStatus(WorkPackage::TYPE_TASK)
         ;
 
         $numberOfUsers = $em
