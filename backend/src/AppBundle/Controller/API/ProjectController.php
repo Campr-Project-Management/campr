@@ -41,6 +41,7 @@ use AppBundle\Form\User\ApiCreateType as UserApiCreateType;
 use AppBundle\Form\WorkPackage\ApiCreateType;
 use AppBundle\Form\WorkPackage\MilestoneType;
 use AppBundle\Form\WorkPackage\PhaseType;
+use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\ProjectVoter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use MainBundle\Controller\API\ApiController;
@@ -1093,14 +1094,31 @@ class ProjectController extends ApiController
      */
     public function tasksAction(Request $request, Project $project)
     {
+        /** @var WorkPackageRepository $repo */
         $repo = $this
             ->getDoctrine()
             ->getManager()
-            ->getRepository(WorkPackage::class);
+            ->getRepository(WorkPackage::class)
+        ;
 
         $filters = $request->query->get('filters', []);
 
+        $orderBy = [];
+        if ($request->query->get('order')) {
+            $key = $request->get('sort', 'createdAt');
+            $orderBy[$key] = $request->query->get('order');
+        }
+
+        $limit = null;
+        if ($request->query->get('limit')) {
+            $limit = intval($request->query->get('limit'));
+            if ($limit < 1) {
+                $limit = 12;
+            }
+        }
+
         if (isset($filters['milestone'])) {
+            /** @var WorkPackage $milestone */
             $milestone = $repo->findOneBy([
                 'id' => $filters['milestone'],
                 'type' => WorkPackage::TYPE_MILESTONE,
@@ -1110,10 +1128,24 @@ class ProjectController extends ApiController
                 throw $this->createNotFoundException();
             }
 
-            return $this->createApiResponse($repo->findTasksByMilestone($milestone));
+            return $this->createApiResponse([
+                'items' => $repo->findTasksByMilestone(
+                    $milestone,
+                    $orderBy,
+                    $limit
+                ),
+                'totalItems' => $repo->countTasksByMilestone($milestone),
+            ]);
         }
 
-        return $this->createApiResponse($repo->findTasksByProject($project));
+        return $this->createApiResponse([
+            'items' => $repo->findTasksByProject(
+                $project,
+                $orderBy,
+                $limit
+            ),
+            'totalItems' => $repo->countTasksByProject($project),
+        ]);
     }
 
     /**
@@ -1126,7 +1158,7 @@ class ProjectController extends ApiController
             $this
                 ->getDoctrine()
                 ->getRepository(WorkPackage::class)
-                ->getForProjectSchedule($project)
+                ->getScheduleForProjectSchedule($project)
         );
     }
 
