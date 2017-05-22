@@ -695,6 +695,19 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     }
 
     /**
+     * return the admin status.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("isAdmin")
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->hasRole(self::ROLE_ADMIN) || $this->hasRole(self::ROLE_SUPER_ADMIN);
+    }
+
+    /**
      * Set isEnabled.
      *
      * @param bool $isEnabled
