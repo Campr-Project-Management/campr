@@ -1,8 +1,24 @@
 <template>
     <div class="page-section">
+        <modal v-if="showDeletePhaseModal" @close="showDeletePhaseModal = false">
+            <p class="modal-title">{{ translateText('message.delete_phase') }}</p>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showDeletePhaseModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteSelectedPhase()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+            </div>
+        </modal>
+        <modal v-if="showDeleteMilestoneModal" @close="showDeleteMilestoneModal = false">
+            <p class="modal-title">{{ translateText('message.delete_milestone') }}</p>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showDeleteMilestoneModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteSelectedMilestone()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+            </div>
+        </modal>
+
+
         <!-- /// P&M Header /// -->
         <div class="header">
-            <h1>Phases &amp; Milestones</h1>
+            <h1>{{ translateText('message.phases_milestones') }}</h1>
         </div>  
         <!-- /// End P&M Header /// --> 
 
@@ -13,14 +29,14 @@
         <!-- /// Phases Header /// -->
         <div class="header flex flex-space-between margintop30">
             <div class="flex">
-                <h1>Project Phases</h1>
+                <h1>{{ translateText('message.project_phases') }}</h1>
             </div>
             <div class="flex flex-v-center">
-                <router-link :to="{name: 'project-phases-create-phase'}" class="btn-rounded btn-auto second-bg">Add New Phase</router-link>
+                <router-link :to="{name: 'project-phases-create-phase'}" class="btn-rounded btn-auto second-bg">{{ translateText('button.add_new_phase') }}</router-link>
             </div>
         </div>
         <div class="full-filters flex flex-direction-reverse">
-            <phase-filters :selectEndDate="setPhaseFilterEndDate" :selectStartDate="setPhaseFilterStartDate" :selectResponsible="setPhaseFilterResponsible" :selectStatus="setPhasesFilterStatus"></phase-filters>
+            <phase-filters :selectStartDate="setPhaseFilterStart" :selectEndDate="setPhaseFilterEnd" :selectResponsible="setPhaseFilterResponsible" :selectStatus="setPhasesFilterStatus"></phase-filters>
         </div>
         <!-- /// End Phases Header /// -->
 
@@ -31,90 +47,94 @@
                     <table class="table table-striped table-responsive">
                         <thead>
                             <tr>
-                                <th class="small-cell">ID</th>
-                                <th>Phase</th>
+                                <th class="small-cell">{{ translateText('table_header_cell.id') }}</th>
+                                <th>{{ translateText('table_header_cell.phase') }}</th>
                                 <th class="no-padding">
                                     <table class="table inner-table">
                                         <tr>
-                                            <th class="text-center" colspan="3">Base Schedule</th>
+                                            <th class="text-center" colspan="3">{{ translateText('table_header_cell.base_schedule') }}</th>
                                         </tr>
                                         <tr>
-                                            <th class="text-center">Start</th>
-                                            <th class="text-center">Finish</th>
-                                            <th class="text-center">Duration</th>
+                                            <th class="text-center">{{ translateText('table_header_cell.start') }}</th>
+                                            <th class="text-center">{{ translateText('table_header_cell.finish') }}</th>
+                                            <th class="text-center">{{ translateText('table_header_cell.duration') }}</th>
                                         </tr>
                                     </table>
                                 </th>
                                 <th class="no-padding">
                                     <table class="table inner-table">
                                         <tr>
-                                            <th class="text-center" colspan="3">Forecast Schedule</th>
+                                            <th class="text-center" colspan="3">{{ translateText('table_header_cell.forecast_schedule') }}</th>
                                         </tr>
                                         <tr>
-                                            <th class="text-center">Start</th>
-                                            <th class="text-center">Finish</th>
-                                            <th class="text-center">Duration</th>
+                                            <th class="text-center">{{ translateText('table_header_cell.start') }}</th>
+                                            <th class="text-center">{{ translateText('table_header_cell.finish') }}</th>
+                                            <th class="text-center">{{ translateText('table_header_cell.duration') }}</th>
                                         </tr>
                                     </table>
                                 </th>
                                 <th class="no-padding">
                                     <table class="table inner-table">
                                         <tr>
-                                            <th class="text-center" colspan="3">Actual Schedule</th>
+                                            <th class="text-center" colspan="3">{{ translateText('table_header_cell.actual_schedule') }}</th>
                                         </tr>
                                         <tr>
-                                            <th class="text-center">Start</th>
-                                            <th class="text-center">Finish</th>
-                                            <th class="text-center">Duration</th>
+                                            <th class="text-center">{{ translateText('table_header_cell.start') }}</th>
+                                            <th class="text-center">{{ translateText('table_header_cell.finish') }}</th>
+                                            <th class="text-center">{{ translateText('table_header_cell.duration') }}</th>
                                         </tr>
                                     </table>
                                 </th>
-                                <th>Status</th>
-                                <th>Responsible</th>
-                                <th>Actions</th>
+                                <th>{{ translateText('table_header_cell.status') }}</th>
+                                <th>{{ translateText('table_header_cell.responsible') }}</th>
+                                <th>{{ translateText('table_header_cell.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody v-if="projectPhases.items && projectPhases.items.length > 0">
                             <tr v-for='phase in projectPhases.items'>
-                                <td class="small-cell">{{phase.id}}</td>
-                                <td>{{phase.name}}</td>
+                                <td class="small-cell">{{ phase.id }}</td>
+                                <td>{{ phase.name }}</td>
                                 <td class="no-padding">
                                     <table class="table inner-table">
-                                        <tr v-if="phase.baseSchedule">
-                                            <td class="text-center">{{phase.baseSchedule.start}}</td>
-                                            <td class="text-center">{{phase.baseSchedule.finish}}</td>
-                                            <td class="text-center">{{phase.baseSchedule.duration}}</td>
+                                        <tr>
+                                            <td class="text-center">{{ phase.scheduledStartAt }}</td>
+                                            <td class="text-center">{{ phase.scheduledFinishAt }}</td>
+                                            <td class="text-center">{{ getDuration(phase.scheduledStartAt, phase.scheduledFinishAt) }}</td>
                                         </tr>
                                     </table>
                                 </td>
                                 <td class="no-padding">
                                     <table class="table inner-table">
-                                        <tr v-if="phase.forecastSchedule">
-                                            <td class="text-center">{{phase.forecastSchedule.start}}</td>
-                                            <td class="text-center">{{phase.forecastSchedule.finish}}</td>
-                                            <td class="text-center">{{phase.forecastSchedule.duration}}</td>
+                                        <tr>
+                                            <td class="text-center">{{ phase.forecastStartAt }}</td>
+                                            <td class="text-center">{{ phase.forecastFinishAt }}</td>
+                                            <td class="text-center">{{ getDuration(phase.forecastStartAt, phase.forecastFinishAt) }}</td>
                                         </tr>
                                     </table>
                                 </td>
                                 <td class="no-padding">
                                     <table class="table inner-table">
-                                        <tr v-if="phase.actualSchedule">
-                                            <td class="text-center">{{phase.actualSchedule.start}}</td>
-                                            <td class="text-center">{{phase.actualSchedule.finish}}</td>
-                                            <td class="text-center">{{phase.actualSchedule.duration}}</td>
+                                        <tr>
+                                            <td class="text-center">{{ phase.actualStartAt }}</td>
+                                            <td class="text-center">{{ phase.actualFinishAt }}</td>
+                                            <td class="text-center">{{ getDuration(phase.actualStartAt, phase.actualFinishAt) }}</td>
                                         </tr>
                                     </table> 
                                 </td> 
-                                <td>{{phase.status}}</td>
+                                <td>{{ translateText(phase.workPackageStatusName) }}</td>
                                 <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: ' + phase.responsibilityFullName"> 
+                                    <div class="user-avatar" v-tooltip.bottom-center="translateText('message.phase_responsible') + phase.responsibilityFullName">
                                         <img :src="phase.responsibilityAvatar"/>
                                     </div>                                    
                                 </td>
                                 <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
-                                    <a gref="#" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
+                                    <router-link :to="{name: 'project-phases-view-phase', params: { id: projectId, phaseId: phase.id } }">
+                                        <a href="javascript:void(0)" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
+                                    </router-link>
+                                    <router-link :to="{name: 'project-phases-edit-phase', params: { id: projectId, phaseId: phase.id } }">
+                                        <a href="javascript:void(0)" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
+                                    </router-link>
+                                    <button @click="initDeletePhaseModal(phase)" data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -124,10 +144,10 @@
 
             <div v-if="projectPhases && projectPhases.items" class="flex flex-direction-reverse flex-v-center">
                 <div class="pagination flex flex-center" v-if="projectPhases && projectPhases.totalItems > 0">
-                    <span v-for="page in phasesPages" v-bind:class="{'active': page == phasesActivePage}" @click="changePhasePage(page)">{{ page }}</span>
+                    <span v-if="phasesPages > 1" v-for="page in phasesPages" v-bind:class="{'active': page == phasesActivePage}" @click="changePhasePage(page)">{{ page }}</span>
                 </div>
                 <div>
-                    <span class="pagination-info">Displaying {{projectPhases.items.length}} results out of {{projectPhases.totalItems}}</span>
+                    <span class="pagination-info">{{ translateText('message.displaying') }} {{ projectPhases.items.length }} {{ translateText('message.results_out_of') }} {{ projectPhases.totalItems }}</span>
                 </div>
             </div>
         </div>
@@ -139,11 +159,11 @@
                 <h1>Project Milestones</h1>
             </div>
             <div class="flex flex-v-center">
-                <router-link :to="{name: 'project-milestones-create-milestone'}" class="btn-rounded btn-auto second-bg">Add New Milestone</router-link>
+                <router-link :to="{name: 'project-milestones-create-milestone'}" class="btn-rounded btn-auto second-bg">{{ translateText('button.add_new_milestone') }}</router-link>
             </div>
         </div>
         <div class="full-filters flex flex-direction-reverse">
-            <milestone-filters :selectDueDate="setMilestonesFilterDueDue" :selectPhase="setMilestonesFilterPhase" :selectResponsible="setMilestonesFilterResponsible" :selectStatus="setMilestonesFilterStatus"></milestone-filters>
+            <milestone-filters :selectDueDate="setMilestonesFilterDueDate" :selectPhase="setMilestonesFilterPhase" :selectResponsible="setMilestonesFilterResponsible" :selectStatus="setMilestonesFilterStatus"></milestone-filters>
         </div>
         <!-- /// End Milestones Header /// -->
 
@@ -154,33 +174,37 @@
                     <table class="table table-striped table-responsive">
                         <thead>
                             <tr>
-                                <th class="small-cell">ID</th>
-                                <th>Milestone</th>
-                                <th>Base due date</th>
-                                <th>Forecast due date</th>
-                                <th>Actual due date</th>
-                                <th>Status</th>
-                                <th>Responsible</th>
-                                <th>Actions</th>
+                                <th class="small-cell">{{ translateText('table_header_cell.id') }}</th>
+                                <th>{{ translateText('table_header_cell.milestone') }}</th>
+                                <th>{{ translateText('table_header_cell.base_due_date') }}</th>
+                                <th>{{ translateText('table_header_cell.forecast_due_date') }}</th>
+                                <th>{{ translateText('table_header_cell.actual_due_date') }}</th>
+                                <th>{{ translateText('table_header_cell.status') }}</th>
+                                <th>{{ translateText('table_header_cell.responsible') }}</th>
+                                <th>{{ translateText('table_header_cell.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody v-if="projectMilestones.items && projectMilestones.items.length">
                             <tr v-for="milestone in projectMilestones.items">
-                                <td class="small-cell">{{milestone.id}}</td>
-                                <td>{{milestone.name}}</td>
-                                <td>{{milestone.baseDueDate}}</td>
-                                <td>{{milestone.forecastDueDate}}</td>
-                                <td>{{milestone.actualDueDate}}</td>
-                                <td>{{milestone.status}}</td>
+                                <td class="small-cell">{{ milestone.id }}</td>
+                                <td>{{ milestone.name }}</td>
+                                <td>{{ milestone.scheduledFinishAt }}</td>
+                                <td>{{ milestone.forecastFinishAt }}</td>
+                                <td>{{ milestone.actualFinishAt }}</td>
+                                <td>{{ translateText(milestone.workPackageStatusName) }}</td>
                                 <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="'Phase responsible: ' + milestone.responsibilityFullName"> 
+                                    <div class="user-avatar" v-tooltip.bottom-center="translateText('message.milestone_responsible') + milestone.responsibilityFullName">
                                         <img :src="milestone.responsibilityAvatar">
                                     </div>                                    
                                 </td>
                                 <td>
-                                    <a href="#" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
-                                    <a gref="#" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
+                                    <router-link :to="{name: 'project-phases-view-milestone', params: { id: projectId, milestoneId: milestone.id } }">
+                                        <a href="javascript:void(0)" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
+                                    </router-link>
+                                    <router-link :to="{name: 'project-phases-edit-milestone', params: { id: projectId, milestoneId: milestone.id } }">
+                                        <a href="javascript:void(0)" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
+                                    </router-link>
+                                    <button @click="initDeleteMilestoneModal(milestone)" data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -190,10 +214,10 @@
 
             <div v-if="projectMilestones && projectMilestones.items"  class="flex flex-direction-reverse flex-v-center">
                 <div class="pagination flex flex-center" v-if="projectMilestones && projectMilestones.totalItems > 0">
-                    <span v-for="page in milestonesPages" v-bind:class="{'active': page == milestoneActivePage}" @click="changeMilestonePage(page)">{{ page }}</span>
+                    <span v-if="milestonesPages > 1" v-for="page in milestonesPages" v-bind:class="{'active': page == milestoneActivePage}" @click="changeMilestonesPage(page)">{{ page }}</span>
                 </div>
                 <div>
-                    <span class="pagination-info">Displaying {{projectMilestones.items.length}} results out of {{projectMilestones.totalItems}}</span>
+                    <span class="pagination-info">{{ translateText('message.displaying') }} {{ projectMilestones.items.length }} {{ translateText('message.results_out_of') }} {{ projectMilestones.totalItems }}</span>
                 </div>
             </div>
         </div>
@@ -211,6 +235,8 @@ import EditIcon from '../_common/_icons/EditIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
 import ViewIcon from '../_common/_icons/ViewIcon';
 import Vue from 'vue';
+import moment from 'moment';
+import Modal from '../_common/Modal';
 
 export default {
     components: {
@@ -221,6 +247,7 @@ export default {
         EditIcon,
         DeleteIcon,
         ViewIcon,
+        Modal,
     },
     created() {
         this.getProjectPhases({
@@ -229,62 +256,110 @@ export default {
                 page: 1,
             },
         });
-        this.getProjectMilestones(
-            this.$route.params.id,
-            {
+        this.getProjectMilestones({
+            projectId: this.$route.params.id,
+            apiParams: {
                 page: 1,
             },
-        );
+        });
+        this.getProjectMilestones({
+            projectId: this.$route.params.id,
+        });
     },
     methods: {
-        ...mapActions(['getProjectPhases', 'getProjectMilestones', 'setPhasesFiters', 'setMilestonesFiters']),
+        ...mapActions([
+            'getProjectPhases', 'getProjectMilestones',
+            'setPhasesFilters', 'setMilestonesFilters', 'deleteProjectPhase',
+            'deleteProjectMilestone',
+        ]),
+        getDuration: function(startDate, endDate) {
+            let end = moment(endDate);
+            let start = moment(startDate);
+
+            return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') : '-';
+        },
+        translateText: function(text) {
+            return this.translate(text);
+        },
         changePhasePage: function(page) {
             this.phasesActivePage = page;
+            this.refreshPhasesData();
+        },
+        changeMilestonesPage: function(page) {
+            this.milestonesActivePage = page;
+            this.refreshMilestonesData();
+        },
+        initDeletePhaseModal(phase) {
+            this.showDeletePhaseModal = true;
+            this.phaseId = phase.id;
+        },
+        initDeleteMilestoneModal(milestone) {
+            this.showDeleteMilestoneModal = true;
+            this.milestoneId = milestone.id;
+        },
+        deleteSelectedPhase() {
+            this.showDeletePhaseModal = false;
+            this.deleteProjectPhase(this.phaseId);
+        },
+        deleteSelectedMilestone() {
+            this.showDeleteMilestoneModal = false;
+            this.deleteProjectMilestone(this.milestoneId);
+        },
+        setPhasesFilterStatus: function(value) {
+            this.setPhasesFilters({status: value});
+            this.refreshPhasesData();
+        },
+        setPhaseFilterResponsible: function(value) {
+            this.setPhasesFilters({responsible: value});
+            this.refreshPhasesData();
+        },
+        setMilestonesFilterStatus: function(value) {
+            this.setMilestonesFilters({status: value});
+            this.refreshMilestonesData();
+        },
+        setMilestonesFilterResponsible: function(value) {
+            this.setMilestonesFilters({responsible: value});
+            this.refreshMilestonesData();
+        },
+        setMilestonesFilterPhase: function(value) {
+            this.setMilestonesFilters({phase: value});
+            this.refreshMilestonesData();
+        },
+        setMilestonesFilterDueDate: function(value) {
+            this.setMilestonesFilters({dueDate: value ? moment(value).format('YYYY-MM-DD') : null});
+            this.refreshMilestonesData();
+        },
+        setPhaseFilterStart: function(value) {
+            this.setPhasesFilters({startDate: value ? moment(value).format('YYYY-MM-DD') : null});
+            this.refreshPhasesData();
+        },
+        setPhaseFilterEnd: function(value) {
+            this.setPhasesFilters({endDate: value ? moment(value).format('YYYY-MM-DD') : null});
+            this.refreshPhasesData();
+        },
+        refreshPhasesData: function() {
             this.getProjectPhases({
                 projectId: this.$route.params.id,
                 apiParams: {
-                    page: page,
+                    page: this.phasesActivePage,
                 },
             });
         },
-        changeMilestonesPage: function(page) {
-            this.milestoneActivePage = page;
-            this.getProjectMilestones(
-                this.$route.params.id,
-                {
-                    page: page,
+        refreshMilestonesData: function() {
+            this.getProjectMilestones({
+                projectId: this.$route.params.id,
+                apiParams: {
+                    page: this.milestonesActivePage,
                 },
-            );
-        },
-        setPhasesFilterStatus: function(value) {
-            this.setPhasesFiters({status: value});
-        },
-        setPhaseFilterResponsible: function(value) {
-            this.setPhasesFiters({responsible: value});
-        },
-        setMilestonesFilterStatus: function(value) {
-            this.setMilestonesFiters({status: value});
-        },
-        setMilestonesFilterResponsible: function(value) {
-            this.setMilestonesFiters({responsible: value});
-        },
-        setMilestonesFilterPhase: function(value) {
-            this.setMilestonesFiters({phase: value});
-        },
-        setMilestonesFilterDueDue: function(value) {
-            this.setMilestonesFiters({dueDate: value});
-        },
-        setPhaseFilterStartDate: function(value) {
-            this.setPhasesFiters({startDate: value});
-        },
-        setPhaseFilterEndDate: function(value) {
-            this.setPhasesFiters({endDate: value});
+            });
         },
     },
     computed: {
         ...mapGetters({
             projectPhases: 'projectPhases',
             projectMilestones: 'projectMilestones',
+            allProjectMilestones: 'allProjectMilestones',
+            allProjectPhases: 'allProjectPhases',
         }),
         phasesPages: function() {
             return Math.ceil(this.projectPhases.totalItems / 4);
@@ -294,8 +369,8 @@ export default {
         },
         pmData: function() {
             let items = [];
-            if (this.projectPhases && this.projectPhases.items) {
-                items = items.concat(this.projectPhases.items.map((item) => {
+            if (this.allProjectPhases && this.allProjectPhases.items) {
+                items = items.concat(this.allProjectPhases.items.map((item) => {
                     return {
                         id: item.id,
                         group: 0,
@@ -308,8 +383,8 @@ export default {
                 }));
             }
 
-            if (this.projectMilestones && this.projectMilestones.items) {
-                items = items.concat(this.projectMilestones.items.map((item) => {
+            if (this.allProjectMilestones && this.allProjectMilestones.items) {
+                items = items.concat(this.allProjectMilestones.items.map((item) => {
                     return {
                         id: item.id,
                         group: 1,
@@ -325,8 +400,13 @@ export default {
     },
     data() {
         return {
-            phasesActivePage: 0,
-            milestonesActivePage: 0,
+            phasesActivePage: 1,
+            milestonesActivePage: 1,
+            projectId: this.$route.params.id,
+            showDeleteMilestoneModal: false,
+            showDeletePhaseModal: false,
+            milestoneId: '',
+            phaseId: '',
         };
     },
 };
@@ -341,7 +421,9 @@ function renderTooltip(item) {
         <div class="task-box box">
             <div class="box-header">
                 <div class="user-info flex flex-v-center">
-                    <img class="user-avatar" src="` + item.responsibilityAvatar + `" alt="Phase responsable:` + item.responsibilityFullName + `"/>
+                    <img class="user-avatar"
+                        src="` + item.responsibilityAvatar + `" alt="` + Vue.translate('table_header_cell.responsible') + item.responsibilityFullName +
+                    `"/>
                     <p>` + item.responsibilityFullName + `</p>
                 </div>
                 <h2><router-link to="" class="simple-link">` + item.name + `</router-link></h2>
@@ -351,36 +433,42 @@ function renderTooltip(item) {
                 <table class="table table-small">
                     <thead>
                         <tr>
-                            <th>Schedule</th>
-                            <th>Start</th>
-                            <th>Finish</th>
-                            <th>Duration</th>
+                            <th>` + Vue.translate('table_header_cell.schedule') + `</th>
+                            <th>` + Vue.translate('table_header_cell.start') + `</th>
+                            <th>` + Vue.translate('table_header_cell.finish') + `</th>
+                            <th>` + Vue.translate('table_header_cell.duration') + `</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Base</td>
+                            <td>`+ Vue.translate('table_header_cell.base') +`</td>
                             <td>` + (item.scheduledStartAt ? item.scheduledStartAt : '-') + `</td>
                             <td>` + (item.scheduledFinishAt ? item.scheduledFinishAt : '-') + `</td>
-                            <td>2</td>
+                            <td>` + (!isNaN(moment(item.scheduledFinishAt).diff(moment(item.scheduledStartAt), 'days'))
+                                ? moment(item.scheduledFinishAt).diff(moment(item.scheduledStartAt), 'days')
+                                : '-') + `</td>
                         </tr>
                         <tr class="column-warning">
-                            <td>Forecast</td>
-                            <td>` + (item.forecastStartAt? item.forecastStartAt : '-') + `</td>
-                            <td>` + (item.forecastFinishedAt? item.forecastFinishedAt: '-') + `</td>
-                            <td>3</td>
+                            <td>`+ Vue.translate('table_header_cell.forecast') +`</td>
+                            <td>` + (item.forecastStartAt ? item.forecastStartAt : '-') + `</td>
+                            <td>` + (item.forecastFinishedAt ? item.forecastFinishedAt: '-') + `</td>
+                            <td>` + (!isNaN(moment(item.forecastFinishedAt).diff(moment(item.forecastStartAt), 'days'))
+                                ? moment(item.forecastFinishedAt).diff(moment(item.forecastStartAt), 'days')
+                                : '-') + `</td>
                         </tr>
                         <tr>
-                            <td>Actual</td>
-                            <td>` + (item.actualStartAt? item.actualStartAt : '-') + `</td>
-                            <td>` + (item.actualFinishAt? item.actualFinishAt : '-') + `</td>
-                            <td>-</td>
+                            <td>` + Vue.translate('table_header_cell.actual') + `</td>
+                            <td>` + (item.actualStartAt ? item.actualStartAt : '-') + `</td>
+                            <td>` + (item.actualFinishAt ? item.actualFinishAt : '-') + `</td>
+                            <td>` + (!isNaN(moment(item.actualFinishAt).diff(moment(item.actualStartAt), 'days'))
+                                ? moment(item.actualFinishAt).diff(moment(item.actualStartAt), 'days')
+                                : '-') + `</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div class="status">
-                <p><span>Status:</span> ` + Vue.translate(item.workPackageStatusName) +`</p>
+                <p><span>` + Vue.translate('table_header_cell.status') + `:</span> ` + Vue.translate(item.workPackageStatusName) +`</p>
                 <bar-chart position="right" :percentage="85" :color="Green" v-bind:title-right="green"></bar-chart>
             </div>
         </div>
@@ -410,6 +498,29 @@ function renderTooltip(item) {
         .small-cell {
             width: 90px;
             padding-right: 0;
+        }
+    }
+
+    .modal {
+        .modal-title {
+            text-transform: uppercase;
+            text-align: center;
+            font-size: 18px;
+            letter-spacing: 1.8px;
+            font-weight: 300;
+            margin-bottom: 40px;
+        }
+
+        .input-holder {
+            margin-bottom: 30px;
+        }
+
+        .main-list .member {
+            border-top: 1px solid $darkColor;
+        }
+
+        .results {
+            width: 600px;
         }
     }
 </style>
