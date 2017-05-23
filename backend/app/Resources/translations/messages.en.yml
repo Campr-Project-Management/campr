@@ -789,9 +789,7 @@ label:
     subteam_roles: Subteam Roles
 
 button:
-<<<<<<< HEAD
-    add_new_measure: Add New Measure +
-=======
+    add_new_measure: Add New Measure
     view_all_tasks: View all tasks
     view_tasks_board: View tasks board
     print_project_handbook: Print Project Handbook
@@ -800,7 +798,6 @@ button:
     delete_milestone: Delete Milestone
     add_new_phase: Add New Phase
     add_new_milestone: Add New Milestone
->>>>>>> 118ebd0e5343d6f600f5c2c89c4442060a4f037c
     add_new_team_members: Add New Team Members
     create_phase: Create Phase
     create_milestone: Create Milestone

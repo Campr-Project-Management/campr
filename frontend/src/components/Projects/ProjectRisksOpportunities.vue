@@ -16,100 +16,17 @@
                 <!-- /// Project Opportunities /// -->
                 <div class="ro-grid-wrapper clearfix">
                     <!-- /// Project Opportunities Grid /// -->
-                    <div class="ro-grid">
-                        <div class="ro-grid-header vertical-axis-header">
-                            <div class="big-header">{{ translateText('message.impact') }}</div>
-                            <div class="small-headers clearfix">
-                                <div class="small-header">{{ translateText('message.very_low') }}</div>
-                                <div class="small-header">{{ translateText('message.low') }}</div>
-                                <div class="small-header">{{ translateText('message.high') }}</div>
-                                <div class="small-header">{{ translateText('message.very_high') }}</div>
-                            </div>
-                        </div> 
-                        <div class="ro-grid-items clearfix">
-                            <div class="ro-grid-item medium"><span>1</span></div>
-                            <div class="ro-grid-item low"></div>
-                            <div class="ro-grid-item very-low"></div>
-                            <div class="ro-grid-item very-low active"><span>3</span></div>
-                            <!-- ================================= -->
-                            <div class="ro-grid-item high"></div>
-                            <div class="ro-grid-item medium"><span>1</span></div>
-                            <div class="ro-grid-item low"></div>
-                            <div class="ro-grid-item very-low"><span>2</span></div>
-                            <!-- ================================= -->
-                            <div class="ro-grid-item very-high"></div>
-                            <div class="ro-grid-item high"></div>
-                            <div class="ro-grid-item medium"></div>
-                            <div class="ro-grid-item low"></div>
-                            <!-- ================================= -->
-                            <div class="ro-grid-item very-high"></div>
-                            <div class="ro-grid-item very-high"></div>
-                            <div class="ro-grid-item high"></div>
-                            <div class="ro-grid-item medium"></div>
-                        </div>
-                        <div class="ro-grid-header horizontal-axis-header">                            
-                            <div class="small-headers clearfix">
-                                <div class="small-header">{{ translateText('message.very_low') }}</div>
-                                <div class="small-header">{{ translateText('message.low') }}</div>
-                                <div class="small-header">{{ translateText('message.high') }}</div>
-                                <div class="small-header">{{ translateText('message.very_high') }}</div>
-                            </div>
-                            <div class="big-header">{{ translateText('message.probability') }}</div>
-                        </div>
-                    </div>
+                    <risk-grid :gridData="gridData"></risk-grid>
                     <!-- /// End Project Opportunities Grid /// -->
 
                     <!-- /// Project Opportunities List /// -->
-                    <div class="ro-list">
-                        <div class="ro-list-item">
-                            <div class="avatar" style="background-image:url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg);" v-tooltip.top="'Responsible: David Guetta'"></div>
-                            <a href="#" title="Plant based dietary Program">1. Plant based dietary Program</a>
-                            <p>{{ translateText('message.potential_savings') }}: <b>$4.850</b></p>
-                            <p>{{ translateText('message.potential_time_savings') }}: <b>14 days</b></p>
-                            <p>{{ translateText('message.priority') }}: <b>Very High</b></p>
-                            <p>{{ translateText('message.strategy') }}: <b>Take</b></p>
-                            <p>{{ translateText('message.status') }}: <b>Ongoing</b></p>
-                        </div>
-                        <div class="ro-list-item">
-                            <div class="avatar" style="background-image:url(http://trisoft.dev.campr.biz/uploads/avatars/60.jpg);" v-tooltip.top="'Responsible: Lindsay Wong'"></div>
-                            <a href="#" title="Plant based dietary Program">2. Self Landing Supply Rockets</a>
-                            <p>{{ translateText('message.potential_savings') }}: <b>$18.500</b></p>
-                            <p>{{ translateText('message.potential_time_savings') }}: <b>60 days</b></p>
-                            <p>{{ translateText('message.priority') }}: <b>Very High</b></p>
-                            <p>{{ translateText('message.strategy') }}: <b>Increase</b></p>
-                            <p>{{ translateText('message.status') }}: <b>Initiated</b></p>
-                        </div>
-                        <div class="ro-list-item">
-                            <div class="avatar" style="background-image:url(http://trisoft.dev.campr.biz/uploads/avatars/64.jpg);" v-tooltip.top="'Responsible: Maria Anabelle'"></div>
-                            <a href="#" title="Plant based dietary Program">3. S.M.A.R.T Technology</a>
-                            <p>{{ translateText('message.potential_savings') }}: <b>$300.000</b></p>
-                            <p>{{ translateText('message.potential_time_savings') }}: <b>90 days</b></p>
-                            <p>{{ translateText('message.priority') }}: <b>Very High</b></p>
-                            <p>{{ translateText('message.strategy') }}: <b>Take</b></p>
-                            <p>{{ translateText('message.status') }}: <b>Ongoing</b></p>
-                        </div>
-                    </div>
+                    <risk-list :listData="listData"></risk-list>
                     <!-- /// End Project Opportunities List /// -->
                 </div>
                 <!-- /// End Project Opportunities /// -->
 
                 <!-- /// Project Opportunities Summary /// -->
-                <div class="ro-summary">
-                    <div class="text-center flex flex-center">
-                        <div class="text-right">
-                            <p>{{ translateText('message.total_potential_savings') }}:</p>
-                            <p>{{ translateText('message.total_potential_time_savings') }}:</p>
-                            <p>{{ translateText('message.total_number_of_measures') }}:</p>
-                            <p>{{ translateText('message.total_cost_of_measures') }}:</p>
-                        </div>
-                        <div class="text-left">
-                            <p><b>$323.350</b></p>
-                            <p><b>74 days</b></p>
-                            <p><b>12</b></p>
-                            <p><b>$85.550</b></p>
-                        </div>
-                    </div>
-                </div>
+                <risk-summary :summaryData="summaryData"></risk-summary>
                 <!-- /// End Project Opportunities Summary /// -->
             </div>
             <div class="col-lg-6">
@@ -127,82 +44,17 @@
                 <!-- /// Project Risks /// -->
                 <div class="ro-grid-wrapper clearfix">
                     <!-- /// Project Risks Grid /// -->
-                    <div class="ro-grid">
-                        <div class="ro-grid-header vertical-axis-header">
-                            <div class="big-header">{{ translateText('message.impact') }}</div>
-                            <div class="small-headers clearfix">
-                                <div class="small-header">{{ translateText('message.very_low') }}</div>
-                                <div class="small-header">{{ translateText('message.low') }}</div>
-                                <div class="small-header">{{ translateText('message.high') }}</div>
-                                <div class="small-header">{{ translateText('message.very_high') }}</div>
-                            </div>
-                        </div> 
-                        <div class="ro-grid-items clearfix">
-                            <div class="ro-grid-item medium"><span>1</span></div>
-                            <div class="ro-grid-item high"></div>
-                            <div class="ro-grid-item very-high"></div>
-                            <div class="ro-grid-item very-high"></div>
-                            <!-- ================================= -->
-                            <div class="ro-grid-item low"></div>
-                            <div class="ro-grid-item medium"></div>
-                            <div class="ro-grid-item high"><span>2</span></div>
-                            <div class="ro-grid-item very-high active"><span>1</span></div>
-                            <!-- ================================= -->
-                            <div class="ro-grid-item very-low"></div>
-                            <div class="ro-grid-item low"></div>
-                            <div class="ro-grid-item medium"></div>
-                            <div class="ro-grid-item high"></div>
-                            <!-- ================================= -->
-                            <div class="ro-grid-item very-low"></div>
-                            <div class="ro-grid-item very-low"></div>
-                            <div class="ro-grid-item low"></div>
-                            <div class="ro-grid-item medium"></div>
-                        </div>
-                        <div class="ro-grid-header horizontal-axis-header">                            
-                            <div class="small-headers clearfix">
-                                <div class="small-header">{{ translateText('message.very_low') }}</div>
-                                <div class="small-header">{{ translateText('message.low') }}</div>
-                                <div class="small-header">{{ translateText('message.high') }}</div>
-                                <div class="small-header">{{ translateText('message.very_high') }}</div>
-                            </div>
-                            <div class="big-header">{{ translateText('message.probability') }}</div>
-                        </div>
-                    </div>
+                    <risk-grid :gridData="gridData"></risk-grid>
                     <!-- /// End Project Risks Grid /// -->
 
                     <!-- /// Project Risks List /// -->
-                    <div class="ro-list">
-                        <div class="ro-list-item">
-                            <div class="avatar" style="background-image:url(http://trisoft.dev.campr.biz/uploads/avatars/49.jpg);" v-tooltip.top="'Responsible: Motubu Xebala'"></div>
-                            <a href="#" title="Plant based dietary Program">1. Unknown ViraL Breach</a>
-                            <p>{{ translateText('message.potential_cost') }}: <b>$120.000</b></p>
-                            <p>{{ translateText('message.potential_time_delay') }}: <b>60 days</b></p>
-                            <p>{{ translateText('message.priority') }}: <b>Very High</b></p>
-                            <p>{{ translateText('message.strategy') }}: <b>Avoid</b></p>
-                            <p>{{ translateText('message.status') }}: <b>Initiated</b></p>
-                        </div>
-                    </div>
+                    <risk-list :listData="listData"></risk-list>
                     <!-- /// End Project Risks List /// -->
                 </div>
                 <!-- /// End Project Risks /// -->
 
                 <!-- /// Project Risks Summary /// -->
-                <div class="ro-summary">
-                    <div class="text-center flex flex-center">
-                        <div class="text-right">
-                            <p>{{ translateText('message.total_potential_cost') }}:</p>
-                            <p>{{ translateText('message.total_potential_delay') }}:</p>
-                            <p>{{ translateText('message.total_number_of_measures') }}:</p>
-                            <p>{{ translateText('message.total_cost_of_measures') }}:</p>
-                        </div>
-                        <div class="text-left">
-                            <p><b>$120.000</b></p>
-                            <p><b>60 days</b></p>
-                            <p><b>2</b></p>
-                            <p><b>$12.500</b></p>
-                        </div>
-                    </div>
-                </div>
+                <risk-summary :summaryData="summaryData"></risk-summary>
                 <!-- /// End Project Risks Summary /// -->
             </div>
         </div>
@@ -210,11 +62,58 @@
 </template>
 
 <script>
+import RiskGrid from './Risks/RiskGrid';
+import RiskList from './Risks/RiskList';
+import RiskSummary from './Risks/RiskSummary';
 export default {
+    components: {
+        RiskGrid,
+        RiskList,
+        RiskSummary,
+    },
     methods: {
         translateText: function(text) {
             return this.translate(text);
         },
+    },
+    data: function() {
+        return {
+            gridData: [[{number: 1, type: 'medium'}, {number: 2, type: 'high'}, {number: null, type: 'low'}, {number: null, type: 'very-low'}],
+            [{number: 1, type: 'medium'}, {number: 2, type: 'high'}, {number: null, type: 'low'}, {number: null, type: 'very-low'}],
+            [{number: 1, type: 'medium'}, {number: 2, type: 'high'}, {number: null, type: 'low'}, {number: null, type: 'very-low'}],
+            [{number: 1, type: 'medium'}, {number: 2, type: 'high'}, {number: null, type: 'low'}, {number: null, type: 'very-low'}]],
+            listData: [{
+                responsible: 'John',
+                title: 'Title 1',
+                potential_savings: '$1200',
+                potential_time_savings: '40 days',
+                priority: 'High',
+                strategy: 'Increase',
+                status: 'Ongoing',
+            }, {
+                responsible: 'John',
+                title: 'Title 1',
+                potential_savings: '$1200',
+                potential_time_savings: '40 days',
+                priority: 'High',
+                strategy: 'Increase',
+                status: 'Ongoing',
+            }, {
+                responsible: 'John',
+                title: 'Title 1',
+                potential_savings: '$1200',
+                potential_time_savings: '40 days',
+                priority: 'High',
+                strategy: 'Increase',
+                status: 'Ongoing',
+            }],
+            summaryData: {
+                total_potential_savings: '$323.350',
+                total_potential_time_savings: '74 days',
+                total_number_of_measures: 12,
+                total_cost_of_measures: '$85.550',
+            },
+        };
     },
 };
 </script>
