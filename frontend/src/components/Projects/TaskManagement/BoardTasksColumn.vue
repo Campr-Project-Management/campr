@@ -7,12 +7,12 @@
                 <span class="notification-balloon second-bg">+</span>
             </div>
         </div>
-        <vue-scrollbar class="tasks-scroll">
+        <div class="tasks-scroll" v-bind:ref="'scrollWrapper' + status.id" infinite-wrapper>
             <div>
                 <small-task-box v-if="tasksByStatuses[status.id]" v-bind:task="task" v-for="task in tasksByStatuses[status.id].items"></small-task-box>
                 <infinite-loading :status="status.id" :on-infinite="onInfinite" v-bind:ref="'infiniteLoading' + status.id"></infinite-loading>
             </div>
-        </vue-scrollbar>
+        </div>
     </div>
 </template>
 
@@ -21,6 +21,7 @@ import {mapActions, mapGetters} from 'vuex';
 import SmallTaskBox from '../../Dashboard/SmallTaskBox';
 import VueScrollbar from 'vue2-scrollbar';
 import InfiniteLoading from 'vue-infinite-loading';
+import Ps from 'perfect-scrollbar';
 
 export default {
     props: ['status'],
@@ -33,6 +34,9 @@ export default {
         ...mapGetters({
             tasksByStatuses: 'tasksByStatuses',
         }),
+    },
+    mounted() {
+        Ps.initialize(this.$refs['scrollWrapper'+this.status.id]);
     },
     methods: {
         ...mapActions(['getTasksByStatus']),
@@ -89,8 +93,11 @@ export default {
 
     .tasks-scroll {
         max-height: 400px;
+        height: 400px;
         padding-right: 40px;
         margin-bottom: 10px;
+        position: relative;
+        overflow: auto;
     }
 
     .notification-balloon {
