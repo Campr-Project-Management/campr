@@ -123,7 +123,7 @@
                                     <switches @click.native="updateUserOption(item, 'org')" v-model="showInOrg" :selected="item.showInOrg"></switches>
                                 </td>
                                 <td class="text-center switchers" v-for="dl in project.distributionLists">
-                                    <switches @click.native="updateDistribution(item, dl)" v-model="inDistribution" :selected="inDistributionList(item.id, dl)"></switches>
+                                    <switches :modelChanged="updateDistributionItem(item, dl)" v-model="inDistribution" :selected="inDistributionList(item.id, dl)"></switches>
                                 </td>
                             </tr>
                         </tbody>
@@ -224,9 +224,18 @@ export default {
         },
         updateDistribution(item, distribution) {
             this.inDistribution
-                ? this.addToDistribution({id: distribution.id, user: item.id})
-                : this.removeFromDistribution({id: distribution.id, user: item.id})
+                ? this.addToDistribution({id: distribution.id, user: item.user})
+                : this.removeFromDistribution({id: distribution.id, user: item.user})
             ;
+        },
+        updateDistributionItem(item, distribution) {
+            const self = this;
+            return function(value) {
+                value 
+                    ? self.addToDistribution({id: distribution.id, user: item.user})
+                    : self.removeFromDistribution({id: distribution.id, user: item.user})
+                ;
+            };
         },
     },
     created() {
