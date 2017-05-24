@@ -3,6 +3,10 @@
         <div class="task-box box small-box">
             <div class="box-header">
                 <div>
+                    <div v-if="task.responsibility" class="user-info flex flex-v-center">
+                        <img class="user-avatar" :src="task.responsibilityAvatar" :alt="task.responsibilityFullName"/>
+                        <p>{{ task.responsibilityFullName }}</p>
+                    </div>
                     <h2>
                         <router-link :to="{name: 'project-task-management-edit', params: { id: task.project, taskId: task.id }}">
                             {{ task.name }}
