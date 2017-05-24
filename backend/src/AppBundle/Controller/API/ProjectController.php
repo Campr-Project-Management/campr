@@ -989,6 +989,7 @@ class ProjectController extends ApiController
     public function phasesAction(Request $request, Project $project)
     {
         $filters = $request->query->all();
+        /** @var WorkPackageRepository $repo */
         $repo = $this
             ->getDoctrine()
             ->getManager()
@@ -998,7 +999,10 @@ class ProjectController extends ApiController
             $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
             $filters['type'] = WorkPackage::TYPE_PHASE;
             $result = $repo->getQueryByProjectAndFilters($project, $filters)->getResult();
-            $responseArray['totalItems'] = count($result);
+            $responseArray['totalItems'] = (int) $repo
+                ->getQueryByProjectAndFilters($project, $filters, 'COUNT(DISTINCT wp.id)')
+                ->getSingleScalarResult()
+            ;
             $responseArray['pageSize'] = $filters['pageSize'];
             $responseArray['items'] = $result;
 
@@ -1007,6 +1011,7 @@ class ProjectController extends ApiController
 
         return $this->createApiResponse([
             'items' => $repo->findPhasesByProject($project),
+            'totalItems' => $repo->countPhasesByProject($project),
         ]);
     }
 
@@ -1042,6 +1047,7 @@ class ProjectController extends ApiController
     public function milestonesAction(Request $request, Project $project)
     {
         $filters = $request->query->all();
+        /** @var WorkPackageRepository $repo */
         $repo = $this
             ->getDoctrine()
             ->getManager()
@@ -1051,7 +1057,10 @@ class ProjectController extends ApiController
             $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
             $filters['type'] = WorkPackage::TYPE_MILESTONE;
             $result = $repo->getQueryByProjectAndFilters($project, $filters)->getResult();
-            $responseArray['totalItems'] = count($result);
+            $responseArray['totalItems'] = (int) $repo
+                ->getQueryByProjectAndFilters($project, $filters, 'COUNT(DISTINCT wp.id)')
+                ->getSingleScalarResult()
+            ;
             $responseArray['pageSize'] = $filters['pageSize'];
             $responseArray['items'] = $result;
 
@@ -1060,6 +1069,7 @@ class ProjectController extends ApiController
 
         return $this->createApiResponse([
             'items' => $repo->findMilestonesByProject($project),
+            'totalItems' => $repo->countMilestonesByProject($project),
         ]);
     }
 
