@@ -19,12 +19,12 @@ export default {
         TaskBox,
     },
     created() {
-        if (!this.$store.state.colorStatus || this.$store.state.colorStatus.items.length === 0) {
+        if (!this.$store.state.colorStatuses || this.$store.state.colorStatuses.length === 0) {
             this.getColorStatuses();
-        };
-        if (!this.allTasks.length || this.allTasks.totalItems === 0) {
+        }
+        if (!this.allTasks.length || this.allTasks.totalMilestones === 0) {
             this.getTaskPerPage(1);
-        };
+        }
     },
     computed: {
         ...mapGetters({
