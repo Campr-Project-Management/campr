@@ -175,7 +175,7 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
-        return $qb
+        return (int) $qb
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -194,6 +194,30 @@ class WorkPackageRepository extends BaseRepository
         );
     }
 
+    public function countPhasesByProject(Project $project)
+    {
+        $qb = $this
+            ->createQueryBuilder('wp')
+            ->select('COUNT(DISTINCT wp.id)')
+        ;
+
+        $qb->where(
+            $qb->expr()->eq(
+                'wp.project',
+                $project->getId()
+            )
+        );
+
+        $qb->andWhere(
+            $qb->expr()->eq(
+                'wp.type',
+                WorkPackage::TYPE_PHASE
+            )
+        );
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
     public function findMilestonesByProject(Project $project)
     {
         return $this->findBy(
@@ -205,6 +229,30 @@ class WorkPackageRepository extends BaseRepository
                 'puid' => 'ASC',
             ]
         );
+    }
+
+    public function countMilestonesByProject(Project $project)
+    {
+        $qb = $this
+            ->createQueryBuilder('wp')
+            ->select('COUNT(DISTINCT wp.id)')
+        ;
+
+        $qb->where(
+            $qb->expr()->eq(
+                'wp.project',
+                $project->getId()
+            )
+        );
+
+        $qb->andWhere(
+            $qb->expr()->eq(
+                'wp.type',
+                WorkPackage::TYPE_MILESTONE
+            )
+        );
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
     public function findMilestonesByPhase(WorkPackage $phase)
@@ -253,18 +301,18 @@ class WorkPackageRepository extends BaseRepository
         $qb->where(
             $qb->expr()->eq(
                 'wp.project',
-                $project
+                $project->getId()
             )
         );
 
-        $qb->where(
+        $qb->andWhere(
             $qb->expr()->eq(
                 'wp.type',
                 WorkPackage::TYPE_TASK
             )
         );
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
     public function findTasksByMilestone(
@@ -300,19 +348,19 @@ class WorkPackageRepository extends BaseRepository
 
         $qb->where(
             $qb->expr()->eq(
-                'wp.project',
-                $milestone->getProject()
+                'wp.milestone',
+                $milestone->getId()
             )
         );
 
-        $qb->where(
+        $qb->andWhere(
             $qb->expr()->eq(
                 'wp.type',
                 WorkPackage::TYPE_TASK
             )
         );
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
     /**
@@ -324,7 +372,7 @@ class WorkPackageRepository extends BaseRepository
      *
      * @return Query
      */
-    public function getQueryByProjectAndFilters(Project $project, $filters = [])
+    public function getQueryByProjectAndFilters(Project $project, $filters = [], $select = null)
     {
         $qb = $this
             ->createQueryBuilder('wp')
@@ -332,6 +380,10 @@ class WorkPackageRepository extends BaseRepository
             ->where('p.id = :project')
             ->setParameter('project', $project)
         ;
+
+        if ($select) {
+            $qb->select($select);
+        }
 
         if (isset($filters['phase'])) {
             $qb
@@ -489,6 +541,6 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 }

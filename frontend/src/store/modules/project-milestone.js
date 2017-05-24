@@ -3,18 +3,18 @@ import * as types from '../mutation-types';
 import router from '../../router';
 
 const state = {
-    items: [],
-    currentItem: {},
-    totalItems: 0,
-    filters: {},
-    allItems: [],
+    milestones: [],
+    currentMilestone: {},
+    totalMilestones: 0,
+    milestoneFilters: {},
+    allMilestones: [],
 };
 
 const getters = {
-    projectMilestones: state => state.items,
-    milestone: state => state.currentItem,
+    projectMilestones: state => state.milestones,
+    milestone: state => state.currentMilestone,
     projectMilestonesForSelect: state => {
-        return state.items.items.map(item => {
+        return state.milestones.map(item => {
             return {
                 'key': item.id,
                 'label': item.name,
@@ -22,7 +22,7 @@ const getters = {
             };
         });
     },
-    allProjectMilestones: state => state.allItems,
+    allProjectMilestones: state => state.allMilestones,
 };
 
 const actions = {
@@ -32,31 +32,33 @@ const actions = {
      * @param {Object} apiParams
      */
     getProjectMilestones({commit, state}, {projectId, apiParams}) {
-        let paramObject = {params: {}};
+        let paramObject = {
+            id: projectId,
+            params: {},
+        };
         if (apiParams && apiParams.page) {
             paramObject.params.page = apiParams.page;
         }
 
-        if (state.filters.status) {
+        if (state.filters && state.filters.status) {
             paramObject.params.status = state.filters.status;
         }
 
-        if (state.filters.responsible) {
+        if (state.filters && state.filters.responsible) {
             paramObject.params.projectUser = state.filters.responsible;
         }
 
-        if (state.filters.phase) {
+        if (state.filters && state.filters.phase) {
             paramObject.params.phase = state.filters.phase;
         }
 
-        if (state.filters.dueDate) {
+        if (state.filters && state.filters.dueDate) {
             paramObject.params.dueDate = state.filters.dueDate;
         }
 
         Vue.http
-            .get(Routing.generate('app_api_project_milestones', {'id': projectId}),
-                paramObject,
-            ).then((response) => {
+            .get(Routing.generate('app_api_project_milestones', paramObject))
+            .then((response) => {
                 if (response.status === 200) {
                     let milestones = response.data;
                     commit(types.SET_PROJECT_MILESTONES, {milestones});
@@ -142,7 +144,7 @@ const mutations = {
      * @param {array} milestones
      */
     [types.SET_PROJECT_MILESTONES](state, {milestones}) {
-        state.items = milestones;
+        state.milestones = milestones.items;
     },
     [types.SET_MILESTONES_FILTERS](state, {filters}) {
         state.filters = Object.assign({}, state.filters, filters);
@@ -153,7 +155,7 @@ const mutations = {
      * @param {Object} milestone
      */
     [types.SET_MILESTONE](state, {milestone}) {
-        state.currentItem = milestone;
+        state.currentMilestone = milestone;
     },
     /**
      * Delete project milestone
@@ -161,13 +163,13 @@ const mutations = {
      * @param {integer} id
      */
     [types.DELETE_PROJECT_MILESTONE](state, {id}) {
-        state.items.items = state.items.items.filter((item) => {
+        state.milestones = state.milestones.filter((item) => {
             return item.id !== id ? true : false;
         });
-        state.items.totalItems--;
+        state.totalMilestones--;
     },
     [types.SET_ALL_PROJECT_MILESTONES](state, {milestones}) {
-        state.allItems = milestones;
+        state.totalMilestones = milestones;
     },
 };
 
