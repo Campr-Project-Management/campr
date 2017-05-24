@@ -388,6 +388,20 @@ class Project
     private $subteams;
 
     /**
+     * @var ArrayCollection|ProjectTeam[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Risk", mappedBy="project")
+     */
+    private $risks;
+
+    /**
+     * @var ArrayCollection|ProjectTeam[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Opportunity", mappedBy="project")
+     */
+    private $opportunities;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -416,6 +430,8 @@ class Project
         $this->units = new ArrayCollection();
         $this->resources = new ArrayCollection();
         $this->subteams = new ArrayCollection();
+        $this->risks = new ArrayCollection();
+        $this->opportunities = new ArrayCollection();
     }
 
     public function __toString()
@@ -1979,5 +1995,81 @@ class Project
     public function getSubteams()
     {
         return $this->subteams;
+    }
+
+    /**
+     * Add risk.
+     *
+     * @param Risk $risk
+     *
+     * @return Project
+     */
+    public function addRisk(Risk $risk)
+    {
+        $this->risks[] = $risk;
+
+        return $this;
+    }
+
+    /**
+     * Remove risk.
+     *
+     * @param Risk $risk
+     *
+     * @return Project
+     */
+    public function removeRisk(Risk $risk)
+    {
+        $this->risks->removeElement($risk);
+
+        return $this;
+    }
+
+    /**
+     * Get risks.
+     *
+     * @return ArrayCollection
+     */
+    public function getRisks()
+    {
+        return $this->risks;
+    }
+
+    /**
+     * Add opportunity.
+     *
+     * @param Opportunity $opportunity
+     *
+     * @return Project
+     */
+    public function addOpportunity(Opportunity $opportunity)
+    {
+        $this->opportunities[] = $opportunity;
+
+        return $this;
+    }
+
+    /**
+     * Remove opportunity.
+     *
+     * @param Opportunity $opportunity
+     *
+     * @return Project
+     */
+    public function removeOpportunity(Opportunity $opportunity)
+    {
+        $this->opportunities->removeElement($opportunity);
+
+        return $this;
+    }
+
+    /**
+     * Get opportunities.
+     *
+     * @return ArrayCollection
+     */
+    public function getOpportunities()
+    {
+        return $this->opportunities;
     }
 }
