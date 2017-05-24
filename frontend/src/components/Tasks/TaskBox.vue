@@ -6,7 +6,11 @@
                     <img class="user-avatar" :src="task.responsibilityAvatar" :alt="task.responsibilityFullName"/>
                     <p>{{ task.responsibilityFullName }}</p>
                 </div>
-                <h2><router-link to="" class="simple-link">{{ task.name }}</router-link></h2>
+                <h2>
+                    <router-link :to="{name: 'project-task-management-edit', params: { id: task.project, taskId: task.id }}" class="simple-link">
+                        {{ task.name }}
+                    </router-link>
+                </h2>
                 <p class="task-id">#{{ task.id }}</p>
                 <div class="status-boxes">
                     <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? task.colorStatusColor : '' }"></span>

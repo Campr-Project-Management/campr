@@ -7,6 +7,7 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\WorkPackageStatus;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 
 class WorkPackageRepository extends BaseRepository
 {
@@ -364,7 +365,7 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
-     * Return all project workpackages filtered.
+     * Return all project workpackages filtered and sorted in a custom order of the status.
      *
      * @param Project           $project
      * @param array             $filters
@@ -372,7 +373,58 @@ class WorkPackageRepository extends BaseRepository
      *
      * @return Query
      */
+    public function getQueryByProjectAndFiltersSortedByStatus(Project $project, $filters = [])
+    {
+        $qBuilder = $this->getQueryBuilderByProjectAndFilters($project, $filters);
+
+        if (isset($filters['isGrid'])) {
+            $qBuilder->addSelect('(CASE 
+                    WHEN wp.workPackageStatus = :statusOngoing THEN 0
+                    WHEN wp.workPackageStatus = :statusPending THEN 1 
+                    WHEN wp.workPackageStatus = :statusClosed THEN 2 
+                    ELSE 3 
+                END ) AS  HIDDEN tempFieldForSorting'
+            );
+            $qBuilder
+                ->setParameter('statusOngoing', WorkPackageStatus::ONGOING)
+                ->setParameter('statusPending', WorkPackageStatus::PENDING)
+                ->setParameter('statusClosed', WorkPackageStatus::CLOSED)
+            ;
+
+            $qBuilder->addOrderBy('tempFieldForSorting', 'ASC');
+            $qBuilder->addOrderBy('wp.actualStartAt', 'ASC');
+        }
+
+        return $qBuilder->getQuery();
+    }
+
+    /**
+     * Return all project workpackages filtered.
+     *
+     * @param Project $project
+     * @param array   $filters
+     * @param array   $select
+     *
+     * @return Query
+     */
     public function getQueryByProjectAndFilters(Project $project, $filters = [], $select = null)
+    {
+        return $this
+            ->getQueryBuilderByProjectAndFilters($project, $filters, $select)
+            ->getQuery()
+        ;
+    }
+
+    /**
+     * Return the query builder for all project workpackages filtered.
+     *
+     * @param Project $project
+     * @param array   $filters
+     * @param array   $selects
+     *
+     * @return QueryBuilder
+     */
+    public function getQueryBuilderByProjectAndFilters(Project $project, $filters = [], $select = null)
     {
         $qb = $this
             ->createQueryBuilder('wp')
@@ -465,7 +517,7 @@ class WorkPackageRepository extends BaseRepository
                 ->setMaxResults($filters['pageSize']);
         }
 
-        return $qb->getQuery();
+        return $qb;
     }
 
     public function getScheduleForProjectSchedule(Project $project)
