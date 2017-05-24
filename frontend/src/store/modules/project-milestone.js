@@ -14,13 +14,18 @@ const getters = {
     projectMilestones: state => state.milestones,
     milestone: state => state.currentMilestone,
     projectMilestonesForSelect: state => {
-        return state.milestones.map(item => {
-            return {
-                'key': item.id,
-                'label': item.name,
-                'parent': item.parent,
-            };
-        });
+        let milestonesSelect = [];
+        if (state.allMilestones && state.allMilestones.items) {
+            milestonesSelect = state.allMilestones.items.map(item => {
+                return {
+                    'key': item.id,
+                    'label': item.name,
+                    'parent': item.parent,
+                };
+            });
+        }
+        milestonesSelect.unshift({label: Vue.translate('label.milestone'), key: null});
+        return milestonesSelect;
     },
     allProjectMilestones: state => state.allMilestones,
 };
@@ -32,10 +37,7 @@ const actions = {
      * @param {Object} apiParams
      */
     getProjectMilestones({commit, state}, {projectId, apiParams}) {
-        let paramObject = {
-            id: projectId,
-            params: {},
-        };
+        let paramObject = {params: {}};
         if (apiParams && apiParams.page) {
             paramObject.params.page = apiParams.page;
         }
@@ -57,13 +59,14 @@ const actions = {
         }
 
         Vue.http
-            .get(Routing.generate('app_api_project_milestones', paramObject))
+            .get(Routing.generate('app_api_project_milestones', {'id': projectId}), paramObject)
             .then((response) => {
                 if (response.status === 200) {
                     let milestones = response.data;
-                    commit(types.SET_PROJECT_MILESTONES, {milestones});
-                    if (!apiParams) {
+                    if (apiParams === undefined) {
                         commit(types.SET_ALL_PROJECT_MILESTONES, {milestones});
+                    } else {
+                        commit(types.SET_PROJECT_MILESTONES, {milestones});
                     }
                 }
             }, (response) => {
@@ -144,7 +147,7 @@ const mutations = {
      * @param {array} milestones
      */
     [types.SET_PROJECT_MILESTONES](state, {milestones}) {
-        state.milestones = milestones.items;
+        state.milestones = milestones;
     },
     [types.SET_MILESTONES_FILTERS](state, {filters}) {
         state.filters = Object.assign({}, state.filters, filters);
@@ -169,7 +172,7 @@ const mutations = {
         state.totalMilestones--;
     },
     [types.SET_ALL_PROJECT_MILESTONES](state, {milestones}) {
-        state.totalMilestones = milestones;
+        state.allMilestones = milestones;
     },
 };
 
