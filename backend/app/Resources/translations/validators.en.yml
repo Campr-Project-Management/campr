@@ -1,5 +1,8 @@
 not_blank:
+    priority: The priority field should not be blank
+    probability: The probability field should not be blank
     name: The name field should not be blank
+    impact: The impact field should not be blank
     number: The number field should not be blank
     sequence: The sequence field should not be blank
     username: The username field should not be blank
@@ -115,6 +118,9 @@ greater_than_or_equal:
     work_percent: The work percent field should contain numbers greater than or equal to 0
     type: The type field should contain numbers greater than or equal to 0
     unit: The unit field should contain numbers greater than or equal to 0
+    cost: The cost field should contain numbers greater than or equal to 0
+    impact: The impact field should contain numbers greater than or equal to 0
+    probability: The probability field should contain numbers greater than or equal to 0
 
 invite:
     yourself: You are already part of the team.

@@ -265,6 +265,7 @@ title:
     my_account: My Account
     account_activation: Account activation
     reset: Please enter your email address to reset the account password. An email will be sent with instructions.
+    risk_and_opportunities: Risk & Opportunities
     user:
         list: User
         create: Create new user
@@ -358,6 +359,22 @@ title:
         list: Risk Strategy
         create: Create new risk strategy
         edit: Edit risk strategy
+    opportunity:
+        list: Opportunity
+        create: Create new opportunity
+        edit: Edit opportunity
+    opportunity_strategy:
+        list: Opportunity Strategy
+        create: Create new opportunity strategy
+        edit: Edit opportunity strategy
+    opportunity_status:
+        list: Opportunity Status
+        create: Create new opportunity status
+        edit: Edit opportunity status
+    measure:
+        list: Measure
+        create: Create new measure
+        edit: Edit measure
     todo:
         list: Todo
         create: Create new todo
@@ -509,6 +526,10 @@ title:
         edit: Edit Subteam Member
 
 subtitle:
+    measure: Measure
+    opportunity_strategy: List of opportunity strategies
+    opportunity_status: List of opportunity statuses
+    opportunity: List of opportunities
     resource: List of resources
     cost: List of costs
     user: List of users
@@ -567,10 +588,14 @@ subtitle:
     subteam_role: List of subteam roles
     subteam_member: List of subteam members
 
-label:  
+label:
     opportunity_status: Opportunity Status
     opportunity_strategy: Opportunity Strategy    
     currency: Currency
+    risk: Risk
+    opportunity: Opportunity
+    probability: Probability
+    time_savings: Time Savings
     phase_is_subphase: This is a subphase
     parent_phase: Select parent phase
     select_users: Select Users
@@ -856,6 +881,10 @@ checkbox:
     unchecked: No
 
 add:
+    measure: Add new measure
+    opportunity_strategy: Add new opportunity strategy
+    opportunity_status: Add new opportunity status
+    opportunity: Add new opportunity
     resource: Add new resource
     cost: Add new cost
     new_team_members: Add New Team Members
@@ -923,6 +952,8 @@ placeholder:
     risk_title: Risk Title
     opportunity_description: Opportunity Description
     opportunity_title: Opportunity Title
+    risk: Risk
+    opportunity: Opportunity
     phase_title: Phase Title
     phase_description: Phase Description
     milestone_title: Milestone Title
@@ -1000,6 +1031,12 @@ placeholder:
     gplus: Google Plus
 
 table_header_cell:
+    risk: Risk
+    opportunity: Opportunity
+    comments: Comments
+    probability: Probability
+    cost_savings: Cost Savings
+    time_savings: Time Savings
     automatic: Automatic
     base_due_date: Base Due Date
     forecast_due_date: Forecast Due Date

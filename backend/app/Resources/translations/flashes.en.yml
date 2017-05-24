@@ -348,7 +348,30 @@ success:
         delete:
             from_edit: Subteam Member successfully deleted!
             from_data_table: Subteam Member with ID
-
+    opportunity:
+        create: Opportunity successfully created!
+        edit: Opportunity successfully edited!
+        delete:
+            from_edit: Opportunity successfully deleted!
+            from_data_table: Opportunity with ID
+    opportunity_strategy:
+        create: Opportunity Strategy successfully created!
+        edit: Opportunity Strategy successfully edited!
+        delete:
+            from_edit: Opportunity Strategy successfully deleted!
+            from_data_table: Opportunity Strategy with ID
+    opportunity_status:
+        create: Opportunity Status successfully created!
+        edit: Opportunity Status successfully edited!
+        delete:
+            from_edit: Opportunity Status successfully deleted!
+            from_data_table: Opportunity Status with ID
+    measure:
+        create: Measure successfully created!
+        edit: Measure successfully edited!
+        delete:
+            from_edit: Measure successfully deleted!
+            from_data_table: Measure with ID
 failed:
     media:
         upload: File upload failed. Filesystem cannot be reached.

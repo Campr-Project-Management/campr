@@ -9,21 +9,21 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Risk;
-use AppBundle\Form\Risk\AdminType;
+use AppBundle\Entity\OpportunityStrategy;
+use AppBundle\Form\OpportunityStrategy\BaseType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Risk admin controller.
+ * OpportunityStrategy admin controller.
  *
- * @Route("/admin/risk")
+ * @Route("/admin/opportunity-strategy")
  */
-class RiskController extends BaseController
+class OpportunityStrategyController extends BaseController
 {
     /**
-     * List all Risk entities.
+     * List all OpportunityStrategy entities.
      *
-     * @Route("/list", name="app_admin_risk_list")
+     * @Route("/list", name="app_admin_opportunity_strategy_list")
      * @Method({"GET"})
      * @Secure(roles="ROLE_SUPER_ADMIN")
      *
@@ -31,24 +31,24 @@ class RiskController extends BaseController
      */
     public function listAction()
     {
-        $risks = $this
+        $opportunityStrategies = $this
             ->getDoctrine()
-            ->getRepository(Risk::class)
+            ->getRepository(OpportunityStrategy::class)
             ->findAll()
         ;
 
         return $this->render(
-            'AppBundle:Admin/Risk:list.html.twig',
+            'AppBundle:Admin/OpportunityStrategy:list.html.twig',
             [
-                'risks' => $risks,
+                'opportunityStrategies' => $opportunityStrategies,
             ]
         );
     }
 
     /**
-     * Lists all Risk entities filtered and paginated.
+     * Lists all OpportunityStrategy entities filtered and paginated.
      *
-     * @Route("/list/filtered", name="app_admin_risk_list_filtered", options={"expose"=true})
+     * @Route("/list/filtered", name="app_admin_opportunity_strategy_list_filtered", options={"expose"=true})
      * @Method("POST")
      *
      * @param Request $request
@@ -59,35 +59,35 @@ class RiskController extends BaseController
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginateByColumn(Risk::class, 'title', $requestParams);
+        $response = $dataTableService->paginateByColumn(OpportunityStrategy::class, 'name', $requestParams);
 
         return $this->createApiResponse($response);
     }
 
     /**
-     * Displays Risk entity.
+     * Displays OpportunityStrategy entity.
      *
-     * @Route("/{id}/show", name="app_admin_risk_show", options={"expose"=true})
+     * @Route("/{id}/show", name="app_admin_opportunity_strategy_show", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Risk $risk
+     * @param OpportunityStrategy $opportunityStrategy
      *
      * @return Response
      */
-    public function showAction(Risk $risk)
+    public function showAction(OpportunityStrategy $opportunityStrategy)
     {
         return $this->render(
-            'AppBundle:Admin/Risk:show.html.twig',
+            'AppBundle:Admin/OpportunityStrategy:show.html.twig',
             [
-                'risk' => $risk,
+                'opportunityStrategy' => $opportunityStrategy,
             ]
         );
     }
 
     /**
-     * Creates a new Risk entity.
+     * Creates a new OpportunityStrategy entity.
      *
-     * @Route("/create", name="app_admin_risk_create")
+     * @Route("/create", name="app_admin_opportunity_strategy_create")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -96,12 +96,11 @@ class RiskController extends BaseController
      */
     public function createAction(Request $request)
     {
-        $form = $this->createForm(AdminType::class);
+        $form = $this->createForm(BaseType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->persistAndFlush($form->getData());
-
             $this
                 ->get('session')
                 ->getFlashBag()
@@ -109,15 +108,15 @@ class RiskController extends BaseController
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('success.risk.create', [], 'flashes')
+                        ->trans('success.opportunity_strategy.create', [], 'flashes')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_risk_list');
+            return $this->redirectToRoute('app_admin_opportunity_strategy_list');
         }
 
         return $this->render(
-            'AppBundle:Admin/Risk:create.html.twig',
+            'AppBundle:Admin/OpportunityStrategy:create.html.twig',
             [
                 'form' => $form->createView(),
             ]
@@ -125,24 +124,23 @@ class RiskController extends BaseController
     }
 
     /**
-     * Displays a form to edit an existing Risk entity.
+     * Displays a form to edit an existing OpportunityStrategy entity.
      *
-     * @Route("/{id}/edit", name="app_admin_risk_edit", options={"expose"=true})
+     * @Route("/{id}/edit", name="app_admin_opportunity_strategy_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
-     * @param Request $request
-     * @param Risk    $risk
+     * @param Request             $request
+     * @param OpportunityStrategy $opportunityStrategy
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Request $request, Risk $risk)
+    public function editAction(Request $request, OpportunityStrategy $opportunityStrategy)
     {
-        $form = $this->createForm(AdminType::class, $risk);
+        $form = $this->createForm(BaseType::class, $opportunityStrategy);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->persistAndFlush($risk);
-
+            $this->persistAndFlush($opportunityStrategy);
             $this
                 ->get('session')
                 ->getFlashBag()
@@ -150,37 +148,37 @@ class RiskController extends BaseController
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('success.risk.edit', [], 'flashes')
+                        ->trans('success.opportunity_strategy.edit', [], 'flashes')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_risk_list');
+            return $this->redirectToRoute('app_admin_opportunity_strategy_list');
         }
 
         return $this->render(
-            'AppBundle:Admin/Risk:edit.html.twig',
+            'AppBundle:Admin/OpportunityStrategy:edit.html.twig',
             [
-                'id' => $risk->getId(),
+                'id' => $opportunityStrategy->getId(),
                 'form' => $form->createView(),
             ]
         );
     }
 
     /**
-     * Deletes a specific Risk entity.
+     * Deletes a specific OpportunityStrategy entity.
      *
-     * @Route("/{id}/delete", name="app_admin_risk_delete", options={"expose"=true})
+     * @Route("/{id}/delete", name="app_admin_opportunity_strategy_delete", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
-     * @param Risk    $risk
+     * @param Request             $request
+     * @param OpportunityStrategy $opportunityStrategy
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(Request $request, Risk $risk)
+    public function deleteAction(Request $request, OpportunityStrategy $opportunityStrategy)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($risk);
+        $em->remove($opportunityStrategy);
         $em->flush();
 
         if ($request->isXmlHttpRequest()) {
@@ -198,10 +196,10 @@ class RiskController extends BaseController
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.risk.delete.from_edit', [], 'flashes')
+                    ->trans('success.opportunity_strategy.delete.from_edit', [], 'flashes')
             )
         ;
 
-        return $this->redirectToRoute('app_admin_risk_list');
+        return $this->redirectToRoute('app_admin_opportunity_strategy_list');
     }
 }
