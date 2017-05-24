@@ -32,13 +32,13 @@ export default {
         },
     },
     created() {
-        if (!this.$store.state.task || this.$store.state.task.items.length === 0) {
+        if (!this.$store.state.task || (this.$store.state.task.items && this.$store.state.task.items.length === 0)) {
             this.getRecentTasks(this.activePage);
         }
-        if (!this.$store.state.project || this.$store.state.project.items.length === 0) {
+        if (!this.$store.state.project || (this.$store.state.project.items && this.$store.state.project.items.length === 0)) {
             this.getProjects();
         }
-        if (!this.$store.state.colorStatus || this.$store.state.colorStatus.items.length === 0) {
+        if (!this.$store.state.colorStatus || (this.$store.state.colorStatus.items && this.$store.state.colorStatus.items.length === 0)) {
             this.getColorStatuses();
         }
     },
