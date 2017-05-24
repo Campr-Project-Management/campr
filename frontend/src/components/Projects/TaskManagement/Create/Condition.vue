@@ -29,7 +29,7 @@ export default {
         },
     },
     created() {
-        if (!this.$store.state.colorStatus || this.$store.state.colorStatus.items.length == 0) {
+        if (!this.$store.state.colorStatuses || this.$store.state.colorStatuses.length == 0) {
             this.getColorStatuses();
         }
     },

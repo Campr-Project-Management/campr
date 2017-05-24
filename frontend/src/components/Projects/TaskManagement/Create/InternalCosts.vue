@@ -187,7 +187,6 @@ export default {
                 forecast: 0,
                 actual: 0,
             },
-            resources: [],
         };
     },
 };
