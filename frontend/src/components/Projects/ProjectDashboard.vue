@@ -53,7 +53,7 @@
                                 <span>{{ translateText('message.project_managers') }}:</span>
                                 <b v-if="projectManagers" v-for="(manager, index) in projectManagers">
                                     {{ manager.userFullName }}
-                                    <span v-if="index != projectSponsors.length - 1">, </span>
+                                    <span v-if="index != projectManagers.length - 1">, </span>
                                 </b>
                                 <b v-else>-</b>
                             </li>
@@ -201,10 +201,10 @@ export default {
         this.getTasksForSchedule(this.$route.params.id);
         this.getProjectUsers({id: this.$route.params.id});
         this.getTasksStatus(this.$route.params.id);
-        if (!this.$store.state.task || this.$store.state.task.items.length === 0) {
+        if (!this.$store.state.task || (this.$store.state.task.items && this.$store.state.task.items.length === 0)) {
             this.getRecentTasksByProject(this.activePage);
         }
-        if (!this.$store.state.colorStatus || this.$store.state.colorStatus.items.length === 0) {
+        if (!this.$store.state.colorStatus || (this.$store.state.colorStatus.items && this.$store.state.colorStatus.items.length === 0)) {
             this.getColorStatuses();
         }
     },
