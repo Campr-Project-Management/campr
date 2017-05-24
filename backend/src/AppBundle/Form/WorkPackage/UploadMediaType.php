@@ -11,7 +11,6 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\File as FileConstaint;
 
 class UploadMediaType extends AbstractType
@@ -35,9 +34,6 @@ class UploadMediaType extends AbstractType
                 'data_class' => File::class,
                 'constraints' => [
                     new FileConstaint(),
-//                    new NotBlank([
-//                        'message' => 'not_blank.file',
-//                    ]),
                 ],
             ])
             ->addEventListener(

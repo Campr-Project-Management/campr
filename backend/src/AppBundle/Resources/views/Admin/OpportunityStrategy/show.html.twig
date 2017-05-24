@@ -1,0 +1,45 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'title.opportunity_strategy.list'|trans }}<small>{{ opportunityStrategy.name }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_opportunity_strategy_create') }}">{{ 'add.opportunity_strategy'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_opportunity_strategy_edit', {'id': opportunityStrategy.id}) }}">{{ 'button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_opportunity_strategy_list') }}">{{ 'button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <th>{{ 'table_header_cell.name'|trans }}</th>
+                                <td>{{ opportunityStrategy.name }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

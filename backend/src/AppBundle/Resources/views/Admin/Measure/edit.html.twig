@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'title.risk.create'|trans }}</h2>
+                    <h2>{{ 'title.measure.edit'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,7 +17,10 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_risk_list') }}">{{ 'button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_measure_create') }}">{{ 'add.measure'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_measure_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -28,9 +31,9 @@
                         form,
                         {
                             'method': 'POST',
-                            'action': path('app_admin_risk_create'),
+                            'action': path('app_admin_measure_edit', {'id': id}),
                             'attr': {
-                                'id': 'create-form',
+                                'id': 'edit-form',
                                 'class': 'form-horizontal',
                                 'novalidate': 'novalidate',
                             },
@@ -56,36 +59,9 @@
                         form.description,
                         {
                             'attr': {
-                                'class': 'form-control input-sm',
-                            },
+                            'class': 'form-control input-sm',
+                        },
                             'label': 'label.description'|trans
-                        }
-                    ) }}
-                    {{ form_widget(
-                        form.project,
-                        {
-                            'attr': {
-                                'class': 'selectpicker',
-                            },
-                            'label': 'label.project'|trans
-                        }
-                    ) }}
-                    {{ form_widget(
-                        form.impact,
-                        {
-                            'attr': {
-                                'class': 'form-control input-sm',
-                            },
-                            'label': 'label.impact'|trans
-                        }
-                    ) }}
-                    {{ form_widget(
-                        form.probability,
-                        {
-                            'attr': {
-                                'class': 'form-control input-sm',
-                            },
-                            'label': 'label.probability'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -98,51 +74,6 @@
                         }
                     ) }}
                     {{ form_widget(
-                        form.budget,
-                        {
-                            'attr': {
-                                'class': 'form-control input-sm',
-                            },
-                            'label': 'label.budget'|trans
-                        }
-                    ) }}
-                    {{ form_widget(
-                        form.delay,
-                        {
-                            'attr': {
-                                'class': 'form-control input-sm',
-                            },
-                            'label': 'label.delay'|trans
-                        }
-                    ) }}
-                    {{ form_widget(
-                        form.priority,
-                        {
-                            'attr': {
-                                'class': 'form-control input-sm',
-                            },
-                            'label': 'label.priority'|trans
-                        }
-                    ) }}
-                    {{ form_widget(
-                        form.riskStrategy,
-                        {
-                            'attr': {
-                                'class': 'selectpicker',
-                            },
-                        'label': 'label.strategy'|trans
-                    }
-                    ) }}
-                    {{ form_widget(
-                        form.riskCategory,
-                        {
-                            'attr': {
-                                'class': 'selectpicker',
-                            },
-                            'label': 'label.category'|trans
-                        }
-                    ) }}
-                    {{ form_widget(
                         form.responsibility,
                         {
                             'attr': {
@@ -152,26 +83,30 @@
                         }
                     ) }}
                     {{ form_widget(
-                        form.dueDate,
-                        {
-                            'attr': {
-                                'class': 'form-control date-picker',
-                                'addon_front': 'calendar',
-                            },
-                            'label': 'label.due_date'|trans
-                        }
-                    ) }}
-                    {{ form_widget(
-                        form.status,
+                        form.risk,
                         {
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'label.status'|trans
+                            'label': 'label.risk'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.opportunity,
+                        {
+                            'attr': {
+                                'class': 'selectpicker',
+                            },
+                            'label': 'label.opportunity'|trans
                         }
                     ) }}
 
-                    {% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
+                    {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
+                        with {
+                            'delete_path': 'app_admin_measure_delete',
+                            'id': id,
+                        }
+                    %}
 
                     <span class="hidden">{{ form_row(form._token) }}</span>
                     {{ form_end(form, {'render_rest': false}) }}

@@ -8,12 +8,12 @@ use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Risk.
+ * Opportunity.
  *
- * @ORM\Table(name="risk")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\RiskRepository")
+ * @ORM\Table(name="opportunity")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\OpportunityRepository")
  */
-class Risk
+class Opportunity
 {
     /**
      * @var int
@@ -29,7 +29,7 @@ class Risk
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="Project", inversedBy="risks")
+     * @ORM\ManyToOne(targetEntity="Project", inversedBy="opportunities")
      * @ORM\JoinColumn(name="project_id")
      */
     private $project;
@@ -65,57 +65,47 @@ class Risk
     /**
      * @var string
      *
-     * @ORM\Column(name="cost", type="string", length=255)
+     * @ORM\Column(name="cost_savings", type="string", length=255, nullable=true)
      */
-    private $cost;
+    private $costSavings;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="budget", type="string", length=255)
+     * @ORM\Column(name="budget", type="string", length=255, nullable=true)
      */
     private $budget;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="delay", type="string", length=255)
+     * @ORM\Column(name="time_savings", type="string", length=255, nullable=true)
      */
-    private $delay;
+    private $timeSavings;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="priority", type="string", length=255)
+     * @ORM\Column(name="priority", type="string", length=255, nullable=true)
      */
     private $priority;
 
     /**
-     * @var RiskStrategy|null
+     * @var OpportunityStrategy|null
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\RiskStrategy")
-     * @ORM\JoinColumn(name="risk_strategy_id")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\OpportunityStrategy")
+     * @ORM\JoinColumn(name="opportunity_strategy_id")
      */
-    private $riskStrategy;
+    private $opportunityStrategy;
 
     /**
      * @var ArrayCollection|Measure[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Measure", mappedBy="risk")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Measure", mappedBy="opportunity")
      */
     private $measures;
-
-    /**
-     * @var RiskCategory|null
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\RiskCategory")
-     * @ORM\JoinColumn(name="risk_category_id")
-     */
-    private $riskCategory;
 
     /**
      * @var User|null
@@ -137,14 +127,14 @@ class Risk
     private $dueDate;
 
     /**
-     * @var Status|null
+     * @var OpportunityStatus|null
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Status")
-     * @ORM\JoinColumn(name="status_id")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\OpportunityStatus")
+     * @ORM\JoinColumn(name="opportunity_status_id")
      */
-    private $status;
+    private $opportunityStatus;
 
     /**
      * @var \DateTime
@@ -189,7 +179,7 @@ class Risk
      *
      * @param Project $project
      *
-     * @return Risk
+     * @return Opportunity
      */
     public function setProject(Project $project = null)
     {
@@ -239,7 +229,7 @@ class Risk
      *
      * @param string $title
      *
-     * @return Risk
+     * @return Opportunity
      */
     public function setTitle($title)
     {
@@ -263,7 +253,7 @@ class Risk
      *
      * @param string $description
      *
-     * @return Risk
+     * @return Opportunity
      */
     public function setDescription($description)
     {
@@ -283,27 +273,27 @@ class Risk
     }
 
     /**
-     * Set cost.
+     * Set costSavings.
      *
-     * @param string $cost
+     * @param string $costSavings
      *
-     * @return Risk
+     * @return Opportunity
      */
-    public function setCost($cost)
+    public function setCostSavings($costSavings)
     {
-        $this->cost = $cost;
+        $this->costSavings = $costSavings;
 
         return $this;
     }
 
     /**
-     * Get cost.
+     * Get costSavings.
      *
      * @return string
      */
-    public function getCost()
+    public function getCostSavings()
     {
-        return $this->cost;
+        return $this->costSavings;
     }
 
     /**
@@ -311,7 +301,7 @@ class Risk
      *
      * @param string $budget
      *
-     * @return Risk
+     * @return Opportunity
      */
     public function setBudget($budget)
     {
@@ -331,27 +321,27 @@ class Risk
     }
 
     /**
-     * Set delay.
+     * Set timeSavings.
      *
-     * @param string $delay
+     * @param string $timeSavings
      *
-     * @return Risk
+     * @return Opportunity
      */
-    public function setDelay($delay)
+    public function setTimeSavings($timeSavings)
     {
-        $this->delay = $delay;
+        $this->timeSavings = $timeSavings;
 
         return $this;
     }
 
     /**
-     * Get delay.
+     * Get timeSavings.
      *
      * @return string
      */
-    public function getDelay()
+    public function getTimeSavings()
     {
-        return $this->delay;
+        return $this->timeSavings;
     }
 
     /**
@@ -359,7 +349,7 @@ class Risk
      *
      * @param string $priority
      *
-     * @return Risk
+     * @return Opportunity
      */
     public function setPriority($priority)
     {
@@ -383,7 +373,7 @@ class Risk
      *
      * @param int $impact
      *
-     * @return Risk
+     * @return Opportunity
      */
     public function setImpact($impact)
     {
@@ -407,7 +397,7 @@ class Risk
      *
      * @param int $probability
      *
-     * @return Risk
+     * @return Opportunity
      */
     public function setProbability($probability)
     {
@@ -431,7 +421,7 @@ class Risk
      *
      * @param \DateTime $dueDate
      *
-     * @return Risk
+     * @return Opportunity
      */
     public function setDueDate(\DateTime $dueDate = null)
     {
@@ -455,7 +445,7 @@ class Risk
      *
      * @param \DateTime $createdAt
      *
-     * @return Risk
+     * @return Opportunity
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
@@ -479,7 +469,7 @@ class Risk
      *
      * @param \DateTime $updatedAt
      *
-     * @return Risk
+     * @return Opportunity
      */
     public function setUpdatedAt(\DateTime $updatedAt = null)
     {
@@ -499,103 +489,53 @@ class Risk
     }
 
     /**
-     * Set riskStrategy.
+     * Set opportunityStrategy.
      *
-     * @param RiskStrategy $riskStrategy
+     * @param OpportunityStrategy $opportunityStrategy
      *
      * @return Risk
      */
-    public function setRiskStrategy(RiskStrategy $riskStrategy = null)
+    public function setOpportunityStrategy(OpportunityStrategy $opportunityStrategy = null)
     {
-        $this->riskStrategy = $riskStrategy;
+        $this->opportunityStrategy = $opportunityStrategy;
 
         return $this;
     }
 
     /**
-     * Get riskStrategy.
+     * Get opportunityStrategy.
      *
-     * @return RiskStrategy
+     * @return OpportunityStrategy
      */
-    public function getRiskStrategy()
+    public function getOpportunityStrategy()
     {
-        return $this->riskStrategy;
+        return $this->opportunityStrategy;
     }
 
     /**
-     * Returns riskStrategy id.
+     * Returns opportunityStrategy id.
      *
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("riskStrategy")
+     * @Serializer\SerializedName("opportunityStrategy")
      *
      * @return string
      */
-    public function getRiskStrategyId()
+    public function getOpportunityStrategyId()
     {
-        return $this->riskStrategy ? $this->riskStrategy->getId() : null;
+        return $this->opportunityStrategy ? $this->opportunityStrategy->getId() : null;
     }
 
     /**
-     * Returns riskStrategy name.
+     * Returns opportunityStrategy name.
      *
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("riskStrategyName")
+     * @Serializer\SerializedName("opportunityStrategyName")
      *
      * @return string
      */
-    public function getRiskStrategyName()
+    public function getOpportunityStrategyName()
     {
-        return $this->riskStrategy ? $this->riskStrategy->getName() : null;
-    }
-
-    /**
-     * Set riskCategory.
-     *
-     * @param RiskCategory $riskCategory
-     *
-     * @return Risk
-     */
-    public function setRiskCategory(RiskCategory $riskCategory = null)
-    {
-        $this->riskCategory = $riskCategory;
-
-        return $this;
-    }
-
-    /**
-     * Get riskCategory.
-     *
-     * @return RiskCategory
-     */
-    public function getRiskCategory()
-    {
-        return $this->riskCategory;
-    }
-
-    /**
-     * Returns riskCategory id.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("riskCategory")
-     *
-     * @return string
-     */
-    public function getRiskCategoryId()
-    {
-        return $this->riskCategory ? $this->riskCategory->getId() : null;
-    }
-
-    /**
-     * Returns riskCategory name.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("riskCategoryName")
-     *
-     * @return string
-     */
-    public function getRiskCategoryName()
-    {
-        return $this->riskCategory ? $this->riskCategory->getName() : null;
+        return $this->opportunityStrategy ? $this->opportunityStrategy->getName() : null;
     }
 
     /**
@@ -649,59 +589,59 @@ class Risk
     }
 
     /**
-     * Set status.
+     * Set opportunityStatus.
      *
-     * @param Status $status
+     * @param OpportunityStatus $opportunityStatus
      *
-     * @return Risk
+     * @return Opportunity
      */
-    public function setStatus(Status $status = null)
+    public function setOpportunityStatus(OpportunityStatus $opportunityStatus)
     {
-        $this->status = $status;
+        $this->opportunityStatus = $opportunityStatus;
 
         return $this;
     }
 
     /**
-     * Get status.
+     * Get opportunityStatus.
      *
-     * @return Status
+     * @return OpportunityStatus
      */
-    public function getStatus()
+    public function getOpportunityStatus()
     {
-        return $this->status;
+        return $this->opportunityStatus;
     }
 
     /**
-     * Returns status id.
+     * Returns opportunityStatus id.
      *
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("status")
+     * @Serializer\SerializedName("opportunityStatus")
      *
      * @return string
      */
-    public function getStatusId()
+    public function getOpportunityStatusId()
     {
-        return $this->status ? $this->status->getId() : null;
+        return $this->opportunityStatus ? $this->opportunityStatus->getId() : null;
     }
 
     /**
-     * Returns status name.
+     * Returns opportunityStatus name.
      *
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("statusName")
+     * @Serializer\SerializedName("opportunityStatusName")
      *
      * @return string
      */
-    public function getStatusName()
+    public function getOpportunityStatusName()
     {
-        return $this->status ? $this->status->getName() : null;
+        return $this->opportunityStatus ? $this->opportunityStatus->getName() : null;
     }
 
     /**
      * @param Measure $measure
      *
-     * @return Risk
+     * @return Opportunity
      */
     public function addMeasure(Measure $measure)
     {
@@ -713,7 +653,7 @@ class Risk
     /**
      * @param Measure $measure
      *
-     * @return Risk
+     * @return Opportunity
      */
     public function removeMeasure(Measure $measure)
     {

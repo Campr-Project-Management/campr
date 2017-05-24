@@ -328,7 +328,7 @@ class MenuBuilder
         ;
 
         $menu
-            ->addChild($this->translator->trans('title.risk.list', [], 'messages'), [])
+            ->addChild($this->translator->trans('title.risk_and_opportunities', [], 'messages'), [])
             ->setAttributes([
                 'class' => 'sub-menu main-category',
                 'dropdown' => true,
@@ -342,6 +342,18 @@ class MenuBuilder
             ])->getParent()
             ->addChild($this->translator->trans('title.risk_strategy.list', [], 'messages'), [
                 'route' => 'app_admin_risk_strategy_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.opportunity.list', [], 'messages'), [
+                'route' => 'app_admin_opportunity_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.opportunity_strategy.list', [], 'messages'), [
+                'route' => 'app_admin_opportunity_strategy_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.opportunity_status.list', [], 'messages'), [
+                'route' => 'app_admin_opportunity_status_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.measure.list', [], 'messages'), [
+                'route' => 'app_admin_measure_list',
             ])->getParent()
         ;
 
