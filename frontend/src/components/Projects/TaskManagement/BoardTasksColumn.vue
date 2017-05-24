@@ -49,10 +49,12 @@ export default {
                 statusId: this.status.id,
                 page: this.page,
                 callback: () => {
-                    this.$refs[infiniteLoadingRef].$emit('$InfiniteLoading:loaded');
-                    if(this.tasksByStatuses[this.status.id].items.length >= this.tasksByStatuses[this.status.id].totalItems) {
-                        // every task has been loaded in the store (length of array equals to totalItems)
-                        this.$refs[infiniteLoadingRef].$emit('$InfiniteLoading:complete');
+                    if (this.$refs[infiniteLoadingRef]) {
+                        this.$refs[infiniteLoadingRef].$emit('$InfiniteLoading:loaded');
+                        if (this.tasksByStatuses[this.status.id].items.length >= this.tasksByStatuses[this.status.id].totalItems) {
+                            // every task has been loaded in the store (length of array equals to totalItems)
+                            this.$refs[infiniteLoadingRef].$emit('$InfiniteLoading:complete');
+                        }
                     }
                 },
             });

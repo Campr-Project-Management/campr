@@ -36,8 +36,8 @@ export default {
         ...mapActions(['getProjectMilestones', 'getProjectPhases']),
     },
     created() {
-        this.getProjectPhases(this.$route.params.id);
-        this.getProjectMilestones(this.$route.params.id);
+        this.getProjectPhases({projectId: this.$route.params.id});
+        this.getProjectMilestones({projectId: this.$route.params.id});
 
         this.planning = this.editPlanning;
     },
