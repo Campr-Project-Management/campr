@@ -260,12 +260,16 @@ export default {
             this.createObjective(data);
         },
         createProjectLimitation: function() {
-            let data = {
-                projectId: this.$route.params.id,
-                description: this.limitationDescription,
-                sequence: this.project.projectLimitations.length,
-            };
-            this.createLimitation(data);
+            if (!this.limitationDescription) {
+                return;
+            } else {
+                let data = {
+                    projectId: this.$route.params.id,
+                    description: this.limitationDescription,
+                    sequence: this.project.projectLimitations.length,
+                };
+                this.createLimitation(data);
+            }
         },
         createProjectDeliverable: function() {
             let data = {
