@@ -68,7 +68,7 @@
                             <div class="col-md-6">
                                 <select-field
                                     v-bind:title="translateText('label.status')"
-                                    v-bind:options="workPackageStatusesForSelect"
+                                    v-bind:options="workPackageStatusesForMilestone"
                                     v-model="details.status"
                                     v-bind:currentOption="details.status" />
                             </div>
@@ -164,7 +164,7 @@ export default {
     },
     computed: mapGetters({
         projectUsersForSelect: 'projectUsersForSelect',
-        workPackageStatusesForSelect: 'workPackageStatusesForSelect',
+        workPackageStatusesForMilestone: 'workPackageStatusesForMilestone',
         projectPhasesForSelect: 'projectPhasesForSelect',
         projectPhases: 'projectPhases',
         milestone: 'milestone',
