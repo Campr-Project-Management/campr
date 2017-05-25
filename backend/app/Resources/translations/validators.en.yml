@@ -92,6 +92,8 @@ invalid:
     image: Uploaded file must be an image!
     slug: The slug is invalid. Slug must start/end only with alphanumeric values and contain alphanumeric or '-' characters
     module: Invalid module name provided
+    milestone:
+        work_package_status: A milestone can have only the Opened and Completed statuses 
 
 used:
     team:
