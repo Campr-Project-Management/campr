@@ -100,7 +100,7 @@
                 <!-- /// Task History /// -->
                 <div class="task-history">
                     <!-- /// Task Comment /// -->
-                    <div class="task-comment">
+                    <div class="comment">
                         <div class="comment-header">
                             <div class="user-avatar"> 
                                 <img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="'Nelson Carr'"/>
@@ -117,7 +117,7 @@
                     <hr class="double">
 
                     <!-- /// Task Comment /// -->
-                    <div class="task-comment">
+                    <div class="comment">
                         <div class="comment-header">
                             <div class="user-avatar"> 
                                 <img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="'Nelson Carr'"/>
@@ -141,7 +141,7 @@
                     <hr class="double">
 
                     <!-- /// Task Comment /// -->
-                    <div class="task-comment">
+                    <div class="comment">
                         <div class="comment-header">
                             <div class="user-avatar"> 
                                 <img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="'Nelson Carr'"/>
@@ -160,7 +160,7 @@
                     <hr class="double">
 
                     <!-- /// Task Comment /// -->
-                    <div class="task-comment">
+                    <div class="comment">
                         <div class="comment-header">
                             <div class="user-avatar"> 
                                 <img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="'Nelson Carr'"/>
@@ -757,7 +757,7 @@ export default {
         }
     }
 
-    .task-comment {
+    .comment {
         .comment-header {
             padding-right: 60px;
             position: relative;
@@ -778,6 +778,10 @@ export default {
 
             ul {
                 list-style-type: disc;
+            }
+
+            ol {
+                list-style-type: decimal;
             }
 
             img {
