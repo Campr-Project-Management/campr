@@ -4,6 +4,8 @@ import * as types from '../mutation-types';
 const state = {
     items: [],
 };
+const STATUS_OPEN_ID = 1;
+const STATUS_COMPLETED_ID = 4;
 
 const getters = {
     workPackageStatuses: state => state.items,
@@ -14,6 +16,17 @@ const getters = {
                 label: Vue.translate(item.name),
             };
         });
+    },
+    workPackageStatusesForMilestone: (state) => {
+        let workPackageStatusesForMilestone = [];
+
+        state.items.map(function(workPackageStatus) {
+            if (workPackageStatus.id == STATUS_OPEN_ID || workPackageStatus.id == STATUS_COMPLETED_ID) {
+                workPackageStatusesForMilestone.push({'key': workPackageStatus.id, 'label': Vue.translate(workPackageStatus.name)});
+            }
+        });
+
+        return workPackageStatusesForMilestone;
     },
 };
 
