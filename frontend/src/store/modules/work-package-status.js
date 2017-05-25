@@ -21,7 +21,9 @@ const getters = {
         let workPackageStatusesForMilestone = [];
 
         state.items.map(function(workPackageStatus) {
-            if (workPackageStatus.id == STATUS_OPEN_ID || workPackageStatus.id == STATUS_COMPLETED_ID) {
+            const allowedStatuses = [STATUS_OPEN_ID, STATUS_COMPLETED_ID];
+
+            if (allowedStatuses.indexOf(workPackageStatus.id) !== -1) {
                 workPackageStatusesForMilestone.push({'key': workPackageStatus.id, 'label': Vue.translate(workPackageStatus.name)});
             }
         });

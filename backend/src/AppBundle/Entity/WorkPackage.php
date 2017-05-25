@@ -1526,10 +1526,9 @@ class WorkPackage
             return;
         }
 
-        if (
-            $this->getWorkPackageStatusId() !== WorkPackageStatus::OPEN &&
-            $this->getWorkPackageStatusId() !== WorkPackageStatus::COMPLETED
-        ) {
+        $allowedStatuses = [WorkPackageStatus::OPEN, WorkPackageStatus::COMPLETED];
+
+        if (!in_array($this->getWorkPackageStatusId(), $allowedStatuses)) {
             $context
                 ->buildViolation('invalid.milestone.work_package_status')
                 ->atPath('workPackageStatus')
