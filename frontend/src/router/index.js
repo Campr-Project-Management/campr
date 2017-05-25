@@ -24,6 +24,11 @@ import PhaseCreate from '../components/Projects/Phases/PhaseCreate.vue';
 import PhaseView from '../components/Projects/Phases/PhaseView.vue';
 import MilestoneCreate from '../components/Projects/Milestones/MilestoneCreate.vue';
 import MilestoneView from '../components/Projects/Milestones/MilestoneView.vue';
+import ProjectRisksOpportunities from '../components/Projects/ProjectRisksOpportunities.vue';
+import RiskCreate from '../components/Projects/Risks/RiskCreate.vue';
+import OpportunityCreate from '../components/Projects/Opportunities/OpportunityCreate.vue';
+import RiskView from '../components/Projects/Risks/RiskView.vue';
+import OpportunityView from '../components/Projects/Opportunities/OpportunityView.vue';
 
 Vue.use(VueRouter);
 
@@ -157,7 +162,32 @@ const routes = [
             {
                 path: 'phases-and-milestones/edit-milestone/:milestoneId',
                 component: MilestoneCreate,
-                name: 'project-phases-edit-milestone',
+                name: 'project-milestones-edit-milestone',
+            },
+            {
+                path: 'risks-and-opportunities',
+                component: ProjectRisksOpportunities,
+                name: 'project-risks-and-opportunities',
+            },
+            {
+                path: 'risks-and-opportunities/create-risk',
+                component: RiskCreate,
+                name: 'project-risks-create-risk',
+            },
+            {
+                path: 'risks-and-opportunities/view-risk',
+                component: RiskView,
+                name: 'project-risks-view-risk',
+            },
+            {
+                path: 'risks-and-opportunities/create-opportunity',
+                component: OpportunityCreate,
+                name: 'project-opportunities-create-opportunity',
+            },
+            {
+                path: 'risks-and-opportunities/view-opportunity',
+                component: OpportunityView,
+                name: 'project-opportunities-view-opportunity',
             },
             {
                 path: 'phases-and-milestones/milestone/:milestoneId',
