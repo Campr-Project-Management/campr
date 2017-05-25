@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * WorkPackage.
@@ -1509,5 +1511,29 @@ class WorkPackage
     public function getCosts()
     {
         return $this->costs;
+    }
+
+    /**
+     * Validation for milestones, they can have only the OPEN&COMPLETED status.
+     *
+     * @Assert\Callback
+     *
+     * @param ExecutionContextInterface $context
+     */
+    public function workPackageStatusValidator(ExecutionContextInterface $context)
+    {
+        if ($this->getType() != self::TYPE_MILESTONE) {
+            return;
+        }
+
+        $allowedStatuses = [WorkPackageStatus::OPEN, WorkPackageStatus::COMPLETED];
+
+        if (!in_array($this->getWorkPackageStatusId(), $allowedStatuses)) {
+            $context
+                ->buildViolation('invalid.milestone.work_package_status')
+                ->atPath('workPackageStatus')
+                ->addViolation()
+            ;
+        }
     }
 }
