@@ -28,7 +28,7 @@
                             </g>
                             </svg>
                         </span>
-                        <span class="notification-balloon">{{ $store.state.project.items.totalItems + $store.state.task.items.totalItems }}</span>
+                        <span class="notification-balloon">{{ $store.state.project.items.totalItems + $store.state.task.totalItems }}</span>
                     </router-link>
                 </li>
                 <li>
@@ -71,7 +71,7 @@
                             </g>
                             </svg>
                         </span>
-                        <span class="notification-balloon">{{ $store.state.task.items.totalItems }}</span>
+                        <span class="notification-balloon">{{ $store.state.task.totalItems }}</span>
                     </router-link>
                 </li>
             </ul>
@@ -179,8 +179,21 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex';
+
 export default {
     name: 'sidebar',
+    created() {
+        if (!this.$store.state.project.items || this.$store.state.project.items.length == 0) {
+            this.getProjects();
+        }
+        if (!this.$store.state.task.items || this.$store.state.task.items.length == 0) {
+            this.getTasks(1);
+        }
+    },
+    methods: {
+        ...mapActions(['getProjects', 'getTasks']),
+    },
     data: function() {
         return {
             message: {
