@@ -21,6 +21,7 @@ import VTooltip from 'v-tooltip';
 Vue.use(VueResource);
 Vue.use(Vue2Dragula);
 Vue.use(VeeValidate);
+Vue.use(VTooltip);
 let config = {
     // buttons on the toolbar, you can use '|' or 'divider' as the separator
     toolbar: [
@@ -71,5 +72,3 @@ new Vue({
     template: '<App/>',
     components: {App},
 }).$mount('#app');
-
-Vue.use(VTooltip);

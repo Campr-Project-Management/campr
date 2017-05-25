@@ -125,12 +125,12 @@
                         <!--<span class="tablet"></span>-->
                     <!--</router-link>-->
                 <!--</li>-->
-                <!--<li>-->
-                    <!--<router-link to="todo" v-bind:title="message.risks_oportunities">-->
-                        <!--<span class="default">{{ message.risks_oportunities }}</span>-->
-                        <!--<span class="tablet"></span>-->
-                    <!--</router-link>-->
-                <!--</li>-->
+                <li>
+                    <router-link :to="{name: 'project-risks-and-opportunities'}" v-bind:title="message.risks_oportunities">
+                        <span class="default">{{ message.risks_oportunities }}</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
                 <!--<li>-->
                     <!--<router-link to="todo" v-bind:title="message.communication">-->
                         <!--<span class="default">{{ message.comunication }}</span>-->

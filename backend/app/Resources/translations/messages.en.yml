@@ -1,4 +1,54 @@
 message:
+    cost: Cost
+    close: Close
+    new_comment: New Comment
+    add_comment: Add Comment
+    commented: commented
+    comment: Comment
+    minute_ago: minute ago
+    minutes_ago: minutes ago
+    hour_ago: hour ago
+    hours_ago: hours ago
+    day_ago: day ago
+    days_ago: days ago
+    responsible: Responsible
+    edited: edited
+    by: by
+    created_on: created on
+    added_a_measure: added a measure
+    measures_cost: Measures Cost
+    measures: Measures
+    due_date: Due Date
+    budget_saved: Budget Saved
+    new_opportunity: New Opportunity
+    new_risk: New Risk
+    potential_savings: Potential Savings
+    potential_time_savings: Potential Time Savings
+    total_potential_savings: Total Potential Savings
+    total_potential_time_savings: Total Potential Time Savings
+    project_opportunities: Project Opportunities
+    project_risks: Project Risks
+    total_potential_cost: Total Potential Cost
+    total_potential_delay: Total Potential Delay
+    total_number_of_measures: Total Number of Measures
+    total_cost_of_measures: Total Cost of Measures 
+    potential_cost: Potential Cost
+    potential_time_delay: Potential Time Delay
+    strategy: Strategy
+    very_high: Very High
+    high: High
+    medium: Medium
+    low: Low
+    very_low: Very Low
+    time_saved: Time Saved
+    impact: Impact
+    delay: Delay
+    budget: Budget
+    probability: Probability
+    priority: Priority
+    create_new_risk: Create New Risk
+    create_new_opportunity: Create New Opportunity
+    back_to_risks_and_opportunities: Back to Risks & Opportunities
     total_tasks: Total tasks
     project_status: Project Status
     project_schedule: Project Schedule
@@ -517,7 +567,10 @@ subtitle:
     subteam_role: List of subteam roles
     subteam_member: List of subteam members
 
-label:
+label:  
+    opportunity_status: Opportunity Status
+    opportunity_strategy: Opportunity Strategy    
+    currency: Currency
     phase_is_subphase: This is a subphase
     parent_phase: Select parent phase
     select_users: Select Users
@@ -736,6 +789,7 @@ label:
     subteam_roles: Subteam Roles
 
 button:
+    add_new_measure: Add New Measure
     view_all_tasks: View all tasks
     view_tasks_board: View tasks board
     print_project_handbook: Print Project Handbook
@@ -859,6 +913,16 @@ add:
     subteam_member: Add new subteam member
 
 placeholder:
+    measure_cost: Measure Cost
+    new_measure: New Measure
+    potential_time_delay: Potential Time Delay
+    potential_cost: Potential Cost
+    potential_time_savings: Potential Time Savings
+    potential_savings: Potential Savings
+    risk_description: Risk Description
+    risk_title: Risk Title
+    opportunity_description: Opportunity Description
+    opportunity_title: Opportunity Title
     phase_title: Phase Title
     phase_description: Phase Description
     milestone_title: Milestone Title
