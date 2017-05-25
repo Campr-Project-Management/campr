@@ -20,11 +20,14 @@ const getters = {
     workPackageStatusesForMilestone: (state) => {
         let workPackageStatusesForMilestone = [];
 
-        state.items.map(function(workPackageStatus) {
-            const allowedStatuses = [STATUS_OPEN_ID, STATUS_COMPLETED_ID];
+        const allowedStatuses = [STATUS_OPEN_ID, STATUS_COMPLETED_ID];
 
+        state.items.map(function(workPackageStatus) {
             if (allowedStatuses.indexOf(workPackageStatus.id) !== -1) {
-                workPackageStatusesForMilestone.push({'key': workPackageStatus.id, 'label': Vue.translate(workPackageStatus.name)});
+                workPackageStatusesForMilestone.push({
+                    'key': workPackageStatus.id,
+                    'label': Vue.translate(workPackageStatus.name),
+                });
             }
         });
 

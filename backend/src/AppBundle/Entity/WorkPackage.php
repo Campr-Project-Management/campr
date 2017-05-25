@@ -1534,8 +1534,6 @@ class WorkPackage
                 ->atPath('workPackageStatus')
                 ->addViolation()
             ;
-
-            return;
         }
     }
 }
