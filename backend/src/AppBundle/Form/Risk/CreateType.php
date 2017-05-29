@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Risk;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -75,6 +76,16 @@ class CreateType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('currency', ChoiceType::class, [
+                'required' => true,
+                'choices' => [
+                    '$' => '$',
+                    '€' => '€',
+                    '₤' => '₤',
+                ],
+                'placeholder' => 'placeholder.currency',
+                'translation_domain' => 'messages',
+            ])
             ->add('budget', TextType::class, [
                 'required' => true,
                 'constraints' => [
@@ -90,6 +101,17 @@ class CreateType extends AbstractType
                         'message' => 'not_blank.delay',
                     ]),
                 ],
+            ])
+            ->add('delayUnit', ChoiceType::class, [
+                'required' => true,
+                'choices' => [
+                    'choices.hours' => 'choices.hours',
+                    'choices.days' => 'choices.days',
+                    'choices.weeks' => 'choices.weeks',
+                    'choices.months' => 'choices.months',
+                ],
+                'placeholder' => 'placeholder.time_unit',
+                'translation_domain' => 'messages',
             ])
             ->add('priority', TextType::class, [
                 'required' => true,

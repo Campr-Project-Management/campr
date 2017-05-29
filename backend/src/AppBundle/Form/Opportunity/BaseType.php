@@ -8,6 +8,7 @@ use AppBundle\Entity\OpportunityStrategy;
 use AppBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -71,8 +72,29 @@ class BaseType extends AbstractType
             ->add('costSavings', TextType::class, [
                 'required' => false,
             ])
+            ->add('currency', ChoiceType::class, [
+                'required' => true,
+                'choices' => [
+                    '$' => '$',
+                    '€' => '€',
+                    '₤' => '₤',
+                ],
+                'placeholder' => 'placeholder.currency',
+                'translation_domain' => 'messages',
+            ])
             ->add('timeSavings', TextType::class, [
                 'required' => false,
+            ])
+            ->add('timeUnit', ChoiceType::class, [
+                'required' => true,
+                'choices' => [
+                    'choices.hours' => 'choices.hours',
+                    'choices.days' => 'choices.days',
+                    'choices.weeks' => 'choices.weeks',
+                    'choices.months' => 'choices.months',
+                ],
+                'placeholder' => 'placeholder.time_unit',
+                'translation_domain' => 'messages',
             ])
             ->add('priority', TextType::class, [
                 'required' => true,

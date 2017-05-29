@@ -39,6 +39,7 @@ class RiskControllerTest extends BaseController
         $response = $this->client->getResponse();
         $risk = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $risk['updatedAt'];
+        $responseContent['responsibilityAvatar'] = $risk['responsibilityAvatar'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -74,8 +75,10 @@ class RiskControllerTest extends BaseController
                     'impact' => 10,
                     'probability' => 10,
                     'cost' => 'cost1',
+                    'currency' => '$',
                     'budget' => 'budget1',
                     'delay' => 'delay1',
+                    'delayUnit' => 'days',
                     'priority' => 'priority1',
                     'measures' => [],
                     'dueDate' => '2017-03-03 00:00:00',
@@ -168,8 +171,10 @@ class RiskControllerTest extends BaseController
             ->setProbability(10)
             ->setDescription('description3')
             ->setCost('cost3')
+            ->setCurrency('$')
             ->setBudget('budget3')
             ->setDelay('delay3')
+            ->setDelayUnit('choices.days')
             ->setPriority('priority3')
         ;
         $this->em->persist($risk);
@@ -239,6 +244,7 @@ class RiskControllerTest extends BaseController
         $response = $this->client->getResponse();
         $risk = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $risk['updatedAt'];
+        $responseContent['responsibilityAvatar'] = $risk['responsibilityAvatar'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -272,8 +278,10 @@ class RiskControllerTest extends BaseController
                     'impact' => 20,
                     'probability' => 20,
                     'cost' => 'cost2',
+                    'currency' => '$',
                     'budget' => 'budget2',
                     'delay' => 'delay2',
+                    'delayUnit' => 'days',
                     'priority' => 'priority2',
                     'measures' => [],
                     'dueDate' => '2017-03-03 00:00:00',
