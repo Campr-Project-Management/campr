@@ -589,6 +589,8 @@ subtitle:
     subteam_member: List of subteam members
 
 label:
+    time_unit: Time Unit
+    delay_unit: Delay Unit
     opportunity_status: Opportunity Status
     opportunity_strategy: Opportunity Strategy    
     currency: Currency
@@ -942,6 +944,9 @@ add:
     subteam_member: Add new subteam member
 
 placeholder:
+    currency: Currency
+    time_unit: Time Unit
+    delay_unit: Delay Unit
     measure_cost: Measure Cost
     new_measure: New Measure
     potential_time_delay: Potential Time Delay
@@ -1307,6 +1312,13 @@ choices:
     phase: Phase
     milestone: Milestone
     task: Task
+    dollar: Dollar
+    euro: Euro
+    pound: Pound
+    hours: Hours
+    days: Days
+    weeks: Weeks
+    months: Months
 
 roles:
     project_sponsor: Project Sponsor

@@ -72,6 +72,13 @@ class Risk
     /**
      * @var string
      *
+     * @ORM\Column(name="currency", type="string", length=255)
+     */
+    private $currency;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="budget", type="string", length=255)
      */
     private $budget;
@@ -82,6 +89,13 @@ class Risk
      * @ORM\Column(name="delay", type="string", length=255)
      */
     private $delay;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="delay_unit", type="string", length=255)
+     */
+    private $delayUnit;
 
     /**
      * @var string
@@ -728,5 +742,41 @@ class Risk
     public function getMeasures()
     {
         return $this->measures;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param string $currency
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDelayUnit()
+    {
+        return $this->delayUnit;
+    }
+
+    /**
+     * @param string $delayUnit
+     */
+    public function setDelayUnit($delayUnit)
+    {
+        $this->delayUnit = $delayUnit;
+
+        return $this;
     }
 }
