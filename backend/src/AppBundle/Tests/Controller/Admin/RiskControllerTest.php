@@ -20,32 +20,32 @@ class RiskControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk/create');
 
-        $this->assertContains('id="create_title"', $crawler->html());
-        $this->assertContains('name="create[title]"', $crawler->html());
-        $this->assertContains('id="create_description"', $crawler->html());
-        $this->assertContains('name="create[description]"', $crawler->html());
-        $this->assertContains('id="create_impact"', $crawler->html());
-        $this->assertContains('name="create[impact]"', $crawler->html());
-        $this->assertContains('id="create_cost"', $crawler->html());
-        $this->assertContains('name="create[cost]"', $crawler->html());
-        $this->assertContains('id="create_budget"', $crawler->html());
-        $this->assertContains('name="create[budget]"', $crawler->html());
-        $this->assertContains('id="create_delay"', $crawler->html());
-        $this->assertContains('name="create[delay]"', $crawler->html());
-        $this->assertContains('id="create_priority"', $crawler->html());
-        $this->assertContains('name="create[priority]"', $crawler->html());
-        $this->assertContains('id="create_riskStrategy"', $crawler->html());
-        $this->assertContains('name="create[riskStrategy]"', $crawler->html());
-        $this->assertContains('id="create_riskCategory"', $crawler->html());
-        $this->assertContains('name="create[riskCategory]"', $crawler->html());
-        $this->assertContains('id="create_measure"', $crawler->html());
-        $this->assertContains('name="create[measure]"', $crawler->html());
-        $this->assertContains('id="create_responsibility"', $crawler->html());
-        $this->assertContains('name="create[responsibility]"', $crawler->html());
-        $this->assertContains('id="create_dueDate"', $crawler->html());
-        $this->assertContains('name="create[dueDate]"', $crawler->html());
-        $this->assertContains('id="create_status"', $crawler->html());
-        $this->assertContains('name="create[status]"', $crawler->html());
+        $this->assertContains('id="admin_title"', $crawler->html());
+        $this->assertContains('name="admin[title]"', $crawler->html());
+        $this->assertContains('id="admin_project"', $crawler->html());
+        $this->assertContains('name="admin[project]"', $crawler->html());
+        $this->assertContains('id="admin_description"', $crawler->html());
+        $this->assertContains('name="admin[description]"', $crawler->html());
+        $this->assertContains('id="admin_impact"', $crawler->html());
+        $this->assertContains('name="admin[impact]"', $crawler->html());
+        $this->assertContains('id="admin_cost"', $crawler->html());
+        $this->assertContains('name="admin[cost]"', $crawler->html());
+        $this->assertContains('id="admin_budget"', $crawler->html());
+        $this->assertContains('name="admin[budget]"', $crawler->html());
+        $this->assertContains('id="admin_delay"', $crawler->html());
+        $this->assertContains('name="admin[delay]"', $crawler->html());
+        $this->assertContains('id="admin_priority"', $crawler->html());
+        $this->assertContains('name="admin[priority]"', $crawler->html());
+        $this->assertContains('id="admin_riskStrategy"', $crawler->html());
+        $this->assertContains('name="admin[riskStrategy]"', $crawler->html());
+        $this->assertContains('id="admin_riskCategory"', $crawler->html());
+        $this->assertContains('name="admin[riskCategory]"', $crawler->html());
+        $this->assertContains('id="admin_responsibility"', $crawler->html());
+        $this->assertContains('name="admin[responsibility]"', $crawler->html());
+        $this->assertContains('id="admin_dueDate"', $crawler->html());
+        $this->assertContains('name="admin[dueDate]"', $crawler->html());
+        $this->assertContains('id="admin_status"', $crawler->html());
+        $this->assertContains('name="admin[status]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -70,7 +70,6 @@ class RiskControllerTest extends BaseController
         $this->assertContains('The budget field should not be blank', $crawler->html());
         $this->assertContains('The delay field should not be blank', $crawler->html());
         $this->assertContains('The priority field should not be blank', $crawler->html());
-        $this->assertContains('The measure field should not be blank', $crawler->html());
     }
 
     public function testCreateAction()
@@ -88,14 +87,15 @@ class RiskControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[title]'] = 'risk3';
-        $form['create[description]'] = 'risk-description';
-        $form['create[cost]'] = 'risk-cost';
-        $form['create[budget]'] = 'risk-budget';
-        $form['create[delay]'] = 'risk-delay';
-        $form['create[priority]'] = 'risk-priority';
-        $form['create[measure]'] = 'risk-measure';
-        $form['create[status]'] = $status->getId();
+        $form['admin[title]'] = 'risk3';
+        $form['admin[impact]'] = 10;
+        $form['admin[probability]'] = 100;
+        $form['admin[description]'] = 'risk-description';
+        $form['admin[cost]'] = 'risk-cost';
+        $form['admin[budget]'] = 'risk-budget';
+        $form['admin[delay]'] = 'risk-delay';
+        $form['admin[priority]'] = 'risk-priority';
+        $form['admin[status]'] = $status->getId();
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -135,12 +135,13 @@ class RiskControllerTest extends BaseController
 
         $risk = (new Risk())
             ->setTitle('risk-title3')
+            ->setImpact(1)
+            ->setProbability(1)
             ->setDescription('risk-description')
             ->setCost('risk-cost')
             ->setBudget('risk-budget')
             ->setDelay('risk-delay')
             ->setPriority('risk-priority')
-            ->setMeasure('risk-measure')
             ->setStatus($status)
         ;
 
@@ -176,32 +177,32 @@ class RiskControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk/1/edit');
 
-        $this->assertContains('id="create_title"', $crawler->html());
-        $this->assertContains('name="create[title]"', $crawler->html());
-        $this->assertContains('id="create_description"', $crawler->html());
-        $this->assertContains('name="create[description]"', $crawler->html());
-        $this->assertContains('id="create_impact"', $crawler->html());
-        $this->assertContains('name="create[impact]"', $crawler->html());
-        $this->assertContains('id="create_cost"', $crawler->html());
-        $this->assertContains('name="create[cost]"', $crawler->html());
-        $this->assertContains('id="create_budget"', $crawler->html());
-        $this->assertContains('name="create[budget]"', $crawler->html());
-        $this->assertContains('id="create_delay"', $crawler->html());
-        $this->assertContains('name="create[delay]"', $crawler->html());
-        $this->assertContains('id="create_priority"', $crawler->html());
-        $this->assertContains('name="create[priority]"', $crawler->html());
-        $this->assertContains('id="create_riskStrategy"', $crawler->html());
-        $this->assertContains('name="create[riskStrategy]"', $crawler->html());
-        $this->assertContains('id="create_riskCategory"', $crawler->html());
-        $this->assertContains('name="create[riskCategory]"', $crawler->html());
-        $this->assertContains('id="create_measure"', $crawler->html());
-        $this->assertContains('name="create[measure]"', $crawler->html());
-        $this->assertContains('id="create_responsibility"', $crawler->html());
-        $this->assertContains('name="create[responsibility]"', $crawler->html());
-        $this->assertContains('id="create_dueDate"', $crawler->html());
-        $this->assertContains('name="create[dueDate]"', $crawler->html());
-        $this->assertContains('id="create_status"', $crawler->html());
-        $this->assertContains('name="create[status]"', $crawler->html());
+        $this->assertContains('id="admin_title"', $crawler->html());
+        $this->assertContains('name="admin[title]"', $crawler->html());
+        $this->assertContains('id="admin_project"', $crawler->html());
+        $this->assertContains('name="admin[project]"', $crawler->html());
+        $this->assertContains('id="admin_description"', $crawler->html());
+        $this->assertContains('name="admin[description]"', $crawler->html());
+        $this->assertContains('id="admin_impact"', $crawler->html());
+        $this->assertContains('name="admin[impact]"', $crawler->html());
+        $this->assertContains('id="admin_cost"', $crawler->html());
+        $this->assertContains('name="admin[cost]"', $crawler->html());
+        $this->assertContains('id="admin_budget"', $crawler->html());
+        $this->assertContains('name="admin[budget]"', $crawler->html());
+        $this->assertContains('id="admin_delay"', $crawler->html());
+        $this->assertContains('name="admin[delay]"', $crawler->html());
+        $this->assertContains('id="admin_priority"', $crawler->html());
+        $this->assertContains('name="admin[priority]"', $crawler->html());
+        $this->assertContains('id="admin_riskStrategy"', $crawler->html());
+        $this->assertContains('name="admin[riskStrategy]"', $crawler->html());
+        $this->assertContains('id="admin_riskCategory"', $crawler->html());
+        $this->assertContains('name="admin[riskCategory]"', $crawler->html());
+        $this->assertContains('id="admin_responsibility"', $crawler->html());
+        $this->assertContains('name="admin[responsibility]"', $crawler->html());
+        $this->assertContains('id="admin_dueDate"', $crawler->html());
+        $this->assertContains('name="admin[dueDate]"', $crawler->html());
+        $this->assertContains('id="admin_status"', $crawler->html());
+        $this->assertContains('name="admin[status]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 
@@ -218,13 +219,12 @@ class RiskControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk/1/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[title]'] = '';
-        $form['create[description]'] = '';
-        $form['create[cost]'] = '';
-        $form['create[budget]'] = '';
-        $form['create[delay]'] = '';
-        $form['create[priority]'] = '';
-        $form['create[measure]'] = '';
+        $form['admin[title]'] = '';
+        $form['admin[description]'] = '';
+        $form['admin[cost]'] = '';
+        $form['admin[budget]'] = '';
+        $form['admin[delay]'] = '';
+        $form['admin[priority]'] = '';
 
         $crawler = $this->client->submit($form);
 
@@ -234,7 +234,6 @@ class RiskControllerTest extends BaseController
         $this->assertContains('The budget field should not be blank', $crawler->html());
         $this->assertContains('The delay field should not be blank', $crawler->html());
         $this->assertContains('The priority field should not be blank', $crawler->html());
-        $this->assertContains('The measure field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -248,7 +247,7 @@ class RiskControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk/2/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[title]'] = 'title2';
+        $form['admin[title]'] = 'title2';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

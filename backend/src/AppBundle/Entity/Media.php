@@ -98,6 +98,20 @@ class Media
     private $workPackages;
 
     /**
+     * @var Measure[]|ArrayCollection
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Measure", mappedBy="medias")
+     * @Serializer\Exclude()
+     */
+    private $measures;
+
+    /**
+     * @var MeasureComments[]|ArrayCollection
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\MeasureComment", mappedBy="medias")
+     * @Serializer\Exclude()
+     */
+    private $measureComments;
+
+    /**
      * @var \DateTime
      *
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
@@ -114,6 +128,8 @@ class Media
         $this->createdAt = new \DateTime();
         $this->meetings = new ArrayCollection();
         $this->workPackages = new ArrayCollection();
+        $this->measures = new ArrayCollection();
+        $this->measureComments = new ArrayCollection();
     }
 
     /**
@@ -416,5 +432,73 @@ class Media
     public function getWorkPackages()
     {
         return $this->workPackages;
+    }
+
+    /**
+     * @param Measure $measure
+     *
+     * @return Media
+     */
+    public function addMeasure(Measure $measure)
+    {
+        $this->measures[] = $measure;
+        $measure->addMedia($this);
+
+        return $this;
+    }
+
+    /**
+     * @param Measure $measure
+     *
+     * @return Media
+     */
+    public function removeMeasure(Measure $measure)
+    {
+        $this->measures->removeElement($measure);
+        $measure->removeMedia($this);
+
+        return $this;
+    }
+
+    /**
+     * @return Measure[]|ArrayCollection
+     */
+    public function getMeasures()
+    {
+        return $this->measures;
+    }
+
+    /**
+     * @param MeasureComment $measureComment
+     *
+     * @return Media
+     */
+    public function addMeasureComment(MeasureComment $measureComment)
+    {
+        $this->measureComments[] = $measureComment;
+        $measureComment->addMedia($this);
+
+        return $this;
+    }
+
+    /**
+     * @param Measure $measure
+     *
+     * @return Media
+     */
+    public function removeMeasureComment(MeasureComment $measureComment)
+    {
+        $this->measureComments->removeElement($measureComment);
+        $measureComment->removeMedia($this);
+
+        return $this;
+    }
+
+    /**
+     * @return Measure[]|ArrayCollection
+     */
+    public function getMeasureComments()
+    {
+        return $this->measureComments;
     }
 }

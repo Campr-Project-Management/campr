@@ -21,7 +21,6 @@ class LoadRiskData extends AbstractFixture implements OrderedFixtureInterface
 
         for ($i = 1; $i <= 2; ++$i) {
             $dueDate = new \DateTime('2017-03-03');
-            $impact = $this->getReference('impact'.$i);
             $strategy = $this->getReference('risk-strategy'.$i);
             $category = $this->getReference('risk-category'.$i);
             $status = $this->getReference('status'.$i);
@@ -34,10 +33,10 @@ class LoadRiskData extends AbstractFixture implements OrderedFixtureInterface
                 ->setBudget('budget'.$i)
                 ->setDelay('delay'.$i)
                 ->setPriority('priority'.$i)
-                ->setMeasure('measure'.$i)
                 ->setDueDate($dueDate)
                 ->setResponsibility($responsible)
-                ->setImpact($impact)
+                ->setImpact($i * 10)
+                ->setProbability($i * 10)
                 ->setRiskStrategy($strategy)
                 ->setRiskCategory($category)
                 ->setStatus($status)

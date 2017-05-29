@@ -65,12 +65,30 @@
                         }
                     ) }}
                     {{ form_widget(
-                        form.impact,
+                        form.project,
                         {
                             'attr': {
                                 'class': 'selectpicker',
                             },
+                            'label': 'label.project'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.impact,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
                             'label': 'label.impact'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.probability,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'label.probability'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -125,15 +143,6 @@
                                 'class': 'selectpicker',
                             },
                             'label': 'label.category'|trans
-                        }
-                    ) }}
-                    {{ form_widget(
-                        form.measure,
-                        {
-                            'attr': {
-                                'class': 'form-control input-sm',
-                            },
-                            'label': 'label.measure'|trans
                         }
                     ) }}
                     {{ form_widget(
