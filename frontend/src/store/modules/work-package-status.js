@@ -9,14 +9,6 @@ const STATUS_COMPLETED_ID = 4;
 
 const getters = {
     workPackageStatuses: state => state.items,
-    workPackageStatusesForSelect: (state) => {
-        return state.items.map((item) => {
-            return {
-                key: item.id,
-                label: Vue.translate(item.name),
-            };
-        });
-    },
     workPackageStatusesForMilestone: (state) => {
         let workPackageStatusesForMilestone = [];
 
@@ -33,6 +25,11 @@ const getters = {
 
         return workPackageStatusesForMilestone;
     },
+    workPackageStatusesForSelect: (state) => state.items.map((item) => ({
+        key: item.id,
+        label: Vue.translate(item.name),
+    })),
+    workPackageStatusesCount: state => state.items.totalItems,
 };
 
 const actions = {

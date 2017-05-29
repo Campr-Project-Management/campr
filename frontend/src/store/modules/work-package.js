@@ -4,15 +4,14 @@ import * as types from '../mutation-types';
 const state = {
     items: [],
     workPackagesForSelect: [],
-    projectTasks: [],
-    projectTasksForSelect: [],
 };
 
 const getters = {
     workPackages: state => state.items,
-    workPackagesForSelect: state => state.workPackagesForSelect,
-    projectTasks: state => state.projectTasks,
-    projectTasksForSelect: state => state.projectTasksForSelect,
+    workPackagesForSelect: state => state.items.map(item => ({key: item.id, label: item.name})),
+    projectTasks: state => state.items.filter(item => item.type === 2),
+    projectTasksForSelect: state => state.items.filter(item => item.type === 2)
+                                               .map(item => ({key: item.id, label: item.name})),
 };
 
 const actions = {
@@ -41,11 +40,6 @@ const mutations = {
      */
     [types.SET_WORK_PACKAGES](state, {workPackages}) {
         state.items = workPackages.items;
-        let tasks = state.items.filter(item => item.type === 2);
-        let tasksForSelect = [];
-        tasks.map(item => tasksForSelect.push({'key': item.id, 'label': item.name}));
-        state.projectTasks = tasks;
-        state.projectTasksForSelect = tasksForSelect;
     },
 };
 
