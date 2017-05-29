@@ -15,6 +15,7 @@ before_script:
   - bin/console doctrine:migrations:migrate --no-interaction --env=test
   - bin/console doctrine:fixtures:load --append --fixtures=backend/src/AppBundle/DataFixtures/ORM/ --no-interaction --env=test
   - bin/console cache:clear --env=test
+  - bin/console doctrine:schema:validate --env=test
 
 test:phpunit:
   stage: test
