@@ -16,55 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class RiskController extends ApiController
 {
-    /**
-     * Get all risks.
-     *
-     * @Route(name="app_api_risks_list")
-     * @Method({"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function listAction()
-    {
-        $risks = $this
-            ->getDoctrine()
-            ->getRepository(Risk::class)
-            ->findAll()
-        ;
-
-        return $this->createApiResponse($risks);
-    }
-
-    /**
-     * Create a new Risk.
-     *
-     * @Route(name="app_api_risks_create")
-     * @Method({"POST"})
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function createAction(Request $request)
-    {
-        $form = $this->createForm(CreateType::class, null, ['csrf_protection' => false]);
-        $this->processForm($request, $form);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($form->getData());
-            $em->flush();
-
-            return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
-        }
-
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
-    }
+    const ENTITY_CLASS = Risk::class;
+    const FORM_CLASS = CreateType::class;
 
     /**
      * Get Risk by id.
@@ -94,13 +47,11 @@ class RiskController extends ApiController
      */
     public function editAction(Request $request, Risk $risk)
     {
-        $form = $this->createForm(CreateType::class, $risk, ['csrf_protection' => false]);
+        $form = $this->getForm($risk, ['method' => $request->getMethod()]);
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($risk);
-            $em->flush();
+            $this->persistAndFlush($risk);
 
             return $this->createApiResponse($risk, Response::HTTP_ACCEPTED);
         }
