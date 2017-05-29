@@ -9,6 +9,7 @@ use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\Label;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Note;
+use AppBundle\Entity\Opportunity;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectDeliverable;
 use AppBundle\Entity\ProjectLimitation;
@@ -16,6 +17,7 @@ use AppBundle\Entity\ProjectObjective;
 use AppBundle\Entity\ProjectStatus;
 use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
+use AppBundle\Entity\Risk;
 use AppBundle\Entity\Subteam;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\WorkPackage;
@@ -41,6 +43,8 @@ use AppBundle\Form\User\ApiCreateType as UserApiCreateType;
 use AppBundle\Form\WorkPackage\ApiCreateType;
 use AppBundle\Form\WorkPackage\MilestoneType;
 use AppBundle\Form\WorkPackage\PhaseType;
+use AppBundle\Form\Risk\CreateType as RiskCreateType;
+use AppBundle\Form\Opportunity\BaseType as OpportunityCreateType;
 use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\ProjectVoter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -1383,6 +1387,102 @@ class ProjectController extends ApiController
             $this->persistAndFlush($subteam);
 
             return $this->createApiResponse($subteam, JsonResponse::HTTP_CREATED);
+        }
+
+        return $this->createApiResponse(
+            [
+                'messages' => $this->getFormErrors($form),
+            ],
+            JsonResponse::HTTP_BAD_REQUEST
+        );
+    }
+
+    /**
+     * All project risks.
+     *
+     * @Route("/{id}/risks", name="app_api_project_risks", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function risksAction(Project $project)
+    {
+        return $this->createApiResponse($project->getRisks());
+    }
+
+    /**
+     * Create new project Risk.
+     *
+     * @Route("/{id}/risks", name="app_api_project_create_risk", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function createRiskAction(Request $request, Project $project)
+    {
+        $risk = new Risk();
+        $form = $this->createForm(RiskCreateType::class, $risk, ['csrf_protection' => false]);
+
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $risk->setProject($project);
+            $this->persistAndFlush($risk);
+
+            return $this->createApiResponse($risk, JsonResponse::HTTP_CREATED);
+        }
+
+        return $this->createApiResponse(
+            [
+                'messages' => $this->getFormErrors($form),
+            ],
+            JsonResponse::HTTP_BAD_REQUEST
+        );
+    }
+
+    /**
+     * All project opportunities.
+     *
+     * @Route("/{id}/opportunities", name="app_api_project_opportunities", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function opportunitiesAction(Project $project)
+    {
+        return $this->createApiResponse($project->getOpportunities());
+    }
+
+    /**
+     * Create new project opportunity.
+     *
+     * @Route("/{id}/opportunities", name="app_api_project_create_opportunity", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function createOpportunityAction(Request $request, Project $project)
+    {
+        $opportunity = new Opportunity();
+        $form = $this->createForm(OpportunityCreateType::class, $opportunity, ['csrf_protection' => false]);
+
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $opportunity->setProject($project);
+            $this->persistAndFlush($opportunity);
+
+            return $this->createApiResponse($opportunity, JsonResponse::HTTP_CREATED);
         }
 
         return $this->createApiResponse(
