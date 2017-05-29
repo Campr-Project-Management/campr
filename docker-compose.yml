@@ -48,3 +48,9 @@ services:
             - php-fpm
         ports:
             - 80:80
+    supervisor:
+        # build: config/docker/supervisor
+        image: lab.trisoft.ro:4567/trisoft/internal/php-supervisor
+        volumes:
+            - .:/app
+            - ./config/supervisor/docker_dev.conf:/etc/supervisor/conf.d/docker_dev.conf
