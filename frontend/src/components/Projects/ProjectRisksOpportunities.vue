@@ -20,7 +20,7 @@
                     <!-- /// End Project Opportunities Grid /// -->
 
                     <!-- /// Project Opportunities List /// -->
-                    <risk-list :listData="listData"></risk-list>
+                    <opportunity-list :listData="opportunities"></opportunity-list>
                     <!-- /// End Project Opportunities List /// -->
                 </div>
                 <!-- /// End Project Opportunities /// -->
@@ -48,7 +48,7 @@
                     <!-- /// End Project Risks Grid /// -->
 
                     <!-- /// Project Risks List /// -->
-                    <risk-list :listData="listData"></risk-list>
+                    <risk-list :listData="risks"></risk-list>
                     <!-- /// End Project Risks List /// -->
                 </div>
                 <!-- /// End Project Risks /// -->
@@ -62,19 +62,34 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex';
 import RiskGrid from './Risks/RiskGrid';
 import RiskList from './Risks/RiskList';
+import OpportunityList from './Opportunities/OpportunityList';
 import RiskSummary from './Risks/RiskSummary';
+
 export default {
     components: {
         RiskGrid,
         RiskList,
         RiskSummary,
+        OpportunityList,
+    },
+    computed: {
+        ...mapGetters({
+            opportunities: 'opportunities',
+            risks: 'risks',
+        }),
     },
     methods: {
+        ...mapActions(['getProjectOpportunities', 'getProjectRisks']),
         translateText: function(text) {
             return this.translate(text);
         },
+    },
+    created() {
+        this.getProjectOpportunities({projectId: this.$route.params.id});
+        this.getProjectRisks({projectId: this.$route.params.id});
     },
     data: function() {
         return {
@@ -82,31 +97,6 @@ export default {
             [{number: 1, type: 'medium'}, {number: 2, type: 'high'}, {number: null, type: 'low'}, {number: null, type: 'very-low'}],
             [{number: 1, type: 'medium'}, {number: 2, type: 'high'}, {number: null, type: 'low'}, {number: null, type: 'very-low'}],
             [{number: 1, type: 'medium'}, {number: 2, type: 'high'}, {number: null, type: 'low'}, {number: null, type: 'very-low'}]],
-            listData: [{
-                responsible: 'John',
-                title: 'Title 1',
-                potential_savings: '$1200',
-                potential_time_savings: '40 days',
-                priority: 'High',
-                strategy: 'Increase',
-                status: 'Ongoing',
-            }, {
-                responsible: 'John',
-                title: 'Title 1',
-                potential_savings: '$1200',
-                potential_time_savings: '40 days',
-                priority: 'High',
-                strategy: 'Increase',
-                status: 'Ongoing',
-            }, {
-                responsible: 'John',
-                title: 'Title 1',
-                potential_savings: '$1200',
-                potential_time_savings: '40 days',
-                priority: 'High',
-                strategy: 'Increase',
-                status: 'Ongoing',
-            }],
             summaryData: {
                 total_potential_savings: '$323.350',
                 total_potential_time_savings: '74 days',
