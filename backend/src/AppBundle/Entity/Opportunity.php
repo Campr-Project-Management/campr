@@ -86,7 +86,7 @@ class Opportunity
     /**
      * @var string
      *
-     * @ORM\Column(name="priority", type="string", length=255, nullable=true)
+     * @ORM\Column(name="priority", type="string", length=255, nullable=false)
      */
     private $priority;
 
