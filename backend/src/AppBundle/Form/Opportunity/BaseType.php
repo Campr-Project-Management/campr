@@ -1,24 +1,25 @@
 <?php
 
-namespace AppBundle\Form\Risk;
+namespace AppBundle\Form\Opportunity;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use AppBundle\Entity\Opportunity;
+use AppBundle\Entity\OpportunityStatus;
+use AppBundle\Entity\OpportunityStrategy;
+use AppBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
-use AppBundle\Entity\Risk;
-use AppBundle\Entity\User;
-use AppBundle\Entity\Status;
-use AppBundle\Entity\RiskStrategy;
-use AppBundle\Entity\RiskCategory;
+use AppBundle\Form\Measure\BaseType as MeasureType;
 
-class CreateType extends AbstractType
+class BaseType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -67,29 +68,11 @@ class CreateType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('cost', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.cost',
-                    ]),
-                ],
+            ->add('costSavings', TextType::class, [
+                'required' => false,
             ])
-            ->add('budget', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.budget',
-                    ]),
-                ],
-            ])
-            ->add('delay', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.delay',
-                    ]),
-                ],
+            ->add('timeSavings', TextType::class, [
+                'required' => false,
             ])
             ->add('priority', TextType::class, [
                 'required' => true,
@@ -99,19 +82,22 @@ class CreateType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('riskStrategy', EntityType::class, [
-                'class' => RiskStrategy::class,
-                'required' => false,
+            ->add('opportunityStrategy', EntityType::class, [
+                'class' => OpportunityStrategy::class,
                 'choice_label' => 'name',
-                'placeholder' => 'placeholder.risk_strategy',
+                'placeholder' => 'placeholder.name',
                 'translation_domain' => 'messages',
             ])
-            ->add('riskCategory', EntityType::class, [
-                'class' => RiskCategory::class,
-                'required' => false,
+            ->add('opportunityStatus', EntityType::class, [
+                'class' => OpportunityStatus::class,
                 'choice_label' => 'name',
-                'placeholder' => 'placeholder.risk_category',
+                'placeholder' => 'placeholder.name',
                 'translation_domain' => 'messages',
+            ])
+            ->add('dueDate', DateType::class, [
+                'required' => false,
+                'widget' => 'single_text',
+                'format' => 'dd-MM-yyyy',
             ])
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
@@ -119,16 +105,11 @@ class CreateType extends AbstractType
                 'placeholder' => 'placeholder.user',
                 'translation_domain' => 'messages',
             ])
-            ->add('dueDate', DateType::class, [
-                'widget' => 'single_text',
-                'format' => 'dd-MM-yyyy',
+            ->add('measures', CollectionType::class, [
                 'required' => false,
-            ])
-            ->add('status', EntityType::class, [
-                'class' => Status::class,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.status',
-                'translation_domain' => 'messages',
+                'entry_type' => MeasureType::class,
+                'allow_add' => true,
+                'by_reference' => false,
             ])
         ;
     }
@@ -139,7 +120,7 @@ class CreateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Risk::class,
+            'data_class' => Opportunity::class,
             'allow_extra_fields' => true,
             'csrf_protection' => false,
         ]);

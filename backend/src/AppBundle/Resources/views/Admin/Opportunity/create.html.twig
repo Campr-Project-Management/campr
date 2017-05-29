@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'title.risk.create'|trans }}</h2>
+                    <h2>{{ 'title.opportunity.create'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,7 +17,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_risk_list') }}">{{ 'button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_opportunity_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -28,7 +28,7 @@
                         form,
                         {
                             'method': 'POST',
-                            'action': path('app_admin_risk_create'),
+                            'action': path('app_admin_opportunity_create'),
                             'attr': {
                                 'id': 'create-form',
                                 'class': 'form-horizontal',
@@ -62,7 +62,7 @@
                         }
                     ) }}
                     {{ form_widget(
-                        form.project,
+                        form.priority,
                         {
                             'attr': {
                                 'class': 'selectpicker',
@@ -89,30 +89,21 @@
                         }
                     ) }}
                     {{ form_widget(
-                        form.cost,
+                        form.costSavings,
                         {
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
                             'label': 'label.cost'|trans
                         }
-                    ) }}
+                        ) }}
                     {{ form_widget(
-                        form.budget,
+                        form.timeSavings,
                         {
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'label.budget'|trans
-                        }
-                    ) }}
-                    {{ form_widget(
-                        form.delay,
-                        {
-                            'attr': {
-                                'class': 'form-control input-sm',
-                            },
-                            'label': 'label.delay'|trans
+                            'label': 'label.time_savings'|trans
                         }
                     ) }}
                     {{ form_widget(
@@ -125,16 +116,16 @@
                         }
                     ) }}
                     {{ form_widget(
-                        form.riskStrategy,
+                        form.opportunityStrategy,
                         {
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                        'label': 'label.strategy'|trans
-                    }
+                            'label': 'label.strategy'|trans
+                        }
                     ) }}
                     {{ form_widget(
-                        form.riskCategory,
+                        form.opportunityStatus,
                         {
                             'attr': {
                                 'class': 'selectpicker',
@@ -159,15 +150,6 @@
                                 'addon_front': 'calendar',
                             },
                             'label': 'label.due_date'|trans
-                        }
-                    ) }}
-                    {{ form_widget(
-                        form.status,
-                        {
-                            'attr': {
-                                'class': 'selectpicker',
-                            },
-                            'label': 'label.status'|trans
                         }
                     ) }}
 
