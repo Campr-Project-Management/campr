@@ -9,6 +9,7 @@ const state = {
 const getters = {
     subteams: state => state.items,
     subteamsForSelect: state => state.itemsForSelect,
+    subteamsCount: state => state.items.totalItems,
 };
 
 const actions = {
