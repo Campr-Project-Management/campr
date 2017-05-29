@@ -92,8 +92,10 @@ class RiskControllerTest extends BaseController
         $form['admin[probability]'] = 100;
         $form['admin[description]'] = 'risk-description';
         $form['admin[cost]'] = 'risk-cost';
+        $form['admin[currency]'] = '$';
         $form['admin[budget]'] = 'risk-budget';
         $form['admin[delay]'] = 'risk-delay';
+        $form['admin[delayUnit]'] = 'choices.days';
         $form['admin[priority]'] = 'risk-priority';
         $form['admin[status]'] = $status->getId();
 
@@ -139,8 +141,10 @@ class RiskControllerTest extends BaseController
             ->setProbability(1)
             ->setDescription('risk-description')
             ->setCost('risk-cost')
+            ->setCurrency('$')
             ->setBudget('risk-budget')
             ->setDelay('risk-delay')
+            ->setDelayUnit('days')
             ->setPriority('risk-priority')
             ->setStatus($status)
         ;
@@ -248,6 +252,7 @@ class RiskControllerTest extends BaseController
 
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['admin[title]'] = 'title2';
+        $form['admin[delayUnit]'] = 'choices.days';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

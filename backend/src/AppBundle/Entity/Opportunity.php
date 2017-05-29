@@ -72,6 +72,13 @@ class Opportunity
     /**
      * @var string
      *
+     * @ORM\Column(name="currency", type="string", length=255)
+     */
+    private $currency;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="budget", type="string", length=255, nullable=true)
      */
     private $budget;
@@ -82,6 +89,13 @@ class Opportunity
      * @ORM\Column(name="time_savings", type="string", length=255, nullable=true)
      */
     private $timeSavings;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="time_unit", type="string", length=255)
+     */
+    private $timeUnit;
 
     /**
      * @var string
@@ -668,5 +682,41 @@ class Opportunity
     public function getMeasures()
     {
         return $this->measures;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param string $currency
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimeUnit()
+    {
+        return $this->timeUnit;
+    }
+
+    /**
+     * @param string $timeUnit
+     */
+    public function setTimeUnit($timeUnit)
+    {
+        $this->timeUnit = $timeUnit;
+
+        return $this;
     }
 }
