@@ -13,9 +13,9 @@ before_script:
   - bin/console doctrine:database:drop --if-exists --force --env=test
   - bin/console doctrine:database:create --env=test
   - bin/console doctrine:migrations:migrate --no-interaction --env=test
+  - bin/console doctrine:schema:validate --env=test
   - bin/console doctrine:fixtures:load --append --fixtures=backend/src/AppBundle/DataFixtures/ORM/ --no-interaction --env=test
   - bin/console cache:clear --env=test
-  - bin/console doctrine:schema:validate --env=test
 
 test:phpunit:
   stage: test
