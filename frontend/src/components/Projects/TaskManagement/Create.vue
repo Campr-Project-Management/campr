@@ -195,7 +195,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            task: 'task',
+            task: 'currentTask',
         }),
     },
     watch: {

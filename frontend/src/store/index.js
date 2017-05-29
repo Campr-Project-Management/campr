@@ -28,6 +28,8 @@ import projectRole from './modules/project-role';
 import subteam from './modules/subteam';
 import opportunity from './modules/opportunity';
 import risk from './modules/risk';
+import tasksStatus from './modules/tasks-status';
+import tasksByStatus from './modules/tasks-by-status';
 
 Vue.use(Vuex);
 
@@ -63,6 +65,8 @@ export default new Vuex.Store({
         subteam,
         opportunity,
         risk,
+        tasksStatus,
+        tasksByStatus,
     },
     strict: debug,
 });

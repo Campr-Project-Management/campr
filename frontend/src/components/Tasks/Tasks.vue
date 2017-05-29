@@ -38,10 +38,10 @@ export default {
         },
     },
     created() {
-        if (!this.$store.state.task || this.$store.state.task.items.length === 0) {
+        if (!this.$store.state.task.items || this.$store.state.task.items.length === 0) {
             this.getTasks(this.activePage);
         }
-        if (!this.$store.state.colorStatus || this.$store.state.colorStatus.items.length === 0) {
+        if (!this.$store.state.colorStatus.items || this.$store.state.colorStatus.items.length === 0) {
             this.getColorStatuses();
         }
     },
@@ -49,14 +49,15 @@ export default {
         ...mapGetters({
             user: 'user',
             tasks: 'tasks',
-            count: 'count',
+            count: 'tasksCount',
             colorStatuses: 'colorStatuses',
         }),
         pageCount: function() {
-            if (!this.tasks.length) {
+            if (!this.tasks || !this.tasks.length) {
                 return [1];
             }
             let pages = Math.ceil(this.count / 12);
+            console.warn('count', this.count);
             let out = [];
             for (let c = 1; c <= pages; c++) {
                 out.push(c);
