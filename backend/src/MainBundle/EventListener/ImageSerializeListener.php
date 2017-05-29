@@ -2,8 +2,10 @@
 
 namespace MainBundle\EventListener;
 
+use AppBundle\Entity\Opportunity;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectUser;
+use AppBundle\Entity\Risk;
 use AppBundle\Entity\SubteamMember;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Team;
@@ -66,6 +68,8 @@ class ImageSerializeListener
                 }
                 break;
             case $object instanceof WorkPackage:
+            case $object instanceof Opportunity:
+            case $object instanceof Risk:
                 if ($object->getResponsibility() instanceof User) {
                     if ($object->getResponsibility()->getAvatar()) {
                         $visitor->addData('responsibilityAvatar', $this->getUri($object->getResponsibility(), 'avatarFile'));

@@ -62,7 +62,7 @@
                         }
                     ) }}
                     {{ form_widget(
-                        form.priority,
+                        form.project,
                         {
                             'attr': {
                                 'class': 'selectpicker',
@@ -96,7 +96,16 @@
                             },
                             'label': 'label.cost'|trans
                         }
-                        ) }}
+                    ) }}
+                    {{ form_widget(
+                        form.currency,
+                        {
+                            'attr': {
+                                'class': 'selectpicker',
+                            },
+                            'label': 'label.currency'|trans
+                        }
+                    ) }}
                     {{ form_widget(
                         form.timeSavings,
                         {
@@ -104,6 +113,15 @@
                                 'class': 'form-control input-sm',
                             },
                             'label': 'label.time_savings'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.timeUnit,
+                        {
+                            'attr': {
+                               'class': 'selectpicker',
+                            },
+                        'label': 'label.time_unit'|trans
                         }
                     ) }}
                     {{ form_widget(
