@@ -2,21 +2,21 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    items: [],
+    projectRoles: [],
 };
 
 const getters = {
-    projectRoles: state => state.items,
+    projectRoles: state => state.projectRoles,
     projectRolesForSelect: state => {
         let projectRolesSelect = [{'key': null, 'label': Translator.trans('placeholder.role')}];
-        state.items.map(function(item) {
+        state.projectRoles.map(function(item) {
             projectRolesSelect.push({'key': item.id, 'label': item.name});
         });
         return projectRolesSelect;
     },
     projectRolesForMultiSelect: state => {
         let projectRolesSelect = [];
-        state.items.map(function(item) {
+        state.projectRoles.map(function(item) {
             projectRolesSelect.push({'key': item.id, 'label': item.name});
         });
         return projectRolesSelect;
@@ -47,7 +47,7 @@ const mutations = {
      * @param {array} roles
      */
     [types.SET_PROJECT_ROLES](state, {roles}) {
-        state.items = roles;
+        state.projectRoles = roles;
     },
 };
 

@@ -7,19 +7,19 @@ const ROLE_SPONSOR = 'roles.project_sponsor';
 const ROLE_MANAGER = 'roles.project_manager';
 
 const state = {
-    items: [],
+    projectUsers: [],
     sponsors: [],
     managers: [],
 };
 
 const getters = {
-    projectUsers: state => state.items,
+    projectUsers: state => state.projectUsers,
     projectSponsors: state => state.sponsors,
     projectManagers: state => state.managers,
     projectUsersForSelect: state => {
         let usersSelect = [];
-        if (state.items && state.items.items) {
-            usersSelect = state.items.items.map(item => {
+        if (state.projectUsers && state.projectUsers.items) {
+            usersSelect = state.projectUsers.items.map(item => {
                 return {
                     'key': item.user,
                     'label': item.userFullName,
@@ -117,7 +117,7 @@ const mutations = {
      * @param {array} projectUsers
      */
     [types.SET_PROJECT_USERS](state, {projectUsers}) {
-        state.items = projectUsers;
+        state.projectUsers = projectUsers;
     },
     /**
      * Set project managers

@@ -2,13 +2,13 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    items: [],
+    projectUnits: [],
 };
 
 const getters = {
-    projectUnits: state => state.items,
+    projectUnits: state => state.projectUnits,
     projectUnitsForSelect: state => {
-        let units = state.items.map(item => {
+        let units = state.projectUnits.map(item => {
             return {
                 'key': item.id,
                 'label': item.name,
@@ -47,7 +47,7 @@ const mutations = {
      * @param {array} units
      */
     [types.SET_PROJECT_UNITS](state, {units}) {
-        state.items = units;
+        state.projectUnits = units;
     },
 };
 

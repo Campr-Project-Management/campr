@@ -2,19 +2,19 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    items: [],
+    workPackageStatuses: [],
 };
 const STATUS_OPEN_ID = 1;
 const STATUS_COMPLETED_ID = 4;
 
 const getters = {
-    workPackageStatuses: state => state.items,
+    workPackageStatuses: state => state.workPackageStatuses,
     workPackageStatusesForMilestone: (state) => {
         let workPackageStatusesForMilestone = [];
 
         const allowedStatuses = [STATUS_OPEN_ID, STATUS_COMPLETED_ID];
 
-        state.items.map(function(workPackageStatus) {
+        state.workPackageStatuses.map(function(workPackageStatus) {
             if (allowedStatuses.indexOf(workPackageStatus.id) !== -1) {
                 workPackageStatusesForMilestone.push({
                     'key': workPackageStatus.id,
@@ -25,11 +25,11 @@ const getters = {
 
         return workPackageStatusesForMilestone;
     },
-    workPackageStatusesForSelect: (state) => state.items.map((item) => ({
+    workPackageStatusesForSelect: (state) => state.workPackageStatuses.map((item) => ({
         key: item.id,
         label: Vue.translate(item.name),
     })),
-    workPackageStatusesCount: state => state.items.totalItems,
+    workPackageStatusesCount: state => state.workPackageStatuses.totalItems,
 };
 
 const actions = {
@@ -48,7 +48,7 @@ const actions = {
 
 const mutations = {
     [types.SET_WORK_PACKAGE_STATUSES](state, {workPackageStatuses}) {
-        state.items = workPackageStatuses;
+        state.workPackageStatuses = workPackageStatuses;
     },
 };
 

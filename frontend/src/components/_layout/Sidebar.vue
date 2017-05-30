@@ -28,7 +28,7 @@
                             </g>
                             </svg>
                         </span>
-                        <span class="notification-balloon">{{ $store.state.project.items.totalItems + $store.state.task.totalItems }}</span>
+                        <span class="notification-balloon">{{ projectsCount + tasksCount }}</span>
                     </router-link>
                 </li>
                 <li>
@@ -46,7 +46,7 @@
                             </g>
                               </svg>
                         </span>
-                        <span class="notification-balloon">{{ $store.state.project.items.totalItems }}</span>
+                        <span class="notification-balloon">{{ projectsCount }}</span>
                     </router-link>
                 </li>
                 <li>
@@ -71,7 +71,7 @@
                             </g>
                             </svg>
                         </span>
-                        <span class="notification-balloon">{{ $store.state.task.totalItems }}</span>
+                        <span class="notification-balloon">{{ tasksCount }}</span>
                     </router-link>
                 </li>
             </ul>
@@ -179,7 +179,7 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     name: 'sidebar',
@@ -218,6 +218,12 @@ export default {
                 close_down_project: window.Translator.trans('message.close_down_project'),
             },
         };
+    },
+    computed: {
+        ...mapGetters({
+            tasksCount: 'tasksCount',
+            projectsCount: 'projectsCount',
+        }),
     },
 };
 </script>

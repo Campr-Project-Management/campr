@@ -2,17 +2,17 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    items: [],
-    itemsForSelect: [],
-    itemsForMultiSelect: [],
+    projectDepartments: [],
+    projectDepartmentsForSelect: [],
+    projectDepartmentsForMultiSelect: [],
     loading: false,
 };
 
 const getters = {
-    projectDepartments: state => state.items,
-    projectDepartmentsForSelect: state => state.itemsForSelect,
+    projectDepartments: state => state.projectDepartments,
+    projectDepartmentsForSelect: state => state.projectDepartmentsForSelect,
     projectDepartmentsLoading: state => state.loading,
-    projectDepartmentsForMultiSelect: state => state.itemsForMultiSelect,
+    projectDepartmentsForMultiSelect: state => state.projectDepartmentsForMultiSelect,
 };
 
 const actions = {
@@ -85,15 +85,15 @@ const mutations = {
      * @param {array} programmes
      */
     [types.SET_PROJECT_DEPARTMENTS](state, {projectDepartments}) {
-        state.items = projectDepartments;
-        let itemsForSelect = [{'key': null, 'label': Translator.trans('placeholder.department'), 'rate': 0}];
-        let itemsForMultiSelect = [];
-        state.items.items.map((item) => {
-            itemsForSelect.push({'key': item.id, 'label': item.name, 'rate': item.rate});
-            itemsForMultiSelect.push({'key': item.id, 'label': item.name, 'rate': item.rate});
+        state.projectDepartments = projectDepartments;
+        let projectDepartmentsForSelect = [{'key': null, 'label': Translator.trans('placeholder.department'), 'rate': 0}];
+        let projectDepartmentsForMultiSelect = [];
+        state.projectDepartments.items.map((item) => {
+            projectDepartmentsForSelect.push({'key': item.id, 'label': item.name, 'rate': item.rate});
+            projectDepartmentsForMultiSelect.push({'key': item.id, 'label': item.name, 'rate': item.rate});
         });
-        state.itemsForSelect = itemsForSelect;
-        state.itemsForMultiSelect = itemsForMultiSelect;
+        state.projectDepartmentsForSelect = projectDepartmentsForSelect;
+        state.projectDepartmentsForMultiSelect = projectDepartmentsForMultiSelect;
     },
     /**
      * @param {Object} state
@@ -109,8 +109,8 @@ const mutations = {
      * @param {array} department
      */
     [types.ADD_PROJECT_DEPARTMENT](state, {department}) {
-        state.items.items.push(department);
-        state.items.totalItems++;
+        state.projectDepartments.items.push(department);
+        state.projectDepartments.totalItems++;
     },
     /**
      * Edit project department
@@ -118,7 +118,7 @@ const mutations = {
      * @param {array} department
      */
     [types.EDIT_PROJECT_DEPARTMENT](state, {id, department}) {
-        state.items.items = state.items.items.map((item) => {
+        state.projectDepartments.items = state.projectDepartments.items.map((item) => {
             return item.id === id ? department : item;
         });
     },
@@ -128,10 +128,10 @@ const mutations = {
      * @param {array} department
      */
     [types.DELETE_PROJECT_DEPARTMENT](state, {id}) {
-        state.items.items = state.items.items.filter((item) => {
+        state.projectDepartments.items = state.projectDepartments.items.filter((item) => {
             return item.id !== id ? true : false;
         });
-        state.items.totalItems--;
+        state.projectDepartments.totalItems--;
     },
 };
 
