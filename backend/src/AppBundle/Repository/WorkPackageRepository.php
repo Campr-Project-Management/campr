@@ -416,6 +416,25 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
+     * counts the filtered workpackages.
+     *
+     * @param Project $project
+     * @param array   $filters
+     *
+     * @return int
+     */
+    public function countTotalByProjectAndFilters(Project $project, $filters = [])
+    {
+        return (int) $this
+            ->getQueryBuilderByProjectAndFilters($project, $filters, 'COUNT(DISTINCT wp.id)')
+            ->setFirstResult(0)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
      * Return the query builder for all project workpackages filtered.
      *
      * @param Project $project
