@@ -23,7 +23,7 @@ export default {
     computed: {
         ...mapGetters({
             projectsForFilter: 'projectsForFilter',
-            statuses: 'colorStatusesForFilter',
+            statuses: 'colorStatusesForSelect',
             user: 'user',
         }),
     },

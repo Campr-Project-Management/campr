@@ -57,7 +57,6 @@ export default {
                 return [1];
             }
             let pages = Math.ceil(this.count / 12);
-            console.warn('count', this.count);
             let out = [];
             for (let c = 1; c <= pages; c++) {
                 out.push(c);
