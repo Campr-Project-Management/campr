@@ -87,5 +87,7 @@ export default {
     .categories-scroll {
         width: 100%;
         padding-bottom: 30px;
+        position: relative;
+        overflow: auto;
     }
 </style>
