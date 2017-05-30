@@ -2,13 +2,13 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    allResources: [],
-    resourcesForSelect: [],
+    projectResources: [],
+    projectResourcesForSelect: [],
 };
 
 const getters = {
-    projectResources: state => state.allResources,
-    projectResourcesForSelect: state => state.resourcesForSelect,
+    projectResources: state => state.projectResources,
+    projectResourcesForSelect: state => state.projectResourcesForSelect,
 };
 
 const actions = {
@@ -35,10 +35,10 @@ const actions = {
 
 const mutations = {
     [types.SET_PROJECT_RESOURCES](state, {resources}) {
-        state.allResources = resources;
-        state.resourcesForSelect = [];
+        state.projectResources = resources;
+        state.projectResourcesForSelect = [];
         resources.map(function(item) {
-            state.resourcesForSelect.push({
+            state.projectResourcesForSelect.push({
                 key: item.id,
                 label: item.name,
                 rate: item.rate,

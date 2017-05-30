@@ -326,7 +326,7 @@ export default {
     },
     computed: mapGetters({
         project: 'project',
-        contract: 'contract',
+        contract: 'currentContract',
         projectResourcesForGraph: 'projectResourcesForGraph',
         projectSponsors: 'projectSponsors',
         projectManagers: 'projectManagers',
