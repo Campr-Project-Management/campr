@@ -6,7 +6,7 @@ const state = {
 };
 
 const getters = {
-    contract: state => state.currentItem,
+    currentContract: state => state.currentItem,
 };
 
 const actions = {
