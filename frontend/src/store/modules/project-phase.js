@@ -7,13 +7,12 @@ const state = {
     currentItem: {},
     phaseWorkPackages: [],
     filters: {},
-    currentItem: {},
     allItems: [],
 };
 
 const getters = {
     projectPhases: state => state.items,
-    phase: state => state.currentItem,
+    currentPhase: state => state.currentItem,
     phaseWorkPackages: state => state.phaseWorkPackages,
     projectPhasesForSelect: state => {
         let phaseSelect = [];
@@ -151,21 +150,6 @@ const actions = {
             ).then((response) => {
                 if (response.status === 202) {
                     router.push({name: 'project-phases-and-milestones'});
-                }
-            }, (response) => {
-            });
-    },
-    /**
-     * Gets project phase
-     * @param {function} commit
-     * @param {number} id
-     */
-    getProjectPhase({commit}, id) {
-        Vue.http
-            .get(Routing.generate('app_api_workpackage_get', {'id': id})).then((response) => {
-                if (response.status === 200) {
-                    let phase = response.data;
-                    commit(types.SET_PHASE, {phase});
                 }
             }, (response) => {
             });

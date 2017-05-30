@@ -42,7 +42,6 @@ const mutations = {
      */
     [types.SET_TASK_STATUSES](state, {taskStatuses}) {
         state.items = taskStatuses;
-        console.log('seted', state.items);
     },
 };
 
