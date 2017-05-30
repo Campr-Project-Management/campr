@@ -22,7 +22,7 @@ class OpportunityStrategyController extends ApiController
     /**
      * Get all opportunity strategies.
      *
-     * @Route(name="app_api_opportunity_strategies_list")
+     * @Route(name="app_api_opportunity_strategies_list", options={"expose"=true})
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -35,7 +35,7 @@ class OpportunityStrategyController extends ApiController
     /**
      * Create a new OpportunityStrategy.
      *
-     * @Route(name="app_api_opportunity_strategies_create")
+     * @Route(name="app_api_opportunity_strategies_create", options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request $request
@@ -64,7 +64,7 @@ class OpportunityStrategyController extends ApiController
     /**
      * Get Opportunity Strategy by id.
      *
-     * @Route("/{id}", name="app_api_opportunity_strategies_get")
+     * @Route("/{id}", name="app_api_opportunity_strategies_get", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param OpportunityStrategy $opportunityStrategy
@@ -79,7 +79,7 @@ class OpportunityStrategyController extends ApiController
     /**
      * Edit a specific Opportunity Strategy.
      *
-     * @Route("/{id}", name="app_api_opportunity_strategies_edit")
+     * @Route("/{id}", name="app_api_opportunity_strategies_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      *
      * @param Request             $request
@@ -109,7 +109,7 @@ class OpportunityStrategyController extends ApiController
     /**
      * Delete a specific Opportunity Strategy.
      *
-     * @Route("/{id}", name="app_api_opportunity_strategies_delete")
+     * @Route("/{id}", name="app_api_opportunity_strategies_delete", options={"expose"=true})
      * @Method({"DELETE"})
      *
      * @param OpportunityStrategy $opportunityStrategy
