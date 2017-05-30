@@ -2,18 +2,18 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    items: [],
-    itemsForSelect: [],
+    programmes: [],
+    programmesForSelect: [],
     loading: false,
 };
 
 const getters = {
-    programmes: state => state.items,
-    programmesForSelect: state => state.itemsForSelect,
+    programmes: state => state.programmes,
+    programmesForSelect: state => state.programmesForSelect,
     programmeLoading: state => state.loading,
     programmesForFilter: function(state) {
         let programmesForFilter = [{'key': '', 'label': Translator.trans('message.all_programmes')}];
-        state.items.map(function(programme) {
+        state.programmes.map(function(programme) {
             programmesForFilter.push({'key': programme.id, 'label': programme.name});
         });
 
@@ -69,12 +69,12 @@ const mutations = {
      * @param {array} programmes
      */
     [types.SET_PROGRAMMES](state, {programmes}) {
-        state.items = programmes;
+        state.programmes = programmes;
         let programmesForSelect = [];
-        state.items.map((programme) => {
+        state.programmes.map((programme) => {
             programmesForSelect.push({'key': programme.id, 'label': programme.name});
         });
-        state.itemsForSelect = programmesForSelect;
+        state.programmesForSelect = programmesForSelect;
     },
     /**
      * @param {Object} state
@@ -84,12 +84,12 @@ const mutations = {
         state.loading = loading;
     },
     [types.ADD_PROGRAMME](state, {programme}) {
-        state.items.push(programme);
+        state.programmes.push(programme);
         let programmesForSelect = [];
-        state.items.map((programme) => {
+        state.programmes.map((programme) => {
             programmesForSelect.push({'key': programme.id, 'label': programme.name});
         });
-        state.itemsForSelect = programmesForSelect;
+        state.programmesForSelect = programmesForSelect;
     },
 };
 

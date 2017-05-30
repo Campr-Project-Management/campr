@@ -2,14 +2,14 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    items: [],
-    itemsForSelect: [],
+    projectScopes: [],
+    projectScopesForSelect: [],
     loading: false,
 };
 
 const getters = {
-    projectScopes: state => state.items,
-    projectScopesForSelect: state => state.itemsForSelect,
+    projectScopes: state => state.projectScopes,
+    projectScopesForSelect: state => state.projectScopesForSelect,
     projectScopesLoading: state => state.loading,
 };
 
@@ -40,12 +40,12 @@ const mutations = {
      * @param {array} programmes
      */
     [types.SET_PROJECT_SCOPES](state, {projectScopes}) {
-        state.items = projectScopes;
+        state.projectScopes = projectScopes;
         let projectScopesForSelect = [];
-        state.items.map((projectScope) => {
+        state.projectScopes.map((projectScope) => {
             projectScopesForSelect.push({'key': projectScope.id, 'label': projectScope.name});
         });
-        state.itemsForSelect = projectScopesForSelect;
+        state.projectScopesForSelect = projectScopesForSelect;
     },
     /**
      * @param {Object} state
