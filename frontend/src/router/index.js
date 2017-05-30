@@ -165,6 +165,11 @@ const routes = [
                 name: 'project-milestones-edit-milestone',
             },
             {
+                path: 'phases-and-milestones/milestone/:milestoneId',
+                component: MilestoneView,
+                name: 'project-phases-view-milestone',
+            },
+            {
                 path: 'risks-and-opportunities',
                 component: ProjectRisksOpportunities,
                 name: 'project-risks-and-opportunities',
@@ -175,9 +180,14 @@ const routes = [
                 name: 'project-risks-create-risk',
             },
             {
-                path: 'risks-and-opportunities/view-risk',
+                path: 'risks-and-opportunities/risk/:riskId',
                 component: RiskView,
                 name: 'project-risks-view-risk',
+            },
+            {
+                path: 'risks-and-opportunities/edit-risk/:riskId',
+                component: RiskView,
+                name: 'project-risks-edit-risk',
             },
             {
                 path: 'risks-and-opportunities/create-opportunity',
@@ -185,14 +195,14 @@ const routes = [
                 name: 'project-opportunities-create-opportunity',
             },
             {
-                path: 'risks-and-opportunities/view-opportunity',
+                path: 'risks-and-opportunities/opportunity/:opportunityId',
                 component: OpportunityView,
                 name: 'project-opportunities-view-opportunity',
             },
             {
-                path: 'phases-and-milestones/milestone/:milestoneId',
-                component: MilestoneView,
-                name: 'project-phases-view-milestone',
+                path: 'risks-and-opportunities/edit-opportunity/:opportunityId',
+                component: OpportunityView,
+                name: 'project-opportunities-edit-opportunity',
             },
         ],
     },

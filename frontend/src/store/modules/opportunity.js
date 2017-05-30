@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import router from '../../router';
 
 const state = {
     opportunities: [],
@@ -16,6 +17,23 @@ const actions = {
                 if (response.status === 200) {
                     let opportunities = response.data;
                     commit(types.SET_PROJECT_OPPORTUNITIES, {opportunities});
+                }
+            }, (response) => {
+            });
+    },
+    /**
+     * Create project opportunity
+     * @param {function} commit
+     * @param {array}    data
+     */
+    createProjectOpportunity({commit}, data) {
+        Vue.http
+            .post(
+                Routing.generate('app_api_project_create_opportunity', {id: data.project}),
+                JSON.stringify(data)
+            ).then((response) => {
+                if (response.status === 201) {
+                    router.push({name: 'project-phases-and-milestones'});
                 }
             }, (response) => {
             });
