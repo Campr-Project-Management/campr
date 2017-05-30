@@ -160,6 +160,8 @@ task('deploy:assetic:dump', function () {
 task('project:supervisor:restart', function () {
     run('sudo service supervisor stop');
     run('sudo systemctl daemon-reload');
+    // Sometimes supervisor can have a mind of it's own for some reason, and therefore have to murder it!
+    run('ps aux | grep supervisord | awk \'{{ print $2 }}\' | xargs -l1 sudo kill -9');
     sleep(2);
     run('sudo service supervisor start');
 });
