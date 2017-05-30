@@ -2,16 +2,16 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    currentItem: {},
-    items: [],
-    itemsForSelect: [],
+    currentPortofolio: {},
+    portfolios: [],
+    portfoliosForSelect: [],
     loading: false,
 };
 
 const getters = {
-    currentPortfolio: state => state.currentItem,
-    portfolios: state => state.items,
-    portfoliosForSelect: state => state.itemsForSelect,
+    currentPortfolio: state => state.currentPortofolio,
+    portfolios: state => state.portfolios,
+    portfoliosForSelect: state => state.portfoliosForSelect,
     portfolioLoading: state => state.loading,
 };
 
@@ -78,7 +78,7 @@ const mutations = {
      * @param {Object} portfolio
      */
     [types.SET_PORTFOLIO](state, {portfolio}) {
-        state.currentItem = portfolio;
+        state.currentPortofolio = portfolio;
     },
     /**
      * Sets portfolios to state
@@ -86,24 +86,24 @@ const mutations = {
      * @param {array} portfolios
      */
     [types.SET_PORTFOLIOS](state, {portfolios}) {
-        state.items = portfolios;
+        state.portfolios = portfolios;
         let portfoliosForSelect = [];
-        state.items.map( function(portfolio) {
+        state.portfolios.map( function(portfolio) {
             portfoliosForSelect.push({'key': portfolio.id, 'label': portfolio.name});
         });
-        state.itemsForSelect = portfoliosForSelect;
+        state.portfoliosForSelect = portfoliosForSelect;
     },
     [types.SET_PORTFOLIO_LOADING](state, {loading}) {
         state.loading = loading;
     },
     [types.ADD_PORTFOLIO](state, {portfolio}) {
-        state.items.push(portfolio);
+        state.portfolios.push(portfolio);
 
         let portfoliosForSelect = [];
-        state.items.map((portfolio) => {
+        state.portfolios.map((portfolio) => {
             portfoliosForSelect.push({'key': portfolio.id, 'label': portfolio.name});
         });
-        state.itemsForSelect = portfoliosForSelect;
+        state.portfoliosForSelect = portfoliosForSelect;
     },
 };
 

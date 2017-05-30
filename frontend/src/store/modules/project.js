@@ -40,6 +40,7 @@ const getters = {
     tasksForSchedule: state => state.tasksForSchedule,
     projectTasksStatus: state => state.projectTasksStatus,
     risksOpportunitiesStats: state => state.risksOpportunitiesStats,
+    projectsCount: state => state.items.totalItems,
 };
 
 const actions = {
