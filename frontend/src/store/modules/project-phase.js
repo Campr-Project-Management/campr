@@ -3,22 +3,21 @@ import * as types from '../mutation-types';
 import router from '../../router';
 
 const state = {
-    items: [],
-    currentItem: {},
+    projectPhases: [],
+    currentPhase: {},
     phaseWorkPackages: [],
     filters: {},
-    currentItem: {},
-    allItems: [],
+    allProjectPhases: [],
 };
 
 const getters = {
-    projectPhases: state => state.items,
-    phase: state => state.currentItem,
+    projectPhases: state => state.projectPhases,
+    currentPhase: state => state.currentPhase,
     phaseWorkPackages: state => state.phaseWorkPackages,
     projectPhasesForSelect: state => {
         let phaseSelect = [];
-        if (state.allItems && state.allItems.items) {
-            phaseSelect = state.allItems.items.map(item => {
+        if (state.allProjectPhases && state.allProjectPhases.items) {
+            phaseSelect = state.allProjectPhases.items.map(item => {
                 return {
                     'key': item.id,
                     'label': item.name,
@@ -28,7 +27,7 @@ const getters = {
         phaseSelect.unshift({label: Vue.translate('label.phase'), key: null});
         return phaseSelect;
     },
-    allProjectPhases: state => state.allItems,
+    allProjectPhases: state => state.allProjectPhases,
 };
 
 const actions = {
@@ -67,38 +66,6 @@ const actions = {
                     } else {
                         commit(types.SET_PROJECT_PHASES, {phases});
                     }
-                }
-            }, (response) => {
-            });
-    },
-    /**
-     * Create project phase
-     * @param {function} commit
-     * @param {array}    data
-     */
-    createProjectPhase({commit}, data) {
-        Vue.http
-            .post(
-                Routing.generate('app_api_project_phases_create', {id: data.project}),
-                JSON.stringify(data)
-            ).then((response) => {
-                if (response.status === 201) {
-                }
-            }, (response) => {
-            });
-    },
-    /**
-     * Edit project phase
-     * @param {function} commit
-     * @param {array}    data
-     */
-    editProjectPhase({commit}, data) {
-        Vue.http
-            .patch(
-                Routing.generate('app_api_workpackage_phase_edit', {id: data.id}),
-                JSON.stringify(data)
-            ).then((response) => {
-                if (response.status === 202) {
                 }
             }, (response) => {
             });
@@ -156,21 +123,6 @@ const actions = {
             });
     },
     /**
-     * Gets project phase
-     * @param {function} commit
-     * @param {number} id
-     */
-    getProjectPhase({commit}, id) {
-        Vue.http
-            .get(Routing.generate('app_api_workpackage_get', {'id': id})).then((response) => {
-                if (response.status === 200) {
-                    let phase = response.data;
-                    commit(types.SET_PHASE, {phase});
-                }
-            }, (response) => {
-            });
-    },
-    /**
      * Delete project phase
      * @param {function} commit
      * @param {integer} id
@@ -211,7 +163,7 @@ const mutations = {
      * @param {array} phases
      */
     [types.SET_PROJECT_PHASES](state, {phases}) {
-        state.items = phases;
+        state.projectPhases = phases;
     },
     /**
      * Sets project phase to state
@@ -219,7 +171,7 @@ const mutations = {
      * @param {Object} phase
      */
     [types.SET_PHASE](state, {phase}) {
-        state.currentItem = phase;
+        state.currentPhase = phase;
     },
     [types.SET_PHASES_FILTERS](state, {filters}) {
         state.filters = Object.assign({}, state.filters, filters);
@@ -230,7 +182,7 @@ const mutations = {
      * @param {Object} phases
      */
     [types.SET_PROJECT_ALL_PHASES](state, {phases}) {
-        state.allItems = phases;
+        state.allProjectPhases = phases;
     },
     /**
      * Delete project phase
@@ -238,10 +190,10 @@ const mutations = {
      * @param {integer} id
      */
     [types.DELETE_PROJECT_PHASE](state, {id}) {
-        state.items.items = state.items.items.filter((item) => {
+        state.projectPhases.items = state.projectPhases.items.filter((item) => {
             return item.id !== id ? true : false;
         });
-        state.items.totalItems--;
+        state.projectPhases.totalItems--;
     },
     /**
      * Set phase workpackages

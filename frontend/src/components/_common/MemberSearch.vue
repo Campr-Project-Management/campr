@@ -18,7 +18,8 @@
                 <div class="members">
                     <div class="member flex" v-for="item in items">
                         <div class="checkbox-input clearfix" :class="{'inactive': !item.checked}">
-                            <input :id="item.id"  type="checkbox" :name="item.userFullName" :checked="item.checked" @click="toggleActivation(item)">
+                            <input v-if="singleSelect" :id="item.id"  type="checkbox" :name="item.userFullName" :checked="item.checked" @click="toggleActivation(item)">
+                            <input v-else="singleSelect" :id="item.id"  type="radio" :name="item.userFullName" :checked="item.checked">
                             <label :for="item.id"></label>
                         </div>
                         <img :src="item.userAvatar">
@@ -48,7 +49,7 @@ import {mapActions} from 'vuex';
 
 export default {
     extends: VueTypeahead,
-    props: ['placeholder'],
+    props: ['placeholder', 'singleSelect'],
     components: {
         VueScrollbar,
     },

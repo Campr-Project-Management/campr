@@ -7,14 +7,10 @@ const state = {
 
 const getters = {
     colorStatuses: state => state.colorStatuses,
-    colorStatusesForFilter: function(state) {
-        let colorStatusesForFilter = [{'key': '', 'label': Translator.trans('message.all_statuses')}];
-        state.colorStatuses.map(function(colorStatus) {
-            colorStatusesForFilter.push({'key': colorStatus.name, 'label': colorStatus.name});
-        });
-
-        return colorStatusesForFilter;
-    },
+    colorStatusesForSelect: state =>
+        [{'key': '', 'label': Translator.trans('message.all_statuses')}].concat(
+            state.colorStatuses.map(colorStatus => ({'key': colorStatus.name, 'label': colorStatus.name}))
+        ),
 };
 
 const actions = {

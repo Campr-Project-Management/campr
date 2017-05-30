@@ -167,7 +167,7 @@ export default {
         workPackageStatusesForMilestone: 'workPackageStatusesForMilestone',
         projectPhasesForSelect: 'projectPhasesForSelect',
         projectPhases: 'projectPhases',
-        milestone: 'milestone',
+        milestone: 'currentMilestone',
     }),
     watch: {
         milestone(value) {

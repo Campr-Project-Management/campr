@@ -2,14 +2,14 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    items: [],
-    itemsForSelect: [],
+    projectCategories: [],
+    projectCategoriesForSelect: [],
     loading: false,
 };
 
 const getters = {
-    projectCategories: state => state.items,
-    projectCategoriesForSelect: state => state.itemsForSelect,
+    projectCategories: state => state.projectCategories,
+    projectCategoriesForSelect: state => state.projectCategoriesForSelect,
     projectCategoriesLoading: state => state.loading,
 };
 
@@ -40,12 +40,12 @@ const mutations = {
      * @param {array} programmes
      */
     [types.SET_PROJECT_CATEGORIES](state, {projectCategories}) {
-        state.items = projectCategories;
+        state.projectCategories = projectCategories;
         let projectCategoriesForSelect = [];
-        state.items.map((projectCategory) => {
+        state.projectCategories.map((projectCategory) => {
             projectCategoriesForSelect.push({'key': projectCategory.id, 'label': projectCategory.name});
         });
-        state.itemsForSelect = projectCategoriesForSelect;
+        state.projectCategoriesForSelect = projectCategoriesForSelect;
     },
     /**
      * @param {Object} state

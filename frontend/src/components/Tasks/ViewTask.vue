@@ -46,7 +46,7 @@ export default {
         this.getTaskById(this.$route.params.id);
     },
     computed: mapGetters({
-        task: 'task',
+        currentTask: 'currentTask',
     }),
 };
 </script>
