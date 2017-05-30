@@ -74,7 +74,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            taskStatuses: 'tasks',
+            taskStatuses: 'taskStatuses',
         }),
         statusesLabel: function() {
             let statuses = this.taskStatuses.map(item => ({label: this.translate(item.name), key: item.id}));

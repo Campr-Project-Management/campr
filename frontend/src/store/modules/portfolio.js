@@ -9,7 +9,7 @@ const state = {
 };
 
 const getters = {
-    portfolio: state => state.currentItem,
+    currentPortfolio: state => state.currentItem,
     portfolios: state => state.items,
     portfoliosForSelect: state => state.itemsForSelect,
     portfolioLoading: state => state.loading,
