@@ -793,6 +793,7 @@ label:
     daily_rate: Daily Rate
     qty: Qty.
     days: Days
+    hours: Hours
     internal_cost_subtotal: Subtotal
     forecast_total: Forecast Total
     actual_total: Actual Total
