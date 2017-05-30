@@ -1003,11 +1003,10 @@ class ProjectController extends ApiController
         if (isset($filters['page'])) {
             $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
             $filters['type'] = WorkPackage::TYPE_PHASE;
+
             $result = $repo->getQueryByProjectAndFilters($project, $filters)->getResult();
-            $responseArray['totalItems'] = (int) $repo
-                ->getQueryByProjectAndFilters($project, $filters, 'COUNT(DISTINCT wp.id)')
-                ->getSingleScalarResult()
-            ;
+
+            $responseArray['totalItems'] = $repo->countTotalByProjectAndFilters($project, $filters);
             $responseArray['pageSize'] = $filters['pageSize'];
             $responseArray['items'] = $result;
 
@@ -1061,11 +1060,10 @@ class ProjectController extends ApiController
         if (isset($filters['page'])) {
             $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
             $filters['type'] = WorkPackage::TYPE_MILESTONE;
+
             $result = $repo->getQueryByProjectAndFilters($project, $filters)->getResult();
-            $responseArray['totalItems'] = (int) $repo
-                ->getQueryByProjectAndFilters($project, $filters, 'COUNT(DISTINCT wp.id)')
-                ->getSingleScalarResult()
-            ;
+
+            $responseArray['totalItems'] = $repo->countTotalByProjectAndFilters($project, $filters);
             $responseArray['pageSize'] = $filters['pageSize'];
             $responseArray['items'] = $result;
 
