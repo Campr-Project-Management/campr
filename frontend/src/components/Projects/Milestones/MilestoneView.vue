@@ -135,7 +135,7 @@ export default {
         },
     },
     computed: mapGetters({
-        milestone: 'milestone',
+        milestone: 'currentMilestone',
     }),
     created() {
         if (this.$route.params.milestoneId) {

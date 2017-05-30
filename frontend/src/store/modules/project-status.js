@@ -2,20 +2,20 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    items: [],
+    projectStatuses: [],
 };
 
 const getters = {
-    projectStatuses: state => state.items,
+    projectStatuses: state => state.projectStatuses,
     projectStatusesForFilter: function(state) {
         let projectStatusesForFilter = [{'key': '', 'label': Translator.trans('message.all_statuses')}];
-        state.items.map(function(projectStatus) {
+        state.projectStatuses.map(function(projectStatus) {
             projectStatusesForFilter.push({'key': projectStatus.id, 'label': projectStatus.name});
         });
 
         return projectStatusesForFilter;
     },
-    projectStatusesForSelect: state => state.items.map(projectStatus => {
+    projectStatusesForSelect: state => state.projectStatuses.map(projectStatus => {
         return {
             'key': projectStatus.id,
             'label': projectStatus.name,
@@ -48,7 +48,7 @@ const mutations = {
      * @param {array} projectStatuses
      */
     [types.SET_PROJECT_STATUSES](state, {projectStatuses}) {
-        state.items = projectStatuses;
+        state.projectStatuses = projectStatuses;
     },
 };
 

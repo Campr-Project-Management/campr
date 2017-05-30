@@ -12,7 +12,7 @@ const state = {
 
 const getters = {
     projectMilestones: state => state.milestones,
-    milestone: state => state.currentMilestone,
+    currentMilestone: state => state.currentMilestone,
     projectMilestonesForSelect: state => {
         let milestonesSelect = [];
         if (state.allMilestones && state.allMilestones.items) {

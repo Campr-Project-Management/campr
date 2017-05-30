@@ -2,14 +2,14 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    items: [],
+    customers: [],
 };
 
 const getters = {
-    customers: state => state.items,
+    customers: state => state.customers,
     customersForSelect: function(state) {
         let customersForSelect = [];
-        state.items.map(function(customer) {
+        state.customers.map(function(customer) {
             customersForSelect.push({'key': customer.id, 'label': customer.name});
         });
 
@@ -17,7 +17,7 @@ const getters = {
     },
     customersForFilter: function(state) {
         let customersForFilter = [{'key': '', 'label': Translator.trans('message.all_customers')}];
-        state.items.map(function(customer) {
+        state.customers.map(function(customer) {
             customersForFilter.push({'key': customer.id, 'label': customer.name});
         });
 
@@ -49,7 +49,7 @@ const mutations = {
      * @param {array} customers
      */
     [types.SET_CUSTOMERS](state, {customers}) {
-        state.items = customers;
+        state.customers = customers;
     },
 };
 

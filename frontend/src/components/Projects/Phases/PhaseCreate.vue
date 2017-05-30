@@ -218,7 +218,7 @@ export default {
         workPackageStatusesForSelect: 'workPackageStatusesForSelect',
         projectPhases: 'projectPhases',
         projectPhasesForSelect: 'projectPhasesForSelect',
-        phase: 'phase',
+        phase: 'currentPhase',
     }),
     watch: {
         phase(value) {

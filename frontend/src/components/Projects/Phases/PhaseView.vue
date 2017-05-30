@@ -162,7 +162,7 @@ export default {
         },
     },
     computed: mapGetters({
-        phase: 'phase',
+        phase: 'currentPhase',
         phaseWorkPackages: 'phaseWorkPackages',
     }),
     created() {

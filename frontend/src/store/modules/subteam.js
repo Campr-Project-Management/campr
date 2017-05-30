@@ -2,13 +2,14 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    items: [],
-    itemsForSelect: [],
+    subteams: [],
+    subteamsForSelect: [],
 };
 
 const getters = {
-    subteams: state => state.items,
-    subteamsForSelect: state => state.itemsForSelect,
+    subteams: state => state.subteams,
+    subteamsForSelect: state => state.subteamsForSelect,
+    subteamsCount: state => state.subteams.totalItems,
 };
 
 const actions = {
@@ -78,12 +79,12 @@ const mutations = {
      * @param {array} subteams
      */
     [types.SET_SUBTEAMS](state, {subteams}) {
-        state.items = subteams;
-        let itemsForSelect = [{'key': null, 'label': Translator.trans('placeholder.subteam'), 'rate': 0}];
-        state.items.items.map((item) => {
-            itemsForSelect.push({'key': item.id, 'label': item.name});
+        state.subteams = subteams;
+        let subteamsForSelect = [{'key': null, 'label': Translator.trans('placeholder.subteam'), 'rate': 0}];
+        state.subteams.items.map((item) => {
+            subteamsForSelect.push({'key': item.id, 'label': item.name});
         });
-        state.itemsForSelect = itemsForSelect;
+        state.subteamsForSelect = subteamsForSelect;
     },
     /**
      * Add subteam
@@ -91,8 +92,8 @@ const mutations = {
      * @param {array} subteam
      */
     [types.ADD_SUBTEAM](state, {subteam}) {
-        state.items.items.push(subteam);
-        state.items.totalItems++;
+        state.subteams.items.push(subteam);
+        state.subteams.totalItems++;
     },
     /**
      * Edit subteam
@@ -100,7 +101,7 @@ const mutations = {
      * @param {array} subteam
      */
     [types.EDIT_SUBTEAM](state, {id, subteam}) {
-        state.items.items = state.items.items.map((item) => {
+        state.subteams.items = state.subteams.items.map((item) => {
             return item.id === id ? subteam : item;
         });
     },
@@ -110,10 +111,10 @@ const mutations = {
      * @param {integer} id
      */
     [types.DELETE_SUBTEAM](state, {id}) {
-        state.items.items = state.items.items.filter((item) => {
+        state.subteams.items = state.subteams.items.filter((item) => {
             return item.id !== id ? true : false;
         });
-        state.items.totalItems--;
+        state.subteams.totalItems--;
     },
 };
 

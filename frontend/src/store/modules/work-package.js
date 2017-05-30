@@ -2,17 +2,16 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    items: [],
+    workPackages: [],
     workPackagesForSelect: [],
-    projectTasks: [],
-    projectTasksForSelect: [],
 };
 
 const getters = {
-    workPackages: state => state.items,
-    workPackagesForSelect: state => state.workPackagesForSelect,
-    projectTasks: state => state.projectTasks,
-    projectTasksForSelect: state => state.projectTasksForSelect,
+    workPackages: state => state.workPackages,
+    workPackagesForSelect: state => state.workPackages.map(item => ({key: item.id, label: item.name})),
+    projectTasks: state => state.workPackages.filter(item => item.type === 2),
+    projectTasksForSelect: state => state.workPackages.filter(item => item.type === 2)
+        .map(item => ({key: item.id, label: item.name})),
 };
 
 const actions = {
@@ -40,12 +39,7 @@ const mutations = {
      * @param {array} work packages
      */
     [types.SET_WORK_PACKAGES](state, {workPackages}) {
-        state.items = workPackages.items;
-        let tasks = state.items.filter(item => item.type === 2);
-        let tasksForSelect = [];
-        tasks.map(item => tasksForSelect.push({'key': item.id, 'label': item.name}));
-        state.projectTasks = tasks;
-        state.projectTasksForSelect = tasksForSelect;
+        state.workPackages = workPackages.items;
     },
 };
 
