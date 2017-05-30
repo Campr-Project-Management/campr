@@ -30,6 +30,8 @@ import opportunity from './modules/opportunity';
 import risk from './modules/risk';
 import tasksStatus from './modules/tasks-status';
 import tasksByStatus from './modules/tasks-by-status';
+import opportunityStrategy from './modules/opportunity-strategy';
+import opportunityStatus from './modules/opportunity-status';
 
 Vue.use(Vuex);
 
@@ -67,6 +69,8 @@ export default new Vuex.Store({
         risk,
         tasksStatus,
         tasksByStatus,
+        opportunityStrategy,
+        opportunityStatus,
     },
     strict: debug,
 });

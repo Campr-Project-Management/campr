@@ -19,7 +19,7 @@ class StatusController extends ApiController
     /**
      * Get all status.
      *
-     * @Route(name="app_api_statuses_list")
+     * @Route(name="app_api_statuses_list", options={"expose"=true})
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -38,7 +38,7 @@ class StatusController extends ApiController
     /**
      * Create a new Status.
      *
-     * @Route(name="app_api_statuses_create")
+     * @Route(name="app_api_statuses_create", options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request $request
@@ -69,7 +69,7 @@ class StatusController extends ApiController
     /**
      * Get Status by id.
      *
-     * @Route("/{id}", name="app_api_statuses_get")
+     * @Route("/{id}", name="app_api_statuses_get", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Status $status
@@ -84,7 +84,7 @@ class StatusController extends ApiController
     /**
      * Edit a specific Status.
      *
-     * @Route("/{id}", name="app_api_statuses_edit")
+     * @Route("/{id}", name="app_api_statuses_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      *
      * @param Request $request
@@ -116,7 +116,7 @@ class StatusController extends ApiController
     /**
      * Delete a specific Status.
      *
-     * @Route("/{id}", name="app_api_statuses_delete")
+     * @Route("/{id}", name="app_api_statuses_delete", options={"expose"=true})
      * @Method({"DELETE"})
      *
      * @param Status $status

@@ -1,4 +1,8 @@
 message:
+    budget_calculation: Budget is calculated as Probability times Potential Savings
+    time_calculation: Time Saved is calculated as Probability times Potential Time Savings
+    average_impact: Average Impact Value of all opportunities is
+    average_probability: Average Probability Value of all opportunities is
     cost: Cost
     close: Close
     new_comment: New Comment
@@ -945,6 +949,11 @@ add:
     subteam_member: Add new subteam member
 
 placeholder:
+    opportunity_strategy: Opportunity Strategy
+    opportunity_status: Opportunity Status
+    rist_strategy: Risk Strategy
+    risk_status: Risk Status
+    measure_title: Measure Title
     currency: Currency
     time_unit: Time Unit
     delay_unit: Delay Unit

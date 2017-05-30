@@ -19,7 +19,7 @@ class RiskStrategyController extends ApiController
     /**
      * Get all risk strategies.
      *
-     * @Route(name="app_api_risk_strategies_list")
+     * @Route(name="app_api_risk_strategies_list", options={"expose"=true})
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -38,7 +38,7 @@ class RiskStrategyController extends ApiController
     /**
      * Create a new Risk Strategy.
      *
-     * @Route(name="app_api_risk_strategies_create")
+     * @Route(name="app_api_risk_strategies_create", options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request $request
@@ -69,7 +69,7 @@ class RiskStrategyController extends ApiController
     /**
      * Get Risk Strategy by id.
      *
-     * @Route("/{id}", name="app_api_risk_strategies_get")
+     * @Route("/{id}", name="app_api_risk_strategies_get", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param RiskStrategy $riskStrategy
@@ -84,7 +84,7 @@ class RiskStrategyController extends ApiController
     /**
      * Edit a specific Risk Strategy.
      *
-     * @Route("/{id}", name="app_api_risk_strategies_edit")
+     * @Route("/{id}", name="app_api_risk_strategies_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      *
      * @param Request      $request
@@ -116,7 +116,7 @@ class RiskStrategyController extends ApiController
     /**
      * Delete a specific Risk Strategy.
      *
-     * @Route("/{id}", name="app_api_risk_strategies_delete")
+     * @Route("/{id}", name="app_api_risk_strategies_delete", options={"expose"=true})
      * @Method({"DELETE"})
      *
      * @param RiskStrategy $riskStrategy

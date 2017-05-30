@@ -1404,13 +1404,20 @@ class ProjectController extends ApiController
      * @Route("/{id}/risks", name="app_api_project_risks", options={"expose"=true})
      * @Method({"GET"})
      *
+     * @param Request $request
      * @param Project $project
      *
      * @return JsonResponse
      */
-    public function risksAction(Project $project)
+    public function risksAction(Request $request, Project $project)
     {
-        return $this->createApiResponse($project->getRisks());
+        return $this->createApiResponse(
+            $this
+                ->getDoctrine()
+                ->getManager()
+                ->getRepository(Risk::class)
+                ->findFiltered($project, $request->query->all())
+        );
     }
 
     /**
@@ -1452,13 +1459,20 @@ class ProjectController extends ApiController
      * @Route("/{id}/opportunities", name="app_api_project_opportunities", options={"expose"=true})
      * @Method({"GET"})
      *
+     * @param Request $request
      * @param Project $project
      *
      * @return JsonResponse
      */
-    public function opportunitiesAction(Project $project)
+    public function opportunitiesAction(Request $request, Project $project)
     {
-        return $this->createApiResponse($project->getOpportunities());
+        return $this->createApiResponse(
+            $this
+                ->getDoctrine()
+                ->getManager()
+                ->getRepository(Opportunity::class)
+                ->findFiltered($project, $request->query->all())
+        );
     }
 
     /**

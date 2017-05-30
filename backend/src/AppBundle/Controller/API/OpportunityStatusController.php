@@ -22,7 +22,7 @@ class OpportunityStatusController extends ApiController
     /**
      * Get all opportunity statuses.
      *
-     * @Route(name="app_api_opportunity_statuses_list")
+     * @Route(name="app_api_opportunity_statuses_list", options={"expose"=true})
      * @Method({"GET"})
      *
      * @return JsonResponse
@@ -35,7 +35,7 @@ class OpportunityStatusController extends ApiController
     /**
      * Create a new OpportunityStatus.
      *
-     * @Route(name="app_api_opportunity_statuses_create")
+     * @Route(name="app_api_opportunity_statuses_create", options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request $request
@@ -64,7 +64,7 @@ class OpportunityStatusController extends ApiController
     /**
      * Get Opportunity Status by id.
      *
-     * @Route("/{id}", name="app_api_opportunity_statuses_get")
+     * @Route("/{id}", name="app_api_opportunity_statuses_get", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param OpportunityStatus $opportunityStatus
@@ -79,7 +79,7 @@ class OpportunityStatusController extends ApiController
     /**
      * Edit a specific Opportunity Status.
      *
-     * @Route("/{id}", name="app_api_opportunity_statuses_edit")
+     * @Route("/{id}", name="app_api_opportunity_statuses_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      *
      * @param Request           $request
@@ -109,7 +109,7 @@ class OpportunityStatusController extends ApiController
     /**
      * Delete a specific Opportunity Status.
      *
-     * @Route("/{id}", name="app_api_opportunity_statuses_delete")
+     * @Route("/{id}", name="app_api_opportunity_statuses_delete", options={"expose"=true})
      * @Method({"DELETE"})
      *
      * @param OpportunityStatus $opportunityStatus
