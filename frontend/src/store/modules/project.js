@@ -16,6 +16,7 @@ const state = {
     projectResourcesForGraph: {},
     tasksForSchedule: {},
     projectTasksStatus: {},
+    risksOpportunitiesStats: [],
 };
 
 const getters = {
@@ -38,6 +39,7 @@ const getters = {
     label: state => state.label,
     tasksForSchedule: state => state.tasksForSchedule,
     projectTasksStatus: state => state.projectTasksStatus,
+    risksOpportunitiesStats: state => state.risksOpportunitiesStats,
 };
 
 const actions = {
@@ -428,6 +430,21 @@ const actions = {
             }, (response) => {
             });
     },
+    /**
+     * Gets project risks and opportunities stats
+     * @param {function} commit
+     * @param {number} id
+     */
+    getProjectRiskAndOpportunitiesStats({commit}, id) {
+        Vue.http
+            .get(Routing.generate('app_api_project_risks_opportunities_stats', {'id': id})).then((response) => {
+                if (response.status === 200) {
+                    let roStats = response.data;
+                    commit(types.SET_PROJECT_RISKS_OPPORTUNITIES_STATS, {roStats});
+                }
+            }, (response) => {
+            });
+    },
 };
 
 const mutations = {
@@ -553,6 +570,15 @@ const mutations = {
      */
     [types.SET_PROJECT_TASKS_STATUS](state, {tasksStatus}) {
         state.projectTasksStatus = tasksStatus;
+    },
+
+    /**
+     * Set project risks and opporunities stats
+     * @param {Object} state
+     * @param {array} roStats
+     */
+    [types.SET_PROJECT_RISKS_OPPORTUNITIES_STATS](state, {roStats}) {
+        state.risksOpportunitiesStats = roStats;
     },
 };
 
