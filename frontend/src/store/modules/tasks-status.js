@@ -2,8 +2,6 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    items: [],
-    totalItems: 0,
     filteredItems: [],
     filters: [],
     taskStatuses: [],
@@ -11,8 +9,8 @@ const state = {
 };
 
 const getters = {
-    taskStatuses: state => state.items,
-    taskStatusesCount: state => state.totalItems,
+    taskStatuses: state => state.taskStatuses,
+    taskStatusesCount: state => state.taskStatuses.totalItems,
 };
 
 const actions = {
@@ -41,7 +39,7 @@ const mutations = {
      * @param {array} taskStatuses
      */
     [types.SET_TASK_STATUSES](state, {taskStatuses}) {
-        state.items = taskStatuses;
+        state.taskStatuses = taskStatuses;
     },
 };
 

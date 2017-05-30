@@ -3,9 +3,9 @@ import * as types from '../mutation-types';
 import router from '../../router';
 
 const state = {
-    currentItem: {},
-    items: [],
-    totalItems: 0,
+    currentTask: {},
+    tasks: [],
+    tasksCount: 0,
     filteredItems: [],
     filters: [],
     users: [],
@@ -14,9 +14,9 @@ const state = {
 };
 
 const getters = {
-    currentTask: state => state.currentItem,
-    tasks: state => state.items,
-    tasksCount: state => state.totalItems,
+    currentTask: state => state.currentTask,
+    tasks: state => state.tasks,
+    tasksCount: state => state.tasksCount,
     allTasks: state => state.allTasks,
 };
 
@@ -204,15 +204,6 @@ const actions = {
 
 const mutations = {
     /**
-     * Sets color statuses to state
-     * @param {Object} state
-     * @param {array} colorStatuses
-     */
-    [types.SET_COLOR_STATUSES](state, {colorStatuses}) {
-        state.items = colorStatuses;
-        state.filteredItems = colorStatuses;
-    },
-    /**
      * Sets tasks to state
      * @param {Object} state
      * @param {array} tasks
@@ -222,8 +213,8 @@ const mutations = {
         //     items: tasks.items,
         //     totalNumber: tasks.totalNumber,
         // };
-        state.items = tasks.items;
-        state.totalItems = tasks.totalItems;
+        state.tasks = tasks.items;
+        state.tasksCount = tasks.totalItems;
         state.filteredItems = JSON.parse(JSON.stringify(tasks));
     },
     /**
@@ -232,7 +223,7 @@ const mutations = {
      * @param {Object} task
      */
     [types.SET_TASK](state, {task}) {
-        state.currentItem = task;
+        state.currentTask = task;
     },
     /**
      * Sets filters to state

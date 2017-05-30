@@ -2,14 +2,13 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    items: [],
-    totalItems: 0,
+    tasksByStatuses: [],
     tasksFilters: [],
 };
 
 const getters = {
-    tasksByStatuses: state => state.items,
-    tasksByStatusesCount: state => state.totalItems.length,
+    tasksByStatuses: state => state.tasksByStatuses,
+    tasksByStatusesCount: state => state.tasksByStatuses.length,
 };
 
 const actions = {
@@ -106,7 +105,7 @@ const mutations = {
      * @param {array} tasksByStatuses
      */
     [types.SET_TASKS_BY_STATUSES](state, {tasksByStatuses}) {
-        state.items = tasksByStatuses;
+        state.tasksByStatuses = tasksByStatuses;
     },
     /**
      * Sets tasks filtered by status to state
@@ -115,11 +114,11 @@ const mutations = {
      * @param {number} status
      */
     [types.SET_TASKS_BY_STATUS](state, {tasksByStatus, statusId}) {
-        state.items[statusId].items = state.items[statusId].items.concat(tasksByStatus.items);
-        state.items[statusId].totalItems = tasksByStatus.totalItems;
+        state.tasksByStatuses[statusId].items = state.tasksByStatuses[statusId].items.concat(tasksByStatus.items);
+        state.tasksByStatuses[statusId].totalItems = tasksByStatus.totalItems;
     },
     [types.RESET_TASKS](state) {
-        state.items = [];
+        state.tasksByStatuses = [];
     },
     [types.SET_TASKS_FILTERS](state, filters) {
         state.tasksFilters = filters;

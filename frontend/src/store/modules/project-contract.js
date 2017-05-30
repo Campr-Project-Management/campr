@@ -2,11 +2,11 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    currentItem: {},
+    currentContract: {},
 };
 
 const getters = {
-    currentContract: state => state.currentItem,
+    currentContract: state => state.currentContract,
 };
 
 const actions = {
@@ -72,7 +72,7 @@ const mutations = {
      * @param {Object} contract
      */
     [types.SET_CONTRACT](state, {contract}) {
-        state.currentItem = contract;
+        state.currentContract = contract;
     },
 };
 
