@@ -7,6 +7,7 @@ use AppBundle\Entity\Contract;
 use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\Label;
+use AppBundle\Entity\Measure;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Note;
 use AppBundle\Entity\Opportunity;
@@ -1491,5 +1492,33 @@ class ProjectController extends ApiController
             ],
             JsonResponse::HTTP_BAD_REQUEST
         );
+    }
+
+    /**
+     * All risk & opportunities statistics overivew.
+     *
+     * @Route("/{id}/risks-opportunities-stats", name="app_api_project_risks_opportunities_stats", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function risksOpportunitiesStatsAction(Project $project)
+    {
+        $riskData = $this->getDoctrine()->getRepository(Risk::class)->getStatsByProject($project);
+        $opportunityData = $this->getDoctrine()->getRepository(Opportunity::class)->getStatsByProject($project);
+        $measureRepo = $this->getDoctrine()->getRepository(Measure::class);
+
+        return $this->createApiResponse([
+            'risks' => [
+                'risk_data' => $riskData,
+                'measure_data' => $measureRepo->getStatsForRisk(),
+             ],
+            'opportunities' => [
+                'opportunity_data' => $opportunityData,
+                'measure_data' => $measureRepo->getStatsForOpportunity(),
+            ],
+        ]);
     }
 }

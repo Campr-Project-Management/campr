@@ -26,7 +26,7 @@
                 <!-- /// End Project Opportunities /// -->
 
                 <!-- /// Project Opportunities Summary /// -->
-                <risk-summary :summaryData="summaryData"></risk-summary>
+                <opportunity-summary :summaryData="risksOpportunitiesStats.opportunities"></opportunity-summary>
                 <!-- /// End Project Opportunities Summary /// -->
             </div>
             <div class="col-lg-6">
@@ -54,7 +54,7 @@
                 <!-- /// End Project Risks /// -->
 
                 <!-- /// Project Risks Summary /// -->
-                <risk-summary :summaryData="summaryData"></risk-summary>
+                <risk-summary :summaryData="risksOpportunitiesStats.risks"></risk-summary>
                 <!-- /// End Project Risks Summary /// -->
             </div>
         </div>
@@ -67,22 +67,25 @@ import RiskGrid from './Risks/RiskGrid';
 import RiskList from './Risks/RiskList';
 import OpportunityList from './Opportunities/OpportunityList';
 import RiskSummary from './Risks/RiskSummary';
+import OpportunitySummary from './Opportunities/OpportunitySummary';
 
 export default {
     components: {
         RiskGrid,
         RiskList,
         RiskSummary,
+        OpportunitySummary,
         OpportunityList,
     },
     computed: {
         ...mapGetters({
             opportunities: 'opportunities',
             risks: 'risks',
+            risksOpportunitiesStats: 'risksOpportunitiesStats',
         }),
     },
     methods: {
-        ...mapActions(['getProjectOpportunities', 'getProjectRisks']),
+        ...mapActions(['getProjectOpportunities', 'getProjectRisks', 'getProjectRiskAndOpportunitiesStats']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -90,6 +93,7 @@ export default {
     created() {
         this.getProjectOpportunities({projectId: this.$route.params.id});
         this.getProjectRisks({projectId: this.$route.params.id});
+        this.getProjectRiskAndOpportunitiesStats(this.$route.params.id);
     },
     data: function() {
         return {
@@ -97,12 +101,6 @@ export default {
             [{number: 1, type: 'medium'}, {number: 2, type: 'high'}, {number: null, type: 'low'}, {number: null, type: 'very-low'}],
             [{number: 1, type: 'medium'}, {number: 2, type: 'high'}, {number: null, type: 'low'}, {number: null, type: 'very-low'}],
             [{number: 1, type: 'medium'}, {number: 2, type: 'high'}, {number: null, type: 'low'}, {number: null, type: 'very-low'}]],
-            summaryData: {
-                total_potential_savings: '$323.350',
-                total_potential_time_savings: '74 days',
-                total_number_of_measures: 12,
-                total_cost_of_measures: '$85.550',
-            },
         };
     },
 };
