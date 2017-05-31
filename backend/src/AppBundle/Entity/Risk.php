@@ -117,7 +117,7 @@ class Risk
     /**
      * @var ArrayCollection|Measure[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Measure", mappedBy="risk")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Measure", mappedBy="risk", cascade={"all"})
      */
     private $measures;
 
@@ -719,6 +719,7 @@ class Risk
      */
     public function addMeasure(Measure $measure)
     {
+        $measure->setRisk($this);
         $this->measures[] = $measure;
 
         return $this;

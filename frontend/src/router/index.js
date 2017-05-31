@@ -186,7 +186,7 @@ const routes = [
             },
             {
                 path: 'risks-and-opportunities/edit-risk/:riskId',
-                component: RiskView,
+                component: RiskCreate,
                 name: 'project-risks-edit-risk',
             },
             {
@@ -201,7 +201,7 @@ const routes = [
             },
             {
                 path: 'risks-and-opportunities/edit-opportunity/:opportunityId',
-                component: OpportunityView,
+                component: OpportunityCreate,
                 name: 'project-opportunities-edit-opportunity',
             },
         ],
