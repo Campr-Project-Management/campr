@@ -46,7 +46,7 @@
                     </div>
                     <div class=""></div>
                 </div>
-                <!-- /// End Project Opportunities Grid /// -->
+                <!-- /// End Project Risk Grid /// -->
             </div>
 
             <!-- /// Project Risks Summary /// -->
@@ -71,78 +71,86 @@
                             <i class="fa fa-angle-left"></i>
                             {{ translateText('message.back_to_risks_and_opportunities') }}
                         </router-link>
-                        <h1>{{ translateText('message.create_new_risk') }}</h1>
+                        <h1 v-if="!isEdit">{{ translateText('message.create_new_risk') }}</h1>
+                        <h1 v-else>{{ translateText('message.create_new_risk') }}</h1>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
 
                 <div class="form">
-                    <!-- /// Opportunity Name /// -->
-                    <input-field type="text" v-bind:label="translateText('placeholder.risk_title')" v-model="name" v-bind:content="name" />
-                    <!-- /// End Opportunity Name /// -->
+                    <!-- /// Risk Name /// -->
+                    <input-field type="text" v-bind:label="translateText('placeholder.risk_title')" v-model="title" v-bind:content="title" />
+                    <!-- /// End Risk /// -->
 
-                    <!-- /// Opportunity Description /// -->
+                    <!-- /// Risk Description /// -->
                     <div class="vueditor-holder">
                         <div class="vueditor-header">{{ translateText('placeholder.risk_description') }}</div>
-                        <Vueditor ref="content" />
+                        <Vueditor ref="description" />
                     </div>
-                    <!-- /// End Opportunity Description /// -->
+                    <!-- /// End Risk Description /// -->
 
                     <hr class="double">
 
-                    <!-- /// Opportunity Impact /// -->
+                    <!-- /// Risk Impact /// -->
                     <div class="range-slider-wrapper">
                         <range-slider
-                        v-bind:title="message.impact"
+                        v-bind:title="translateText('message.impact')"
                         min="0"
                         max="100"
                         minSuffix=" %"
                         type="single"
                         v-model="riskImpact"
                         v-bind:value="riskImpact" />
-                        <div class="slider-indicator">
-                            <indicator-icon fill="middle-fill" position="77" title="Average Impact Value of all risks is"></indicator-icon>
+                        <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
+                            <indicator-icon fill="middle-fill" :position="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact" :title="translateText('message.average_impact_risk')"></indicator-icon>
                         </div>
                     </div>
-                    <!-- /// End Opportunity Impact /// -->
+                    <!-- /// End Risk Impact /// -->
 
-                    <!-- /// Opportunity Probability /// -->
+                    <!-- /// Risk Probability /// -->
                     <div class="range-slider-wrapper">
                         <range-slider
-                        v-bind:title="message.probability"
+                        v-bind:title="translateText('message.probability')"
                         min="0"
                         max="100"
                         minSuffix=" %"
                         type="single"
                         v-model="riskProbability"
                         v-bind:value="riskProbability" />
-                        <div class="slider-indicator">
-                            <indicator-icon fill="middle-fill" position="61" title="Average Probability Value of all risks is"></indicator-icon>
+                        <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
+                            <indicator-icon fill="middle-fill" :position="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability" :title="translateText('message.average_probability_risk')"></indicator-icon>
                         </div>
                     </div>
-                    <!-- /// End Opportunity Probability /// -->
+                    <!-- /// End Risk Probability /// -->
 
                     <hr class="double">
 
-                    <!-- /// Opportunity Details  /// -->
+                    <!-- /// Risk Details  /// -->
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-4">
-                                <input-field type="text" v-bind:label="translateText('placeholder.potential_cost')"/>
+                                <input-field
+                                    type="text"
+                                    v-model="cost" v-bind:content="cost"
+                                    v-bind:label="translateText('placeholder.potential_cost')"
+                                />
                             </div>
                             <div class="col-md-2">
-                                <select-field 
-                                    v-bind:title="'$'"
+                                <select-field
+                                    v-bind:title="translateText('label.currency')"
                                     v-bind:options="currencyLabel"
                                     v-model="details.currency"
                                     v-bind:currentOption="details.currency" />
                             </div>
                             <div class="col-md-4">
-                                <input-field type="text" v-bind:label="translateText('placeholder.potential_time_delay')" v-model="timeDelay" v-bind:content="timeDelay" />
+                                <input-field
+                                    type="text"
+                                    v-model="timeDelay" v-bind:content="timeDelay"
+                                    v-bind:label="translateText('placeholder.potential_time_delay')"/>
                             </div>
                             <div class="col-md-2">
-                                <select-field 
-                                    v-bind:title="'Hours'"
+                                <select-field
+                                    v-bind:title="translateText('label.time')"
                                     v-bind:options="timeLabel"
                                     v-model="details.time"
                                     v-bind:currentOption="details.time" />
@@ -153,16 +161,16 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <h4 class="light-color">
-                                    {{translateText('message.budget')}}: <b>$0</b>
-                                    <button type="button" class="btn btn-icon" v-tooltip.right-start="'Budget is calculated as Probability times Potential Savings'">
+                                    {{ translateText('message.budget' )}}: <b>{{ calculatedBudget }}</b>
+                                    <button type="button" class="btn btn-icon" v-tooltip.right-start="translateText('message.budget_calculation_risk')">
                                         <tooltip-icon fill="light-fill"></tooltip-icon>
                                     </button>
                                 </h4>
                             </div>
                             <div class="col-md-6">
                                 <h4 class="light-color">
-                                    {{translateText('message.delay')}}: <b>0 Days</b>
-                                    <button type="button" class="btn btn-icon" v-tooltip.right-start="'Time Saved is calculated as Probability times Potential Time Savings'">
+                                    {{ translateText('message.delay') }}: <b>{{ calculatedTime }}</b>
+                                    <button type="button" class="btn btn-icon" v-tooltip.right-start="translateText('message.time_calculation_risk')">
                                         <tooltip-icon fill="light-fill"></tooltip-icon>
                                     </button>
                                 </h4>
@@ -173,8 +181,8 @@
                         <div class="form-group">
                             <div class="col-md-4">
                                 <select-field 
-                                    v-bind:title="translateText('label.opportunity_strategy')"
-                                    v-bind:options="strategyLabel"
+                                    v-bind:title="translateText('placeholder.risk_strategy')"
+                                    v-bind:options="riskStrategiesForSelect"
                                     v-model="details.strategy"
                                     v-bind:currentOption="details.strategy" />
                             </div>
@@ -187,8 +195,8 @@
                             </div>
                             <div class="col-md-4">
                                 <select-field 
-                                    v-bind:title="translateText('label.opportunity_status')"
-                                    v-bind:options="strategyLabel"
+                                    v-bind:title="translateText('placeholder.risk_status')"
+                                    v-bind:options="riskStatusesForSelect"
                                     v-model="details.status"
                                     v-bind:currentOption="details.status" />
                             </div>
@@ -198,43 +206,54 @@
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-12">
-                                <member-search v-model="gridList" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
+                                <member-search singleSelect="false" v-model="memberList" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
                             </div>
                         </div>
                     </div>
-                    <!-- /// End Opportunity Details /// -->
+                    <!-- /// End Risk Details /// -->
 
                     <hr class="double">
 
-                    <!-- /// Opportunity Measure /// -->
-                    <div class="row">
+                    <!-- /// Risk Measure /// -->
+                    <div class="row" v-for="(measure, index) in measures">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input-field type="text" v-bind:label="translateText('placeholder.measure_title')" v-model="measure.title" v-bind:content="measure.title" />
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="col-md-12">
                                 <div class="vueditor-holder measure-vueditor-holder">
                                     <div class="vueditor-header">{{ translateText('placeholder.new_measure') }}</div>
-                                    <Vueditor ref="content" />
+                                    <Vueditor :ref="'measure.description'+index" />
                                 </div>
                             </div>
                         </div>
                         <div class="form-group last-form-group">
                             <div class="flex flex-space-between">
                                 <div class="col-md-4">
-                                    <input-field type="text" v-bind:label="translateText('placeholder.measure_cost')" v-model="measureCost" v-bind:content="measureCost" />
-                                </div>
-                                <div class="col-md-4 text-right">
-                                    <a href="#" class="btn-rounded btn-auto">{{ translateText('button.add_new_measure') }}</a>
+                                    <input-field type="text" v-bind:label="translateText('placeholder.measure_cost')" v-model="measure.cost" v-bind:content="measure.cost" />
                                 </div>
                             </div>
                         </div>
+                        <hr class="double">
                     </div>
-                    <!-- /// End Opportunity Measure /// -->
+                    <div class="row">
+                        <div class="form-group last-form-group">
+                            <div class="col-md-12 text-right">
+                                <a @click="addMeasure()" class="btn-rounded btn-auto">{{ translateText('button.add_new_measure') }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /// End Risk Measure /// -->
 
                     <hr class="double">
 
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
-                        <a href="javascript:void(0)" class="btn-rounded btn-auto disable-bg">{{ translateText('button.cancel') }}</a>
-                        <a href="javascript:void(0)" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
+                        <router-link :to="{name: 'project-risks-and-opportunities'}" class="btn-rounded btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
+                        <a v-if="!isEdit" @click="saveRisk()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
+                        <a v-if="isEdit" @click="editRisk()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
@@ -244,6 +263,7 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex';
 import InputField from '../../_common/_form-components/InputField';
 import RangeSlider from '../../_common/_form-components/RangeSlider';
 import TooltipIcon from '../../_common/_icons/TooltipQuestionMark';
@@ -267,17 +287,91 @@ export default {
         moment,
     },
     methods: {
+        ...mapActions([
+            'getProjectRiskAndOpportunitiesStats', 'getRiskStrategies', 'getRiskStatuses',
+            'createProjectRisk', 'getProjectRisk', 'editProjectRisk',
+        ]),
         translateText: function(text) {
             return this.translate(text);
         },
+        addMeasure: function() {
+            this.measures.push({
+                title: '',
+                description: this.$refs['measure.description'+this.measures.length],
+                cost: '',
+            });
+        },
+        getFormData: function() {
+            this.measures.map((item, index) => {
+                item.description = this.$refs['measure.description'+index][0].getContent();
+            });
+            let data = {
+                title: this.title,
+                description: this.$refs.description.getContent(),
+                impact: this.riskImpact,
+                probability: this.riskProbability,
+                budget: this.calculatedBudget,
+                cost: this.cost,
+                currency: this.details.currency && this.details.currency.key ? this.details.currency.label : '',
+                delay: this.timeDelay,
+                delayUnit: this.details.time && this.details.time.key ? this.details.time.key : '',
+                priority: 'PRIORITY', // TODO: determine the priority calulation method
+                riskStrategy: this.details.strategy ? this.details.strategy.key : null,
+                riskStatus: this.details.status ? this.details.status.key : null,
+                dueDate: moment(this.schedule.dueDate).format('DD-MM-YYYY'),
+                responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
+                measures: this.measures,
+            };
+
+            return data;
+        },
+        saveRisk: function() {
+            let data = this.getFormData();
+            data.project = this.$route.params.id;
+            this.createProjectRisk(data);
+        },
+        editRisk: function() {
+            let data = this.getFormData();
+            data.id = this.$route.params.riskId;
+            this.editProjectRisk(data);
+        },
+        calculateBudget: function() {
+            let currency = this.details.currency && this.details.currency.key ? this.details.currency.label : '';
+            let riskVal = parseInt(this.riskProbability ? this.riskProbability : 0);
+            let costVal = parseFloat(this.cost ? this.cost : 0);
+            this.calculatedBudget = currency + ' ' + (riskVal * costVal).toFixed(2);
+        },
+        calculateTime: function() {
+            let unit = this.details.time && this.details.time.key ? this.details.time.label : '';
+            let riskVal = parseInt(this.riskProbability ? this.riskProbability : 0);
+            let timeVal = parseFloat(this.timeDelay ? this.timeDelay : 0);
+            this.calculatedTime = (riskVal * timeVal).toFixed(2) + ' ' + unit;
+        },
+    },
+    computed: {
+        ...mapGetters({
+            risksOpportunitiesStats: 'risksOpportunitiesStats',
+            riskStrategiesForSelect: 'riskStrategiesForSelect',
+            riskStatusesForSelect: 'riskStatusesForSelect',
+            risk: 'currentRisk',
+        }),
+    },
+    created() {
+        this.getProjectRiskAndOpportunitiesStats(this.$route.params.id);
+        this.getRiskStrategies();
+        this.getRiskStatuses();
+        if (this.$route.params.riskId) {
+            this.getProjectRisk(this.$route.params.riskId);
+        }
     },
     data: function() {
-        const stepData = 2;
-
         return {
-            name: '',
-            content: '',
-            timeSavings: '',
+            calculatedBudget: '0.00',
+            calculatedTime: '0.00',
+            title: '',
+            description: '',
+            cost: '',
+            timeDelay: '',
             days: '',
             measureCost: '',
             schedule: {
@@ -289,19 +383,75 @@ export default {
                 strategy: null,
                 status: null,
             },
-            message: {
-                impact: Translator.trans('message.impact'),
-                probability: Translator.trans('message.probability'),
-            },
-            riskImpact: stepData ? stepData.riskImpact : 0,
-            riskProbability: stepData ? stepData.riskProbability : 0,
-            currencyLabel: [{label: '$', key: 1}, {label: '€', key: 2}, {label: '₤', key: 3}],
-            timeLabel: [{label: 'Hours', key: 1}, {label: 'Days', key: 2}, {label: 'Weeks', key: 3}, {label: 'Months', key: 4}],
-            strategyLabel: [{label: 'Take', key: 1}, {label: 'Increase', key: 2}, {label: 'Skip', key: 3}],
-            statusLabel: [{label: 'Initiated', key: 1}, {label: 'Ongoing', key: 2}, {label: 'Finished', key: 3}],
+            memberList: [],
+            measures: [],
+            riskImpact: 0,
+            riskProbability: 0,
+            currencyLabel: [{label: this.translateText('label.currency'), key: null}, {label: '$', key: 1}, {label: '€', key: 2}, {label: '₤', key: 3}],
+            timeLabel: [
+                {label: this.translateText('label.time'), key: null},
+                {label: this.translateText('choices.hours'), key: 'choices.hours'},
+                {label: this.translateText('choices.days'), key: 'choices.days'},
+                {label: this.translateText('choices.weeks'), key: 'choices.weeks'},
+                {label: this.translateText('choices.months'), key: 'choices.months'},
+            ],
             model: {},
             currentOption: {},
+            isEdit: this.$route.params.riskId,
         };
+    },
+    watch: {
+        riskProbability(value) {
+            this.calculateBudget();
+            this.calculateTime();
+        },
+        cost(value) {
+            this.calculateBudget();
+        },
+        timeDelay(value) {
+            this.calculateTime();
+        },
+        details: {
+            handler: function(value) {
+                this.calculateBudget();
+                this.calculateTime();
+            },
+            deep: true,
+        },
+        risk(value) {
+            this.title = this.risk.title;
+            this.$refs.description.setContent(this.risk.description);
+            this.riskImpact = this.risk.impact.toString();
+            this.riskProbability = this.risk.probability.toString();
+            this.cost = this.risk.cost;
+            this.details.currency = this.risk.currency
+                ? {key: this.risk.currency, label: this.risk.currency}
+                : null
+            ;
+            this.timeDelay = this.risk.delay;
+            this.details.time = this.risk.delayUnit
+                ? {key: this.risk.delayUnit, label: this.translateText(this.risk.delayUnit)}
+                : null
+            ;
+            this.details.strategy = this.risk.riskStrategy
+                ? {key: this.risk.riskStrategy, label: this.risk.riskStrategyName}
+                : null
+            ;
+            this.details.status = this.risk.status
+                ? {key: this.risk.status, label: this.risk.statusName}
+                : null
+            ;
+            this.memberList.push(this.risk.responsibility);
+            if (this.risk.measures.length > 0) {
+                this.measures = this.risk.measures.map((item, index) => {
+                    return {
+                        title: item.title,
+                        description: item.description,
+                        cost: item.cost,
+                    };
+                });
+            }
+        },
     },
 };
 </script>
