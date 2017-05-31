@@ -362,10 +362,16 @@ export default {
             allProjectPhases: 'allProjectPhases',
         }),
         phasesPages: function() {
-            return Math.ceil(this.projectPhases.totalItems / 12);
+            return Math.ceil(this.projectPhases.totalItems / this.phasesPerPage);
+        },
+        phasesPerPage: function() {
+            return this.projectPhases.pageSize;
         },
         milestonesPages: function() {
-            return Math.ceil(this.projectMilestones.totalItems / 12);
+            return Math.ceil(this.projectMilestones.totalItems / this.milestonesPerPage);
+        },
+        milestonesPerPage: function() {
+            return this.projectMilestones.pageSize;
         },
         pmData: function() {
             let items = [];
