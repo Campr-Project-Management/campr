@@ -117,7 +117,7 @@ class Opportunity
     /**
      * @var ArrayCollection|Measure[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Measure", mappedBy="opportunity")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Measure", mappedBy="opportunity", cascade={"all"})
      */
     private $measures;
 
@@ -659,6 +659,7 @@ class Opportunity
      */
     public function addMeasure(Measure $measure)
     {
+        $measure->setOpportunity($this);
         $this->measures[] = $measure;
 
         return $this;
