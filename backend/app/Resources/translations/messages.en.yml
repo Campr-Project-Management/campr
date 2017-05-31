@@ -1,8 +1,12 @@
 message:
-    budget_calculation: Budget is calculated as Probability times Potential Savings
-    time_calculation: Time Saved is calculated as Probability times Potential Time Savings
-    average_impact: Average Impact Value of all opportunities is
-    average_probability: Average Probability Value of all opportunities is
+    budget_calculation_opportunity: Budget is calculated as Probability times Potential Savings
+    time_calculation_opportunity: Time Saved is calculated as Probability times Potential Time Savings
+    budget_calculation_risk: Budget is calculated as Probability times Potential Costs
+    time_calculation_risk: Time Saved is calculated as Probability times Potential Time Delays
+    average_impact_opportunity: Average Impact Value of all opportunities is
+    average_probability_opportunity: Average Probability Value of all opportunities is
+    average_impact_risks: Average Impact Value of all risks is
+    average_probability_risks: Average Probability Value of all risks is
     cost: Cost
     close: Close
     new_comment: New Comment
@@ -798,6 +802,8 @@ label:
     qty: Qty.
     days: Days
     hours: Hours
+    weeks: Weeks
+    months: Months
     internal_cost_subtotal: Subtotal
     forecast_total: Forecast Total
     actual_total: Actual Total

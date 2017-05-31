@@ -22,7 +22,7 @@ class RiskController extends ApiController
     /**
      * Get Risk by id.
      *
-     * @Route("/{id}", name="app_api_risks_get")
+     * @Route("/{id}", name="app_api_risks_get", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Risk $risk
@@ -37,7 +37,7 @@ class RiskController extends ApiController
     /**
      * Edit a specific Risk.
      *
-     * @Route("/{id}", name="app_api_risks_edit")
+     * @Route("/{id}", name="app_api_risks_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      *
      * @param Request $request
@@ -67,7 +67,7 @@ class RiskController extends ApiController
     /**
      * Delete a specific Risk.
      *
-     * @Route("/{id}", name="app_api_risks_delete")
+     * @Route("/{id}", name="app_api_risks_delete", options={"expose"=true})
      * @Method({"DELETE"})
      *
      * @param Risk $risk
