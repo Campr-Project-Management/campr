@@ -83,6 +83,9 @@ export default {
 
             return this.user.avatar;
         },
+        showDashboard: function() {
+            return this.user.isAdmin;
+        },
     },
     data: function() {
         return {
@@ -99,7 +102,6 @@ export default {
                 back_to_campr: Routing.generate('main_homepage'),
                 admin_dashboard: Routing.generate('app_admin_dashboard'),
             },
-            showDashboard: this.user.isAdmin,
         };
     },
 };
