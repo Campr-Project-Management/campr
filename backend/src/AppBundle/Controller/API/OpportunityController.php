@@ -22,7 +22,7 @@ class OpportunityController extends ApiController
     /**
      * Get Opportunity by id.
      *
-     * @Route("/{id}", name="app_api_opportunities_get")
+     * @Route("/{id}", name="app_api_opportunities_get", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Opportunity $opportunity
@@ -37,7 +37,7 @@ class OpportunityController extends ApiController
     /**
      * Edit a specific Opportunity.
      *
-     * @Route("/{id}", name="app_api_opportunities_edit")
+     * @Route("/{id}", name="app_api_opportunities_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      *
      * @param Request     $request
@@ -67,7 +67,7 @@ class OpportunityController extends ApiController
     /**
      * Delete a specific opportunity.
      *
-     * @Route("/{id}", name="app_api_opportunities_delete")
+     * @Route("/{id}", name="app_api_opportunities_delete", options={"expose"=true})
      * @Method({"DELETE"})
      *
      * @param Opportunity $opportunity
