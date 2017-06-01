@@ -9,7 +9,7 @@
             </div>
             <div v-if="summaryData" class="text-left">
                 <p v-if="summaryData.opportunity_data.costSavings && summaryData.opportunity_data.costSavings.length > 0">
-                    <b v-for="(item, index) in summaryData.opportunity_data.costSavings">{{ item.currency }} {{ item.totalCost }}<span v-if="index < summaryData.opportunity_data.costSavings.length - 1">, </span></b>
+                    <b v-for="(item, index) in summaryData.opportunity_data.costSavings">{{ translateText(item.currency) }} {{ item.totalCost }}<span v-if="index < summaryData.opportunity_data.costSavings.length - 1">, </span></b>
                 </p>
                 <p v-else>-</p>
                 <p v-if="summaryData.opportunity_data.timeSavings">

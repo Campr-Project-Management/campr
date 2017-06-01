@@ -76,10 +76,10 @@ class RiskControllerTest extends BaseController
                     'description' => 'description1',
                     'impact' => 10,
                     'probability' => 10,
-                    'cost' => 'cost1',
-                    'currency' => '$',
-                    'budget' => 'budget1',
-                    'delay' => 'delay1',
+                    'cost' => 1.00,
+                    'currency' => 'USD',
+                    'budget' => 1.00,
+                    'delay' => 1.00,
                     'delayUnit' => 'days',
                     'priority' => 'priority1',
                     'measures' => [],
@@ -172,10 +172,10 @@ class RiskControllerTest extends BaseController
             ->setImpact(10)
             ->setProbability(10)
             ->setDescription('description3')
-            ->setCost('cost3')
-            ->setCurrency('$')
-            ->setBudget('budget3')
-            ->setDelay('delay3')
+            ->setCost(3)
+            ->setCurrency('USD')
+            ->setBudget(3)
+            ->setDelay(3)
             ->setDelayUnit('choices.days')
             ->setPriority('priority3')
         ;
@@ -281,10 +281,10 @@ class RiskControllerTest extends BaseController
                     'description' => 'description2',
                     'impact' => 20,
                     'probability' => 20,
-                    'cost' => 'cost2',
-                    'currency' => '$',
-                    'budget' => 'budget2',
-                    'delay' => 'delay2',
+                    'cost' => 1.00,
+                    'currency' => 'USD',
+                    'budget' => 1.00,
+                    'delay' => 1.00,
                     'delayUnit' => 'days',
                     'priority' => 'priority2',
                     'measures' => [],

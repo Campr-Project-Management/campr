@@ -54,7 +54,7 @@
                             {{ translateText('message.back_to_risks_and_opportunities') }}
                         </router-link>
                         <h1 v-if="!isEdit">{{ translateText('message.create_new_risk') }}</h1>
-                        <h1 v-else>{{ translateText('message.create_new_risk') }}</h1>
+                        <h1 v-else>{{ translateText('message.edit_risk') }}</h1>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
@@ -292,9 +292,9 @@ export default {
                 description: this.$refs.description.getContent(),
                 impact: this.riskImpact,
                 probability: this.riskProbability,
-                budget: this.calculatedBudget,
+                budget: this.calculateBudget(),
                 cost: this.cost,
-                currency: this.details.currency && this.details.currency.key ? this.details.currency.label : '',
+                currency: this.details.currency && this.details.currency.key ? this.details.currency.key : '',
                 delay: this.timeDelay,
                 delayUnit: this.details.time && this.details.time.key ? this.details.time.key : '',
                 priority: 'PRIORITY', // TODO: determine the priority calulation method
@@ -322,6 +322,8 @@ export default {
             let riskVal = parseInt(this.riskProbability ? this.riskProbability : 0);
             let costVal = parseFloat(this.cost ? this.cost : 0);
             this.calculatedBudget = currency + ' ' + (riskVal * costVal).toFixed(2);
+
+            return (riskVal * costVal).toFixed(2);
         },
         calculateTime: function() {
             let unit = this.details.time && this.details.time.key ? this.details.time.label : '';
@@ -367,6 +369,15 @@ export default {
             this.activeItem = this.gridData[index];
             this.activeItem.isActive = true;
         },
+        getCurrencySymbol: function(label) {
+            let symbols = {
+                'USD': '$',
+                'EUR': '€',
+                'GBP': '₤',
+            };
+
+            return symbols[label];
+        },
     },
     computed: {
         ...mapGetters({
@@ -407,7 +418,12 @@ export default {
             measures: [],
             riskImpact: 0,
             riskProbability: 0,
-            currencyLabel: [{label: this.translateText('label.currency'), key: null}, {label: '$', key: 1}, {label: '€', key: 2}, {label: '₤', key: 3}],
+            currencyLabel: [
+                {label: this.translateText('label.currency'), key: null},
+                {label: '$', key: 'USD'},
+                {label: '€', key: 'EUR'},
+                {label: '₤', key: 'GBP'},
+            ],
             timeLabel: [
                 {label: this.translateText('label.time'), key: null},
                 {label: this.translateText('choices.hours'), key: 'choices.hours'},
@@ -448,7 +464,7 @@ export default {
             this.riskProbability = this.risk.probability.toString();
             this.cost = this.risk.cost;
             this.details.currency = this.risk.currency
-                ? {key: this.risk.currency, label: this.risk.currency}
+                ? {key: this.translateText(this.risk.currency), label: this.getCurrencySymbol(this.risk.currency)}
                 : null
             ;
             this.timeDelay = this.risk.delay;
