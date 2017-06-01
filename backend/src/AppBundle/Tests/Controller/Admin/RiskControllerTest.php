@@ -91,10 +91,10 @@ class RiskControllerTest extends BaseController
         $form['admin[impact]'] = 10;
         $form['admin[probability]'] = 100;
         $form['admin[description]'] = 'risk-description';
-        $form['admin[cost]'] = 'risk-cost';
-        $form['admin[currency]'] = '$';
-        $form['admin[budget]'] = 'risk-budget';
-        $form['admin[delay]'] = 'risk-delay';
+        $form['admin[cost]'] = 1;
+        $form['admin[currency]'] = 'USD';
+        $form['admin[budget]'] = 1;
+        $form['admin[delay]'] = 1;
         $form['admin[delayUnit]'] = 'choices.days';
         $form['admin[priority]'] = 'risk-priority';
         $form['admin[status]'] = $status->getId();
@@ -140,10 +140,10 @@ class RiskControllerTest extends BaseController
             ->setImpact(1)
             ->setProbability(1)
             ->setDescription('risk-description')
-            ->setCost('risk-cost')
-            ->setCurrency('$')
-            ->setBudget('risk-budget')
-            ->setDelay('risk-delay')
+            ->setCost(1)
+            ->setCurrency('USD')
+            ->setBudget(1)
+            ->setDelay(1)
             ->setDelayUnit('days')
             ->setPriority('risk-priority')
             ->setStatus($status)
