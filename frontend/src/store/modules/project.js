@@ -4,10 +4,10 @@ import _ from 'lodash';
 import router from '../../router';
 
 const state = {
-    currentItem: {},
-    items: [],
-    itemsForFilter: [],
-    filteredItems: [],
+    currentProject: {},
+    projects: [],
+    projectsForFilter: [],
+    filteredProjects: [],
     filters: [],
     labelsForChoice: [],
     loading: false,
@@ -20,14 +20,14 @@ const state = {
 };
 
 const getters = {
-    project: state => state.currentItem,
-    projects: state => state.filteredItems.items,
+    project: state => state.currentProject,
+    projects: state => state.filteredProjects.items,
     projectLoading: state => state.loading,
-    labels: state => state.items,
+    labels: state => state.projects,
     currentProjectTitle: function(state) {
-        return state.currentItem.title;
+        return state.currentProject.title;
     },
-    projectsForFilter: state => state.itemsForFilter,
+    projectsForFilter: state => state.projectsForFilter,
     labelsForChoice: state => state.labelsForChoice,
     projectResourcesForGraph: (state) => _.merge(
         {
@@ -40,7 +40,7 @@ const getters = {
     tasksForSchedule: state => state.tasksForSchedule,
     projectTasksStatus: state => state.projectTasksStatus,
     risksOpportunitiesStats: state => state.risksOpportunitiesStats,
-    projectsCount: state => state.items.totalItems,
+    projectsCount: state => state.projects.totalItems,
 };
 
 const actions = {
@@ -455,13 +455,13 @@ const mutations = {
      * @param {array} projects
      */
     [types.SET_PROJECTS](state, {projects}) {
-        state.items = projects;
-        state.filteredItems = JSON.parse(JSON.stringify(projects));
+        state.projects = projects;
+        state.filteredProjects = JSON.parse(JSON.stringify(projects));
         let projectsForFilter = [{'key': '', 'label': Translator.trans('message.all_projects_filter')}];
-        state.items.items.map( function(project) {
+        state.projects.items.map( function(project) {
             projectsForFilter.push({'key': project.id, 'label': project.name});
         });
-        state.itemsForFilter = projectsForFilter;
+        state.projectsForFilter = projectsForFilter;
     },
 
     /**
@@ -470,7 +470,7 @@ const mutations = {
      * @param {Object} project
      */
     [types.SET_PROJECT](state, {project}) {
-        state.currentItem = project;
+        state.currentProject = project;
     },
 
     /**
@@ -479,7 +479,7 @@ const mutations = {
      * @param {Object} project
      */
     [types.TOGGLE_FAVORITE](state, project) {
-        let stateProject = _.find(state.items.items, {id: project.id});
+        let stateProject = _.find(state.projects.items, {id: project.id});
         stateProject.favorite = !project.favorite;
     },
 
@@ -498,9 +498,9 @@ const mutations = {
      * @param {array} labels
      */
     [types.SET_LABELS](state, {labels}) {
-        state.items = labels;
+        state.projects = labels;
         let choiceLabel = [];
-        state.items.map( function(label) {
+        state.projects.map( function(label) {
             choiceLabel.push({'key': label.id, 'label': label.title});
         });
         state.labelsForChoice = choiceLabel;
@@ -516,7 +516,7 @@ const mutations = {
      * @param {array} objective
      */
     [types.ADD_PROJECT_OBJECTIVE](state, {objective}) {
-        state.currentItem.projectObjectives.push(objective);
+        state.currentProject.projectObjectives.push(objective);
     },
 
     /**
@@ -525,7 +525,7 @@ const mutations = {
      * @param {array} limitation
      */
     [types.ADD_PROJECT_LIMITATION](state, {limitation}) {
-        state.currentItem.projectLimitations.push(limitation);
+        state.currentProject.projectLimitations.push(limitation);
     },
 
     /**
@@ -534,7 +534,7 @@ const mutations = {
      * @param {array} deliverable
      */
     [types.ADD_PROJECT_DELIVERABLE](state, {deliverable}) {
-        state.currentItem.projectDeliverables.push(deliverable);
+        state.currentProject.projectDeliverables.push(deliverable);
     },
 
     /**
