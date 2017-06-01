@@ -15,27 +15,9 @@
                         </div>
                     </div> 
                     <div class="ro-grid-items clearfix">
-                        <div class="ro-grid-item medium"></div>
-                            <div class="ro-grid-item high"></div>
-                            <div class="ro-grid-item very-high"></div>
-                            <div class="ro-grid-item very-high"></div>
-                            <!-- ================================= -->
-                            <div class="ro-grid-item low"></div>
-                            <div class="ro-grid-item medium"></div>
-                            <div class="ro-grid-item high"></div>
-                            <div class="ro-grid-item very-high active"></div>
-                            <!-- ================================= -->
-                            <div class="ro-grid-item very-low"></div>
-                            <div class="ro-grid-item low"></div>
-                            <div class="ro-grid-item medium"></div>
-                            <div class="ro-grid-item high"></div>
-                            <!-- ================================= -->
-                            <div class="ro-grid-item very-low"></div>
-                            <div class="ro-grid-item very-low"></div>
-                            <div class="ro-grid-item low"></div>
-                            <div class="ro-grid-item medium"></div>
+                        <div v-for="item in gridData" class="ro-grid-item" :class="[{active: item.isActive}, item.type]"></div>
                     </div>
-                    <div class="ro-grid-header horizontal-axis-header">                            
+                    <div class="ro-grid-header horizontal-axis-header">
                         <div class="small-headers clearfix">
                             <div class="small-header">{{ translateText('message.very_low') }}</div>
                             <div class="small-header">{{ translateText('message.low') }}</div>
@@ -347,6 +329,44 @@ export default {
             let timeVal = parseFloat(this.timeDelay ? this.timeDelay : 0);
             this.calculatedTime = (riskVal * timeVal).toFixed(2) + ' ' + unit;
         },
+        updateGridView() {
+            let index = 0;
+            const riskImpact = this.riskImpact;
+            const riskProbability = this.riskProbability;
+
+            if (riskImpact < 25 || !riskImpact) {
+                index +=12;
+            }
+            if (riskImpact >=25 && riskImpact < 50) {
+                index +=8;
+            }
+            if (riskImpact >=50 && riskImpact < 75) {
+                index +=4;
+            }
+            if (riskImpact >= 75) {
+                index +=0;
+            }
+
+            if (riskProbability < 25 || !riskProbability) {
+                index +=0;
+            }
+            if (riskProbability >=25 && riskProbability < 50) {
+                index +=1;
+            }
+            if (riskProbability >=50 && riskProbability < 75) {
+                index +=2;
+            }
+            if (riskProbability >= 75) {
+                index +=3;
+            }
+
+            if(this.activeItem) {
+                this.activeItem.isActive = false;
+            }
+
+            this.activeItem = this.gridData[index];
+            this.activeItem.isActive = true;
+        },
     },
     computed: {
         ...mapGetters({
@@ -398,13 +418,16 @@ export default {
             model: {},
             currentOption: {},
             isEdit: this.$route.params.riskId,
+            gridData: [
+                {type: 'medium'}, {type: 'high'}, {type: 'very-high'}, {type: 'very-high'},
+                {type: 'low'}, {type: 'medium'}, {type: 'high'}, {type: 'very-high'},
+                {type: 'very-low'}, {type: 'low'}, {type: 'medium'}, {type: 'high'},
+                {type: 'very-low'}, {type: 'very-low'}, {type: 'low'}, {type: 'medium'},
+            ],
+            activeItem: null,
         };
     },
     watch: {
-        riskProbability(value) {
-            this.calculateBudget();
-            this.calculateTime();
-        },
         cost(value) {
             this.calculateBudget();
         },
@@ -451,6 +474,18 @@ export default {
                     };
                 });
             }
+        },
+        riskProbability: function(value) {
+            this.calculateBudget();
+            this.calculateTime();
+            this.updateGridView();
+            this.riskProbability = value;
+            return value;
+        },
+        riskImpact: function(value) {
+            this.updateGridView();
+            this.riskImpact = value;
+            return value;
         },
     },
 };
