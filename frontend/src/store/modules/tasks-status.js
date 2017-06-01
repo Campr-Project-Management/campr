@@ -2,10 +2,7 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    filteredItems: [],
-    filters: [],
     taskStatuses: [],
-    tasksFilters: [],
 };
 
 const getters = {
