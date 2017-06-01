@@ -3,6 +3,8 @@ message:
     delete_risk: Delete Risk
     edit_measure: Edit Measure
     download_attachment: Download Attachment
+    edit_risk: Edit Risk
+    edit_opportunity: Edit Opportunity
     budget_calculation_opportunity: Budget is calculated as Probability times Potential Savings
     time_calculation_opportunity: Time Saved is calculated as Probability times Potential Time Savings
     budget_calculation_risk: Budget is calculated as Probability times Potential Costs

@@ -5,7 +5,7 @@
             <router-link :to="{name: 'project-risks-view-risk'}">
                 <a href="javascript:void(0)" :title="item.title">{{ item.title }}</a>
             </router-link>
-            <p>{{ translateText('message.potential_cost') }}: <b v-if="item.cost">{{ item.currency }} {{ item.cost }}</b><b v-else>-</b></p>
+            <p>{{ translateText('message.potential_cost') }}: <b v-if="item.cost">{{ translateText(item.currency) }} {{ item.cost }}</b><b v-else>-</b></p>
             <p>{{ translateText('message.potential_time_delay') }}: <b v-if="item.delay">{{ item.delay }} {{ translateText(item.delayUnit) }}</b><b v-else>-</b></p>
             <p>{{ translateText('message.priority') }}: <b v-if="item.priority">{{ item.priority }}</b><b v-else>-</b></p>
             <p>{{ translateText('message.strategy') }}: <b v-if="item.riskStrategyName">{{ item.riskStrategyName }}</b><b v-else>-</b></p>
