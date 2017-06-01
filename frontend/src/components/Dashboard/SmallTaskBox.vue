@@ -8,7 +8,7 @@
                         <p>{{ task.responsibilityFullName }}</p>
                     </div>
                     <h2>
-                        <router-link :to="{name: 'project-task-management-edit', params: { id: task.project, taskId: task.id }}">
+                        <router-link :to="{name: 'project-task-management-view', params: { id: task.project, taskId: task.id }}">
                             {{ task.name }}
                         </router-link>
                     </h2>
