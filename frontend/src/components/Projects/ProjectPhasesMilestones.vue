@@ -201,7 +201,7 @@
                                     <router-link :to="{name: 'project-phases-view-milestone', params: { id: projectId, milestoneId: milestone.id } }">
                                         <a href="javascript:void(0)" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
                                     </router-link>
-                                    <router-link :to="{name: 'project-phases-edit-milestone', params: { id: projectId, milestoneId: milestone.id } }">
+                                    <router-link :to="{name: 'project-milestones-edit-milestone', params: { id: projectId, milestoneId: milestone.id } }">
                                         <a href="javascript:void(0)" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
                                     </router-link>
                                     <button @click="initDeleteMilestoneModal(milestone)" data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
