@@ -1438,6 +1438,7 @@ class ProjectController extends ApiController
 
         if ($form->isValid()) {
             $risk->setProject($project);
+            $risk->setCreatedBy($this->getUser());
             $this->persistAndFlush($risk);
 
             return $this->createApiResponse($risk, JsonResponse::HTTP_CREATED);
@@ -1493,6 +1494,7 @@ class ProjectController extends ApiController
 
         if ($form->isValid()) {
             $opportunity->setProject($project);
+            $opportunity->setCreatedBy($this->getUser());
             $this->persistAndFlush($opportunity);
 
             return $this->createApiResponse($opportunity, JsonResponse::HTTP_CREATED);

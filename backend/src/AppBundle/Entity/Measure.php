@@ -48,6 +48,8 @@ class Measure
     /**
      * @var User|null
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id")
      */
@@ -82,7 +84,7 @@ class Measure
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Risk", inversedBy="measures")
-     * @ORM\JoinColumn(name="risk_id")
+     * @ORM\JoinColumn(name="risk_id", onDelete="CASCADE")
      */
     private $risk;
 
@@ -92,7 +94,7 @@ class Measure
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Opportunity", inversedBy="measures")
-     * @ORM\JoinColumn(name="opportunity_id")
+     * @ORM\JoinColumn(name="opportunity_id", onDelete="CASCADE")
      */
     private $opportunity;
 
@@ -291,6 +293,7 @@ class Measure
      */
     public function addComment(MeasureComment $comment)
     {
+        $comment->setMeasure($this);
         $this->comments[] = $comment;
 
         return $this;
@@ -386,5 +389,44 @@ class Measure
     public function getOpportunity()
     {
         return $this->opportunity;
+    }
+
+    /**
+     * Returns responsibility id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibility")
+     *
+     * @return string
+     */
+    public function getResponsibilityId()
+    {
+        return $this->responsibility ? $this->responsibility->getId() : null;
+    }
+
+    /**
+     * Returns responsibility full name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibilityFullName")
+     *
+     * @return string
+     */
+    public function getResponsibilityFullName()
+    {
+        return $this->responsibility ? $this->responsibility->getFullName() : null;
+    }
+
+    /**
+     * Returns responsibility username.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibilityUsername")
+     *
+     * @return string
+     */
+    public function getResponsibilityUsername()
+    {
+        return $this->responsibility ? $this->responsibility->getUsername() : null;
     }
 }
