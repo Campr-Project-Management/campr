@@ -92,7 +92,7 @@
                             {{ translateText('button.cancel') }}
                         </router-link>
                         <div class="flex flex-v-center">
-                            <router-link :to="{name: 'project-phases-edit-milestone', params: { id: projectId, phaseId: milestone.id } }" class="btn-rounded btn-auto second-bg">
+                            <router-link :to="{name: 'project-milestones-edit-milestone', params: { id: projectId, phaseId: milestone.id } }" class="btn-rounded btn-auto second-bg">
                                 {{ translateText('button.edit_milestone') }}
                             </router-link>
                             <button @click="showDeleteModal = true" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_milestone') }}</button>
