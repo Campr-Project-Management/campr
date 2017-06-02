@@ -132,6 +132,16 @@ class Opportunity
     private $responsibility;
 
     /**
+     * @var User|null
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="created_by")
+     */
+    private $createdBy;
+
+    /**
      * @var \DateTime|null
      *
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
@@ -719,5 +729,55 @@ class Opportunity
         $this->timeUnit = $timeUnit;
 
         return $this;
+    }
+
+    /**
+     * Set createdBy.
+     *
+     * @param User $createdBy
+     *
+     * @return Risk
+     */
+    public function setCreatedBy(User $createdBy = null)
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    /**
+     * Get createdBy.
+     *
+     * @return User
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * Returns createdBy id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("createdBy")
+     *
+     * @return string
+     */
+    public function getCreatedById()
+    {
+        return $this->createdBy ? $this->createdBy->getId() : null;
+    }
+
+    /**
+     * Returns createdBy full name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("createdByFullName")
+     *
+     * @return string
+     */
+    public function getCreatedByFullName()
+    {
+        return $this->createdBy ? $this->createdBy->getFullName() : null;
     }
 }
