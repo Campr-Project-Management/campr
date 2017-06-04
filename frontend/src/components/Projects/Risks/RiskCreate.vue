@@ -335,29 +335,29 @@ export default {
             const riskProbability = this.riskProbability;
 
             if (riskImpact < 25 || !riskImpact) {
-                index +=12;
+                index += 12;
             }
-            if (riskImpact >=25 && riskImpact < 50) {
-                index +=8;
+            if (riskImpact >= 25 && riskImpact < 50) {
+                index += 8;
             }
-            if (riskImpact >=50 && riskImpact < 75) {
-                index +=4;
+            if (riskImpact >= 50 && riskImpact < 75) {
+                index += 4;
             }
             if (riskImpact >= 75) {
-                index +=0;
+                index += 0;
             }
 
             if (riskProbability < 25 || !riskProbability) {
-                index +=0;
+                index += 0;
             }
-            if (riskProbability >=25 && riskProbability < 50) {
-                index +=1;
+            if (riskProbability >= 25 && riskProbability < 50) {
+                index += 1;
             }
-            if (riskProbability >=50 && riskProbability < 75) {
-                index +=2;
+            if (riskProbability >= 50 && riskProbability < 75) {
+                index += 2;
             }
             if (riskProbability >= 75) {
-                index +=3;
+                index += 3;
             }
 
             if(this.activeItem) {
