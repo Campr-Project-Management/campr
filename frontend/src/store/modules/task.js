@@ -6,7 +6,7 @@ const state = {
     currentTask: {},
     tasks: [],
     tasksCount: 0,
-    filteredItems: [],
+    filteredTasks: [],
     filters: [],
     users: [],
     tasksFilters: [],
@@ -209,13 +209,9 @@ const mutations = {
      * @param {array} tasks
      */
     [types.SET_TASKS](state, {tasks}) {
-        // state.items = {
-        //     items: tasks.items,
-        //     totalNumber: tasks.totalNumber,
-        // };
         state.tasks = tasks.items;
         state.tasksCount = tasks.totalItems;
-        state.filteredItems = JSON.parse(JSON.stringify(tasks));
+        state.filteredTasks = JSON.parse(JSON.stringify(tasks));
     },
     /**
      * Sets task to state
