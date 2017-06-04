@@ -18,8 +18,8 @@
                 <div class="members">
                     <div class="member flex" v-for="item in items">
                         <div class="checkbox-input clearfix" :class="{'inactive': !item.checked}">
-                            <input v-if="singleSelect" :id="item.id"  type="checkbox" :name="item.userFullName" :checked="item.checked" @click="toggleActivation(item)">
-                            <input v-else="singleSelect" :id="item.id"  type="radio" :name="item.userFullName" :checked="item.checked">
+                            <input v-if="singleSelect" :id="item.id"  type="radio" :name="item.userFullName" :checked="item.checked" @click="toogleRadioButton(item)">
+                            <input v-else="singleSelect" :id="item.id"  type="checkbox" :name="item.userFullName" :checked="item.checked" @click="toggleActivation(item)">                            
                             <label :for="item.id"></label>
                         </div>
                         <img :src="item.userAvatar">
@@ -58,6 +58,10 @@ export default {
         toggleActivation(item) {
             item.checked = !item.checked;
         },
+        toogleRadioButton(item) {
+            this.items.map(item => item.checked = false);
+            item.checked = true;
+        },
         prepareResponseData(data) {
             let items = data.items;
             if (!Array.isArray(items) || !items) {
@@ -87,10 +91,14 @@ export default {
             });
             this.selectedUsers = users;
             this.$emit('input', this.selectedUsers);
+            const items = this.items;
             this.reset();
+            if (this.singleSelect) {
+                this.query = items.filter((item) => item.checked)[0].userFullName;
+            }
         },
     },
-    data: function() {
+    data() {
         return {
             button: {
                 cancel: this.translate('button.cancel'),

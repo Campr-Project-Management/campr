@@ -35,7 +35,7 @@ export default {
         },
     },
     created() {
-        if (!this.$store.state.project || this.$store.state.project.items.length === 0) {
+        if (!this.$store.state.project || this.$store.state.project.projects.length === 0) {
             this.getProjects(this.activePage);
         }
     },
