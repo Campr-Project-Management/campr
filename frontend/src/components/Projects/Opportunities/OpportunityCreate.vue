@@ -15,25 +15,7 @@
                         </div>
                     </div> 
                     <div class="ro-grid-items clearfix">
-                        <div class="ro-grid-item medium"></div>
-                        <div class="ro-grid-item low"></div>
-                        <div class="ro-grid-item very-low"></div>
-                        <div class="ro-grid-item very-low active"></div>
-                        <!-- ================================= -->
-                        <div class="ro-grid-item high"></div>
-                        <div class="ro-grid-item medium"></div>
-                        <div class="ro-grid-item low"></div>
-                        <div class="ro-grid-item very-low"></div>
-                        <!-- ================================= -->
-                        <div class="ro-grid-item very-high"></div>
-                        <div class="ro-grid-item high"></div>
-                        <div class="ro-grid-item medium"></div>
-                        <div class="ro-grid-item low"></div>
-                        <!-- ================================= -->
-                        <div class="ro-grid-item very-high"></div>
-                        <div class="ro-grid-item very-high"></div>
-                        <div class="ro-grid-item high"></div>
-                        <div class="ro-grid-item medium"></div>
+                        <div v-for="item in gridData" class="ro-grid-item" :class="[{active: item.isActive}, item.type]"></div>
                     </div>
                     <div class="ro-grid-header horizontal-axis-header">                            
                         <div class="small-headers clearfix">
@@ -348,6 +330,44 @@ export default {
             let timeVal = parseFloat(this.timeSavings ? this.timeSavings : 0);
             this.calculatedTime = (opportunityVal * timeVal).toFixed(2) + ' ' + unit;
         },
+        updateGridView() {
+            let index = 0;
+            const riskImpact = this.opportunityImpact;
+            const riskProbability = this.opportunityProbability;
+
+            if (riskImpact < 25 || !riskImpact) {
+                index +=12;
+            }
+            if (riskImpact >=25 && riskImpact < 50) {
+                index +=8;
+            }
+            if (riskImpact >=50 && riskImpact < 75) {
+                index +=4;
+            }
+            if (riskImpact >= 75) {
+                index +=0;
+            }
+
+            if (riskProbability < 25 || !riskProbability) {
+                index +=0;
+            }
+            if (riskProbability >=25 && riskProbability < 50) {
+                index +=1;
+            }
+            if (riskProbability >=50 && riskProbability < 75) {
+                index +=2;
+            }
+            if (riskProbability >= 75) {
+                index +=3;
+            }
+
+            if(this.activeItem) {
+                this.activeItem.isActive = false;
+            }
+
+            this.activeItem = this.gridData[index];
+            this.activeItem.isActive = true;
+        },
     },
     computed: {
         ...mapGetters({
@@ -365,43 +385,18 @@ export default {
             this.getProjectOpportunity(this.$route.params.opportunityId);
         }
     },
-    data: function() {
-        return {
-            calculatedBudget: '0.00',
-            calculatedTime: '0.00',
-            title: '',
-            description: '',
-            costSavings: '',
-            timeSavings: '',
-            days: '',
-            schedule: {
-                dueDate: new Date(),
-            },
-            measures: [],
-            details: {
-                currency: null,
-                time: null,
-                strategy: null,
-                status: null,
-            },
-            memberList: [],
-            opportunityImpact: 0,
-            opportunityProbability: 0,
-            currencyLabel: [{label: this.translateText('label.currency'), key: null}, {label: '$', key: 1}, {label: '€', key: 2}, {label: '₤', key: 3}],
-            timeLabel: [
-                {label: this.translateText('label.time'), key: null},
-                {label: this.translateText('choices.hours'), key: 'choices.hours'},
-                {label: this.translateText('choices.days'), key: 'choices.days'},
-                {label: this.translateText('choices.weeks'), key: 'choices.weeks'},
-                {label: this.translateText('choices.months'), key: 'choices.months'},
-            ],
-            isEdit: this.$route.params.opportunityId,
-        };
-    },
     watch: {
+        opportunityImpact: function(value) {
+            this.updateGridView();
+            this.opportunityImpact = value;
+            return value;
+        },
         opportunityProbability(value) {
             this.calculateBudget();
             this.calculateTime();
+            this.updateGridView();
+            this.opportunityProbability = value;
+            return value;
         },
         costSavings(value) {
             this.calculateBudget();
@@ -450,6 +445,54 @@ export default {
                 });
             }
         },
+    },
+    data: function() {
+        return {
+            calculatedBudget: '0.00',
+            calculatedTime: '0.00',
+            title: '',
+            description: '',
+            costSavings: '',
+            timeSavings: '',
+            days: '',
+            schedule: {
+                dueDate: new Date(),
+            },
+            measures: [],
+            details: {
+                currency: null,
+                time: null,
+                strategy: null,
+                status: null,
+            },
+            memberList: [],
+            opportunityImpact: 0,
+            opportunityProbability: 0,
+            currencyLabel: [{label: this.translateText('label.currency'), key: null}, {label: '$', key: 1}, {label: '€', key: 2}, {label: '₤', key: 3}],
+            timeLabel: [
+                {label: this.translateText('label.time'), key: null},
+                {label: this.translateText('choices.hours'), key: 'choices.hours'},
+                {label: this.translateText('choices.days'), key: 'choices.days'},
+                {label: this.translateText('choices.weeks'), key: 'choices.weeks'},
+                {label: this.translateText('choices.months'), key: 'choices.months'},
+            ],
+            isEdit: this.$route.params.opportunityId,
+            message: {
+                impact: Translator.trans('message.impact'),
+                probability: Translator.trans('message.probability'),
+            },
+            strategyLabel: [{label: 'Take', key: 1}, {label: 'Increase', key: 2}, {label: 'Skip', key: 3}],
+            statusLabel: [{label: 'Initiated', key: 1}, {label: 'Ongoing', key: 2}, {label: 'Finished', key: 3}],
+            model: {},
+            currentOption: {},
+            gridData: [
+                {type: 'medium'}, {type: 'high'}, {type: 'very-high'}, {type: 'very-high'},
+                {type: 'low'}, {type: 'medium'}, {type: 'high'}, {type: 'very-high'},
+                {type: 'very-low'}, {type: 'low'}, {type: 'medium'}, {type: 'high'},
+                {type: 'very-low'}, {type: 'very-low'}, {type: 'low'}, {type: 'medium'},
+            ],
+            activeItem: null,
+        };
     },
 };
 </script>
