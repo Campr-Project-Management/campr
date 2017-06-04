@@ -184,10 +184,10 @@ import {mapActions, mapGetters} from 'vuex';
 export default {
     name: 'sidebar',
     created() {
-        if (!this.$store.state.project.items || this.$store.state.project.items.length == 0) {
+        if (!this.$store.state.project.projects || this.$store.state.project.projects.length == 0) {
             this.getProjects();
         }
-        if (!this.$store.state.task.items || this.$store.state.task.items.length == 0) {
+        if (!this.$store.state.task.tasks || this.$store.state.task.tasks.length == 0) {
             this.getTasks(1);
         }
     },
