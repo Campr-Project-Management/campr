@@ -5,11 +5,13 @@ namespace AppBundle\Controller\API;
 use AppBundle\Entity\Assignment;
 use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\WorkPackage;
+use AppBundle\Entity\Comment;
 use AppBundle\Form\WorkPackage\ApiCreateType;
 use AppBundle\Form\WorkPackage\MilestoneType;
 use AppBundle\Form\WorkPackage\PhaseType;
 use AppBundle\Security\WorkPackageVoter;
 use AppBundle\Form\Assignment\BaseCreateType as AssignmentCreateType;
+use AppBundle\Form\Comment\CreateType as CommentCreateType;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -298,6 +300,44 @@ class WorkPackageController extends ApiController
             $em->flush();
 
             return $this->createApiResponse($assignment, Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return  $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * Adds a new comment.
+     *
+     * @Route("/{id}/comments", name="app_api_workpackage_comments_create", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request     $request
+     * @param WorkPackage $wp
+     *
+     * @return JsonResponse
+     */
+    public function commentsCreateAction(Request $request, WorkPackage $wp)
+    {
+        $comment = new Comment();
+
+        $form = $this->createForm(CommentCreateType::class, $comment, ['csrf_protection' => false]);
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($comment);
+
+            $wp->addComment($comment);
+            $em->persist($wp);
+
+            $em->flush();
+
+            return $this->createApiResponse($comment, Response::HTTP_CREATED);
         }
 
         $errors = $this->getFormErrors($form);
