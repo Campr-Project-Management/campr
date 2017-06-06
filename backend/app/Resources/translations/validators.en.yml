@@ -71,11 +71,14 @@ not_blank:
         subteam: You must select a subteam.
     subteam_role:
         name: The subteam role name must not be empty.
+    comment:
+        body: The body of the comment cannot be blank
 
 not_null:
     driver: You must select a driver
     filesystem: You must select a filesystem
     company: You must select a company
+    author: You must select an author
 
 unique:
     name: That name is taken
