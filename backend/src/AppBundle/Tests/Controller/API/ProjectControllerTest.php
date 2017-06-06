@@ -2971,6 +2971,7 @@ class ProjectControllerTest extends BaseController
                     'automaticSchedule' => false,
                     'duration' => 0,
                     'costs' => [],
+                    'comments' => [],
                 ],
             ],
         ];
