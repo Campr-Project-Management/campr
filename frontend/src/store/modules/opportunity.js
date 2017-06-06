@@ -15,8 +15,13 @@ const getters = {
 const actions = {
     getProjectOpportunities({commit}, data) {
         Vue.http
-            .get(Routing.generate('app_api_project_opportunities', {id: data.projectId})).then((response) => {
-                if (response.status === 200) {
+            .get(
+                Routing.generate(
+                    'app_api_project_opportunities',
+                    {id: data.projectId, probability: data.probability, impact: data.impact}
+                )
+            ).then((response) => {
+                if (response.status === 200 || response.status === 204) {
                     let opportunities = response.data;
                     commit(types.SET_PROJECT_OPPORTUNITIES, {opportunities});
                 }

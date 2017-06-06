@@ -16,7 +16,7 @@
                 <!-- /// Project Opportunities /// -->
                 <div class="ro-grid-wrapper clearfix">
                     <!-- /// Project Opportunities Grid /// -->
-                    <risk-grid :gridData="gridData"></risk-grid>
+                    <risk-grid :gridData="opportunityGridData" :isRisk="false"></risk-grid>
                     <!-- /// End Project Opportunities Grid /// -->
 
                     <!-- /// Project Opportunities List /// -->
@@ -44,7 +44,7 @@
                 <!-- /// Project Risks /// -->
                 <div class="ro-grid-wrapper clearfix">
                     <!-- /// Project Risks Grid /// -->
-                    <risk-grid :gridData="gridData"></risk-grid>
+                    <risk-grid :gridData="riskGridData" :isRisk="true"></risk-grid>
                     <!-- /// End Project Risks Grid /// -->
 
                     <!-- /// Project Risks List /// -->
@@ -91,16 +91,44 @@ export default {
         },
     },
     created() {
-        this.getProjectOpportunities({projectId: this.$route.params.id});
-        this.getProjectRisks({projectId: this.$route.params.id});
+        this.getProjectOpportunities(
+            {
+                projectId: this.$route.params.id,
+                probability: 1,
+                impact: 1,
+            }
+        );
+        this.getProjectRisks(
+            {
+                projectId: this.$route.params.id,
+                probability: 1,
+                impact: 1,
+            }
+        );
         this.getProjectRiskAndOpportunitiesStats(this.$route.params.id);
+    },
+    watch: {
+        risksOpportunitiesStats(value) {
+            let opportunityGridValues = this.risksOpportunitiesStats.opportunities.opportunity_data.gridValues;
+            let riskGridValues = this.risksOpportunitiesStats.risks.risk_data.gridValues;
+            let types = ['medium', 'high', 'low', 'very-low'];
+            for (let i = 4; i >= 1; i--) {
+                for (let j = 1; j <= 4; j++) {
+                    let isActive = i === 1 && j === 1;
+                    this.opportunityGridData.push(
+                        {probability: j, impact: i, number: opportunityGridValues[j+'-'+i], type: types[j-1], isActive: isActive},
+                    );
+                    this.riskGridData.push(
+                        {probability: j, impact: i, number: riskGridValues[j+'-'+i], type: types[j-1], isActive: isActive},
+                    );
+                }
+            }
+        },
     },
     data: function() {
         return {
-            gridData: [[{number: 1, type: 'medium'}, {number: 2, type: 'high'}, {number: null, type: 'low'}, {number: null, type: 'very-low'}],
-            [{number: 1, type: 'medium'}, {number: 2, type: 'high'}, {number: null, type: 'low'}, {number: null, type: 'very-low'}],
-            [{number: 1, type: 'medium'}, {number: 2, type: 'high'}, {number: null, type: 'low'}, {number: null, type: 'very-low'}],
-            [{number: 1, type: 'medium'}, {number: 2, type: 'high'}, {number: null, type: 'low'}, {number: null, type: 'very-low'}]],
+            opportunityGridData: [],
+            riskGridData: [],
         };
     },
 };
