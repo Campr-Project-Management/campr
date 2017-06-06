@@ -1,38 +1,71 @@
 <template>
-  <div class="ro-grid">
-    <div class="ro-grid-header vertical-axis-header">
-      <div class="big-header">{{ translateText('message.impact') }}</div>
-      <div class="small-headers clearfix">
-        <div class="small-header">{{ translateText('message.very_low') }}</div>
-        <div class="small-header">{{ translateText('message.low') }}</div>
-        <div class="small-header">{{ translateText('message.high') }}</div>
-        <div class="small-header">{{ translateText('message.very_high') }}</div>
-      </div>
-    </div>
-    <div class="ro-grid-items clearfix" v-for="row in gridData">
-        <div v-for="item in row">
-      <div class="ro-grid-item medium" v-bind:class="[item.type]"><span>{{item.number? item.number : ''}}</span></div>
+    <div class="ro-grid">
+        <div class="ro-grid-header vertical-axis-header">
+            <div class="big-header">{{ translateText('message.impact') }}</div>
+            <div class="small-headers clearfix">
+                <div class="small-header">{{ translateText('message.very_low') }}</div>
+                <div class="small-header">{{ translateText('message.low') }}</div>
+                <div class="small-header">{{ translateText('message.high') }}</div>
+                <div class="small-header">{{ translateText('message.very_high') }}</div>
+            </div>
         </div>
+        <div class="ro-grid-items clearfix">
+            <div @click="updateItems(item)" v-for="item in gridData" class="ro-grid-item" :class="[{active: item.isActive}, item.type]"><span>{{ item.number ? item.number : '' }}</span></div>
+        </div>
+        <div class="ro-grid-header horizontal-axis-header">
+            <div class="small-headers clearfix">
+                <div class="small-header">{{ translateText('message.very_low') }}</div>
+                <div class="small-header">{{ translateText('message.low') }}</div>
+                <div class="small-header">{{ translateText('message.high') }}</div>
+                <div class="small-header">{{ translateText('message.very_high') }}</div>
+            </div>
+            <div class="big-header">{{ translateText('message.probability') }}</div>
+        </div>
+        <div class=""></div>
     </div>
-    <div class="ro-grid-header horizontal-axis-header">
-      <div class="small-headers clearfix">
-        <div class="small-header">{{ translateText('message.very_low') }}</div>
-        <div class="small-header">{{ translateText('message.low') }}</div>
-        <div class="small-header">{{ translateText('message.high') }}</div>
-        <div class="small-header">{{ translateText('message.very_high') }}</div>
-      </div>
-      <div class="big-header">{{ translateText('message.probability') }}</div>
-    </div>
-  </div>
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex';
+
 export default {
-    props: ['gridData'],
+    props: ['gridData', 'isRisk'],
+    computed: {
+        ...mapGetters({
+            opportunities: 'opportunities',
+            risks: 'risks',
+        }),
+    },
     methods: {
+        ...mapActions(['getProjectOpportunities', 'getProjectRisks', 'getProjectRiskAndOpportunitiesStats']),
         translateText: function(text) {
             return this.translate(text);
         },
+        updateItems: function(selected) {
+            this.gridData.map(item => {
+                item.isActive = item === selected;
+            });
+            this.isRisk
+                ? this.getProjectRisks(
+                    {
+                        projectId: this.$route.params.id,
+                        probability: selected.probability,
+                        impact: selected.impact,
+                    }
+                )
+                : this.getProjectOpportunities(
+                    {
+                        projectId: this.$route.params.id,
+                        probability: selected.probability,
+                        impact: selected.impact,
+                    }
+                );
+        },
+    },
+    data: function() {
+        return {
+            activeItem: null,
+        };
     },
 };
 </script>

@@ -123,7 +123,7 @@
                                     <switches @click.native="updateUserOption(item, 'org')" v-model="showInOrg" :selected="item.showInOrg"></switches>
                                 </td>
                                 <td class="text-center switchers" v-for="dl in project.distributionLists">
-                                    <switches :modelChanged="updateDistributionItem(item, dl)" v-model="inDistribution" :selected="inDistributionList(item.id, dl)"></switches>
+                                    <switches :modelChanged="updateDistributionItem(item, dl)" v-model="inDistribution" :selected="inDistributionList(item.user, dl)"></switches>
                                 </td>
                             </tr>
                         </tbody>
@@ -152,7 +152,6 @@ import MemberSearch from '../_common/MemberSearch';
 import Switches from '../3rdparty/vue-switches';
 import VueScrollbar from 'vue2-scrollbar';
 import Modal from '../_common/Modal';
-// import 'vue2-scrollbar/dist/style/vue2-scrollbar.css';
 
 export default {
     components: {
