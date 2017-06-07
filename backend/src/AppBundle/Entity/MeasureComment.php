@@ -50,6 +50,8 @@ class MeasureComment
     /**
      * @var User|null
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id")
      */
@@ -60,8 +62,8 @@ class MeasureComment
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Measure", inversedBy="comments")
-     * @ORM\JoinColumn(name="measure_id")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Measure", inversedBy="comments", cascade={"all"})
+     * @ORM\JoinColumn(name="measure_id", onDelete="CASCADE")
      */
     private $measure;
 
@@ -250,5 +252,57 @@ class MeasureComment
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Returns responsibility id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibility")
+     *
+     * @return string
+     */
+    public function getResponsibilityId()
+    {
+        return $this->responsibility ? $this->responsibility->getId() : null;
+    }
+
+    /**
+     * Returns responsibility full name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibilityFullName")
+     *
+     * @return string
+     */
+    public function getResponsibilityFullName()
+    {
+        return $this->responsibility ? $this->responsibility->getFullName() : null;
+    }
+
+    /**
+     * Returns responsibility username.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibilityUsername")
+     *
+     * @return string
+     */
+    public function getResponsibilityUsername()
+    {
+        return $this->responsibility ? $this->responsibility->getUsername() : null;
+    }
+
+    /**
+     * Returns measure id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("measure")
+     *
+     * @return string
+     */
+    public function getMeasureId()
+    {
+        return $this->measure ? $this->measure->getId() : null;
     }
 }

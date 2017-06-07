@@ -34,6 +34,7 @@ import opportunityStrategy from './modules/opportunity-strategy';
 import opportunityStatus from './modules/opportunity-status';
 import riskStatus from './modules/risk-status';
 import riskStrategy from './modules/risk-strategy';
+import measure from './modules/measure';
 
 Vue.use(Vuex);
 
@@ -75,6 +76,7 @@ export default new Vuex.Store({
         opportunityStatus,
         riskStatus,
         riskStrategy,
+        measure,
     },
     strict: debug,
 });
