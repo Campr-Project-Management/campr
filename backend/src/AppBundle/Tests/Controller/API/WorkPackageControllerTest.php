@@ -538,7 +538,7 @@ class WorkPackageControllerTest extends BaseController
                 true,
                 Response::HTTP_CREATED,
                 [
-                    'id' => 1,
+                    'id' => 2,
                     'body' => 'This is the text for comment body.',
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => '2017-01-01 12:00:00',
