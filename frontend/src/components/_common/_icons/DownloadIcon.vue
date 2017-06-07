@@ -1,38 +1,16 @@
 <template>
     <div class="download-icon icon">
-        <svg version="1.1" id="Layer_1" width="12px" height="12px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-           viewBox="0 0 13.1 12.6" style="enable-background:new 0 0 13.1 12.6;" xml:space="preserve">
-            <g id="XMLID_200_">
-                <line id="XMLID_1153_" class="st0" x1="-456" y1="-80.4" x2="364" y2="-80.4"/>
-                <g id="XMLID_201_">
-                    <g id="XMLID_220_">
-                        <g id="XMLID_1147_">
-                            <path id="XMLID_1145_" class="st1" d="M10.4,8.4v0.7c0,0.6-0.5,1-1,1H3.4c-0.6,0-1-0.5-1-1V8.4"/>
-                            <line id="XMLID_1144_" class="st1" x1="6.4" y1="8.4" x2="6.4" y2="2.2"/>
-                            <polyline id="XMLID_834_" class="st1" points="8.9,5.8 6.4,8.4 3.8,5.8 				"/>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </svg>
+      <svg version="1.1" v-bind:class="fill" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32">
+        <g>
+          <path d="M31.5,24.3c-0.3,0-0.5,0.2-0.5,0.5v2.7c0,2-1.6,3.5-3.5,3.5H4.5c-2,0-3.5-1.6-3.5-3.5v-2.7c0-0.3-0.2-0.5-0.5-0.5 S0,24.5,0,24.8v2.7C0,30,2,32,4.5,32h22.9c2.5,0,4.5-2,4.5-4.5v-2.7C32,24.5,31.8,24.3,31.5,24.3z"/>
+          <path d="M15.6,25c0,0,0.1,0.1,0.2,0.1c0.1,0,0.1,0,0.2,0s0.1,0,0.2,0c0.1,0,0.1-0.1,0.2-0.1l9.9-9.9c0.2-0.2,0.2-0.5,0-0.7 s-0.5-0.2-0.7,0l-9,9V0.5C16.5,0.2,16.3,0,16,0s-0.5,0.2-0.5,0.5v22.9l-9-9c-0.2-0.2-0.5-0.2-0.7,0s-0.2,0.5,0,0.7L15.6,25z"/>
+        </g>
+      </svg>
     </div>
 </template>
 
-<style scoped lang="scss">
-  @import '../../../css/_common.scss';
-  @import '../../../css/_variables.scss';
-
-  .st0 {
-      fill:none;
-      stroke:#191E37;
-      stroke-miterlimit:10;
-  }
-
-  .st1 {
-      fill:none;
-      stroke:#D8DAE5;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-      stroke-miterlimit:10;
-  }
-</style>
+<script>
+export default {
+    props: ['fill'],
+};
+</script>
