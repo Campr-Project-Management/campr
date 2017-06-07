@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller\API;
 
+use AppBundle\Entity\Measure;
 use AppBundle\Entity\Risk;
 use AppBundle\Form\Risk\CreateType;
+use AppBundle\Form\Measure\BaseType as MeasureBaseType;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -81,5 +83,39 @@ class RiskController extends ApiController
         $em->flush();
 
         return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Create new Measure.
+     *
+     * @Route("/{id}/measures", name="app_api_risks_create_measure", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Risk    $risk
+     *
+     * @return JsonResponse
+     */
+    public function createMeasureAction(Request $request, Risk $risk)
+    {
+        $measure = new Measure();
+        $form = $this->createForm(MeasureBaseType::class, $measure, ['csrf_protection' => false]);
+
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $measure->setRisk($risk);
+            $measure->setResponsibility($this->getUser());
+            $this->persistAndFlush($measure);
+
+            return $this->createApiResponse($measure, JsonResponse::HTTP_CREATED);
+        }
+
+        return $this->createApiResponse(
+            [
+                'messages' => $this->getFormErrors($form),
+            ],
+            JsonResponse::HTTP_BAD_REQUEST
+        );
     }
 }

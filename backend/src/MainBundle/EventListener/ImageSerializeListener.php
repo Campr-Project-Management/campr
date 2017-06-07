@@ -2,6 +2,8 @@
 
 namespace MainBundle\EventListener;
 
+use AppBundle\Entity\Measure;
+use AppBundle\Entity\MeasureComment;
 use AppBundle\Entity\Opportunity;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectUser;
@@ -70,11 +72,20 @@ class ImageSerializeListener
             case $object instanceof WorkPackage:
             case $object instanceof Opportunity:
             case $object instanceof Risk:
+            case $object instanceof Measure:
+            case $object instanceof MeasureComment:
                 if ($object->getResponsibility() instanceof User) {
                     if ($object->getResponsibility()->getAvatar()) {
                         $visitor->addData('responsibilityAvatar', $this->getUri($object->getResponsibility(), 'avatarFile'));
                     } else {
                         $visitor->addData('responsibilityAvatar', $object->getResponsibility()->getGravatar());
+                    }
+                }
+                if (method_exists($object, 'getCreatedBy') && $object->getCreatedBy() instanceof User) {
+                    if ($object->getCreatedBy()->getAvatar()) {
+                        $visitor->addData('createdByAvatar', $this->getUri($object->getCreatedBy(), 'avatarFile'));
+                    } else {
+                        $visitor->addData('createdByAvatar', $object->getCreatedBy()->getGravatar());
                     }
                 }
                 break;

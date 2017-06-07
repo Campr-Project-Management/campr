@@ -1,4 +1,8 @@
 message:
+    delete_opportunity: Delete Opoortunity
+    delete_risk: Delete Risk
+    edit_measure: Edit Measure
+    download_attachment: Download Attachment
     budget_calculation_opportunity: Budget is calculated as Probability times Potential Savings
     time_calculation_opportunity: Time Saved is calculated as Probability times Potential Time Savings
     budget_calculation_risk: Budget is calculated as Probability times Potential Costs
@@ -955,6 +959,7 @@ add:
     subteam_member: Add new subteam member
 
 placeholder:
+    measure_description: Measure description
     opportunity_strategy: Opportunity Strategy
     opportunity_status: Opportunity Status
     rist_strategy: Risk Strategy

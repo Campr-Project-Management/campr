@@ -1,5 +1,40 @@
 <template>
-    <div class="row">        
+    <div class="row">
+        <modal v-if="showDeleteModal" @close="showDeleteModal = false">
+            <p class="modal-title">{{ translateText('message.delete_opportunity') }}</p>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteOpportunity()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+            </div>
+        </modal>
+        <modal v-if="showEditMeasureModal" @close="showEditMeasureModal = false">
+            <p class="modal-title">{{ translateText('message.edit_measure') }}</p>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input-field type="text" v-bind:label="translateText('placeholder.measure_title')" v-model="selectedMeasure.title" v-bind:content="selectedMeasure.title" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="vueditor-holder measure-vueditor-holder">
+                        <div class="vueditor-header">{{ translateText('placeholder.measure_description') }}</div>
+                        <Vueditor :ref="'selectedMeasureDescription'" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group last-form-group">
+                <div class="flex flex-space-between">
+                    <div class="col-md-12">
+                        <input-field type="text" v-bind:label="translateText('placeholder.measure_cost')" v-model="selectedMeasure.cost" v-bind:content="selectedMeasure.cost" />
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showEditMeasureModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="editSelectedMeasure()" class="btn-rounded">{{ translateText('button.save') }}</a>
+            </div>
+        </modal>
+
         <div class="col-md-6 col-md-push-6">
             <!-- /// Project Opportunities /// -->
             <div class="ro-grid-wrapper clearfix">
@@ -13,50 +48,32 @@
                             <div class="small-header">{{ translateText('message.high') }}</div>
                             <div class="small-header">{{ translateText('message.very_high') }}</div>
                         </div>
-                    </div> 
-                    <div class="ro-grid-items clearfix">
-                        <div class="ro-grid-item medium"></div>
-                        <div class="ro-grid-item low"></div>
-                        <div class="ro-grid-item very-low"></div>
-                        <div class="ro-grid-item very-low active"></div>
-                        <!-- ================================= -->
-                        <div class="ro-grid-item high"></div>
-                        <div class="ro-grid-item medium"></div>
-                        <div class="ro-grid-item low"></div>
-                        <div class="ro-grid-item very-low"></div>
-                        <!-- ================================= -->
-                        <div class="ro-grid-item very-high"></div>
-                        <div class="ro-grid-item high"></div>
-                        <div class="ro-grid-item medium"></div>
-                        <div class="ro-grid-item low"></div>
-                        <!-- ================================= -->
-                        <div class="ro-grid-item very-high"></div>
-                        <div class="ro-grid-item very-high"></div>
-                        <div class="ro-grid-item high"></div>
-                        <div class="ro-grid-item medium"></div>
                     </div>
-                    <div class="ro-grid-header horizontal-axis-header">                            
+                    <div class="ro-grid-items clearfix">
+                        <div v-for="item in gridData" class="ro-grid-item" :class="[{active: item.isActive}, item.type]"></div>
+                    </div>
+                    <div class="ro-grid-header horizontal-axis-header">
                         <div class="small-headers clearfix">
                             <div class="small-header">{{ translateText('message.very_low') }}</div>
                             <div class="small-header">{{ translateText('message.low') }}</div>
                             <div class="small-header">{{ translateText('message.high') }}</div>
                             <div class="small-header">{{ translateText('message.very_high') }}</div>
                         </div>
-                        <div class="big-header">Probability</div>
+                        <div class="big-header">{{ translateText('message.probability') }}</div>
                     </div>
                     <div class=""></div>
                 </div>
                 <!-- /// End Project Opportunities Grid /// -->
             </div>
 
-            <!-- /// Project Risks Summary /// -->
+            <!-- /// Project Opportunitty Summary /// -->
             <div class="ro-summary">
                 <div class="text-center flex flex-center">
                     <div class="text-right">
                         <p>{{ translateText('message.priority') }}:</p>
                     </div>
                     <div class="text-left">
-                        <p><b>{{ translateText('message.very_high') }}</b></p>
+                        <p><b>{{ opportunity.priority }}</b></p>
                     </div>
                 </div>
             </div>
@@ -71,32 +88,34 @@
                             <i class="fa fa-angle-left"></i>
                             {{ translateText('message.back_to_risks_and_opportunities') }}
                         </router-link>
-                        <h1>Self Landing Supply Rockets</h1>
+                        <h1>{{ opportunity.title }}</h1>
                     </div>
                     <div>
-                        <div class="header-buttons">
-                            <a href="javascript:void(0)" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
-                            <a href="javascript:void(0)" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></a>
+                        <div class="header-buttons" v-if="opportunity">
+                            <router-link :to="{name: 'project-opportunities-edit-opportunity', params: {opportunityId: opportunity.id}}" class="btn-icon">
+                                <edit-icon fill="second-fill"></edit-icon>
+                            </router-link>
+                            <a @click="showDeleteModal = true" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></a>
                         </div>
                     </div>
                 </div>
                 <div class="row ro-details">
                     <div class="col-md-12">
                         <div class="ro-info">
-                            <p>{{ translateText('message.priority') }}: <b>Very High</b></p>
-                            <p>{{ translateText('message.strategy') }}: <b>Increase</b></p>
-                            <p>{{ translateText('message.status') }}: <b>Initiated</b></p>
+                            <p>{{ translateText('message.priority') }}: <b>{{ opportunity.priority }}</b></p>
+                            <p>{{ translateText('message.strategy') }}: <b>{{ opportunity.opportunityStrategyName }}</b></p>
+                            <p>{{ translateText('message.status') }}: <b>{{ opportunity.opportunityStatusyName }}</b></p>
                         </div>
                         
                         <div class="ro-info">
-                            <p>{{ translateText('message.budget_saved') }}: <b>$18.500</b></p>
-                            <p>{{ translateText('message.time_saved') }}: <b>60 Days</b></p>
-                            <p>{{ translateText('message.due_date') }}: <b>31.12.2017</b></p>
+                            <p>{{ translateText('message.budget_saved') }}: <b>{{ opportunity.currency }} {{ opportunity.budget }}</b></p>
+                            <p>{{ translateText('message.time_saved') }}: <b>{{ opportunity.timeSavings }} {{ translateText(opportunity.timeUnit) }}</b></p>
+                            <p>{{ translateText('message.due_date') }}: <b>{{ opportunity.dueDate | moment('DD.MM.YYYY') }}</b></p>
                         </div>
                         
                         <div class="ro-info">
-                            <p>{{ translateText('message.measures') }}: <b>3</b></p>
-                            <p>{{ translateText('message.measures_cost') }}: <b>$8.780</b></p>
+                            <p>{{ translateText('message.measures') }}: <b v-if="opportunity.measures">{{ opportunity.measures.length }}</b></p>
+                            <p>{{ translateText('message.measures_cost') }}: <b v-if="risksOpportunitiesStats.opportunities">$ {{ risksOpportunitiesStats.opportunities.measure_data.totalCost }}</b></p>
                         </div>
                     </div>
                 </div>
@@ -104,10 +123,10 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="status-info">
-                            {{ translateText('message.created_on') }} 24.01.2017, 15:33 {{ translateText('message.by') }}
+                            {{ translateText('message.created_on') }} {{ opportunity.createdAt | moment('DD.MM.YYYY') }}, {{ opportunity.createdAt | moment('HH:mm') }} {{ translateText('message.by') }}
                             <div class="user-avatar"> 
-                                <img src="http://dev.campr.biz/uploads/avatars/40.jpg" :alt="'Nelson Carr'"/>
-                                <b>Nelson Carr</b>
+                                <img :src="opportunity.createdByAvatar" :alt="opportunity.createdByFullName"/>
+                                <b>{{ opportunity.createdByFullName }}</b>
                             </div>
                         </div>
                     </div>
@@ -117,9 +136,9 @@
                     <div class="col-md-12">
                         <div class="status-info">
                             {{ translateText('message.responsible') }}: 
-                            <div class="user-avatar"> 
-                                <img src="http://dev.campr.biz/uploads/avatars/41.jpg" :alt="'Michael Martins'"/>
-                                <b>Michael Martins</b>
+                            <div class="user-avatar">
+                                <img :src="opportunity.responsibilityAvatar" :alt="opportunity.responsibilityFullName"/>
+                                <b>{{ opportunity.responsibilityFullName }}</b>
                             </div>
                         </div>
                     </div>
@@ -129,7 +148,7 @@
                 <hr class="double">
 
                 <!-- /// Descripton /// -->
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis at dolor sollicitudin, interdum nibh quis, faucibus justo. Suspendisse sed nisi id mi aliquam finibus ac sem. Suspendisse in massa in ligula suscipit vulputate. Sed finibus massa nec est rutrum malesuada a et eros. Cras volutpat leo eu lorem viverra ornare.</p>
+                <p>{{ opportunity.description }}</p>
                 <!-- /// End Description /// -->
 
                 <hr class="double">
@@ -137,15 +156,14 @@
                 <!-- ///  Impact /// -->
                 <div class="range-slider-wrapper">
                     <range-slider
-                    v-bind:title="message.impact"
+                    v-bind:title="translateText('message.impact')"
                     min="0"
                     max="100"
                     minSuffix=" %"
                     type="single"
-                    v-model="opportunityImpact"
-                    v-bind:value="opportunityImpact" />
-                    <div class="slider-indicator">
-                        <indicator-icon fill="middle-fill" position="77" title="Average Impact Value of all opportunities is"></indicator-icon>
+                    v-bind:value="transformToString(opportunity.impact)" />
+                    <div class="slider-indicator" v-if="risksOpportunitiesStats.opportunities">
+                        <indicator-icon fill="middle-fill" :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact" :title="translateText('message.average_impact_opportunity')"></indicator-icon>
                     </div>
                 </div>
                 <!-- /// End Impact /// -->
@@ -153,118 +171,88 @@
                 <!-- /// Probability /// -->
                 <div class="range-slider-wrapper">
                     <range-slider
-                    v-bind:title="message.probability"
+                    v-bind:title="translateText('message.probability')"
                     min="0"
                     max="100"
                     minSuffix=" %"
                     type="single"
-                    v-model="opportunityProbability"
-                    v-bind:value="opportunityProbability" />
-                    <div class="slider-indicator">
-                        <indicator-icon fill="middle-fill" position="61" title="Average Probability Value of all opportunities is"></indicator-icon>
+                    v-bind:value="transformToString(opportunity.probability)" />
+                    <div class="slider-indicator" v-if="risksOpportunitiesStats.opportunities">
+                        <indicator-icon fill="middle-fill" :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability" :title="translateText('message.average_probability_opportunity')"></indicator-icon>
                     </div>
                 </div>
                 <!-- /// End Probability /// -->
 
                 <!-- /// Measures /// -->
-                <h3>3 {{ translateText('message.measures') }}</h3>
+                <h3 v-if="opportunity.measures">{{ opportunity.measures.length }} {{ translateText('message.measures') }}</h3>
                 <hr>
 
                 <!-- /// Measure /// -->
-                <div class="measure" id="measure-1">
+                <div class="measure" :id="'measure-'+measure.id" v-if="opportunity.measures" v-for="measure in opportunity.measures">
                     <!-- /// Comment /// -->
                     <div class="comment">
                         <div class="comment-header flex flex-space-between flex-v-center">
                             <div>
                                 <div class="user-avatar"> 
-                                    <img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="'John Doe'"/>
-                                    <b>John Doe</b>
+                                    <img :src="measure.responsibilityAvatar" :alt="measure.responsibilityFullName"/>
+                                    <b>{{ measure.responsibilityFullName }}</b>
                                 </div>
-                                <a href="#link-to-member-page" class="simple-link">@john.d</a>
-                                {{ translateText('message.added_a_measure') }} 3 {{ translateText('message.days_ago') }} | {{ translateText('message.edited') }} 4 {{ translateText('message.hours_ago') }}
+                                <a href="#link-to-member-page" class="simple-link">@{{ measure.responsibilityUsername }}</a>
+                                {{ translateText('message.added_a_measure') }} {{ moment(measure.createdAt).fromNow() }} | {{ translateText('message.edited') }} {{ moment(measure.updatedAt).fromNow() }}
                             </div>
                             <div class="comment-buttons">
-                                <button data-target="#measure-1-edit" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
-                                <button type="button" data-target="#measure-1-new-comment" class="btn btn-rounded btn-empty btn-auto btn-md go-to" data-toggle="collapse" data-parent="#measure-1" aria-expanded="false">{{ translateText('message.comment') }}</button>
+                                <button @click="initEditMeasure(measure)" class="btn btn-rounded second-bg btn-auto btn-md" type="button">{{ translateText('button.edit') }}</button>
+                                <button type="button" :data-target="'#measure-'+measure.id+'-new-comment'" class="btn btn-rounded btn-empty btn-auto btn-md go-to" data-toggle="collapse" :data-parent="'#measure-'+measure.id" aria-expanded="false">{{ translateText('message.comment') }}</button>
                             </div>
                         </div>
                         <div class="comment-body">
-                            <b class="title">Vestibulum ante ipsum primis in faucibus orci luctus et ultrices</b>
-                            <p class="cost">{{ translateText('message.cost') }}: <b>$ 2.780</b></p>
-                            <p>Morbi lectus massa, sollicitudin quis luctus non, pulvinar sed nibh. Suspendisse id dui a sem tempus pretium. Nunc a ornare lacus. Fusce eleifend enim id euismod scelerisque. Maecenas eu consequat ligula, id mollis mauris. Mauris ac mauris sed lorem vulputate bibendum id ut orci. Maecenas lacinia eget ipsum vitae tincidunt.</p>
-                            <ul>
-                                <li>Morbi at diam congue ante auctor tincidunt</li>
-                                <li>Pellentesque arcu odio</li>
-                                <li>Fusce malesuada magna et tincidunt vulputate</li>
-                            </ul>
+                            <b class="title">{{ measure.title }}</b>
+                            <p class="cost">{{ translateText('message.cost') }}: <b>$ {{ measure.cost }}</b></p>
+                            <p>{{ measure.description }}</p>
                         </div>  
-                        <div class="comment-footer">
+                        <div class="comment-footer" v-if="measure.medias.length > 0">
                             <attach-icon fill="second-fill"></attach-icon>
                             <ul class="comment-attachments">
-                                <li><a href="#" title="Download Attachment">Measure-requirements.docx</a></li>
-                                <li><a href="#" title="Download Attachment">Measure-objectives.xls</a></li>
+                                <li v-for="media in measure.medias"><a href="#" :title="translateText('message.download_attachment')"></a></li>
                             </ul>
                         </div>
 
                         <!-- /// Comments /// -->
-                        <div class="comments">
-                            <!-- /// Comment /// -->
-                            <div class="comment">
+                        <div class="comments" v-if="measure.comments.length > 0">
+                            <div class="comment" v-for="comment in measure.comments">
                                 <div class="comment-header flex flex-space-between flex-v-center">
                                     <div>
                                         <div class="user-avatar"> 
-                                            <img src="http://dev.campr.biz/uploads/avatars/64.jpg" :alt="'Anna Doyle'"/>
-                                            <b>Anna Doyle</b>
+                                            <img :src="comment.responsibilityAvatar" :alt="comment.responsibilityFullName"/>
+                                            <b>{{ comment.responsibilityFullName }}</b>
                                         </div>
-                                        <a href="#link-to-member-page" class="simple-link">@anna.d</a>
-                                        {{ translateText('message.commented') }} 2 {{ translateText('message.days_ago') }}
+                                        <a href="#link-to-member-page" class="simple-link">@{{ comment.responsibilityUsername }}</a>
+                                        {{ translateText('message.commented') }} {{ moment(comment.createdAt).fromNow() }}
                                     </div>
                                 </div>
                                 <div class="comment-body">
-                                    <p>Morbi sem ligula, cursus id placerat in, convallis non magna. Pellentesque finibus eros nisl, sit amet commodo arcu porttitor eget. Sed vel tincidunt est, sit amet accumsan nibh. Donec lobortis scelerisque purus, quis rhoncus purus congue vel. Proin consectetur mollis feugiat. Suspendisse at faucibus orci. Duis lacus quam, bibendum ut velit non, maximus consectetur velit. Aenean hendrerit suscipit tristique. Suspendisse vitae pulvinar quam, in aliquet mauris.</p>
-
-                                    <p>Suspendisse suscipit mauris sed metus maximus sodales. Sed vitae pretium lectus. Duis metus urna, sodales at rhoncus non, ultricies et libero. Phasellus a iaculis libero. Vestibulum convallis turpis non blandit tincidunt. Donec ullamcorper, magna eget commodo tincidunt, elit tellus fermentum sem, nec volutpat tortor nibh sed nisl. In hac habitasse platea dictumst.</p>
-                                </div> 
-                            </div>
-                            <!-- /// End Comment /// -->
-
-                            <!-- /// Comment /// -->
-                            <div class="comment">
-                                <div class="comment-header flex flex-space-between flex-v-center">
-                                    <div>
-                                        <div class="user-avatar"> 
-                                            <img src="http://dev.campr.biz/uploads/avatars/60.jpg" :alt="'Christine Wong'"/>
-                                            <b>Christine Wong</b>
-                                        </div>
-                                        <a href="#link-to-member-page" class="simple-link">@christine.w</a>
-                                        {{ translateText('message.commented') }} 1 {{ translateText('message.hour_ago') }}
-                                    </div>
+                                    <p>{{ comment.description }}</p>
                                 </div>
-                                <div class="comment-body">
-                                    <p>Fusce eleifend enim id euismod scelerisque. Maecenas eu consequat ligula, id mollis mauris. Mauris ac mauris sed lorem vulputate bibendum id ut orci. Maecenas lacinia eget ipsum vitae tincidunt.</p>
-                                    <img src="http://www.spacex.com/sites/spacex/files/landingleg_0.jpg" alt="Landing Leg">
-                                </div>  
-                                <div class="comment-footer">
+                                <div class="comment-footer" v-if="comment.medias.length > 0">
                                     <attach-icon fill="second-fill"></attach-icon>
                                     <ul class="comment-attachments">
-                                        <li><a href="#" title="Download Attachment">landing-legs.jpg</a></li>
+                                        <li v-for="media in comment.medias"><a href="#" :title="translateText('message.download_attachment')"></a></li>
                                     </ul>
                                 </div>
                             </div>
-                            <!-- /// End Comment /// -->
                         </div>
                         <!-- /// End Comments /// -->
 
                         <!-- /// New Comment /// -->
-                        <div class="new-comment collapse" id="measure-1-new-comment">
+                        <div class="new-comment collapse" :id="'measure-'+measure.id+'-new-comment'">
                             <div class="new-comment-body">
                                 <div class="vueditor-holder">
                                     <div class="vueditor-header">{{ translateText('message.new_comment') }}</div>
-                                    <Vueditor></Vueditor>
+                                    <Vueditor :ref="'comment'+measure.id" />
                                 </div>
                                 <div class="footer-buttons flex flex-space-between">
-                                    <a href="javascript:void(0)" class="btn-rounded btn-auto btn-md second-bg">{{ translateText('message.add_comment') }}</a>
-                                    <button type="button" data-target="#measure-1-new-comment" class="btn btn-rounded btn-empty btn-auto btn-md" data-toggle="collapse" data-parent="#measure-1" aria-expanded="false">{{ translateText('message.close') }}</button>
+                                    <button @click="addMeasureComment(measure.id)" type="button" :data-target="'#measure-'+measure.id+'-new-comment'" data-toggle="collapse" :data-parent="'#measure-'+measure.id" aria-expanded="false" class="btn-rounded btn-auto btn-md second-bg">{{ translateText('message.add_comment') }}</button>
+                                    <button type="button" :data-target="'#measure-'+measure.id+'-new-comment'" class="btn btn-rounded btn-empty btn-auto btn-md" data-toggle="collapse" :data-parent="'#measure-'+measure.id" aria-expanded="false">{{ translateText('message.close') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -273,148 +261,19 @@
                     <!-- /// End Comment /// -->
                 </div>
                 <!-- /// End Measure /// -->
-
-                <!-- /// Measure /// -->
-                <div class="measure" id="measure-2">
-                    <!-- /// Comment /// -->
-                    <div class="comment">
-                        <div class="comment-header flex flex-space-between flex-v-center">
-                            <div>
-                                <div class="user-avatar"> 
-                                    <img src="http://dev.campr.biz/uploads/avatars/64.jpg" :alt="'Anna Doyle'"/>
-                                    <b>Anna Doyle</b>
-                                </div>
-                                <a href="#link-to-member-page" class="simple-link">@anna.d</a>
-                                {{ translateText('message.added_a_measure') }} 2 {{ translateText('message.days_ago') }}
-                            </div>
-                            <div class="comment-buttons">
-                                <button type="button" data-target="#measure-2-new-comment" class="btn btn-rounded btn-empty btn-auto btn-md go-to" data-toggle="collapse" data-parent="#measure-2" aria-expanded="false">{{ translateText('message.comment') }}</button>
-                            </div>
-                        </div>
-                        <div class="comment-body">
-                            <b class="title">Nam malesuada dui ut tincidunt ultricies</b>
-                            <p class="cost">{{ translateText('message.cost') }}: <b>$ 5.000</b></p>
-                            <p>Morbi sem ligula, cursus id placerat in, convallis non magna. Pellentesque finibus eros nisl, sit amet commodo arcu porttitor eget. Sed vel tincidunt est, sit amet accumsan nibh. Donec lobortis scelerisque purus, quis rhoncus purus congue vel. Proin consectetur mollis feugiat. Suspendisse at faucibus orci. Duis lacus quam, bibendum ut velit non, maximus consectetur velit. Aenean hendrerit suscipit tristique. Suspendisse vitae pulvinar quam, in aliquet mauris.</p>
-
-                            <p>Suspendisse suscipit mauris sed metus maximus sodales. Sed vitae pretium lectus. Duis metus urna, sodales at rhoncus non, ultricies et libero. Phasellus a iaculis libero. Vestibulum convallis turpis non blandit tincidunt. Donec ullamcorper, magna eget commodo tincidunt, elit tellus fermentum sem, nec volutpat tortor nibh sed nisl. In hac habitasse platea dictumst.</p>
-                        </div>  
-
-                        <!-- /// New Comment /// -->
-                        <div class="new-comment collapse" id="measure-2-new-comment">
-                            <div class="new-comment-body">
-                                <div class="vueditor-holder">
-                                    <div class="vueditor-header">{{ translateText('message.new_comment') }}</div>
-                                    <Vueditor></Vueditor>
-                                </div>
-                                <div class="footer-buttons flex flex-space-between">
-                                    <a href="javascript:void(0)" class="btn-rounded btn-auto btn-md second-bg">{{ translateText('message.add_comment') }}</a>
-                                    <button type="button" data-target="#measure-2-new-comment" class="btn btn-rounded btn-empty btn-auto btn-md" data-toggle="collapse" data-parent="#measure-2" aria-expanded="false">{{ translateText('message.close') }}</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /// End New Comment /// -->
-                    </div>
-                    <!-- /// End Comment /// -->
-                </div>
-                <!-- /// End Measure /// -->
-
-                <!-- /// Measure /// -->
-                <div class="measure" id="measure-3">
-                    <!-- /// Comment /// -->
-                    <div class="comment">
-                        <div class="comment-header flex flex-space-between flex-v-center">
-                            <div>
-                                <div class="user-avatar"> 
-                                    <img src="http://dev.campr.biz/uploads/avatars/20.jpg" :alt="'Michael Martins'"/>
-                                    <b>Michael Martins</b>
-                                </div>
-                                <a href="#link-to-member-page" class="simple-link">@michael.m</a>
-                                {{ translateText('message.added_a_measure') }} 1 {{ translateText('message.day_ago') }}
-                            </div>
-                            <div class="comment-buttons">
-                                <button type="button" data-target="#measure-3-new-comment" class="btn btn-rounded btn-empty btn-auto btn-md go-to" data-toggle="collapse" data-parent="#measure-3" aria-expanded="false">{{ translateText('message.comment') }}</button>
-                            </div>
-                        </div>
-                        <div class="comment-body">
-                            <b class="title">Quisque malesuada tellus</b>
-                            <p class="cost">{{ translateText('message.cost') }}: <b>$ 1.000</b></p>
-                            <p>Sed rutrum mattis elit, eu sodales leo semper et. Nam id elit ipsum. Nam maximus porttitor neque, vitae iaculis mauris auctor vel. Mauris nec ipsum at enim vulputate pellentesque:</p>
-
-                            <ol>
-                                <li>Ut faucibus tellus in dui aliquet</li>
-                                <li>Pellentesque maximus viverra lacus in egestas</li>
-                                <li>Quisque consequat vel sem in euismod</li>
-                            </ol>
-                        </div> 
-
-                        <!-- /// Comments /// -->
-                        <div class="comments">
-                            <!-- /// Comment /// -->
-                            <div class="comment">
-                                <div class="comment-header flex flex-space-between flex-v-center">
-                                    <div>
-                                        <div class="user-avatar"> 
-                                            <img src="http://dev.campr.biz/uploads/avatars/61.jpg" :alt="'Timmy Talbot'"/>
-                                            <b>Timmy Talbot</b>
-                                        </div>
-                                        <a href="#link-to-member-page" class="simple-link">@timmy.t</a>
-                                        {{ translateText('message.commented') }} 10 {{ translateText('message.minutes_ago') }}
-                                    </div>
-                                </div>
-                                <div class="comment-body">
-                                    <p><a href="#link-to-member-page" class="simple-link">@michael.m</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                                </div>  
-                            </div>
-                            <!-- /// End Comment /// -->
-                            
-                            <!-- /// Comment /// -->
-                            <div class="comment">
-                                <div class="comment-header flex flex-space-between flex-v-center">
-                                    <div>
-                                        <div class="user-avatar"> 
-                                            <img src="http://dev.campr.biz/uploads/avatars/20.jpg" :alt="'Michael Martins'"/>
-                                            <b>Michael Martins</b>
-                                        </div>
-                                        <a href="#link-to-member-page" class="simple-link">@michael.m</a>
-                                        {{ translateText('message.commented') }} 1 {{ translateText('message.day_ago') }}
-                                    </div>
-                                </div>
-                                <div class="comment-body">
-                                    <p><a href="#link-to-member-page" class="simple-link">@timmy.t</a> Mauris nec ipsum at enim vulputate pellentesque</p>
-                                    <p>Phasellus a iaculis libero. Vestibulum convallis turpis non blandit tincidunt. Donec ullamcorper, magna eget commodo tincidunt, elit tellus fermentum sem, nec volutpat tortor nibh sed nisl. In hac habitasse platea dictumst.</p>
-                                </div> 
-                            </div>
-                            <!-- /// End Comment /// -->
-                        </div>
-                        <!-- /// End Comments /// -->
-
-                        <!-- /// New Comment /// -->
-                        <div class="new-comment collapse" id="measure-3-new-comment">
-                            <div class="new-comment-body">
-                                <div class="vueditor-holder">
-                                    <div class="vueditor-header">{{ translateText('message.new_comment') }}</div>
-                                    <Vueditor></Vueditor>
-                                </div>
-                                <div class="footer-buttons flex flex-space-between">
-                                    <a href="javascript:void(0)" class="btn-rounded btn-auto btn-md second-bg">{{ translateText('message.add_comment') }}</a>
-                                    <button type="button" data-target="#measure-3-new-comment" class="btn btn-rounded btn-empty btn-auto btn-md" data-toggle="collapse" data-parent="#measure-3" aria-expanded="false">{{ translateText('message.close') }}</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /// End New Comment /// -->
-                    </div>
-                    <!-- /// End Comment /// -->
-                </div>
-                <!-- /// End Measure /// -->
-                <!-- /// End Measures /// -->
 
                 <!-- /// New Measure /// -->
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-12">
+                            <input-field type="text" v-bind:label="translateText('placeholder.measure_title')" v-model="measureTitle" v-bind:content="measureTitle" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
                             <div class="vueditor-holder measure-vueditor-holder">
                                 <div class="vueditor-header">{{ translateText('placeholder.new_measure') }}</div>
-                                <Vueditor ref="content" />
+                                <Vueditor ref="measureDescription" />
                             </div>
                         </div>
                     </div>
@@ -424,7 +283,7 @@
                                 <input-field type="text" v-bind:label="translateText('placeholder.measure_cost')" v-model="measureCost" v-bind:content="measureCost" />
                             </div>
                             <div class="col-md-4 text-right">
-                                <a href="#" class="btn-rounded btn-auto">{{ translateText('button.add_new_measure') }}</a>
+                                <a @click="addMeasure()" class="btn-rounded btn-auto">{{ translateText('button.add_new_measure') }}</a>
                             </div>
                         </div>
                     </div>
@@ -442,6 +301,9 @@ import AttachIcon from '../../_common/_icons/AttachIcon';
 import InputField from '../../_common/_form-components/InputField';
 import IndicatorIcon from '../../_common/_icons/IndicatorIcon';
 import RangeSlider from '../../_common/_form-components/RangeSlider';
+import {mapGetters, mapActions} from 'vuex';
+import moment from 'moment';
+import Modal from '../../_common/Modal';
 
 export default {
     components: {
@@ -451,11 +313,105 @@ export default {
         InputField,
         IndicatorIcon,
         RangeSlider,
+        Modal,
     },
     methods: {
+        ...mapActions([
+            'getProjectRiskAndOpportunitiesStats', 'getProjectOpportunity', 'createMeasureComment',
+            'createOpportunityMeasure', 'deleteProjectOpportunity', 'editMeasure',
+        ]),
         translateText: function(text) {
             return this.translate(text);
         },
+        moment: function(date) {
+            return moment(date);
+        },
+        transformToString: function(value) {
+            return value ? value.toString() : '';
+        },
+        addMeasureComment: function(measureId) {
+            let data = {
+                measure: measureId,
+                description: this.$refs['comment'+measureId][0].getContent(),
+            };
+            this.createMeasureComment(data);
+        },
+        addMeasure: function() {
+            let data = {
+                opportunity: this.$route.params.opportunityId,
+                title: this.measureTitle,
+                description: this.$refs['measureDescription'].getContent(),
+                cost: this.measureCost,
+            };
+            this.createOpportunityMeasure(data);
+        },
+        deleteOpportunity: function() {
+            this.deleteProjectOpportunity(this.$route.params.opportunityId);
+        },
+        initEditMeasure: function(measure) {
+            this.showEditMeasureModal = true;
+            this.selectedMeasure = {
+                id: measure.id,
+                title: measure.title,
+                description: measure.description,
+                cost: measure.cost,
+            };
+        },
+        editSelectedMeasure: function() {
+            this.selectedMeasure.description = this.$refs['selectedMeasureDescription'].getContent();
+            this.editMeasure(this.selectedMeasure);
+            this.showEditMeasureModal = false;
+        },
+        updateGridView() {
+            let index = 0;
+            const riskImpact = this.opportunityImpact;
+            const riskProbability = this.opportunityProbability;
+
+            if (riskImpact < 25 || !riskImpact) {
+                index += 12;
+            }
+            if (riskImpact >= 25 && riskImpact < 50) {
+                index += 8;
+            }
+            if (riskImpact >= 50 && riskImpact < 75) {
+                index += 4;
+            }
+            if (riskImpact >= 75) {
+                index += 0;
+            }
+
+            if (riskProbability < 25 || !riskProbability) {
+                index += 0;
+            }
+            if (riskProbability >= 25 && riskProbability < 50) {
+                index += 1;
+            }
+            if (riskProbability >= 50 && riskProbability < 75) {
+                index += 2;
+            }
+            if (riskProbability >= 75) {
+                index += 3;
+            }
+
+            if(this.activeItem) {
+                this.activeItem.isActive = false;
+            }
+
+            this.activeItem = this.gridData[index];
+            this.activeItem.isActive = true;
+        },
+    },
+    computed: {
+        ...mapGetters({
+            opportunity: 'currentOpportunity',
+            risksOpportunitiesStats: 'risksOpportunitiesStats',
+        }),
+    },
+    created() {
+        this.getProjectRiskAndOpportunitiesStats(this.$route.params.id);
+        if (this.$route.params.opportunityId) {
+            this.getProjectOpportunity(this.$route.params.opportunityId);
+        }
     },
     mounted() {
         $('.new-comment').on('shown.bs.collapse', function(e) {
@@ -466,22 +422,59 @@ export default {
         });
     },
     data: function() {
-        const stepData = 2;
-
         return {
+            selectedMeasure: {},
+            measureTitle: '',
+            measureDescription: '',
             measureCost: '',
-            message: {
-                impact: Translator.trans('message.impact'),
-                probability: Translator.trans('message.probability'),
-            },
-            opportunityImpact: stepData ? stepData.opportunityImpact : 0,
-            opportunityProbability: stepData ? stepData.opportunityProbability : 0,
+            opportunityImpact: 0,
+            opportunityProbability: 0,
+            showDeleteModal: false,
+            showEditMeasureModal: false,
+            gridData: [
+                {type: 'medium'}, {type: 'high'}, {type: 'very-high'}, {type: 'very-high'},
+                {type: 'low'}, {type: 'medium'}, {type: 'high'}, {type: 'very-high'},
+                {type: 'very-low'}, {type: 'low'}, {type: 'medium'}, {type: 'high'},
+                {type: 'very-low'}, {type: 'very-low'}, {type: 'low'}, {type: 'medium'},
+            ],
         };
+    },
+    watch: {
+        opportunity(value) {
+            this.opportunityImpact = this.opportunity.impact;
+            this.opportunityProbability = this.opportunity.probability;
+            this.updateGridView();
+        },
     },
 };
 </script>
 
 <style lang="scss">
+    @import '../../../css/_variables';
+
+    .modal {
+        .modal-title {
+            text-transform: uppercase;
+            text-align: center;
+            font-size: 18px;
+            letter-spacing: 1.8px;
+            font-weight: 300;
+            margin-bottom: 40px;
+        }
+
+        .input-holder {
+            margin-bottom: 30px;
+        }
+
+        .main-list .member {
+            border-top: 1px solid $darkColor;
+        }
+
+        .results {
+            width: 600px;
+        }
+    }
+
     .tooltip {
         .tooltip-content {
             text-transform: none;
