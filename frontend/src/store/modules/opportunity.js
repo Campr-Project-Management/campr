@@ -72,6 +72,38 @@ const actions = {
             }, (response) => {
             });
     },
+    /**
+     * Delete an opportunity
+     * @param {function} commit
+     * @param {integer} id
+     */
+    deleteProjectOpportunity({commit}, id) {
+        Vue.http
+            .delete(
+                Routing.generate('app_api_opportunities_delete', {id: id})
+            ).then((response) => {
+                router.push({name: 'project-risks-and-opportunities'});
+            }, (response) => {
+            });
+    },
+    /**
+     * Create opportunity measure
+     * @param {function} commit
+     * @param {array}    data
+     */
+    createOpportunityMeasure({commit}, data) {
+        Vue.http
+            .post(
+                Routing.generate('app_api_opportunities_create_measure', {id: data.opportunity}),
+                JSON.stringify(data)
+            ).then((response) => {
+                if (response.status === 201) {
+                    let measure = response.data;
+                    commit(types.ADD_MEASURE_FOR_CURRENT_OPPORTUNITY, {measure});
+                }
+            }, (response) => {
+            });
+    },
 };
 
 const mutations = {
@@ -90,6 +122,44 @@ const mutations = {
      */
     [types.SET_OPPORTUNITY](state, {opportunity}) {
         state.currentOpportunity = opportunity;
+    },
+    /**
+     * Add opportunity measure
+     * @param {Object} state
+     * @param {array} measure
+     */
+    [types.ADD_MEASURE_FOR_CURRENT_OPPORTUNITY](state, {measure}) {
+        state.currentOpportunity.measures.push(measure);
+    },
+    /**
+     * Add opportunity measure comment
+     * @param {Object} state
+     * @param {array} measureComment
+     */
+    [types.ADD_MEASURE_COMMENT_FOR_CURRENT_OPPORTUNITY](state, {measureComment}) {
+        if (state.currentOpportunity.measures) {
+            state.currentOpportunity.measures.map(item => {
+                if (item.id === measureComment.measure) {
+                    item.comments.push(measureComment);
+                }
+            });
+        }
+    },
+    /**
+     * Edit measure of the current opportunity
+     * @param {Object} state
+     * @param {array} data
+     */
+    [types.EDIT_MEASURE_FOR_CURRENT_OPPORTUNITY](state, {data}) {
+        if (state.currentOpportunity.measures) {
+            state.currentOpportunity.measures.map(item => {
+                if (item.id === data.id) {
+                    item.title = data.title;
+                    item.description = data.description;
+                    item.cost = data.cost;
+                }
+            });
+        }
     },
 };
 
