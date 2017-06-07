@@ -16,23 +16,24 @@
         <div class="results team" v-show="hasItems">
             <vue-scrollbar class="scroll-list">
                 <div class="members">
-                    <div class="member flex" v-for="item in items">
-                        <div class="checkbox-input clearfix" :class="{'inactive': !item.checked}">
-                            <input v-if="singleSelect" :id="item.id"  type="checkbox" :name="item.userFullName" :checked="item.checked" @click="toggleActivation(item)">
-                            <input v-else="singleSelect" :id="item.id"  type="radio" :name="item.userFullName" :checked="item.checked">
+                    <div class="member flex flex-v-center" v-for="item in items">
+                        <div class="checkbox-input clearfix" :class="{'inactive': !item.checked}">                            
+                            <input v-if="singleSelect" :id="item.id"  type="radio" :name="item.userFullName" :checked="item.checked">
+                            <input v-else="singleSelect" :id="item.id"  type="checkbox" :name="item.userFullName" :checked="item.checked" @click="toggleActivation(item)">
                             <label :for="item.id"></label>
                         </div>
-                        <img :src="item.userAvatar">
+                        <div class="avatar" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
                         <div class="info">
                             <p class="title">{{ item.userFullName }}</p>
                             <p class="description">{{ item.projectRoleName }}</p>
                         </div>
                     </div>
                     <div class="footer">
-                        <p>Selected: <span v-for="item in items"><span v-if="item.checked">{{ item.userFullName }}, </span></span></p>
+                        <p v-show="!singleSelect">Selected: <span v-for="item in items"><span v-if="item.checked">{{ item.userFullName }}, </span></span></p>
                         <div class="flex flex-space-between">
-                            <a @click="reset" class="cancel">{{ button.cancel }}</a>
-                            <a @click="updateSelected()" class="show">{{ button.show_selected }}</a>
+                            <a href="javascript:void(0)" @click="reset" class="cancel">{{ translateText('button.cancel') }}</a>
+                            <a v-if="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{ translateText('button.done') }}</a>
+                            <a v-else="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{ translateText('button.show_selected') }}</a>
                         </div>
                     </div>
                 </div>
@@ -55,6 +56,9 @@ export default {
     },
     methods: {
         ...mapActions(['getProjectUsers']),
+        translateText: function(text) {
+            return this.translate(text);
+        },
         toggleActivation(item) {
             item.checked = !item.checked;
         },
@@ -92,10 +96,6 @@ export default {
     },
     data: function() {
         return {
-            button: {
-                cancel: this.translate('button.cancel'),
-                show_selected: this.translate('button.show_selected'),
-            },
             src: Routing.generate('app_api_project_project_users', {'id': this.$route.params.id}),
             queryParamName: 'search',
             minChars: 3,
@@ -154,6 +154,7 @@ export default {
 
 <style scoped lang="scss">
     @import '../../css/_variables';
+    @import '../../css/_mixins';
 
     .modal {
         .modal-title {
@@ -192,32 +193,39 @@ export default {
         .team {
             margin-top: 0;
 
-            .checkbox-input {
-                margin-top: 13px;
-                margin-right: 10px;
-            }
-
             .footer {
                 margin: 0 -20px;
-                padding: 17px 20px;
+                padding: 17px 20px 0 20px;
                 border-top: 1px solid $mainColor;
             }
 
             .footer p {
                 margin-bottom: 11px;
                 font-size: 10px;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
             }
 
             .footer a {
                 text-transform: uppercase;
+                letter-spacing: 0.1em;
+                @include transition(color, 0.3s, ease);
             }
 
             .footer .cancel {
                 color: $middleColor;
+
+                &:hover {
+                    color: darken($middleColor, 15%);
+                }
             }
 
             .footer .show {
                 color: $secondColor;
+
+                &:hover {
+                    color: $secondDarkColor;
+                }
             }
         }
     }
@@ -243,18 +251,22 @@ export default {
         border-top: 1px solid $mainColor;
 
         &:first-child {
-            border-bottom: none;
+            border-top: none;
         }
     }
 
-    img {
+    .avatar {
         width: 46px;
         height: 46px;
+        @include border-radius(50%);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
     }
 
     .info {
         text-transform: uppercase;
-        padding-left: 10px;
+        padding: 0 0 0 10px;
     }
 
     .title {

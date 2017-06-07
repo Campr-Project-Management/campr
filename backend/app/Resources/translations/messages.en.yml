@@ -1,8 +1,33 @@
 message:
+    participants: Participants
+    delete: Delete
+    new_objective: New Objective
+    save_schedule: Save Schedule
+    documents: Documents
+    add_new_info: Add New Info
+    add_new_todo: Add New Todo
+    add_new_decision: Add New Decision
+    add_new_topic: Add New Topic
+    agenda: Agenda
+    add_new_objective: Add New Objective
+    objectives: Objectives
+    location: Location
     budget_calculation: Budget is calculated as Probability times Potential Savings
     time_calculation: Time Saved is calculated as Probability times Potential Time Savings
     average_impact: Average Impact Value of all opportunities is
     average_probability: Average Probability Value of all opportunities is
+    delete_meeting: Delete Meeting
+    reschedule_meeting: Reschedule Meeting
+    send_notifications: Send Notifications
+    back_to_meetings: Back to Meetings
+    print_meeting: Print Meeting
+    edit_meeting: Edit Meeting
+    view_meeting: View Meeting
+    less: less
+    more: more
+    event: Event
+    create_new_meeting: Create New Meeting
+    project_meetings: Project Meetings
     cost: Cost
     close: Close
     new_comment: New Comment
@@ -16,6 +41,7 @@ message:
     day_ago: day ago
     days_ago: days ago
     responsible: Responsible
+    edit: Edit
     edited: edited
     by: by
     created_on: created on
@@ -114,6 +140,7 @@ message:
     control_measures: Control Measures
     status_report: Status Report
     meetings: Meetings
+    infos: Infos
     todos: Todos
     notes: Notes
     close_down_project: Close Down Project
@@ -593,6 +620,11 @@ subtitle:
     subteam_member: List of subteam members
 
 label:
+    select_status: Select Status
+    finish_time: Finish Time
+    start_time: Start Time
+    select_date: Select Date
+    distribution_list: Distribution List
     time_unit: Time Unit
     delay_unit: Delay Unit
     opportunity_status: Opportunity Status
@@ -820,7 +852,11 @@ label:
     subteam: Subteam
     subteam_roles: Subteam Roles
 
-button:
+button: 
+    send_notifications: Send Notifications
+    edit_distribution_list: Edit Distribution List
+    save_meeting: Save Meeting
+    done: Done
     add_new_measure: Add New Measure
     view_all_tasks: View all tasks
     view_tasks_board: View tasks board
@@ -949,6 +985,14 @@ add:
     subteam_member: Add new subteam member
 
 placeholder:
+    info_description: Info Description
+    action: Action
+    decision_description: Decision Description
+    decision_title: Decision Title
+    responsible: Responsible
+    topic: Topic
+    objective: Objective
+    location: Location
     opportunity_strategy: Opportunity Strategy
     opportunity_status: Opportunity Status
     rist_strategy: Risk Strategy
@@ -1046,6 +1090,10 @@ placeholder:
     gplus: Google Plus
 
 table_header_cell:
+    distribution_list: Distribution List
+    present: Present
+    team_member: Team Member
+    event: Event
     risk: Risk
     opportunity: Opportunity
     comments: Comments

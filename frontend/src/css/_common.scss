@@ -45,12 +45,20 @@
   flex-wrap: wrap;
 }
 
+body {
+  background-color: $mainColor;
+}
+
 .uppercase {
   text-transform: uppercase;
 }
 
 .relative {
   position: relative;
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }
 
 .bullets {
@@ -75,7 +83,7 @@ h3 {
   text-transform: uppercase;
   font-weight: 300;
   letter-spacing: 1.6px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 
   &.with-label {
     margin-bottom: 25px;
@@ -109,9 +117,6 @@ p {
 .lighter-fill {
   fill: $lighterColor;
 }
-.lighter-stroke {
-  stroke: $lighterColor;
-}
 .middle-fill {
   fill: $middleColor;
 }
@@ -121,8 +126,17 @@ p {
 .danger-fill {
   fill: $dangerColor;
 }
+.white-fill {
+  fill: $whiteColor;
+}
+.lighter-stroke {
+  stroke: $lighterColor;
+}
 .middle-stroke {
   stroke: $middleColor;
+}
+.white-stroke {
+  stroke: $whiteColor;
 }
 .second-bg {
   background: $secondColor !important;
@@ -159,6 +173,9 @@ p {
 }
 
 .margintop20 {
+  margin-top: 20px;
+}
+.marginbottom20 {
   margin-top: 20px;
 }
 
@@ -213,7 +230,6 @@ img {
     &.active{
       top: -15px;
       left: 20px;
-      font-style: oblique;
       font-size: 0.8em;
     }
   }
@@ -231,7 +247,7 @@ textarea {
   background: $darkColor;
   width: 100%;
   border: none;
-  padding: 12px 20px;
+  padding: 11px 20px;
   color: $lightColor;
   margin-bottom: 20px;
   font-size: 12px;
@@ -271,6 +287,16 @@ textarea {
   border: none;
   cursor: pointer;
   @include transition(all, 0.2s, ease-in);
+
+  .icon {
+    display: inline;
+    margin-left: 5px;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
 
   &:hover,
   &:active,
@@ -355,6 +381,10 @@ textarea {
   background: transparent;
   border: 1px solid $middleColor;
 
+  .icon {
+    display: inline-block;
+  }
+
   svg {
     fill: $lighterColor;
   }
@@ -426,6 +456,30 @@ textarea {
   }
 }
 
+.two-state {
+  .more {
+    display: none;
+  }
+
+  .less {
+    display: inline-block;
+  }
+
+  &.collapsed {
+    .more {
+      display: inline-block;
+    }
+
+    .less {
+      display: none;
+    }
+  }
+
+  &:focus {
+    outline: 0;
+  }
+}
+
 .datetime-picker {
   &.red input {
     background: $dangerColor;
@@ -476,11 +530,13 @@ hr {
 
 .checkbox-input {
 
-  input[type=checkbox] {
+  input[type=checkbox],
+  input[type=radio] {
     display: none;
   }
 
-  input[type=checkbox] + label:before {
+  input[type=checkbox] + label:before,
+  input[type=radio] + label:before {
     content: '';
     width: 20px;
     height: 20px;
@@ -493,7 +549,12 @@ hr {
     top: -1px;
   }
 
-  input[type=checkbox]:checked + label:before {
+  input[type=radio] + label:before {
+    @include border-radius(50%);
+  }
+
+  input[type=checkbox]:checked + label:before,
+  input[type=radio]:checked + label:before {
     content: '';
     text-align: center;
     background: $secondColor;
@@ -837,6 +898,14 @@ hr {
 
   >tbody>tr:nth-of-type(even) {
     background: $semiDarkColor;
+  }
+
+  >tbody>tr.inactive:nth-of-type(odd) {
+    background: darken($whiteColor,75%);
+  }
+
+  >tbody>tr.inactive:nth-of-type(even) {
+    background: darken($whiteColor,80%);
   }
 
   tr.column-warning {
