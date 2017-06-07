@@ -1535,4 +1535,33 @@ class ProjectController extends ApiController
             ],
         ]);
     }
+
+    /**
+     * Get data for Gantt charts.
+     *
+     * @Route("/{id}/gantt", name="app_api_project_gantt", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function ganttAction(Project $project)
+    {
+        $data = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(WorkPackage::class)
+            ->findBy(
+                [
+                    'project' => $project,
+                ],
+                [
+                    'puid' => 'ASC',
+                ]
+            )
+        ;
+
+        return $this->createApiResponse($data);
+    }
 }

@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Dashboard from '../components/Dashboard/Dashboard';
-import Projects from '../components/Projects/Projects';
-import ProjectCreateStep1 from '../components/Projects/ProjectCreateStep1';
-import ProjectCreateStep2 from '../components/Projects/ProjectCreateStep2';
-import ProjectCreateStep3 from '../components/Projects/ProjectCreateStep3';
+import Dashboard from '../components/Dashboard/Dashboard.vue';
+import Projects from '../components/Projects/Projects.vue';
+import ProjectCreateStep1 from '../components/Projects/ProjectCreateStep1.vue';
+import ProjectCreateStep2 from '../components/Projects/ProjectCreateStep2.vue';
+import ProjectCreateStep3 from '../components/Projects/ProjectCreateStep3.vue';
 import ViewProject from '../components/Projects/ViewProject.vue';
 import ProjectDashboard from '../components/Projects/ProjectDashboard.vue';
 import ProjectContract from '../components/Projects/ProjectContract.vue';
@@ -15,8 +15,8 @@ import View from '../components/Projects/TaskManagement/View.vue';
 import Create from '../components/Projects/TaskManagement/Create.vue';
 import AddLabel from '../components/Projects/TaskManagement/AddLabel.vue';
 import EditLabels from '../components/Projects/TaskManagement/EditLabels.vue';
-import ViewTask from '../components/Tasks/ViewTask';
-import Tasks from '../components/Tasks/Tasks';
+import ViewTask from '../components/Tasks/ViewTask.vue';
+import Tasks from '../components/Tasks/Tasks.vue';
 import MemberCreate from '../components/Projects/Organization/MemberCreate.vue';
 import EditOrganization from '../components/Projects/Organization/EditOrganization.vue';
 import ProjectPhasesMilestones from '../components/Projects/ProjectPhasesMilestones.vue';
@@ -29,6 +29,7 @@ import RiskCreate from '../components/Projects/Risks/RiskCreate.vue';
 import OpportunityCreate from '../components/Projects/Opportunities/OpportunityCreate.vue';
 import RiskView from '../components/Projects/Risks/RiskView.vue';
 import OpportunityView from '../components/Projects/Opportunities/OpportunityView.vue';
+import Gantt from '../components/Projects/Gantt.vue';
 
 Vue.use(VueRouter);
 
@@ -203,6 +204,11 @@ const routes = [
                 path: 'risks-and-opportunities/edit-opportunity/:opportunityId',
                 component: OpportunityCreate,
                 name: 'project-opportunities-edit-opportunity',
+            },
+            {
+                path: 'gantt-chart',
+                component: Gantt,
+                name: 'project-gantt-chart',
             },
         ],
     },
