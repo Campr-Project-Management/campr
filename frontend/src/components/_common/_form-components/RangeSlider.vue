@@ -61,6 +61,14 @@ export default {
             this.$emit('input', value);
         },
     },
+    watch: {
+        value: function(val) {
+            const $this = window.$('#slider' + this._uid);
+            $this.data('ionRangeSlider').update({
+                from: val,
+            });
+        },
+    },
 };
 </script>
 
