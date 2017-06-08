@@ -362,6 +362,34 @@ class WorkPackage
     private $updatedAt;
 
     /**
+     * @var decimal
+     *
+     * @ORM\Column(name="external_actual_cost", type="decimal", precision=9, scale=2, nullable=true)
+     */
+    private $externalActualCost;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="external_forecast_cost", type="decimal", precision=9, scale=2, nullable=true)
+     */
+    private $externalForecastCost;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="internal_actual_cost", type="decimal", precision=9, scale=2, nullable=true)
+     */
+    private $internalActualCost;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="internal_forecast_cost", type="decimal", precision=9, scale=2, nullable=true)
+     */
+    private $internalForecastCost;
+
+    /**
      * WorkPackage constructor.
      */
     public function __construct()
@@ -1590,5 +1618,77 @@ class WorkPackage
                 ->addViolation()
             ;
         }
+    }
+
+    /**
+     * @return decimal
+     */
+    public function getExternalActualCost()
+    {
+        return $this->externalActualCost;
+    }
+
+    /**
+     * @param decimal $externalActualCost
+     */
+    public function setExternalActualCost($externalActualCost)
+    {
+        $this->externalActualCost = $externalActualCost;
+
+        return $this;
+    }
+
+    /**
+     * @return decimal
+     */
+    public function getExternalForecastCost()
+    {
+        return $this->externalForecastCost;
+    }
+
+    /**
+     * @param decimal $externalForecastCost
+     */
+    public function setExternalForecastCost($externalForecastCost)
+    {
+        $this->externalForecastCost = $externalForecastCost;
+
+        return $this;
+    }
+
+    /**
+     * @return decimal
+     */
+    public function getInternalActualCost()
+    {
+        return $this->internalActualCost;
+    }
+
+    /**
+     * @param decimal $internalActualCost
+     */
+    public function setInternalActualCost($internalActualCost)
+    {
+        $this->internalActualCost = $internalActualCost;
+
+        return $this;
+    }
+
+    /**
+     * @return decimal
+     */
+    public function getInternalForecastCost()
+    {
+        return $this->internalForecastCost;
+    }
+
+    /**
+     * @param decimal $internalForecastCost
+     */
+    public function setInternalForecastCost($internalForecastCost)
+    {
+        $this->internalForecastCost = $internalForecastCost;
+
+        return $this;
     }
 }
