@@ -191,7 +191,7 @@ const mutations = {
      */
     [types.DELETE_PROJECT_PHASE](state, {id}) {
         state.projectPhases.items = state.projectPhases.items.filter((item) => {
-            return item.id !== id ? true : false;
+            return item.id !== id;
         });
         state.projectPhases.totalItems--;
     },
