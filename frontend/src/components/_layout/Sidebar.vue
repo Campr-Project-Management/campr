@@ -131,6 +131,12 @@
                         <span class="tablet"></span>
                     </router-link>
                 </li>
+                <li>
+                    <router-link :to="{name: 'project-gantt-chart'}" v-bind:title="message.gantt_chart">
+                        <span class="default">{{ message.gantt_chart }}</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
                 <!--<li>-->
                     <!--<router-link to="todo" v-bind:title="message.communication">-->
                         <!--<span class="default">{{ message.comunication }}</span>-->
@@ -179,6 +185,7 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
@@ -193,29 +200,33 @@ export default {
     },
     methods: {
         ...mapActions(['getProjects', 'getTasks']),
+        translate(key) {
+            return Vue.translate(key);
+        },
     },
     data: function() {
         return {
             message: {
-                dashboard: Translator.trans('message.dashboard'),
-                projects: Translator.trans('message.projects'),
-                tasks: Translator.trans('message.tasks'),
-                project_dashboard: Translator.trans('message.project_dashboard'),
-                contract: Translator.trans('message.contract'),
-                organization: Translator.trans('message.organization'),
-                plan: Translator.trans('message.plan'),
-                task_management: Translator.trans('message.task_management'),
-                phases_milestones: Translator.trans('message.phases_milestones'),
-                costs: Translator.trans('message.costs'),
-                resources: Translator.trans('message.resources'),
-                risks_oportunities: Translator.trans('message.risks_oportunities'),
-                comunication: Translator.trans('message.communication'),
-                control_measures: Translator.trans('message.control_measures'),
-                status_report: Translator.trans('message.status_report'),
-                meetings: Translator.trans('message.meetings'),
-                todos: Translator.trans('message.todos'),
-                notes: Translator.trans('message.notes'),
-                close_down_project: window.Translator.trans('message.close_down_project'),
+                dashboard: this.translate('message.dashboard'),
+                projects: this.translate('message.projects'),
+                tasks: this.translate('message.tasks'),
+                project_dashboard: this.translate('message.project_dashboard'),
+                contract: this.translate('message.contract'),
+                organization: this.translate('message.organization'),
+                plan: this.translate('message.plan'),
+                task_management: this.translate('message.task_management'),
+                phases_milestones: this.translate('message.phases_milestones'),
+                costs: this.translate('message.costs'),
+                resources: this.translate('message.resources'),
+                risks_oportunities: this.translate('message.risks_oportunities'),
+                comunication: this.translate('message.communication'),
+                control_measures: this.translate('message.control_measures'),
+                status_report: this.translate('message.status_report'),
+                meetings: this.translate('message.meetings'),
+                todos: this.translate('message.todos'),
+                notes: this.translate('message.notes'),
+                close_down_project: this.translate('message.close_down_project'),
+                gantt_chart: this.translate('message.gantt_chart'),
             },
         };
     },

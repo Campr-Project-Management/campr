@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Dashboard from '../components/Dashboard/Dashboard';
-import Projects from '../components/Projects/Projects';
-import ProjectCreateStep1 from '../components/Projects/ProjectCreateStep1';
-import ProjectCreateStep2 from '../components/Projects/ProjectCreateStep2';
-import ProjectCreateStep3 from '../components/Projects/ProjectCreateStep3';
+import Dashboard from '../components/Dashboard/Dashboard.vue';
+import Projects from '../components/Projects/Projects.vue';
+import ProjectCreateStep1 from '../components/Projects/ProjectCreateStep1.vue';
+import ProjectCreateStep2 from '../components/Projects/ProjectCreateStep2.vue';
+import ProjectCreateStep3 from '../components/Projects/ProjectCreateStep3.vue';
 import ViewProject from '../components/Projects/ViewProject.vue';
 import ProjectDashboard from '../components/Projects/ProjectDashboard.vue';
 import ProjectContract from '../components/Projects/ProjectContract.vue';
@@ -15,8 +15,8 @@ import View from '../components/Projects/TaskManagement/View.vue';
 import Create from '../components/Projects/TaskManagement/Create.vue';
 import AddLabel from '../components/Projects/TaskManagement/AddLabel.vue';
 import EditLabels from '../components/Projects/TaskManagement/EditLabels.vue';
-import ViewTask from '../components/Tasks/ViewTask';
-import Tasks from '../components/Tasks/Tasks';
+import ViewTask from '../components/Tasks/ViewTask.vue';
+import Tasks from '../components/Tasks/Tasks.vue';
 import MemberCreate from '../components/Projects/Organization/MemberCreate.vue';
 import EditOrganization from '../components/Projects/Organization/EditOrganization.vue';
 import ProjectPhasesMilestones from '../components/Projects/ProjectPhasesMilestones.vue';
@@ -33,6 +33,7 @@ import ProjectMeetings from '../components/Projects/ProjectMeetings.vue';
 import MeetingCreate from '../components/Projects/Meetings/MeetingCreate.vue';
 import EditMeeting from '../components/Projects/Meetings/EditMeeting.vue';
 import ViewMeeting from '../components/Projects/Meetings/ViewMeeting.vue';
+import Gantt from '../components/Projects/Gantt.vue';
 
 Vue.use(VueRouter);
 
@@ -227,6 +228,11 @@ const routes = [
                 path: 'meetings/view-meeting',
                 component: ViewMeeting,
                 name: 'project-meetings-view-meeting',
+            },
+            {
+                path: 'gantt-chart',
+                component: Gantt,
+                name: 'project-gantt-chart',
             },
         ],
     },

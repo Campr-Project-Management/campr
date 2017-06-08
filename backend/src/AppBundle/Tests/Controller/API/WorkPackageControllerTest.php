@@ -94,6 +94,7 @@ class WorkPackageControllerTest extends BaseController
                             'automaticSchedule' => false,
                             'duration' => 0,
                             'costs' => [],
+                            'comments' => [],
                             'responsibilityAvatar' => null,
                         ],
                         [
@@ -141,6 +142,7 @@ class WorkPackageControllerTest extends BaseController
                             'automaticSchedule' => false,
                             'duration' => 0,
                             'costs' => [],
+                            'comments' => [],
                             'responsibilityAvatar' => null,
                         ],
                     ],
@@ -232,6 +234,7 @@ class WorkPackageControllerTest extends BaseController
                     'automaticSchedule' => false,
                     'duration' => 0,
                     'costs' => [],
+                    'comments' => [],
                     'responsibilityAvatar' => null,
                 ],
             ],
@@ -325,6 +328,7 @@ class WorkPackageControllerTest extends BaseController
                     'automaticSchedule' => false,
                     'duration' => 0,
                     'costs' => [],
+                    'comments' => [],
                 ],
             ],
         ];
@@ -475,6 +479,84 @@ class WorkPackageControllerTest extends BaseController
                     'confirmed' => false,
                     'startedAt' => null,
                     'finishedAt' => null,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataForCommentsCreateAction()
+     *
+     * @param array $content
+     * @param $isResponseSuccessful
+     * @param $responseStatusCode
+     * @param $responseContent
+     */
+    public function testCommentsCreateAction(
+        array $content,
+        $isResponseSuccessful,
+        $responseStatusCode,
+        $responseContent
+    ) {
+        $user = $this->getUserByUsername('superadmin');
+        $token = $user->getApiToken();
+
+        $this->client->request(
+            'POST',
+            '/api/workpackages/1/comments',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content)
+        );
+
+        $response = $this->client->getResponse();
+
+        $comment = json_decode($response->getContent(), true);
+
+        if ($isResponseSuccessful) {
+            $responseContent['createdAt'] = $comment['createdAt'];
+            $responseContent['updatedAt'] = $comment['updatedAt'];
+        }
+
+        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals(json_encode($responseContent), $response->getContent());
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForCommentsCreateAction()
+    {
+        return [
+            // data set for success
+            [
+                [
+                    'body' => 'This is the text for comment body.',
+                    'author' => 1,
+                ],
+                true,
+                Response::HTTP_CREATED,
+                [
+                    'id' => 2,
+                    'body' => 'This is the text for comment body.',
+                    'createdAt' => '2017-01-01 12:00:00',
+                    'updatedAt' => '2017-01-01 12:00:00',
+                ],
+            ],
+            //data set for failure
+            [
+                [
+                    'body' => 'This is the text for comment body.',
+                ],
+                false,
+                Response::HTTP_BAD_REQUEST,
+                [
+                    'messages' => [
+                        'author' => [
+                            'You must select an author',
+                        ],
+                    ],
                 ],
             ],
         ];
