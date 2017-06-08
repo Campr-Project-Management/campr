@@ -363,7 +363,7 @@ export default {
                 index += 3;
             }
 
-            if(this.activeItem) {
+            if (this.activeItem) {
                 this.activeItem.isActive = false;
             }
 
