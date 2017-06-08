@@ -327,6 +327,22 @@ class WorkPackage
     private $costs;
 
     /**
+     * @var ArrayCollection|Comment[]
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Comment", inversedBy="workPackages")
+     * @ORM\JoinTable(
+     *     name="work_package_comment",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="work_package_id")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="comment_id")
+     *     }
+     * )
+     */
+    private $comments;
+
+    /**
      * @var \DateTime
      *
      * @Serializer\Exclude()
@@ -358,6 +374,7 @@ class WorkPackage
         $this->children = new ArrayCollection();
         $this->medias = new ArrayCollection();
         $this->costs = new ArrayCollection();
+        $this->comments = new ArrayCollection();
         $this->puid = microtime(true) * 1000000;
     }
 
@@ -1511,6 +1528,44 @@ class WorkPackage
     public function getCosts()
     {
         return $this->costs;
+    }
+
+    /**
+     * Add Comment.
+     *
+     * @param Comment $comment
+     *
+     * @return WorkPackage
+     */
+    public function addComment(Comment $comment)
+    {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Remove comment.
+     *
+     * @param Comment $comment
+     *
+     * @return WorkPackage
+     */
+    public function removeComment(Comment $comment)
+    {
+        $this->comments->removeComment($comment);
+
+        return $this;
+    }
+
+    /**
+     * Get comments.
+     *
+     * @return ArrayCollection
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 
     /**
