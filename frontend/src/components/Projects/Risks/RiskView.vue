@@ -156,6 +156,7 @@
                 <!-- ///  Impact /// -->
                 <div class="range-slider-wrapper">
                     <range-slider
+                            :disabled="true"
                             v-bind:title="translateText('message.impact')"
                             min="0"
                             max="100"
@@ -171,6 +172,7 @@
                 <!-- /// Probability /// -->
                 <div class="range-slider-wrapper">
                     <range-slider
+                            :disabled="true"
                             v-bind:title="translateText('message.probability')"
                             min="0"
                             max="100"
