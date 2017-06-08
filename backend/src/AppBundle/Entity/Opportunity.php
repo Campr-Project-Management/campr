@@ -65,7 +65,7 @@ class Opportunity
     /**
      * @var string
      *
-     * @ORM\Column(name="cost_savings", type="string", length=255, nullable=true)
+     * @ORM\Column(name="cost_savings", type="decimal", precision=9, scale=2, nullable=true)
      */
     private $costSavings;
 
@@ -79,14 +79,14 @@ class Opportunity
     /**
      * @var string
      *
-     * @ORM\Column(name="budget", type="string", length=255, nullable=true)
+     * @ORM\Column(name="budget", type="decimal", precision=9, scale=2, nullable=true)
      */
     private $budget;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="time_savings", type="string", length=255, nullable=true)
+     * @ORM\Column(name="time_savings", type="decimal", precision=9, scale=2, nullable=true)
      */
     private $timeSavings;
 

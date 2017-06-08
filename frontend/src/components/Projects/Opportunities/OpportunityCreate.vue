@@ -293,9 +293,9 @@ export default {
                 description: this.$refs.description.getContent(),
                 impact: this.opportunityImpact,
                 probability: this.opportunityProbability,
-                budget: this.calculatedBudget,
+                budget: this.calculateBudget(),
                 costSavings: this.costSavings,
-                currency: this.details.currency && this.details.currency.key ? this.details.currency.label : '',
+                currency: this.details.currency && this.details.currency.key ? this.details.currency.key : '',
                 timeSavings: this.timeSavings,
                 timeUnit: this.details.time && this.details.time.key ? this.details.time.key : '',
                 priority: 'PRIORITY', // TODO: determine the priority calulation method
@@ -323,6 +323,8 @@ export default {
             let opportunityVal = parseInt(this.opportunityProbability ? this.opportunityProbability : 0);
             let savingsVal = parseFloat(this.costSavings ? this.costSavings : 0);
             this.calculatedBudget = currency + ' ' + (opportunityVal * savingsVal).toFixed(2);
+
+            return (opportunityVal * savingsVal).toFixed(2);
         },
         calculateTime: function() {
             let unit = this.details.time && this.details.time.key ? this.details.time.label : '';
@@ -361,12 +363,21 @@ export default {
                 index += 3;
             }
 
-            if(this.activeItem) {
+            if (this.activeItem) {
                 this.activeItem.isActive = false;
             }
 
             this.activeItem = this.gridData[index];
             this.activeItem.isActive = true;
+        },
+        getCurrencySymbol: function(label) {
+            let symbols = {
+                'USD': '$',
+                'EUR': '€',
+                'GBP': '₤',
+            };
+
+            return symbols[label];
         },
     },
     computed: {
@@ -418,7 +429,7 @@ export default {
             this.opportunityProbability = this.opportunity.probability.toString();
             this.costSavings = this.opportunity.costSavings;
             this.details.currency = this.opportunity.currency
-                ? {key: this.opportunity.currency, label: this.opportunity.currency}
+                ? {key: this.translateText(this.opportunity.currency), label: this.getCurrencySymbol(this.opportunity.currency)}
                 : null
             ;
             this.timeSavings = this.opportunity.timeSavings;
@@ -468,7 +479,12 @@ export default {
             memberList: [],
             opportunityImpact: 0,
             opportunityProbability: 0,
-            currencyLabel: [{label: this.translateText('label.currency'), key: null}, {label: '$', key: 1}, {label: '€', key: 2}, {label: '₤', key: 3}],
+            currencyLabel: [
+                {label: this.translateText('label.currency'), key: null},
+                {label: '$', key: 'USD'},
+                {label: '€', key: 'EUR'},
+                {label: '₤', key: 'GBP'},
+            ],
             timeLabel: [
                 {label: this.translateText('label.time'), key: null},
                 {label: this.translateText('choices.hours'), key: 'choices.hours'},
@@ -477,14 +493,6 @@ export default {
                 {label: this.translateText('choices.months'), key: 'choices.months'},
             ],
             isEdit: this.$route.params.opportunityId,
-            message: {
-                impact: Translator.trans('message.impact'),
-                probability: Translator.trans('message.probability'),
-            },
-            strategyLabel: [{label: 'Take', key: 1}, {label: 'Increase', key: 2}, {label: 'Skip', key: 3}],
-            statusLabel: [{label: 'Initiated', key: 1}, {label: 'Ongoing', key: 2}, {label: 'Finished', key: 3}],
-            model: {},
-            currentOption: {},
             gridData: [
                 {type: 'medium'}, {type: 'high'}, {type: 'very-high'}, {type: 'very-high'},
                 {type: 'low'}, {type: 'medium'}, {type: 'high'}, {type: 'very-high'},

@@ -35,6 +35,7 @@ import opportunityStatus from './modules/opportunity-status';
 import riskStatus from './modules/risk-status';
 import riskStrategy from './modules/risk-strategy';
 import measure from './modules/measure';
+import gantt from './modules/gantt';
 
 Vue.use(Vuex);
 
@@ -77,6 +78,7 @@ export default new Vuex.Store({
         riskStatus,
         riskStrategy,
         measure,
+        gantt,
     },
     strict: debug,
 });
