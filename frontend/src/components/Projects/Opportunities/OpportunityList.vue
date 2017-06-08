@@ -2,7 +2,7 @@
     <div class="ro-list">
         <div class="ro-list-item" v-for="item in listData">
             <div class="avatar" :style="{ backgroundImage: 'url(' + item.responsibilityAvatar + ')' }" v-tooltip.top="item.responsibilityFullName"></div>
-            <router-link :to="{name: 'project-opportunities-view-opportunity'}">
+            <router-link :to="{name: 'project-opportunities-view-opportunity', params:{opportunityId: item.id}}">
                 <a href="javascript:void(0)" :title="item.title">{{ item.title }}</a>
             </router-link>
             <p>{{ translateText('message.potential_savings') }}: <b v-if="item.costSavings">{{ translateText(item.currency) }} {{ item.costSavings }}</b><b v-else>-</b></p>
