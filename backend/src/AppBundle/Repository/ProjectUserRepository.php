@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Project;
+
 class ProjectUserRepository extends BaseRepository
 {
     public function findByWithLike(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -67,5 +69,19 @@ class ProjectUserRepository extends BaseRepository
         }
 
         return $qb->getQuery();
+    }
+
+    public function getUserAndDepartment(Project $project)
+    {
+        $qb = $this
+            ->createQueryBuilder('pu')
+            ->select('u.id as uid, pd.name as department')
+            ->innerJoin('pu.user', 'u')
+            ->innerJoin('pu.projectDepartments', 'pd')
+            ->where('pu.project = :project')
+            ->setParameter('project', $project)
+        ;
+
+        return $qb->getQuery()->getArrayResult();
     }
 }

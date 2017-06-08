@@ -49,6 +49,8 @@ export const createFormData = (data) => {
             );
         }
     }
+    formData.append('externalActualCost', data.externalCosts.actual);
+    formData.append('externalForecastCost', data.externalCosts.forecast);
 
     // Internal Costs
     for (let i = 0; i < data.internalCosts.items.length; i++) {
@@ -59,6 +61,8 @@ export const createFormData = (data) => {
         formData.append('costs[' + costIndex + '][rate]', data.internalCosts.items[i].rate);
         formData.append('costs[' + costIndex + '][type]', 0);
     }
+    formData.append('internalActualCost', data.internalCosts.actual);
+    formData.append('internalForecastCost', data.internalCosts.forecast);
 
     // Schedule Data
     formData.append('scheduledStartAt', moment(data.schedule.baseStartDate).format('DD-MM-YYYY'));
