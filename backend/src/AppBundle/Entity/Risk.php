@@ -65,7 +65,7 @@ class Risk
     /**
      * @var string
      *
-     * @ORM\Column(name="cost", type="string", length=255)
+     * @ORM\Column(name="cost", type="decimal", precision=9, scale=2, nullable=true)
      */
     private $cost;
 
@@ -79,14 +79,14 @@ class Risk
     /**
      * @var string
      *
-     * @ORM\Column(name="budget", type="string", length=255)
+     * @ORM\Column(name="budget", type="decimal", precision=9, scale=2, nullable=true)
      */
     private $budget;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="delay", type="string", length=255)
+     * @ORM\Column(name="delay", type="decimal", precision=9, scale=2, nullable=true)
      */
     private $delay;
 
