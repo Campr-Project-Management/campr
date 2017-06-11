@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Cost;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\User;
 use AppBundle\Entity\WorkPackage;
@@ -613,5 +614,27 @@ class WorkPackageRepository extends BaseRepository
         }
 
         return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function getTotalExternalInternalCostsByPhase(Project $project, $type, $userIds = [])
+    {
+        $qb = $this->getQueryBuilderByProjectAndFilters($project, ['type' => WorkPackage::TYPE_TASK]);
+
+        if (intval($type) === Cost::TYPE_EXTERNAL) {
+            $qb->select('SUM(wp.externalActualCost) as actual, SUM(wp.externalForecastCost) as forecast');
+        } elseif (intval($type) === Cost::TYPE_INTERNAL) {
+            $qb->select('SUM(wp.internalActualCost) as actual, SUM(wp.internalForecastCost) as forecast');
+        }
+
+        if (!empty($userIds)) {
+            $qb->andWhere(
+                $qb->expr()->in('wp.responsibility', $userIds)
+            );
+        } else {
+            $qb->addSelect('ph.name as phaseName');
+            $qb->innerJoin('wp.phase', 'ph')->groupBy('wp.phase');
+        }
+
+        return $qb->getQuery()->getArrayResult();
     }
 }
