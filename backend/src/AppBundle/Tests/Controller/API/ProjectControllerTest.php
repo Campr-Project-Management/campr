@@ -2972,6 +2972,10 @@ class ProjectControllerTest extends BaseController
                     'duration' => 0,
                     'costs' => [],
                     'comments' => [],
+                    'externalActualCost' => null,
+                    'externalForecastCost' => null,
+                    'internalActualCost' => null,
+                    'internalForecastCost' => null,
                 ],
             ],
         ];

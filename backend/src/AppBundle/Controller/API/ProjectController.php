@@ -4,6 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Contract;
+use AppBundle\Entity\Cost;
 use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\Label;
@@ -1559,9 +1560,53 @@ class ProjectController extends ApiController
                 [
                     'puid' => 'ASC',
                 ]
-            )
-        ;
+            );
 
         return $this->createApiResponse($data);
+    }
+
+    /**
+     * @Route("/{id}/costs-resources", name="app_api_project_costs_resources", options={"expose"=true})
+     * @Method({"GET"})
+     */
+    public function costsResourcesAction(Request $request, Project $project)
+    {
+        $filters = $request->query->all();
+        if (isset($filters['type'])) {
+            $em = $this->getDoctrine()->getManager();
+            $costRepo = $em->getRepository(Cost::class);
+            $wpRepo = $em->getRepository(WorkPackage::class);
+
+            $baseCosts = $costRepo->getTotalBaseCostByPhase($project, $filters['type']);
+            $actualForecastCosts = $wpRepo->getTotalExternalInternalCostsByPhase($project, $filters['type']);
+            $dataByPhase = [];
+            foreach (array_merge($baseCosts, $actualForecastCosts) as $cost) {
+                foreach ($cost as $key => $value) {
+                    if ($key !== 'phaseName') {
+                        $dataByPhase[$cost['phaseName']][$key] = $value;
+                    }
+                }
+            }
+
+            $userDepartments = $em->getRepository(ProjectUser::class)->getUserAndDepartment($project);
+            $dataByDepartment = [];
+            foreach ($userDepartments as $userDepartment) {
+                $dataByDepartment[$userDepartment['department']]['userIds'][] = $userDepartment['uid'];
+            }
+            foreach ($dataByDepartment as $key => $value) {
+                $base = $costRepo->getTotalBaseCostByPhase($project, $filters['type'], $value['userIds']);
+                $actualForecast = $wpRepo->getTotalExternalInternalCostsByPhase($project, $filters['type'], $value['userIds']);
+                $dataByDepartment[$key]['base'] = !empty($base) ? $base[0]['base'] : 0;
+                $dataByDepartment[$key]['actual'] = !empty($actualForecast) ? $actualForecast[0]['actual'] : 0;
+                $dataByDepartment[$key]['forecast'] = !empty($actualForecast) ? $actualForecast[0]['forecast'] : 0;
+            }
+
+            return $this->createApiResponse([
+                'byPhase' => $dataByPhase,
+                'byDepartment' => $dataByDepartment
+            ]);
+        }
+
+        return $this->createApiResponse(null, Response::HTTP_BAD_REQUEST);
     }
 }
