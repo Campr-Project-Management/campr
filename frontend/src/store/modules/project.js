@@ -17,6 +17,7 @@ const state = {
     tasksForSchedule: {},
     projectTasksStatus: {},
     risksOpportunitiesStats: [],
+    projectCostsAndResources: {},
 };
 
 const getters = {
@@ -41,6 +42,7 @@ const getters = {
     projectTasksStatus: state => state.projectTasksStatus,
     risksOpportunitiesStats: state => state.risksOpportunitiesStats,
     projectsCount: state => state.projects.totalItems,
+    projectCostsAndResources: state => state.projectCostsAndResources,
 };
 
 const actions = {
@@ -446,6 +448,22 @@ const actions = {
             }, (response) => {
             });
     },
+
+    /**
+     * Gets project costs and resources data
+     * @param {function} commit
+     * @param {number} data
+     */
+    getProjectCostsResources({commit}, data) {
+        Vue.http
+            .get(Routing.generate('app_api_project_costs_resources', data)).then((response) => {
+                if (response.status === 200) {
+                    let projectCostsAndResources = response.data;
+                    commit(types.SET_PROJECT_COSTS_AND_RESOURCES, {projectCostsAndResources});
+                }
+            }, (response) => {
+            });
+    },
 };
 
 const mutations = {
@@ -580,6 +598,14 @@ const mutations = {
      */
     [types.SET_PROJECT_RISKS_OPPORTUNITIES_STATS](state, {roStats}) {
         state.risksOpportunitiesStats = roStats;
+    },
+    /**
+     * Set project costs and resources data
+     * @param {Object} state
+     * @param {array} projectCostsAndResources
+     */
+    [types.SET_PROJECT_COSTS_AND_RESOURCES](state, {projectCostsAndResources}) {
+        state.projectCostsAndResources = projectCostsAndResources;
     },
 };
 
