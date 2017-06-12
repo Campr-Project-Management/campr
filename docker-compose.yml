@@ -40,12 +40,12 @@ services:
         ports:
             - 2080:8080
     dev.campr.biz:
-        # build: config/docker/nginx
-        image: lab.trisoft.ro:4567/trisoft/internal/nginx-dev
+        image: nginx:1.11.10
         depends_on:
             - php-fpm
-        volumes_from:
-            - php-fpm
+        volumes:
+            - .:/app
+            - ./config/docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
         ports:
             - 80:80
     supervisor:
