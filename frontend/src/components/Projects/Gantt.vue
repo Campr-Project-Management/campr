@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import 'dhtmlx-gantt';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
@@ -95,5 +96,5 @@ export default {
 </script>
 
 <style scoped="scoped">
-    /* gantt shit */
+    @import "~dhtmlx-gantt/codebase/dhtmlxgantt.css";
 </style>

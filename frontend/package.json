@@ -15,6 +15,7 @@
   "dependencies": {
     "bazinga-translator": "^2.6.3",
     "bootstrap": "^3.3.7",
+    "dhtmlx-gantt": "^4.1.0",
     "domenu": "github:cristiandan/domenu",
     "exports-loader": "^0.6.3",
     "font-awesome": "^4.7.0",
