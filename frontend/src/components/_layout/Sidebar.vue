@@ -155,12 +155,12 @@
                         <!--<span class="tablet"></span>-->
                     <!--</router-link>-->
                 <!--</li>-->
-                <!--<li>-->
-                    <!--<router-link to="todo" v-bind:title="message.meetings">-->
-                        <!--<span class="default">{{ message.meetings }}</span>-->
-                        <!--<span class="tablet"></span>-->
-                    <!--</router-link>-->
-                <!--</li>-->
+                <li>
+                    <router-link :to="{name: 'project-meetings'}" v-bind:title="message.meetings">
+                        <span class="default">{{ message.meetings }}</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
                 <!--<li>-->
                     <!--<router-link to="todo" v-bind:title="message.todos">-->
                         <!--<span class="default">{{ message.todos }}</span>-->

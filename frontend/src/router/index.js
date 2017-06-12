@@ -29,6 +29,10 @@ import RiskCreate from '../components/Projects/Risks/RiskCreate.vue';
 import OpportunityCreate from '../components/Projects/Opportunities/OpportunityCreate.vue';
 import RiskView from '../components/Projects/Risks/RiskView.vue';
 import OpportunityView from '../components/Projects/Opportunities/OpportunityView.vue';
+import ProjectMeetings from '../components/Projects/ProjectMeetings.vue';
+import MeetingCreate from '../components/Projects/Meetings/MeetingCreate.vue';
+import EditMeeting from '../components/Projects/Meetings/EditMeeting.vue';
+import ViewMeeting from '../components/Projects/Meetings/ViewMeeting.vue';
 import Gantt from '../components/Projects/Gantt.vue';
 import Costs from '../components/Projects/Costs.vue';
 import Resources from '../components/Projects/Resources.vue';
@@ -206,6 +210,26 @@ const routes = [
                 path: 'risks-and-opportunities/edit-opportunity/:opportunityId',
                 component: OpportunityCreate,
                 name: 'project-opportunities-edit-opportunity',
+            },
+            {
+                path: 'meetings',
+                component: ProjectMeetings,
+                name: 'project-meetings',
+            },
+            {
+                path: 'meetings/create-meeting',
+                component: MeetingCreate,
+                name: 'project-meetings-create-meeting',
+            },
+            {
+                path: 'meetings/edit-meeting',
+                component: EditMeeting,
+                name: 'project-meetings-edit-meeting',
+            },
+            {
+                path: 'meetings/view-meeting',
+                component: ViewMeeting,
+                name: 'project-meetings-view-meeting',
             },
             {
                 path: 'gantt-chart',
