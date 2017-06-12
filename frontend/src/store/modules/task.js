@@ -3,7 +3,9 @@ import * as types from '../mutation-types';
 import router from '../../router';
 
 const state = {
+    items: [],
     currentTask: {},
+    taskHistory: {},
     tasks: [],
     tasksCount: 0,
     filteredTasks: [],
@@ -18,6 +20,7 @@ const getters = {
     tasks: state => state.tasks,
     tasksCount: state => state.tasksCount,
     allTasks: state => state.allTasks,
+    taskHistory: state => state.taskHistory,
 };
 
 const actions = {
@@ -91,6 +94,16 @@ const actions = {
                 if (response.status === 200) {
                     let task = response.data;
                     commit(types.SET_TASK, {task});
+                }
+            }, (response) => {
+            });
+    },
+    getTaskHistory({commit}, id) {
+        Vue.http
+            .get(Routing.generate('app_api_workpackage_history', {'id': id})).then((response) => {
+                if (response.status === 200) {
+                    let history = response.data;
+                    commit(types.SET_TASK_HISTORY, {history});
                 }
             }, (response) => {
             });
@@ -204,6 +217,41 @@ const actions = {
             }, (response) => {
             });
     },
+    /**
+     * Delete subtask
+     * @param {function} commit
+     * @param {integer} taskId
+     */
+    deleteTaskSubtask({commit}, taskId) {
+        Vue.http
+            .delete(
+                Routing.generate('app_api_workpackage_delete', {id: taskId})
+            ).then((response) => {
+                commit(types.DELETE_TASK_SUBTASK, taskId);
+            }, (response) => {
+            });
+    },
+    /**
+     * Add new comment
+     * @param {function} commit
+     * @param {array} data
+     */
+    addTaskComment({commit}, data) {
+        Vue.http
+            .post(Routing.generate('app_api_workpackage_comments_create', {'id': data.task.id}), JSON.stringify(data.payload)).then((response) => {
+                if (response.status === 201) {
+                    Vue.http
+                        .get(Routing.generate('app_api_workpackage_history', {'id': data.task.id})).then((response) => {
+                            if (response.status === 200) {
+                                let history = response.data;
+                                commit(types.SET_TASK_HISTORY, {history});
+                            }
+                        }, (response) => {
+                        });
+                }
+            }, (response) => {
+            });
+    },
 };
 
 const mutations = {
@@ -226,6 +274,14 @@ const mutations = {
         state.currentTask = task;
     },
     /**
+     * Set the history
+     * @param {Object} state
+     * @param {Object} history
+     */
+    [types.SET_TASK_HISTORY](state, {history}) {
+        state.taskHistory = history;
+    },
+    /**
      * Sets taskFilters to state
      * @param {Object} state
      * @param {array} filter
@@ -238,6 +294,8 @@ const mutations = {
     },
     [types.SET_ALL_TASKS](state, tasks) {
         state.allTasks = tasks;
+    },
+    [types.DELETE_TASK_SUBTASK](state, taskId) {
     },
 };
 
