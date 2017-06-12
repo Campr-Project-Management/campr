@@ -5,6 +5,7 @@ namespace AppBundle\Controller\API;
 use AppBundle\Entity\Assignment;
 use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\WorkPackage;
+use AppBundle\Entity\Log;
 use AppBundle\Entity\Comment;
 use AppBundle\Form\WorkPackage\ApiCreateType;
 use AppBundle\Form\WorkPackage\MilestoneType;
@@ -321,6 +322,7 @@ class WorkPackageController extends ApiController
      *
      * @return JsonResponse
      */
+
     public function commentsCreateAction(Request $request, WorkPackage $wp)
     {
         $comment = new Comment();
@@ -346,5 +348,37 @@ class WorkPackageController extends ApiController
         ];
 
         return  $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+
+    }
+
+    /**
+     * Returns all the changes made against a specific WorkPackage.
+     *
+     * @Route("/{id}/history", name="app_api_workpackage_history", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param WorkPackage $wp
+     *
+     * @return JsonResponse
+     */
+
+    public function historyAction(Request $request, WorkPackage $wp)
+    {   
+        $filters = $request->query->all();
+        $filters['pageSize'] = (isset($filters['pageSize'])) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+        $filters['page'] = isset($filters['page']) ? intval($filters['page']) : 1;
+        
+         $em = $this->getDoctrine()->getManager();
+         
+         $history = $em
+                ->getRepository(Log::class)
+                ->findByObjectAndFilters(
+                    WorkPackage::class,
+                    $wp->getId(),
+                    $filters    
+                )
+            ;
+        return $this->createApiResponse($history);
     }
 }

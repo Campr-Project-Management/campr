@@ -501,4 +501,17 @@ class Media
     {
         return $this->measureComments;
     }
+
+    /**
+     * returns the file name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("fileName")
+     *
+     * @return string
+     */
+    public function getFileName()
+    {
+        return basename($this->path);
+    }
 }

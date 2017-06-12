@@ -117,6 +117,7 @@ class MeetingControllerTest extends BaseController
                             'fileSystemName' => 'fs',
                             'user' => 1,
                             'userFullName' => 'FirstName1 LastName1',
+                            'fileName' => 'file1',
                             'id' => 1,
                             'path' => 'file1',
                             'mimeType' => 'inode/x-empty',

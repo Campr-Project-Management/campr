@@ -940,6 +940,19 @@ class WorkPackage
     }
 
     /**
+     * Returns responsibility email address.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibilityEmail")
+     *
+     * @return string
+     */
+    public function getResponsibilityEmail()
+    {
+        return $this->responsibility ? $this->responsibility->getEmail() : null;
+    }
+
+    /**
      * Set project.
      *
      * @param Project $project
@@ -1206,6 +1219,19 @@ class WorkPackage
     {
         return $this->labels && $this->labels->count()
             ? (string) $this->labels->first()
+            : null
+        ;
+    }
+
+    /**
+     * @return string
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("labelColor")
+     */
+    public function getLabelColor()
+    {
+        return $this->labels && $this->labels->count()
+            ? $this->labels->first()->getColor()
             : null
         ;
     }
