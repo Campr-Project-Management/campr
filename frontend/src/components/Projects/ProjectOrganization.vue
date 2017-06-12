@@ -1,9 +1,9 @@
 <template>
     <div class="project-organization page-section">
         <modal v-if="showModal" @close="showModal = false">
-            <p class="modal-title">{{ translateText('message.add_distribution_list') }}</p>
+            <p class="modal-title">{{ translateText('title.add_distribution_list') }}</p>
             <input-field v-model="distributionTitle" type="text" v-bind:label="translateText('label.distribution_list_title')"></input-field>
-            <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.search_resources')"></member-search>
+            <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.search_resources')" v-bind:singleSelect="false"></member-search>
             <br />
             <div class="members main-list">
                 <div class="member flex"  v-for="item in distributionList">

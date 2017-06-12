@@ -144,8 +144,7 @@
                 <div class="flex buttons flex-center">
                     <a v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
                     <a class="btn-rounded second-bg flex flex-center download-pdf">
-                        <p>{{ translateText('button.download_pdf') }}</p>
-                        <download-icon></download-icon>
+                        {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill"></downloadbutton-icon>
                     </a>
                 </div>
             </div>
@@ -159,7 +158,7 @@ import {mapGetters, mapActions} from 'vuex';
 import DragBox from './TaskManagement/DragBox';
 import InputField from '../_common/_form-components/InputField';
 import CalendarIcon from '../_common/_icons/CalendarIcon';
-import DownloadIcon from '../_common/_icons/DownloadIcon';
+import DownloadbuttonIcon from '../_common/_icons/DownloadbuttonIcon';
 import EyeIcon from '../_common/_icons/EyeIcon';
 import MemberBadge from '../_common/MemberBadge';
 import datepicker from 'vuejs-datepicker';
@@ -172,7 +171,7 @@ export default {
         datepicker,
         InputField,
         CalendarIcon,
-        DownloadIcon,
+        DownloadbuttonIcon,
         EyeIcon,
         MemberBadge,
     },
