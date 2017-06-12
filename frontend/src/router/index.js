@@ -34,6 +34,8 @@ import MeetingCreate from '../components/Projects/Meetings/MeetingCreate.vue';
 import EditMeeting from '../components/Projects/Meetings/EditMeeting.vue';
 import ViewMeeting from '../components/Projects/Meetings/ViewMeeting.vue';
 import Gantt from '../components/Projects/Gantt.vue';
+import Costs from '../components/Projects/Costs.vue';
+import Resources from '../components/Projects/Resources.vue';
 
 Vue.use(VueRouter);
 
@@ -233,6 +235,16 @@ const routes = [
                 path: 'gantt-chart',
                 component: Gantt,
                 name: 'project-gantt-chart',
+            },
+            {
+                path: 'costs',
+                component: Costs,
+                name: 'project-costs',
+            },
+            {
+                path: 'resources',
+                component: Resources,
+                name: 'project-resources',
             },
         ],
     },
