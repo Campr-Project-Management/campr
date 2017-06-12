@@ -2,6 +2,8 @@ message:
     to: to
     from: from
     starting_on: Starting On
+    costs_chart: Costs Chart
+    resources_chart: Resources Chart
     delete_opportunity: Delete Opoortunity
     delete_risk: Delete Risk
     edit_measure: Edit Measure
