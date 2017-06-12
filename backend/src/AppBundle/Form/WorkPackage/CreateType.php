@@ -10,6 +10,7 @@ use AppBundle\Entity\WorkPackageStatus;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -186,6 +187,10 @@ class CreateType extends BaseType
             ->add('isKeyMilestone', CheckboxType::class)
             ->add('duration', IntegerType::class)
             ->add('automaticSchedule', CheckboxType::class)
+            ->add('externalActualCost', NumberType::class)
+            ->add('externalForecastCost', NumberType::class)
+            ->add('internalActualCost', NumberType::class)
+            ->add('internalForecastCost', NumberType::class)
         ;
 
         $formModifier = function (FormInterface $form, $project = null, $wpId = null) {

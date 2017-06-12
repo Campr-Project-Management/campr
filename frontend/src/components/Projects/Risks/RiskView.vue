@@ -154,8 +154,9 @@
                 <hr class="double">
 
                 <!-- ///  Impact /// -->
-                <div class="range-slider-wrapper">
+                <div class="range-slider-wrapper" v-if="risk">
                     <range-slider
+                            :disabled="true"
                             v-bind:title="translateText('message.impact')"
                             min="0"
                             max="100"
@@ -169,8 +170,9 @@
                 <!-- /// End Impact /// -->
 
                 <!-- /// Probability /// -->
-                <div class="range-slider-wrapper">
+                <div class="range-slider-wrapper" v-if="risk">
                     <range-slider
+                            :disabled="true"
                             v-bind:title="translateText('message.probability')"
                             min="0"
                             max="100"
