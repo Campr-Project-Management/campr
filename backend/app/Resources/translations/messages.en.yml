@@ -283,12 +283,15 @@ message:
     import_task: Import Task
     task_schedule: Task Schedule
     task_details: Task Details
+    back_to_task_management: Back to task management
+    subtasks_summary: %completed_tasks% of %total_tasks% 
     planning: Planning
     subtasks: Subtasks
     project_tasks: Project Tasks
     edit_labels: Edit Labels
     edit_task: Edit Task
     close_task: Close Task
+    delete_task: Delete Task 
     import_project: Import project
     all_programmes: All Programmes
     all_projects_filter: All Projects
@@ -308,6 +311,7 @@ message:
     internal_costs: Internal Costs
     project_currency: Project Currency
     external_costs: External Costs
+    asignee: Asignee
     note: Note:
     opex_capex_note: If an External Cost is not set up as CAPEX,it will automatically be set up as OPEX.
     capex: Capex
@@ -316,6 +320,14 @@ message:
     attachments: Attachments
     view_team: View Team
     departments: Departments
+    assigned_to: assigned task to
+    has_edited_task: has edited task
+    has_commented_task: has commented task
+    new_comment: New Comment
+    this_task_part_of: This task is part of
+    task_completion: Task completion
+    task_condition: Task condition  
+
 
 menu:
     users: Users
@@ -684,6 +696,8 @@ subtitle:
     subteam: List of subteams
     subteam_role: List of subteam roles
     subteam_member: List of subteam members
+    task_schedule: Task schedule
+    task_precedesor: Task predecesor
 
 label:
     expiry_date: Expiry Date
@@ -872,6 +886,8 @@ label:
     base_due_date: Base Due Date
     forecast_due_date: Forecast Due Date
     select_phase: Select Phase
+    edit_phase: Edith Phase
+    edit_milestone: Edith Milestone
     created_by: Created By
     two_factor_auth: Two Factor Authentication
     closed: Closed
@@ -900,6 +916,7 @@ label:
     weeks: Weeks
     months: Months
     internal_cost_subtotal: Subtotal
+    internal_costs_total: Base Total
     forecast_total: Forecast Total
     actual_total: Actual Total
     cost_description: Cost Description
@@ -920,6 +937,8 @@ label:
     subteam_members: Subteam Members
     subteam: Subteam
     subteam_roles: Subteam Roles
+    schedule: Schedule
+    
 
 button:
     delete_info: Delete Info
@@ -993,12 +1012,14 @@ button:
     add_new_subtask: Add new subtask
     create_task: Create Task
     edit_task: Edit Task
+    start_task: Start Task  
     show_results: Show Results
     import: Import
     add_internal_cost: Add internal cost
     add_external_cost: Add external cost
     add_attachment: Add attachment
     edit_label: Edit Label
+    comment: Comment
 
 checkbox:
     checked: Yes
