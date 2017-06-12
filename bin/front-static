@@ -25,4 +25,3 @@ ln -sf "${dir}/web/bundles/bazingajstranslation/js/translator.min.js" "${dir}/fr
 ln -sf "${dir}/web/js/translations/config.js" "${dir}/frontend/static/js/config.js"
 ln -sf "${dir}/web/js/translations/en.js" "${dir}/frontend/static/js/en.js"
 ln -sf "${dir}/web/js/translations/de.js" "${dir}/frontend/static/js/de.js"
-ln -sf "${dir}/web/assets" "${dir}/frontend/static/assets"
