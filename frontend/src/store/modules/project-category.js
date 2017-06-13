@@ -4,13 +4,13 @@ import * as types from '../mutation-types';
 const state = {
     projectCategories: [],
     projectCategoriesForSelect: [],
-    loading: false,
+    projectCategoryLoading: false,
 };
 
 const getters = {
     projectCategories: state => state.projectCategories,
     projectCategoriesForSelect: state => state.projectCategoriesForSelect,
-    projectCategoriesLoading: state => state.loading,
+    projectCategoriesLoading: state => state.projectCategoryLoading,
 };
 
 const actions = {
@@ -52,7 +52,7 @@ const mutations = {
      * @param {array} loading
      */
     [types.SET_PROJECT_CATEGORIES_LOADING](state, {loading}) {
-        state.loading = loading;
+        state.projectCategoryLoading = loading;
     },
 };
 
