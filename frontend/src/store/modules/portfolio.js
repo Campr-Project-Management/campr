@@ -5,14 +5,14 @@ const state = {
     currentPortofolio: {},
     portfolios: [],
     portfoliosForSelect: [],
-    loading: false,
+    portfolioLoading: false,
 };
 
 const getters = {
     currentPortfolio: state => state.currentPortofolio,
     portfolios: state => state.portfolios,
     portfoliosForSelect: state => state.portfoliosForSelect,
-    portfolioLoading: state => state.loading,
+    portfolioLoading: state => state.portfolioLoading,
 };
 
 const actions = {
@@ -94,7 +94,7 @@ const mutations = {
         state.portfoliosForSelect = portfoliosForSelect;
     },
     [types.SET_PORTFOLIO_LOADING](state, {loading}) {
-        state.loading = loading;
+        state.portfolioLoading = loading;
     },
     [types.ADD_PORTFOLIO](state, {portfolio}) {
         state.portfolios.push(portfolio);

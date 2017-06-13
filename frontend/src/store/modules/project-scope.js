@@ -4,13 +4,13 @@ import * as types from '../mutation-types';
 const state = {
     projectScopes: [],
     projectScopesForSelect: [],
-    loading: false,
+    projectScopeLoading: false,
 };
 
 const getters = {
     projectScopes: state => state.projectScopes,
     projectScopesForSelect: state => state.projectScopesForSelect,
-    projectScopesLoading: state => state.loading,
+    projectScopesLoading: state => state.projectScopeLoading,
 };
 
 const actions = {
@@ -37,7 +37,7 @@ const mutations = {
     /**
      * Sets project scopes to state
      * @param {Object} state
-     * @param {array} programmes
+     * @param {array} projectScopes
      */
     [types.SET_PROJECT_SCOPES](state, {projectScopes}) {
         state.projectScopes = projectScopes;
@@ -52,7 +52,7 @@ const mutations = {
      * @param {array} loading
      */
     [types.SET_PROJECT_SCOPES_LOADING](state, {loading}) {
-        state.loading = loading;
+        state.projectScopeLoading = loading;
     },
 };
 

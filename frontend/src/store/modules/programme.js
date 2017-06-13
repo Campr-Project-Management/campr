@@ -4,13 +4,13 @@ import * as types from '../mutation-types';
 const state = {
     programmes: [],
     programmesForSelect: [],
-    loading: false,
+    programmeLoading: false,
 };
 
 const getters = {
     programmes: state => state.programmes,
     programmesForSelect: state => state.programmesForSelect,
-    programmeLoading: state => state.loading,
+    programmeLoading: state => state.programmeLoading,
     programmesForFilter: function(state) {
         let programmesForFilter = [{'key': '', 'label': Translator.trans('message.all_programmes')}];
         state.programmes.map(function(programme) {
@@ -81,7 +81,7 @@ const mutations = {
      * @param {array} loading
      */
     [types.SET_PROGRAMME_LOADING](state, {loading}) {
-        state.loading = loading;
+        state.programmeLoading = loading;
     },
     [types.ADD_PROGRAMME](state, {programme}) {
         state.programmes.push(programme);
