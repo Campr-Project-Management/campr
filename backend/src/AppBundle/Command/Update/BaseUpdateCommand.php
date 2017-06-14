@@ -5,6 +5,7 @@ namespace AppBundle\Command\Update;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\WorkPackage;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -35,65 +36,33 @@ abstract class BaseUpdateCommand extends ContainerAwareCommand
 
     protected function getWorkPackages(
         Project $project,
-        array $parent = null,
-        $includeDependants = false,
-        $includeChildren = true
+        array $parent = null
     ) {
         $qb = $this
             ->getEm()
             ->getRepository(WorkPackage::class)
             ->createQueryBuilder('wp')
+            ->select('wp')
         ;
-        $where = 'wp.project = :project AND wp.type IN (:types)';
+
+        $where = 'wp.project = :project';
         $params = [
             'project' => $project->getId(),
         ];
+
         if ($parent) {
-            switch ($parent['type']) {
-                case WorkPackage::TYPE_TASK:
-                    $wherePiece = ' AND (wp.parent = :parent %s)';
-                    break;
-                case WorkPackage::TYPE_MILESTONE:
-                    $wherePiece = ' AND ((wp.milestone = :parent OR wp.parent = :parent) %s)';
-                    break;
-                case WorkPackage::TYPE_PHASE:
-                default: // in case 0 fails
-                    $wherePiece = ' AND ((wp.phase = :parent OR wp.parent = :parent) %s)';
-                    break;
-            }
-            if ($includeDependants) {
-                $qb->leftJoin('wp.dependants', 'dependants');
-            }
-            $where .= sprintf(
-                $wherePiece,
-                $includeDependants
-                    ? ' OR dependants.id = :parent'
-                    : ''
-            );
+            $where .= ' AND (wp.phase = :parent OR wp.milestone = :parent OR wp.parent = :parent)';
             $params['parent'] = $parent['id'];
-            $params['types'] = self::TYPE_NESTING[$parent['type']];
         } else {
-            $params['types'] = [WorkPackage::TYPE_PHASE];
+            $where .= ' AND wp.type = :type AND wp.parent IS NULL';
+            $params['type'] = WorkPackage::TYPE_PHASE;
         }
-        $workPackages = $qb
-            ->select('wp')
-            ->where($where) // AND wp.type = :type
+
+        return $qb
+            ->where($where)
             ->setParameters($params)
             ->getQuery()
-            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY)
+            ->getResult(Query::HYDRATE_ARRAY)
         ;
-
-        if ($includeChildren) {
-            foreach ($workPackages as $key => $workPackage) {
-                $workPackages[$key]['children'] = $this->getWorkPackages(
-                    $project,
-                    $workPackage,
-                    $includeDependants,
-                    $includeChildren
-                );
-            }
-        }
-
-        return $workPackages;
     }
 }
