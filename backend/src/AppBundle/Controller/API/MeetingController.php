@@ -20,7 +20,7 @@ class MeetingController extends ApiController
     /**
      * Retrieve Meeting information.
      *
-     * @Route("/{id}", name="app_api_meeting_get")
+     * @Route("/{id}", name="app_api_meeting_get", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Meeting $meeting
@@ -37,7 +37,7 @@ class MeetingController extends ApiController
     /**
      * Edit a specific Meeting.
      *
-     * @Route("/{id}", name="app_api_meeting_edit")
+     * @Route("/{id}", name="app_api_meeting_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      *
      * @param Request $request
@@ -71,7 +71,7 @@ class MeetingController extends ApiController
     /**
      * Delete a specific Meeting.
      *
-     * @Route("/{id}", name="app_api_meeting_delete")
+     * @Route("/{id}", name="app_api_meeting_delete", options={"expose"=true})
      * @Method({"DELETE"})
      *
      * @param Meeting $meeting
