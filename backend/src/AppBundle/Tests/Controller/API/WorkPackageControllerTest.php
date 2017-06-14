@@ -239,6 +239,7 @@ class WorkPackageControllerTest extends BaseController
                     'type' => 1,
                     'dependencies' => [],
                     'dependants' => [],
+                    'createdAt' => date(\DateTime::ATOM),
                     'medias' => [],
                     'automaticSchedule' => false,
                     'duration' => 0,
