@@ -224,7 +224,7 @@
                                 <b>Anna Floyd</b>
                             </div>
                         </div>
-                        <div class="decision-body">
+                        <div class="entry-body">
                             <p>Morbi lectus massa, sollicitudin quis luctus non, pulvinar sed nibh. Suspendisse id dui a sem tempus pretium. Nunc a ornare lacus. Fusce eleifend enim id euismod scelerisque. Maecenas eu consequat ligula, id mollis mauris. Mauris ac mauris sed lorem vulputate bibendum id ut orci. Maecenas lacinia eget ipsum vitae tincidunt.</p>
                             <ul>
                                 <li>Morbi at diam congue ante auctor tincidunt</li>
@@ -255,7 +255,7 @@
                                 <b>John Doe</b>
                             </div>
                         </div>
-                        <div class="decision-body">
+                        <div class="entry-body">
                             <ul>
                                 <li>vitae enim quis elit volutpat sodales</li>
                                 <li>vitae molestie ante</li>
@@ -285,7 +285,7 @@
                                 <b>Martin Lawrence</b>
                             </div>
                         </div>
-                        <div class="decision-body">
+                        <div class="entry-body">
                             <p>Phasellus mattis massa non metus pretium mollis sed eget justo. Cras non nisi et ligula rhoncus lobortis. Curabitur iaculis sem magna, sed efficitur magna sodales quis. Nam eget commodo eros.</p>
                             <p>Nullam vestibulum urna id laoreet porttitor. Praesent eu purus fermentum, varius augue eget, sollicitudin dolor. Mauris feugiat dictum convallis. Nulla quis quam id arcu tincidunt hendrerit. Aenean volutpat tincidunt posuere. Nulla arcu dolor, dapibus ut augue a, tincidunt semper felis. Curabitur in mauris risus. Maecenas eget blandit nibh. Sed vel laoreet lacus. Nulla bibendum risus at sem convallis consequat.</p>
                             <ol>
@@ -325,7 +325,7 @@
                                 <b>Kyle Kennedy</b>
                             </div>
                         </div>
-                        <div class="decision-body">
+                        <div class="entry-body">
                             <p>Morbi lectus massa, sollicitudin quis luctus non, pulvinar sed nibh. Suspendisse id dui a sem tempus pretium. Nunc a ornare lacus. Fusce eleifend enim id euismod scelerisque. Maecenas eu consequat ligula, id mollis mauris. Mauris ac mauris sed lorem vulputate bibendum id ut orci. Maecenas lacinia eget ipsum vitae tincidunt.</p>
                         </div>  
                     </div>
@@ -350,7 +350,7 @@
                                 <b>Cathrine Magnusson</b>
                             </div>
                         </div>
-                        <div class="decision-body">
+                        <div class="entry-body">
                             <ul>
                                 <li>vitae enim quis elit volutpat sodales</li>
                                 <li>vitae molestie ante</li>
@@ -388,7 +388,7 @@
                                 <b>Anne Manning</b>
                             </div>
                         </div>
-                        <div class="decision-body">
+                        <div class="entry-body">
                             <ul>
                                 <li>vitae enim quis elit volutpat sodales</li>
                                 <li>vitae molestie ante</li>
@@ -415,7 +415,7 @@
                     </div>
                     <!-- /// End Header /// -->
         
-                    <div class="header flex-v-center">
+                    <div class="flex flex-v-center flex-space-between">
                         <div>
                             <h3>{{ translateText('message.participants') }}</h3>
                         </div>
@@ -871,7 +871,7 @@ export default {
             }
         }
 
-        .decision-body {
+        .entry-body {
             padding: 10px 0 0 0;
 
             ul {
