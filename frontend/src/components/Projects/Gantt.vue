@@ -30,11 +30,11 @@ export default {
             if (value && value.length) {
                 // config
                 gantt.config.auto_scheduling_descendant_links = false;
-//                gantt.config.buttons_left = [];
-//                gantt.config.buttons_right = [];
-//                gantt.config.details_on_create = false;
-//                gantt.config.details_on_dblclick = false;
-//                gantt.config.show_unscheduled = false; // woot?
+                gantt.config.columns = [
+                    {name: 'text', tree: true, width: 156, resize: true},
+                    {name: 'start_date', align: 'center', resize: true, width: 90},
+                    {name: 'duration', align: 'center', width: 70},
+                ];
                 gantt.config.drag_links = false;
                 gantt.config.show_unscheduled = true;
 
@@ -44,9 +44,6 @@ export default {
                     data: this.ganttDataFormatted,
                     links: this.ganttDataLinks,
                 });
-
-                // this mostly helps in dev mode to prevent events from popping up twice
-                gantt.detachAllEvents();
 
                 // disable link double clicks
                 gantt.attachEvent('onLinkDblClick', (id, e) => false);
