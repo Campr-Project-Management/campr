@@ -1,4 +1,6 @@
 message:
+    saved: Saved!
+    unable_to_save: Unable to save.
     to: to
     from: from
     starting_on: Starting On
