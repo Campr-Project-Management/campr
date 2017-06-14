@@ -113,18 +113,18 @@
                         <span class="tablet"></span>
                     </router-link>
                 </li>
-                <!--<li>-->
-                    <!--<router-link to="todo" v-bind:title="message.costs">-->
-                        <!--<span class="default">{{ message.costs }}</span>-->
-                        <!--<span class="tablet"></span>-->
-                    <!--</router-link>-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<router-link to="todo" v-bind:title="message.resources">-->
-                        <!--<span class="default">{{ message.resources }}</span>-->
-                        <!--<span class="tablet"></span>-->
-                    <!--</router-link>-->
-                <!--</li>-->
+                <li>
+                    <router-link :to="{name: 'project-costs'}" v-bind:title="message.costs">
+                        <span class="default">{{ message.costs }}</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-resources'}" v-bind:title="message.resources">
+                        <span class="default">{{ message.resources }}</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
                 <li>
                     <router-link :to="{name: 'project-risks-and-opportunities'}" v-bind:title="message.risks_oportunities">
                         <span class="default">{{ message.risks_oportunities }}</span>

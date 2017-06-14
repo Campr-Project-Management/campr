@@ -38,6 +38,8 @@ import ProjectTodos from '../components/Projects/ProjectTodos.vue';
 import TodoCreate from '../components/Projects/Todos/TodoCreate.vue';
 import EditTodo from '../components/Projects/Todos/EditTodo.vue';
 import ViewTodo from '../components/Projects/Todos/ViewTodo.vue';
+import Costs from '../components/Projects/Costs.vue';
+import Resources from '../components/Projects/Resources.vue';
 
 Vue.use(VueRouter);
 
@@ -257,6 +259,16 @@ const routes = [
                 path: 'todos/view-todo',
                 component: ViewTodo,
                 name: 'project-todos-view-todo',
+            },
+            {
+                path: 'costs',
+                component: Costs,
+                name: 'project-costs',
+            },
+            {
+                path: 'resources',
+                component: Resources,
+                name: 'project-resources',
             },
         ],
     },

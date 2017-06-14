@@ -219,7 +219,6 @@ export default {
             selectedPortfolio: stepData ? stepData.selectedPortfolio : '',
             selectedProgramme: stepData ? stepData.selectedProgramme : '',
             selectedCompany: stepData ? stepData.selectedCompany: '',
-            errors: null,
         };
     },
 };
