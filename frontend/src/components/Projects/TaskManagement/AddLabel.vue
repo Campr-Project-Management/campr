@@ -13,7 +13,7 @@
             <input-field v-model="description" type="textarea" v-bind:content="description" v-bind:label="message.label_description"></input-field>
             <div class="color">
                 <input-field @click.native="toggleSketch" v-model="color" type="text" v-bind:label="message.label_color" :content="color" :css="css"></input-field>
-                <sketch-picker v-show="showSketch" v-model="colors" @change-color="onChange"></sketch-picker>
+                <sketch-picker v-show="showSketch" v-model="colors" @input="onChange"></sketch-picker>
             </div>
             <p class="note">{{ message.label_note }}</p>
             <div class="flex flex-space-between actions">
