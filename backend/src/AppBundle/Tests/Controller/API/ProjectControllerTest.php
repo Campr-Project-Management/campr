@@ -1938,7 +1938,7 @@ class ProjectControllerTest extends BaseController
                             'projectName' => 'project1',
                             'responsibility' => null,
                             'responsibilityFullName' => null,
-                            'id' => 3,
+                            'id' => 4,
                             'title' => 'note project 1',
                             'description' => 'descript',
                             'showInStatusReport' => false,
