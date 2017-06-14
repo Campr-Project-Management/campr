@@ -31,8 +31,6 @@ class MeetingControllerTest extends BaseController
         $this->assertContains('name="create[start]"', $crawler->html());
         $this->assertContains('id="create_end"', $crawler->html());
         $this->assertContains('name="create[end]"', $crawler->html());
-        $this->assertContains('id="create_objectives"', $crawler->html());
-        $this->assertContains('name="create[objectives]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -56,7 +54,6 @@ class MeetingControllerTest extends BaseController
         $this->assertContains('The date field should not be blank', $crawler->html());
         $this->assertContains('The start field should not be blank', $crawler->html());
         $this->assertContains('The end field should not be blank', $crawler->html());
-        $this->assertContains('The objectives field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -76,7 +73,6 @@ class MeetingControllerTest extends BaseController
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[name]'] = 'meeting2';
         $form['create[location]'] = 'meeting-location';
-        $form['create[objectives]'] = 'meeting-objectives';
         $form['create[date]'] = $date->format('d-m-Y');
         $form['create[start]'] = $start->format('H:i:s');
         $form['create[end]'] = $end->format('H:i:s');
@@ -107,7 +103,6 @@ class MeetingControllerTest extends BaseController
         $meeting = (new Meeting())
             ->setName('meeting3')
             ->setLocation('meeting-location')
-            ->setObjectives('meeting-objectives')
             ->setDate(new \DateTime())
             ->setStart(new \DateTime())
             ->setEnd(new \DateTime('+1 hour'))
@@ -146,8 +141,6 @@ class MeetingControllerTest extends BaseController
         $this->assertContains('name="create[start]"', $crawler->html());
         $this->assertContains('id="create_end"', $crawler->html());
         $this->assertContains('name="create[end]"', $crawler->html());
-        $this->assertContains('id="create_objectives"', $crawler->html());
-        $this->assertContains('name="create[objectives]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 
@@ -166,7 +159,6 @@ class MeetingControllerTest extends BaseController
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['create[name]'] = '';
         $form['create[location]'] = '';
-        $form['create[objectives]'] = '';
         $form['create[date]'] = '';
         $form['create[start]'] = '';
         $form['create[end]'] = '';
@@ -177,7 +169,6 @@ class MeetingControllerTest extends BaseController
         $this->assertContains('The date field should not be blank', $crawler->html());
         $this->assertContains('The start field should not be blank', $crawler->html());
         $this->assertContains('The end field should not be blank', $crawler->html());
-        $this->assertContains('The objectives field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }

@@ -2,6 +2,18 @@ success:
     delete_common: successfully deleted!
     account:
         edit: Your account was succesfully edited!
+    meeting_category:
+        create: Meeting Category successfully created!
+        edit: Meeting Category successfully edited!
+        delete:
+            from_edit: Meeting Category successfully deleted!
+            from_data_table: Meeting Category with ID
+    meeting_objective:
+        create: Meeting Objective successfully created!
+        edit: Meeting Objective successfully edited!
+        delete:
+            from_edit: Meeting Objective successfully deleted!
+            from_data_table: Meeting Objective with ID
     assignment:
         create: Assignment successfully created!
         edit: Assignment successfully edited!
