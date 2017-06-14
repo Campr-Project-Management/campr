@@ -345,8 +345,6 @@ class WorkPackage
     /**
      * @var \DateTime
      *
-     * @Serializer\Exclude()
-     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
