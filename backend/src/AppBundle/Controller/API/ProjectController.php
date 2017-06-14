@@ -31,7 +31,6 @@ use AppBundle\Form\Project\CreateType;
 use AppBundle\Form\Calendar\BaseCreateType as CalendarCreateType;
 use AppBundle\Form\Contract\BaseCreateType as ContractCreateType;
 use AppBundle\Form\DistributionList\BaseCreateType as DistributionCreateType;
-use AppBundle\Form\Meeting\BaseCreateType as MeetingCreateType;
 use AppBundle\Form\Note\BaseCreateType as NoteCreateType;
 use AppBundle\Form\ProjectTeam\BaseCreateType as ProjectTeamCreateType;
 use AppBundle\Form\ProjectUser\BaseCreateType as ProjectUserCreateType;
@@ -47,6 +46,7 @@ use AppBundle\Form\WorkPackage\MilestoneType;
 use AppBundle\Form\WorkPackage\PhaseType;
 use AppBundle\Form\Risk\CreateType as RiskCreateType;
 use AppBundle\Form\Opportunity\BaseType as OpportunityCreateType;
+use AppBundle\Repository\MeetingRepository;
 use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\ProjectVoter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -57,6 +57,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\User;
+use AppBundle\Form\Meeting\ApiCreateType as MeetingApiCreateType;
 
 /**
  * @Route("/api/projects")
@@ -411,22 +412,47 @@ class ProjectController extends ApiController
     /**
      * All meetings for a specific Project.
      *
-     * @Route("/{id}/meetings", name="app_api_project_meetings")
+     * @Route("/{id}/meetings", name="app_api_project_meetings", options={"expose"=true})
      * @Method({"GET"})
      *
+     * @param Meeting $meeting
      * @param Project $project
      *
      * @return JsonResponse
      */
-    public function meetingsAction(Project $project)
+    public function meetingsAction(Request $request, Project $project)
     {
-        return $this->createApiResponse($project->getMeetings());
+        $filters = $request->query->all();
+        /** @var MeetingRepository $repo */
+        $repo = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(Meeting::class)
+        ;
+
+        if (isset($filters['page'])) {
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+            $result = $repo->getQueryBuilderByProjectAndFilters($project, $filters)->getQuery()->getResult();
+
+            $responseArray['totalItems'] = $repo->countTotalByProjectAndFilters($project, $filters);
+            $responseArray['pageSize'] = $filters['pageSize'];
+            $responseArray['items'] = $result;
+
+            return $this->createApiResponse($responseArray);
+        }
+
+        $items = $repo->findBy(['project' => $project]);
+
+        return $this->createApiResponse([
+            'items' => $items,
+            'totalItems' => count($items),
+        ]);
     }
 
     /**
      * Create a new Meeting.
      *
-     * @Route("/{id}/meetings", name="app_api_project_meeting_create")
+     * @Route("/{id}/meetings", name="app_api_project_meeting_create", options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request $request
@@ -435,16 +461,14 @@ class ProjectController extends ApiController
      */
     public function createMeetingAction(Request $request, Project $project)
     {
-        $meeting = new Meeting();
-        $meeting->setProject($project);
-
-        $form = $this->createForm(MeetingCreateType::class, $meeting, ['csrf_protection' => false]);
+        $form = $this->createForm(MeetingApiCreateType::class, new Meeting(), ['csrf_protection' => false]);
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($meeting);
-            $em->flush();
+            $meeting = $form->getData();
+            $meeting->setCreatedBy($this->getUser());
+            $meeting->setProject($project);
+            $this->persistAndFlush($meeting);
 
             return $this->createApiResponse($meeting, Response::HTTP_CREATED);
         }
@@ -1603,7 +1627,7 @@ class ProjectController extends ApiController
 
             return $this->createApiResponse([
                 'byPhase' => $dataByPhase,
-                'byDepartment' => $dataByDepartment
+                'byDepartment' => $dataByDepartment,
             ]);
         }
 

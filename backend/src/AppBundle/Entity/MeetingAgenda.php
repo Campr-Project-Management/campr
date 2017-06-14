@@ -52,7 +52,7 @@ class MeetingAgenda
     /**
      * @var \DateTime
      *
-     * @Serializer\Type("DateTime<'H:i:s'>")
+     * @Serializer\Type("DateTime<'H:i'>")
      *
      * @ORM\Column(name="start", type="time", nullable=false)
      */
@@ -61,7 +61,7 @@ class MeetingAgenda
     /**
      * @var \DateTime
      *
-     * @Serializer\Type("DateTime<'H:i:s'>")
+     * @Serializer\Type("DateTime<'H:i'>")
      *
      * @ORM\Column(name="end", type="time", nullable=false)
      */
@@ -70,7 +70,7 @@ class MeetingAgenda
     /**
      * @var \DateTime
      *
-     * @Serializer\Type("DateTime<'H:i:s'>")
+     * @Serializer\Type("DateTime<'H:i'>")
      *
      * @ORM\Column(name="duration", type="time", nullable=false)
      */
