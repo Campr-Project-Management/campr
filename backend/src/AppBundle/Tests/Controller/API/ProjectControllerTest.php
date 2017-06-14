@@ -704,6 +704,7 @@ class ProjectControllerTest extends BaseController
         $contract = json_decode($response->getContent(), true);
         $responseContent['createdAt'] = $contract['createdAt'];
         $responseContent['updatedAt'] = $contract['updatedAt'];
+        $responseContent['id'] = $contract['id'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -1744,6 +1745,7 @@ class ProjectControllerTest extends BaseController
             $responseContent['projectUsers'][$i - 1]['userAvatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
         }
 
+        // abcd
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -1936,7 +1938,7 @@ class ProjectControllerTest extends BaseController
                             'projectName' => 'project1',
                             'responsibility' => null,
                             'responsibilityFullName' => null,
-                            'id' => 4,
+                            'id' => 3,
                             'title' => 'note project 1',
                             'description' => 'descript',
                             'showInStatusReport' => false,
@@ -2904,6 +2906,7 @@ class ProjectControllerTest extends BaseController
 
         // Remove the 2 lines bellow when WP listener is fixed
         $task = json_decode($response->getContent(), true);
+        $responseContent['id'] = $task['id'];
         $responseContent['puid'] = $task['puid'];
         $responseContent['createdAt'] = $task['createdAt'];
 
@@ -2973,6 +2976,7 @@ class ProjectControllerTest extends BaseController
                     'duration' => 0,
                     'costs' => [],
                     'comments' => [],
+                    'createdAt' => date(\DateTime::ATOM),
                     'externalActualCost' => null,
                     'externalForecastCost' => null,
                     'internalActualCost' => null,
