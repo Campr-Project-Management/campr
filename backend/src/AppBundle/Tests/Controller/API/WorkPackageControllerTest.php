@@ -30,6 +30,7 @@ class WorkPackageControllerTest extends BaseController
         $tasks = $content['items'];
         for ($i = 0; $i < sizeof($tasks); ++$i) {
             $responseContent['items'][$i]['responsibilityAvatar'] = $tasks[$i]['responsibilityAvatar'];
+            $responseContent['items'][$i]['createdAt'] = $tasks[$i]['createdAt'];
         }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());

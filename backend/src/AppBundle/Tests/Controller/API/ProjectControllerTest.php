@@ -2905,6 +2905,7 @@ class ProjectControllerTest extends BaseController
         // Remove the 2 lines bellow when WP listener is fixed
         $task = json_decode($response->getContent(), true);
         $responseContent['puid'] = $task['puid'];
+        $responseContent['createdAt'] = $task['createdAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
