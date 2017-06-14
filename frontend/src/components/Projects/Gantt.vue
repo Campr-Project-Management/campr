@@ -31,7 +31,7 @@ export default {
                 // config
                 gantt.config.auto_scheduling_descendant_links = false;
                 gantt.config.columns = [
-                    {name: 'text', tree: true, width: 156, resize: true},
+                    {name: 'text', tree: true, width: '*', resize: true},
                     {name: 'start_date', align: 'center', resize: true, width: 90},
                     {name: 'duration', align: 'center', width: 70},
                 ];
