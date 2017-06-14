@@ -182,6 +182,7 @@ class WorkPackageControllerTest extends BaseController
 
         $task = json_decode($response->getContent(), true);
         $responseContent['responsibilityAvatar'] = $task['responsibilityAvatar'];
+        $responseContent['createdAt'] = $task['createdAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -239,7 +240,6 @@ class WorkPackageControllerTest extends BaseController
                     'type' => 1,
                     'dependencies' => [],
                     'dependants' => [],
-                    'createdAt' => date(\DateTime::ATOM),
                     'medias' => [],
                     'automaticSchedule' => false,
                     'duration' => 0,
@@ -250,6 +250,7 @@ class WorkPackageControllerTest extends BaseController
                     'internalActualCost' => null,
                     'internalForecastCost' => null,
                     'responsibilityAvatar' => null,
+                    'createdAt' => date(\DateTime::ATOM),
                 ],
             ],
         ];
@@ -347,6 +348,7 @@ class WorkPackageControllerTest extends BaseController
                     'externalForecastCost' => null,
                     'internalActualCost' => null,
                     'internalForecastCost' => null,
+                    'createdAt' => date(\DateTime::ATOM),
                 ],
             ],
         ];
