@@ -1,4 +1,11 @@
 message:
+    created: Created
+    back_to_todos: Back to Todos
+    delete_todo: Delete Todo
+    edit_toto: Edit Todo
+    view_todo: View Todo
+    create_new_todo: Create New Todo
+    project_todos: Project Todos
     to: to
     from: from
     starting_on: Starting On
@@ -871,7 +878,11 @@ label:
     subteam: Subteam
     subteam_roles: Subteam Roles
 
-button: 
+button:
+    delete_todo: Delete Todo
+    new_todo: New Todo
+    edit_todo: Edit Todo 
+    create_todo: Create Todo
     reschedule: Reschedule
     delete_meeting: Delete Meeting
     new_meeting: New Meeting
@@ -1007,7 +1018,8 @@ add:
     subteam_role: Add new subteam role
     subteam_member: Add new subteam member
 
-placeholder:
+placeholder:    
+    todo_topic: Todo Topic
     measure_description: Measure description
     info_description: Info Description
     action: Action
