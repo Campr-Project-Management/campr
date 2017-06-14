@@ -35,6 +35,7 @@ export default {
 //                gantt.config.details_on_create = false;
 //                gantt.config.details_on_dblclick = false;
 //                gantt.config.show_unscheduled = false; // woot?
+                gantt.config.drag_links = false;
                 gantt.config.show_unscheduled = true;
 
                 // init!
@@ -74,48 +75,21 @@ export default {
                     return false;
                 });
 
-                gantt.attachEvent('onAfterTaskDrag', (id, mode) => {
-//                    switch (mode) {
-//                    case gantt.config.drag_mode.ignore:
-//                        console.log(mode);
-//                        break;
-//                    case gantt.config.drag_mode.move:
-//                        console.log(mode);
-//                        break;
-//                    case gantt.config.drag_mode.progress:
-//                        console.log(mode);
-//                        break;
-//                    case gantt.config.drag_mode.resize:
-//                        console.log(mode);
-//                        break;
-//                    }
-//                    var task = gantt.getTask(id);
-//                    if(mode == gantt.config.drag_mode.progress){
-//                        var pr = Math.floor(task.progress * 100 * 10)/10;
-//                        gantt.message(task.text + " is now " + pr + "% completed!");
-//                    }else{
-//                        var convert = gantt.date.date_to_str("%H:%i, %F %j");
-//                        var s = convert(task.start_date);
-//                        var e = convert(task.end_date);
-//                        gantt.message(task.text + " starts at " + s + " and ends at " + e);
-//                    }
-                });
                 gantt.attachEvent('onBeforeTaskChanged', (id, mode, oldEvent) => {
-//                    var task = gantt.getTask(id);
-//                    if(mode == gantt.config.drag_mode.progress){
-//                        if(task.progress < old_event.progress){
-//                            gantt.message(task.text + " progress can't be undone!");
-//                            return false;
-//                        }
-//                    }
-//                    return true;
                     const task = gantt.getTask(id);
                     const progress = parseInt(task.progress * 100, 10);
+                    const convert = gantt.date.date_to_str('%d-%m-%Y');
+                    const params = {
+                        progress,
+                        scheduledStartAt: convert(task.start_date),
+                        scheduledFinishAt: convert(task.end_date),
+                    };
+
                     this
                         .$http
                         .patch(
                             Routing.generate('app_api_workpackage_edit', {id}),
-                            {progress}
+                            params
                         )
                         .then(
                             (response) => {
@@ -127,30 +101,15 @@ export default {
                                 } else {
                                     task.progress = oldEvent.progress;
                                     gantt.updateTask(id);
-                                    gantt.message(this.translate('message.unable_to_save'));
+                                    gantt.message({
+                                        'type': 'error',
+                                        'message': this.translate('message.unable_to_save'),
+                                    });
                                 }
                             }
                         )
                     ;
 
-                    return true;
-                });
-
-                gantt.attachEvent('onBeforeTaskDrag', (id, mode) => {
-//                    var task = gantt.getTask(id);
-//                    var message = task.text + " ";
-//
-//                    if(mode == gantt.config.drag_mode.progress){
-//                        message += "progress is being updated";
-//                    }else{
-//                        message += "is being ";
-//                        if(mode == gantt.config.drag_mode.move)
-//                            message += "moved";
-//                        else if(mode == gantt.config.drag_mode.resize)
-//                            message += "resized";
-//                    }
-//
-//                    gantt.message(message);
                     return true;
                 });
             }
@@ -177,36 +136,6 @@ export default {
                     };
                 })
             ;
-//            const out = [];
-//            const milestones = this
-//                .ganttData
-//                .filter(item => {
-//                    return item.type === 1;
-//                })
-//            ;
-//            const tasks = this
-//                .ganttData
-//                .filter(item => {
-//                    return item.type === 2;
-//                })
-//            ;
-//            milestones.forEach(item => {
-//                out.push({
-//                    id: out.length,
-//                    source: item.phase,
-//                    target: item.id,
-//                    type: 0,
-//                });
-//            });
-//            tasks.forEach(item => {
-//                out.push({
-//                    id: out.length,
-//                    source: item.milestone || item.phase,
-//                    target: item.id,
-//                    type: 0,
-//                });
-//            });
-//            return out;
         },
         ganttDataFormatted() {
             const ganttType2WorkPackageType = [
@@ -217,13 +146,8 @@ export default {
             return this
                 .ganttData
                 .map(item => {
-                    if (item.id == 32) {
-                        console.log(item.name);
-                        console.log(item.progress);
-                    }
                     let out = {
                         id: item.id,
-//                        text: item.puid + ' ' + item.name + ' / ' + item.type,
                         text: item.name,
                         progress: item.progress
                             ? item.progress / 100

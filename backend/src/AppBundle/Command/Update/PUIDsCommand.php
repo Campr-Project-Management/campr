@@ -24,7 +24,6 @@ class PUIDsCommand extends BaseUpdateCommand
         }
         $this->getEm()->clear();
         // reset all PUIDs before updating
-        $this->getEm()->beginTransaction();
         $this
             ->getEm()
             ->createQuery(sprintf(
@@ -35,7 +34,6 @@ class PUIDsCommand extends BaseUpdateCommand
                 'rand' => random_int(0, time()),
             ])
         ;
-        $this->getEm()->commit();
         foreach ($projects as $project) {
             $output->writeln(sprintf(
                 '<info>Processing: %s</info>',
@@ -55,29 +53,28 @@ class PUIDsCommand extends BaseUpdateCommand
 
     private function updateWorkPackages(Project $project, string $puidPrefix = '', array $workPackageParent = null)
     {
-        $wps = $this->getWorkPackages($project, $workPackageParent, false, true);
+        static $done = [];
+        $wps = $this->getWorkPackages($project, $workPackageParent);
         $c = 0;
         foreach ($wps as $wp) {
+            if (in_array($wp['id'], $done)) {
+                continue;
+            }
+            $done[] = $wp['id'];
             ++$c;
-            $dql = sprintf(
-                'UPDATE %s wp SET wp.puid = :puid WHERE wp.id = :id',
-                WorkPackage::class
-            );
+            $sql = 'UPDATE work_package wp SET wp.puid = ? WHERE wp.id = ?';
             $params = [
-                'puid' => $puidPrefix ? $puidPrefix.'.'.$c : $c,
-                'id' => $wp['id'],
+                $puidPrefix ? $puidPrefix.'.'.$c : $c,
+                $wp['id'],
             ];
+            $this->getEm()->getConnection()->executeUpdate($sql, $params);
             $this->output->writeln(sprintf(
-                '<comment>Setting puid %s for WP %s</comment>',
-                $params['puid'],
-                $wp['name']
+                '<comment>Setting puid %s for WP %s (%d)</comment>',
+                $params[0],
+                $wp['name'],
+                $wp['id']
             ));
-            $this
-                ->getEm()
-                ->createQuery($dql)
-                ->execute($params)
-            ;
-            $this->updateWorkPackages($project, $params['puid'], $wp);
+            $this->updateWorkPackages($project, $params[0], $wp);
         }
     }
 }
