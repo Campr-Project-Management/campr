@@ -36,6 +36,10 @@ import ViewMeeting from '../components/Projects/Meetings/ViewMeeting.vue';
 import Gantt from '../components/Projects/Gantt.vue';
 import Costs from '../components/Projects/Costs.vue';
 import Resources from '../components/Projects/Resources.vue';
+import ProjectTodos from '../components/Projects/ProjectTodos.vue';
+import TodoCreate from '../components/Projects/Todos/TodoCreate.vue';
+import EditTodo from '../components/Projects/Todos/EditTodo.vue';
+import ViewTodo from '../components/Projects/Todos/ViewTodo.vue';
 
 Vue.use(VueRouter);
 
@@ -245,6 +249,26 @@ const routes = [
                 path: 'resources',
                 component: Resources,
                 name: 'project-resources',
+            },
+            {
+                path: 'todos',
+                component: ProjectTodos,
+                name: 'project-todos',
+            },
+            {
+                path: 'todos/create-todo',
+                component: TodoCreate,
+                name: 'project-todos-create-todo',
+            },
+            {
+                path: 'todos/edit-todo',
+                component: EditTodo,
+                name: 'project-todos-edit-todo',
+            },
+            {
+                path: 'todos/view-todo',
+                component: ViewTodo,
+                name: 'project-todos-view-todo',
             },
         ],
     },

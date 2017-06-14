@@ -301,7 +301,8 @@ export default {
             // Distribution list values added just for testing
             meetingsDistributionList: [{label: 'TP Meeting', key: 1}, {label: 'EK Meeting', key: 2}, {label: 'ANLAGENVERWERTUNG BTF', key: 3}],
             decisionStatus: [{label: 'Undone', key: 1}, {label: 'Done', key: 2}],
-            todoStatus: [{label: 'Undone', key: 1}, {label: 'Ongoing', key: 2}, {label: 'Done', key: 3}],
+            todoStatus: [{label: 'Initiated', key: 1}, {label: 'Ongoing', key: 2}, {label: 'On Hold', key: 3},
+             {label: 'Discontinued', key: 4}, {label: 'Finished', key: 5}],
             infoStatus: [{label: 'Undone', key: 1}, {label: 'Ongoing', key: 2}, {label: 'Done', key: 3}],
             location: '',
             objective: '',
