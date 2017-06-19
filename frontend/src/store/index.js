@@ -36,6 +36,8 @@ import riskStatus from './modules/risk-status';
 import riskStrategy from './modules/risk-strategy';
 import measure from './modules/measure';
 import gantt from './modules/gantt';
+import meeting from './modules/meeting';
+import meetingCategory from './modules/meeting-category';
 
 Vue.use(Vuex);
 
@@ -79,6 +81,8 @@ export default new Vuex.Store({
         riskStrategy,
         measure,
         gantt,
+        meeting,
+        meetingCategory,
     },
     strict: debug,
 });
