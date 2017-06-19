@@ -38,10 +38,10 @@ export default {
         },
     },
     created() {
-        if (!this.$store.state.task.items || this.$store.state.task.items.length === 0) {
+        if (!this.$store.state.task.tasks || this.$store.state.task.tasks.length === 0) {
             this.getTasks(this.activePage);
         }
-        if (!this.$store.state.colorStatus.items || this.$store.state.colorStatus.items.length === 0) {
+        if (!this.$store.state.colorStatus.colorStatuses || this.$store.state.colorStatus.colorStatuses.length === 0) {
             this.getColorStatuses();
         }
     },
