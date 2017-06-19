@@ -7,8 +7,8 @@ const state = {
     currentProject: {},
     projects: [],
     projectsForFilter: [],
-    filteredProjects: [],
-    filters: [],
+    filteredProjects: {},
+    projectFilters: [],
     labelsForChoice: [],
     loading: false,
     label: {},
@@ -502,12 +502,12 @@ const mutations = {
     },
 
     /**
-     * Sets filters to state
+     * Sets projectFilters to state
      * @param {Object} state
      * @param {array} filter
      */
     [types.SET_FILTERS](state, filter) {
-        state.filters[filter[0]] = filter[1];
+        state.projectFilters[filter[0]] = filter[1];
     },
 
     /**
@@ -518,7 +518,7 @@ const mutations = {
     [types.SET_LABELS](state, {labels}) {
         state.projects = labels;
         let choiceLabel = [];
-        state.projects.map( function(label) {
+        state.projects.map(function(label) {
             choiceLabel.push({'key': label.id, 'label': label.title});
         });
         state.labelsForChoice = choiceLabel;
