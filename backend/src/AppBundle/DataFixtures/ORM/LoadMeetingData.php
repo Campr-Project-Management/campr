@@ -25,7 +25,6 @@ class LoadMeetingData extends AbstractFixture implements OrderedFixtureInterface
         $meeting = (new Meeting())
             ->setName('meeting1')
             ->setLocation('location1')
-            ->setObjectives('objectives')
             ->setProject($project)
             ->setDate($date)
             ->setStart($start)

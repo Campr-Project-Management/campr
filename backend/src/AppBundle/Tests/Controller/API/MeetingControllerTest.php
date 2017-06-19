@@ -32,6 +32,9 @@ class MeetingControllerTest extends BaseController
         $content = json_decode($response->getContent(), true);
         $responseContent['createdAt'] = $content['createdAt'];
         $responseContent['updatedAt'] = $content['updatedAt'];
+        foreach ($content['meetingParticipants'] as $key => $participant) {
+            $responseContent['meetingParticipants'][$key]['userAvatar'] = $participant['userAvatar'];
+        }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -53,13 +56,15 @@ class MeetingControllerTest extends BaseController
                     'projectName' => 'project1',
                     'createdBy' => null,
                     'createdByFullName' => null,
+                    'meetingCategory' => null,
+                    'meetingCategoryName' => null,
                     'id' => 1,
                     'name' => 'meeting1',
                     'location' => 'location1',
                     'date' => '2017-01-01 00:00:00',
-                    'start' => '07:00:00',
-                    'end' => '12:00:00',
-                    'objectives' => 'objectives',
+                    'start' => '07:00',
+                    'end' => '12:00',
+                    'meetingObjectives' => [],
                     'meetingParticipants' => [
                         [
                             'meeting' => 1,
@@ -92,9 +97,9 @@ class MeetingControllerTest extends BaseController
                             'responsibilityFullName' => 'FirstName3 LastName3',
                             'id' => 1,
                             'topic' => 'topic1',
-                            'start' => '07:30:00',
-                            'end' => '08:00:00',
-                            'duration' => '00:30:00',
+                            'start' => '07:30',
+                            'end' => '08:00',
+                            'duration' => '00:30',
                         ],
                         [
                             'meeting' => 1,
@@ -103,9 +108,9 @@ class MeetingControllerTest extends BaseController
                             'responsibilityFullName' => 'FirstName3 LastName3',
                             'id' => 2,
                             'topic' => 'topic2',
-                            'start' => '11:30:00',
-                            'end' => '12:00:00',
-                            'duration' => '00:30:00',
+                            'start' => '11:30',
+                            'end' => '12:00',
+                            'duration' => '00:30',
                         ],
                     ],
                     'medias' => [
@@ -252,7 +257,6 @@ class MeetingControllerTest extends BaseController
         $meeting = new Meeting();
         $meeting->setName('nname');
         $meeting->setLocation('loc1');
-        $meeting->setObjectives('objectives');
         $meeting->setProject($project);
         $meeting->setDate(new \DateTime('2017-03-09'));
         $meeting->setStart(new \DateTime('2017-03-09 16:00:00'));
@@ -290,13 +294,15 @@ class MeetingControllerTest extends BaseController
                     'projectName' => 'project1',
                     'createdBy' => null,
                     'createdByFullName' => null,
+                    'meetingCategory' => null,
+                    'meetingCategoryName' => null,
                     'id' => 2,
                     'name' => 'meeting-renamed',
                     'location' => 'loc1',
                     'date' => '2017-03-09 00:00:00',
-                    'start' => '16:00:00',
-                    'end' => '17:00:00',
-                    'objectives' => 'objectives',
+                    'start' => '16:00',
+                    'end' => '17:00',
+                    'meetingObjectives' => [],
                     'meetingParticipants' => [],
                     'meetingAgendas' => [],
                     'medias' => [],

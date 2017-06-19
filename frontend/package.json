@@ -43,6 +43,7 @@
     "vue-typeahead": "^2.3.1",
     "vue2-dragula": "^2.4.2",
     "vue2-scrollbar": "git+https://github.com/dilibau/vue2-scrollbar.git",
+    "vue2-timepicker": "^0.1.4",
     "vueditor": "^0.2.4",
     "vuejs-datepicker": "^0.6.5",
     "vuex": "^2.0.0",
