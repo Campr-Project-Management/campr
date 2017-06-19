@@ -71,6 +71,20 @@ const actions = {
             }, (response) => {
             });
     },
+    /**
+     * Creates a new project meeting
+     * @param {function} commit
+     * @param {array} data
+     */
+    createProjectMeeting({commit}, data) {
+        Vue.http
+            .post(
+                Routing.generate('app_api_project_meeting_create', {'id': data.projectId}),
+                data.data
+            ).then((response) => {
+            }, (response) => {
+            });
+    },
 };
 
 const mutations = {

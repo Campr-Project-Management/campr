@@ -20,7 +20,6 @@ class LoadNoteData extends AbstractFixture implements OrderedFixtureInterface
         $project = $this->getReference('project1');
         $meeting = $this->getReference('meeting1');
         $responsible = $this->getReference('user4');
-        $status = $this->getReference('status1');
         $date = new \DateTime('2017-01-01');
         $dueDate = new \DateTime('2017-05-01');
 
@@ -33,7 +32,6 @@ class LoadNoteData extends AbstractFixture implements OrderedFixtureInterface
                 ->setProject($project)
                 ->setMeeting($meeting)
                 ->setResponsibility($responsible)
-                ->setStatus($status)
             ;
 
             $manager->persist($note);
