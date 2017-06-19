@@ -39,7 +39,7 @@ class Todo
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="todos")
-     * @ORM\JoinColumn(name="meeting_id")
+     * @ORM\JoinColumn(name="meeting_id", onDelete="CASCADE")
      */
     private $meeting;
 
@@ -97,7 +97,7 @@ class Todo
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Status")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TodoStatus")
      * @ORM\JoinColumn(name="status_id")
      */
     private $status;
@@ -382,11 +382,11 @@ class Todo
     /**
      * Set status.
      *
-     * @param Status $status
+     * @param TodoStatus $status
      *
      * @return Todo
      */
-    public function setStatus(Status $status = null)
+    public function setStatus(TodoStatus $status = null)
     {
         $this->status = $status;
 
@@ -396,7 +396,7 @@ class Todo
     /**
      * Get status.
      *
-     * @return Status
+     * @return TodoStatus
      */
     public function getStatus()
     {

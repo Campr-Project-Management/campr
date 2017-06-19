@@ -1,10 +1,37 @@
 import Vue from 'vue';
+import * as types from '../mutation-types';
 
-const state = {};
+const state = {
+    distributionLists: [],
+};
 
-const getters = {};
+const getters = {
+    distributionLists: state => state.distributionLists,
+    distributionListsForSelect: state => {
+        let selectLsts = [{'key': null, 'label': Translator.trans('placeholder.distribution_lists')}];
+        state.distributionLists.map(function(item) {
+            selectLsts.push({'key': item.id, 'label': item.name});
+        });
+        return selectLsts;
+    },
+};
 
 const actions = {
+    /**
+     * Get all distribution lists.
+     * @param {function} commit
+     * @param {array} data
+     */
+    getDistributionLists({commit}, data) {
+        Vue.http
+            .get(Routing.generate('app_api_project_distribution_lists', {'id': data.projectId})).then((response) => {
+                if (response.status === 200) {
+                    let distributionLists = response.data;
+                    commit(types.SET_DISTRIBUTION_LISTS, {distributionLists});
+                }
+            }, (response) => {
+            });
+    },
     /**
      * Add new project user to distribution list
      * @param {function} commit
@@ -33,7 +60,16 @@ const actions = {
     },
 };
 
-const mutations = {};
+const mutations = {
+    /**
+     * Sets distribution lists to state
+     * @param {Object} state
+     * @param {array} customers
+     */
+    [types.SET_DISTRIBUTION_LISTS](state, {distributionLists}) {
+        state.distributionLists = distributionLists;
+    },
+};
 
 export default {
     state,

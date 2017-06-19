@@ -28,7 +28,7 @@ class MeetingAgenda
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="meetingAgendas")
-     * @ORM\JoinColumn(name="meeting_id")
+     * @ORM\JoinColumn(name="meeting_id", onDelete="CASCADE")
      */
     private $meeting;
 
@@ -66,15 +66,6 @@ class MeetingAgenda
      * @ORM\Column(name="end", type="time", nullable=false)
      */
     private $end;
-
-    /**
-     * @var \DateTime
-     *
-     * @Serializer\Type("DateTime<'H:i'>")
-     *
-     * @ORM\Column(name="duration", type="time", nullable=false)
-     */
-    private $duration;
 
     /**
      * Get id.
@@ -156,30 +147,6 @@ class MeetingAgenda
     public function getEnd()
     {
         return $this->end;
-    }
-
-    /**
-     * Set duration.
-     *
-     * @param \DateTime $duration
-     *
-     * @return MeetingAgenda
-     */
-    public function setDuration(\DateTime $duration = null)
-    {
-        $this->duration = $duration;
-
-        return $this;
-    }
-
-    /**
-     * Get duration.
-     *
-     * @return \DateTime
-     */
-    public function getDuration()
-    {
-        return $this->duration;
     }
 
     /**
