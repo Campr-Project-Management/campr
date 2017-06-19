@@ -2,11 +2,13 @@
 
 namespace AppBundle\Form\Meeting;
 
+use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\Meeting;
+use AppBundle\Entity\MeetingCategory;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,6 +23,17 @@ class BaseCreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('meetingCategory', EntityType::class, [
+                'class' => MeetingCategory::class,
+                'choice_label' => 'name',
+                'placeholder' => 'placeholder.category',
+                'translation_domain' => 'messages',
+            ])
+            ->add('distributionLists', EntityType::class, [
+                'class' => DistributionList::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+            ])
             ->add('name', TextType::class, [
                 'required' => true,
                 'constraints' => [
@@ -48,7 +61,6 @@ class BaseCreateType extends AbstractType
             ])
             ->add('start', DateTimeType::class, [
                 'widget' => 'single_text',
-                'format' => 'H:i:s',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'not_blank.start',
@@ -57,18 +69,9 @@ class BaseCreateType extends AbstractType
             ])
             ->add('end', DateTimeType::class, [
                 'widget' => 'single_text',
-                'format' => 'H:i:s',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'not_blank.end',
-                    ]),
-                ],
-            ])
-            ->add('objectives', TextareaType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.objectives',
                     ]),
                 ],
             ])
