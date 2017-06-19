@@ -18,19 +18,26 @@
                     <!-- /// Meeting Distribution List (Event Name) and Category /// -->
                     <div class="row">
                         <div class="form-group last-form-group">
+                            <input-field type="text" v-bind:label="translateText('placeholder.name')" v-model="name" v-bind:content="name" />
+                        </div>
+                    </div>
+                    <hr class="double">
+
+                    <div class="row">
+                        <div class="form-group last-form-group">
                             <div class="col-md-6">
                                 <select-field
-                                    v-bind:title="translateText('label.distribution_list')"
-                                    v-bind:options="meetingsDistributionList"
-                                    v-model="details.distribution_list"
-                                    v-bind:currentOption="details.distribution_list" />
+                                    :title="translateText('label.distribution_list')"
+                                    :options="distributionListsForSelect"
+                                    v-model="details.distributionList"
+                                    :currentOption="details.distributionList" />
                             </div>
                             <div class="col-md-6">
                                 <select-field
-                                    v-bind:title="translateText('label.category')"
-                                    v-bind:options="projectCategories"
+                                    :title="translateText('label.category')"
+                                    :options="meetingCategoriesForSelect"
                                     v-model="details.category"
-                                    v-bind:currentOption="details.category" />
+                                    :currentOption="details.category" />
                             </div>
                         </div>
                     </div>
@@ -52,15 +59,13 @@
                             <div class="col-md-4">
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.start_time') }}</label>
-                                    <datepicker v-model="schedule.meetingStartTime" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                                    <vue-timepicker v-model="schedule.startTime" hide-clear-button></vue-timepicker>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.finish_time') }}</label>
-                                    <datepicker v-model="schedule.meetingFinishTime" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                                    <vue-timepicker v-model="schedule.endTime" hide-clear-button></vue-timepicker>
                                 </div>
                             </div>
                         </div>
@@ -78,11 +83,12 @@
 
                     <!-- /// Meeting Objectives /// -->
                     <h3>{{ translateText('message.objectives') }}</h3>
-                    <div class="form-group">
-                        <input-field type="text" v-bind:label="translateText('placeholder.objective')" v-model="objective" v-bind:content="objective" />
+                    <div class="form-group" v-for="(objective, index) in objectives">
+                        <input-field type="text" v-bind:label="translateText('placeholder.objective')" v-model="objective.description" v-bind:content="objective.description" />
+                        <hr>
                     </div>
                     <div class="flex flex-direction-reverse">
-                        <a href="#" class="btn-rounded btn-auto">{{ translateText('message.add_new_objective') }} +</a>
+                        <a @click="addObjective()" class="btn-rounded btn-auto">{{ translateText('message.add_new_objective') }} +</a>
                     </div>
                     <!-- /// End Meeting Objectives /// -->
 
@@ -90,32 +96,33 @@
 
                     <!-- /// Meeting Agenda /// -->
                     <h3>{{ translateText('message.agenda') }}</h3>
-                    <div class="form-group">
-                        <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="topic" v-bind:content="topic" />
-                    </div>
-                    <div class="row">
-                        <div class="form-group form-group">
-                            <div class="col-md-4">
-                                <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.start_time') }}</label>
-                                    <datepicker v-model="schedule.agendaTopicStartTime" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                    <div v-for="(agenda, index) in agendas">
+                        <div class="form-group">
+                            <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="agenda.topic" v-bind:content="agenda.topic" />
+                        </div>
+                        <div class="row">
+                            <div class="form-group form-group">
+                                <div class="col-md-4">
+                                    <member-search singleSelect="false" v-model="agenda.responsible" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.finish_time') }}</label>
-                                    <datepicker v-model="schedule.agendaTopicFinishTime" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                                <div class="col-md-4">
+                                    <div class="input-holder right">
+                                        <label class="active">{{ translateText('label.start_time') }}</label>
+                                        <vue-timepicker v-model="agenda.startTime" hide-clear-button></vue-timepicker>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-holder right">
+                                        <label class="active">{{ translateText('label.finish_time') }}</label>
+                                        <vue-timepicker v-model="agenda.endTime" hide-clear-button></vue-timepicker>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <hr>
                     </div>
                     <div class="flex flex-direction-reverse">
-                        <a href="#" class="btn-rounded btn-auto">{{ translateText('message.add_new_topic') }} +</a>
+                        <a @click="addAgenda()" class="btn-rounded btn-auto">{{ translateText('message.add_new_topic') }} +</a>
                     </div>
                     <!-- /// End Meeting Objectives /// -->
 
@@ -129,42 +136,43 @@
 
                     <!-- /// Decisions /// -->
                     <h3>{{ translateText('message.decisions') }}</h3>
-                    <input-field type="text" v-bind:label="translateText('placeholder.decision_title')" v-model="decision" v-bind:content="decision" />
-                    <div class="form-group">
-                        <div class="vueditor-holder">
-                            <div class="vueditor-header">{{ translateText('placeholder.decision_description') }}</div>
-                            <Vueditor ref="content" />
-                        </div>
-                    </div>
-                    <div class="row">
+                    <div v-for="(decision, index) in decisions">
+                        <input-field type="text" v-bind:label="translateText('placeholder.decision_title')" v-model="decision.title" v-bind:content="decision.title" />
                         <div class="form-group">
-                            <div class="col-md-6">
-                                <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                            <div class="vueditor-holder">
+                                <div class="vueditor-header">{{ translateText('placeholder.decision_description') }}</div>
+                                <Vueditor :ref="'decision.description'+index" />
                             </div>
-                            <div class="col-md-6">
-                                <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.due_date') }}</label>
-                                    <datepicker v-model="schedule.decisionDueDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <member-search singleSelect="false" v-model="decision.responsible" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-holder right">
+                                        <label class="active">{{ translateText('label.due_date') }}</label>
+                                        <datepicker v-model="decision.dueDate" format="dd-MM-yyyy" />
+                                        <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="form-group last-form-group">
+                                <div class="col-md-6">
+                                    <select-field
+                                        v-bind:title="translateText('label.select_status')"
+                                        v-bind:options="decisionStatusesForSelect"
+                                        v-model="decision.status"
+                                        v-bind:currentOption="decision.status" />
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
                     </div>
-                    <div class="row">
-                        <div class="form-group last-form-group">
-                            <div class="col-md-6">
-                                <select-field
-                                    v-bind:title="translateText('label.select_status')"
-                                    v-bind:options="decisionStatus"
-                                    v-model="details.decisionStatus"
-                                    v-bind:currentOption="details.decisionStatus" />
-                            </div>
-                            <div class="col-md-6">
-                                <div class="flex flex-direction-reverse">
-                                    <a href="#" class="btn-rounded btn-auto">{{ translateText('message.add_new_decision') }} +</a>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="flex flex-direction-reverse">
+                        <a @click="addDecision()" class="btn-rounded btn-auto">{{ translateText('message.add_new_decision') }} +</a>
                     </div>
                     <!-- /// End Decisions /// -->
 
@@ -172,42 +180,43 @@
 
                     <!-- /// ToDos /// -->
                     <h3>{{ translateText('message.todos') }}</h3>
-                    <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="todo_topic" v-bind:content="todo_topic" />
-                    <div class="form-group">
-                        <div class="vueditor-holder">
-                            <div class="vueditor-header">{{ translateText('placeholder.action') }}</div>
-                            <Vueditor ref="content" />
-                        </div>
-                    </div>
-                    <div class="row">
+                    <div v-for="(todo, index) in todos">
+                        <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="todo.title" v-bind:content="todo.title" />
                         <div class="form-group">
-                            <div class="col-md-6">
-                                <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                            <div class="vueditor-holder">
+                                <div class="vueditor-header">{{ translateText('placeholder.action') }}</div>
+                                <Vueditor :ref="'todo.description'+index" />
                             </div>
-                            <div class="col-md-6">
-                                <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.due_date') }}</label>
-                                    <datepicker v-model="schedule.todoDueDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <member-search singleSelect="false" v-model="todo.responsible" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-holder right">
+                                        <label class="active">{{ translateText('label.due_date') }}</label>
+                                        <datepicker v-model="todo.dueDate" format="dd-MM-yyyy" />
+                                        <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="form-group last-form-group">
+                                <div class="col-md-6">
+                                    <select-field
+                                        v-bind:title="translateText('label.select_status')"
+                                        v-bind:options="todoStatusesForSelect"
+                                        v-model="todo.status"
+                                        v-bind:currentOption="todo.status" />
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
                     </div>
-                    <div class="row">
-                        <div class="form-group last-form-group">
-                            <div class="col-md-6">
-                                <select-field
-                                    v-bind:title="translateText('label.select_status')"
-                                    v-bind:options="todoStatus"
-                                    v-model="details.todoStatus"
-                                    v-bind:currentOption="details.todoStatus" />
-                            </div>
-                            <div class="col-md-6">
-                                <div class="flex flex-direction-reverse">
-                                    <a href="#" class="btn-rounded btn-auto">{{ translateText('message.add_new_todo') }} +</a>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="flex flex-direction-reverse">
+                        <a @click="addTodo()" class="btn-rounded btn-auto">{{ translateText('message.add_new_todo') }} +</a>
                     </div>
                     <!-- /// End ToDos /// -->
 
@@ -215,42 +224,43 @@
 
                     <!-- /// Infos /// -->
                     <h3>{{ translateText('message.infos') }}</h3>
-                    <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="info_topic" v-bind:content="info_topic" />
-                    <div class="form-group">
-                        <div class="vueditor-holder">
-                            <div class="vueditor-header">{{ translateText('placeholder.info_description') }}</div>
-                            <Vueditor ref="content" />
-                        </div>
-                    </div>
-                    <div class="row">
+                    <div v-for="(info, index) in infos">
+                        <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="info.title" v-bind:content="info.title" />
                         <div class="form-group">
-                            <div class="col-md-6">
-                                <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                            <div class="vueditor-holder">
+                                <div class="vueditor-header">{{ translateText('placeholder.info_description') }}</div>
+                                <Vueditor :ref="'info.description'+index" />
                             </div>
-                            <div class="col-md-6">
-                                <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.due_date') }}</label>
-                                    <datepicker v-model="schedule.infoDueDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <member-search singleSelect="false" v-model="info.responsible" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-holder right">
+                                        <label class="active">{{ translateText('label.due_date') }}</label>
+                                        <datepicker v-model="info.dueDate" format="dd-MM-yyyy" />
+                                        <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="form-group last-form-group">
+                                <div class="col-md-6">
+                                    <select-field
+                                        v-bind:title="translateText('label.select_status')"
+                                        v-bind:options="noteStatusesForSelect"
+                                        v-model="info.status"
+                                        v-bind:currentOption="info.status" />
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
                     </div>
-                    <div class="row">
-                        <div class="form-group last-form-group">
-                            <div class="col-md-6">
-                                <select-field
-                                    v-bind:title="translateText('label.select_status')"
-                                    v-bind:options="infoStatus"
-                                    v-model="details.infoStatus"
-                                    v-bind:currentOption="details.infoStatus" />
-                            </div>
-                            <div class="col-md-6">
-                                <div class="flex flex-direction-reverse">
-                                    <a href="#" class="btn-rounded btn-auto">{{ translateText('message.add_new_info') }} +</a>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="flex flex-direction-reverse">
+                        <a @click="addInfo()" class="btn-rounded btn-auto">{{ translateText('message.add_new_info') }} +</a>
                     </div>
                     <!-- /// End ToDos /// -->
 
@@ -259,7 +269,7 @@
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
                         <router-link :to="{name: 'project-meetings'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
-                        <a ref="#" class="btn-rounded btn-auto btn-auto second-bg">{{ translateText('button.create_meeting') }}</a>
+                        <a @click="saveMeeting()" class="btn-rounded btn-auto btn-auto second-bg">{{ translateText('button.save_meeting') }}</a>
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
@@ -269,12 +279,15 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex';
 import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
 import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
 import MeetingAttachments from './MeetingAttachments';
+import VueTimepicker from 'vue2-timepicker';
+import {createFormData} from '../../../helpers/meeting';
 
 export default {
     components: {
@@ -284,48 +297,127 @@ export default {
         CalendarIcon,
         MemberSearch,
         MeetingAttachments,
+        VueTimepicker,
     },
     methods: {
+        ...mapActions([
+            'getDistributionLists', 'getMeetingCategories', 'getNoteStatuses',
+            'getTodoStatuses', 'getDecisionStatuses', 'createProjectMeeting',
+        ]),
         translateText: function(text) {
             return this.translate(text);
         },
         setMedias(value) {
             this.medias = value;
         },
+        addObjective() {
+            this.objectives.push({description: ''});
+        },
+        addAgenda() {
+            this.agendas.push({
+                topic: '',
+                responsible: [],
+                startTime: {
+                    HH: null,
+                    mm: null,
+                },
+                endTime: {
+                    HH: null,
+                    mm: null,
+                },
+            });
+        },
+        addDecision() {
+            this.decisions.push({
+                title: '',
+                description: this.$refs['decision.description'+this.decisions.length],
+                responsible: [],
+                dueDate: new Date(),
+                status: {},
+            });
+        },
+        addTodo() {
+            this.todos.push({
+                title: '',
+                description: this.$refs['todo.description'+this.todos.length],
+                responsible: [],
+                dueDate: new Date(),
+                status: {},
+            });
+        },
+        addInfo() {
+            this.infos.push({
+                title: '',
+                description: this.$refs['info.description'+this.infos.length],
+                responsible: [],
+                dueDate: new Date(),
+                status: {},
+            });
+        },
+        saveMeeting() {
+            let data = {
+                name: this.name,
+                distributionLists: [this.details.distributionList],
+                meetingCategory: this.details.category,
+                date: this.schedule.meetingDate,
+                start: this.schedule.startTime,
+                end: this.schedule.endTime,
+                location: this.location,
+                objectives: this.objectives,
+                agendas: this.agendas,
+                medias: this.medias,
+                decisions: this.decisions,
+                todos: this.todos,
+                infos: this.infos,
+            };
+
+            this.createProjectMeeting({
+                data: createFormData(data),
+                projectId: this.$route.params.id,
+            });
+        },
+    },
+    computed: {
+        ...mapGetters({
+            distributionListsForSelect: 'distributionListsForSelect',
+            meetingCategoriesForSelect: 'meetingCategoriesForSelect',
+            noteStatusesForSelect: 'noteStatusesForSelect',
+            todoStatusesForSelect: 'todoStatusesForSelect',
+            decisionStatusesForSelect: 'decisionStatusesForSelect',
+        }),
+    },
+    created() {
+        this.getDistributionLists({projectId: this.$route.params.id});
+        this.getMeetingCategories();
+        this.getTodoStatuses();
+        this.getNoteStatuses();
+        this.getDecisionStatuses();
     },
     data() {
         return {
-            projectCategories: [{label: 'Production', key: 1}, {label: 'Logistics', key: 2}, {label: 'Quality Management', key: 3},
-             {label: 'Human Resources', key: 4}, {label: 'Purchasing', key: 5}, {label: 'Maintenance', key: 6},
-              {label: 'Assembly', key: 7}, {label: 'Tooling', key: 8}, {label: 'Process Engineering', key: 9}, {label: 'Industrialization', key: 10}],
-            // Distribution list values added just for testing
-            meetingsDistributionList: [{label: 'TP Meeting', key: 1}, {label: 'EK Meeting', key: 2}, {label: 'ANLAGENVERWERTUNG BTF', key: 3}],
-            decisionStatus: [{label: 'Undone', key: 1}, {label: 'Done', key: 2}],
-            todoStatus: [{label: 'Undone', key: 1}, {label: 'Ongoing', key: 2}, {label: 'Done', key: 3}],
-            infoStatus: [{label: 'Undone', key: 1}, {label: 'Ongoing', key: 2}, {label: 'Done', key: 3}],
+            name: '',
             location: '',
-            objective: '',
-            topic: '',
-            decision: '',
-            todo_topic: '',
-            info_topic: '',
+            objectives: [],
+            agendas: [],
+            decisions: [],
+            todos: [],
+            infos: [],
+            medias: [],
             schedule: {
                 meetingDate: new Date(),
-                meetingStartTime: new Date(), // should be time select
-                meetingFinishTime: new Date(), // should be time select
-                agendaTopicStartTime: new Date(), // should be time select
-                agendaTopicFinishTime: new Date(), // should be time select
-                decisionDueDate: new Date(),
-                todoDueDate: new Date(),
-                infoDueDate: new Date(),
+                startTime: {
+                    HH: null,
+                    mm: null,
+                },
+                endTime: {
+                    HH: null,
+                    mm: null,
+                },
             },
             details: {
-                decisionStatus: null,
-                todoStatus: null,
-                infoStatus: null,
+                distributionList: null,
+                category: null,
             },
-            visibleSubphase: false,
-            isEdit: this.$route.params.phaseId,
         };
     },
 };

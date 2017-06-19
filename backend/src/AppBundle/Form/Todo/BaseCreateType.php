@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\Todo;
 
+use AppBundle\Entity\TodoStatus;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -64,7 +65,7 @@ class BaseCreateType extends AbstractType
                 'format' => 'dd-MM-yyyy',
             ])
             ->add('status', EntityType::class, [
-                'class' => Status::class,
+                'class' => TodoStatus::class,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.status',
                 'translation_domain' => 'messages',
