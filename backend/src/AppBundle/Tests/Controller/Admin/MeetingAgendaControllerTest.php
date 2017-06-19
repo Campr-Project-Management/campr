@@ -29,8 +29,6 @@ class MeetingAgendaControllerTest extends BaseController
         $this->assertContains('name="create[start]"', $crawler->html());
         $this->assertContains('id="create_end"', $crawler->html());
         $this->assertContains('name="create[end]"', $crawler->html());
-        $this->assertContains('id="create_duration"', $crawler->html());
-        $this->assertContains('name="create[duration]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -52,7 +50,6 @@ class MeetingAgendaControllerTest extends BaseController
         $this->assertContains('The topic field should not be blank', $crawler->html());
         $this->assertContains('The start field should not be blank', $crawler->html());
         $this->assertContains('The end field should not be blank', $crawler->html());
-        $this->assertContains('The duration field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -66,13 +63,11 @@ class MeetingAgendaControllerTest extends BaseController
         $start = new \DateTime();
         $end = new \DateTime('+1 hour');
         $diff = $end->diff($start)->format('%H:%I:%S');
-        $duration = new \DateTime($diff);
 
         $meetingAgenda = (new MeetingAgenda())
             ->setTopic('topic4')
             ->setStart($start)
             ->setEnd($end)
-            ->setDuration($duration)
         ;
         $this->em->persist($meetingAgenda);
         $this->em->flush();
@@ -97,14 +92,11 @@ class MeetingAgendaControllerTest extends BaseController
 
         $start = new \DateTime();
         $end = new \DateTime('+1 hour');
-        $diff = $end->diff($start)->format('%H:%I:%S');
-        $duration = new \DateTime($diff);
 
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[topic]'] = 'topic3';
         $form['create[start]'] = $start->format('H:m');
         $form['create[end]'] = $end->format('H:m');
-        $form['create[duration]'] = $duration->format('H:m');
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -142,8 +134,6 @@ class MeetingAgendaControllerTest extends BaseController
         $this->assertContains('name="create[start]"', $crawler->html());
         $this->assertContains('id="create_end"', $crawler->html());
         $this->assertContains('name="create[end]"', $crawler->html());
-        $this->assertContains('id="create_duration"', $crawler->html());
-        $this->assertContains('name="create[duration]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 
@@ -163,13 +153,11 @@ class MeetingAgendaControllerTest extends BaseController
         $form['create[topic]'] = '';
         $form['create[start]'] = '';
         $form['create[end]'] = '';
-        $form['create[duration]'] = '';
         $crawler = $this->client->submit($form);
 
         $this->assertContains('The topic field should not be blank', $crawler->html());
         $this->assertContains('The start field should not be blank', $crawler->html());
         $this->assertContains('The end field should not be blank', $crawler->html());
-        $this->assertContains('The duration field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }

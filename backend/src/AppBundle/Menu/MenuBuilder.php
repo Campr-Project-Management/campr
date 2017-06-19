@@ -295,12 +295,6 @@ class MenuBuilder
             ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-calendar-note')
             ->getParent()
-            ->addChild($this->translator->trans('title.raci.list', [], 'messages'), [
-                'route' => 'app_admin_raci_list',
-            ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-view-agenda')
-            ->getParent()
             ->addChild($this->translator->trans('title.wppcwct.list', [], 'messages'), [
                 'route' => 'app_admin_wppcwct_list',
             ])
@@ -312,12 +306,6 @@ class MenuBuilder
             ])
             ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-apps')
-            ->getParent()
-            ->addChild($this->translator->trans('title.todo.list', [], 'messages'), [
-                'route' => 'app_admin_todo_list',
-            ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-collection-item')
             ->getParent()
             ->addChild($this->translator->trans('title.impact.list', [], 'messages'), [
                 'route' => 'app_admin_impact_list',
@@ -403,22 +391,56 @@ class MenuBuilder
         ;
 
         $menu
+            ->addChild($this->translator->trans('title.todo.list', [], 'messages'), [])
+            ->setAttributes([
+                'class' => 'sub-menu main-category',
+                'dropdown' => true,
+            ])
+            ->setLinkAttribute('icon', 'zmdi zmdi-collection-item')
+            ->addChild($this->translator->trans('title.todo.list', [], 'messages'), [
+                'route' => 'app_admin_todo_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.todo_status.list', [], 'messages'), [
+                'route' => 'app_admin_todo_status_list',
+            ])->getParent()
+        ;
+
+        $menu
+            ->addChild($this->translator->trans('title.note.list', [], 'messages'), [])
+            ->setAttributes([
+                'class' => 'sub-menu main-category',
+                'dropdown' => true,
+            ])
+            ->setLinkAttribute('icon', 'zmdi zmdi-comment-edit')
             ->addChild($this->translator->trans('title.note.list', [], 'messages'), [
                 'route' => 'app_admin_note_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.note_status.list', [], 'messages'), [
+                'route' => 'app_admin_note_status_list',
+            ])->getParent()
+        ;
+
+        $menu
+            ->addChild($this->translator->trans('title.decision.list', [], 'messages'), [])
+            ->setAttributes([
+                'class' => 'sub-menu main-category',
+                'dropdown' => true,
             ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-comment-edit')
-            ->getParent()
+            ->setLinkAttribute('icon', 'zmdi zmdi-device-hub')
+            ->addChild($this->translator->trans('title.decision.list', [], 'messages'), [
+                'route' => 'app_admin_decision_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.decision_status.list', [], 'messages'), [
+                'route' => 'app_admin_decision_status_list',
+            ])->getParent()
+        ;
+
+        $menu
             ->addChild($this->translator->trans('title.company.list', [], 'messages'), [
                 'route' => 'app_admin_company_list',
             ])
             ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-case')
-            ->getParent()
-            ->addChild($this->translator->trans('title.decision.list', [], 'messages'), [
-                'route' => 'app_admin_decision_list',
-            ])
-            ->setLinkAttribute('icon', 'zmdi zmdi-device-hub')
             ->getParent()
             ->addChild($this->translator->trans('title.distribution_list.list', [], 'messages'), [
                 'route' => 'app_admin_distribution_list_list',

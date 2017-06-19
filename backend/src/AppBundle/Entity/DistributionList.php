@@ -89,10 +89,10 @@ class DistributionList
      * @ORM\JoinTable(
      *     name="distribution_list_meeting",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="distribution_list_id")
+     *         @ORM\JoinColumn(name="distribution_list_id", onDelete="CASCADE")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="meeting_id")
+     *         @ORM\JoinColumn(name="meeting_id", onDelete="CASCADE")
      *     }
      * )
      */
