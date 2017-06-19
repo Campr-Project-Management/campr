@@ -3,7 +3,7 @@ import * as types from '../mutation-types';
 
 const state = {
     tasksByStatuses: [],
-    tasksFilters: [],
+    tasksByStatusFilters: {},
 };
 
 const getters = {
@@ -46,9 +46,9 @@ const actions = {
      */
     getTasksByStatus({commit, state}, {project, statusId, page, callback}) {
         // commit(types.TOGGLE_LOADER, true);
-        const projectUser = state.tasksFilters.assignee;
-        const colorStatus = state.tasksFilters.condition;
-        const searchString = state.tasksFilters.searchString;
+        const projectUser = state.tasksByStatusFilters.assignee;
+        const colorStatus = state.tasksByStatusFilters.condition;
+        const searchString = state.tasksByStatusFilters.searchString;
         Vue.http
             .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
                 params: {
@@ -74,9 +74,9 @@ const actions = {
     resetTasks({commit}, project) {
         commit(types.RESET_TASKS);
 
-        const projectUser = state.tasksFilters.assignee;
-        const colorStatus = state.tasksFilters.condition;
-        const searchString = state.tasksFilters.searchString;
+        const projectUser = state.tasksByStatusFilters.assignee;
+        const colorStatus = state.tasksByStatusFilters.condition;
+        const searchString = state.tasksByStatusFilters.searchString;
 
         Vue.http
             .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
@@ -121,7 +121,7 @@ const mutations = {
         state.tasksByStatuses = [];
     },
     [types.SET_TASKS_FILTERS](state, filters) {
-        state.tasksFilters = filters;
+        state.tasksByStatusFilters = filters;
     },
 };
 

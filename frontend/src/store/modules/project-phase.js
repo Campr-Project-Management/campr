@@ -3,11 +3,11 @@ import * as types from '../mutation-types';
 import router from '../../router';
 
 const state = {
-    projectPhases: [],
+    projectPhases: {},
     currentPhase: {},
     phaseWorkPackages: [],
-    filters: {},
-    allProjectPhases: [],
+    projectPhaseFilters: {},
+    allProjectPhases: {},
 };
 
 const getters = {
@@ -43,17 +43,17 @@ const actions = {
             paramObject.params.page = apiParams.page;
         }
 
-        if (state.filters && state.filters.startDate) {
-            paramObject.params.startDate = state.filters.startDate;
+        if (state.projectPhaseFilters && state.projectPhaseFilters.startDate) {
+            paramObject.params.startDate = state.projectPhaseFilters.startDate;
         }
-        if (state.filters && state.filters.endDate) {
-            paramObject.params.endDate = state.filters.endDate;
+        if (state.projectPhaseFilters && state.projectPhaseFilters.endDate) {
+            paramObject.params.endDate = state.projectPhaseFilters.endDate;
         }
-        if (state.filters && state.filters.status) {
-            paramObject.params.status = state.filters.status;
+        if (state.projectPhaseFilters && state.projectPhaseFilters.status) {
+            paramObject.params.status = state.projectPhaseFilters.status;
         }
-        if (state.filters && state.filters.responsible) {
-            paramObject.params.projectUser = state.filters.responsible;
+        if (state.projectPhaseFilters && state.projectPhaseFilters.responsible) {
+            paramObject.params.projectUser = state.projectPhaseFilters.responsible;
         }
         Vue.http
             .get(Routing.generate('app_api_project_phases', {'id': projectId}),
@@ -174,7 +174,7 @@ const mutations = {
         state.currentPhase = phase;
     },
     [types.SET_PHASES_FILTERS](state, {filters}) {
-        state.filters = Object.assign({}, state.filters, filters);
+        state.projectPhaseFilters = Object.assign({}, state.projectPhaseFilters, filters);
     },
     /**
      * Sets all project phases
