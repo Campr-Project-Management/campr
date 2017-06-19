@@ -61,7 +61,11 @@
                             </tr>
                             <tr>
                                 <th>{{ 'table_header_cell.objectives'|trans }}</th>
-                                <td>{{ meeting.obectives|default('-') }}</td>
+                                <td>
+                                    {% for objective in meeting.meetingObjectives %}
+                                        <p>{{ objective.description|default('-') }}</p>
+                                    {% endfor %}
+                                </td>
                             </tr>
                             <tr>
                                 <th>{{ 'table_header_cell.participants'|trans }}</th>
