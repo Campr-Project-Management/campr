@@ -5,9 +5,9 @@
                 <!-- /// Header /// -->
                 <div class="header flex-v-center">
                     <div>
-                        <router-link :to="{name: 'project-meetings'}" class="small-link">
+                        <router-link :to="{name: 'project-todos'}" class="small-link">
                             <i class="fa fa-angle-left"></i>
-                            {{ translateText('message.back_to_meetings') }}
+                            {{ translateText('message.back_to_todos') }}
                         </router-link>
                         <h1>{{ translateText('message.edit') }} <b>TP Meeting</b></h1>
                     </div>
@@ -306,7 +306,7 @@
                                     <b>Anna Floyd</b>
                                 </div>
                             </div>
-                            <div class="entry-body">
+                            <div class="decision-body">
                                 <p>Morbi lectus massa, sollicitudin quis luctus non, pulvinar sed nibh. Suspendisse id dui a sem tempus pretium. Nunc a ornare lacus. Fusce eleifend enim id euismod scelerisque. Maecenas eu consequat ligula, id mollis mauris. Mauris ac mauris sed lorem vulputate bibendum id ut orci. Maecenas lacinia eget ipsum vitae tincidunt.</p>
                                 <ul>
                                     <li>Morbi at diam congue ante auctor tincidunt</li>
@@ -337,7 +337,7 @@
                                     <b>John Doe</b>
                                 </div>
                             </div>
-                            <div class="entry-body">
+                            <div class="decision-body">
                                 <ul>
                                     <li>vitae enim quis elit volutpat sodales</li>
                                     <li>vitae molestie ante</li>
@@ -367,7 +367,7 @@
                                     <b>Martin Lawrence</b>
                                 </div>
                             </div>
-                            <div class="entry-body">
+                            <div class="decision-body">
                                 <p>Phasellus mattis massa non metus pretium mollis sed eget justo. Cras non nisi et ligula rhoncus lobortis. Curabitur iaculis sem magna, sed efficitur magna sodales quis. Nam eget commodo eros.</p>
                                 <p>Nullam vestibulum urna id laoreet porttitor. Praesent eu purus fermentum, varius augue eget, sollicitudin dolor. Mauris feugiat dictum convallis. Nulla quis quam id arcu tincidunt hendrerit. Aenean volutpat tincidunt posuere. Nulla arcu dolor, dapibus ut augue a, tincidunt semper felis. Curabitur in mauris risus. Maecenas eget blandit nibh. Sed vel laoreet lacus. Nulla bibendum risus at sem convallis consequat.</p>
                                 <ol>
@@ -445,7 +445,7 @@
                                     <b>Kyle Kennedy</b>
                                 </div>
                             </div>
-                            <div class="entry-body">
+                            <div class="decision-body">
                                 <p>Morbi lectus massa, sollicitudin quis luctus non, pulvinar sed nibh. Suspendisse id dui a sem tempus pretium. Nunc a ornare lacus. Fusce eleifend enim id euismod scelerisque. Maecenas eu consequat ligula, id mollis mauris. Mauris ac mauris sed lorem vulputate bibendum id ut orci. Maecenas lacinia eget ipsum vitae tincidunt.</p>
                             </div>  
                         </div>
@@ -470,7 +470,7 @@
                                     <b>Cathrine Magnusson</b>
                                 </div>
                             </div>
-                            <div class="entry-body">
+                            <div class="decision-body">
                                 <ul>
                                     <li>vitae enim quis elit volutpat sodales</li>
                                     <li>vitae molestie ante</li>
@@ -546,7 +546,7 @@
                                     <b>Anne Manning</b>
                                 </div>
                             </div>
-                            <div class="entry-body">
+                            <div class="decision-body">
                                 <ul>
                                     <li>vitae enim quis elit volutpat sodales</li>
                                     <li>vitae molestie ante</li>
@@ -618,7 +618,7 @@
                 </div>
                 <!-- /// End Header /// -->
 
-                <div class="flex flex-v-center flex-space-between">
+                <div class="header flex-v-center">
                     <div>
                         <h3>{{ translateText('message.participants') }}</h3>
                     </div>
@@ -838,7 +838,6 @@ import SelectField from '../../_common/_form-components/SelectField';
 import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
-import MeetingAttachments from './MeetingAttachments';
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import VueScrollbar from 'vue2-scrollbar';
@@ -851,7 +850,6 @@ export default {
         datepicker,
         CalendarIcon,
         MemberSearch,
-        MeetingAttachments,
         EditIcon,
         DeleteIcon,
         VueScrollbar,
@@ -1074,7 +1072,7 @@ export default {
             }
         }
 
-        .entry-body {
+        .decision-body {
             padding: 10px 0 0 0;
 
             ul {
