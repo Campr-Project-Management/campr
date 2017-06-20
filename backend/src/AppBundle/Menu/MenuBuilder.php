@@ -388,6 +388,12 @@ class MenuBuilder
             ->addChild($this->translator->trans('title.meeting.list', [], 'messages'), [
                 'route' => 'app_admin_meeting_list',
             ])->getParent()
+            ->addChild($this->translator->trans('title.meeting_category.list', [], 'messages'), [
+                'route' => 'app_admin_meeting_category_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.meeting_objective.list', [], 'messages'), [
+                'route' => 'app_admin_meeting_objective_list',
+            ])->getParent()
             ->addChild($this->translator->trans('title.meeting_agenda.list', [], 'messages'), [
                 'route' => 'app_admin_meeting_agenda_list',
             ])->getParent()

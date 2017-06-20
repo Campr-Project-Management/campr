@@ -226,12 +226,12 @@ const routes = [
                 name: 'project-meetings-create-meeting',
             },
             {
-                path: 'meetings/edit-meeting',
+                path: 'meetings/edit-meeting/:meetingId',
                 component: EditMeeting,
                 name: 'project-meetings-edit-meeting',
             },
             {
-                path: 'meetings/view-meeting',
+                path: 'meetings/view-meeting/:meetingId',
                 component: ViewMeeting,
                 name: 'project-meetings-view-meeting',
             },

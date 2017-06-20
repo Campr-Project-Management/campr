@@ -9,7 +9,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'title.meeting.edit'|trans }}</h2>
+                    <h2>{{ 'title.meeting_objective.edit'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -17,21 +17,21 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_meeting_create') }}">{{ 'add.meeting'|trans }}</a>
+                                    <a href="{{ path('app_admin_meeting_objective_create') }}">{{ 'add.meeting_objective'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_meeting_list') }}">{{ 'button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_meeting_objective_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
                     </ul>
                 </div>
-                <div class="card-body card-padding">
+                <div class="card-body m-t-0 card-padding">
                     {{ form_start(
                         form,
                         {
                             'method': 'POST',
-                            'action': path('app_admin_meeting_edit', {'id': id}),
+                            'action': path('app_admin_meeting_objective_edit', {'id': id}),
                             'attr': {
                                 'id': 'edit-form',
                                 'class': 'form-horizontal',
@@ -42,74 +42,32 @@
                     {% if form.vars.valid == false %}
                         <div class="alert alert-danger">
                             {% for field in form.children %}
-
                                 {{ form_errors(field) }}
                             {% endfor %}
                         </div>
                     {% endif %}
                     {{ form_widget(
-                    form.project,
+                        form.description,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'label.description'|trans,
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.meeting,
                         {
                             'attr': {
                                 'class': 'selectpicker',
                             },
-                            'label': 'label.project'|trans,
-                        }
-                    ) }}
-                    {{ form_widget(
-                        form.name,
-                        {
-                            'attr': {
-                                'class': 'form-control input-sm',
-                            },
-                            'label': 'label.name'|trans,
-                        }
-                    ) }}
-                    {{ form_widget(
-                        form.location,
-                        {
-                            'attr': {
-                                'class': 'form-control input-sm',
-                            },
-                            'label': 'label.location'|trans,
-                        }
-                    ) }}
-                    {{ form_widget(
-                        form.date,
-                        {
-                            'attr': {
-                                'class': 'form-control date-picker',
-                                'addon_front': 'calendar',
-                            },
-                            'label': 'label.date'|trans
-                        }
-                    ) }}
-                    {{ form_widget(
-                        form.start,
-                        {
-                            'attr': {
-                                'class': 'form-control time-picker',
-                                'data-date-format': "HH:mm",
-                                'addon_front': 'time',
-                            },
-                            'label': 'label.start'|trans
-                        }
-                    ) }}
-                    {{ form_widget(
-                        form.end,
-                        {
-                            'attr': {
-                                'class': 'form-control time-picker',
-                                'data-date-format': "HH:mm",
-                                'addon_front': 'time',
-                            },
-                            'label': 'label.end'|trans
+                            'label': 'label.meeting'|trans,
                         }
                     ) }}
 
                     {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
                         with {
-                            'delete_path': 'app_admin_meeting_delete',
+                            'delete_path': 'app_admin_meeting_objective_delete',
                             'id': id,
                         }
                     %}
