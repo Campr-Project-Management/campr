@@ -1,7 +1,9 @@
 <template>
-    <div>
-        <h1>Gantt chart</h1>
-        <div ref="gantt_chart" id="gantt_chart" style="width:100%; height:100%; min-height: 600px;">
+    <div class="page-section">
+        <div class="header flex flex-space-between">
+            <h1>{{ translateText('message.gantt_chart') }}</h1>
+        </div>       
+        <div ref="gantt_chart" id="gantt_chart" class="gantt-chart">
             <p>Loading...</p>
         </div>
     </div>
@@ -21,6 +23,10 @@ export default {
     },
     methods: {
         ...mapActions(['getGanttData']),
+
+        translateText: function(text) {
+            return this.translate(text);
+        },
     },
     mounted() {
         gantt.init(this.$refs.gantt_chart);
@@ -203,9 +209,143 @@ export default {
 };
 </script>
 
-<style scoped="scoped">
-@import "~dhtmlx-gantt/codebase/dhtmlxgantt.css";
-.gantt_add {
-    display: none !important;
-}
+<style scoped="scoped" lang="scss">
+    @import "~dhtmlx-gantt/codebase/dhtmlxgantt.css";
+</style>
+
+<style lang="scss">
+    @import '../../css/_variables';
+    @import '../../css/_mixins';
+
+    .gantt_add {
+        display: none !important;
+    }
+
+    .gantt-chart {
+        width: 100%;
+        height: 100%;
+        min-height: 600px;
+    }
+
+    .gantt_container {
+        font-family: Poppins;
+        font-size: 10px;
+        border: 1px solid $middleColor;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    .gantt_grid {
+        border-right: 1px solid $middleColor;
+    }
+
+    .gantt_grid_scale,
+    .gantt_task_scale {
+        color: $lightColor;
+        font-size: 10px;
+        border-bottom: 1px solid $darkColor;
+        background-color: $darkColor;
+    }
+
+    .gantt_grid_scale .gantt_grid_head_cell {
+        color: $lightColor;
+    }
+
+    .gantt_row,
+    .gantt_task_row,
+    .gantt_row.odd,
+    .gantt_task_row.odd {
+        border-bottom: 1px solid $mainColor;
+        background-color: $mainColor;
+    }
+
+    .gantt_task .gantt_task_scale .gantt_scale_cell {
+        color: $lightColor;
+        border-right: 1px solid $darkColor;
+    }
+
+    .gantt_task_line {
+        @include border-radius(3px);
+        background-color: $secondColor;
+        border: 1px solid $mainColor;
+    }
+
+    .gantt_task_progress {
+        background: $secondDarkColor;
+        @include border-radii(3px, 0, 0, 3px)
+    }
+
+    .gantt_task_content {
+        font-size: 10px;
+        font-weight: 500;
+    } 
+
+    .gantt_task_cell {
+        border-right: 1px solid $mainColor;
+    }   
+
+    .gantt_grid_data .gantt_cell {
+        color: $lighterColor;
+        cursor: pointer;
+    }
+
+    .gantt_cell {
+        font-size: 10px;
+        font-weight: 500;
+    } 
+
+    .gantt_grid_data .gantt_row.odd:hover, 
+    .gantt_grid_data .gantt_row:hover {
+        background-color: $darkColor;
+    }
+
+    .gantt_grid_data .gantt_row.gantt_selected, 
+    .gantt_grid_data .gantt_row.odd.gantt_selected, 
+    .gantt_task_row.gantt_selected {
+        background-color: $darkColor;
+    }  
+
+    .gantt_task_row.gantt_selected .gantt_task_cell {
+        border-right-color: $darkColor;
+    } 
+
+    .gantt_line_wrapper div {
+        background-color: $lightColor;
+    }
+
+    .gantt_link_arrow_right {
+        border-color: $lightColor;
+    }
+
+    .gantt_task_line.gantt_selected {
+        @include box-shadow(0, 0, 7px, $darkerColor);
+    }
+
+    .gantt_tree_icon.gantt_close{
+        &:before {
+            content: "-";
+        }
+    }
+
+    .gantt_tree_icon.gantt_open{
+        &:before {
+            content: "+";
+        }
+    }
+
+    .gantt_tree_icon.gantt_close,
+    .gantt_tree_icon.gantt_open {
+        background: none;
+        width: 15px;
+
+        &:before {
+            width: 15px;
+            height: 15px;
+            border: 1px solid $lightColor;
+            color: $lightColor;
+            display: inline-block;
+            line-height: 14px;
+            text-align: center;
+        }
+    }
 </style>
