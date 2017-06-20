@@ -88,56 +88,56 @@ class Meeting
     /**
      * @var ArrayCollection|MeetingObjective[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MeetingObjective", mappedBy="meeting")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MeetingObjective", mappedBy="meeting", cascade={"all"})
      */
     private $meetingObjectives;
 
     /**
      * @var ArrayCollection|MeetingParticipant[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MeetingParticipant", mappedBy="meeting")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MeetingParticipant", mappedBy="meeting", cascade={"all"})
      */
     private $meetingParticipants;
 
     /**
      * @var ArrayCollection|MeetingAgenda[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MeetingAgenda", mappedBy="meeting")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MeetingAgenda", mappedBy="meeting", cascade={"all"})
      */
     private $meetingAgendas;
 
     /**
      * @var ArrayCollection|Media[]
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Media", mappedBy="meetings")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Media", mappedBy="meetings", cascade={"all"})
      */
     private $medias;
 
     /**
      * @var ArrayCollection|Decision[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Decision", mappedBy="meeting")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Decision", mappedBy="meeting", cascade={"all"})
      */
     private $decisions;
 
     /**
      * @var ArrayCollection|Decision[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Todo", mappedBy="meeting")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Todo", mappedBy="meeting", cascade={"all"})
      */
     private $todos;
 
     /**
      * @var ArrayCollection|Decision[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Note", mappedBy="meeting")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Note", mappedBy="meeting", cascade={"all"})
      */
     private $notes;
 
     /**
      * @var ArrayCollection|DistributionList[]
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\DistributionList", mappedBy="meetings")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\DistributionList", mappedBy="meetings", cascade={"all"})
      */
     private $distributionLists;
 
@@ -348,7 +348,7 @@ class Meeting
      *
      * @return string
      */
-    public function getProjectId()
+    public function getPojectId()
     {
         return $this->project ? $this->project->getId() : null;
     }
@@ -410,6 +410,7 @@ class Meeting
     public function addMeetingAgenda(MeetingAgenda $meetingAgenda)
     {
         $this->meetingAgendas[] = $meetingAgenda;
+        $meetingAgenda->setMeeting($this);
 
         return $this;
     }
@@ -444,6 +445,7 @@ class Meeting
     public function addMedia(Media $media)
     {
         $this->medias[] = $media;
+        $media->addMeeting($this);
 
         return $this;
     }
@@ -456,6 +458,9 @@ class Meeting
     public function removeMedia(Media $media)
     {
         $this->medias->removeElement($media);
+        $media->removeMeeting($this);
+
+        return $this;
     }
 
     /**
@@ -478,6 +483,7 @@ class Meeting
     public function addDecision(Decision $decision)
     {
         $this->decisions[] = $decision;
+        $decision->setMeeting($this);
 
         return $this;
     }
@@ -490,6 +496,8 @@ class Meeting
     public function removeDecision(Decision $decision)
     {
         $this->decisions->removeElement($decision);
+
+        return $this;
     }
 
     /**
@@ -512,6 +520,7 @@ class Meeting
     public function addTodo(Todo $todo)
     {
         $this->todos[] = $todo;
+        $todo->setMeeting($this);
 
         return $this;
     }
@@ -524,6 +533,8 @@ class Meeting
     public function removeTodo(Todo $todo)
     {
         $this->todos->removeElement($todo);
+
+        return $this;
     }
 
     /**
@@ -546,6 +557,7 @@ class Meeting
     public function addNote(Note $note)
     {
         $this->notes[] = $note;
+        $note->setMeeting($this);
 
         return $this;
     }
@@ -558,6 +570,8 @@ class Meeting
     public function removeNote(Note $note)
     {
         $this->notes->removeElement($note);
+
+        return $this;
     }
 
     /**
@@ -580,6 +594,7 @@ class Meeting
     public function addDistributionList(DistributionList $distributionList)
     {
         $this->distributionLists[] = $distributionList;
+        $distributionList->addMeeting($this);
 
         return $this;
     }
@@ -592,6 +607,9 @@ class Meeting
     public function removeDistributionList(DistributionList $distributionList)
     {
         $this->distributionLists->removeElement($distributionList);
+        $distributionList->removeMeeting($this);
+
+        return $this;
     }
 
     /**
@@ -751,6 +769,7 @@ class Meeting
     public function addMeetingObjective(MeetingObjective $meetingObjective)
     {
         $this->meetingObjectives[] = $meetingObjective;
+        $meetingObjective->setMeeting($this);
 
         return $this;
     }

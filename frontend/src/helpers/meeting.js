@@ -1,0 +1,76 @@
+import moment from 'moment';
+
+export const createFormData = (data) => {
+    let formData = new FormData();
+
+    formData.append('name', data.name);
+    formData.append('meetingCategory', data.meetingCategory ? data.meetingCategory.key : null);
+    formData.append('date', moment(data.date).format('DD-MM-YYYY'));
+    formData.append('start', data.start.HH + ':' + data.start.mm);
+    formData.append('end', data.end.HH + ':' + data.end.mm);
+    formData.append('location', data.location);
+
+    if (data.distributionLists.length) {
+        for (let i = 0; i < data.distributionLists.length; i++) {
+            formData.append('distributionLists[' + i + ']', data.distributionLists[i] ? data.distributionLists[i].key : null);
+        }
+    }
+
+    if (data.objectives.length > 0) {
+        for (let i = 0; i < data.objectives.length; i++) {
+            formData.append('meetingObjectives[' + i + '][description]', data.objectives[i].description);
+        }
+    }
+
+    if (data.agendas.length > 0) {
+        for (let i = 0; i < data.agendas.length; i++) {
+            formData.append('meetingAgendas[' + i + '][topic]', data.agendas[i].topic);
+            formData.append('meetingAgendas[' + i + '][responsibility]', data.agendas[i].responsible.length > 0 ? data.agendas[i].responsible[0] : null);
+            formData.append('meetingAgendas[' + i + '][start]', data.agendas[i].startTime.HH + ':' + data.agendas[i].startTime.mm);
+            formData.append('meetingAgendas[' + i + '][end]', data.agendas[i].endTime.HH + ':' + data.agendas[i].endTime.mm);
+        }
+    }
+
+    if (data.medias.length > 0) {
+        for (let i = 0; i < data.medias.length; i++) {
+            formData.append(
+                'medias[' + i + '][file]',
+                data.medias[i] instanceof window.File
+                    ? data.medias[i]
+                    : ''
+            );
+        }
+    }
+
+    if (data.decisions.length > 0) {
+        for (let i = 0; i < data.decisions.length; i++) {
+            formData.append('decisions[' + i + '][title]', data.decisions[i].title);
+            formData.append('decisions[' + i + '][description]', data.decisions[i].description);
+            formData.append('decisions[' + i + '][responsibility]', data.decisions[i].responsible.length > 0 ? data.decisions[i].responsible[0] : null);
+            formData.append('decisions[' + i + '][dueDate]', moment(data.decisions[i].dueDate).format('DD-MM-YYYY'));
+            formData.append('decisions[' + i + '][status]', data.decisions[i].status ? data.decisions[i].status.key : null);
+        }
+    }
+
+    if (data.todos.length > 0) {
+        for (let i = 0; i < data.todos.length; i++) {
+            formData.append('todos[' + i + '][title]', data.todos[i].title);
+            formData.append('todos[' + i + '][description]', data.todos[i].description);
+            formData.append('todos[' + i + '][responsibility]', data.todos[i].responsible.length > 0 ? data.todos[i].responsible[0] : null);
+            formData.append('todos[' + i + '][dueDate]', moment(data.todos[i].dueDate).format('DD-MM-YYYY'));
+            formData.append('todos[' + i + '][status]', data.todos[i].status ? data.todos[i].status.key : null);
+        }
+    }
+
+    if (data.infos.length > 0) {
+        for (let i = 0; i < data.infos.length; i++) {
+            formData.append('notes[' + i + '][title]', data.infos[i].title);
+            formData.append('notes[' + i + '][description]', data.infos[i].description);
+            formData.append('notes[' + i + '][responsibility]', data.infos[i].responsible.length > 0 ? data.infos[i].responsible[0] : null);
+            formData.append('notes[' + i + '][dueDate]', moment(data.infos[i].dueDate).format('DD-MM-YYYY'));
+            formData.append('notes[' + i + '][status]', data.infos[i].status ? data.infos[i].status.key : null);
+        }
+    }
+
+    return formData;
+};

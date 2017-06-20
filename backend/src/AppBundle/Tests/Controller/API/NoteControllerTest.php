@@ -44,8 +44,8 @@ class NoteControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'status' => 1,
-                    'statusName' => 'status1',
+                    'status' => null,
+                    'statusName' => null,
                     'meeting' => 1,
                     'meetingName' => 'meeting1',
                     'project' => 1,

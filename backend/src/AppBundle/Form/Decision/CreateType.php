@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Decision;
 
 use AppBundle\Entity\Decision;
+use AppBundle\Entity\DecisionStatus;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Status;
@@ -65,7 +66,7 @@ class CreateType extends AbstractType
                 'translation_domain' => 'messages',
             ])
             ->add('status', EntityType::class, [
-                'class' => Status::class,
+                'class' => DecisionStatus::class,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.status',
                 'translation_domain' => 'messages',

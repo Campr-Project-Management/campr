@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Meeting;
 
 use AppBundle\Entity\Meeting;
+use AppBundle\Form\WorkPackage\UploadMediaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -48,6 +49,12 @@ class ApiCreateType extends BaseCreateType
             ])
             ->add('notes', CollectionType::class, [
                 'entry_type' => NoteType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ])
+            ->add('medias', CollectionType::class, [
+                'entry_type' => UploadMediaType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,

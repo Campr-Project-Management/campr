@@ -60,15 +60,6 @@ class CreateType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('duration', DateTimeType::class, [
-                'required' => true,
-                'widget' => 'single_text',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.duration',
-                    ]),
-                ],
-            ])
         ;
     }
 

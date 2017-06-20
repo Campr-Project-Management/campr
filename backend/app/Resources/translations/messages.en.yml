@@ -598,8 +598,23 @@ title:
         list: Subteam Member
         create: Create Subteam Member
         edit: Edit Subteam Member
+    decision_status:
+        list: Decision Status
+        create: Create Decision Status
+        edit: Edit Decision Status
+    todo_status:
+        list: Todo Status
+        create: Create Todo Status
+        edit: Edit Todo Status
+    note_status:
+        list: Note Status
+        create: Create Note Status
+        edit: Edit Note Status
 
 subtitle:
+    decision_status: List of decision statuses
+    note_status: List of note statuses
+    todo_status: List of todo statuses
     meeting_category: List of meeting categories
     meeting_objective: List of meeting objectives
     measure: Measure
@@ -979,6 +994,9 @@ checkbox:
     unchecked: No
 
 add:
+    decision_status: Add new decision status
+    todo_status: Add new todo status
+    note_status: Add new note status
     meeting_category: Add new meeting category
     meeting_objective: Add new meeting objective
     measure: Add new measure

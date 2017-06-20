@@ -28,7 +28,7 @@ class MeetingParticipant
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="meetingParticipants")
-     * @ORM\JoinColumn(name="meeting_id")
+     * @ORM\JoinColumn(name="meeting_id", onDelete="CASCADE")
      */
     private $meeting;
 
