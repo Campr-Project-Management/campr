@@ -92,17 +92,6 @@
                             'label': 'label.end'|trans
                         }
                     ) }}
-                    {{ form_widget(
-                        form.duration,
-                        {
-                            'attr': {
-                                'class': 'form-control time-picker',
-                                'data-date-format': "HH:mm",
-                                'addon_front': 'time',
-                            },
-                            'label': 'label.duration'|trans
-                        }
-                    ) }}
 
                     {% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
 

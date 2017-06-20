@@ -39,7 +39,7 @@ class Note
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="notes")
-     * @ORM\JoinColumn(name="meeting_id")
+     * @ORM\JoinColumn(name="meeting_id", onDelete="CASCADE")
      */
     private $meeting;
 
@@ -97,7 +97,7 @@ class Note
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Status")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\NoteStatus")
      * @ORM\JoinColumn(name="status_id")
      */
     private $status;
@@ -382,11 +382,11 @@ class Note
     /**
      * Set status.
      *
-     * @param Status $status
+     * @param NoteStatus $status
      *
      * @return Note
      */
-    public function setStatus(Status $status = null)
+    public function setStatus(NoteStatus $status = null)
     {
         $this->status = $status;
 
@@ -396,7 +396,7 @@ class Note
     /**
      * Get status.
      *
-     * @return Status
+     * @return NoteStatus
      */
     public function getStatus()
     {

@@ -6,16 +6,16 @@
             type="file"
             name="attachments"
             style="display: none;"
-            v-on:change="updateMedias" />
-        <div class="attachments">
-            <div v-for="media, index in medias" class="attachment">
+            @change="updateMedias" />
+        <div class="attachments" v-if="medias.length > 0">
+            <div v-for="(media, index) in medias" class="attachment">
                 <view-icon />
                 <span class="attachment-name">{{ media.name || media.path }}</span>
-                <i class="fa fa-times" v-on:click="deleteMedia(index);"></i>
+                <i class="fa fa-times" @click="deleteMedia(index);"></i>
             </div>
         </div>
         <div class="text-center">
-            <a class="btn-rounded btn-empty btn-md" v-on:click="openFileSelection">{{ translateText('button.add_attachment') }}</a>
+            <a class="btn-rounded btn-empty btn-md" @click="openFileSelection">{{ translateText('button.add_attachment') }}</a>
         </div>
     </div>
 </template>
@@ -27,7 +27,9 @@ export default {
     props: {
         editMedias: {
             'type': Array,
-            'default': [],
+            'default': function() {
+                return [];
+            },
         },
     },
     components: {

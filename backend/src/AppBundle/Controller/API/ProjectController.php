@@ -314,7 +314,7 @@ class ProjectController extends ApiController
     /**
      * Get all distribution lists for a specific Project.
      *
-     * @Route("/{id}/distribution-lists", name="app_api_project_distribution_lists")
+     * @Route("/{id}/distribution-lists", name="app_api_project_distribution_lists", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Project $project
@@ -461,11 +461,43 @@ class ProjectController extends ApiController
      */
     public function createMeetingAction(Request $request, Project $project)
     {
-        $form = $this->createForm(MeetingApiCreateType::class, new Meeting(), ['csrf_protection' => false]);
+        $meeting = new Meeting();
+        $form = $this->createForm(MeetingApiCreateType::class, $meeting, ['csrf_protection' => false]);
         $this->processForm($request, $form);
 
+        $em = $this->getDoctrine()->getManager();
+        $fileSystem = $project
+            ->getFileSystems()
+            ->filter(function (FileSystem $fs) {
+                return $fs->getDriver() === FileSystem::LOCAL_ADAPTER;
+            })
+            ->first()
+        ;
+
+        if (!$fileSystem) {
+            $fileSystem = $em
+                ->getRepository(FileSystem::class)
+                ->findOneBy([
+                    'driver' => FileSystem::LOCAL_ADAPTER,
+                ])
+            ;
+            if (!$fileSystem) {
+                return $this->createApiResponse(
+                    [
+                        'messages' => [
+                            'Filesystem is missing. Please contact us.',
+                        ],
+                    ],
+                    Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+            }
+        }
+
         if ($form->isValid()) {
-            $meeting = $form->getData();
+            foreach ($meeting->getMedias() as $media) {
+                $media->setFileSystem($fileSystem);
+            }
+
             $meeting->setCreatedBy($this->getUser());
             $meeting->setProject($project);
             $this->persistAndFlush($meeting);
