@@ -75,6 +75,11 @@
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive">
                         <thead>
+                            <!-- <tr v-if='project.distributionLists'>
+                                <th colspan="10"></th>
+                                <th class="text-center " :colspan="project.distributionLists.length">{{ translateText('table_header_cell.distribution_lists') }}</th>
+                                <th></th>
+                            </tr> -->
                             <tr>
                                 <th class="avatar"></th>
                                 <th class="text-center switchers">{{ translateText('table_header_cell.resource') }}</th>
@@ -86,16 +91,8 @@
                                 <th>{{ translateText('table_header_cell.contact') }}</th>
                                 <th class="text-center switchers">{{ translateText('table_header_cell.raci') }}</th>
                                 <th class="text-center switchers">{{ translateText('table_header_cell.org') }}</th>
-                                <th v-if='project.distributionLists' :colspan="project.distributionLists.length" class="no-padding">
-                                    <table>
-                                        <tr>
-                                            <th class="text-center " :colspan="project.distributionLists.length">{{ translateText('table_header_cell.distribution_lists') }}</th>
-                                        </tr>
-                                        <tr>
-                                            <th class="text-center switchers" v-for="dl in project.distributionLists">{{ dl.name }}</th>
-                                        </tr>
-                                    </table>
-                                </th>
+                                <th class="text-center switchers" v-if='project.distributionLists' v-for="dl in project.distributionLists">{{ dl.name }}</th>
+                                <th>{{ translateText('table_header_cell.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -125,6 +122,15 @@
                                 <td class="text-center switchers" v-for="dl in project.distributionLists">
                                     <switches :modelChanged="updateDistributionItem(item, dl)" v-model="inDistribution" :selected="inDistributionList(item.user, dl)"></switches>
                                 </td>
+                                <td>
+                                    <router-link :to="{name: 'project-organization-view-member'}" class="btn-icon">
+                                        <view-icon fill="second-fill"></view-icon>
+                                    </router-link>
+                                    <router-link :to="{name: 'project-organization-create-member'}" class="btn-icon">
+                                        <edit-icon fill="second-fill"></edit-icon>
+                                    </router-link>
+                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -152,6 +158,9 @@ import MemberSearch from '../_common/MemberSearch';
 import Switches from '../3rdparty/vue-switches';
 import VueScrollbar from 'vue2-scrollbar';
 import Modal from '../_common/Modal';
+import EditIcon from '../_common/_icons/EditIcon';
+import DeleteIcon from '../_common/_icons/DeleteIcon';
+import ViewIcon from '../_common/_icons/ViewIcon';
 
 export default {
     components: {
@@ -162,6 +171,9 @@ export default {
         Modal,
         VueScrollbar,
         MemberSearch,
+        EditIcon,
+        DeleteIcon,
+        ViewIcon,
     },
     methods: {
         ...mapActions(['getProjectById', 'createDistribution', 'updateProjectUser',
