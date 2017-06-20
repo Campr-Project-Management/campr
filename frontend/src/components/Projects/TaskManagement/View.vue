@@ -1,10 +1,10 @@
 <template>
     <div class="project-task-management page-section">
         <modal v-if="showDeleteModal" @close="showDeleteModal = false">
-            <p class="modal-title">{{ message.delete_task }}</p>
+            <p class="modal-title">{{ translateText('message.delete_task') }}</p>
             <div class="flex flex-space-between">
-                <a @click.preventDefault="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ message.no }}</a>
-                <a @click.preventDefault="deleteSubtask(showDeleteModal)" class="btn-rounded">{{ message.yes }}</a>
+                <a @click.preventDefault="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                <a @click.preventDefault="deleteSubtask(showDeleteModal)" class="btn-rounded">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
 
@@ -16,7 +16,7 @@
                     <div>
                         <router-link :to="{name: 'project-task-management-list'}" class="small-link">
                             <i class="fa fa-angle-left"></i>
-                            {{ message.back_to_task_management }}
+                            {{ translateText('message.back_to_task_management') }}
                         </router-link>
                         <h1>{{ task.name }}</h1>
                     </div>
@@ -30,20 +30,20 @@
                 <!-- /// Task Status /// -->
                 <div class="task-status flex flex-v-center">
                     <div>
-                        <span class="small">{{ message.status }}:</span>
+                        <span class="small">{{ translateText('table_header_cell.status') }}:</span>
                         <div class="task-status-box" :style="'background-color: '+task.colorStatusColor">{{ task.colorStatusName }}</div>
-                        <a href="#open-status-edit-modal" class="simple-link small">{{ message.edit }}</a>
+                        <a href="#open-status-edit-modal" class="simple-link small">{{ translateText('message.edit') }}</a>
                     </div>
                     <div>
                         <div class="task-status-info">
                             <b>#{{ task.puid }}</b>
-                            {{message.created_on}} {{ task.createdAt | moment('DD.MM.YYYY') }} {{message.by}}
+                            {{ translateText('message.created_on') }} {{ task.createdAt | moment('DD.MM.YYYY') }} {{ translateText('message.by') }}
                             <div class="user-avatar">
                                 <img :src="task.responsibilityAvatar" :alt="task.responsibilityFullName"/>
                                 <b>{{ task.responsibilityFullName }}</b>
                             </div>
                             <span class="task-subtasks">
-                                &nbsp;&nbsp;|&nbsp;&nbsp; {{ getSubtaskSummary() }} {{ message.subtasks }} {{ message.completed }}
+                                &nbsp;&nbsp;|&nbsp;&nbsp; {{ getSubtaskSummary() }} {{ translateText('message.subtasks') }} {{ translateText('label.completed') }}
                             </span>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                 <hr class="double">
 
                 <!-- ///Subtasks /// -->
-                <h3>{{ message.subtasks }} | {{ getSubtaskSummary() }} {{ message.completed }}</h3>
+                <h3>{{ translateText('message.subtasks') }} | {{ getSubtaskSummary() }} {{ translateText('label.completed') }}</h3>
                 <div v-for="subtask in task.children" class="subtasks">
                     <div class="subtask flex flex-space-between">
                         <div class="checkbox-input clearfix">
@@ -98,11 +98,11 @@
                         <div v-if="item.isResponsabilityAdded" class="comment">
                             <div class="comment-header">
                                 <div class="user-avatar">
-                                    <img :src="item.userGravatar" :alt="item.userName"/>
-                                    <b>{{item.userName}}</b>
+                                    <img :src="item.userGravatar" :alt="item.userFullName"/>
+                                    <b>{{item.userFullName}}</b>
                                 </div>
                                 <a href="#link-to-member-page" class="simple-link">{{ item.userEmail }}</a>
-                                    {{ message.assigned_to }}
+                                    {{ translateText('message.assigned_to') }}
                                 <a href="#link-to-member-page" class="simple-link">@sandy.fc</a>
                                 {{ getHumanTimeDiff(item.createdAt) }}
                             </div>
@@ -113,11 +113,11 @@
                         <div v-else-if="item.isCommentAdded" class="comment">
                             <div class="comment-header">
                                 <div class="user-avatar">
-                                    <img :src="item.userGravatar" :alt="item.userName"/>
-                                    <b>{{item.userName}}</b>
+                                    <img :src="item.userGravatar" :alt="item.userFullName"/>
+                                    <b>{{item.userFullName}}</b>
                                 </div>
                                 <a href="#link-to-member-page" class="simple-link">{{ item.userEmail }}</a>
-                                {{message.has_commented_task }} {{ getHumanTimeDiff(item.createdAt) }} | edited 4 hours ago
+                                {{ translateText('message.has_commented_task') }} {{ getHumanTimeDiff(item.createdAt) }} | edited 4 hours ago
                                 <button data-target="#comment-1-edit" class="simple-link edit-comment" data-toggle="modal" type="button">edit</button>
                             </div>
                             <div class="comment-body">
@@ -135,8 +135,8 @@
                         <div v-else-if="item.isLabelAdded" class="comment">
                             <div class="comment-header">
                                 <div class="user-avatar">
-                                    <img :src="item.userGravatar" :alt="item.userName"/>
-                                    <b>{{item.userName}}</b>
+                                    <img :src="item.userGravatar" :alt="item.userFullName"/>
+                                    <b>{{item.userFullName}}</b>
                                 </div>
                                 <a href="#link-to-member-page" class="simple-link">{{ item.userEmail }}</a>
                                 added
@@ -152,11 +152,11 @@
                         <div v-else class="comment">
                             <div class="comment-header">
                                 <div class="user-avatar">
-                                    <img :src="item.userGravatar" :alt="item.userName"/>
-                                    <b>{{item.userName}}</b>
+                                    <img :src="item.userGravatar" :alt="item.userFullName"/>
+                                    <b>{{item.userFullName}}</b>
                                 </div>
                                 <a href="#link-to-member-page" class="simple-link">{{ item.userEmail }}</a>
-                                {{ message.has_edited_task }} {{ getHumanTimeDiff(item.createdAt) }}
+                                {{ translateText('message.has_edited_task') }} {{ getHumanTimeDiff(item.createdAt) }}
                             </div>
                         </div>
                         <!-- /// End Task Edited /// -->
@@ -173,12 +173,12 @@
                     </div>
                     <div class="new-comment-body">
                         <div class="vueditor-holder">
-                            <div class="vueditor-header">{{message.new_comment}}</div>
+                            <div class="vueditor-header">{{ translateText('message.new_comment') }}</div>
                             <Vueditor ref="newCommentBody" />
                         </div>
                         <div class="footer-buttons">
-                            <a href="javascript:void(0)" class="btn-rounded btn-auto" @click="createNewComment()" >{{message.comment}}</a>
-                            <router-link to="" v-if="isStarted" class="btn-rounded btn-auto danger-bg">{{ message.close_task }}</router-link>
+                            <a href="javascript:void(0)" class="btn-rounded btn-auto" @click="createNewComment()" >{{ translateText('button.comment') }}</a>
+                            <router-link to="" v-if="isStarted" class="btn-rounded btn-auto danger-bg">{{ translateText('message.close_task') }}</router-link>
                         </div>
                     </div>
                 </div>
@@ -192,24 +192,24 @@
                         to=""
                         v-if="isClosed"
                         class="btn-rounded btn-auto second-bg">
-                        {{ message.start_task }}
+                        {{ translateText('button.start_task') }}
                     </router-link>
                     <router-link
                         :to="{name: 'project-task-management-edit', params: {id: task.project, taskId: task.id}}"
                         class="btn-rounded btn-auto">
-                        {{ message.edit_task }}
+                        {{ translateText('message.edit_task') }}
                     </router-link>
                     <!-- If task has not yet started, don't show the Close button and vice-versa -->
                     <router-link
                         to=""
                         v-if="isStarted"
                         class="btn-rounded btn-auto danger-bg">
-                        {{ message.close_task }}
+                            {{ translateText('message.close_task') }}
                     </router-link>
                     <router-link
                         :to="{name: 'project-task-management-create'}"
                         class="btn-rounded btn-auto second-bg">
-                        {{ message.new_task }}
+                        {{ translateText('message.new_task') }}
                     </router-link>
                 </div>
                 <!-- /// End Header Buttons /// -->
@@ -217,10 +217,10 @@
                 <!-- /// Task Sidebar /// -->
                 <div class="task-sidebar">
                     <!-- /// Phase & Milestone /// -->
-                    <h3>{{ message.planning }}</h3>
+                    <h3>{{ translateText('message.planning') }}</h3>
                     <div class="flex flex-space-between flex-v-center margintop20">
                         <div>
-                            {{message.this_task_part_of}}
+                            {{ translateText('message.this_task_part_of') }}
                             <router-link
                                 :to="{name: 'project-phases-view-phase', params: {phaseId: task.phase}}"
                                 class="simple-link">
@@ -236,12 +236,12 @@
                             <router-link
                                 :to="{name: 'project-phases-edit-phase', params: {phaseId: task.phase}}"
                                 class="btn-rounded btn-md btn-empty btn-auto">
-                                {{message.edit_phase}}
+                                {{ translateText('message.edit_phase') }}
                             </router-link>
                             <router-link
                                 :to="{name: 'project-milestones-edit-milestone', params: {milestoneId: task.milestone}}"
                                 class="btn-rounded btn-md btn-empty btn-auto">
-                                {{message.edit_milestone}}
+                                {{ translateText('message.edit_milestone') }}
                             </router-link>
                         </div>
                     </div>
@@ -250,20 +250,20 @@
                     <hr class="double">
 
                     <!-- /// Task Schedule /// -->
-                    <h3>{{message.task_schedule}}</h3>
+                    <h3>{{ translateText('message.task_schedule') }}</h3>
                     <vue-scrollbar class="table-wrapper">
                         <table class="table table-small">
                             <thead>
                                 <tr>
-                                    <th>{{message.schedule}}</th>
-                                    <th>{{message.start}}</th>
-                                    <th>{{message.finish}}</th>
-                                    <th>{{message.duration}}</th>
+                                    <th>{{ translateText('table_header_cell.schedule') }}</th>
+                                    <th>{{ translateText('table_header_cell.start') }}</th>
+                                    <th>{{ translateText('table_header_cell.finish') }}</th>
+                                    <th>{{ translateText('table_header_cell.duration') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{{message.base}}</td>
+                                    <td>{{ translateText('label.base') }}</td>
                                     <td v-if="task.scheduledStartAt">{{ task.scheduledStartAt|moment('DD.MM.YYYY') }}</td>
                                     <td v-else>-</td>
 
@@ -275,7 +275,7 @@
                                     </td>
                                 </tr>
                                 <tr class="column-warning">
-                                    <td>{{message.forecast}}</td>
+                                    <td>{{ translateText('label.forecast') }}</td>
                                     <td v-if="task.forecastStartAt">{{ task.forecastStartAt|moment('DD.MM.YYYY') }}</td>
                                     <td v-else>-</td>
 
@@ -287,7 +287,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>{{message.actual}}</td>
+                                    <td>{{ translateText('label.actual') }}</td>
                                     <td v-if="task.actualStartAt" >{{ task.actualStartAt|moment('DD.MM.YYYY') }}</td>
                                     <td v-else>-</td>
 
@@ -303,7 +303,7 @@
                     </vue-scrollbar>
                     <div v-for="dependancy in task.dependencies" class="flex flex-space-between flex-v-center margintop20">
                         <div>
-                            {{message.task_precedesor}}:
+                            {{ translateText('subtitle.task_precedesor') }}:
                             <router-link
                                 :to="{name: 'project-task-management-view', params: { id: task.project, taskId: task.id }}"
                                 class="simple-link">
@@ -323,17 +323,17 @@
                     <hr class="double">
 
                     <!-- /// Task Internal Costs /// -->
-                    <h3>{{message.internal_costs}}</h3>
+                    <h3>{{ translateText('message.internal_costs') }}</h3>
                     <vue-scrollbar class="table-wrapper">
                         <table class="table table-small">
                             <thead>
                                 <tr>
-                                    <th>{{message.resource}}</th>
-                                    <th>{{message.daily_rate}}</th>
-                                    <th>{{message.qty}}</th>
-                                    <th>{{message.days}}</th>
-                                    <th>{{message.total}}</th>
-                                    <th>{{message.actions}}</th>
+                                    <th>{{ translateText('table_header_cell.resource') }}</th>
+                                    <th>{{ translateText('label.daily_rate') }}</th>
+                                    <th>{{ translateText('label.qty') }}</th>
+                                    <th>{{ translateText('label.days') }}</th>
+                                    <th>{{ translateText('message.total') }}</th>
+                                    <th>{{ translateText('message.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -350,18 +350,18 @@
                                 </tr>
                                
                                 <tr>
-                                    <td colspan="4" class="text-right"><b>{{message.internal_costs_total}}</b></td>
+                                    <td colspan="4" class="text-right"><b>{{ translateText('label.internal_costs_total') }}</b></td>
                                     <td colspan="2"><b><i class="fa fa-dollar"></i>  {{totalCostsForType(0)}}</b></td>
                                 </tr>
                                 <tr class="column-warning">
-                                    <td colspan="4" class="text-right"><b>{{message.forecast_total}}</b></td>
+                                    <td colspan="4" class="text-right"><b>{{ translateText('label.forecast_total') }}</b></td>
                                     <td><b><i class="fa fa-dollar"></i> {{task.internalForecastCost}}</b></td>
                                     <td>
                                         <button data-target="#internal-costs-forecast-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4" class="text-right"><b>{{message.actual_total}}</b></td>
+                                    <td colspan="4" class="text-right"><b>{{ translateText('label.actual_total') }}</b></td>
                                     <td><b><i class="fa fa-dollar"></i> {{task.internalActualCost}}</b></td>
                                     <td>
                                         <button data-target="#internal-costs-actual-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
@@ -379,18 +379,18 @@
                     <hr class="double">
 
                     <!-- /// Task Internal Costs /// -->
-                    <h3>{{message.external_costs}}</h3>
+                    <h3>{{ translateText('message.external_costs') }}</h3>
                     <vue-scrollbar class="table-wrapper">
                         <table class="table table-small">
                             <thead>
                                 <tr>
-                                    <th>{{message.description}}</th>
-                                    <th>{{message.qty}}</th>
-                                    <th>{{message.unit}}</th>
-                                    <th>{{message.external_cost_unit_rate}}</th>
-                                    <th>{{message.capex}}</th>
-                                    <th>{{message.total}}</th>
-                                    <th>{{message.actions}}</th>
+                                    <th>{{ translateText('placeholder.description') }}</th>
+                                    <th>{{ translateText('label.qty') }}</th>
+                                    <th>{{ translateText('table_header_cell.unit') }}</th>
+                                    <th>{{ translateText('label.external_cost_unit_rate') }}</th>
+                                    <th>{{ translateText('message.capex') }}</th>
+                                    <th>{{ translateText('message.total') }}</th>
+                                    <th>{{ translateText('message.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -407,26 +407,26 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5" class="text-right">{{message.capex_subtotal}}</b></td>
+                                    <td colspan="5" class="text-right">{{ translateText('message.capex_subtotal')}}</b></td>
                                     <td colspan="2"><i class="fa fa-dollar"></i> {{totalCapex()}}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5" class="text-right">{{message.opex_subtotal}}</b></td>
+                                    <td colspan="5" class="text-right">{{ translateText('message.opex_subtotal') }}</b></td>
                                     <td colspan="2"><i class="fa fa-dollar"></i> {{totalOpex()}}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5" class="text-right"><b>{{message.external_costs_total}}</b></td>
+                                    <td colspan="5" class="text-right"><b>{{ translateText('label.external_cost_total') }}</b></td>
                                     <td colspan="2"><b> <i class="fa fa-dollar"></i> {{totalCostsForType(1)}}</b></td>
                                 </tr>
                                 <tr class="column-warning">
-                                    <td colspan="5" class="text-right"><b>{{message.forecast_total}}</b></td>
+                                    <td colspan="5" class="text-right"><b>{{ translateText('label.forecast_total')}}</b></td>
                                     <td><b><i class="fa fa-dollar"></i> {{task.externalForecastCost}}</b></td>
                                     <td>
                                         <button data-target="#internal-costs-forecast-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
                                 </tr>
                                 <tr class="column-alert">
-                                    <td colspan="5" class="text-right"><b>{{message.actual_total}}</b></td>
+                                    <td colspan="5" class="text-right"><b>{{ translateText('label.actual_total') }}</b></td>
                                     <td><b><i class="fa fa-dollar"></i> {{task.externalActualCost}}</b></td>
                                     <td>
                                         <button data-target="#internal-costs-actual-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
@@ -444,7 +444,7 @@
                     <hr class="double">
 
                     <!-- /// Task Assignee /// -->
-                    <h3>{{message.asignee}}</h3>
+                    <h3>{{ translateText('message.asignee')}}</h3>
                     <div class="row">
                         <div class="col-md-8">
                             <div class="user-avatar flex flex-v-center">
@@ -464,11 +464,11 @@
                     <hr class="double">
 
                     <!-- /// Task Completion /// -->
-                    <h3>{{message.status}}</h3>
+                    <h3>{{ translateText('message.status') }}</h3>
                     <div class="row">
                         <div class="col-md-12">
                             <range-slider
-                            v-bind:title="message.task_completion"
+                            v-bind:title=" translateText('message.task_completion') "
                             min="0"
                             max="100"
                             minSuffix=" %"
@@ -487,7 +487,7 @@
                     <hr class="double">
 
                     <!-- /// Task Condition /// -->
-                    <h3>{{message.task_condition}}</h3>
+                    <h3>{{ translateText('message.task_condition') }}</h3>
                     <p v-for="status in colorStatuses">
                         <b class="caps" v-bind:style="{ color: status.color }" >{{ status.name }}:</b>{{status.description}}.
                     </p>
@@ -502,7 +502,7 @@
                     <hr class="double">
 
                     <!-- /// Task Attachmets /// -->
-                    <h3>{{message.attachments}}</h3>
+                    <h3>{{ translateText('message.attachments') }}</h3>
                     <div class="flex flex-space-between margintop20">
                         <div>
                             <div v-for="media in task.medias">
@@ -518,7 +518,7 @@
                     <hr class="double">
 
                     <!-- /// Task Labels /// -->
-                    <h3>{{message.labels}}</h3>
+                    <h3>{{ translateText('label.labels') }}</h3>
                     <div class="row">
                         <div class="col-md-8">
                             <div class="task-label-holder flex flex-v-center">
@@ -635,7 +635,6 @@ export default {
         },
         deleteSubtask: function(subtaskId) {
             this.deleteTaskSubtask(subtaskId);
-            router.push({name: 'project-task-management-list'});
             this.showDeleteModal = false;
         },
         getDuration: function(startDate, endDate) {
@@ -705,69 +704,12 @@ export default {
         transformToString: function(value) {
             return value ? value.toString() : '';
         },
+        translateText: function(text) {
+            return this.translate(text);
+        },
     },
     data: function() {
         return {
-            message: {
-                edit_task: Translator.trans('message.edit_task'),
-                close_task: Translator.trans('message.close_task'),
-                delete_task: Translator.trans('message.delete_task'),
-                no: Translator.trans('message.no'),
-                yes: Translator.trans('message.yes'),
-                start_task: Translator.trans('button.start_task'),
-                new_task: Translator.trans('message.new_task'),
-                planning: Translator.trans('message.planning'),
-                edit: Translator.trans('message.edit'),
-                back_to_task_management: Translator.trans('message.back_to_task_management'),
-                status: Translator.trans('message.status'),
-                subtasks: Translator.trans('message.subtasks'),
-                completed: Translator.trans('label.completed'),
-                assigned_to: Translator.trans('message.assigned_to'),
-                has_edited_task: Translator.trans('message.has_edited_task'),
-                has_commented_task: Translator.trans('message.has_commented_task'),
-                new_comment: Translator.trans('message.new_comment'),
-                comment: Translator.trans('button.comment'),
-                created_on: Translator.trans('message.created_on'),
-                by: Translator.trans('message.by'),
-                this_task_part_of: Translator.trans('message.this_task_part_of'),
-                edit_milestone: Translator.trans('label.edit_milestone'),
-                edit_phase: Translator.trans('label.edit_phase'),
-                task_schedule: Translator.trans('message.task_schedule'),
-                start: Translator.trans('table_header_cell.start'),
-                finish: Translator.trans('table_header_cell.finish'),
-                duration: Translator.trans('table_header_cell.duration'),
-                schedule: Translator.trans('table_header_cell.schedule'),
-                resource: Translator.trans('table_header_cell.resource'),
-                daily_rate: Translator.trans('label.daily_rate'),
-                qty: Translator.trans('label.qty'),
-                days: Translator.trans('label.days'),
-                total: Translator.trans('message.total'),
-                actions: Translator.trans('placeholder.actions'),
-                base: Translator.trans('label.base'),
-                forecast: Translator.trans('label.forecast'),
-                actual: Translator.trans('label.actual'),
-                task_precedesor: Translator.trans('subtitle.task_precedesor'),
-                internal_costs: Translator.trans('message.internal_costs'),
-                internal_costs_total: Translator.trans('label.internal_costs_total'),
-                external_costs_total: Translator.trans('label.external_cost_total'),
-                actual_total: Translator.trans('label.actual_total'),
-                forecast_total: Translator.trans('label.forecast_total'),
-                description: Translator.trans('placeholder.description'),
-                unit: Translator.trans('table_header_cell.unit'),
-                external_cost_unit_rate: Translator.trans('label.external_cost_unit_rate'),
-                capex: Translator.trans('message.capex'),
-                external_costs: Translator.trans('message.external_costs'),
-                asignee: Translator.trans('message.asignee'),
-                task_completion: Translator.trans('message.task_completion'),
-                attachments: Translator.trans('message.attachments'),
-                labels: Translator.trans('label.labels'),
-                task_condition: Translator.trans('message.task_condition'),
-                capex_subtotal: Translator.trans('message.capex_subtotal'),
-                opex_subtotal: Translator.trans('message.opex_subtotal'),
-            },
-            button: {
-                new_task: Translator.trans('button.new_task'),
-            },
             showDeleteModal: false,
         };
     },
