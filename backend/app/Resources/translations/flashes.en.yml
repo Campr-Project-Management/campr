@@ -2,6 +2,24 @@ success:
     delete_common: successfully deleted!
     account:
         edit: Your account was succesfully edited!
+    decision_status:
+        create: Decision Status successfully created!
+        edit: Decision Status successfully edited!
+        delete:
+            from_edit: Decision Status successfully deleted!
+            from_data_table: Decision Status with ID
+    todo_status:
+        create: Todo Status successfully created!
+        edit: Todo Status successfully edited!
+        delete:
+            from_edit: Todo Status successfully deleted!
+            from_data_table: Todo Status with ID
+    note_status:
+        create: Note Status successfully created!
+        edit: Note Status successfully edited!
+        delete:
+            from_edit: Note Status successfully deleted!
+            from_data_table: Note Status with ID
     meeting_category:
         create: Meeting Category successfully created!
         edit: Meeting Category successfully edited!

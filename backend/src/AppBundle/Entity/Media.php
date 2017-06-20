@@ -43,10 +43,10 @@ class Media
      * @ORM\JoinTable(
      *     name="media_meeting",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="media_id")
+     *         @ORM\JoinColumn(name="media_id", onDelete="CASCADE")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="meeting_id")
+     *         @ORM\JoinColumn(name="meeting_id", onDelete="CASCADE")
      *     }
      * )
      */

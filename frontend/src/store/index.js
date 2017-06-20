@@ -38,6 +38,9 @@ import measure from './modules/measure';
 import gantt from './modules/gantt';
 import meeting from './modules/meeting';
 import meetingCategory from './modules/meeting-category';
+import todoStatus from './modules/todo-status';
+import noteStatus from './modules/note-status';
+import decisionStatus from './modules/decision-status';
 
 Vue.use(Vuex);
 
@@ -83,6 +86,9 @@ export default new Vuex.Store({
         gantt,
         meeting,
         meetingCategory,
+        todoStatus,
+        noteStatus,
+        decisionStatus,
     },
     strict: debug,
 });
