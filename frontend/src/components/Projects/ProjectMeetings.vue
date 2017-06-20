@@ -1,5 +1,43 @@
 <template>
     <div class="project-meetings page-section">
+        <modal v-if="showDeleteModal" @close="showDeleteModal = false">
+            <p class="modal-title">{{ translateText('message.delete_meeting') }}</p>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteMeeting()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+            </div>
+        </modal>
+
+        <modal v-if="showRescheduleModal" @close="showRescheduleModal = false">
+            <p class="modal-title">{{ translateText('message.reschedule_meeting') }}</p>
+            <div class="form-group last-form-group">
+                <div class="col-md-4">
+                    <div class="input-holder">
+                        <label class="active">{{ translateText('label.select_date') }}</label>
+                        <datepicker :clear-button="false" v-model="date" format="dd-MM-yyyy" :value="date"></datepicker>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-holder">
+                        <label class="active">{{ translateText('label.start_time') }}</label>
+                        <vue-timepicker v-model="startTime" hide-clear-button></vue-timepicker>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-holder">
+                        <label class="active">{{ translateText('label.finish_time') }}</label>
+                        <vue-timepicker v-model="endTime" hide-clear-button></vue-timepicker>
+                    </div>
+                </div>
+            </div>
+            <hr class="double">
+
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showRescheduleModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="rescheduleMeeting()" class="btn-rounded">{{ translateText('button.save') }}</a>
+            </div>
+        </modal>
+
         <div class="header flex flex-space-between">
             <h1>{{ translateText('message.project_meetings') }}</h1>
             <div class="flex flex-v-center">
@@ -9,7 +47,7 @@
 
         <div class="flex flex-direction-reverse">
             <div class="full-filters">
-                <meetings-filters></meetings-filters>
+                <meetings-filters :selectEvent="setEventFilter" :selectCategory="setFilterCategory" :selectDate="setFilterDate"></meetings-filters>
             </div>
         </div>
 
@@ -28,320 +66,35 @@
                                 <th>{{ translateText('table_header_cell.actions') }}</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>TP Meeting</td>
-                                <td>Production</td>
-                                <td>20.03.2017</td>
-                                <td>11:00 - 11:45</td>
-                                <td>45 min</td>
+                        <tbody v-if="projectMeetings">
+                            <tr v-for="meeting in projectMeetings.items" :class="{'inactive': isInactive(meeting)}">
+                                <td>{{ meeting.name }}</td>
+                                <td>{{ meeting.meetingCategoryName }}</td>
+                                <td>{{ meeting.date | moment('DD.MM.YYYY') }}</td>
+                                <td>{{ meeting.start }} - {{ meeting.end }}</td>
+                                <td>{{ getDuration(meeting.start, meeting.end) }} {{ translateText('message.min') }}</td>
                                 <td>
-                                    <div class="avatars collapse in" id="tp-meeting-20032017-1">
+                                    <div class="avatars collapse in" id="m1" v-if="meeting.meetingParticipants.length > 0">
                                         <div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/41.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/44.jpg)' }"></div>
+                                            <span v-for="participant in meeting.meetingParticipants">
+                                                <div class="avatar" v-tooltip.top-center="participant.userFullName" :style="{ backgroundImage: 'url('+participant.userAvatar+')' }"></div>
+                                            </span>
+                                            <button type="button" data-toggle="collapse" data-target="#m1" class="two-state collapsed"><span class="more">{{ translateText('message.more') }} +</span><span class="less">{{ translateText('message.less') }} -</span></button>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_meeting')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_meeting')"><edit-icon fill="second-fill"></edit-icon></a>
+                                        <router-link :to="{name: 'project-meetings-view-meeting', params:{meetingId: meeting.id}}">
+                                            <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_meeting')"><view-icon fill="second-fill"></view-icon></a>
+                                        </router-link>
+                                        <router-link :to="{name: 'project-meetings-edit-meeting', params:{meetingId: meeting.id}}">
+                                            <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_meeting')"><edit-icon fill="second-fill"></edit-icon></a>
+                                        </router-link>
                                         <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.print_meeting')"><print-icon fill="second-fill"></print-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.send_notifications')"><notification-icon fill="second-fill"></notification-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.reschedule_meeting')"><reschedule-icon fill="second-fill"></reschedule-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_meeting')"><delete-icon fill="danger-fill"></delete-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-
-                            <tr>
-                                <td>EK Meeting</td>
-                                <td>Production</td>
-                                <td>15.03.2017</td>
-                                <td>15:30 - 15:55</td>
-                                <td>25 min</td>
-                                <td>
-                                    <div class="avatars collapse in" id="ek-meeting-15032017-1">
-                                        <div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/41.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/44.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/49.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/60.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/61.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/64.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <button type="button" data-toggle="collapse" data-target="#ek-meeting-15032017-2" class="two-state collapsed"><span class="more">{{ translateText('message.more') }} +</span><span class="less">{{ translateText('message.less') }} -</span></button>
-                                        </div>
-                                    </div>
-                                    <div class="avatars collapse" id="ek-meeting-15032017-2">                                        
-                                        <div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/49.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/60.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/61.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/41.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/44.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/49.jpg)' }"></div>
-                                            <button type="button" data-toggle="collapse" data-target="#ek-meeting-15032017-3" class="two-state collapsed"><span class="more">{{ translateText('message.more') }} +</span><span class="less">{{ translateText('message.less') }} -</span></button>
-                                        </div>
-                                    </div>
-                                    <div class="avatars collapse" id="ek-meeting-15032017-3">                                        
-                                        <div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/41.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/44.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/49.jpg)' }"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_meeting')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_meeting')"><edit-icon fill="second-fill"></edit-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.print_meeting')"><print-icon fill="second-fill"></print-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.send_notifications')"><notification-icon fill="second-fill"></notification-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.reschedule_meeting')"><reschedule-icon fill="second-fill"></reschedule-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-
-                            <tr class="inactive">
-                                <td>TP Meeting</td>
-                                <td>Logistics</td>
-                                <td>20.02.2017</td>
-                                <td>11:00 - 11:45</td>
-                                <td>45 min</td>
-                                <td>
-                                    <div class="avatars collapse in" id="tp-meeting-20022017">
-                                        <div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/61.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/64.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_meeting')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.print_meeting')"><print-icon fill="second-fill"></print-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-
-                            <tr class="inactive">
-                                <td>Anlagenverwertung BTF</td>
-                                <td>Quality Management</td>
-                                <td>20.02.2017</td>
-                                <td>09:30 - 09:45</td>
-                                <td>15 min</td>
-                                <td>
-                                    <div class="avatars collapse in" id="anlagenverwertung-btf-20022017-1">                                        
-                                        <div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/49.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/60.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/61.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/41.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/44.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/49.jpg)' }"></div>
-                                            <button type="button" data-toggle="collapse" data-target="#anlagenverwertung-btf-20022017-2" class="two-state collapsed"><span class="more">{{ translateText('message.more') }} +</span><span class="less">{{ translateText('message.less') }} -</span></button>
-                                        </div>
-                                    </div>
-                                    <div class="avatars collapse" id="anlagenverwertung-btf-20022017-2">                                        
-                                        <div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/41.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/44.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/49.jpg)' }"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_meeting')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.print_meeting')"><print-icon fill="second-fill"></print-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-
-                            <tr class="inactive">
-                                <td>Gebäudeplanung</td>
-                                <td>Maintenance</td>
-                                <td>18.02.2017</td>
-                                <td>15:00 - 17:00</td>
-                                <td>120 min</td>
-                                <td>
-                                    <div class="avatars collapse in" id="gebäudeplanung-20022017">
-                                        <div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg)' }"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_meeting')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.print_meeting')"><print-icon fill="second-fill"></print-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-
-                            <tr class="inactive">
-                                <td>TP Meeting</td>
-                                <td>Logistics</td>
-                                <td>20.02.2017</td>
-                                <td>11:00 - 11:45</td>
-                                <td>45 min</td>
-                                <td>
-                                    <div class="avatars collapse in" id="tp-meeting-20022017">
-                                        <div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/61.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/64.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_meeting')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.print_meeting')"><print-icon fill="second-fill"></print-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-
-                            <tr class="inactive">
-                                <td>Anlagenverwertung BTF</td>
-                                <td>Quality Management</td>
-                                <td>17.02.2017</td>
-                                <td>09:30 - 09:45</td>
-                                <td>15 min</td>
-                                <td>
-                                    <div class="avatars collapse in" id="anlagenverwertung-btf-17022017-1">                                        
-                                        <div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/49.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/60.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/61.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/41.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/44.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/49.jpg)' }"></div>
-                                            <button type="button" data-toggle="collapse" data-target="#anlagenverwertung-btf-17022017-2" class="two-state collapsed"><span class="more">{{ translateText('message.more') }} +</span><span class="less">{{ translateText('message.less') }} -</span></button>
-                                        </div>
-                                    </div>
-                                    <div class="avatars collapse" id="anlagenverwertung-btf-17022017-2">                                        
-                                        <div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/41.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/44.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/49.jpg)' }"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_meeting')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.print_meeting')"><print-icon fill="second-fill"></print-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-
-                            <tr class="inactive">
-                                <td>Gebäudeplanung</td>
-                                <td>Maintenance</td>
-                                <td>16.02.2017</td>
-                                <td>15:00 - 17:00</td>
-                                <td>120 min</td>
-                                <td>
-                                    <div class="avatars collapse in" id="gebäudeplanung-20022017">
-                                        <div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg)' }"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_meeting')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.print_meeting')"><print-icon fill="second-fill"></print-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-
-                            <tr class="inactive">
-                                <td>TP Meeting</td>
-                                <td>Logistics</td>
-                                <td>14.02.2017</td>
-                                <td>11:00 - 11:45</td>
-                                <td>45 min</td>
-                                <td>
-                                    <div class="avatars collapse in" id="tp-meeting-14022017">
-                                        <div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/61.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/64.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_meeting')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.print_meeting')"><print-icon fill="second-fill"></print-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-
-                            <tr class="inactive">
-                                <td>TP Meeting</td>
-                                <td>Logistics</td>
-                                <td>10.02.2017</td>
-                                <td>11:00 - 11:45</td>
-                                <td>45 min</td>
-                                <td>
-                                    <div class="avatars collapse in" id="tp-meeting-10022017">
-                                        <div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/61.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/64.jpg)' }"></div>
-                                            <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_meeting')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.print_meeting')"><print-icon fill="second-fill"></print-icon></a>
+                                        <a v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.send_notifications')"><notification-icon fill="second-fill"></notification-icon></a>
+                                        <a @click="initRescheduleModal(meeting)" v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.reschedule_meeting')"><reschedule-icon fill="second-fill"></reschedule-icon></a>
+                                        <a @click="initDeleteModal(meeting)" v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_meeting')"><delete-icon fill="danger-fill"></delete-icon></a>
                                     </div>
                                 </td>                                
                             </tr>
@@ -350,15 +103,12 @@
                 </div>
             </vue-scrollbar>
 
-            <div class="flex flex-direction-reverse flex-v-center">
-                <div class="pagination">
-                    <span class="active">1</span>
-                    <span>2</span>
-                    <span>3</span>
-                    <span>4</span>
+            <div v-if="projectMeetings && projectMeetings.items" class="flex flex-direction-reverse flex-v-center">
+                <div class="pagination flex flex-center" v-if="projectMeetings && projectMeetings.totalItems > 0">
+                    <span v-if="pages > 1" v-for="page in pages" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
                 </div>
                 <div>
-                    <span class="pagination-info">{{ translateText('message.displaying') }} 10 {{ translateText('message.results_out_of') }} 43</span>
+                    <span class="pagination-info">{{ translateText('message.displaying') }} {{ projectMeetings.items.length }} {{ translateText('message.results_out_of') }} {{ projectMeetings.totalItems }}</span>
                 </div>
             </div>
         </div>
@@ -366,6 +116,7 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex';
 import MeetingsFilters from '../_common/_meetings-components/MeetingsFilters';
 import VueScrollbar from 'vue2-scrollbar';
 import ViewIcon from '../_common/_icons/ViewIcon';
@@ -374,6 +125,10 @@ import PrintIcon from '../_common/_icons/PrintIcon';
 import NotificationIcon from '../_common/_icons/NotificationIcon';
 import RescheduleIcon from '../_common/_icons/RescheduleIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
+import moment from 'moment';
+import Modal from '../_common/Modal';
+import datepicker from 'vuejs-datepicker';
+import VueTimepicker from 'vue2-timepicker';
 
 export default {
     components: {
@@ -385,17 +140,115 @@ export default {
         NotificationIcon,
         RescheduleIcon,
         DeleteIcon,
+        moment,
+        Modal,
+        datepicker,
+        VueTimepicker,
     },
     methods: {
+        ...mapActions(['getProjectMeetings', 'setMeetingsFilters', 'deleteProjectMeeting', 'editProjectMeeting']),
         translateText: function(text) {
             return this.translate(text);
+        },
+        isInactive(meeting) {
+            let currentDate = new Date();
+            let meetingDate = new Date(meeting.date);
+
+            return meetingDate < currentDate;
+        },
+        getDuration: function(startDate, endDate) {
+            let end = moment(endDate, 'HH:mm');
+            let start = moment(startDate, 'HH:mm');
+
+            return !isNaN(end.diff(start, 'minutes')) ? end.diff(start, 'minutes') : '-';
+        },
+        changePage: function(page) {
+            this.activePage = page;
+            this.refreshData();
+        },
+        refreshData: function() {
+            this.getProjectMeetings({
+                projectId: this.$route.params.id,
+                apiParams: {
+                    page: this.activePage,
+                },
+            });
+        },
+        setFilterCategory: function(value) {
+            this.setMeetingsFilters({category: value});
+            this.refreshData();
+        },
+        setFilterDate: function(value) {
+            this.setMeetingsFilters({date: value ? moment(value).format('YYYY-MM-DD') : null});
+            this.refreshData();
+        },
+        setEventFilter: function(value) {
+            this.setMeetingsFilters({event: value});
+            this.refreshData();
+        },
+        initDeleteModal: function(meeting) {
+            this.showDeleteModal = true;
+            this.meetingId = meeting.id;
+        },
+        deleteMeeting: function() {
+            if (this.meetingId) {
+                this.deleteProjectMeeting(this.meetingId);
+                this.showDeleteModal = false;
+            }
+        },
+        initRescheduleModal: function(meeting) {
+            this.showRescheduleModal = true;
+            this.meetingId = meeting.id;
+            this.date = new Date(meeting.date);
+
+            this.startTime = {
+                HH: moment(meeting.start, 'HH:mm').format('HH'),
+                mm: moment(meeting.start, 'HH:mm').format('mm'),
+            };
+            this.endTime = {
+                HH: moment(meeting.end, 'HH:mm').format('HH'),
+                mm: moment(meeting.end, 'HH:mm').format('mm'),
+            };
+        },
+        rescheduleMeeting: function() {
+            let data = {
+                id: this.meetingId,
+                date: moment(this.date).format('DD-MM-YYYY'),
+                start: this.startTime.HH + ':' + this.startTime.mm,
+                end: this.endTime.HH + ':' + this.endTime.mm,
+            };
+            this.editProjectMeeting(data);
+            this.showRescheduleModal = false;
+        },
+    },
+    created() {
+        this.getProjectMeetings({
+            projectId: this.$route.params.id,
+            apiParams: {
+                page: this.activePage,
+            },
+        });
+    },
+    computed: {
+        ...mapGetters({
+            projectMeetings: 'projectMeetings',
+        }),
+        pages: function() {
+            return Math.ceil(this.projectMeetings.totalItems / this.perPage);
+        },
+        perPage: function() {
+            return this.projectMeetings.pageSize;
         },
     },
     data: function() {
         return {
-            pages: 4,
-            page: 1,
             activePage: 1,
+            showDeleteModal: false,
+            showRescheduleModal: false,
+            meetingId: null,
+            date: null,
+            startTime: null,
+            endTime: null,
         };
     },
 };

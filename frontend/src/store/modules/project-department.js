@@ -2,16 +2,16 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 
 const state = {
-    projectDepartments: [],
+    projectDepartments: {},
     projectDepartmentsForSelect: [],
     projectDepartmentsForMultiSelect: [],
-    loading: false,
+    projectDepartmentLoading: false,
 };
 
 const getters = {
     projectDepartments: state => state.projectDepartments,
     projectDepartmentsForSelect: state => state.projectDepartmentsForSelect,
-    projectDepartmentsLoading: state => state.loading,
+    projectDepartmentsLoading: state => state.projectDepartmentLoading,
     projectDepartmentsForMultiSelect: state => state.projectDepartmentsForMultiSelect,
 };
 
@@ -82,7 +82,7 @@ const mutations = {
     /**
      * Sets project departments to state
      * @param {Object} state
-     * @param {array} programmes
+     * @param {array} projectDepartments
      */
     [types.SET_PROJECT_DEPARTMENTS](state, {projectDepartments}) {
         state.projectDepartments = projectDepartments;
@@ -100,7 +100,7 @@ const mutations = {
      * @param {array} loading
      */
     [types.SET_PROJECT_DEPARTMENTS_LOADING](state, {loading}) {
-        state.loading = loading;
+        state.projectDepartmentLoading = loading;
     },
 
     /**

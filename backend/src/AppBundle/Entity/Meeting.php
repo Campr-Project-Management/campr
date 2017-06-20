@@ -35,6 +35,16 @@ class Meeting
     private $project;
 
     /**
+     * @var MeetingCategory|null
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\MeetingCategory")
+     * @ORM\JoinColumn(name="meeting_category_id")
+     */
+    private $meetingCategory;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
@@ -60,7 +70,7 @@ class Meeting
     /**
      * @var \DateTime
      *
-     * @Serializer\Type("DateTime<'H:i:s'>")
+     * @Serializer\Type("DateTime<'H:i'>")
      *
      * @ORM\Column(name="start", type="time")
      */
@@ -69,18 +79,18 @@ class Meeting
     /**
      * @var \DateTime
      *
-     * @Serializer\Type("DateTime<'H:i:s'>")
+     * @Serializer\Type("DateTime<'H:i'>")
      *
      * @ORM\Column(name="end", type="time")
      */
     private $end;
 
     /**
-     * @var string
+     * @var ArrayCollection|MeetingObjective[]
      *
-     * @ORM\Column(name="objectives", type="text")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MeetingObjective", mappedBy="meeting")
      */
-    private $objectives;
+    private $meetingObjectives;
 
     /**
      * @var ArrayCollection|MeetingParticipant[]
@@ -106,7 +116,7 @@ class Meeting
     /**
      * @var ArrayCollection|Decision[]
      *
-     * @ORM\OneToMany   (targetEntity="AppBundle\Entity\Decision", mappedBy="meeting")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Decision", mappedBy="meeting")
      */
     private $decisions;
 
@@ -166,6 +176,7 @@ class Meeting
     public function __construct()
     {
         $this->meetingParticipants = new ArrayCollection();
+        $this->meetingObjectives = new ArrayCollection();
         $this->meetingAgendas = new ArrayCollection();
         $this->medias = new ArrayCollection();
         $this->decisions = new ArrayCollection();
@@ -303,30 +314,6 @@ class Meeting
     public function getEnd()
     {
         return $this->end;
-    }
-
-    /**
-     * Set objectives.
-     *
-     * @param string $objectives
-     *
-     * @return Meeting
-     */
-    public function setObjectives($objectives)
-    {
-        $this->objectives = $objectives;
-
-        return $this;
-    }
-
-    /**
-     * Get objectives.
-     *
-     * @return string
-     */
-    public function getObjectives()
-    {
-        return $this->objectives;
     }
 
     /**
@@ -708,5 +695,85 @@ class Meeting
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @return MeetingCategory|null
+     */
+    public function getMeetingCategory()
+    {
+        return $this->meetingCategory;
+    }
+
+    /**
+     * @param MeetingCategory|null $meetingCategory
+     */
+    public function setMeetingCategory(MeetingCategory $meetingCategory)
+    {
+        $this->meetingCategory = $meetingCategory;
+
+        return $this;
+    }
+
+    /**
+     * Returns meeting category id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("meetingCategory")
+     *
+     * @return string
+     */
+    public function getMeetingCategoryId()
+    {
+        return $this->meetingCategory ? $this->meetingCategory->getId() : null;
+    }
+
+    /**
+     * Returns meeting category name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("meetingCategoryName")
+     *
+     * @return string
+     */
+    public function getMeetingCategoryName()
+    {
+        return $this->meetingCategory ? $this->meetingCategory->getName() : null;
+    }
+
+    /**
+     * Add meetingObjective.
+     *
+     * @param MeetingObjective $meetingObjective
+     *
+     * @return Meeting
+     */
+    public function addMeetingObjective(MeetingObjective $meetingObjective)
+    {
+        $this->meetingObjectives[] = $meetingObjective;
+
+        return $this;
+    }
+
+    /**
+     * Remove meetingObjective.
+     *
+     * @param MeetingObjective $meetingObjective
+     */
+    public function removeMeetingObjective(MeetingObjective $meetingObjective)
+    {
+        $this->meetingObjectives->removeElement($meetingObjective);
+
+        return $this;
+    }
+
+    /**
+     * Get meetingObjective.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMeetingObjectives()
+    {
+        return $this->meetingObjectives;
     }
 }
