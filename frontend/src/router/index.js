@@ -34,6 +34,10 @@ import MeetingCreate from '../components/Projects/Meetings/MeetingCreate.vue';
 import EditMeeting from '../components/Projects/Meetings/EditMeeting.vue';
 import ViewMeeting from '../components/Projects/Meetings/ViewMeeting.vue';
 import Gantt from '../components/Projects/Gantt.vue';
+import ProjectTodos from '../components/Projects/ProjectTodos.vue';
+import TodoCreate from '../components/Projects/Todos/TodoCreate.vue';
+import EditTodo from '../components/Projects/Todos/EditTodo.vue';
+import ViewTodo from '../components/Projects/Todos/ViewTodo.vue';
 import Costs from '../components/Projects/Costs.vue';
 import Resources from '../components/Projects/Resources.vue';
 
@@ -237,6 +241,26 @@ const routes = [
                 name: 'project-gantt-chart',
             },
             {
+                path: 'todos',
+                component: ProjectTodos,
+                name: 'project-todos',
+            },
+            {
+                path: 'todos/create-todo',
+                component: TodoCreate,
+                name: 'project-todos-create-todo',
+            },
+            {
+                path: 'todos/edit-todo',
+                component: EditTodo,
+                name: 'project-todos-edit-todo',
+            },
+            {
+                path: 'todos/view-todo',
+                component: ViewTodo,
+                name: 'project-todos-view-todo',
+            },
+            {
                 path: 'costs',
                 component: Costs,
                 name: 'project-costs',
@@ -245,6 +269,26 @@ const routes = [
                 path: 'resources',
                 component: Resources,
                 name: 'project-resources',
+            },
+            {
+                path: 'todos',
+                component: ProjectTodos,
+                name: 'project-todos',
+            },
+            {
+                path: 'todos/create-todo',
+                component: TodoCreate,
+                name: 'project-todos-create-todo',
+            },
+            {
+                path: 'todos/edit-todo',
+                component: EditTodo,
+                name: 'project-todos-edit-todo',
+            },
+            {
+                path: 'todos/view-todo',
+                component: ViewTodo,
+                name: 'project-todos-view-todo',
             },
         ],
     },
