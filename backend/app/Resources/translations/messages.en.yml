@@ -326,8 +326,7 @@ message:
     new_comment: New Comment
     this_task_part_of: This task is part of
     task_completion: Task completion
-    task_condition: Task condition  
-
+    task_condition: Task condition
 
 menu:
     users: Users
@@ -938,7 +937,6 @@ label:
     subteam: Subteam
     subteam_roles: Subteam Roles
     schedule: Schedule
-    
 
 button:
     delete_info: Delete Info

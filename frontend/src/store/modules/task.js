@@ -3,9 +3,8 @@ import * as types from '../mutation-types';
 import router from '../../router';
 
 const state = {
-    items: [],
     currentTask: {},
-    taskHistory: {},
+    taskHistory: [],
     tasks: [],
     tasksCount: 0,
     filteredTasks: [],
@@ -229,6 +228,7 @@ const actions = {
             ).then((response) => {
                 commit(types.DELETE_TASK_SUBTASK, taskId);
             }, (response) => {
+                // implement alert response error here
             });
     },
     /**
@@ -296,6 +296,22 @@ const mutations = {
         state.allTasks = tasks;
     },
     [types.DELETE_TASK_SUBTASK](state, taskId) {
+        state.currentTask.children = state.currentTask.children.filter((item) => {
+            return item.id !== taskId ? true : false;
+        });
+
+        let decrementNeeded = false;
+        state.tasks = state.tasks.filter((item) => {
+            if (item.id === taskId) {
+                decrementNeeded = true;
+                return false;
+            }
+            return true;
+        });
+
+        if (decrementNeeded) {
+            state.tasksCount--;
+        }
     },
 };
 
