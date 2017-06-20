@@ -14,19 +14,20 @@
   .dropdowns {
     display: flex;
 
-    .dropdown {
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-
     @media screen and (max-width: 1024px) {
       margin-left: 0;
     }
   }
 
-  .dropdown, .title {
+  .dropdown,
+  .title,
+  .input-holder,
+  .search {
     margin-right: 20px;
+
+    &:last-child {
+      margin-right: 0;
+    }
   }
 
   .dropdown {

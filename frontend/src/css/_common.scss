@@ -844,6 +844,10 @@ hr {
   font-weight: 400;
   letter-spacing: 1.8px;
 
+  &.table-fixed {
+    table-layout: fixed;
+  }
+
   >thead {
     >tr {
       >th {
@@ -939,6 +943,10 @@ hr {
 
       &.no-padding {
         padding: 0;
+      }
+
+      &.cell-auto {
+        width: auto;
       }
     }
   }
