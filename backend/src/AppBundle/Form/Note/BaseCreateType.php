@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Note;
 
 use AppBundle\Entity\Note;
+use AppBundle\Entity\NoteStatus;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Status;
 use Symfony\Component\Form\AbstractType;
@@ -39,7 +40,7 @@ class BaseCreateType extends AbstractType
                 'translation_domain' => 'messages',
             ])
             ->add('status', EntityType::class, [
-                'class' => Status::class,
+                'class' => NoteStatus::class,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.status',
                 'translation_domain' => 'messages',

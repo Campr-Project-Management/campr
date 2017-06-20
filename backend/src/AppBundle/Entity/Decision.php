@@ -39,7 +39,7 @@ class Decision
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="decisions")
-     * @ORM\JoinColumn(name="meeting_id")
+     * @ORM\JoinColumn(name="meeting_id", onDelete="CASCADE")
      */
     private $meeting;
 
@@ -97,7 +97,7 @@ class Decision
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Status")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\DecisionStatus")
      * @ORM\JoinColumn(name="status_id")
      */
     private $status;
@@ -382,11 +382,11 @@ class Decision
     /**
      * Set status.
      *
-     * @param Status $status
+     * @param DecisionStatus $status
      *
      * @return Decision
      */
-    public function setStatus(Status $status = null)
+    public function setStatus(DecisionStatus $status = null)
     {
         $this->status = $status;
 
@@ -396,7 +396,7 @@ class Decision
     /**
      * Get status.
      *
-     * @return Status
+     * @return DecisionStatus
      */
     public function getStatus()
     {

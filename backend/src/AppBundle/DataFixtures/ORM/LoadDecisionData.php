@@ -20,7 +20,6 @@ class LoadDecisionData extends AbstractFixture implements OrderedFixtureInterfac
         $project = $this->getReference('project1');
         $meeting = $this->getReference('meeting1');
         $responsible = $this->getReference('user4');
-        $status = $this->getReference('status1');
         $date = new \DateTime('2017-01-01');
         $dueDate = new \DateTime('2017-05-01');
 
@@ -33,7 +32,6 @@ class LoadDecisionData extends AbstractFixture implements OrderedFixtureInterfac
                 ->setDueDate($dueDate)
                 ->setProject($project)
                 ->setMeeting($meeting)
-                ->setStatus($status)
                 ->setResponsibility($responsible)
             ;
 

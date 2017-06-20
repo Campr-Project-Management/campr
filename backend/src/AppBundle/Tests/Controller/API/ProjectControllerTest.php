@@ -1208,7 +1208,6 @@ class ProjectControllerTest extends BaseController
                                     'topic' => 'topic1',
                                     'start' => '07:30',
                                     'end' => '08:00',
-                                    'duration' => '00:30',
                                 ],
                                 [
                                     'meeting' => 1,
@@ -1219,7 +1218,6 @@ class ProjectControllerTest extends BaseController
                                     'topic' => 'topic2',
                                     'start' => '11:30',
                                     'end' => '12:00',
-                                    'duration' => '00:30',
                                 ],
                             ],
                             'medias' => [
@@ -1237,8 +1235,8 @@ class ProjectControllerTest extends BaseController
                             ],
                             'decisions' => [
                                 [
-                                    'status' => 1,
-                                    'statusName' => 'status1',
+                                    'status' => null,
+                                    'statusName' => null,
                                     'meeting' => 1,
                                     'meetingName' => 'meeting1',
                                     'project' => 1,
@@ -1253,8 +1251,8 @@ class ProjectControllerTest extends BaseController
                                     'dueDate' => '2017-05-01 00:00:00',
                                 ],
                                 [
-                                    'status' => 1,
-                                    'statusName' => 'status1',
+                                    'status' => null,
+                                    'statusName' => null,
                                     'meeting' => 1,
                                     'meetingName' => 'meeting1',
                                     'project' => 1,
@@ -1271,8 +1269,8 @@ class ProjectControllerTest extends BaseController
                             ],
                             'todos' => [
                                 [
-                                    'status' => 1,
-                                    'statusName' => 'status1',
+                                    'status' => null,
+                                    'statusName' => null,
                                     'meeting' => 1,
                                     'meetingName' => 'meeting1',
                                     'project' => 1,
@@ -1287,8 +1285,8 @@ class ProjectControllerTest extends BaseController
                                     'dueDate' => '2017-05-01 00:00:00',
                                 ],
                                 [
-                                    'status' => 1,
-                                    'statusName' => 'status1',
+                                    'status' => null,
+                                    'statusName' => null,
                                     'meeting' => 1,
                                     'meetingName' => 'meeting1',
                                     'project' => 1,
@@ -1305,8 +1303,8 @@ class ProjectControllerTest extends BaseController
                             ],
                             'notes' => [
                                 [
-                                    'status' => 1,
-                                    'statusName' => 'status1',
+                                    'status' => null,
+                                    'statusName' => null,
                                     'meeting' => 1,
                                     'meetingName' => 'meeting1',
                                     'project' => 1,
@@ -1321,8 +1319,8 @@ class ProjectControllerTest extends BaseController
                                     'dueDate' => '2017-05-01 00:00:00',
                                 ],
                                 [
-                                    'status' => 1,
-                                    'statusName' => 'status1',
+                                    'status' => null,
+                                    'statusName' => null,
                                     'meeting' => 1,
                                     'meetingName' => 'meeting1',
                                     'project' => 1,
@@ -1459,8 +1457,8 @@ class ProjectControllerTest extends BaseController
                 [
                     [
 
-                        'status' => 1,
-                        'statusName' => 'status1',
+                        'status' => null,
+                        'statusName' => null,
                         'meeting' => 1,
                         'meetingName' => 'meeting1',
                         'project' => 1,
@@ -1475,8 +1473,8 @@ class ProjectControllerTest extends BaseController
                         'dueDate' => '2017-05-01 00:00:00',
                     ],
                     [
-                        'status' => 1,
-                        'statusName' => 'status1',
+                        'status' => null,
+                        'statusName' => null,
                         'meeting' => 1,
                         'meetingName' => 'meeting1',
                         'project' => 1,
@@ -1907,8 +1905,8 @@ class ProjectControllerTest extends BaseController
                     ],
                     'notes' => [
                         [
-                            'status' => 1,
-                            'statusName' => 'status1',
+                            'status' => null,
+                            'statusName' => null,
                             'meeting' => 1,
                             'meetingName' => 'meeting1',
                             'project' => 1,
@@ -1923,8 +1921,8 @@ class ProjectControllerTest extends BaseController
                             'dueDate' => '2017-05-01 00:00:00',
                         ],
                         [
-                            'status' => 1,
-                            'statusName' => 'status1',
+                            'status' => null,
+                            'statusName' => null,
                             'meeting' => 1,
                             'meetingName' => 'meeting1',
                             'project' => 1,
@@ -1958,8 +1956,8 @@ class ProjectControllerTest extends BaseController
                     'todos' => [
                         [
 
-                            'status' => 1,
-                            'statusName' => 'status1',
+                            'status' => null,
+                            'statusName' => null,
                             'meeting' => 1,
                             'meetingName' => 'meeting1',
                             'project' => 1,
@@ -1974,8 +1972,8 @@ class ProjectControllerTest extends BaseController
                             'dueDate' => '2017-05-01 00:00:00',
                         ],
                         [
-                            'status' => 1,
-                            'statusName' => 'status1',
+                            'status' => null,
+                            'statusName' => null,
                             'meeting' => 1,
                             'meetingName' => 'meeting1',
                             'project' => 1,
@@ -2635,8 +2633,8 @@ class ProjectControllerTest extends BaseController
                 [
                     [
 
-                        'status' => 1,
-                        'statusName' => 'status1',
+                        'status' => null,
+                        'statusName' => null,
                         'meeting' => 1,
                         'meetingName' => 'meeting1',
                         'project' => 1,
@@ -2651,8 +2649,8 @@ class ProjectControllerTest extends BaseController
                         'dueDate' => '2017-05-01 00:00:00',
                     ],
                     [
-                        'status' => 1,
-                        'statusName' => 'status1',
+                        'status' => null,
+                        'statusName' => null,
                         'meeting' => 1,
                         'meetingName' => 'meeting1',
                         'project' => 1,
