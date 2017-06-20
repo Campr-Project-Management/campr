@@ -42,6 +42,7 @@ const actions = {
             });
     },
     getRecentTasksByProject({commit}, projectId) {
+        commit(types.SET_TASKS, {tasks: []});
         commit(types.TOGGLE_LOADER, true);
         let params = {
             id: projectId,
@@ -55,8 +56,11 @@ const actions = {
                     let tasks = response.data;
                     commit(types.SET_TASKS, {tasks});
                     commit(types.TOGGLE_LOADER, false);
+                } else {
+                    commit(types.SET_TASKS, {tasks: []});
                 }
             }, (response) => {
+                commit(types.SET_TASKS, {tasks: []});
             });
     },
     /**
