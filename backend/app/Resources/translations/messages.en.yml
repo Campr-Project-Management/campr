@@ -8,8 +8,10 @@ message:
     view_todo: View Todo
     create_new_todo: Create New Todo
     project_todos: Project Todos
+    delete_meeting: Delete Meeting
     to: to
     from: from
+    min: Min
     starting_on: Starting On
     costs_chart: Costs Chart
     resources_chart: Resources Chart
@@ -462,6 +464,14 @@ title:
         list: Meeting
         create: Create new meeting
         edit: Edit meeting
+    meeting_category:
+        list: Meeting category
+        create: Create new meeting category
+        edit: Edit meeting category
+    meeting_objective:
+        list: Meeting objective
+        create: Create new meeting objective
+        edit: Edit meeting objective
     note:
         list: Note
         create: Create new note
@@ -585,6 +595,8 @@ title:
         edit: Edit Subteam Member
 
 subtitle:
+    meeting_category: List of meeting categories
+    meeting_objective: List of meeting objectives
     measure: Measure
     opportunity_strategy: List of opportunity strategies
     opportunity_status: List of opportunity statuses
@@ -962,6 +974,8 @@ checkbox:
     unchecked: No
 
 add:
+    meeting_category: Add new meeting category
+    meeting_objective: Add new meeting objective
     measure: Add new measure
     opportunity_strategy: Add new opportunity strategy
     opportunity_status: Add new opportunity status

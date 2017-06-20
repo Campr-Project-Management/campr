@@ -4,6 +4,7 @@ namespace MainBundle\EventListener;
 
 use AppBundle\Entity\Measure;
 use AppBundle\Entity\MeasureComment;
+use AppBundle\Entity\MeetingParticipant;
 use AppBundle\Entity\Opportunity;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectUser;
@@ -61,6 +62,7 @@ class ImageSerializeListener
                 break;
             case $object instanceof ProjectUser:
             case $object instanceof SubteamMember:
+            case $object instanceof MeetingParticipant:
                 if ($object->getUser() instanceof User) {
                     if ($object->getUser()->getAvatar()) {
                         $visitor->addData('userAvatar', $this->getUri($object->getUser(), 'avatarFile'));
