@@ -712,28 +712,32 @@ hr {
 }
 
 .task-sidebar {
-    .vue-switcher-theme--default.vue-switcher-color--default {
-        div {
-            height: 20px;
-            width: 40px;
+  .vue-switcher-theme--default.vue-switcher-color--default {
+    div {
+      height: 20px;
+      width: 40px;
 
-            &:after {
-                height: 14px;
-                width: 14px;
-                margin-left: -18px;
-                top: 3px;
-            }
-        }
-
-        &.vue-switcher--unchecked {
-            div {
-                &:after {
-                    left: 22px !important;
-                    margin-left: -18px !important;
-                }
-            }
-        }
+      &:after {
+        height: 14px;
+        width: 14px;
+        margin-left: -18px;
+        top: 3px;
+      }
     }
+
+    &.vue-switcher--unchecked {
+      div {
+        &:after {
+          left: 22px !important;
+          margin-left: -18px !important;
+        }
+      }
+    }
+  }
+}
+
+.vue-switcher-theme--default.vue-switcher--disabled div {
+  @include opacity(1);
 }
 
 .vue-scrollbar__wrapper {
@@ -844,8 +848,17 @@ hr {
   font-weight: 400;
   letter-spacing: 1.8px;
 
+  .table{
+    background-color: transparent;
+  }
+
   &.table-fixed {
     table-layout: fixed;
+
+    .wide-switchers {
+      width: 120px;
+      white-space: normal;
+    }
   }
 
   >thead {
@@ -935,10 +948,6 @@ hr {
           padding: 0 30px;
           box-sizing: content-box;
         }
-      }
-
-      &.switchers {
-        width: 60px;
       }
 
       &.no-padding {
@@ -1044,5 +1053,36 @@ hr {
 
   &.no-margin-bottom {
     margin: 10px 0 0;
+  }
+}
+
+.gantt_modal_box {
+  font-family: 'Poppins';
+
+  .gantt_popup_button.gantt_ok_button {
+    background: $secondColor;
+    text-shadow: none;
+    @include transition(all, 0.2s, ease);
+    outline: 0;
+
+    &:focus {
+      outline: 0;
+    }
+
+    &:hover {
+      background: $secondDarkColor;
+    }
+  }
+
+  .gantt_popup_button.gantt_cancel_button {
+    @include transition(all, 0.2s, ease);
+
+    &:focus {
+      outline: 0;
+    }
+
+    &:hover {
+      background: darken($whiteColor, 10%);
+    }
   }
 }
