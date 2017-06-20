@@ -7,9 +7,9 @@ const state = {
     tasks: [],
     tasksCount: 0,
     filteredTasks: [],
-    filters: [],
+    taskFilters: [],
     users: [],
-    tasksFilters: [],
+    tasksFilters: {},
     allTasks: [],
 };
 
@@ -42,6 +42,7 @@ const actions = {
             });
     },
     getRecentTasksByProject({commit}, projectId) {
+        commit(types.SET_TASKS, {tasks: []});
         commit(types.TOGGLE_LOADER, true);
         let params = {
             id: projectId,
@@ -55,8 +56,11 @@ const actions = {
                     let tasks = response.data;
                     commit(types.SET_TASKS, {tasks});
                     commit(types.TOGGLE_LOADER, false);
+                } else {
+                    commit(types.SET_TASKS, {tasks: []});
                 }
             }, (response) => {
+                commit(types.SET_TASKS, {tasks: []});
             });
     },
     /**
@@ -169,8 +173,8 @@ const actions = {
         );
     },
 
-    setFilters({commit}, filters) {
-        commit(types.SET_TASKS_FILTERS, filters);
+    setFilters({commit}, taskFilters) {
+        commit(types.SET_TASKS_FILTERS, taskFilters);
     },
     getAllTasksGrid({commit, state}, {project, page}) {
         const projectUser = state.tasksFilters.assignee;
@@ -222,15 +226,15 @@ const mutations = {
         state.currentTask = task;
     },
     /**
-     * Sets filters to state
+     * Sets taskFilters to state
      * @param {Object} state
      * @param {array} filter
      */
     [types.SET_FILTERS](state, filter) {
-        state.filters[filter[0]] = filter[1];
+        state.taskFilters[filter[0]] = filter[1];
     },
-    [types.SET_TASKS_FILTERS](state, filters) {
-        state.tasksFilters = filters;
+    [types.SET_TASKS_FILTERS](state, taskFilters) {
+        state.tasksFilters = taskFilters;
     },
     [types.SET_ALL_TASKS](state, tasks) {
         state.allTasks = tasks;

@@ -50,6 +50,8 @@ class UserControllerTest extends BaseController
             $responseContent['ownedDistributionLists'][0]['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
             $email = md5(strtolower(trim($responseContent['ownedDistributionLists'][1]['users'][0]['email'])));
             $responseContent['ownedDistributionLists'][1]['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
+            $responseContent['ownedMeetings'][0]['updatedAt'] = $userContent['ownedMeetings'][0]['updatedAt'];
+            $responseContent['ownedMeetings'][0]['createdAt'] = $userContent['ownedMeetings'][0]['createdAt'];
         }
 
         if (isset($responseContent['updatedAt'])) {
@@ -234,7 +236,32 @@ class UserControllerTest extends BaseController
                             'updatedAt' => null,
                         ],
                     ],
-                    'ownedMeetings' => [],
+                    'ownedMeetings' => [
+                        [
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'createdBy' => 1,
+                            'createdByFullName' => 'FirstName1 LastName1',
+                            'meetingCategory' => null,
+                            'meetingCategoryName' => null,
+                            'id' => 3,
+                            'name' => 'meet',
+                            'location' => 'loc1',
+                            'date' => '2017-01-07 00:00:00',
+                            'start' => '16:00',
+                            'end' => '17:00',
+                            'meetingObjectives' => [],
+                            'meetingParticipants' => [],
+                            'meetingAgendas' => [],
+                            'medias' => [],
+                            'decisions' => [],
+                            'todos' => [],
+                            'notes' => [],
+                            'distributionLists' => [],
+                            'createdAt' => null,
+                            'updatedAt' => null,
+                        ],
+                    ],
                     'subteamMembers' => [],
                     'projectUsers' => [],
                     'avatar' => null,
