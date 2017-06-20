@@ -161,12 +161,12 @@
                         <span class="tablet"></span>
                     </router-link>
                 </li>
-                <!--<li>-->
-                    <!--<router-link to="todo" v-bind:title="message.todos">-->
-                        <!--<span class="default">{{ message.todos }}</span>-->
-                        <!--<span class="tablet"></span>-->
-                    <!--</router-link>-->
-                <!--</li>-->
+                <li>
+                    <router-link :to="{name: 'project-todos'}" v-bind:title="message.todos">
+                        <span class="default">{{ message.todos }}</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
                 <!--<li>-->
                     <!--<router-link to="todo" v-bind:title="message.notes">-->
                         <!--<span class="default">{{ message.notes }}</span>-->
@@ -194,7 +194,7 @@ export default {
         if (!this.$store.state.project.projects || this.$store.state.project.projects.length == 0) {
             this.getProjects();
         }
-        if (!this.$store.state.task.tasks || this.$store.state.task.tasks.length == 0) {
+        if (Object.keys(this.$route.params).length === 0) {
             this.getTasks(1);
         }
     },

@@ -192,8 +192,9 @@ export default {
         getDuration: function(startDate, endDate) {
             let end = moment(endDate);
             let start = moment(startDate);
+            let diff = end.diff(start, 'days');
 
-            return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') : '-';
+            return !isNaN(diff) ? diff : '-';
         },
     },
     created() {
@@ -201,9 +202,7 @@ export default {
         this.getTasksForSchedule(this.$route.params.id);
         this.getProjectUsers({id: this.$route.params.id});
         this.getTasksStatus(this.$route.params.id);
-        if (!this.$store.state.task || (this.$store.state.task.tasks && this.$store.state.task.tasks.length === 0)) {
-            this.getRecentTasksByProject(this.activePage);
-        }
+        this.getRecentTasksByProject(this.$route.params.id);
         if (!this.$store.state.colorStatus || (this.$store.state.colorStatus.colorStatuses && this.$store.state.colorStatus.colorStatuses.length === 0)) {
             this.getColorStatuses();
         }
