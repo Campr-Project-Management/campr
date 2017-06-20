@@ -248,9 +248,9 @@ class Log
 
     /**
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("userName")
+     * @Serializer\SerializedName("userFullName")
      */
-    public function getUserName()
+    public function getUserFullName()
     {
         return $this->user->getFullName();
     }
