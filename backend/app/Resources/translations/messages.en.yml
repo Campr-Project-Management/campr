@@ -1,4 +1,9 @@
 message:
+    edit_phase: Edit Phase
+    subteam: Subteam
+    department: Department
+    company: Company
+    role: Role
     saved: Saved!
     unable_to_save: Unable to save.
     created: Created

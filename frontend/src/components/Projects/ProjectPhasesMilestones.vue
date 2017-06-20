@@ -123,16 +123,16 @@
                                 </td> 
                                 <td>{{ translateText(phase.workPackageStatusName) }}</td>
                                 <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="translateText('message.phase_responsible') + phase.responsibilityFullName">
+                                    <div class="user-avatar" v-tooltip.top-center="translateText('message.phase_responsible') + phase.responsibilityFullName">
                                         <img :src="phase.responsibilityAvatar"/>
                                     </div>                                    
                                 </td>
                                 <td>
-                                    <router-link :to="{name: 'project-phases-view-phase', params: { id: projectId, phaseId: phase.id } }">
-                                        <a href="javascript:void(0)" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
+                                    <router-link :to="{name: 'project-phases-view-phase', params: { id: projectId, phaseId: phase.id } }" class="btn-icon">
+                                        <view-icon fill="second-fill"></view-icon>
                                     </router-link>
-                                    <router-link :to="{name: 'project-phases-edit-phase', params: { id: projectId, phaseId: phase.id } }">
-                                        <a href="javascript:void(0)" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
+                                    <router-link :to="{name: 'project-phases-edit-phase', params: { id: projectId, phaseId: phase.id } }" class="btn-icon">
+                                        <edit-icon fill="second-fill"></edit-icon>
                                     </router-link>
                                     <button @click="initDeletePhaseModal(phase)" data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
                                 </td>
@@ -193,16 +193,16 @@
                                 <td>{{ milestone.actualFinishAt }}</td>
                                 <td>{{ translateText(milestone.workPackageStatusName) }}</td>
                                 <td class="small-avatar text-center">
-                                    <div class="user-avatar" v-tooltip.bottom-center="translateText('message.milestone_responsible') + milestone.responsibilityFullName">
+                                    <div class="user-avatar" v-tooltip.top-center="translateText('message.milestone_responsible') + milestone.responsibilityFullName">
                                         <img :src="milestone.responsibilityAvatar">
                                     </div>                                    
                                 </td>
                                 <td>
-                                    <router-link :to="{name: 'project-phases-view-milestone', params: { id: projectId, milestoneId: milestone.id } }">
-                                        <a href="javascript:void(0)" class="btn-icon"><view-icon fill="second-fill"></view-icon></a>
+                                    <router-link :to="{name: 'project-phases-view-milestone', params: { id: projectId, milestoneId: milestone.id } }" class="btn-icon">
+                                        <view-icon fill="second-fill"></view-icon>
                                     </router-link>
-                                    <router-link :to="{name: 'project-milestones-edit-milestone', params: { id: projectId, milestoneId: milestone.id } }">
-                                        <a href="javascript:void(0)" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></a>
+                                    <router-link :to="{name: 'project-milestones-edit-milestone', params: { id: projectId, milestoneId: milestone.id } }" class="btn-icon">
+                                        <edit-icon fill="second-fill"></edit-icon>
                                     </router-link>
                                     <button @click="initDeleteMilestoneModal(milestone)" data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
                                 </td>
@@ -481,6 +481,18 @@ function renderTooltip(item) {
     </div>`;
 }
 </script>
+
+<style lang="scss"> 
+    @import '../../css/page-section';
+    @import '../../css/_variables';
+
+    .datepicker-clear-button {
+        position: absolute;
+        right: 0;
+        top: -14px;
+        color: $dangerColor;
+    }
+</style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
