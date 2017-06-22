@@ -63,10 +63,17 @@ export default {
     },
     watch: {
         value: function(val) {
-            const $this = window.$('#slider' + this._uid);
-            $this.data('ionRangeSlider').update({
-                from: val,
-            });
+            const $slider = window.$('#slider' + this._uid);
+            if (!$slider.length) {
+                return;
+            }
+
+            const irs = $slider.data().ionRangeSlider;
+            if (irs && !irs.dragging) {
+                irs.update({
+                    from: val,
+                });
+            }
         },
     },
 };
