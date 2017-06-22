@@ -109,8 +109,6 @@ class ProjectController extends ApiController
         $form = $this->createForm(CreateType::class, $project, ['csrf_protection' => false]);
         $this->processForm($request, $form);
 
-        $project->setLogoFile($request->files->get('logoFile'));
-
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
