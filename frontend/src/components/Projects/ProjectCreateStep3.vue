@@ -94,7 +94,7 @@ export default {
             formData.append('company', firstStepData.selectedCompany.key);
 
             if (firstStepData.projectLogo) {
-                formData.append('logoFile', convertImageToBlog(firstStepData.projectLogo));
+                formData.append('logoFile[file]', convertImageToBlog(firstStepData.projectLogo));
             }
             if (firstStepData.visiblePortfolio) {
                 formData.append('portfolio', firstStepData.selectedPortfolio.key);
