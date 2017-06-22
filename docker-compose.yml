@@ -26,8 +26,8 @@ services:
         environment:
             - MYSQL_ROOT_PASSWORD=root
     php-fpm:
-        # build: config/docker/php-fpm
-        image: lab.trisoft.ro:4567/trisoft/internal/php-fpm-7.0
+#        build: config/docker/php-fpm
+        image: lab.trisoft.ro:4567/trisoft/internal/php-fpm-7.1
         environment:
             - SYMFONY_DEBUG=true
             - SYMFONY_ENV=dev
@@ -49,7 +49,7 @@ services:
         ports:
             - 80:80
     supervisor:
-        # build: config/docker/supervisor
+#        build: config/docker/supervisor
         image: lab.trisoft.ro:4567/trisoft/internal/php-supervisor
         volumes:
             - .:/app
