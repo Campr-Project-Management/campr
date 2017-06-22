@@ -15,21 +15,21 @@
             <range-slider
                 v-bind:title="message.project_budget"
                 min="0"
-                max="30000"
-                minPrefix="$"
+                max="64000"
+                minPrefix="€"
                 type="single"
                 v-model="projectBudget"
                 v-bind:value="projectBudget" />
             <range-slider
                 v-bind:title="message.project_involved"
-                min="0"
+                min="1"
                 max="20"
                 type="double"
                 v-model="projectInvolved"
                 v-bind:value="projectInvolved" />
             <range-slider
                 v-bind:title="message.departments_involved"
-                min="0"
+                min="1"
                 max="20"
                 type="double"
                 v-model="departmentsInvolved"
