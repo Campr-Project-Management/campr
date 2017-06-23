@@ -1,4 +1,9 @@
 message:
+    expiry_date: Expiry Date
+    back_to_infos: Back to Infos
+    create_new_info: Create New Info
+    project_infos: Project Infos
+    infos: Infos
     edit_phase: Edit Phase
     subteam: Subteam
     department: Department
@@ -680,6 +685,7 @@ subtitle:
     subteam_member: List of subteam members
 
 label:
+    expiry_date: Expiry Date
     select_status: Select Status
     finish_time: Finish Time
     start_time: Start Time
@@ -915,6 +921,10 @@ label:
     subteam_roles: Subteam Roles
 
 button:
+    delete_info: Delete Info
+    new_info: New Info
+    edit_info: Edit Info
+    create_info: Create Info
     delete_todo: Delete Todo
     new_todo: New Todo
     edit_todo: Edit Todo 
@@ -1060,6 +1070,7 @@ add:
     subteam_member: Add new subteam member
 
 placeholder:    
+    info_topic: Info Topic
     todo_topic: Todo Topic
     measure_description: Measure description
     info_description: Info Description
@@ -1167,6 +1178,7 @@ placeholder:
     gplus: Google Plus
 
 table_header_cell:
+    expiry_date: Expiry Date
     distribution_list: Distribution List
     present: Present
     team_member: Team Member
