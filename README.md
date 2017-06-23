@@ -1,6 +1,8 @@
 Campr - Project Management Tool
 ===============================
 
+[![build status](https://lab.trisoft.ro/campr/campr/badges/master/build.svg)](https://lab.trisoft.ro/campr/campr/commits/master)
+
 #### Genereate Sami documentation
 
 To generate Sami documentation for the code just write the correct annotations and descriptions for classes and run the following command:
