@@ -212,10 +212,15 @@ services:
         tags :
             - { name: doctrine.event_listener, event: prePersist }
 
-    app.listenter.request:
+    app.listener.request:
         class: AppBundle\EventListener\RequestListener
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    app.listener.ajax_response:
+        class: AppBundle\EventListener\AjaxResponseListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
 
     app.subscriber.api_problem:
         class: AppBundle\EventListener\ApiExceptionSubscriber

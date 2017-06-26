@@ -47,422 +47,485 @@ const getters = {
 
 const actions = {
     /**
-    * Calls edit project API to set 'favorite' property
-    * and commits TOGGLE_FAVORITE mutation
-    * @param {function} commit
-    * @param {array} data
-    */
+     * Calls edit project API to set 'favorite' property
+     * and commits TOGGLE_FAVORITE mutation
+     * @param {function} commit
+     * @param {array} data
+     * @return {object}
+     */
     toggleFavorite({commit}, data) {
-        Vue.http
-        .patch(Routing.generate('app_api_project_edit', {id: data.project.id}), {favorite: data.favorite})
-        .then(() => {
-            commit(types.TOGGLE_FAVORITE, data.project);
-        }, (response) => {
-            // TODO: REMOVE MOCK ACTION
-            commit(types.TOGGLE_FAVORITE, data.project);
-        });
+        return Vue
+            .http
+            .patch(Routing.generate('app_api_project_edit', {id: data.project.id}), {favorite: data.favorite})
+            .then(
+                () => {
+                    commit(types.TOGGLE_FAVORITE, data.project);
+                },
+                () => {
+                    commit(types.TOGGLE_FAVORITE, data.project);
+                }
+            )
+        ;
     },
 
     /**
      * Gets projects from the API and commits SET_PROJECTS mutation
      * @param {function} commit
+     * @return {object}
      */
     getProjects({commit}) {
         commit(types.TOGGLE_LOADER, true);
-        Vue.http
-        .get(Routing.generate('app_api_project_list')).then((response) => {
-            if (response.status === 200) {
-                let projects = response.data;
-                commit(types.SET_PROJECTS, {projects});
-                commit(types.TOGGLE_LOADER, false);
-            }
-        }, (response) => {
-        });
+        return Vue
+            .http
+            .get(Routing.generate('app_api_project_list'))
+            .then(
+                (response) => {
+                    if (response.status === 200) {
+                        let projects = response.data;
+                        commit(types.SET_PROJECTS, {projects});
+                        commit(types.TOGGLE_LOADER, false);
+                    }
+                },
+                (response) => {}
+            )
+        ;
     },
 
     /**
      * Gets a project by ID from the API and commits SET_PROJECT mutation
      * @param {function} commit
      * @param {number} id
+     * @return {object}
      */
     getProjectById({commit}, id) {
-        Vue.http
-            .get(Routing.generate('app_api_project_get', {'id': id})).then((response) => {
-                if (response.status === 200) {
-                    let project = response.data;
-                    commit(types.SET_PROJECT, {project});
-                }
-            }, (response) => {
-            });
+        return Vue
+            .http
+            .get(Routing.generate('app_api_project_get', {'id': id}))
+            .then(
+                (response) => {
+                    if (response.status === 200) {
+                        let project = response.data;
+                        commit(types.SET_PROJECT, {project});
+                    }
+                },
+                (response) => {}
+            )
+        ;
     },
 
     /**
      * Gets all project labels from the API and commits SET_LABELS mutation
      * @param {function} commit
      * @param {number} id
+     * @return {object}
      */
     getProjectLabels({commit}, id) {
-        Vue.http
-            .get(Routing.generate('app_api_project_labels', {'id': id})).then((response) => {
-                if (response.status === 200) {
-                    let labels = response.data;
-                    commit(types.SET_LABELS, {labels});
-                }
-            }, (response) => {
-            });
+        return Vue
+            .http
+            .get(Routing.generate('app_api_project_labels', {'id': id}))
+            .then(
+                (response) => {
+                    if (response.status === 200) {
+                        let labels = response.data;
+                        commit(types.SET_LABELS, {labels});
+                    }
+                },
+                (response) => {}
+            )
+        ;
     },
 
     /**
      * Gets a specific project label
      * @param {function} commit
      * @param {number} id
+     * @return {object}
      */
     getProjectLabel({commit}, id) {
-        Vue.http
-            .get(Routing.generate('app_api_label_get', {'id': id})).then((response) => {
-                if (response.status === 200) {
-                    let label = response.data;
-                    commit(types.SET_LABEL, {label});
-                }
-            }, (response) => {
-            });
+        return Vue
+            .http
+            .get(Routing.generate('app_api_label_get', {'id': id}))
+            .then(
+                (response) => {
+                    if (response.status === 200) {
+                        let label = response.data;
+                        commit(types.SET_LABEL, {label});
+                    }
+                },
+                (response) => {}
+            )
+        ;
     },
 
     /**
      * Creates a new label on project
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     createProjectLabel({commit}, data) {
-        Vue.http
+        return Vue
+            .http
             .post(
                 Routing.generate('app_api_project_create_label', {'id': data.projectId}),
                 JSON.stringify(data)
-            ).then((response) => {
-                router.push({name: 'project-task-management-edit-labels'});
-            }, (response) => {
-                if (response.status === 400) {
-                    // implement system to dispay errors
-                    console.log(response.data);
-                }
-            });
+            )
+            .then(
+                () => {
+                    router.push({name: 'project-task-management-edit-labels'});
+                },
+                () => {}
+            )
+        ;
     },
 
     /**
      * Edit a project label
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     editProjectLabel({commit}, data) {
-        Vue.http
+        return Vue
+            .http
             .patch(
                 Routing.generate('app_api_label_edit', {'id': data.labelId}),
                 JSON.stringify(data)
-            ).then((response) => {
-                router.push({name: 'project-task-management-edit-labels'});
-            }, (response) => {
-                if (response.status === 400) {
-                    console.log(response.data);
-                }
-            });
+            )
+            .then(
+                () => {
+                    router.push({name: 'project-task-management-edit-labels'});
+                },
+                () => {}
+            )
+        ;
     },
 
     /**
      * Delete a label
      * @param {function} commit
      * @param {int} id
+     * @return {object}
      */
     deleteProjectLabel({commit}, id) {
-        Vue.http
-            .delete(Routing.generate('app_api_label_delete', {'id': id})).then((response) => {
-                if (response.status === 204) {
-                }
-            }, (response) => {
-            });
+        return Vue
+            .http
+            .delete(Routing.generate('app_api_label_delete', {'id': id}))
+        ;
     },
 
     /**
      * Creates a new objective on project
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     createObjective({commit}, data) {
-        Vue.http
+        return Vue.http
             .post(
                 Routing.generate('app_api_project_create_objective', {'id': data.projectId}),
                 JSON.stringify(data)
-            ).then((response) => {
-                let objective = response.data;
-                commit(types.ADD_PROJECT_OBJECTIVE, {objective});
-            }, (response) => {
-                if (response.status === 400) {
-                    console.log(response.data);
-                }
-            });
+            ).then(
+                (response) => {
+                    let objective = response.data;
+                    commit(types.ADD_PROJECT_OBJECTIVE, {objective});
+                },
+                (response) => {}
+            )
+        ;
     },
 
     /**
      * Edit a project objective
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     editObjective({commit}, data) {
-        Vue.http
+        return Vue
+            .http
             .patch(
                 Routing.generate('app_api_project_objective_edit', {'id': data.itemId}),
                 JSON.stringify(data)
-            ).then((response) => {
-            }, (response) => {
-                if (response.status === 400) {
-                    console.log(response.data);
-                }
-            });
+            )
+        ;
     },
 
     /**
      * Reorder project objectives
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     reorderObjectives({commit}, data) {
-        Vue.http
+        return Vue
+            .http
             .patch(
                 Routing.generate('app_api_project_objective_reorder'),
                 JSON.stringify(data)
-            ).then((response) => {
-            }, (response) => {
-                if (response.status === 400) {
-                    console.log(response.data);
-                }
-            });
+            )
+        ;
     },
 
     /**
      * Creates a new limitation on project
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     createLimitation({commit}, data) {
-        Vue.http
+        return Vue
+            .http
             .post(
                 Routing.generate('app_api_project_create_limitation', {'id': data.projectId}),
                 JSON.stringify(data)
-            ).then((response) => {
-                let limitation = response.data;
-                commit(types.ADD_PROJECT_LIMITATION, {limitation});
-            }, (response) => {
-                if (response.status === 400) {
-                    console.log(response.data);
-                }
-            });
+            )
+            .then(
+                (response) => {
+                    let limitation = response.data;
+                    commit(types.ADD_PROJECT_LIMITATION, {limitation});
+                },
+                (response) => {}
+            )
+        ;
     },
 
     /**
      * Reorder project limitations
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     reorderLimitations({commit}, data) {
-        Vue.http
+        return Vue
+            .http
             .patch(
                 Routing.generate('app_api_project_limitation_reorder'),
                 JSON.stringify(data)
-            ).then((response) => {
-            }, (response) => {
-                if (response.status === 400) {
-                    console.log(response.data);
-                }
-            });
+            )
+        ;
     },
 
     /**
      * Edit a project limitation
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     editLimitation({commit}, data) {
-        Vue.http
+        return Vue
+            .http
             .patch(
                 Routing.generate('app_api_project_limitation_edit', {'id': data.itemId}),
                 JSON.stringify(data)
-            ).then((response) => {
-            }, (response) => {
-                if (response.status === 400) {
-                    console.log(response.data);
-                }
-            });
+            )
+        ;
     },
 
     /**
      * Creates a new deliverable on project
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     createDeliverable({commit}, data) {
-        Vue.http
+        return Vue
+            .http
             .post(
                 Routing.generate('app_api_project_create_deliverable', {'id': data.projectId}),
                 JSON.stringify(data)
-            ).then((response) => {
-                let deliverable = response.data;
-                commit(types.ADD_PROJECT_DELIVERABLE, {deliverable});
-            }, (response) => {
-                if (response.status === 400) {
-                    console.log(response.data);
-                }
-            });
+            )
+            .then(
+                (response) => {
+                    let deliverable = response.data;
+                    commit(types.ADD_PROJECT_DELIVERABLE, {deliverable});
+                },
+                (response) => {}
+            );
     },
 
     /**
      * Edit a project deliverable
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     editDeliverable({commit}, data) {
-        Vue.http
+        return Vue
+            .http
             .patch(
                 Routing.generate('app_api_project_deliverable_edit', {'id': data.itemId}),
                 JSON.stringify(data)
-            ).then((response) => {
-            }, (response) => {
-                if (response.status === 400) {
-                    console.log(response.data);
-                }
-            });
+            )
+        ;
     },
 
     /**
      * Reorder project derivables
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     reorderDeliverables({commit}, data) {
-        Vue.http
+        return Vue
+            .http
             .patch(
                 Routing.generate('app_api_project_deliverable_reorder'),
                 JSON.stringify(data)
-            ).then((response) => {
-            }, (response) => {
-                if (response.status === 400) {
-                    console.log(response.data);
-                }
-            });
+            )
+        ;
     },
 
     /**
      * Gets project resources values for graphic
      * @param {function} commit
      * @param {number} id
+     * @return {object}
      */
     getProjectResourcesForGraph({commit}, id) {
-        Vue.http
+        return Vue
+            .http
             .get(Routing.generate('app_api_project_resources_graph', {'id': id})).then((response) => {
                 if (response.status === 200) {
                     let resources = response.data;
                     commit(types.SET_PROJECT_RESOURCES_GRAPH, {resources});
                 }
             }, (response) => {
-            });
+            })
+        ;
     },
 
     /**
      * Creates a new project
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     createProject({commit}, data) {
         commit(types.SET_PROJECT_LOADING, {loading: true});
-        Vue.http
+        return Vue
+            .http
             .post(
                 Routing.generate('app_api_project_create'),
                 data
-            ).then((response) => {
-                if (response.status === 201) {
-                    let project = response.data;
-                    commit(types.SET_PROJECT, {project});
+            )
+            .then(
+                (response) => {
+                    if (response.status === 201) {
+                        let project = response.data;
+                        commit(types.SET_PROJECT, {project});
+                    }
+                    commit(types.SET_PROJECT_LOADING, {loading: false});
+                },
+                (response) => {
+                    commit(types.SET_PROJECT_LOADING, {loading: false});
                 }
-                commit(types.SET_PROJECT_LOADING, {loading: false});
-            }, (response) => {
-                commit(types.SET_PROJECT_LOADING, {loading: false});
-            });
+            )
+        ;
     },
+
     /**
      * Creates a new distribution list
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     createDistribution({commit}, data) {
-        Vue.http
+        return Vue
+            .http
             .post(
                 Routing.generate('app_api_project_distribution_list_create', {'id': data.projectId}),
                 JSON.stringify(data)
-            ).then((response) => {
-            }, (response) => {
-                if (response.status === 400) {
-                    console.log(response.data);
-                }
-            });
+            )
+        ;
     },
+
     /**
      * Gets basic tasks to determine the project schedule
      * @param {function} commit
      * @param {number} id
+     * @return {object}
      */
     getTasksForSchedule({commit}, id) {
-        Vue.http
-            .get(Routing.generate('app_api_project_schedule', {'id': id})).then((response) => {
-                if (response.status === 200) {
-                    let tasks = response.data;
-                    commit(types.SET_TASKS_FOR_SCHEDULE, {tasks});
+        return Vue
+            .http
+            .get(Routing.generate('app_api_project_schedule', {'id': id}))
+            .then(
+                (response) => {
+                    if (response.status === 200) {
+                        let tasks = response.data;
+                        commit(types.SET_TASKS_FOR_SCHEDULE, {tasks});
+                    }
+                },
+                (response) => {
                 }
-            }, (response) => {
-            });
+            )
+        ;
     },
+
     /**
      * Gets the project tasks status
      * @param {function} commit
      * @param {number} id
+     * @return {object}
      */
     getTasksStatus({commit}, id) {
-        Vue.http
-            .get(Routing.generate('app_api_project_tasks_status', {'id': id})).then((response) => {
-                if (response.status === 200) {
-                    let tasksStatus = response.data;
-                    commit(types.SET_PROJECT_TASKS_STATUS, {tasksStatus});
-                }
-            }, (response) => {
-            });
+        return Vue
+            .http
+            .get(Routing.generate('app_api_project_tasks_status', {'id': id}))
+            .then(
+                (response) => {
+                    if (response.status === 200) {
+                        let tasksStatus = response.data;
+                        commit(types.SET_PROJECT_TASKS_STATUS, {tasksStatus});
+                    }
+                },
+                (response) => {}
+            )
+        ;
     },
     /**
      * Gets project risks and opportunities stats
      * @param {function} commit
      * @param {number} id
+     * @return {object}
      */
     getProjectRiskAndOpportunitiesStats({commit}, id) {
-        Vue.http
-            .get(Routing.generate('app_api_project_risks_opportunities_stats', {'id': id})).then((response) => {
-                if (response.status === 200) {
-                    let roStats = response.data;
-                    commit(types.SET_PROJECT_RISKS_OPPORTUNITIES_STATS, {roStats});
-                }
-            }, (response) => {
-            });
+        return Vue
+            .http
+            .get(Routing.generate('app_api_project_risks_opportunities_stats', {'id': id}))
+            .then(
+                (response) => {
+                    if (response.status === 200) {
+                        let roStats = response.data;
+                        commit(types.SET_PROJECT_RISKS_OPPORTUNITIES_STATS, {roStats});
+                    }
+                },
+                (response) => {}
+            )
+        ;
     },
 
     /**
      * Gets project costs and resources data
      * @param {function} commit
      * @param {number} data
+     * @return {object}
      */
     getProjectCostsResources({commit}, data) {
-        Vue.http
-            .get(Routing.generate('app_api_project_costs_resources', data)).then((response) => {
-                if (response.status === 200) {
-                    let projectCostsAndResources = response.data;
-                    commit(types.SET_PROJECT_COSTS_AND_RESOURCES, {projectCostsAndResources});
-                }
-            }, (response) => {
-            });
+        return Vue
+            .http
+            .get(Routing.generate('app_api_project_costs_resources', data))
+            .then(
+                (response) => {
+                    if (response.status === 200) {
+                        let projectCostsAndResources = response.data;
+                        commit(types.SET_PROJECT_COSTS_AND_RESOURCES, {projectCostsAndResources});
+                    }
+                },
+                (response) => {}
+            )
+        ;
     },
 };
 

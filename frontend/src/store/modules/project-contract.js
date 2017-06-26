@@ -32,26 +32,26 @@ const actions = {
      * @param {function} commit
      * @param {array} data
      * @param {number} id
+     * @return {object}
      */
     updateContract({commit}, data) {
-        Vue.http
+        return Vue
+            .http
             .patch(
                 Routing.generate('app_api_contract_edit', {'id': data.id}),
                 JSON.stringify(data)
-            ).then((response) => {
-            }, (response) => {
-                if (response.status === 400) {
-                    // implement system to display errors
-                }
-            });
+            )
+        ;
     },
     /**
      * Gets a contract by project ID from the API and commits SET_CONTRACT mutation
      * @param {function} commit
      * @param {number} id
+     * @return {object}
      */
     getContractByProjectId({commit}, id) {
-        Vue.http
+        return Vue
+            .http
             .get(Routing.generate('app_api_project_contracts', {'id': id})).then((response) => {
                 if (response.status === 200) {
                     let contract = {};
@@ -61,7 +61,8 @@ const actions = {
                     commit(types.SET_CONTRACT, {contract});
                 }
             }, (response) => {
-            });
+            })
+        ;
     },
 };
 
