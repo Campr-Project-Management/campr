@@ -149,18 +149,26 @@
                 </div>
             </div>
         </div>
+
+        <!-- Contract stuff -->
+        <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved" />
+        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
+        <!-- Contract component stuff -->
+        <alert-modal v-if="showSavedComponent" @close="showSavedComponent = false" body="message.saved" />
+        <alert-modal v-if="showFailedComponent" @close="showFailedComponent = false" body="message.saved" />
     </div>
 </template>
 
 <script>
 import Vue from 'vue';
 import {mapGetters, mapActions} from 'vuex';
-import DragBox from './TaskManagement/DragBox';
-import InputField from '../_common/_form-components/InputField';
-import CalendarIcon from '../_common/_icons/CalendarIcon';
-import DownloadbuttonIcon from '../_common/_icons/DownloadbuttonIcon';
-import EyeIcon from '../_common/_icons/EyeIcon';
-import MemberBadge from '../_common/MemberBadge';
+import DragBox from './TaskManagement/DragBox.vue';
+import InputField from '../_common/_form-components/InputField.vue';
+import CalendarIcon from '../_common/_icons/CalendarIcon.vue';
+import DownloadbuttonIcon from '../_common/_icons/DownloadbuttonIcon.vue';
+import EyeIcon from '../_common/_icons/EyeIcon.vue';
+import MemberBadge from '../_common/MemberBadge.vue';
+import AlertModal from '../_common/AlertModal.vue';
 import datepicker from 'vuejs-datepicker';
 import moment from 'moment';
 import router from '../../router';
@@ -174,8 +182,19 @@ export default {
         DownloadbuttonIcon,
         EyeIcon,
         MemberBadge,
+        AlertModal,
     },
     watch: {
+        showSaved(value) {
+            if (value === false) {
+                router.push({
+                    name: 'project-dashboard',
+                    params: {
+                        id: this.$route.params.id,
+                    },
+                });
+            }
+        },
         contract(value) {
             this.proposedStartDate = this.contract.proposedStartDate ? new Date(this.contract.proposedStartDate) : new Date();
             this.proposedEndDate = this.contract.proposedEndDate ? new Date(this.contract.proposedEndDate) : new Date();
@@ -243,11 +262,30 @@ export default {
             };
             if (this.contract.id) {
                 data.id = this.contract.id;
-                this.updateContract(data);
+                this
+                    .updateContract(data)
+                    .then(
+                        () => {
+                            this.showSaved = true;
+                        },
+                        (response) => {
+                            this.showFailed = response.status === 200;
+                        }
+                    )
+                ;
             } else {
-                this.createContract(data);
+                this
+                    .createContract(data)
+                    .then(
+                        (reponse) => {
+                            this.showSaved = true;
+                        },
+                        (reponse) => {
+                            this.showFailed = true;
+                        }
+                    )
+                ;
             }
-            router.push({name: 'project-dashboard'});
         },
         createProjectObjective: function() {
             let data = {
@@ -256,19 +294,38 @@ export default {
                 description: this.objectiveDescription,
                 sequence: this.project.projectObjectives.length,
             };
-            this.createObjective(data);
+            this
+                .createObjective(data)
+                .then(
+                    () => {
+                        this.showSavedComponent = true;
+                    },
+                    () => {
+                        this.showFailedComponent = true;
+                    }
+                )
+            ;
         },
         createProjectLimitation: function() {
             if (!this.limitationDescription) {
                 return;
-            } else {
-                let data = {
-                    projectId: this.$route.params.id,
-                    description: this.limitationDescription,
-                    sequence: this.project.projectLimitations.length,
-                };
-                this.createLimitation(data);
             }
+            let data = {
+                projectId: this.$route.params.id,
+                description: this.limitationDescription,
+                sequence: this.project.projectLimitations.length,
+            };
+            this
+                .createLimitation(data)
+                .then(
+                    () => {
+                        this.showSavedComponent = true;
+                    },
+                    () => {
+                        this.showFailedComponent = true;
+                    }
+                )
+            ;
         },
         createProjectDeliverable: function() {
             let data = {
@@ -276,7 +333,17 @@ export default {
                 description: this.deliverableDescription,
                 sequence: this.project.projectDeliverables.length,
             };
-            this.createDeliverable(data);
+            this
+                .createDeliverable(data)
+                .then(
+                    () => {
+                        this.showSavedComponent = true;
+                    },
+                    () => {
+                        this.showFailedComponent = true;
+                    }
+                )
+            ;
         },
         reorderSequences: function(values, dragIndex, dropIndex) {
             let data = [];
@@ -309,13 +376,43 @@ export default {
         service.eventBus.$on('dropModel', function(args) {
             switch(args.name) {
             case 'objectives':
-                vm.reorderObjectives(vm.reorderSequences(vm.project.projectObjectives, args.dragIndex, args.dropIndex));
+                vm
+                    .reorderObjectives(vm.reorderSequences(vm.project.projectObjectives, args.dragIndex, args.dropIndex))
+                    .then(
+                        () => {
+                            this.showSavedComponent = true;
+                        },
+                        () => {
+                            this.showFailedComponent = true;
+                        }
+                    )
+                ;
                 break;
             case 'limitations':
-                vm.reorderLimitations(vm.reorderSequences(vm.project.projectLimitations, args.dragIndex, args.dropIndex));
+                vm
+                    .reorderLimitations(vm.reorderSequences(vm.project.projectLimitations, args.dragIndex, args.dropIndex))
+                    .then(
+                        () => {
+                            this.showSavedComponent = true;
+                        },
+                        () => {
+                            this.showFailedComponent = true;
+                        }
+                    )
+                ;
                 break;
             case 'deliverables':
-                vm.reorderDeliverables(vm.reorderSequences(vm.project.projectDeliverables, args.dragIndex, args.dropIndex));
+                vm
+                    .reorderDeliverables(vm.reorderSequences(vm.project.projectDeliverables, args.dragIndex, args.dropIndex))
+                    .then(
+                        () => {
+                            this.showSavedComponent = true;
+                        },
+                        () => {
+                            this.showFailedComponent = true;
+                        }
+                    )
+                ;
                 break;
             default:
                 break;
@@ -332,25 +429,36 @@ export default {
     }),
     data: function() {
         return {
-            columns: [{
-                'type': 'string',
-                'label': Translator.trans('message.total'),
-            }, {
-                'type': 'number',
-                'label': Translator.trans('label.base'),
-            }, {
-                'type': 'number',
-                'label': Translator.trans('label.change'),
-            }, {
-                'type': 'number',
-                'label': Translator.trans('label.actual'),
-            }, {
-                'type': 'number',
-                'label': Translator.trans('label.remaining'),
-            }, {
-                'type': 'number',
-                'label': Translator.trans('label.forecast'),
-            }],
+            showSaved: false,
+            showFailed: false,
+            showSavedComponent: false,
+            showFailedComponent: false,
+            columns: [
+                {
+                    'type': 'string',
+                    'label': Translator.trans('message.total'),
+                },
+                {
+                    'type': 'number',
+                    'label': Translator.trans('label.base'),
+                },
+                {
+                    'type': 'number',
+                    'label': Translator.trans('label.change'),
+                },
+                {
+                    'type': 'number',
+                    'label': Translator.trans('label.actual'),
+                },
+                {
+                    'type': 'number',
+                    'label': Translator.trans('label.remaining'),
+                },
+                {
+                    'type': 'number',
+                    'label': Translator.trans('label.forecast'),
+                },
+            ],
             rowsInternal: [
                 [
                     Translator.trans('message.total'), 0, 0, 0, 0, 0,

@@ -78,13 +78,46 @@ export default {
             };
             switch(type) {
             case 'objective':
-                this.$parent.editObjective(data);
+                this
+                    .$parent
+                    .editObjective(data)
+                    .then(
+                        () => {
+                            this.$parent.showSavedComponent = true;
+                        },
+                        () => {
+                            this.$parent.showFailedComponent = true;
+                        }
+                    )
+                ;
                 break;
             case 'limitation':
-                this.$parent.editLimitation(data);
+                this
+                    .$parent
+                    .editLimitation(data)
+                    .then(
+                        () => {
+                            this.$parent.showSavedComponent = true;
+                        },
+                        () => {
+                            this.$parent.showFailedComponent = true;
+                        }
+                    )
+                ;
                 break;
             case 'deliverable':
-                this.$parent.editDeliverable(data);
+                this
+                    .$parent
+                    .editDeliverable(data)
+                    .then(
+                        () => {
+                            this.$parent.showSavedComponent = true;
+                        },
+                        () => {
+                            this.$parent.showFailedComponent = true;
+                        }
+                    )
+                ;
                 break;
             default:
                 break;
