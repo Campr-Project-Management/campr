@@ -22,6 +22,7 @@ Vue.use(VueResource);
 Vue.use(Vue2Dragula);
 Vue.use(VeeValidate);
 Vue.use(VTooltip);
+
 let config = {
     // buttons on the toolbar, you can use '|' or 'divider' as the separator
     toolbar: [
@@ -66,6 +67,9 @@ Vue.use(VueCharts);
 Vue.use(VueCookie);
 
 Vue.http.headers.common['Authorization'] = 'Bearer ' + window.user.api_token;
+// This is required for Symfony to actually be able to respond properly to Request::isXmlHttpRequest()
+Vue.http.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
 new Vue({
     router,
     store,
