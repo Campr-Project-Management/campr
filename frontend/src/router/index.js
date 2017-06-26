@@ -37,10 +37,12 @@ import ViewMeeting from '../components/Projects/Meetings/ViewMeeting.vue';
 import Gantt from '../components/Projects/Gantt.vue';
 import ProjectTodos from '../components/Projects/ProjectTodos.vue';
 import TodoCreate from '../components/Projects/Todos/TodoCreate.vue';
-import EditTodo from '../components/Projects/Todos/EditTodo.vue';
 import ViewTodo from '../components/Projects/Todos/ViewTodo.vue';
 import Costs from '../components/Projects/Costs.vue';
 import Resources from '../components/Projects/Resources.vue';
+import ProjectInfos from '../components/Projects/ProjectInfos.vue';
+import InfoCreate from '../components/Projects/Infos/InfoCreate.vue';
+import ViewInfo from '../components/Projects/Infos/ViewInfo.vue';
 
 Vue.use(VueRouter);
 
@@ -257,11 +259,6 @@ const routes = [
                 name: 'project-todos-create-todo',
             },
             {
-                path: 'todos/edit-todo',
-                component: EditTodo,
-                name: 'project-todos-edit-todo',
-            },
-            {
                 path: 'todos/view-todo',
                 component: ViewTodo,
                 name: 'project-todos-view-todo',
@@ -277,24 +274,19 @@ const routes = [
                 name: 'project-resources',
             },
             {
-                path: 'todos',
-                component: ProjectTodos,
-                name: 'project-todos',
+                path: 'infos',
+                component: ProjectInfos,
+                name: 'project-infos',
             },
             {
-                path: 'todos/create-todo',
-                component: TodoCreate,
-                name: 'project-todos-create-todo',
+                path: 'infos/create-info',
+                component: InfoCreate,
+                name: 'project-infos-create-info',
             },
             {
-                path: 'todos/edit-todo',
-                component: EditTodo,
-                name: 'project-todos-edit-todo',
-            },
-            {
-                path: 'todos/view-todo',
-                component: ViewTodo,
-                name: 'project-todos-view-todo',
+                path: 'infos/view-info',
+                component: ViewInfo,
+                name: 'project-infos-view-info',
             },
         ],
     },
