@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+    <head>
+        <title>{{ 'message.contract'|trans }} - {{ contract.project }}</title>
+        <style type="text/css">
+            tr {
+                vertical-align: top;
+            }
+            ul, dl {
+                margin: 0 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <th colspan="2">{{ contract.name }}</th>
+            </tr>
+            <tr>
+                <td colspan="2"><br></td>
+            </tr>
+            <tr>
+                <th>{{ 'message.project_name'|trans }}:</th>
+                <td>{{ contract.project.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'message.project_number'|trans }}:</th>
+                <td>{{ contract.project.number|default('-') }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'label.portfolio'|trans }}:</th>
+                <td>{{ contract.project.portofolio|default('-') }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'label.programme'|trans }}:</th>
+                <td>{{ contract.project.programme|default('-') }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'message.customer'|trans }}:</th>
+                <td>{{ contract.project.customer|default('-') }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'label.description'|trans }}:</th>
+                <td>{{ contract.description|default('-') }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'message.project_start_event'|trans }}:</th>
+                <td>{{ contract.projectStartEvent|default('-') }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'label.proposed_start_date'|trans }}:</th>
+                <td>{{ contract.proposedStartDate|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'label.proposed_end_date'|trans }}:</th>
+                <td>{{ contract.proposedEndDate|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'label.forecast_start_date'|trans }}:</th>
+                <td>{{ contract.forecastStartDate|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'label.forecast_end_date'|trans }}:</th>
+                <td>{{ contract.forecastEndDate|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'message.project_limitations'|trans }}:</th>
+                <td>
+                    <ul>
+                        {% for limitation in contract.project.projectLimitations %}
+                            <li>{{ limitation.description }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'message.objectives'|trans }}:</th>
+                <td>
+                    <dl>
+                        {% for objective in contract.project.projectObjectives %}
+                            <dt>{{ objective.title }}</dt>
+                            <dd>{{ objective.description }}</dd>
+                            {% if not loop.last %}
+                                <hr>
+                            {% endif %}
+                        {% endfor %}
+                    </dl>
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'message.project_deliverables'|trans }}:</th>
+                <td>
+                    <ul>
+                        {% for deliverable in contract.project.projectDeliverables %}
+                            <li>{{ deliverable.description }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
