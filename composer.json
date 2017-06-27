@@ -40,7 +40,6 @@
         "knplabs/knp-paginator-bundle": "^2.5",
         "fabpot/goutte": "^3.1",
         "whiteoctober/breadcrumbs-bundle": "^1.2",
-        "spraed/pdf-generator-bundle": "^1.3",
         "vich/uploader-bundle": "1.2.0",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
         "gregwar/captcha-bundle": "^2.0",
@@ -64,7 +63,8 @@
         "willdurand/js-translation-bundle": "^2.6",
         "lexik/translation-bundle": "^4.0",
         "scheb/two-factor-bundle": "^2.9",
-        "jsvrcek/ics-bundle": "^0.1.0"
+        "jsvrcek/ics-bundle": "^0.1.0",
+        "cangelis/pdf": "^2.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
