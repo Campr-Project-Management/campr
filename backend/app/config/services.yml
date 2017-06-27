@@ -104,6 +104,11 @@ services:
         tags:
             - { name: gos_web_socket.topic }
 
+    app.service.pdf:
+        class: CanGelis\PDF\PDF
+        arguments:
+            - '%app.path.wkhtmltopdf%'
+
 ### MENU BUILDER ###
     app.menu.menu_builder:
         class: AppBundle\Menu\MenuBuilder
