@@ -143,7 +143,7 @@
                 <div class="hr"></div>
                 <div class="flex buttons flex-center">
                     <a v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
-                    <a class="btn-rounded second-bg flex flex-center download-pdf">
+                    <a class="btn-rounded second-bg flex flex-center download-pdf" :href="downloadPdf">
                         {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill"></downloadbutton-icon>
                     </a>
                 </div>
@@ -420,13 +420,18 @@ export default {
             vm.getProjectById(vm.$route.params.id);
         });
     },
-    computed: mapGetters({
-        project: 'project',
-        contract: 'currentContract',
-        projectResourcesForGraph: 'projectResourcesForGraph',
-        projectSponsors: 'projectSponsors',
-        projectManagers: 'projectManagers',
-    }),
+    computed: {
+        ...mapGetters({
+            project: 'project',
+            contract: 'currentContract',
+            projectResourcesForGraph: 'projectResourcesForGraph',
+            projectSponsors: 'projectSponsors',
+            projectManagers: 'projectManagers',
+        }),
+        downloadPdf() {
+            return Routing.generate('app_contract_pdf', {id: this.$route.params.id});
+        },
+    },
     data: function() {
         return {
             showSaved: false,
