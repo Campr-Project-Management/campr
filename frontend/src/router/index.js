@@ -43,6 +43,9 @@ import Resources from '../components/Projects/Resources.vue';
 import ProjectInfos from '../components/Projects/ProjectInfos.vue';
 import InfoCreate from '../components/Projects/Infos/InfoCreate.vue';
 import ViewInfo from '../components/Projects/Infos/ViewInfo.vue';
+import ProjectDecisions from '../components/Projects/ProjectDecisions.vue';
+import DecisionCreate from '../components/Projects/Decisions/DecisionCreate.vue';
+import ViewDecision from '../components/Projects/Decisions/ViewDecision.vue';
 
 Vue.use(VueRouter);
 
@@ -287,6 +290,21 @@ const routes = [
                 path: 'infos/view-info',
                 component: ViewInfo,
                 name: 'project-infos-view-info',
+            },
+            {
+                path: 'decisions',
+                component: ProjectDecisions,
+                name: 'project-decisions',
+            },
+            {
+                path: 'decisions/create-decision',
+                component: DecisionCreate,
+                name: 'project-decisions-create-decision',
+            },
+            {
+                path: 'decisions/view-decision',
+                component: ViewDecision,
+                name: 'project-decisions-view-decision',
             },
         ],
     },

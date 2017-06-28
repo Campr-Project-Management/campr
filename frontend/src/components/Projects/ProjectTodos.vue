@@ -35,7 +35,7 @@
                                 <td>Initiated</td>
                                 <td>01.04.2017</td>
                                 <td class="cell-wrap">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
-                                <td>
+                                <td class="text-center">
                                     <div class="avatar" v-tooltip.top-center="'Andrea Sinclair'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
                                 </td>
                                 <td>
@@ -52,7 +52,7 @@
                                 <td>Ongoing</td>
                                 <td>15.06.2017</td>
                                 <td class="cell-wrap">Donec magna massa, tincidunt sit amet quam nec, pellentesque varius libero.</td>
-                                <td>
+                                <td class="text-center">
                                     <div class="avatar" v-tooltip.top-center="'Connan Wilder'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
                                 </td>
                                 <td>
@@ -69,7 +69,7 @@
                                 <td class="second-color">Finished</td>
                                 <td>01.04.2017</td>
                                 <td class="cell-wrap">Donec id rhoncus justo, ac imperdiet purus. Fusce eleifend tortor vulputate leo interdum, eu malesuada ipsum ac imperdiet purus.</td>
-                                <td>
+                                <td class="text-center">
                                     <div class="avatar" v-tooltip.top-center="'Connan Wilder'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
                                 </td>
                                 <td>
@@ -86,7 +86,7 @@
                                 <td class="danger-color">Discontinued</td>
                                 <td>18.08.2017</td>
                                 <td class="cell-wrap">Vestibulum vulputate mattis nibh vel iaculis.</td>
-                                <td>
+                                <td class="text-center">
                                     <div class="avatar" v-tooltip.top-center="'Craig Pruess'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg)' }"></div>
                                 </td>
                                 <td>
@@ -103,7 +103,7 @@
                                 <td class="second-color">Finished</td>
                                 <td>15.04.2017</td>
                                 <td class="cell-wrap">Etiam lectus orci.</td>
-                                <td>
+                                <td class="text-center">
                                     <div class="avatar" v-tooltip.top-center="'John Doe'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/41.jpg)' }"></div>
                                 </td>
                                 <td>
@@ -120,7 +120,7 @@
                                 <td class="warning-color">On Hold</td>
                                 <td>07.0332017</td>
                                 <td class="cell-wrap">Fermentum vel lacinia sit amet.</td>
-                                <td>
+                                <td class="text-center">
                                     <div class="avatar" v-tooltip.top-center="'Angella Patterstone'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/44.jpg)' }"></div>
                                 </td>
                                 <td>
@@ -137,7 +137,7 @@
                                 <td>Initiated</td>
                                 <td>01.04.2017</td>
                                 <td class="cell-wrap">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
-                                <td>
+                                <td class="text-center">
                                     <div class="avatar" v-tooltip.top-center="'Andrea Sinclair'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
                                 </td>
                                 <td>
@@ -154,7 +154,7 @@
                                 <td>Ongoing</td>
                                 <td>15.06.2017</td>
                                 <td class="cell-wrap">Donec magna massa, tincidunt sit amet quam nec, pellentesque varius libero.</td>
-                                <td>
+                                <td class="text-center">
                                     <div class="avatar" v-tooltip.top-center="'Connan Wilder'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
                                 </td>
                                 <td>
@@ -171,7 +171,7 @@
                                 <td class="second-color">Finished</td>
                                 <td>01.04.2017</td>
                                 <td class="cell-wrap">Donec id rhoncus justo, ac imperdiet purus. Fusce eleifend tortor vulputate leo interdum, eu malesuada ipsum ac imperdiet purus.</td>
-                                <td>
+                                <td class="text-center">
                                     <div class="avatar" v-tooltip.top-center="'Connan Wilder'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
                                 </td>
                                 <td>
@@ -188,7 +188,7 @@
                                 <td class="danger-color">Discontinued</td>
                                 <td>18.08.2017</td>
                                 <td class="cell-wrap">Vestibulum vulputate mattis nibh vel iaculis.</td>
-                                <td>
+                                <td class="text-center">
                                     <div class="avatar" v-tooltip.top-center="'Craig Pruess'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg)' }"></div>
                                 </td>
                                 <td>
