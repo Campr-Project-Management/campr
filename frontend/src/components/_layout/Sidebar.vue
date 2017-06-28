@@ -173,6 +173,12 @@
                         <span class="tablet"></span>
                     </router-link>
                 </li>
+                <li>
+                    <router-link :to="{name: 'project-decisions'}" v-bind:title="message.decisions">
+                        <span class="default">{{ message.decisions }}</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
                 <!--<li>-->
                     <!--<router-link to="todo" v-bind:title="message.close_down_project">-->
                         <!--<span class="default">{{ message.close_down_project }}</span>-->
@@ -225,6 +231,7 @@ export default {
                 meetings: this.translate('message.meetings'),
                 todos: this.translate('message.todos'),
                 infos: this.translate('message.infos'),
+                decisions: this.translate('message.decisions'),
                 close_down_project: this.translate('message.close_down_project'),
                 gantt_chart: this.translate('message.gantt_chart'),
             },
