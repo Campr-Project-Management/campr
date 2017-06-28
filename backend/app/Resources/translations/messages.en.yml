@@ -1,4 +1,8 @@
 message:
+    back_to_decisions: Back to Decisions
+    create_new_decision: Create New Decision
+    project_decision: Project Decisions
+    decisions: Decisions
     expiry_date: Expiry Date
     back_to_infos: Back to Infos
     create_new_info: Create New Info
@@ -686,6 +690,7 @@ subtitle:
     subteam_member: List of subteam members
 
 label:
+    event: Event
     expiry_date: Expiry Date
     select_status: Select Status
     finish_time: Finish Time
@@ -922,6 +927,10 @@ label:
     subteam_roles: Subteam Roles
 
 button:
+    delete_decision: Delete Decision
+    new_decision: New Decision
+    edit_decision: Edit Decision
+    create_decision: Create Decision
     delete_info: Delete Info
     new_info: New Info
     edit_info: Edit Info
