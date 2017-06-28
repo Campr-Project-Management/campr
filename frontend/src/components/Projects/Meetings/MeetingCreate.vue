@@ -55,12 +55,20 @@
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.start_time') }}</label>
                                     <vue-timepicker v-model="schedule.startTime" hide-clear-button></vue-timepicker>
+                                    <error
+                                        v-if="validationMessages.start && validationMessages.start.length"
+                                        v-for="message in validationMessages.start"
+                                        :message="message" />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.finish_time') }}</label>
                                     <vue-timepicker v-model="schedule.endTime" hide-clear-button></vue-timepicker>
+                                    <error
+                                        v-if="validationMessages.end && validationMessages.end.length"
+                                        v-for="message in validationMessages.end"
+                                        :message="message" />
                                 </div>
                             </div>
                         </div>
@@ -72,6 +80,10 @@
                     <!-- /// Meeting Location /// -->
                     <h3>{{ translateText('message.location') }}</h3>
                     <input-field type="text" v-bind:label="translateText('placeholder.location')" v-model="location" v-bind:content="location" />
+                    <error
+                        v-if="validationMessages.location && validationMessages.location.length"
+                        v-for="message in validationMessages.location"
+                        :message="message" />
                     <!-- /// End Meeting Location /// -->
 
                     <hr class="double">
@@ -80,6 +92,12 @@
                     <h3>{{ translateText('message.objectives') }}</h3>
                     <div class="form-group" v-for="(objective, index) in objectives">
                         <input-field type="text" v-bind:label="translateText('placeholder.objective')" v-model="objective.description" v-bind:content="objective.description" />
+                        <div v-if="validationMessages.meetingObjectives && validationMessages.meetingObjectives[index.toString()]">
+                            <error
+                                v-if="validationMessages.meetingObjectives[index.toString()].description && validationMessages.meetingObjectives[index.toString()].description.length"
+                                v-for="message in validationMessages.meetingObjectives[index.toString()].description"
+                                :message="message" />
+                        </div>
                         <hr>
                     </div>
                     <div class="flex flex-direction-reverse">
@@ -94,22 +112,46 @@
                     <div v-for="(agenda, index) in agendas">
                         <div class="form-group">
                             <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="agenda.topic" v-bind:content="agenda.topic" />
+                            <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
+                                <error
+                                    v-if="validationMessages.meetingAgendas[index.toString()].topic && validationMessages.meetingAgendas[index.toString()].topic.length"
+                                    v-for="message in validationMessages.meetingAgendas[index.toString()].topic"
+                                    :message="message" />
+                            </div>
                         </div>
                         <div class="row">
                             <div class="form-group form-group">
                                 <div class="col-md-4">
                                     <member-search singleSelect="false" v-model="agenda.responsible" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
+                                    <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
+                                        <error
+                                            v-if="validationMessages.meetingAgendas[index.toString()].responsibility && validationMessages.meetingAgendas[index.toString()].responsibility.length"
+                                            v-for="message in validationMessages.meetingAgendas[index.toString()].responsibility"
+                                            :message="message" />
+                                    </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="input-holder right">
                                         <label class="active">{{ translateText('label.start_time') }}</label>
                                         <vue-timepicker v-model="agenda.startTime" hide-clear-button></vue-timepicker>
+                                        <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
+                                        <error
+                                            v-if="validationMessages.meetingAgendas[index.toString()].start && validationMessages.meetingAgendas[index.toString()].start.length"
+                                            v-for="message in validationMessages.meetingAgendas[index.toString()].start"
+                                            :message="message" />
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="input-holder right">
                                         <label class="active">{{ translateText('label.finish_time') }}</label>
                                         <vue-timepicker v-model="agenda.endTime" hide-clear-button></vue-timepicker>
+                                        <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
+                                        <error
+                                            v-if="validationMessages.meetingAgendas[index.toString()].end && validationMessages.meetingAgendas[index.toString()].end.length"
+                                            v-for="message in validationMessages.meetingAgendas[index.toString()].end"
+                                            :message="message" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -133,6 +175,12 @@
                     <h3>{{ translateText('message.decisions') }}</h3>
                     <div v-for="(decision, index) in decisions">
                         <input-field type="text" v-bind:label="translateText('placeholder.decision_title')" v-model="decision.title" v-bind:content="decision.title" />
+                        <div v-if="validationMessages.decisions && validationMessages.decisions[index.toString()]">
+                        <error
+                            v-if="validationMessages.decisions[index.toString()].title && validationMessages.decisions[index.toString()].title.length"
+                            v-for="message in validationMessages.decisions[index.toString()].title"
+                            :message="message" />
+                        </div>
                         <div class="form-group">
                             <div class="vueditor-holder">
                                 <div class="vueditor-header">{{ translateText('placeholder.decision_description') }}</div>
@@ -143,6 +191,12 @@
                             <div class="form-group">
                                 <div class="col-md-6">
                                     <member-search singleSelect="false" v-model="decision.responsible" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
+                                    <div v-if="validationMessages.decisions && validationMessages.decisions[index.toString()]">
+                                    <error
+                                        v-if="validationMessages.decisions[index.toString()].responsibility && validationMessages.decisions[index.toString()].responsibility.length"
+                                        v-for="message in validationMessages.decisions[index.toString()].responsibility"
+                                        :message="message" />
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-holder right">
@@ -161,6 +215,12 @@
                                         v-bind:options="decisionStatusesForSelect"
                                         v-model="decision.status"
                                         v-bind:currentOption="decision.status" />
+                                    <div v-if="validationMessages.decisions && validationMessages.decisions[index.toString()]">
+                                    <error
+                                        v-if="validationMessages.decisions[index.toString()].status && validationMessages.decisions[index.toString()].status.length"
+                                        v-for="message in validationMessages.decisions[index.toString()].status"
+                                        :message="message" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -177,6 +237,12 @@
                     <h3>{{ translateText('message.todos') }}</h3>
                     <div v-for="(todo, index) in todos">
                         <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="todo.title" v-bind:content="todo.title" />
+                        <div v-if="validationMessages.todos && validationMessages.todos[index.toString()]">
+                        <error
+                            v-if="validationMessages.todos[index.toString()].title && validationMessages.todos[index.toString()].title.length"
+                            v-for="message in validationMessages.todos[index.toString()].title"
+                            :message="message" />
+                        </div>
                         <div class="form-group">
                             <div class="vueditor-holder">
                                 <div class="vueditor-header">{{ translateText('placeholder.action') }}</div>
@@ -187,6 +253,12 @@
                             <div class="form-group">
                                 <div class="col-md-6">
                                     <member-search singleSelect="false" v-model="todo.responsible" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
+                                    <div v-if="validationMessages.todos && validationMessages.todos[index.toString()]">
+                                    <error
+                                        v-if="validationMessages.todos[index.toString()].responsibility && validationMessages.todos[index.toString()].responsibility.length"
+                                        v-for="message in validationMessages.todos[index.toString()].responsibility"
+                                        :message="message" />
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-holder right">
@@ -205,6 +277,12 @@
                                         v-bind:options="todoStatusesForSelect"
                                         v-model="todo.status"
                                         v-bind:currentOption="todo.status" />
+                                    <div v-if="validationMessages.todos && validationMessages.todos[index.toString()]">
+                                    <error
+                                        v-if="validationMessages.todos[index.toString()].status && validationMessages.todos[index.toString()].status.length"
+                                        v-for="message in validationMessages.todos[index.toString()].status"
+                                        :message="message" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -221,6 +299,12 @@
                     <h3>{{ translateText('message.infos') }}</h3>
                     <div v-for="(info, index) in infos">
                         <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="info.title" v-bind:content="info.title" />
+                        <div v-if="validationMessages.notes && validationMessages.notes[index.toString()]">
+                        <error
+                            v-if="validationMessages.notes[index.toString()].title && validationMessages.notes[index.toString()].title.length"
+                            v-for="message in validationMessages.notes[index.toString()].title"
+                            :message="message" />
+                        </div>
                         <div class="form-group">
                             <div class="vueditor-holder">
                                 <div class="vueditor-header">{{ translateText('placeholder.info_description') }}</div>
@@ -231,6 +315,12 @@
                             <div class="form-group">
                                 <div class="col-md-6">
                                     <member-search singleSelect="false" v-model="info.responsible" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
+                                    <div v-if="validationMessages.notes && validationMessages.notes[index.toString()]">
+                                    <error
+                                        v-if="validationMessages.notes[index.toString()].responsibility && validationMessages.notes[index.toString()].responsibility.length"
+                                        v-for="message in validationMessages.notes[index.toString()].responsibility"
+                                        :message="message" />
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-holder right">
@@ -249,6 +339,12 @@
                                         v-bind:options="noteStatusesForSelect"
                                         v-model="info.status"
                                         v-bind:currentOption="info.status" />
+                                    <div v-if="validationMessages.notes && validationMessages.notes[index.toString()]">
+                                    <error
+                                        v-if="validationMessages.notes[index.toString()].status && validationMessages.notes[index.toString()].status.length"
+                                        v-for="message in validationMessages.notes[index.toString()].status"
+                                        :message="message" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -270,6 +366,8 @@
                 </div>
             </div>
         </div>
+        <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved" />
+        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
 </template>
 
@@ -284,6 +382,8 @@ import MeetingAttachments from './MeetingAttachments';
 import VueTimepicker from 'vue2-timepicker';
 import {createFormData} from '../../../helpers/meeting';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
+import AlertModal from '../../_common/AlertModal.vue';
+import Error from '../../_common/_messages/Error.vue';
 
 export default {
     components: {
@@ -295,6 +395,8 @@ export default {
         MeetingAttachments,
         VueTimepicker,
         MultiSelectField,
+        AlertModal,
+        Error,
     },
     methods: {
         ...mapActions([
@@ -377,6 +479,16 @@ export default {
             this.createProjectMeeting({
                 data: createFormData(data),
                 projectId: this.$route.params.id,
+            })
+            .then((response) => {
+                if (response.body && response.body.error && response.body.messages) {
+                    this.showFailed = true;
+                } else {
+                    this.showSaved = true;
+                }
+            },
+            (response) => {
+                this.showFailed = true;
             });
         },
     },
@@ -387,6 +499,7 @@ export default {
             noteStatusesForSelect: 'noteStatusesForSelect',
             todoStatusesForSelect: 'todoStatusesForSelect',
             decisionStatusesForSelect: 'decisionStatusesForSelect',
+            validationMessages: 'validationMessages',
         }),
     },
     created() {
@@ -398,6 +511,8 @@ export default {
     },
     data() {
         return {
+            showSaved: false,
+            showFailed: false,
             name: '',
             location: '',
             objectives: [],
