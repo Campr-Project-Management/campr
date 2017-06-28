@@ -3,6 +3,10 @@
         <modal v-if="showModal" @close="showModal = false">
             <p class="modal-title">{{ translateText('title.add_distribution_list') }}</p>
             <input-field v-model="distributionTitle" type="text" v-bind:label="translateText('label.distribution_list_title')"></input-field>
+            <error
+                                    v-if="validationMessages.name && validationMessages.name.length"
+                                    v-for="message in validationMessages.name"
+                                    :message="message" />
             <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.search_resources')" v-bind:singleSelect="false"></member-search>
             <br />
             <div class="members main-list">
@@ -146,6 +150,7 @@
                 </div>
             </div>
         </div>
+        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
 </template>
 
@@ -161,6 +166,8 @@ import Modal from '../_common/Modal';
 import EditIcon from '../_common/_icons/EditIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
 import ViewIcon from '../_common/_icons/ViewIcon';
+import AlertModal from '../_common/AlertModal.vue';
+import Error from '../_common/_messages/Error.vue';
 
 export default {
     components: {
@@ -174,6 +181,8 @@ export default {
         EditIcon,
         DeleteIcon,
         ViewIcon,
+        AlertModal,
+        Error,
     },
     methods: {
         ...mapActions(['getProjectById', 'createDistribution', 'updateProjectUser',
@@ -200,9 +209,20 @@ export default {
                 projectId: this.$route.params.id,
                 users: this.selectedDistribution,
             };
-            this.createDistribution(data);
-            this.showModal = false;
-            this.distributionList = [];
+            this.createDistribution(data)
+                .then(
+                    (data) => {
+                        if (!data.error) {
+                            this.showModal = false;
+                            this.distributionList = [];
+                        } else {
+                            this.showFailed = true;
+                        }
+                    },
+                    () => {
+                        this.showFailed = true;
+                    }
+                );
         },
         inDistributionList(userId, distribution) {
             for (let i = 0; i < distribution.users.length; i++) {
@@ -259,9 +279,11 @@ export default {
         projectUsers: 'projectUsers',
         projectSponsors: 'projectSponsors',
         subteams: 'subteams',
+        validationMessages: 'validationMessages',
     }),
     data: function() {
         return {
+            showFailed: false,
             selectedDistribution: [],
             distributionList: [],
             gridList: [],
