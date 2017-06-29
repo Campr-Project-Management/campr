@@ -388,6 +388,7 @@ class ProjectControllerTest extends BaseController
                             'projectCategoryName' => 'project-category2',
                             'projectRoles' => [8],
                             'projectDepartments' => [2],
+                            'projectDepartmentNames' => ['project-department2'],
                             'projectTeam' => 2,
                             'projectTeamName' => 'project-team2',
                             'projectRoleNames' => ['team-participant'],
@@ -796,6 +797,8 @@ class ProjectControllerTest extends BaseController
         $responseContent[0]['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
         $email = md5(strtolower(trim($responseArray[1]['users'][0]['email'])));
         $responseContent[1]['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
+        $responseContent[0]['createdByAvatar'] = $responseArray[0]['createdByAvatar'];
+        $responseContent[1]['createdByAvatar'] = $responseArray[1]['createdByAvatar'];
 
         $responseArray = json_encode($responseArray);
 
@@ -820,6 +823,7 @@ class ProjectControllerTest extends BaseController
                         'projectName' => 'project1',
                         'createdBy' => 1,
                         'createdByFullName' => 'FirstName1 LastName1',
+                        'createdByDepartmentNames' => [],
                         'id' => 1,
                         'name' => 'distribution-list-1',
                         'sequence' => 1,
@@ -859,12 +863,14 @@ class ProjectControllerTest extends BaseController
                         'meetings' => [],
                         'createdAt' => '2017-01-01 07:00:00',
                         'updatedAt' => null,
+                        'createdByAvatar' => '',
                     ],
                     [
                         'project' => 1,
                         'projectName' => 'project1',
                         'createdBy' => 1,
                         'createdByFullName' => 'FirstName1 LastName1',
+                        'createdByDepartmentNames' => [],
                         'id' => 2,
                         'name' => 'distribution-list-2',
                         'sequence' => 1,
@@ -904,6 +910,7 @@ class ProjectControllerTest extends BaseController
                         'meetings' => [],
                         'createdAt' => '2017-01-01 07:00:00',
                         'updatedAt' => null,
+                        'createdByAvatar' => '',
                     ],
                 ],
             ],
@@ -944,6 +951,7 @@ class ProjectControllerTest extends BaseController
         $responseContent['createdAt'] = $distributionList['createdAt'];
         $responseContent['updatedAt'] = $distributionList['updatedAt'];
         $responseContent['id'] = $distributionList['id'];
+        $responseContent['createdByAvatar'] = $distributionList['createdByAvatar'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -976,6 +984,7 @@ class ProjectControllerTest extends BaseController
                     'projectName' => 'project1',
                     'createdBy' => 1,
                     'createdByFullName' => 'FirstName1 LastName1',
+                    'createdByDepartmentNames' => [],
                     'id' => null,
                     'name' => 'distribution-list-3',
                     'sequence' => 1,
@@ -983,6 +992,7 @@ class ProjectControllerTest extends BaseController
                     'meetings' => [],
                     'createdAt' => null,
                     'updatedAt' => null,
+                    'createdByAvatar' => '',
                 ],
             ],
         ];
@@ -1143,6 +1153,18 @@ class ProjectControllerTest extends BaseController
         foreach ($responseArray['items'][0]['meetingParticipants'] as $key => $participant) {
             $responseContent['items'][0]['meetingParticipants'][$key]['userAvatar'] = $participant['userAvatar'];
         }
+        foreach ($responseArray['items'][0]['meetingAgendas'] as $key => $agenda) {
+            $responseContent['items'][0]['meetingAgendas'][$key]['responsibilityAvatar'] = $agenda['responsibilityAvatar'];
+        }
+        foreach ($responseArray['items'][0]['decisions'] as $key => $decision) {
+            $responseContent['items'][0]['decisions'][$key]['responsibilityAvatar'] = $decision['responsibilityAvatar'];
+        }
+        foreach ($responseArray['items'][0]['todos'] as $key => $todo) {
+            $responseContent['items'][0]['todos'][$key]['responsibilityAvatar'] = $todo['responsibilityAvatar'];
+        }
+        foreach ($responseArray['items'][0]['notes'] as $key => $note) {
+            $responseContent['items'][0]['notes'][$key]['responsibilityAvatar'] = $note['responsibilityAvatar'];
+        }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -1180,6 +1202,7 @@ class ProjectControllerTest extends BaseController
                                     'meetingName' => 'meeting1',
                                     'user' => 4,
                                     'userFullName' => 'FirstName4 LastName4',
+                                    'userDepartmentNames' => ['project-department2'],
                                     'id' => 1,
                                     'remark' => null,
                                     'isPresent' => false,
@@ -1191,6 +1214,7 @@ class ProjectControllerTest extends BaseController
                                     'meetingName' => 'meeting1',
                                     'user' => 5,
                                     'userFullName' => 'FirstName5 LastName5',
+                                    'userDepartmentNames' => ['project-department1'],
                                     'id' => 2,
                                     'remark' => null,
                                     'isPresent' => false,
@@ -1208,6 +1232,7 @@ class ProjectControllerTest extends BaseController
                                     'topic' => 'topic1',
                                     'start' => '07:30',
                                     'end' => '08:00',
+                                    'responsibilityAvatar' => '',
                                 ],
                                 [
                                     'meeting' => 1,
@@ -1218,6 +1243,7 @@ class ProjectControllerTest extends BaseController
                                     'topic' => 'topic2',
                                     'start' => '11:30',
                                     'end' => '12:00',
+                                    'responsibilityAvatar' => '',
                                 ],
                             ],
                             'medias' => [
@@ -1249,6 +1275,7 @@ class ProjectControllerTest extends BaseController
                                     'showInStatusReport' => false,
                                     'date' => '2017-01-01 00:00:00',
                                     'dueDate' => '2017-05-01 00:00:00',
+                                    'responsibilityAvatar' => '',
                                 ],
                                 [
                                     'status' => null,
@@ -1265,6 +1292,7 @@ class ProjectControllerTest extends BaseController
                                     'showInStatusReport' => false,
                                     'date' => '2017-01-01 00:00:00',
                                     'dueDate' => '2017-05-01 00:00:00',
+                                    'responsibilityAvatar' => '',
                                 ],
                             ],
                             'todos' => [
@@ -1283,6 +1311,7 @@ class ProjectControllerTest extends BaseController
                                     'showInStatusReport' => false,
                                     'date' => '2017-01-01 00:00:00',
                                     'dueDate' => '2017-05-01 00:00:00',
+                                    'responsibilityAvatar' => '',
                                 ],
                                 [
                                     'status' => null,
@@ -1299,6 +1328,7 @@ class ProjectControllerTest extends BaseController
                                     'showInStatusReport' => false,
                                     'date' => '2017-01-01 00:00:00',
                                     'dueDate' => '2017-05-01 00:00:00',
+                                    'responsibilityAvatar' => '',
                                 ],
                             ],
                             'notes' => [
@@ -1317,6 +1347,7 @@ class ProjectControllerTest extends BaseController
                                     'showInStatusReport' => false,
                                     'date' => '2017-01-01 00:00:00',
                                     'dueDate' => '2017-05-01 00:00:00',
+                                    'responsibilityAvatar' => '',
                                 ],
                                 [
                                     'status' => null,
@@ -1333,6 +1364,7 @@ class ProjectControllerTest extends BaseController
                                     'showInStatusReport' => false,
                                     'date' => '2017-01-01 00:00:00',
                                     'dueDate' => '2017-05-01 00:00:00',
+                                    'responsibilityAvatar' => '',
                                 ],
                             ],
                             'distributionLists' => [],
@@ -1439,6 +1471,11 @@ class ProjectControllerTest extends BaseController
 
         $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
+
+        $responseArray = json_decode($response->getContent(), true);
+        $responseContent[0]['responsibilityAvatar'] = $responseArray[0]['responsibilityAvatar'];
+        $responseContent[1]['responsibilityAvatar'] = $responseArray[1]['responsibilityAvatar'];
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -1471,6 +1508,7 @@ class ProjectControllerTest extends BaseController
                         'showInStatusReport' => false,
                         'date' => '2017-01-01 00:00:00',
                         'dueDate' => '2017-05-01 00:00:00',
+                        'responsibilityAvatar' => '',
                     ],
                     [
                         'status' => null,
@@ -1487,6 +1525,7 @@ class ProjectControllerTest extends BaseController
                         'showInStatusReport' => false,
                         'date' => '2017-01-01 00:00:00',
                         'dueDate' => '2017-05-01 00:00:00',
+                        'responsibilityAvatar' => '',
                     ],
                 ],
             ],
@@ -1734,6 +1773,8 @@ class ProjectControllerTest extends BaseController
         $responseContent['distributionLists'][1]['users'][0]['apiToken'] = $project['distributionLists'][1]['users'][0]['apiToken'];
         $responseContent['distributionLists'][0]['users'][0]['updatedAt'] = $project['distributionLists'][0]['users'][0]['updatedAt'];
         $responseContent['distributionLists'][1]['users'][0]['updatedAt'] = $project['distributionLists'][1]['users'][0]['updatedAt'];
+        $responseContent['distributionLists'][0]['createdByAvatar'] = $project['distributionLists'][0]['createdByAvatar'];
+        $responseContent['distributionLists'][1]['createdByAvatar'] = $project['distributionLists'][1]['createdByAvatar'];
         $responseContent['contracts'][0]['updatedAt'] = $project['contracts'][0]['updatedAt'];
         $responseContent['contracts'][1]['updatedAt'] = $project['contracts'][1]['updatedAt'];
         $email = md5(strtolower(trim($project['distributionLists'][0]['users'][0]['email'])));
@@ -1744,6 +1785,11 @@ class ProjectControllerTest extends BaseController
         $responseContent['units'][1]['createdAt'] = $project['units'][1]['createdAt'];
         $responseContent['units'][0]['updatedAt'] = $project['units'][0]['updatedAt'];
         $responseContent['units'][1]['updatedAt'] = $project['units'][1]['updatedAt'];
+
+        $responseContent['notes'][0]['responsibilityAvatar'] = $project['notes'][0]['responsibilityAvatar'];
+        $responseContent['notes'][1]['responsibilityAvatar'] = $project['notes'][1]['responsibilityAvatar'];
+        $responseContent['todos'][0]['responsibilityAvatar'] = $project['todos'][0]['responsibilityAvatar'];
+        $responseContent['todos'][1]['responsibilityAvatar'] = $project['todos'][1]['responsibilityAvatar'];
 
         for ($i = 1; $i <= 3; ++$i) {
             $projectUser = $this->em->getRepository(ProjectUser::class)->find($i);
@@ -1812,6 +1858,7 @@ class ProjectControllerTest extends BaseController
                             'projectCategoryName' => 'project-category1',
                             'projectRoles' => [5],
                             'projectDepartments' => [1],
+                            'projectDepartmentNames' => ['project-department1'],
                             'projectTeam' => 1,
                             'projectTeamName' => 'project-team1',
                             'projectRoleNames' => ['manager'],
@@ -1839,6 +1886,7 @@ class ProjectControllerTest extends BaseController
                             'projectCategoryName' => 'project-category2',
                             'projectRoles' => [6],
                             'projectDepartments' => [2],
+                            'projectDepartmentNames' => ['project-department2'],
                             'projectTeam' => 2,
                             'projectTeamName' => 'project-team2',
                             'projectRoleNames' => ['sponsor'],
@@ -1866,6 +1914,7 @@ class ProjectControllerTest extends BaseController
                             'projectCategoryName' => 'project-category1',
                             'projectRoles' => [7],
                             'projectDepartments' => [1],
+                            'projectDepartmentNames' => ['project-department1'],
                             'projectTeam' => 1,
                             'projectTeamName' => 'project-team1',
                             'projectRoleNames' => ['team-member'],
@@ -1919,6 +1968,7 @@ class ProjectControllerTest extends BaseController
                             'showInStatusReport' => false,
                             'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
+                            'responsibilityAvatar' => '',
                         ],
                         [
                             'status' => null,
@@ -1935,6 +1985,7 @@ class ProjectControllerTest extends BaseController
                             'showInStatusReport' => false,
                             'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
+                            'responsibilityAvatar' => '',
                         ],
                         [
                             'status' => null,
@@ -1970,6 +2021,7 @@ class ProjectControllerTest extends BaseController
                             'showInStatusReport' => false,
                             'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
+                            'responsibilityAvatar' => '',
                         ],
                         [
                             'status' => null,
@@ -1986,6 +2038,7 @@ class ProjectControllerTest extends BaseController
                             'showInStatusReport' => false,
                             'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
+                            'responsibilityAvatar' => '',
                         ],
                     ],
                     'distributionLists' => [
@@ -1994,6 +2047,7 @@ class ProjectControllerTest extends BaseController
                             'projectName' => 'project1',
                             'createdBy' => 1,
                             'createdByFullName' => 'FirstName1 LastName1',
+                            'createdByDepartmentNames' => [],
                             'id' => 1,
                             'name' => 'distribution-list-1',
                             'sequence' => 1,
@@ -2033,12 +2087,14 @@ class ProjectControllerTest extends BaseController
                             'meetings' => [],
                             'createdAt' => '2017-01-01 07:00:00',
                             'updatedAt' => '2017-01-30 07:11:12',
+                            'createdByAvatar' => [],
                         ],
                         [
                             'project' => 1,
                             'projectName' => 'project1',
                             'createdBy' => 1,
                             'createdByFullName' => 'FirstName1 LastName1',
+                            'createdByDepartmentNames' => [],
                             'id' => 2,
                             'name' => 'distribution-list-2',
                             'sequence' => 1,
@@ -2078,6 +2134,7 @@ class ProjectControllerTest extends BaseController
                             'meetings' => [],
                             'createdAt' => '2017-01-01 07:00:00',
                             'updatedAt' => '2017-01-30 07:11:12',
+                            'createdByAvatar' => [],
                         ],
                     ],
                     'statusUpdatedAt' => null,
@@ -2526,6 +2583,7 @@ class ProjectControllerTest extends BaseController
                     'projectCategoryName' => null,
                     'projectRoles' => [],
                     'projectDepartments' => [],
+                    'projectDepartmentNames' => [],
                     'projectTeam' => null,
                     'projectTeamName' => null,
                     'projectRoleNames' => [],
@@ -2615,6 +2673,11 @@ class ProjectControllerTest extends BaseController
 
         $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
+
+        $responseArray = json_decode($response->getContent(), true);
+        $responseContent[0]['responsibilityAvatar'] = $responseArray[0]['responsibilityAvatar'];
+        $responseContent[1]['responsibilityAvatar'] = $responseArray[1]['responsibilityAvatar'];
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -2647,6 +2710,7 @@ class ProjectControllerTest extends BaseController
                         'showInStatusReport' => false,
                         'date' => '2017-01-01 00:00:00',
                         'dueDate' => '2017-05-01 00:00:00',
+                        'responsibilityAvatar' => '',
                     ],
                     [
                         'status' => null,
@@ -2663,6 +2727,7 @@ class ProjectControllerTest extends BaseController
                         'showInStatusReport' => false,
                         'date' => '2017-01-01 00:00:00',
                         'dueDate' => '2017-05-01 00:00:00',
+                        'responsibilityAvatar' => '',
                     ],
                 ],
             ],

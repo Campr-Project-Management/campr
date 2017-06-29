@@ -1,6 +1,62 @@
 <template>
     <div>
         <div class="row">
+            <meeting-modals
+                    v-bind:editObjectiveModal="showEditObjectiveModal"
+                    v-bind:deleteObjectiveModal="showDeleteObjectiveModal"
+                    v-bind:objectiveObject="editObjectiveObject"
+                    v-bind:editAgendaModal="showEditAgendaModal"
+                    v-bind:deleteAgendaModal="showDeleteAgendaModal"
+                    v-bind:agendaObject="editAgendaObject"
+                    v-bind:editDecisionModal="showEditDecisionModal"
+                    v-bind:deleteDecisionModal="showDeleteDecisionModal"
+                    v-bind:decisionObject="editDecisionObject"
+                    v-bind:editTodoModal="showEditTodoModal"
+                    v-bind:deleteTodoModal="showDeleteTodoModal"
+                    v-bind:todoObject="editTodoObject"
+                    v-bind:editNoteModal="showEditNoteModal"
+                    v-bind:deleteNoteModal="showDeleteNoteModal"
+                    v-bind:noteObject="editNoteObject"
+                    v-on:input="setModals"
+            >
+            </meeting-modals>
+            <modal v-if="deleteMeetingModal" @close="deleteMeetingModal = false">
+                <p class="modal-title">{{ translateText('message.delete_meeting') }}</p>
+                <div class="flex flex-space-between">
+                    <a href="javascript:void(0)" @click="deleteMeetingModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="deleteMeeting()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                </div>
+            </modal>
+            <modal v-if="rescheduleModal" @close="rescheduleModal = false">
+                <p class="modal-title">{{ translateText('message.reschedule_meeting') }}</p>
+                <div class="form-group last-form-group">
+                    <div class="col-md-4">
+                        <div class="input-holder">
+                            <label class="active">{{ translateText('label.select_date') }}</label>
+                            <datepicker :clear-button="false" v-model="date" format="dd-MM-yyyy" :value="date"></datepicker>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-holder">
+                            <label class="active">{{ translateText('label.start_time') }}</label>
+                            <vue-timepicker v-model="startTime" hide-clear-button></vue-timepicker>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-holder">
+                            <label class="active">{{ translateText('label.finish_time') }}</label>
+                            <vue-timepicker v-model="endTime" hide-clear-button></vue-timepicker>
+                        </div>
+                    </div>
+                </div>
+                <hr class="double">
+
+                <div class="flex flex-space-between">
+                    <a href="javascript:void(0)" @click="rescheduleModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="rescheduleMeeting()" class="btn-rounded">{{ translateText('button.save') }}</a>
+                </div>
+            </modal>
+
             <div class="col-md-6">
                 <div class="create-meeting page-section">
                     <!-- /// Header /// -->
@@ -10,10 +66,13 @@
                                 <i class="fa fa-angle-left"></i>
                                 {{ translateText('message.back_to_meetings') }}
                             </router-link>
-                            <h1>TP Meeting</h1>
-                            <h3 class="category"><b>Logistics</b></h3>
-                            <h4>{{ translateText('message.starting_on') }} <b>Monday</b>, <b>20.03.2017</b> {{ translateText('message.from') }} <b>11:00</b> {{ translateText('message.to') }} <b>11:45</b> | {{ translateText('message.duration') }}: <b>45 min</b></h4>
-                            <a ref="#" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.reschedule') }} <reschedule-icon></reschedule-icon></a>
+                            <h1>{{ meeting.name }}</h1>
+                            <h3 class="category"><b>{{ meeting.meetingCategoryName }}</b></h3>
+                            <h4>
+                                {{ translateText('message.starting_on') }} <b>{{ meeting.date | moment('dddd') }}</b>, <b>{{ meeting.date | moment('DD.MM.YYYY') }}</b>
+                                {{ translateText('message.from') }} <b>{{ meeting.start }}</b> {{ translateText('message.to') }} <b>{{ meeting.end }}</b> | {{ translateText('message.duration') }}: <b>{{ getDuration(meeting.start, meeting.end) }} {{ translateText('message.min') }}</b>
+                            </h4>
+                            <a @click="rescheduleModal = true;" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.reschedule') }} <reschedule-icon></reschedule-icon></a>
                         </div>
                     </div>
                     <!-- /// End Header /// -->
@@ -22,39 +81,21 @@
         
                 <!-- /// Meeting Location /// -->
                 <h3>{{ translateText('message.location') }}</h3>
-                <p>Trisoft HQ, Dobrogeanu Gherea Street, No. 9, Suite 4, 1st Floor, Brasov, BV, Romania</p>
+                <p>{{ meeting.location }}</p>
                 <!-- /// End Meeting Location /// -->
         
                 <hr class="double">
                 
                 <!-- /// Meeting Objectives /// -->
                 <h3>{{ translateText('message.objectives') }}</h3>
-                <ul class="action-list">
-                    <li>
+                <ul class="action-list" v-if="meeting.meetingObjectives">
+                    <li v-for="objective in meeting.meetingObjectives">
                         <div class="list-item-description">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            {{ objective.description }}
                         </div>
                         <div class="list-item-actions">
-                            <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_objective')"><edit-icon fill="second-fill"></edit-icon></a>
-                            <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_objective')"><delete-icon fill="danger-fill"></delete-icon></a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="list-item-description">
-                            Duis at dolor sollicitudin, interdum nibh quis, faucibus justo.
-                        </div>
-                        <div class="list-item-actions">
-                            <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_objective')"><edit-icon fill="second-fill"></edit-icon></a>
-                            <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_objective')"><delete-icon fill="danger-fill"></delete-icon></a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="list-item-description">
-                            Suspendisse sed nisi id mi aliquam finibus ac sem. Suspendisse in massa in ligula suscipit vulputate. Sed finibus massa nec est rutrum malesuada a et eros. Cras volutpat leo eu lorem viverra ornare.
-                        </div>
-                        <div class="list-item-actions">
-                            <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_objective')"><edit-icon fill="second-fill"></edit-icon></a>
-                            <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_objective')"><delete-icon fill="danger-fill"></delete-icon></a>
+                            <a @click="initEditObjective(objective)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_objective')"><edit-icon fill="second-fill"></edit-icon></a>
+                            <a @click="initDeleteObjective(objective)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_objective')"><delete-icon fill="danger-fill"></delete-icon></a>
                         </div>
                     </li>
                 </ul>
@@ -78,99 +119,23 @@
                                         <th>{{ translateText('table_header_cell.actions') }}</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="topic">Cras condimentum</td>
+                                <tbody v-if="meetingAgendas">
+                                    <tr v-for="agenda in meetingAgendas.items">
+                                        <td class="topic">{{ agenda.topic }}</td>
                                         <td>
-                                            <div class="avatars flex flex-v-center" id="tp-meeting-20032017-1">
+                                            <div class="avatars collapse in" id="tp-meeting-20032017-1">
                                                 <div>
-                                                    <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
+                                                    <div class="avatar" v-tooltip.top-center="agenda.responsibilityFullName" :style="{ backgroundImage: 'url('+agenda.responsibilityAvatar+')' }"></div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>11:00</td>
-                                        <td>11:15</td>
-                                        <td>15 min</td>
+                                        <td>{{ agenda.start }}</td>
+                                        <td>{{ agenda.end }}</td>
+                                        <td>{{ getDuration(agenda.start, agenda.end) }} {{ translateText('message.min') }}</td>
                                         <td>
                                             <div class="text-right">
-                                                <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_topic')"><edit-icon fill="second-fill"></edit-icon></a>
-                                                <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_topic')"><delete-icon fill="danger-fill"></delete-icon></a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="topic">Donec tellus massa, pulvinar ac tellus eget</td>
-                                        <td>
-                                            <div class="avatars flex flex-v-center" id="tp-meeting-20032017-1">
-                                                <div>
-                                                    <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>11:15</td>
-                                        <td>11:30</td>
-                                        <td>15 min</td>
-                                        <td>
-                                            <div class="text-right">
-                                                <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_topic')"><edit-icon fill="second-fill"></edit-icon></a>
-                                                <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_topic')"><delete-icon fill="danger-fill"></delete-icon></a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="topic">Duis maximus quam at augue commodo</td>
-                                        <td>
-                                            <div class="avatars flex flex-v-center" id="tp-meeting-20032017-1">
-                                                <div>
-                                                    <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg)' }"></div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>11:30</td>
-                                        <td>11:35</td>
-                                        <td>5 min</td>
-                                        <td>
-                                            <div class="text-right">
-                                                <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_topic')"><edit-icon fill="second-fill"></edit-icon></a>
-                                                <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_topic')"><delete-icon fill="danger-fill"></delete-icon></a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="topic">Mauris nec dapibus arcu</td>
-                                        <td>
-                                            <div class="avatars flex flex-v-center" id="tp-meeting-20032017-1">
-                                                <div>
-                                                    <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>11:35</td>
-                                        <td>11:45</td>
-                                        <td>10 min</td>
-                                        <td>
-                                            <div class="text-right">
-                                                <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_topic')"><edit-icon fill="second-fill"></edit-icon></a>
-                                                <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_topic')"><delete-icon fill="danger-fill"></delete-icon></a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="topic">Cras condimentum donec tellus massa, pulvinar ac tellus eget</td>
-                                        <td>
-                                            <div class="avatars flex flex-v-center" id="tp-meeting-20032017-1">
-                                                <div>
-                                                    <div class="avatar" v-tooltip.top-center="'FirstName LastName'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/41.jpg)' }"></div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>11:45</td>
-                                        <td>12:00</td>
-                                        <td>15 min</td>
-                                        <td>
-                                            <div class="text-right">
-                                                <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_topic')"><edit-icon fill="second-fill"></edit-icon></a>
-                                                <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_topic')"><delete-icon fill="danger-fill"></delete-icon></a>
+                                                <a @click="initEditAgenda(agenda)"  class="btn-icon" v-tooltip.top-center="translateText('message.edit_topic')"><edit-icon fill="second-fill"></edit-icon></a>
+                                                <a @click="initDeleteAgenda(agenda)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_topic')"><delete-icon fill="danger-fill"></delete-icon></a>
                                             </div>
                                         </td>
                                     </tr>
@@ -179,12 +144,12 @@
                         </div>
                     </vue-scrollbar>
                 </div>
-                <div class="flex flex-direction-reverse flex-v-center">
-                    <div class="pagination">
-                        <span class="active">1</span>
+                <div v-if="meetingAgendas && meetingAgendas.items" class="flex flex-direction-reverse flex-v-center">
+                    <div class="pagination flex flex-center" v-if="meetingAgendas && meetingAgendas.totalItems > 0">
+                        <span v-if="agendasPages > 1" v-for="page in agendasPages" v-bind:class="{'active': page == agendasActivePage}" @click="changeAgendasPage(page)">{{ page }}</span>
                     </div>
                     <div>
-                        <span class="pagination-info">{{ translateText('message.displaying') }} 5 {{ translateText('message.results_out_of') }} 5</span>
+                        <span class="pagination-info">{{ translateText('message.displaying') }} {{ meetingAgendas.items.length }} {{ translateText('message.results_out_of') }} {{ meetingAgendas.totalItems }}</span>
                     </div>
                 </div>
                 <!-- /// End Meeting Agenda /// -->
@@ -193,9 +158,10 @@
         
                 <!-- /// Meeting Documents /// -->
                 <h3>{{ translateText('message.documents') }}</h3>
-                <ul class="attachments">
-                    <li><a href="#" title="Download Attachment">Measure-requirements.docx <downloadbutton-icon fill="second-fill"></downloadbutton-icon></a></li>
-                    <li><a href="#" title="Download Attachment">Measure-objectives.xls <downloadbutton-icon fill="second-fill"></downloadbutton-icon></a></li>
+                <ul class="attachments" v-if="meeting.medias">
+                    <li v-for="media in meeting.medias">
+                        <a @click="downloadMedia()" :title="translateText('message.download_attachment')">{{ media.path }} <downloadbutton-icon fill="second-fill"></downloadbutton-icon></a>
+                    </li>
                 </ul>
                 <!-- /// End Meeting Documents /// -->
         
@@ -203,98 +169,31 @@
                 
                 <!-- /// Decisions /// -->
                 <h3>{{ translateText('message.decisions') }}</h3>
-        
-                <div class="entries-wrapper">
+
+                <div class="entries-wrapper" v-if="meeting.decisions">
                     <!-- /// Decision /// -->
-                    <div class="entry" id="decision-1">
+                    <div class="entry" v-for="decision in meeting.decisions">
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
-                                <h4>Etiam maximus arcu vitae mauris</h4>  | {{ translateText('message.due_date') }}: <b>25.03.2017</b> | {{ translateText('message.status') }}: <b class="undone">Undone</b>
+                                <h4>{{ decision.title }}</h4>  | {{ translateText('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.status') }}: <b v-if="decision.status">{{ decision.statusName }}</b><b v-else>-</b>
                             </div>
                             <div class="entry-buttons">
-                                <button type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
+                                <button @click="initEditDecision(decision)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
+                                <button @click="initDeleteDecision(decision)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar"> 
-                                <img src="http://trisoft.dev.campr.biz/uploads/avatars/10.jpg" :alt="'Anna Floyd'"/>
-                            </div>
-                            <div>
-                                {{ translateText('message.responsible') }}::
-                                <b>Anna Floyd</b>
-                            </div>
-                        </div>
-                        <div class="entry-body">
-                            <p>Morbi lectus massa, sollicitudin quis luctus non, pulvinar sed nibh. Suspendisse id dui a sem tempus pretium. Nunc a ornare lacus. Fusce eleifend enim id euismod scelerisque. Maecenas eu consequat ligula, id mollis mauris. Mauris ac mauris sed lorem vulputate bibendum id ut orci. Maecenas lacinia eget ipsum vitae tincidunt.</p>
-                            <ul>
-                                <li>Morbi at diam congue ante auctor tincidunt</li>
-                                <li>Pellentesque arcu odio</li>
-                                <li>Fusce malesuada magna et tincidunt vulputate</li>
-                            </ul>
-                        </div>  
-                    </div>
-                    <!-- /// End Decision /// -->
-                    
-                    <!-- /// Decision /// -->
-                    <div class="entry" id="decision-2">
-                        <div class="entry-header flex flex-space-between flex-v-center">
-                            <div class="entry-title">
-                                <h4>Curabitur iaculis</h4>  | {{ translateText('message.due_date') }}: <b>25.03.2017</b> | {{ translateText('message.status') }}: <b class="undone">Undone</b>
-                            </div>
-                            <div class="entry-buttons">
-                                <button data-target="#decision-2-edit" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
-                                <button type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
-                            </div>
-                        </div>
-                        <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar"> 
-                                <img src="http://trisoft.dev.campr.biz/uploads/avatars/61.jpg" :alt="'John Doe'"/>
+                            <div class="user-avatar">
+                                <img :src="decision.responsibilityAvatar" :alt="decision.responsibilityFullName"/>
                             </div>
                             <div>
                                 {{ translateText('message.responsible') }}:
-                                <b>John Doe</b>
+                                <b>{{ decision.responsibilityFullName }}</b>
                             </div>
                         </div>
                         <div class="entry-body">
-                            <ul>
-                                <li>vitae enim quis elit volutpat sodales</li>
-                                <li>vitae molestie ante</li>
-                                <li>pulvinar arcu eu, auctor tellus</li>
-                                <li>gravida ut lorem sit amet</li>
-                            </ul>
-                        </div>  
-                    </div>
-                    <!-- /// End Decision /// -->
-                    
-                    <!-- /// Decision /// -->
-                    <div class="entry" id="decision-2">
-                        <div class="entry-header flex flex-space-between flex-v-center">
-                            <div class="entry-title">
-                                <h4>Donec mauris nunc</h4>  | {{ translateText('message.due_date') }}: <b>25.03.2017</b> | {{ translateText('message.status') }}: <b class="done">Done</b>
-                            </div>
-                            <div class="entry-buttons">
-                                <button type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
-                            </div>
+                            {{ decision.description }}
                         </div>
-                        <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar"> 
-                                <img src="http://trisoft.dev.campr.biz/uploads/avatars/41.jpg" :alt="'Martin Lawrence'"/>
-                            </div>
-                            <div>
-                                {{ translateText('message.responsible') }}:
-                                <b>Martin Lawrence</b>
-                            </div>
-                        </div>
-                        <div class="entry-body">
-                            <p>Phasellus mattis massa non metus pretium mollis sed eget justo. Cras non nisi et ligula rhoncus lobortis. Curabitur iaculis sem magna, sed efficitur magna sodales quis. Nam eget commodo eros.</p>
-                            <p>Nullam vestibulum urna id laoreet porttitor. Praesent eu purus fermentum, varius augue eget, sollicitudin dolor. Mauris feugiat dictum convallis. Nulla quis quam id arcu tincidunt hendrerit. Aenean volutpat tincidunt posuere. Nulla arcu dolor, dapibus ut augue a, tincidunt semper felis. Curabitur in mauris risus. Maecenas eget blandit nibh. Sed vel laoreet lacus. Nulla bibendum risus at sem convallis consequat.</p>
-                            <ol>
-                                <li>vitae enim quis elit volutpat sodales</li>
-                                <li>vitae molestie ante</li>
-                                <li>pulvinar arcu eu, auctor tellus</li>
-                                <li>gravida ut lorem sit amet</li>
-                            </ol>
-                        </div>  
                     </div>
                     <!-- /// End Decision /// -->
                 </div>
@@ -304,60 +203,31 @@
         
                 <!-- /// ToDos /// -->
                 <h3>{{ translateText('message.todos') }}</h3>
-        
-                <div class="entries-wrapper">
+
+                <div class="entries-wrapper" v-if="meeting.todos">
                     <!-- /// ToDo /// -->
-                    <div class="entry" id="decision-1">
+                    <div class="entry" v-for="todo in meeting.todos">
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
-                                <h4>Proin vestibulum</h4>  | {{ translateText('message.due_date') }}: <b>25.03.2017</b> | {{ translateText('message.status') }}: <b class="done">Done</b>
+                                <h4>{{ todo.title }}</h4>  | {{ translateText('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.status') }}: <b v-if="todo.status">{{ todo.statusName }}</b><b v-else>-</b>
                             </div>
                             <div class="entry-buttons">
-                                <button type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
+                                <button @click="initEditTodo(todo)"  class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
+                                <button @click="initDeleteTodo(todo)"  type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar"> 
-                                <img src="http://trisoft.dev.campr.biz/uploads/avatars/49.jpg" :alt="'Kyle Kennedy'"/>
-                            </div>
-                            <div>
-                                {{ translateText('message.responsible') }}::
-                                <b>Kyle Kennedy</b>
-                            </div>
-                        </div>
-                        <div class="entry-body">
-                            <p>Morbi lectus massa, sollicitudin quis luctus non, pulvinar sed nibh. Suspendisse id dui a sem tempus pretium. Nunc a ornare lacus. Fusce eleifend enim id euismod scelerisque. Maecenas eu consequat ligula, id mollis mauris. Mauris ac mauris sed lorem vulputate bibendum id ut orci. Maecenas lacinia eget ipsum vitae tincidunt.</p>
-                        </div>  
-                    </div>
-                    <!-- /// End ToDo /// -->
-                    
-                    <!-- /// ToDo /// -->
-                    <div class="entry" id="decision-2">
-                        <div class="entry-header flex flex-space-between flex-v-center">
-                            <div class="entry-title">
-                                <h4>Duis sodales lectus</h4>  | {{ translateText('message.due_date') }}: <b>25.03.2017</b> | {{ translateText('message.status') }}: <b class="undone">Undone</b>
-                            </div>
-                            <div class="entry-buttons">
-                                <button type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
-                            </div>
-                        </div>
-                        <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar"> 
-                                <img src="http://trisoft.dev.campr.biz/uploads/avatars/64.jpg" :alt="'Cathrine Magnusson'"/>
+                            <div class="user-avatar">
+                                <img :src="todo.responsibilityAvatar" :alt="todo.responsibilityFullName"/>
                             </div>
                             <div>
                                 {{ translateText('message.responsible') }}:
-                                <b>Cathrine Magnusson</b>
+                                <b>{{ todo.responsibilityFullName }}</b>
                             </div>
                         </div>
                         <div class="entry-body">
-                            <ul>
-                                <li>vitae enim quis elit volutpat sodales</li>
-                                <li>vitae molestie ante</li>
-                                <li>pulvinar arcu eu, auctor tellus</li>
-                                <li>gravida ut lorem sit amet</li>
-                            </ul>
-                        </div>  
+                            {{ todo.description }}
+                        </div>
                     </div>
                     <!-- /// End ToDo /// -->
                 </div>
@@ -367,37 +237,31 @@
         
                 <!-- /// Infos /// -->
                 <h3>{{ translateText('message.infos') }}</h3>
-        
-                <div class="entries-wrapper">
+
+                <div class="entries-wrapper" v-if="meeting.notes">
                     <!-- /// Info /// -->
-                    <div class="entry" id="decision-1">
+                    <div class="entry" v-for="note in meeting.notes">
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
-                                <h4>Proin vestibulum</h4>  | {{ translateText('message.due_date') }}: <b>25.03.2017</b> | {{ translateText('message.status') }}: <b class="done">Done</b>
+                                <h4>{{ note.title }}</h4> | {{ translateText('message.due_date') }}: <b>{{ note.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.status') }}: <b v-if="note.status">{{ note.statusName }}</b><b v-else>-</b>
                             </div>
                             <div class="entry-buttons">
-                                <button type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
+                                <button @click="initEditNote(note)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
+                                <button @click="initDeleteNote(note)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar"> 
-                                <img src="http://trisoft.dev.campr.biz/uploads/avatars/44.jpg" :alt="'Anne Manning'"/>
+                            <div class="user-avatar">
+                                <img :src="note.responsibilityAvatar" :alt="note.responsibilityFullName"/>
                             </div>
                             <div>
-                                {{ translateText('message.responsible') }}::
-                                <b>Anne Manning</b>
+                                {{ translateText('message.responsible') }}:
+                                <b>{{ note.responsibilityFullName }}</b>
                             </div>
                         </div>
                         <div class="entry-body">
-                            <ul>
-                                <li>vitae enim quis elit volutpat sodales</li>
-                                <li>vitae molestie ante</li>
-                                <li>pulvinar arcu eu, auctor tellus</li>
-                                <li>gravida ut lorem sit amet</li>
-                            </ul>
-                    
-                            <p>Morbi lectus massa, sollicitudin quis luctus non, pulvinar sed nibh. Suspendisse id dui a sem tempus pretium. Nunc a ornare lacus. Fusce eleifend enim id euismod scelerisque. Maecenas eu consequat ligula, id mollis mauris. Mauris ac mauris sed lorem vulputate bibendum id ut orci. Maecenas lacinia eget ipsum vitae tincidunt.</p>
-                        </div>  
+                            {{ note.description }}
+                        </div>
                     </div>
                     <!-- /// End Info /// -->
                 </div>
@@ -408,9 +272,13 @@
                     <!-- /// Header /// -->
                     <div class="margintop20 text-right">
                         <div class="buttons">
-                            <a ref="#" class="btn-rounded btn-auto">{{ translateText('button.edit_meeting') }}</a>
-                            <a ref="#" class="btn-rounded btn-auto second-bg">{{ translateText('button.new_meeting') }}</a>
-                            <a ref="#" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_meeting') }}</a>
+                            <router-link :to="{name: 'project-meetings-edit-meeting', params: {id: projectId, meetingId: meetingId}}" class="btn-rounded btn-auto">
+                                {{ translateText('button.edit_meeting') }}
+                            </router-link>
+                            <router-link :to="{name: 'project-meetings-create-meeting', params: {id: projectId}}" class="btn-rounded btn-auto second-bg">
+                                {{ translateText('button.new_meeting') }}
+                            </router-link>
+                            <a @click="deleteMeetingModal = true;" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_meeting') }}</a>
                         </div>
                     </div>
                     <!-- /// End Header /// -->
@@ -420,210 +288,18 @@
                             <h3>{{ translateText('message.participants') }}</h3>
                         </div>
                         <div class="buttons">
-                            <router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.edit_distribution_list') }}</router-link>
-                            <a ref="#" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.send_notifications') }}</a>
+                            <!--<router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.edit_distribution_list') }}</router-link>-->
+                            <a @click="sendNotifications()" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.send_notifications') }}</a>
                         </div>
                     </div>
-        
-                    <div class="overflow-hidden">
-                        <vue-scrollbar class="table-wrapper">
-                            <div class="scroll-wrapper">
-                                <table class="table table-striped table-responsive">
-                                    <thead>
-                                        <tr>
-                                            <th>{{ translateText('table_header_cell.team_member') }}</th>
-                                            <th>{{ translateText('table_header_cell.department') }}</th>
-                                            <th>{{ translateText('table_header_cell.present') }}</th>
-                                            <th>{{ translateText('table_header_cell.distribution_list') }}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="avatars flex flex-v-center" id="tp-meeting-20032017-1">
-                                                    <div>
-                                                        <div class="avatar" v-tooltip.top-center="'Anabelle Johansson'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                                    </div>
-                                                    <span>Anabelle Johansson</span>
-                                                </div>
-                                            </td>
-                                            <td>Purchasing KOH</td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="showPresent" :selected="false"></switches>
-                                            </td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="distributionList" :selected="true"></switches>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="avatars flex flex-v-center" id="tp-meeting-20032017-1">
-                                                    <div>
-                                                        <div class="avatar" v-tooltip.top-center="'Carl Percy'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                                    </div>
-                                                    <span>Carl Percy</span>
-                                                </div>
-                                            </td>
-                                            <td>Purchasing KOH</td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="showPresent" :selected="true"></switches>
-                                            </td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="distributionList" :selected="true"></switches>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="avatars flex flex-v-center" id="tp-meeting-20032017-1">
-                                                    <div>
-                                                        <div class="avatar" v-tooltip.top-center="'Johnathan Burges'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg)' }"></div>
-                                                    </div>
-                                                    <span>Johnathan Burges</span>
-                                                </div>
-                                            </td>
-                                            <td>Global Operations</td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="showPresent" :selected="false"></switches>
-                                            </td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="distributionList" :selected="true"></switches>
-                                            </td>
-                                        </tr>
-        
-                                        <tr>
-                                            <td>
-                                                <div class="avatars flex flex-v-center" id="tp-meeting-20032017-1">
-                                                    <div>
-                                                        <div class="avatar" v-tooltip.top-center="'John Doe'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/41.jpg)' }"></div>
-                                                    </div>
-                                                    <span>John Doe</span>
-                                                </div>
-                                            </td>
-                                            <td>Technical Services</td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="showPresent" :selected="false"></switches>
-                                            </td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="distributionList" :selected="true"></switches>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="avatars flex flex-v-center" id="tp-meeting-20032017-1">
-                                                    <div>
-                                                        <div class="avatar" v-tooltip.top-center="'Christinne Galoppy'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/44.jpg)' }"></div>
-                                                    </div>
-                                                    <span>Christinne Galoppy</span>
-                                                </div>
-                                            </td>
-                                            <td>Technical Services</td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="showPresent" :selected="true"></switches>
-                                            </td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="distributionList" :selected="true"></switches>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="avatars flex flex-v-center" id="tp-meeting-20032017-1">
-                                                    <div>
-                                                        <div class="avatar" v-tooltip.top-center="'Mobutu Seseseko'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/49.jpg)' }"></div>
-                                                    </div>
-                                                    <span>Mobutu Seseseko</span>
-                                                </div>
-                                            </td>
-                                            <td>Global Operations</td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="showPresent" :selected="true"></switches>
-                                            </td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="distributionList" :selected="true"></switches>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="avatars flex flex-v-center" id="tp-meeting-20032017-1">
-                                                    <div>
-                                                        <div class="avatar" v-tooltip.top-center="'Anne Wong'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/60.jpg)' }"></div>
-                                                    </div>
-                                                    <span>Anne Wong</span>
-                                                </div>
-                                            </td>
-                                            <td>Global Operations</td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="showPresent" :selected="true"></switches>
-                                            </td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="distributionList" :selected="true"></switches>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="avatars flex flex-v-center" id="tp-meeting-20032017-1">
-                                                    <div>
-                                                        <div class="avatar" v-tooltip.top-center="'Albert Strauss'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/61.jpg)' }"></div>
-                                                    </div>
-                                                    <span>Albert Strauss</span>
-                                                </div>
-                                            </td>
-                                            <td>GMP</td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="showPresent" :selected="true"></switches>
-                                            </td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="distributionList" :selected="true"></switches>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="avatars flex flex-v-center" id="tp-meeting-20032017-1">
-                                                    <div>
-                                                        <div class="avatar" v-tooltip.top-center="'Jhoanne Rothschild-Moore'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/64.jpg)' }"></div>
-                                                    </div>
-                                                    <span>Jhoanne Rothschild-Moore</span>
-                                                </div>
-                                            </td>
-                                            <td>Purchasing KOH</td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="showPresent" :selected="true"></switches>
-                                            </td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="distributionList" :selected="true"></switches>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="avatars flex flex-v-center" id="tp-meeting-20032017-1">
-                                                    <div>
-                                                        <div class="avatar" v-tooltip.top-center="'Kelly West'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                                    </div>
-                                                    <span>Kelly West</span>
-                                                </div>
-                                            </td>
-                                            <td>GMP</td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="showPresent" :selected="false"></switches>
-                                            </td>
-                                            <td class="text-center switchers">
-                                                <switches v-model="distributionList" :selected="true"></switches>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </vue-scrollbar>
-                    </div>
-        
-                    <div class="flex flex-direction-reverse flex-v-center">
-                        <div class="pagination">
-                            <span class="active">1</span>
-                            <span>2</span>
-                        </div>
-                        <div>
-                            <span class="pagination-info">{{ translateText('message.displaying') }} 10 {{ translateText('message.results_out_of') }} 25</span>
-                        </div>
-                    </div>
+
+                    <meeting-participants
+                            v-bind:meetingParticipants="displayedParticipants"
+                            v-bind:participants="participants"
+                            v-bind:participantsPages="participantsPages"
+                            v-bind:participantsPerPage="participantsPerPage"
+                    >
+                    </meeting-participants>
                 </div>
             </div>
         </div>
@@ -632,9 +308,13 @@
             <div class="col-md-12">
                 <div class="text-right footer-buttons">
                     <div class="buttons">
-                        <a ref="#" class="btn-rounded btn-auto">{{ translateText('button.edit_meeting') }}</a>
-                        <a ref="#" class="btn-rounded btn-auto second-bg">{{ translateText('button.new_meeting') }}</a>
-                        <a ref="#" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_meeting') }}</a>
+                        <router-link :to="{name: 'project-meetings-edit-meeting', params: {id: projectId, meetingId: meetingId}}" class="btn-rounded btn-auto">
+                            {{ translateText('button.edit_meeting') }}
+                        </router-link>
+                        <router-link :to="{name: 'project-meetings-create-meeting', params: {id: projectId}}" class="btn-rounded btn-auto second-bg">
+                            {{ translateText('button.new_meeting') }}
+                        </router-link>
+                        <a @click="deleteMeetingModal = true;" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_meeting') }}</a>
                     </div>
                 </div>
             </div>
@@ -649,6 +329,13 @@ import VueScrollbar from 'vue2-scrollbar';
 import Switches from '../../3rdparty/vue-switches';
 import RescheduleIcon from '../../_common/_icons/RescheduleIcon';
 import DownloadbuttonIcon from '../../_common/_icons/DownloadbuttonIcon';
+import {mapGetters, mapActions} from 'vuex';
+import moment from 'moment';
+import MeetingModals from './MeetingModals';
+import MeetingParticipants from './MeetingParticipants';
+import Modal from '../../_common/Modal';
+import VueTimepicker from 'vue2-timepicker';
+import datepicker from 'vuejs-datepicker';
 
 export default {
     components: {
@@ -658,17 +345,247 @@ export default {
         Switches,
         RescheduleIcon,
         DownloadbuttonIcon,
+        MeetingModals,
+        MeetingParticipants,
+        Modal,
+        VueTimepicker,
+        datepicker,
     },
     methods: {
+        ...mapActions([
+            'getProjectMeeting', 'getMeetingAgendas', 'getMeetingParticipants',
+            'getDistributionLists', 'deleteProjectMeeting', 'editProjectMeeting',
+        ]),
         translateText: function(text) {
             return this.translate(text);
         },
+        getDuration: function(startDate, endDate) {
+            let end = moment(endDate, 'HH:mm');
+            let start = moment(startDate, 'HH:mm');
+
+            return !isNaN(end.diff(start, 'minutes')) ? end.diff(start, 'minutes') : '-';
+        },
+        setModals(value) {
+            this.showEditObjectiveModal = value;
+            this.showDeleteObjectiveModal = value;
+            this.showEditAgendaModal = value;
+            this.showDeleteAgendaModal = value;
+            this.showEditDecisionModal = value;
+            this.showDeleteDecisionModal = value;
+            this.showEditTodoModal = value;
+            this.showDeleteTodoModal = value;
+            this.showEditNoteModal = value;
+            this.showDeleteNoteModal = value;
+        },
+        initEditObjective: function(objective) {
+            this.showEditObjectiveModal = true;
+            this.editObjectiveObject = {
+                id: objective.id,
+                description: objective.description,
+            };
+        },
+        initDeleteObjective: function(objective) {
+            this.showDeleteObjectiveModal = true;
+            this.editObjectiveObject = {id: objective.id};
+        },
+        initEditAgenda: function(agenda) {
+            this.showEditAgendaModal = true;
+            this.editAgendaObject = {
+                id: agenda.id,
+                topic: agenda.topic,
+                responsibility: agenda.responsibility,
+                start: {
+                    HH: moment(agenda.start, 'HH:mm').format('HH'),
+                    mm: moment(agenda.start, 'HH:mm').format('mm'),
+                },
+                end: {
+                    HH: moment(agenda.end, 'HH:mm').format('HH'),
+                    mm: moment(agenda.end, 'HH:mm').format('mm'),
+                },
+            };
+        },
+        initDeleteAgenda: function(agenda) {
+            this.showDeleteAgendaModal = true;
+            this.editAgendaObject = {id: agenda.id};
+        },
+        initEditDecision: function(decision) {
+            this.showEditDecisionModal = true;
+            this.editDecisionObject = {
+                id: decision.id,
+                title: decision.title,
+                responsibility: [decision.responsibility],
+                dueDate: decision.date ? new Date(decision.date) : new Date(),
+                status: {key: decision.status, label: decision.statusName},
+                meeting: this.$route.params.meetingId,
+            };
+            this.$refs.editDecisionDescription.setContent(decision.description);
+        },
+        initDeleteDecision: function(decision) {
+            this.showDeleteDecisionModal = true;
+            this.editDecisionObject = {id: decision.id, meeting: this.$route.params.meetingId};
+        },
+        initEditTodo: function(todo) {
+            this.showEditTodoModal = true;
+            this.editTodoObject = {
+                id: todo.id,
+                title: todo.title,
+                responsibility: [todo.responsibility],
+                dueDate: todo.date ? new Date(todo.date) : new Date(),
+                status: {key: todo.status, label: todo.statusName},
+                meeting: this.$route.params.meetingId,
+            };
+            this.$refs.editTodoDescription.setContent(todo.description);
+        },
+        initDeleteTodo: function(todo) {
+            this.showDeleteTodoModal = true;
+            this.editTodoObject = {id: todo.id, meeting: this.$route.params.meetingId};
+        },
+        initEditNote: function(note) {
+            this.showEditNoteModal = true;
+            this.editNoteObject = {
+                id: note.id,
+                title: note.title,
+                responsibility: [note.responsibility],
+                dueDate: note.date ? new Date(note.date) : new Date(),
+                status: {key: note.status, label: note.statusName},
+                meeting: this.$route.params.meetingId,
+            };
+            this.$refs.editNoteDescription.setContent(note.description);
+        },
+        initDeleteNote: function(note) {
+            this.showDeleteNoteModal = true;
+            this.editNoteObject = {id: note.id, meeting: this.$route.params.meetingId};
+        },
+        deleteMeeting: function(note) {
+            this.deleteMeetingModal = false;
+            this.deleteProjectMeeting(this.$route.params.meetingId);
+        },
+        rescheduleMeeting: function() {
+            this.rescheduleModal = false;
+            let data = {
+                id: this.$route.params.meetingId,
+                date: moment(this.date).format('DD-MM-YYYY'),
+                start: this.startTime.HH + ':' + this.startTime.mm,
+                end: this.endTime.HH + ':' + this.endTime.mm,
+            };
+            this.editProjectMeeting(data);
+        },
+    },
+    computed: {
+        ...mapGetters({
+            meeting: 'meeting',
+            meetingAgendas: 'meetingAgendas',
+            distributionLists: 'distributionLists',
+            meetingParticipants: 'meetingParticipants',
+        }),
+    },
+    created() {
+        this.getDistributionLists({projectId: this.$route.params.id});
+        this.getProjectMeeting(this.$route.params.meetingId);
+        this.getMeetingAgendas({
+            meetingId: this.$route.params.meetingId,
+            apiParams: {
+                page: this.agendasActivePage,
+            },
+        });
+        this.getMeetingParticipants({id: this.$route.params.meetingId});
     },
     data() {
         return {
-            showPresent: '',
-            distributionList: '',
+            projectId: this.$route.params.id,
+            meetingId: this.$route.params.meetingId,
+            agendasActivePage: 1,
+            participantsPages: 0,
+            participantsPerPage: 10,
+            showPresent: null,
+            showEditObjectiveModal: false,
+            showDeleteObjectiveModal: false,
+            editObjectiveObject: {},
+            showEditAgendaModal: false,
+            showDeleteAgendaModal: false,
+            editAgendaObject: {},
+            showEditDecisionModal: false,
+            showDeleteDecisionModal: false,
+            editDecisionObject: {},
+            showEditTodoModal: false,
+            showDeleteTodoModal: false,
+            editTodoObject: {},
+            showEditNoteModal: false,
+            showDeleteNoteModal: false,
+            editNoteObject: {},
+            deleteMeetingModal: false,
+            rescheduleModal: false,
+            date: new Date(),
+            startTime: {},
+            endTime: {},
+            participants: [],
+            displayedParticipants: [],
         };
+    },
+    watch: {
+        meeting(value) {
+            let users = [];
+            this.meetingParticipants.map(function(item) {
+                users.push({
+                    id: item.user,
+                    fullName: item.userFullName,
+                    avatar: item.userAvatar,
+                    departments: item.userDepartmentNames,
+                    isPresent: item.isPresent,
+                });
+            });
+            this.lists = this.distributionLists.filter((item) => {
+                for (let i = 0; i < this.meeting.distributionLists.length; i++) {
+                    if (item.id === this.meeting.distributionLists[i].id) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+
+            this.lists.map((item) => {
+                let existingUser = users.find((participant) => {
+                    return participant.id === item.createdBy;
+                });
+                if (!existingUser) {
+                    users.push({
+                        id: item.createdBy,
+                        fullName: item.createdByFullName,
+                        avatar: item.createdByAvatar,
+                        departments: item.createdByDepartmentNames,
+                    });
+                }
+                item.users.map((user) => {
+                    let projectUser = user.projectUsers.filter((item) => {
+                        return item.project !== this.$route.params.id;
+                    });
+                    let existingUser = users.find((participant) => {
+                        return participant.id === user.id;
+                    });
+                    if (!existingUser && projectUser.length > 0) {
+                        users.push({
+                            id: user.id,
+                            fullName: user.firstName + ' ' + user.lastName,
+                            avatar: user.avatar ? user.avatar : user.gravatar,
+                            departments: projectUser[0].projectDepartmentNames,
+                        });
+                    }
+                });
+            });
+
+            this.participants = users;
+            this.displayedParticipants = this.participants.slice(0, this.participantsPerPage);
+            this.participantsPages = Math.ceil(this.participants.length / this.participantsPerPage);
+            this.date = new Date(this.meeting.date);
+            this.startTime = {
+                HH: moment(this.meeting.start, 'HH:mm').format('HH'),
+                mm: moment(this.meeting.start, 'HH:mm').format('mm'),
+            };
+            this.endTime = {
+                HH: moment(this.meeting.end, 'HH:mm').format('HH'),
+                mm: moment(this.meeting.end, 'HH:mm').format('mm'),
+            };
+        },
     },
 };
 </script>
