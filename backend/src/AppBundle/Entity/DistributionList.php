@@ -434,4 +434,25 @@ class DistributionList
     {
         return $this->createdBy ? $this->createdBy->getFullName() : null;
     }
+
+    /**
+     * Returns createdBy departments.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("createdByDepartmentNames")
+     *
+     * @return string
+     */
+    public function getCreatedByDepartmentNames()
+    {
+        if ($this->createdBy) {
+            foreach ($this->createdBy->getProjectUsers() as $projectUser) {
+                if ($projectUser->getProject() === $this->getProject()) {
+                    return $projectUser->getProjectDepartmentNames();
+                }
+            }
+        }
+
+        return [];
+    }
 }

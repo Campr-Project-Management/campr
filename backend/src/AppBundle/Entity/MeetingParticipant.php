@@ -275,4 +275,25 @@ class MeetingParticipant
     {
         return $this->user ? $this->user->getFullName() : null;
     }
+
+    /**
+     * Returns user departments.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userDepartmentNames")
+     *
+     * @return string
+     */
+    public function getUserDepartmentNames()
+    {
+        if ($this->user) {
+            foreach ($this->user->getProjectUsers() as $projectUser) {
+                if ($projectUser->getProject() === $this->getMeeting()->getProject()) {
+                    return $projectUser->getProjectDepartmentNames();
+                }
+            }
+        }
+
+        return [];
+    }
 }

@@ -7,7 +7,7 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
                 <li v-for="option in processedOptions">
-                    <a href="javascript:void(0)" v-on:click="updateValue(option)">
+                    <a href="javascript:void(0)" @click="updateValue(option)">
                         {{ option.label }}
                     </a>
                 </li>
@@ -15,7 +15,7 @@
         </div>
         <p v-for="option in selectedOptions" class="multiselect-option">
             {{ option.label }}
-            <a v-on:click="removeSelectedOption(option)"> <i class="fa fa-times"></i></a>
+            <a @click="removeSelectedOption(option)"> <i class="fa fa-times"></i></a>
         </p>
     </div>
 </template>

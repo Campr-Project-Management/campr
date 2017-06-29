@@ -42,6 +42,7 @@ class CreateType extends BaseCreateType
     {
         $resolver->setDefaults([
             'data_class' => Note::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }
