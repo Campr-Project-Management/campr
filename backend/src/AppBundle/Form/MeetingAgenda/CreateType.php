@@ -70,6 +70,8 @@ class CreateType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => MeetingAgenda::class,
+            'allow_extra_fields' => true,
+            'csrf_protection' => false,
         ]);
     }
 }

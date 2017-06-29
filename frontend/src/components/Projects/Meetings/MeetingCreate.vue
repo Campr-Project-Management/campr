@@ -16,21 +16,16 @@
                 
                 <div class="form">
                     <!-- /// Meeting Distribution List (Event Name) and Category /// -->
-                    <div class="row">
-                        <div class="form-group last-form-group">
-                            <input-field type="text" v-bind:label="translateText('placeholder.name')" v-model="name" v-bind:content="name" />
-                        </div>
-                    </div>
                     <hr class="double">
 
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
-                                <select-field
-                                    :title="translateText('label.distribution_list')"
-                                    :options="distributionListsForSelect"
-                                    v-model="details.distributionList"
-                                    :currentOption="details.distributionList" />
+                                <multi-select-field
+                                    v-bind:title="translateText('label.distribution_list')"
+                                    v-bind:options="distributionListsForSelect"
+                                    v-bind:selectedOptions="details.distributionLists"
+                                    v-model="details.distributionLists" />
                             </div>
                             <div class="col-md-6">
                                 <select-field
@@ -288,6 +283,7 @@ import MemberSearch from '../../_common/MemberSearch';
 import MeetingAttachments from './MeetingAttachments';
 import VueTimepicker from 'vue2-timepicker';
 import {createFormData} from '../../../helpers/meeting';
+import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 
 export default {
     components: {
@@ -298,6 +294,7 @@ export default {
         MemberSearch,
         MeetingAttachments,
         VueTimepicker,
+        MultiSelectField,
     },
     methods: {
         ...mapActions([
@@ -356,8 +353,7 @@ export default {
         },
         saveMeeting() {
             let data = {
-                name: this.name,
-                distributionLists: [this.details.distributionList],
+                distributionLists: this.details.distributionLists,
                 meetingCategory: this.details.category,
                 date: this.schedule.meetingDate,
                 start: this.schedule.startTime,
@@ -370,6 +366,13 @@ export default {
                 todos: this.todos,
                 infos: this.infos,
             };
+            if (this.details.distributionLists.length > 0) {
+                data.name = '';
+                const length = this.details.distributionLists.length;
+                this.details.distributionLists.map(function(item, index) {
+                    data.name += index !== length - 1 ? item.label + '|' : item.label;
+                });
+            }
 
             this.createProjectMeeting({
                 data: createFormData(data),
@@ -415,7 +418,7 @@ export default {
                 },
             },
             details: {
-                distributionList: null,
+                distributionLists: [],
                 category: null,
             },
         };

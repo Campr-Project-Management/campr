@@ -35,6 +35,21 @@ class MeetingControllerTest extends BaseController
         foreach ($content['meetingParticipants'] as $key => $participant) {
             $responseContent['meetingParticipants'][$key]['userAvatar'] = $participant['userAvatar'];
         }
+        foreach ($content['meetingAgendas'] as $key => $agenda) {
+            $responseContent['meetingAgendas'][$key]['responsibilityAvatar'] = $agenda['responsibilityAvatar'];
+        }
+
+        foreach ($content['decisions'] as $key => $decision) {
+            $responseContent['decisions'][$key]['responsibilityAvatar'] = $decision['responsibilityAvatar'];
+        }
+
+        foreach ($content['todos'] as $key => $todo) {
+            $responseContent['todos'][$key]['responsibilityAvatar'] = $todo['responsibilityAvatar'];
+        }
+
+        foreach ($content['notes'] as $key => $note) {
+            $responseContent['notes'][$key]['responsibilityAvatar'] = $note['responsibilityAvatar'];
+        }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -71,6 +86,7 @@ class MeetingControllerTest extends BaseController
                             'meetingName' => 'meeting1',
                             'user' => 4,
                             'userFullName' => 'FirstName4 LastName4',
+                            'userDepartmentNames' => ['project-department2'],
                             'id' => 1,
                             'remark' => null,
                             'isPresent' => false,
@@ -82,6 +98,7 @@ class MeetingControllerTest extends BaseController
                             'meetingName' => 'meeting1',
                             'user' => 5,
                             'userFullName' => 'FirstName5 LastName5',
+                            'userDepartmentNames' => ['project-department1'],
                             'id' => 2,
                             'remark' => null,
                             'isPresent' => false,
@@ -99,6 +116,7 @@ class MeetingControllerTest extends BaseController
                             'topic' => 'topic1',
                             'start' => '07:30',
                             'end' => '08:00',
+                            'responsibilityAvatar' => '',
                         ],
                         [
                             'meeting' => 1,
@@ -109,6 +127,7 @@ class MeetingControllerTest extends BaseController
                             'topic' => 'topic2',
                             'start' => '11:30',
                             'end' => '12:00',
+                            'responsibilityAvatar' => '',
                         ],
                     ],
                     'medias' => [
@@ -140,6 +159,7 @@ class MeetingControllerTest extends BaseController
                             'showInStatusReport' => false,
                             'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
+                            'responsibilityAvatar' => '',
                         ],
                         [
                             'status' => null,
@@ -156,6 +176,7 @@ class MeetingControllerTest extends BaseController
                             'showInStatusReport' => false,
                             'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
+                            'responsibilityAvatar' => '',
                         ],
                     ],
                     'todos' => [
@@ -174,6 +195,7 @@ class MeetingControllerTest extends BaseController
                             'showInStatusReport' => false,
                             'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
+                            'responsibilityAvatar' => '',
                         ],
                         [
                             'status' => null,
@@ -190,6 +212,7 @@ class MeetingControllerTest extends BaseController
                             'showInStatusReport' => false,
                             'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
+                            'responsibilityAvatar' => '',
                         ],
                     ],
                     'notes' => [
@@ -208,6 +231,7 @@ class MeetingControllerTest extends BaseController
                             'showInStatusReport' => false,
                             'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
+                            'responsibilityAvatar' => '',
                         ],
                         [
                             'status' => null,
@@ -224,6 +248,7 @@ class MeetingControllerTest extends BaseController
                             'showInStatusReport' => false,
                             'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
+                            'responsibilityAvatar' => '',
                         ],
                     ],
                     'distributionLists' => [],

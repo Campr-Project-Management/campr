@@ -615,6 +615,27 @@ class ProjectUser
     }
 
     /**
+     * Returns projectDepartment names id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectDepartmentNames")
+     *
+     * @return string
+     */
+    public function getProjectDepartmentNames()
+    {
+        $projectDepartmentNames = [];
+
+        if ($this->projectDepartments->count()) {
+            foreach ($this->projectDepartments as $projectDepartment) {
+                $projectDepartmentNames[] = $projectDepartment->getName();
+            }
+        }
+
+        return $projectDepartmentNames;
+    }
+
+    /**
      * Returns projectTeam id.
      *
      * @Serializer\VirtualProperty()

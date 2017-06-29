@@ -1,13 +1,15 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
-// import router from '../../router';
+import router from '../../router';
 
 const state = {
     projectMeetings: [],
+    meeting: {},
 };
 
 const getters = {
     projectMeetings: state => state.projectMeetings,
+    meeting: state => state.meeting,
 };
 
 const actions = {
@@ -60,16 +62,26 @@ const actions = {
      * @param {array} data
      */
     editProjectMeeting({commit}, data) {
-        Vue.http
-            .patch(
-                Routing.generate('app_api_meeting_edit', {id: data.id}),
-                JSON.stringify(data)
-            ).then((response) => {
-                let meeting = response.data;
-                let id = data.id;
-                commit(types.EDIT_PROJECT_MEETING, {id, meeting});
-            }, (response) => {
-            });
+        if (data.withPost) {
+            Vue.http
+                .post(
+                    Routing.generate('app_api_meeting_edit', {id: data.id}),
+                    data.data
+                ).then((response) => {
+                }, (response) => {
+                });
+        } else {
+            Vue.http
+                .patch(
+                    Routing.generate('app_api_meeting_edit', {id: data.id}),
+                    JSON.stringify(data)
+                ).then((response) => {
+                    let meeting = response.data;
+                    let id = data.id;
+                    commit(types.EDIT_PROJECT_MEETING, {id, meeting});
+                }, (response) => {
+                });
+        }
     },
     /**
      * Creates a new project meeting
@@ -82,6 +94,35 @@ const actions = {
                 Routing.generate('app_api_project_meeting_create', {'id': data.projectId}),
                 data.data
             ).then((response) => {
+            }, (response) => {
+            });
+    },
+    /**
+     * Gets project meeting
+     * @param {function} commit
+     * @param {number} id
+     */
+    getProjectMeeting({commit}, id) {
+        Vue.http
+            .get(Routing.generate('app_api_meeting_get', {'id': id})).then((response) => {
+                if (response.status === 200) {
+                    let meeting = response.data;
+                    commit(types.SET_MEETING, {meeting});
+                }
+            }, (response) => {
+            });
+    },
+    /**
+     * Delete meeting
+     * @param {function} commit
+     * @param {integer} id
+     */
+    deleteProjectMeeting({commit}, id) {
+        Vue.http
+            .delete(
+                Routing.generate('app_api_meeting_delete', {id: id})
+            ).then((response) => {
+                router.push({name: 'project-meetings'});
             }, (response) => {
             });
     },
@@ -121,9 +162,178 @@ const mutations = {
      * @param {array} meeting
      */
     [types.EDIT_PROJECT_MEETING](state, {id, meeting}) {
-        state.projectMeetings.items = state.projectMeetings.items.map((item) => {
-            return item.id === id ? meeting : item;
-        });
+        if (state.projectMeetings.items) {
+            state.projectMeetings.items = state.projectMeetings.items.map((item) => {
+                return item.id === id ? meeting : item;
+            });
+        } else if (state.meeting) {
+            state.meeting = meeting;
+        }
+    },
+    /**
+     * Set meeting
+     * @param {Object} state
+     * @param {array} meeting
+     */
+    [types.SET_MEETING](state, {meeting}) {
+        state.meeting = meeting;
+    },
+    /**
+     * Add new meeting objective
+     * @param {Object} state
+     * @param {Object} meetingObjective
+     */
+    [types.ADD_MEETING_OBJECTIVE](state, {meetingObjective}) {
+        state.meeting.meetingObjectives.push(meetingObjective);
+    },
+    /**
+     * Edit meeting objective
+     * @param {Object} state
+     * @param {array} meetingObjective
+     */
+    [types.EDIT_MEETING_OBJECTIVE](state, {meetingObjective}) {
+        if (state.meeting.meetingObjectives) {
+            state.meeting.meetingObjectives.map(item => {
+                if (item.id === meetingObjective.id) {
+                    item.description = meetingObjective.description;
+                }
+            });
+        }
+    },
+    /**
+     * Delete meeting objective
+     * @param {Object} state
+     * @param {integer} meetingObjectiveId
+     */
+    [types.DELETE_MEETING_OBJECTIVE](state, {meetingObjectiveId}) {
+        if (state.meeting.meetingObjectives) {
+            state.meeting.meetingObjectives = state.meeting.meetingObjectives.filter((item) => {
+                return item.id !== meetingObjectiveId;
+            });
+        }
+    },
+    /**
+     * Add new meeting decision
+     * @param {Object} state
+     * @param {Object} decision
+     */
+    [types.ADD_MEETING_DECISION](state, {decision}) {
+        state.meeting.decisions.push(decision);
+    },
+    /**
+     * Edit meeting decision
+     * @param {Object} state
+     * @param {array} decision
+     */
+    [types.EDIT_MEETING_DECISION](state, {decision}) {
+        if (state.meeting.decisions) {
+            state.meeting.decisions.map(item => {
+                if (item.id === decision.id) {
+                    item.title = decision.title;
+                    item.description = decision.description;
+                    item.responsibility = decision.responsibility;
+                    item.responsibilityAvatar = decision.responsibilityAvatar;
+                    item.responsibilityFullName = decision.responsibilityFullName;
+                    item.dueDate = decision.dueDate;
+                    item.status = decision.status;
+                    item.statusName = decision.statusName;
+                }
+            });
+        }
+    },
+    /**
+     * Delete meeting decision
+     * @param {Object} state
+     * @param {integer} decisionId
+     */
+    [types.DELETE_MEETING_DECISION](state, {decisionId}) {
+        if (state.meeting.decisions) {
+            state.meeting.decisions = state.meeting.decisions.filter((item) => {
+                return item.id !== decisionId;
+            });
+        }
+    },
+    /**
+     * Add new meeting todo
+     * @param {Object} state
+     * @param {Object} todo
+     */
+    [types.ADD_MEETING_TODO](state, {todo}) {
+        state.meeting.todos.push(todo);
+    },
+    /**
+     * Edit meeting todo
+     * @param {Object} state
+     * @param {array} todo
+     */
+    [types.EDIT_MEETING_TODO](state, {todo}) {
+        if (state.meeting.todos) {
+            state.meeting.todos.map(item => {
+                if (item.id === todo.id) {
+                    item.title = todo.title;
+                    item.description = todo.description;
+                    item.responsibility = todo.responsibility;
+                    item.responsibilityAvatar = todo.responsibilityAvatar;
+                    item.responsibilityFullName = todo.responsibilityFullName;
+                    item.dueDate = todo.dueDate;
+                    item.status = todo.status;
+                    item.statusName = todo.statusName;
+                }
+            });
+        }
+    },
+    /**
+     * Delete meeting todo
+     * @param {Object} state
+     * @param {integer} todoId
+     */
+    [types.DELETE_MEETING_TODO](state, {todoId}) {
+        if (state.meeting.todos) {
+            state.meeting.todos = state.meeting.todos.filter((item) => {
+                return item.id !== todoId;
+            });
+        }
+    },
+    /**
+     * Add new meeting note
+     * @param {Object} state
+     * @param {Object} note
+     */
+    [types.ADD_MEETING_NOTE](state, {note}) {
+        state.meeting.notes.push(note);
+    },
+    /**
+     * Edit meeting note
+     * @param {Object} state
+     * @param {array} note
+     */
+    [types.EDIT_MEETING_NOTE](state, {note}) {
+        if (state.meeting.notes) {
+            state.meeting.notes.map(item => {
+                if (item.id === note.id) {
+                    item.title = note.title;
+                    item.description = note.description;
+                    item.responsibility = note.responsibility;
+                    item.responsibilityAvatar = note.responsibilityAvatar;
+                    item.responsibilityFullName = note.responsibilityFullName;
+                    item.dueDate = note.dueDate;
+                    item.status = note.status;
+                    item.statusName = note.statusName;
+                }
+            });
+        }
+    },
+    /**
+     * Delete meeting note
+     * @param {Object} state
+     * @param {integer} noteId
+     */
+    [types.DELETE_MEETING_NOTE](state, {noteId}) {
+        if (state.meeting.notes) {
+            state.meeting.notes = state.meeting.notes.filter((item) => {
+                return item.id !== noteId;
+            });
+        }
     },
 };
 
