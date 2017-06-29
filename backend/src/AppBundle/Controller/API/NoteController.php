@@ -20,7 +20,7 @@ class NoteController extends ApiController
     /**
      * Retrieve Note information.
      *
-     * @Route("/{id}", name="app_api_note_get")
+     * @Route("/{id}", name="app_api_notes_get", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Note $note
@@ -41,7 +41,7 @@ class NoteController extends ApiController
     /**
      * Edit a specific Note.
      *
-     * @Route("/{id}", name="app_api_note_edit")
+     * @Route("/{id}", name="app_api_notes_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      *
      * @param Request $request
@@ -51,12 +51,6 @@ class NoteController extends ApiController
      */
     public function editAction(Request $request, Note $note)
     {
-        $project = $note->getProject();
-        if (!$project) {
-            throw new \LogicException('Project does not exist!');
-        }
-        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
-
         $form = $this->createForm(CreateType::class, $note, ['csrf_protection' => false]);
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
@@ -79,7 +73,7 @@ class NoteController extends ApiController
     /**
      * Delete a specific Note.
      *
-     * @Route("/{id}", name="app_api_note_delete")
+     * @Route("/{id}", name="app_api_notes_delete", options={"expose"=true})
      * @Method({"DELETE"})
      *
      * @param Note $note
@@ -88,12 +82,6 @@ class NoteController extends ApiController
      */
     public function deleteAction(Note $note)
     {
-        $project = $note->getProject();
-        if (!$project) {
-            throw new \LogicException('Project does not exist!');
-        }
-        $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
-
         $em = $this->getDoctrine()->getManager();
         $em->remove($note);
         $em->flush();

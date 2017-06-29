@@ -3,12 +3,29 @@ import moment from 'moment';
 export const createFormData = (data) => {
     let formData = new FormData();
 
-    formData.append('name', data.name);
-    formData.append('meetingCategory', data.meetingCategory ? data.meetingCategory.key : null);
-    formData.append('date', moment(data.date).format('DD-MM-YYYY'));
-    formData.append('start', data.start.HH + ':' + data.start.mm);
-    formData.append('end', data.end.HH + ':' + data.end.mm);
-    formData.append('location', data.location);
+    if (data.name) {
+        formData.append('name', data.name);
+    }
+
+    if (data.meetingCategory) {
+        formData.append('meetingCategory', data.meetingCategory ? data.meetingCategory.key : null);
+    }
+
+    if (data.date) {
+        formData.append('date', moment(data.date).format('DD-MM-YYYY'));
+    }
+
+    if (data.start) {
+        formData.append('start', data.start.HH + ':' + data.start.mm);
+    }
+
+    if (data.end) {
+        formData.append('end', data.end.HH + ':' + data.end.mm);
+    }
+
+    if (data.location) {
+        formData.append('location', data.location);
+    }
 
     if (data.distributionLists.length) {
         for (let i = 0; i < data.distributionLists.length; i++) {
@@ -16,13 +33,13 @@ export const createFormData = (data) => {
         }
     }
 
-    if (data.objectives.length > 0) {
+    if (data.objectives) {
         for (let i = 0; i < data.objectives.length; i++) {
             formData.append('meetingObjectives[' + i + '][description]', data.objectives[i].description);
         }
     }
 
-    if (data.agendas.length > 0) {
+    if (data.agendas) {
         for (let i = 0; i < data.agendas.length; i++) {
             formData.append('meetingAgendas[' + i + '][topic]', data.agendas[i].topic);
             formData.append('meetingAgendas[' + i + '][responsibility]', data.agendas[i].responsible.length > 0 ? data.agendas[i].responsible[0] : null);
@@ -31,7 +48,7 @@ export const createFormData = (data) => {
         }
     }
 
-    if (data.medias.length > 0) {
+    if (data.medias) {
         for (let i = 0; i < data.medias.length; i++) {
             formData.append(
                 'medias[' + i + '][file]',
@@ -42,7 +59,7 @@ export const createFormData = (data) => {
         }
     }
 
-    if (data.decisions.length > 0) {
+    if (data.decisions) {
         for (let i = 0; i < data.decisions.length; i++) {
             formData.append('decisions[' + i + '][title]', data.decisions[i].title);
             formData.append('decisions[' + i + '][description]', data.decisions[i].description);
@@ -52,7 +69,7 @@ export const createFormData = (data) => {
         }
     }
 
-    if (data.todos.length > 0) {
+    if (data.todos) {
         for (let i = 0; i < data.todos.length; i++) {
             formData.append('todos[' + i + '][title]', data.todos[i].title);
             formData.append('todos[' + i + '][description]', data.todos[i].description);
@@ -62,7 +79,7 @@ export const createFormData = (data) => {
         }
     }
 
-    if (data.infos.length > 0) {
+    if (data.infos) {
         for (let i = 0; i < data.infos.length; i++) {
             formData.append('notes[' + i + '][title]', data.infos[i].title);
             formData.append('notes[' + i + '][description]', data.infos[i].description);

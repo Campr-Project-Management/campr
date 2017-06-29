@@ -20,7 +20,7 @@ class TodoController extends ApiController
     /**
      * Retrieve todo information.
      *
-     * @Route("/{id}", name="app_api_todos_get")
+     * @Route("/{id}", name="app_api_todos_get", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param Todo $todo
@@ -41,7 +41,7 @@ class TodoController extends ApiController
     /**
      * Edit a specific Todo.
      *
-     * @Route("/{id}", name="app_api_todos_edit")
+     * @Route("/{id}", name="app_api_todos_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      *
      * @param Request $request
@@ -51,12 +51,6 @@ class TodoController extends ApiController
      */
     public function editAction(Request $request, Todo $todo)
     {
-        $project = $todo->getProject();
-        if (!$project) {
-            throw new \LogicException('Project does not exist!');
-        }
-        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
-
         $form = $this->createForm(CreateType::class, $todo, ['csrf_protection' => false]);
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
@@ -79,7 +73,7 @@ class TodoController extends ApiController
     /**
      * Delete a specific Todo.
      *
-     * @Route("/{id}", name="app_api_todos_delete")
+     * @Route("/{id}", name="app_api_todos_delete", options={"expose"=true})
      * @Method({"DELETE"})
      *
      * @param Todo $todo
@@ -88,12 +82,6 @@ class TodoController extends ApiController
      */
     public function deleteAction(Todo $todo)
     {
-        $project = $todo->getProject();
-        if (!$project) {
-            throw new \LogicException('Project does not exist!');
-        }
-        $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
-
         $em = $this->getDoctrine()->getManager();
         $em->remove($todo);
         $em->flush();
