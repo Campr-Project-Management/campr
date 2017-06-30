@@ -42,7 +42,7 @@ export default {
                 status: this.translate('label.status'),
             },
             message: {
-                condition: this.translate('message.condition'),
+                condition: this.translate('message.task_condition'),
             },
         };
     },
