@@ -1,5 +1,6 @@
 <template>
     <div class="project-task-management page-section">
+        <!-- /// Delete Subtask Modal /// -->
         <modal v-if="showDeleteModal" @close="showDeleteModal = false">
             <p class="modal-title">{{ translateText('message.delete_task') }}</p>
             <div class="flex flex-space-between">
@@ -7,6 +8,46 @@
                 <a @click.preventDefault="deleteSubtask(showDeleteModal)" class="btn-rounded">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
+        <!-- /// End Delete Subtask Modal /// -->
+
+        <!-- /// Edit Status Modal /// -->
+        <modal v-if="showEditStatusModal" @close="showEditStatusModal = false">
+            <p class="modal-title">{{ translateText('title.status.edit') }}</p>
+            <select-field
+                    v-bind:title="translateText('title.status.edit')"
+                    v-bind:options="workPackageStatusesForSelect"
+                    v-bind:currentOption="editableData.workPackageStatus"
+                    v-model="editableData.workPackageStatus"/>
+            <br />
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showEditStatusModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="changeStatus()" class="btn-rounded">{{ translateText('title.status.edit') }} +</a>
+            </div>
+        </modal>
+        <!-- /// End Edit Status Modal /// -->
+
+        <!-- /// Edit Schedule Modal /// -->
+        <modal v-if="showEditScheduleModal" @close="showEditScheduleModal = false">
+            <p class="modal-title">{{ translateText('title.schedule.edit') }}</p>
+            <schedule v-model="editableData.schedule" v-bind:editSchedule="editableData.schedule" />
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showEditScheduleModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="changeSchedule()" class="btn-rounded">{{ translateText('button.edit_schedule') }} +</a>
+            </div>
+        </modal>
+        <!-- /// End Edit Schedule Modal /// -->
+        
+        <!-- /// Add internal costs Modal /// -->
+        <modal v-if="showAddInternalCostsModal" @close="showAddInternalCostsModal = false">
+            <internal-costs v-on:input="addInternalCosts" />
+        </modal>
+        <!-- /// End Add internal Cost Modal /// -->
+        
+        <!-- /// Add external costs Modal /// -->
+        <modal v-if="showAddExternalCostsModal" @close="showAddExternalCostsModal = false">
+            <external-costs v-on:input="addExternalCosts" />
+        </modal>
+        <!-- /// End Add external Cost Modal /// -->
 
         <div class="row">
             <div class="col-md-6">
@@ -31,8 +72,8 @@
                 <div class="task-status flex flex-v-center">
                     <div>
                         <span class="small">{{ translateText('table_header_cell.status') }}:</span>
-                        <div class="task-status-box" :style="'background-color: '+task.colorStatusColor">{{ task.colorStatusName }}</div>
-                        <a href="#open-status-edit-modal" class="simple-link small">{{ translateText('message.edit') }}</a>
+                        <div class="task-status-box">{{ translateText(task.workPackageStatusName)}}</div>
+                        <a @click="initChangeStatusModal()" class="simple-link small">{{ translateText('message.edit') }}</a>
                     </div>
                     <div>
                         <div class="task-status-info">
@@ -209,7 +250,7 @@
                     <router-link
                         :to="{name: 'project-task-management-create'}"
                         class="btn-rounded btn-auto second-bg">
-                        {{ translateText('message.new_task') }}
+                        {{ translateText('button.new_task') }}
                     </router-link>
                 </div>
                 <!-- /// End Header Buttons /// -->
@@ -302,20 +343,22 @@
                         </table>
                     </vue-scrollbar>
                     <div v-for="dependancy in task.dependencies" class="flex flex-space-between flex-v-center margintop20">
-                        <div>
-                            {{ translateText('subtitle.task_precedesor') }}:
-                            <router-link
-                                :to="{name: 'project-task-management-view', params: { id: task.project, taskId: task.id }}"
-                                class="simple-link">
-                                {{ dependancy.name }}
-                            </router-link>
-                        </div>
+                        {{ translateText('subtitle.task_precedesor') }}:
+                        <router-link
+                            :to="{name: 'project-task-management-view', params: { id: task.project, taskId: task.id }}"
+                            class="simple-link">
+                            {{ dependancy.name }}
+                        </router-link>
+                    </div>
+                    <div class="flex flex-space-between flex-v-center margintop20">
+                        <div></div>      
                         <button
+                            @click="initChangeScheduleModal()"
                             data-target="#edit-schedule-module"
                             data-toggle="modal"
                             class="btn-rounded btn-md btn-empty btn-auto"
                             type="button">
-                            Edit Schedule
+                            {{ translateText('button.edit_schedule') }}
                         </button>
                     </div>
                     <!-- /// Task End Schedule /// -->
@@ -333,25 +376,32 @@
                                     <th>{{ translateText('label.qty') }}</th>
                                     <th>{{ translateText('label.days') }}</th>
                                     <th>{{ translateText('message.total') }}</th>
-                                    <th>{{ translateText('message.actions') }}</th>
+                                    <th>{{ translateText('placeholder.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="item in task.costs"  v-if="item.type==0">
+                                <tr v-for="(item, index) in editableData.internalCosts">
                                     <td>{{item.resourceName}}</td>
                                     <td>{{item.rate}}</td>
                                     <td>{{item.quantity}}</td>
                                     <td>{{item.duration}}</td>
-                                    <td><b><i class="fa fa-dollar"></i> {{costTotal(item)}}</b></td>
+                                    <td><b><i class="fa fa-dollar"></i> {{item.total}}</b></td>
                                     <td>
                                         <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                        <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
+                                        <button 
+                                            data-target="#logistics-delete-modal" 
+                                            @click="removeInternalCost(index)"     
+                                            data-toggle="modal"
+                                            type="button"
+                                            class="btn-icon">
+                                            <delete-icon fill="danger-fill"></delete-icon>
+                                        </button>
                                     </td>
                                 </tr>
                                
                                 <tr>
                                     <td colspan="4" class="text-right"><b>{{ translateText('label.internal_costs_total') }}</b></td>
-                                    <td colspan="2"><b><i class="fa fa-dollar"></i>  {{totalCostsForType(0)}}</b></td>
+                                    <td colspan="2"><b><i class="fa fa-dollar"></i>  {{ internalBaseTotal }}</b></td>
                                 </tr>
                                 <tr class="column-warning">
                                     <td colspan="4" class="text-right"><b>{{ translateText('label.forecast_total') }}</b></td>
@@ -372,13 +422,20 @@
                     </vue-scrollbar>
                     <div class="flex flex-space-between flex-v-center margintop20">
                         <div></div>
-                        <button data-target="#edit-schedule-module" data-toggle="modal" class="btn-rounded btn-md btn-empty btn-auto" type="button">Add Internal Cost +</button>
+                        <button
+                            @click="initAddInternalCostModal()"
+                            data-target="#internal-costs-add-modal"
+                            data-toggle="modal"
+                            class="btn-rounded btn-md btn-empty btn-auto"
+                            type="button">
+                            Add Internal Cost +
+                        </button>
                     </div>
                     <!-- /// Task Internal Costs /// -->
 
                     <hr class="double">
 
-                    <!-- /// Task Internal Costs /// -->
+                    <!-- /// Task External Costs /// -->
                     <h3>{{ translateText('message.external_costs') }}</h3>
                     <vue-scrollbar class="table-wrapper">
                         <table class="table table-small">
@@ -390,36 +447,43 @@
                                     <th>{{ translateText('label.external_cost_unit_rate') }}</th>
                                     <th>{{ translateText('message.capex') }}</th>
                                     <th>{{ translateText('message.total') }}</th>
-                                    <th>{{ translateText('message.actions') }}</th>
+                                    <th>{{ translateText('placeholder.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                 <tr v-for="cost in task.costs"  v-if="cost.type==1">
+                                <tr v-for="(cost, index) in editableData.externalCosts">
                                     <td>{{cost.name}}</td>
                                     <td>{{cost.quantity}}</td>
-                                    <td>{{cost.unit.name}}</td>
+                                    <td>{{cost.selectedUnit}}</td>
                                     <td><i class="fa fa-dollar"></i> {{cost.rate}}</td>
                                     <td><switches v-model="cost.expenseType" v-bind:selected="cost.expenseType"></switches></td>
-                                    <td><b><b><i class="fa fa-dollar"></i> {{costTotal(cost)}}</b></b></td>
+                                    <td><b><b><i class="fa fa-dollar"></i> {{itemTotal(cost)}}</b></b></td>
                                     <td>
                                         <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill" ></edit-icon></button>
-                                        <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
+                                        <button 
+                                            data-target="#logistics-delete-modal"
+                                            data-toggle="modal"
+                                            @click="removeExternalCost(index)"
+                                            type="button" 
+                                            class="btn-icon">
+                                            <delete-icon fill="danger-fill"></delete-icon>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5" class="text-right">{{ translateText('message.capex_subtotal')}}</b></td>
-                                    <td colspan="2"><i class="fa fa-dollar"></i> {{totalCapex()}}</td>
+                                    <td colspan="5" class="text-right">{{ translateText('message.capex_subtotal') }}</b></td>
+                                    <td colspan="2"><i class="fa fa-dollar"></i> {{totalCapex}}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="5" class="text-right">{{ translateText('message.opex_subtotal') }}</b></td>
-                                    <td colspan="2"><i class="fa fa-dollar"></i> {{totalOpex()}}</td>
+                                    <td colspan="2"><i class="fa fa-dollar"></i> {{totalOpex}}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="5" class="text-right"><b>{{ translateText('label.external_cost_total') }}</b></td>
-                                    <td colspan="2"><b> <i class="fa fa-dollar"></i> {{totalCostsForType(1)}}</b></td>
+                                    <td colspan="2"><b> <i class="fa fa-dollar"></i> {{ externalBaseTotal }}</b></td>
                                 </tr>
                                 <tr class="column-warning">
-                                    <td colspan="5" class="text-right"><b>{{ translateText('label.forecast_total')}}</b></td>
+                                    <td colspan="5" class="text-right"><b>{{ translateText('label.forecast_total') }}</b></td>
                                     <td><b><i class="fa fa-dollar"></i> {{task.externalForecastCost}}</b></td>
                                     <td>
                                         <button data-target="#internal-costs-forecast-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
@@ -437,7 +501,14 @@
                     </vue-scrollbar>
                     <div class="flex flex-space-between flex-v-center margintop20">
                         <div></div>
-                        <button data-target="#edit-schedule-module" data-toggle="modal" class="btn-rounded btn-md btn-empty btn-auto">Add External Cost +</button>
+                        <button
+                            @click="initAddExternalCostModal()"
+                            data-target="#external-costs-add-modal"
+                            data-toggle="modal"
+                            class="btn-rounded btn-md btn-empty btn-auto"
+                            type="button">
+                            Add External Cost +
+                        </button>
                     </div>
                     <!-- /// Task Internal Costs /// -->
 
@@ -456,7 +527,11 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <select-field v-bind:title="'Change Assignee'"></select-field>
+                            <select-field
+                                v-bind:title="'Change Assignee'"
+                                v-bind:options="assigneesForSelect"
+                                v-model="editableData.assignee"
+                                v-bind:currentOption="editableData.assignee" />
                         </div>
                     </div>
                     <!-- /// End Task Assignee /// -->
@@ -468,52 +543,38 @@
                     <div class="row">
                         <div class="col-md-12">
                             <range-slider
-                            v-bind:title=" translateText('message.task_completion') "
-                            min="0"
-                            max="100"
-                            minSuffix=" %"
-                            type="single"
-                            v-bind:value="transformToString(task.progress)" />
+                                v-bind:title="translateText('message.task_completion')"
+                                min="0"
+                                max="100"
+                                minSuffix=" %"
+                                type="single"
+                                v-bind:value="transformToString(task.progress)" />
                         </div>
                          <div class="col-md-8">
-                            <h4>{{task.colorStatusName}}</h4>
+                            <h4>{{translateText(task.workPackageStatusName)}}</h4>
                         </div>
                         <div class="col-md-4">
-                            <select-field v-bind:title="'Change Status'"></select-field>
+                            <select-field
+                                v-bind:title="translateText('message.change_status')"
+                                v-bind:options="workPackageStatusesForSelect"
+                                v-model="editableData.workPackageStatus"
+                                v-bind:currentOption="editableData.workPackageStatus" />
                         </div>
                     </div>
                     <!-- /// End Task Completion /// -->
 
                     <hr class="double">
-
+                    
                     <!-- /// Task Condition /// -->
-                    <h3>{{ translateText('message.task_condition') }}</h3>
-                    <p v-for="status in colorStatuses">
-                        <b class="caps" v-bind:style="{ color: status.color }" >{{ status.name }}:</b>{{status.description}}.
-                    </p>
-                    <div class="flex flex-space-between flex-v-center margintop20">
-                        <div class="status-boxes flex flex-v-center">
-                            <div v-for="status in colorStatuses" class="status-box" v-bind:style="{ background: status.color }" ></div>
-                        </div>
-                        <button data-target="#ajax-save-status" class="btn-rounded btn-md btn-empty btn-auto btn-disabled" type="button">Save Status</button>
-                    </div>
+                    <condition v-model="editableData.colorStatus" v-bind:selectedStatusColor="editableData.colorStatus" />
+
                     <!-- /// End Task Condition /// -->
 
                     <hr class="double">
 
                     <!-- /// Task Attachmets /// -->
-                    <h3>{{ translateText('message.attachments') }}</h3>
-                    <div class="flex flex-space-between margintop20">
-                        <div>
-                            <div v-for="media in task.medias">
-                                <a :href="media.fileName" class="simple-link">{{media.path}}</a>
-                            </div>
-                            <button class="btn-rounded btn-md btn-empty btn-auto flex" type="button">
-                                <span>Attach a file</span>
-                                <attach-icon></attach-icon>
-                            </button>
-                        </div>
-                    </div>
+                    
+                    <attachments v-on:input="setMedias" v-bind:editMedias="editableData.medias" />
                     <!-- /// End Task Attachments /// -->
                     <hr class="double">
 
@@ -522,9 +583,9 @@
                     <div class="row">
                         <div class="col-md-8">
                             <div class="task-label-holder flex flex-v-center">
-                                <div v-for="label in task.labels">
-                                    <div class="task-label"  :style="'background-color:' + label.color">
-                                        {{label.title}}
+                                <div  v-if="editableData.label">
+                                    <div class="task-label" :style="'background-color:' + editableData.label.color">
+                                        {{editableData.label.label}}
                                     </div>
                                     <button class="btn-icon btn-remove" type="button">
                                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10">
@@ -537,7 +598,11 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <select-field v-bind:title="'Add Label'"></select-field>
+                            <select-field
+                                v-bind:title="'Add Label'"
+                                v-bind:options="labelsForSelect"
+                                v-model="editableData.label"
+                                v-bind:currentOption="editableData.label" />
                         </div>
                     </div>
                     <!-- /// End Labels /// -->
@@ -563,7 +628,7 @@
                     <hr class="double">
 
                     <div class="footer-buttons">
-                        <a href="javascript:void(0)" class="btn-rounded btn-auto second-bg">Save Changes</a>
+                        <a href="javascript:void(0)" @click="saveChangedData" class="btn-rounded btn-auto second-bg">Save Changes</a>
                         <a href="javascript:void(0)" class="btn-rounded btn-auto btn-empty">Export Task</a>
                     </div>
                 </div>
@@ -578,12 +643,17 @@ import {mapGetters, mapActions} from 'vuex';
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import AttachIcon from '../../_common/_icons/AttachIcon';
+import Schedule from './Create/Schedule';
+import InternalCosts from './View/InternalCosts';
+import ExternalCosts from './View/ExternalCosts';
+import Attachments from './Create/Attachments';
 import Switches from '../../3rdparty/vue-switches';
 import VueScrollbar from 'vue2-scrollbar';
 import SelectField from '../../_common/_form-components/SelectField';
 import RangeSlider from '../../_common/_form-components/RangeSlider';
 import Modal from '../../_common/Modal';
 import router from '../../../router';
+import Condition from './Create/Condition';
 import moment from 'moment';
 
 export default {
@@ -591,12 +661,17 @@ export default {
         EditIcon,
         DeleteIcon,
         AttachIcon,
+        Schedule,
+        InternalCosts,
+        ExternalCosts,
+        Attachments,
         Switches,
         VueScrollbar,
         SelectField,
         RangeSlider,
         Modal,
         router,
+        Condition,
         moment,
     },
     created() {
@@ -605,12 +680,19 @@ export default {
             this.getTaskHistory(this.$route.params.taskId);
         }
         this.getColorStatuses();
+        this.getProjectUsers({id: this.$route.params.id});
+        this.getWorkPackageStatuses();
+        this.getProjectLabels(this.$route.params.id);
     },
     computed: {
         ...mapGetters({
             task: 'currentTask',
             taskHistory: 'taskHistory',
             colorStatuses: 'colorStatuses',
+            colorStatusesForSelect: 'colorStatusesForSelect',
+            assigneesForSelect: 'projectUsersForSelect',
+            workPackageStatusesForSelect: 'workPackageStatusesForSelect',
+            labelsForSelect: 'labelsForChoice',
         }),
         isClosed: function() {
             return this.task.workPackageStatus === 5;
@@ -618,9 +700,125 @@ export default {
         isStarted: function() {
             this.task.workPackageStatus === 3;
         },
+        internalBaseTotal: function() {
+            return this.editableData.internalCosts.reduce((prev, next) => {
+                return prev + next.total;
+            }, 0);
+        },
+        externalBaseTotal: function() {
+            return this.editableData.externalCosts.reduce((prev, next) => {
+                return prev + next.total;
+            }, 0);
+        },
+        totalOpex: function() {
+            let totalOpexCost = 0;
+            // remove and replace with coputed prop
+            for (let cost of this.editableData.externalCosts) {
+                if (cost.opex === 1) {
+                    totalOpexCost += cost.total;
+                }
+            }
+            return totalOpexCost;
+        },
+        totalCapex: function() {
+            let totalCapexCost = 0;
+
+            for (let cost of this.editableData.externalCosts) {
+                if (cost.capex === 1) {
+                    totalCapexCost += cost.total;
+                }
+            }
+            return totalCapexCost;
+        },
+    },
+    watch: {
+        task(value) {
+            this.editableData.colorStatus = this.task.colorStatus
+                ? {id: this.task.colorStatus, name: this.task.colorStatusName}
+                : null
+            ;
+            this.editableData.workPackageStatus = this.task.workPackageStatus
+                ? {key: this.task.workPackageStatus, label: this.translateText(this.task.workPackageStatusName)}
+                : null
+            ;
+
+            this.editableData.schedule = {
+                baseStartDate: new Date(this.task.scheduledStartAt),
+                baseEndDate: new Date(this.task.scheduledFinishAt),
+                forecastStartDate: new Date(this.task.forecastStartAt),
+                forecastEndDate: new Date(this.task.forecastFinishAt),
+                automatic: this.task.automaticSchedule,
+                successors: this.task.dependants.map((item) => {
+                    return {
+                        key: item.id,
+                        label: item.name,
+                    };
+                }),
+                predecessors: this.task.dependencies.map((item) => {
+                    return {
+                        key: item.id,
+                        label: item.name,
+                    };
+                }),
+                durationInDays: this.task.duration,
+            };
+
+            this.editableData.assignee = this.task.responsibility
+                ? {key: this.task.responsibility, label: this.task.responsibilityFullName}
+                : null
+            ;
+
+            this.editableData.label = this.task.label
+                ? {key: this.task.label, label: this.task.labelName, color: this.task.labelColor}
+                : null
+            ;
+
+            this.editableData.medias = this.task.medias;
+
+            let internal = [];
+            let external = [];
+            let itemTotal = this.itemTotal;
+            this.task.costs.map(function(cost) {
+                if (cost.type === 0) {
+                    internal.push({
+                        resourceName: cost.resourceName,
+                        resource: cost.resource,
+                        rate: cost.rate,
+                        quantity: cost.quantity,
+                        duration: cost.duration,
+                        total: itemTotal(cost),
+                    });
+                } else {
+                    external.push({
+                        rate: cost.rate,
+                        name: cost.name,
+                        quantity: cost.quantity,
+                        selectedUnit: cost.unit && cost.unit.id ? cost.unit.id.toString() : null,
+                        capex: cost.expenseType === 0 ? 1 : 0,
+                        opex: cost.expenseType === 1 ? 1 : 0,
+                        total: itemTotal(cost),
+                        customUnit: '',
+                    });
+                }
+            });
+            this.editableData.internalCosts = internal;
+            this.editableData.externalCosts = external;
+        },
     },
     methods: {
-        ...mapActions(['getTaskById', 'getTaskHistory', 'deleteTaskSubtask', 'countCompletedSubtasks', 'addTaskComment', 'getColorStatuses']),
+        ...mapActions([
+            'getTaskById',
+            'getTaskHistory',
+            'deleteTaskSubtask',
+            'countCompletedSubtasks',
+            'addTaskComment',
+            'getColorStatuses',
+            'editTask',
+            'getProjectUsers',
+            'getWorkPackageStatuses',
+            'getWorkPackageStatusesForSelect',
+            'getProjectLabels',
+        ]),
         countCompletedSubtasks: function() {
             let completed = 0;
 
@@ -665,41 +863,23 @@ export default {
             };
             this.addTaskComment(data);
         },
-        costTotal: function(item) {
-            if (item.type === 0 ) {
-                return item.rate * item.quantity * item.duration;
-            }
-            return item.rate * item.quantity;
+        itemTotal(item) {
+            let duration = (item.duration == null || isNaN(item.duration) || item.duration == 0) ? 1 : item.duration;
+            let total = item.rate * item.quantity * duration;
+            return !isNaN(total) ? total : 0;
+        },
+        setMedias(value) {
+            this.editableData.medias = value;
         },
         totalCostsForType: function(costType) {
             let totalCostForType = 0;
-
+            // to be removed and replace with a computed prop
             for (let cost of this.task.costs) {
                 if (cost.type === 1) {
-                    totalCostForType += this.costTotal(cost);
+                    totalCostForType += this.itemTotal(cost);
                 }
             }
             return totalCostForType;
-        },
-        totalOpex: function() {
-            let totalOpexCost = 0;
-
-            for (let cost of this.task.costs) {
-                if (cost.type === 1 && cost.expenseType === 1) {
-                    totalOpexCost += this.costTotal(cost);
-                }
-            }
-            return totalOpexCost;
-        },
-        totalCapex: function() {
-            let totalCapexCost = 0;
-
-            for (let cost of this.task.costs) {
-                if (cost.type === 1 && cost.expenseType === 0) {
-                    totalCapexCost += this.costTotal(cost);
-                }
-            }
-            return totalCapexCost;
         },
         transformToString: function(value) {
             return value ? value.toString() : '';
@@ -707,10 +887,189 @@ export default {
         translateText: function(text) {
             return this.translate(text);
         },
+        initChangeStatusModal: function() {
+            this.showEditStatusModal = true;
+        },
+        changeStatus: function() {
+            let data = {
+                taskId: this.task.id,
+                data: {
+                    workPackageStatus: this.editableData.workPackageStatus.key,
+                },
+            };
+            this.editTask(data);
+            this.showEditStatusModal = false;
+        },
+        initChangeScheduleModal: function() {
+            this.showEditScheduleModal = true;
+        },
+        initAddInternalCostModal: function() {
+            this.showAddInternalCostsModal = true;
+        },
+        initAddExternalCostModal: function() {
+            this.showAddExternalCostsModal = true;
+        },
+        removeInternalCost: function(index) {
+            this.editableData.internalCosts = [
+                ...this.editableData.internalCosts.slice(0, index),
+                ...this.editableData.internalCosts.slice(index + 1),
+            ];
+        },
+        removeExternalCost: function(index) {
+            this.editableData.externalCosts = [
+                ...this.editableData.externalCosts.slice(0, index),
+                ...this.editableData.externalCosts.slice(index + 1),
+            ];
+        },
+        changeSchedule: function() {
+            let data = {
+                scheduledStartAt: this.editableData.schedule.baseStartDate,
+                scheduledFinishAt: this.editableData.schedule.baseEndDate,
+                forecastStartAt: this.editableData.schedule.forecastStartDate,
+                forecastFinishAt: this.editableData.schedule.forecastEndDate,
+                automaticSchedule: this.editableData.schedule.automatic,
+                duration: this.editableData.schedule.durationInDays,
+                dependants: this.editableData.schedule.successors.map((item) => {
+                    return item.key;
+                }),
+                dependencies: this.editableData.schedule.predecessors.map((item) => {
+                    return item.key;
+                }),
+            };
+
+            this.editTask({
+                data: data,
+                taskId: this.$route.params.taskId,
+            });
+            this.showEditScheduleModal = false;
+        },
+        addInternalCosts(value) {
+            this.showAddInternalCostsModal = false;
+
+            if (value === null) {
+                return;
+            }
+
+            let newCost = {
+                resourceName: value.resource.label,
+                resource: value.resource,
+                rate: value.daily_rate,
+                quantity: value.qty,
+                duration: value.days,
+            };
+            newCost.total = this.itemTotal(newCost);
+            this.editableData.internalCosts.push(newCost);
+        },
+        addExternalCosts(value) {
+            this.showAddExternalCostsModal = false;
+
+            if (value === null) {
+                return;
+            }
+
+            let newCost = {
+                name: value.name,
+                rate: value.rate,
+                quantity: value.qty,
+                selectedUnit: value.selectedUnit,
+                capex: 0,
+                opex: 1,
+                customUnit: value.customUnit,
+                unit: (value.unit !== 'custom') ? value.unit : null,
+            };
+            newCost.total = this.itemTotal(newCost);
+
+            this.editableData.externalCosts.push(newCost);
+        },
+        saveChangedData: function() {
+            let data = {
+                responsibility: this.editableData.assignee.key,
+                labels: [this.editableData.label.key],
+                colorStatus: this.editableData.colorStatus.id,
+                workPackageStatus: this.editableData.workPackageStatus.key,
+                duration: this.editableData.schedule.durationInDays,
+                automaticSchedule: this.editableData.schedule.automatic,
+                scheduledStartAt: moment(this.editableData.schedule.baseStartDate).format('DD-MM-YYYY'),
+                scheduledFinishAt: moment(this.editableData.schedule.baseEndDate).format('DD-MM-YYYY'),
+                forecastStartAt: moment(this.editableData.schedule.forecastStartDate).format('DD-MM-YYYY'),
+                forecastFinishAt: moment(this.editableData.schedule.forecastEndDate).format('DD-MM-YYYY'),
+                dependants: this.editableData.schedule.successors.map((item) => {
+                    return item.key;
+                }),
+                dependencies: this.editableData.schedule.predecessors.map((item) => {
+                    return item.key;
+                }),
+            };
+
+            data.costs = [];
+            for (let i = 0; i < this.editableData.internalCosts.length; i++) {
+                let cost = {
+                    resource: this.editableData.internalCosts[i].resource.key,
+                    quantity: this.editableData.internalCosts[i].quantity,
+                    duration: this.editableData.internalCosts[i].duration,
+                    rate: this.editableData.internalCosts[i].rate,
+                    type: 0,
+                };
+                data.costs.push(cost);
+            }
+
+            for (let i = 0; i < this.editableData.externalCosts.length; i++) {
+                let cost = {
+                    name: this.editableData.externalCosts[i].name,
+                    quantity: this.editableData.externalCosts[i].quantity,
+                    rate: this.editableData.externalCosts[i].rate,
+                    expenseType: this.editableData.externalCosts[i].capex ? 0 : 1,
+                    type: 1,
+                };
+                if (this.editableData.externalCosts[i].customUnit && this.editableData.externalCosts[i].customUnit.length) {
+                    cost.customUnit = this.editableData.externalCosts[i].customUnit;
+                } else {
+                    cost.unit = this.editableData.externalCosts[i].selectedUnit;
+                }
+
+                data.costs.push(cost);
+            }
+
+            data.medias = [];
+
+            for (let i = 0; i < this.editableData.medias.length; i++) {
+                if (this.editableData.medias[i] instanceof window.File) {
+                    data.medias.push(this.editableData.medias[i]);
+                }
+            }
+
+            this.editTask({
+                data: data,
+                taskId: this.$route.params.taskId,
+            });
+        },
     },
     data: function() {
         return {
             showDeleteModal: false,
+            showEditStatusModal: false,
+            showEditScheduleModal: false,
+            showAddInternalCostsModal: false,
+            showAddExternalCostsModal: false,
+            editableData: {
+                workPackageStatus: false,
+                assignee: null,
+                colorStatus: false,
+                label: null,
+                medias: [],
+                schedule: {
+                    baseStartDate: new Date(),
+                    baseEndDate: new Date(),
+                    forecastStartDate: new Date(),
+                    forecastEndDate: new Date(),
+                    automatic: false,
+                    successors: [],
+                    predecessors: [],
+                    durationInDays: 0,
+                },
+                internalCosts: [],
+                externalCosts: [],
+            },
         };
     },
 };
