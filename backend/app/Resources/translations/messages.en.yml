@@ -327,6 +327,8 @@ message:
     this_task_part_of: This task is part of
     task_completion: Task completion
     task_condition: Task condition
+    add_internal_costs: Add internal costs  
+    add_external_costs: Add external costs    
 
 menu:
     users: Users
@@ -937,6 +939,7 @@ label:
     subteam: Subteam
     subteam_roles: Subteam Roles
     schedule: Schedule
+    change_status: Change Status  
 
 button:
     delete_info: Delete Info
@@ -1018,6 +1021,8 @@ button:
     add_attachment: Add attachment
     edit_label: Edit Label
     comment: Comment
+    edit_schedule: Edit Schedule
+    save_status: Save Status  
 
 checkbox:
     checked: Yes
