@@ -45,6 +45,7 @@ class DistributionListControllerTest extends BaseController
         $responseContent['users'][0]['updatedAt'] = $distributionList['users'][0]['updatedAt'];
         $email = md5(strtolower(trim($distributionList['users'][0]['email'])));
         $responseContent['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
+        $responseContent['createdByAvatar'] = $distributionList['createdByAvatar'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -68,6 +69,7 @@ class DistributionListControllerTest extends BaseController
                     'projectName' => 'project1',
                     'createdBy' => 1,
                     'createdByFullName' => 'FirstName1 LastName1',
+                    'createdByDepartmentNames' => [],
                     'id' => 1,
                     'name' => 'distribution-list-1',
                     'sequence' => 1,
@@ -107,6 +109,7 @@ class DistributionListControllerTest extends BaseController
                     'meetings' => [],
                     'createdAt' => '2017-01-01 07:00:00',
                     'updatedAt' => null,
+                    'createdByAvatar' => '',
                 ],
             ],
         ];
@@ -375,6 +378,7 @@ class DistributionListControllerTest extends BaseController
         $responseContent['users'][0]['updatedAt'] = $distributionList['users'][0]['updatedAt'];
         $email = md5(strtolower(trim($distributionList['users'][0]['email'])));
         $responseContent['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
+        $responseContent['createdByAvatar'] = $distributionList['createdByAvatar'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -396,6 +400,7 @@ class DistributionListControllerTest extends BaseController
                     'projectName' => 'project1',
                     'createdBy' => 1,
                     'createdByFullName' => 'FirstName1 LastName1',
+                    'createdByDepartmentNames' => [],
                     'id' => 1,
                     'name' => 'distribution-list-1',
                     'sequence' => 1,
@@ -435,6 +440,7 @@ class DistributionListControllerTest extends BaseController
                     'meetings' => [],
                     'createdAt' => '2017-01-01 07:00:00',
                     'updatedAt' => null,
+                    'createdByAvatar' => [],
                 ],
             ],
         ];
