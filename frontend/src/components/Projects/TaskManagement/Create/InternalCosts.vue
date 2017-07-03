@@ -45,7 +45,7 @@
                         <span class="title">
                             {{ label.internal_cost_subtotal }} <b><i class="fa fa-dollar"></i> {{ cost.total }}</b>
                         </span>
-                    </div>
+        </div>
                     <div class="col-md-6">
                         <div class="pull-right">
                             <span v-on:click="deleteInternalCost(index);"><delete-icon /></span>
