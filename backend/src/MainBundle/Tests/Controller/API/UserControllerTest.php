@@ -38,6 +38,8 @@ class UserControllerTest extends BaseController
         if (!array_key_exists('message', $userContent)) {
             $responseContent['ownedDistributionLists'][0]['updatedAt'] = $userContent['ownedDistributionLists'][0]['updatedAt'];
             $responseContent['ownedDistributionLists'][1]['updatedAt'] = $userContent['ownedDistributionLists'][1]['updatedAt'];
+            $responseContent['ownedDistributionLists'][0]['createdByAvatar'] = $userContent['ownedDistributionLists'][0]['createdByAvatar'];
+            $responseContent['ownedDistributionLists'][1]['createdByAvatar'] = $userContent['ownedDistributionLists'][1]['createdByAvatar'];
             $responseContent['ownedDistributionLists'][0]['users'][0]['apiToken'] = $userContent['ownedDistributionLists'][0]['users'][0]['apiToken'];
             $responseContent['ownedDistributionLists'][0]['users'][0]['updatedAt'] = $userContent['ownedDistributionLists'][0]['users'][0]['updatedAt'];
             $responseContent['ownedDistributionLists'][1]['users'][0]['apiToken'] = $userContent['ownedDistributionLists'][1]['users'][0]['apiToken'];
@@ -110,6 +112,7 @@ class UserControllerTest extends BaseController
                             'projectName' => 'project1',
                             'createdBy' => 1,
                             'createdByFullName' => 'FirstName1 LastName1',
+                            'createdByDepartmentNames' => [],
                             'id' => 1,
                             'name' => 'distribution-list-1',
                             'sequence' => 1,
@@ -149,12 +152,14 @@ class UserControllerTest extends BaseController
                             'meetings' => [],
                             'createdAt' => '2017-01-01 07:00:00',
                             'updatedAt' => '2017-01-30 07:11:12',
+                            'createdByAvatar' => '',
                         ],
                         [
                             'project' => 1,
                             'projectName' => 'project1',
                             'createdBy' => 1,
                             'createdByFullName' => 'FirstName1 LastName1',
+                            'createdByDepartmentNames' => [],
                             'id' => 2,
                             'name' => 'distribution-list-2',
                             'sequence' => 1,
@@ -194,6 +199,7 @@ class UserControllerTest extends BaseController
                             'meetings' => [],
                             'createdAt' => '2017-01-01 07:00:00',
                             'updatedAt' => '2017-01-30 07:11:12',
+                            'createdByAvatar' => '',
                         ],
                     ],
                     'contracts' => [

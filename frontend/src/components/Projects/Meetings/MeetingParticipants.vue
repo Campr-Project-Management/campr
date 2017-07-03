@@ -1,0 +1,117 @@
+<template>
+    <div>
+        <div class="overflow-hidden">
+            <vue-scrollbar class="table-wrapper">
+                <div class="scroll-wrapper">
+                    <table class="table table-striped table-responsive">
+                        <thead>
+                        <tr>
+                            <th>{{ translateText('table_header_cell.team_member') }}</th>
+                            <th>{{ translateText('table_header_cell.department') }}</th>
+                            <th>{{ translateText('table_header_cell.present') }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for='participant in displayedParticipants'>
+                            <td>
+                                <div class="avatars flex flex-v-center">
+                                    <div>
+                                        <div class="avatar" v-tooltip.top-center="participant.fullName" :style="{ backgroundImage: 'url('+participant.avatar+')' }"></div>
+                                    </div>
+                                    <span>{{ participant.fullName }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span v-for="(department, index) in participant.departments">{{ department }}<span v-if="index < participant.departments.length - 1">,</span></span>
+                            </td>
+                            <td class="text-center switchers">
+                                <switches @click.native="updateIsPresent(participant)" v-model="showPresent" :selected="participant.isPresent"></switches>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </vue-scrollbar>
+        </div>
+
+        <div v-if="participants && participants.length > 0" class="flex flex-direction-reverse flex-v-center">
+            <div class="pagination flex flex-center" v-if="participants && participants.length > 0">
+                <span v-if="participantsPages > 1" v-for="page in participantsPages" v-bind:class="{'active': page == participantsActivePage}" @click="changeParticipantsPage(page)">{{ page }}</span>
+            </div>
+            <div>
+                <span class="pagination-info">{{ translateText('message.displaying') }} {{ displayedParticipants.length }} {{ translateText('message.results_out_of') }} {{ participants.length }}</span>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+import VueScrollbar from 'vue2-scrollbar';
+import Switches from '../../3rdparty/vue-switches';
+import {mapActions} from 'vuex';
+
+export default {
+    props: ['meetingParticipants', 'participants', 'participantsPerPage', 'participantsPages'],
+    components: {
+        VueScrollbar,
+        Switches,
+    },
+    watch: {
+        meetingParticipants(value) {
+            this.displayedParticipants = this.meetingParticipants;
+        },
+    },
+    methods: {
+        ...mapActions(['updateParticipantPresent']),
+        translateText: function(text) {
+            return this.translate(text);
+        },
+        changeParticipantsPage: function(page) {
+            this.participantsActivePage = page;
+            this.displayedParticipants = this.participants.slice(((page - 1) * this.participantsPerPage), page * this.participantsPerPage);
+        },
+        updateIsPresent(participant) {
+            this.updateParticipantPresent({
+                meeting: this.$route.params.meetingId,
+                user: participant.id,
+                isPresent: this.showPresent,
+            });
+        },
+    },
+    data() {
+        return {
+            participantsActivePage: 1,
+            showPresent: null,
+        };
+    },
+};
+</script>
+<style scoped lang="scss">
+    @import '../../../css/_mixins';
+    @import '../../../css/_variables';
+
+    .avatars {
+        > div {
+            height: 34px;
+            padding: 2px 0;
+            display: inline-block;
+        }
+
+        span {
+            margin-left: 10px;
+            line-height: 34px;
+        }
+    }
+
+    .avatar {
+        width: 30px;
+        height: 30px;
+        @include border-radius(50%);
+        background-size: cover;
+        display: inline-block;
+        margin-right: 5px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+</style>

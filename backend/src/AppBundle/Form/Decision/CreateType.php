@@ -88,6 +88,8 @@ class CreateType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Decision::class,
+            'allow_extra_fields' => true,
+            'csrf_protection' => false,
         ]);
     }
 }

@@ -44,6 +44,8 @@ class BaseType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => MeetingObjective::class,
+            'allow_extra_fields' => true,
+            'csrf_protection' => false,
         ]);
     }
 }
