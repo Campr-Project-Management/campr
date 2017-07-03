@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Log.
@@ -23,6 +24,8 @@ class Log
 
     /**
      * @var string
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\Column(name="class", type="string", length=255)
      */
@@ -58,6 +61,8 @@ class Log
 
     /**
      * @var User
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL")
@@ -239,5 +244,74 @@ class Log
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userFullName")
+     */
+    public function getUserFullName()
+    {
+        return $this->user->getFullName();
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userEmail")
+     */
+    public function getUserEmail()
+    {
+        return $this->user->getEmail();
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userId")
+     */
+    public function getUserId()
+    {
+        return $this->user->getId();
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userGravatar")
+     */
+    public function getUserGravatar()
+    {
+        return $this->user->getGravatar();
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("isCommentAdded")
+     */
+    public function isCommentAdded()
+    {
+        $newValueObj = $this->getNewValue();
+
+        return isset($newValueObj['comments']);
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("isResponsabilityAdded")
+     */
+    public function isResponsabilityAdded()
+    {
+        $newValueObj = $this->getNewValue();
+
+        return isset($newValueObj['responsibility']);
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("isLabelAdded")
+     */
+    public function isLabelAdded()
+    {
+        $newValueObj = $this->getNewValue();
+
+        return isset($newValueObj['label']);
     }
 }

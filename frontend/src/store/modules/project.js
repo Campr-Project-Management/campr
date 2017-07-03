@@ -582,7 +582,7 @@ const mutations = {
         state.projects = labels;
         let choiceLabel = [];
         state.projects.map(function(label) {
-            choiceLabel.push({'key': label.id, 'label': label.title});
+            choiceLabel.push({'key': label.id, 'label': label.title, 'color': label.color});
         });
         state.labelsForChoice = choiceLabel;
     },

@@ -35,14 +35,18 @@ const getters = {
 const actions = {
     getWorkPackageStatuses({commit}) {
         Vue.http
-            .get(Routing.generate('app_api_workpackage_statuses_list')).then((response) => {
-                if (response.status === 200) {
-                    let workPackageStatuses = response.data;
-                    commit(types.SET_WORK_PACKAGE_STATUSES, {workPackageStatuses});
+            .get(Routing.generate('app_api_workpackage_statuses_list'))
+            .then(
+                (response) => {
+                    if (response.status === 200) {
+                        let workPackageStatuses = response.data;
+                        commit(types.SET_WORK_PACKAGE_STATUSES, {workPackageStatuses});
+                    }
+                },
+                (response) => {
+                    //
                 }
-            }, (response) => {
-                //
-            });
+            );
     },
 };
 
