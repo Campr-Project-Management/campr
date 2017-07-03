@@ -1,5 +1,54 @@
 <template>
     <div class="project-task-management page-section">
+        <!-- /// Delete Subtask Modal /// -->
+        <modal v-if="showDeleteModal" @close="showDeleteModal = false">
+            <p class="modal-title">{{ translateText('message.delete_task') }}</p>
+            <div class="flex flex-space-between">
+                <a @click.preventDefault="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                <a @click.preventDefault="deleteSubtask(showDeleteModal)" class="btn-rounded">{{ translateText('message.yes') }}</a>
+            </div>
+        </modal>
+        <!-- /// End Delete Subtask Modal /// -->
+
+        <!-- /// Edit Status Modal /// -->
+        <modal v-if="showEditStatusModal" @close="showEditStatusModal = false">
+            <p class="modal-title">{{ translateText('title.status.edit') }}</p>
+            <select-field
+                    v-bind:title="translateText('title.status.edit')"
+                    v-bind:options="workPackageStatusesForSelect"
+                    v-bind:currentOption="editableData.workPackageStatus"
+                    v-model="editableData.workPackageStatus"/>
+            <br />
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showEditStatusModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="changeStatus()" class="btn-rounded">{{ translateText('title.status.edit') }} +</a>
+            </div>
+        </modal>
+        <!-- /// End Edit Status Modal /// -->
+
+        <!-- /// Edit Schedule Modal /// -->
+        <modal v-if="showEditScheduleModal" @close="showEditScheduleModal = false">
+            <p class="modal-title">{{ translateText('title.schedule.edit') }}</p>
+            <schedule v-model="editableData.schedule" v-bind:editSchedule="editableData.schedule" />
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showEditScheduleModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="changeSchedule()" class="btn-rounded">{{ translateText('button.edit_schedule') }} +</a>
+            </div>
+        </modal>
+        <!-- /// End Edit Schedule Modal /// -->
+        
+        <!-- /// Add internal costs Modal /// -->
+        <modal v-if="showAddInternalCostsModal" @close="showAddInternalCostsModal = false">
+            <internal-costs v-on:input="addInternalCosts" />
+        </modal>
+        <!-- /// End Add internal Cost Modal /// -->
+        
+        <!-- /// Add external costs Modal /// -->
+        <modal v-if="showAddExternalCostsModal" @close="showAddExternalCostsModal = false">
+            <external-costs v-on:input="addExternalCosts" />
+        </modal>
+        <!-- /// End Add external Cost Modal /// -->
+
         <div class="row">
             <div class="col-md-6">
 
@@ -8,87 +57,72 @@
                     <div>
                         <router-link :to="{name: 'project-task-management-list'}" class="small-link">
                             <i class="fa fa-angle-left"></i>
-                            Back to Task Management
+                            {{ translateText('message.back_to_task_management') }}
                         </router-link>
-                        <h1>Build Self-Landing Rocket Legs</h1>                     
+                        <h1>{{ task.name }}</h1>
                     </div>
 
-                    <div class="task-label" :style="'background-color:#e04fcc'">
-                        High Priority
-                    </div>              
+                    <div v-if="task.label" class="task-label" :style="'background-color:' + task.labelColor">
+                        {{ task.labelName }}
+                    </div>
                 </div>
                 <!-- /// End Task Title and Label /// -->
 
                 <!-- /// Task Status /// -->
                 <div class="task-status flex flex-v-center">
                     <div>
-                        <span class="small">Status:</span>
-                        <div class="task-status-box">In Progress</div>
-                        <a href="#open-status-edit-modal" class="simple-link small">Edit</a>
+                        <span class="small">{{ translateText('table_header_cell.status') }}:</span>
+                        <div class="task-status-box">{{ translateText(task.workPackageStatusName)}}</div>
+                        <a @click="initChangeStatusModal()" class="simple-link small">{{ translateText('message.edit') }}</a>
                     </div>
                     <div>
                         <div class="task-status-info">
-                            <b>#244</b>
-                            Created on 25.02.2017 by
-                            <div class="user-avatar"> 
-                                <img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="'Nelson Carr'"/>
-                                <b>Nelson Carr</b>
+                            <b>#{{ task.puid }}</b>
+                            {{ translateText('message.created_on') }} {{ task.createdAt | moment('DD.MM.YYYY') }} {{ translateText('message.by') }}
+                            <div class="user-avatar">
+                                <img :src="task.responsibilityAvatar" :alt="task.responsibilityFullName"/>
+                                <b>{{ task.responsibilityFullName }}</b>
                             </div>
-                            <span class="task-subtasks">&nbsp;&nbsp;|&nbsp;&nbsp; 1 of 3 Subtasks Completed</span>
+                            <span class="task-subtasks">
+                                &nbsp;&nbsp;|&nbsp;&nbsp; {{ getSubtaskSummary() }} {{ translateText('message.subtasks') }} {{ translateText('label.completed') }}
+                            </span>
                         </div>
                     </div>
                 </div>
                 <!-- /// End Task Status /// -->
 
                 <hr class="double">
-                
-                <!-- /// Task Description /// -->
-                <div class="task-description">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas luctus venenatis lorem, vel semper enim vehicula aliquet. Donec eget egestas augue. Nulla cursus purus lectus, et imperdiet nisl varius quis. Nulla eget augue sed sapien sodales ultrices. Donec et purus neque. Etiam venenatis ut nulla eget vestibulum. Maecenas a eros at erat aliquet pellentesque. Suspendisse scelerisque velit vulputate tortor rutrum, in pellentesque ante condimentum. Vivamus lacinia diam ut neque tempor dictum. Nullam nec rutrum sem, ac maximus odio.</p>
 
-                    <p><b>Lorem ipsum dolor sit amet</b>, consectetur adipiscing elit. Maecenas luctus venenatis lorem, vel semper enim vehicula aliquet. Donec eget egestas augue. Nulla cursus purus lectus, et imperdiet nisl varius quis. Nulla eget augue sed sapien sodales ultrices. Donec et purus neque. Etiam venenatis ut nulla eget vestibulum. Maecenas a eros at erat aliquet pellentesque. Suspendisse scelerisque velit vulputate tortor rutrum, in pellentesque ante condimentum. Vivamus lacinia diam ut neque tempor dictum. Nullam nec rutrum sem, ac maximus odio.</p>
-                </div>
+                <!-- /// Task Description /// -->
+                <div class="task-description" v-html="task.content"></div>
                 <!-- /// End Task Description /// -->
 
                 <hr class="double">
 
-                <!-- /// End Subtasks /// -->
-                <h3>Subtasks | 1 of 3 Completed</h3>
-                <div class="subtasks">
+                <!-- ///Subtasks /// -->
+                <h3>{{ translateText('message.subtasks') }} | {{ getSubtaskSummary() }} {{ translateText('label.completed') }}</h3>
+                <div v-for="subtask in task.children" class="subtasks">
                     <div class="subtask flex flex-space-between">
                         <div class="checkbox-input clearfix">
-                            <input id="subtask1" type="checkbox" name="" value="1" checked>
-                            <label for="subtask1">Curabitur lacinia dictum dui ac malesuada</label>
+                            <input :id="'subtask-'+subtask.puid" type="checkbox" name="" value="">
+                            <label :for="'subtask-'+subtask.puid">{{ subtask.name }}</label>
                         </div>
                         <div>
                             <div class="text-right">
-                                <button data-target="#subtask1-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                <button data-target="#subtask1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="subtask flex flex-space-between">
-                        <div class="checkbox-input clearfix">
-                            <input id="subtask2" type="checkbox" name="" value="0">
-                            <label for="subtask2">Duis euismod ipsum eu luctus varius vestibulum auctor, odio id molestie gravida</label>
-                        </div>
-                        <div>
-                            <div class="text-right">
-                                <button data-target="#subtask2-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                <button data-target="#subtask2-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="subtask flex flex-space-between">
-                        <div class="checkbox-input clearfix">
-                            <input id="subtask3" type="checkbox" name="" value="0">
-                            <label for="subtask3">Suspendisse lobortis suscipit aliquet. Aliquam lacinia, nunc a lacinia commodo, felis dui mollis erat, cursus fermentum nisl eros a libero. Maecenas tristique
-    et sapien quis faucibus.</label>
-                        </div>
-                        <div>
-                            <div class="text-right">
-                                <button data-target="#subtask3-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                <button data-target="#subtask3-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
+                                <router-link
+                                    :to="{name: 'project-task-management-edit', params: {id: task.project, taskId: subtask.id}}"
+                                    class="btn-icon">
+                                    <edit-icon fill="second-fill"></edit-icon>
+                                </router-link>
+
+                                <button
+                                    @click="showDeleteModal = subtask.id;"
+                                    data-target="#subtask1-delete-modal"
+                                    data-toggle="modal"
+                                    type="button"
+                                    class="btn-icon">
+                                    <delete-icon fill="danger-fill"></delete-icon>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -99,100 +133,93 @@
 
                 <!-- /// Task History /// -->
                 <div class="task-history">
-                    <!-- /// Task Comment /// -->
-                    <div class="comment">
-                        <div class="comment-header">
-                            <div class="user-avatar"> 
-                                <img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="'Nelson Carr'"/>
-                                <b>Nelson Carr</b>
-                            </div>
-                            <a href="#link-to-member-page" class="simple-link">@nelson.c</a>
-                            assigned task to 
-                            <a href="#link-to-member-page" class="simple-link">@sandy.fc</a>
-                            2 hours ago
-                        </div>    
-                    </div>
-                    <!-- /// End Task Comment /// -->
+                    <div v-for="item in taskHistory">
 
-                    <hr class="double">
-
-                    <!-- /// Task Comment /// -->
-                    <div class="comment">
-                        <div class="comment-header">
-                            <div class="user-avatar"> 
-                                <img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="'Nelson Carr'"/>
-                                <b>Nelson Carr</b>
+                        <!-- /// Task assignement /// -->
+                        <div v-if="item.isResponsabilityAdded" class="comment">
+                            <div class="comment-header">
+                                <div class="user-avatar">
+                                    <img :src="item.userGravatar" :alt="item.userFullName"/>
+                                    <b>{{item.userFullName}}</b>
+                                </div>
+                                <a href="#link-to-member-page" class="simple-link">{{ item.userEmail }}</a>
+                                    {{ translateText('message.assigned_to') }}
+                                <a href="#link-to-member-page" class="simple-link">@sandy.fc</a>
+                                {{ getHumanTimeDiff(item.createdAt) }}
                             </div>
-                            <a href="#link-to-member-page" class="simple-link">@nelson.c</a>
-                            commented 3 days ago | edited 4 hours ago
-                            <button data-target="#comment-1-edit" class="simple-link edit-comment" data-toggle="modal" type="button">edit</button>
                         </div>
-                        <div class="comment-body">
-                            <p>Morbi lectus massa, sollicitudin quis luctus non, pulvinar sed nibh. Suspendisse id dui a sem tempus pretium. Nunc a ornare lacus. Fusce eleifend enim id euismod scelerisque. Maecenas eu consequat ligula, id mollis mauris. Mauris ac mauris sed lorem vulputate bibendum id ut orci. Maecenas lacinia eget ipsum vitae tincidunt.</p>
-                            <ul>
-                                <li>Morbi at diam congue ante auctor tincidunt</li>
-                                <li>Pellentesque arcu odio</li>
-                                <li>Fusce malesuada magna et tincidunt vulputate</li>
-                            </ul>
-                        </div>  
-                    </div>
-                    <!-- /// End Task Comment /// -->
+                        <!-- /// End Task Assignement /// -->
 
-                    <hr class="double">
-
-                    <!-- /// Task Comment /// -->
-                    <div class="comment">
-                        <div class="comment-header">
-                            <div class="user-avatar"> 
-                                <img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="'Nelson Carr'"/>
-                                <b>Nelson Carr</b>
+                        <!-- /// Task Comment /// -->
+                        <div v-else-if="item.isCommentAdded" class="comment">
+                            <div class="comment-header">
+                                <div class="user-avatar">
+                                    <img :src="item.userGravatar" :alt="item.userFullName"/>
+                                    <b>{{item.userFullName}}</b>
+                                </div>
+                                <a href="#link-to-member-page" class="simple-link">{{ item.userEmail }}</a>
+                                {{ translateText('message.has_commented_task') }} {{ getHumanTimeDiff(item.createdAt) }} | edited 4 hours ago
+                                <button data-target="#comment-1-edit" class="simple-link edit-comment" data-toggle="modal" type="button">edit</button>
                             </div>
-                            <a href="#link-to-member-page" class="simple-link">@nelson.c</a>
-                            added
-                            <div class="task-label" :style="'background-color:#e04fcc'">
-                                High Priority
-                            </div>                                                        
-                            2 hours ago
-                        </div> 
-                    </div>
-                    <!-- /// End Task Comment /// -->
-                    
-                    <hr class="double">
-
-                    <!-- /// Task Comment /// -->
-                    <div class="comment">
-                        <div class="comment-header">
-                            <div class="user-avatar"> 
-                                <img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="'Nelson Carr'"/>
-                                <b>Nelson Carr</b>
+                            <div class="comment-body">
+                                <p>Morbi lectus massa, sollicitudin quis luctus non, pulvinar sed nibh. Suspendisse id dui a sem tempus pretium. Nunc a ornare lacus. Fusce eleifend enim id euismod scelerisque. Maecenas eu consequat ligula, id mollis mauris. Mauris ac mauris sed lorem vulputate bibendum id ut orci. Maecenas lacinia eget ipsum vitae tincidunt.</p>
+                                <ul>
+                                    <li>Morbi at diam congue ante auctor tincidunt</li>
+                                    <li>Pellentesque arcu odio</li>
+                                    <li>Fusce malesuada magna et tincidunt vulputate</li>
+                                </ul>
                             </div>
-                            <a href="#link-to-member-page" class="simple-link">@nelson.c</a>
-                            commented 35 min ago
                         </div>
-                        <div class="comment-body">
-                            <p><a href="#link-to-member-page" class="simple-link">@sandy.fc</a> here is the image you asked for</p>
-                            <img src="http://www.spacex.com/sites/spacex/files/landingleg_0.jpg" alt="Landing Leg">
-                        </div> 
+                        <!-- /// End Task Comment /// -->
+
+                        <!-- /// Task Label added /// -->
+                        <div v-else-if="item.isLabelAdded" class="comment">
+                            <div class="comment-header">
+                                <div class="user-avatar">
+                                    <img :src="item.userGravatar" :alt="item.userFullName"/>
+                                    <b>{{item.userFullName}}</b>
+                                </div>
+                                <a href="#link-to-member-page" class="simple-link">{{ item.userEmail }}</a>
+                                added
+                                <div class="task-label" :style="'background-color:#e04fcc'">
+                                    High Priority
+                                </div>
+                                {{ getHumanTimeDiff(item.createdAt) }}
+                            </div>
+                        </div>
+                        <!-- /// End Task Label Added /// -->
+
+                        <!-- /// Task Edited /// -->
+                        <div v-else class="comment">
+                            <div class="comment-header">
+                                <div class="user-avatar">
+                                    <img :src="item.userGravatar" :alt="item.userFullName"/>
+                                    <b>{{item.userFullName}}</b>
+                                </div>
+                                <a href="#link-to-member-page" class="simple-link">{{ item.userEmail }}</a>
+                                {{ translateText('message.has_edited_task') }} {{ getHumanTimeDiff(item.createdAt) }}
+                            </div>
+                        </div>
+                        <!-- /// End Task Edited /// -->
+
+                        <hr class="double">
                     </div>
-                    <!-- /// End Task Comment /// -->
-                </div>
+                </div>    
                 <!-- /// End Task History /// -->
-
-                <hr class="double">
 
                 <!-- /// New Task Description /// -->
                 <div class="new-comment">
-                    <div class="user-avatar"> 
-                        <img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="'Nelson Carr'"/>
+                    <div class="user-avatar">
+                        <img :src="task.responsibilityAvatar" :alt="responsibilityFullName"/>
                     </div>
                     <div class="new-comment-body">
                         <div class="vueditor-holder">
-                            <div class="vueditor-header">New Comment</div>
-                            <Vueditor></Vueditor>
+                            <div class="vueditor-header">{{ translateText('message.new_comment') }}</div>
+                            <Vueditor ref="newCommentBody" />
                         </div>
                         <div class="footer-buttons">
-                            <a href="javascript:void(0)" class="btn-rounded btn-auto">Comment</a>
-                            <router-link to="" class="btn-rounded btn-auto danger-bg">{{ message.close_task }}</router-link>
+                            <a href="javascript:void(0)" class="btn-rounded btn-auto" @click="createNewComment()" >{{ translateText('button.comment') }}</a>
+                            <router-link to="" v-if="isStarted" class="btn-rounded btn-auto danger-bg">{{ translateText('message.close_task') }}</router-link>
                         </div>
                     </div>
                 </div>
@@ -202,130 +229,190 @@
             <div class="col-md-6">
                 <!-- /// Header Buttons /// -->
                 <div class="header-buttons">
-                    <router-link to="" class="btn-rounded btn-auto second-bg">Start Task</router-link>
-                    <a href="javascript:void(0)" class="btn-rounded btn-auto">{{ message.edit_task }}</a>
+                    <router-link
+                        to=""
+                        v-if="isClosed"
+                        class="btn-rounded btn-auto second-bg">
+                        {{ translateText('button.start_task') }}
+                    </router-link>
+                    <router-link
+                        :to="{name: 'project-task-management-edit', params: {id: task.project, taskId: task.id}}"
+                        class="btn-rounded btn-auto">
+                        {{ translateText('message.edit_task') }}
+                    </router-link>
                     <!-- If task has not yet started, don't show the Close button and vice-versa -->
-                    <router-link to="" class="btn-rounded btn-auto danger-bg">{{ message.close_task }}</router-link>
-                    <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">New Task</router-link>
+                    <router-link
+                        to=""
+                        v-if="isStarted"
+                        class="btn-rounded btn-auto danger-bg">
+                            {{ translateText('message.close_task') }}
+                    </router-link>
+                    <router-link
+                        :to="{name: 'project-task-management-create'}"
+                        class="btn-rounded btn-auto second-bg">
+                        {{ translateText('button.new_task') }}
+                    </router-link>
                 </div>
                 <!-- /// End Header Buttons /// -->
 
                 <!-- /// Task Sidebar /// -->
                 <div class="task-sidebar">
                     <!-- /// Phase & Milestone /// -->
-                    <h3>Planning</h3>
+                    <h3>{{ translateText('message.planning') }}</h3>
                     <div class="flex flex-space-between flex-v-center margintop20">
-                        <div>This task is part of <a href="#path-to-phase" class="simple-link">Phase 2</a> > <a href="#path-to-milestone" class="simple-link">Milestone 2.2</a></div>
-                        <button data-target="#edit-planning-module" data-toggle="modal" class="btn-rounded btn-md btn-empty btn-auto" type="button">Edit Phase/Milestone</button>
+                        <div>
+                            {{ translateText('message.this_task_part_of') }}
+                            <router-link
+                                :to="{name: 'project-phases-view-phase', params: {phaseId: task.phase}}"
+                                class="simple-link">
+                                {{ task.phaseName }}
+                            </router-link>
+                            <router-link
+                                :to="{name: 'project-phases-view-milestone', params: {milestoneId: task.milestone}}"
+                                class="simple-link">
+                                {{ task.milestoneName }}
+                            </router-link>
+                        </div>
+                        <div>
+                            <router-link
+                                :to="{name: 'project-phases-edit-phase', params: {phaseId: task.phase}}"
+                                class="btn-rounded btn-md btn-empty btn-auto">
+                                {{ translateText('message.edit_phase') }}
+                            </router-link>
+                            <router-link
+                                :to="{name: 'project-milestones-edit-milestone', params: {milestoneId: task.milestone}}"
+                                class="btn-rounded btn-md btn-empty btn-auto">
+                                {{ translateText('message.edit_milestone') }}
+                            </router-link>
+                        </div>
                     </div>
                     <!-- /// End Phase & Milestone /// -->
 
                     <hr class="double">
-                    
+
                     <!-- /// Task Schedule /// -->
-                    <h3>Task Schedule</h3>
+                    <h3>{{ translateText('message.task_schedule') }}</h3>
                     <vue-scrollbar class="table-wrapper">
                         <table class="table table-small">
                             <thead>
                                 <tr>
-                                    <th>Schedule</th>
-                                    <th>Start</th>
-                                    <th>Finish</th>
-                                    <th>Duration</th>
+                                    <th>{{ translateText('table_header_cell.schedule') }}</th>
+                                    <th>{{ translateText('table_header_cell.start') }}</th>
+                                    <th>{{ translateText('table_header_cell.finish') }}</th>
+                                    <th>{{ translateText('table_header_cell.duration') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Base</td>
-                                    <td>24.01.2017</td>
-                                    <td>26.01.2017</td>
-                                    <td>2</td>
+                                    <td>{{ translateText('label.base') }}</td>
+                                    <td v-if="task.scheduledStartAt">{{ task.scheduledStartAt|moment('DD.MM.YYYY') }}</td>
+                                    <td v-else>-</td>
+
+                                    <td v-if="task.scheduledFinishAt">{{ task.scheduledFinishAt|moment('DD.MM.YYYY') }}</td>
+                                    <td v-else>-</td>
+
+                                    <td>
+                                        {{ getDuration(task.scheduledStartAt, task.scheduledFinishAt) }}
+                                    </td>
                                 </tr>
                                 <tr class="column-warning">
-                                    <td>Forecast</td>
-                                    <td>24.01.2017</td>
-                                    <td>27.01.2017</td>
-                                    <td>3</td>
+                                    <td>{{ translateText('label.forecast') }}</td>
+                                    <td v-if="task.forecastStartAt">{{ task.forecastStartAt|moment('DD.MM.YYYY') }}</td>
+                                    <td v-else>-</td>
+
+                                    <td v-if="task.forecastFinishAt">{{ task.forecastFinishAt|moment('DD.MM.YYYY') }}</td>
+                                    <td v-else>-</td>
+
+                                    <td>
+                                        {{ getDuration(task.forecastStartAt, task.forecastFinishAt) }}
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>Actual</td>
-                                    <td>24.01.2017</td>
-                                    <td>-</td>
-                                    <td>-</td>
+                                    <td>{{ translateText('label.actual') }}</td>
+                                    <td v-if="task.actualStartAt" >{{ task.actualStartAt|moment('DD.MM.YYYY') }}</td>
+                                    <td v-else>-</td>
+
+                                    <td v-if="task.actualFinishAt">{{ task.actualFinishAt|moment('DD.MM.YYYY') }}</td>
+                                    <td v-else>-</td>
+
+                                    <td>
+                                        {{ getDuration(task.actualStartAt, task.actualFinishAt) }}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </vue-scrollbar>
+                    <div v-for="dependancy in task.dependencies" class="flex flex-space-between flex-v-center margintop20">
+                        {{ translateText('subtitle.task_precedesor') }}:
+                        <router-link
+                            :to="{name: 'project-task-management-view', params: { id: task.project, taskId: task.id }}"
+                            class="simple-link">
+                            {{ dependancy.name }}
+                        </router-link>
+                    </div>
                     <div class="flex flex-space-between flex-v-center margintop20">
-                        <div>Task Predecessor: <a href="#path-to-predecessor-task" class="simple-link">Self Landing System</a></div>
-                        <button data-target="#edit-schedule-module" data-toggle="modal" class="btn-rounded btn-md btn-empty btn-auto" type="button">Edit Schedule</button>
+                        <div></div>      
+                        <button
+                            @click="initChangeScheduleModal()"
+                            data-target="#edit-schedule-module"
+                            data-toggle="modal"
+                            class="btn-rounded btn-md btn-empty btn-auto"
+                            type="button">
+                            {{ translateText('button.edit_schedule') }}
+                        </button>
                     </div>
                     <!-- /// Task End Schedule /// -->
 
                     <hr class="double">
 
                     <!-- /// Task Internal Costs /// -->
-                    <h3>Internal Costs</h3>
+                    <h3>{{ translateText('message.internal_costs') }}</h3>
                     <vue-scrollbar class="table-wrapper">
                         <table class="table table-small">
                             <thead>
                                 <tr>
-                                    <th>Resource</th>
-                                    <th>Daily Rate</th>
-                                    <th>Qty.</th>
-                                    <th>Days</th>
-                                    <th>Total</th>
-                                    <th>Actions</th>
+                                    <th>{{ translateText('table_header_cell.resource') }}</th>
+                                    <th>{{ translateText('label.daily_rate') }}</th>
+                                    <th>{{ translateText('label.qty') }}</th>
+                                    <th>{{ translateText('label.days') }}</th>
+                                    <th>{{ translateText('message.total') }}</th>
+                                    <th>{{ translateText('placeholder.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Logistics</td>
-                                    <td>$ 25</td>
-                                    <td>2</td>
-                                    <td>2</td>
-                                    <td><b>$ 100</b></td>
+                                <tr v-for="(item, index) in editableData.internalCosts">
+                                    <td>{{item.resourceName}}</td>
+                                    <td>{{item.rate}}</td>
+                                    <td>{{item.quantity}}</td>
+                                    <td>{{item.duration}}</td>
+                                    <td><b><i class="fa fa-dollar"></i> {{item.total}}</b></td>
                                     <td>
                                         <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                        <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
+                                        <button 
+                                            data-target="#logistics-delete-modal" 
+                                            @click="removeInternalCost(index)"     
+                                            data-toggle="modal"
+                                            type="button"
+                                            class="btn-icon">
+                                            <delete-icon fill="danger-fill"></delete-icon>
+                                        </button>
                                     </td>
                                 </tr>
+                               
                                 <tr>
-                                    <td>Procurement</td>
-                                    <td>$ 40</td>
-                                    <td>3</td>
-                                    <td>3</td>
-                                    <td><b>$ 360</b></td>
-                                    <td>
-                                        <button data-target="#procurement-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                        <button data-target="#procurement-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Quality Assurance</td>
-                                    <td>$ 30</td>
-                                    <td>1</td>
-                                    <td>3</td>
-                                    <td><b>$ 90</b></td>
-                                    <td>
-                                        <button data-target="#qa-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                        <button data-target="#qa-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4" class="text-right"><b>Base Total</b></td>
-                                    <td colspan="2"><b>$ 540</b></td>
+                                    <td colspan="4" class="text-right"><b>{{ translateText('label.internal_costs_total') }}</b></td>
+                                    <td colspan="2"><b><i class="fa fa-dollar"></i>  {{ internalBaseTotal }}</b></td>
                                 </tr>
                                 <tr class="column-warning">
-                                    <td colspan="4" class="text-right"><b>Forecast</b></td>
-                                    <td><b>$ 600</b></td>
+                                    <td colspan="4" class="text-right"><b>{{ translateText('label.forecast_total') }}</b></td>
+                                    <td><b><i class="fa fa-dollar"></i> {{task.internalForecastCost}}</b></td>
                                     <td>
                                         <button data-target="#internal-costs-forecast-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4" class="text-right"><b>Actual</b></td>
-                                    <td><b>$ 220</b></td>
+                                    <td colspan="4" class="text-right"><b>{{ translateText('label.actual_total') }}</b></td>
+                                    <td><b><i class="fa fa-dollar"></i> {{task.internalActualCost}}</b></td>
                                     <td>
                                         <button data-target="#internal-costs-actual-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
@@ -335,86 +422,76 @@
                     </vue-scrollbar>
                     <div class="flex flex-space-between flex-v-center margintop20">
                         <div></div>
-                        <button data-target="#edit-schedule-module" data-toggle="modal" class="btn-rounded btn-md btn-empty btn-auto" type="button">Add Internal Cost +</button>
+                        <button
+                            @click="initAddInternalCostModal()"
+                            data-target="#internal-costs-add-modal"
+                            data-toggle="modal"
+                            class="btn-rounded btn-md btn-empty btn-auto"
+                            type="button">
+                            Add Internal Cost +
+                        </button>
                     </div>
                     <!-- /// Task Internal Costs /// -->
 
                     <hr class="double">
 
-                    <!-- /// Task Internal Costs /// -->
-                    <h3>Exernal Costs</h3>
+                    <!-- /// Task External Costs /// -->
+                    <h3>{{ translateText('message.external_costs') }}</h3>
                     <vue-scrollbar class="table-wrapper">
                         <table class="table table-small">
                             <thead>
                                 <tr>
-                                    <th>Description</th>
-                                    <th>Qty.</th>
-                                    <th>Unit</th>
-                                    <th>Unit Rate</th>
-                                    <th>CAPEX</th>
-                                    <th>Total</th>
-                                    <th>Actions</th>
+                                    <th>{{ translateText('placeholder.description') }}</th>
+                                    <th>{{ translateText('label.qty') }}</th>
+                                    <th>{{ translateText('table_header_cell.unit') }}</th>
+                                    <th>{{ translateText('label.external_cost_unit_rate') }}</th>
+                                    <th>{{ translateText('message.capex') }}</th>
+                                    <th>{{ translateText('message.total') }}</th>
+                                    <th>{{ translateText('placeholder.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Carbon Fiber</td>
-                                    <td>200</td>
-                                    <td>kg</td>
-                                    <td>$ 1200</td>
-                                    <td><switches v-model="test" :selected="true"></switches></td>
-                                    <td><b>$ 240.000</b></td>
+                                <tr v-for="(cost, index) in editableData.externalCosts">
+                                    <td>{{cost.name}}</td>
+                                    <td>{{cost.quantity}}</td>
+                                    <td>{{cost.selectedUnit}}</td>
+                                    <td><i class="fa fa-dollar"></i> {{cost.rate}}</td>
+                                    <td><switches v-model="cost.expenseType" v-bind:selected="cost.expenseType"></switches></td>
+                                    <td><b><b><i class="fa fa-dollar"></i> {{itemTotal(cost)}}</b></b></td>
                                     <td>
                                         <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill" ></edit-icon></button>
-                                        <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
+                                        <button 
+                                            data-target="#logistics-delete-modal"
+                                            data-toggle="modal"
+                                            @click="removeExternalCost(index)"
+                                            type="button" 
+                                            class="btn-icon">
+                                            <delete-icon fill="danger-fill"></delete-icon>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Aluminium Honeycomb</td>
-                                    <td>2000</td>
-                                    <td>kg</td>
-                                    <td>$ 800</td>
-                                    <td><switches v-model="test" :selected="true"></switches></td>
-                                    <td><b>$ 1.600.000</b></td>
-                                    <td>
-                                        <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                        <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                    </td>
+                                    <td colspan="5" class="text-right">{{ translateText('message.capex_subtotal') }}</b></td>
+                                    <td colspan="2"><i class="fa fa-dollar"></i> {{totalCapex}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Steel</td>
-                                    <td>5</td>
-                                    <td>Ton</td>
-                                    <td>$ 10.000</td>
-                                    <td><switches v-model="test" :selected="false"></switches></td>
-                                    <td><b>$ 50.000</b></td>
-                                    <td>
-                                        <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                        <button data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                    </td>
+                                    <td colspan="5" class="text-right">{{ translateText('message.opex_subtotal') }}</b></td>
+                                    <td colspan="2"><i class="fa fa-dollar"></i> {{totalOpex}}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5" class="text-right">CAPEX Subtotal</b></td>
-                                    <td colspan="2">$ 1.840.000</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="5" class="text-right">OPEX Subtotal</b></td>
-                                    <td colspan="2">$ 50.000</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="5" class="text-right"><b>Base Total</b></td>
-                                    <td colspan="2"><b>$ 1.890.000</b></td>
+                                    <td colspan="5" class="text-right"><b>{{ translateText('label.external_cost_total') }}</b></td>
+                                    <td colspan="2"><b> <i class="fa fa-dollar"></i> {{ externalBaseTotal }}</b></td>
                                 </tr>
                                 <tr class="column-warning">
-                                    <td colspan="5" class="text-right"><b>Forecast</b></td>
-                                    <td><b>$ 1.700.000</b></td>
+                                    <td colspan="5" class="text-right"><b>{{ translateText('label.forecast_total') }}</b></td>
+                                    <td><b><i class="fa fa-dollar"></i> {{task.externalForecastCost}}</b></td>
                                     <td>
                                         <button data-target="#internal-costs-forecast-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
                                 </tr>
                                 <tr class="column-alert">
-                                    <td colspan="5" class="text-right"><b>Actual</b></td>
-                                    <td><b>$ 2.250.000</b></td>
+                                    <td colspan="5" class="text-right"><b>{{ translateText('label.actual_total') }}</b></td>
+                                    <td><b><i class="fa fa-dollar"></i> {{task.externalActualCost}}</b></td>
                                     <td>
                                         <button data-target="#internal-costs-actual-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
@@ -424,118 +501,110 @@
                     </vue-scrollbar>
                     <div class="flex flex-space-between flex-v-center margintop20">
                         <div></div>
-                        <button data-target="#edit-schedule-module" data-toggle="modal" class="btn-rounded btn-md btn-empty btn-auto">Add External Cost +</button>
+                        <button
+                            @click="initAddExternalCostModal()"
+                            data-target="#external-costs-add-modal"
+                            data-toggle="modal"
+                            class="btn-rounded btn-md btn-empty btn-auto"
+                            type="button">
+                            Add External Cost +
+                        </button>
                     </div>
                     <!-- /// Task Internal Costs /// -->
 
                     <hr class="double">
 
                     <!-- /// Task Assignee /// -->
-                    <h3>Asignee</h3>
+                    <h3>{{ translateText('message.asignee')}}</h3>
                     <div class="row">
                         <div class="col-md-8">
-                            <div class="user-avatar flex flex-v-center"> 
-                                <div><img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="'Nelson Carr'"/></div>
+                            <div class="user-avatar flex flex-v-center">
+                                <div><img :src="task.responsibilityAvatar" :alt="task.responsibilityFullName"/></div>
                                 <div>
-                                    <b>Nelson Carr</b><br/>
-                                    <a href="#path-to-member-page" class="simple-link">@nelson.c</a>
+                                    <b>{{task.responsibilityFullName}}</b><br/>
+                                    <a href="#path-to-member-page" class="simple-link">{{task.responsibilityEmail}}</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <select-field v-bind:title="'Change Assignee'"></select-field>    
+                            <select-field
+                                v-bind:title="'Change Assignee'"
+                                v-bind:options="assigneesForSelect"
+                                v-model="editableData.assignee"
+                                v-bind:currentOption="editableData.assignee" />
                         </div>
                     </div>
                     <!-- /// End Task Assignee /// -->
 
                     <hr class="double">
 
-                    <!-- /// Task Assignee /// -->
-                    <h3>Status</h3>
+                    <!-- /// Task Completion /// -->
+                    <h3>{{ translateText('message.status') }}</h3>
                     <div class="row">
                         <div class="col-md-12">
                             <range-slider
-                            v-bind:title="'Task Completion'"
-                            min="0"
-                            max="100"
-                            minSuffix=" %"
-                            type="single"
-                            v-model="projectCompletion"
-                            v-bind:value="projectCompletion" />
+                                v-bind:title="translateText('message.task_completion')"
+                                min="0"
+                                max="100"
+                                minSuffix=" %"
+                                type="single"
+                                v-bind:value="transformToString(task.progress)" />
                         </div>
-                        <div class="col-md-8">
-                            <h4>In Progress</h4>
+                         <div class="col-md-8">
+                            <h4>{{translateText(task.workPackageStatusName)}}</h4>
                         </div>
                         <div class="col-md-4">
-                            <select-field v-bind:title="'Change Status'"></select-field>    
+                            <select-field
+                                v-bind:title="translateText('message.change_status')"
+                                v-bind:options="workPackageStatusesForSelect"
+                                v-model="editableData.workPackageStatus"
+                                v-bind:currentOption="editableData.workPackageStatus" />
                         </div>
                     </div>
-                    <!-- /// End Task Assignee /// -->
+                    <!-- /// End Task Completion /// -->
 
                     <hr class="double">
-
+                    
                     <!-- /// Task Condition /// -->
-                    <h3>Task Condition</h3>
-                    <!-- Original vue syntax: <p v-for="status in colorStatuses"><span v-bind:style="{ color: status.color }">{{ status.name }}</span> Add condition description here</p>-->
-                    <p>
-                        <b class="caps second-color">Green:</b> Quisque maximus quam id nunc congue ultricies. Aliquam quis quam lectus. Suspendisse porta ipsum non 	justo gravida, commodo rhoncus dolor congue.
-                    </p>
-                    <p>
-                        <b class="caps warning-color">Yellow:</b> Aliquam ullamcorper sapien sed leo tincidunt hendrerit.
-                    </p>
-                    <p>
-                        <b class="caps danger-color">Red:</b> Etiam a tellus non purus dignissim molestie ac in nulla. Vestibulum orci nisi, venenatis a sagittis eget, molestie 	quis orci. Morbi fermentum ut metus id porttitor.
-                    </p>
-                    <div class="flex flex-space-between flex-v-center margintop20">
-                        <div class="status-boxes flex flex-v-center">
-                            <!-- Original vue syntax: <div v-for="status in colorStatuses" v-bind:style="{ background: status.color }" class="status-box"></div>-->
-                            <div class="status-box" style="background-color:#5FC3A5"></div>
-                            <div class="status-box" style=""></div>
-                            <div class="status-box" style=""></div>
-                        </div>
-                        <button data-target="#ajax-save-status" class="btn-rounded btn-md btn-empty btn-auto btn-disabled" type="button">Save Status</button>
-                    </div>
+                    <condition v-model="editableData.colorStatus" v-bind:selectedStatusColor="editableData.colorStatus" />
+
                     <!-- /// End Task Condition /// -->
 
                     <hr class="double">
 
                     <!-- /// Task Attachmets /// -->
-                    <h3>2 Attachments</h3>
-                    <div class="flex flex-space-between margintop20">
-                        <div>
-                            <div><a href="#path-to-download-file" class="simple-link">self-landing-leg-materials-required.xls</a></div>
-                            <div><a href="#path-to-download-file" class="simple-link">leg-mockup.sketch</a></div>
-                        </div>
-                        <button class="btn-rounded btn-md btn-empty btn-auto flex" type="button">
-                            <span>Attach a file</span>
-                            <attach-icon></attach-icon>
-                        </button>
-                    </div>
+                    
+                    <attachments v-on:input="setMedias" v-bind:editMedias="editableData.medias" />
                     <!-- /// End Task Attachments /// -->
-
                     <hr class="double">
 
                     <!-- /// Task Labels /// -->
-                    <h3>Labels</h3>
+                    <h3>{{ translateText('label.labels') }}</h3>
                     <div class="row">
                         <div class="col-md-8">
                             <div class="task-label-holder flex flex-v-center">
-                                <div class="task-label" :style="'background-color:#e04fcc'">
-                                    High Priority
+                                <div  v-if="editableData.label">
+                                    <div class="task-label" :style="'background-color:' + editableData.label.color">
+                                        {{editableData.label.label}}
+                                    </div>
+                                    <button class="btn-icon btn-remove" type="button">
+                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10">
+                                            <path d="M9.9,9.3L5.6,5l4.3-4.3c0.2-0.2,0.2-0.4,0-0.6C9.7,0,9.5,0,9.3,0.1L5,4.4L0.7,0.1C0.5,0,0.3,0,0.1,0.1
+                                            C0,0.3,0,0.5,0.1,0.7L4.4,5L0.1,9.3C0,9.5,0,9.7,0.1,9.9c0.2,0.2,0.4,0.2,0.6,0L5,5.6l4.3,4.3c0.2,0.2,0.4,0.2,0.6,0
+                                            C10,9.7,10,9.5,9.9,9.3z"/>
+                                        </svg>
+                                    </button>
                                 </div>
-                                <button class="btn-icon btn-remove" type="button">
-                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10">
-                                        <path d="M9.9,9.3L5.6,5l4.3-4.3c0.2-0.2,0.2-0.4,0-0.6C9.7,0,9.5,0,9.3,0.1L5,4.4L0.7,0.1C0.5,0,0.3,0,0.1,0.1
-                                        C0,0.3,0,0.5,0.1,0.7L4.4,5L0.1,9.3C0,9.5,0,9.7,0.1,9.9c0.2,0.2,0.4,0.2,0.6,0L5,5.6l4.3,4.3c0.2,0.2,0.4,0.2,0.6,0
-                                        C10,9.7,10,9.5,9.9,9.3z"/>
-                                    </svg>
-                                </button> 
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <select-field v-bind:title="'Add Label'"></select-field>
+                            <select-field
+                                v-bind:title="'Add Label'"
+                                v-bind:options="labelsForSelect"
+                                v-model="editableData.label"
+                                v-bind:currentOption="editableData.label" />
                         </div>
-                    </div>                        
+                    </div>
                     <!-- /// End Labels /// -->
 
                     <hr class="double">
@@ -545,27 +614,21 @@
                     <div class="row">
                         <div class="col-md-8">
                             <div class="flex flex-v-center">
-                                <div class="user-avatar" v-tooltip.bottom-center="'Nelson Carr'"> 
-                                    <img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="'Nelson Carr'"/>
-                                </div>
-                                <div class="user-avatar" v-tooltip.bottom-center="'Nelson Carr'"> 
-                                    <img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="'Nelson Carr'"/>
-                                </div>
-                                <div class="user-avatar" v-tooltip.bottom-center="'Nelson Carr'"> 
-                                    <img src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="'Nelson Carr'"/>
+                                <div class="user-avatar" v-tooltip.bottom-center="task.responsibilityFullName">
+                                    <img :src="task.responsibilityAvatar" :alt="task.responsibilityFullName"/>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <select-field v-bind:title="'Invite Members'"></select-field>
                         </div>
-                    </div>                        
+                    </div>
                     <!-- /// End Participants /// -->
 
                     <hr class="double">
 
                     <div class="footer-buttons">
-                        <a href="javascript:void(0)" class="btn-rounded btn-auto second-bg">Save Changes</a>
+                        <a href="javascript:void(0)" @click="saveChangedData" class="btn-rounded btn-auto second-bg">Save Changes</a>
                         <a href="javascript:void(0)" class="btn-rounded btn-auto btn-empty">Export Task</a>
                     </div>
                 </div>
@@ -576,32 +639,436 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex';
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import AttachIcon from '../../_common/_icons/AttachIcon';
+import Schedule from './Create/Schedule';
+import InternalCosts from './View/InternalCosts';
+import ExternalCosts from './View/ExternalCosts';
+import Attachments from './Create/Attachments';
 import Switches from '../../3rdparty/vue-switches';
 import VueScrollbar from 'vue2-scrollbar';
 import SelectField from '../../_common/_form-components/SelectField';
 import RangeSlider from '../../_common/_form-components/RangeSlider';
+import Modal from '../../_common/Modal';
+import router from '../../../router';
+import Condition from './Create/Condition';
+import moment from 'moment';
 
 export default {
     components: {
         EditIcon,
         DeleteIcon,
         AttachIcon,
+        Schedule,
+        InternalCosts,
+        ExternalCosts,
+        Attachments,
         Switches,
         VueScrollbar,
         SelectField,
         RangeSlider,
+        Modal,
+        router,
+        Condition,
+        moment,
+    },
+    created() {
+        if (this.$route.params.taskId) {
+            this.getTaskById(this.$route.params.taskId);
+            this.getTaskHistory(this.$route.params.taskId);
+        }
+        this.getColorStatuses();
+        this.getProjectUsers({id: this.$route.params.id});
+        this.getWorkPackageStatuses();
+        this.getProjectLabels(this.$route.params.id);
+    },
+    computed: {
+        ...mapGetters({
+            task: 'currentTask',
+            taskHistory: 'taskHistory',
+            colorStatuses: 'colorStatuses',
+            colorStatusesForSelect: 'colorStatusesForSelect',
+            assigneesForSelect: 'projectUsersForSelect',
+            workPackageStatusesForSelect: 'workPackageStatusesForSelect',
+            labelsForSelect: 'labelsForChoice',
+        }),
+        isClosed: function() {
+            return this.task.workPackageStatus === 5;
+        },
+        isStarted: function() {
+            this.task.workPackageStatus === 3;
+        },
+        internalBaseTotal: function() {
+            return this.editableData.internalCosts.reduce((prev, next) => {
+                return prev + next.total;
+            }, 0);
+        },
+        externalBaseTotal: function() {
+            return this.editableData.externalCosts.reduce((prev, next) => {
+                return prev + next.total;
+            }, 0);
+        },
+        totalOpex: function() {
+            let totalOpexCost = 0;
+            // remove and replace with coputed prop
+            for (let cost of this.editableData.externalCosts) {
+                if (cost.opex === 1) {
+                    totalOpexCost += cost.total;
+                }
+            }
+            return totalOpexCost;
+        },
+        totalCapex: function() {
+            let totalCapexCost = 0;
+
+            for (let cost of this.editableData.externalCosts) {
+                if (cost.capex === 1) {
+                    totalCapexCost += cost.total;
+                }
+            }
+            return totalCapexCost;
+        },
+    },
+    watch: {
+        task(value) {
+            this.editableData.colorStatus = this.task.colorStatus
+                ? {id: this.task.colorStatus, name: this.task.colorStatusName}
+                : null
+            ;
+            this.editableData.workPackageStatus = this.task.workPackageStatus
+                ? {key: this.task.workPackageStatus, label: this.translateText(this.task.workPackageStatusName)}
+                : null
+            ;
+
+            this.editableData.schedule = {
+                baseStartDate: new Date(this.task.scheduledStartAt),
+                baseEndDate: new Date(this.task.scheduledFinishAt),
+                forecastStartDate: new Date(this.task.forecastStartAt),
+                forecastEndDate: new Date(this.task.forecastFinishAt),
+                automatic: this.task.automaticSchedule,
+                successors: this.task.dependants.map((item) => {
+                    return {
+                        key: item.id,
+                        label: item.name,
+                    };
+                }),
+                predecessors: this.task.dependencies.map((item) => {
+                    return {
+                        key: item.id,
+                        label: item.name,
+                    };
+                }),
+                durationInDays: this.task.duration,
+            };
+
+            this.editableData.assignee = this.task.responsibility
+                ? {key: this.task.responsibility, label: this.task.responsibilityFullName}
+                : null
+            ;
+
+            this.editableData.label = this.task.label
+                ? {key: this.task.label, label: this.task.labelName, color: this.task.labelColor}
+                : null
+            ;
+
+            this.editableData.medias = this.task.medias;
+
+            let internal = [];
+            let external = [];
+            let itemTotal = this.itemTotal;
+            this.task.costs.map(function(cost) {
+                if (cost.type === 0) {
+                    internal.push({
+                        resourceName: cost.resourceName,
+                        resource: cost.resource,
+                        rate: cost.rate,
+                        quantity: cost.quantity,
+                        duration: cost.duration,
+                        total: itemTotal(cost),
+                    });
+                } else {
+                    external.push({
+                        rate: cost.rate,
+                        name: cost.name,
+                        quantity: cost.quantity,
+                        selectedUnit: cost.unit && cost.unit.id ? cost.unit.id.toString() : null,
+                        capex: cost.expenseType === 0 ? 1 : 0,
+                        opex: cost.expenseType === 1 ? 1 : 0,
+                        total: itemTotal(cost),
+                        customUnit: '',
+                    });
+                }
+            });
+            this.editableData.internalCosts = internal;
+            this.editableData.externalCosts = external;
+        },
+    },
+    methods: {
+        ...mapActions([
+            'getTaskById',
+            'getTaskHistory',
+            'deleteTaskSubtask',
+            'countCompletedSubtasks',
+            'addTaskComment',
+            'getColorStatuses',
+            'editTask',
+            'getProjectUsers',
+            'getWorkPackageStatuses',
+            'getWorkPackageStatusesForSelect',
+            'getProjectLabels',
+        ]),
+        countCompletedSubtasks: function() {
+            let completed = 0;
+
+            for (let task of this.task.children) {
+                // TODO: use constants
+                if (task.workPackageStatus === 4) {
+                    completed++;
+                }
+            }
+
+            return completed;
+        },
+        deleteSubtask: function(subtaskId) {
+            this.deleteTaskSubtask(subtaskId);
+            this.showDeleteModal = false;
+        },
+        getDuration: function(startDate, endDate) {
+            let end = moment(endDate);
+            let start = moment(startDate);
+
+            return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') : '-';
+        },
+        getHumanTimeDiff: function(date) {
+            return moment(date).from(new Date(), false);
+        },
+        getSubtaskSummary: function() {
+            return Translator.trans(
+                'message.subtasks_summary',
+                {
+                    'completed_tasks': this.countCompletedSubtasks(),
+                    'total_tasks': this.task.children.length,
+                }
+            );
+        },
+        createNewComment: function() {
+            let data = {
+                task: this.task,
+                payload: {
+                    body: this.$refs['newCommentBody'].getContent(),
+                    author: this.task.responsibility,
+                },
+            };
+            this.addTaskComment(data);
+        },
+        itemTotal(item) {
+            let duration = (item.duration == null || isNaN(item.duration) || item.duration == 0) ? 1 : item.duration;
+            let total = item.rate * item.quantity * duration;
+            return !isNaN(total) ? total : 0;
+        },
+        setMedias(value) {
+            this.editableData.medias = value;
+        },
+        totalCostsForType: function(costType) {
+            let totalCostForType = 0;
+            // to be removed and replace with a computed prop
+            for (let cost of this.task.costs) {
+                if (cost.type === 1) {
+                    totalCostForType += this.itemTotal(cost);
+                }
+            }
+            return totalCostForType;
+        },
+        transformToString: function(value) {
+            return value ? value.toString() : '';
+        },
+        translateText: function(text) {
+            return this.translate(text);
+        },
+        initChangeStatusModal: function() {
+            this.showEditStatusModal = true;
+        },
+        changeStatus: function() {
+            let data = {
+                taskId: this.task.id,
+                data: {
+                    workPackageStatus: this.editableData.workPackageStatus.key,
+                },
+            };
+            this.editTask(data);
+            this.showEditStatusModal = false;
+        },
+        initChangeScheduleModal: function() {
+            this.showEditScheduleModal = true;
+        },
+        initAddInternalCostModal: function() {
+            this.showAddInternalCostsModal = true;
+        },
+        initAddExternalCostModal: function() {
+            this.showAddExternalCostsModal = true;
+        },
+        removeInternalCost: function(index) {
+            this.editableData.internalCosts = [
+                ...this.editableData.internalCosts.slice(0, index),
+                ...this.editableData.internalCosts.slice(index + 1),
+            ];
+        },
+        removeExternalCost: function(index) {
+            this.editableData.externalCosts = [
+                ...this.editableData.externalCosts.slice(0, index),
+                ...this.editableData.externalCosts.slice(index + 1),
+            ];
+        },
+        changeSchedule: function() {
+            let data = {
+                scheduledStartAt: this.editableData.schedule.baseStartDate,
+                scheduledFinishAt: this.editableData.schedule.baseEndDate,
+                forecastStartAt: this.editableData.schedule.forecastStartDate,
+                forecastFinishAt: this.editableData.schedule.forecastEndDate,
+                automaticSchedule: this.editableData.schedule.automatic,
+                duration: this.editableData.schedule.durationInDays,
+                dependants: this.editableData.schedule.successors.map((item) => {
+                    return item.key;
+                }),
+                dependencies: this.editableData.schedule.predecessors.map((item) => {
+                    return item.key;
+                }),
+            };
+
+            this.editTask({
+                data: data,
+                taskId: this.$route.params.taskId,
+            });
+            this.showEditScheduleModal = false;
+        },
+        addInternalCosts(value) {
+            this.showAddInternalCostsModal = false;
+
+            if (value === null) {
+                return;
+            }
+
+            let newCost = {
+                resourceName: value.resource.label,
+                resource: value.resource,
+                rate: value.daily_rate,
+                quantity: value.qty,
+                duration: value.days,
+            };
+            newCost.total = this.itemTotal(newCost);
+            this.editableData.internalCosts.push(newCost);
+        },
+        addExternalCosts(value) {
+            this.showAddExternalCostsModal = false;
+
+            if (value === null) {
+                return;
+            }
+
+            let newCost = {
+                name: value.name,
+                rate: value.rate,
+                quantity: value.qty,
+                selectedUnit: value.selectedUnit,
+                capex: 0,
+                opex: 1,
+                customUnit: value.customUnit,
+                unit: (value.unit !== 'custom') ? value.unit : null,
+            };
+            newCost.total = this.itemTotal(newCost);
+
+            this.editableData.externalCosts.push(newCost);
+        },
+        saveChangedData: function() {
+            let data = {
+                responsibility: this.editableData.assignee.key,
+                labels: [this.editableData.label.key],
+                colorStatus: this.editableData.colorStatus.id,
+                workPackageStatus: this.editableData.workPackageStatus.key,
+                duration: this.editableData.schedule.durationInDays,
+                automaticSchedule: this.editableData.schedule.automatic,
+                scheduledStartAt: moment(this.editableData.schedule.baseStartDate).format('DD-MM-YYYY'),
+                scheduledFinishAt: moment(this.editableData.schedule.baseEndDate).format('DD-MM-YYYY'),
+                forecastStartAt: moment(this.editableData.schedule.forecastStartDate).format('DD-MM-YYYY'),
+                forecastFinishAt: moment(this.editableData.schedule.forecastEndDate).format('DD-MM-YYYY'),
+                dependants: this.editableData.schedule.successors.map((item) => {
+                    return item.key;
+                }),
+                dependencies: this.editableData.schedule.predecessors.map((item) => {
+                    return item.key;
+                }),
+            };
+
+            data.costs = [];
+            for (let i = 0; i < this.editableData.internalCosts.length; i++) {
+                let cost = {
+                    resource: this.editableData.internalCosts[i].resource.key,
+                    quantity: this.editableData.internalCosts[i].quantity,
+                    duration: this.editableData.internalCosts[i].duration,
+                    rate: this.editableData.internalCosts[i].rate,
+                    type: 0,
+                };
+                data.costs.push(cost);
+            }
+
+            for (let i = 0; i < this.editableData.externalCosts.length; i++) {
+                let cost = {
+                    name: this.editableData.externalCosts[i].name,
+                    quantity: this.editableData.externalCosts[i].quantity,
+                    rate: this.editableData.externalCosts[i].rate,
+                    expenseType: this.editableData.externalCosts[i].capex ? 0 : 1,
+                    type: 1,
+                };
+                if (this.editableData.externalCosts[i].customUnit && this.editableData.externalCosts[i].customUnit.length) {
+                    cost.customUnit = this.editableData.externalCosts[i].customUnit;
+                } else {
+                    cost.unit = this.editableData.externalCosts[i].selectedUnit;
+                }
+
+                data.costs.push(cost);
+            }
+
+            data.medias = [];
+
+            for (let i = 0; i < this.editableData.medias.length; i++) {
+                if (this.editableData.medias[i] instanceof window.File) {
+                    data.medias.push(this.editableData.medias[i]);
+                }
+            }
+
+            this.editTask({
+                data: data,
+                taskId: this.$route.params.taskId,
+            });
+        },
     },
     data: function() {
         return {
-            message: {
-                edit_task: Translator.trans('message.edit_task'),
-                close_task: Translator.trans('message.close_task'),
-            },
-            button: {
-                new_task: Translator.trans('button.new_task'),
+            showDeleteModal: false,
+            showEditStatusModal: false,
+            showEditScheduleModal: false,
+            showAddInternalCostsModal: false,
+            showAddExternalCostsModal: false,
+            editableData: {
+                workPackageStatus: false,
+                assignee: null,
+                colorStatus: false,
+                label: null,
+                medias: [],
+                schedule: {
+                    baseStartDate: new Date(),
+                    baseEndDate: new Date(),
+                    forecastStartDate: new Date(),
+                    forecastEndDate: new Date(),
+                    automatic: false,
+                    successors: [],
+                    predecessors: [],
+                    durationInDays: 0,
+                },
+                internalCosts: [],
+                externalCosts: [],
             },
         };
     },
@@ -623,7 +1090,7 @@ export default {
             align-items: center;
 
             .task-label {
-                margin:0 0 0 20px;                
+                margin:0 0 0 20px;
             }
         }
     }
@@ -698,7 +1165,7 @@ export default {
             width: 30px;
             height: 30px;
             @include border-radius(50%);
-            margin: 0 10px 0 0;  
+            margin: 0 10px 0 0;
             display: inline-block;
             position: relative;
             top: -2px;
@@ -769,7 +1236,7 @@ export default {
             }
 
             .task-label {
-                margin: 0 20px;                
+                margin: 0 20px;
             }
         }
 
@@ -797,7 +1264,7 @@ export default {
         .user-avatar {
             position: absolute;
             top: 2px;
-            left: 0;            
+            left: 0;
         }
     }
 
@@ -890,7 +1357,7 @@ export default {
             }
         }
     }
-    
+
     .task-label-holder {
         margin-bottom: 10px;
 
