@@ -45,7 +45,7 @@ export const createFormData = (data) => {
         } else {
             formData.append(
                 'costs[' + i + '][unit]',
-                data.externalCosts.items[i].selectedUnit || data.externalCosts.items[i].unit.id
+                data.externalCosts.items[i].selectedUnit || data.externalCosts.items[i].unit
             );
         }
     }
@@ -55,7 +55,7 @@ export const createFormData = (data) => {
     // Internal Costs
     for (let i = 0; i < data.internalCosts.items.length; i++) {
         let costIndex = i + data.externalCosts.items.length;
-        formData.append('costs[' + costIndex + '][resource]', data.internalCosts.items[i].resource.key);
+        formData.append('costs[' + costIndex + '][resource]', data.internalCosts.items[i].resource);
         formData.append('costs[' + costIndex + '][quantity]', data.internalCosts.items[i].quantity);
         formData.append('costs[' + costIndex + '][duration]', data.internalCosts.items[i].duration);
         formData.append('costs[' + costIndex + '][rate]', data.internalCosts.items[i].rate);
