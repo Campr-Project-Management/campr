@@ -41,6 +41,12 @@ import meetingCategory from './modules/meeting-category';
 import todoStatus from './modules/todo-status';
 import noteStatus from './modules/note-status';
 import decisionStatus from './modules/decision-status';
+import meetingObjective from './modules/meeting-objective';
+import meetingAgenda from './modules/meeting-agenda';
+import decision from './modules/decision';
+import todo from './modules/todo';
+import note from './modules/note';
+import meetingParticipant from './modules/meeting-participant';
 
 Vue.use(Vuex);
 
@@ -89,6 +95,12 @@ export default new Vuex.Store({
         todoStatus,
         noteStatus,
         decisionStatus,
+        meetingObjective,
+        meetingAgenda,
+        decision,
+        todo,
+        note,
+        meetingParticipant,
     },
     strict: debug,
 });

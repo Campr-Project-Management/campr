@@ -28,6 +28,10 @@ class NoteControllerTest extends BaseController
 
         $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
+
+        $content = json_decode($response->getContent(), true);
+        $responseContent['responsibilityAvatar'] = $content['responsibilityAvatar'];
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -58,6 +62,7 @@ class NoteControllerTest extends BaseController
                     'showInStatusReport' => false,
                     'date' => '2017-01-01 00:00:00',
                     'dueDate' => '2017-05-01 00:00:00',
+                    'responsibilityAvatar' => '',
                 ],
             ],
         ];
