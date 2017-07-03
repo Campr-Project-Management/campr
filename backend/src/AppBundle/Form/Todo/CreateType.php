@@ -35,6 +35,7 @@ class CreateType extends BaseCreateType
     {
         $resolver->setDefaults([
             'data_class' => Todo::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

@@ -2,14 +2,19 @@
 
 namespace MainBundle\EventListener;
 
+use AppBundle\Entity\Decision;
+use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\Measure;
 use AppBundle\Entity\MeasureComment;
+use AppBundle\Entity\MeetingAgenda;
 use AppBundle\Entity\MeetingParticipant;
+use AppBundle\Entity\Note;
 use AppBundle\Entity\Opportunity;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Risk;
 use AppBundle\Entity\SubteamMember;
+use AppBundle\Entity\Todo;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\WorkPackage;
@@ -76,7 +81,12 @@ class ImageSerializeListener
             case $object instanceof Risk:
             case $object instanceof Measure:
             case $object instanceof MeasureComment:
-                if ($object->getResponsibility() instanceof User) {
+            case $object instanceof MeetingAgenda:
+            case $object instanceof Decision:
+            case $object instanceof Todo:
+            case $object instanceof Note:
+            case $object instanceof DistributionList:
+                if (method_exists($object, 'getResponsibility') && $object->getResponsibility() instanceof User) {
                     if ($object->getResponsibility()->getAvatar()) {
                         $visitor->addData('responsibilityAvatar', $this->getUri($object->getResponsibility(), 'avatarFile'));
                     } else {

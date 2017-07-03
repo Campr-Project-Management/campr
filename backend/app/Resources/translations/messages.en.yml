@@ -4,6 +4,11 @@ message:
     create_new_info: Create New Info
     project_infos: Project Infos
     infos: Infos
+    delete_objective: Delete objective
+    edit_agenda: Edit Agenda
+    delete_agenda: Delete agenda
+    edit_decision: Edit Decision
+    delete_decision: Delete Decision
     edit_phase: Edit Phase
     subteam: Subteam
     department: Department
