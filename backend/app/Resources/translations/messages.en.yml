@@ -1407,6 +1407,7 @@ email:
         team_member:
             invite: Campr - Team member invitation
         general: Subject
+        new_meeting_notification: You have a new meeting notification
     message:
         user:
             register: To activate your account click the following
@@ -1421,6 +1422,9 @@ email:
                 second: If you don't have an account with this email please make one in order to accept invitation.
                 third: Please click on the following
                 link: invitation
+        meeting_notification: You have been invited to a meeting. Here are the meeeting informations:
+        starts_at: Starts at
+        ends_at: Ends at
     expiration:
         user:
             activation: The activation link will expire in{0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% days

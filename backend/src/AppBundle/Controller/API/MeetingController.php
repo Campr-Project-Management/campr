@@ -356,7 +356,7 @@ class MeetingController extends ApiController
     }
 
     /**
-     * Update meeting participants
+     * Update meeting participants.
      *
      * @Route("/{id}/participants", name="app_api_meeting_participants_update", options={"expose"=true})
      * @Method({"POST"})
@@ -391,5 +391,44 @@ class MeetingController extends ApiController
         }
 
         return $this->createApiResponse(null, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * Send notification to participants.
+     *
+     * @Route("/{id}/notifications", name="app_api_meeting_notifications", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Meeting $meeting
+     *
+     * @return JsonResponse
+     */
+    public function notificationsAction(Meeting $meeting)
+    {
+        $participants = $meeting->getMeetingParticipants();
+        $distributionLists = $meeting->getDistributionLists();
+        $mailerService = $this->get('app.service.mailer');
+        foreach ($participants as $participant) {
+            $user = $participant->getUser();
+            $mailerService->sendEmail(
+                ':meeting:notification.html.twig',
+                'info',
+                $user->getEmail(),
+                ['meeting' => $meeting]
+            );
+        }
+        foreach ($distributionLists as $distributionList) {
+            $users = $distributionList->getUsers();
+            foreach ($users as $user) {
+                $mailerService->sendEmail(
+                    ':meeting:notification.html.twig',
+                    'info',
+                    $user->getEmail(),
+                    ['meeting' => $meeting]
+                );
+            }
+        }
+
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
 }
