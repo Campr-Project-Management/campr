@@ -1,0 +1,14 @@
+{% extends 'MainBundle:Email:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% block subject %}{{ 'email.subject.new_meeting_notification'|trans }}{% endblock %}
+
+{% block message %}
+    <p>{{ 'email.message.meeting_notification'|trans }}</p>
+    <p>
+        {{ meeting.name }} - {{ meeting.date|date('d.m.Y') }}
+    </p>
+    <p>{{ 'email.message.starts_at'|trans }}: {{ meeting.start|date('H:i') }}</p>
+    <p>{{ 'email.message.ends_at'|trans }}:  {{ meeting.end|date('H:i') }}</p>
+{% endblock %}

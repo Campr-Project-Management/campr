@@ -38,6 +38,14 @@
             </div>
         </modal>
 
+        <modal v-if="showNotificationModal" @close="showNotificationModal = false">
+            <p class="modal-title">{{ translateText('message.send_notifications') }}</p>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showNotificationModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="sendNotifications()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+            </div>
+        </modal>
+
         <div class="header flex flex-space-between">
             <h1>{{ translateText('message.project_meetings') }}</h1>
             <div class="flex flex-v-center">
@@ -91,8 +99,8 @@
                                         <router-link :to="{name: 'project-meetings-edit-meeting', params:{meetingId: meeting.id}}">
                                             <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_meeting')"><edit-icon fill="second-fill"></edit-icon></a>
                                         </router-link>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.print_meeting')"><print-icon fill="second-fill"></print-icon></a>
-                                        <a v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.send_notifications')"><notification-icon fill="second-fill"></notification-icon></a>
+                                        <a @click="printMeeting(meeting)" class="btn-icon" v-tooltip.top-center="translateText('message.print_meeting')"><print-icon fill="second-fill"></print-icon></a>
+                                        <a @click="initSendNotifications(meeting)" v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.send_notifications')"><notification-icon fill="second-fill"></notification-icon></a>
                                         <a @click="initRescheduleModal(meeting)" v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.reschedule_meeting')"><reschedule-icon fill="second-fill"></reschedule-icon></a>
                                         <a @click="initDeleteModal(meeting)" v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_meeting')"><delete-icon fill="danger-fill"></delete-icon></a>
                                     </div>
@@ -146,7 +154,7 @@ export default {
         VueTimepicker,
     },
     methods: {
-        ...mapActions(['getProjectMeetings', 'setMeetingsFilters', 'deleteProjectMeeting', 'editProjectMeeting']),
+        ...mapActions(['getProjectMeetings', 'setMeetingsFilters', 'deleteProjectMeeting', 'editProjectMeeting', 'sendMeetingNotifications']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -220,6 +228,17 @@ export default {
             this.editProjectMeeting(data);
             this.showRescheduleModal = false;
         },
+        initSendNotifications: function(meeting) {
+            this.showNotificationModal = true;
+            this.meetingId = meeting.id;
+        },
+        printMeeting: function(meeting) {
+            window.location.href = Routing.generate('app_meeting_pdf', {id: meeting.id});
+        },
+        sendNotifications: function() {
+            this.sendMeetingNotifications(this.meetingId);
+            this.showNotificationModal = false;
+        },
     },
     created() {
         this.getProjectMeetings({
@@ -245,6 +264,7 @@ export default {
             activePage: 1,
             showDeleteModal: false,
             showRescheduleModal: false,
+            showNotificationModal: false,
             meetingId: null,
             date: null,
             startTime: null,
