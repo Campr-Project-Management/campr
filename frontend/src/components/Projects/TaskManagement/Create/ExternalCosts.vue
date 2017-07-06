@@ -18,6 +18,10 @@
                             v-bind:label="label.external_cost_qty"
                             v-model="cost.quantity"
                             v-bind:content="cost.quantity" />
+                        <error
+                            v-if="getValidationMessages(index, 'quantity').length"
+                            v-for="message in getValidationMessages(index, 'quantity')"
+                            :message="message" />
                     </div>
                 </div>
             </div>
@@ -37,6 +41,10 @@
                             v-model="cost.customUnit"
                             v-bind:content="cost.customUnit"
                             v-bind:disabled="cost.selectedUnit !== 'custom'" />
+                        <error
+                            v-if="getValidationMessages(index, 'unit').length"
+                            v-for="message in getValidationMessages(index, 'unit')"
+                            :message="message" />
                     </div>
                     <div class="col-md-2">
                         <input-field
@@ -44,6 +52,10 @@
                             v-bind:label="label.external_cost_unit_rate"
                             v-model="cost.rate"
                             v-bind:content="cost.rate" />
+                        <error
+                            v-if="getValidationMessages(index, 'rate').length"
+                            v-for="message in getValidationMessages(index, 'rate')"
+                            :message="message" />
                     </div>
                 </div>
             </div>
@@ -125,15 +137,18 @@ import SelectField from '../../../_common/_form-components/SelectField';
 import RadioField from '../../../_common/_form-components/RadioField';
 import Switches from '../../../3rdparty/vue-switches';
 import DeleteIcon from '../../../_common/_icons/DeleteIcon';
+import Error from '../../../_common/_messages/Error.vue';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
+    props: ['validationMessages'],
     components: {
         InputField,
         SelectField,
         RadioField,
         Switches,
         DeleteIcon,
+        Error,
     },
     methods: {
         ...mapActions(['getProjectUnits']),
@@ -156,6 +171,12 @@ export default {
         },
         itemTotal(item) {
             return !isNaN(item.rate * item.quantity) ? item.rate * item.quantity : 0;
+        },
+        getValidationMessages(index, key) {
+            if (this.validationMessages[index] && this.validationMessages[index][key]) {
+                return this.validationMessages[index][key];
+            }
+            return [];
         },
     },
     watch: {
