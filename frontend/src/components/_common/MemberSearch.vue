@@ -76,7 +76,7 @@ export default {
             items.map(function(user) {
                 let checked = false;
                 for (let i=0; i < selected.length; i++) {
-                    if (selected[i] === user.id) {
+                    if (selected[i] === user.user) {
                         checked = true;
                     }
                     user.checked = checked;
@@ -90,7 +90,7 @@ export default {
             let users = [];
             this.items.map(function(user) {
                 if (user.checked) {
-                    users.push(user.id);
+                    users.push(user.user);
                 }
             });
             this.selectedUsers = users;
