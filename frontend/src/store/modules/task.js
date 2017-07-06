@@ -127,6 +127,7 @@ const actions = {
                         commit(types.SET_VALIDATION_MESSAGES, {messages});
                     } else {
                         const task = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                         commit(types.SET_TASK, {task});
                     }
                 },
@@ -148,19 +149,16 @@ const actions = {
                 data.data
             ).then(
                 (response) => {
-                    // router.push({name: 'project-task-management-list'});
-                    if (response.status === 200) {
-                        alert('Saved!');
+                    if (response.body && response.body.error) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
                     } else {
-                        alert(response.status);
+                        const task = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                        commit(types.SET_TASK, {task});
                     }
                 },
-                (response) => {
-                    alert('Validation issues');
-                    if (response.status === 400) {
-                        // implement system to dispay errors
-                    }
-                }
+                (response) => {}
             );
     },
 
