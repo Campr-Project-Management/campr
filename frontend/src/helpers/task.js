@@ -35,7 +35,7 @@ export const createFormData = (data) => {
 
     // External Costs
     for (let i = 0; i < data.externalCosts.items.length; i++) {
-        formData.append('costs[' + i + '][name]', data.externalCosts.items[i].name);
+        formData.append('costs[' + i + '][name]', data.externalCosts.items[i].name || '');
         formData.append('costs[' + i + '][quantity]', data.externalCosts.items[i].quantity);
         formData.append('costs[' + i + '][rate]', data.externalCosts.items[i].rate);
         formData.append('costs[' + i + '][expenseType]', data.externalCosts.items[i].capex ? 0 : 1);

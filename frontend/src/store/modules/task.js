@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
-import router from '../../router';
 
 const state = {
     currentTask: {},
@@ -112,36 +111,38 @@ const actions = {
      * @param {function} commit
      * @param {array} data
      * @param {Number} projectId
+     * @return {object}
      */
     createNewTask({commit}, data) {
-        Vue.http
+        return Vue
+            .http
             .post(
                 Routing.generate('app_api_project_tasks_create', {'id': data.projectId}),
                 data.data
-            ).then((response) => {
-                router.push({name: 'project-task-management-list'});
-                // @TODO: use this redirect when we figure out why this is getting broken
-                // router.push({
-                //     name: 'project-task-management-edit',
-                //     params: {
-                //         id: data.projectId,
-                //         taskId: response.data.id,
-                //     },
-                // });
-            }, (response) => {
-                if (response.status === 400) {
-                    // implement system to display errors
-                }
-            });
+            )
+            .then(
+                (response) => {
+                    if (response.body && response.body.error) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        const task = response.body;
+                        commit(types.SET_TASK, {task});
+                    }
+                },
+                (response) => {}
+            )
+        ;
     },
 
     /**
      * Edit an existing task
      * @param {function} commit
      * @param {array} data
+     * @return {Object}
      */
     editTask({commit}, data) {
-        Vue.http
+        return Vue.http
             .patch(
                 Routing.generate('app_api_workpackage_edit', {'id': data.taskId}),
                 data.data
@@ -255,6 +256,7 @@ const actions = {
 };
 
 const mutations = {
+    mutations,
     /**
      * Sets tasks to state
      * @param {Object} state
