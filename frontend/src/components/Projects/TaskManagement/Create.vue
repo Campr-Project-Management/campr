@@ -300,13 +300,14 @@ export default {
     },
     watch: {
         showSaved(value) {
-            if (value === false) {
+            if (!this.isEdit && value === false) {
                 router.push({
-                    name: 'project-task-management-edit',
-                    params: {
-                        id: this.$route.params.id,
-                        taskId: this.task.id,
-                    },
+                    name: 'project-task-management-list',
+//                    name: 'project-task-management-edit',
+//                    params: {
+//                        id: this.$route.params.id,
+//                        taskId: this.task.id,
+//                    },
                 });
             }
         },
