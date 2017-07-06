@@ -12,6 +12,10 @@
                             v-model="cost.resource"
                             v-bind:currentOption="cost.selectedResource"
                             v-on:input="setCostProperty('resource', index, $event)" />
+                        <error
+                            v-if="getValidationMessages(index, 'resource').length"
+                            v-for="message in getValidationMessages(index, 'resource')"
+                            :message="message" />
                     </div>
                     <div class="col-md-2">
                         <input-field
@@ -45,7 +49,7 @@
                         <span class="title">
                             {{ label.internal_cost_subtotal }} <b><i class="fa fa-dollar"></i> {{ cost.total }}</b>
                         </span>
-        </div>
+                    </div>
                     <div class="col-md-6">
                         <div class="pull-right">
                             <span v-on:click="deleteInternalCost(index);"><delete-icon /></span>
@@ -92,13 +96,16 @@
 import InputField from '../../../_common/_form-components/InputField';
 import SelectField from '../../../_common/_form-components/SelectField';
 import DeleteIcon from '../../../_common/_icons/DeleteIcon';
+import Error from '../../../_common/_messages/Error.vue';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
+    props: ['validationMessages'],
     components: {
         InputField,
         SelectField,
         DeleteIcon,
+        Error,
     },
     methods: {
         ...mapActions(['getProjectDepartments', 'getProjectResources']),
@@ -125,6 +132,12 @@ export default {
                 this.internalCosts.items[index].selectedResource = value;
             }
             this.$emit('input', this.internalCosts);
+        },
+        getValidationMessages(index, key) {
+            if (this.validationMessages[index] && this.validationMessages[index][key]) {
+                return this.validationMessages[index][key];
+            }
+            return [];
         },
     },
     created() {
