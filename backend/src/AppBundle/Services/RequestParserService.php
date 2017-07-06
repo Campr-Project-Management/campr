@@ -18,10 +18,10 @@ class RequestParserService
     public $order;
 
     /** @var int */
-    public $offset;
+    public $offset = null;
 
     /** @var int */
-    public $limit;
+    public $limit = null;
 
     /**
      * Parse sent parameters.
@@ -30,6 +30,10 @@ class RequestParserService
      */
     public function parse($params)
     {
+        if (intval($params['rowCount']) === -1) {
+            return;
+        }
+
         $this->offset = intval(($params['current'] - 1) * $params['rowCount'], 10);
         $this->limit = intval($params['rowCount'], 10);
 
