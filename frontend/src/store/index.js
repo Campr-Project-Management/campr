@@ -47,6 +47,7 @@ import decision from './modules/decision';
 import todo from './modules/todo';
 import note from './modules/note';
 import meetingParticipant from './modules/meeting-participant';
+import validation from './modules/validation';
 
 Vue.use(Vuex);
 
@@ -101,6 +102,7 @@ export default new Vuex.Store({
         todo,
         note,
         meetingParticipant,
+        validation,
     },
     strict: debug,
 });

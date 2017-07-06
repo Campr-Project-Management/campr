@@ -13,6 +13,7 @@
                     v-bind:style="'background-color:' + status.color"
                     v-on:click="selectColorStatus(status)" />
             </div>
+            <div v-for="error in errorz">{{ error }}</div>
         </div>
     </div>
 </template>
@@ -21,7 +22,7 @@
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
-    props: ['selectedStatusColor'],
+    props: ['selectedStatusColor', 'errorz'],
     methods: {
         ...mapActions(['getColorStatuses']),
         selectColorStatus: function(status) {
