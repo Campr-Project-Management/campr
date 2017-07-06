@@ -8,6 +8,10 @@
                     v-bind:label="label.subtask_description"
                     v-model="subtask.description"
                     v-bind:content="subtask.description" />
+                <error
+                    v-if="validationMessages && validationMessages[index] && validationMessages[index].name && validationMessages[index].name.length"
+                    v-for="message in ((validationMessages && validationMessages[index] && validationMessages[index].name) || [])"
+                    :message="message" />
             </div>
             <div class="col-md-1">
                 <span v-on:click="deleteSubtask(index);"><delete-icon /></span>
@@ -22,12 +26,14 @@
 <script>
 import InputField from '../../../_common/_form-components/InputField';
 import DeleteIcon from '../../../_common/_icons/DeleteIcon';
+import Error from '../../../_common/_messages/Error.vue';
 
 export default {
-    props: ['editSubtasks'],
+    props: ['editSubtasks', 'validationMessages'],
     components: {
         InputField,
         DeleteIcon,
+        Error,
     },
     methods: {
         addSubtask: function() {

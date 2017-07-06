@@ -22,6 +22,10 @@
                 <div class="form">
                     <!-- /// Task Name /// -->
                     <input-field type="text" v-bind:label="label.task_title" v-model="title" v-bind:content="title" />
+                    <error
+                        v-if="validationMessages.name && validationMessages.name.length"
+                        v-for="message in validationMessages.name"
+                        :message="message" />
                     <!-- /// End Task Name /// -->
 
                     <!-- /// Task Description /// -->
@@ -49,13 +53,19 @@
                     <hr class="double">
 
                     <!-- /// Task Internal Costs /// -->
-                    <internal-costs v-model="internalCosts" v-on:input="setInternalCosts" />
+                    <internal-costs
+                        v-model="internalCosts"
+                        v-on:input="setInternalCosts"
+                        :validationMessages="internalValidationMessages" />
                     <!-- /// End Task Internal Costs /// -->
 
                     <hr class="double">
 
                     <!-- /// Task External Costs /// -->
-                    <external-costs v-model="externalCosts" v-on:input="setExternalCosts" />
+                    <external-costs
+                        v-model="externalCosts"
+                        v-on:input="setExternalCosts"
+                        :validationMessages="externalValidationMessages" />
                     <!-- /// End Task External Costs /// -->
 
                     <hr class="double">
@@ -67,7 +77,10 @@
                     <hr class="double">
 
                     <!-- /// SubTasks /// -->
-                    <subtasks v-model="subtasks" v-bind:editSubtasks="subtasks" />
+                    <subtasks
+                        v-model="subtasks"
+                        :editSubtasks="subtasks"
+                        :validationMessages="validationMessages.children" />
                     <!-- /// End SubTasks /// -->
 
                     <hr class="double">
@@ -81,6 +94,10 @@
 
                     <!-- /// Task Condition /// -->
                     <condition v-model="statusColor" v-bind:selectedStatusColor="statusColor" />
+                    <error
+                        v-if="validationMessages.colorStatus && validationMessages.colorStatus.length"
+                        v-for="message in validationMessages.colorStatus"
+                        :message="message" />
                     <!-- /// End Task Condition /// -->
 
                     <hr class="double">
@@ -95,6 +112,9 @@
                 </div>
             </div>
         </div>
+
+        <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved" />
+        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
 </template>
 
@@ -113,8 +133,11 @@ import TaskDetails from './Create/Details';
 import Attachments from './Create/Attachments';
 import datepicker from 'vuejs-datepicker';
 import Switches from '../../3rdparty/vue-switches';
+import Error from '../../_common/_messages/Error.vue';
+import AlertModal from '../../_common/AlertModal.vue';
 import {mapGetters, mapActions} from 'vuex';
 import {createFormData} from '../../../helpers/task';
+import router from '../../../router';
 import _ from 'lodash';
 
 export default {
@@ -133,6 +156,8 @@ export default {
         Condition,
         TaskDetails,
         Attachments,
+        Error,
+        AlertModal,
     },
     methods: {
         ...mapActions(['createNewTask', 'getTaskById', 'editTask']),
@@ -152,10 +177,24 @@ export default {
                 statusColor: this.statusColor,
             };
 
-            this.createNewTask({
-                data: createFormData(data),
-                projectId: this.$route.params.id,
-            });
+            this
+                .createNewTask({
+                    data: createFormData(data),
+                    projectId: this.$route.params.id,
+                })
+                .then(
+                    () => {
+                        if (this.task.id) {
+                            this.showSaved = true;
+                        } else {
+                            this.showFailed = true;
+                        }
+                    },
+                    () => {
+                        this.showFailed = true;
+                    }
+                )
+            ;
         },
         editExistingTask: function() {
             let data = {
@@ -172,10 +211,24 @@ export default {
                 details: this.details,
                 statusColor: this.statusColor,
             };
-            this.editTask({
-                data: createFormData(data),
-                taskId: this.$route.params.taskId,
-            });
+            this
+                .editTask({
+                    data: createFormData(data),
+                    taskId: this.$route.params.taskId,
+                })
+                .then(
+                    () => {
+                        if (this.task.id) {
+                            this.showSaved = true;
+                        } else {
+                            this.showFailed = true;
+                        }
+                    },
+                    () => {
+                        this.showFailed = true;
+                    }
+                )
+            ;
         },
         // event methods
         setInternalCosts(value) {
@@ -196,9 +249,67 @@ export default {
     computed: {
         ...mapGetters({
             task: 'currentTask',
+            validationMessages: 'validationMessages',
         }),
+        internalValidationMessages() {
+            if (_.isPlainObject(this.validationMessages.costs)) {
+                const out = {};
+                Object
+                    .keys(this.validationMessages.costs)
+                    .filter(key => key >= this.externalCosts.items.length)
+                    .forEach(key => {
+                        out[key - this.externalCosts.items.length] = this.validationMessages.costs[key];
+                    })
+                ;
+                return out;
+            } else if (_.isArray(this.validationMessages.costs)) {
+                return this
+                    .validationMessages
+                    .costs
+                    .slice(
+                        this.externalCosts.items.length,
+                        this.validationMessages.costs.length
+                    )
+                ;
+            }
+            return {};
+        },
+        // this is actually sent first in the costs array
+        externalValidationMessages() {
+            if (this.validationMessages && this.validationMessages.costs) {
+                if (_.isPlainObject(this.validationMessages.costs)) {
+                    const out = {};
+                    Object
+                        .keys(this.validationMessages.costs)
+                        .filter(key => key < this.externalCosts.items.length)
+                        .forEach(key => {
+                            out[key] = this.validationMessages.costs[key];
+                        })
+                    ;
+                    return out;
+                } else if (_.isArray(this.validationMessages.costs)) {
+                    return this
+                        .validationMessages
+                        .costs
+                        .slice(0, this.externalCosts.items.length)
+                    ;
+                }
+            }
+            return {};
+        },
     },
     watch: {
+        showSaved(value) {
+            if (value === false) {
+                router.push({
+                    name: 'project-task-management-edit',
+                    params: {
+                        id: this.$route.params.id,
+                        taskId: this.task.id,
+                    },
+                });
+            }
+        },
         task(value) {
             this.title = this.task.name;
             this.$refs.description.setContent(this.task.content);
@@ -305,6 +416,8 @@ export default {
     },
     data() {
         return {
+            showSaved: false,
+            showFailed: false,
             isEdit: this.$route.params.taskId,
             message: {
                 create_new_task: this.translate('message.create_new_task'),
