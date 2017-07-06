@@ -2,6 +2,8 @@
 
 namespace AppBundle\EventListener;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 class AjaxResponseListener
@@ -13,12 +15,22 @@ class AjaxResponseListener
 
         if ($request->isXmlHttpRequest()) {
             // VueJS cannot interpret this range as successful so we have to do something about it
-            if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
-                $response->setStatusCode(200);
-            } else {
-                $response->headers->add([
-                    'cyka' => 'blyat',
-                ]);
+            $range2xx = $response->getStatusCode() > Response::HTTP_OK && $response->getStatusCode() < Response::HTTP_MULTIPLE_CHOICES;
+            $miscAllowed = [
+                Response::HTTP_NO_CONTENT,
+                Response::HTTP_BAD_REQUEST,
+                Response::HTTP_UNAUTHORIZED,
+            ];
+            if ($range2xx || in_array($response->getStatusCode(), $miscAllowed, true)) {
+                if ($response instanceof JsonResponse) {
+                    $content = $response->getContent();
+                    if (!empty($content) && !in_array($content, ['""', "''"], true)) {
+                        $content = json_decode($content, true);
+                        $content['error'] = true;
+                        $response->setData($content);
+                    }
+                }
+                $response->setStatusCode(Response::HTTP_OK);
             }
         }
     }
