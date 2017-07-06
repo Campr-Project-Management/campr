@@ -58,7 +58,7 @@ class ProjectUserRepository extends BaseRepository
         }
 
         if (isset($filters['users']) && !empty($filters['users'])) {
-            $qb->andWhere($qb->expr()->in('q.id', $filters['users']));
+            $qb->andWhere($qb->expr()->in('u.id', $filters['users']));
         }
 
         if (isset($filters['project'])) {
