@@ -356,7 +356,7 @@ class MeetingController extends ApiController
     }
 
     /**
-     * Update meeting participants
+     * Update meeting participants.
      *
      * @Route("/{id}/participants", name="app_api_meeting_participants_update", options={"expose"=true})
      * @Method({"POST"})
