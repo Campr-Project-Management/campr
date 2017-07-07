@@ -32,7 +32,7 @@
 
                 <!-- /// Content /// -->
                 <div class="phase-content">
-                    {{ phase.content }}
+                    <div v-html="phase.content"></div>
                     <hr>
                     <h3>{{ translateText('message.schedule') }}</h3>
 
