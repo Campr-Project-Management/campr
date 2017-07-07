@@ -10,7 +10,7 @@ const STATUS_COMPLETED_ID = 4;
 const getters = {
     workPackageStatuses: state => state.workPackageStatuses,
     workPackageStatusesForMilestone: (state) => {
-        let workPackageStatusesForMilestone = [];
+        let workPackageStatusesForMilestone = [{'key': null, 'label': Vue.translate('placeholder.status')}];
 
         const allowedStatuses = [STATUS_OPEN_ID, STATUS_COMPLETED_ID];
 
