@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+    <title>{{ 'label.meeting'|trans }} - {{ meeting.projectName }}</title>
+    <style type="text/css">
+        tr {
+            vertical-align: top;
+        }
+        ul, dl {
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+<table>
+    <tr>
+        <th colspan="2">{{ meeting.name }}</th>
+    </tr>
+    <tr>
+        <td colspan="2"><br></td>
+    </tr>
+    <tr>
+        <th>{{ 'table_header_cell.project'|trans }}</th>
+        <td>{{ meeting.project.name|default('-') }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'table_header_cell.location'|trans }}</th>
+        <td>{{ meeting.location|default('-') }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'table_header_cell.date'|trans }}</th>
+        <td>{{ meeting.date|date('d.m.Y') }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'table_header_cell.start'|trans }}</th>
+        <td>{{ meeting.start|date('H:i') }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'table_header_cell.end'|trans }}</th>
+        <td>{{ meeting.end|date('H:i') }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'table_header_cell.objectives'|trans }}</th>
+        <td>
+            {% for objective in meeting.meetingObjectives %}
+                <p>{{ objective.description|default('-') }}</p>
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <th>{{ 'table_header_cell.participants'|trans }}</th>
+        <td>
+            {% for participant in meeting.meetingParticipants %}
+                {{ participant.user.username|default('-') }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+            {% for dlist in meeting.distributionLists %}
+                {% for member in dlist.users %}
+                    {{ member.username|default('-') }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <th>{{ 'table_header_cell.agendas'|trans }}</th>
+        <td>
+            {% if meeting.meetingAgendas|length %}
+                {% for agendas in meeting.meetingAgendas %}
+                    <p>{{ agendas.topic }}</p>
+                {% endfor %}
+            {% else %}
+                -
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th>{{ 'table_header_cell.decisions'|trans }}</th>
+        <td>
+            {% if meeting.decisions|length %}
+                {% for decision in meeting.decisions %}
+                    <p>{{ decision.title }}</p>
+                {% endfor %}
+            {% else %}
+                -
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th>{{ 'table_header_cell.todos'|trans }}</th>
+        <td>
+            {% if meeting.todos|length %}
+                {% for todo in meeting.todos %}
+                    <p>{{ todo.title }}</p>
+                {% endfor %}
+            {% else %}
+                -
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th>{{ 'table_header_cell.notes'|trans }}</th>
+        <td>
+            {% if meeting.notes|length %}
+                {% for note in meeting.notes %}
+                    <p>{{ participant.title|default('-') }}</p>
+                {% endfor %}
+            {% else %}
+                -
+            {% endif %}
+        </td>
+    </tr>
+</table>
+</body>
+</html>

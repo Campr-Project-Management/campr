@@ -57,6 +57,14 @@
                 </div>
             </modal>
 
+            <modal v-if="showNotificationModal" @close="showNotificationModal = false">
+                <p class="modal-title">{{ translateText('message.send_notifications') }}</p>
+                <div class="flex flex-space-between">
+                    <a href="javascript:void(0)" @click="showNotificationModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="sendNotifications()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                </div>
+            </modal>
+
             <div class="col-md-6">
                 <div class="create-meeting page-section">
                     <!-- /// Header /// -->
@@ -289,7 +297,7 @@
                         </div>
                         <div class="buttons">
                             <!--<router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.edit_distribution_list') }}</router-link>-->
-                            <a @click="sendNotifications()" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.send_notifications') }}</a>
+                            <a @click="showNotificationModal = true" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.send_notifications') }}</a>
                         </div>
                     </div>
 
@@ -354,7 +362,7 @@ export default {
     methods: {
         ...mapActions([
             'getProjectMeeting', 'getMeetingAgendas', 'getMeetingParticipants',
-            'getDistributionLists', 'deleteProjectMeeting', 'editProjectMeeting',
+            'getDistributionLists', 'deleteProjectMeeting', 'editProjectMeeting', 'sendMeetingNotifications',
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -470,6 +478,10 @@ export default {
             };
             this.editProjectMeeting(data);
         },
+        sendNotifications: function() {
+            this.sendMeetingNotifications(this.$route.params.id);
+            this.showNotificationModal = false;
+        },
     },
     computed: {
         ...mapGetters({
@@ -520,6 +532,7 @@ export default {
             endTime: {},
             participants: [],
             displayedParticipants: [],
+            showNotificationModal: false,
         };
     },
     watch: {
