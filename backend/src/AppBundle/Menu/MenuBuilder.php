@@ -403,6 +403,9 @@ class MenuBuilder
             ->addChild($this->translator->trans('title.todo_status.list', [], 'messages'), [
                 'route' => 'app_admin_todo_status_list',
             ])->getParent()
+            ->addChild($this->translator->trans('title.todo_category.list', [], 'messages'), [
+                'route' => 'app_admin_todo_category_list',
+            ])->getParent()
         ;
 
         $menu

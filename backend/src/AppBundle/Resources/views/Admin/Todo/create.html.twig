@@ -71,6 +71,15 @@
                         }
                     ) }}
                     {{ form_widget(
+                        form.todoCategory,
+                        {
+                            'attr': {
+                                'class': 'selectpicker',
+                            },
+                            'label': 'label.category'|trans
+                        }
+                    ) }}
+                    {{ form_widget(
                         form.description,
                         {
                             'attr': {
