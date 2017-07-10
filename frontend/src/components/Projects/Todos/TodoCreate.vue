@@ -21,9 +21,9 @@
                             <div class="col-md-6">
                                 <select-field
                                     v-bind:title="translateText('label.category')"
-                                    v-bind:options="projectCategories"
-                                    v-model="details.category"
-                                    v-bind:currentOption="details.category" />
+                                    v-bind:options="todoCategoriesForSelect"
+                                    v-model="todoCategory"
+                                    v-bind:currentOption="todoCategory" />
                             </div>
                         </div>
                     </div>
@@ -31,12 +31,20 @@
 
                     <!-- /// Todo Title and Description /// -->
                     <div class="form-group">
-                        <input-field type="text" v-bind:label="translateText('placeholder.todo_topic')" v-model="topic" v-bind:content="topic" />
+                        <input-field type="text" v-bind:label="translateText('placeholder.todo_topic')" v-model="title" v-bind:content="title" />
+                        <error
+                            v-if="validationMessages.title && validationMessages.title.length"
+                            v-for="message in validationMessages.title"
+                            :message="message" />
                     </div>
                     <div class="form-group">
                         <div class="vueditor-holder">
                             <div class="vueditor-header">{{ translateText('placeholder.decision_description') }}</div>
-                            <Vueditor ref="content" />
+                            <Vueditor ref="description" />
+                            <error
+                                v-if="validationMessages.description && validationMessages.description.length"
+                                v-for="message in validationMessages.description"
+                                :message="message" />
                         </div>
                     </div>
                     <!-- /// End Todo Title and Description /// -->
@@ -45,12 +53,12 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <member-search v-model="Responsible" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                                <member-search v-model="responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.due_date') }}</label>
-                                    <datepicker v-model="schedule.dueDate" format="dd-MM-yyyy" />
+                                    <datepicker v-model="dueDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill" stroke="middle-stroke" />
                                 </div>
                             </div>
@@ -62,9 +70,9 @@
                             <div class="col-md-6">
                                 <select-field
                                     v-bind:title="translateText('label.select_status')"
-                                    v-bind:options="todoStatus"
-                                    v-model="details.todoStatus"
-                                    v-bind:currentOption="details.todoStatus" />
+                                    v-bind:options="todoStatusesForSelect"
+                                    v-model="todoStatus"
+                                    v-bind:currentOption="todoStatus" />
                             </div>
                         </div>
                     </div>     
@@ -73,8 +81,9 @@
 
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
-                        <router-link :to="{name: 'project-meetings'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
-                        <a ref="#" class="btn-rounded btn-auto btn-auto second-bg">{{ translateText('button.create_todo') }}</a>
+                        <router-link :to="{name: 'project-todos'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
+                        <a ref="#" v-if="!isEdit" @click="saveTodo" class="btn-rounded btn-auto btn-auto second-bg">{{ translateText('button.create_todo') }}</a>
+                        <a ref="#" v-if="isEdit" @click="updateTodo" class="btn-rounded btn-auto btn-auto second-bg">{{ translateText('button.save_todo') }}</a>
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
@@ -89,6 +98,9 @@ import SelectField from '../../_common/_form-components/SelectField';
 import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
+import {mapGetters, mapActions} from 'vuex';
+import moment from 'moment';
+import Error from '../../_common/_messages/Error.vue';
 
 export default {
     components: {
@@ -97,27 +109,80 @@ export default {
         datepicker,
         CalendarIcon,
         MemberSearch,
+        moment,
+        Error,
     },
     methods: {
+        ...mapActions([
+            'createTodo',
+            'editTodo',
+            'getTodoStatuses',
+            'getTodoById',
+            'getTodoCategories',
+        ]),
         translateText: function(text) {
             return this.translate(text);
+        },
+        saveTodo: function() {
+            let data = {
+                projectId: this.$route.params.id,
+                data: {
+                    title: this.title,
+                    responsibility: (this.responsibility && this.responsibility.length > 0) ? this.responsibility[0] : null,
+                    dueDate: moment(this.dueDate).format('DD-MM-YYYY'),
+                    description: this.$refs.description.getContent(),
+                    status: this.todoStatus ? this.todoStatus.key : null,
+                    todoCategory: this.todoCategory ? this.todoCategory.key : null,
+                },
+            };
+            this.createTodo(data);
+        },
+        updateTodo: function() {
+            let data = {
+                id: this.$route.params.todoId,
+                title: this.title,
+                responsibility: (this.responsibility && this.responsibility.length > 0) ? this.responsibility[0] : null,
+                dueDate: moment(this.dueDate).format('DD-MM-YYYY'),
+                description: this.$refs.description.getContent(),
+                status: this.todoStatus.key,
+                todoCategory: this.todoCategory.key,
+            };
+            this.editTodo(data);
+        },
+    },
+    created() {
+        this.getTodoStatuses();
+        if (this.$route.params.todoId) {
+            this.getTodoById(this.$route.params.todoId);
+        }
+        this.getTodoCategories();
+    },
+    computed: {
+        ...mapGetters({
+            todo: 'currentTodo',
+            todoStatusesForSelect: 'todoStatusesForSelect',
+            validationMessages: 'validationMessages',
+            todoCategoriesForSelect: 'todoCategoriesForSelect',
+        }),
+    },
+    watch: {
+        todo(val) {
+            this.todoStatus = {key: this.todo.status, label: this.todo.statusName};
+            this.title = this.todo.title;
+            this.$refs.description.setContent(this.todo.description);
+            this.dueDate = this.todo.dueDate;
+            this.responsibility = this.todo.responsibility;
+            this.todoCategory = {key: this.todo.todoCategory, label: this.todo.todoCategoryName};
         },
     },
     data() {
         return {
-            projectCategories: [{label: 'Production', key: 1}, {label: 'Logistics', key: 2}, {label: 'Quality Management', key: 3},
-             {label: 'Human Resources', key: 4}, {label: 'Purchasing', key: 5}, {label: 'Maintenance', key: 6},
-              {label: 'Assembly', key: 7}, {label: 'Tooling', key: 8}, {label: 'Process Engineering', key: 9}, {label: 'Industrialization', key: 10}],
-            todoStatus: [{label: 'Initiated', key: 1}, {label: 'Ongoing', key: 2}, {label: 'On Hold', key: 3},
-             {label: 'Discontinued', key: 4}, {label: 'Finished', key: 5}],
-            todo_topic: '',
-            schedule: {
-                dueDate: new Date(),
-            },
-            details: {
-                category: null,
-                todoStatus: null,
-            },
+            isEdit: this.$route.params.todoId,
+            todoStatus: {},
+            title: '',
+            dueDate: new Date(),
+            responsibility: [],
+            todoCategory: null,
         };
     },
 };
