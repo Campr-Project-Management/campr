@@ -126,6 +126,19 @@ const actions = {
             }, (response) => {
             });
     },
+    /**
+     * Delete meeting
+     * @param {function} commit
+     * @param {integer} id
+     */
+    sendMeetingNotifications({commit}, id) {
+        Vue.http
+            .get(
+                Routing.generate('app_api_meeting_notifications', {id})
+            ).then((response) => {
+            }, (response) => {
+            });
+    },
 };
 
 const mutations = {
