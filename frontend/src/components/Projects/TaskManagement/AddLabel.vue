@@ -10,10 +10,18 @@
         </div>
         <div class="form">
             <input-field v-model="title" type="text" v-bind:content="title" v-bind:label="message.label_title"></input-field>
+            <error
+                v-if="validationMessages.title && validationMessages.title.length"
+                v-for="message in validationMessages.title"
+                :message="message" />
             <input-field v-model="description" type="textarea" v-bind:content="description" v-bind:label="message.label_description"></input-field>
             <div class="color">
                 <input-field @click.native="toggleSketch" v-model="color" type="text" v-bind:label="message.label_color" :content="color" :css="css"></input-field>
-                <sketch-picker v-show="showSketch" v-model="colors" @input="onChange"></sketch-picker>
+                <error
+                    v-if="validationMessages.color && validationMessages.color.length"
+                    v-for="message in validationMessages.color"
+                    :message="message" />
+                <sketch-picker v-show="showSketch" v-model="colors" @change-color="onChange"></sketch-picker>
             </div>
             <p class="note">{{ message.label_note }}</p>
             <div class="flex flex-space-between actions">
@@ -29,17 +37,20 @@
 import InputField from '../../_common/_form-components/InputField';
 import {Sketch} from 'vue-color';
 import {mapGetters, mapActions} from 'vuex';
+import Error from '../../_common/_messages/Error.vue';
 
 export default {
     components: {
         InputField,
         'sketch-picker': Sketch,
+        Error,
     },
     created() {
         if (this.$route.params.labelId) this.getProjectLabel(this.$route.params.labelId);
     },
     computed: mapGetters({
         label: 'label',
+        validationMessages: 'validationMessages',
     }),
     watch: {
         label(value) {

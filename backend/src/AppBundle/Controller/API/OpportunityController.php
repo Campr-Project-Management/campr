@@ -108,14 +108,14 @@ class OpportunityController extends ApiController
             $measure->setResponsibility($this->getUser());
             $this->persistAndFlush($measure);
 
-            return $this->createApiResponse($measure, JsonResponse::HTTP_CREATED);
+            return $this->createApiResponse($measure, Response::HTTP_CREATED);
         }
 
         return $this->createApiResponse(
             [
                 'messages' => $this->getFormErrors($form),
             ],
-            JsonResponse::HTTP_BAD_REQUEST
+            Response::HTTP_BAD_REQUEST
         );
     }
 }
