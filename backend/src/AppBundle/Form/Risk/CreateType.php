@@ -20,6 +20,7 @@ use AppBundle\Entity\Status;
 use AppBundle\Entity\RiskStrategy;
 use AppBundle\Entity\RiskCategory;
 use AppBundle\Form\Measure\BaseType as MeasureType;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class CreateType extends AbstractType
 {
@@ -87,6 +88,11 @@ class CreateType extends AbstractType
                 ],
                 'placeholder' => 'placeholder.currency',
                 'translation_domain' => 'messages',
+                'constraints' => [
+                    new NotNull([
+                        'message' => 'not_null.currency',
+                    ]),
+                ],
             ])
             ->add('budget', TextType::class, [
                 'required' => true,
@@ -111,6 +117,11 @@ class CreateType extends AbstractType
                     'choices.days' => 'choices.days',
                     'choices.weeks' => 'choices.weeks',
                     'choices.months' => 'choices.months',
+                ],
+                'constraints' => [
+                    new NotNull([
+                        'message' => 'not_null.delay_unit',
+                    ]),
                 ],
                 'placeholder' => 'placeholder.time_unit',
                 'translation_domain' => 'messages',

@@ -62,12 +62,20 @@
                 <div class="form">
                     <!-- /// Risk Name /// -->
                     <input-field type="text" v-bind:label="translateText('placeholder.risk_title')" v-model="title" v-bind:content="title" />
+                    <error
+                        v-if="validationMessages.title && validationMessages.title.length"
+                        v-for="message in validationMessages.title"
+                        :message="message" />
                     <!-- /// End Risk /// -->
 
                     <!-- /// Risk Description /// -->
                     <div class="vueditor-holder">
                         <div class="vueditor-header">{{ translateText('placeholder.risk_description') }}</div>
                         <Vueditor ref="description" />
+                        <error
+                            v-if="validationMessages.description && validationMessages.description.length"
+                            v-for="message in validationMessages.description"
+                            :message="message" />
                     </div>
                     <!-- /// End Risk Description /// -->
 
@@ -114,8 +122,11 @@
                                 <input-field
                                     type="text"
                                     v-model="cost" v-bind:content="cost"
-                                    v-bind:label="translateText('placeholder.potential_cost')"
-                                />
+                                    v-bind:label="translateText('placeholder.potential_cost')" />
+                                <error
+                                    v-if="validationMessages.cost && validationMessages.cost.length"
+                                    v-for="message in validationMessages.cost"
+                                    :message="message" />
                             </div>
                             <div class="col-md-2">
                                 <select-field
@@ -123,12 +134,20 @@
                                     v-bind:options="currencyLabel"
                                     v-model="details.currency"
                                     v-bind:currentOption="details.currency" />
+                                <error
+                                    v-if="validationMessages.currency && validationMessages.currency.length"
+                                    v-for="message in validationMessages.currency"
+                                    :message="message" />
                             </div>
                             <div class="col-md-4">
                                 <input-field
                                     type="text"
                                     v-model="timeDelay" v-bind:content="timeDelay"
-                                    v-bind:label="translateText('placeholder.potential_time_delay')"/>
+                                    v-bind:label="translateText('placeholder.potential_time_delay')" />
+                                <error
+                                    v-if="validationMessages.delay && validationMessages.delay.length"
+                                    v-for="message in validationMessages.delay"
+                                    :message="message" />
                             </div>
                             <div class="col-md-2">
                                 <select-field
@@ -136,6 +155,10 @@
                                     v-bind:options="timeLabel"
                                     v-model="details.time"
                                     v-bind:currentOption="details.time" />
+                                <error
+                                    v-if="validationMessages.delayUnit && validationMessages.delayUnit.length"
+                                    v-for="message in validationMessages.delayUnit"
+                                    :message="message" />
                             </div>                            
                         </div>
                     </div>
@@ -201,6 +224,12 @@
                         <div class="form-group">
                             <div class="col-md-12">
                                 <input-field type="text" v-bind:label="translateText('placeholder.measure_title')" v-model="measure.title" v-bind:content="measure.title" />
+                                <span v-if="validationMessages.measures && validationMessages.measures[index]">
+                                    <error
+                                        v-if="validationMessages.measures[index].title.length"
+                                        v-for="message in validationMessages.measures[index].title"
+                                        :message="message" />
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -208,6 +237,12 @@
                                 <div class="vueditor-holder measure-vueditor-holder">
                                     <div class="vueditor-header">{{ translateText('placeholder.new_measure') }}</div>
                                     <Vueditor :ref="'measure.description'+index" />
+                                    <span v-if="validationMessages.measures && validationMessages.measures[index]">
+                                        <error
+                                            v-if="validationMessages.measures[index].description.length"
+                                            v-for="message in validationMessages.measures[index].description"
+                                            :message="message" />
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -215,6 +250,12 @@
                             <div class="flex flex-space-between">
                                 <div class="col-md-4">
                                     <input-field type="text" v-bind:label="translateText('placeholder.measure_cost')" v-model="measure.cost" v-bind:content="measure.cost" />
+                                    <span v-if="validationMessages.measures && validationMessages.measures[index]">
+                                        <error
+                                            v-if="validationMessages.measures[index].cost.length"
+                                            v-for="message in validationMessages.measures[index].cost"
+                                            :message="message" />
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -255,6 +296,7 @@ import SelectField from '../../_common/_form-components/SelectField';
 import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
+import Error from '../../_common/_messages/Error.vue';
 
 export default {
     components: {
@@ -267,6 +309,7 @@ export default {
         datepicker,
         CalendarIcon,
         moment,
+        Error,
     },
     methods: {
         ...mapActions([
@@ -385,6 +428,7 @@ export default {
             riskStrategiesForSelect: 'riskStrategiesForSelect',
             riskStatusesForSelect: 'riskStatusesForSelect',
             risk: 'currentRisk',
+            validationMessages: 'validationMessages',
         }),
     },
     created() {
