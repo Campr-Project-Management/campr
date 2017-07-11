@@ -79,6 +79,9 @@ not_null:
     filesystem: You must select a filesystem
     company: You must select a company
     author: You must select an author
+    currency: You must select a currency
+    delay_unit: You must select a delay unit
+    time_unit: You must select a time unit
 
 unique:
     name: That name is taken

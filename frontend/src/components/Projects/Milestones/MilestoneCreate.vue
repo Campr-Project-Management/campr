@@ -16,7 +16,11 @@
 
                 <div class="form">
                     <!-- /// Milestone Name /// -->
-                    <input-field type="text" v-bind:label="translateText('placeholder.milestone_title')" v-model="name" v-bind:content="name" />
+                    <input-field type="text" v-bind:label="translateText('placeholder.milestone_name')" v-model="name" v-bind:content="name" />
+                    <error
+                        v-if="validationMessages.name && validationMessages.name.length"
+                        v-for="message in validationMessages.name"
+                        :message="message" />
                     <!-- /// End Milestone Name /// -->
 
                     <!-- /// Milestone Description /// -->
@@ -71,6 +75,10 @@
                                     v-bind:options="workPackageStatusesForMilestone"
                                     v-model="details.status"
                                     v-bind:currentOption="details.status" />
+                                <error
+                                    v-if="validationMessages.workPackageStatus && validationMessages.workPackageStatus.length"
+                                    v-for="message in validationMessages.workPackageStatus"
+                                    :message="message" />
                             </div>
                         </div>
                     </div>
@@ -116,6 +124,7 @@ import SelectField from '../../_common/_form-components/SelectField';
 import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
+import Error from '../../_common/_messages/Error.vue';
 
 export default {
     components: {
@@ -123,6 +132,7 @@ export default {
         SelectField,
         datepicker,
         CalendarIcon,
+        Error,
     },
     methods: {
         ...mapActions([
@@ -168,6 +178,7 @@ export default {
         projectPhasesForSelect: 'projectPhasesForSelect',
         projectPhases: 'projectPhases',
         milestone: 'currentMilestone',
+        validationMessages: 'validationMessages',
     }),
     watch: {
         milestone(value) {
