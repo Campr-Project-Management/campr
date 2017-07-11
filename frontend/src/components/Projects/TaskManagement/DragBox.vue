@@ -16,8 +16,20 @@
     <div v-else-if="showEdit">
         <div class="hr small"></div>
         <input-field v-if="item.title" v-model="title" :content="title" type="text" v-bind:label="dynamicLabels(type, 'title')"></input-field>
+        <error
+            v-if="item.title && validationMessages.dragbox && validationMessages.title && validationMessages.title.length"
+            v-for="message in validationMessages.title"
+            :message="message" />
         <input-field v-if="!item.title" v-model="description" :content="description" type="text" v-bind:label="dynamicLabels(type, 'description')"></input-field><br />
+        <error
+            v-if="!item.title && validationMessages.dragbox && validationMessages.description && validationMessages.description.length"
+            v-for="message in validationMessages.description"
+            :message="message" />
         <input-field v-if="item.title" v-model="description" :content="description" type="textarea" v-bind:label="dynamicLabels(type, 'description')"></input-field>
+        <error
+            v-if="item.title && validationMessages.dragbox && validationMessages.description && validationMessages.description.length"
+            v-for="message in validationMessages.description"
+            :message="message" />
         <div class="flex flex-direction-reverse">
             <a v-on:click="edit(type)" class="btn-rounded">{{ dynamicLabels(type, 'button') }}</a>
         </div>
@@ -29,6 +41,7 @@
 import PencilIcon from '../../_common/_icons/PencilIcon';
 import DragIcon from '../../_common/_icons/DragIcon';
 import InputField from '../../_common/_form-components/InputField';
+import Error from '../../_common/_messages/Error.vue';
 
 export default {
     props: ['item', 'index', 'type'],
@@ -36,6 +49,7 @@ export default {
         InputField,
         PencilIcon,
         DragIcon,
+        Error,
     },
     data: function() {
         return {
@@ -51,6 +65,7 @@ export default {
             },
             title: this.item.title,
             description: this.item.description,
+            validationMessages: {},
         };
     },
     methods: {
@@ -70,7 +85,6 @@ export default {
             this.showEdit = true;
         },
         edit: function(type) {
-            this.showEdit = false;
             let data = {
                 itemId: this.item.id,
                 title: this.title,
@@ -82,8 +96,16 @@ export default {
                     .$parent
                     .editObjective(data)
                     .then(
-                        () => {
+                        (response) => {
                             this.$parent.showSavedComponent = true;
+                            if (response.body && response.body.error) {
+                                const {messages} = response.body;
+                                messages.dragbox = true;
+                                this.validationMessages = messages;
+                            } else {
+                                this.validationMessages = {};
+                                this.showEdit = false;
+                            }
                         },
                         () => {
                             this.$parent.showFailedComponent = true;
@@ -96,8 +118,16 @@ export default {
                     .$parent
                     .editLimitation(data)
                     .then(
-                        () => {
+                        (response) => {
                             this.$parent.showSavedComponent = true;
+                            if (response.body && response.body.error) {
+                                const {messages} = response.body;
+                                messages.dragbox = true;
+                                this.validationMessages = messages;
+                            } else {
+                                this.validationMessages = {};
+                                this.showEdit = false;
+                            }
                         },
                         () => {
                             this.$parent.showFailedComponent = true;
@@ -110,8 +140,16 @@ export default {
                     .$parent
                     .editDeliverable(data)
                     .then(
-                        () => {
+                        (response) => {
                             this.$parent.showSavedComponent = true;
+                            if (response.body && response.body.error) {
+                                const {messages} = response.body;
+                                messages.dragbox = true;
+                                this.validationMessages = messages;
+                            } else {
+                                this.validationMessages = {};
+                                this.showEdit = false;
+                            }
                         },
                         () => {
                             this.$parent.showFailedComponent = true;

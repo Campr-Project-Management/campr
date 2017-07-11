@@ -1131,9 +1131,9 @@ placeholder:
     opportunity_title: Opportunity Title
     risk: Risk
     opportunity: Opportunity
-    phase_title: Phase Title
+    phase_name: Phase Name
     phase_description: Phase Description
-    milestone_title: Milestone Title
+    milestone_name: Milestone Name
     milestone_description: Milestone Description
     first_name: First Name
     last_name: Last Name

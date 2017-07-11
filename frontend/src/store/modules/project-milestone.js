@@ -83,7 +83,11 @@ const actions = {
                 Routing.generate('app_api_project_milestones_create', {id: data.project}),
                 JSON.stringify(data)
             ).then((response) => {
-                if (response.status === 201) {
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                     router.push({name: 'project-phases-and-milestones'});
                 }
             }, (response) => {
@@ -100,7 +104,11 @@ const actions = {
                 Routing.generate('app_api_workpackage_milestone_edit', {id: data.id}),
                 JSON.stringify(data)
             ).then((response) => {
-                if (response.status === 202) {
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                     router.push({name: 'project-phases-and-milestones'});
                 }
             }, (response) => {
