@@ -108,14 +108,14 @@ class MeasureController extends ApiController
             $comment->setResponsibility($this->getUser());
             $this->persistAndFlush($comment);
 
-            return $this->createApiResponse($comment, JsonResponse::HTTP_CREATED);
+            return $this->createApiResponse($comment, Response::HTTP_CREATED);
         }
 
         return $this->createApiResponse(
             [
                 'messages' => $this->getFormErrors($form),
             ],
-            JsonResponse::HTTP_BAD_REQUEST
+            Response::HTTP_BAD_REQUEST
         );
     }
 }
