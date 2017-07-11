@@ -62,12 +62,20 @@
                 <div class="form">
                     <!-- /// Opportunity Name /// -->
                     <input-field type="text" v-bind:label="translateText('placeholder.opportunity_title')" v-model="title" v-bind:content="title" />
+                    <error
+                        v-if="validationMessages.title && validationMessages.title.length"
+                        v-for="message in validationMessages.title"
+                        :message="message" />
                     <!-- /// End Opportunity Name /// -->
 
                     <!-- /// Opportunity Description /// -->
                     <div class="vueditor-holder">
                         <div class="vueditor-header">{{ translateText('placeholder.opportunity_description') }}</div>
                         <Vueditor ref="description" />
+                        <error
+                            v-if="validationMessages.description && validationMessages.description.length"
+                            v-for="message in validationMessages.description"
+                            :message="message" />
                     </div>
                     <!-- /// End Opportunity Description /// -->
 
@@ -114,8 +122,7 @@
                                 <input-field
                                     type="text"
                                     v-bind:label="translateText('placeholder.potential_savings')"
-                                    v-model="costSavings" v-bind:content="costSavings"
-                                />
+                                    v-model="costSavings" v-bind:content="costSavings" />
                             </div>
                             <div class="col-md-2">
                                 <select-field 
@@ -123,6 +130,10 @@
                                     v-bind:options="currencyLabel"
                                     v-model="details.currency"
                                     v-bind:currentOption="details.currency" />
+                                <error
+                                    v-if="validationMessages.currency && validationMessages.currency.length"
+                                    v-for="message in validationMessages.currency"
+                                    :message="message" />
                             </div>
                             <div class="col-md-4">
                                 <input-field
@@ -137,6 +148,10 @@
                                     v-bind:options="timeLabel"
                                     v-model="details.time"
                                     v-bind:currentOption="details.time" />
+                                <error
+                                    v-if="validationMessages.timeUnit && validationMessages.timeUnit.length"
+                                    v-for="message in validationMessages.timeUnit"
+                                    :message="message" />
                             </div>                            
                         </div>
                     </div>
@@ -202,6 +217,12 @@
                         <div class="form-group">
                             <div class="col-md-12">
                                 <input-field type="text" v-bind:label="translateText('placeholder.measure_title')" v-model="measure.title" v-bind:content="measure.title" />
+                                <span v-if="validationMessages.measures && validationMessages.measures[index]">
+                                    <error
+                                        v-if="validationMessages.measures[index].title.length"
+                                        v-for="message in validationMessages.measures[index].title"
+                                        :message="message" />
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -209,6 +230,12 @@
                                 <div class="vueditor-holder measure-vueditor-holder">
                                     <div class="vueditor-header">{{ translateText('placeholder.new_measure') }}</div>
                                     <Vueditor :ref="'measure.description'+index" />
+                                    <span v-if="validationMessages.measures && validationMessages.measures[index]">
+                                        <error
+                                            v-if="validationMessages.measures[index].description.length"
+                                            v-for="message in validationMessages.measures[index].description"
+                                            :message="message" />
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -216,6 +243,12 @@
                             <div class="flex flex-space-between">
                                 <div class="col-md-4">
                                     <input-field type="text" v-bind:label="translateText('placeholder.measure_cost')" v-model="measure.cost" v-bind:content="measure.cost" />
+                                    <span v-if="validationMessages.measures && validationMessages.measures[index]">
+                                        <error
+                                            v-if="validationMessages.measures[index].cost.length"
+                                            v-for="message in validationMessages.measures[index].cost"
+                                            :message="message" />
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -256,6 +289,7 @@ import SelectField from '../../_common/_form-components/SelectField';
 import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
+import Error from '../../_common/_messages/Error.vue';
 
 export default {
     components: {
@@ -268,6 +302,7 @@ export default {
         datepicker,
         CalendarIcon,
         moment,
+        Error,
     },
     methods: {
         ...mapActions([
@@ -386,6 +421,7 @@ export default {
             opportunityStrategiesForSelect: 'opportunityStrategiesForSelect',
             opportunityStatusesForSelect: 'opportunityStatusesForSelect',
             opportunity: 'currentOpportunity',
+            validationMessages: 'validationMessages',
         }),
     },
     created() {

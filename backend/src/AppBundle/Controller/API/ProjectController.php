@@ -392,9 +392,7 @@ class ProjectController extends ApiController
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($label);
-            $em->flush();
+            $this->persistAndFlush($label);
 
             return $this->createApiResponse($label, Response::HTTP_CREATED);
         }
@@ -892,9 +890,7 @@ class ProjectController extends ApiController
         if ($form->isValid()) {
             $projectObjective = $form->getData();
             $projectObjective->setProject($project);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($projectObjective);
-            $em->flush();
+            $this->persistAndFlush($projectObjective);
 
             return $this->createApiResponse($projectObjective, Response::HTTP_CREATED);
         }
@@ -1496,14 +1492,14 @@ class ProjectController extends ApiController
             $risk->setCreatedBy($this->getUser());
             $this->persistAndFlush($risk);
 
-            return $this->createApiResponse($risk, JsonResponse::HTTP_CREATED);
+            return $this->createApiResponse($risk, Response::HTTP_CREATED);
         }
 
         return $this->createApiResponse(
             [
                 'messages' => $this->getFormErrors($form),
             ],
-            JsonResponse::HTTP_BAD_REQUEST
+            Response::HTTP_BAD_REQUEST
         );
     }
 
@@ -1552,14 +1548,14 @@ class ProjectController extends ApiController
             $opportunity->setCreatedBy($this->getUser());
             $this->persistAndFlush($opportunity);
 
-            return $this->createApiResponse($opportunity, JsonResponse::HTTP_CREATED);
+            return $this->createApiResponse($opportunity, Response::HTTP_CREATED);
         }
 
         return $this->createApiResponse(
             [
                 'messages' => $this->getFormErrors($form),
             ],
-            JsonResponse::HTTP_BAD_REQUEST
+            Response::HTTP_BAD_REQUEST
         );
     }
 

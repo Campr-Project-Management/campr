@@ -19,6 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use AppBundle\Form\Measure\BaseType as MeasureType;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class BaseType extends AbstractType
 {
@@ -89,6 +90,11 @@ class BaseType extends AbstractType
                 ],
                 'placeholder' => 'placeholder.currency',
                 'translation_domain' => 'messages',
+                'constraints' => [
+                    new NotNull([
+                        'message' => 'not_null.currency',
+                    ]),
+                ],
             ])
             ->add('timeSavings', TextType::class, [
                 'required' => false,
@@ -100,6 +106,11 @@ class BaseType extends AbstractType
                     'choices.days' => 'choices.days',
                     'choices.weeks' => 'choices.weeks',
                     'choices.months' => 'choices.months',
+                ],
+                'constraints' => [
+                    new NotNull([
+                        'message' => 'not_null.time_unit',
+                    ]),
                 ],
                 'placeholder' => 'placeholder.time_unit',
                 'translation_domain' => 'messages',
