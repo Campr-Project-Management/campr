@@ -12,6 +12,10 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <input-field type="text" v-bind:label="translateText('placeholder.measure_title')" v-model="selectedMeasure.title" v-bind:content="selectedMeasure.title" />
+                    <error
+                        v-if="editMeasureValidationMessages.title && editMeasureValidationMessages.title.length"
+                        v-for="message in editMeasureValidationMessages.title"
+                        :message="message" />
                 </div>
             </div>
             <div class="form-group">
@@ -19,6 +23,10 @@
                     <div class="vueditor-holder measure-vueditor-holder">
                         <div class="vueditor-header">{{ translateText('placeholder.measure_description') }}</div>
                         <Vueditor :ref="'selectedMeasureDescription'" />
+                        <error
+                            v-if="editMeasureValidationMessages.description && editMeasureValidationMessages.description.length"
+                            v-for="message in editMeasureValidationMessages.description"
+                            :message="message" />
                     </div>
                 </div>
             </div>
@@ -26,6 +34,10 @@
                 <div class="flex flex-space-between">
                     <div class="col-md-12">
                         <input-field type="text" v-bind:label="translateText('placeholder.measure_cost')" v-model="selectedMeasure.cost" v-bind:content="selectedMeasure.cost" />
+                        <error
+                            v-if="editMeasureValidationMessages.cost && editMeasureValidationMessages.cost.length"
+                            v-for="message in editMeasureValidationMessages.cost"
+                            :message="message" />
                     </div>
                 </div>
             </div>
@@ -249,9 +261,13 @@
                                 <div class="vueditor-holder">
                                     <div class="vueditor-header">{{ translateText('message.new_comment') }}</div>
                                     <Vueditor :ref="'comment'+measure.id" />
+                                    <error
+                                        v-if="measureCommentValidationMessages.description && measureCommentValidationMessages.description.length"
+                                        v-for="message in measureCommentValidationMessages.description"
+                                        :message="message" />
                                 </div>
                                 <div class="footer-buttons flex flex-space-between">
-                                    <button @click="addMeasureComment(measure.id)" type="button" :data-target="'#measure-'+measure.id+'-new-comment'" data-toggle="collapse" :data-parent="'#measure-'+measure.id" aria-expanded="false" class="btn-rounded btn-auto btn-md second-bg">{{ translateText('message.add_comment') }}</button>
+                                    <button @click="addMeasureComment(measure.id)" type="button" :data-target="'#measure-'+measure.id+'-new-comment'" :data-parent="'#measure-'+measure.id" aria-expanded="false" class="btn-rounded btn-auto btn-md second-bg">{{ translateText('message.add_comment') }}</button>
                                     <button type="button" :data-target="'#measure-'+measure.id+'-new-comment'" class="btn btn-rounded btn-empty btn-auto btn-md" data-toggle="collapse" :data-parent="'#measure-'+measure.id" aria-expanded="false">{{ translateText('message.close') }}</button>
                                 </div>
                             </div>
@@ -267,6 +283,10 @@
                     <div class="form-group">
                         <div class="col-md-12">
                             <input-field type="text" v-bind:label="translateText('placeholder.measure_title')" v-model="measureTitle" v-bind:content="measureTitle" />
+                            <error
+                                v-if="validationMessages.title && validationMessages.title.length"
+                                v-for="message in validationMessages.title"
+                                :message="message" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -274,6 +294,10 @@
                             <div class="vueditor-holder measure-vueditor-holder">
                                 <div class="vueditor-header">{{ translateText('placeholder.new_measure') }}</div>
                                 <Vueditor ref="measureDescription" />
+                                <error
+                                    v-if="validationMessages.description && validationMessages.description.length"
+                                    v-for="message in validationMessages.description"
+                                    :message="message" />
                             </div>
                         </div>
                     </div>
@@ -281,6 +305,10 @@
                         <div class="flex flex-space-between">
                             <div class="col-md-4">
                                 <input-field type="text" v-bind:label="translateText('placeholder.measure_cost')" v-model="measureCost" v-bind:content="measureCost" />
+                                <error
+                                    v-if="validationMessages.cost && validationMessages.cost.length"
+                                    v-for="message in validationMessages.cost"
+                                    :message="message" />
                             </div>
                             <div class="col-md-4 text-right">
                                 <a @click="addMeasure()" class="btn-rounded btn-auto">{{ translateText('button.add_new_measure') }}</a>
@@ -304,6 +332,7 @@ import RangeSlider from '../../_common/_form-components/RangeSlider';
 import {mapGetters, mapActions} from 'vuex';
 import moment from 'moment';
 import Modal from '../../_common/Modal';
+import Error from '../../_common/_messages/Error.vue';
 
 export default {
     components: {
@@ -314,6 +343,7 @@ export default {
         IndicatorIcon,
         RangeSlider,
         Modal,
+        Error,
     },
     methods: {
         ...mapActions([
@@ -334,7 +364,24 @@ export default {
                 measure: measureId,
                 description: this.$refs['comment'+measureId][0].getContent(),
             };
-            this.createMeasureComment(data);
+            this
+                .createMeasureComment(data)
+                .then(
+                    (response) => {
+                        if (response.body && response.body.error) {
+                            const {messages} = response.body;
+                            this.measureCommentValidationMessages = messages;
+                        } else {
+                            if (this.opportunity.measures) {
+                                let measureComment = response.body;
+                                this.opportunity.measures.map(item => {
+                                    if (item.id === measureComment.measure) {
+                                        item.comments.push(measureComment);
+                                    }
+                                });
+                            }
+                        }
+                    });
         },
         addMeasure: function() {
             let data = {
@@ -359,8 +406,28 @@ export default {
         },
         editSelectedMeasure: function() {
             this.selectedMeasure.description = this.$refs['selectedMeasureDescription'].getContent();
-            this.editMeasure(this.selectedMeasure);
-            this.showEditMeasureModal = false;
+            this
+                .editMeasure(this.selectedMeasure)
+                .then(
+                    (response) => {
+                        if (response.body && response.body.error) {
+                            const {messages} = response.body;
+                            this.editMeasureValidationMessages = messages;
+                        } else {
+                            if (this.opportunity.measures) {
+                                let data = response.body;
+                                this.opportunity.measures.map(item => {
+                                    if (item.id === data.id) {
+                                        item.title = data.title;
+                                        item.description = data.description;
+                                        item.cost = data.cost;
+                                    }
+                                });
+                            }
+                            this.editMeasureValidationMessages = {};
+                            this.showEditMeasureModal = false;
+                        }
+                    });
         },
         updateGridView() {
             let index = 0;
@@ -405,6 +472,7 @@ export default {
         ...mapGetters({
             opportunity: 'currentOpportunity',
             risksOpportunitiesStats: 'risksOpportunitiesStats',
+            validationMessages: 'validationMessages',
         }),
     },
     created() {
@@ -437,6 +505,8 @@ export default {
                 {type: 'very-low'}, {type: 'low'}, {type: 'medium'}, {type: 'high'},
                 {type: 'very-low'}, {type: 'very-low'}, {type: 'low'}, {type: 'medium'},
             ],
+            editMeasureValidationMessages: {},
+            measureCommentValidationMessages: {},
         };
     },
     watch: {

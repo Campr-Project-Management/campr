@@ -16,7 +16,11 @@
 
                 <div class="form">
                     <!-- /// Phase Name /// -->
-                    <input-field type="text" v-bind:label="translateText('placeholder.phase_title')" v-model="name" v-bind:content="name" />
+                    <input-field type="text" v-bind:label="translateText('placeholder.phase_name')" v-model="name" v-bind:content="name" />
+                    <error
+                        v-if="validationMessages.name && validationMessages.name.length"
+                        v-for="message in validationMessages.name"
+                        :message="message" />
                     <!-- /// End Phase Name /// -->
 
                     <!-- /// Phase Description /// -->
@@ -161,6 +165,7 @@ import SelectField from '../../_common/_form-components/SelectField';
 import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
+import Error from '../../_common/_messages/Error.vue';
 
 export default {
     components: {
@@ -168,6 +173,7 @@ export default {
         SelectField,
         datepicker,
         CalendarIcon,
+        Error,
     },
     methods: {
         ...mapActions([
@@ -219,6 +225,7 @@ export default {
         projectPhases: 'projectPhases',
         projectPhasesForSelect: 'projectPhasesForSelect',
         phase: 'currentPhase',
+        validationMessages: 'validationMessages',
     }),
     watch: {
         phase(value) {
