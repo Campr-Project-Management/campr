@@ -71,7 +71,15 @@
                 </div>
                 <div class="hr small"></div>
                 <input-field v-model="objectiveTitle" type="text" v-bind:label="translateText('message.new_objective_title')"></input-field>
+                <error
+                    v-if="validationMessages.createProjectObjectiveForm && validationMessages.title && validationMessages.title.length"
+                    v-for="message in validationMessages.title"
+                    :message="message" />
                 <input-field v-model="objectiveDescription" type="textarea" v-bind:label="translateText('message.new_objective_description')"></input-field>
+                <error
+                    v-if="validationMessages.createProjectObjectiveForm && validationMessages.description && validationMessages.description.length"
+                    v-for="message in validationMessages.description"
+                    :message="message" />
                 <div class="flex flex-direction-reverse">
                     <a v-on:click="createProjectObjective()" class="btn-rounded">{{ translateText('message.add_objective') }} +</a>
                 </div>
@@ -85,6 +93,10 @@
                 </div>
                 <div class="hr small"></div>
                 <input-field v-model="deliverableDescription" type="text" v-bind:label="translateText('message.new_project_deliverable')"></input-field>
+                <error
+                    v-if="validationMessages.createProjectDeliverableForm && validationMessages.description && validationMessages.description.length"
+                    v-for="message in validationMessages.description"
+                    :message="message" />
                 <div class="flex flex-direction-reverse">
                     <a v-on:click="createProjectDeliverable()" class="btn-rounded">{{ translateText('message.add_deliverable') }} +</a>
                 </div>
@@ -114,6 +126,10 @@
                 </div>
                 <div class="hr small"></div>
                 <input-field v-model="limitationDescription" type="text" v-bind:label="translateText('message.new_project_limitation')"></input-field>
+                <error
+                    v-if="validationMessages.createProjectLimitationForm && validationMessages.description && validationMessages.description.length"
+                    v-for="message in validationMessages.description"
+                    :message="message" />
                 <div class="flex flex-direction-reverse">
                     <a v-on:click="createProjectLimitation()" class="btn-rounded">{{ translateText('message.add_limitation') }} +</a>
                 </div>
@@ -172,6 +188,7 @@ import AlertModal from '../_common/AlertModal.vue';
 import datepicker from 'vuejs-datepicker';
 import moment from 'moment';
 import router from '../../router';
+import Error from '../_common/_messages/Error.vue';
 
 export default {
     components: {
@@ -183,6 +200,7 @@ export default {
         EyeIcon,
         MemberBadge,
         AlertModal,
+        Error,
     },
     watch: {
         showSaved(value) {
@@ -307,9 +325,6 @@ export default {
             ;
         },
         createProjectLimitation: function() {
-            if (!this.limitationDescription) {
-                return;
-            }
             let data = {
                 projectId: this.$route.params.id,
                 description: this.limitationDescription,
@@ -427,6 +442,7 @@ export default {
             projectResourcesForGraph: 'projectResourcesForGraph',
             projectSponsors: 'projectSponsors',
             projectManagers: 'projectManagers',
+            validationMessages: 'validationMessages',
         }),
         downloadPdf() {
             return Routing.generate('app_contract_pdf', {id: this.$route.params.id});
@@ -508,6 +524,8 @@ export default {
             forecastStartDate: new Date(),
             forecastEndDate: new Date(),
             showSponsorsManagers: false,
+            objectiveDescription: null,
+            limitationDescription: null,
         };
     },
 };

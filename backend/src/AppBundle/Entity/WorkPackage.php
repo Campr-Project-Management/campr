@@ -1247,7 +1247,7 @@ class WorkPackage
     /**
      * @param WorkPackageStatus|null $workPackageStatus
      */
-    public function setWorkPackageStatus(WorkPackageStatus $workPackageStatus)
+    public function setWorkPackageStatus(WorkPackageStatus $workPackageStatus = null)
     {
         $this->workPackageStatus = $workPackageStatus;
     }

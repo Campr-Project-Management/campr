@@ -171,8 +171,14 @@ const actions = {
                 JSON.stringify(data)
             )
             .then(
-                () => {
-                    router.push({name: 'project-task-management-edit-labels'});
+                (response) => {
+                    if (response.body && response.body.error) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                        router.push({name: 'project-task-management-edit-labels'});
+                    }
                 },
                 () => {}
             )
@@ -193,8 +199,14 @@ const actions = {
                 JSON.stringify(data)
             )
             .then(
-                () => {
-                    router.push({name: 'project-task-management-edit-labels'});
+                (response) => {
+                    if (response.body && response.body.error) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                        router.push({name: 'project-task-management-edit-labels'});
+                    }
                 },
                 () => {}
             )
@@ -227,8 +239,15 @@ const actions = {
                 JSON.stringify(data)
             ).then(
                 (response) => {
-                    let objective = response.data;
-                    commit(types.ADD_PROJECT_OBJECTIVE, {objective});
+                    if (response.body && response.body.error) {
+                        const {messages} = response.body;
+                        messages.createProjectObjectiveForm = true;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        let objective = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                        commit(types.ADD_PROJECT_OBJECTIVE, {objective});
+                    }
                 },
                 (response) => {}
             )
@@ -282,8 +301,15 @@ const actions = {
             )
             .then(
                 (response) => {
-                    let limitation = response.data;
-                    commit(types.ADD_PROJECT_LIMITATION, {limitation});
+                    if (response.body && response.body.error) {
+                        const {messages} = response.body;
+                        messages.createProjectLimitationForm = true;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        let limitation = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                        commit(types.ADD_PROJECT_LIMITATION, {limitation});
+                    }
                 },
                 (response) => {}
             )
@@ -337,8 +363,15 @@ const actions = {
             )
             .then(
                 (response) => {
-                    let deliverable = response.data;
-                    commit(types.ADD_PROJECT_DELIVERABLE, {deliverable});
+                    if (response.body && response.body.error) {
+                        const {messages} = response.body;
+                        messages.createProjectDeliverableForm = true;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        let deliverable = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                        commit(types.ADD_PROJECT_DELIVERABLE, {deliverable});
+                    }
                 },
                 (response) => {}
             );
