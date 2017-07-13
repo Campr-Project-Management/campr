@@ -27,16 +27,28 @@ const actions = {
      * Creates a new subteam
      * @param {function} commit
      * @param {array} data
+     * @return {Object}
      */
     createSubteam({commit}, data) {
-        Vue.http
+        return Vue.http
             .post(
                 Routing.generate('app_api_project_create_subteam', {id: data.project}),
                 JSON.stringify(data)
             ).then((response) => {
-                let subteam = response.data;
-                commit(types.ADD_SUBTEAM, {subteam});
+                if (response.body && response.body.error && response.body.messages) {
+                    const {messages} = response.body;
+                    if (messages.name) {
+                        messages.subteamName = messages.name;
+                    }
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    let subteam = response.body;
+                    commit(types.ADD_SUBTEAM, {subteam});
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                }
+                return response;
             }, (response) => {
+                return response;
             });
     },
     /**
