@@ -470,6 +470,20 @@ const actions = {
                 Routing.generate('app_api_project_distribution_list_create', {'id': data.projectId}),
                 JSON.stringify(data)
             )
+            .then(
+                (response) => {
+                    if (response.body && response.body.error) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        const task = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                        commit(types.SET_TASK, {task});
+                    }
+                    return response.body;
+                },
+                (response) => {}
+            )
         ;
     },
 

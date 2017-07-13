@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
 import _ from 'lodash';
-import router from '../../router';
+// import router from '../../router';
 
 const ROLE_SPONSOR = 'roles.project_sponsor';
 const ROLE_MANAGER = 'roles.project_manager';
@@ -89,24 +89,25 @@ const actions = {
                 }
             }
         });
-
-        const cb = (response) => {
-            if ([200, 201].indexOf(response.status) !== -1) {
-                router.push({
-                    name: 'project-organization',
-                });
-            } else {
-                alert('Something went wrong!');
-            }
-        };
-
-        Vue
+        return Vue
             .http
             .post(
                 Routing.generate('app_api_project_team_member_create', {'id': userData.project}),
                 data
             )
-            .then(cb, cb);
+            .then(
+                (response) => {
+                    if (response.body && response.body.error) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                    }
+                    return response.body;
+                },
+                (response) => {
+                    return response.body;
+                }
+            );
     },
 };
 
