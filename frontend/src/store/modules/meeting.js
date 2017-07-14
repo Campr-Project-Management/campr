@@ -87,14 +87,23 @@ const actions = {
      * Creates a new project meeting
      * @param {function} commit
      * @param {array} data
+     * @return {Object}
      */
     createProjectMeeting({commit}, data) {
-        Vue.http
+        return Vue.http
             .post(
                 Routing.generate('app_api_project_meeting_create', {'id': data.projectId}),
                 data.data
             ).then((response) => {
+                if (response.body && response.body.error && response.body.messages) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                }
+                return response;
             }, (response) => {
+                return response;
             });
     },
     /**
