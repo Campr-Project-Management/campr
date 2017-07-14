@@ -1,5 +1,6 @@
 export const TOGGLE_LOADER = 'TOGGLE_LOADER';
 export const SET_USER = 'SET_USER';
+export const SET_CURRENT_MEMBER = 'SET_CURRENT_MEMBER';
 export const SET_PROJECTS = 'SET_PROJECTS';
 export const TOGGLE_FAVORITE = 'TOGGLE_FAVOURITE';
 export const SET_PROJECT = 'SET_PROJECT';
