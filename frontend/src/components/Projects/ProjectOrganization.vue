@@ -123,7 +123,7 @@
                                     <switches :modelChanged="updateDistributionItem(item, dl)" v-model="inDistribution" :selected="inDistributionList(item.user, dl)"></switches>
                                 </td>
                                 <td>
-                                    <router-link :to="{name: 'project-organization-view-member'}" class="btn-icon">
+                                    <router-link :to="{name: 'project-organization-view-member', params: {userId: item.user} }" class="btn-icon">
                                         <view-icon fill="second-fill"></view-icon>
                                     </router-link>
                                     <router-link :to="{name: 'project-organization-create-member'}" class="btn-icon">
