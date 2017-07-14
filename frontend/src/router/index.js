@@ -103,7 +103,7 @@ const routes = [
                 name: 'project-organization-create-member',
             },
             {
-                path: 'organization/view-member',
+                path: 'organization/view-member/:userId',
                 component: ViewMember,
                 name: 'project-organization-view-member',
             },
