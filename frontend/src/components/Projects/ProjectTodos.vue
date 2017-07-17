@@ -1,5 +1,12 @@
 <template>
     <div class="project-meetings page-section">
+        <modal v-if="showDeleteModal" @close="showDeleteModal = false">
+            <p class="modal-title">{{ translateText('message.delete_todo') }}</p>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="removeTodo()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+            </div>
+        </modal>
         <div class="header flex flex-space-between">
             <h1>{{ translateText('message.project_todos') }}</h1>
             <div class="flex flex-v-center">
@@ -9,7 +16,7 @@
 
         <div class="flex flex-direction-reverse">
             <div class="full-filters">
-                <todos-filters></todos-filters>
+                <todos-filters :updateFilters="applyFilters" ></todos-filters>
             </div>
         </div>
 
@@ -29,173 +36,24 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>232</td>
-                                <td>Production</td>
-                                <td>Initiated</td>
-                                <td>01.04.2017</td>
-                                <td class="cell-wrap">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
+                            <tr v-for="todo in todos.items">
+                                <td>{{ todo.id }}</td>
+                                <td>{{ todo.todoCategoryName }}</td>
+                                <td>{{ todo.statusName }}</td>
+                                <td>{{ todo.dueDate | moment('DD.MM.YYYY') }}</td>
+                                <td class="cell-wrap">{{ todo.title }}</td>
                                 <td>
-                                    <div class="avatar" v-tooltip.top-center="'Andrea Sinclair'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
+                                    <div class="avatar" v-tooltip.top-center="todo.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
                                 </td>
                                 <td>
                                     <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_todo')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_todo')"><edit-icon fill="second-fill"></edit-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_todo')"><delete-icon fill="danger-fill"></delete-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-                            <tr>
-                                <td>231</td>
-                                <td>Logistics</td>
-                                <td>Ongoing</td>
-                                <td>15.06.2017</td>
-                                <td class="cell-wrap">Donec magna massa, tincidunt sit amet quam nec, pellentesque varius libero.</td>
-                                <td>
-                                    <div class="avatar" v-tooltip.top-center="'Connan Wilder'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_todo')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_todo')"><edit-icon fill="second-fill"></edit-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_todo')"><delete-icon fill="danger-fill"></delete-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-                            <tr>
-                                <td>230</td>
-                                <td>Production</td>
-                                <td class="second-color">Finished</td>
-                                <td>01.04.2017</td>
-                                <td class="cell-wrap">Donec id rhoncus justo, ac imperdiet purus. Fusce eleifend tortor vulputate leo interdum, eu malesuada ipsum ac imperdiet purus.</td>
-                                <td>
-                                    <div class="avatar" v-tooltip.top-center="'Connan Wilder'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_todo')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_todo')"><edit-icon fill="second-fill"></edit-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_todo')"><delete-icon fill="danger-fill"></delete-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-                            <tr>
-                                <td>229</td>
-                                <td>Quality Management</td>
-                                <td class="danger-color">Discontinued</td>
-                                <td>18.08.2017</td>
-                                <td class="cell-wrap">Vestibulum vulputate mattis nibh vel iaculis.</td>
-                                <td>
-                                    <div class="avatar" v-tooltip.top-center="'Craig Pruess'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg)' }"></div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_todo')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_todo')"><edit-icon fill="second-fill"></edit-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_todo')"><delete-icon fill="danger-fill"></delete-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-                            <tr>
-                                <td>228</td>
-                                <td>Maintenance</td>
-                                <td class="second-color">Finished</td>
-                                <td>15.04.2017</td>
-                                <td class="cell-wrap">Etiam lectus orci.</td>
-                                <td>
-                                    <div class="avatar" v-tooltip.top-center="'John Doe'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/41.jpg)' }"></div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_todo')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_todo')"><edit-icon fill="second-fill"></edit-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_todo')"><delete-icon fill="danger-fill"></delete-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-                            <tr>
-                                <td>228</td>
-                                <td>Logistics</td>
-                                <td class="warning-color">On Hold</td>
-                                <td>07.0332017</td>
-                                <td class="cell-wrap">Fermentum vel lacinia sit amet.</td>
-                                <td>
-                                    <div class="avatar" v-tooltip.top-center="'Angella Patterstone'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/44.jpg)' }"></div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_todo')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_todo')"><edit-icon fill="second-fill"></edit-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_todo')"><delete-icon fill="danger-fill"></delete-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-                            <tr>
-                                <td>232</td>
-                                <td>Production</td>
-                                <td>Initiated</td>
-                                <td>01.04.2017</td>
-                                <td class="cell-wrap">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
-                                <td>
-                                    <div class="avatar" v-tooltip.top-center="'Andrea Sinclair'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_todo')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_todo')"><edit-icon fill="second-fill"></edit-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_todo')"><delete-icon fill="danger-fill"></delete-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-                            <tr>
-                                <td>231</td>
-                                <td>Logistics</td>
-                                <td>Ongoing</td>
-                                <td>15.06.2017</td>
-                                <td class="cell-wrap">Donec magna massa, tincidunt sit amet quam nec, pellentesque varius libero.</td>
-                                <td>
-                                    <div class="avatar" v-tooltip.top-center="'Connan Wilder'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_todo')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_todo')"><edit-icon fill="second-fill"></edit-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_todo')"><delete-icon fill="danger-fill"></delete-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-                            <tr>
-                                <td>230</td>
-                                <td>Production</td>
-                                <td class="second-color">Finished</td>
-                                <td>01.04.2017</td>
-                                <td class="cell-wrap">Donec id rhoncus justo, ac imperdiet purus. Fusce eleifend tortor vulputate leo interdum, eu malesuada ipsum ac imperdiet purus.</td>
-                                <td>
-                                    <div class="avatar" v-tooltip.top-center="'Connan Wilder'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_todo')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_todo')"><edit-icon fill="second-fill"></edit-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_todo')"><delete-icon fill="danger-fill"></delete-icon></a>
-                                    </div>
-                                </td>                                
-                            </tr>
-                            <tr>
-                                <td>229</td>
-                                <td>Quality Management</td>
-                                <td class="danger-color">Discontinued</td>
-                                <td>18.08.2017</td>
-                                <td class="cell-wrap">Vestibulum vulputate mattis nibh vel iaculis.</td>
-                                <td>
-                                    <div class="avatar" v-tooltip.top-center="'Craig Pruess'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/40.jpg)' }"></div>
-                                </td>
-                                <td>
-                                    <div class="text-right">
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_todo')"><view-icon fill="second-fill"></view-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_todo')"><edit-icon fill="second-fill"></edit-icon></a>
-                                        <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_todo')"><delete-icon fill="danger-fill"></delete-icon></a>
+                                        <router-link :to="{name: 'project-todos-view-todo', params:{todoId: todo.id}}">
+                                            <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_todo')"><view-icon fill="second-fill"></view-icon></a>
+                                        </router-link>
+                                        <router-link :to="{name: 'project-todos-edit-todo', params:{todoId: todo.id}}">
+                                            <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_todo')"><edit-icon fill="second-fill"></edit-icon></a>
+                                        </router-link>    
+                                        <a href="javascript:void(0)" @click="initDeleteModal(todo)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_todo')"><delete-icon fill="danger-fill"></delete-icon></a>
                                     </div>
                                 </td>                                
                             </tr>
@@ -204,15 +62,12 @@
                 </div>
             </vue-scrollbar>
 
-            <div class="flex flex-direction-reverse flex-v-center">
+            <div class="flex flex-direction-reverse flex-v-center" v-if="pages > 1">
                 <div class="pagination">
-                    <span class="active">1</span>
-                    <span>2</span>
-                    <span>3</span>
-                    <span>4</span>
+                    <span v-if="pages > 1" v-for="page in pages" v-bind:class="{'active': page == activePage}" @click="changePage(page)" >{{ page }}</span>
                 </div>
                 <div>
-                    <span class="pagination-info">{{ translateText('message.displaying') }} 10 {{ translateText('message.results_out_of') }} 43</span>
+                    <span class="pagination-info">{{ translateText('message.displaying') }} {{ todos.items.length }} {{ translateText('message.results_out_of') }} {{ todos.totalItems }}</span>
                 </div>
             </div>
         </div>
@@ -225,6 +80,9 @@ import VueScrollbar from 'vue2-scrollbar';
 import ViewIcon from '../_common/_icons/ViewIcon';
 import EditIcon from '../_common/_icons/EditIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
+import moment from 'moment';
+import {mapActions, mapGetters} from 'vuex';
+import Modal from '../_common/Modal';
 
 export default {
     components: {
@@ -233,17 +91,61 @@ export default {
         ViewIcon,
         EditIcon,
         DeleteIcon,
+        moment,
+        Modal,
     },
     methods: {
+        ...mapActions(['getProjectTodos', 'deleteTodo', 'setTodosFilters']),
         translateText: function(text) {
             return this.translate(text);
         },
+        initDeleteModal: function(todo) {
+            this.showDeleteModal = true;
+            this.todoId = todo.id;
+        },
+        removeTodo: function() {
+            if (this.todoId) {
+                this.deleteTodo({id: this.todoId});
+                this.showDeleteModal = false;
+                this.todoId = false;
+            }
+        },
+        changePage: function(page) {
+            this.activePage = page;
+            this.getData();
+        },
+        getData: function() {
+            this.getProjectTodos({
+                projectId: this.$route.params.id,
+                queryParams: {
+                    page: this.activePage,
+                },
+            });
+        },
+        applyFilters: function(key, value) {
+            let filterObj = {};
+            filterObj[key] = value;
+            this.setTodosFilters(filterObj);
+            this.getData();
+        },
+    },
+    computed: {
+        ...mapGetters({
+            todos: 'todos',
+            todosCount: 'todosCount',
+        }),
+        pages: function() {
+            return Math.ceil(this.todos.totalItems / 12);
+        },
+    },
+    created() {
+        this.getData();
     },
     data: function() {
         return {
-            pages: 4,
-            page: 1,
             activePage: 1,
+            showDeleteModal: false,
+            todoId: null,
         };
     },
 };
@@ -287,5 +189,5 @@ export default {
 
     .cell-wrap {
         white-space: normal;
-    }
+    }   
 </style>

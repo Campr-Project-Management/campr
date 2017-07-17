@@ -14,6 +14,12 @@ success:
         delete:
             from_edit: Todo Status successfully deleted!
             from_data_table: Todo Status with ID
+    todo_category:
+        create: Todo Category successfully created!
+        edit: Todo Category successfully edited!
+        delete:
+            from_edit: Todo Category successfully deleted!
+            from_data_table: Todo Category with ID        
     note_status:
         create: Note Status successfully created!
         edit: Note Status successfully edited!

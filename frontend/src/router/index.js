@@ -259,7 +259,12 @@ const routes = [
                 name: 'project-todos-create-todo',
             },
             {
-                path: 'todos/view-todo',
+                path: 'todos/edit-todo/:todoId',
+                component: TodoCreate,
+                name: 'project-todos-edit-todo',
+            },
+            {
+                path: 'todos/view-todo/:todoId',
                 component: ViewTodo,
                 name: 'project-todos-view-todo',
             },
