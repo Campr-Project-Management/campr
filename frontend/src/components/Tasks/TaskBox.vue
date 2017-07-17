@@ -89,7 +89,7 @@
 
 <script>
 import BarChart from '../_common/_charts/BarChart';
-import 'jquery.nicescroll/jquery.nicescroll.min.js';
+import 'jquery.nicescroll/jquery.nicescroll.js';
 import moment from 'moment';
 import TaskRangeSlider from '../_common/_task-components/TaskRangeSlider';
 
