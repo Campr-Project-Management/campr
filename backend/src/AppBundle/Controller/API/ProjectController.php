@@ -747,7 +747,7 @@ class ProjectController extends ApiController
                 );
             }
 
-            return $this->createApiResponse($user, Response::HTTP_OK);
+            return $this->createApiResponse($user, Response::HTTP_CREATED);
         }
 
         return $this->createApiResponse(
