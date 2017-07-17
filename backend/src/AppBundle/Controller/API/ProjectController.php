@@ -761,22 +761,42 @@ class ProjectController extends ApiController
     /**
      * All project Todos.
      *
-     * @Route("/{id}/todos", name="app_api_projects_todos")
+     * @Route("/{id}/todos", name="app_api_projects_todos", options={"expose"=true})
      * @Method({"GET"})
      *
+     * @param Request $request
      * @param Project $project
      *
      * @return JsonResponse
      */
-    public function todosAction(Project $project)
+    public function todosAction(Request $request, Project $project)
     {
+        $filters = $request->query->all();
+
+        $todoRepo = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(Todo::class)
+        ;
+
+        if (isset($filters['page'])) {
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+            $result = $todoRepo->getQueryBuilderByProjectAndFilters($project, $filters)->getQuery()->getResult();
+
+            $responseArray['totalItems'] = $todoRepo->countTotalByProjectAndFilters($project, $filters);
+            $responseArray['pageSize'] = $filters['pageSize'];
+            $responseArray['items'] = $result;
+
+            return $this->createApiResponse($responseArray);
+        }
+
         return $this->createApiResponse($project->getTodos());
     }
 
     /**
      * Create a new Todo.
      *
-     * @Route("/{id}/todos", name="app_api_projects_todo_create")
+     * @Route("/{id}/todos", name="app_api_projects_todo_create",  options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request $request

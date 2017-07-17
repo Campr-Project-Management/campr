@@ -3,6 +3,36 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="view-todo page-section">
+                    <modal v-if="showDeleteModal" @close="showDeleteModal = false">
+                        <p class="modal-title">{{ translateText('message.delete_todo') }}</p>
+                        <div class="flex flex-space-between">
+                            <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                            <a href="javascript:void(0)" @click="removeTodo()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                        </div>
+                    </modal>
+                    <modal v-if="showRescheduleModal" @close="cancelRescheduleModal">
+                        <p class="modal-title">{{ translateText('message.reschedule_todo') }}</p>
+                        <div class="form-group last-form-group">
+                            <div class="col-md-4">
+                                <div class="input-holder">
+                                    <label class="active">{{ translateText('label.select_date') }}</label>
+                                    <datepicker :clear-button="false" v-model="rescheduleObj.date" format="dd-MM-yyyy" :value="rescheduleObj.date"></datepicker>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-holder">
+                                    <label class="active">{{ translateText('label.select_due_date') }}</label>
+                                    <datepicker :clear-button="false" v-model="rescheduleObj.dueDate" format="dd-MM-yyyy" :value="rescheduleObj.dueDate"></datepicker>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="double">
+
+                        <div class="flex flex-space-between">
+                            <a href="javascript:void(0)" @click="cancelRescheduleModal" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
+                            <a href="javascript:void(0)" @click="rescheduleTodo" class="btn-rounded">{{ translateText('button.save') }}</a>
+                        </div>
+                    </modal>
                     <!-- /// Header /// -->
                     <div class="header flex-v-center">
                         <div>
@@ -10,39 +40,27 @@
                                 <i class="fa fa-angle-left"></i>
                                 {{ translateText('message.back_to_todos') }}
                             </router-link>
-                            <h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit</h1>
-                            <h3 class="category"><b>Logistics</b></h3>
-                            <h4>{{ translateText('message.created') }}: <b>28.03.2017</b> | {{ translateText('message.due_date') }}: <b>01.04.2017</b> | {{ translateText('message.status') }}: <b>Initiated</b></h4>
+                            <h1>{{todo.title}}</h1>
+                            <!-- /// to implement this after the categories will be added /// -->
+                            <h3 class="category"><b>{{todo.todoCategoryName}}</b></h3>
+                            <h4>{{ translateText('message.created') }}: <b>{{rescheduleObj.date | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.due_date') }}: <b>{{rescheduleObj.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.status') }}: <b>{{todo.statusName}}</b></h4>
                             <div class="entry-responsible flex flex-v-center">
                                 <div class="user-avatar"> 
-                                    <img src="http://trisoft.dev.campr.biz/uploads/avatars/49.jpg" :alt="'Kyle Kennedy'"/>
+                                    <img :src="todo.responsibilityAvatar" :alt="todo.responsibilityFullName"/>
                                 </div>
                                 <div>
                                     {{ translateText('message.responsible') }}:
-                                    <b>Kyle Kennedy</b>
+                                    <b>{{todo.responsibilityFullName}}</b>
                                 </div>
                             </div>
-                            <a ref="#" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.reschedule') }} <reschedule-icon></reschedule-icon></a>
+                            <a ref="#" @click="initRescheduleModal" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.reschedule') }} <reschedule-icon></reschedule-icon></a>
                         </div>
                     </div>
                     <!-- /// End Header /// -->
                 </div>
 
                 <div class="entry-body">
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nisl justo, bibendum vel nisi vel, suscipit lobortis felis. Donec hendrerit varius erat, eu mollis arcu porttitor aliquet. Nam pellentesque nisi ac diam rutrum lobortis. Pellentesque imperdiet fermentum nisl, quis faucibus nisl blandit dictum. Integer ut tristique mauris. Pellentesque sed lorem non metus volutpat laoreet. Donec consectetur sapien ut orci mattis congue. Vestibulum pellentesque volutpat libero sit amet pharetra. Vestibulum dictum, neque quis dictum sollicitudin, purus velit feugiat elit, sed porttitor neque odio quis est. Nulla ultrices sit amet mauris ac facilisis.
-                    </p>
-                    <ul>
-                        <li>Mauris leo ante</li>
-                        <li>Interdum quis felis</li>
-                        <li>Phasellus sit amet ligula sit amet lacus fringilla gravida</li>
-                        <li>Suspendisse elementum augue sem, at tincidunt risus condimentum ut</li>
-                        <li>Etiam tempor justo quis erat suscipit consequat</li>
-                        <li>Nam non turpis scelerisque</li>
-                        <li>Pellentesque habitant morbi tristique senectus et netus</li>
-                    </ul>
-                    <p>Nulla vel odio dui. Praesent non commodo dolor. Donec quis consectetur ex. Sed malesuada mi a nunc rutrum, at posuere eros vestibulum. Quisque lobortis ligula sed vestibulum scelerisque. Duis ultrices dui vitae aliquet fermentum. Maecenas vulputate magna lorem, ac laoreet leo molestie vel. Duis sagittis dui eget sem finibus iaculis et at augue. Nam non semper nulla, id pharetra tellus. Sed pellentesque ac tortor feugiat pulvinar.</p>
-                    <p>Maecenas tempor, nunc vel faucibus rutrum, ante nulla ornare massa, sit amet dictum orci nisi consectetur nisl. In cursus risus diam, ut viverra nunc vulputate consequat. </p>
+                    {{todo.description}}
                 </div>
             </div>
             <div class="col-md-6">
@@ -50,9 +68,13 @@
                     <!-- /// Header /// -->
                     <div class="margintop20 text-right">
                         <div class="buttons">
-                            <a ref="#" class="btn-rounded btn-auto">{{ translateText('button.edit_todo') }}</a>
-                            <a ref="#" class="btn-rounded btn-auto second-bg">{{ translateText('button.new_todo') }}</a>
-                            <a ref="#" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_todo') }}</a>
+                            <router-link :to="{name: 'project-todos-edit-todo', params:{todoId: todo.id}}">
+                                <a ref="#" class="btn-rounded btn-auto">{{ translateText('button.edit_todo') }}</a>
+                            </router-link>    
+                            <router-link :to="{name: 'project-todos-create-todo'}" class="btn-rounded btn-auto second-bg">
+                                {{ translateText('button.new_todo') }}
+                            </router-link>
+                            <a ref="#" @click="initDeleteModal" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_todo') }}</a>
                         </div>
                     </div>
                     <!-- /// End Header /// -->
@@ -64,9 +86,13 @@
             <div class="col-md-12">
                 <div class="text-right footer-buttons">
                     <div class="buttons">
-                        <a ref="#" class="btn-rounded btn-auto">{{ translateText('button.edit_todo') }}</a>
-                        <a ref="#" class="btn-rounded btn-auto second-bg">{{ translateText('button.new_todo') }}</a>
-                        <a ref="#" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_todo') }}</a>
+                        <router-link :to="{name: 'project-todos-edit-todo', params:{todoId: todo.id}}">
+                            <a ref="#" class="btn-rounded btn-auto">{{ translateText('button.edit_todo') }}</a>
+                        </router-link> 
+                        <router-link :to="{name: 'project-todos-create-todo'}" class="btn-rounded btn-auto second-bg">
+                            {{ translateText('button.new_todo') }}
+                        </router-link>
+                        <a ref="#" @click="initDeleteModal" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_todo') }}</a>
                     </div>
                 </div>
             </div>
@@ -75,31 +101,80 @@
 </template>
 
 <script>
-import EditIcon from '../../_common/_icons/EditIcon';
-import DeleteIcon from '../../_common/_icons/DeleteIcon';
-import VueScrollbar from 'vue2-scrollbar';
-import Switches from '../../3rdparty/vue-switches';
 import RescheduleIcon from '../../_common/_icons/RescheduleIcon';
-import DownloadbuttonIcon from '../../_common/_icons/DownloadbuttonIcon';
+import {mapGetters, mapActions} from 'vuex';
+import Modal from '../../_common/Modal';
+import router from '../../../router';
+import datepicker from 'vuejs-datepicker';
+import moment from 'moment';
 
 export default {
     components: {
-        EditIcon,
-        DeleteIcon,
-        VueScrollbar,
-        Switches,
         RescheduleIcon,
-        DownloadbuttonIcon,
+        Modal,
+        datepicker,
     },
     methods: {
+        ...mapActions([
+            'getTodoById',
+            'deleteTodo',
+            'editTodo',
+        ]),
         translateText: function(text) {
             return this.translate(text);
+        },
+        initDeleteModal: function(todo) {
+            this.showDeleteModal = true;
+        },
+        removeTodo: function() {
+            if (this.$route.params.todoId) {
+                this.deleteTodo({id: this.$route.params.todoId});
+                this.showDeleteModal = false;
+                router.push({name: 'project-todos', params: {id: this.$route.params.id}});
+            }
+        },
+        initRescheduleModal: function() {
+            this.showRescheduleModal = true;
+        },
+        rescheduleTodo: function() {
+            let data = {
+                id: this.$route.params.todoId,
+                dueDate: moment(this.rescheduleObj.dueDate).format('DD-MM-YYYY'),
+                date: moment(this.rescheduleObj.date).format('DD-MM-YYYY'),
+            };
+            this.editTodo(data);
+            this.showRescheduleModal = false;
+        },
+        cancelRescheduleModal: function() {
+            this.showRescheduleModal = false;
+            this.rescheduleObj.date = this.todo.date;
+            this.rescheduleObj.dueDate = this.todo.dueDate;
+        },
+    },
+    created() {
+        if (this.$route.params.todoId) {
+            this.getTodoById(this.$route.params.todoId);
+        }
+    },
+    computed: {
+        ...mapGetters({
+            todo: 'currentTodo',
+        }),
+    },
+    watch: {
+        todo(val) {
+            this.rescheduleObj.date = this.todo.date;
+            this.rescheduleObj.dueDate = this.todo.dueDate;
         },
     },
     data() {
         return {
-            showPresent: '',
-            distributionList: '',
+            showDeleteModal: false,
+            showRescheduleModal: false,
+            rescheduleObj: {
+                date: new Date(),
+                dueDate: new Date(),
+            },
         };
     },
 };
