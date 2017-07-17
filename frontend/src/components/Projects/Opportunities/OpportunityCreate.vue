@@ -71,7 +71,7 @@
                     <!-- /// Opportunity Description /// -->
                     <div class="vueditor-holder">
                         <div class="vueditor-header">{{ translateText('placeholder.opportunity_description') }}</div>
-                        <Vueditor ref="description" />
+                        <Vueditor ref="description" id="description" />
                         <error
                             v-if="validationMessages.description && validationMessages.description.length"
                             v-for="message in validationMessages.description"
@@ -229,7 +229,8 @@
                             <div class="col-md-12">
                                 <div class="vueditor-holder measure-vueditor-holder">
                                     <div class="vueditor-header">{{ translateText('placeholder.new_measure') }}</div>
-                                    <Vueditor :ref="'measure.description'+index" />
+                                    <!-- <Vueditor :id="'measure.description'+index" :ref="'measure.description'+index" />  -->
+                                    <div :ref="'measure.description'+index" :id="'measure.description'+index"></div> 
                                     <span v-if="validationMessages.measures && validationMessages.measures[index]">
                                         <error
                                             v-if="validationMessages.measures[index].description.length"
@@ -290,6 +291,27 @@ import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
+import {createEditor} from 'vueditor';
+
+let config = {
+    toolbar: [
+        'bold', 'italic', 'underline',
+        'insertOrderedList', 'insertUnorderedList', 'links', 'picture',
+    ],
+    fontName: [
+        {val: '', abbr: ''},
+        {val: 'arial black'},
+        {val: 'times new roman'},
+        {val: 'Courier New'},
+    ],
+    fontSize: ['12px', '14px', '16px', '18px', '0.8rem', '1.0rem', '1.2rem', '1.5rem', '2.0rem'],
+    emoji: ['1f600', '1f601', '1f602', '1f923', '1f603'],
+    lang: 'en',
+    mode: 'default',
+    iframePath: '',
+    fileuploadUrl: '',
+    classList: ['campr-editor'],
+};
 
 export default {
     components: {
@@ -313,16 +335,27 @@ export default {
             return this.translate(text);
         },
         addMeasure: function() {
-            this.measures.push({
+            let thisRef = 'measure.description'+this.measures.length;
+            let measure = {
                 title: '',
-                description: this.$refs['measure.description'+this.measures.length],
+                description: this.$refs[thisRef],
                 cost: '',
-            });
+            };
+            setTimeout(() => {
+                measure.element = createEditor(document.getElementById(thisRef), {...config, id: thisRef});
+                console.log(measure.element);
+                console.log('id', thisRef);
+                console.log('refs', this.$refs);
+            }, 1000);
+            this.measures.push(measure);
         },
         getFormData: function() {
-            this.measures.map((item, index) => {
-                item.description = this.$refs['measure.description'+index][0].getContent();
-            });
+            let measures = this.measures.map((item, index) => ({
+                description: item.element.getContent(),
+                title: item.title,
+                cost: item.cost,
+            }));
+            console.log('measures', measures);
             let data = {
                 title: this.title,
                 description: this.$refs.description.getContent(),
@@ -338,7 +371,7 @@ export default {
                 opportunityStatus: this.details.status ? this.details.status.key : null,
                 dueDate: moment(this.schedule.dueDate).format('DD-MM-YYYY'),
                 responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
-                measures: this.measures,
+                measures,
             };
 
             return data;
@@ -431,6 +464,10 @@ export default {
         if (this.$route.params.opportunityId) {
             this.getProjectOpportunity(this.$route.params.opportunityId);
         }
+    },
+    mounted() {
+        this.$refs.description.id = 1;
+        console.log('as', this.$refs.description);
     },
     watch: {
         opportunityImpact: function(value) {
