@@ -19,7 +19,7 @@ message:
     created: Created
     back_to_todos: Back to Todos
     delete_todo: Delete Todo
-    edit_toto: Edit Todo
+    edit_todo: Edit Todo
     view_todo: View Todo
     create_new_todo: Create New Todo
     project_todos: Project Todos
@@ -333,7 +333,8 @@ message:
     task_completion: Task completion
     task_condition: Task condition
     add_internal_costs: Add internal costs  
-    add_external_costs: Add external costs    
+    add_external_costs: Add external costs
+    reschedule_todo: Reschedule todo
 
 menu:
     users: Users
@@ -630,6 +631,10 @@ title:
         list: Todo Status
         create: Create Todo Status
         edit: Edit Todo Status
+    todo_category:
+        list: Todo Category
+        create: Create Todo Category
+        edit: Edit Todo Category    
     note_status:
         list: Note Status
         create: Create Note Status
@@ -671,6 +676,7 @@ subtitle:
     risk_category: List of risk categories
     risk_strategy: List of risk strategies
     todo: List of todos
+    todo_category: List of todo categories   
     unit: List of units
     wppcwct: List of Work Package Project Work Cost Type
     impact: List of impacts
@@ -944,7 +950,8 @@ label:
     subteam: Subteam
     subteam_roles: Subteam Roles
     schedule: Schedule
-    change_status: Change Status  
+    change_status: Change Status
+    select_due_date: Select Due Date
 
 button:
     delete_info: Delete Info
@@ -952,6 +959,7 @@ button:
     edit_info: Edit Info
     create_info: Create Info
     delete_todo: Delete Todo
+    reschedule_todo: Reschedule todo  
     new_todo: New Todo
     edit_todo: Edit Todo 
     create_todo: Create Todo
@@ -1027,7 +1035,8 @@ button:
     edit_label: Edit Label
     comment: Comment
     edit_schedule: Edit Schedule
-    save_status: Save Status  
+    save_status: Save Status
+    save_todo: Save Todo  
 
 checkbox:
     checked: Yes
@@ -1036,6 +1045,7 @@ checkbox:
 add:
     decision_status: Add new decision status
     todo_status: Add new todo status
+    todo_category: Add new todo category  
     note_status: Add new note status
     meeting_category: Add new meeting category
     meeting_objective: Add new meeting objective
@@ -1206,6 +1216,8 @@ placeholder:
     twitter: Twitter
     linked_in: Linked In
     gplus: Google Plus
+    category: Choose a category
+    todo_category: Todo Category
 
 table_header_cell:
     expiry_date: Expiry Date

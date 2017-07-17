@@ -24,7 +24,8 @@ class AjaxResponseListener
             if ($range2xx || in_array($response->getStatusCode(), $miscAllowed, true)) {
                 if ($response instanceof JsonResponse) {
                     $content = $response->getContent();
-                    if (!empty($content) && !in_array($content, ['""', "''"], true)) {
+                    // @todo the third condition is just a temporary solution, it will be replaced later
+                    if (!empty($content) && !in_array($content, ['""', "''"], true) && strpos($content, 'messages') !== false) {
                         $content = json_decode($content, true);
                         $content['error'] = true;
                         $response->setData($content);

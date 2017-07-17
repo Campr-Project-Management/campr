@@ -34,6 +34,16 @@ class Todo
     private $project;
 
     /**
+     * @var TodoCategory|null
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TodoCategory")
+     * @ORM\JoinColumn(name="todo_category_id")
+     */
+    private $todoCategory;
+
+    /**
      * @var Meeting|null
      *
      * @Serializer\Exclude()
@@ -342,6 +352,12 @@ class Todo
     {
         $this->meeting = $meeting;
 
+        if ($meeting instanceof Meeting) {
+            $this->project = $meeting->getProject();
+        } else {
+            $this->project = null;
+        }
+
         return $this;
     }
 
@@ -505,5 +521,48 @@ class Todo
     public function getResponsibilityFullName()
     {
         return $this->responsibility ? $this->responsibility->getFullName() : null;
+    }
+    /**
+     * @return TodoCategory|null
+     */
+    public function getTodoCategory()
+    {
+        return $this->todoCategory;
+    }
+
+    /**
+     * @param TodoCategory|null $todoCategory
+     */
+    public function setTodoCategory(TodoCategory $todoCategory)
+    {
+        $this->todoCategory = $todoCategory;
+
+        return $this;
+    }
+
+    /**
+     * Returns todo category id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("todoCategory")
+     *
+     * @return string
+     */
+    public function getTodoCategoryId()
+    {
+        return $this->todoCategory ? $this->todoCategory->getId() : null;
+    }
+
+    /**
+     * Returns todo category name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("todoCategoryName")
+     *
+     * @return string
+     */
+    public function getTodoCategoryName()
+    {
+        return $this->todoCategory ? $this->todoCategory->getName() : null;
     }
 }

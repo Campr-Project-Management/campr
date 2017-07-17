@@ -16,6 +16,7 @@ use AppBundle\Entity\Todo;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Status;
+use AppBundle\Entity\TodoCategory;
 
 class BaseCreateType extends AbstractType
 {
@@ -68,6 +69,12 @@ class BaseCreateType extends AbstractType
                 'class' => TodoStatus::class,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.status',
+                'translation_domain' => 'messages',
+            ])
+            ->add('todoCategory', EntityType::class, [
+                'class' => TodoCategory::class,
+                'choice_label' => 'name',
+                'placeholder' => 'placeholder.todo_category',
                 'translation_domain' => 'messages',
             ])
             ->add('showInStatusReport', CheckboxType::class)
