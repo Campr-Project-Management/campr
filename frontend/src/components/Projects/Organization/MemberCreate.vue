@@ -36,9 +36,17 @@
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
                                 <input-field v-model="firstName" type="text" v-bind:label="translateText('placeholder.first_name')"></input-field>
+                                <error
+                                    v-if="validationMessages.firstName && validationMessages.firstName.length"
+                                    v-for="message in validationMessages.firstName"
+                                    :message="message" />
                             </div>
                             <div class="col-md-6">
                                 <input-field v-model="lastName" type="text" v-bind:label="translateText('placeholder.last_name')"></input-field>
+                                <error
+                                    v-if="validationMessages.lastName && validationMessages.lastName.length"
+                                    v-for="message in validationMessages.lastName"
+                                    :message="message" />
                             </div>
                         </div>
                     </div>
@@ -48,6 +56,10 @@
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-6"><input-field v-model="username" type="text" v-bind:label="translateText('placeholder.username')"></input-field></div>
+                            <error
+                                    v-if="validationMessages.username && validationMessages.username.length"
+                                    v-for="message in validationMessages.username"
+                                    :message="message" />
                             <div class="col-md-6">
                                 <multi-select-field
                                         v-bind:title="translateText('placeholder.role')"
@@ -134,6 +146,10 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <input-field v-model="email" type="text" v-bind:label="translateText('placeholder.email')"></input-field>
+                                <error
+                                    v-if="validationMessages.email && validationMessages.email.length"
+                                    v-for="message in validationMessages.email"
+                                    :message="message" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -174,7 +190,8 @@
                     <!-- /// Actions /// -->
                 </div> 
             </div>
-        </div>               
+        </div>
+        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />               
     </div>
 </template>
 
@@ -185,6 +202,9 @@ import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import SelectField from '../../_common/_form-components/SelectField';
 import Switches from '../../3rdparty/vue-switches';
 import AvatarPlaceholder from '../../_common/_form-components/AvatarPlaceholder';
+import Error from '../../_common/_messages/Error.vue';
+import router from '../../../router';
+import AlertModal from '../../_common/AlertModal.vue';
 
 export default {
     components: {
@@ -193,9 +213,11 @@ export default {
         Switches,
         AvatarPlaceholder,
         MultiSelectField,
+        Error,
+        AlertModal,
     },
     methods: {
-        ...mapActions(['createNewOrganizationMember', 'getProjectById', 'getProjectRoles', 'getProjectDepartments', 'saveProjectUser', 'getSubteams']),
+        ...mapActions(['getProjectById', 'getProjectRoles', 'getProjectDepartments', 'saveProjectUser', 'getSubteams']),
         openAvatarFileSelection() {
             document.getElementById('avatar').click();
         },
@@ -244,7 +266,22 @@ export default {
                 'departments': this.departments.filter((item) => item.key).map((item) => item.key),
                 'subteams': this.subteams.filter((item) => item.key).map((item) => item.key),
             };
-            this.saveProjectUser(data);
+            this.saveProjectUser(data)
+                .then(
+                    (data) => {
+                        if (data && !data.error) {
+                            router.push({
+                                name: 'project-organization',
+                            });
+                        } else {
+                            this.showFailed = true;
+                        }
+                        console.log('asdwer', this.validationMessages);
+                    },
+                    (error) => {
+                        this.showFailed = true;
+                    }
+                );
         },
     },
     created() {
@@ -258,9 +295,11 @@ export default {
         projectRolesForMultiSelect: 'projectRolesForMultiSelect',
         projectDepartmentsForMultiSelect: 'projectDepartmentsForMultiSelect',
         subteamsForSelect: 'subteamsForSelect',
+        validationMessages: 'validationMessages',
     }),
     data: function() {
         return {
+            showFailed: false,
             avatar: '',
             avatarFile: '',
             firstName: '',
