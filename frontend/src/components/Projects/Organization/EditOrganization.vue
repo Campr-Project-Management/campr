@@ -104,6 +104,10 @@
                     <!-- /// Add new Role /// -->
                     <div class="form-group">
                         <input-field v-model="title" type="text" label="New Role"></input-field>
+                        <error
+                            v-if="validationMessages.roleName && validationMessages.roleName.length"
+                            v-for="message in validationMessages.roleName"
+                            :message="message" />
                     </div>
                     <div class="flex flex-space-between">
                         <a @click="" class="btn-rounded btn-auto second-bg">Save</a>
@@ -164,6 +168,10 @@
                     <!-- /// Add new Department /// -->
                     <div class="form-group">
                         <input-field v-model="departmentName" type="text" v-bind:label="translateText('placeholder.new_department')"></input-field>
+                        <error
+                            v-if="validationMessages.departmentName && validationMessages.departmentName.length"
+                            v-for="message in validationMessages.departmentName"
+                            :message="message" />
                     </div>
                     <div class="flex flex-direction-reverse">
                         <a @click="createNewDepartment()" class="btn-rounded btn-auto">{{ translateText('button.add_new_department') }} +</a>
@@ -196,7 +204,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td>{{ subteam.subteamMembers.length }}</td>
+                                <td v-if="subteam.subteamMembers">{{ subteam.subteamMembers.length }}</td>
                                 <td>-</td>
                                 <td>
                                     <button @click="initEditSubteamModal(subteam)" data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
@@ -218,6 +226,10 @@
                     <!-- /// Add new Subteam /// -->
                     <div class="form-group">
                         <input-field v-model="subteamName" type="text" v-bind:label="translateText('label.new_subteam')"></input-field>
+                        <error
+                            v-if="validationMessages.subteamName && validationMessages.subteamName.length"
+                            v-for="message in validationMessages.subteamName"
+                            :message="message" />
                     </div>
                     <div class="flex flex-direction-reverse">
                         <a @click="createNewSubteam()" class="btn-rounded btn-auto">{{ translateText('button.add_new_subteam') }} +</a>
@@ -225,7 +237,8 @@
                     <!-- /// End Add new Subteam /// -->
                 </div>
             </div>
-        </div>               
+        </div>  
+        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
 </template>
 
@@ -242,6 +255,8 @@ import Modal from '../../_common/Modal';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import OrganizationDistributionItem from './OrganizationDistributionItem';
 import 'domenu';
+import AlertModal from '../../_common/AlertModal.vue';
+import Error from '../../_common/_messages/Error.vue';
 
 export default {
     components: {
@@ -254,6 +269,8 @@ export default {
         Modal,
         MultiSelectField,
         OrganizationDistributionItem,
+        AlertModal,
+        Error,
     },
     methods: {
         ...mapActions([
@@ -276,11 +293,19 @@ export default {
         createNewDepartment() {
             let data = {
                 name: this.departmentName,
-                sequence: this.projectDepartments.items.length,
+                sequence: this.projectDepartments.items ? this.projectDepartments.items.length : 0,
                 rate: 0,
                 abbreviation: this.departmentName.toLowerCase(),
             };
-            this.createDepartment(data);
+            this.createDepartment(data)
+                .then((response) => {
+                    if (response.body && response.body.error && response.body.messages) {
+                        this.showFailed = true;
+                    }
+                })
+                .catch((err) => {
+                    this.showFailed = true;
+                });
         },
         initEditDepartmentModal(department) {
             this.showEditDepartmentModal = true;
@@ -335,7 +360,15 @@ export default {
                 name: this.subteamName,
                 project: this.$route.params.id,
             };
-            this.createSubteam(data);
+            this.createSubteam(data)
+                .then((response) => {
+                    if (response.body && response.body.error && response.body.messages) {
+                        this.showFailed = true;
+                    }
+                })
+                .catch((response) => {
+                    this.showFailed = true;
+                });
         },
         editSelectedSubteam() {
             let data = {
@@ -371,10 +404,12 @@ export default {
             managersForSelect: 'managersForSelect',
             projectUsersForSelect: 'projectUsersForSelect',
             subteams: 'subteams',
+            validationMessages: 'validationMessages',
         }),
     },
     data() {
         return {
+            showFailed: false,
             departmentPage: 1,
             activeDepartmentPage: 1,
             departmentPages: 0,
