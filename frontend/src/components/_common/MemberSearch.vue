@@ -50,7 +50,7 @@ import {mapActions} from 'vuex';
 
 export default {
     extends: VueTypeahead,
-    props: ['placeholder', 'singleSelect'],
+    props: ['placeholder', 'singleSelect', 'value', 'selectedUser'],
     components: {
         VueScrollbar,
     },
@@ -114,6 +114,11 @@ export default {
         const $this = window.$('#input' + this._uid);
         let textValue = $this.val();
         let $label = $this.next();
+
+        if (this.selectedUser && this.value) {
+            this.query = this.selectedUser;
+            this.selectedUsers = this.value;
+        }
 
         $label.on('click', function() {
             $(this).prev().focus();
