@@ -144,7 +144,7 @@ const actions = {
      */
     editTask({commit}, data) {
         return Vue.http
-            .patch(
+            .post(
                 Routing.generate('app_api_workpackage_edit', {'id': data.taskId}),
                 data.data
             ).then(

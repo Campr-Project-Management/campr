@@ -31,7 +31,7 @@
         <!-- /// Tasks Filters /// -->
         <div class="flex">
             <input-field v-model="searchString" type="text" v-bind:label="label.search_for_tasks" class="search"></input-field>
-            <dropdown :selectedValue="selectAsignee" title="Asignee" :options="users"></dropdown>
+            <dropdown :selectedValue="selectAssignee" title="Asignee" :options="users"></dropdown>
             <dropdown :selectedValue="selectStatus" v-if="!boardView" title="Status" :options="statusesLabel"></dropdown>
             <dropdown :selectedValue="selectCondition" title="Condition" :options="conditions"></dropdown>
             <!--To be added after disscusion about milestones-->
@@ -107,8 +107,8 @@ export default {
         selectCondition: function(condition) {
             this.conditionFilter = condition;
         },
-        selectAsignee: function(asignee) {
-            this.asigneeFilter = asignee;
+        selectAssignee: function(assignee) {
+            this.assigneeFilter = assignee;
         },
         selectStatus: function(status) {
             this.statusFilter = status;
@@ -121,7 +121,7 @@ export default {
 
             const filters = {};
             filters.condition = this.conditionFilter ? this.conditionFilter : undefined;
-            filters.asignee = this.asigneeFilter ? this.asigneeFilter : undefined;
+            filters.assignee = this.assigneeFilter ? this.assigneeFilter : undefined;
             filters.searchString = this.searchString ? this.searchString : undefined;
             filters.status = this.statusFilter ? this.statusFilter : undefined;
 
