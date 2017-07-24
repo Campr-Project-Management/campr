@@ -116,7 +116,7 @@
                         <div class="ro-info">
                             <p>{{ translateText('message.priority') }}: <b>{{ opportunity.priority }}</b></p>
                             <p>{{ translateText('message.strategy') }}: <b>{{ opportunity.opportunityStrategyName }}</b></p>
-                            <p>{{ translateText('message.status') }}: <b>{{ opportunity.opportunityStatusyName }}</b></p>
+                            <p>{{ translateText('message.status') }}: <b>{{ opportunity.opportunityStatusName }}</b></p>
                         </div>
                         
                         <div class="ro-info">
