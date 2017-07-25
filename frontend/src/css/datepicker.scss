@@ -1,0 +1,78 @@
+@import '_variables.scss';
+@import '_mixins.scss';
+
+.calendar {
+	width: 100%;
+	background: $darkColor;
+	border: 1px solid $darkColor;
+	border-top: 1px solid $mainColor;
+	@include box-shadow(0, 0, 30px, $darkerColor);
+
+	header {
+		.next,
+		.prev,
+		.up {
+			&:not(.disabled) {
+				&:hover {
+					background: $secondColor;
+					color: $whiteColor;	
+				}
+			}
+		}
+
+		.prev {
+			&:after {
+				border-right: 10px solid $lightColor;
+			}
+
+			&:not(.disabled) {
+				&:hover {
+					&:after {
+						border-right: 10px solid $whiteColor;
+					}
+				}
+			}
+		}
+
+		.next {
+			&:after {
+				border-left: 10px solid $lightColor;
+			}
+
+			&:not(.disabled) {
+				&:hover {
+					&:after {
+						border-left: 10px solid $whiteColor;
+					}
+				}
+			}
+		}
+	}
+
+	.cell {
+		&.selected {
+			background: $secondColor;
+			color: $whiteColor;
+
+			&.highlighted {
+				background: $secondColor;
+			}
+
+			&:hover {
+				background: $secondColor;
+			}
+		}
+
+		&:not(.blank) {
+			&:not(.disabled) {
+				&.day,
+				&.month,
+				&.year {
+					&:hover {
+						border: 1px solid $secondDarkColor;
+					}
+				}
+			}
+		}
+	}
+}
