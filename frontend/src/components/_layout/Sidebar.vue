@@ -149,12 +149,6 @@
                         <!--<span class="tablet"></span>-->
                     <!--</router-link>-->
                 <!--</li>-->
-                <!--<li>-->
-                    <!--<router-link to="todo" v-bind:title="message.status_report">-->
-                        <!--<span class="default">{{ message.status_report }}</span>-->
-                        <!--<span class="tablet"></span>-->
-                    <!--</router-link>-->
-                <!--</li>-->
                 <li>
                     <router-link :to="{name: 'project-meetings'}" v-bind:title="message.meetings">
                         <span class="default">{{ message.meetings }}</span>
@@ -170,6 +164,18 @@
                 <li>
                     <router-link :to="{name: 'project-infos'}" v-bind:title="message.infos">
                         <span class="default">{{ message.infos }}</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-decisions'}" v-bind:title="message.decisions">
+                        <span class="default">{{ message.decisions }}</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'project-status-report'}" v-bind:title="message.status_report">
+                        <span class="default">{{ message.status_report }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
@@ -225,6 +231,7 @@ export default {
                 meetings: this.translate('message.meetings'),
                 todos: this.translate('message.todos'),
                 infos: this.translate('message.infos'),
+                decisions: this.translate('message.decisions'),
                 close_down_project: this.translate('message.close_down_project'),
                 gantt_chart: this.translate('message.gantt_chart'),
             },
