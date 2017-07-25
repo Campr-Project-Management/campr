@@ -1,4 +1,8 @@
 message:
+    back_to_decisions: Back to Decisions
+    create_new_decision: Create New Decision
+    project_decisions: Project Decisions
+    decisions: Decisions
     expiry_date: Expiry Date
     back_to_infos: Back to Infos
     create_new_info: Create New Info
@@ -712,6 +716,7 @@ subtitle:
     task_precedesor: Task predecesor
 
 label:
+    event: Event
     expiry_date: Expiry Date
     select_status: Select Status
     finish_time: Finish Time
@@ -954,6 +959,10 @@ label:
     select_due_date: Select Due Date
 
 button:
+    delete_decision: Delete Decision
+    new_decision: New Decision
+    edit_decision: Edit Decision
+    create_decision: Create Decision
     delete_info: Delete Info
     new_info: New Info
     edit_info: Edit Info
@@ -1109,7 +1118,8 @@ add:
     subteam_role: Add new subteam role
     subteam_member: Add new subteam member
 
-placeholder:    
+placeholder:
+    comment: Comment   
     info_topic: Info Topic
     todo_topic: Todo Topic
     measure_description: Measure description
