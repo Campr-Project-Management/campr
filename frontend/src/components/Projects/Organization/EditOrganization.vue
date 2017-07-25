@@ -89,9 +89,9 @@
                             </div>
                             <div class="dd-edit-box" style="display: none;">
                             <input type="text" name="title" autocomplete="off" placeholder="Item"
-                                    data-placeholder="Any nice idea for the title?"
-                                    v-bind:data-default-value="departmentPage">
-                            <i class="end-edit">save</i>
+                                data-placeholder="Any nice idea for the title?"
+                                v-bind:data-default-value="departmentPage">
+                            <i class="end-edit">{{ translateText('button.save') }}</i>
                             </div>
                         </div>
                         </li>
@@ -103,15 +103,14 @@
 
                     <!-- /// Add new Role /// -->
                     <div class="form-group">
-                        <input-field v-model="title" type="text" label="New Role"></input-field>
+                        <input-field v-model="roleName" type="text" :label="translateText('label.new_role')"></input-field>
                         <error
-                            v-if="validationMessages.roleName && validationMessages.roleName.length"
-                            v-for="message in validationMessages.roleName"
+                            v-if="validationMessages.name && validationMessages.name.length"
+                            v-for="message in validationMessages.name"
                             :message="message" />
                     </div>
                     <div class="flex flex-space-between">
-                        <a @click="" class="btn-rounded btn-auto second-bg">Save</a>
-                        <a @click="addNewItemDistribution({title})" class="btn-rounded btn-auto">Add new role +</a>
+                        <a @click="createNewRole()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
                     </div>
                     <!-- /// End Add new Role /// -->
                 </div>
@@ -276,7 +275,7 @@ export default {
         ...mapActions([
             'getProjectDepartments', 'createDepartment', 'editDepartment',
             'deleteDepartment', 'getProjectUsers', 'getSubteams', 'createSubteam',
-            'editSubteam', 'deleteSubteam',
+            'editSubteam', 'deleteSubteam', 'createProjectRole', 'getProjectRoles',
         ]),
         moment: function(date) {
             return moment(date);
@@ -289,6 +288,13 @@ export default {
         },
         changeSubteamPage: function(page) {
             this.activeSubteamPage = page;
+        },
+        createNewRole() {
+            let data = {
+                name: this.roleName,
+                sequence: this.projectRoles.length + 1,
+            };
+            this.createProjectRole(data);
         },
         createNewDepartment() {
             let data = {
@@ -335,13 +341,6 @@ export default {
             this.showDeleteDepartmentModal = false;
             this.deleteDepartment(this.deleteDepartmentId);
         },
-        addDistributionData() {
-            const distData = this.distributionHierarchy;
-            $('#domenu-0').domenu({'data': JSON.stringify(distData)}).parseJson();
-        },
-        addNewItemDistribution(item) {
-            $('#domenu-0').domenu().createNewListItem(item);
-        },
         initEditSubteamModal(subteam) {
             this.showEditSubteamModal = true;
             this.editSubteamId = subteam.id;
@@ -386,20 +385,15 @@ export default {
             this.deleteSubteam(this.deleteSubteamId);
         },
     },
-    mounted: function() {
-        $('#domenu-0').domenu({
-            data: '[]',
-        }).parseJson();
-
-        this.addDistributionData();
-    },
     created() {
         this.getProjectDepartments({projectId: this.$route.params.id, page: this.departmentPage});
         this.getProjectUsers({id: this.$route.params.id});
         this.getSubteams({project: this.$route.params.id, page: this.subteamPage});
+        this.getProjectRoles();
     },
     computed: {
         ...mapGetters({
+            projectRoles: 'projectRoles',
             projectDepartments: 'projectDepartments',
             managersForSelect: 'managersForSelect',
             projectUsersForSelect: 'projectUsersForSelect',
@@ -428,39 +422,22 @@ export default {
             subteamPages: 0,
             activeSubteamPage: 1,
             departmentsPerPage: 6,
-            distributionHierarchy: [{
-                title: 'Project Sponsor',
-                id: 1,
-                children: [
-                    {
-                        title: 'Project Manager',
-                        id: 2,
-                        children: [
-                            {
-                                title: 'Team Leader',
-                                id: 3,
-                                children: [
-                                    {
-                                        title: 'Team Member',
-                                        id: 4,
-                                        children: [],
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                    {
-                        title: 'Coach',
-                        id: 5,
-                        children: [],
-                    },
-                ],
-            }],
+            roleName: null,
         };
     },
     watch: {
         projectDepartments(value) {
             this.departmentPages = Math.ceil(this.projectDepartments.totalItems / this.projectDepartments.pageSize);
+        },
+        projectRoles(value) {
+            const distData = this.projectRoles.map(role => {
+                return {
+                    title: this.translateText(role.name),
+                    id: role.id,
+                    children: [],
+                };
+            });
+            $('#domenu-0').domenu({'data': JSON.stringify(distData)}).parseJson();
         },
     },
 };
