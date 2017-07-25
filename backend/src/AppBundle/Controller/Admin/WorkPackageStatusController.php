@@ -158,7 +158,7 @@ class WorkPackageStatusController extends BaseController
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_workpackage_show');
+            return $this->redirectToRoute('app_admin_workpackage_status_list');
         }
 
         return $this->render(
