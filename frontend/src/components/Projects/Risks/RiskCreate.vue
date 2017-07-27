@@ -342,7 +342,7 @@ export default {
                 delayUnit: this.details.time && this.details.time.key ? this.details.time.key : '',
                 priority: 'PRIORITY', // TODO: determine the priority calulation method
                 riskStrategy: this.details.strategy ? this.details.strategy.key : null,
-                riskStatus: this.details.status ? this.details.status.key : null,
+                status: this.details.status ? this.details.status.key : null,
                 dueDate: moment(this.schedule.dueDate).format('DD-MM-YYYY'),
                 responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
                 measures: this.measures,
