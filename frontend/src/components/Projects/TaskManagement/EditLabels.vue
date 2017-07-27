@@ -17,7 +17,7 @@
                     <div class="tasks">{{ label.openWorkPackagesNumber }} {{ message.open_tasks }}</div>
                 </div>
                 <div class="actions">
-                    <router-link :to="{name: 'project-task-management-edit-label', params: { id: 1, labelId: label.id }}">
+                    <router-link :to="{name: 'project-task-management-edit-label', params: { id: label.project, labelId: label.id }}">
                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         viewBox="0 0 28.5 29.8" style="enable-background:new 0 0 28.5 29.8;" xml:space="preserve">
                             <g id="XMLID_1677_">

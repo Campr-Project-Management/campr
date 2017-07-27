@@ -23,7 +23,7 @@
                     <!-- /// Task Name /// -->
                     <input-field type="text" v-bind:label="label.task_title" v-model="title" v-bind:content="title" />
                     <error
-                        v-if="validationMessages.name && validationMessages.name.length"
+                        v-if="validationMessages && validationMessages.name && validationMessages.name.length"
                         v-for="message in validationMessages.name"
                         :message="message" />
                     <!-- /// End Task Name /// -->

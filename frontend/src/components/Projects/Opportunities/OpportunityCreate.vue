@@ -355,7 +355,6 @@ export default {
                 title: item.title,
                 cost: item.cost,
             }));
-            console.log('measures', measures);
             let data = {
                 title: this.title,
                 description: this.$refs.description.getContent(),
