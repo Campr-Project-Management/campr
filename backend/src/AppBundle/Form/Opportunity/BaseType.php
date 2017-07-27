@@ -9,7 +9,6 @@ use AppBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -18,7 +17,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
-use AppBundle\Form\Measure\BaseType as MeasureType;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 class BaseType extends AbstractType
@@ -145,12 +143,6 @@ class BaseType extends AbstractType
                 'choice_label' => 'username',
                 'placeholder' => 'placeholder.user',
                 'translation_domain' => 'messages',
-            ])
-            ->add('measures', CollectionType::class, [
-                'required' => false,
-                'entry_type' => MeasureType::class,
-                'allow_add' => true,
-                'by_reference' => false,
             ])
         ;
     }

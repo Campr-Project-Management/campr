@@ -4,7 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Measure;
 use AppBundle\Entity\Opportunity;
-use AppBundle\Form\Opportunity\BaseType;
+use AppBundle\Form\Opportunity\ApiType;
 use AppBundle\Form\Measure\BaseType as MeasureBaseType;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 class OpportunityController extends ApiController
 {
     const ENTITY_CLASS = Opportunity::class;
-    const FORM_CLASS = BaseType::class;
+    const FORM_CLASS = ApiType::class;
 
     /**
      * Get Opportunity by id.

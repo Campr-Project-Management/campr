@@ -717,6 +717,7 @@ subtitle:
 
 label:
     event: Event
+    time: Time
     expiry_date: Expiry Date
     select_status: Select Status
     finish_time: Finish Time
@@ -963,6 +964,7 @@ button:
     new_decision: New Decision
     edit_decision: Edit Decision
     create_decision: Create Decision
+    new_task: New task
     delete_info: Delete Info
     new_info: New Info
     edit_info: Edit Info
