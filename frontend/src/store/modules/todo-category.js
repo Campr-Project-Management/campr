@@ -19,7 +19,7 @@ const getters = {
 const actions = {
     getTodoCategories({commit}) {
         Vue.http
-            .get('http://trisoft.dev.campr.biz/api/todo-categories'/* Routing.generate('app_api_todo_categories_list')*/).then((response) => {
+            .get(Routing.generate('app_api_todo_categories_list')).then((response) => {
                 if (response.status === 200) {
                     let categories = response.data;
                     commit(types.SET_TODO_CATEGORIES, {categories});
