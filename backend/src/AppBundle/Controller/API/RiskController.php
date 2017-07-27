@@ -4,7 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Measure;
 use AppBundle\Entity\Risk;
-use AppBundle\Form\Risk\CreateType;
+use AppBundle\Form\Risk\ApiType;
 use AppBundle\Form\Measure\BaseType as MeasureBaseType;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 class RiskController extends ApiController
 {
     const ENTITY_CLASS = Risk::class;
-    const FORM_CLASS = CreateType::class;
+    const FORM_CLASS = ApiType::class;
 
     /**
      * Get Risk by id.
