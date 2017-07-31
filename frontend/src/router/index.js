@@ -313,7 +313,12 @@ const routes = [
                 name: 'project-decisions-create-decision',
             },
             {
-                path: 'decisions/view-decision',
+                path: 'decisions/edit-decision/:decisionId',
+                component: DecisionCreate,
+                name: 'project-decisions-edit-decision',
+            },
+            {
+                path: 'decisions/view-decision/:decisionId',
                 component: ViewDecision,
                 name: 'project-decisions-view-decision',
             },

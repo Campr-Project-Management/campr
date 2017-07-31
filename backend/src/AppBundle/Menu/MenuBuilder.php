@@ -433,6 +433,9 @@ class MenuBuilder
             ->addChild($this->translator->trans('title.decision.list', [], 'messages'), [
                 'route' => 'app_admin_decision_list',
             ])->getParent()
+            ->addChild($this->translator->trans('title.decision_category.list', [], 'messages'), [
+                'route' => 'app_admin_decision_category_list',
+            ])->getParent()
             ->addChild($this->translator->trans('title.decision_status.list', [], 'messages'), [
                 'route' => 'app_admin_decision_status_list',
             ])->getParent()
