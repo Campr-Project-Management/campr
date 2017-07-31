@@ -126,19 +126,6 @@ export default {
     @import '../../../css/_mixins';
     @import '../../../css/_variables';
 
-    .entry-responsible {
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-size: 10px;
-        line-height: 1.5em;
-        margin: 20px 0;
-
-        b {
-            display: block;
-            font-size: 12px;
-        }
-    }
-
     .user-avatar {
         display: inline-block;
         text-transform: uppercase;
@@ -186,6 +173,7 @@ export default {
         letter-spacing: 0.1em;
         font-size: 10px;
         line-height: 1.5em;
+        margin: 20px 0;
 
         b {
             display: block;
