@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <!-- /// Modals /// -->
-        <meeting-modals
+        <meeting-modals ref="meetingmodal"
             v-bind:editObjectiveModal="showEditObjectiveModal"
             v-bind:deleteObjectiveModal="showDeleteObjectiveModal"
             v-bind:objectiveObject="editObjectiveObject"
@@ -242,7 +242,7 @@
                     <div class="form-group">
                         <div class="vueditor-holder">
                             <div class="vueditor-header">{{ translateText('placeholder.decision_description') }}</div>
-                            <Vueditor ref="decisionDescription" />
+                            <div id="decisionDescription" ref="decisionDescription"></div>
                         </div>
                     </div>
                     <div class="row">
@@ -314,7 +314,8 @@
                     <div class="form-group">
                         <div class="vueditor-holder">
                             <div class="vueditor-header">{{ translateText('placeholder.action') }}</div>
-                            <Vueditor ref="todoDescription" />
+                            <div id="todoDescription" ref="todoDescription">
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -386,7 +387,8 @@
                     <div class="form-group">
                         <div class="vueditor-holder">
                             <div class="vueditor-header">{{ translateText('placeholder.info_description') }}</div>
-                            <Vueditor ref="noteDescription" />
+                            <div id="noteDescription" ref="noteDescription">
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -478,6 +480,8 @@ import {createFormData} from '../../../helpers/meeting';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import MeetingModals from './MeetingModals';
 import MeetingParticipants from './MeetingParticipants';
+import {createEditor} from 'vueditor';
+import vueditorConfig from '../../_common/vueditorConfig';
 
 export default {
     components: {
@@ -593,7 +597,7 @@ export default {
             this.createMeetingDecision({
                 id: this.$route.params.meetingId,
                 title: this.decision.title,
-                description: this.$refs.decisionDescription.getContent(),
+                description: this.decisionDescriptionEditor.getContent(),
                 responsibility: this.decision.responsibility.length > 0 ? this.decision.responsibility[0] : null,
                 dueDate: moment(this.decision.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 status: this.decision.status ? this.decision.status.key : null,
@@ -610,7 +614,9 @@ export default {
                 status: {key: decision.status, label: decision.statusName},
                 meeting: this.$route.params.meetingId,
             };
-            this.$refs.editDecisionDescription.setContent(decision.description);
+            setTimeout(() => {
+                this.$refs.meetingmodal.$refs.editDecisionDescription.setContent(decision.description);
+            }, 100);
         },
         initDeleteDecision: function(decision) {
             this.showDeleteDecisionModal = true;
@@ -620,7 +626,7 @@ export default {
             this.createMeetingTodo({
                 id: this.$route.params.meetingId,
                 title: this.todo.title,
-                description: this.$refs.todoDescription.getContent(),
+                description: this.todoDescriptionEditor.getContent(),
                 responsibility: this.todo.responsibility.length > 0 ? this.todo.responsibility[0] : null,
                 dueDate: moment(this.todo.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 status: this.todo.status ? this.todo.status.key : null,
@@ -637,7 +643,9 @@ export default {
                 status: {key: todo.status, label: todo.statusName},
                 meeting: this.$route.params.meetingId,
             };
-            this.$refs.editTodoDescription.setContent(todo.description);
+            setTimeout(() => {
+                this.$refs.meetingmodal.$refs.editTodoDescription.setContent(todo.description);
+            }, 100);
         },
         initDeleteTodo: function(todo) {
             this.showDeleteTodoModal = true;
@@ -647,7 +655,7 @@ export default {
             this.createMeetingNote({
                 id: this.$route.params.meetingId,
                 title: this.note.title,
-                description: this.$refs.noteDescription.getContent(),
+                description: this.noteDescriptionEditor.getContent(),
                 responsibility: this.note.responsibility.length > 0 ? this.note.responsibility[0] : null,
                 dueDate: moment(this.note.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 status: this.note.status ? this.note.status.key : null,
@@ -664,7 +672,9 @@ export default {
                 status: {key: note.status, label: note.statusName},
                 meeting: this.$route.params.meetingId,
             };
-            this.$refs.editNoteDescription.setContent(note.description);
+            setTimeout(() => {
+                this.$refs.meetingmodal.$refs.editNoteDescription.setContent(note.description);
+            }, 100);
         },
         initDeleteNote: function(note) {
             this.showDeleteNoteModal = true;
@@ -686,6 +696,13 @@ export default {
                 data: createFormData(data),
                 withPost: true,
             });
+        },
+        initVueEditors: function() {
+            setTimeout(() => {
+                this.decisionDescriptionEditor = createEditor(document.getElementById('decisionDescription'), {...vueditorConfig, id: 'decisionDescription'});
+                this.todoDescriptionEditor = createEditor(document.getElementById('todoDescription'), {...vueditorConfig, id: 'todoDescription'});
+                this.noteDescriptionEditor = createEditor(document.getElementById('noteDescription'), {...vueditorConfig, id: 'noteDescription'});
+            }, 100);
         },
     },
     computed: {
@@ -721,6 +738,9 @@ export default {
                 page: this.agendasActivePage,
             },
         });
+    },
+    mounted() {
+        this.initVueEditors();
     },
     data() {
         return {
@@ -793,6 +813,9 @@ export default {
             editNoteObject: {},
             participants: [],
             displayedParticipants: [],
+            decisionDescriptionEditor: null,
+            todoDescriptionEditor: null,
+            noteDescriptionEditor: null,
         };
     },
     watch: {
@@ -883,6 +906,7 @@ export default {
                     'path': item.path,
                 };
             });
+            this.initVueEditors();
         },
     },
 };
