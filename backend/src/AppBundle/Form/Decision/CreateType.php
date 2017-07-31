@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Decision;
 
 use AppBundle\Entity\Decision;
+use AppBundle\Entity\DecisionCategory;
 use AppBundle\Entity\DecisionStatus;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Project;
@@ -42,6 +43,12 @@ class CreateType extends AbstractType
                         'message' => 'not_blank.description',
                     ]),
                 ],
+            ])
+            ->add('decisionCategory', EntityType::class, [
+                'class' => DecisionCategory::class,
+                'choice_label' => 'name',
+                'placeholder' => 'placeholder.decision_category',
+                'translation_domain' => 'messages',
             ])
             ->add('date', DateType::class, [
                 'required' => false,
