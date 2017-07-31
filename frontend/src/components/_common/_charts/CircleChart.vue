@@ -1,17 +1,17 @@
 <template>
-  <div :data-percentage="percentage" class="chart relative" :id="'chart-' + _uid">
-      <svg viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="49" class="empty" stroke-width="1" fill="transparent"/>
-          <circle cx="50" cy="50" r="49" class="full" stroke-width="1" fill="transparent"/>
-      </svg>
-      <div class="text">
-          <div class="title">{{ title }}</div>
-          <div class="flex flex-align-end">
-              <div class="percentage">0</div>
-              <div class="percentage-sign flex-end">%</div>
-          </div>
-      </div>
-  </div>
+    <div :data-percentage="percentage" class="chart relative" :id="'chart-' + _uid">
+        <svg viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="49" class="empty" stroke-width="1" fill="transparent"/>
+            <circle cx="50" cy="50" r="49" class="full" stroke-width="1" fill="transparent"/>
+        </svg>
+        <div class="text">
+            <div class="title">{{ title }}</div>
+            <div class="value">
+                <div class="percentage">0</div>
+                <div class="percentage-sign">%</div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -54,76 +54,102 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import '../../../css/_common';
-  @import '../../../css/_variables.scss';
+@import '../../../css/_common';
+@import '../../../css/_variables.scss';
 
-  .chart {
-    font-size: 22px;
+    .chart {
+        font-size: 22px;
 
-    svg {
-      display: block;
-      width: 100%;
-      transform: rotate(-90deg);
-    }
+        svg {
+            display: block;
+            width: 100%;
+            transform: rotate(-90deg);
+        }
 
-    .empty {
-      stroke: $mainColor;
-    }
+        .empty {
+            stroke: $mainColor;
+        }
 
-    .full {
-      stroke: $secondColor;
-      stroke-dasharray: 0, 10000;
-    }
+        .full {
+            stroke: $secondColor;
+            stroke-dasharray: 0, 10000;
+        }
 
-    .text {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      padding: 0;
-      margin: 0;
-      transform: translate(-50%, -50%);
-      color: rgb(216, 218, 229);
-      line-height: 1em;
-
-      .title {
-        text-transform: uppercase;
-        font-size: 9px;
-        text-align: center;
-      }
-
-      .percentage {
-        font-weight: 700;
-        font-size: 34px;
-        line-height: 34px;
-      }
-
-      .percentage-sign {
-        color: $middleColor;
-        font-size: 12px;
-        line-height: 22px;
-      }
-    }
-  }
-
-  .widget.task-status-widget {
-    @media (min-width:1024px) {
-      .chart {
         .text {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            padding: 0;
+            margin: 0;
+            transform: translate(-50%, -50%);
+            color: rgb(216, 218, 229);
+            line-height: 1em;
+
             .title {
-                font-size: 16px;
+                text-transform: uppercase;
+                font-size: 9px;
+                text-align: center;
+            }
+
+            .value {
+                text-align: center;
+                white-space: nowrap;
             }
 
             .percentage {
-            font-size: 85px;
-            line-height: 85px;
+                display: inline-block;
+                font-weight: 700;
+                font-size: 34px;
+                line-height: 34px;
             }
 
             .percentage-sign {
-                font-size: 16px;
-                line-height: 50px;
+                display: inline-block;
+                color: $middleColor;
+                font-size: 12px;
+                line-height: 22px;
+                margin-left: -5px;
             }
         }
-      }
+
+        &.dark-chart {
+            .empty {
+                stroke: $darkerColor;
+            }
+        }
+
+        &.warning {
+            .full {
+                stroke: $warningColor;
+            }
+        }
+
+        &.danger {
+            .full {
+                stroke: $dangerColor;
+            }
+        }
     }
-  }
+
+    .widget.task-status-widget {
+        @media (min-width:1024px) {
+            .chart {
+                .text {
+                    .title {
+                        font-size: 16px;
+                    }
+
+                    .percentage {
+                        font-size: 85px;
+                        line-height: 85px;
+                    }
+
+                    .percentage-sign {
+                        font-size: 16px;
+                        line-height: 50px;
+                    }
+                }
+            }
+        }
+    }
 </style>
