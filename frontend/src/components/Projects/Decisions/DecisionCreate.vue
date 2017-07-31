@@ -9,7 +9,8 @@
                             <i class="fa fa-angle-left"></i>
                             {{ translateText('message.back_to_decisions') }}
                         </router-link>
-                        <h1>{{ translateText('message.create_new_decision') }}</h1>
+                        <h1 v-if="!isEdit">{{ translateText('message.create_new_decision') }}</h1>
+                        <h1 v-else>{{ translateText('message.edit_decision') }}</h1>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
@@ -20,17 +21,17 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <select-field
-                                    v-bind:title="translateText('label.event')"
-                                    v-bind:options="projectEvents"
-                                    v-model="details.event"
-                                    v-bind:currentOption="details.event" />
+                                    v-bind:title="translateText('message.event')"
+                                    v-bind:options="projectMeetingsForSelect"
+                                    v-model="details.meeting"
+                                    v-bind:currentOption="details.meeting" />
                             </div>
                             <div class="col-md-6">
                                 <select-field
                                     v-bind:title="translateText('label.category')"
-                                    v-bind:options="projectCategories"
-                                    v-model="details.category"
-                                    v-bind:currentOption="details.category" />
+                                    v-bind:options="decisionCategoriesForSelect"
+                                    v-model="details.decisionCategory"
+                                    v-bind:currentOption="details.decisionCategory" />
                             </div>
                         </div>
                     </div>
@@ -39,11 +40,19 @@
                     <!-- /// Info Title and Description /// -->
                     <div class="form-group">
                         <input-field type="text" v-bind:label="translateText('placeholder.decision_title')" v-model="title" v-bind:content="title" />
+                        <error
+                            v-if="validationMessages.title && validationMessages.title.length"
+                            v-for="message in validationMessages.title"
+                            :message="message" />
                     </div>
                     <div class="form-group">
                         <div class="vueditor-holder">
                             <div class="vueditor-header">{{ translateText('placeholder.decision_description') }}</div>
-                            <Vueditor ref="content" />
+                            <Vueditor ref="description" />
+                            <error
+                                v-if="validationMessages.description && validationMessages.description.length"
+                                v-for="message in validationMessages.description"
+                                :message="message" />
                         </div>
                     </div>
                     <!-- /// End Info Title and Description /// -->
@@ -52,12 +61,12 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <member-search v-model="Responsible" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                                <member-search v-model="responsible" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.due_date') }}</label>
-                                    <datepicker v-model="schedule.expiryDate" format="dd-MM-yyyy" />
+                                    <datepicker v-model="schedule.dueDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill" stroke="middle-stroke" />
                                 </div>
                             </div>
@@ -69,9 +78,9 @@
                             <div class="col-md-6">
                                 <select-field
                                     v-bind:title="translateText('label.select_status')"
-                                    v-bind:options="decisionStatus"
-                                    v-model="details.decisionStatus"
-                                    v-bind:currentOption="details.decisionStatus" />
+                                    v-bind:options="decisionStatusesForSelect"
+                                    v-model="details.status"
+                                    v-bind:currentOption="details.status" />
                             </div>
                         </div>
                     </div>     
@@ -80,8 +89,9 @@
 
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
-                        <router-link :to="{name: 'project-meetings'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
-                        <a ref="#" class="btn-rounded btn-auto btn-auto second-bg">{{ translateText('button.create_decision') }}</a>
+                        <router-link :to="{name: 'project-decisions'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
+                        <a v-if="!isEdit" @click="createNewDecision()" class="btn-rounded btn-auto btn-auto second-bg">{{ translateText('button.create_decision') }}</a>
+                        <a v-if="isEdit" @click="saveDecision()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
@@ -96,6 +106,9 @@ import SelectField from '../../_common/_form-components/SelectField';
 import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
+import {mapActions, mapGetters} from 'vuex';
+import moment from 'moment';
+import Error from '../../_common/_messages/Error.vue';
 
 export default {
     components: {
@@ -104,30 +117,91 @@ export default {
         datepicker,
         CalendarIcon,
         MemberSearch,
+        moment,
+        Error,
     },
     methods: {
+        ...mapActions([
+            'getProjectMeetings', 'getDecisionStatuses', 'getDecisionCategories',
+            'createDecision', 'getDecision', 'editDecision',
+        ]),
         translateText: function(text) {
             return this.translate(text);
         },
+        getData: function() {
+            let data = {
+                projectId: this.$route.params.id,
+                meeting: this.details.meeting ? this.details.meeting.key : null,
+                title: this.title,
+                description: this.$refs.description.getContent(),
+                decisionCategory: this.details.decisionCategory ? this.details.decisionCategory.key : null,
+                responsibility: this.responsible.length > 0 ? this.responsible[0] : null,
+                dueDate: moment(this.schedule.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
+                status: this.details.status ? this.details.status.key : null,
+            };
+            return data;
+        },
+        createNewDecision: function() {
+            this.createDecision(this.getData());
+        },
+        saveDecision: function() {
+            let data = this.getData();
+            data.id = this.$route.params.decisionId;
+            data.redirect = true;
+            this.editDecision(data);
+        },
+    },
+    computed: {
+        ...mapGetters({
+            decisionStatusesForSelect: 'decisionStatusesForSelect',
+            decisionCategoriesForSelect: 'decisionCategoriesForSelect',
+            projectMeetingsForSelect: 'projectMeetingsForSelect',
+            validationMessages: 'validationMessages',
+            currentDecision: 'currentDecision',
+        }),
+    },
+    created() {
+        this.getDecisionStatuses();
+        this.getDecisionCategories();
+        this.getProjectMeetings({projectId: this.$route.params.id});
+        if (this.$route.params.decisionId) {
+            this.getDecision(this.$route.params.decisionId);
+        }
     },
     data() {
         return {
-            projectEvents: [{label: 'TP Meeting', key: 1}, {label: 'EK Meeting', key: 2}, {label: 'Anlagenverwertung BTF', key: 3},
-             {label: 'Gebäudeplanung', key: 4}],
-            projectCategories: [{label: 'Production', key: 1}, {label: 'Logistics', key: 2}, {label: 'Quality Management', key: 3},
-             {label: 'Human Resources', key: 4}, {label: 'Purchasing', key: 5}, {label: 'Maintenance', key: 6},
-              {label: 'Assembly', key: 7}, {label: 'Tooling', key: 8}, {label: 'Process Engineering', key: 9}, {label: 'Industrialization', key: 10}],
-            decisionStatus: [{label: 'Done', key: 1}, {label: 'Undone', key: 2}],
             title: '',
+            responsible: [],
             schedule: {
-                expiryDate: new Date(),
+                dueDate: new Date(),
             },
             details: {
-                event: null,
-                category: null,
-                infoStatus: null,
+                meeting: null,
+                decisionCategory: null,
+                status: null,
             },
+            isEdit: this.$route.params.decisionId,
         };
+    },
+    watch: {
+        currentDecision(value) {
+            this.title = this.currentDecision.title;
+            this.$refs.description.setContent(this.currentDecision.description);
+            this.details.meeting = this.currentDecision.meeting
+                ? {key: this.currentDecision.meeting, label: this.currentDecision.meetingName}
+                : null
+            ;
+            this.details.decisionCategory = this.currentDecision.decisionCategory
+                ? {key: this.currentDecision.decisionCategory, label: this.currentDecision.decisionCategoryName}
+                : null
+            ;
+            this.details.status = this.currentDecision.status
+                ? {key: this.currentDecision.status, label: this.currentDecision.statusName}
+                : null
+            ;
+            this.responsible.push(this.currentDecision.responsibility);
+            this.schedule.dueDate = new Date(this.currentDecision.dueDate);
+        },
     },
 };
 </script>

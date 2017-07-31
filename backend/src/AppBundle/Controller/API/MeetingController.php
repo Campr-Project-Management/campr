@@ -263,6 +263,7 @@ class MeetingController extends ApiController
         if ($form->isValid()) {
             $decision = $form->getData();
             $decision->setMeeting($meeting);
+            $decision->setProject($meeting->getProject());
             $this->persistAndFlush($decision);
 
             return $this->createApiResponse($decision, Response::HTTP_CREATED);
