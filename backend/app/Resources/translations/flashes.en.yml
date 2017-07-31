@@ -92,6 +92,12 @@ success:
         delete:
             from_edit: Decision successfully deleted!
             from_data_table: Decision with ID
+    decision_category:
+        create: Decision Category successfully created!
+        edit: Decision Category successfully edited!
+        delete:
+            from_edit: Decision Category successfully deleted!
+            from_data_table: Decision Category with ID
     distribution_list:
         create: Distribution list successfully created!
         edit: Distribution list successfully edited!
