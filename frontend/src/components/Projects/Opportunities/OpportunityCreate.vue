@@ -343,9 +343,6 @@ export default {
             };
             setTimeout(() => {
                 measure.element = createEditor(document.getElementById(thisRef), {...config, id: thisRef});
-                console.log(measure.element);
-                console.log('id', thisRef);
-                console.log('refs', this.$refs);
             }, 1000);
             this.measures.push(measure);
         },
@@ -355,7 +352,6 @@ export default {
                 title: item.title,
                 cost: item.cost,
             }));
-            console.log('measures', measures);
             let data = {
                 title: this.title,
                 description: this.$refs.description.getContent(),
@@ -467,7 +463,6 @@ export default {
     },
     mounted() {
         this.$refs.description.id = 1;
-        console.log('as', this.$refs.description);
     },
     watch: {
         opportunityImpact: function(value) {
