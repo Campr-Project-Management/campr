@@ -8,7 +8,7 @@ const state = {
 const getters = {
     distributionLists: state => state.distributionLists,
     distributionListsForSelect: state => {
-        let selectLsts = [{'key': null, 'label': Translator.trans('placeholder.distribution_lists')}];
+        let selectLsts = [{'key': null, 'label': Translator.trans('placeholder.distribution_list')}];
         state.distributionLists.map(function(item) {
             selectLsts.push({'key': item.id, 'label': item.name});
         });

@@ -113,7 +113,7 @@
                         </li>
                     </ul>
                     <div class="form-group">
-                        <input-field type="text" v-bind:label="translateText('placeholder.new_objective')" v-model="objectiveDescription" v-bind:content="objectiveDescription" />
+                        <input-field type="text" v-bind:label="translateText('message.new_objective')" v-model="objectiveDescription" v-bind:content="objectiveDescription" />
                     </div>
                     <div class="flex flex-direction-reverse">
                         <a @click="addObjective()" class="btn-rounded btn-auto">{{ translateText('message.add_new_objective') }}</a>
