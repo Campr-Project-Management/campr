@@ -408,6 +408,25 @@ success:
         delete:
             from_edit: Measure successfully deleted!
             from_data_table: Measure with ID
+    info:
+        create: Info successfully created!
+        edit: Info successfully edited!
+        delete:
+            from_edit: Info successfully deleted!
+            from_data_table: Info with ID
+    info_status:
+        create: Info status successfully created!
+        edit: Info status successfully edited!
+        delete:
+            from_edit: Info status successfully deleted!
+            from_data_table: Info status with ID
+    info_category:
+        create: Info category successfully created!
+        edit: Info category successfully edited!
+        delete:
+            from_edit: Info category successfully deleted!
+            from_data_table: Info category with ID
+
 failed:
     media:
         upload: File upload failed. Filesystem cannot be reached.
