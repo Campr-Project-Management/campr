@@ -452,6 +452,33 @@ class MenuBuilder
             ->getParent()
         ;
 
+        $menu
+            ->addChild($this->translator->trans('title.info.list', [], 'messages'), [])
+            ->setAttributes([
+                'class' => 'sub-menu main-category',
+                'dropdown' => true,
+            ])
+            ->setLinkAttribute('icon', 'zmdi zmdi-device-hub')
+            ->addChild($this->translator->trans('title.info.list', [], 'messages'), [
+                'route' => 'app_admin_info_list',
+            ])
+            ->setAttribute('class', 'main-category')
+            ->setLinkAttribute('icon', 'zmdi zmdi-comment')
+            ->getParent()
+            ->addChild($this->translator->trans('title.info_category.list', [], 'messages'), [
+                'route' => 'app_admin_info_category_list',
+            ])
+            ->setAttribute('class', 'main-category')
+            ->setLinkAttribute('icon', 'zmdi zmdi-comment')
+            ->getParent()
+            ->addChild($this->translator->trans('title.info_status.list', [], 'messages'), [
+                'route' => 'app_admin_info_status_list',
+            ])
+            ->setAttribute('class', 'main-category')
+            ->setLinkAttribute('icon', 'zmdi zmdi-comment')
+            ->getParent()
+        ;
+
         $this->filterMenu($menu);
 
         return $menu;

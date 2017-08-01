@@ -2,9 +2,19 @@
     <div class="filters">
         <span class="title">{{ translateText('message.filter_by') }}</span>
         <div class="dropdowns">            
-            <member-search v-model="Responsible" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
-            <dropdown v-bind:title="translateText('message.category')" v-bind:options="category" item="project" filter="category"></dropdown>
-            <dropdown v-bind:title="translateText('message.status')" v-bind:options="status" item="project" filter="status"></dropdown>
+            <member-search
+                v-model="user"
+                v-bind:placeholder="translateText('placeholder.responsible')"
+                v-bind:singleSelect="true"></member-search>
+            <dropdown
+                v-bind:title="translateText('message.category')"
+                v-bind:options="infoCategoriesForDropdown"
+                :selectedValue="setFiltersInfoCategory"></dropdown>
+            <dropdown
+                v-bind:title="translateText('message.status')"
+                v-bind:options="infoStatusesForDropdown"
+                :selectedValue="setFiltersInfoStatus"></dropdown>
+            <button v-on:click="clearFilters" class="btn-rounded btn-auto second-bg">{{ translateText('filter.clear') }}</button>
         </div>
     </div>
 </template>
@@ -12,24 +22,43 @@
 <script>
 import Dropdown from '../../_common/Dropdown';
 import MemberSearch from '../../_common/MemberSearch';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     components: {
         Dropdown,
         MemberSearch,
     },
+    created() {
+        this.getInfoCategories();
+        this.getInfoStatuses();
+    },
     methods: {
+        ...mapActions(['getInfoCategories', 'getInfoStatuses']),
         translateText: function(text) {
             return this.translate(text);
+        },
+        setFiltersInfoStatus(val) {
+            this.$emit('set-info-status', val);
+        },
+        setFiltersInfoCategory(val) {
+            this.$emit('set-info-category', val);
+        },
+        clearFilters() {
+            this.$emit('clear-filters');
+        },
+    },
+    computed: {
+        ...mapGetters(['infoCategoriesForDropdown', 'infoStatusesForDropdown']),
+    },
+    watch: {
+        user(val) {
+            this.$emit('set-user', val);
         },
     },
     data() {
         return {
-            category: [{label: 'Production', key: 1}, {label: 'Logistics', key: 2}, {label: 'Quality Management', key: 3},
-             {label: 'Human Resources', key: 4}, {label: 'Purchasing', key: 5}, {label: 'Maintenance', key: 6},
-              {label: 'Assembly', key: 7}, {label: 'Tooling', key: 8}, {label: 'Process Engineering', key: 9}, {label: 'Industrialization', key: 10}],
-            status: [{label: 'Initiated', key: 1}, {label: 'Ongoing', key: 2}, {label: 'On Hold', key: 3},
-             {label: 'Published', key: 4}, {label: 'Expired', key: 5}],
+            user: null,
         };
     },
 };

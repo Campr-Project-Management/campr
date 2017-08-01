@@ -43,9 +43,12 @@ class UnitController extends ApiController
             return $this->createApiResponse($unit, JsonResponse::HTTP_CREATED);
         }
 
-        return $this->createApiResponse([
-            'messages' => $this->getFormErrors($form),
-        ]);
+        return $this->createApiResponse(
+            [
+                'messages' => $this->getFormErrors($form),
+            ],
+            JsonResponse::HTTP_BAD_REQUEST
+        );
     }
 
     /**
