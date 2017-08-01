@@ -124,28 +124,27 @@ const actions = {
      * @param {function} commit
      * @param {array} data
      */
-    getProjectTodos({commit}, data) {
-        let paramObject = {id: data.projectId};
+    getProjectTodos({commit, state}, data) {
+        let paramObject = {params: {}};
         if (data && data.queryParams && data.queryParams.page !== undefined) {
-            paramObject.page = data.queryParams.page;
+            paramObject.params.page = data.queryParams.page;
         }
         if (state.todoFilters && state.todoFilters.status) {
-            paramObject.status = state.todoFilters.status;
+            paramObject.params.status = state.todoFilters.status;
         }
         if (state.todoFilters && state.todoFilters.dueDate) {
-            paramObject.dueDate = state.todoFilters.dueDate;
+            paramObject.params.dueDate = state.todoFilters.dueDate;
         }
         if (state.todoFilters && state.todoFilters.responsibility && state.todoFilters.responsibility[0]) {
-            paramObject.responsibility = state.todoFilters.responsibility[0];
+            paramObject.params.responsibility = state.todoFilters.responsibility[0];
         }
         if (state.todoFilters && state.todoFilters.todoCategory) {
-            paramObject.todoCategory = state.todoFilters.todoCategory;
+            paramObject.params.todoCategory = state.todoFilters.todoCategory;
         }
-
         Vue.http
             .get(
                 Routing.generate('app_api_projects_todos', {id: data.projectId}),
-                paramObject
+                paramObject,
             ).then((response) => {
                 if (response.status === 200) {
                     let todos = response.data;
