@@ -7,6 +7,7 @@ use AppBundle\Entity\Contract;
 use AppBundle\Entity\Cost;
 use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\FileSystem;
+use AppBundle\Entity\Info;
 use AppBundle\Entity\Label;
 use AppBundle\Entity\Measure;
 use AppBundle\Entity\Meeting;
@@ -26,6 +27,7 @@ use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\Unit;
 use AppBundle\Entity\WorkPackageProjectWorkCostType;
 use AppBundle\Entity\WorkPackageStatus;
+use AppBundle\Form\Info\ApiCreateType as InfoType;
 use AppBundle\Form\Label\BaseLabelType;
 use AppBundle\Form\Project\CreateType;
 use AppBundle\Form\Calendar\BaseCreateType as CalendarCreateType;
@@ -50,6 +52,7 @@ use AppBundle\Repository\MeetingRepository;
 use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\ProjectVoter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -1678,5 +1681,62 @@ class ProjectController extends ApiController
         }
 
         return $this->createApiResponse(null, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @Route("/{id}/infos", name="app_api_project_infos", options={"expose"=true})
+     * @Method({"GET"})
+     */
+    public function infosAction(Request $request, Project $project)
+    {
+        $queryBuilder = $this
+            ->getDoctrine()
+            ->getRepository(Info::class)
+            ->getQueryBuilderByProjectAndFilters($project, $request->query)
+        ;
+
+        $page = $request->query->get('page', 1);
+        $perPage = $request->query->get('per_page', 10);
+
+        /** @var SlidingPagination $paginator */
+        $paginator = $this->get('knp_paginator')->paginate($queryBuilder, $page, $perPage);
+
+        $out = [
+            'items' => $paginator->getItems(),
+            'currentPage' => (int) $paginator->getPage(),
+            'numberOfPages' => $paginator->getPageCount(),
+            'numberOfItems' => $paginator->getTotalItemCount(),
+            'itemsPerPage' => $paginator->getItemNumberPerPage(),
+        ];
+
+        return $this->createApiResponse($out);
+    }
+
+    /**
+     * @Route("/{id}/infos", name="app_api_project_create_info", options={"expose"=true})
+     * @Method({"POST"})
+     */
+    public function createInfoAction(Request $request, Project $project)
+    {
+        $info = new Info();
+        $info->setProject($project);
+        $form = $this->createForm(InfoType::class, $info, ['method' => Request::METHOD_POST, 'csrf_protection' => false]);
+
+        $this->processForm($request, $form, false);
+
+        if ($form->isValid()) {
+            $em = $this->getEntityManager();
+            $em->persist($info);
+            $em->flush();
+
+            return $this->createApiResponse($info, Response::HTTP_CREATED);
+        }
+
+        return $this->createApiResponse(
+            [
+                'messages' => $this->getFormErrors($form),
+            ],
+            Response::HTTP_BAD_REQUEST
+        );
     }
 }

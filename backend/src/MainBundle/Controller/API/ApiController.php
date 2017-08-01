@@ -2,6 +2,8 @@
 
 namespace MainBundle\Controller\API;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 use MainBundle\Controller\BaseController;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
@@ -19,7 +21,15 @@ abstract class ApiController extends BaseController
     const FORM_CLASS = '';
 
     /**
-     * @return \Doctrine\Common\Persistence\ObjectRepository
+     * @return ObjectManager
+     */
+    public function getEntityManager()
+    {
+        return $this->getDoctrine()->getManager();
+    }
+
+    /**
+     * @return ObjectRepository
      */
     protected function getRepository()
     {

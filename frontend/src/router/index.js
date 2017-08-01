@@ -284,14 +284,19 @@ const routes = [
                 name: 'project-infos',
             },
             {
-                path: 'infos/create-info',
+                path: 'infos/new',
                 component: InfoCreate,
-                name: 'project-infos-create-info',
+                name: 'project-infos-new',
             },
             {
-                path: 'infos/view-info',
+                path: 'infos/edit/:infoId',
+                component: InfoCreate,
+                name: 'project-infos-edit',
+            },
+            {
+                path: 'infos/view/:infoId',
                 component: ViewInfo,
-                name: 'project-infos-view-info',
+                name: 'project-infos-view',
             },
         ],
     },
