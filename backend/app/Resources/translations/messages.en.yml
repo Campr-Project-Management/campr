@@ -156,6 +156,7 @@ message:
     create_new_team_member: Create new team member
     add_avatar_image: Add avatar image
     delete_department: Are you sure you want to delete selected department?
+    delete_info: Are you sure you want to delete selected info?
     edit_department: Edit Department
     displaying: Displaying
     results_out_of: results out of
@@ -639,6 +640,18 @@ title:
         list: Note Status
         create: Create Note Status
         edit: Edit Note Status
+    info:
+        list: Info
+        create: Create new info
+        edit: Edit info
+    info_status:
+        list: Info status
+        create: Create new info status
+        edit: Edit info status
+    info_category:
+        list: Info category
+        create: Create new info category
+        edit: Edit info category
 
 subtitle:
     decision_status: List of decision statuses
@@ -952,6 +965,26 @@ label:
     schedule: Schedule
     change_status: Change Status
     select_due_date: Select Due Date
+    production: Production
+    logistics: Logistics
+    quality_management: Quality Management
+    human_resources: Human Resources
+    purchasing: Purchasing
+    maintenance: Maintenance
+    assembly: Assembly
+    tooling: Tooling
+    process_engineering: Process Engineering
+    industrialization: Industrialization
+    initiated: Initiated
+    ongoing: Ongoing
+    on_hold: On Hold
+    published: Published
+    expired: Expired
+    info_status: Info status
+    info_category: Info category
+    users: Users
+    loading: Loading
+    no_data: No data
 
 button:
     delete_info: Delete Info
@@ -1258,6 +1291,7 @@ table_header_cell:
     puid: Puid
     username: Username
     user: User
+    users: Users
     sponsor: Sponsor
     manager: Manager
     responsible: Responsible
@@ -1414,6 +1448,8 @@ table_header_cell:
     subteam_members: Subteam Members
     subteam_roles: Subteam Roles
     subteam_parent: Subteam parent
+    info_status: Info status
+    info_category: Info Category
 
 link:
     home: Home
@@ -1518,3 +1554,6 @@ roles:
     project_manager: Project Manager
     team_leader: Team Leader
     team_member: Team Member
+
+filter:
+    clear: Clear filters

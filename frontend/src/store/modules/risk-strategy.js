@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import _ from 'lodash';
 
 const state = {
     riskStrategies: [],
@@ -9,7 +10,7 @@ const getters = {
     riskStrategies: state => state.riskStrategies,
     riskStrategiesForSelect: state => {
         let strategiesSelect = [{'key': null, 'label': Translator.trans('placeholder.risk_strategy')}];
-        state.riskStrategies.map(function(item) {
+        _.isArray(state.riskStrategies) && state.riskStrategies.map(function(item) {
             strategiesSelect.push({'key': item.id, 'label': item.name});
         });
         return strategiesSelect;
