@@ -125,7 +125,7 @@ const actions = {
      * @param {array} data
      */
     getProjectTodos({commit}, data) {
-        let paramObject = {id: projectId};
+        let paramObject = {id: data.projectId};
         if (data && data.queryParams && data.queryParams.page !== undefined) {
             paramObject.page = data.queryParams.page;
         }
