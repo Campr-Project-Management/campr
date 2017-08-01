@@ -1639,48 +1639,83 @@ class ProjectController extends ApiController
     }
 
     /**
-     * @Route("/{id}/costs-resources", name="app_api_project_costs_resources", options={"expose"=true})
+     * @Route("/{id}/costs-graph-data", name="app_api_project_costs_graph_data", options={"expose"=true})
      * @Method({"GET"})
      */
-    public function costsResourcesAction(Request $request, Project $project)
+    public function costsGraphDataAction(Project $project)
     {
-        $filters = $request->query->all();
-        if (isset($filters['type'])) {
-            $em = $this->getDoctrine()->getManager();
-            $costRepo = $em->getRepository(Cost::class);
-            $wpRepo = $em->getRepository(WorkPackage::class);
+        $em = $this->getDoctrine()->getManager();
+        $costRepo = $em->getRepository(Cost::class);
+        $wpRepo = $em->getRepository(WorkPackage::class);
 
-            $baseCosts = $costRepo->getTotalBaseCostByPhase($project, $filters['type']);
-            $actualForecastCosts = $wpRepo->getTotalExternalInternalCostsByPhase($project, $filters['type']);
-            $dataByPhase = [];
-            foreach (array_merge($baseCosts, $actualForecastCosts) as $cost) {
-                foreach ($cost as $key => $value) {
-                    if ($key !== 'phaseName') {
-                        $dataByPhase[$cost['phaseName']][$key] = $value;
-                    }
+        $baseCosts = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_EXTERNAL);
+        $actualForecastCosts = $wpRepo->getTotalExternalInternalCostsByPhase($project, Cost::TYPE_EXTERNAL);
+        $dataByPhase = [];
+        foreach (array_merge($baseCosts, $actualForecastCosts) as $cost) {
+            foreach ($cost as $key => $value) {
+                if ($key !== 'phaseName') {
+                    $dataByPhase[$cost['phaseName']][$key] = $value;
                 }
             }
-
-            $userDepartments = $em->getRepository(ProjectUser::class)->getUserAndDepartment($project);
-            $dataByDepartment = [];
-            foreach ($userDepartments as $userDepartment) {
-                $dataByDepartment[$userDepartment['department']]['userIds'][] = $userDepartment['uid'];
-            }
-            foreach ($dataByDepartment as $key => $value) {
-                $base = $costRepo->getTotalBaseCostByPhase($project, $filters['type'], $value['userIds']);
-                $actualForecast = $wpRepo->getTotalExternalInternalCostsByPhase($project, $filters['type'], $value['userIds']);
-                $dataByDepartment[$key]['base'] = !empty($base) ? $base[0]['base'] : 0;
-                $dataByDepartment[$key]['actual'] = !empty($actualForecast) ? $actualForecast[0]['actual'] : 0;
-                $dataByDepartment[$key]['forecast'] = !empty($actualForecast) ? $actualForecast[0]['forecast'] : 0;
-            }
-
-            return $this->createApiResponse([
-                'byPhase' => $dataByPhase,
-                'byDepartment' => $dataByDepartment,
-            ]);
         }
 
-        return $this->createApiResponse(null, Response::HTTP_BAD_REQUEST);
+        $userDepartments = $em->getRepository(ProjectUser::class)->getUserAndDepartment($project);
+        $dataByDepartment = [];
+        foreach ($userDepartments as $userDepartment) {
+            $dataByDepartment[$userDepartment['department']]['userIds'][] = $userDepartment['uid'];
+        }
+        foreach ($dataByDepartment as $key => $value) {
+            $base = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_EXTERNAL, $value['userIds']);
+            $actualForecast = $wpRepo->getTotalExternalInternalCostsByPhase($project, Cost::TYPE_EXTERNAL, $value['userIds']);
+            $dataByDepartment[$key]['base'] = !empty($base) ? $base[0]['base'] : 0;
+            $dataByDepartment[$key]['actual'] = !empty($actualForecast) ? $actualForecast[0]['actual'] : 0;
+            $dataByDepartment[$key]['forecast'] = !empty($actualForecast) ? $actualForecast[0]['forecast'] : 0;
+        }
+
+        return $this->createApiResponse([
+            'byPhase' => $dataByPhase,
+            'byDepartment' => $dataByDepartment,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/resources-graph-data", name="app_api_project_resources_graph_data", options={"expose"=true})
+     * @Method({"GET"})
+     */
+    public function resourcesGraphDataAction(Project $project)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $costRepo = $em->getRepository(Cost::class);
+        $wpRepo = $em->getRepository(WorkPackage::class);
+
+        $baseCosts = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_INTERNAL);
+        $actualForecastCosts = $wpRepo->getTotalExternalInternalCostsByPhase($project, Cost::TYPE_INTERNAL);
+        $dataByPhase = [];
+        foreach (array_merge($baseCosts, $actualForecastCosts) as $cost) {
+            foreach ($cost as $key => $value) {
+                if ($key !== 'phaseName') {
+                    $dataByPhase[$cost['phaseName']][$key] = $value;
+                }
+            }
+        }
+
+        $userDepartments = $em->getRepository(ProjectUser::class)->getUserAndDepartment($project);
+        $dataByDepartment = [];
+        foreach ($userDepartments as $userDepartment) {
+            $dataByDepartment[$userDepartment['department']]['userIds'][] = $userDepartment['uid'];
+        }
+        foreach ($dataByDepartment as $key => $value) {
+            $base = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_INTERNAL, $value['userIds']);
+            $actualForecast = $wpRepo->getTotalExternalInternalCostsByPhase($project, Cost::TYPE_INTERNAL, $value['userIds']);
+            $dataByDepartment[$key]['base'] = !empty($base) ? $base[0]['base'] : 0;
+            $dataByDepartment[$key]['actual'] = !empty($actualForecast) ? $actualForecast[0]['actual'] : 0;
+            $dataByDepartment[$key]['forecast'] = !empty($actualForecast) ? $actualForecast[0]['forecast'] : 0;
+        }
+
+        return $this->createApiResponse([
+            'byPhase' => $dataByPhase,
+            'byDepartment' => $dataByDepartment,
+        ]);
     }
 
     /**

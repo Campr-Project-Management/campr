@@ -32,20 +32,20 @@ import {mapGetters, mapActions} from 'vuex';
 
 export default {
     methods: {
-        ...mapActions(['getProjectCostsResources']),
+        ...mapActions(['getProjectResourcesGraphData']),
         translateText: function(text) {
             return this.translate(text);
         },
     },
     created() {
-        this.getProjectCostsResources({id: this.$route.params.id, type: 0});
+        this.getProjectResourcesGraphData({id: this.$route.params.id});
     },
     computed: mapGetters({
-        projectCostsAndResources: 'projectCostsAndResources',
+        resourceData: 'resourceData',
     }),
     watch: {
-        projectCostsAndResources(value) {
-            Object.entries(this.projectCostsAndResources.byPhase).map(([key, value]) => {
+        resourceData(value) {
+            Object.entries(this.resourceData.byPhase).map(([key, value]) => {
                 this.rowsByPhase.push([
                     key,
                     value.base ? parseInt(value.base) : 0,
@@ -54,7 +54,7 @@ export default {
                     value.base && value.actual ? parseInt(value.base) - parseInt(value.actual) : 0,
                 ]);
             });
-            Object.entries(this.projectCostsAndResources.byDepartment).map(([key, value]) => {
+            Object.entries(this.resourceData.byDepartment).map(([key, value]) => {
                 this.rowsByDepartment.push([
                     key,
                     value.base ? parseInt(value.base) : 0,
