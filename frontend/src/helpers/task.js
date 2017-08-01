@@ -42,7 +42,7 @@ export const createFormData = (data) => {
         formData.append('costs[' + i + '][type]', 1);
         if (data.externalCosts.items[i].customUnit && data.externalCosts.items[i].customUnit.length) {
             formData.append('costs[' + i + '][customUnit]', data.externalCosts.items[i].customUnit);
-        } else {
+        } else if (data.externalCosts.items.unit) {
             formData.append(
                 'costs[' + i + '][unit]',
                 data.externalCosts.items[i].selectedUnit || data.externalCosts.items[i].unit.id

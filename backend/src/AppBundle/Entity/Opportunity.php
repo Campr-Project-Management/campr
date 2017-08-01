@@ -619,7 +619,7 @@ class Opportunity
      *
      * @return Opportunity
      */
-    public function setOpportunityStatus(OpportunityStatus $opportunityStatus)
+    public function setOpportunityStatus(OpportunityStatus $opportunityStatus = null)
     {
         $this->opportunityStatus = $opportunityStatus;
 

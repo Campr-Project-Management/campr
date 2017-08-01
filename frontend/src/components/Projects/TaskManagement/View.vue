@@ -282,7 +282,7 @@
                             <router-link
                                 :to="{name: 'project-milestones-edit-milestone', params: {milestoneId: task.milestone}}"
                                 class="btn-rounded btn-md btn-empty btn-auto">
-                                {{ translateText('message.edit_milestone') }}
+                                {{ translateText('button.edit_milestone') }}
                             </router-link>
                         </div>
                     </div>

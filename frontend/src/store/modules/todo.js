@@ -144,8 +144,9 @@ const actions = {
 
         Vue.http
             .get(
-                Routing.generate('app_api_projects_todos', paramObject),
-            ).then((response) => { // remove this
+                Routing.generate('app_api_projects_todos', {id: data.projectId}),
+                paramObject
+            ).then((response) => {
                 if (response.status === 200) {
                     let todos = response.data;
                     commit(types.SET_TODOS, {todos});
