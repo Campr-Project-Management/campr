@@ -80,7 +80,7 @@ class Todo
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumn(name="responsibility_id")
+     * @ORM\JoinColumn(name="responsibility_id", onDelete="SET NULL")
      */
     private $responsibility;
 
