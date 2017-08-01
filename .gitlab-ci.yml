@@ -25,13 +25,3 @@ test:phpunit:
 
 after_script:
   - rm -rf backend/src/AppBundle/Tests/Resources/files/
-
-deploy:qa:
-    stage: deploy
-    script:
-        - git config --local user.name "RoboCop"
-        - git config --local user.email "info@trisoft.ro"
-        - bin/dep deploy qa -vvv
-    only:
-        - master
-    when: manual
