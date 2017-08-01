@@ -1,4 +1,20 @@
 message:
+    opportunities: Opportunities
+    phases_and_milestones: Phases and Milestones
+    costs_progress: Costs Progress
+    task_progress: Task Progress
+    overall_progress: Overall Progress
+    danger: Danger
+    warning: Warning
+    actual_schedule: Actual Schedule
+    forecast_schedule: Forecast Schedule
+    base_schedule: Base Schedule
+    current_date: Current Date
+    project_trend: Project Trend
+    action_needed: Action Needed
+    tasks_condition: Tasks Condition
+    tasks_status: Tasks Status
+    overall_status: Overall Status
     back_to_decisions: Back to Decisions
     create_new_decision: Create New Decision
     project_decisions: Project Decisions
@@ -993,6 +1009,7 @@ label:
     no_data: No data
 
 button:
+    email_status_report: Email Status Report
     delete_decision: Delete Decision
     new_decision: New Decision
     edit_decision: Edit Decision
