@@ -17,7 +17,8 @@ const state = {
     tasksForSchedule: {},
     projectTasksStatus: {},
     risksOpportunitiesStats: [],
-    projectCostsAndResources: {},
+    costData: {},
+    resourceData: {},
 };
 
 const getters = {
@@ -42,7 +43,8 @@ const getters = {
     projectTasksStatus: state => state.projectTasksStatus,
     risksOpportunitiesStats: state => state.risksOpportunitiesStats,
     projectsCount: state => state.projects.totalItems,
-    projectCostsAndResources: state => state.projectCostsAndResources,
+    costData: state => state.costData,
+    resourceData: state => state.resourceData,
 };
 
 const actions = {
@@ -554,20 +556,41 @@ const actions = {
     },
 
     /**
-     * Gets project costs and resources data
+     * Gets project costs data
      * @param {function} commit
      * @param {number} data
      * @return {object}
      */
-    getProjectCostsResources({commit}, data) {
+    getProjectCostsGraphData({commit}, data) {
         return Vue
             .http
-            .get(Routing.generate('app_api_project_costs_resources', data))
+            .get(Routing.generate('app_api_project_costs_graph_data', data))
             .then(
                 (response) => {
                     if (response.status === 200) {
-                        let projectCostsAndResources = response.data;
-                        commit(types.SET_PROJECT_COSTS_AND_RESOURCES, {projectCostsAndResources});
+                        let costData = response.data;
+                        commit(types.SET_PROJECT_COSTS_GRAPH_DATA, {costData});
+                    }
+                },
+                (response) => {}
+            )
+        ;
+    },
+    /**
+     * Gets project resource data
+     * @param {function} commit
+     * @param {number} data
+     * @return {object}
+     */
+    getProjectResourcesGraphData({commit}, data) {
+        return Vue
+            .http
+            .get(Routing.generate('app_api_project_resources_graph_data', data))
+            .then(
+                (response) => {
+                    if (response.status === 200) {
+                        let resourceData = response.data;
+                        commit(types.SET_PROJECT_RESOURCES_GRAPH_DATA, {resourceData});
                     }
                 },
                 (response) => {}
@@ -710,12 +733,20 @@ const mutations = {
         state.risksOpportunitiesStats = roStats;
     },
     /**
-     * Set project costs and resources data
+     * Set project costs data
      * @param {Object} state
-     * @param {array} projectCostsAndResources
+     * @param {array} costData
      */
-    [types.SET_PROJECT_COSTS_AND_RESOURCES](state, {projectCostsAndResources}) {
-        state.projectCostsAndResources = projectCostsAndResources;
+    [types.SET_PROJECT_COSTS_GRAPH_DATA](state, {costData}) {
+        state.costData = costData;
+    },
+    /**
+     * Set project resource data
+     * @param {Object} state
+     * @param {array} costData
+     */
+    [types.SET_PROJECT_RESOURCES_GRAPH_DATA](state, {resourceData}) {
+        state.resourceData = resourceData;
     },
 };
 
