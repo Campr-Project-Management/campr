@@ -28,3 +28,4 @@ Vagrantfile
 /web/js/
 /web/app_dev.php
 /frontend/config/dev.local.js
+docker-compose.yml
