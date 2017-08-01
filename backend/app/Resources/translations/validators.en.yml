@@ -73,6 +73,9 @@ not_blank:
         name: The subteam role name must not be empty.
     comment:
         body: The body of the comment cannot be blank
+    info_category: Category should be empty.
+    info_status: Status should be empty.
+    expiry_date: Expiry date should not be empty.
 
 not_null:
     driver: You must select a driver
@@ -104,9 +107,12 @@ invalid:
     milestone:
         work_package_status: A milestone can have only the Opened and Completed statuses 
 
+format:
+    color: 'Invalid color format. Should be a valid RGB color starting with a "#" and followed by 6 characters from a to z and 0 to 9. E.g.: #abc123, #123456, #ffffff'
+
 used:
     team:
-      slug: Slug was already used for this team!
+        slug: Slug was already used for this team!
 
 regex:
     password: Password must contain 1 upper case letter, 1 lower case letter, and 1 number

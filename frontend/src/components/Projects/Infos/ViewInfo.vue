@@ -1,6 +1,10 @@
 <template>
     <div>
-        <div class="row">
+        <div class="row" v-if="!info">
+            <p>{{ translateText('message.loading') }}</p>
+        </div>
+
+        <div class="row" v-if="info">
             <div class="col-md-6">
                 <div class="view-todo page-section">
                     <!-- /// Header /// -->
@@ -10,28 +14,30 @@
                                 <i class="fa fa-angle-left"></i>
                                 {{ translateText('message.back_to_infos') }}
                             </router-link>
-                            <h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit</h1>
-                            <h3 class="category"><b>Logistics</b></h3>
-                            <h4>{{ translateText('message.created') }}: <b>28.03.2017</b> | {{ translateText('message.expiry_date') }}: <b>01.04.2017</b> | {{ translateText('message.status') }}: <b class="danger-color">Expired</b></h4>
-                            <div class="entry-responsible flex flex-v-center">
+                            <h1>{{ info.topic }}</h1>
+                            <h3 class="category"><b>{{ translateText(info.infoCategoryName) }}</b></h3>
+                            <h4>{{ translateText('message.created') }}: <b>{{ displayDate(info.createdAt) }}</b> | {{ translateText('message.expiry_date') }}: <b>{{ displayDate(info.expiryDate) }}</b> | {{ translateText('message.status') }}: <b :style="{color: info.infoStatusColor}">{{ translateText(info.infoStatusName) }}</b></h4>
+
+                            <div class="entry-responsible flex flex-v-center" v-for="(user, key) in info.users">
                                 <div class="user-avatar"> 
-                                    <img src="http://trisoft.dev.campr.biz/uploads/avatars/49.jpg" :alt="'Kyle Kennedy'"/>
+                                    <img :src="(info.usersAvatars[key] ? '/uploads/avatars/' + info.usersAvatars[key] : info.usersGravatars[key])" :alt="info.usersNames[key]"/>
                                 </div>
                                 <div>
                                     {{ translateText('message.responsible') }}:
-                                    <b>Kyle Kennedy</b>
+                                    <b>{{ info.usersNames[key] }}</b>
                                 </div>
                             </div>
-                            <a ref="#" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.reschedule') }} <reschedule-icon></reschedule-icon></a>
+                            <router-link :to="{name: 'project-infos-edit'}" class="btn-rounded btn-auto btn-md btn-empty">
+                                {{ translateText('button.reschedule') }}
+                                <reschedule-icon></reschedule-icon>
+                            </router-link>
                         </div>
                     </div>
                     <!-- /// End Header /// -->
                 </div>
 
                 <div class="entry-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nisl justo, bibendum vel nisi vel, suscipit lobortis felis. Donec hendrerit varius erat, eu mollis arcu porttitor aliquet. Nam pellentesque nisi ac diam rutrum lobortis. Pellentesque imperdiet fermentum nisl, quis faucibus nisl blandit dictum. Integer ut tristique mauris.</p>
-                    <p>Nulla vel odio dui. Praesent non commodo dolor. Donec quis consectetur ex. Sed malesuada mi a nunc rutrum, at posuere eros vestibulum. Quisque lobortis ligula sed vestibulum scelerisque. Duis ultrices dui vitae aliquet fermentum. Maecenas vulputate magna lorem, ac laoreet leo molestie vel. Duis sagittis dui eget sem finibus iaculis et at augue. Nam non semper nulla, id pharetra tellus. Sed pellentesque ac tortor feugiat pulvinar.</p>
-                    <p>Maecenas tempor, nunc vel faucibus rutrum, ante nulla ornare massa, sit amet dictum orci nisi consectetur nisl. In cursus risus diam, ut viverra nunc vulputate consequat. </p>
+                    <p v-if="info.description" v-for="line in info.description.split('\n')">{{ line }}</p>
                 </div>
             </div>
             <div class="col-md-6">
@@ -39,9 +45,18 @@
                     <!-- /// Header /// -->
                     <div class="margintop20 text-right">
                         <div class="buttons">
-                            <a ref="#" class="btn-rounded btn-auto">{{ translateText('button.edit_info') }}</a>
-                            <a ref="#" class="btn-rounded btn-auto second-bg">{{ translateText('button.new_info') }}</a>
-                            <a ref="#" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_info') }}</a>
+                            <router-link :to="{name: 'project-infos-edit'}" class="btn-rounded btn-auto">
+                                {{ translateText('button.edit_info') }}
+                                <reschedule-icon></reschedule-icon>
+                            </router-link>
+
+                            <router-link :to="{name: 'project-infos-new'}" class="btn-rounded btn-auto second-bg">
+                                {{ translateText('button.new_info') }}
+                                <reschedule-icon></reschedule-icon>
+                            </router-link>
+                            <a href="javascript:void(0)" @click="tryDeleteInfo(info.id)" class="btn-rounded btn-auto danger-bg">
+                                {{ translateText('button.delete_info') }}
+                            </a>
                         </div>
                     </div>
                     <!-- /// End Header /// -->
@@ -49,13 +64,21 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" v-if="info">
             <div class="col-md-12">
                 <div class="text-right footer-buttons">
                     <div class="buttons">
-                        <a ref="#" class="btn-rounded btn-auto">{{ translateText('button.edit_info') }}</a>
-                        <a ref="#" class="btn-rounded btn-auto second-bg">{{ translateText('button.new_info') }}</a>
-                        <a ref="#" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_info') }}</a>
+                        <router-link :to="{name: 'project-infos-edit'}" class="btn-rounded btn-auto">
+                            {{ translateText('button.edit_info') }}
+                        </router-link>
+
+                        <router-link :to="{name: 'project-infos-new'}" class="btn-rounded btn-auto second-bg">
+                            {{ translateText('button.new_info') }}
+                        </router-link>
+
+                        <a href="javascript:void(0)" @click="tryDeleteInfo(info.id)" class="btn-rounded btn-auto danger-bg">
+                            {{ translateText('button.delete_info') }}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -70,6 +93,8 @@ import VueScrollbar from 'vue2-scrollbar';
 import Switches from '../../3rdparty/vue-switches';
 import RescheduleIcon from '../../_common/_icons/RescheduleIcon';
 import DownloadbuttonIcon from '../../_common/_icons/DownloadbuttonIcon';
+import router from '../../../router';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     components: {
@@ -80,10 +105,53 @@ export default {
         RescheduleIcon,
         DownloadbuttonIcon,
     },
+    created() {
+        this.getInfo(this.$route.params.infoId);
+    },
     methods: {
+        ...mapActions(['getInfo', 'deleteInfo']),
         translateText: function(text) {
             return this.translate(text);
         },
+        displayDate(d8) {
+            const dt = new Date(d8);
+            if (isNaN(dt.getTime())) {
+                return '-';
+            }
+            const out = [dt.getFullYear()];
+            let month = dt.getMonth() + 1;
+            let day = dt.getDay();
+
+            if (month < 10) {
+                month = '0' + month;
+            }
+            if (day < 10) {
+                day = '0' + day;
+            }
+
+            out.push(month);
+            out.push(day);
+
+            return out.join('-');
+        },
+        tryDeleteInfo(id) {
+            if (confirm(this.translate('message.delete_info'))) {
+                this
+                    .deleteInfo(id)
+                    .then(
+                        () => {
+                            router.push({name: 'project-infos'});
+                        },
+                        () => {
+                            router.push({name: 'project-infos'});
+                        }
+                    )
+                ;
+            }
+        },
+    },
+    computed: {
+        ...mapGetters(['info']),
     },
     data() {
         return {

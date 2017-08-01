@@ -36,10 +36,10 @@ abstract class BaseController extends Controller
         }
     }
 
-    protected function createApiResponse($data, $statusCode = Response::HTTP_OK)
+    protected function createApiResponse($data, $statusCode = Response::HTTP_OK, $emptyData = '')
     {
         if (empty($data)) {
-            return new JsonResponse('', JsonResponse::HTTP_NO_CONTENT);
+            return new JsonResponse($emptyData, JsonResponse::HTTP_NO_CONTENT);
         }
 
         $serializedData = $this

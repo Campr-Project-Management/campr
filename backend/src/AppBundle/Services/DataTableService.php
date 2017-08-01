@@ -84,9 +84,18 @@ class DataTableService
             )
         ;
 
+        $current = isset($requestParams['current'])
+            ? intval($requestParams['current'])
+            : 0
+        ;
+        $rowCount = isset($requestParams['rowCount'])
+            ? intval($requestParams['rowCount'])
+            : count($entries)
+        ;
+
         $response = [
-            'current' => intval($requestParams['current']),
-            'rowCount' => intval($requestParams['rowCount']),
+            'current' => $current,
+            'rowCount' => $rowCount,
             'rows' => $entries,
             'total' => intval($entriesNumber),
         ];

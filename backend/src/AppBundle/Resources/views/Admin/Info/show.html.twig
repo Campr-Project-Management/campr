@@ -1,0 +1,89 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'title.info.list'|trans }}<small>{{ info.topic }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_info_create') }}">{{ 'add.label'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_info_edit', {'id': info.id}) }}">{{ 'button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_info_list') }}">{{ 'button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th>{{ 'table_header_cell.id'|trans }}</th>
+                                    <td>{{ info.id }}</td>
+                                <tr>
+                                    <th>{{ 'table_header_cell.project'|trans }}</th>
+                                    <td>{{ info.project }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'table_header_cell.info_status'|trans }}</th>
+                                    <td>{{ info.infoStatus }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'table_header_cell.info_category'|trans }}</th>
+                                    <td>{{ info.infoCategory }}</td>
+                                </tr>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'table_header_cell.topic'|trans }}</th>
+                                    <td>{{ info.topic }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'table_header_cell.description'|trans }}</th>
+                                    <td>{{ info.description }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'table_header_cell.expiry_date'|trans }}</th>
+                                    <td>{{ info.expiryDate ? info.expiryDate|date('Y-m-d') : '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'table_header_cell.users'|trans }}</th>
+                                    <td>
+                                        {% if info.users|length %}
+                                        <ul>
+                                            {% for user in info.users %}
+                                            <li>{{ user.fullName }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'table_header_cell.created_at'|trans }}</th>
+                                    <td>{{ info.createdAt ? info.createdAt|date('Y-m-d') : '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'table_header_cell.updated_at'|trans }}</th>
+                                    <td>{{ info.updatedAt ? info.updatedAt|date('Y-m-d') : '-' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

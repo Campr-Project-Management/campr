@@ -30,7 +30,10 @@ class RequestParserService
      */
     public function parse($params)
     {
-        if (intval($params['rowCount']) === -1) {
+        if (!isset($params['rowCount']) || intval($params['rowCount']) === -1) {
+            $this->offset = 0;
+            $this->limit = PHP_INT_MAX;
+
             return;
         }
 
