@@ -374,7 +374,7 @@ class Measure
      *
      * @return Measure
      */
-    public function setOpportunity(Opportunity $opportunity)
+    public function setOpportunity(Opportunity $opportunity = null)
     {
         $this->opportunity = $opportunity;
 

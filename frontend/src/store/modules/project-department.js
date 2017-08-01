@@ -33,16 +33,28 @@ const actions = {
      * Creates a new project department
      * @param {function} commit
      * @param {array} data
+     * @return {Object}
      */
     createDepartment({commit}, data) {
-        Vue.http
+        return Vue.http
             .post(
                 Routing.generate('app_api_project_departments_create'),
                 JSON.stringify(data)
             ).then((response) => {
-                let department = response.data;
-                commit(types.ADD_PROJECT_DEPARTMENT, {department});
+                if (response.body && response.body.error && response.body.messages) {
+                    const {messages} = response.body;
+                    if (messages.name) {
+                        messages.departmentName = messages.name;
+                    }
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    let department = response.data;
+                    commit(types.ADD_PROJECT_DEPARTMENT, {department});
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                }
+                return response;
             }, (response) => {
+                return response;
             });
     },
     /**
