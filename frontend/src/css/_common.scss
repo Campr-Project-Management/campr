@@ -153,6 +153,18 @@ p {
 .second-dark-bg {
   background: $secondDarkColor !important;
 }
+.middle-bg {
+  background-color: $middleColor !important;
+}
+.main-bg {
+  background-color: $mainColor !important;
+}
+.dark-bg {
+  background-color: $darkColor !important;
+}
+.middle-bg {
+  background-color: $middleColor !important;
+}
 .middle-color {
   color: $middleColor !important;
 }
@@ -935,6 +947,14 @@ hr {
     td {
       color: $dangerColor;
     }
+  }
+
+  td.cell-warning {
+    color: $warningColor;
+  }
+
+  td.cell-alert {
+    color: $dangerColor;
   }
 
   tr {
