@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use Gedmo\Sortable\Entity\Repository\SortableRepository;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * Class BaseRepository
@@ -78,5 +79,16 @@ abstract class BaseRepository extends SortableRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
+    }
+
+    protected function getIntParam(ParameterBag $filters, string $param, int $default = null, int $forceMinimum = null): int
+    {
+        $out = $filters->getInt($param, $default);
+
+        if ($forceMinimum !== null && $out < $forceMinimum) {
+            $out = $forceMinimum;
+        }
+
+        return $out;
     }
 }

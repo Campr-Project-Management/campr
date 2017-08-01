@@ -49,6 +49,9 @@ import todoCategory from './modules/todo-category';
 import note from './modules/note';
 import meetingParticipant from './modules/meeting-participant';
 import validation from './modules/validation';
+import info from './modules/info';
+import infoCategory from './modules/info-category';
+import infoStatus from './modules/info-status';
 
 Vue.use(Vuex);
 
@@ -105,6 +108,9 @@ export default new Vuex.Store({
         note,
         meetingParticipant,
         validation,
+        info,
+        infoCategory,
+        infoStatus,
     },
     strict: debug,
 });
