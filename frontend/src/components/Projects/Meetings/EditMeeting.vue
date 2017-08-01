@@ -113,7 +113,7 @@
                         </li>
                     </ul>
                     <div class="form-group">
-                        <input-field type="text" v-bind:label="translateText('placeholder.new_objective')" v-model="objectiveDescription" v-bind:content="objectiveDescription" />
+                        <input-field type="text" v-bind:label="translateText('message.new_objective')" v-model="objectiveDescription" v-bind:content="objectiveDescription" />
                     </div>
                     <div class="flex flex-direction-reverse">
                         <a @click="addObjective()" class="btn-rounded btn-auto">{{ translateText('message.add_new_objective') }}</a>
@@ -605,6 +605,7 @@ export default {
                 id: decision.id,
                 title: decision.title,
                 responsibility: [decision.responsibility],
+                responsibilityFullName: decision.responsibilityFullName,
                 dueDate: decision.date ? new Date(decision.date) : new Date(),
                 status: {key: decision.status, label: decision.statusName},
                 meeting: this.$route.params.meetingId,
@@ -631,6 +632,7 @@ export default {
                 id: todo.id,
                 title: todo.title,
                 responsibility: [todo.responsibility],
+                responsibilityFullName: todo.responsibilityFullName,
                 dueDate: todo.date ? new Date(todo.date) : new Date(),
                 status: {key: todo.status, label: todo.statusName},
                 meeting: this.$route.params.meetingId,
@@ -657,6 +659,7 @@ export default {
                 id: note.id,
                 title: note.title,
                 responsibility: [note.responsibility],
+                responsibilityFullName: note.responsibilityFullName,
                 dueDate: note.date ? new Date(note.date) : new Date(),
                 status: {key: note.status, label: note.statusName},
                 meeting: this.$route.params.meetingId,

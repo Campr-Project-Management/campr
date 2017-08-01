@@ -75,7 +75,7 @@
             <div class="row">
                 <div class="form-group">
                     <div class="col-md-6">
-                        <member-search v-model="editDecisionObject.responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                        <member-search v-bind:selectedUser="editDecisionObject.responsibilityFullName" v-model="editDecisionObject.responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                     </div>
                     <div class="col-md-6">
                         <div class="input-holder right">
@@ -123,7 +123,7 @@
             <div class="row">
                 <div class="form-group">
                     <div class="col-md-6">
-                        <member-search v-model="editTodoObject.responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                        <member-search  v-bind:selectedUser="editTodoObject.responsibilityFullName" v-model="editTodoObject.responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                     </div>
                     <div class="col-md-6">
                         <div class="input-holder right">
@@ -171,7 +171,7 @@
             <div class="row">
                 <div class="form-group">
                     <div class="col-md-6">
-                        <member-search v-model="editNoteObject.responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                        <member-search v-bind:selectedUser="editNoteObject.responsibilityFullName" v-model="editNoteObject.responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                     </div>
                     <div class="col-md-6">
                         <div class="input-holder right">
