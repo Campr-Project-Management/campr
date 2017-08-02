@@ -3,9 +3,12 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Project;
+use AppBundle\Repository\Traits\ProjectSortingTrait;
 
 class ProjectUserRepository extends BaseRepository
 {
+    use ProjectSortingTrait;
+
     public function findByWithLike(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $qb = $this
@@ -24,11 +27,7 @@ class ProjectUserRepository extends BaseRepository
             );
         }
 
-        if ($orderBy) {
-            foreach ($orderBy as $key => $value) {
-                $qb->orderBy('u.'.$key, $value);
-            }
-        }
+        $this->setOrder($orderBy, $qb);
 
         if ($limit) {
             $qb->setMaxResults($limit);

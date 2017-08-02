@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Gedmo\Sortable\Entity\Repository\SortableRepository;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -49,11 +50,7 @@ abstract class BaseRepository extends SortableRepository
             );
         }
 
-        if ($orderBy) {
-            foreach ($orderBy as $key => $value) {
-                $qb->orderBy('q.'.$key, $value);
-            }
-        }
+        $this->setOrder($orderBy, $qb);
 
         if ($limit) {
             $qb->setMaxResults($limit);
@@ -81,6 +78,13 @@ abstract class BaseRepository extends SortableRepository
         ;
     }
 
+    /**
+     * @param ParameterBag $filters
+     * @param string $param
+     * @param int|null $default
+     * @param int|null $forceMinimum
+     * @return int
+     */
     protected function getIntParam(ParameterBag $filters, string $param, int $default = null, int $forceMinimum = null): int
     {
         $out = $filters->getInt($param, $default);
@@ -90,5 +94,18 @@ abstract class BaseRepository extends SortableRepository
         }
 
         return $out;
+    }
+
+    /**
+     * @param array $orderBy
+     * @param QueryBuilder $qb
+     */
+    protected function setOrder(array $orderBy, QueryBuilder $qb)
+    {
+        if ($orderBy) {
+            foreach ($orderBy as $key => $value) {
+                $qb->orderBy('q.'.$key, $value);
+            }
+        }
     }
 }
