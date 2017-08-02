@@ -343,7 +343,7 @@ export default {
                     ? {key: this.task.responsibility, label: this.task.responsibilityFullName}
                     : null,
                 status: this.task.workPackageStatus
-                    ? {key: this.task.workPackageStatus, label: this.task.workPackageStatusName}
+                    ? {key: this.task.workPackageStatus, label: this.translate(this.task.workPackageStatusName)}
                     : null,
                 label: this.task.label
                     ? {key: this.task.label, label: this.task.labelName}
