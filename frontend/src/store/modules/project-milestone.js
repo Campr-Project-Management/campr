@@ -44,17 +44,20 @@ const actions = {
         if (state.filters && state.filters.status) {
             paramObject.params.status = state.filters.status;
         }
-
         if (state.filters && state.filters.responsible) {
             paramObject.params.projectUser = state.filters.responsible;
         }
-
         if (state.filters && state.filters.phase) {
             paramObject.params.phase = state.filters.phase;
         }
-
         if (state.filters && state.filters.dueDate) {
             paramObject.params.dueDate = state.filters.dueDate;
+        }
+        if (state.filters && state.filters.startDate) {
+            paramObject.params.startDate = state.filters.startDate;
+        }
+        if (state.filters && state.filters.endDate) {
+            paramObject.params.endDate = state.filters.endDate;
         }
 
         Vue.http
