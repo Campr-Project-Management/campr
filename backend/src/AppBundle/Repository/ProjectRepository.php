@@ -3,9 +3,12 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\User;
+use AppBundle\Repository\Traits\CategorySortingTrait;
 
 class ProjectRepository extends BaseRepository
 {
+    use CategorySortingTrait;
+
     /**
      * Return all projects for current user.
      *
