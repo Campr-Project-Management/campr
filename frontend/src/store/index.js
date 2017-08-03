@@ -44,6 +44,7 @@ import decisionStatus from './modules/decision-status';
 import meetingObjective from './modules/meeting-objective';
 import meetingAgenda from './modules/meeting-agenda';
 import decision from './modules/decision';
+import decisionCategory from './modules/decision-category';
 import todo from './modules/todo';
 import todoCategory from './modules/todo-category';
 import note from './modules/note';
@@ -103,6 +104,7 @@ export default new Vuex.Store({
         meetingObjective,
         meetingAgenda,
         decision,
+        decisionCategory,
         todo,
         todoCategory,
         note,

@@ -402,6 +402,13 @@ class Project
     private $opportunities;
 
     /**
+     * @var ArrayCollection|Decision[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Decision", mappedBy="project")
+     */
+    private $decisions;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -432,6 +439,7 @@ class Project
         $this->subteams = new ArrayCollection();
         $this->risks = new ArrayCollection();
         $this->opportunities = new ArrayCollection();
+        $this->decisions = new ArrayCollection();
     }
 
     public function __toString()
@@ -2071,5 +2079,41 @@ class Project
     public function getOpportunities()
     {
         return $this->opportunities;
+    }
+
+    /**
+     * Add decision.
+     *
+     * @param Decision $decision
+     *
+     * @return Project
+     */
+    public function addDecision(Decision $decision)
+    {
+        $this->decisions[] = $decision;
+
+        return $this;
+    }
+
+    /**
+     * Remove decision.
+     *
+     * @param Decision $decision
+     */
+    public function removeDecision(Decision $decision)
+    {
+        $this->decisions->removeElement($decision);
+
+        return $this;
+    }
+
+    /**
+     * Get decisions.
+     *
+     * @return ArrayCollection|Decision[]
+     */
+    public function getDecisions()
+    {
+        return $this->decisions;
     }
 }
