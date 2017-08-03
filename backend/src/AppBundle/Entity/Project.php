@@ -20,6 +20,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Project
 {
+    const STATUS_RED = 0;
+    const STATUS_YELLOW = 1;
+    const STATUS_GREEN = 2;
+
     /**
      * @var int
      *
@@ -2441,5 +2445,23 @@ class Project
             ? $this->colorStatus->getColor()
             : null
         ;
+    }
+
+    /**
+     * Returns the project overall status
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("overallStatus")
+     *
+     * @return string
+     */
+    public function getOverallStatus()
+    {
+        $status = self::STATUS_GREEN;
+        foreach ($this->workPackages as $wp) {
+            $colorStatus = $wp->getColorStatus();
+        }
+
+        return $status;
     }
 }

@@ -4,8 +4,8 @@
             <div class="col-lg-8 col-lg-offset-2">
                 <div class="header">
                     <h1>
-                        Tesla - SpaceX Mars Project
-                        <span>week 12</span>
+                        {{ project.name }}
+                        <span>{{ translateText('message.week') }} {{ getDuration(project.createdAt, null, 'weeks') }}</span>
                     </h1>
                 </div>
 
@@ -16,32 +16,41 @@
                 <div class="row large-half-columns">
                     <div class="col-md-6">
                         <div class="widget same-height">
+                            <!-- TODO: project status traffic light to be determined -->
                             <h3>{{ translateText('message.overall_status') }}</h3>
                             <div class="flex flex-center">
                                 <div class="status-boxes big-status-boxes flex flex-v-center">
-                                    <div class="status-box" style="background-color:#5FC3A5"></div>
-                                    <div class="status-box" style=""></div>
-                                    <div class="status-box" style=""></div>
+                                    <div class="status-box" style="background-color:#5FC3A5" v-bind:style="{ cursor: 'default' }"></div>
+                                    <div class="status-box" style="" v-bind:style="{ cursor: 'default' }"></div>
+                                    <div class="status-box" style="" v-bind:style="{ cursor: 'default' }"></div>
                                 </div>
                             </div>
 
                             <h4>{{ translateText('message.tasks_status') }}</h4>
                             <div class="status-bar clearfix flex">
                                 <!-- bar width calculated as (data-number * 100)/(bar1_data-number + bar2_data-number + ...) -->
-                                <div class="bar middle-bg flex-v-center" data-number="245" style="width:66.40%;">Open: 245</div>
-                                <div class="bar main-bg flex-v-center" data-number="124" style="width:33.60%;">Closed: 124</div>
+                                <div class="bar middle-bg flex-v-center" v-bind:style="{width: (projectTasksStatus['label.open'] * 100) / (projectTasksStatus['label.open'] + projectTasksStatus['label.closed']) + '%'}">
+                                    {{ translateText('label.open') }}: {{ projectTasksStatus['label.open'] }}
+                                </div>
+                                <div class="bar main-bg flex-v-center" v-bind:style="{width: (projectTasksStatus['label.closed'] * 100) / (projectTasksStatus['label.open'] + projectTasksStatus['label.closed']) + '%'}">
+                                    {{ translateText('label.closed') }}: {{ projectTasksStatus['label.closed'] }}
+                                </div>
                             </div>
 
                             <h4>{{ translateText('message.tasks_condition') }}</h4>
                             <div class="status-bar clearfix flex">
                                 <!-- bar width calculated as (data-number * 100)/(bar1_data-number + bar2_data-number + ...) -->
-                                <div class="bar second-bg flex-v-center" data-number="285" style="width:77.23%;">285</div>
-                                <div class="bar warning-bg flex-v-center" data-number="55" style="width:14.90%;">55</div>
-                                <div class="bar danger-bg flex-v-center" data-number="29" style="width:7.87%;">29</div>
+                                <div
+                                        v-for="condition in projectTasksStatus.conditions"
+                                        class="bar flex-v-center"
+                                        v-bind:style="{width: (condition.count * 100) / (projectTasksStatus.conditions.total) + '%', background: condition.color}"
+                                >
+                                    {{ condition.count }}
+                                </div>
                             </div>
 
                             <div class="checkbox-input clearfix">
-                                <input id="action_needed" type="checkbox" name="" value="">
+                                <input v-model="actionNeeded" id="action_needed" type="checkbox" name="" value="">
                                 <label class="no-margin-bottom" for="action_needed">{{ translateText('message.action_needed') }}</label>
                             </div>
                         </div>
@@ -49,7 +58,7 @@
                     <div class="col-md-6">
                         <div class="widget same-height">
                             <h3>{{ translateText('message.project_trend') }}</h3>
-                            <h4>{{ translateText('message.current_date') }}: 12.08.2017</h4>
+                            <h4>{{ translateText('message.current_date') }}: {{ today | moment('DD.MM.YYYY') }}</h4>
                         </div>
                     </div>
                 </div>
@@ -61,7 +70,7 @@
                             <div class="form-group last-form-group">
                                 <div class="vueditor-holder">
                                     <div class="vueditor-header">{{ translateText('placeholder.comment') }}</div>
-                                    <Vueditor ref="content" />
+                                    <Vueditor ref="comment" />
                                 </div>
                             </div>
                             <!-- /// End Project Staus Comment /// -->
@@ -79,32 +88,59 @@
                         <vue-scrollbar class="table-wrapper">
                             <table class="table table-small">
                                 <thead>
-                                    <tr>
-                                        <th>{{ translateText('table_header_cell.schedule') }}</th>
-                                        <th>{{ translateText('table_header_cell.start') }}</th>
-                                        <th>{{ translateText('table_header_cell.finish') }}</th>
-                                        <th>{{ translateText('table_header_cell.duration') }}</th>
-                                    </tr>
+                                <tr>
+                                    <th>{{ translateText('table_header_cell.schedule') }}</th>
+                                    <th>{{ translateText('table_header_cell.start') }}</th>
+                                    <th>{{ translateText('table_header_cell.finish') }}</th>
+                                    <th>{{ translateText('table_header_cell.duration') }}</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Base</td>
-                                        <td>10.02.2016</td>
-                                        <td>30.05.2018</td>
-                                        <td>841</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Forecast</td>
-                                        <td>01.04.2016</td>
-                                        <td class="cell-warning">30.06.2018</td>
-                                        <td>721</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Actual</td>
-                                        <td>01.04.2016</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                    </tr>
+                                <tr>
+                                    <td>{{ translateText('table_header_cell.base') }}</td>
+                                    <td v-if="tasksForSchedule.base_start && tasksForSchedule.base_start.scheduledStartAt">
+                                        {{ tasksForSchedule.base_start.scheduledStartAt | moment('DD.MM.YYYY') }}
+                                    </td>
+                                    <td v-else>-</td>
+                                    <td v-if="tasksForSchedule.base_finish && tasksForSchedule.base_finish.scheduledFinishAt">
+                                        {{ tasksForSchedule.base_finish.scheduledFinishAt | moment('DD.MM.YYYY')  }}
+                                    </td>
+                                    <td v-else>-</td>
+                                    <td  v-if="tasksForSchedule.base_start && tasksForSchedule.base_finish">
+                                        {{ getDuration(tasksForSchedule.base_start.scheduledStartAt, tasksForSchedule.base_finish.scheduledFinishAt, 'days') }}
+                                    </td>
+                                    <td v-else>-</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ translateText('table_header_cell.forecast') }}</td>
+                                    <td v-if="tasksForSchedule.forecast_start && tasksForSchedule.forecast_start.forecastStartAt">
+                                        {{ tasksForSchedule.forecast_start.forecastStartAt | moment('DD.MM.YYYY')  }}
+                                    </td>
+                                    <td v-else>-</td>
+                                    <td v-if="tasksForSchedule.forecast_finish && tasksForSchedule.forecast_finish.forecastFinishAt">
+                                        {{ tasksForSchedule.forecast_finish.forecastFinishAt | moment('DD.MM.YYYY')  }}
+                                    </td>
+                                    <td v-else>-</td>
+                                    <td  v-if="tasksForSchedule.forecast_start && tasksForSchedule.forecast_finish">
+                                        {{ getDuration(tasksForSchedule.forecast_start.forecastStartAt, tasksForSchedule.forecast_finish.forecastFinishAt) }}
+                                    </td>
+                                    <td v-else>-</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ translateText('table_header_cell.actual') }}</td>
+                                    <td v-if="tasksForSchedule.actual_start && tasksForSchedule.actual_start.actualStartAt">
+                                        {{ tasksForSchedule.actual_start.actualStartAt | moment('DD.MM.YYYY')  }}
+                                    </td>
+                                    <td v-else>-</td>
+                                    <td v-if="tasksForSchedule.actual_finish && tasksForSchedule.actual_finish.actualFinishAt">
+                                        {{ tasksForSchedule.actual_finish.actualFinishAt | moment('DD.MM.YYYY')  }}
+                                    </td>
+                                    <td v-else>-</td>
+                                    <td  v-if="tasksForSchedule.actual_start && tasksForSchedule.actual_finish">
+                                        {{ getDuration(tasksForSchedule.actual_start.actualStartAt, tasksForSchedule.actual_finish.actualFinishAt) }}
+                                    </td>
+                                    <td v-else>-</td>
+                                </tr>
                                 </tbody>
                             </table>
                         </vue-scrollbar>
@@ -138,9 +174,37 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="task-range-slider big-range-slider">
-                            <task-range-slider class="base dark-range-slider" id="scheduleBase" message="Base" min="2016-02-10" max="2018-09-20" v-bind:from="'2016-02-10'" v-bind:to="'2018-05-30'" type="double"></task-range-slider>
-                            <task-range-slider class="forecast warning" id="scheduleForecast" message="Forecast" min="2016-02-10" max="2018-09-20" v-bind:from="'2016-04-01'" v-bind:to="'2018-09-20'" type="double"></task-range-slider>
-                            <task-range-slider class="actual" id="scheduleActual" message="Actual" min="2016-02-10" max="2018-09-20" v-bind:from="'2016-05-01'" v-bind:to="'2017-07-27'" type="double"></task-range-slider>
+                            <!--TODO: determine the values for min and max for the bars-->
+                            <task-range-slider v-if="tasksForSchedule.base_start && tasksForSchedule.base_finish"
+                                               class="base dark-range-slider"
+                                               id="scheduleBase"
+                                               :message="translateText('table_header_cell.base')"
+                                               min="2017-01-01"
+                                               max="2018-01-01"
+                                               v-bind:from="tasksForSchedule.base_start.scheduledStartAt"
+                                               v-bind:to="tasksForSchedule.base_finish.scheduledFinishAt"
+                                               type="double">
+                            </task-range-slider>
+                            <task-range-slider v-if="tasksForSchedule.forecast_start && tasksForSchedule.forecast_finish"
+                                               class="forecast warning"
+                                               id="translateText('table_header_cell.forecast')"
+                                               message="Forecast"
+                                               min="2017-01-01"
+                                               max="2018-01-01"
+                                               v-bind:from="tasksForSchedule.forecast_start.forecastStartAt"
+                                               v-bind:to="tasksForSchedule.forecast_finish.forecastFinishAt "
+                                               type="double">
+                            </task-range-slider>
+                            <task-range-slider v-if="tasksForSchedule.actual_start && tasksForSchedule.actual_finish"
+                                               class="actual"
+                                               id="translateText('table_header_cell.actual')"
+                                               message="Actual"
+                                               min="2017-01-01"
+                                               max="2018-01-01"
+                                               v-bind:from="tasksForSchedule.actual_start.actualStartAt"
+                                               v-bind:to="tasksForSchedule.actual_finish.actualFinishAt"
+                                               type="double">
+                            </task-range-slider>
                         </div>
                     </div>
                 </div>
@@ -150,16 +214,18 @@
                 <div class="row statuses">
                     <div class="col-md-4">
                         <div class="status">
+                            <!--TODO: overall progress of project formula needs to be determined-->
                             <circle-chart :percentage="'42.88'" v-bind:title="translateText('message.overall_progress')" class="left dark-chart medium-chart"></circle-chart>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="status">
-                            <circle-chart :percentage="'84.15'" v-bind:title="translateText('message.task_progress')" class="left warning dark-chart medium-chart"></circle-chart>
+                        <div class="status" v-if="progresses.task_progress">
+                            <circle-chart v-bind:percentage="progresses.task_progress" v-bind:title="translateText('message.task_progress')" class="left warning dark-chart medium-chart"></circle-chart>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="status">
+                            <!--TODO: overall progress of costs formula needs to be determined-->
                             <circle-chart :percentage="'60.06'" v-bind:title="translateText('message.costs_progress')" class="left danger dark-chart medium-chart"></circle-chart>
                         </div>
                     </div>
@@ -192,10 +258,10 @@
                         </div>
 
                         <vue-chart
-                            chart-type="ColumnChart"
-                            :columns="columns"
-                            :rows="rowsByPhase"
-                            :options="options">
+                                chart-type="ColumnChart"
+                                :columns="columns"
+                                :rows="rowsByPhase"
+                                :options="options">
                         </vue-chart>
                     </div>
                 </div>
@@ -212,10 +278,10 @@
                         </div>
 
                         <vue-chart
-                            chart-type="ColumnChart"
-                            :columns="columns"
-                            :rows="rowsByPhase"
-                            :options="options">
+                                chart-type="ColumnChart"
+                                :columns="columns"
+                                :rows="rowsByPhase"
+                                :options="options">
                         </vue-chart>
                     </div>
                 </div>
@@ -229,9 +295,9 @@
                             <risk-grid :gridData="opportunityGridData" :isRisk="false"></risk-grid>
                             <h4>Top Opportunity:</h4>
                             <div class="ro-main ro-main-opportunity">
-                                <b>Plant based dietary Program</b> <span class="ro-main-stats">| <b class="ro-main-priority">Priority: Very High</b> | Potential Savings: $4.850 | Potential Time Savings: 14 days | Strategy: Take | Status: Ongoing</span>   
+                                <b>Plant based dietary Program</b> <span class="ro-main-stats">| <b class="ro-main-priority">Priority: Very High</b> | Potential Savings: $4.850 | Potential Time Savings: 14 days | Strategy: Take | Status: Ongoing</span>
                                 <div class="entry-responsible flex flex-v-center">
-                                    <div class="user-avatar"> 
+                                    <div class="user-avatar">
                                         <img src="http://trisoft.dev.campr.biz/uploads/avatars/49.jpg" :alt="'Kyle Kennedy'"/>
                                     </div>
                                     <div>
@@ -247,19 +313,19 @@
                     <div class="col-md-6">
                         <h3 class="marginbottom20 margintop0">{{ translateText('message.risks') }}</h3>
                         <div class="ro-grid-wrapper clearfix">
-                            <risk-grid :gridData="opportunityGridData" :isRisk="true"></risk-grid> 
+                            <risk-grid :gridData="opportunityGridData" :isRisk="true"></risk-grid>
                             <h4>Top Risk:</h4>
                             <div class="ro-main ro-main-risk">
-                                <b>Unknown viral breach</b> <span class="ro-main-stats">| <b class="ro-main-priority">Priority: Very High</b> | Potential Costs: $120.000 | Potential Time Delays: 90 days | Strategy: Avoid | Status: Initiated</span>  
-                                 <div class="entry-responsible flex flex-v-center">
-                                    <div class="user-avatar"> 
+                                <b>Unknown viral breach</b> <span class="ro-main-stats">| <b class="ro-main-priority">Priority: Very High</b> | Potential Costs: $120.000 | Potential Time Delays: 90 days | Strategy: Avoid | Status: Initiated</span>
+                                <div class="entry-responsible flex flex-v-center">
+                                    <div class="user-avatar">
                                         <img src="http://trisoft.dev.campr.biz/uploads/avatars/49.jpg" :alt="'Kyle Kennedy'"/>
                                     </div>
                                     <div>
                                         {{ translateText('message.responsible') }}:
                                         <b>Kyle Kennedy</b>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                             <risk-summary :summaryData="risksOpportunitiesStats.risks"></risk-summary>
                         </div>
@@ -273,24 +339,24 @@
                         <h3 class="margintop0">{{ translateText('message.todos') }}</h3>
                         <table class="table table-striped table-responsive table-fixed table-small">
                             <thead>
-                                <tr>
-                                    <th style="width:11%">{{ translateText('table_header_cell.status') }}</th>
-                                    <th style="width:14%">{{ translateText('table_header_cell.due_date') }}</th>
-                                    <th style="width:25%">{{ translateText('table_header_cell.topic') }}</th>
-                                    <th style="width:36%">{{ translateText('table_header_cell.description') }}</th>
-                                    <th style="width:14%">{{ translateText('table_header_cell.responsible') }}</th>
-                                </tr>
+                            <tr>
+                                <th style="width:11%">{{ translateText('table_header_cell.status') }}</th>
+                                <th style="width:14%">{{ translateText('table_header_cell.due_date') }}</th>
+                                <th style="width:25%">{{ translateText('table_header_cell.topic') }}</th>
+                                <th style="width:36%">{{ translateText('table_header_cell.description') }}</th>
+                                <th style="width:14%">{{ translateText('table_header_cell.responsible') }}</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="todo in todos.items">
-                                    <td>{{ todo.statusName }}</td>
-                                    <td>{{ todo.dueDate | moment('DD.MM.YYYY') }}</td>
-                                    <td class="cell-wrap">{{ todo.title }}</td>
-                                    <td class="cell-wrap">{{ todo.description }}</td>
-                                    <td>
-                                        <div class="avatar" v-tooltip.top-center="todo.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
-                                    </td>                               
-                                </tr>
+                            <tr v-for="todo in todos.items">
+                                <td>{{ todo.statusName }}</td>
+                                <td>{{ todo.dueDate | moment('DD.MM.YYYY') }}</td>
+                                <td class="cell-wrap">{{ todo.title }}</td>
+                                <td class="cell-wrap">{{ todo.description }}</td>
+                                <td>
+                                    <div class="avatar" v-tooltip.top-center="todo.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -300,45 +366,27 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <h3 class="margintop0">{{ translateText('message.decisions') }}</h3>                        
+                        <h3 class="margintop0">{{ translateText('message.decisions') }}</h3>
                         <table class="table table-striped table-responsive table-fixed table-small">
                             <thead>
-                                <tr>
-                                    <th style="width:11%">{{ translateText('table_header_cell.status') }}</th>
-                                    <th style="width:14%">{{ translateText('table_header_cell.due_date') }}</th>
-                                    <th style="width:25%">{{ translateText('table_header_cell.topic') }}</th>
-                                    <th style="width:36%">{{ translateText('table_header_cell.description') }}</th>
-                                    <th style="width:14%">{{ translateText('table_header_cell.responsible') }}</th>
-                                </tr>
+                            <tr>
+                                <th style="width:11%">{{ translateText('table_header_cell.status') }}</th>
+                                <th style="width:14%">{{ translateText('table_header_cell.due_date') }}</th>
+                                <th style="width:25%">{{ translateText('table_header_cell.topic') }}</th>
+                                <th style="width:36%">{{ translateText('table_header_cell.description') }}</th>
+                                <th style="width:14%">{{ translateText('table_header_cell.responsible') }}</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr>                                                
-                                    <td class="danger-color">Undone</td>
-                                    <td>01.08.2017</td>
-                                    <td class="cell-wrap">Lorem ipsum dolor sit amet</td>
-                                    <td class="cell-wrap cell-large">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eu velit dolor. Morbi at sagittis sapien. Vivamus molestie arcu et sem condimentum, quis fermentum ante elementum. Proin et nulla ut lorem commodo fringilla vel sit amet ante. Donec facilisis orci quis ante mattis accumsan.</td>       
-                                    <td class="text-center">
-                                        <div class="avatar" v-tooltip.top-center="'Andrea Sinclair'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
-                                    </td>                               
-                                </tr>
-                                <tr>                                                
-                                    <td class="danger-color">Undone</td>
-                                    <td>15.07.2017</td>
-                                    <td class="cell-wrap">Donec magna massa, tincidunt sit amet quam nec, pellentesque varius libero.</td>
-                                    <td class="cell-wrap cell-large">Sed tempor libero vel urna rutrum dapibus. Aenean id interdum ligula. Cras pulvinar ante consectetur imperdiet accumsan. Nunc vitae magna metus. Vivamus vitae felis maximus, vulputate urna vel, aliquam ex. Nullam condimentum elit vel diam volutpat tempus. Proin efficitur efficitur viverra. Aliquam convallis eros ut porttitor ornare. Donec a est vitae turpis congue bibendum et iaculis nisi. Nullam eget iaculis augue, sit amet interdum diam.</td>
-                                    <td class="text-center">
-                                        <div class="avatar" v-tooltip.top-center="'Connan Wilder'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                    </td>                               
-                                </tr>
-                                <tr>
-                                    <td class="second-color">Done</td>
-                                    <td>01.11.2017</td>
-                                    <td class="cell-wrap">Donec id rhoncus justo, ac imperdiet purus. Fusce eleifend tortor vulputate leo interdum, eu malesuada ipsum ac imperdiet purus.</td>
-                                    <td class="cell-wrap cell-large">Sed elit velit, luctus ac felis commodo, consequat pulvinar tortor. Nulla auctor interdum arcu et rutrum. Sed elit dui, euismod eu porta ut, pellentesque ut lorem. Maecenas posuere nulla ac nisl iaculis aliquet in ut neque. Aliquam ornare sem libero, eget fringilla quam suscipit sit amet. Duis quis dui sit amet erat fermentum vestibulum. Pellentesque nec nulla quis orci egestas facilisis. Curabitur magna leo, scelerisque ut magna id, placerat malesuada sapien. Maecenas vitae mi imperdiet, fringilla leo eget, cursus mauris. Aenean imperdiet purus eros, ut ullamcorper eros porttitor eget. Interdum et malesuada fames ac ante ipsum primis in faucibus. Praesent eget sapien non massa eleifend pulvinar ac gravida metus. Aliquam nec nunc ornare, fringilla turpis id, tristique ligula. Mauris faucibus eget quam a malesuada.</td>
-                                    <td class="text-center">
-                                        <div class="avatar" v-tooltip.top-center="'Connan Wilder'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/20.jpg)' }"></div>
-                                    </td>                                
-                                </tr>
+                            <tr>
+                                <td class="danger-color">Undone</td>
+                                <td>01.08.2017</td>
+                                <td class="cell-wrap">Lorem ipsum dolor sit amet</td>
+                                <td class="cell-wrap cell-large">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eu velit dolor. Morbi at sagittis sapien. Vivamus molestie arcu et sem condimentum, quis fermentum ante elementum. Proin et nulla ut lorem commodo fringilla vel sit amet ante. Donec facilisis orci quis ante mattis accumsan.</td>
+                                <td class="text-center">
+                                    <div class="avatar" v-tooltip.top-center="'Andrea Sinclair'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -391,22 +439,35 @@ export default {
         AtIcon,
     },
     created() {
+        this.getProjectById(this.$route.params.id);
+        this.getTasksStatus(this.$route.params.id);
+        this.getTasksForSchedule(this.$route.params.id);
+        this.getProgress(this.$route.params.id);
+        this.getProjectCostsGraphData({id: this.$route.params.id});
+        this.setPhasesFilters(
+            {
+                startDate: moment().subtract(14, 'd').format('YYYY-MM-DD'),
+                endDate: moment().add(14, 'd').format('YYYY-MM-DD'),
+            }
+        );
         this.getProjectPhases({
             projectId: this.$route.params.id,
             apiParams: {
                 page: 1,
             },
         });
+        this.setMilestonesFilters(
+            {
+                startDate: moment().subtract(14, 'd').format('YYYY-MM-DD'),
+                endDate: moment().add(14, 'd').format('YYYY-MM-DD'),
+            }
+        );
         this.getProjectMilestones({
             projectId: this.$route.params.id,
             apiParams: {
                 page: 1,
             },
         });
-        this.getProjectMilestones({
-            projectId: this.$route.params.id,
-        });
-        this.getProjectCostsResources({id: this.$route.params.id, type: 1});
         this.getProjectOpportunities(
             {
                 projectId: this.$route.params.id,
@@ -434,16 +495,17 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getProjectPhases', 'getProjectMilestones',
-            'getProjectCostsResources',
+            'getProjectById', 'getTasksStatus', 'getProjectPhases', 'getTasksForSchedule', 'getProgress',
+            'setPhasesFilters', 'setMilestonesFilters', 'getProjectMilestones', 'getProjectCostsGraphData',
             'getProjectOpportunities', 'getProjectRisks', 'getProjectRiskAndOpportunitiesStats',
             'getProjectTodos',
         ]),
-        getDuration: function(startDate, endDate) {
-            let end = moment().add(1, 'weeks').endOf('isoWeek');
-            let start = moment().add(1, 'weeks').startOf('isoWeek');
+        getDuration: function(startDate, endDate, unit) {
+            let end = endDate ? moment(endDate) : moment();
+            let start = moment(startDate);
+            let diff = end.diff(start, unit);
 
-            return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') : '-';
+            return !isNaN(diff) ? diff : '-';
         },
         translateText: function(text) {
             return this.translate(text);
@@ -451,16 +513,17 @@ export default {
     },
     computed: {
         ...mapGetters({
-            projectPhases: 'projectPhases',
-            projectMilestones: 'projectMilestones',
+            project: 'project',
+            projectTasksStatus: 'projectTasksStatus',
+            tasksForSchedule: 'tasksForSchedule',
+            progresses: 'progresses',
             allProjectMilestones: 'allProjectMilestones',
             allProjectPhases: 'allProjectPhases',
-            projectCostsAndResources: 'projectCostsAndResources',
+            costData: 'costData',
             opportunities: 'opportunities',
             risks: 'risks',
             risksOpportunitiesStats: 'risksOpportunitiesStats',
             todos: 'todos',
-            todosCount: 'todosCount',
         }),
         pmData: function() {
             let items = [];
@@ -494,8 +557,8 @@ export default {
         },
     },
     watch: {
-        projectCostsAndResources(value) {
-            Object.entries(this.projectCostsAndResources.byPhase).map(([key, value]) => {
+        costData(value) {
+            Object.entries(this.costData.byPhase).map(([key, value]) => {
                 this.rowsByPhase.push([
                     key,
                     value.base ? parseInt(value.base) : 0,
@@ -525,6 +588,9 @@ export default {
     data() {
         return {
             projectId: this.$route.params.id,
+            actionNeeded: null,
+            today: new Date(),
+            comment: null,
             milestoneId: '',
             phaseId: '',
             opportunityGridData: [],
@@ -681,7 +747,7 @@ function renderTooltip(item) {
         text-align: center;
         text-transform: uppercase;
         letter-spacing: 0.1em;
-        margin-bottom: 30px; 
+        margin-bottom: 30px;
     }
 
     .large-half-columns {
@@ -715,7 +781,7 @@ function renderTooltip(item) {
         margin: 40px 0;
     }
 
-    .status-boxes {  
+    .status-boxes {
         &.big-status-boxes{
             margin-bottom: 30px;
 
@@ -873,7 +939,7 @@ function renderTooltip(item) {
             width: 30px;
             height: 30px;
             @include border-radius(50%);
-            margin: 0 10px 0 0;  
+            margin: 0 10px 0 0;
             display: inline-block;
             position: relative;
             top: -2px;
