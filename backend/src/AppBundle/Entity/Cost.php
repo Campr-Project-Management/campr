@@ -13,8 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Cost
 {
-    const TYPE_INTERNAL = 0;
-    const TYPE_EXTERNAL = 1;
+    const TYPE_INTERNAL = 0; // resource
+    const TYPE_EXTERNAL = 1; // cost
 
     const EXPENSE_TYPE_CAPEX = 0;
     const EXPENSE_TYPE_OPEX = 1;
