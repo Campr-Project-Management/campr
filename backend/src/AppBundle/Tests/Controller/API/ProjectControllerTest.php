@@ -421,6 +421,7 @@ class ProjectControllerTest extends BaseController
                     'subteams' => [],
                     'risks' => [],
                     'opportunities' => [],
+                    'decisions' => [],
                     'logo' => null,
                 ],
             ],
@@ -1270,6 +1271,8 @@ class ProjectControllerTest extends BaseController
                                     'projectName' => 'project1',
                                     'responsibility' => 4,
                                     'responsibilityFullName' => 'FirstName4 LastName4',
+                                    'decisionCategory' => null,
+                                    'decisionCategoryName' => null,
                                     'id' => 1,
                                     'title' => 'decision1',
                                     'description' => 'description1',
@@ -1287,6 +1290,8 @@ class ProjectControllerTest extends BaseController
                                     'projectName' => 'project1',
                                     'responsibility' => 4,
                                     'responsibilityFullName' => 'FirstName4 LastName4',
+                                    'decisionCategory' => null,
+                                    'decisionCategoryName' => null,
                                     'id' => 2,
                                     'title' => 'decision2',
                                     'description' => 'description2',
@@ -1795,6 +1800,8 @@ class ProjectControllerTest extends BaseController
         $responseContent['notes'][1]['responsibilityAvatar'] = $project['notes'][1]['responsibilityAvatar'];
         $responseContent['todos'][0]['responsibilityAvatar'] = $project['todos'][0]['responsibilityAvatar'];
         $responseContent['todos'][1]['responsibilityAvatar'] = $project['todos'][1]['responsibilityAvatar'];
+        $responseContent['decisions'][0]['responsibilityAvatar'] = $project['decisions'][0]['responsibilityAvatar'];
+        $responseContent['decisions'][1]['responsibilityAvatar'] = $project['decisions'][1]['responsibilityAvatar'];
 
         for ($i = 1; $i <= 3; ++$i) {
             $projectUser = $this->em->getRepository(ProjectUser::class)->find($i);
@@ -2219,6 +2226,46 @@ class ProjectControllerTest extends BaseController
                     'subteams' => [],
                     'risks' => [],
                     'opportunities' => [],
+                    'decisions' => [
+                        [
+                            'status' => null,
+                            'statusName' => null,
+                            'meeting' => 1,
+                            'meetingName' => 'meeting1',
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'responsibility' => 4,
+                            'responsibilityFullName' => 'FirstName4 LastName4',
+                            'decisionCategory' => null,
+                            'decisionCategoryName' => null,
+                            'id' => 1,
+                            'title' => 'decision1',
+                            'description' => 'description1',
+                            'showInStatusReport' => false,
+                            'date' => '2017-01-01 00:00:00',
+                            'dueDate' => '2017-05-01 00:00:00',
+                            'responsibilityAvatar' => '',
+                        ],
+                        [
+                            'status' => null,
+                            'statusName' => null,
+                            'meeting' => 1,
+                            'meetingName' => 'meeting1',
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'responsibility' => 4,
+                            'responsibilityFullName' => 'FirstName4 LastName4',
+                            'decisionCategory' => null,
+                            'decisionCategoryName' => null,
+                            'id' => 2,
+                            'title' => 'decision2',
+                            'description' => 'description2',
+                            'showInStatusReport' => false,
+                            'date' => '2017-01-01 00:00:00',
+                            'dueDate' => '2017-05-01 00:00:00',
+                            'responsibilityAvatar' => '',
+                        ],
+                    ],
                     'logo' => null,
                 ],
             ],

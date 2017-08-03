@@ -15,6 +15,8 @@ message:
     tasks_condition: Tasks Condition
     tasks_status: Tasks Status
     overall_status: Overall Status
+    delete_decision: Delete decision
+    reschedule_decision: Reschedule Decision
     back_to_decisions: Back to Decisions
     create_new_decision: Create New Decision
     project_decisions: Project Decisions
@@ -648,6 +650,10 @@ title:
         list: Decision Status
         create: Create Decision Status
         edit: Edit Decision Status
+    decision_category:
+        list: Decision Category
+        create: Create Decision Category
+        edit: Edit Decision Category
     todo_status:
         list: Todo Status
         create: Create Todo Status
@@ -675,6 +681,7 @@ title:
 
 subtitle:
     decision_status: List of decision statuses
+    decision_category: List of decision categories
     note_status: List of note statuses
     todo_status: List of todo statuses
     meeting_category: List of meeting categories
@@ -1105,6 +1112,7 @@ checkbox:
 
 add:
     decision_status: Add new decision status
+    decision_category: Add new decision category
     todo_status: Add new todo status
     todo_category: Add new todo category  
     note_status: Add new note status

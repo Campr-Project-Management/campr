@@ -28,7 +28,7 @@ class Decision
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="Project")
+     * @ORM\ManyToOne(targetEntity="Project", inversedBy="decisions")
      * @ORM\JoinColumn(name="project_id")
      */
     private $project;
@@ -101,6 +101,16 @@ class Decision
      * @ORM\JoinColumn(name="status_id")
      */
     private $status;
+
+    /**
+     * @var DecisionCategory|null
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\DecisionCategory")
+     * @ORM\JoinColumn(name="decision_category_id")
+     */
+    private $decisionCategory;
 
     /**
      * @var \DateTime
@@ -505,5 +515,49 @@ class Decision
     public function getResponsibilityFullName()
     {
         return $this->responsibility ? $this->responsibility->getFullName() : null;
+    }
+
+    /**
+     * @return DecisionCategory|null
+     */
+    public function getDecisionCategory()
+    {
+        return $this->decisionCategory;
+    }
+
+    /**
+     * @param DecisionCategory|null $decisionCategory
+     */
+    public function setDecisionCategory(DecisionCategory $decisionCategory = null)
+    {
+        $this->decisionCategory = $decisionCategory;
+
+        return $this;
+    }
+
+    /**
+     * Returns decision category id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("decisionCategory")
+     *
+     * @return string
+     */
+    public function getDecisionCategoryId()
+    {
+        return $this->decisionCategory ? $this->decisionCategory->getId() : null;
+    }
+
+    /**
+     * Returns decision category name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("decisionCategoryName")
+     *
+     * @return string
+     */
+    public function getDecisionCategoryName()
+    {
+        return $this->decisionCategory ? $this->decisionCategory->getName() : null;
     }
 }
