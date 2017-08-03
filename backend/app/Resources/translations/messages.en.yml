@@ -22,6 +22,7 @@ message:
     no_managers: There are no managers defined on this project. Please set up managers in order to asign them to this department.
     contract_frozen: Project contract is frozen
     work_package_dependency_constraint: Entry cannot be deleted because there are phases/milestones/tasks that are depending on it!
+    week: Week
     opportunities: Opportunities
     phases_and_milestones: Phases and Milestones
     costs_progress: Costs Progress
@@ -1653,6 +1654,11 @@ roles:
     project_manager: Project Manager
     team_leader: Team Leader
     team_member: Team Member
+
+color_status:
+    not_started: Not Started
+    in_progress: In Progress
+    finished: Finished
 
 filter:
     clear: Clear filters

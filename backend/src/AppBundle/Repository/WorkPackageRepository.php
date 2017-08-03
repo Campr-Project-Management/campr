@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\ColorStatus;
 use AppBundle\Entity\Cost;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\User;
@@ -468,6 +469,25 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
+     * Average progress value.
+     *
+     * @param Project $project
+     * @param array   $filters
+     *
+     * @return int
+     */
+    public function averageProgressByProjectAndFilters(Project $project, $filters = [])
+    {
+        return (float) $this
+            ->getQueryBuilderByProjectAndFilters($project, $filters, 'AVG(wp.progress)')
+            ->setFirstResult(0)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
      * Return the query builder for all project workpackages filtered.
      *
      * @param Project $project
@@ -622,7 +642,7 @@ class WorkPackageRepository extends BaseRepository
      *
      * @return int
      */
-    public function countTotalByTypeProjectAndStatus($type, Project $project = null, WorkPackageStatus $status = null)
+    public function countTotalByTypeProjectAndStatus($type, Project $project = null, WorkPackageStatus $status = null, ColorStatus $colorStatus = null)
     {
         $qb = $this
             ->createQueryBuilder('wp')
@@ -642,6 +662,13 @@ class WorkPackageRepository extends BaseRepository
             $qb
                 ->andWhere('wp.workPackageStatus = :status')
                 ->setParameter('status', $status)
+            ;
+        }
+
+        if ($colorStatus) {
+            $qb
+                ->andWhere('wp.colorStatus = :colorStatus')
+                ->setParameter('colorStatus', $colorStatus)
             ;
         }
 
