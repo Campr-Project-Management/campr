@@ -76,14 +76,14 @@ class OpportunityRepository extends BaseRepository
                     WHEN probability <= :very_low_1 THEN 1
                     WHEN probability > :low_0 AND probability <= :low_1 THEN 2
                     WHEN probability > :high_0 AND probability <= :high_1 THEN 3
-                    WHEN probability > :very_high_1 THEN 4
+                    WHEN probability > :very_high_0 THEN 4
                     ELSE 1
                 END as probability,
                 CASE
                     WHEN impact <= :very_low_1 THEN 1
                     WHEN impact > :low_0 AND impact <= :low_1 THEN 2
                     WHEN impact > :high_0 AND impact <= :high_1 THEN 3
-                    WHEN impact > :very_high_1 THEN 4
+                    WHEN impact > :very_high_0 THEN 4
                     ELSE 1
                 END as impact
             FROM `opportunity`
@@ -97,7 +97,7 @@ class OpportunityRepository extends BaseRepository
             ':low_1' => self::LOW[1],
             ':high_0' => self::HIGH[0],
             ':high_1' => self::HIGH[1],
-            ':very_high_1' => self::VERY_HIGH[1],
+            ':very_high_0' => self::VERY_HIGH[0],
             ':project_id' => $projectId,
         ]);
         $result = $stmt->fetchAll();

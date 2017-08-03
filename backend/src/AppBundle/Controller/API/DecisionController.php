@@ -20,6 +20,21 @@ class DecisionController extends ApiController
     const FORM_CLASS = CreateType::class;
 
     /**
+     * Retrieve decision information.
+     *
+     * @Route("/{id}", name="app_api_decisions_get", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Decision $decision
+     *
+     * @return JsonResponse
+     */
+    public function getAction(Decision $decision)
+    {
+        return $this->createApiResponse($decision);
+    }
+
+    /**
      * Edit a specific Decision.
      *
      * @Route("/{id}", name="app_api_decisions_edit", options={"expose"=true})

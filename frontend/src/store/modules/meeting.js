@@ -9,6 +9,15 @@ const state = {
 
 const getters = {
     projectMeetings: state => state.projectMeetings,
+    projectMeetingsForSelect: state => {
+        let meetings = [{'key': null, 'label': Translator.trans('message.event')}];
+        if (state.projectMeetings.items) {
+            state.projectMeetings.items.map(function(item) {
+                meetings.push({'key': item.id, 'label': item.name});
+            });
+        }
+        return meetings;
+    },
     meeting: state => state.meeting,
 };
 
@@ -240,7 +249,9 @@ const mutations = {
      * @param {Object} decision
      */
     [types.ADD_MEETING_DECISION](state, {decision}) {
-        state.meeting.decisions.push(decision);
+        if (state.meeting.decisions) {
+            state.meeting.decisions.push(decision);
+        }
     },
     /**
      * Edit meeting decision

@@ -5,6 +5,7 @@ namespace AppBundle\Controller\API;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Contract;
 use AppBundle\Entity\Cost;
+use AppBundle\Entity\Decision;
 use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\Info;
@@ -61,6 +62,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\User;
 use AppBundle\Form\Meeting\ApiCreateType as MeetingApiCreateType;
+use AppBundle\Form\Decision\CreateType as DecisionType;
 
 /**
  * @Route("/api/projects")
@@ -1773,5 +1775,70 @@ class ProjectController extends ApiController
             ],
             Response::HTTP_BAD_REQUEST
         );
+    }
+
+    /**
+     * All project Decisions.
+     *
+     * @Route("/{id}/decisions", name="app_api_projects_decisions", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function decisionsAction(Request $request, Project $project)
+    {
+        $filters = $request->query->all();
+        $decisionsRepo = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(Decision::class)
+        ;
+
+        if (isset($filters['page'])) {
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+            $result = $decisionsRepo->getQueryBuilderByProjectAndFilters($project, $filters)->getQuery()->getResult();
+            $responseArray['totalItems'] = $decisionsRepo->countTotalByProjectAndFilters($project, $filters);
+            $responseArray['pageSize'] = $filters['pageSize'];
+            $responseArray['items'] = $result;
+
+            return $this->createApiResponse($responseArray);
+        }
+
+        return $this->createApiResponse($project->getDecisions());
+    }
+
+    /**
+     * Create new decision.
+     *
+     * @Route("/{id}/decisions", name="app_api_project_decisions_create", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Meeting $meeting
+     *
+     * @return JsonResponse
+     */
+    public function createDecisionAction(Request $request, Project $project)
+    {
+        $form = $this->createForm(DecisionType::class, new Decision(), ['csrf_protection' => false]);
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $decision = $form->getData();
+            $decision->setProject($project);
+            $this->persistAndFlush($decision);
+
+            return $this->createApiResponse($decision, Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 }
