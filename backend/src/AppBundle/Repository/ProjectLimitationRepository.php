@@ -2,8 +2,12 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Repository\Traits\ProjectSortingTrait;
+
 class ProjectLimitationRepository extends BaseRepository
 {
+    use ProjectSortingTrait;
+
     /**
      * @param array $limitations
      */

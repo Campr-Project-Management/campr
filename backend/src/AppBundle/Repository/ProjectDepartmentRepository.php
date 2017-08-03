@@ -2,8 +2,12 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Repository\Traits\ProjectSortingTrait;
+
 class ProjectDepartmentRepository extends BaseRepository
 {
+    use ProjectSortingTrait;
+
     /**
      * Return project departments query.
      *
