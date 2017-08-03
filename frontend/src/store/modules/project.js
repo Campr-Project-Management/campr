@@ -19,6 +19,8 @@ const state = {
     risksOpportunitiesStats: [],
     costData: {},
     resourceData: {},
+    projectCostsAndResources: {},
+    progresses: {},
 };
 
 const getters = {
@@ -37,6 +39,8 @@ const getters = {
     projectsPerPage: state => state.projects.pageSize,
     costData: state => state.costData,
     resourceData: state => state.resourceData,
+    projectCostsAndResources: state => state.projectCostsAndResources,
+    progresses: state => state.progresses,
 };
 
 const actions = {
@@ -635,6 +639,27 @@ const actions = {
             )
         ;
     },
+    /**
+     * Gets the project/tasks/cost progresses
+     * @param {function} commit
+     * @param {number} id
+     * @return {object}
+     */
+    getProgress({commit}, id) {
+        return Vue
+            .http
+            .get(Routing.generate('app_api_project_progress', {'id': id}))
+            .then(
+                (response) => {
+                    if (response.status === 200) {
+                        let progresses = response.data;
+                        commit(types.SET_PROJECT_PROGRESSES, {progresses});
+                    }
+                },
+                (response) => {}
+            )
+        ;
+    },
 };
 
 const mutations = {
@@ -800,6 +825,15 @@ const mutations = {
     [types.SET_PROJECT_RESOURCES_GRAPH_DATA](state, {resourceData}) {
         state.resourceData = resourceData;
     },
+    /**
+     * Set project/task/cost progresses
+     * @param {Object} state
+     * @param {array} progresses
+     */
+    [types.SET_PROJECT_PROGRESSES](state, {progresses}) {
+        state.progresses = progresses;
+    },
+
 };
 
 export default {

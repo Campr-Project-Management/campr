@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Calendar;
+use AppBundle\Entity\ColorStatus;
 use AppBundle\Entity\Contract;
 use AppBundle\Entity\Cost;
 use AppBundle\Entity\Decision;
@@ -1281,6 +1282,24 @@ class ProjectController extends ApiController
     }
 
     /**
+     * Overall progress of the project/tasks/costs.
+     *
+     * @Route("/{id}/progress", name="app_api_project_progress", options={"expose"=true})
+     * @Method({"GET"})
+     */
+    public function progressAction(Project $project)
+    {
+        // TODO: Add overall progress for project and cost when formula is determined.
+        $em = $this->getDoctrine()->getManager();
+
+        return $this->createApiResponse([
+            'project_progress' => null,
+            'task_progress' => $em->getRepository(WorkPackage::class)->averageProgressByProjectAndFilters($project),
+            'cost_progress' => null,
+        ]);
+    }
+
+    /**
      * @Route("/{id}/tasks-status", name="app_api_project_tasks_status", options={"expose"=true})
      * @Method({"GET"})
      */
@@ -1288,10 +1307,18 @@ class ProjectController extends ApiController
     {
         $response = [];
         $statuses = $this->getDoctrine()->getRepository(WorkPackageStatus::class)->findAll();
+        $colorStatuses = $this->getDoctrine()->getRepository(ColorStatus::class)->findAll();
         $wpRepo = $this->getDoctrine()->getRepository(WorkPackage::class);
         $response['message.total_tasks'] = $wpRepo->countTotalByTypeProjectAndStatus(WorkPackage::TYPE_TASK, $project);
         foreach ($statuses as $status) {
             $response[$status->getName()] = $wpRepo->countTotalByTypeProjectAndStatus(WorkPackage::TYPE_TASK, $project, $status);
+        }
+
+        $response['conditions']['total'] = 0;
+        foreach ($colorStatuses as $status) {
+            $response['conditions'][$status->getName()]['count'] = $wpRepo->countTotalByTypeProjectAndStatus(WorkPackage::TYPE_TASK, $project, null, $status);
+            $response['conditions'][$status->getName()]['color'] = $status->getColor();
+            $response['conditions']['total'] += $response['conditions'][$status->getName()]['count'];
         }
 
         return $this->createApiResponse($response);
