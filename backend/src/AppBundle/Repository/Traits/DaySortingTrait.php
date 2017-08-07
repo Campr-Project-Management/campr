@@ -4,7 +4,7 @@ namespace AppBundle\Repository\Traits;
 
 use Doctrine\ORM\QueryBuilder;
 
-trait CategorySortingTrait
+trait DaySortingTrait
 {
     /**
      * @param array        $orderBy
@@ -14,10 +14,13 @@ trait CategorySortingTrait
     {
         foreach ($orderBy as $field => $dir) {
             switch ($field) {
-                case 'projectCategoryName':
-                    $qb->innerJoin('q.projectCategory', 'c');
-                    $qb->orderBy('c.name', $dir);
-                    unset($orderBy['projectCategoryName']);
+                case 'type':
+                    $qb->orderBy('q.type', $dir);
+                    unset($orderBy['type']);
+                    break;
+                case 'working':
+                    $qb->orderBy('q.working', $dir);
+                    unset($orderBy['working']);
                     break;
                 default:
                     continue;
