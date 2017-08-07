@@ -101,7 +101,7 @@ abstract class BaseRepository extends SortableRepository
      * @param array        $orderBy
      * @param QueryBuilder $qb
      */
-    protected function setOrder(array $orderBy, QueryBuilder $qb)
+    protected function setOrder(array &$orderBy, QueryBuilder $qb)
     {
         if ($orderBy) {
             foreach ($orderBy as $key => $value) {
