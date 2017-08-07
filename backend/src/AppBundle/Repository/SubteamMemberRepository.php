@@ -4,9 +4,12 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Project;
 use AppBundle\Entity\User;
+use AppBundle\Repository\Traits\UserSortingTrait;
 
 class SubteamMemberRepository extends BaseRepository
 {
+    use UserSortingTrait;
+
     public function findByUserAndProject(User $user, Project $project)
     {
         return $this
@@ -51,11 +54,7 @@ class SubteamMemberRepository extends BaseRepository
             );
         }
 
-        if ($orderBy) {
-            foreach ($orderBy as $key => $value) {
-                $qb->orderBy('u.'.$key, $value);
-            }
-        }
+        $this->setOrder($orderBy, $qb);
 
         if ($limit) {
             $qb->setMaxResults($limit);
