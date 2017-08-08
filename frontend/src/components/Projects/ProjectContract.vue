@@ -159,7 +159,7 @@
                 <div class="hr"></div>
                 <div class="flex buttons flex-center">
                     <a v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
-                    <a class="btn-rounded second-bg flex flex-center download-pdf" :href="downloadPdf">
+                    <a v-if="contract && contract.id" class="btn-rounded second-bg flex flex-center download-pdf" :href="downloadPdf">
                         {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill"></downloadbutton-icon>
                     </a>
                 </div>
@@ -445,7 +445,7 @@ export default {
             validationMessages: 'validationMessages',
         }),
         downloadPdf() {
-            return Routing.generate('app_contract_pdf', {id: this.$route.params.id});
+            return Routing.generate('app_contract_pdf', {id: this.contract.id});
         },
     },
     data: function() {
