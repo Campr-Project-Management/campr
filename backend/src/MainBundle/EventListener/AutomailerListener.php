@@ -60,7 +60,7 @@ class AutomailerListener
             $this->redis->rpush(RedisQueueManagerCommand::AUTOMAILER, [
                 sprintf(
                     'automailer:spool:send --env=%s',
-                    $this->subdomain.'_'.$this->env
+                    $this->env
                 ),
             ]);
         }
