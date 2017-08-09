@@ -13,6 +13,7 @@ use AppBundle\Entity\Opportunity;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Risk;
+use AppBundle\Entity\StatusReport;
 use AppBundle\Entity\SubteamMember;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\User;
@@ -86,6 +87,7 @@ class ImageSerializeListener
             case $object instanceof Todo:
             case $object instanceof Note:
             case $object instanceof DistributionList:
+            case $object instanceof StatusReport:
                 if (method_exists($object, 'getResponsibility') && $object->getResponsibility() instanceof User) {
                     if ($object->getResponsibility()->getAvatar()) {
                         $visitor->addData('responsibilityAvatar', $this->getUri($object->getResponsibility(), 'avatarFile'));

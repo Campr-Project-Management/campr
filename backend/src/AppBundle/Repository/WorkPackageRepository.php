@@ -551,11 +551,8 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
-        if (isset($filters['milestone'])) {
-            $qb
-                ->andWhere('wp.isKeyMilestone = :milestone')
-                ->setParameter('milestone', $filters['milestone'])
-            ;
+        if (isset($filters['isKeyMilestone'])) {
+            $qb->andWhere($qb->expr()->eq('wp.isKeyMilestone', $filters['isKeyMilestone']));
         }
 
         if (isset($filters['startDate'])) {
@@ -695,6 +692,21 @@ class WorkPackageRepository extends BaseRepository
         }
 
         return $qb->getQuery()->getArrayResult();
+    }
+
+    public function getTotalExternalInternalCosts(Project $project)
+    {
+        $qb = $this->getQueryBuilderByProjectAndFilters($project, ['type' => WorkPackage::TYPE_TASK]);
+        $selectInternal = 'SUM(wp.internalActualCost) as actual, SUM(wp.internalForecastCost) as forecast';
+        $selectExternal = 'SUM(wp.externalActualCost) as actual, SUM(wp.externalForecastCost) as forecast';
+
+        $internalResult = $qb->select($selectInternal)->getQuery()->getSingleResult();
+        $externalResult = $qb->select($selectExternal)->getQuery()->getSingleResult();
+
+        return [
+            'forecast' => (int) $internalResult['forecast'] + (int) $externalResult['forecast'],
+            'actual' => (int) $internalResult['actual'] + (int) $externalResult ['actual'],
+        ];
     }
 
     /**

@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+    <title>{{ 'label.status_report'|trans }} - {{ statusReport.project.name }} : {{ statusReport.createdAt|date('d-m-Y') }}</title>
+    <style type="text/css">
+        tr {
+            vertical-align: top;
+        }
+        ul, dl {
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+<table>
+    <tr>
+        <th colspan="2">{{ statusReport.project.name }} : {{ statusReport.createdAt|date('d-m-Y') }}</th>
+    </tr>
+    <tr>
+        <td colspan="2"><br></td>
+    </tr>
+    <tr>
+        <th>{{ 'table_header_cell.week'|trans }}</th>
+        <td>{{ statusReport.information.week }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'table_header_cell.status'|trans }}</th>
+        <td>
+            {% if statusReport.information.project.overallStatus == 2 %}<span style="background: #5FC3A5">Green</span>{% endif %}
+            {% if statusReport.information.project.overallStatus == 1 %}<span style="background: #ccba54">Yellow</span>{% endif %}
+            {% if statusReport.information.project.overallStatus == 0 %}<span style="background: #c87369">Red</span>{% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th>{{ 'message.action_needed'|trans }}</th>
+        <td>
+            {% if statusReport.information.actionNeeded  %}
+                {{ 'message.yes'|trans }}
+            {% else %}
+                {{ 'message.no'|trans }}
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th>{{ 'message.comment'|trans }}</th>
+        <td>{{ statusReport.information.comment|raw|default('-')  }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'label.open'|trans }}</th>
+        <td>{{ statusReport.information.projectTasksStatus['label.open']  }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'label.closed'|trans }}</th>
+        <td>{{ statusReport.information.projectTasksStatus['label.closed']  }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'label.top_risk'|trans }}</th>
+        <td>{{ statusReport.information.risksOpportunitiesStats.risks.top_risk.title|default('-')  }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'label.top_opportunity'|trans }}</th>
+        <td>{{ statusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.title|default('-')  }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'message.todos'|trans }}:</th>
+        <td>
+            <dl>
+                {% for todo in statusReport.information.todos.items %}
+                    <dt>{{ todo.title }}</dt>
+                    {% if not loop.last %}
+                        <hr>
+                    {% endif %}
+                {% endfor %}
+            </dl>
+        </td>
+    </tr>
+    <tr>
+        <th>{{ 'message.decisions'|trans }}:</th>
+        <td>
+            <dl>
+                {% for decision in statusReport.information.decisions.items %}
+                    <dt>{{ decision.title }}</dt>
+                    {% if not loop.last %}
+                        <hr>
+                    {% endif %}
+                {% else %}
+                    <span>-</span>
+                {% endfor %}
+            </dl>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

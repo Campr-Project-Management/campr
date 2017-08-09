@@ -15,6 +15,10 @@ use JMS\Serializer\Annotation as Serializer;
  */
 class ColorStatus
 {
+    const STATUS_NOT_STARTED = 'color_status.not_started';
+    const STATUS_IN_PROGRESS = 'color_status.in_progress';
+    const STATUS_FINISHED = 'color_status.finished';
+
     /**
      * @var int
      *
