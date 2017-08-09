@@ -141,6 +141,9 @@ const actions = {
         if (state.todoFilters && state.todoFilters.todoCategory) {
             paramObject.params.todoCategory = state.todoFilters.todoCategory;
         }
+        if (state.todoFilters && state.todoFilters.statusReport) {
+            paramObject.params.statusReport = state.todoFilters.statusReport;
+        }
         Vue.http
             .get(
                 Routing.generate('app_api_projects_todos', {id: data.projectId}),

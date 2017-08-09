@@ -1,0 +1,13 @@
+{% extends 'MainBundle:Email:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% block subject %}{{ 'email.subject.status_report'|trans }}{% endblock %}
+
+{% block message %}
+    <p>{{ 'email.message.status_report'|trans }}</p>
+    <p>
+        {{ statusReport.project.name }} - {{ statusReport.createdAt|date('d.m.Y') }}
+    </p>
+    <p>{{ 'email.message.createdBy'|trans }}: {{ statusReport.createdByFullName }}</p>
+{% endblock %}

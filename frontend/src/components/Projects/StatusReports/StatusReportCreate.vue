@@ -16,13 +16,12 @@
                 <div class="row large-half-columns">
                     <div class="col-md-6">
                         <div class="widget same-height">
-                            <!-- TODO: project status traffic light to be determined -->
                             <h3>{{ translateText('message.overall_status') }}</h3>
                             <div class="flex flex-center">
                                 <div class="status-boxes big-status-boxes flex flex-v-center">
-                                    <div class="status-box" style="background-color:#5FC3A5" v-bind:style="{ cursor: 'default' }"></div>
-                                    <div class="status-box" style="" v-bind:style="{ cursor: 'default' }"></div>
-                                    <div class="status-box" style="" v-bind:style="{ cursor: 'default' }"></div>
+                                    <div class="status-box" v-bind:style="{background: project.overallStatus === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>
+                                    <div class="status-box" v-bind:style="{background: project.overallStatus === 1 ? '#ccba54' : '', cursor: 'default'}"></div>
+                                    <div class="status-box" v-bind:style="{background: project.overallStatus === 0 ? '#c87369' : '', cursor: 'default'}"></div>
                                 </div>
                             </div>
 
@@ -41,10 +40,9 @@
                             <div class="status-bar clearfix flex">
                                 <!-- bar width calculated as (data-number * 100)/(bar1_data-number + bar2_data-number + ...) -->
                                 <div
-                                        v-for="condition in projectTasksStatus.conditions"
-                                        class="bar flex-v-center"
-                                        v-bind:style="{width: (condition.count * 100) / (projectTasksStatus.conditions.total) + '%', background: condition.color}"
-                                >
+                                    v-for="condition in projectTasksStatus.conditions"
+                                    class="bar flex-v-center"
+                                    v-bind:style="{width: (condition.count * 100) / (projectTasksStatus.conditions.total) + '%', background: condition.color}">
                                     {{ condition.count }}
                                 </div>
                             </div>
@@ -59,6 +57,11 @@
                         <div class="widget same-height">
                             <h3>{{ translateText('message.project_trend') }}</h3>
                             <h4>{{ translateText('message.current_date') }}: {{ today | moment('DD.MM.YYYY') }}</h4>
+                            <vue-chart
+                                :columns="trendColumns"
+                                :rows="trendRows"
+                                :options="trendOptions">
+                            </vue-chart>
                         </div>
                     </div>
                 </div>
@@ -111,7 +114,7 @@
                                     </td>
                                     <td v-else>-</td>
                                 </tr>
-                                <tr>
+                                <tr :class="forecastColorClass">
                                     <td>{{ translateText('table_header_cell.forecast') }}</td>
                                     <td v-if="tasksForSchedule.forecast_start && tasksForSchedule.forecast_start.forecastStartAt">
                                         {{ tasksForSchedule.forecast_start.forecastStartAt | moment('DD.MM.YYYY')  }}
@@ -126,7 +129,7 @@
                                     </td>
                                     <td v-else>-</td>
                                 </tr>
-                                <tr>
+                                <tr :class="actualColorClass">
                                     <td>{{ translateText('table_header_cell.actual') }}</td>
                                     <td v-if="tasksForSchedule.actual_start && tasksForSchedule.actual_start.actualStartAt">
                                         {{ tasksForSchedule.actual_start.actualStartAt | moment('DD.MM.YYYY')  }}
@@ -213,20 +216,18 @@
 
                 <div class="row statuses">
                     <div class="col-md-4">
-                        <div class="status">
-                            <!--TODO: overall progress of project formula needs to be determined-->
-                            <circle-chart :percentage="'42.88'" v-bind:title="translateText('message.overall_progress')" class="left dark-chart medium-chart"></circle-chart>
+                        <div class="status" v-if="progresses.project_progress">
+                            <circle-chart :percentage="progresses.project_progress.value" v-bind:title="translateText('message.overall_progress')" class="left dark-chart medium-chart" v-bind:class="progresses.project_progress.class"></circle-chart>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="status" v-if="progresses.task_progress">
-                            <circle-chart v-bind:percentage="progresses.task_progress" v-bind:title="translateText('message.task_progress')" class="left warning dark-chart medium-chart"></circle-chart>
+                            <circle-chart v-bind:percentage="progresses.task_progress.value" v-bind:title="translateText('message.task_progress')" class="left dark-chart medium-chart" v-bind:class="progresses.task_progress.class"></circle-chart>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="status">
-                            <!--TODO: overall progress of costs formula needs to be determined-->
-                            <circle-chart :percentage="'60.06'" v-bind:title="translateText('message.costs_progress')" class="left danger dark-chart medium-chart"></circle-chart>
+                        <div class="status" v-if="progresses.cost_progress">
+                            <circle-chart :percentage="progresses.cost_progress.value" v-bind:title="translateText('message.costs_progress')" class="left dark-chart medium-chart" v-bind:class="progresses.cost_progress.class"></circle-chart>
                         </div>
                     </div>
                 </div>
@@ -237,12 +238,12 @@
                     <div class="col-md-12">
                         <h3 class="margintop0">{{ translateText('message.phases_and_milestones') }}</h3>
                         <div class="status-boxes flex flex-v-center marginbottom20">
-                            <div class="status-box" style=""></div>
-                            <div class="status-box" style="background-color:#CCBA54"></div>
-                            <div class="status-box" style=""></div>
+                            <div class="status-box" v-bind:style="{background: project.overallStatus === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>
+                            <div class="status-box" v-bind:style="{background: project.overallStatus === 1 ? '#ccba54' : '', cursor: 'default'}"></div>
+                            <div class="status-box" v-bind:style="{background: project.overallStatus === 0 ? '#c87369' : '', cursor: 'default'}"></div>
                         </div>
 
-                        <vis-timeline :pmData="pmData"></vis-timeline>
+                        <vis-timeline :pmData="pmData" :withPhases="false"></vis-timeline>
                     </div>
                 </div>
 
@@ -252,15 +253,15 @@
                     <div class="col-md-12">
                         <h3 class="margintop0">{{ translateText('message.internal_costs') }}</h3>
                         <div class="status-boxes flex flex-v-center marginbottom20">
-                            <div class="status-box" style="background-color:#5fc3a5"></div>
-                            <div class="status-box" style=""></div>
-                            <div class="status-box" style=""></div>
+                            <div class="status-box" v-bind:style="{background: costData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>
+                            <div class="status-box" v-bind:style="{background: costData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>
+                            <div class="status-box" v-bind:style="{background: costData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>
                         </div>
 
                         <vue-chart
                                 chart-type="ColumnChart"
                                 :columns="columns"
-                                :rows="rowsByPhase"
+                                :rows="costRowsByPhase"
                                 :options="options">
                         </vue-chart>
                     </div>
@@ -272,15 +273,15 @@
                     <div class="col-md-12">
                         <h3 class="margintop0">{{ translateText('message.external_costs') }}</h3>
                         <div class="status-boxes flex flex-v-center marginbottom20">
-                            <div class="status-box" style="background-color:#5fc3a5"></div>
-                            <div class="status-box" style=""></div>
-                            <div class="status-box" style=""></div>
+                            <div class="status-box" v-bind:style="{background: resourceData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>
+                            <div class="status-box" v-bind:style="{background: resourceData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>
+                            <div class="status-box" v-bind:style="{background: resourceData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>
                         </div>
 
                         <vue-chart
                                 chart-type="ColumnChart"
                                 :columns="columns"
-                                :rows="rowsByPhase"
+                                :rows="resourceRowsByPhase"
                                 :options="options">
                         </vue-chart>
                     </div>
@@ -292,17 +293,26 @@
                     <div class="col-md-6 dark-border-right">
                         <h3 class="marginbottom20 margintop0">{{ translateText('message.opportunities') }}</h3>
                         <div class="ro-grid-wrapper clearfix">
-                            <risk-grid :gridData="opportunityGridData" :isRisk="false"></risk-grid>
-                            <h4>Top Opportunity:</h4>
-                            <div class="ro-main ro-main-opportunity">
-                                <b>Plant based dietary Program</b> <span class="ro-main-stats">| <b class="ro-main-priority">Priority: Very High</b> | Potential Savings: $4.850 | Potential Time Savings: 14 days | Strategy: Take | Status: Ongoing</span>
+                            <risk-grid :gridData="opportunityGridData" :isRisk="false" :clickable="false"></risk-grid>
+                            <h4>{{ translateText('message.top_opportunity') }}:</h4>
+                            <div class="ro-main ro-main-opportunity" v-if="risksOpportunitiesStats.opportunities && risksOpportunitiesStats.opportunities.top_opportunity">
+                                <b>{{ risksOpportunitiesStats.opportunities.top_opportunity.title }}</b>
+                                <span class="ro-main-stats">|
+                                    <b v-bind:class="getPriorityNameColor(risksOpportunitiesStats.opportunities.top_opportunity.priority).color">
+                                        {{ translateText('message.priority') }}: {{ getPriorityNameColor(risksOpportunitiesStats.opportunities.top_opportunity.priority).name }}
+                                    </b>|
+                                    {{ translateText('message.potential_savings') }}: {{ risksOpportunitiesStats.opportunities.top_opportunity.costSavings }}{{ risksOpportunitiesStats.opportunities.top_opportunity.currency }} |
+                                    {{ translateText('message.potential_time_savings') }}: {{ risksOpportunitiesStats.opportunities.top_opportunity.timeSavings }} {{ translateText(risksOpportunitiesStats.opportunities.top_opportunity.timeUnit) }} |
+                                    {{ translateText('message.strategy') }}: {{ risksOpportunitiesStats.opportunities.top_opportunity.opportunityStrategyName }} |
+                                    {{ translateText('message.status') }}: {{ risksOpportunitiesStats.opportunities.top_opportunity.opportunityStatusName }}
+                                </span>
                                 <div class="entry-responsible flex flex-v-center">
                                     <div class="user-avatar">
-                                        <img src="http://trisoft.dev.campr.biz/uploads/avatars/49.jpg" :alt="'Kyle Kennedy'"/>
+                                        <img :src="risksOpportunitiesStats.opportunities.top_opportunity.responsibilityAvatar" :alt="risksOpportunitiesStats.opportunities.top_opportunity.responsibilityFullName"/>
                                     </div>
                                     <div>
                                         {{ translateText('message.responsible') }}:
-                                        <b>Kyle Kennedy</b>
+                                        <b>{{ risksOpportunitiesStats.opportunities.top_opportunity.responsibilityFullName }}</b>
                                     </div>
                                 </div>
                             </div>
@@ -313,17 +323,26 @@
                     <div class="col-md-6">
                         <h3 class="marginbottom20 margintop0">{{ translateText('message.risks') }}</h3>
                         <div class="ro-grid-wrapper clearfix">
-                            <risk-grid :gridData="opportunityGridData" :isRisk="true"></risk-grid>
-                            <h4>Top Risk:</h4>
-                            <div class="ro-main ro-main-risk">
-                                <b>Unknown viral breach</b> <span class="ro-main-stats">| <b class="ro-main-priority">Priority: Very High</b> | Potential Costs: $120.000 | Potential Time Delays: 90 days | Strategy: Avoid | Status: Initiated</span>
+                            <risk-grid :gridData="riskGridData" :isRisk="true" :clickable="false"></risk-grid>
+                            <h4>{{ translateText('message.top_risk') }}:</h4>
+                            <div class="ro-main ro-main-risk" v-if="risksOpportunitiesStats.risks && risksOpportunitiesStats.risks.top_risk">
+                                <b>{{ risksOpportunitiesStats.risks.top_risk.title }}</b>
+                                <span class="ro-main-stats">|
+                                    <b v-bind:class="getPriorityNameColor(risksOpportunitiesStats.risks.top_risk.priority).color">
+                                        {{ translateText('message.priority') }}: {{ getPriorityNameColor(risksOpportunitiesStats.risks.top_risk.priority).name }}
+                                    </b>|
+                                    {{ translateText('message.potential_savings') }}: {{ risksOpportunitiesStats.risks.top_risk.cost }}{{ risksOpportunitiesStats.risks.top_risk.currency }} |
+                                    {{ translateText('message.potential_time_savings') }}: {{ risksOpportunitiesStats.risks.top_risk.delay }} {{ translateText(risksOpportunitiesStats.risks.top_risk.delayUnit) }} |
+                                    {{ translateText('message.strategy') }}: {{ risksOpportunitiesStats.risks.top_risk.riskStrategyName }} |
+                                    {{ translateText('message.status') }}: {{ risksOpportunitiesStats.risks.top_risk.riskStatusName }}
+                                </span>
                                 <div class="entry-responsible flex flex-v-center">
                                     <div class="user-avatar">
-                                        <img src="http://trisoft.dev.campr.biz/uploads/avatars/49.jpg" :alt="'Kyle Kennedy'"/>
+                                        <img :src="risksOpportunitiesStats.risks.top_risk.responsibilityAvatar" :alt="risksOpportunitiesStats.risks.top_risk.responsibilityFullName"/>
                                     </div>
                                     <div>
                                         {{ translateText('message.responsible') }}:
-                                        <b>Kyle Kennedy</b>
+                                        <b>{{ risksOpportunitiesStats.risks.top_risk.responsibilityFullName }}</b>
                                     </div>
                                 </div>
                             </div>
@@ -337,7 +356,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h3 class="margintop0">{{ translateText('message.todos') }}</h3>
-                        <table class="table table-striped table-responsive table-fixed table-small">
+                        <table class="table table-striped table-responsive table-fixed table-small" v-if="todos.items && todos.items.length > 0">
                             <thead>
                             <tr>
                                 <th style="width:11%">{{ translateText('table_header_cell.status') }}</th>
@@ -349,7 +368,7 @@
                             </thead>
                             <tbody>
                             <tr v-for="todo in todos.items">
-                                <td>{{ todo.statusName }}</td>
+                                <td>{{ translateText(todo.statusName) }}</td>
                                 <td>{{ todo.dueDate | moment('DD.MM.YYYY') }}</td>
                                 <td class="cell-wrap">{{ todo.title }}</td>
                                 <td class="cell-wrap">{{ todo.description }}</td>
@@ -359,6 +378,7 @@
                             </tr>
                             </tbody>
                         </table>
+                        <span v-else>{{ translateText('label.no_data') }}</span>
                     </div>
                 </div>
 
@@ -367,10 +387,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h3 class="margintop0">{{ translateText('message.decisions') }}</h3>
-                        <table class="table table-striped table-responsive table-fixed table-small">
+                        <table class="table table-striped table-responsive table-fixed table-small" v-if="decisions.items && decisions.items.length > 0">
                             <thead>
                             <tr>
-                                <th style="width:11%">{{ translateText('table_header_cell.status') }}</th>
                                 <th style="width:14%">{{ translateText('table_header_cell.due_date') }}</th>
                                 <th style="width:25%">{{ translateText('table_header_cell.topic') }}</th>
                                 <th style="width:36%">{{ translateText('table_header_cell.description') }}</th>
@@ -378,17 +397,17 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td class="danger-color">Undone</td>
-                                <td>01.08.2017</td>
-                                <td class="cell-wrap">Lorem ipsum dolor sit amet</td>
-                                <td class="cell-wrap cell-large">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eu velit dolor. Morbi at sagittis sapien. Vivamus molestie arcu et sem condimentum, quis fermentum ante elementum. Proin et nulla ut lorem commodo fringilla vel sit amet ante. Donec facilisis orci quis ante mattis accumsan.</td>
-                                <td class="text-center">
-                                    <div class="avatar" v-tooltip.top-center="'Andrea Sinclair'" v-bind:style="{ backgroundImage: 'url(http://trisoft.dev.campr.biz/uploads/avatars/10.jpg)' }"></div>
+                            <tr v-for="decision in decisions.items">
+                                <td>{{ decision.dueDate | moment('DD.MM.YYYY') }}</td>
+                                <td class="cell-wrap">{{ decision.title }}</td>
+                                <td class="cell-wrap cell-large">{{ decision.description }}</td>
+                                <td>
+                                    <div class="avatar" v-tooltip.top-center="decision.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatar + ')' }"></div>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
+                        <span v-else>{{ translateText('label.no_data') }}</span>
                     </div>
                 </div>
 
@@ -397,8 +416,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="flex flex-space-between">
-                            <a href="#" class="btn-rounded btn-auto btn-auto second-bg">{{ translateText('button.download_pdf') }} <download-icon fill="white-fill"></download-icon></a>
-                            <a href="#" class="btn-rounded btn-auto btn-auto second-bg">{{ translateText('button.email_status_report') }} <at-icon fill="white-fill"></at-icon></a>
+                            <a @click="saveReport()" class="btn-rounded btn-auto btn-auto second-bg">{{ translateText('button.save') }}</a>
                         </div>
                     </div>
                 </div>
@@ -439,25 +457,21 @@ export default {
         AtIcon,
     },
     created() {
+        this.getProjectStatusReports({
+            projectId: this.$route.params.id,
+            queryParams: {
+                trend: true,
+            },
+        });
         this.getProjectById(this.$route.params.id);
         this.getTasksStatus(this.$route.params.id);
         this.getTasksForSchedule(this.$route.params.id);
         this.getProgress(this.$route.params.id);
         this.getProjectCostsGraphData({id: this.$route.params.id});
-        this.setPhasesFilters(
-            {
-                startDate: moment().subtract(14, 'd').format('YYYY-MM-DD'),
-                endDate: moment().add(14, 'd').format('YYYY-MM-DD'),
-            }
-        );
-        this.getProjectPhases({
-            projectId: this.$route.params.id,
-            apiParams: {
-                page: 1,
-            },
-        });
+        this.getProjectResourcesGraphData({id: this.$route.params.id});
         this.setMilestonesFilters(
             {
+                isKeyMilestone: true,
                 startDate: moment().subtract(14, 'd').format('YYYY-MM-DD'),
                 endDate: moment().add(14, 'd').format('YYYY-MM-DD'),
             }
@@ -483,7 +497,15 @@ export default {
             }
         );
         this.getProjectRiskAndOpportunitiesStats(this.$route.params.id);
+        this.setTodosFilters({statusReport: [1, 2]});
         this.getProjectTodos({
+            projectId: this.$route.params.id,
+            queryParams: {
+                page: this.activePage,
+            },
+        });
+        this.setDecisionsFilters({statusReport: true});
+        this.getProjectDecisions({
             projectId: this.$route.params.id,
             queryParams: {
                 page: this.activePage,
@@ -495,10 +517,11 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getProjectById', 'getTasksStatus', 'getProjectPhases', 'getTasksForSchedule', 'getProgress',
-            'setPhasesFilters', 'setMilestonesFilters', 'getProjectMilestones', 'getProjectCostsGraphData',
+            'getProjectById', 'getTasksStatus', 'getTasksForSchedule', 'getProgress',
+            'setMilestonesFilters', 'getProjectMilestones', 'getProjectCostsGraphData',
             'getProjectOpportunities', 'getProjectRisks', 'getProjectRiskAndOpportunitiesStats',
-            'getProjectTodos',
+            'setTodosFilters', 'getProjectTodos', 'getProjectResourcesGraphData',
+            'setDecisionsFilters', 'getProjectDecisions', 'createStatusReport', 'getProjectStatusReports',
         ]),
         getDuration: function(startDate, endDate, unit) {
             let end = endDate ? moment(endDate) : moment();
@@ -510,6 +533,47 @@ export default {
         translateText: function(text) {
             return this.translate(text);
         },
+        getPriorityNameColor: function(value) {
+            const priorityNames = [
+                {name: 'message.very_low', color: 'ro-very-low-priority'},
+                {name: 'message.low', color: 'ro-low-priority'},
+                {name: 'message.medium', color: 'ro-medium-priority'},
+                {name: 'message.high', color: 'ro-high-priority'},
+                {name: 'message.very_high', color: 'ro-very-high-priority'},
+            ];
+
+            return {
+                name: this.translateText(priorityNames[value].name),
+                color: priorityNames[value].color,
+            };
+        },
+        saveReport: function() {
+            let data = {
+                information: {
+                    week: this.getDuration(this.project.createdAt, null, 'weeks'),
+                    project: {
+                        id: this.$route.params.id,
+                        name: this.project.name,
+                        overallStatus: this.project.overallStatus,
+                    },
+                    projectTasksStatus: this.projectTasksStatus,
+                    actionNeeded: this.actionNeeded,
+                    projectTrend: this.trendRows,
+                    comment: this.$refs.comment.getContent(),
+                    tasksForSchedule: this.tasksForSchedule,
+                    progresses: this.progresses,
+                    projectMilestones: this.projectMilestones,
+                    costData: this.costData,
+                    resourceData: this.resourceData,
+                    opportunities: this.opportunities,
+                    risks: this.risks,
+                    risksOpportunitiesStats: this.risksOpportunitiesStats,
+                    todos: this.todos,
+                    decisions: this.decisions,
+                },
+            };
+            this.createStatusReport(data);
+        },
     },
     computed: {
         ...mapGetters({
@@ -517,35 +581,23 @@ export default {
             projectTasksStatus: 'projectTasksStatus',
             tasksForSchedule: 'tasksForSchedule',
             progresses: 'progresses',
-            allProjectMilestones: 'allProjectMilestones',
-            allProjectPhases: 'allProjectPhases',
+            projectMilestones: 'projectMilestones',
             costData: 'costData',
+            resourceData: 'resourceData',
             opportunities: 'opportunities',
             risks: 'risks',
             risksOpportunitiesStats: 'risksOpportunitiesStats',
             todos: 'todos',
+            decisions: 'decisions',
+            statusReports: 'statusReports',
         }),
         pmData: function() {
             let items = [];
-            if (this.allProjectPhases && this.allProjectPhases.items) {
-                items = items.concat(this.allProjectPhases.items.map((item) => {
+            if (this.projectMilestones && this.projectMilestones.items) {
+                items = items.concat(this.projectMilestones.items.map((item) => {
                     return {
                         id: item.id,
                         group: 0,
-                        content: item.name,
-                        start: new Date(item.scheduledStartAt),
-                        end: new Date(item.scheduledFinishAt),
-                        value: item.workPackageStatus,
-                        title: renderTooltip(item),
-                    };
-                }));
-            }
-
-            if (this.allProjectMilestones && this.allProjectMilestones.items) {
-                items = items.concat(this.allProjectMilestones.items.map((item) => {
-                    return {
-                        id: item.id,
-                        group: 1,
                         content: item.name,
                         start: new Date(item.scheduledFinishAt),
                         value: item.workPackageStatus,
@@ -559,7 +611,18 @@ export default {
     watch: {
         costData(value) {
             Object.entries(this.costData.byPhase).map(([key, value]) => {
-                this.rowsByPhase.push([
+                this.costRowsByPhase.push([
+                    key,
+                    value.base ? parseInt(value.base) : 0,
+                    value.actual ? parseInt(value.actual) : 0,
+                    value.forecast ? parseInt(value.forecast) : 0,
+                    value.base && value.actual ? parseInt(value.base) - parseInt(value.actual) : 0,
+                ]);
+            });
+        },
+        resourceData(value) {
+            Object.entries(this.resourceData.byPhase).map(([key, value]) => {
+                this.resourceRowsByPhase.push([
                     key,
                     value.base ? parseInt(value.base) : 0,
                     value.actual ? parseInt(value.actual) : 0,
@@ -571,16 +634,74 @@ export default {
         risksOpportunitiesStats(value) {
             let opportunityGridValues = this.risksOpportunitiesStats.opportunities.opportunity_data.gridValues;
             let riskGridValues = this.risksOpportunitiesStats.risks.risk_data.gridValues;
-            let types = ['medium', 'high', 'low', 'very-low'];
+            const opportunityTypes = [
+                ['very-high', 'very-high', 'high', 'medium'],
+                ['very-high', 'high', 'medium', 'low'],
+                ['high', 'medium', 'low', 'very-low'],
+                ['medium', 'low', 'very-low', 'very-low'],
+            ];
+            const riskTypes = [
+                ['very-low', 'very-low', 'low', 'medium'],
+                ['very-low', 'low', 'medium', 'high'],
+                ['low', 'medium', 'high', 'very-high'],
+                ['medium', 'high', 'very-high', 'very-high'],
+            ];
             for (let i = 4; i >= 1; i--) {
                 for (let j = 1; j <= 4; j++) {
-                    let isActive = i === 1 && j === 1;
                     this.opportunityGridData.push(
-                        {probability: j, impact: i, number: opportunityGridValues[j+'-'+i], type: types[j-1], isActive: isActive},
+                        {probability: j, impact: i, number: opportunityGridValues[j+'-'+i], type: opportunityTypes[i-1][j-1], isActive: false},
                     );
                     this.riskGridData.push(
-                        {probability: j, impact: i, number: riskGridValues[j+'-'+i], type: types[j-1], isActive: isActive},
+                        {probability: j, impact: i, number: riskGridValues[j+'-'+i], type: riskTypes[i-1][j-1], isActive: false},
                     );
+                }
+            }
+        },
+        tasksForSchedule(value) {
+            this.forecastColorClass = this.tasksForSchedule.forecast_finish.forecastFinishAt > this.tasksForSchedule.base_finish.scheduledFinishAt
+                ? 'column-warning'
+                : 'column'
+            ;
+            this.actualColorClass = this.tasksForSchedule.actual_finish.actualFinishAt > this.tasksForSchedule.forecast_finish.forecastFinishAt
+                ? 'column-alert'
+                : 'column'
+            ;
+        },
+        projectMilestones(value) {
+            for (let i = 0; i < this.projectMilestones.length; i++) {
+                if (this.projectMilestones[i].colorStatusColor === '#ccba54') {
+                    this.milestoneColorClass = '#ccba54';
+                } else if (this.projectMilestones[i].colorStatusColor === '#c87369') {
+                    this.milestoneColorClass = '#c87369';
+                    break;
+                }
+            }
+        },
+        statusReports(value) {
+            let trend = null;
+            this.trendOptions.hAxis.maxValue = this.statusReports.items.length + 1;
+            for (let i = 0; i < this.statusReports.items.length; i++) {
+                if (this.statusReports.items[i].information) {
+                    if (i === 0) {
+                        trend = this.statusReports.items[i].information.project.overallStatus - 1;
+                    } else {
+                        if (
+                            this.statusReports.items[i].information.project.overallStatus >
+                            this.statusReports.items[i-1].information.project.overallStatus
+                        ) {
+                            trend += this.statusReports.items[i].information.project.overallStatus -
+                                this.statusReports.items[i-1].information.project.overallStatus
+                            ;
+                        } else if (
+                            this.statusReports.items[i].information.project.overallStatus <
+                            this.statusReports.items[i-1].information.project.overallStatus
+                        ) {
+                            trend -= this.statusReports.items[i-1].information.project.overallStatus -
+                                this.statusReports.items[i].information.project.overallStatus
+                            ;
+                        }
+                    }
+                    this.trendRows.push([i, trend]);
                 }
             }
         },
@@ -591,12 +712,20 @@ export default {
             actionNeeded: null,
             today: new Date(),
             comment: null,
-            milestoneId: '',
-            phaseId: '',
+            forecastColorClass: null,
+            actualColorClass: null,
+            milestoneColorClass: '#5FC3A5',
             opportunityGridData: [],
             riskGridData: [],
             activePage: 1,
-            todoId: null,
+            trendColumns: [{
+                'type': 'number',
+                'label': Translator.trans('label.week'),
+            }, {
+                'type': 'number',
+                'label': Translator.trans('label.trend'),
+            }],
+            trendRows: [],
             columns: [{
                 'type': 'string',
                 'label': Translator.trans('message.total'),
@@ -613,12 +742,50 @@ export default {
                 'type': 'number',
                 'label': Translator.trans('label.remaining'),
             }],
-            rowsByPhase: [
+            costRowsByPhase: [
                 ['', 0, 0, 0, 0],
             ],
-            rowsByDepartment: [
+            resourceRowsByPhase: [
                 ['', 0, 0, 0, 0],
             ],
+            trendOptions: {
+                title: Translator.trans('message.project_trend'),
+                pointSize: 8,
+                hAxis: {
+                    gridlines: {
+                        count: 5,
+                    },
+                    minValue: 0,
+                    maxValue: 4,
+                    textStyle: {
+                        color: '#D8DAE5',
+                    },
+                },
+                vAxis: {
+                    gridlines: {
+                        count: 5,
+                    },
+                    minValue: -2,
+                    maxValue: 2,
+                    textStyle: {
+                        color: '#D8DAE5',
+                    },
+                },
+                width: '100%',
+                height: 350,
+                colors: ['#5FC3A5', '#A05555', '#646EA0', '#2E3D60', '#D8DAE5'],
+                backgroundColor: '#191E37',
+                titleTextStyle: {
+                    color: '#D8DAE5',
+                },
+                legend: {
+                    position: 'bottom',
+                    maxLines: 1,
+                },
+                legendTextStyle: {
+                    color: '#D8DAE5',
+                },
+            },
             options: {
                 title: Translator.trans('message.costs_chart'),
                 hAxis: {
@@ -660,6 +827,12 @@ export default {
  * @return {string}
  */
 function renderTooltip(item) {
+    let forecastColorClass = 'column';
+    if (moment(item.forecastFinishAt).diff(moment(item.scheduledFinishAt), 'days') > 0) {
+        forecastColorClass = 'column-warning';
+    } else if (moment(item.actualFinishAt).diff(moment(item.forecastFinishAt), 'days') > 0) {
+        forecastColorClass = 'column-alert';
+    }
     return `<div>
         <div class="task-box box">
             <div class="box-header">
@@ -670,44 +843,25 @@ function renderTooltip(item) {
                     <p>` + item.responsibilityFullName + `</p>
                 </div>
                 <h2><router-link to="" class="simple-link">` + item.name + `</router-link></h2>
-                <p class="task-id">`+ item.id +`</p>
             </div>
             <div class="content">
                 <table class="table table-small">
                     <thead>
                         <tr>
-                            <th>` + Vue.translate('table_header_cell.schedule') + `</th>
-                            <th>` + Vue.translate('table_header_cell.start') + `</th>
-                            <th>` + Vue.translate('table_header_cell.finish') + `</th>
-                            <th>` + Vue.translate('table_header_cell.duration') + `</th>
-                        </tr>
+                            <th>` + Vue.translate('table_header_cell.schedule') + `</th>` +
+                            `<th>` + Vue.translate('table_header_cell.date') + `</th>` +
+                        `</tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>`+ Vue.translate('table_header_cell.base') +`</td>
-                            <td>` + (item.scheduledStartAt ? item.scheduledStartAt : '-') + `</td>
-                            <td>` + (item.scheduledFinishAt ? item.scheduledFinishAt : '-') + `</td>
-                            <td>` + (!isNaN(moment(item.scheduledFinishAt).diff(moment(item.scheduledStartAt), 'days'))
-                                ? moment(item.scheduledFinishAt).diff(moment(item.scheduledStartAt), 'days')
-                                : '-') + `</td>
-                        </tr>
-                        <tr class="column-warning">
-                            <td>`+ Vue.translate('table_header_cell.forecast') +`</td>
-                            <td>` + (item.forecastStartAt ? item.forecastStartAt : '-') + `</td>
-                            <td>` + (item.forecastFinishedAt ? item.forecastFinishedAt: '-') + `</td>
-                            <td>` + (!isNaN(moment(item.forecastFinishedAt).diff(moment(item.forecastStartAt), 'days'))
-                                ? moment(item.forecastFinishedAt).diff(moment(item.forecastStartAt), 'days')
-                                : '-') + `</td>
-                        </tr>
-                        <tr>
-                            <td>` + Vue.translate('table_header_cell.actual') + `</td>
-                            <td>` + (item.actualStartAt ? item.actualStartAt : '-') + `</td>
-                            <td>` + (item.actualFinishAt ? item.actualFinishAt : '-') + `</td>
-                            <td>` + (!isNaN(moment(item.actualFinishAt).diff(moment(item.actualStartAt), 'days'))
-                                ? moment(item.actualFinishAt).diff(moment(item.actualStartAt), 'days')
-                                : '-') + `</td>
-                        </tr>
-                    </tbody>
+                            <td>`+ Vue.translate('table_header_cell.base') +`</td>` +
+                            `<td>` + (item.scheduledFinishAt ? item.scheduledFinishAt : '-') + `</td>` +
+                        `</tr>
+                        <tr class="` + forecastColorClass +`">
+                            <td>` + Vue.translate('table_header_cell.forecast') +`</td>` +
+                            `<td>` + (item.forecastFinishAt ? item.forecastFinishAt: '-') + `</td>` +
+                        `</tr>` +
+                    `</tbody>
                 </table>
             </div>
             <div class="status">
@@ -913,16 +1067,40 @@ function renderTooltip(item) {
 
             &.ro-main-opportunity {
                 .ro-main-stats {
-                    .ro-main-priority {
+                    .ro-very-high-priority {
+                        color: $secondDarkColor;
+                    }
+                    .ro-high-priority {
                         color: $secondColor;
+                    }
+                    .ro-medium-priority {
+                        color: $warningColor;
+                    }
+                    .ro-low-priority {
+                        color: $dangerColor;
+                    }
+                    .ro-very-low-priority {
+                        color: $dangerDarkColor;
                     }
                 }
             }
 
             &.ro-main-risk {
                 .ro-main-stats {
-                    .ro-main-priority {
+                    .ro-very-high-priority {
+                        color: $secondDarkColor;
+                    }
+                    .ro-high-priority {
+                        color: $secondColor;
+                    }
+                    .ro-medium-priority {
+                        color: $warningColor;
+                    }
+                    .ro-low-priority {
                         color: $dangerColor;
+                    }
+                    .ro-very-low-priority {
+                        color: $dangerDarkColor;
                     }
                 }
             }

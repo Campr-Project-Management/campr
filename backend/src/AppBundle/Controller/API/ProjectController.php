@@ -25,6 +25,8 @@ use AppBundle\Entity\ProjectStatus;
 use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Risk;
+use AppBundle\Entity\StatusReport;
+use AppBundle\Entity\StatusReportConfig;
 use AppBundle\Entity\Subteam;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\WorkPackage;
@@ -59,6 +61,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use MainBundle\Controller\API\ApiController;
+use Proxies\__CG__\AppBundle\Entity\Status;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -68,6 +71,7 @@ use AppBundle\Entity\User;
 use AppBundle\Form\Meeting\ApiCreateType as MeetingApiCreateType;
 use AppBundle\Form\Decision\CreateType as DecisionType;
 use AppBundle\Form\ProjectDepartment\CreateType as ProjectDepartmentType;
+use AppBundle\Form\StatusReport\CreateType as StatusReportCreateType;
 
 /**
  * @Route("/api/projects")
@@ -1289,13 +1293,35 @@ class ProjectController extends ApiController
      */
     public function progressAction(Project $project)
     {
-        // TODO: Add overall progress for project and cost when formula is determined.
         $em = $this->getDoctrine()->getManager();
+        $class = '';
+        $baseCost = $em->getRepository(Cost::class)->getTotalBaseCost($project);
+        $actualForecastCosts = $em->getRepository(WorkPackage::class)->getTotalExternalInternalCosts($project, Cost::TYPE_EXTERNAL);
+        $costClass = '';
+        if ($project->getOverallStatus() === 0) {
+            $class = 'danger';
+        } elseif ($project->getOverallStatus() === 1) {
+            $class = 'warning';
+        }
+        if ($actualForecastCosts['forecast'] > $baseCost) {
+            $costClass = 'warning';
+        } elseif ($actualForecastCosts['actual'] > $baseCost) {
+            $costClass = 'danger';
+        }
 
         return $this->createApiResponse([
-            'project_progress' => null,
-            'task_progress' => $em->getRepository(WorkPackage::class)->averageProgressByProjectAndFilters($project),
-            'cost_progress' => null,
+            'project_progress' => [
+                'value' => 0,
+                'class' => $class,
+            ],
+            'task_progress' => [
+                'value' => $em->getRepository(WorkPackage::class)->averageProgressByProjectAndFilters($project),
+                'class' => $class,
+            ],
+            'cost_progress' => [
+                'value' => ($actualForecastCosts['actual'] * 100) / $baseCost,
+                'class' => $costClass,
+            ],
         ]);
     }
 
@@ -1675,18 +1701,20 @@ class ProjectController extends ApiController
      */
     public function risksOpportunitiesStatsAction(Project $project)
     {
-        $riskData = $this->getDoctrine()->getRepository(Risk::class)->getStatsByProject($project);
-        $opportunityData = $this->getDoctrine()->getRepository(Opportunity::class)->getStatsByProject($project);
+        $riskRepo = $this->getDoctrine()->getRepository(Risk::class);
+        $opportunityRepo = $this->getDoctrine()->getRepository(Opportunity::class);
         $measureRepo = $this->getDoctrine()->getRepository(Measure::class);
 
         return $this->createApiResponse([
             'risks' => [
-                'risk_data' => $riskData,
+                'risk_data' => $riskRepo->getStatsByProject($project),
                 'measure_data' => $measureRepo->getStatsForRisk($project),
+                'top_risk' => $riskRepo->findTopByProject($project),
              ],
             'opportunities' => [
-                'opportunity_data' => $opportunityData,
+                'opportunity_data' => $opportunityRepo->getStatsByProject($project),
                 'measure_data' => $measureRepo->getStatsForOpportunity($project),
+                'top_opportunity' => $opportunityRepo->findTopByProject($project),
             ],
         ]);
     }
@@ -1739,6 +1767,16 @@ class ProjectController extends ApiController
                 }
             }
         }
+        $trafficLight = Project::STATUS_GREEN;
+        foreach ($dataByPhase as $phase) {
+            if (isset($phase['forecast']) && isset($phase['base']) && (float) $phase['forecast'] > (float) $phase['base']) {
+                $trafficLight = Project::STATUS_YELLOW;
+            }
+            if (isset($phase['actual']) && isset($phase['forecast']) && (float) $phase['actual'] > (float) $phase['forecast']) {
+                $trafficLight = Project::STATUS_RED;
+                break;
+            }
+        }
 
         $userDepartments = $em->getRepository(ProjectUser::class)->getUserAndDepartment($project);
         $dataByDepartment = [];
@@ -1755,6 +1793,7 @@ class ProjectController extends ApiController
 
         return $this->createApiResponse([
             'byPhase' => $dataByPhase,
+            'byPhaseTraffic' => $trafficLight,
             'byDepartment' => $dataByDepartment,
         ]);
     }
@@ -1779,6 +1818,16 @@ class ProjectController extends ApiController
                 }
             }
         }
+        $trafficLight = Project::STATUS_GREEN;
+        foreach ($dataByPhase as $phase) {
+            if (isset($phase['forecast']) && isset($phase['base']) && (float) $phase['forecast'] > (float) $phase['base']) {
+                $trafficLight = Project::STATUS_YELLOW;
+            }
+            if (isset($phase['actual']) && isset($phase['forecast']) && (float) $phase['actual'] > (float) $phase['forecast']) {
+                $trafficLight = Project::STATUS_RED;
+                break;
+            }
+        }
 
         $userDepartments = $em->getRepository(ProjectUser::class)->getUserAndDepartment($project);
         $dataByDepartment = [];
@@ -1795,6 +1844,7 @@ class ProjectController extends ApiController
 
         return $this->createApiResponse([
             'byPhase' => $dataByPhase,
+            'byPhaseTraffic' => $trafficLight,
             'byDepartment' => $dataByDepartment,
         ]);
     }
@@ -1870,14 +1920,16 @@ class ProjectController extends ApiController
     public function decisionsAction(Request $request, Project $project)
     {
         $filters = $request->query->all();
-        $decisionsRepo = $this
-            ->getDoctrine()
-            ->getManager()
-            ->getRepository(Decision::class)
-        ;
+        $em = $this->getDoctrine()->getManager();
+        $decisionsRepo = $em->getRepository(Decision::class);
 
         if (isset($filters['page'])) {
             $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+            if (isset($filters['statusReport'])) {
+                $report = $em->getRepository(StatusReport::class)->findLastByProject($project);
+                $filters['createdAt'] = $report ? $report->getCreatedAt() : null;
+            }
+
             $result = $decisionsRepo->getQueryBuilderByProjectAndFilters($project, $filters)->getQuery()->getResult();
             $responseArray['totalItems'] = $decisionsRepo->countTotalByProjectAndFilters($project, $filters);
             $responseArray['pageSize'] = $filters['pageSize'];
@@ -2025,6 +2077,115 @@ class ProjectController extends ApiController
             $this->persistAndFlush($projectDepartment);
 
             return $this->createApiResponse($projectDepartment, Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * Get all project status reports.
+     *
+     * @Route("/{id}/status-reports", name="app_api_project_status_reports", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function statusReportsAction(Request $request, Project $project)
+    {
+        $filters = $request->query->all();
+        $statusReportRepo = $this->getDoctrine()->getRepository(StatusReport::class);
+        if (isset($filters['page'])) {
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('admin.per_page');
+            $result = $statusReportRepo->getQueryBuilderByProjectAndFilters($project, $filters)->getQuery()->getResult();
+            $responseArray['totalItems'] = $statusReportRepo->countTotalByProjectAndFilters($project, $filters);
+            $responseArray['pageSize'] = $filters['pageSize'];
+            $responseArray['items'] = $result;
+
+            return $this->createApiResponse($responseArray);
+        } elseif (isset($filters['trend'])) {
+            return $this->createApiResponse([
+                'items' => $statusReportRepo->findTrendReports($project),
+            ]);
+        }
+
+        return $this->createApiResponse([
+            'items' => $statusReportRepo->findAll(),
+        ]);
+    }
+
+    /**
+     * Checks if the user is able to create a new status report.
+     *
+     * @Route("/{id}/check-status-report-availability", name="app_api_project_status_reports_availability", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function statusReportsAvailabilityAction(Project $project)
+    {
+        $statusReportRepo = $this->getDoctrine()->getRepository(StatusReport::class);
+        $statusReportConfigRepo = $this->getDoctrine()->getRepository(StatusReportConfig::class);
+        /** @var StatusReportConfig $config */
+        $config = $statusReportConfigRepo->findOneBy(['project' => $project, 'isDefault' => true]);
+
+        if ($config) {
+            $today = new \DateTime();
+            $lastReport = $statusReportRepo->findLastByProject($project);
+            $todayReports = $statusReportRepo->countTotalByProjectAndFilters($project, ['date' => $today->format('Y-m-d')]);
+            $perDay = $config->getPerDay();
+            $minutesInterval = $config->getMinutesInterval();
+            if ($perDay && $todayReports === $perDay) {
+                return $this->createApiResponse(['error' => 'message.per_day_reports_exceeded']);
+            } elseif ($minutesInterval) {
+                $lastReportCreatedAt = $lastReport->getCreatedAt();
+                $now = new \DateTime();
+                $datetime1 = strtotime($lastReportCreatedAt->format('d-m-Y H:i:s'));
+                $datetime2 = strtotime($now->format('d-m-Y H:i:s'));
+                $interval = abs($datetime2 - $datetime1);
+                $minutes = intval($interval / 60);
+                if ($minutes < $minutesInterval) {
+                    return $this->createApiResponse(['error' => 'message.minutes_under_interval']);
+                }
+            }
+        }
+
+        return $this->createApiResponse(null);
+    }
+
+    /**
+     * Create a new Status Report.
+     *
+     * @Route("/{id}/status-reports", name="app_api_project_status_reports_create", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function createStatusReportAction(Request $request, Project $project)
+    {
+        $form = $this->createForm(StatusReportCreateType::class, new StatusReport(), ['csrf_protection' => false]);
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $statusReport = $form->getData();
+            $statusReport->setProject($project);
+            $statusReport->setCreatedBy($this->getUser());
+            $this->persistAndFlush($statusReport);
+
+            return $this->createApiResponse($statusReport, Response::HTTP_CREATED);
         }
 
         $errors = $this->getFormErrors($form);

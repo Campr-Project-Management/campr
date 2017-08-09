@@ -58,6 +58,23 @@ class CostRepository extends BaseRepository
         return $qb->getQuery()->getArrayResult();
     }
 
+    public function getTotalBaseCost(Project $project)
+    {
+        $selectInternal = 'SUM(c.rate * c.quantity * c.duration) as base';
+        $selectExternal = 'SUM(c.rate * c.quantity) as base';
+
+        $qb = $this
+            ->createQueryBuilder('c')
+            ->where('c.project = :project')
+            ->setParameter('project', $project)
+        ;
+
+        $internalResult = $qb->select($selectInternal)->getQuery()->getSingleScalarResult();
+        $externalResult = $qb->select($selectExternal)->getQuery()->getSingleScalarResult();
+
+        return $internalResult + $externalResult;
+    }
+
     /**
      * @param array        $orderBy
      * @param QueryBuilder $qb
