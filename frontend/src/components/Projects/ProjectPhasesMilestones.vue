@@ -23,7 +23,7 @@
         <!-- /// End P&M Header /// --> 
 
         <!-- /// P&M Timeline /// -->
-        <vis-timeline :pmData="pmData"></vis-timeline>
+        <vis-timeline :pmData="pmData" :withPhases="true"></vis-timeline>
         <!-- /// End P&M Timeline /// -->    
 
         <!-- /// Phases Header /// -->

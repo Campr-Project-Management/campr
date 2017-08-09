@@ -192,6 +192,12 @@ class MenuBuilder
             ->addChild($this->translator->trans('title.project_work_cost_type.list', [], 'messages'), [
                 'route' => 'app_admin_project_work_cost_type_list',
             ])->getParent()
+            ->addChild($this->translator->trans('title.status_report_config.list', [], 'messages'), [
+                'route' => 'app_admin_status_report_config_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.status_report.list', [], 'messages'), [
+                'route' => 'app_admin_status_report_list',
+            ])->getParent()
         ;
 
         $menu

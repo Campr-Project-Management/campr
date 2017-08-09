@@ -55,6 +55,7 @@ import infoStatus from './modules/info-status';
 import dashboard from './modules/dashboard';
 import cost from './modules/cost';
 import module from './modules/module';
+import statusReport from './modules/status-report';
 
 Vue.use(Vuex);
 
@@ -117,6 +118,7 @@ export default new Vuex.Store({
         infoStatus,
         cost,
         module,
+        statusReport,
     },
     strict: debug,
 });
