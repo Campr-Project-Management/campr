@@ -192,7 +192,7 @@ class ColorStatusControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/color-status/2/edit');
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/color-status/4/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['create[name]'] = 'color-status2';

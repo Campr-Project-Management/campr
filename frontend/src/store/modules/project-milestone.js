@@ -59,6 +59,9 @@ const actions = {
         if (state.filters && state.filters.endDate) {
             paramObject.params.endDate = state.filters.endDate;
         }
+        if (state.filters && state.filters.isKeyMilestone) {
+            paramObject.params.isKeyMilestone = state.filters.isKeyMilestone;
+        }
 
         Vue.http
             .get(Routing.generate('app_api_project_milestones', {'id': projectId}), paramObject)

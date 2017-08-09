@@ -345,7 +345,7 @@ const routes = [
                 name: 'project-status-reports-create-status-report',
             },
             {
-                path: 'status-reports/view-status-report',
+                path: 'status-reports/view-status-report/:reportId',
                 component: StatusReportView,
                 name: 'project-status-reports-view-status-report',
             },

@@ -1,4 +1,8 @@
 message:
+    per_day_reports_exceeded: You exceeded the number of reports per day. Please check with your manager.
+    minutes_under_interval: You cannot generate another report due to time interval restriction. Please check with your manager.
+    email_report: Are you sure you want to email thie status report?
+    project_trend: Project Trend
     edit_remaining_action: Edit Remaining Action
     back_to: Back To
     project_acceptance: Project Acceptance
@@ -22,6 +26,8 @@ message:
     no_managers: There are no managers defined on this project. Please set up managers in order to asign them to this department.
     contract_frozen: Project contract is frozen
     work_package_dependency_constraint: Entry cannot be deleted because there are phases/milestones/tasks that are depending on it!
+    top_opportunity: Top Opportunity
+    top_risk: Top Risk
     week: Week
     opportunities: Opportunities
     phases_and_milestones: Phases and Milestones
@@ -420,6 +426,12 @@ title:
     account_activation: Account activation
     reset: Please enter your email address to reset the account password. An email will be sent with instructions.
     risk_and_opportunities: Risk & Opportunities
+    status_report:
+        list: Status Report
+    status_report_config:
+        list: Status Report Config
+        create: Create new status report config
+        edit: Edit status report config
     user:
         list: User
         create: Create new user
@@ -721,6 +733,8 @@ title:
     project_add_error: There where some errors while saving the project 
 
 subtitle:
+    status_report_config: List of status report configs
+    status_report: List of status reports
     decision_status: List of decision statuses
     decision_category: List of decision categories
     note_status: List of note statuses
@@ -793,6 +807,12 @@ subtitle:
     task_precedesor: Task predecesor
 
 label:
+    is_default: Is default
+    minutes_interval: Minutes Interval
+    per_day: Per Day
+    top_risk: Top Risk
+    top_opportunity: Top Opportunity
+    status_report: Status Report
     frozen: Frozen
     not_started: Not Started
     in_progress: In progress
@@ -800,6 +820,7 @@ label:
     open: Open
     closed: Closed
     freezed: Freezed
+    trend: Trend
     event: Event
     time: Time
     new_role: New Role
@@ -1170,6 +1191,7 @@ checkbox:
     unchecked: No
 
 add:
+    status_report_config: Add new status report config
     decision_status: Add new decision status
     decision_category: Add new decision category
     todo_status: Add new todo status
@@ -1350,6 +1372,11 @@ placeholder:
     todo_category: Todo Category
 
 table_header_cell:
+    per_day: Per Day
+    minutes_interval: Minutes Interval
+    is_default: Is default
+    status_report: Status Report
+    week: Week
     task_title: Task Title
     task_number: Task No.
     frozen: Frozen
@@ -1580,6 +1607,7 @@ email:
             invite: Campr - Team member invitation
         general: Subject
         new_meeting_notification: You have a new meeting notification
+        status_report: Campr Status Report
     message:
         user:
             register: To activate your account click the following
@@ -1597,6 +1625,7 @@ email:
         meeting_notification: You have been invited to a meeting. Here are the meeeting informations:
         starts_at: Starts at
         ends_at: Ends at
+        status_report: New status report
     expiration:
         user:
             activation: The activation link will expire in{0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% days
@@ -1659,6 +1688,13 @@ color_status:
     not_started: Not Started
     in_progress: In Progress
     finished: Finished
+
+todo_status:
+    initiated: Initiated
+    ongoing: Ongoing
+    finished: Finished
+    on_hold: On hold
+    discontinued: Discontinued
 
 filter:
     clear: Clear filters
