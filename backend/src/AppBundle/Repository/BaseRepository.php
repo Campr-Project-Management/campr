@@ -80,9 +80,10 @@ abstract class BaseRepository extends SortableRepository
 
     /**
      * @param ParameterBag $filters
-     * @param string $param
-     * @param int|null $default
-     * @param int|null $forceMinimum
+     * @param string       $param
+     * @param int|null     $default
+     * @param int|null     $forceMinimum
+     *
      * @return int
      */
     protected function getIntParam(ParameterBag $filters, string $param, int $default = null, int $forceMinimum = null): int
@@ -97,7 +98,7 @@ abstract class BaseRepository extends SortableRepository
     }
 
     /**
-     * @param array $orderBy
+     * @param array        $orderBy
      * @param QueryBuilder $qb
      */
     protected function setOrder(array $orderBy, QueryBuilder $qb)
