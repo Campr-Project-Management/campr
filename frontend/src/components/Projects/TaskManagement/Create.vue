@@ -376,7 +376,7 @@ export default {
 
             let internal = [];
             let external = [];
-            this.task.costs.map(function(cost) {
+            this.task.costs.map((cost) => {
                 if (cost.type === 0) {
                     internal.push(_.merge(
                         {},
@@ -394,6 +394,8 @@ export default {
                                     key: cost.resource.toString(),
                                 }
                                 : null,
+                            project: this.$route.params.id ? this.$route.params.id: null,
+                            workPackage: this.$route.params.taskId ? this.$route.params.taskId : null,
                         }
                     ));
                 } else {
@@ -405,6 +407,8 @@ export default {
                             capex: cost.expenseType === 0 ? 1 : 0,
                             opex: cost.expenseType === 1 ? 1 : 0,
                             customUnit: '',
+                            project: this.$route.params.id ? this.$route.params.id: null,
+                            workPackage: this.$route.params.taskId ? this.$route.params.taskId : null,
                         }
                     ));
                 }
