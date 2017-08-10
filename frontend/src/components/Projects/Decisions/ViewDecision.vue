@@ -43,7 +43,7 @@
                             </router-link>
                             <h1>{{ currentDecision.title }}</h1>
                             <h3 class="category"><b>{{ currentDecision.meetingName }}</b> | <b>{{ currentDecision.decisionCategoryName }}</b></h3>
-                            <h4>{{ translateText('message.created') }}: <b>{{currentDecision.date | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.due_date') }}: <b>{{currentDecision.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.status') }}: <b>{{currentDecision.statusName}}</b></h4>
+                            <h4>{{ translateText('message.created') }}: <b>{{currentDecision.date | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.due_date') }}: <b>{{currentDecision.dueDate | moment('DD.MM.YYYY') }}</b> </h4>
                             <div class="entry-responsible flex flex-v-center">
                                 <div class="user-avatar">
                                     <img :src="currentDecision.responsibilityAvatar" :alt="currentDecision.responsibilityFullName"/>

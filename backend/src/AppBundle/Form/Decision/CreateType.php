@@ -4,10 +4,8 @@ namespace AppBundle\Form\Decision;
 
 use AppBundle\Entity\Decision;
 use AppBundle\Entity\DecisionCategory;
-use AppBundle\Entity\DecisionStatus;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Project;
-use AppBundle\Entity\Status;
 use AppBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -70,12 +68,6 @@ class CreateType extends AbstractType
                 'class' => Meeting::class,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.meeting',
-                'translation_domain' => 'messages',
-            ])
-            ->add('status', EntityType::class, [
-                'class' => DecisionStatus::class,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.status',
                 'translation_domain' => 'messages',
             ])
             ->add('responsibility', EntityType::class, [
