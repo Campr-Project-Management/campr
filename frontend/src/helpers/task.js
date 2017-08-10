@@ -48,6 +48,12 @@ export const createFormData = (data) => {
                 data.externalCosts.items[i].selectedUnit || data.externalCosts.items[i].unit.id
             );
         }
+        if (data.externalCosts.items[i].project) {
+            formData.append('costs[' + i + '][project]', data.externalCosts.items[i].project);
+        }
+        if (data.externalCosts.items[i].workPackage) {
+            formData.append('costs[' + i + '][workPackage]', data.externalCosts.items[i].workPackage);
+        }
     }
     formData.append('externalActualCost', data.externalCosts.actual);
     formData.append('externalForecastCost', data.externalCosts.forecast);
@@ -60,6 +66,12 @@ export const createFormData = (data) => {
         formData.append('costs[' + costIndex + '][duration]', data.internalCosts.items[i].duration);
         formData.append('costs[' + costIndex + '][rate]', data.internalCosts.items[i].rate);
         formData.append('costs[' + costIndex + '][type]', 0);
+        if (data.internalCosts.items[i].project) {
+            formData.append('costs[' + costIndex + '][project]', data.internalCosts.items[i].project);
+        }
+        if (data.internalCosts.items[i].workPackage) {
+            formData.append('costs[' + costIndex + '][workPackage]', data.internalCosts.items[i].workPackage);
+        }
     }
     formData.append('internalActualCost', data.internalCosts.actual);
     formData.append('internalForecastCost', data.internalCosts.forecast);

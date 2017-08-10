@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Cost;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\WorkPackage;
 
@@ -9,9 +10,13 @@ class CostRepository extends BaseRepository
 {
     public function getTotalBaseCostByPhase(Project $project, $type, $userIds = [])
     {
+        $select = $type === Cost::TYPE_EXTERNAL
+            ? 'SUM(c.rate * c.quantity) as base'
+            : 'SUM(c.rate * c.quantity * c.duration) as base'
+        ;
         $qb = $this
             ->createQueryBuilder('c')
-            ->select('SUM(c.rate * c.quantity * c.duration) as base')
+            ->select($select)
             ->innerJoin('c.project', 'p')
             ->innerJoin('c.workPackage', 'wp')
             ->where('p.id = :project')
