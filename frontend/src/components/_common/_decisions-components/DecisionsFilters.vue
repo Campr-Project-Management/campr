@@ -5,7 +5,6 @@
             <member-search v-model="responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
             <dropdown v-bind:title="translateText('message.event')" v-bind:options="projectMeetingsForSelect" :selectedValue="selectedEvent"></dropdown>
             <dropdown v-bind:title="translateText('message.category')" v-bind:options="decisionCategoriesForSelect" :selectedValue="selectedCategory"></dropdown>
-            <dropdown v-bind:title="translateText('message.status')" v-bind:options="decisionStatusesForSelect" :selectedValue="selectedStatus"></dropdown>
         </div>
     </div>
 </template>
@@ -23,7 +22,7 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getDecisionStatuses', 'getDecisionCategories', 'getProjectMeetings',
+            'getDecisionCategories', 'getProjectMeetings',
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -40,13 +39,11 @@ export default {
     },
     computed: {
         ...mapGetters({
-            decisionStatusesForSelect: 'decisionStatusesForSelect',
             decisionCategoriesForSelect: 'decisionCategoriesForSelect',
             projectMeetingsForSelect: 'projectMeetingsForSelect',
         }),
     },
     created() {
-        this.getDecisionStatuses();
         this.getDecisionCategories();
         this.getProjectMeetings({projectId: this.$route.params.id});
     },

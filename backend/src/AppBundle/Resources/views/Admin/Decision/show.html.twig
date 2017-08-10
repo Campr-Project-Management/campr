@@ -64,10 +64,6 @@
                                     <td>{{ decision.responsibility.username|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'table_header_cell.status'|trans }}</th>
-                                    <td>{{ decision.status.name|default('-') }}</td>
-                                </tr>
-                                <tr>
                                     <th>{{ 'table_header_cell.show_in_status_report'|trans }}</th>
                                     <td>
                                         {% if decision.showInStatusReport %}

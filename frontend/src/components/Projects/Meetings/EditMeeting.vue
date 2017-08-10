@@ -262,13 +262,6 @@
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
-                                <select-field
-                                    v-bind:title="translateText('label.select_status')"
-                                    v-bind:options="decisionStatusesForSelect"
-                                    v-model="decision.status"
-                                    v-bind:currentOption="decision.status" />
-                            </div>
-                            <div class="col-md-6">
                                 <div class="flex flex-direction-reverse">
                                     <a @click="addDecision()" class="btn-rounded btn-auto">{{ translateText('message.add_new_decision') }}</a>
                                 </div>
@@ -499,7 +492,7 @@ export default {
     methods: {
         ...mapActions([
             'getDistributionLists', 'getMeetingCategories', 'getNoteStatuses', 'getProjectMeeting', 'createMeetingObjective', 'getTodoStatuses',
-            'getDecisionStatuses', 'createProjectMeeting', 'getMeetingAgendas', 'editProjectMeeting', 'editMeetingObjective', 'deleteMeetingObjective',
+            'createProjectMeeting', 'getMeetingAgendas', 'editProjectMeeting', 'editMeetingObjective', 'deleteMeetingObjective',
             'createMeetingAgenda', 'createMeetingDecision', 'createMeetingTodo', 'createMeetingNote', 'getMeetingParticipants',
         ]),
         translateText: function(text) {
@@ -694,7 +687,6 @@ export default {
             meetingCategoriesForSelect: 'meetingCategoriesForSelect',
             noteStatusesForSelect: 'noteStatusesForSelect',
             todoStatusesForSelect: 'todoStatusesForSelect',
-            decisionStatusesForSelect: 'decisionStatusesForSelect',
             meeting: 'meeting',
             meetingAgendas: 'meetingAgendas',
             distributionLists: 'distributionLists',
@@ -713,7 +705,6 @@ export default {
         this.getMeetingCategories();
         this.getTodoStatuses();
         this.getNoteStatuses();
-        this.getDecisionStatuses();
         this.getProjectMeeting(this.$route.params.meetingId);
         this.getMeetingAgendas({
             meetingId: this.$route.params.meetingId,
