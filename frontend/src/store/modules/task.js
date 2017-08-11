@@ -149,7 +149,7 @@ const actions = {
                 data.data
             ).then(
                 (response) => {
-                    if (response.body && response.body.error) {
+                    if (response.body && response.body.error && response.body.messages) {
                         const {messages} = response.body;
                         commit(types.SET_VALIDATION_MESSAGES, {messages});
                     } else {
