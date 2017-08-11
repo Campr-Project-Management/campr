@@ -756,6 +756,7 @@ subtitle:
 label:
     event: Event
     time: Time
+    new_role: New Role
     expiry_date: Expiry Date
     select_status: Select Status
     finish_time: Finish Time
