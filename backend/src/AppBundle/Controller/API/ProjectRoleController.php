@@ -52,9 +52,7 @@ class ProjectRoleController extends ApiController
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($form->getData());
-            $em->flush();
+            $this->persistAndFlush($form->getData());
 
             return $this->createApiResponse($form->getData(), Response::HTTP_CREATED);
         }
@@ -103,11 +101,7 @@ class ProjectRoleController extends ApiController
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
-            $projectRole->setUpdatedAt(new \DateTime());
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($projectRole);
-            $em->flush();
+            $this->persistAndFlush($projectRole);
 
             return $this->createApiResponse($projectRole, Response::HTTP_ACCEPTED);
         }
