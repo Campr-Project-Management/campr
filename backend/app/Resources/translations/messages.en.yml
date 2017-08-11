@@ -388,10 +388,10 @@ title:
         create: Create new user
         edit: Edit user
         invite: Invite user
-    status:
-        list: Status
-        create: Create new status
-        edit: Edit status
+    risk_status:
+        list: Risk Status
+        create: Create new risk status
+        edit: Edit risk status
     schedule:
         list: Schedule
         create: Create new schedule

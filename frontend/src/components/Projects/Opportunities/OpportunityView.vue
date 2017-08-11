@@ -85,7 +85,7 @@
                         <p>{{ translateText('message.priority') }}:</p>
                     </div>
                     <div class="text-left">
-                        <p><b>{{ opportunity.priority }}</b></p>
+                        <p><b v-if="priority" v-bind:class="priority.color">{{ translateText(priority.name) }}</b><b v-else>-</b></p>
                     </div>
                 </div>
             </div>
@@ -114,7 +114,7 @@
                 <div class="row ro-details">
                     <div class="col-md-12">
                         <div class="ro-info">
-                            <p>{{ translateText('message.priority') }}: <b>{{ opportunity.priority }}</b></p>
+                            <p>{{ translateText('message.priority') }}: <b v-if="priority" v-bind:class="priority.color">{{ translateText(priority.name) }}</b><b v-else>-</b></p>
                             <p>{{ translateText('message.strategy') }}: <b>{{ opportunity.opportunityStrategyName }}</b></p>
                             <p>{{ translateText('message.status') }}: <b>{{ opportunity.opportunityStatusName }}</b></p>
                         </div>
@@ -160,7 +160,7 @@
                 <hr class="double">
 
                 <!-- /// Descripton /// -->
-                <p>{{ opportunity.description }}</p>
+                <p v-html="opportunity.description"></p>
                 <!-- /// End Description /// -->
 
                 <hr class="double">
@@ -168,12 +168,13 @@
                 <!-- ///  Impact /// -->
                 <div class="range-slider-wrapper">
                     <range-slider
-                    v-bind:title="translateText('message.impact')"
-                    min="0"
-                    max="100"
-                    minSuffix=" %"
-                    type="single"
-                    v-bind:value="transformToString(opportunity.impact)" />
+                        :disabled="true"
+                        v-bind:title="translateText('message.impact')"
+                        min="0"
+                        max="100"
+                        minSuffix=" %"
+                        type="single"
+                        v-bind:value="transformToString(opportunity.impact)" />
                     <div class="slider-indicator" v-if="risksOpportunitiesStats.opportunities">
                         <indicator-icon fill="middle-fill" :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact" :title="translateText('message.average_impact_opportunity')"></indicator-icon>
                     </div>
@@ -183,12 +184,13 @@
                 <!-- /// Probability /// -->
                 <div class="range-slider-wrapper">
                     <range-slider
-                    v-bind:title="translateText('message.probability')"
-                    min="0"
-                    max="100"
-                    minSuffix=" %"
-                    type="single"
-                    v-bind:value="transformToString(opportunity.probability)" />
+                        :disabled="true"
+                        v-bind:title="translateText('message.probability')"
+                        min="0"
+                        max="100"
+                        minSuffix=" %"
+                        type="single"
+                        v-bind:value="transformToString(opportunity.probability)" />
                     <div class="slider-indicator" v-if="risksOpportunitiesStats.opportunities">
                         <indicator-icon fill="middle-fill" :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability" :title="translateText('message.average_probability_opportunity')"></indicator-icon>
                     </div>
@@ -220,7 +222,7 @@
                         <div class="comment-body">
                             <b class="title">{{ measure.title }}</b>
                             <p class="cost">{{ translateText('message.cost') }}: <b>$ {{ measure.cost }}</b></p>
-                            <p>{{ measure.description }}</p>
+                            <p v-html="measure.description"></p>
                         </div>  
                         <div class="comment-footer" v-if="measure.medias.length > 0">
                             <attach-icon fill="second-fill"></attach-icon>
@@ -243,7 +245,7 @@
                                     </div>
                                 </div>
                                 <div class="comment-body">
-                                    <p>{{ comment.description }}</p>
+                                    <p v-html="comment.description"></p>
                                 </div>
                                 <div class="comment-footer" v-if="comment.medias.length > 0">
                                     <attach-icon fill="second-fill"></attach-icon>
@@ -466,6 +468,18 @@ export default {
 
             this.activeItem = this.gridData[index];
             this.activeItem.isActive = true;
+            this.setPriority(this.gridData[index].type);
+        },
+        setPriority: function(type) {
+            const priorityNames = {
+                'very-low': {name: 'message.very_high', color: 'ro-very-low-priority', value: 0},
+                'low': {name: 'message.high', color: 'ro-low-priority', value: 1},
+                'medium': {name: 'message.medium', color: 'ro-medium-priority', value: 2},
+                'high': {name: 'message.low', color: 'ro-high-priority', value: 3},
+                'very-high': {name: 'message.very_low', color: 'ro-very-high-priority', value: 4},
+            };
+
+            this.priority = priorityNames[type];
         },
     },
     computed: {
@@ -500,10 +514,10 @@ export default {
             showDeleteModal: false,
             showEditMeasureModal: false,
             gridData: [
-                {type: 'medium'}, {type: 'high'}, {type: 'very-high'}, {type: 'very-high'},
-                {type: 'low'}, {type: 'medium'}, {type: 'high'}, {type: 'very-high'},
-                {type: 'very-low'}, {type: 'low'}, {type: 'medium'}, {type: 'high'},
-                {type: 'very-low'}, {type: 'very-low'}, {type: 'low'}, {type: 'medium'},
+                {type: 'medium'}, {type: 'low'}, {type: 'very-low'}, {type: 'very-low'},
+                {type: 'high'}, {type: 'medium'}, {type: 'low'}, {type: 'very-low'},
+                {type: 'very-high'}, {type: 'high'}, {type: 'medium'}, {type: 'low'},
+                {type: 'very-high'}, {type: 'very-high'}, {type: 'high'}, {type: 'medium'},
             ],
             editMeasureValidationMessages: {},
             measureCommentValidationMessages: {},
@@ -559,4 +573,22 @@ export default {
     @import '../../../css/_variables';
     @import '../../../css/_mixins';  
     @import '../../../css/risks-and-opportunities/view';
+
+    .ro-summary {
+        .ro-very-high-priority {
+            color: $dangerDarkColor;
+        }
+        .ro-high-priority {
+            color: $dangerColor;
+        }
+        .ro-medium-priority {
+            color: $warningColor;
+        }
+        .ro-low-priority {
+            color: $secondColor;
+        }
+        .ro-very-low-priority {
+            color: $secondDarkColor;
+        }
+    }
 </style>

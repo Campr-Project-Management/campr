@@ -331,6 +331,10 @@ class MenuBuilder
             ->addChild($this->translator->trans('title.risk_strategy.list', [], 'messages'), [
                 'route' => 'app_admin_risk_strategy_list',
             ])->getParent()
+            ->addChild($this->translator->trans('title.risk_status.list', [], 'messages'), [
+                'route' => 'app_admin_status_list',
+            ])
+            ->getParent()
             ->addChild($this->translator->trans('title.opportunity.list', [], 'messages'), [
                 'route' => 'app_admin_opportunity_list',
             ])->getParent()
@@ -346,12 +350,6 @@ class MenuBuilder
         ;
 
         $menu
-            ->addChild($this->translator->trans('title.status.list', [], 'messages'), [
-                'route' => 'app_admin_status_list',
-            ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-power-input')
-            ->getParent()
             ->addChild($this->translator->trans('title.communication.list', [], 'messages'), [
                 'route' => 'app_admin_communication_list',
             ])
