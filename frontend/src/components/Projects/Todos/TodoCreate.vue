@@ -9,7 +9,10 @@
                             <i class="fa fa-angle-left"></i>
                             {{ translateText('message.back_to_todos') }}
                         </router-link>
-                        <h1>{{ translateText('message.create_new_todo') }}</h1>
+                        <h1>
+                            <span v-if="isEdit">{{ translateText('message.edit_todo') }}</span>
+                            <span v-if="!isEdit">{{ translateText('message.create_new_todo') }}</span>
+                        </h1>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
@@ -53,7 +56,11 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <member-search v-model="responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                                <div class="input-holder right">
+                                    <label class="active">{{ translateText('label.date') }}</label>
+                                    <datepicker v-model="date" format="dd-MM-yyyy" />
+                                    <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
@@ -67,6 +74,9 @@
 
                     <div class="row">
                         <div class="form-group last-form-group">
+                            <div class="col-md-6">
+                                <member-search v-bind:selectedUser="responsibilityFullName" v-model="responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                            </div>
                             <div class="col-md-6">
                                 <select-field
                                     v-bind:title="translateText('label.select_status')"
@@ -130,6 +140,7 @@ export default {
                     title: this.title,
                     responsibility: (this.responsibility && this.responsibility.length > 0) ? this.responsibility[0] : null,
                     dueDate: moment(this.dueDate).format('DD-MM-YYYY'),
+                    date: moment(this.date).format('DD-MM-YYYY'),
                     description: this.$refs.description.getContent(),
                     status: this.todoStatus ? this.todoStatus.key : null,
                     todoCategory: this.todoCategory ? this.todoCategory.key : null,
@@ -143,6 +154,7 @@ export default {
                 title: this.title,
                 responsibility: (this.responsibility && this.responsibility.length > 0) ? this.responsibility[0] : null,
                 dueDate: moment(this.dueDate).format('DD-MM-YYYY'),
+                date: moment(this.date).format('DD-MM-YYYY'),
                 description: this.$refs.description.getContent(),
                 status: this.todoStatus.key,
                 todoCategory: this.todoCategory.key,
@@ -171,7 +183,9 @@ export default {
             this.title = this.todo.title;
             this.$refs.description.setContent(this.todo.description);
             this.dueDate = this.todo.dueDate;
+            this.date = this.todo.date;
             this.responsibility = this.todo.responsibility;
+            this.responsibilityFullName = this.todo.responsibilityFullName;
             this.todoCategory = {key: this.todo.todoCategory, label: this.todo.todoCategoryName};
         },
     },
@@ -181,7 +195,9 @@ export default {
             todoStatus: {},
             title: '',
             dueDate: new Date(),
+            date: new Date(),
             responsibility: [],
+            responsibilityFullName: '',
             todoCategory: null,
         };
     },

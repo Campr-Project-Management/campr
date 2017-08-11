@@ -13,6 +13,7 @@
                    @input="update"/>
             <label :class="{ 'active': placeholder }">{{ placeholder }}</label>
         </div>
+        <i class="member-search-clear-button" @click="clearValue">×</i>
         <div class="results team" v-show="hasItems">
             <vue-scrollbar class="scroll-list">
                 <div class="members">
@@ -97,9 +98,14 @@ export default {
             this.$emit('input', this.selectedUsers);
             const items = this.items;
             this.reset();
-            if (this.singleSelect) {
+            if (this.singleSelect && items.length > 0) {
                 this.query = items.filter((item) => item.checked)[0].userFullName;
             }
+        },
+        clearValue() {
+            this.query = '';
+            this.items = [];
+            this.updateSelected();
         },
     },
     data() {
@@ -240,6 +246,14 @@ export default {
                     color: $secondDarkColor;
                 }
             }
+        }
+        .member-search-clear-button {
+            position: absolute;
+            right: 0;
+            top: -14px;
+            color: $dangerColor;
+            cursor: pointer;
+            font-style: normal;
         }
     }
 
