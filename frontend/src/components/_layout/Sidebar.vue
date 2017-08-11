@@ -200,7 +200,7 @@ export default {
         if (!this.$store.state.project.projects || this.$store.state.project.projects.length == 0) {
             this.getProjects();
         }
-        if (Object.keys(this.$route.params).length === 0) {
+        if (this.tasksCount === 0) {
             this.getTasks(1);
         }
     },
