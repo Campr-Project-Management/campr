@@ -183,7 +183,32 @@ const actions = {
                 (response) => {}
             );
     },
-
+    /**
+     * Patch an existing task
+     * @param {function} commit
+     * @param {array} data
+     * @return {Object}
+     * @todo change this to a more suitable version
+     */
+    patchTask({commit}, data) {
+        return Vue.http
+            .patch(
+                Routing.generate('app_api_workpackage_edit', {'id': data.taskId}),
+                data.data
+            ).then(
+                (response) => {
+                    if (response.body && response.body.error) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        const task = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                        commit(types.SET_TASK, {task});
+                    }
+                },
+                (response) => {}
+            );
+    },
     getUsers({commit}) {
         Vue.http
             .post(
@@ -267,7 +292,7 @@ const actions = {
     addTaskComment({commit}, data) {
         Vue.http
             .post(Routing.generate('app_api_workpackage_comments_create', {'id': data.task.id}), JSON.stringify(data.payload)).then((response) => {
-                if (response.status === 201) {
+                if (response.status === 200) {
                     Vue.http
                         .get(Routing.generate('app_api_workpackage_history', {'id': data.task.id})).then((response) => {
                             if (response.status === 200) {
@@ -351,6 +376,31 @@ const mutations = {
         if (decrementNeeded) {
             state.tasksCount--;
         }
+    },
+    /**
+     * Add new cost for task
+     * @param {Object} state
+     * @param {Object} cost
+     */
+    [types.ADD_TASK_COST](state, cost) {
+        state.currentTask.costs.push(cost);
+    },
+    /**
+     * Removes a cost of a task
+     * @param {Object} state
+     * @param {Object} costId
+     */
+    [types.REMOVE_TASK_COST](state, costId) {
+        state.currentTask.costs = state.currentTask.costs.filter((item) => {
+            return item.id !== costId ? true : false;
+        });
+    },
+    /**
+     * Updates cost for task
+     * @param {Object} state
+     * @param {Object} cost
+     */
+    [types.SET_TASK_COST](state, cost) {
     },
 };
 

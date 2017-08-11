@@ -257,6 +257,15 @@ class Log
 
     /**
      * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userUsername")
+     */
+    public function getUserUsername()
+    {
+        return $this->user->getUsername();
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("userEmail")
      */
     public function getUserEmail()
@@ -290,14 +299,14 @@ class Log
     {
         $newValueObj = $this->getNewValue();
 
-        return isset($newValueObj['comments']);
+        return isset($newValueObj['comment']);
     }
 
     /**
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("isResponsabilityAdded")
+     * @Serializer\SerializedName("isResponsibilityAdded")
      */
-    public function isResponsabilityAdded()
+    public function isResponsibilityAdded()
     {
         $newValueObj = $this->getNewValue();
 
@@ -313,5 +322,20 @@ class Log
         $newValueObj = $this->getNewValue();
 
         return isset($newValueObj['label']);
+    }
+
+    /**
+     * Returns true if there is a field that was
+     * edited other than 'updatedAt'.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("isFieldEdited")
+     */
+    public function isFieldEdited()
+    {
+        $newValueObj = $this->getNewValue();
+        unset($newValueObj['updatedAt']);
+
+        return count($newValueObj) > 0;
     }
 }

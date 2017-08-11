@@ -25,29 +25,23 @@
             </div>
         </modal>
         <!-- /// End Edit Status Modal /// -->
-
-        <!-- /// Edit Schedule Modal /// -->
-        <modal v-if="showEditScheduleModal" @close="showEditScheduleModal = false">
-            <p class="modal-title">{{ translateText('title.schedule.edit') }}</p>
-            <schedule v-model="editableData.schedule" v-bind:editSchedule="editableData.schedule" />
-            <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditScheduleModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="changeSchedule()" class="btn-rounded">{{ translateText('button.edit_schedule') }} +</a>
-            </div>
-        </modal>
-        <!-- /// End Edit Schedule Modal /// -->
-        
-        <!-- /// Add internal costs Modal /// -->
-        <modal v-if="showAddInternalCostsModal" @close="showAddInternalCostsModal = false">
-            <internal-costs v-on:input="addInternalCosts" />
-        </modal>
-        <!-- /// End Add internal Cost Modal /// -->
-        
-        <!-- /// Add external costs Modal /// -->
-        <modal v-if="showAddExternalCostsModal" @close="showAddExternalCostsModal = false">
-            <external-costs v-on:input="addExternalCosts" />
-        </modal>
-        <!-- /// End Add external Cost Modal /// -->
+        <task-modals
+            v-bind:editExternalCostModal="showEditExternalCostModal"
+            v-bind:deleteExternalCostModal="showDeleteExternalCostModal"
+            v-bind:editExternalForecastCostModal="showEditExternalForecastCostModal"
+            v-bind:editExternalActualCostModal="showEditExternalActualCostModal"
+            v-bind:externalCostObj="editExternalCostObj"
+            v-bind:editInternalCostModal="showEditInternalCostModal"
+            v-bind:deleteInternalCostModal="showDeleteInternalCostModal"
+            v-bind:editInternalForecastCostModal="showEditInternalForecastCostModal"
+            v-bind:editInternalActualCostModal="showEditInternalActualCostModal"
+            v-bind:internalCostObj="editInternalCostObj"
+            v-bind:editScheduleModal="showEditScheduleModal"
+            v-bind:scheduleObj="editScheduleObj"
+            v-bind:taskObj="task"
+            v-bind:closeTaskModal="showCloseTaskModal"
+            v-bind:openTaskModal="showOpenTaskModal"
+            v-on:input="setModals" />
 
         <div class="row">
             <div class="col-md-6">
@@ -62,8 +56,8 @@
                         <h1>{{ task.name }}</h1>
                     </div>
 
-                    <div v-if="task.label" class="task-label" :style="'background-color:' + task.labelColor">
-                        {{ task.labelName }}
+                    <div v-if="editableData.label" class="task-label" :style="'background-color:' + editableData.label.color">
+                        {{ editableData.label.label }}
                     </div>
                 </div>
                 <!-- /// End Task Title and Label /// -->
@@ -72,7 +66,7 @@
                 <div class="task-status flex flex-v-center">
                     <div>
                         <span class="small">{{ translateText('table_header_cell.status') }}:</span>
-                        <div class="task-status-box">{{ translateText(task.workPackageStatusName)}}</div>
+                        <div class="task-status-box">{{ editableData.workPackageStatus.label }}</div>
                         <a @click="initChangeStatusModal()" class="simple-link small">{{ translateText('message.edit') }}</a>
                     </div>
                     <div>
@@ -136,73 +130,96 @@
                     <div v-for="item in taskHistory">
 
                         <!-- /// Task assignement /// -->
-                        <div v-if="item.isResponsabilityAdded" class="comment">
-                            <div class="comment-header">
-                                <div class="user-avatar">
-                                    <img :src="item.userGravatar" :alt="item.userFullName"/>
-                                    <b>{{item.userFullName}}</b>
-                                </div>
-                                <a href="#link-to-member-page" class="simple-link">{{ item.userEmail }}</a>
+                        <div v-if="item.isResponsibilityAdded">
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <div class="user-avatar">
+                                        <img :src="item.userGravatar" :alt="item.userFullName"/>
+                                        <b>{{item.userFullName}}</b>
+                                    </div>
+                                    <router-link
+                                        :to="{name: 'project-organization-view-member', params: {userId: item.userId} }"
+                                        class="simple-link">
+                                        @{{ item.userUsername }}
+                                    </router-link>
                                     {{ translateText('message.assigned_to') }}
-                                <a href="#link-to-member-page" class="simple-link">@sandy.fc</a>
-                                {{ getHumanTimeDiff(item.createdAt) }}
+                                     <router-link
+                                        :to="{name: 'project-organization-view-member', params: {userId: item.newValue.responsibility[1]} }"
+                                        class="simple-link">
+                                        @{{getResponsibityUsername(item.newValue.responsibility[1])}}
+                                    </router-link>
+                                    {{ getHumanTimeDiff(item.createdAt) }}
+                                </div>
                             </div>
+                            <hr class="double">
                         </div>
                         <!-- /// End Task Assignement /// -->
 
                         <!-- /// Task Comment /// -->
-                        <div v-else-if="item.isCommentAdded" class="comment">
-                            <div class="comment-header">
-                                <div class="user-avatar">
-                                    <img :src="item.userGravatar" :alt="item.userFullName"/>
-                                    <b>{{item.userFullName}}</b>
+                        <div v-else-if="item.isCommentAdded">
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <div class="user-avatar">
+                                        <img :src="item.userGravatar" :alt="item.userFullName"/>
+                                        <b>{{item.userFullName}}</b>
+                                    </div>
+                                    <router-link
+                                        :to="{name: 'project-organization-view-member', params: {userId: item.userId} }"
+                                        class="simple-link">
+                                        @{{ item.userUsername }}
+                                    </router-link>
+                                    {{ translateText('message.has_commented_task') }} {{ getHumanTimeDiff(item.createdAt) }}
                                 </div>
-                                <a href="#link-to-member-page" class="simple-link">{{ item.userEmail }}</a>
-                                {{ translateText('message.has_commented_task') }} {{ getHumanTimeDiff(item.createdAt) }} | edited 4 hours ago
-                                <button data-target="#comment-1-edit" class="simple-link edit-comment" data-toggle="modal" type="button">edit</button>
+                                <div class="comment-body">
+                                    {{ item.newValue.comment}}
+                                </div>     
                             </div>
-                            <div class="comment-body">
-                                <p>Morbi lectus massa, sollicitudin quis luctus non, pulvinar sed nibh. Suspendisse id dui a sem tempus pretium. Nunc a ornare lacus. Fusce eleifend enim id euismod scelerisque. Maecenas eu consequat ligula, id mollis mauris. Mauris ac mauris sed lorem vulputate bibendum id ut orci. Maecenas lacinia eget ipsum vitae tincidunt.</p>
-                                <ul>
-                                    <li>Morbi at diam congue ante auctor tincidunt</li>
-                                    <li>Pellentesque arcu odio</li>
-                                    <li>Fusce malesuada magna et tincidunt vulputate</li>
-                                </ul>
-                            </div>
-                        </div>
+                            <hr class="double">
+                        </div>    
                         <!-- /// End Task Comment /// -->
 
                         <!-- /// Task Label added /// -->
-                        <div v-else-if="item.isLabelAdded" class="comment">
-                            <div class="comment-header">
-                                <div class="user-avatar">
-                                    <img :src="item.userGravatar" :alt="item.userFullName"/>
-                                    <b>{{item.userFullName}}</b>
+                        <div v-else-if="item.isLabelAdded">
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <div class="user-avatar">
+                                        <img :src="item.userGravatar" :alt="item.userFullName"/>
+                                        <b>{{item.userFullName}}</b>
+                                    </div>
+                                    <router-link
+                                        :to="{name: 'project-organization-view-member', params: {userId: item.userId} }"
+                                        class="simple-link">
+                                        @{{ item.userUsername }}
+                                    </router-link>
+                                    <div class="task-label" :style="'background-color:#e04fcc'">
+                                        High Priority
+                                    </div>
+                                    {{ getHumanTimeDiff(item.createdAt) }}
                                 </div>
-                                <a href="#link-to-member-page" class="simple-link">{{ item.userEmail }}</a>
-                                added
-                                <div class="task-label" :style="'background-color:#e04fcc'">
-                                    High Priority
-                                </div>
-                                {{ getHumanTimeDiff(item.createdAt) }}
                             </div>
+                            <hr class="double">
                         </div>
                         <!-- /// End Task Label Added /// -->
 
                         <!-- /// Task Edited /// -->
-                        <div v-else class="comment">
-                            <div class="comment-header">
-                                <div class="user-avatar">
-                                    <img :src="item.userGravatar" :alt="item.userFullName"/>
-                                    <b>{{item.userFullName}}</b>
+                        <div v-else-if="item.isFieldEdited" >
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <div class="user-avatar">
+                                        <img :src="item.userGravatar" :alt="item.userFullName"/>
+                                        <b>{{item.userFullName}}</b>
+                                    </div>
+                                    <router-link
+                                        :to="{name: 'project-organization-view-member', params: {userId: item.userId} }"
+                                        class="simple-link">
+                                        @{{ item.userUsername }}
+                                    </router-link>
+                                    {{ translateText('message.has_edited_task') }} {{ getHumanTimeDiff(item.createdAt) }}
                                 </div>
-                                <a href="#link-to-member-page" class="simple-link">{{ item.userEmail }}</a>
-                                {{ translateText('message.has_edited_task') }} {{ getHumanTimeDiff(item.createdAt) }}
                             </div>
+                            <hr class="double">
                         </div>
                         <!-- /// End Task Edited /// -->
-
-                        <hr class="double">
                     </div>
                 </div>    
                 <!-- /// End Task History /// -->
@@ -229,24 +246,28 @@
             <div class="col-md-6">
                 <!-- /// Header Buttons /// -->
                 <div class="header-buttons">
-                    <router-link
-                        to=""
+                    <button
+                        @click="initOpenTaskModal"
+                        data-toggle="modal"
                         v-if="isClosed"
-                        class="btn-rounded btn-auto second-bg">
+                        class="btn-rounded btn-auto danger-bg"
+                        type="button">
                         {{ translateText('button.start_task') }}
-                    </router-link>
+                    </button>
                     <router-link
                         :to="{name: 'project-task-management-edit', params: {id: task.project, taskId: task.id}}"
                         class="btn-rounded btn-auto">
                         {{ translateText('message.edit_task') }}
                     </router-link>
                     <!-- If task has not yet started, don't show the Close button and vice-versa -->
-                    <router-link
-                        to=""
-                        v-if="isStarted"
-                        class="btn-rounded btn-auto danger-bg">
-                            {{ translateText('message.close_task') }}
-                    </router-link>
+                    <button
+                        @click="initCloseTaskModal"
+                        data-toggle="modal"
+                        v-if="!isClosed"
+                        class="btn-rounded btn-auto danger-bg"
+                        type="button">
+                        {{ translateText('message.close_task') }}
+                    </button>
                     <router-link
                         :to="{name: 'project-task-management-create'}"
                         class="btn-rounded btn-auto second-bg">
@@ -387,10 +408,10 @@
                                     <td>{{item.duration}}</td>
                                     <td><b><i class="fa fa-dollar"></i> {{item.total}}</b></td>
                                     <td>
-                                        <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
+                                        <button @click="initEditInternalCostModal(item)" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                         <button 
                                             data-target="#logistics-delete-modal" 
-                                            @click="removeInternalCost(index)"     
+                                            @click="initDeleteInternalCostModal(item)"     
                                             data-toggle="modal"
                                             type="button"
                                             class="btn-icon">
@@ -407,14 +428,14 @@
                                     <td colspan="4" class="text-right"><b>{{ translateText('label.forecast_total') }}</b></td>
                                     <td><b><i class="fa fa-dollar"></i> {{task.internalForecastCost}}</b></td>
                                     <td>
-                                        <button data-target="#internal-costs-forecast-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
+                                        <button @click="initEditInternalForecastCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="4" class="text-right"><b>{{ translateText('label.actual_total') }}</b></td>
                                     <td><b><i class="fa fa-dollar"></i> {{task.internalActualCost}}</b></td>
                                     <td>
-                                        <button data-target="#internal-costs-actual-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
+                                        <button @click="initEditInternalActualCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -428,7 +449,7 @@
                             data-toggle="modal"
                             class="btn-rounded btn-md btn-empty btn-auto"
                             type="button">
-                            Add Internal Cost +
+                            {{ translateText('message.add_internal_costs') }} +
                         </button>
                     </div>
                     <!-- /// Task Internal Costs /// -->
@@ -454,16 +475,16 @@
                                 <tr v-for="(cost, index) in editableData.externalCosts">
                                     <td>{{cost.name}}</td>
                                     <td>{{cost.quantity}}</td>
-                                    <td>{{cost.selectedUnit}}</td>
+                                    <td>{{cost.unit}}</td>
                                     <td><i class="fa fa-dollar"></i> {{cost.rate}}</td>
-                                    <td><switches v-model="cost.expenseType" v-bind:selected="cost.expenseType"></switches></td>
+                                    <td><switches @click.native="updateCostType(cost)" v-model="cost.expenseType" v-bind:selected="cost.capex === 1"></switches></td>
                                     <td><b><b><i class="fa fa-dollar"></i> {{itemTotal(cost)}}</b></b></td>
                                     <td>
-                                        <button data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill" ></edit-icon></button>
+                                        <button @click="initEditExternalCostModal(cost)" data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill" ></edit-icon></button>
                                         <button 
                                             data-target="#logistics-delete-modal"
                                             data-toggle="modal"
-                                            @click="removeExternalCost(index)"
+                                            @click="initDeleteExternalCostModal(cost)"
                                             type="button" 
                                             class="btn-icon">
                                             <delete-icon fill="danger-fill"></delete-icon>
@@ -486,14 +507,14 @@
                                     <td colspan="5" class="text-right"><b>{{ translateText('label.forecast_total') }}</b></td>
                                     <td><b><i class="fa fa-dollar"></i> {{task.externalForecastCost}}</b></td>
                                     <td>
-                                        <button data-target="#internal-costs-forecast-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
+                                        <button @click="initEditExternalForecastCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
                                 </tr>
                                 <tr class="column-alert">
                                     <td colspan="5" class="text-right"><b>{{ translateText('label.actual_total') }}</b></td>
                                     <td><b><i class="fa fa-dollar"></i> {{task.externalActualCost}}</b></td>
                                     <td>
-                                        <button data-target="#internal-costs-actual-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
+                                        <button data-toggle="modal" @click="initEditExternalActualCostModal()" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -503,14 +524,13 @@
                         <div></div>
                         <button
                             @click="initAddExternalCostModal()"
-                            data-target="#external-costs-add-modal"
                             data-toggle="modal"
                             class="btn-rounded btn-md btn-empty btn-auto"
                             type="button">
-                            Add External Cost +
+                            {{ translateText('button.add_external_cost') }} +
                         </button>
                     </div>
-                    <!-- /// Task Internal Costs /// -->
+                    <!-- /// Task External Costs /// -->
 
                     <hr class="double">
 
@@ -518,20 +538,25 @@
                     <h3>{{ translateText('message.asignee')}}</h3>
                     <div class="row">
                         <div class="col-md-8">
-                            <div class="user-avatar flex flex-v-center">
-                                <div><img :src="task.responsibilityAvatar" :alt="task.responsibilityFullName"/></div>
+                            <div class="user-avatar flex flex-v-center" v-if="editableData.assignee">
+                                <div><img :src="editableData.assignee.avatar" :alt="task.responsibilityFullName"/></div>
                                 <div>
-                                    <b>{{task.responsibilityFullName}}</b><br/>
-                                    <a href="#path-to-member-page" class="simple-link">{{task.responsibilityEmail}}</a>
+                                    <b> {{editableData.assignee.label}}</b><br/>
+                                    <router-link
+                                        :to="{name: 'project-organization-view-member', params: {userId: editableData.assignee.key} }"
+                                        class="simple-link">
+                                        {{ editableData.assignee.email }}
+                                    </router-link>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <select-field
-                                v-bind:title="'Change Assignee'"
+                                v-bind:title="translateText('message.change_assignee')"
                                 v-bind:options="assigneesForSelect"
                                 v-model="editableData.assignee"
-                                v-bind:currentOption="editableData.assignee" />
+                                v-bind:currentOption="editableData.assignee"
+                                v-on:input="updateAssignee" />
                         </div>
                     </div>
                     <!-- /// End Task Assignee /// -->
@@ -548,17 +573,19 @@
                                 max="100"
                                 minSuffix=" %"
                                 type="single"
-                                v-bind:value="transformToString(task.progress)" />
+                                v-bind:value="transformToString(task.progress)" 
+                                v-bind:disabled="true" />
                         </div>
                          <div class="col-md-8">
-                            <h4>{{translateText(task.workPackageStatusName)}}</h4>
+                            <h4>{{editableData.workPackageStatus.label}}</h4>
                         </div>
                         <div class="col-md-4">
                             <select-field
                                 v-bind:title="translateText('message.change_status')"
                                 v-bind:options="workPackageStatusesForSelect"
                                 v-model="editableData.workPackageStatus"
-                                v-bind:currentOption="editableData.workPackageStatus" />
+                                v-bind:currentOption="editableData.workPackageStatus" 
+                                v-on:input="changeStatus" />
                         </div>
                     </div>
                     <!-- /// End Task Completion /// -->
@@ -566,7 +593,7 @@
                     <hr class="double">
                     
                     <!-- /// Task Condition /// -->
-                    <condition v-model="editableData.colorStatus" v-bind:selectedStatusColor="editableData.colorStatus" />
+                    <condition v-model="editableData.colorStatus" v-bind:selectedStatusColor="editableData.colorStatus" v-on:input="updateColorStatus"/>
 
                     <!-- /// End Task Condition /// -->
 
@@ -587,7 +614,7 @@
                                     <div class="task-label" :style="'background-color:' + editableData.label.color">
                                         {{editableData.label.label}}
                                     </div>
-                                    <button class="btn-icon btn-remove" type="button">
+                                    <button class="btn-icon btn-remove" type="button" @click="removeLabel">
                                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10">
                                             <path d="M9.9,9.3L5.6,5l4.3-4.3c0.2-0.2,0.2-0.4,0-0.6C9.7,0,9.5,0,9.3,0.1L5,4.4L0.7,0.1C0.5,0,0.3,0,0.1,0.1
                                             C0,0.3,0,0.5,0.1,0.7L4.4,5L0.1,9.3C0,9.5,0,9.7,0.1,9.9c0.2,0.2,0.4,0.2,0.6,0L5,5.6l4.3,4.3c0.2,0.2,0.4,0.2,0.6,0
@@ -602,35 +629,11 @@
                                 v-bind:title="'Add Label'"
                                 v-bind:options="labelsForSelect"
                                 v-model="editableData.label"
-                                v-bind:currentOption="editableData.label" />
+                                v-bind:currentOption="editableData.label"
+                                v-on:input="updateLabel" />
                         </div>
                     </div>
                     <!-- /// End Labels /// -->
-
-                    <hr class="double">
-
-                    <!-- /// Participants /// -->
-                    <h3>Participants</h3>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="flex flex-v-center">
-                                <div class="user-avatar" v-tooltip.bottom-center="task.responsibilityFullName">
-                                    <img :src="task.responsibilityAvatar" :alt="task.responsibilityFullName"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <select-field v-bind:title="'Invite Members'"></select-field>
-                        </div>
-                    </div>
-                    <!-- /// End Participants /// -->
-
-                    <hr class="double">
-
-                    <div class="footer-buttons">
-                        <a href="javascript:void(0)" @click="saveChangedData" class="btn-rounded btn-auto second-bg">Save Changes</a>
-                        <a href="javascript:void(0)" class="btn-rounded btn-auto btn-empty">Export Task</a>
-                    </div>
                 </div>
                 <!-- /// End Task Sidebar /// -->
             </div>
@@ -643,9 +646,7 @@ import {mapGetters, mapActions} from 'vuex';
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import AttachIcon from '../../_common/_icons/AttachIcon';
-import Schedule from './Create/Schedule';
-import InternalCosts from './View/InternalCosts';
-import ExternalCosts from './View/ExternalCosts';
+import TaskModals from './View/TaskModals';
 import Attachments from './Create/Attachments';
 import Switches from '../../3rdparty/vue-switches';
 import VueScrollbar from 'vue2-scrollbar';
@@ -661,9 +662,7 @@ export default {
         EditIcon,
         DeleteIcon,
         AttachIcon,
-        Schedule,
-        InternalCosts,
-        ExternalCosts,
+        TaskModals,
         Attachments,
         Switches,
         VueScrollbar,
@@ -690,15 +689,14 @@ export default {
             taskHistory: 'taskHistory',
             colorStatuses: 'colorStatuses',
             colorStatusesForSelect: 'colorStatusesForSelect',
-            assigneesForSelect: 'projectUsersForSelect',
+            assigneesForSelect: 'projectUsersForSelectOnViewTask',
             workPackageStatusesForSelect: 'workPackageStatusesForSelect',
             labelsForSelect: 'labelsForChoice',
+            projectUsers: 'projectUsers',
+            currentUser: 'user',
         }),
         isClosed: function() {
             return this.task.workPackageStatus === 5;
-        },
-        isStarted: function() {
-            this.task.workPackageStatus === 3;
         },
         internalBaseTotal: function() {
             return this.editableData.internalCosts.reduce((prev, next) => {
@@ -764,10 +762,14 @@ export default {
             };
 
             this.editableData.assignee = this.task.responsibility
-                ? {key: this.task.responsibility, label: this.task.responsibilityFullName}
+                ? {
+                    key: this.task.responsibility,
+                    label: this.task.responsibilityFullName,
+                    avatar: this.task.responsibilityAvatar,
+                    email: this.task.responsibilityEmail,
+                }
                 : null
             ;
-
             this.editableData.label = this.task.label
                 ? {key: this.task.label, label: this.task.labelName, color: this.task.labelColor}
                 : null
@@ -778,9 +780,11 @@ export default {
             let internal = [];
             let external = [];
             let itemTotal = this.itemTotal;
+
             this.task.costs.map(function(cost) {
                 if (cost.type === 0) {
                     internal.push({
+                        id: cost.id,
                         resourceName: cost.resourceName,
                         resource: cost.resource,
                         rate: cost.rate,
@@ -790,12 +794,14 @@ export default {
                     });
                 } else {
                     external.push({
+                        id: cost.id,
                         rate: cost.rate,
                         name: cost.name,
                         quantity: cost.quantity,
                         selectedUnit: cost.unit && cost.unit.id ? cost.unit.id.toString() : null,
-                        capex: cost.expenseType === 0 ? 1 : 0,
-                        opex: cost.expenseType === 1 ? 1 : 0,
+                        unit: cost.unit && cost.unit.id ? cost.unit.name : '',
+                        capex: cost.expenseType === 1 ? 1 : 0,
+                        opex: cost.expenseType !== 1 ? 1 : 0,
                         total: itemTotal(cost),
                         customUnit: '',
                     });
@@ -818,6 +824,8 @@ export default {
             'getWorkPackageStatuses',
             'getWorkPackageStatusesForSelect',
             'getProjectLabels',
+            'patchTask',
+            'editTaskCost',
         ]),
         countCompletedSubtasks: function() {
             let completed = 0;
@@ -854,13 +862,22 @@ export default {
             );
         },
         createNewComment: function() {
+            let authorId = null;
+            let projectUsers = this.projectUsers.items;
+            for (let i = 0; i < projectUsers.length; i++) {
+                if (projectUsers[i].userEmail == this.currentUser.email) {
+                    authorId = projectUsers[i].user;
+                };
+            }
+
             let data = {
                 task: this.task,
                 payload: {
                     body: this.$refs['newCommentBody'].getContent(),
-                    author: this.task.responsibility,
+                    author: authorId,
                 },
             };
+            this.$refs['newCommentBody'].setContent('');
             this.addTaskComment(data);
         },
         itemTotal(item) {
@@ -869,6 +886,23 @@ export default {
             return !isNaN(total) ? total : 0;
         },
         setMedias(value) {
+            let formData = new FormData();
+
+            if (value.length) {
+                for (let i = 0; i < value.length; i++) {
+                    formData.append(
+                        'medias[' + i + '][file]',
+                        value[i] instanceof window.File
+                            ? value[i]
+                            : ''
+                    );
+                }
+            }
+
+            this.patchTask({
+                data: formData,
+                taskId: this.$route.params.taskId,
+            });
             this.editableData.medias = value;
         },
         totalCostsForType: function(costType) {
@@ -897,151 +931,152 @@ export default {
                     workPackageStatus: this.editableData.workPackageStatus.key,
                 },
             };
-            this.editTask(data);
+            this.patchTask(data);
             this.showEditStatusModal = false;
         },
         initChangeScheduleModal: function() {
+            this.editScheduleObj = this.editableData.schedule;
             this.showEditScheduleModal = true;
         },
-        initAddInternalCostModal: function() {
-            this.showAddInternalCostsModal = true;
-        },
-        initAddExternalCostModal: function() {
-            this.showAddExternalCostsModal = true;
-        },
-        removeInternalCost: function(index) {
-            this.editableData.internalCosts = [
-                ...this.editableData.internalCosts.slice(0, index),
-                ...this.editableData.internalCosts.slice(index + 1),
-            ];
-        },
-        removeExternalCost: function(index) {
-            this.editableData.externalCosts = [
-                ...this.editableData.externalCosts.slice(0, index),
-                ...this.editableData.externalCosts.slice(index + 1),
-            ];
-        },
-        changeSchedule: function() {
-            let data = {
-                scheduledStartAt: this.editableData.schedule.baseStartDate,
-                scheduledFinishAt: this.editableData.schedule.baseEndDate,
-                forecastStartAt: this.editableData.schedule.forecastStartDate,
-                forecastFinishAt: this.editableData.schedule.forecastEndDate,
-                automaticSchedule: this.editableData.schedule.automatic,
-                duration: this.editableData.schedule.durationInDays,
-                dependants: this.editableData.schedule.successors.map((item) => {
-                    return item.key;
-                }),
-                dependencies: this.editableData.schedule.predecessors.map((item) => {
-                    return item.key;
-                }),
+        initEditExternalCostModal(externalCost) {
+            let externalCostObj = {
+                id: externalCost.id,
+                name: externalCost.name,
+                quantity: externalCost.quantity,
+                selectedUnit: externalCost.selectedUnit,
+                customUnit: externalCost.customUnit,
+                rate: externalCost.rate,
             };
-
-            this.editTask({
+            this.showEditExternalCostModal = true;
+            this.editExternalCostObj = externalCostObj;
+        },
+        initAddExternalCostModal() {
+            let emptyExternalCostObj = {
+                id: 0,
+                name: '',
+                quantity: '',
+                selectedUnit: null,
+                customUnit: null,
+                rate: 0,
+            };
+            this.showEditExternalCostModal = true;
+            this.editExternalCostObj = emptyExternalCostObj;
+        },
+        initDeleteExternalCostModal(externalCost) {
+            this.showDeleteExternalCostModal = true;
+            this.editExternalCostObj = externalCost;
+        },
+        updateCostType(cost) {
+            let data = {
+                expenseType: cost.expenseType,
+            };
+            this.editTaskCost({costId: cost.id, data: data});
+            this.getTaskById(this.$route.params.taskId);
+        },
+        initEditExternalForecastCostModal() {
+            this.showEditExternalForecastCostModal = true;
+        },
+        initEditExternalActualCostModal() {
+            this.showEditExternalActualCostModal = true;
+        },
+        initAddInternalCostModal() {
+            let emptyInternalCostObj = {
+                id: 0,
+                resource: null,
+                daily_rate: 0,
+                quantity: '',
+                duration: '',
+            };
+            this.showEditInternalCostModal = true;
+            this.editInternalCostObj = emptyInternalCostObj;
+        },
+        initEditInternalCostModal(cost) {
+            let internalCostObj = {
+                id: cost.id,
+                resource: {key: cost.resource, label: cost.resourceName, rate: cost.rate},
+                daily_rate: cost.rate,
+                quantity: cost.quantity,
+                duration: cost.duration,
+            };
+            this.showEditInternalCostModal = true;
+            this.editInternalCostObj = internalCostObj;
+        },
+        initDeleteInternalCostModal(internalCost) {
+            this.showDeleteInternalCostModal = true;
+            this.editInternalCostObj = internalCost;
+        },
+        initEditInternalForecastCostModal() {
+            this.showEditInternalForecastCostModal = true;
+        },
+        initEditInternalActualCostModal() {
+            this.showEditInternalActualCostModal = true;
+        },
+        setModals(value) {
+            this.getTaskById(this.$route.params.taskId);
+            this.showEditExternalCostModal = value;
+            this.showDeleteExternalCostModal = value;
+            this.showEditExternalForecastCostModal = value;
+            this.showEditExternalActualCostModal = value;
+            this.showEditInternalCostModal = value;
+            this.showDeleteInternalCostModal = value;
+            this.showEditInternalForecastCostModal = value;
+            this.showEditInternalActualCostModal = value;
+            this.showEditScheduleModal = value;
+            this.showCloseTaskModal = value;
+            this.showOpenTaskModal = value;
+        },
+        updateColorStatus: function() {
+            let data = {
+                colorStatus: this.editableData.colorStatus.id,
+            };
+            this.patchTask({
                 data: data,
                 taskId: this.$route.params.taskId,
             });
-            this.showEditScheduleModal = false;
         },
-        addInternalCosts(value) {
-            this.showAddInternalCostsModal = false;
-
-            if (value === null) {
-                return;
-            }
-
-            let newCost = {
-                resourceName: value.resource.label,
-                resource: value.resource,
-                rate: value.daily_rate,
-                quantity: value.qty,
-                duration: value.days,
+        updateLabel: function() {
+            let data = {
+                labels: [this.editableData.label.key],
             };
-            newCost.total = this.itemTotal(newCost);
-            this.editableData.internalCosts.push(newCost);
+            this.patchTask({
+                data: data,
+                taskId: this.$route.params.taskId,
+            });
         },
-        addExternalCosts(value) {
-            this.showAddExternalCostsModal = false;
-
-            if (value === null) {
-                return;
-            }
-
-            let newCost = {
-                name: value.name,
-                rate: value.rate,
-                quantity: value.qty,
-                selectedUnit: value.selectedUnit,
-                capex: 0,
-                opex: 1,
-                customUnit: value.customUnit,
-                unit: (value.unit !== 'custom') ? value.unit : null,
+        removeLabel: function() {
+            this.editableData.label = null;
+            let data = {
+                labels: [],
             };
-            newCost.total = this.itemTotal(newCost);
-
-            this.editableData.externalCosts.push(newCost);
+            this.patchTask({
+                data: data,
+                taskId: this.$route.params.taskId,
+            });
         },
-        saveChangedData: function() {
+        updateAssignee: function() {
+            console.log(this.editableData.assignee);
             let data = {
                 responsibility: this.editableData.assignee.key,
-                labels: [this.editableData.label.key],
-                colorStatus: this.editableData.colorStatus.id,
-                workPackageStatus: this.editableData.workPackageStatus.key,
-                duration: this.editableData.schedule.durationInDays,
-                automaticSchedule: this.editableData.schedule.automatic,
-                scheduledStartAt: moment(this.editableData.schedule.baseStartDate).format('DD-MM-YYYY'),
-                scheduledFinishAt: moment(this.editableData.schedule.baseEndDate).format('DD-MM-YYYY'),
-                forecastStartAt: moment(this.editableData.schedule.forecastStartDate).format('DD-MM-YYYY'),
-                forecastFinishAt: moment(this.editableData.schedule.forecastEndDate).format('DD-MM-YYYY'),
-                dependants: this.editableData.schedule.successors.map((item) => {
-                    return item.key;
-                }),
-                dependencies: this.editableData.schedule.predecessors.map((item) => {
-                    return item.key;
-                }),
             };
-
-            data.costs = [];
-            for (let i = 0; i < this.editableData.internalCosts.length; i++) {
-                let cost = {
-                    resource: this.editableData.internalCosts[i].resource.key,
-                    quantity: this.editableData.internalCosts[i].quantity,
-                    duration: this.editableData.internalCosts[i].duration,
-                    rate: this.editableData.internalCosts[i].rate,
-                    type: 0,
-                };
-                data.costs.push(cost);
-            }
-
-            for (let i = 0; i < this.editableData.externalCosts.length; i++) {
-                let cost = {
-                    name: this.editableData.externalCosts[i].name,
-                    quantity: this.editableData.externalCosts[i].quantity,
-                    rate: this.editableData.externalCosts[i].rate,
-                    expenseType: this.editableData.externalCosts[i].capex ? 0 : 1,
-                    type: 1,
-                };
-                if (this.editableData.externalCosts[i].customUnit && this.editableData.externalCosts[i].customUnit.length) {
-                    cost.customUnit = this.editableData.externalCosts[i].customUnit;
-                } else {
-                    cost.unit = this.editableData.externalCosts[i].selectedUnit;
-                }
-
-                data.costs.push(cost);
-            }
-
-            data.medias = [];
-
-            for (let i = 0; i < this.editableData.medias.length; i++) {
-                if (this.editableData.medias[i] instanceof window.File) {
-                    data.medias.push(this.editableData.medias[i]);
-                }
-            }
-
-            this.editTask({
+            this.patchTask({
                 data: data,
                 taskId: this.$route.params.taskId,
             });
+        },
+        initCloseTaskModal: function() {
+            this.showCloseTaskModal = true;
+        },
+        initOpenTaskModal: function() {
+            this.showOpenTaskModal = true;
+        },
+        getResponsibityUsername: function(userId) {
+            let users = this.projectUsers.items;
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].user == userId) {
+                    return users[i].userFullName;
+                };
+            }
+            return '-';
         },
     },
     data: function() {
@@ -1049,8 +1084,17 @@ export default {
             showDeleteModal: false,
             showEditStatusModal: false,
             showEditScheduleModal: false,
-            showAddInternalCostsModal: false,
-            showAddExternalCostsModal: false,
+            showAddInternalCostsModal: false, // remove this
+            showEditExternalCostModal: false,
+            showDeleteExternalCostModal: false,
+            showEditExternalForecastCostModal: false,
+            showEditExternalActualCostModal: false,
+            showEditInternalCostModal: false,
+            showDeleteInternalCostModal: false,
+            showEditInternalForecastCostModal: false,
+            showEditInternalActualCostModal: false,
+            showCloseTaskModal: false,
+            showOpenTaskModal: false,
             editableData: {
                 workPackageStatus: false,
                 assignee: null,
@@ -1069,6 +1113,18 @@ export default {
                 },
                 internalCosts: [],
                 externalCosts: [],
+            },
+            editExternalCostObj: {},
+            editInternalCostObj: {},
+            editScheduleObj: {
+                baseStartDate: new Date(),
+                baseEndDate: new Date(),
+                forecastStartDate: new Date(),
+                forecastEndDate: new Date(),
+                automatic: false,
+                successors: [],
+                predecessors: [],
+                durationInDays: 0,
             },
         };
     },
