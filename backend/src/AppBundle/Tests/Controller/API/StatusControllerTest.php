@@ -9,63 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 class StatusControllerTest extends BaseController
 {
     /**
-     * @dataProvider getDataForListAction()
-     *
-     * @param $url
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
-     */
-    public function testListAction(
-        $url,
-        $isResponseSuccessful,
-        $responseStatusCode,
-        $responseContent
-    ) {
-        $user = $this->getUserByUsername('superadmin');
-        $token = $user->getApiToken();
-
-        $this->client->request(
-            'GET',
-            $url,
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token), ],
-            ''
-        );
-        $response = $this->client->getResponse();
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataForListAction()
-    {
-        return [
-            [
-                '/api/statuses',
-                true,
-                Response::HTTP_OK,
-                [
-                    [
-                        'id' => 1,
-                        'name' => 'status1',
-                    ],
-                    [
-                        'id' => 2,
-                        'name' => 'status2',
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    /**
      * @dataProvider getDataForCreateAction()
      *
      * @param array $content
@@ -123,6 +66,8 @@ class StatusControllerTest extends BaseController
                 true,
                 Response::HTTP_CREATED,
                 [
+                    'project' => null,
+                    'projectName' => null,
                     'id' => 3,
                     'name' => 'status3',
                 ],
@@ -297,6 +242,8 @@ class StatusControllerTest extends BaseController
                 true,
                 Response::HTTP_ACCEPTED,
                 [
+                    'project' => null,
+                    'projectName' => null,
                     'id' => 1,
                     'name' => 'status1',
                 ],
@@ -509,6 +456,8 @@ class StatusControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
+                    'project' => null,
+                    'projectName' => null,
                     'id' => 1,
                     'name' => 'status1',
                 ],
