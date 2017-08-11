@@ -108,6 +108,10 @@ export default {
                 this.deleteTodo({id: this.todoId});
                 this.showDeleteModal = false;
                 this.todoId = false;
+                if(this.todos.items.length == 1 && this.activePage > 1) {
+                    this.activePage--;
+                };
+                this.getData();
             }
         },
         changePage: function(page) {
