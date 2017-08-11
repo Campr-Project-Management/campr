@@ -111,15 +111,26 @@ export default {
         risksOpportunitiesStats(value) {
             let opportunityGridValues = this.risksOpportunitiesStats.opportunities.opportunity_data.gridValues;
             let riskGridValues = this.risksOpportunitiesStats.risks.risk_data.gridValues;
-            let types = ['medium', 'high', 'low', 'very-low'];
+            const opportunityTypes = [
+                ['very-high', 'very-high', 'high', 'medium'],
+                ['very-high', 'high', 'medium', 'low'],
+                ['high', 'medium', 'low', 'very-low'],
+                ['medium', 'low', 'very-low', 'very-low'],
+            ];
+            const riskTypes = [
+                ['very-low', 'very-low', 'low', 'medium'],
+                ['very-low', 'low', 'medium', 'high'],
+                ['low', 'medium', 'high', 'very-high'],
+                ['medium', 'high', 'very-high', 'very-high'],
+            ];
             for (let i = 4; i >= 1; i--) {
                 for (let j = 1; j <= 4; j++) {
                     let isActive = i === 1 && j === 1;
                     this.opportunityGridData.push(
-                        {probability: j, impact: i, number: opportunityGridValues[j+'-'+i], type: types[j-1], isActive: isActive},
+                        {probability: j, impact: i, number: opportunityGridValues[j+'-'+i], type: opportunityTypes[i-1][j-1], isActive: isActive},
                     );
                     this.riskGridData.push(
-                        {probability: j, impact: i, number: riskGridValues[j+'-'+i], type: types[j-1], isActive: isActive},
+                        {probability: j, impact: i, number: riskGridValues[j+'-'+i], type: riskTypes[i-1][j-1], isActive: isActive},
                     );
                 }
             }
