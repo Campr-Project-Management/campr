@@ -17,25 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 class RiskStrategyController extends ApiController
 {
     /**
-     * Get all risk strategies.
-     *
-     * @Route(name="app_api_risk_strategies_list", options={"expose"=true})
-     * @Method({"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function listAction()
-    {
-        $riskStrategies = $this
-            ->getDoctrine()
-            ->getRepository(RiskStrategy::class)
-            ->findAll()
-        ;
-
-        return $this->createApiResponse($riskStrategies);
-    }
-
-    /**
      * Create a new Risk Strategy.
      *
      * @Route(name="app_api_risk_strategies_create", options={"expose"=true})

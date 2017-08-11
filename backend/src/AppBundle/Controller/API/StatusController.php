@@ -17,25 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 class StatusController extends ApiController
 {
     /**
-     * Get all status.
-     *
-     * @Route(name="app_api_statuses_list", options={"expose"=true})
-     * @Method({"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function listAction()
-    {
-        $status = $this
-            ->getDoctrine()
-            ->getRepository(Status::class)
-            ->findAll()
-        ;
-
-        return $this->createApiResponse($status);
-    }
-
-    /**
      * Create a new Status.
      *
      * @Route(name="app_api_statuses_create", options={"expose"=true})
