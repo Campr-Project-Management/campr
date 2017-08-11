@@ -50,8 +50,10 @@ message:
     from: from
     min: Min
     starting_on: Starting On
-    costs_chart: Costs Chart
-    resources_chart: Resources Chart
+    costs_chart_by_phase: Costs By Phase
+    costs_chart_by_department: Costs By Department
+    resources_chart_by_phase: Resources By Phase
+    resources_chart_by_department: Resources By Department
     delete_opportunity: Delete Opoortunity
     delete_risk: Delete Risk
     edit_measure: Edit Measure
