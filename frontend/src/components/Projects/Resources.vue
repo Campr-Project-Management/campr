@@ -12,7 +12,7 @@
                 chart-type="ColumnChart"
                 :columns="columns"
                 :rows="rowsByPhase"
-                :options="options">
+                :options="optionsByPhase">
             </vue-chart>
         </div>
         <hr class="double">
@@ -21,7 +21,7 @@
                 chart-type="ColumnChart"
                 :columns="columns"
                 :rows="rowsByDepartment"
-                :options="options">
+                :options="optionsByDepartment">
             </vue-chart>
         </div>
     </div>
@@ -66,6 +66,40 @@ export default {
         },
     },
     data: function() {
+        const defaultOptions = {
+            hAxis: {
+                textStyle: {
+                    color: '#D8DAE5',
+                },
+            },
+            vAxis: {
+                title: '',
+                minValue: 0,
+                maxValue: 0,
+                textStyle: {
+                    color: '#D8DAE5',
+                },
+            },
+            width: '100%',
+            height: 350,
+            curveType: 'function',
+            colors: ['#5FC3A5', '#A05555', '#646EA0', '#2E3D60', '#D8DAE5'],
+            backgroundColor: '#191E37',
+            titleTextStyle: {
+                color: '#D8DAE5',
+            },
+            legend: {
+                position: 'bottom',
+                maxLines: 5,
+            },
+            legendTextStyle: {
+                color: '#D8DAE5',
+            },
+        };
+        const optionsByPhase = Object.assign({}, optionsByPhase, defaultOptions);
+        const optionsByDepartment = Object.assign({}, optionsByDepartment, defaultOptions);
+        optionsByPhase.title = Translator.trans('message.resources_chart_by_phase');
+        optionsByDepartment.title = Translator.trans('message.resources_chart_by_department');
         return {
             columns: [{
                 'type': 'string',
@@ -89,37 +123,8 @@ export default {
             rowsByDepartment: [
                 ['', 0, 0, 0, 0],
             ],
-            options: {
-                title: Translator.trans('message.resources_chart'),
-                hAxis: {
-                    textStyle: {
-                        color: '#D8DAE5',
-                    },
-                },
-                vAxis: {
-                    title: '',
-                    minValue: 0,
-                    maxValue: 0,
-                    textStyle: {
-                        color: '#D8DAE5',
-                    },
-                },
-                width: '100%',
-                height: 350,
-                curveType: 'function',
-                colors: ['#5FC3A5', '#A05555', '#646EA0', '#2E3D60', '#D8DAE5'],
-                backgroundColor: '#191E37',
-                titleTextStyle: {
-                    color: '#D8DAE5',
-                },
-                legend: {
-                    position: 'bottom',
-                    maxLines: 5,
-                },
-                legendTextStyle: {
-                    color: '#D8DAE5',
-                },
-            },
+            optionsByPhase: optionsByPhase,
+            optionsByDepartment: optionsByDepartment,
         };
     },
 };
