@@ -1,17 +1,17 @@
 <template>
     <div class="page-section projects">
         <div class="header">
-            <h1>{{ message.recent_projects }}</h1>
+            <h1>{{ translateText('message.recent_projects') }}</h1>
             <div class="full-filters">
-                <project-filters></project-filters>
+                <project-filters :updateFilters="applyFilters"></project-filters>
                 <div class="separator"></div>
-                <router-link :to="{name: 'projects'}" class="btn-rounded btn-auto">{{ message.all_projects }}</router-link>
+                <router-link :to="{name: 'projects'}" class="btn-rounded btn-auto">{{ translateText('message.all_projects') }}</router-link>
             </div>
         </div>
         <div class="grid-view">
             <small-project-box v-for="project in projects" v-bind:project="project"></small-project-box>
             <router-link :to="{name: 'projects-create-1'}" class="new-box">
-                {{ message.new_project }} +
+                {{ translateText('message.new_project') }} +
             </router-link>
         </div>
     </div>
@@ -28,16 +28,27 @@ export default {
         SmallProjectBox,
     },
     methods: {
-        ...mapActions(['getProjects']),
-        changePage(page) {
-            this.getProjects(page);
-            this.activePage = page;
+        ...mapActions(['getProjects', 'setProjectFilters']),
+        translateText: function(text) {
+            return this.translate(text);
+        },
+        applyFilters: function(key, value) {
+            let filterObj = {};
+            filterObj[key] = value;
+            this.setProjectFilters(filterObj);
+            this.getRecentProjectsData();
+        },
+        getRecentProjectsData: function() {
+            this.getProjects({
+                queryParams: {
+                    page: this.activePage,
+                },
+            });
         },
     },
     created() {
-        if (!this.$store.state.project || this.$store.state.project.projects.length === 0) {
-            this.getProjects(this.activePage);
-        }
+        this.setProjectFilters({clear: true});
+        this.getRecentProjectsData();
     },
     computed: mapGetters({
         projects: 'projects',
@@ -46,11 +57,6 @@ export default {
     data() {
         return {
             activePage: 1,
-            message: {
-                recent_projects: Translator.trans('message.recent_projects'),
-                all_projects: Translator.trans('message.all_projects'),
-                new_project: Translator.trans('message.new_project'),
-            },
         };
     },
 };

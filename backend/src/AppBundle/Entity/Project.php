@@ -44,6 +44,12 @@ class Project
     private $number;
 
     /**
+     * @var string
+     * @ORM\Column(name="short_note", type="text", nullable=true)
+     */
+    private $shortNote;
+
+    /**
      * @var Company
      *
      * @Serializer\Exclude()
@@ -2115,5 +2121,39 @@ class Project
     public function getDecisions()
     {
         return $this->decisions;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortNote()
+    {
+        return $this->shortNote;
+    }
+
+    /**
+     * @param string $shortNote
+     */
+    public function setShortNote($shortNote)
+    {
+        $this->shortNote = $shortNote;
+
+        return $this;
+    }
+
+    /**
+     * Returns if a project is new.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("isNew")
+     *
+     * @return string
+     */
+    public function getIsNew()
+    {
+        $today = new \DateTime();
+        $createdAt = $this->getCreatedAt();
+
+        return intval($today->diff($createdAt)->format('%a')) <= 7;
     }
 }

@@ -13,16 +13,26 @@
                 </h2>
                 <p class="task-id">#{{ task.id }}</p>
                 <div class="status-boxes">
-                    <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? task.colorStatusColor : '' }"></span>
+                    <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? task.colorStatusColor : '', cursor: 'default' }"></span>
                 </div>
             </div>
             <div class="content">
                 <div class="info">
-                    <div class="plan" v-if="task.phase || task.milestone">
-                        <a href="#path-to-phase" title="View phase.name" v-if="task.phase">{{ task.phaseName }}</a>
-                        <span v-if="task.phase && task.milestone"> > </span>
-                        <a href="#path-to-milestone" title="View milestone.name" v-if="task.milestone">{{ task.milestoneName }}</a>
-                    </div>
+                    <router-link :to="{name: 'project-dashboard', params: {id: task.project}}">
+                        {{ task.projectName }}
+                    </router-link>
+                    <span v-show="task.phaseName">
+                        >
+                        <router-link :to="{name: 'project-phases-view-phase', params: {id: task.project, phaseId: task.phase}}">
+                            {{ task.phaseName }}
+                        </router-link>
+                    </span>
+                    <span v-show="task.milestoneName">
+                        >
+                        <router-link :to="{name: 'project-phases-view-milestone', params: {id: task.project, milestoneId: task.milestone}}">
+                            {{ task.milestoneName }}
+                        </router-link>
+                    </span>
                     <div class="task-range-slider">
                         <div class="task-range-slider-title">Schedule</div>
                         <task-range-slider class="base" id="scheduleBase" message="Base" min="2017-01-01" max="2017-12-31" v-bind:from="task.scheduledStartAt" v-bind:to="task.scheduledFinishAt" type="double"></task-range-slider>
@@ -38,8 +48,8 @@
                 </div>
             </div>
             <bar-chart :percentage="task.progress" :status="task.colorStatusName" :color="task.colorStatusColor" :title-left="'' + translateText(task.workPackageStatusName)"></bar-chart>
-            <div class="nicescroll">{{ task.content }}</div>
-            <div class="info bottom">
+            <div class="nicescroll" v-html="task.content"></div>
+            <div class="info bottom" v-if="task">
                 <div class="icons">
                     <div class="icon-holder">
                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px" height="25px"
@@ -54,7 +64,7 @@
                             </g>
                         </g>
                         </svg>
-                        <span class="number">0</span>
+                        <span class="number">{{ task.noAttachments }}</span>
                     </div>
 
                     <div class="icon-holder">
@@ -66,7 +76,7 @@
                         c0-0.2,0.2-0.4,0.4-0.4h11.1c0.2,0,0.4,0.2,0.4,0.4C20,13.5,19.8,13.7,19.5,13.7z M19.5,11.1H8.4c-0.2,0-0.4-0.2-0.4-0.4
                         c0-0.2,0.2-0.4,0.4-0.4h11.1c0.2,0,0.4,0.2,0.4,0.4C20,10.9,19.8,11.1,19.5,11.1z"/>
                         </svg>
-                        <span class="number">2</span>
+                        <span class="number">{{ task.noComments }}</span>
                     </div>
                     <div class="icon-holder">
                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px" height="25px"
@@ -79,7 +89,7 @@
                             C20.2,12,19.8,11.6,19.4,11.6z"/>
                         </g>
                         </svg>
-                        <span class="number">2</span>
+                        <span class="number">{{ task.noSubtasks }}</span>
                     </div>
                 </div>
             </div>

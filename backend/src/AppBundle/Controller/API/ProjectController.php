@@ -70,8 +70,6 @@ use AppBundle\Form\Decision\CreateType as DecisionType;
 class ProjectController extends ApiController
 {
     /**
-     * TODO: Add filters.
-     *
      * Get all projects.
      *
      * @Route(name="app_api_project_list", options={"expose"=true})
@@ -83,19 +81,26 @@ class ProjectController extends ApiController
      */
     public function listAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
         $filters = $request->query->all();
+        $user = $this->getUser();
+        $projectRepo = $this->getDoctrine()->getManager()->getRepository(Project::class);
 
-        $projects = $em
-            ->getRepository(Project::class)
-            ->findByUserAndFilters($this->getUser(), $filters)
-        ;
+        if (isset($filters['page'])) {
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+            $result = $projects = $projectRepo->findByUserAndFilters($user, $filters)->getQuery()->getResult();
+            $responseArray['totalItems'] = $projectRepo->countTotalByUserAndFilters($user, $filters);
+            $responseArray['pageSize'] = $filters['pageSize'];
+            usort($result, function ($a, $b) use ($user) {
+                return !in_array($user->getId(), $a->getUserFavoritesIds());
+            });
+            $responseArray['items'] = $result;
 
-        $responseArray = [];
-        $responseArray['totalItems'] = count($projects);
-        $responseArray['items'] = $projects;
+            return $this->createApiResponse($responseArray);
+        }
 
-        return $this->createApiResponse($responseArray);
+        return $this->createApiResponse([
+            'items' => $projectRepo->findByUserAndFilters($user, $filters)->getQuery()->getResult(),
+        ]);
     }
 
     /**
@@ -176,9 +181,7 @@ class ProjectController extends ApiController
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($project);
-            $em->flush();
+            $this->persistAndFlush($project);
 
             return $this->createApiResponse($project, Response::HTTP_ACCEPTED);
         }
@@ -876,7 +879,6 @@ class ProjectController extends ApiController
         }
 
         $filters = $request->query->all();
-        $filters['project'] = $project->getName();
 
         return $this->get('app.service.calendar')->exportUserCalendars($filters, $this->getUser());
     }

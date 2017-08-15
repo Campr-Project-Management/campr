@@ -43,6 +43,7 @@ const getters = {
     projectTasksStatus: state => state.projectTasksStatus,
     risksOpportunitiesStats: state => state.risksOpportunitiesStats,
     projectsCount: state => state.projects.totalItems,
+    projectsPerPage: state => state.projects.pageSize,
     costData: state => state.costData,
     resourceData: state => state.resourceData,
 };
@@ -71,26 +72,61 @@ const actions = {
     },
 
     /**
-     * Gets projects from the API and commits SET_PROJECTS mutation
      * @param {function} commit
+     * @param {array} data
      * @return {object}
      */
-    getProjects({commit}) {
-        commit(types.TOGGLE_LOADER, true);
+    editProject({commit}, data) {
         return Vue
             .http
-            .get(Routing.generate('app_api_project_list'))
+            .patch(Routing.generate('app_api_project_edit', {id: data.projectId}), data)
+            .then(
+                (response) => {
+                    let project = response.data;
+                    commit(types.EDIT_PROJECT, project);
+                }
+            )
+        ;
+    },
+
+    /**
+     * Gets projects from the API and commits SET_PROJECTS mutation
+     * @param {function} commit
+     * @param {array} data
+     *
+     * @return {object}
+     */
+    getProjects({commit}, data) {
+        let paramObject = {params: {}};
+        if (data && data.queryParams && data.queryParams.page !== undefined) {
+            paramObject.params.page = data.queryParams.page;
+        }
+        if (state.projectFilters && state.projectFilters.status) {
+            paramObject.params.status = state.projectFilters.status;
+        }
+        if (state.projectFilters && state.projectFilters.programme) {
+            paramObject.params.programme = state.projectFilters.programme;
+        }
+        if (state.projectFilters && state.projectFilters.customer) {
+            paramObject.params.customer = state.projectFilters.customer;
+        }
+        return Vue
+            .http
+            .get(Routing.generate('app_api_project_list'), paramObject)
             .then(
                 (response) => {
                     if (response.status === 200) {
                         let projects = response.data;
                         commit(types.SET_PROJECTS, {projects});
-                        commit(types.TOGGLE_LOADER, false);
                     }
                 },
                 (response) => {}
             )
         ;
+    },
+
+    setProjectFilters({commit}, filters) {
+        commit(types.SET_PROJECT_FILTERS, {filters});
     },
 
     /**
@@ -601,6 +637,14 @@ const actions = {
 
 const mutations = {
     /**
+     * Sets the project filters
+     * @param {Object} state
+     * @param {array} filters
+     */
+    [types.SET_PROJECT_FILTERS](state, {filters}) {
+        state.projectFilters = !filters.clear ? Object.assign({}, state.projectFilters, filters) : [];
+    },
+    /**
      * Sets projects to state
      * @param {Object} state
      * @param {array} projects
@@ -633,16 +677,20 @@ const mutations = {
         let stateProject = _.find(state.projects.items, {id: project.id});
         stateProject.favorite = !project.favorite;
     },
-
     /**
-     * Sets projectFilters to state
+     * Edit project
      * @param {Object} state
-     * @param {array} filter
+     * @param {Object} project
      */
-    [types.SET_FILTERS](state, filter) {
-        state.projectFilters[filter[0]] = filter[1];
+    [types.EDIT_PROJECT](state, project) {
+        if (state.filteredProjects.items) {
+            state.filteredProjects.items.map(item => {
+                if (item.id === project.id) {
+                    item.shortNote = project.shortNote;
+                }
+            });
+        }
     },
-
     /**
      * Sets labels
      * @param {Object} state

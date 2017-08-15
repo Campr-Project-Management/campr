@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-direction-reverse flex-v-center">
-        <div class="pagination">
+        <div class="pagination" v-if="numberOfPages > 1">
             <span
                 v-for="page in pagesToShow()"
                 :class="{active: (page == currentPage)}"
