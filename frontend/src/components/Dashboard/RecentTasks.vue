@@ -1,11 +1,11 @@
 <template>
     <div class="page-section tasks recent-tasks">
         <div class="header">
-            <h1>{{ message.recent_tasks }}</h1>
+            <h1>{{ translateText('message.recent_tasks') }}</h1>
             <div class="full-filters">
-                <task-filters></task-filters>
+                <task-filters :updateFilters="applyFilters"></task-filters>
                 <div class="separator"></div>
-                <router-link :to="{name: 'tasks'}" class="btn-rounded btn-auto">{{ message.all_tasks }}</router-link>
+                <router-link :to="{name: 'tasks'}" class="btn-rounded btn-auto">{{ translateText('message.all_tasks') }}</router-link>
             </div>
         </div>
         <div class="grid-view">
@@ -25,22 +25,29 @@ export default {
         SmallTaskBox,
     },
     methods: {
-        ...mapActions(['getRecentTasks', 'getColorStatuses', 'getProjects']),
-        changePage(page) {
-            this.getRecentTasks(page);
-            this.activePage = page;
+        ...mapActions(['getRecentTasks', 'getColorStatuses', 'getProjects', 'setFilters']),
+        translateText: function(text) {
+            return this.translate(text);
+        },
+        applyFilters: function(key, value) {
+            let filterObj = {};
+            filterObj[key] = value;
+            this.setFilters(filterObj);
+            this.getRecentTasksData();
+        },
+        getRecentTasksData: function() {
+            this.getRecentTasks({
+                queryParams: {
+                    page: this.activePage,
+                },
+            });
         },
     },
     created() {
-        if (!this.$store.state.task || (this.$store.state.task.tasks && this.$store.state.task.tasks.length === 0)) {
-            this.getRecentTasks(this.activePage);
-        }
-        if (!this.$store.state.project || (this.$store.state.project.projects && this.$store.state.project.projects.length === 0)) {
-            this.getProjects();
-        }
-        if (!this.$store.state.colorStatus || (this.$store.state.colorStatus.colorStatuses && this.$store.state.colorStatus.colorStatuses.length === 0)) {
-            this.getColorStatuses();
-        }
+        this.setFilters({clear: true});
+        this.getRecentTasksData();
+        this.getProjects();
+        this.getColorStatuses();
     },
     computed: mapGetters({
         tasks: 'tasks',
@@ -51,11 +58,6 @@ export default {
     data() {
         return {
             activePage: 1,
-            message: {
-                recent_tasks: Translator.trans('message.recent_tasks'),
-                all_tasks: Translator.trans('message.all_tasks'),
-                new_task: Translator.trans('message.new_task'),
-            },
         };
     },
 };
