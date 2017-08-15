@@ -146,8 +146,6 @@ class MeetingControllerTest extends BaseController
                     ],
                     'decisions' => [
                         [
-                            'status' => null,
-                            'statusName' => null,
                             'meeting' => 1,
                             'meetingName' => 'meeting1',
                             'project' => 1,
@@ -165,8 +163,6 @@ class MeetingControllerTest extends BaseController
                             'responsibilityAvatar' => '',
                         ],
                         [
-                            'status' => null,
-                            'statusName' => null,
                             'meeting' => 1,
                             'meetingName' => 'meeting1',
                             'project' => 1,

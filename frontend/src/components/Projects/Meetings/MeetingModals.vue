@@ -86,17 +86,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="form-group">
-                    <div class="col-md-6">
-                        <select-field
-                                v-bind:title="translateText('label.select_status')"
-                                v-bind:options="decisionStatusesForSelect"
-                                v-model="editDecisionObject.status"
-                                v-bind:currentOption="editDecisionObject.status" />
-                    </div>
-                </div>
-            </div>
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showEditDecisionModal = false; $emit('input', showEditDecisionModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
                 <a href="javascript:void(0)" @click="saveDecision()" class="btn-rounded">{{ translateText('button.save') }}</a>
@@ -291,7 +280,7 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getNoteStatuses', 'getTodoStatuses', 'getDecisionStatuses', 'editMeetingObjective', 'deleteMeetingObjective',
+            'getNoteStatuses', 'getTodoStatuses', 'editMeetingObjective', 'deleteMeetingObjective',
             'editMeetingAgenda', 'deleteMeetingAgenda', 'editDecision', 'deleteDecision', 'editTodo', 'deleteTodo',
             'editNote', 'deleteNote',
         ]),
@@ -367,13 +356,11 @@ export default {
         ...mapGetters({
             noteStatusesForSelect: 'noteStatusesForSelect',
             todoStatusesForSelect: 'todoStatusesForSelect',
-            decisionStatusesForSelect: 'decisionStatusesForSelect',
         }),
     },
     created() {
         this.getTodoStatuses();
         this.getNoteStatuses();
-        this.getDecisionStatuses();
     },
     data() {
         return {

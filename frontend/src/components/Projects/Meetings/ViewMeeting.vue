@@ -183,7 +183,7 @@
                     <div class="entry" v-for="decision in meeting.decisions">
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
-                                <h4>{{ decision.title }}</h4>  | {{ translateText('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.status') }}: <b v-if="decision.status">{{ decision.statusName }}</b><b v-else>-</b>
+                                <h4>{{ decision.title }}</h4>  | {{ translateText('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b>
                             </div>
                             <div class="entry-buttons">
                                 <button @click="initEditDecision(decision)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
@@ -423,7 +423,6 @@ export default {
                 title: decision.title,
                 responsibility: [decision.responsibility],
                 dueDate: decision.date ? new Date(decision.date) : new Date(),
-                status: {key: decision.status, label: decision.statusName},
                 meeting: this.$route.params.meetingId,
             };
             this.$refs.editDecisionDescription.setContent(decision.description);
