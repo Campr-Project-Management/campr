@@ -52,6 +52,7 @@ import validation from './modules/validation';
 import info from './modules/info';
 import infoCategory from './modules/info-category';
 import infoStatus from './modules/info-status';
+import dashboard from './modules/dashboard';
 
 Vue.use(Vuex);
 
@@ -63,6 +64,7 @@ export default new Vuex.Store({
     mutations,
     modules: {
         loader,
+        dashboard,
         user,
         distributionList,
         project,
