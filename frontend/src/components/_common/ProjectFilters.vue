@@ -1,10 +1,10 @@
 <template>
     <div class="filters">
-        <span class="title">{{ message.filter_by }}</span>
+        <span class="title">{{ translateText('message.filter_by') }}</span>
         <div class="dropdowns">
-            <dropdown v-bind:title="message.customer" v-bind:options="customers" item="project" filter="company"></dropdown>
-            <dropdown v-bind:title="message.programme" v-bind:options="programmes" item="project" filter="programme"></dropdown>
-            <dropdown v-bind:title="message.status" v-bind:options="statuses" item="project" filter="status"></dropdown>
+            <dropdown v-bind:title="translateText('message.customer')" v-bind:options="customers" :selectedValue="selectCustomer"></dropdown>
+            <dropdown v-bind:title="translateText('message.programme')" v-bind:options="programmes" :selectedValue="selectProgramme"></dropdown>
+            <dropdown v-bind:title="translateText('message.status')" v-bind:options="statuses" :selectedValue="selectStatus"></dropdown>
         </div>
     </div>
 </template>
@@ -14,10 +14,25 @@ import Dropdown from '../_common/Dropdown';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
+    props: ['updateFilters'],
     components: {
         Dropdown,
     },
-    methods: mapActions(['getProjectStatuses', 'getCustomers', 'getProgrammes']),
+    methods: {
+        ...mapActions(['getProjectStatuses', 'getCustomers', 'getProgrammes']),
+        translateText: function(text) {
+            return this.translate(text);
+        },
+        selectCustomer: function(value) {
+            this.updateFilters('customer', value);
+        },
+        selectProgramme: function(value) {
+            this.updateFilters('programme', value);
+        },
+        selectStatus: function(value) {
+            this.updateFilters('status', value);
+        },
+    },
     watch: {
         user: function() {
             this.getCustomers();
@@ -32,16 +47,6 @@ export default {
             programmes: 'programmesForFilter',
             user: 'user',
         }),
-    },
-    data: function() {
-        return {
-            message: {
-                filter_by: Translator.trans('message.filter_by'),
-                customer: Translator.trans('message.customer'),
-                programme: Translator.trans('message.programme'),
-                status: Translator.trans('message.status'),
-            },
-        };
     },
 
 };

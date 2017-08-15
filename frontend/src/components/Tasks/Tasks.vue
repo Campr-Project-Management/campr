@@ -4,7 +4,7 @@
             <div class="header">
                 <h1>{{ translateText('message.my_tasks') }}</h1>
                 <div class="flex filters-container">
-                    <task-filters></task-filters>
+                    <task-filters :updateFilters="applyFilters"></task-filters>
                 </div>
             </div>
             <div class="grid-view">
@@ -14,6 +14,10 @@
                 <span v-for="page in pageCount" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
             </div>
         </div>
+        <pagination
+            :current-page="activePage"
+            :number-of-pages="pages"
+            v-on:change-page="changePage"/>
     </div>
 </template>
 
@@ -21,47 +25,52 @@
 import TaskFilters from '../_common/TaskFilters';
 import TaskBox from './TaskBox';
 import {mapActions, mapGetters} from 'vuex';
+import Pagination from '../_common/Pagination.vue';
 
 export default {
     components: {
         TaskFilters,
         TaskBox,
+        Pagination,
     },
     methods: {
-        ...mapActions(['getTasks', 'getColorStatuses']),
+        ...mapActions(['getTasks', 'getColorStatuses', 'setFilters']),
         changePage(page) {
-            this.getTasks(page);
             this.activePage = page;
+            this.getTasksData();
         },
         translateText: function(text) {
             return this.translate(text);
         },
+        applyFilters: function(key, value) {
+            let filterObj = {};
+            filterObj[key] = value;
+            this.setFilters(filterObj);
+            this.getTasksData();
+        },
+        getTasksData: function() {
+            this.getTasks({
+                queryParams: {
+                    page: this.activePage,
+                },
+            });
+        },
     },
     created() {
-        if (!this.$store.state.task.tasks || this.$store.state.task.tasks.length === 0) {
-            this.getTasks(this.activePage);
-        }
-        if (!this.$store.state.colorStatus.colorStatuses || this.$store.state.colorStatus.colorStatuses.length === 0) {
-            this.getColorStatuses();
-        }
+        this.setFilters({clear: true});
+        this.getTasksData();
+        this.getColorStatuses();
     },
     computed: {
         ...mapGetters({
             user: 'user',
             tasks: 'tasks',
             count: 'tasksCount',
+            tasksPerPage: 'tasksPerPage',
             colorStatuses: 'colorStatuses',
         }),
-        pageCount: function() {
-            if (!this.tasks || !this.tasks.length) {
-                return [1];
-            }
-            let pages = Math.ceil(this.count / 12);
-            let out = [];
-            for (let c = 1; c <= pages; c++) {
-                out.push(c);
-            }
-            return out;
+        pages: function() {
+            return Math.ceil(this.count / this.tasksPerPage);
         },
     },
     data() {

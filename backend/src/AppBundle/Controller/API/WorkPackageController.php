@@ -13,7 +13,6 @@ use AppBundle\Form\WorkPackage\PhaseType;
 use AppBundle\Security\WorkPackageVoter;
 use AppBundle\Form\Assignment\BaseCreateType as AssignmentCreateType;
 use AppBundle\Form\Comment\CreateType as CommentCreateType;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -40,27 +39,22 @@ class WorkPackageController extends ApiController
     {
         $filters = $request->query->all();
         $user = $this->getUser();
-        $wpQuery = $this
-            ->getDoctrine()
-            ->getRepository(WorkPackage::class)
-            ->findUserFiltered($user, $filters)
-        ;
+        $wpRepo = $this->getDoctrine()->getManager()->getRepository(WorkPackage::class);
 
-        $pageSize = $this->getParameter('front.per_page');
-        $currentPage = isset($filters['page']) ? intval($filters['page']) : 1;
-        if ($currentPage < 1) {
-            $currentPage = 1;
+        if (isset($filters['page'])) {
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+            $result = $projects = $wpRepo->findUserFiltered($user, $filters)->getQuery()->getResult();
+            $responseArray['totalItems'] = $wpRepo->countTotalByUserAndFilters($user, $filters);
+            $responseArray['pageSize'] = $filters['pageSize'];
+            $responseArray['items'] = $result;
+
+            return $this->createApiResponse($responseArray);
         }
-        $paginator = new Paginator($wpQuery);
-        $paginator->getQuery()
-            ->setFirstResult($pageSize * ($currentPage - 1))
-            ->setMaxResults($pageSize)
-        ;
 
-        $responseArray['totalItems'] = count($paginator);
-        $responseArray['items'] = $paginator->getIterator()->getArrayCopy();
-
-        return $this->createApiResponse($responseArray);
+        return $this->createApiResponse([
+            'totalItems' => $wpRepo->countTotalByUserAndFilters($user),
+            'items' => $wpRepo->findUserFiltered($user)->getQuery()->getResult(),
+        ]);
     }
 
     /**
