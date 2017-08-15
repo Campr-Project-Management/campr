@@ -73,18 +73,6 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="form-group last-form-group">
-                            <div class="col-md-6">
-                                <select-field
-                                    v-bind:title="translateText('label.select_status')"
-                                    v-bind:options="decisionStatusesForSelect"
-                                    v-model="details.status"
-                                    v-bind:currentOption="details.status" />
-                            </div>
-                        </div>
-                    </div>     
-
                     <hr class="double">               
 
                     <!-- /// Actions /// -->
@@ -122,7 +110,7 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getProjectMeetings', 'getDecisionStatuses', 'getDecisionCategories',
+            'getProjectMeetings', 'getDecisionCategories',
             'createDecision', 'getDecision', 'editDecision',
         ]),
         translateText: function(text) {
@@ -137,7 +125,6 @@ export default {
                 decisionCategory: this.details.decisionCategory ? this.details.decisionCategory.key : null,
                 responsibility: this.responsible.length > 0 ? this.responsible[0] : null,
                 dueDate: moment(this.schedule.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
-                status: this.details.status ? this.details.status.key : null,
             };
             return data;
         },
@@ -153,7 +140,6 @@ export default {
     },
     computed: {
         ...mapGetters({
-            decisionStatusesForSelect: 'decisionStatusesForSelect',
             decisionCategoriesForSelect: 'decisionCategoriesForSelect',
             projectMeetingsForSelect: 'projectMeetingsForSelect',
             validationMessages: 'validationMessages',
@@ -161,7 +147,6 @@ export default {
         }),
     },
     created() {
-        this.getDecisionStatuses();
         this.getDecisionCategories();
         this.getProjectMeetings({projectId: this.$route.params.id});
         if (this.$route.params.decisionId) {
@@ -178,7 +163,6 @@ export default {
             details: {
                 meeting: null,
                 decisionCategory: null,
-                status: null,
             },
             isEdit: this.$route.params.decisionId,
         };
@@ -193,10 +177,6 @@ export default {
             ;
             this.details.decisionCategory = this.currentDecision.decisionCategory
                 ? {key: this.currentDecision.decisionCategory, label: this.currentDecision.decisionCategoryName}
-                : null
-            ;
-            this.details.status = this.currentDecision.status
-                ? {key: this.currentDecision.status, label: this.currentDecision.statusName}
                 : null
             ;
             this.responsible.push(this.currentDecision.responsibility);

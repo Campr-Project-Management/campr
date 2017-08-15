@@ -207,23 +207,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group last-form-group">
-                                <div class="col-md-6">
-                                    <select-field
-                                        v-bind:title="translateText('label.select_status')"
-                                        v-bind:options="decisionStatusesForSelect"
-                                        v-model="decision.status"
-                                        v-bind:currentOption="decision.status" />
-                                    <div v-if="validationMessages.decisions && validationMessages.decisions[index.toString()]">
-                                    <error
-                                        v-if="validationMessages.decisions[index.toString()].status && validationMessages.decisions[index.toString()].status.length"
-                                        v-for="message in validationMessages.decisions[index.toString()].status"
-                                        :message="message" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <hr>
                     </div>
                     <div class="flex flex-direction-reverse">
@@ -401,7 +384,7 @@ export default {
     methods: {
         ...mapActions([
             'getDistributionLists', 'getMeetingCategories', 'getNoteStatuses',
-            'getTodoStatuses', 'getDecisionStatuses', 'createProjectMeeting',
+            'getTodoStatuses', 'createProjectMeeting',
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -432,7 +415,6 @@ export default {
                 description: this.$refs['decision.description'+this.decisions.length],
                 responsible: [],
                 dueDate: new Date(),
-                status: {},
             });
         },
         addTodo() {
@@ -498,7 +480,6 @@ export default {
             meetingCategoriesForSelect: 'meetingCategoriesForSelect',
             noteStatusesForSelect: 'noteStatusesForSelect',
             todoStatusesForSelect: 'todoStatusesForSelect',
-            decisionStatusesForSelect: 'decisionStatusesForSelect',
             validationMessages: 'validationMessages',
         }),
     },
@@ -507,7 +488,6 @@ export default {
         this.getMeetingCategories();
         this.getTodoStatuses();
         this.getNoteStatuses();
-        this.getDecisionStatuses();
     },
     data() {
         return {

@@ -93,16 +93,6 @@ class Decision
     private $dueDate;
 
     /**
-     * @var Status
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\DecisionStatus")
-     * @ORM\JoinColumn(name="status_id")
-     */
-    private $status;
-
-    /**
      * @var DecisionCategory|null
      *
      * @Serializer\Exclude()
@@ -387,56 +377,6 @@ class Decision
     public function getResponsibility()
     {
         return $this->responsibility;
-    }
-
-    /**
-     * Set status.
-     *
-     * @param DecisionStatus $status
-     *
-     * @return Decision
-     */
-    public function setStatus(DecisionStatus $status = null)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status.
-     *
-     * @return DecisionStatus
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * Returns status id.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("status")
-     *
-     * @return string
-     */
-    public function getStatusId()
-    {
-        return $this->status ? $this->status->getId() : null;
-    }
-
-    /**
-     * Returns status name.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("statusName")
-     *
-     * @return string
-     */
-    public function getStatusName()
-    {
-        return $this->status ? $this->status->getName() : null;
     }
 
     /**

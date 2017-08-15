@@ -107,9 +107,6 @@ const actions = {
         if (data.queryParams && data.queryParams.page !== undefined) {
             paramObject.params.page = data.queryParams.page;
         }
-        if (state.decisionFilters && state.decisionFilters.status) {
-            paramObject.params.status = state.decisionFilters.status;
-        }
         if (state.decisionFilters && state.decisionFilters.meeting) {
             paramObject.params.meeting = state.decisionFilters.meeting;
         }
