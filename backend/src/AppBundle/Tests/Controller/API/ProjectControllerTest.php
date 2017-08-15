@@ -1263,8 +1263,6 @@ class ProjectControllerTest extends BaseController
                             ],
                             'decisions' => [
                                 [
-                                    'status' => null,
-                                    'statusName' => null,
                                     'meeting' => 1,
                                     'meetingName' => 'meeting1',
                                     'project' => 1,
@@ -1282,8 +1280,6 @@ class ProjectControllerTest extends BaseController
                                     'responsibilityAvatar' => '',
                                 ],
                                 [
-                                    'status' => null,
-                                    'statusName' => null,
                                     'meeting' => 1,
                                     'meetingName' => 'meeting1',
                                     'project' => 1,
@@ -2228,8 +2224,6 @@ class ProjectControllerTest extends BaseController
                     'opportunities' => [],
                     'decisions' => [
                         [
-                            'status' => null,
-                            'statusName' => null,
                             'meeting' => 1,
                             'meetingName' => 'meeting1',
                             'project' => 1,
@@ -2247,8 +2241,6 @@ class ProjectControllerTest extends BaseController
                             'responsibilityAvatar' => '',
                         ],
                         [
-                            'status' => null,
-                            'statusName' => null,
                             'meeting' => 1,
                             'meetingName' => 'meeting1',
                             'project' => 1,
