@@ -31,8 +31,6 @@ class DecisionControllerTest extends BaseController
         $this->assertContains('name="create[project]"', $crawler->html());
         $this->assertContains('id="create_meeting"', $crawler->html());
         $this->assertContains('name="create[meeting]"', $crawler->html());
-        $this->assertContains('id="create_status"', $crawler->html());
-        $this->assertContains('name="create[status]"', $crawler->html());
         $this->assertContains('id="create_responsibility"', $crawler->html());
         $this->assertContains('name="create[responsibility]"', $crawler->html());
         $this->assertContains('id="create_showInStatusReport"', $crawler->html());
@@ -134,8 +132,6 @@ class DecisionControllerTest extends BaseController
         $this->assertContains('name="create[project]"', $crawler->html());
         $this->assertContains('id="create_meeting"', $crawler->html());
         $this->assertContains('name="create[meeting]"', $crawler->html());
-        $this->assertContains('id="create_status"', $crawler->html());
-        $this->assertContains('name="create[status]"', $crawler->html());
         $this->assertContains('id="create_responsibility"', $crawler->html());
         $this->assertContains('name="create[responsibility]"', $crawler->html());
         $this->assertContains('id="create_showInStatusReport"', $crawler->html());

@@ -30,7 +30,6 @@
                                 <th class="cell-auto">{{ translateText('table_header_cell.id') }}</th>
                                 <th class="cell-auto">{{ translateText('table_header_cell.event') }}</th>
                                 <th class="cell-auto">{{ translateText('table_header_cell.category') }}</th>
-                                <th class="cell-auto">{{ translateText('table_header_cell.status') }}</th>
                                 <th class="cell-auto">{{ translateText('table_header_cell.due_date') }}</th>
                                 <th>{{ translateText('table_header_cell.title') }}</th>
                                 <th>{{ translateText('table_header_cell.responsible') }}</th>
@@ -42,7 +41,6 @@
                                 <td>{{ decision.id }}</td>
                                 <td>{{ decision.meetingName }}</td>
                                 <td>{{ decision.decisionCategoryName }}</td>
-                                <td>{{ decision.statusName }}</td>
                                 <td>{{ decision.dueDate }}</td>
                                 <td class="cell-wrap">{{ decision.title }}</td>
                                 <td class="text-center">
