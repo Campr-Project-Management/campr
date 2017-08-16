@@ -148,6 +148,13 @@ class Contract
     private $updatedAt;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="freezed", type="boolean", nullable=false, options={"default"=0})
+     */
+    private $freezed = false;
+
+    /**
      * Contract constructor.
      */
     public function __construct()
@@ -590,5 +597,23 @@ class Contract
     public function getProjectDeliverables()
     {
         return $this->projectDeliverables;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFreezed()
+    {
+        return $this->freezed;
+    }
+
+    /**
+     * @param bool $freezed
+     */
+    public function setFreezed($freezed)
+    {
+        $this->freezed = $freezed;
+
+        return $this;
     }
 }

@@ -122,6 +122,16 @@
                                 'label': 'label.forecast_end_date'|trans
                             }
                         ) }}
+                        {{ form_widget(
+                            form.freezed,
+                            {
+                                'attr': {
+                                    'class': 'form-control input-sm',
+                                    'toggle': true
+                                },
+                                'label': 'label.freezed'|trans
+                            }
+                        ) }}
 
                         {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
                         with {
