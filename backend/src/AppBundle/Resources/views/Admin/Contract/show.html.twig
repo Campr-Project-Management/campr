@@ -96,6 +96,16 @@
                                     <th>{{ 'table_header_cell.updated_at'|trans }}</th>
                                     <td>{{ contract.updatedAt|date('d/m/Y')}}</td>
                                 </tr>
+                                <tr>
+                                    <th>{{ 'table_header_cell.freezed'|trans }}</th>
+                                    <td>
+                                        {% if contract.freezed %}
+                                            <span class="c-green">{{ 'message.yes'|trans }}</span>
+                                        {% else %}
+                                            <span class="c-red">{{ 'message.no'|trans }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

@@ -648,6 +648,7 @@ class ProjectControllerTest extends BaseController
                         'forecastEndDate' => null,
                         'createdAt' => '2017-01-01 12:00:00',
                         'updatedAt' => null,
+                        'freezed' => false,
                     ],
                     [
                         'project' => 1,
@@ -667,6 +668,7 @@ class ProjectControllerTest extends BaseController
                         'forecastEndDate' => null,
                         'createdAt' => '2017-01-01 12:00:00',
                         'updatedAt' => null,
+                        'freezed' => false,
                     ],
                 ],
             ],
@@ -751,6 +753,7 @@ class ProjectControllerTest extends BaseController
                     'forecastEndDate' => null,
                     'createdAt' => null,
                     'updatedAt' => null,
+                    'freezed' => false,
                 ],
             ],
         ];
@@ -2177,6 +2180,7 @@ class ProjectControllerTest extends BaseController
                             'forecastEndDate' => null,
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
+                            'freezed' => false,
                         ],
                         [
                             'project' => 1,
@@ -2196,6 +2200,7 @@ class ProjectControllerTest extends BaseController
                             'forecastEndDate' => null,
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
+                            'freezed' => false,
                         ],
                     ],
                     'projectObjectives' => [],

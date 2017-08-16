@@ -5,7 +5,7 @@
                 <div class="header">
                     <div class="flex">
                         <h1>{{ translateText('message.project_contract') }}</h1>
-                        <a href="#" class="pdf">
+                        <a :href="downloadPdf" class="pdf" v-if="contract && contract.id">
                             <svg version="1.1" id="Layer_1" width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                 viewBox="0 0 23.1 23.5" style="enable-background:new 0 0 23.1 23.5;" xml:space="preserve">
                                 <g id="XMLID_252_">
@@ -31,82 +31,64 @@
                         </a>
                     </div>
                 </div>
-                <input-field v-model="description" type="textarea" v-bind:label="translateText('message.project_description')" :content="contract.description"></input-field>
-                <input-field v-model="projectStartEvent" type="textarea" v-bind:label="translateText('message.project_start_event')" :content="contract.projectStartEvent"></input-field>
+                <input-field :disabled="freezed" v-model="description" type="textarea" v-bind:label="translateText('message.project_description')" :content="contract.description"></input-field>
+                <input-field :disabled="freezed" v-model="projectStartEvent" type="textarea" v-bind:label="translateText('message.project_start_event')" :content="contract.projectStartEvent"></input-field>
 
                 <div class="flex flex-space-between dates">
-                    <div class="input-holder left">
+                    <div class="input-holder left" :class="{disabledpicker: freezed }">
                         <label class="active">{{ translateText('label.proposed_start_date') }}</label>
-                        <datepicker v-model="proposedStartDate" format="dd - MM - yyyy" :value="contract.proposedStartDate"></datepicker>
-                        <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
+                        <datepicker v-on:selected="closeDatePicker('proposedStartDate')" id="proposedStartDate" v-model="proposedStartDate" format="dd - MM - yyyy" :value="contract.proposedStartDate"></datepicker>
+                        <calendar-icon @click.native="showDatePicker('proposedStartDate')" fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                     </div>
-                    <div class="input-holder right">
+                    <div class="input-holder right" :class="{disabledpicker: freezed }">
                         <label class="active">{{ translateText('label.proposed_end_date') }}</label>
-                        <datepicker v-model="proposedEndDate" format="dd - MM - yyyy" :value="contract.proposedEndDate"></datepicker>
-                        <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
+                        <datepicker v-on:selected="closeDatePicker('proposedEndDate')" id="proposedEndDate" v-model="proposedEndDate" format="dd - MM - yyyy" :value="contract.proposedEndDate"></datepicker>
+                        <calendar-icon @click.native="showDatePicker('proposedEndDate')" fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                     </div>
                 </div>
 
                 <div class="flex flex-space-between dates right">
-                    <div class="input-holder left">
+                    <div class="input-holder left" :class="{disabledpicker: freezed }">
                         <label class="active">{{ translateText('label.forecast_start_date') }}</label>
-                        <datepicker v-model="forecastStartDate" format="dd - MM - yyyy" :value="contract.forecastStartDate"></datepicker>
-                        <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
+                        <datepicker v-on:selected="closeDatePicker('forecastStartDate')" id="forecastStartDate" v-model="forecastStartDate" format="dd - MM - yyyy" :value="contract.forecastStartDate"></datepicker>
+                        <calendar-icon @click.native="showDatePicker('forecastStartDate')" fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                     </div>
-                    <div class="input-holder right">
+                    <div class="input-holder right" :class="{disabledpicker: freezed }">
                         <label class="active">{{ translateText('label.forecast_end_date') }}</label>
-                        <datepicker v-model="forecastEndDate" format="dd - MM - yyyy" :value="contract.forecastEndDate"></datepicker>
-                        <calendar-icon fill="lighter-fill" stroke="lighter-stroke"></calendar-icon>
+                        <datepicker v-on:selected="closeDatePicker('forecastEndDate')" id="forecastEndDate" v-model="forecastEndDate"  format="dd - MM - yyyy" :value="contract.forecastEndDate"></datepicker>
+                        <calendar-icon @click.native="showDatePicker('forecastEndDate')" fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                     </div>
                 </div>
 
-                <div class="header">
-                    <div class="flex">
-                        <h1>{{ translateText('message.project_objectives') }}</h1>
-                    </div>
-                </div>
-
-                <div v-dragula="colOne" drake="objectives">
-                    <drag-box v-for="(item, index) in project.projectObjectives" v-bind:item="item" v-bind:index="index" type="objective"></drag-box>
-                </div>
-                <div class="hr small"></div>
-                <input-field v-model="objectiveTitle" type="text" v-bind:label="translateText('message.new_objective_title')"></input-field>
-                <error
-                    v-if="validationMessages.createProjectObjectiveForm && validationMessages.title && validationMessages.title.length"
-                    v-for="message in validationMessages.title"
-                    :message="message" />
-                <input-field v-model="objectiveDescription" type="textarea" v-bind:label="translateText('message.new_objective_description')"></input-field>
-                <error
-                    v-if="validationMessages.createProjectObjectiveForm && validationMessages.description && validationMessages.description.length"
-                    v-for="message in validationMessages.description"
-                    :message="message" />
-                <div class="flex flex-direction-reverse">
-                    <a v-on:click="createProjectObjective()" class="btn-rounded">{{ translateText('message.add_objective') }} +</a>
-                </div>
                 <div class="header">
                     <div class="flex">
                         <h1>{{ translateText('message.project_deliverables') }}</h1>
                     </div>
                 </div>
-                <div v-dragula="colOne" drake="deliverables">
-                    <drag-box v-for="(item, index) in project.projectDeliverables" v-bind:item="item" v-bind:index="index" type="deliverable"></drag-box>
+                <div v-dragula="colOne" drake="deliverables" v-if="project.projectDeliverables && project.projectDeliverables.length > 0">
+                    <drag-box :disabled="freezed" v-for="(item, index) in project.projectDeliverables" v-bind:item="item" v-bind:index="index" type="deliverable"></drag-box>
                 </div>
+                <p v-else>{{ translateText('label.no_data') }}</p>
                 <div class="hr small"></div>
-                <input-field v-model="deliverableDescription" type="text" v-bind:label="translateText('message.new_project_deliverable')"></input-field>
+                <input-field v-if="!freezed" v-model="deliverableDescription" :content="deliverableDescription" type="text" v-bind:label="translateText('message.new_project_deliverable')"></input-field>
                 <error
                     v-if="validationMessages.createProjectDeliverableForm && validationMessages.description && validationMessages.description.length"
                     v-for="message in validationMessages.description"
                     :message="message" />
-                <div class="flex flex-direction-reverse">
-                    <a v-on:click="createProjectDeliverable()" class="btn-rounded">{{ translateText('message.add_deliverable') }} +</a>
+                <div v-if="!freezed" class="flex flex-direction-reverse">
+                    <button v-on:click="createProjectDeliverable()" class="btn-rounded">{{ translateText('message.add_deliverable') }} +</button>
                 </div>
             </div>
 
             <div class="page-side right">
+                <div class="flex buttons right" v-if="contract && contract.id">
+                    <button v-if="!freezed" @click="freezeContract()" class="btn-rounded second-bg">{{ translateText('button.freeze_contract') }}</button>
+                    <h4 v-else>{{ translateText('message.contract_freezed') }}</h4>
+                </div>
                 <div class="header">
                     <h2 class="clickable" @click="toggleSponsorsManagers()">{{ translateText('message.sponsors_managers') }}
-                        <i class="fa fa-angle-up" v-if="showSponsorsManagers"></i>
-                        <i class="fa fa-angle-down" v-if="!showSponsorsManagers"></i>
+                        <i class="fa fa-angle-down" v-if="showSponsorsManagers"></i>
+                        <i class="fa fa-angle-up" v-if="!showSponsorsManagers"></i>
                     </h2>
                     <router-link :to="{name: 'project-organization'}">
                         <a class="btn-rounded btn-md btn-empty">{{ translateText('message.view_team') }}</a>
@@ -115,22 +97,42 @@
                 <div class="flex flex-row flex-center members-big" v-if="showSponsorsManagers">
                     <member-badge v-for="item in projectSponsors" v-bind:item="item" size="small"></member-badge>
                     <member-badge v-for="item in projectManagers" v-bind:item="item" size="small"></member-badge>
+                    <p v-if="projectSponsors.length === 0 && projectManagers.length === 0">{{ translateText('label.no_data') }}</p>
+                </div>
+                <div class="header">
+                    <div class="flex">
+                        <h1>{{ translateText('message.project_objectives') }}</h1>
+                    </div>
+                </div>
+
+                <div v-dragula="colOne" drake="objectives" v-if="project.projectObjectives && project.projectObjectives.length > 0">
+                    <drag-box :disabled="freezed" v-for="(item, index) in project.projectObjectives" v-bind:item="item" v-bind:index="index" type="objective"></drag-box>
+                </div>
+                <p v-else>{{ translateText('label.no_data') }}</p>
+                <input-field v-if="!freezed" v-model="objectiveTitle" :content="objectiveTitle" type="text" v-bind:label="translateText('message.new_objective_title')"></input-field>
+                <error
+                        v-if="validationMessages.createProjectObjectiveForm && validationMessages.title && validationMessages.title.length"
+                        v-for="message in validationMessages.title"
+                        :message="message" />
+                <div v-if="!freezed" class="flex flex-direction-reverse">
+                    <a v-on:click="createProjectObjective()" class="btn-rounded">{{ translateText('message.add_objective') }} +</a>
                 </div>
                 <div class="header">
                     <div class="flex">
                         <h1>{{ translateText('message.project_limitations') }}</h1>
                     </div>
                 </div>
-                <div v-dragula="colOne" drake="limitations">
-                    <drag-box v-for="(item, index) in project.projectLimitations" v-bind:item="item" v-bind:index="index" type="limitation"></drag-box>
+                <div v-dragula="colOne" drake="limitations" v-if="project.projectLimitations && project.projectLimitations.length > 0">
+                    <drag-box :disabled="freezed" v-for="(item, index) in project.projectLimitations" v-bind:item="item" v-bind:index="index" type="limitation"></drag-box>
                 </div>
+                <p v-else>{{ translateText('label.no_data') }}</p>
                 <div class="hr small"></div>
-                <input-field v-model="limitationDescription" type="text" v-bind:label="translateText('message.new_project_limitation')"></input-field>
+                <input-field v-if="!freezed" v-model="limitationDescription" :content="limitationDescription" type="text" v-bind:label="translateText('message.new_project_limitation')"></input-field>
                 <error
                     v-if="validationMessages.createProjectLimitationForm && validationMessages.description && validationMessages.description.length"
                     v-for="message in validationMessages.description"
                     :message="message" />
-                <div class="flex flex-direction-reverse">
+                <div v-if="!freezed" class="flex flex-direction-reverse">
                     <a v-on:click="createProjectLimitation()" class="btn-rounded">{{ translateText('message.add_limitation') }} +</a>
                 </div>
                 <div class="header">
@@ -158,7 +160,7 @@
                 ></vue-chart>
                 <div class="hr"></div>
                 <div class="flex buttons flex-center">
-                    <a v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
+                    <a v-if="!freezed" v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
                     <a v-if="contract && contract.id" class="btn-rounded second-bg flex flex-center download-pdf" :href="downloadPdf">
                         {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill"></downloadbutton-icon>
                     </a>
@@ -218,54 +220,72 @@ export default {
             this.proposedEndDate = this.contract.proposedEndDate ? new Date(this.contract.proposedEndDate) : new Date();
             this.forecastStartDate = this.contract.forecastStartDate ? new Date(this.contract.forecastStartDate) : new Date();
             this.forecastEndDate = this.contract.forecastEndDate ? new Date(this.contract.forecastEndDate) : new Date();
+            this.freezed = this.contract.freezed;
         },
-        project(value) {
-            this.rowsInternal = [
-                [
-                    this.translateText('message.total'),
-                    parseInt(this.projectResourcesForGraph.internal.base || 0, 10),
-                    parseInt(this.projectResourcesForGraph.internal.change || 0, 10),
-                    parseInt(this.projectResourcesForGraph.internal.actual || 0, 10),
-                    parseInt(this.projectResourcesForGraph.internal.remaining || 0, 10),
-                    parseInt(this.projectResourcesForGraph.internal.forecast || 0, 10),
-                ],
-            ];
-            this.rowsExternal = [
-                [
-                    this.translateText('message.total'),
-                    parseInt(this.projectResourcesForGraph.external.base || 0, 10),
-                    parseInt(this.projectResourcesForGraph.external.change || 0, 10),
-                    parseInt(this.projectResourcesForGraph.external.actual || 0, 10),
-                    parseInt(this.projectResourcesForGraph.external.remaining || 0, 10),
-                    parseInt(this.projectResourcesForGraph.external.forecast || 0, 10),
-                ],
-            ];
-            this.options.vAxis.maxValue = Math.max(
-                parseInt(this.projectResourcesForGraph.internal.base || 0, 10),
-                parseInt(this.projectResourcesForGraph.internal.change || 0, 10),
-                parseInt(this.projectResourcesForGraph.internal.actual || 0, 10),
-                parseInt(this.projectResourcesForGraph.internal.remaining || 0, 10),
-                parseInt(this.projectResourcesForGraph.internal.forecast || 0, 10),
-                parseInt(this.projectResourcesForGraph.external.base || 0, 10),
-                parseInt(this.projectResourcesForGraph.external.change || 0, 10),
-                parseInt(this.projectResourcesForGraph.external.actual || 0, 10),
-                parseInt(this.projectResourcesForGraph.external.remaining || 0, 10),
-                parseInt(this.projectResourcesForGraph.external.forecast || 0, 10)
-            );
+        costData(value) {
+            Object.entries(this.costData.byPhase).map(([key, value]) => {
+                this.rowsExternal.push([
+                    key,
+                    value.base ? parseInt(value.base) : 0,
+                    value.actual ? parseInt(value.actual) : 0,
+                    value.forecast ? parseInt(value.forecast) : 0,
+                    value.base && value.actual ? parseInt(value.base) - parseInt(value.actual) : 0,
+                ]);
+            });
+        },
+        resourceData(value) {
+            Object.entries(this.resourceData.byPhase).map(([key, value]) => {
+                this.rowsInternal.push([
+                    key,
+                    value.base ? parseInt(value.base) : 0,
+                    value.actual ? parseInt(value.actual) : 0,
+                    value.forecast ? parseInt(value.forecast) : 0,
+                    value.base && value.actual ? parseInt(value.base) - parseInt(value.actual) : 0,
+                ]);
+            });
         },
     },
     methods: {
         ...mapActions(['getProjectById', 'getContractByProjectId', 'updateContract',
             'createContract', 'createObjective', 'createLimitation', 'createDeliverable',
             'editObjective', 'editLimitation', 'editDeliverable', 'reorderObjectives',
-            'reorderLimitations', 'reorderDeliverables', 'getProjectResourcesForGraph',
-            'getProjectUsers',
+            'reorderLimitations', 'reorderDeliverables', 'getProjectCostsGraphData',
+            'getProjectUsers', 'getProjectResourcesGraphData',
         ]),
+        showDatePicker: function(id) {
+            const picker = $('#'+id);
+            picker.next().toggle();
+            picker.focus();
+        },
+        closeDatePicker: function(id) {
+            const picker = $('#'+id);
+            picker.next().hide();
+        },
         translateText: function(text) {
             return this.translate(text);
         },
         toggleSponsorsManagers: function() {
             this.showSponsorsManagers = !this.showSponsorsManagers;
+        },
+        freezeContract: function() {
+            if (this.contract.id) {
+                let data = {
+                    id: this.contract.id,
+                    freezed: true,
+                };
+                this
+                    .updateContract(data)
+                    .then(
+                        () => {
+                            this.showSavedComponent = true;
+                            this.freezed = true;
+                        },
+                        (response) => {
+                            this.showFailed = response.status === 200;
+                        }
+                    )
+                ;
+            }
         },
         updateProjectContract: function() {
             let data = {
@@ -309,7 +329,6 @@ export default {
             let data = {
                 projectId: this.$route.params.id,
                 title: this.objectiveTitle,
-                description: this.objectiveDescription,
                 sequence: this.project.projectObjectives.length,
             };
             this
@@ -317,6 +336,7 @@ export default {
                 .then(
                     () => {
                         this.showSavedComponent = true;
+                        this.objectiveTitle = null;
                     },
                     () => {
                         this.showFailedComponent = true;
@@ -335,6 +355,7 @@ export default {
                 .then(
                     () => {
                         this.showSavedComponent = true;
+                        this.limitationDescription = null;
                     },
                     () => {
                         this.showFailedComponent = true;
@@ -353,6 +374,7 @@ export default {
                 .then(
                     () => {
                         this.showSavedComponent = true;
+                        this.deliverableDescription = null;
                     },
                     () => {
                         this.showFailedComponent = true;
@@ -384,8 +406,9 @@ export default {
     created() {
         this.getProjectById(this.$route.params.id);
         this.getContractByProjectId(this.$route.params.id);
-        this.getProjectResourcesForGraph(this.$route.params.id);
         this.getProjectUsers({id: this.$route.params.id});
+        this.getProjectCostsGraphData({id: this.$route.params.id});
+        this.getProjectResourcesGraphData({id: this.$route.params.id});
         const service = Vue.$dragula.$service;
         let vm = this;
         service.eventBus.$on('dropModel', function(args) {
@@ -439,7 +462,8 @@ export default {
         ...mapGetters({
             project: 'project',
             contract: 'currentContract',
-            projectResourcesForGraph: 'projectResourcesForGraph',
+            costData: 'costData',
+            resourceData: 'resourceData',
             projectSponsors: 'projectSponsors',
             projectManagers: 'projectManagers',
             validationMessages: 'validationMessages',
@@ -465,10 +489,6 @@ export default {
                 },
                 {
                     'type': 'number',
-                    'label': Translator.trans('label.change'),
-                },
-                {
-                    'type': 'number',
                     'label': Translator.trans('label.actual'),
                 },
                 {
@@ -481,12 +501,10 @@ export default {
                 },
             ],
             rowsInternal: [
-                [
-                    Translator.trans('message.total'), 0, 0, 0, 0, 0,
-                ],
+                [Translator.trans('message.total'), 0, 0, 0, 0],
             ],
             rowsExternal: [
-                [Translator.trans('message.total'), 0, 0, 0, 0, 0],
+                [Translator.trans('message.total'), 0, 0, 0, 0],
             ],
             options: {
                 title: Translator.trans('message.resource_chart'),
@@ -526,6 +544,7 @@ export default {
             showSponsorsManagers: false,
             objectiveDescription: null,
             limitationDescription: null,
+            freezed: false,
         };
     },
 };
@@ -576,7 +595,7 @@ export default {
         }
 
         &.right {
-            padding-top: 55px;
+            padding-top: 20px;
             padding-left: 15px;
         }
     }
@@ -623,5 +642,10 @@ export default {
 
     .input-holder {
         margin-bottom: 20px;
+    }
+
+    .disabledpicker {
+        pointer-events: none;
+        opacity: .5;
     }
 </style>
