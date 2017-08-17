@@ -13,7 +13,6 @@ const state = {
     loading: false,
     label: {},
     resources: [],
-    projectResourcesForGraph: {},
     tasksForSchedule: {},
     projectTasksStatus: {},
     risksOpportunitiesStats: [],
@@ -31,13 +30,6 @@ const getters = {
     },
     projectsForFilter: state => state.projectsForFilter,
     labelsForChoice: state => state.labelsForChoice,
-    projectResourcesForGraph: (state) => _.merge(
-        {
-            internal: {},
-            external: {},
-        },
-        state.projectResourcesForGraph
-    ),
     label: state => state.label,
     tasksForSchedule: state => state.tasksForSchedule,
     projectTasksStatus: state => state.projectTasksStatus,
@@ -412,25 +404,6 @@ const actions = {
     },
 
     /**
-     * Gets project resources values for graphic
-     * @param {function} commit
-     * @param {number} id
-     * @return {object}
-     */
-    getProjectResourcesForGraph({commit}, id) {
-        return Vue
-            .http
-            .get(Routing.generate('app_api_project_resources_graph', {'id': id})).then((response) => {
-                if (response.status === 200) {
-                    let resources = response.data;
-                    commit(types.SET_PROJECT_RESOURCES_GRAPH, {resources});
-                }
-            }, (response) => {
-            })
-        ;
-    },
-
-    /**
      * Creates a new project
      * @param {function} commit
      * @param {array} data
@@ -686,15 +659,6 @@ const mutations = {
      */
     [types.ADD_PROJECT_DELIVERABLE](state, {deliverable}) {
         state.currentProject.projectDeliverables.push(deliverable);
-    },
-
-    /**
-     * set project resources
-     * @param {Object} state
-     * @param {Object} resources
-     */
-    [types.SET_PROJECT_RESOURCES_GRAPH](state, {resources}) {
-        state.projectResourcesForGraph = resources;
     },
 
     /**

@@ -1,17 +1,16 @@
 <template>
     <div class="box" v-bind:id="item.id" v-if="!showEdit">
-        <header class="flex flex-space-between" v-bind:class="{'full': !item.title}">
+        <header class="flex flex-space-between full">
             <span>
                 {{ index+1 }}.
                 <span v-if="item.title">{{ title }}</span>
                 <span v-if="!item.title">{{ description }}</span>
             </span>
-            <div class="flex">
+            <div class="flex" v-if="!disabled">
                 <pencil-icon v-on:click.native="showEditBox()" :link="{name: ''}"></pencil-icon>
                 <drag-icon></drag-icon>
             </div>
         </header>
-        <div v-if="item.title" class="content">{{ description }}</div>
     </div>
     <div v-else-if="showEdit">
         <div class="hr small"></div>
@@ -23,11 +22,6 @@
         <input-field v-if="!item.title" v-model="description" :content="description" type="text" v-bind:label="dynamicLabels(type, 'description')"></input-field><br />
         <error
             v-if="!item.title && validationMessages.dragbox && validationMessages.description && validationMessages.description.length"
-            v-for="message in validationMessages.description"
-            :message="message" />
-        <input-field v-if="item.title" v-model="description" :content="description" type="textarea" v-bind:label="dynamicLabels(type, 'description')"></input-field>
-        <error
-            v-if="item.title && validationMessages.dragbox && validationMessages.description && validationMessages.description.length"
             v-for="message in validationMessages.description"
             :message="message" />
         <div class="flex flex-direction-reverse">
@@ -44,7 +38,7 @@ import InputField from '../../_common/_form-components/InputField';
 import Error from '../../_common/_messages/Error.vue';
 
 export default {
-    props: ['item', 'index', 'type'],
+    props: ['item', 'index', 'type', 'disabled'],
     components: {
         InputField,
         PencilIcon,

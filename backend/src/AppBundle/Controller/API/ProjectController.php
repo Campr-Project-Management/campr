@@ -126,8 +126,7 @@ class ProjectController extends ApiController
                 $project->setStatus($projectStatus);
             }
 
-            $em->persist($project);
-            $em->flush();
+            $this->persistAndFlush($project);
 
             return $this->createApiResponse($project, Response::HTTP_CREATED);
         }
@@ -1033,34 +1032,6 @@ class ProjectController extends ApiController
     public function resourcesAction(Project $project)
     {
         return $this->createApiResponse($project->getResources());
-    }
-
-    /**
-     * All project resources costs.
-     *
-     * @Route("/{id}/resources-graph", name="app_api_project_resources_graph", options={"expose"=true})
-     * @Method({"GET"})
-     *
-     * @param Project $project
-     *
-     * @return JsonResponse
-     */
-    public function resourcesGraphAction(Project $project)
-    {
-        // @TODO: replace with \AppBundle\Entity\Resource AND \AppBundle\Entity\Cost
-        return $this->createApiResponse(
-            [
-                'internal' => $this
-                    ->getDoctrine()
-                    ->getRepository(WorkPackageProjectWorkCostType::class)
-                    ->costsByProject($project),
-                'external' => $this
-                    ->getDoctrine()
-                    ->getRepository(WorkPackageProjectWorkCostType::class)
-                    ->costsByProject($project, false),
-            ],
-            Response::HTTP_OK
-        );
     }
 
     /**

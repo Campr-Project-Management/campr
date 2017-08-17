@@ -30,13 +30,6 @@ class ProjectObjective
     private $title;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text")
-     */
-    private $description;
-
-    /**
      * @var int
      *
      * @ORM\Column(name="sequence", type="integer", nullable=false, options={"default"=0})
@@ -85,24 +78,6 @@ class ProjectObjective
     public function setTitle($title)
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
 
         return $this;
     }
