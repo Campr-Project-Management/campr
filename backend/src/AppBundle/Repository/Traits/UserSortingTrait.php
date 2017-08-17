@@ -4,7 +4,7 @@ namespace AppBundle\Repository\Traits;
 
 use Doctrine\ORM\QueryBuilder;
 
-trait CategorySortingTrait
+trait UserSortingTrait
 {
     /**
      * @param array        $orderBy
@@ -14,10 +14,14 @@ trait CategorySortingTrait
     {
         foreach ($orderBy as $field => $dir) {
             switch ($field) {
-                case 'projectCategoryName':
-                    $qb->innerJoin('q.projectCategory', 'c');
-                    $qb->orderBy('c.name', $dir);
-                    unset($orderBy['projectCategoryName']);
+                case 'userFullName':
+                    $qb->addSelect('CONCAT(u.firstName, \' \', u.lastName) AS HIDDEN full_name');
+                    $qb->orderBy('full_name', $dir);
+                    unset($orderBy['userFullName']);
+                    break;
+                case 'userEmail':
+                    $qb->orderBy('u.email', $dir);
+                    unset($orderBy['userEmail']);
                     break;
                 default:
                     continue;
