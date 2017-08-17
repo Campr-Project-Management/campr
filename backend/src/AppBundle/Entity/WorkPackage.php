@@ -1715,4 +1715,34 @@ class WorkPackage
 
         return $this;
     }
+
+    /**
+     * @return int|null
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("noAttachments")
+     */
+    public function getNoAttachments()
+    {
+        return (int) $this->medias->count();
+    }
+
+    /**
+     * @return int|null
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("noComments")
+     */
+    public function getNoComments()
+    {
+        return (int) $this->comments->count();
+    }
+
+    /**
+     * @return int|null
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("noSubtasks")
+     */
+    public function getNoSubtasks()
+    {
+        return (int) $this->children->count();
+    }
 }

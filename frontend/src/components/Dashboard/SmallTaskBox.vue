@@ -15,24 +15,30 @@
                     <p class="task-id">#{{ task.id }}</p>
                 </div>
                 <div class="status-boxes">
-                    <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? task.colorStatusColor : '' }"></span>
+                    <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? task.colorStatusColor : '', cursor: 'default' }"></span>
                 </div>
             </div>
             <div class="info">
                 <div class="plan">
-                    <a href="#path-to-phase" title="View phase.name">{{ task.projectName }}</a>
+                    <router-link :to="{name: 'project-dashboard', params: {id: task.project}}">
+                        {{ task.projectName }}
+                    </router-link>
                     <span v-show="task.phaseName">
                         >
-                        <a href="#path-to-phase" title="View phase.name">{{ task.phaseName }}</a>
+                        <router-link :to="{name: 'project-phases-view-phase', params: {id: task.project, phaseId: task.phase}}">
+                            {{ task.phaseName }}
+                        </router-link>
                     </span>
                     <span v-show="task.milestoneName">
                         >
-                        <a href="#path-to-milestone" title="View milestone.name">{{ task.milestoneName }}</a>
+                        <router-link :to="{name: 'project-phases-view-milestone', params: {id: task.project, milestoneId: task.milestone}}">
+                            {{ task.milestoneName }}
+                        </router-link>
                     </span>
                 </div>
             </div>
             <div class="status">
-                <p><span>Status:</span> {{ translate(task.workPackageStatusName) }}</p>
+                <p><span>{{ translate('message.status') }}:</span> {{ translate(task.workPackageStatusName) }}</p>
                 <bar-chart position="right" :percentage="task.progress" :color="task.colorStatusColor" v-bind:title-right="message.progress"></bar-chart>
             </div>
         </div>

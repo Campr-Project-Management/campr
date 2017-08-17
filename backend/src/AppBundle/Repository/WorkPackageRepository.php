@@ -20,13 +20,17 @@ class WorkPackageRepository extends BaseRepository
      *
      * @return array
      */
-    public function findUserFiltered(User $user, $filters = [])
+    public function findUserFiltered(User $user, $filters = [], $select = null)
     {
         $qb = $this
             ->createQueryBuilder('wp')
             ->where('wp.responsibility = :user')
             ->setParameter('user', $user)
         ;
+
+        if ($select) {
+            $qb->select($select);
+        }
 
         if (isset($filters['type'])) {
             $qb
@@ -48,22 +52,16 @@ class WorkPackageRepository extends BaseRepository
 
         if (isset($filters['project'])) {
             $qb
-                ->innerJoin('wp.project', 'p')
-                ->andWhere('p.name = :projectName')
-                ->setParameter('projectName', $filters['project'])
+                ->andWhere('wp.project = :project')
+                ->setParameter('project', $filters['project'])
             ;
         }
 
         if (isset($filters['status'])) {
             $qb
-                ->innerJoin('wp.colorStatus', 'c')
-                ->andWhere('c.name = :colorName')
-                ->setParameter('colorName', $filters['status'])
+                ->andWhere('wp.colorStatus = :status')
+                ->setParameter('status', $filters['status'])
             ;
-        }
-
-        if (isset($filters['schedule'])) {
-            // TODO: Finish after we determine what is filtered here (schedule dates / schedule type)
         }
 
         if (isset($filters['milestone'])) {
@@ -72,8 +70,33 @@ class WorkPackageRepository extends BaseRepository
                 ->setParameter('milestone', $filters['milestone'])
             ;
         }
+        if (isset($filters['pageSize']) && isset($filters['page'])) {
+            $qb
+                ->setFirstResult($filters['pageSize'] * ($filters['page'] - 1))
+                ->setMaxResults($filters['pageSize'])
+            ;
+        }
 
-        return $qb->getQuery();
+        return $qb;
+    }
+
+    /**
+     * Counts the filtered projects.
+     *
+     * @param Project $project
+     * @param array   $filters
+     *
+     * @return int
+     */
+    public function countTotalByUserAndFilters(User $user, $filters = [])
+    {
+        return (int) $this
+            ->findUserFiltered($user, $filters, 'COUNT(DISTINCT wp.id)')
+            ->setFirstResult(0)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 
     /**

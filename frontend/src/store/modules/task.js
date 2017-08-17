@@ -11,12 +11,14 @@ const state = {
     users: [],
     tasksFilters: {},
     allTasks: [],
+    tasksPageSize: 0,
 };
 
 const getters = {
     currentTask: state => state.currentTask,
     tasks: state => state.tasks,
     tasksCount: state => state.tasksCount,
+    tasksPerPage: state => state.tasksPageSize,
     allTasks: state => state.allTasks,
     taskHistory: state => state.taskHistory,
 };
@@ -25,19 +27,28 @@ const actions = {
     /**
      * Gets this month tasks from the API and commits SET_TASKS mutation
      * @param {function} commit
-     * @param {number} page
+     * @param {array} data
      */
-    getRecentTasks({commit}, page) {
-        commit(types.TOGGLE_LOADER, true);
-        if (page === undefined) {
-            page = 1;
+    getRecentTasks({commit}, data) {
+        let paramObject = {params: {
+            recent: true,
+            type: 2,
+        }};
+        if (data && data.queryParams && data.queryParams.page !== undefined) {
+            paramObject.params.page = data.queryParams.page;
+        }
+        if (state.taskFilters && state.taskFilters.status) {
+            paramObject.params.status = state.taskFilters.status;
+        }
+        if (state.taskFilters && state.taskFilters.project) {
+            paramObject.params.project = state.taskFilters.project;
         }
         Vue.http
-            .get(Routing.generate('app_api_workpackage_list', {recent: true, page: page, type: 2})).then((response) => {
+            .get(Routing.generate('app_api_workpackage_list'), paramObject)
+            .then((response) => {
                 if (response.status === 200) {
                     let tasks = response.data;
                     commit(types.SET_TASKS, {tasks});
-                    commit(types.TOGGLE_LOADER, false);
                 }
             }, (response) => {
             });
@@ -67,16 +78,27 @@ const actions = {
     /**
      * Gets tasks from the API and commits SET_TASKS mutation
      * @param {function} commit
-     * @param {number} page
+     * @param {array} data
      */
-    getTasks({commit}, page) {
-        commit(types.TOGGLE_LOADER, true);
+    getTasks({commit}, data) {
+        let paramObject = {params: {
+            type: 2,
+        }};
+        if (data && data.queryParams && data.queryParams.page !== undefined) {
+            paramObject.params.page = data.queryParams.page;
+        }
+        if (state.taskFilters && state.taskFilters.status) {
+            paramObject.params.status = state.taskFilters.status;
+        }
+        if (state.taskFilters && state.taskFilters.project) {
+            paramObject.params.project = state.taskFilters.project;
+        }
         Vue.http
-            .get(Routing.generate('app_api_workpackage_list', {page: page, type: 2})).then((response) => {
+            .get(Routing.generate('app_api_workpackage_list'), paramObject)
+            .then((response) => {
                 if (response.status === 200) {
                     let tasks = response.data;
                     commit(types.SET_TASKS, {tasks});
-                    commit(types.TOGGLE_LOADER, false);
                 }
             }, (response) => {
             });
@@ -184,9 +206,10 @@ const actions = {
         );
     },
 
-    setFilters({commit}, taskFilters) {
-        commit(types.SET_TASKS_FILTERS, taskFilters);
+    setFilters({commit}, filters) {
+        commit(types.SET_TASKS_FILTERS, {filters});
     },
+
     getAllTasksGrid({commit, state}, {project, page}) {
         const projectUser = state.tasksFilters.assignee;
         const colorStatus = state.tasksFilters.condition;
@@ -263,6 +286,7 @@ const mutations = {
     [types.SET_TASKS](state, {tasks}) {
         state.tasks = tasks.items;
         state.tasksCount = tasks.totalItems;
+        state.tasksPageSize = tasks.pageSize;
         state.filteredTasks = JSON.parse(JSON.stringify(tasks));
     },
     /**
@@ -282,19 +306,28 @@ const mutations = {
         state.taskHistory = history;
     },
     /**
-     * Sets taskFilters to state
+     * Set the tasks filters
      * @param {Object} state
-     * @param {array} filter
+     * @param {array} filters
      */
-    [types.SET_FILTERS](state, filter) {
-        state.taskFilters[filter[0]] = filter[1];
+    [types.SET_TASKS_FILTERS](state, {filters}) {
+        state.taskFilters = !filters.clear ? Object.assign({}, state.taskFilters, filters) : [];
     },
-    [types.SET_TASKS_FILTERS](state, taskFilters) {
-        state.tasksFilters = taskFilters;
-    },
-    [types.SET_ALL_TASKS](state, tasks) {
+
+    /**
+     * Set all tasks
+     * @param {Object} state
+     * @param {array} tasks
+     */
+    [types.SET_ALL_TASKS](state, {tasks}) {
         state.allTasks = tasks;
     },
+
+    /**
+     * Delete a subtask
+     * @param {Object} state
+     * @param {number} taskId
+     */
     [types.DELETE_TASK_SUBTASK](state, taskId) {
         state.currentTask.children = state.currentTask.children.filter((item) => {
             return item.id !== taskId ? true : false;

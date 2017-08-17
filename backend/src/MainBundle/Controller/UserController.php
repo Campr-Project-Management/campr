@@ -336,7 +336,7 @@ class UserController extends Controller
     /**
      * Current user account settings.
      *
-     * @Route("/account", name="main_user_account")
+     * @Route("/account", name="main_user_account", options={"expose"=true})
      *
      * @param Request $request
      *
