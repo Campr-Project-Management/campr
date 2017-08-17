@@ -7,7 +7,7 @@
                         {{ project.name }}
                     </router-link>
                 </h2>
-                <div class="favourite">
+                <div class="favourite" v-if="project">
                     <star-icon :item="project"></star-icon>
                 </div>
             </div>
@@ -23,11 +23,11 @@
                     </p>
                     <p>
                         <span class="title">{{ message.project_manager }}</span>
-                        <span class="data">{{ project.projectManagerName }}</span>
+                        <span class="data" v-if="project.projectManager">{{ project.projectManagerName }}</span><span class="data" v-else>-</span>
                     </p>
                     <p>
                         <span class="title">{{ message.project_sponsor }}</span>
-                        <span class="data">{{ project.projectSponsorName }}</span>
+                        <span class="data" v-if="project.projectSponsor">{{ project.projectSponsorName }}</span><span class="data" v-else>-</span>
                     </p>
                     <p>
                         <span class="title">{{ message.status }}:</span>
