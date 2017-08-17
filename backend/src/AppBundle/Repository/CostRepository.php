@@ -3,11 +3,28 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Cost;
+use Doctrine\ORM\QueryBuilder;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\WorkPackage;
+use AppBundle\Repository\Traits\ProjectSortingTrait;
+use AppBundle\Repository\Traits\WorkPackageSortingTrait;
+use AppBundle\Repository\Traits\ResourceSortingTrait;
 
 class CostRepository extends BaseRepository
 {
+    use ProjectSortingTrait, WorkPackageSortingTrait, ResourceSortingTrait {
+        ProjectSortingTrait::setOrder as setProjectOrder;
+        WorkPackageSortingTrait::setOrder as setWorkPackageOrder;
+        ResourceSortingTrait::setOrder as setResourceOrder;
+    }
+
+    /**
+     * @param Project $project
+     * @param $type
+     * @param array $userIds
+     *
+     * @return array
+     */
     public function getTotalBaseCostByPhase(Project $project, $type, $userIds = [])
     {
         $select = $type === Cost::TYPE_EXTERNAL
@@ -39,5 +56,16 @@ class CostRepository extends BaseRepository
         }
 
         return $qb->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param array        $orderBy
+     * @param QueryBuilder $qb
+     */
+    public function setOrder(array &$orderBy, QueryBuilder $qb)
+    {
+        $this->setProjectOrder($orderBy, $qb);
+        $this->setWorkPackageOrder($orderBy, $qb);
+        $this->setResourceOrder($orderBy, $qb);
     }
 }

@@ -2,8 +2,25 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
+use AppBundle\Repository\Traits\DaySortingTrait;
+use AppBundle\Repository\Traits\CalendarSortingTrait;
+
 class DayRepository extends BaseRepository
 {
+    use DaySortingTrait, CalendarSortingTrait {
+        DaySortingTrait::setOrder as setDayOrder;
+        CalendarSortingTrait::setOrder as setCalendarOrder;
+    }
+
+    /**
+     * @param array      $criteria
+     * @param array|null $orderBy
+     * @param null       $limit
+     * @param null       $offset
+     *
+     * @return array
+     */
     public function findByWithLike(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $qb = $this
@@ -23,11 +40,7 @@ class DayRepository extends BaseRepository
             );
         }
 
-        if ($orderBy) {
-            foreach ($orderBy as $key => $value) {
-                $qb->orderBy('c.'.$key, $value);
-            }
-        }
+        $this->setOrder($orderBy, $qb);
 
         if ($limit) {
             $qb->setMaxResults($limit);
@@ -38,5 +51,15 @@ class DayRepository extends BaseRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param array        $orderBy
+     * @param QueryBuilder $qb
+     */
+    public function setOrder(array &$orderBy, QueryBuilder $qb)
+    {
+        $this->setDayOrder($orderBy, $qb);
+        $this->setCalendarOrder($orderBy, $qb);
     }
 }
