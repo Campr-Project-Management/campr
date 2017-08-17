@@ -1,4 +1,5 @@
 message:
+    contract_freezed: Project contract is freezed
     opportunities: Opportunities
     phases_and_milestones: Phases and Milestones
     costs_progress: Costs Progress
@@ -754,6 +755,7 @@ subtitle:
     task_precedesor: Task predecesor
 
 label:
+    freezed: Freezed
     event: Event
     time: Time
     new_role: New Role
@@ -1019,6 +1021,7 @@ label:
     no_data: No data
 
 button:
+    freeze_contract: Freeze Contract
     email_status_report: Email Status Report
     delete_decision: Delete Decision
     new_decision: New Decision
@@ -1293,6 +1296,7 @@ placeholder:
     todo_category: Todo Category
 
 table_header_cell:
+    freezed: Freezed
     expiry_date: Expiry Date
     distribution_list: Distribution List
     present: Present

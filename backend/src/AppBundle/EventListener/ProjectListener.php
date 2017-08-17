@@ -3,6 +3,7 @@
 namespace AppBundle\EventListener;
 
 use AppBundle\Entity\Project;
+use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\ProjectUser;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -34,6 +35,9 @@ class ProjectListener
             $projectUser->setUser($this->tokenStorage->getToken()->getUser());
             $projectUser->setShowInResources(true);
             $projectUser->setShowInOrg(true);
+
+            $role = $args->getEntityManager()->getRepository(ProjectRole::class)->findOneByName(ProjectRole::ROLE_MANAGER);
+            $projectUser->addProjectRole($role);
 
             $args->getEntityManager()->persist($projectUser);
         }
