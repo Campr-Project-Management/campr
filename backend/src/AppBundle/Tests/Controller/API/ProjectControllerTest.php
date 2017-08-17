@@ -369,9 +369,11 @@ class ProjectControllerTest extends BaseController
                     'progress' => 0,
                     'programme' => null,
                     'programmeName' => null,
+                    'isNew' => false,
                     'id' => 2,
                     'name' => 'project2',
                     'number' => 'project-number-2',
+                    'shortNote' => null,
                     'projectUsers' => [
                         [
                             'user' => 6,
@@ -1850,9 +1852,11 @@ class ProjectControllerTest extends BaseController
                     'progress' => 0,
                     'programme' => null,
                     'programmeName' => null,
+                    'isNew' => false,
                     'id' => 1,
                     'name' => 'project1',
                     'number' => 'project-number-1',
+                    'shortNote' => null,
                     'projectUsers' => [
                         [
                             'user' => 3,
@@ -3085,6 +3089,9 @@ class ProjectControllerTest extends BaseController
                     'workPackageStatusName' => null,
                     'workPackageCategory' => null,
                     'workPackageCategoryName' => null,
+                    'noAttachments' => 0,
+                    'noComments' => 0,
+                    'noSubtasks' => 0,
                     'id' => 5,
                     'puid' => '5',
                     'name' => 'task',
