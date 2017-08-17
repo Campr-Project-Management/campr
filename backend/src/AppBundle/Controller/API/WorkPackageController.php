@@ -13,6 +13,8 @@ use AppBundle\Form\WorkPackage\PhaseType;
 use AppBundle\Security\WorkPackageVoter;
 use AppBundle\Form\Assignment\BaseCreateType as AssignmentCreateType;
 use AppBundle\Form\Comment\CreateType as CommentCreateType;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -248,9 +250,19 @@ class WorkPackageController extends ApiController
     {
         $this->denyAccessUnlessGranted(WorkPackageVoter::DELETE, $wp);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($wp);
-        $em->flush();
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($wp);
+            $em->flush();
+        } catch (ForeignKeyConstraintViolationException $e) {
+            $errors = [
+                'messages' => [
+                    'dependency' => $this->get('translator')->trans('message.work_package_dependency_constraint', [], 'messages'),
+                ],
+            ];
+
+            return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+        }
 
         return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
