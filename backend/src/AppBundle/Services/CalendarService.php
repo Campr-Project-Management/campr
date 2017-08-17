@@ -50,6 +50,7 @@ class CalendarService
             ->em
             ->getRepository(WorkPackage::class)
             ->findUserFiltered($user, $options)
+            ->getQuery()
             ->getResult()
         ;
 

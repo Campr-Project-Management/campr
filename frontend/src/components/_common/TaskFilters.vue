@@ -1,9 +1,9 @@
 <template>
     <div class="filters">
-        <span class="title">{{ message.filter_by }}</span>
+        <span class="title">{{ translateText('message.filter_by') }}</span>
         <div class="dropdowns">
-            <dropdown v-bind:title="message.status" v-bind:options="statuses" item="task" filter="colorStatusName"></dropdown>
-            <dropdown v-bind:title="message.project" v-bind:options="projectsForFilter" item="task" filter="project"></dropdown>
+            <dropdown v-bind:title="translateText('message.status')" v-bind:options="statuses" :selectedValue="selectStatus"></dropdown>
+            <dropdown v-bind:title="translateText('message.project')" v-bind:options="projectsForFilter" :selectedValue="selectProject"></dropdown>
         </div>
     </div>
 </template>
@@ -13,10 +13,22 @@ import Dropdown from '../_common/Dropdown';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
+    props: ['updateFilters'],
     components: {
         Dropdown,
     },
-    methods: mapActions(['getProjects']),
+    methods: {
+        ...mapActions(['getProjects']),
+        translateText: function(text) {
+            return this.translate(text);
+        },
+        selectStatus: function(value) {
+            this.updateFilters('status', value);
+        },
+        selectProject: function(value) {
+            this.updateFilters('project', value);
+        },
+    },
     created() {
         this.getProjects();
     },
@@ -29,12 +41,6 @@ export default {
     },
     data: function() {
         return {
-            message: {
-                filter_by: Translator.trans('message.filter_by'),
-                schedule: Translator.trans('message.schedule'),
-                status: Translator.trans('message.status'),
-                project: Translator.trans('message.project'),
-            },
         };
     },
 };

@@ -28,7 +28,7 @@
                             </g>
                             </svg>
                         </span>
-                        <span class="notification-balloon">{{ projectsCount + tasksCount }}</span>
+                        <span class="notification-balloon" v-if="sidebarStats">{{ sidebarStats.total }}</span>
                     </router-link>
                 </li>
                 <li>
@@ -46,7 +46,7 @@
                             </g>
                               </svg>
                         </span>
-                        <span class="notification-balloon">{{ projectsCount }}</span>
+                        <span class="notification-balloon" v-if="sidebarStats">{{ sidebarStats.projectTotal }}</span>
                     </router-link>
                 </li>
                 <li>
@@ -71,7 +71,7 @@
                             </g>
                             </svg>
                         </span>
-                        <span class="notification-balloon">{{ tasksCount }}</span>
+                        <span class="notification-balloon" v-if="sidebarStats">{{ sidebarStats.taskTotal }}</span>
                     </router-link>
                 </li>
             </ul>
@@ -84,14 +84,14 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.contract">
-                        <span class="default">{{ message.contract }}</span>
+                    <router-link :to="{name: 'project-organization'}" v-bind:title="message.organization">
+                        <span class="default">{{ message.organization }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-organization'}" v-bind:title="message.organization">
-                        <span class="default">{{ message.organization }}</span>
+                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.contract">
+                        <span class="default">{{ message.contract }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
@@ -197,15 +197,10 @@ import {mapActions, mapGetters} from 'vuex';
 export default {
     name: 'sidebar',
     created() {
-        if (!this.$store.state.project.projects || this.$store.state.project.projects.length == 0) {
-            this.getProjects();
-        }
-        if (this.tasksCount === 0) {
-            this.getTasks(1);
-        }
+        this.getSidebarInformation();
     },
     methods: {
-        ...mapActions(['getProjects', 'getTasks']),
+        ...mapActions(['getSidebarInformation']),
         translate(key) {
             return Vue.translate(key);
         },
@@ -239,8 +234,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            tasksCount: 'tasksCount',
-            projectsCount: 'projectsCount',
+            sidebarStats: 'sidebarStats',
         }),
     },
 };
