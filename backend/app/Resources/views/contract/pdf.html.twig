@@ -79,7 +79,6 @@
                     <dl>
                         {% for objective in contract.project.projectObjectives %}
                             <dt>{{ objective.title }}</dt>
-                            <dd>{{ objective.description }}</dd>
                             {% if not loop.last %}
                                 <hr>
                             {% endif %}
