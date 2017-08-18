@@ -18,9 +18,9 @@ const getters = {
 };
 
 const actions = {
-    getRiskStrategies({commit}) {
+    getRiskStrategies({commit}, id) {
         Vue.http
-            .get(Routing.generate('app_api_risk_strategies_list')).then((response) => {
+            .get(Routing.generate('app_api_project_risk_strategies', {'id': id})).then((response) => {
                 if (response.status === 200) {
                     let strategies = response.data;
                     commit(types.SET_RISK_STRATEGIES, {strategies});

@@ -20,7 +20,7 @@ import 'ion-rangeslider/css/ion.rangeSlider.css';
 import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
 
 export default {
-    props: ['title', 'min', 'max', 'type', 'minPrefix', 'minSuffix', 'maxPrefix', 'maxSuffix', 'values', 'value', 'disabled'],
+    props: ['title', 'min', 'max', 'type', 'minPrefix', 'minSuffix', 'maxPrefix', 'maxSuffix', 'values', 'value', 'disabled', 'step'],
     computed: {
         from: function() {
             if (!this.value) {
@@ -50,6 +50,7 @@ export default {
             to: isNaN(parseFloat(this.to, 10)) ? values.indexOf(this.to) : this.to,
             values: values,
             disable: this.disabled,
+            step: this.step,
         });
 
         $this.on('change', function(e) {

@@ -9,65 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 class RiskStrategyControllerTest extends BaseController
 {
     /**
-     * @dataProvider getDataForListAction()
-     *
-     * @param $url
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
-     */
-    public function testListAction(
-        $url,
-        $isResponseSuccessful,
-        $responseStatusCode,
-        $responseContent
-    ) {
-        $user = $this->getUserByUsername('superadmin');
-        $token = $user->getApiToken();
-
-        $this->client->request(
-            'GET',
-            $url,
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token), ],
-            ''
-        );
-        $response = $this->client->getResponse();
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataForListAction()
-    {
-        return [
-            [
-                '/api/risk-strategies',
-                true,
-                Response::HTTP_OK,
-                [
-                    [
-                        'id' => 1,
-                        'name' => 'risk-strategy1',
-                        'sequence' => 1,
-                    ],
-                    [
-                        'id' => 2,
-                        'name' => 'risk-strategy2',
-                        'sequence' => 2,
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    /**
      * @dataProvider getDataForCreateAction()
      *
      * @param array $content
@@ -126,6 +67,8 @@ class RiskStrategyControllerTest extends BaseController
                 true,
                 Response::HTTP_CREATED,
                 [
+                    'project' => null,
+                    'projectName' => null,
                     'id' => 3,
                     'name' => 'risk-strategy3',
                     'sequence' => 1,
@@ -363,6 +306,8 @@ class RiskStrategyControllerTest extends BaseController
                 true,
                 Response::HTTP_ACCEPTED,
                 [
+                    'project' => null,
+                    'projectName' => null,
                     'id' => 1,
                     'name' => 'risk-strategy1',
                     'sequence' => 1,
@@ -638,6 +583,8 @@ class RiskStrategyControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
+                    'project' => null,
+                    'projectName' => null,
                     'id' => 1,
                     'name' => 'risk-strategy1',
                     'sequence' => 1,
