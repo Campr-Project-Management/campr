@@ -2314,7 +2314,7 @@ class Project
 
         return $this;
     }
-    
+
     /**
      * Returns if a project is new.
      *
@@ -2326,7 +2326,9 @@ class Project
     public function getIsNew()
     {
         $today = new \DateTime();
-        $createdAt = $this->getCreatedAt();
+        $today->setTime(0, 0, 0);
+        $createdAt = clone $this->getCreatedAt();
+        $createdAt->setTime(0,0,0);
 
         return intval($today->diff($createdAt)->format('%a')) <= 7;
     }
