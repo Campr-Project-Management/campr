@@ -19,8 +19,10 @@ class StatusControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/status/create');
 
-        $this->assertContains('id="create_name"', $crawler->html());
-        $this->assertContains('name="create[name]"', $crawler->html());
+        $this->assertContains('id="admin_name"', $crawler->html());
+        $this->assertContains('name="admin[name]"', $crawler->html());
+        $this->assertContains('id="admin_project"', $crawler->html());
+        $this->assertContains('name="admin[project]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -54,7 +56,7 @@ class StatusControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/status/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[name]'] = 'status1';
+        $form['admin[name]'] = 'status1';
 
         $crawler = $this->client->submit($form);
 
@@ -72,7 +74,7 @@ class StatusControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/status/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[name]'] = 'status3';
+        $form['admin[name]'] = 'status3';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -122,8 +124,10 @@ class StatusControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/status/1/edit');
 
-        $this->assertContains('id="create_name"', $crawler->html());
-        $this->assertContains('name="create[name]"', $crawler->html());
+        $this->assertContains('id="admin_name"', $crawler->html());
+        $this->assertContains('name="admin[name]"', $crawler->html());
+        $this->assertContains('id="admin_project"', $crawler->html());
+        $this->assertContains('name="admin[project]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 
@@ -140,7 +144,7 @@ class StatusControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/status/1/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[name]'] = '';
+        $form['admin[name]'] = '';
 
         $crawler = $this->client->submit($form);
 
@@ -159,7 +163,7 @@ class StatusControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/status/1/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[name]'] = 'status2';
+        $form['admin[name]'] = 'status2';
 
         $crawler = $this->client->submit($form);
 
@@ -177,7 +181,7 @@ class StatusControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/status/2/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[name]'] = 'status2';
+        $form['admin[name]'] = 'status2';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -198,6 +202,7 @@ class StatusControllerTest extends BaseController
         $this->assertEquals(1, $crawler->filter('#data-table-command')->count());
         $this->assertContains('data-column-id="id"', $crawler->html());
         $this->assertContains('data-column-id="name"', $crawler->html());
+        $this->assertContains('data-column-id="projectName"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());
         $this->assertEquals(1, $crawler->filter('.zmdi-plus')->count());
 

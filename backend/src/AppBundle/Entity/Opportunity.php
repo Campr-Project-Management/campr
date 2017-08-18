@@ -79,7 +79,7 @@ class Opportunity
     /**
      * @var string
      *
-     * @ORM\Column(name="budget", type="decimal", precision=9, scale=2, nullable=true)
+     * @ORM\Column(name="budget", type="decimal", precision=25, scale=2, nullable=true)
      */
     private $budget;
 

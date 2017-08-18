@@ -49,7 +49,7 @@ class OpportunityController extends ApiController
      */
     public function editAction(Request $request, Opportunity $opportunity)
     {
-        $form = $this->getForm($opportunity, ['method' => $request->getMethod()]);
+        $form = $this->getForm($opportunity, ['method' => $request->getMethod(), 'csrf_protection' => false]);
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {

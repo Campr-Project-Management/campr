@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\RiskStrategy;
-use AppBundle\Form\RiskStrategy\CreateType;
+use AppBundle\Form\RiskStrategy\AdminType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -97,7 +97,7 @@ class RiskStrategyController extends BaseController
     public function createAction(Request $request)
     {
         $riskStrategy = new RiskStrategy();
-        $form = $this->createForm(CreateType::class, $riskStrategy);
+        $form = $this->createForm(AdminType::class, $riskStrategy);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -141,7 +141,7 @@ class RiskStrategyController extends BaseController
     public function editAction(Request $request, RiskStrategy $riskStrategy)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(CreateType::class, $riskStrategy);
+        $form = $this->createForm(AdminType::class, $riskStrategy);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

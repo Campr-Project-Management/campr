@@ -1576,11 +1576,11 @@ class ProjectController extends ApiController
         return $this->createApiResponse([
             'risks' => [
                 'risk_data' => $riskData,
-                'measure_data' => $measureRepo->getStatsForRisk(),
+                'measure_data' => $measureRepo->getStatsForRisk($project),
              ],
             'opportunities' => [
                 'opportunity_data' => $opportunityData,
-                'measure_data' => $measureRepo->getStatsForOpportunity(),
+                'measure_data' => $measureRepo->getStatsForOpportunity($project),
             ],
         ]);
     }
@@ -1813,5 +1813,57 @@ class ProjectController extends ApiController
         ];
 
         return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * Get all opportunity statuses.
+     *
+     * @Route("/{id}/opportunity-statuses", name="app_api_project_opportunity_statuses", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @return JsonResponse
+     */
+    public function opportunityStatusesAction(Project $project)
+    {
+        return $this->createApiResponse($project->getOpportunityStatuses());
+    }
+
+    /**
+     * Get all opportunity strategies.
+     *
+     * @Route("/{id}/opportunity-strategies", name="app_api_project_opportunity_strategies", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @return JsonResponse
+     */
+    public function opportunityStrategiesAction(Project $project)
+    {
+        return $this->createApiResponse($project->getOpportunityStrategies());
+    }
+
+    /**
+     * Get all risk statuses.
+     *
+     * @Route("/{id}/risk-statuses", name="app_api_project_risk_statuses", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @return JsonResponse
+     */
+    public function riskStatusesAction(Project $project)
+    {
+        return $this->createApiResponse($project->getRiskStatuses());
+    }
+
+    /**
+     * Get all opporrisktunity strategies.
+     *
+     * @Route("/{id}/risk-strategies", name="app_api_project_risk_strategies", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @return JsonResponse
+     */
+    public function riskStrategiesAction(Project $project)
+    {
+        return $this->createApiResponse($project->getRiskStrategies());
     }
 }

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\OpportunityStrategy;
-use AppBundle\Form\OpportunityStrategy\BaseType;
+use AppBundle\Form\OpportunityStrategy\AdminType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -96,7 +96,7 @@ class OpportunityStrategyController extends BaseController
      */
     public function createAction(Request $request)
     {
-        $form = $this->createForm(BaseType::class);
+        $form = $this->createForm(AdminType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -136,7 +136,7 @@ class OpportunityStrategyController extends BaseController
      */
     public function editAction(Request $request, OpportunityStrategy $opportunityStrategy)
     {
-        $form = $this->createForm(BaseType::class, $opportunityStrategy);
+        $form = $this->createForm(AdminType::class, $opportunityStrategy);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
