@@ -85,7 +85,7 @@
                         <p>{{ translateText('message.priority') }}:</p>
                     </div>
                     <div class="text-left">
-                        <p><b>{{ risk.priority }}</b></p>
+                        <p><b v-if="priority" v-bind:class="priority.color">{{ translateText(priority.name) }}</b><b v-else>-</b></p>
                     </div>
                 </div>
             </div>
@@ -114,7 +114,7 @@
                 <div class="row ro-details">
                     <div class="col-md-12">
                         <div class="ro-info">
-                            <p>{{ translateText('message.priority') }}: <b>{{ risk.priority }}</b></p>
+                            <p>{{ translateText('message.priority') }}: <b v-if="priority" v-bind:class="priority.color">{{ translateText(priority.name) }}</b><b v-else>-</b></p>
                             <p>{{ translateText('message.strategy') }}: <b>{{ risk.riskStrategyName }}</b></p>
                             <p>{{ translateText('message.status') }}: <b>{{ risk.statusName }}</b></p>
                         </div>
@@ -160,7 +160,7 @@
                 <hr class="double">
 
                 <!-- /// Descripton /// -->
-                <p>{{ risk.description }}</p>
+                <p v-html="risk.description"></p>
                 <!-- /// End Description /// -->
 
                 <hr class="double">
@@ -222,7 +222,7 @@
                         <div class="comment-body">
                             <b class="title">{{ measure.title }}</b>
                             <p class="cost">{{ translateText('message.cost') }}: <b>$ {{ measure.cost }}</b></p>
-                            <p>{{ measure.description }}</p>
+                            <p v-html="measure.description "></p>
                         </div>
                         <div class="comment-footer" v-if="measure.medias.length > 0">
                             <attach-icon fill="second-fill"></attach-icon>
@@ -245,7 +245,7 @@
                                     </div>
                                 </div>
                                 <div class="comment-body">
-                                    <p>{{ comment.description }}</p>
+                                    <p v-html="comment.description"></p>
                                 </div>
                                 <div class="comment-footer" v-if="comment.medias.length > 0">
                                     <attach-icon fill="second-fill"></attach-icon>
@@ -434,7 +434,7 @@ export default {
         updateGridView() {
             let index = 0;
             const riskImpact = this.currentRiskImpact;
-            const riskProbability = this.currentRiskOpportunity;
+            const riskProbability = this.currentRiskProbability;
 
             if (riskImpact < 25 || !riskImpact) {
                 index += 12;
@@ -468,6 +468,18 @@ export default {
 
             this.activeItem = this.gridData[index];
             this.activeItem.isActive = true;
+            this.setPriority(this.gridData[index].type);
+        },
+        setPriority: function(type) {
+            const priorityNames = {
+                'very-low': {name: 'message.very_low', color: 'ro-very-low-priority', value: 0},
+                'low': {name: 'message.low', color: 'ro-low-priority', value: 1},
+                'medium': {name: 'message.medium', color: 'ro-medium-priority', value: 2},
+                'high': {name: 'message.high', color: 'ro-high-priority', value: 3},
+                'very-high': {name: 'message.very_high', color: 'ro-very-high-priority', value: 4},
+            };
+
+            this.priority = priorityNames[type];
         },
     },
     computed: {
@@ -485,6 +497,7 @@ export default {
     },
     data: function() {
         return {
+            priority: null,
             selectedMeasure: {},
             measureTitle: '',
             measureDescription: '',
@@ -526,6 +539,24 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
     @import '../../../css/_variables';
-    @import '../../../css/_mixins';  
+    @import '../../../css/_mixins';
     @import '../../../css/risks-and-opportunities/view';
+
+    .ro-summary {
+        .ro-very-high-priority {
+            color: $dangerDarkColor;
+        }
+        .ro-high-priority {
+            color: $dangerColor;
+        }
+        .ro-medium-priority {
+            color: $warningColor;
+        }
+        .ro-low-priority {
+            color: $secondColor;
+        }
+        .ro-very-low-priority {
+            color: $secondDarkColor;
+        }
+    }
 </style>

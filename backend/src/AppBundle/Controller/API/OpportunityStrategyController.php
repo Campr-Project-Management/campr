@@ -20,19 +20,6 @@ class OpportunityStrategyController extends ApiController
     const FORM_CLASS = BaseType::class;
 
     /**
-     * Get all opportunity strategies.
-     *
-     * @Route(name="app_api_opportunity_strategies_list", options={"expose"=true})
-     * @Method({"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function listAction()
-    {
-        return $this->createApiResponse($this->getRepository()->findAll());
-    }
-
-    /**
      * Create a new OpportunityStrategy.
      *
      * @Route(name="app_api_opportunity_strategies_create", options={"expose"=true})

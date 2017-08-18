@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * RiskStrategy.
@@ -36,6 +37,16 @@ class RiskStrategy
      * @ORM\Column(name="sequence", type="integer", nullable=false, options={"default"=0})
      */
     private $sequence = 0;
+
+    /**
+     * @var Project
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="riskStrategies")
+     * @ORM\JoinColumn(name="project_id")
+     */
+    private $project;
 
     /**
      * Get id.
@@ -93,5 +104,49 @@ class RiskStrategy
     public function getSequence()
     {
         return $this->sequence;
+    }
+
+    /**
+     * @return Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * @param Project $project
+     */
+    public function setProject(Project $project)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Returns project id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("project")
+     *
+     * @return string
+     */
+    public function getProjectId()
+    {
+        return $this->project ? $this->project->getId() : null;
+    }
+
+    /**
+     * Returns project name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectName")
+     *
+     * @return string
+     */
+    public function getProjectName()
+    {
+        return $this->project ? $this->project->getName() : null;
     }
 }

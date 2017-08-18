@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\OpportunityStatus;
-use AppBundle\Form\OpportunityStatus\BaseType;
+use AppBundle\Form\OpportunityStatus\AdminType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -96,7 +96,7 @@ class OpportunityStatusController extends BaseController
      */
     public function createAction(Request $request)
     {
-        $form = $this->createForm(BaseType::class);
+        $form = $this->createForm(AdminType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -136,7 +136,7 @@ class OpportunityStatusController extends BaseController
      */
     public function editAction(Request $request, OpportunityStatus $opportunityStatus)
     {
-        $form = $this->createForm(BaseType::class, $opportunityStatus);
+        $form = $this->createForm(AdminType::class, $opportunityStatus);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

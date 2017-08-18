@@ -38,7 +38,7 @@
                         <p>{{ translateText('message.priority') }}:</p>
                     </div>
                     <div class="text-left">
-                        <p><b>{{ translateText('message.very_high') }}</b></p>
+                        <p><b v-if="priority" v-bind:class="priority.color">{{ translateText(priority.name) }}</b><b v-else>-</b></p>
                     </div>
                 </div>
             </div>
@@ -89,10 +89,11 @@
                         max="100"
                         minSuffix=" %"
                         type="single"
+                        step="5"
                         v-model="riskImpact"
                         v-bind:value="riskImpact" />
                         <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
-                            <indicator-icon fill="middle-fill" :position="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact" :title="translateText('message.average_impact_risk')"></indicator-icon>
+                            <indicator-icon fill="middle-fill" v-if="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact" :position="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact" :title="translateText('message.average_impact_risk')"></indicator-icon>
                         </div>
                     </div>
                     <!-- /// End Risk Impact /// -->
@@ -105,10 +106,11 @@
                         max="100"
                         minSuffix=" %"
                         type="single"
+                        step="5"
                         v-model="riskProbability"
                         v-bind:value="riskProbability" />
                         <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
-                            <indicator-icon fill="middle-fill" :position="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability" :title="translateText('message.average_probability_risk')"></indicator-icon>
+                            <indicator-icon fill="middle-fill" v-if="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability" :position="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability" :title="translateText('message.average_probability_risk')"></indicator-icon>
                         </div>
                     </div>
                     <!-- /// End Risk Probability /// -->
@@ -340,7 +342,7 @@ export default {
                 currency: this.details.currency && this.details.currency.key ? this.details.currency.key : '',
                 delay: this.timeDelay,
                 delayUnit: this.details.time && this.details.time.key ? this.details.time.key : '',
-                priority: 'PRIORITY', // TODO: determine the priority calulation method
+                priority: this.priority ? this.priority.value : null,
                 riskStrategy: this.details.strategy ? this.details.strategy.key : null,
                 status: this.details.status ? this.details.status.key : null,
                 dueDate: moment(this.schedule.dueDate).format('DD-MM-YYYY'),
@@ -405,12 +407,13 @@ export default {
                 index += 3;
             }
 
-            if(this.activeItem) {
+            if (this.activeItem) {
                 this.activeItem.isActive = false;
             }
 
             this.activeItem = this.gridData[index];
             this.activeItem.isActive = true;
+            this.setPriority(this.gridData[index].type);
         },
         getCurrencySymbol: function(label) {
             let symbols = {
@@ -420,6 +423,17 @@ export default {
             };
 
             return symbols[label];
+        },
+        setPriority: function(type) {
+            const priorityNames = {
+                'very-low': {name: 'message.very_low', color: 'ro-very-low-priority', value: 0},
+                'low': {name: 'message.low', color: 'ro-low-priority', value: 1},
+                'medium': {name: 'message.medium', color: 'ro-medium-priority', value: 2},
+                'high': {name: 'message.high', color: 'ro-high-priority', value: 3},
+                'very-high': {name: 'message.very_high', color: 'ro-very-high-priority', value: 4},
+            };
+
+            this.priority = priorityNames[type];
         },
     },
     computed: {
@@ -433,14 +447,15 @@ export default {
     },
     created() {
         this.getProjectRiskAndOpportunitiesStats(this.$route.params.id);
-        this.getRiskStrategies();
-        this.getRiskStatuses();
+        this.getRiskStrategies(this.$route.params.id);
+        this.getRiskStatuses(this.$route.params.id);
         if (this.$route.params.riskId) {
             this.getProjectRisk(this.$route.params.riskId);
         }
     },
     data: function() {
         return {
+            priority: null,
             calculatedBudget: '0.00',
             calculatedTime: '0.00',
             title: '',
@@ -566,4 +581,22 @@ export default {
     @import '../../../css/_variables';
     @import '../../../css/_mixins';
     @import '../../../css/risks-and-opportunities/view';
+
+    .ro-summary {
+        .ro-very-high-priority {
+            color: $dangerDarkColor;
+        }
+        .ro-high-priority {
+            color: $dangerColor;
+        }
+        .ro-medium-priority {
+            color: $warningColor;
+        }
+        .ro-low-priority {
+            color: $secondColor;
+        }
+        .ro-very-low-priority {
+            color: $secondDarkColor;
+        }
+    }
 </style>
