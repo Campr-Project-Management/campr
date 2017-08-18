@@ -140,8 +140,8 @@ services:
         tags:
             - { name: form.type }
 
-    app.form.project.create_type:
-        class: AppBundle\Form\Project\CreateType
+    app.form.project.api_type:
+        class: AppBundle\Form\Project\ApiType
         arguments:
             - "@security.token_storage"
         tags:

@@ -30,7 +30,7 @@ use AppBundle\Entity\WorkPackageProjectWorkCostType;
 use AppBundle\Entity\WorkPackageStatus;
 use AppBundle\Form\Info\ApiCreateType as InfoType;
 use AppBundle\Form\Label\BaseLabelType;
-use AppBundle\Form\Project\CreateType;
+use AppBundle\Form\Project\ApiType;
 use AppBundle\Form\Calendar\BaseCreateType as CalendarCreateType;
 use AppBundle\Form\Contract\BaseCreateType as ContractCreateType;
 use AppBundle\Form\DistributionList\BaseCreateType as DistributionCreateType;
@@ -116,7 +116,7 @@ class ProjectController extends ApiController
     public function createAction(Request $request)
     {
         $project = new Project();
-        $form = $this->createForm(CreateType::class, $project, ['csrf_protection' => false]);
+        $form = $this->createForm(ApiType::class, $project, ['csrf_protection' => false]);
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
@@ -176,7 +176,7 @@ class ProjectController extends ApiController
     {
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
-        $form = $this->createForm(CreateType::class, $project, ['csrf_protection' => false]);
+        $form = $this->createForm(ApiType::class, $project, ['csrf_protection' => false]);
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
