@@ -65,7 +65,7 @@ class Risk
     /**
      * @var string
      *
-     * @ORM\Column(name="cost", type="decimal", precision=9, scale=2, nullable=true)
+     * @ORM\Column(name="cost", type="decimal", precision=25, scale=2, nullable=true)
      */
     private $cost;
 

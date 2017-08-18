@@ -415,6 +415,34 @@ class Project
     private $decisions;
 
     /**
+     * @var ArrayCollection|OpportunityStatus[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpportunityStatus", mappedBy="project")
+     */
+    private $opportunityStatuses;
+
+    /**
+     * @var ArrayCollection|OpportunityStrategy[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpportunityStrategy", mappedBy="project")
+     */
+    private $opportunityStrategies;
+
+    /**
+     * @var ArrayCollection|Status[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Status", mappedBy="project")
+     */
+    private $riskStatuses;
+
+    /**
+     * @var ArrayCollection|RiskStrategy[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\RiskStrategy", mappedBy="project")
+     */
+    private $riskStrategies;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -446,6 +474,10 @@ class Project
         $this->risks = new ArrayCollection();
         $this->opportunities = new ArrayCollection();
         $this->decisions = new ArrayCollection();
+        $this->opportunityStatuses = new ArrayCollection();
+        $this->opportunityStrategies = new ArrayCollection();
+        $this->riskStrategies = new ArrayCollection();
+        $this->riskStatuses = new ArrayCollection();
     }
 
     public function __toString()
@@ -2137,10 +2169,152 @@ class Project
     public function setShortNote($shortNote)
     {
         $this->shortNote = $shortNote;
+    }
+
+    /**
+     * Add opportunityStatus.
+     *
+     * @param OpportunityStatus $opportunityStatus
+     *
+     * @return Project
+     */
+    public function addOpportunityStatus(OpportunityStatus $opportunityStatus)
+    {
+        $this->opportunityStatuses[] = $opportunityStatus;
 
         return $this;
     }
 
+    /**
+     * Remove opportunityStatus.
+     *
+     * @param OpportunityStatus $opportunityStatus
+     */
+    public function removeOpportunityStatus(OpportunityStatus $opportunityStatus)
+    {
+        $this->opportunityStatuses->removeElement($opportunityStatus);
+
+        return $this;
+    }
+
+    /**
+     * Get opportunityStatuses.
+     *
+     * @return ArrayCollection|OpportunityStatus[]
+     */
+    public function getOpportunityStatuses()
+    {
+        return $this->opportunityStatuses;
+    }
+
+    /**
+     * Add opportunityStrategy.
+     *
+     * @param OpportunityStrategy $oportunityStrategy
+     *
+     * @return Project
+     */
+    public function addOpportunityStrategy(OpportunityStrategy $oportunityStrategy)
+    {
+        $this->opportunityStrategies[] = $oportunityStrategy;
+
+        return $this;
+    }
+
+    /**
+     * Remove $oortunityStrategy.
+     *
+     * @param OpportunityStrategy $oprtunityStrategy
+     */
+    public function removeOpportunityStrategy(OpportunityStrategy $opportunityStrategy)
+    {
+        $this->opportunityStrategies->removeElement($opportunityStrategy);
+
+        return $this;
+    }
+
+    /**
+     * Get opportunityStrategies.
+     *
+     * @return ArrayCollection|OpportunityStrategy[]
+     */
+    public function getOpportunityStrategies()
+    {
+        return $this->opportunityStrategies;
+    }
+
+    /**
+     * Get riskStrategies.
+     *
+     * @return ArrayCollection|RiskStrategy[]
+     */
+    public function getRiskStrategies()
+    {
+        return $this->riskStrategies;
+    }
+
+    /**
+     * Add riskStrategy.
+     *
+     * @param RiskStrategy $riskStrategy
+     *
+     * @return Project
+     */
+    public function addRiskStrategy(RiskStrategy $riskStrategy)
+    {
+        $this->riskStrategies[] = $riskStrategy;
+
+        return $this;
+    }
+
+    /**
+     * Remove riskStrategy.
+     *
+     * @param RiskStrategy $riskStrategy
+     */
+    public function removeRiskStrategy(RiskStrategy $riskStrategy)
+    {
+        $this->riskStrategies->removeElement($riskStrategy);
+
+        return $this;
+    }
+
+    /**
+     * Get riskStatuses.
+     *
+     * @return ArrayCollection|Status[]
+     */
+    public function getRiskStatuses()
+    {
+        return $this->riskStatuses;
+    }
+
+    /**
+     * Add riskStatus.
+     *
+     * @param Status $riskStatus
+     *
+     * @return Project
+     */
+    public function addRiskStatus(Status $riskStatus)
+    {
+        $this->riskStatuses[] = $riskStatus;
+
+        return $this;
+    }
+
+    /**
+     * Remove riskStatus.
+     *
+     * @param Status $riskStatus
+     */
+    public function removeRiskStatus(Status $riskStatus)
+    {
+        $this->riskStatuses->removeElement($riskStatus);
+
+        return $this;
+    }
+    
     /**
      * Returns if a project is new.
      *
