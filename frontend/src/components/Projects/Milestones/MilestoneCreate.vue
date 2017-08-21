@@ -63,11 +63,7 @@
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
-                                <select-field
-                                    v-bind:title="translateText('label.responsible')"
-                                    v-bind:options="projectUsersForSelect"
-                                    v-model="details.responsible"
-                                    v-bind:currentOption="details.responsible" />
+                                <member-search v-model="details.responsible" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                             </div>
                             <div class="col-md-6">
                                 <select-field
@@ -125,6 +121,7 @@ import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
+import MemberSearch from '../../_common/MemberSearch';
 
 export default {
     components: {
@@ -133,6 +130,7 @@ export default {
         datepicker,
         CalendarIcon,
         Error,
+        MemberSearch,
     },
     methods: {
         ...mapActions([
@@ -150,7 +148,7 @@ export default {
                 content: this.$refs.content.getContent(),
                 scheduledFinishAt: moment(this.schedule.baseDueDate).format('DD-MM-YYYY'),
                 forecastFinishAt: moment(this.schedule.forecastDueDate).format('DD-MM-YYYY'),
-                responsibility: this.details.responsible ? this.details.responsible.key : null,
+                responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
                 workPackageStatus: this.details.status ? this.details.status.key: null,
                 phase: this.details.phase ? this.details.phase.key : null,
             };
@@ -165,7 +163,7 @@ export default {
                 content: this.$refs.content.getContent(),
                 scheduledFinishAt: moment(this.schedule.baseDueDate).format('DD-MM-YYYY'),
                 forecastFinishAt: moment(this.schedule.forecastDueDate).format('DD-MM-YYYY'),
-                responsibility: this.details.responsible ? this.details.responsible.key : null,
+                responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
                 workPackageStatus: this.details.status ? this.details.status.key: null,
                 phase: this.details.phase ? this.details.phase.key : null,
             };
@@ -190,10 +188,7 @@ export default {
                 ? {key: this.milestone.workPackageStatus, label: this.translateText(this.milestone.workPackageStatusName)}
                 : null
             ;
-            this.details.responsible = this.milestone.responsibility
-                ? {key: this.milestone.responsibility, label: this.translateText(this.milestone.responsibilityFullName)}
-                : null
-            ;
+            this.details.responsible.push(this.milestone.responsibility);
             this.details.phase = this.milestone.phase
                 ? {key: this.milestone.phase, label: this.translateText(this.milestone.phaseName)}
                 : null
@@ -218,7 +213,7 @@ export default {
             },
             details: {
                 status: null,
-                responsible: null,
+                responsible: [],
                 phase: null,
             },
             isEdit: this.$route.params.milestoneId,

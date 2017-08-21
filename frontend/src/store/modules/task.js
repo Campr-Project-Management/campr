@@ -248,7 +248,13 @@ const actions = {
             .delete(
                 Routing.generate('app_api_workpackage_delete', {id: taskId})
             ).then((response) => {
-                commit(types.DELETE_TASK_SUBTASK, taskId);
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    commit(types.DELETE_TASK_SUBTASK, taskId);
+                }
             }, (response) => {
                 // implement alert response error here
             });
