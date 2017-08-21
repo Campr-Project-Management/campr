@@ -1,15 +1,15 @@
 <template>
     <div class="project-create-wrapper">
         <div class="page-section project-create step-1">
-            <h1>{{ message.project_create_wizard }}</h1>
-            <h2>{{ message.project_create_step1 }}</h2>            
+            <h1>{{ translateText('message.project_create_wizard') }}</h1>
+            <h2>{{ translateText('message.project_create_step1') }}</h2>            
 
-            <input-field type="text" v-bind:label="message.project_name" v-model="projectName" v-bind:content="projectName" />
-            <input-field type="text" v-bind:label="message.project_number" v-model="projectNumber" v-bind:content="projectNumber" />
+            <input-field type="text" v-bind:label="translateText('message.project_name')" v-model="projectName" v-bind:content="projectName" />
+            <input-field type="text" v-bind:label="translateText('message.project_number')" v-model="projectNumber" v-bind:content="projectNumber" />
             <input id="projectLogo" type="file" name="projectLogo" style="display: none;" accept="image/*" v-on:change="updateProjectLogo"> 
 
             <select-field
-                v-bind:title="message.select_customer"
+                v-bind:title="translateText('message.select_customer')"
                 v-bind:options="customers"
                 v-model="selectedCompany"
                 v-bind:currentOption="selectedCompany" />
@@ -21,53 +21,71 @@
                 <img :src="projectLogo" class="avatar" />
             </div>
             <div class="flex flex-center">
-                <a class="btn-rounded btn-empty btn-md" v-on:click="openProjectLogoFileSelection">{{ message.project_logo }}</a>
+                <a class="btn-rounded btn-empty btn-md" v-on:click="openProjectLogoFileSelection">{{ translateText('message.project_logo') }}</a>
             </div>
             <div class="checkbox-input clearfix">
                 <input id="project-portfolio" type="checkbox" v-model="visiblePortfolio">
-                <label for="project-portfolio">{{ message.project_portfolio }}</label>
+                <label for="project-portfolio">{{ translateText('message.project_portfolio') }}</label>
             </div>
             <div v-show="visiblePortfolio">
                 <select-field
-                    v-bind:title="message.select_portfolio"
+                    v-bind:title="translateText('message.select_portfolio')"
                     v-bind:options="portfolios"
                     v-model="selectedPortfolio"
                     v-bind:currentOption="selectedPortfolio" />
-                <input-field v-model="portfolioName" v-bind:content="portfolioName" type="text" v-bind:label="message.add_portfolio" />
-                <div class="flex flex-direction-reverse">
+                <div class="flex" v-if="visibleAddPortfolioField">
+                    <input-field v-model="portfolioName" v-bind:content="portfolioName" type="text" v-bind:label="translateText('message.add_portfolio')" />
                     <button
                         v-on:click="addPortfolio"
                         :disabled="portfolioLoading"
-                        class="btn-rounded btn-right">
-                        {{ message.add_portfolio }} +
+                        class="btn-rounded btn-add">
+                        {{translateText('label.add')}}
+                    </button>
+                </div>
+                <div class="flex flex-direction-reverse">
+                    <button
+                            v-if="!visibleAddPortfolioField"
+                            v-on:click="showAddPortfolioField"
+                            :disabled="portfolioLoading"
+                            class="btn-rounded btn-right">
+                            {{ translateText('message.add_portfolio') }}
                     </button>
                 </div>
             </div>
 
             <div class="checkbox-input clearfix">
                 <input id="project-programme" type="checkbox" v-model="visibleProgramme">
-                <label for="project-programme">{{ message.project_programme }}</label>
+                <label for="project-programme">{{ translateText('message.project_programme') }}</label>
             </div>
             <div v-if="visibleProgramme">
                 <select-field
-                    v-bind:title="message.select_programme"
+                    v-bind:title="translateText('message.select_programme')"
                     v-bind:options="programmes"
                     v-model="selectedProgramme"
                     v-bind:currentOption="selectedProgramme" />
-                <input-field v-model="programmeName" v-bind:content="programmeName" type="text" v-bind:label="message.add_programme" />
-                <div class="flex flex-direction-reverse">
+                <div class="flex" v-if="visibleAddProgrammeField">
+                    <input-field v-model="programmeName" v-bind:content="programmeName" type="text" v-bind:label="translateText('message.add_programme')" />
                     <button
                         v-on:click="addProgramme"
                         :disabled="programmeLoading"
-                        class="btn-rounded btn-right">
-                        {{ message.add_programme }} +
+                        class="btn-rounded btn-add">
+                        {{translateText('label.add')}}
                     </button>
                 </div>
+                <div class="flex flex-direction-reverse">
+                    <button
+                            v-if="!visibleAddProgrammeField"
+                            v-on:click="showAddProgrammeField"
+                            :disabled="programmeLoading"
+                            class="btn-rounded btn-right">
+                            {{ translateText('message.add_programme') }}
+                    </button>
+                </div>    
             </div>
 
             <div class="flex flex-direction-reverse actions">
-                <a href="#" v-on:click="nextStep" class="btn-rounded second-bg" v-bind:title="button.next_step">
-                    {{ button.next_step }} >
+                <a href="#" v-on:click="nextStep" class="btn-rounded second-bg" v-bind:title="translateText('button.next_step')">
+                    {{ translateText('button.next_step') }} >
                 </a>
             </div>
         </div>
@@ -91,11 +109,20 @@ export default {
     },
     methods: {
         ...mapActions(['createPortfolio', 'getPortfolios', 'createProgramme', 'getProgrammes', 'getCustomers']),
-        togglePortfolio: function() {
-            this.visiblePortfolio = !this.visiblePortfolio;
+        translateText(text) {
+            return this.translate(text);
         },
-        toggleProgramme: function() {
-            this.visibleProgramme = !this.visibleProgramme;
+        hideAddPortfolioField: function() {
+            this.visibleAddPortfolioField = false;
+        },
+        showAddPortfolioField: function() {
+            this.visibleAddPortfolioField = true;
+        },
+        hideAddProgrammeField: function() {
+            this.visibleAddProgrammeField = false;
+        },
+        showAddProgrammeField: function() {
+            this.visibleAddProgrammeField = true;
         },
         nextStep: function(e) {
             e.preventDefault();
@@ -110,7 +137,9 @@ export default {
                 'projectNumber': this.projectNumber,
                 'projectLogo': this.projectLogo,
                 'visiblePortfolio': this.visiblePortfolio,
+                'visibleAddPortfolioField': this.visibleAddPortfolioField,
                 'visibleProgramme': this.visibleProgramme,
+                'visibleAddProgrammeField': this.visibleAddProgrammeField,
                 'selectedPortfolio': this.selectedPortfolio,
                 'selectedProgramme': this.selectedProgramme,
                 'selectedCompany': this.selectedCompany,
@@ -122,12 +151,14 @@ export default {
                 name: this.portfolioName,
             };
             this.createPortfolio(data);
+            this.hideAddPortfolioField();
         },
         addProgramme: function() {
             let data = {
                 name: this.programmeName,
             };
             this.createProgramme(data);
+            this.hideAddProgrammeField();
         },
         clearFormErrors() {
             this.errors.clear();
@@ -179,6 +210,9 @@ export default {
                 this.portfolioName = '';
             }
         },
+        selectedPortfolio(value) {
+            this.hideAddPortfolioField();
+        },
         programmes(value) {
             let selectedProgramme = value.filter((item) => item.label === this.programmeName);
 
@@ -187,33 +221,21 @@ export default {
                 this.programmeName = '';
             }
         },
+        selectedProgramme(value) {
+            this.hideAddProgrammeField();
+        },
     },
     data: function() {
         const stepData = JSON.parse(localStorage.getItem(FIRST_STEP_LOCALSTORAGE_KEY));
 
         return {
-            message: {
-                project_create_wizard: Translator.trans('message.project_create_wizard'),
-                project_create_step1: Translator.trans('message.project_create_step1'),
-                project_name: Translator.trans('message.project_name'),
-                project_number: Translator.trans('message.project_number'),
-                project_logo: Translator.trans('message.project_logo'),
-                project_portfolio: Translator.trans('message.project_portfolio'),
-                add_portfolio: Translator.trans('message.add_portfolio'),
-                project_programme: Translator.trans('message.project_programme'),
-                add_programme: Translator.trans('message.add_programme'),
-                select_portfolio: Translator.trans('message.select_portfolio'),
-                select_programme: Translator.trans('message.select_programme'),
-                select_customer: Translator.trans('message.select_customer'),
-            },
-            button: {
-                next_step: Translator.trans('button.next_step'),
-            },
             projectName: stepData ? stepData.projectName : '',
             projectNumber: stepData ? stepData.projectNumber : '',
             projectLogo: stepData ? stepData.projectLogo : '',
             visiblePortfolio: stepData ? stepData.visiblePortfolio : false,
+            visibleAddPortfolioField: stepData ? stepData.visibleAddPortfolioField : false,
             visibleProgramme: stepData ? stepData.visibleProgramme : false,
+            visibleAddProgrammeField: stepData ? stepData.visibleAddProgrammeField : false,
             portfolioName: stepData ? stepData.portfolioName : '',
             programmeName: stepData ? stepData.programmeName : '',
             selectedPortfolio: stepData ? stepData.selectedPortfolio : '',
@@ -249,6 +271,7 @@ export default {
 
   .btn-rounded {
       //padding: 0;
+      width: auto;
   }
 
   button.btn-rounded {
@@ -266,4 +289,7 @@ export default {
   .btn-right {
       margin: 10px 0 30px;
   }
+  .btn-add {
+      margin-left: 10px;
+  }  
 </style>

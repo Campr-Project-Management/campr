@@ -1,48 +1,49 @@
 <template>
     <div class="project-create-wrapper">
         <div class="page-section project-create step-2">
-            <h1>{{ message.project_create_wizard }}</h1>
-            <h2>{{ message.project_create_step2 }}</h2>
+            <h1>{{ translateText('message.project_create_wizard') }}</h1>
+            <h2>{{ translateText('message.project_create_step2') }}</h2>
 
             <range-slider
-                v-bind:title="message.project_duration"
+                v-bind:title="translateText('message.project_duration')"
                 min="0"
-                max="10"
+                v-bind:max="durationMaxValue"
                 minSuffix=" Months"
                 type="single"
                 v-model="projectDuration"
                 v-bind:value="projectDuration" />
             <range-slider
-                v-bind:title="message.project_budget"
+                v-bind:title="translateText('message.project_budget')"
                 min="0"
-                max="64000"
+                v-bind:max="budgetMaxValue"
+                v-bind:values="budgetValues"
                 minPrefix="€"
                 type="single"
                 v-model="projectBudget"
                 v-bind:value="projectBudget" />
             <range-slider
-                v-bind:title="message.project_involved"
+                v-bind:title="translateText('message.team_members_involved')"
                 min="1"
                 max="20"
                 type="double"
                 v-model="projectInvolved"
                 v-bind:value="projectInvolved" />
             <range-slider
-                v-bind:title="message.departments_involved"
+                v-bind:title="translateText('message.departments_involved')"
                 min="1"
                 max="20"
                 type="double"
                 v-model="departmentsInvolved"
                 v-bind:value="departmentsInvolved" />
             <range-slider
-                v-bind:title="message.strategical_meaning"
+                v-bind:title="translateText('message.strategical_meaning')"
                 min="few"
                 values="few,medium,high"
                 type="single"
                 v-model="strategicalMeaning"
                 v-bind:value="strategicalMeaning" />
             <range-slider
-                v-bind:title="message.risks"
+                v-bind:title="translateText('message.risks')"
                 min="few"
                 values="few,medium,high"
                 type="single"
@@ -51,13 +52,13 @@
 
             <div class="dropdowns">
                 <select-field
-                    v-bind:title="message.category"
+                    v-bind:title="translateText('message.category')"
                     v-bind:options="projectCategories" 
                     v-model="selectedCategory"
                     v-bind:currentOption="selectedCategory">
                 </select-field>
                 <select-field
-                    v-bind:title="message.scope"
+                    v-bind:title="translateText('message.scope')"
                     v-bind:options="projectScopes"
                     v-model="selectedScope"
                     v-bind:currentOption="selectedScope">
@@ -65,11 +66,11 @@
             </div>
 
             <div class="flex flex-space-between actions">
-                <a href="#" v-on:click="previousStep" class="btn-rounded" v-bind:title="button.previous_step">
-                    < {{ button.previous_step }}
+                <a href="#" v-on:click="previousStep" class="btn-rounded" v-bind:title="translateText('button.previous_step')">
+                    < {{ translateText('button.previous_step') }}
                 </a>
-                <a href="#" v-on:click="nextStep" class="btn-rounded second-bg" v-bind:title="button.analyze">
-                    {{ button.analyze }} >
+                <a href="#" v-on:click="nextStep" class="btn-rounded second-bg" v-bind:title="translateText('button.analyze')">
+                    {{ translateText('button.analyze') }} >
                 </a>
             </div>
             </div>
@@ -81,7 +82,7 @@
 import SelectField from '../_common/_form-components/SelectField';
 import RangeSlider from '../_common/_form-components/RangeSlider';
 import {mapActions, mapGetters} from 'vuex';
-import {SECOND_STEP_LOCALSTORAGE_KEY} from '../../helpers/project';
+import {FIRST_STEP_LOCALSTORAGE_KEY, SECOND_STEP_LOCALSTORAGE_KEY} from '../../helpers/project';
 
 export default {
     components: {
@@ -90,6 +91,9 @@ export default {
     },
     methods: {
         ...mapActions(['getProjectCategories', 'getProjectScopes']),
+        translateText(text) {
+            return this.translate(text);
+        },
         nextStep: function(e) {
             e.preventDefault();
             this.saveStepState();
@@ -113,13 +117,55 @@ export default {
             };
             localStorage.setItem(SECOND_STEP_LOCALSTORAGE_KEY, JSON.stringify(stepData));
         },
+        projectHasProgrammeAndPortofolio: function() {
+            const step1Data = JSON.parse(localStorage.getItem(FIRST_STEP_LOCALSTORAGE_KEY));
+            if (
+                step1Data.visiblePortfolio &&
+                step1Data.selectedPortfolio.key &&
+                step1Data.visibleProgramme &&
+                step1Data.selectedProgramme.key !== undefined
+            ) {
+                return true;
+            }
+            return false;
+        },
     },
-    computed: mapGetters({
-        projectCategories: 'projectCategoriesForSelect',
-        projectCategoriesLoading: 'projectCategoriesLoading',
-        projectScopes: 'projectScopesForSelect',
-        projectScopesLoading: 'projectScopesLoading',
-    }),
+    computed: {
+        ...mapGetters({
+            projectCategories: 'projectCategoriesForSelect',
+            projectCategoriesLoading: 'projectCategoriesLoading',
+            projectScopes: 'projectScopesForSelect',
+            projectScopesLoading: 'projectScopesLoading',
+        }),
+        durationMaxValue: function() {
+            return this.projectHasProgrammeAndPortofolio() ? '36' : '12';
+        },
+        budgetMaxValue: function() {
+            return this.projectHasProgrammeAndPortofolio() ? '2000000' : '500000';
+        },
+        budgetValues: function() {
+            let result = '';
+            for (let i=0; i<20; i++) {
+                result += i * 10000 + ', ';
+            }
+            if(!this.projectHasProgrammeAndPortofolio()) {
+                for (let i=0; i<6; i++) {
+                    result += 200000 + (i * 50000) + ', ';
+                }
+                result +='500000';
+                return result;
+            }
+
+            for (let i=0; i<16; i++) {
+                result += 200000 + (i * 50000) + ', ';
+            }
+            for (let i=0; i<10; i++) {
+                result += 1000000 + (i * 100000) + ', ';
+            }
+            result +='2000000';
+            return result;
+        },
+    },
     created() {
         this.getProjectCategories();
         this.getProjectScopes();
@@ -128,22 +174,6 @@ export default {
         const stepData = JSON.parse(localStorage.getItem(SECOND_STEP_LOCALSTORAGE_KEY));
 
         return {
-            message: {
-                project_create_wizard: Translator.trans('message.project_create_wizard'),
-                project_create_step2: Translator.trans('message.project_create_step2'),
-                project_duration: Translator.trans('message.project_duration'),
-                project_budget: Translator.trans('message.project_budget'),
-                project_involved: Translator.trans('message.project_involved'),
-                departments_involved: Translator.trans('message.departments_involved'),
-                strategical_meaning: Translator.trans('message.strategical_meaning'),
-                risks: Translator.trans('message.risks'),
-                category: Translator.trans('message.category'),
-                scope: Translator.trans('message.scope'),
-            },
-            button: {
-                previous_step: Translator.trans('button.previous_step'),
-                analyze: Translator.trans('button.analyze'),
-            },
             projectDuration: stepData ? stepData.projectDuration : 0,
             projectBudget: stepData ? stepData.projectBudget : 0,
             projectInvolved: stepData ? stepData.projectInvolved : 0,
