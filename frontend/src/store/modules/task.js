@@ -210,25 +210,27 @@ const actions = {
         commit(types.SET_TASKS_FILTERS, {filters});
     },
 
-    getAllTasksGrid({commit, state}, {project, page}) {
-        const projectUser = state.tasksFilters.assignee;
-        const colorStatus = state.tasksFilters.condition;
-        const searchString = state.tasksFilters.searchString;
-        const status = state.tasksFilters.status;
-
+    getAllTasksGrid({commit}, {project, page}) {
+        let paramObject = {params: {
+            type: 2,
+            page: page,
+            pageSize: 8,
+            isGrid: true,
+        }};
+        if (state.taskFilters && state.taskFilters.status) {
+            paramObject.params.status = state.taskFilters.status;
+        }
+        if (state.taskFilters && state.taskFilters.assignee) {
+            paramObject.params.projectUser = state.taskFilters.assignee;
+        }
+        if (state.taskFilters && state.taskFilters.condition) {
+            paramObject.params.colorStatus = state.taskFilters.condition;
+        }
+        if (state.taskFilters && state.taskFilters.searchString) {
+            paramObject.params.searchString = state.taskFilters.searchString;
+        }
         Vue.http
-            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
-                params: {
-                    'type': 2,
-                    'page': page,
-                    'pageSize': 8,
-                    projectUser,
-                    colorStatus,
-                    searchString,
-                    'isGrid': true,
-                    status,
-                },
-            })
+            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), paramObject)
             .then((response) => {
                 if (response.status === 200) {
                     let tasks = response.data;

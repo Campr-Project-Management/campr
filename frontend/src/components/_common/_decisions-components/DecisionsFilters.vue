@@ -2,9 +2,10 @@
     <div class="filters">
         <span class="title">{{ translateText('message.filter_by') }}</span>
         <div class="dropdowns">
-            <member-search v-model="responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
-            <dropdown v-bind:title="translateText('message.event')" v-bind:options="projectMeetingsForSelect" :selectedValue="selectedEvent"></dropdown>
-            <dropdown v-bind:title="translateText('message.category')" v-bind:options="decisionCategoriesForSelect" :selectedValue="selectedCategory"></dropdown>
+            <member-search ref="responsibles" v-model="responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+            <dropdown ref="events" v-bind:title="translateText('message.event')" v-bind:options="projectMeetingsForSelect" :selectedValue="selectedEvent"></dropdown>
+            <dropdown ref="categories" v-bind:title="translateText('message.category')" v-bind:options="decisionCategoriesForSelect" :selectedValue="selectedCategory"></dropdown>
+            <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>
     </div>
 </template>
@@ -27,14 +28,17 @@ export default {
         translateText: function(text) {
             return this.translate(text);
         },
-        selectedStatus: function(value) {
-            this.updateFilters('status', value);
-        },
         selectedCategory: function(value) {
             this.updateFilters('decisionCategory', value);
         },
         selectedEvent: function(value) {
             this.updateFilters('meeting', value);
+        },
+        clearFilters: function() {
+            this.updateFilters('clear', true);
+            this.$refs.events.resetCustomTitle();
+            this.$refs.categories.resetCustomTitle();
+            this.$refs.responsibles.clearValue();
         },
     },
     computed: {

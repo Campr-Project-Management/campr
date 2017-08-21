@@ -174,7 +174,7 @@ const mutations = {
      * @param {array} filters
      */
     [types.SET_MEETINGS_FILTERS](state, {filters}) {
-        state.filters = Object.assign({}, state.filters, filters);
+        state.filters = !filters.clear ? Object.assign({}, state.filters, filters) : [];
     },
     /**
      * Delete project meeting
