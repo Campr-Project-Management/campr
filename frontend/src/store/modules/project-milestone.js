@@ -163,7 +163,7 @@ const mutations = {
         state.milestones = milestones;
     },
     [types.SET_MILESTONES_FILTERS](state, {filters}) {
-        state.filters = Object.assign({}, state.filters, filters);
+        state.filters = !filters.clear ? Object.assign({}, state.filters, filters) : [];
     },
     /**
      * Sets project milestone to state

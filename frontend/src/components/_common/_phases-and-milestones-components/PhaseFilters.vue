@@ -14,8 +14,9 @@
                     <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                 </div>
             </div>
-            <dropdown :selectedValue="selectedStatusValue" filter="status" item="phase" :title="translateText('message.status')" :options="statusesLabel"></dropdown>
-            <dropdown :selectedValue="selectedResponsible" filter="responsible" item="phase" :title="translateText('label.responsible')" :options="projectUsersForSelect"></dropdown>
+            <dropdown ref="statuses" :selectedValue="selectedStatusValue" filter="status" item="phase" :title="translateText('message.status')" :options="statusesLabel"></dropdown>
+            <dropdown ref="responsibles" :selectedValue="selectedResponsible" filter="responsible" item="phase" :title="translateText('label.responsible')" :options="projectUsersForSelect"></dropdown>
+            <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>
     </div>
 </template>
@@ -27,7 +28,7 @@ import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 
 export default {
-    props: ['selectStatus', 'selectResponsible', 'selectStartDate', 'selectEndDate'],
+    props: ['clearAllFilters', 'selectStatus', 'selectResponsible', 'selectStartDate', 'selectEndDate'],
     created() {
         this.getTaskStatuses();
         this.getProjectUsers({id: this.$route.params.id});
@@ -64,6 +65,13 @@ export default {
         },
         clearEnd: function() {
             this.endDate = null;
+        },
+        clearFilters: function() {
+            this.clearStart();
+            this.clearEnd();
+            this.$refs.statuses.resetCustomTitle();
+            this.$refs.responsibles.resetCustomTitle();
+            this.clearAllFilters(true);
         },
     },
     data() {
