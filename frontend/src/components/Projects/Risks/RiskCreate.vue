@@ -238,7 +238,7 @@
                             <div class="col-md-12">
                                 <div class="vueditor-holder measure-vueditor-holder">
                                     <div class="vueditor-header">{{ translateText('placeholder.new_measure') }}</div>
-                                    <Vueditor :ref="'measure.description'+index" />
+                                    <Vueditor :id="'measure.description'+index" :ref="'measure.description'+index" />
                                     <span v-if="validationMessages.measures && validationMessages.measures[index]">
                                         <error
                                             v-if="validationMessages.measures[index].description.length"
@@ -299,6 +299,8 @@ import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
+import {createEditor} from 'vueditor';
+import vueditorConfig from '../../_common/vueditorConfig';
 
 export default {
     components: {
@@ -327,10 +329,16 @@ export default {
                 description: this.$refs['measure.description'+this.measures.length],
                 cost: '',
             });
+            let thisRef = 'measure.description'+this.measures.length;
+            setTimeout(() => {
+                measure.element = createEditor(document.getElementById(thisRef), {...vueditorConfig, id: thisRef});
+            }, 1000);
+            this.measures.push(measure);
         },
         getFormData: function() {
             this.measures.map((item, index) => {
-                item.description = this.$refs['measure.description'+index][0].getContent();
+                item.description = item.element.getContent();
+                delete item.element;
             });
             let data = {
                 title: this.title,
@@ -542,11 +550,18 @@ export default {
             this.memberList.push(this.risk.responsibility);
             if (this.risk.measures.length > 0) {
                 this.measures = this.risk.measures.map((item, index) => {
-                    return {
+                    let val = {
                         title: item.title,
                         description: item.description,
                         cost: item.cost,
                     };
+                    setTimeout(() => {
+                        const thisRef = 'measure.description'+index;
+                        val.element = createEditor(document.getElementById(thisRef), {...vueditorConfig, id: thisRef});
+                        val.element.setContent(item.description);
+                    }, 1000);
+
+                    return val;
                 });
             }
         },
