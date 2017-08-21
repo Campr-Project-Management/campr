@@ -361,7 +361,15 @@ message:
     task_condition: Task condition
     add_internal_costs: Add internal costs  
     add_external_costs: Add external costs
+    delete_external_cost: Delete this external cost ?
+    delete_internal_cost: Delete this internal cost ?  
+    edit_external_costs: Edit external cost
+    edit_internal_costs: Edit internal cost  
     reschedule_todo: Reschedule todo
+    edit_forecast_total: Edit forecast total
+    edit_actual_total: Edit actual total
+    confirm_open_task: Are you sure you wan to open this task ?
+    confirm_close_task: Are you sure you wan to close this task ?  
 
 menu:
     users: Users
@@ -999,6 +1007,7 @@ label:
     subteam_roles: Subteam Roles
     schedule: Schedule
     change_status: Change Status
+    change_assignee: Change Assignee
     select_due_date: Select Due Date
     production: Production
     logistics: Logistics

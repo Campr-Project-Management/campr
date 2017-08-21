@@ -342,6 +342,16 @@ class WorkPackageController extends ApiController
             $wp->addComment($comment);
             $em->persist($wp);
 
+            $log = new Log();
+            $log->setObjId($wp->getId());
+            $log->setClass(get_class($wp));
+            $log->setOldValue(null);
+            $log->setNewValue([
+                'comment' => $comment->getBody(),
+            ]);
+            $log->setUser($this->getUser());
+
+            $em->persist($log);
             $em->flush();
 
             return $this->createApiResponse($comment, Response::HTTP_CREATED);
