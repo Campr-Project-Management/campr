@@ -2,8 +2,9 @@
     <div class="filters">
         <span class="title">{{ translateText('message.filter_by') }}</span>
         <div class="dropdowns">
-            <dropdown v-bind:title="translateText('message.status')" v-bind:options="statuses" :selectedValue="selectStatus"></dropdown>
-            <dropdown v-bind:title="translateText('message.project')" v-bind:options="projectsForFilter" :selectedValue="selectProject"></dropdown>
+            <dropdown ref="statuses" v-bind:title="translateText('message.status')" v-bind:options="statuses" :selectedValue="selectStatus"></dropdown>
+            <dropdown ref="projects" v-bind:title="translateText('message.project')" v-bind:options="projectsForFilter" :selectedValue="selectProject"></dropdown>
+            <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>
     </div>
 </template>
@@ -27,6 +28,11 @@ export default {
         },
         selectProject: function(value) {
             this.updateFilters('project', value);
+        },
+        clearFilters: function() {
+            this.updateFilters('clear', true);
+            this.$refs.statuses.resetCustomTitle();
+            this.$refs.projects.resetCustomTitle();
         },
     },
     created() {

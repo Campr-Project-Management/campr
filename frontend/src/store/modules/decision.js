@@ -166,7 +166,7 @@ const mutations = {
      * @param {array} filters
      */
     [types.SET_DECISIONS_FILTERS](state, {filters}) {
-        state.decisionFilters = Object.assign({}, state.decisionFilters, filters);
+        state.decisionFilters = !filters.clear ? Object.assign({}, state.decisionFilters, filters) : [];
     },
     /**
      * Sets decision to state
