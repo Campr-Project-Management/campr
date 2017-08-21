@@ -9,9 +9,10 @@
                     <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
                 </div>
             </div>
-            <dropdown :selectedValue="selectPhase" v-if="projectPhases.items && projectPhases.items.length" v-bind:title="'Phase'" item="milestone" filter="phase" :options="projectPhasesForSelect"></dropdown>
-            <dropdown :selectedValue="selectStatus" v-if="!boardView" title="Status" :options="workPackageStatusesForMilestone"></dropdown>
-            <dropdown :selectedValue="selectResponsible" v-bind:title="'Responsible'" item="phase" filter="responsible" :options="projectUsersForSelect"></dropdown>
+            <dropdown ref="phases" :selectedValue="selectPhase" v-if="projectPhases.items && projectPhases.items.length" v-bind:title="'Phase'" item="milestone" filter="phase" :options="projectPhasesForSelect"></dropdown>
+            <dropdown ref="statuses" :selectedValue="selectStatus" v-if="!boardView" title="Status" :options="workPackageStatusesForMilestone"></dropdown>
+            <dropdown ref="responsibles" :selectedValue="selectResponsible" v-bind:title="'Responsible'" item="phase" filter="responsible" :options="projectUsersForSelect"></dropdown>
+            <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>
     </div>
 </template>
@@ -23,7 +24,7 @@ import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 
 export default {
-    props: ['selectStatus', 'selectResponsible', 'selectPhase', 'selectDueDate'],
+    props: ['clearAllFilters', 'selectStatus', 'selectResponsible', 'selectPhase', 'selectDueDate'],
     created() {
         this.getWorkPackageStatuses();
         this.getProjectUsers({id: this.$route.params.id});
@@ -51,6 +52,13 @@ export default {
         },
         clearDueDate: function() {
             this.dueDate = null;
+        },
+        clearFilters: function() {
+            this.clearDueDate();
+            this.$refs.phases.resetCustomTitle();
+            this.$refs.statuses.resetCustomTitle();
+            this.$refs.responsibles.resetCustomTitle();
+            this.clearAllFilters(true);
         },
     },
     data() {

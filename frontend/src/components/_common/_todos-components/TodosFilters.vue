@@ -2,14 +2,15 @@
     <div class="filters">
         <span class="title">{{ translateText('message.filter_by') }}</span>
         <div class="dropdowns">            
-            <member-search v-model="responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
-            <dropdown v-bind:title="translateText('message.category')" v-bind:options="todoCategoriesForSelect" :selectedValue="selectedCategory"></dropdown>
+            <member-search ref="responsibles" v-model="responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+            <dropdown ref="categories" v-bind:title="translateText('message.category')" v-bind:options="todoCategoriesForSelect" :selectedValue="selectedCategory"></dropdown>
             <div class="input-holder">
                 <label class="active">{{ translateText('label.due_date') }}</label>
                 <datepicker v-model="dueDate" format="dd-MM-yyyy" v-bind:clear-button="true" @cleared="clearDate()" />
                 <calendar-icon fill="middle-fill" stroke="middle-stroke" />
             </div>
-            <dropdown v-bind:title="translateText('message.status')" v-bind:options="todoStatusesForSelect" :selectedValue="selectedStatus"></dropdown>
+            <dropdown ref="statuses" v-bind:title="translateText('message.status')" v-bind:options="todoStatusesForSelect" :selectedValue="selectedStatus"></dropdown>
+            <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>
     </div>
 </template>
@@ -56,6 +57,13 @@ export default {
         },
         clearDate: function() {
             this.dueDate = null;
+        },
+        clearFilters: function() {
+            this.updateFilters('clear', true);
+            this.clearDate();
+            this.$refs.statuses.resetCustomTitle();
+            this.$refs.categories.resetCustomTitle();
+            this.$refs.responsibles.clearValue();
         },
     },
     watch: {

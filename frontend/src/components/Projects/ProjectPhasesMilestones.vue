@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="full-filters flex flex-direction-reverse">
-            <phase-filters :selectStartDate="setPhaseFilterStart" :selectEndDate="setPhaseFilterEnd" :selectResponsible="setPhaseFilterResponsible" :selectStatus="setPhasesFilterStatus"></phase-filters>
+            <phase-filters :clearAllFilters="clearPhaseFilters" :selectStartDate="setPhaseFilterStart" :selectEndDate="setPhaseFilterEnd" :selectResponsible="setPhaseFilterResponsible" :selectStatus="setPhasesFilterStatus"></phase-filters>
         </div>
         <!-- /// End Phases Header /// -->
 
@@ -161,7 +161,7 @@
             </div>
         </div>
         <div class="full-filters flex flex-direction-reverse">
-            <milestone-filters :selectDueDate="setMilestonesFilterDueDate" :selectPhase="setMilestonesFilterPhase" :selectResponsible="setMilestonesFilterResponsible" :selectStatus="setMilestonesFilterStatus"></milestone-filters>
+            <milestone-filters :clearAllFilters="clearMilestoneFilters" :selectDueDate="setMilestonesFilterDueDate" :selectPhase="setMilestonesFilterPhase" :selectResponsible="setMilestonesFilterResponsible" :selectStatus="setMilestonesFilterStatus"></milestone-filters>
         </div>
         <!-- /// End Milestones Header /// -->
 
@@ -312,6 +312,10 @@ export default {
             this.showDeleteMilestoneModal = false;
             this.deleteProjectMilestone(this.milestoneId);
         },
+        clearPhaseFilters: function(value) {
+            this.setPhasesFilters({clear: value});
+            this.refreshPhasesData();
+        },
         setPhasesFilterStatus: function(value) {
             this.setPhasesFilters({status: value});
             this.refreshPhasesData();
@@ -319,6 +323,10 @@ export default {
         setPhaseFilterResponsible: function(value) {
             this.setPhasesFilters({responsible: value});
             this.refreshPhasesData();
+        },
+        clearMilestoneFilters: function(value) {
+            this.setMilestonesFilters({clear: value});
+            this.refreshMilestonesData();
         },
         setMilestonesFilterStatus: function(value) {
             this.setMilestonesFilters({status: value});

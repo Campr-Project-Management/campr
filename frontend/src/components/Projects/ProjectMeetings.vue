@@ -55,7 +55,7 @@
 
         <div class="flex flex-direction-reverse">
             <div class="full-filters">
-                <meetings-filters :selectEvent="setEventFilter" :selectCategory="setFilterCategory" :selectDate="setFilterDate"></meetings-filters>
+                <meetings-filters :clearAllFilters="clearMeetingsFilters" :selectEvent="setEventFilter" :selectCategory="setFilterCategory" :selectDate="setFilterDate"></meetings-filters>
             </div>
         </div>
 
@@ -192,6 +192,10 @@ export default {
         },
         setEventFilter: function(value) {
             this.setMeetingsFilters({event: value});
+            this.refreshData();
+        },
+        clearMeetingsFilters: function(value) {
+            this.setMeetingsFilters({clear: value});
             this.refreshData();
         },
         initDeleteModal: function(meeting) {
