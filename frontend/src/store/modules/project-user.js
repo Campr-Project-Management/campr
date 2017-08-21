@@ -29,6 +29,20 @@ const getters = {
         usersSelect.unshift({label: Vue.translate('label.responsible'), key: null});
         return usersSelect;
     },
+    projectUsersForSelectOnViewTask: state => {
+        let usersSelect = [];
+        if (state.projectUsers && state.projectUsers.items) {
+            usersSelect = state.projectUsers.items.map(item => {
+                return {
+                    'key': item.user,
+                    'label': item.userFullName,
+                    'avatar': item.userAvatar,
+                    'email': item.userEmail,
+                };
+            });
+        }
+        return usersSelect;
+    },
     managersForSelect: state => state.managers.map(item => {
         return {
             'key': item.id,
