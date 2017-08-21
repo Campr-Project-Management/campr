@@ -204,7 +204,7 @@ const mutations = {
      * @param {array} filters
      */
     [types.SET_TODOS_FILTERS](state, {filters}) {
-        state.todoFilters = Object.assign({}, state.todoFilters, filters);
+        state.todoFilters = !filters.clear ? Object.assign({}, state.todoFilters, filters) : [];
     },
 };
 

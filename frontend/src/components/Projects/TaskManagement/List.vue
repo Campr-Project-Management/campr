@@ -30,13 +30,14 @@
 
         <!-- /// Tasks Filters /// -->
         <div class="flex">
-            <input-field v-model="searchString" type="text" v-bind:label="label.search_for_tasks" class="search"></input-field>
-            <dropdown :selectedValue="selectAssignee" title="Asignee" :options="users"></dropdown>
-            <dropdown :selectedValue="selectStatus" v-if="!boardView" title="Status" :options="statusesLabel"></dropdown>
-            <dropdown :selectedValue="selectCondition" title="Condition" :options="conditions"></dropdown>
+            <input-field v-model="searchString" :content="searchString" type="text" v-bind:label="label.search_for_tasks" class="search"></input-field>
+            <dropdown ref="assignee" :selectedValue="selectAssignee" title="Asignee" :options="users"></dropdown>
+            <dropdown ref="statuses" :selectedValue="selectStatus" v-if="!boardView" title="Status" :options="statusesLabel"></dropdown>
+            <dropdown ref="conditions" :selectedValue="selectCondition" title="Condition" :options="conditions"></dropdown>
             <!--To be added after disscusion about milestones-->
             <!--<dropdown title="Milestone" options=""></dropdown>-->
             <a @click="filterTasks" class="btn-rounded btn-auto">{{ button.show_results }}</a>
+            <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translate('button.clear_filters') }}</a>
         </div>
         <!-- /// End Tasks Filters /// -->
 
@@ -113,19 +114,28 @@ export default {
         selectStatus: function(status) {
             this.statusFilter = status;
         },
-        setSearchString: function(search) {
-            this.searchString = search;
-        },
         filterTasks: function() {
             const project = this.$route.params.id;
 
-            const filters = {};
-            filters.condition = this.conditionFilter ? this.conditionFilter : undefined;
-            filters.assignee = this.assigneeFilter ? this.assigneeFilter : undefined;
-            filters.searchString = this.searchString ? this.searchString : undefined;
-            filters.status = this.statusFilter ? this.statusFilter : undefined;
-
+            const filters = {
+                condition: this.conditionFilter ? this.conditionFilter : undefined,
+                assignee: this.assigneeFilter ? this.assigneeFilter : undefined,
+                searchString: this.searchString ? this.searchString : undefined,
+                status: this.statusFilter ? this.statusFilter : undefined,
+            };
             this.setFilters(filters);
+            this.resetTasks(project);
+            this.getAllTasksGrid({project, page: 1});
+        },
+        clearFilters: function() {
+            const project = this.$route.params.id;
+            this.searchString = null,
+            this.$refs.assignee.resetCustomTitle();
+            if (this.$refs.statuses) {
+                this.$refs.statuses.resetCustomTitle();
+            }
+            this.$refs.conditions.resetCustomTitle();
+            this.setFilters({clear: true});
             this.resetTasks(project);
             this.getAllTasksGrid({project, page: 1});
         },

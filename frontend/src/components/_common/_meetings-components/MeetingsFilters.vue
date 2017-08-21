@@ -5,7 +5,7 @@
             <div class="mr20">
                 <input-field type="text" :label="translateText('message.event')" v-model="name" :content="name"/>
             </div>
-            <dropdown :selectedValue="selectedCategory" :title="translateText('message.category')"
+            <dropdown ref="categories" :selectedValue="selectedCategory" :title="translateText('message.category')"
                       :options="meetingCategoriesForSelect" item="meetings" filter="category"></dropdown>
             <div class="input-holder right">
                 <label class="active">{{ translateText('label.date') }}</label>
@@ -13,6 +13,7 @@
                             :value="date"></datepicker>
                 <calendar-icon fill="middle-fill" stroke="middle-stroke"/>
             </div>
+            <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>
     </div>
 </template>
@@ -25,7 +26,7 @@
     import InputField from '../../_common/_form-components/InputField';
 
     export default {
-        props: ['selectEvent', 'selectCategory', 'selectDate'],
+        props: ['clearAllFilters', 'selectEvent', 'selectCategory', 'selectDate'],
         components: {
             Dropdown,
             CalendarIcon,
@@ -45,6 +46,12 @@
             },
             clearDate: function() {
                 this.date = null;
+            },
+            clearFilters: function() {
+                this.clearDate();
+                this.name = '';
+                this.$refs.categories.resetCustomTitle();
+                this.clearAllFilters(true);
             },
         },
         computed: {

@@ -39,7 +39,7 @@
                             <tr v-for="todo in todos.items">
                                 <td>{{ todo.id }}</td>
                                 <td>{{ todo.todoCategoryName }}</td>
-                                <td>{{ todo.statusName }}</td>
+                                <td>{{ translateText(todo.statusName) }}</td>
                                 <td>{{ todo.dueDate | moment('DD.MM.YYYY') }}</td>
                                 <td class="cell-wrap">{{ todo.title }}</td>
                                 <td>
