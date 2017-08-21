@@ -293,6 +293,7 @@ message:
     project_duration: Project Duration
     project_budget: Project Budget
     project_involved: Project Involved
+    team_members_involved: Team Members Involved 
     departments_involved: Departments Involved
     strategical_meaning: Strategical Meaning
     risks: Risks
@@ -711,6 +712,7 @@ title:
         list: Info category
         create: Create new info category
         edit: Edit info category
+    project_add_error: There where some errors while saving the project 
 
 subtitle:
     decision_status: List of decision statuses
@@ -1050,6 +1052,7 @@ label:
     users: Users
     loading: Loading
     no_data: No data
+    add: Add +
 
 button:
     clear_filters: Clear Filters
@@ -1640,3 +1643,62 @@ roles:
 
 filter:
     clear: Clear filters
+
+modules:
+    project_contract:
+        title: Project Contract
+        description: Project Contract Description
+    project_organization:
+        title: Project Organization
+        description: Project Organization Description
+    plan:
+        title: Plan
+        description: Plan Description
+    task_management:
+        title: Task Management
+        description: Task Management Description
+    phases_milestones:
+        title: Phases & Milestones
+        description: Phases & Milestones Description
+    costs: 
+        title: Costs
+        description: Costs Description
+    resources:
+        title: Resources
+        description: Resources description
+    risks_opportunities:
+        title: Risks & Oportunities
+        description: Risks & Oportunities Description
+    communication:
+        title: Communication
+        description: Communication Description
+    control_measures:
+        title: Control Measures
+        description: Control Measures
+    status_report:
+        title: Status Report
+        description: Status Report Description
+    meetings: 
+        title: Meetings
+        description: Meetings Description
+    todos:
+        title: Todos
+        description: Todos Description
+    notes:
+        title: Notes
+        description: Notes Description    
+    close_down_project:
+        title: Close Down Project
+        description: Close Down Project Description
+    raci_matrix:
+        title: Raci matrix
+        description: Raci matrix Description
+    task_chart:
+        title: Task chart
+        description: Task chart Description
+    gantt_chart:
+        title: Gantt chart
+        description: Gantt chart Description
+    decisions:
+        title: Decisions
+        description: Decisions Description 
