@@ -17,6 +17,11 @@ export default {
             customTitle: null,
         };
     },
+    methods: {
+        resetCustomTitle: function() {
+            this.customTitle = null;
+        },
+    },
     computed: {
         activeTitle: function() {
             return this.customTitle ? this.customTitle : this.title;

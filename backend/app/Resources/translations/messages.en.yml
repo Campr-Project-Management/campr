@@ -1031,6 +1031,7 @@ label:
     no_data: No data
 
 button:
+    clear_filters: Clear Filters
     freeze_contract: Freeze Contract
     email_status_report: Email Status Report
     delete_decision: Delete Decision
