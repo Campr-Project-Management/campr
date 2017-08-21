@@ -4,87 +4,15 @@ export const THIRD_STEP_LOCALSTORAGE_KEY = 'projectCreateThirdStepData';
 
 export const processProjectModules = (thirdStepData) => {
     let projectModules = [];
-    projectModules.push({
-        'module': 'project_contract',
-        'isEnabled': thirdStepData.projectContract,
-    });
-    projectModules.push({
-        'module': 'project_organization',
-        'isEnabled': thirdStepData.projectOrganization,
-    });
-    projectModules.push({
-        'module': 'plan',
-        'isEnabled': thirdStepData.plan,
-    });
-    projectModules.push({
-        'module': 'task_management',
-        'isEnabled': thirdStepData.taskManagement,
-    });
-    projectModules.push({
-        'module': 'phases_milestones',
-        'isEnabled': thirdStepData.phasesMilestones,
-    });
-    projectModules.push({
-        'module': 'costs',
-        'isEnabled': thirdStepData.costs,
-    });
-    projectModules.push({
-        'module': 'resources',
-        'isEnabled': thirdStepData.resources,
-    });
-    projectModules.push({
-        'module': 'risks_opportunities',
-        'isEnabled': thirdStepData.risksOportunities,
-    });
-    projectModules.push({
-        'module': 'communication',
-        'isEnabled': thirdStepData.communication,
-    });
-    projectModules.push({
-        'module': 'control_measures',
-        'isEnabled': thirdStepData.controlMeasures,
-    });
-    projectModules.push({
-        'module': 'status_report',
-        'isEnabled': thirdStepData.statusReport,
-    });
-    projectModules.push({
-        'module': 'meetings',
-        'isEnabled': thirdStepData.meetings,
-    });
-    projectModules.push({
-        'module': 'notes',
-        'isEnabled': thirdStepData.notes,
-    });
-    projectModules.push({
-        'module': 'todos',
-        'isEnabled': thirdStepData.todos,
-    });
-    projectModules.push({
-        'module': 'close_down_project',
-        'isEnabled': thirdStepData.closeDownProject,
-    });
-    projectModules.push({
-        'module': 'raci_matrix',
-        'isEnabled': thirdStepData.raciMatrix,
-    });
-    projectModules.push({
-        'module': 'task_chart',
-        'isEnabled': thirdStepData.taskChart,
-    });
-    projectModules.push({
-        'module': 'gantt_chart',
-        'isEnabled': thirdStepData.ganttChart,
-    });
-    projectModules.push({
-        'module': 'context',
-        'isEnabled': thirdStepData.context,
-    });
-    projectModules.push({
-        'module': 'decisions',
-        'isEnabled': thirdStepData.decisions,
-    });
 
+    for (let key in thirdStepData.modulesConfiguration) {
+        if (thirdStepData.modulesConfiguration.hasOwnProperty(key)) {
+            projectModules.push({
+                'module': key,
+                'isEnabled': thirdStepData.modulesConfiguration[key],
+            });
+        }
+    }
     return projectModules;
 };
 
