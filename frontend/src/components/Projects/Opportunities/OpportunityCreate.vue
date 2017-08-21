@@ -231,8 +231,7 @@
                             <div class="col-md-12">
                                 <div class="vueditor-holder measure-vueditor-holder">
                                     <div class="vueditor-header">{{ translateText('placeholder.new_measure') }}</div>
-                                    <!-- <Vueditor :id="'measure.description'+index" :ref="'measure.description'+index" />  -->
-                                    <div :ref="'measure.description'+index" :id="'measure.description'+index"></div> 
+                                    <Vueditor :id="'measure.description'+index" :ref="'measure.description'+index" />
                                     <span v-if="validationMessages.measures && validationMessages.measures[index]">
                                         <error
                                             v-if="validationMessages.measures[index].description.length"
@@ -294,26 +293,7 @@ import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
 import {createEditor} from 'vueditor';
-
-let config = {
-    toolbar: [
-        'bold', 'italic', 'underline',
-        'insertOrderedList', 'insertUnorderedList', 'links', 'picture',
-    ],
-    fontName: [
-        {val: '', abbr: ''},
-        {val: 'arial black'},
-        {val: 'times new roman'},
-        {val: 'Courier New'},
-    ],
-    fontSize: ['12px', '14px', '16px', '18px', '0.8rem', '1.0rem', '1.2rem', '1.5rem', '2.0rem'],
-    emoji: ['1f600', '1f601', '1f602', '1f923', '1f603'],
-    lang: 'en',
-    mode: 'default',
-    iframePath: '',
-    fileuploadUrl: '',
-    classList: ['campr-editor'],
-};
+import vueditorConfig from '../../_common/vueditorConfig';
 
 export default {
     components: {
@@ -344,7 +324,7 @@ export default {
                 cost: '',
             };
             setTimeout(() => {
-                measure.element = createEditor(document.getElementById(thisRef), {...config, id: thisRef});
+                measure.element = createEditor(document.getElementById(thisRef), {...vueditorConfig, id: thisRef});
             }, 1000);
             this.measures.push(measure);
         },
@@ -530,11 +510,18 @@ export default {
             this.memberList.push(this.opportunity.responsibility);
             if (this.opportunity.measures.length > 0) {
                 this.measures = this.opportunity.measures.map((item, index) => {
-                    return {
+                    let val = {
                         title: item.title,
                         description: item.description,
                         cost: item.cost,
                     };
+                    setTimeout(() => {
+                        const thisRef = 'measure.description'+index;
+                        val.element = createEditor(document.getElementById(thisRef), {...vueditorConfig, id: thisRef});
+                        val.element.setContent(item.description);
+                    }, 1000);
+
+                    return val;
                 });
             }
         },
