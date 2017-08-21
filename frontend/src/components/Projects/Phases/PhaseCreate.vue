@@ -9,7 +9,8 @@
                             <i class="fa fa-angle-left"></i>
                             {{ translateText('message.back_to_phases_and_milestones') }}
                         </router-link>
-                        <h1>{{ translateText('message.create_new_phase') }}</h1>
+                        <h1 v-if="!isEdit">{{ translateText('message.create_new_phase') }}</h1>
+                        <h1 v-else>{{ translateText('message.edit_phase') }} - {{ phase.name }}</h1>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
@@ -102,11 +103,7 @@
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
-                                <select-field
-                                    v-bind:title="translateText('label.responsible')"
-                                    v-bind:options="projectUsersForSelect"
-                                    v-model="details.responsible"
-                                    v-bind:currentOption="details.responsible" />
+                                <member-search v-model="details.responsible" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                             </div>
                             <div class="col-md-6">
                                 <select-field
@@ -166,6 +163,7 @@ import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
+import MemberSearch from '../../_common/MemberSearch';
 
 export default {
     components: {
@@ -174,6 +172,7 @@ export default {
         datepicker,
         CalendarIcon,
         Error,
+        MemberSearch,
     },
     methods: {
         ...mapActions([
@@ -196,7 +195,7 @@ export default {
                 scheduledFinishAt: moment(this.schedule.baseEndDate).format('DD-MM-YYYY'),
                 forecastStartAt: moment(this.schedule.forecastStartDate).format('DD-MM-YYYY'),
                 forecastFinishAt: moment(this.schedule.forecastEndDate).format('DD-MM-YYYY'),
-                responsibility: this.details.responsible ? this.details.responsible.key : null,
+                responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
                 workPackageStatus: this.details.status ? this.details.status.key: null,
                 parent: this.visibleSubphase ? this.details.parent ? this.details.parent.key : null : null,
             };
@@ -212,7 +211,7 @@ export default {
                 scheduledFinishAt: moment(this.schedule.baseEndDate).format('DD-MM-YYYY'),
                 forecastStartAt: moment(this.schedule.forecastStartDate).format('DD-MM-YYYY'),
                 forecastFinishAt: moment(this.schedule.forecastEndDate).format('DD-MM-YYYY'),
-                responsibility: this.details.responsible ? this.details.responsible.key : null,
+                responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
                 workPackageStatus: this.details.status ? this.details.status.key: null,
                 parent: this.visibleSubphase ? this.details.parent ? this.details.parent.key : null : null,
             };
@@ -239,10 +238,7 @@ export default {
                 ? {key: this.phase.workPackageStatus, label: this.translateText(this.phase.workPackageStatusName)}
                 : null
             ;
-            this.details.responsible = this.phase.responsibility
-                ? {key: this.phase.responsibility, label: this.translateText(this.phase.responsibilityFullName)}
-                : null
-            ;
+            this.details.responsible.push(this.phase.responsibility);
             if (this.phase.parent) {
                 this.visibleSubphase = true;
                 this.details.parent = {key: this.phase.parent, label: this.translateText(this.phase.parentName)};
@@ -269,7 +265,7 @@ export default {
             },
             details: {
                 status: null,
-                responsible: null,
+                responsible: [],
                 parent: null,
             },
             visibleSubphase: false,

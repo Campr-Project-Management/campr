@@ -140,7 +140,13 @@ const actions = {
             .delete(
                 Routing.generate('app_api_workpackage_delete', {id: id})
             ).then((response) => {
-                commit(types.DELETE_PROJECT_PHASE, {id});
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    commit(types.DELETE_PROJECT_PHASE, {id});
+                }
             }, (response) => {
             });
     },
