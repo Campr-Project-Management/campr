@@ -2,9 +2,10 @@
     <div class="filters">
         <span class="title">{{ translateText('message.filter_by') }}</span>
         <div class="dropdowns">
-            <dropdown v-bind:title="translateText('message.customer')" v-bind:options="customers" :selectedValue="selectCustomer"></dropdown>
-            <dropdown v-bind:title="translateText('message.programme')" v-bind:options="programmes" :selectedValue="selectProgramme"></dropdown>
-            <dropdown v-bind:title="translateText('message.status')" v-bind:options="statuses" :selectedValue="selectStatus"></dropdown>
+            <dropdown ref="customers" v-bind:title="translateText('message.customer')" v-bind:options="customers" :selectedValue="selectCustomer"></dropdown>
+            <dropdown ref="programmes" v-bind:title="translateText('message.programme')" v-bind:options="programmes" :selectedValue="selectProgramme"></dropdown>
+            <dropdown ref="statuses" v-bind:title="translateText('message.status')" v-bind:options="statuses" :selectedValue="selectStatus"></dropdown>
+            <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>
     </div>
 </template>
@@ -31,6 +32,12 @@ export default {
         },
         selectStatus: function(value) {
             this.updateFilters('status', value);
+        },
+        clearFilters: function() {
+            this.updateFilters('clear', true);
+            this.$refs.customers.resetCustomTitle();
+            this.$refs.programmes.resetCustomTitle();
+            this.$refs.statuses.resetCustomTitle();
         },
     },
     watch: {

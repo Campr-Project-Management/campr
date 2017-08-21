@@ -25,6 +25,9 @@ export default {
         translateText: function(text) {
             return this.translate(text);
         },
+        resetCustomTitle: function() {
+            this.customTitle = null;
+        },
     },
     data: function() {
         return {

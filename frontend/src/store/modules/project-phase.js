@@ -188,7 +188,7 @@ const mutations = {
         state.currentPhase = phase;
     },
     [types.SET_PHASES_FILTERS](state, {filters}) {
-        state.projectPhaseFilters = Object.assign({}, state.projectPhaseFilters, filters);
+        state.projectPhaseFilters = !filters.clear ? Object.assign({}, state.projectPhaseFilters, filters) : [];
     },
     /**
      * Sets all project phases
