@@ -10,19 +10,13 @@ use AppBundle\Entity\ProjectCategory;
 use AppBundle\Entity\ProjectComplexity;
 use AppBundle\Entity\ProjectScope;
 use AppBundle\Entity\ProjectStatus;
-use AppBundle\Form\ProjectModule\CreateType as ProjectModuleCreateType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -31,13 +25,6 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CreateType extends AbstractType
 {
-    private $tokenStorage;
-
-    public function __construct(TokenStorage $tokenStorage)
-    {
-        $this->tokenStorage = $tokenStorage;
-    }
-
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
@@ -106,7 +93,7 @@ class CreateType extends AbstractType
                 'query_builder' => function (EntityRepository $er) use ($self, $entity) {
                     return $self->findRelatedEntities($er, $entity);
                 },
-                'placeholder' => 'placeholder.project_complexityo',
+                'placeholder' => 'placeholder.project_complexity',
                 'translation_domain' => 'messages',
             ])
             ->add('projectCategory', EntityType::class, [
@@ -146,36 +133,6 @@ class CreateType extends AbstractType
                 'placeholder' => 'placeholder.portfolio',
                 'translation_domain' => 'messages',
             ])
-            ->add('configuration')
-            ->add('projectModules', CollectionType::class, [
-                'required' => false,
-                'entry_type' => ProjectModuleCreateType::class,
-                'allow_add' => true,
-                'by_reference' => false,
-            ])
-            ->addEventListener(
-                FormEvents::PRE_SUBMIT,
-                function (FormEvent $event) {
-                    $data = $event->getData();
-                    if (array_key_exists('favorite', $data)) {
-                        $form = $event->getForm();
-                        $form->add('favorite', CheckboxType::class, ['mapped' => false])->setData($data['favorite']);
-                    }
-                }
-            )
-            ->addEventListener(
-                FormEvents::POST_SUBMIT,
-                function (FormEvent $event) {
-                    $data = $event->getData();
-                    $form = $event->getForm();
-                    if ($form->has('favorite')) {
-                        $form->get('favorite')->getData()
-                            ? $data->addUserFavorite($this->tokenStorage->getToken()->getUser())
-                            : $data->removeUserFavorite($this->tokenStorage->getToken()->getUser())
-                        ;
-                    }
-                }
-            )
         ;
     }
 
