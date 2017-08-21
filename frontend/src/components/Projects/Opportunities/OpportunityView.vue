@@ -22,7 +22,7 @@
                 <div class="col-md-12">
                     <div class="vueditor-holder measure-vueditor-holder">
                         <div class="vueditor-header">{{ translateText('placeholder.measure_description') }}</div>
-                        <Vueditor :ref="'selectedMeasureDescription'" />
+                        <Vueditor :id="'selectedMeasure'+selectedMeasure.id" :ref="'selectedMeasureDescription'" />
                         <error
                             v-if="editMeasureValidationMessages.description && editMeasureValidationMessages.description.length"
                             v-for="message in editMeasureValidationMessages.description"
@@ -335,6 +335,8 @@ import {mapGetters, mapActions} from 'vuex';
 import moment from 'moment';
 import Modal from '../../_common/Modal';
 import Error from '../../_common/_messages/Error.vue';
+import {createEditor} from 'vueditor';
+import vueditorConfig from '../../_common/vueditorConfig';
 
 export default {
     components: {
@@ -405,9 +407,15 @@ export default {
                 description: measure.description,
                 cost: measure.cost,
             };
+            setTimeout(() => {
+                const thisRef = 'selectedMeasure'+measure.id;
+                this.selectedMeasure.editor = createEditor(document.getElementById(thisRef), {...vueditorConfig, id: thisRef});
+                this.selectedMeasure.editor.setContent(measure.description);
+            }, 1000);
         },
         editSelectedMeasure: function() {
-            this.selectedMeasure.description = this.$refs['selectedMeasureDescription'].getContent();
+            this.selectedMeasure.description = this.selectedMeasure.editor.getContent();
+            delete this.selectedMeasure.editor;
             this
                 .editMeasure(this.selectedMeasure)
                 .then(
