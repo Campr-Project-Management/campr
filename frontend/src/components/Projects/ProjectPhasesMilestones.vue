@@ -47,7 +47,6 @@
                     <table class="table table-striped table-responsive">
                         <thead>
                             <tr>
-                                <th class="small-cell">{{ translateText('table_header_cell.id') }}</th>
                                 <th>{{ translateText('table_header_cell.phase') }}</th>
                                 <th class="no-padding">
                                     <table class="table inner-table">
@@ -92,7 +91,6 @@
                         </thead>
                         <tbody v-if="projectPhases.items && projectPhases.items.length > 0">
                             <tr v-for='phase in projectPhases.items'>
-                                <td class="small-cell">{{ phase.id }}</td>
                                 <td>{{ phase.name }}</td>
                                 <td class="no-padding">
                                     <table class="table inner-table">
@@ -174,7 +172,6 @@
                     <table class="table table-striped table-responsive">
                         <thead>
                             <tr>
-                                <th class="small-cell">{{ translateText('table_header_cell.id') }}</th>
                                 <th>{{ translateText('table_header_cell.milestone') }}</th>
                                 <th>{{ translateText('table_header_cell.base_due_date') }}</th>
                                 <th>{{ translateText('table_header_cell.forecast_due_date') }}</th>
@@ -186,7 +183,6 @@
                         </thead>
                         <tbody v-if="projectMilestones.items && projectMilestones.items.length">
                             <tr v-for="milestone in projectMilestones.items">
-                                <td class="small-cell">{{ milestone.id }}</td>
                                 <td>{{ milestone.name }}</td>
                                 <td>{{ milestone.scheduledFinishAt }}</td>
                                 <td>{{ milestone.forecastFinishAt }}</td>
@@ -222,6 +218,8 @@
             </div>
         </div>
         <!-- /// End Milestones List /// -->
+
+        <alert-modal v-if="showAlertModal" @close="showAlertModal = false" :body="validationMessages.dependency" />
     </div>
 </template>
 
@@ -237,6 +235,7 @@ import ViewIcon from '../_common/_icons/ViewIcon';
 import Vue from 'vue';
 import moment from 'moment';
 import Modal from '../_common/Modal';
+import AlertModal from '../_common/AlertModal.vue';
 
 export default {
     components: {
@@ -248,6 +247,14 @@ export default {
         DeleteIcon,
         ViewIcon,
         Modal,
+        AlertModal,
+    },
+    watch: {
+        validationMessages(value) {
+            if (this.validationMessages && this.validationMessages.dependency) {
+                this.showAlertModal = true;
+            }
+        },
     },
     created() {
         this.getProjectPhases({
@@ -360,6 +367,7 @@ export default {
             projectMilestones: 'projectMilestones',
             allProjectMilestones: 'allProjectMilestones',
             allProjectPhases: 'allProjectPhases',
+            validationMessages: 'validationMessages',
         }),
         phasesPages: function() {
             return Math.ceil(this.projectPhases.totalItems / this.phasesPerPage);
@@ -384,7 +392,7 @@ export default {
                         start: new Date(item.scheduledStartAt),
                         end: new Date(item.scheduledFinishAt),
                         value: item.workPackageStatus,
-                        title: renderTooltip(item),
+                        title: renderTooltip(item, 'phase'),
                     };
                 }));
             }
@@ -395,9 +403,9 @@ export default {
                         id: item.id,
                         group: 1,
                         content: item.name,
-                        start: new Date(item.scheduledFinishAt),
+                        start: new Date(item.forecastFinishAt),
                         value: item.workPackageStatus,
-                        title: renderTooltip(item),
+                        title: renderTooltip(item, 'milestone'),
                     };
                 }));
             }
@@ -413,6 +421,7 @@ export default {
             showDeletePhaseModal: false,
             milestoneId: '',
             phaseId: '',
+            showAlertModal: false,
         };
     },
 };
@@ -420,9 +429,21 @@ export default {
 /**
  * Render tooltip based of arguments
  * @param {Object} item
+ * @param {string} type
  * @return {string}
  */
-function renderTooltip(item) {
+function renderTooltip(item, type) {
+    let forecastColorClass = 'column';
+    let actualColorClass = 'column';
+    if (moment(item.forecastFinishAt).diff(moment(item.scheduledFinishAt), 'days') > 0) {
+        forecastColorClass = 'column-warning';
+    }
+    if (moment(item.actualFinishAt).diff(moment(item.forecastFinishAt), 'days') > 0) {
+        if (type === 'milestone') {
+            forecastColorClass = 'column-alert';
+        }
+        actualColorClass = 'column-alert';
+    }
     return `<div>
         <div class="task-box box">
             <div class="box-header">
@@ -433,43 +454,50 @@ function renderTooltip(item) {
                     <p>` + item.responsibilityFullName + `</p>
                 </div>
                 <h2><router-link to="" class="simple-link">` + item.name + `</router-link></h2>
-                <p class="task-id">`+ item.id +`</p>
             </div>
             <div class="content">
                 <table class="table table-small">
                     <thead>
                         <tr>
-                            <th>` + Vue.translate('table_header_cell.schedule') + `</th>
-                            <th>` + Vue.translate('table_header_cell.start') + `</th>
-                            <th>` + Vue.translate('table_header_cell.finish') + `</th>
-                            <th>` + Vue.translate('table_header_cell.duration') + `</th>
-                        </tr>
+                            <th>` + Vue.translate('table_header_cell.schedule') + `</th>` +
+                            (type === 'phase'
+                                ? `<th>` + Vue.translate('table_header_cell.start') + `</th>
+                                 <th>` + Vue.translate('table_header_cell.finish') + `</th>
+                                 <th>` + Vue.translate('table_header_cell.duration') + `</th>`
+                                : `<th>` + Vue.translate('table_header_cell.date') + `</th>`) +
+                        `</tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>`+ Vue.translate('table_header_cell.base') +`</td>
-                            <td>` + (item.scheduledStartAt ? item.scheduledStartAt : '-') + `</td>
-                            <td>` + (item.scheduledFinishAt ? item.scheduledFinishAt : '-') + `</td>
-                            <td>` + (!isNaN(moment(item.scheduledFinishAt).diff(moment(item.scheduledStartAt), 'days'))
-                                ? moment(item.scheduledFinishAt).diff(moment(item.scheduledStartAt), 'days')
-                                : '-') + `</td>
-                        </tr>
-                        <tr class="column-warning">
-                            <td>`+ Vue.translate('table_header_cell.forecast') +`</td>
-                            <td>` + (item.forecastStartAt ? item.forecastStartAt : '-') + `</td>
-                            <td>` + (item.forecastFinishedAt ? item.forecastFinishedAt: '-') + `</td>
-                            <td>` + (!isNaN(moment(item.forecastFinishedAt).diff(moment(item.forecastStartAt), 'days'))
-                                ? moment(item.forecastFinishedAt).diff(moment(item.forecastStartAt), 'days')
-                                : '-') + `</td>
-                        </tr>
-                        <tr>
-                            <td>` + Vue.translate('table_header_cell.actual') + `</td>
-                            <td>` + (item.actualStartAt ? item.actualStartAt : '-') + `</td>
-                            <td>` + (item.actualFinishAt ? item.actualFinishAt : '-') + `</td>
-                            <td>` + (!isNaN(moment(item.actualFinishAt).diff(moment(item.actualStartAt), 'days'))
-                                ? moment(item.actualFinishAt).diff(moment(item.actualStartAt), 'days')
-                                : '-') + `</td>
-                        </tr>
+                            <td>`+ Vue.translate('table_header_cell.base') +`</td>` +
+                            (type === 'phase' ? `<td>` + (item.scheduledStartAt ? item.scheduledStartAt : '-') + `</td>` : '') +
+                            `<td>` + (item.scheduledFinishAt ? item.scheduledFinishAt : '-') + `</td>` +
+                             (type === 'phase'
+                                ? `<td>` + (!isNaN(moment(item.scheduledFinishAt).diff(moment(item.scheduledStartAt), 'days'))
+                                    ? moment(item.scheduledFinishAt).diff(moment(item.scheduledStartAt), 'days')
+                                    : '-') + `</td>`
+                                : '') +
+                        `</tr>
+                        <tr class="` + forecastColorClass +`">
+                            <td>` + Vue.translate('table_header_cell.forecast') +`</td>` +
+                            (type === 'phase' ? `<td>` + (item.forecastStartAt ? item.forecastStartAt : '-') + `</td>` : '') +
+                            `<td>` + (item.forecastFinishAt ? item.forecastFinishAt: '-') + `</td>` +
+                            (type === 'phase'
+                                ? `<td>` + (!isNaN(moment(item.forecastFinishAt).diff(moment(item.forecastStartAt), 'days'))
+                                    ? moment(item.forecastFinishAt).diff(moment(item.forecastStartAt), 'days')
+                                    : '-') + `</td>`
+                                : '') +
+                        `</tr>` +
+                        (type === 'phase'
+                            ? `<tr class="` + actualColorClass + `">
+                                <td>` + Vue.translate('table_header_cell.actual') + `</td>
+                                <td>` + (item.actualStartAt ? item.actualStartAt : '-') + `</td>
+                                <td>` + (item.actualFinishAt ? item.actualFinishAt : '-') + `</td>
+                                <td>` + (!isNaN(moment(item.actualFinishAt).diff(moment(item.actualStartAt), 'days'))
+                                    ? moment(item.actualFinishAt).diff(moment(item.actualStartAt), 'days')
+                                    : '-') + `</td>`
+                            : ``) +
+                        `</tr>
                     </tbody>
                 </table>
             </div>

@@ -1,5 +1,6 @@
 message:
     contract_freezed: Project contract is freezed
+    work_package_dependency_constraint: Entry cannot be deleted because there are phases/milestones/tasks that ar depending on it!
     opportunities: Opportunities
     phases_and_milestones: Phases and Milestones
     costs_progress: Costs Progress

@@ -5,7 +5,6 @@ import router from '../../router';
 const state = {
     milestones: [],
     currentMilestone: {},
-    totalMilestones: 0,
     milestoneFilters: {},
     allMilestones: [],
 };
@@ -139,7 +138,13 @@ const actions = {
             .delete(
                 Routing.generate('app_api_workpackage_delete', {id: id})
             ).then((response) => {
-                commit(types.DELETE_PROJECT_MILESTONE, {id});
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    commit(types.DELETE_PROJECT_MILESTONE, {id});
+                }
             }, (response) => {
             });
     },
@@ -174,10 +179,10 @@ const mutations = {
      * @param {integer} id
      */
     [types.DELETE_PROJECT_MILESTONE](state, {id}) {
-        state.milestones = state.milestones.filter((item) => {
-            return item.id !== id ? true : false;
+        state.milestones.items = state.milestones.items.filter((item) => {
+            return item.id !== id;
         });
-        state.totalMilestones--;
+        state.milestones.totalItems--;
     },
     [types.SET_ALL_PROJECT_MILESTONES](state, {milestones}) {
         state.allMilestones = milestones;
