@@ -3,9 +3,12 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Project;
+use AppBundle\Repository\Traits\ProjectSortingTrait;
 
 class UnitRepository extends BaseRepository
 {
+    use ProjectSortingTrait;
+
     public function findMaxSequence(Project $project = null)
     {
         $qb = $this

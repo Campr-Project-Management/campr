@@ -3,9 +3,12 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Project;
+use AppBundle\Repository\Traits\UserSortingTrait;
 
 class MeasureRepository extends BaseRepository
 {
+    use UserSortingTrait;
+
     /**
      * @param Project $project
      *
