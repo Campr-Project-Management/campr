@@ -2,8 +2,17 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
+use AppBundle\Repository\Traits\WorkPackageSortingTrait;
+use AppBundle\Repository\Traits\WorkPackageProjectWorkCostTypeSortingTrait;
+
 class AssignmentRepository extends BaseRepository
 {
+    use WorkPackageSortingTrait, WorkPackageProjectWorkCostTypeSortingTrait {
+        WorkPackageSortingTrait::setOrder as setWorkPackageOrder;
+        WorkPackageProjectWorkCostTypeSortingTrait::setOrder as setWorkPackageProjectWorkCostTypeOrder;
+    }
+
     /**
      * Finds assignments based on criteria, order and limit.
      *
@@ -33,11 +42,7 @@ class AssignmentRepository extends BaseRepository
             );
         }
 
-        if ($orderBy) {
-            foreach ($orderBy as $key => $value) {
-                $qb->orderBy('wp.'.$key, $value);
-            }
-        }
+        $this->setOrder($orderBy, $qb);
 
         if ($limit) {
             $qb->setMaxResults($limit);
@@ -48,5 +53,15 @@ class AssignmentRepository extends BaseRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param array        $orderBy
+     * @param QueryBuilder $qb
+     */
+    public function setOrder(array &$orderBy, QueryBuilder $qb)
+    {
+        $this->setWorkPackageOrder($orderBy, $qb);
+        $this->setWorkPackageProjectWorkCostTypeOrder($orderBy, $qb);
     }
 }

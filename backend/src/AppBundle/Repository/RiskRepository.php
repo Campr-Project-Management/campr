@@ -2,10 +2,20 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use AppBundle\Entity\Project;
+use AppBundle\Repository\Traits\RiskStrategySortingTrait;
+use AppBundle\Repository\Traits\RiskCategorySortingTrait;
+use AppBundle\Repository\Traits\UserSortingTrait;
 
 class RiskRepository extends BaseRepository
 {
+    use RiskStrategySortingTrait, RiskCategorySortingTrait, UserSortingTrait {
+        RiskStrategySortingTrait::setOrder as setRiskStrategyOrder;
+        RiskCategorySortingTrait::setOrder as setRiskCategoryOrder;
+        UserSortingTrait::setOrder as setUserOrder;
+    }
+
     const VERY_LOW = [0, 25];
     const LOW = [25, 50];
     const HIGH = [50, 75];
@@ -183,5 +193,16 @@ class RiskRepository extends BaseRepository
             ->getQuery()
             ->getSingleResult()
         ;
+    }
+
+    /**
+     * @param array        $orderBy
+     * @param QueryBuilder $qb
+     */
+    public function setOrder(array &$orderBy, QueryBuilder $qb)
+    {
+        $this->setRiskStrategyOrder($orderBy, $qb);
+        $this->setRiskCategoryOrder($orderBy, $qb);
+        $this->setUserOrder($orderBy, $qb);
     }
 }
