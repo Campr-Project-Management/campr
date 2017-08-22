@@ -14,6 +14,12 @@ trait UserSortingTrait
     {
         foreach ($orderBy as $field => $dir) {
             switch ($field) {
+                case 'responsibilityFullName':
+                    $qb->leftJoin('q.responsibility', 'r');
+                    $qb->addSelect('CONCAT(r.firstName, \' \', r.lastName) AS HIDDEN full_name');
+                    $qb->orderBy('full_name', $dir);
+                    unset($orderBy['responsibilityFullName']);
+                    break;
                 case 'userFullName':
                     $qb->addSelect('CONCAT(u.firstName, \' \', u.lastName) AS HIDDEN full_name');
                     $qb->orderBy('full_name', $dir);
