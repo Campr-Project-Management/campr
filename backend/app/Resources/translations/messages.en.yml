@@ -1,4 +1,5 @@
 message:
+    rasci_matrix: RASCI Matrix
     contract_freezed: Project contract is freezed
     work_package_dependency_constraint: Entry cannot be deleted because there are phases/milestones/tasks that are depending on it!
     opportunities: Opportunities
@@ -1307,6 +1308,8 @@ placeholder:
     todo_category: Todo Category
 
 table_header_cell:
+    task_title: Task Title
+    task_number: Task No.
     freezed: Freezed
     expiry_date: Expiry Date
     distribution_list: Distribution List
