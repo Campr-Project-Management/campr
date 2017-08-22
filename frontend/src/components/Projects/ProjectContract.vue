@@ -1,170 +1,209 @@
 <template>
     <div class="project-contract">
-        <div class="page-section flex">
-            <div class="page-side left">
-                <div class="header">
-                    <div class="flex">
-                        <h1>{{ translateText('message.project_contract') }}</h1>
-                        <a :href="downloadPdf" class="pdf" v-if="contract && contract.id">
-                            <svg version="1.1" id="Layer_1" width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                viewBox="0 0 23.1 23.5" style="enable-background:new 0 0 23.1 23.5;" xml:space="preserve">
-                                <g id="XMLID_252_">
-                                    <g id="XMLID_627_">
-                                        <polyline id="XMLID_724_" class="st0" points="13.6,16 15.3,17.7 17.1,16 		"/>
-                                        <circle id="XMLID_723_" class="st0" cx="15.3" cy="15.6" r="4.2"/>
-                                        <line id="XMLID_722_" class="st0" x1="15.3" y1="13.6" x2="15.3" y2="17.7"/>
-                                    </g>
-                                    <g id="XMLID_253_">
-                                        <g id="XMLID_429_">
-                                            <polyline id="XMLID_614_" class="st0" points="10.4,18.4 3.5,18.4 3.5,3.8 11.1,3.8 14.6,7.3 14.6,10.1 			"/>
-                                            <polyline id="XMLID_539_" class="st0" points="11.1,3.8 11.1,7.3 14.6,7.3 			"/>
-                                        </g>
-                                    </g>
-                                    <g id="XMLID_621_">
-                                        <path id="XMLID_619_" class="st0" d="M8.5,11.7V9.3h0.5c0.5,0,0.9,0.5,0.9,1.2c0,0.7-0.4,1.2-0.9,1.2H8.5z"/>
-                                        <polyline id="XMLID_618_" class="st0" points="10.8,11.7 10.8,9.3 12,9.3 		"/>
-                                        <line id="XMLID_616_" class="st0" x1="10.8" y1="10.3" x2="11.5" y2="10.3"/>
-                                        <path id="XMLID_243_" class="st0" d="M6.1,11.7V9.3h0.6c0.3,0,0.6,0.3,0.6,0.6S7,10.5,6.7,10.5H6.1"/>
-                                    </g>
-                                </g>
-                            </svg>
+        <div class="page-section">
+            <div class="row">
+                <!-- /// Header /// -->
+                <div class="col-md-12">
+                    <div class="header">
+                        <div class="text-center">                            
+                            <h1>{{ contract.project }}</h1>
+                        </div>
+                    </div>
+
+                    <div class="hero-text">
+                        {{ translateText('message.project_contract') }}
+                    </div>
+
+
+                    <div class="flex buttons flex-center" v-if="contract && contract.id">
+                        <a class="btn-rounded flex flex-center download-pdf" :href="downloadPdf">
+                            {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill"></downloadbutton-icon>
                         </a>
+                        <button v-if="!freezed" @click="freezeContract()" class="btn-rounded second-bg">{{ translateText('button.freeze_contract') }}</button>
+                        <h4 v-else>{{ translateText('message.contract_freezed') }}</h4>
                     </div>
                 </div>
-                <input-field :disabled="freezed" v-model="description" type="textarea" v-bind:label="translateText('message.project_description')" :content="contract.description"></input-field>
-                <input-field :disabled="freezed" v-model="projectStartEvent" type="textarea" v-bind:label="translateText('message.project_start_event')" :content="contract.projectStartEvent"></input-field>
-
-                <div class="flex flex-space-between dates">
-                    <div class="input-holder left" :class="{disabledpicker: freezed }">
-                        <label class="active">{{ translateText('label.proposed_start_date') }}</label>
-                        <datepicker v-on:selected="closeDatePicker('proposedStartDate')" id="proposedStartDate" v-model="proposedStartDate" format="dd - MM - yyyy" :value="contract.proposedStartDate"></datepicker>
-                        <calendar-icon @click.native="showDatePicker('proposedStartDate')" fill="middle-fill" stroke="middle-stroke"></calendar-icon>
-                    </div>
-                    <div class="input-holder right" :class="{disabledpicker: freezed }">
-                        <label class="active">{{ translateText('label.proposed_end_date') }}</label>
-                        <datepicker v-on:selected="closeDatePicker('proposedEndDate')" id="proposedEndDate" v-model="proposedEndDate" format="dd - MM - yyyy" :value="contract.proposedEndDate"></datepicker>
-                        <calendar-icon @click.native="showDatePicker('proposedEndDate')" fill="middle-fill" stroke="middle-stroke"></calendar-icon>
-                    </div>
-                </div>
-
-                <div class="flex flex-space-between dates right">
-                    <div class="input-holder left" :class="{disabledpicker: freezed }">
-                        <label class="active">{{ translateText('label.forecast_start_date') }}</label>
-                        <datepicker v-on:selected="closeDatePicker('forecastStartDate')" id="forecastStartDate" v-model="forecastStartDate" format="dd - MM - yyyy" :value="contract.forecastStartDate"></datepicker>
-                        <calendar-icon @click.native="showDatePicker('forecastStartDate')" fill="middle-fill" stroke="middle-stroke"></calendar-icon>
-                    </div>
-                    <div class="input-holder right" :class="{disabledpicker: freezed }">
-                        <label class="active">{{ translateText('label.forecast_end_date') }}</label>
-                        <datepicker v-on:selected="closeDatePicker('forecastEndDate')" id="forecastEndDate" v-model="forecastEndDate"  format="dd - MM - yyyy" :value="contract.forecastEndDate"></datepicker>
-                        <calendar-icon @click.native="showDatePicker('forecastEndDate')" fill="middle-fill" stroke="middle-stroke"></calendar-icon>
-                    </div>
-                </div>
-
-                <div class="header">
-                    <div class="flex">
-                        <h1>{{ translateText('message.project_deliverables') }}</h1>
-                    </div>
-                </div>
-                <div v-dragula="colOne" drake="deliverables" v-if="project.projectDeliverables && project.projectDeliverables.length > 0">
-                    <drag-box :disabled="freezed" v-for="(item, index) in project.projectDeliverables" v-bind:item="item" v-bind:index="index" type="deliverable"></drag-box>
-                </div>
-                <p v-else>{{ translateText('label.no_data') }}</p>
-                <div class="hr small"></div>
-                <input-field v-if="!freezed" v-model="deliverableDescription" :content="deliverableDescription" type="text" v-bind:label="translateText('message.new_project_deliverable')"></input-field>
-                <error
-                    v-if="validationMessages.createProjectDeliverableForm && validationMessages.description && validationMessages.description.length"
-                    v-for="message in validationMessages.description"
-                    :message="message" />
-                <div v-if="!freezed" class="flex flex-direction-reverse">
-                    <button v-on:click="createProjectDeliverable()" class="btn-rounded">{{ translateText('message.add_deliverable') }} +</button>
-                </div>
+                <!-- /// End Header /// -->
             </div>
 
-            <div class="page-side right">
-                <div class="flex buttons right" v-if="contract && contract.id">
-                    <button v-if="!freezed" @click="freezeContract()" class="btn-rounded second-bg">{{ translateText('button.freeze_contract') }}</button>
-                    <h4 v-else>{{ translateText('message.contract_freezed') }}</h4>
-                </div>
-                <div class="header">
-                    <h2 class="clickable" @click="toggleSponsorsManagers()">{{ translateText('message.sponsors_managers') }}
-                        <i class="fa fa-angle-down" v-if="showSponsorsManagers"></i>
-                        <i class="fa fa-angle-up" v-if="!showSponsorsManagers"></i>
-                    </h2>
-                    <router-link :to="{name: 'project-organization'}">
-                        <a class="btn-rounded btn-md btn-empty">{{ translateText('message.view_team') }}</a>
-                    </router-link>
-                </div>
-                <div class="flex flex-row flex-center members-big" v-if="showSponsorsManagers">
-                    <member-badge v-for="item in projectSponsors" v-bind:item="item" size="small"></member-badge>
-                    <member-badge v-for="item in projectManagers" v-bind:item="item" size="small"></member-badge>
-                    <p v-if="projectSponsors.length === 0 && projectManagers.length === 0">{{ translateText('label.no_data') }}</p>
-                </div>
-                <div class="header">
-                    <div class="flex">
-                        <h1>{{ translateText('message.project_objectives') }}</h1>
+            <div class="row">
+                <!-- /// Project Description /// -->
+                <div class="col-md-6">
+                    <!--<input-field :disabled="freezed" v-model="description" type="textarea" v-bind:label="translateText('message.project_description')" :content="contract.description"></input-field>-->
+                    <div class="vueditor-holder">
+                        <div class="vueditor-header">{{ translateText('message.project_description') }}</div>
+                        <Vueditor :ref="'contract.description'" :disabled="freezed"/>
                     </div>
                 </div>
+                <!-- End Project Description -->
 
-                <div v-dragula="colOne" drake="objectives" v-if="project.projectObjectives && project.projectObjectives.length > 0">
-                    <drag-box :disabled="freezed" v-for="(item, index) in project.projectObjectives" v-bind:item="item" v-bind:index="index" type="objective"></drag-box>
+                <!-- /// Project Start Event /// -->
+                <div class="col-md-6">
+                    <!--<input-field :disabled="freezed" v-model="projectStartEvent" type="textarea" v-bind:label="translateText('message.project_start_event')" :content="contract.projectStartEvent"></input-field>-->
+                    <div class="vueditor-holder">
+                        <div class="vueditor-header">{{ translateText('message.project_start_event') }}</div>
+                        <Vueditor :ref="'contract.projectStartEvent'" :disabled="freezed"/>
+                    </div>
                 </div>
-                <p v-else>{{ translateText('label.no_data') }}</p>
-                <input-field v-if="!freezed" v-model="objectiveTitle" :content="objectiveTitle" type="text" v-bind:label="translateText('message.new_objective_title')"></input-field>
-                <error
-                        v-if="validationMessages.createProjectObjectiveForm && validationMessages.title && validationMessages.title.length"
-                        v-for="message in validationMessages.title"
+                <!-- /// End Project Start Event /// -->
+            </div>
+
+            <div class="row margintop40">
+                <!-- /// Project Schedule /// -->
+                <div class="col-md-6 col-md-offset-3">
+                    <h3 class="text-center">{{ translateText('message.schedule') }}</h3>
+                    <div class="flex flex-space-between dates">
+                        <div class="input-holder left" :class="{disabledpicker: freezed }">
+                            <label class="active">{{ translateText('label.proposed_start_date') }}</label>
+                            <datepicker v-on:selected="closeDatePicker('proposedStartDate')" id="proposedStartDate" v-model="proposedStartDate" format="dd - MM - yyyy" :value="contract.proposedStartDate"></datepicker>
+                            <calendar-icon @click.native="showDatePicker('proposedStartDate')" fill="middle-fill" stroke="middle-stroke"></calendar-icon>
+                        </div>
+                        <div class="input-holder right" :class="{disabledpicker: freezed }">
+                            <label class="active">{{ translateText('label.proposed_end_date') }}</label>
+                            <datepicker v-on:selected="closeDatePicker('proposedEndDate')" id="proposedEndDate" v-model="proposedEndDate" format="dd - MM - yyyy" :value="contract.proposedEndDate"></datepicker>
+                            <calendar-icon @click.native="showDatePicker('proposedEndDate')" fill="middle-fill" stroke="middle-stroke"></calendar-icon>
+                        </div>
+                    </div>
+                    <div class="flex flex-space-between dates right">
+                        <div class="input-holder left" :class="{disabledpicker: freezed }">
+                            <label class="active">{{ translateText('label.forecast_start_date') }}</label>
+                            <datepicker v-on:selected="closeDatePicker('forecastStartDate')" id="forecastStartDate" v-model="forecastStartDate" format="dd - MM - yyyy" :value="contract.forecastStartDate"></datepicker>
+                            <calendar-icon @click.native="showDatePicker('forecastStartDate')" fill="middle-fill" stroke="middle-stroke"></calendar-icon>
+                        </div>
+                        <div class="input-holder right" :class="{disabledpicker: freezed }">
+                            <label class="active">{{ translateText('label.forecast_end_date') }}</label>
+                            <datepicker v-on:selected="closeDatePicker('forecastEndDate')" id="forecastEndDate" v-model="forecastEndDate"  format="dd - MM - yyyy" :value="contract.forecastEndDate"></datepicker>
+                            <calendar-icon @click.native="showDatePicker('forecastEndDate')" fill="middle-fill" stroke="middle-stroke"></calendar-icon>
+                        </div>
+                    </div>
+                </div>
+                <!-- /// End Project Schedule /// -->
+            </div>
+
+            <div class="row">
+                <!-- /// Project Sponsors & Managers /// -->
+                <div class="col-md-12">
+                    <div class="header">
+                        <h3 class="clickable" @click="toggleSponsorsManagers()">{{ translateText('message.sponsors_managers') }}
+                            <i class="fa fa-angle-down" v-if="!showSponsorsManagers"></i>
+                            <i class="fa fa-angle-up" v-if="showSponsorsManagers"></i>
+                        </h3>
+                    </div>
+                    <div class="text-center">                        
+                        <router-link :to="{name: 'project-organization'}">
+                            <a class="btn-rounded btn-md btn-empty">{{ translateText('message.view_team') }}</a>
+                        </router-link>
+                    </div>
+                    <div class="flex flex-row flex-center members-big" v-if="showSponsorsManagers">
+                        <member-badge v-for="item in projectSponsors" v-bind:item="item" size="small"></member-badge>
+                        <member-badge v-for="item in projectManagers" v-bind:item="item" size="small"></member-badge>
+                        <p v-if="projectSponsors.length === 0 && projectManagers.length === 0">{{ translateText('label.no_data') }}</p>
+                    </div>
+                </div>
+                <!-- /// End Project Sponsors & Managers /// -->
+            </div>
+
+            <div class="row margintop40">
+                <!-- /// Project Objectives /// -->
+                <div class="col-md-4">
+                    <h3>{{ translateText('message.project_objectives') }}</h3>
+
+                    <div v-dragula="colOne" drake="objectives" v-if="project.projectObjectives && project.projectObjectives.length > 0">
+                        <drag-box :disabled="freezed" v-for="(item, index) in project.projectObjectives" v-bind:item="item" v-bind:index="index" type="objective"></drag-box>
+                    </div>
+                    <p v-else>{{ translateText('label.no_data') }}</p>
+                    <input-field v-if="!freezed" v-model="objectiveTitle" :content="objectiveTitle" type="text" v-bind:label="translateText('message.new_objective_title')"></input-field>
+                    <error
+                            v-if="validationMessages.createProjectObjectiveForm && validationMessages.title && validationMessages.title.length"
+                            v-for="message in validationMessages.title"
+                            :message="message" />
+                    <div v-if="!freezed" class="flex flex-direction-reverse">
+                        <a v-on:click="createProjectObjective()" class="btn-rounded">{{ translateText('message.add_objective') }} +</a>
+                    </div>
+                </div>
+                <!-- /// End Project Objectives /// -->
+
+                <!-- /// Project Limitations /// -->
+                <div class="col-md-4">
+                    <h3>{{ translateText('message.project_limitations') }}</h3>
+
+                    <div v-dragula="colOne" drake="limitations" v-if="project.projectLimitations && project.projectLimitations.length > 0">
+                        <drag-box :disabled="freezed" v-for="(item, index) in project.projectLimitations" v-bind:item="item" v-bind:index="index" type="limitation"></drag-box>
+                    </div>
+                    <p v-else>{{ translateText('label.no_data') }}</p>
+                    <div class="hr small"></div>
+                    <input-field v-if="!freezed" v-model="limitationDescription" :content="limitationDescription" type="text" v-bind:label="translateText('message.new_project_limitation')"></input-field>
+                    <error
+                        v-if="validationMessages.createProjectLimitationForm && validationMessages.description && validationMessages.description.length"
+                        v-for="message in validationMessages.description"
                         :message="message" />
-                <div v-if="!freezed" class="flex flex-direction-reverse">
-                    <a v-on:click="createProjectObjective()" class="btn-rounded">{{ translateText('message.add_objective') }} +</a>
-                </div>
-                <div class="header">
-                    <div class="flex">
-                        <h1>{{ translateText('message.project_limitations') }}</h1>
+                    <div v-if="!freezed" class="flex flex-direction-reverse">
+                        <a v-on:click="createProjectLimitation()" class="btn-rounded">{{ translateText('message.add_limitation') }} +</a>
                     </div>
                 </div>
-                <div v-dragula="colOne" drake="limitations" v-if="project.projectLimitations && project.projectLimitations.length > 0">
-                    <drag-box :disabled="freezed" v-for="(item, index) in project.projectLimitations" v-bind:item="item" v-bind:index="index" type="limitation"></drag-box>
-                </div>
-                <p v-else>{{ translateText('label.no_data') }}</p>
-                <div class="hr small"></div>
-                <input-field v-if="!freezed" v-model="limitationDescription" :content="limitationDescription" type="text" v-bind:label="translateText('message.new_project_limitation')"></input-field>
-                <error
-                    v-if="validationMessages.createProjectLimitationForm && validationMessages.description && validationMessages.description.length"
-                    v-for="message in validationMessages.description"
-                    :message="message" />
-                <div v-if="!freezed" class="flex flex-direction-reverse">
-                    <a v-on:click="createProjectLimitation()" class="btn-rounded">{{ translateText('message.add_limitation') }} +</a>
-                </div>
-                <div class="header">
-                    <div class="flex">
-                        <h2>{{ translateText('message.internal_resources') }}</h2>
-                    </div>
-                </div>
-                <vue-chart
-                        chart-type="ColumnChart"
-                        :columns="columns"
-                        :rows="rowsInternal"
-                        :options="options"
-                ></vue-chart>
+                <!-- /// End Project Limitations /// -->
 
-                <div class="header">
-                    <div class="flex">
-                        <h2>{{ translateText('message.external_resources') }}</h2>
+                <!-- /// Project Deliverables /// -->
+                <div class="col-md-4">
+                    <h3>{{ translateText('message.project_deliverables') }}</h3>
+                    <div v-dragula="colOne" drake="deliverables" v-if="project.projectDeliverables && project.projectDeliverables.length > 0">
+                        <drag-box :disabled="freezed" v-for="(item, index) in project.projectDeliverables" v-bind:item="item" v-bind:index="index" type="deliverable"></drag-box>
+                    </div>
+                    <p v-else>{{ translateText('label.no_data') }}</p>
+                    <div class="hr small"></div>
+                    <input-field v-if="!freezed" v-model="deliverableDescription" :content="deliverableDescription" type="text" v-bind:label="translateText('message.new_project_deliverable')"></input-field>
+                    <error
+                        v-if="validationMessages.createProjectDeliverableForm && validationMessages.description && validationMessages.description.length"
+                        v-for="message in validationMessages.description"
+                        :message="message" />
+                    <div v-if="!freezed" class="flex flex-direction-reverse">
+                        <button v-on:click="createProjectDeliverable()" class="btn-rounded">{{ translateText('message.add_deliverable') }} +</button>
                     </div>
                 </div>
-                <vue-chart
-                        chart-type="ColumnChart"
-                        :columns="columns"
-                        :rows="rowsExternal"
-                        :options="options"
-                ></vue-chart>
-                <div class="hr"></div>
-                <div class="flex buttons flex-center">
-                    <a v-if="!freezed" v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
-                    <a v-if="contract && contract.id" class="btn-rounded second-bg flex flex-center download-pdf" :href="downloadPdf">
-                        {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill"></downloadbutton-icon>
-                    </a>
+                <!-- /// End Project Deliverables /// -->
+            </div>
+
+            <div class="row margintop40">
+                <!-- /// Project Internal Costs /// -->
+                <div class="col-md-6">
+                    <h3>{{ translateText('message.internal_resources') }}</h3>
+                    <vue-chart
+                            chart-type="ColumnChart"
+                            :columns="columns"
+                            :rows="rowsInternal"
+                            :options="options"
+                    ></vue-chart>
                 </div>
+                <!-- /// End Project Internal Costs /// -->
+
+                <!-- /// Project External Costs /// -->
+                <div class="col-md-6">
+                    <h3>{{ translateText('message.external_resources') }}</h3>
+                    <vue-chart
+                            chart-type="ColumnChart"
+                            :columns="columns"
+                            :rows="rowsExternal"
+                            :options="options"
+                    ></vue-chart>
+                </div>
+                <!-- /// End Project External Costs /// -->
+            </div>
+
+            <div class="row">
+                <!-- /// Footer Buttons /// -->
+                <div class="col-md-12">
+                    <div class="hr"></div>
+                    <div class="flex flex-space-between buttons">
+                        <a v-if="!freezed" v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
+                        <div class="flex">
+                            <a v-if="contract && contract.id" class="btn-rounded flex flex-center download-pdf" :href="downloadPdf">
+                                {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill"></downloadbutton-icon>
+                            </a>
+                            <button v-if="!freezed" @click="freezeContract()" class="btn-rounded second-bg">{{ translateText('button.freeze_contract') }}</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /// End Footer Buttons /// -->
             </div>
         </div>
 
@@ -557,16 +596,44 @@ export default {
 <style scoped lang="scss">
     @import '../../css/page-section';
 
+    .page-section {
+        .header {
+            justify-content: center;
+            text-align: center;
+
+            h1 {
+                padding-bottom: 20px;
+
+                span {
+                    font-size: 0.75em;
+                    display: block;
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+
+    .hero-text {
+        font-size: 3em;
+        font-weight: 700;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 30px; 
+    }
+
     .header .btn-md {
         margin-top: 24px;
     }
 
     .members-big {
-        margin: 0 -15px;
+        margin: 30px 0 0;
     }
 
-    .members-small {
-        margin: 0 -16px;
+    .member-badge {
+        &:before {
+            display: none;
+        }
     }
 
     .dates {
@@ -581,10 +648,6 @@ export default {
                 margin-left: 15px;
             }
         }
-    }
-
-    .project-contract {
-        padding-bottom: 50px;
     }
 
     .page-side {
@@ -627,7 +690,7 @@ export default {
     }
 
     .hr {
-        margin: 67px 0;
+        margin: 30px 0;
 
         &.small {
             margin: 20px 0;
@@ -636,7 +699,11 @@ export default {
 
     .buttons {
         a {
-            margin: 0 10px;
+            margin: 0 20px 10px 0;
+
+            &:last-child {
+                margin: 0 0 10px 0;
+            }
         }
     }
 

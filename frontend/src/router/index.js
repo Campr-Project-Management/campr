@@ -47,6 +47,7 @@ import ProjectDecisions from '../components/Projects/ProjectDecisions.vue';
 import DecisionCreate from '../components/Projects/Decisions/DecisionCreate.vue';
 import ViewDecision from '../components/Projects/Decisions/ViewDecision.vue';
 import ProjectStatusReport from '../components/Projects/ProjectStatusReport.vue';
+import RASCIMatrix from '../components/Projects/RASCIMatrix.vue';
 
 Vue.use(VueRouter);
 
@@ -326,6 +327,11 @@ const routes = [
                 path: 'status-report',
                 component: ProjectStatusReport,
                 name: 'project-status-report',
+            },
+            {
+                path: 'rasci-matrix',
+                component: RASCIMatrix,
+                name: 'project-rasci-matrix',
             },
         ],
     },
