@@ -50,6 +50,10 @@ import ProjectStatusReports from '../components/Projects/ProjectStatusReports.vu
 import StatusReportCreate from '../components/Projects/StatusReports/StatusReportCreate.vue';
 import StatusReportView from '../components/Projects/StatusReports/StatusReportView.vue';
 import RASCIMatrix from '../components/Projects/RASCIMatrix.vue';
+import CloseDownReport from '../components/Projects/ProjectCloseDownReport.vue';
+import RemainingActionView from '../components/Projects/CloseDownReport/ViewRemainingAction.vue';
+import RemainingActionEdit from '../components/Projects/CloseDownReport/EditRemainingAction.vue';
+
 
 Vue.use(VueRouter);
 
@@ -328,7 +332,7 @@ const routes = [
             {
                 path: 'status-reports',
                 component: ProjectStatusReports,
-                name: 'project-status-report',
+                name: 'project-status-reports',
             },
             {
                 path: 'status-reports/create-status-report',
@@ -344,6 +348,21 @@ const routes = [
                 path: 'rasci-matrix',
                 component: RASCIMatrix,
                 name: 'project-rasci-matrix',
+            },
+            {
+                path: 'close-down-report',
+                component: CloseDownReport,
+                name: 'project-close-down-report',
+            },
+            {
+                path: 'close-down-report/view-remaining-action',
+                component: RemainingActionView,
+                name: 'project-close-down-report-view-remaining-action',
+            },
+            {
+                path: 'close-down-report/edit-remaining-action',
+                component: RemainingActionEdit,
+                name: 'project-close-down-report-edit-remaining-action',
             },
         ],
     },

@@ -167,12 +167,12 @@
                         <span class="tablet"></span>
                     </router-link>
                 </li>
-                <!--<li>-->
-                    <!--<router-link to="todo" v-bind:title="message.close_down_project">-->
-                        <!--<span class="default">{{ message.close_down_project }}</span>-->
-                        <!--<span class="tablet"></span>-->
-                    <!--</router-link>-->
-                <!--</li>-->
+                <li>
+                    <router-link :to="{name: 'project-close-down-report'}" v-bind:title="message.close_down_report">
+                        <span class="default">{{ message.close_down_report }}</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
             </ul>
         </nav>
     </aside>
@@ -218,6 +218,7 @@ export default {
                 close_down_project: this.translate('message.close_down_project'),
                 gantt_chart: this.translate('message.gantt_chart'),
                 rasci_matrix: this.translate('message.rasci_matrix'),
+                close_down_report: this.translate('message.close_down_report'),
             },
         };
     },
