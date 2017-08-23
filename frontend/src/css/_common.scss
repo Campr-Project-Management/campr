@@ -394,15 +394,15 @@ textarea {
     font-size: 8px;
 
     .icon {
-        width: 10px;
-        height: 10px;
+        width: 12px;
+        height: 12px;
         margin-left: 5px;
         position: relative;
         top: 2px;
 
         svg {
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
         }
     }
 }
@@ -478,6 +478,7 @@ textarea {
     font-size: 10px;
     text-transform: uppercase;
     display: inline-block;
+    letter-spacing: 0.1em;
     @include transition(color, 0.2s, ease-in);
 
     &:hover,
@@ -1147,6 +1148,6 @@ hr {
 
 .ve-design {
     > div {
-        padding: 8px 0 0;
+        padding: 8px 0 0 !important;
     }
 }

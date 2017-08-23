@@ -3,16 +3,16 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="view-todo page-section">
-                    <!-- /// Header /// -->
                     <modal v-if="showDeleteModal" @close="showDeleteModal = false">
-                        <p class="modal-title">{{ translateText('message.delete_decision') }}</p>
+                        <p class="modal-title">{{ translateText('message.delete_remaining_action') }}</p>
                         <div class="flex flex-space-between">
                             <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
                             <a href="javascript:void(0)" @click="removeDecision()" class="btn-rounded">{{ translateText('message.yes') }}</a>
                         </div>
                     </modal>
+
                     <modal v-if="showRescheduleModal" @close="cancelRescheduleModal()">
-                        <p class="modal-title">{{ translateText('message.reschedule_decision') }}</p>
+                        <p class="modal-title">{{ translateText('message.reschedule_remaining_action') }}</p>
                         <div class="form-group last-form-group">
                             <div class="col-md-4">
                                 <div class="input-holder">
@@ -34,23 +34,20 @@
                             <a href="javascript:void(0)" @click="rescheduleDecision()" class="btn-rounded">{{ translateText('button.save') }}</a>
                         </div>
                     </modal>
-
+                    <!-- /// Header /// -->
                     <div class="header flex-v-center">
                         <div>
-                            <router-link :to="{name: 'project-decisions'}" class="small-link">
+                            <router-link :to="{name: 'project-close-down-report'}" class="small-link">
                                 <i class="fa fa-angle-left"></i>
-                                {{ translateText('message.back_to_decisions') }}
+                                {{ translateText('message.back_to') }} {{ translateText('message.close_down_report') }}
                             </router-link>
-                            <h1>{{ currentDecision.title }}</h1>
-                            <h3 class="category"><b>{{ currentDecision.meetingName }}</b> | <b>{{ currentDecision.decisionCategoryName }}</b></h3>
-                            <h4>{{ translateText('message.created') }}: <b>{{currentDecision.date | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.due_date') }}: <b>{{currentDecision.dueDate | moment('DD.MM.YYYY') }}</b> </h4>
+                            <h1>Current Remaining Action Name</h1>
+                            <h4>{{ translateText('message.created') }}: <b>23.08.2017</b> | {{ translateText('message.due_date') }}: <b>25.05.2018</b></h4>
                             <div class="entry-responsible flex flex-v-center">
-                                <div class="user-avatar">
-                                    <img :src="currentDecision.responsibilityAvatar" :alt="currentDecision.responsibilityFullName"/>
-                                </div>
+                                <div class="avatar" v-tooltip.top-center="'David Gilmore'" style="background-image:url(http://dev.campr.biz/uploads/avatars/49.jpg"></div>
                                 <div>
                                     {{ translateText('message.responsible') }}:
-                                    <b>{{currentDecision.responsibilityFullName}}</b>
+                                    <b>David Gilmour</b>
                                 </div>
                             </div>
                             <a @click="showRescheduleModal = true" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.reschedule') }} <reschedule-icon></reschedule-icon></a>
@@ -60,7 +57,7 @@
                 </div>
 
                 <div class="entry-body">
-                    <div v-html="currentDecision.description"></div>
+                    Nulla quis quam id arcu tincidunt hendrerit. Aenean volutpat tincidunt posuere. Nulla arcu dolor, dapibus ut augue a, tincidunt semper felis. Curabitur in mauris risus. Vivamus sit amet quam dui. Fusce nec nunc pharetra, consectetur est a, eleifend justo.
                 </div>
             </div>
             <div class="col-md-6">
@@ -68,13 +65,13 @@
                     <!-- /// Header /// -->
                     <div class="margintop20 text-right">
                         <div class="buttons">
-                            <router-link class="btn-rounded btn-auto" :to="{name: 'project-decisions-edit-decision', params:{decisionId: currentDecision.id}}">
-                                {{ translateText('button.edit_decision') }}
+                            <router-link class="btn-rounded btn-auto" :to="{name: 'project-close-down-report-edit-remaining-action'}">
+                                {{ translateText('button.edit_remaining_action') }}
                             </router-link>
-                            <router-link :to="{name: 'project-decisions-create-decision'}" class="btn-rounded btn-auto second-bg">
-                                {{ translateText('button.new_decision') }}
+                            <router-link class="btn-rounded btn-auto second-bg" :to="{name: 'project-decisions-create-decision'}">
+                                {{ translateText('button.new_remaining_action') }}
                             </router-link>
-                            <a @click="showDeleteModal = true" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_decision') }}</a>
+                            <a @click="showDeleteModal = true" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_remaining_action') }}</a>
                         </div>
                     </div>
                     <!-- /// End Header /// -->
@@ -86,13 +83,13 @@
             <div class="col-md-12">
                 <div class="text-right footer-buttons">
                     <div class="buttons">
-                        <router-link class="btn-rounded btn-auto" :to="{name: 'project-decisions-edit-decision', params:{decisionId: currentDecision.id}}">
-                            {{ translateText('button.edit_decision') }}
+                        <router-link class="btn-rounded btn-auto" :to="{name: 'project-close-down-report-edit-remaining-action'}">
+                            {{ translateText('button.edit_remaining_action') }}
                         </router-link>
                         <router-link class="btn-rounded btn-auto second-bg" :to="{name: 'project-decisions-create-decision'}">
-                            {{ translateText('button.new_decision') }}
+                            {{ translateText('button.new_remaining_action') }}
                         </router-link>
-                        <a @click="showDeleteModal = true" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_decision') }}</a>
+                        <a @click="showDeleteModal = true" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_remaining_action') }}</a>
                     </div>
                 </div>
             </div>
@@ -101,62 +98,18 @@
 </template>
 
 <script>
-import EditIcon from '../../_common/_icons/EditIcon';
-import DeleteIcon from '../../_common/_icons/DeleteIcon';
-import VueScrollbar from 'vue2-scrollbar';
-import Switches from '../../3rdparty/vue-switches';
 import RescheduleIcon from '../../_common/_icons/RescheduleIcon';
-import {mapActions, mapGetters} from 'vuex';
 import Modal from '../../_common/Modal';
-import datepicker from 'vuejs-datepicker';
-import moment from 'moment';
-import router from '../../../router';
 
 export default {
     components: {
-        EditIcon,
-        DeleteIcon,
-        VueScrollbar,
-        Switches,
         RescheduleIcon,
         Modal,
-        moment,
-        datepicker,
     },
     methods: {
-        ...mapActions(['getDecision', 'editDecision', 'deleteDecision']),
         translateText: function(text) {
             return this.translate(text);
         },
-        rescheduleDecision: function() {
-            let data = {
-                id: this.$route.params.decisionId,
-                dueDate: moment(this.reschedule.dueDate).format('DD-MM-YYYY'),
-                date: moment(this.reschedule.date).format('DD-MM-YYYY'),
-            };
-            this.editDecision(data);
-            this.showRescheduleModal = false;
-        },
-        cancelRescheduleModal: function() {
-            this.showRescheduleModal = false;
-            this.reschedule.date = new Date(this.currentDecision.date);
-            this.reschedule.dueDate = new Date(this.currentDecision.dueDate);
-        },
-        removeDecision: function() {
-            if (this.$route.params.decisionId) {
-                this.deleteDecision({id: this.$route.params.decisionId});
-                this.showDeleteModal = false;
-                router.push({name: 'project-decisions', params: {id: this.$route.params.id}});
-            }
-        },
-    },
-    computed: {
-        ...mapGetters({currentDecision: 'currentDecision'}),
-    },
-    created() {
-        if (this.$route.params.decisionId) {
-            this.getDecision(this.$route.params.decisionId);
-        }
     },
     data() {
         return {
@@ -168,62 +121,21 @@ export default {
             },
         };
     },
-    watch: {
-        currentDecision(val) {
-            this.reschedule.date = new Date(this.currentDecision.date);
-            this.reschedule.dueDate = new Date(this.currentDecision.dueDate);
-        },
-    },
 };
 </script>
-
-<style lang="scss">
-    @import '../../../css/_mixins';
-    @import '../../../css/_variables';
-
-    ul.attachments {
-        li {
-            a {
-                .icon {
-                    svg {
-                        width: 12px;
-                        height: 12px;
-                        @include transition(color, 0.2s, ease);
-                    }
-                }
-
-                &:hover {
-                    .icon {
-                        svg {
-                            fill: $secondDarkColor;
-                        }
-                    }                    
-                }
-            }
-        }
-    }
-</style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
     @import '../../../css/_mixins';
     @import '../../../css/_variables';
 
-    .user-avatar {
+    .avatar {
+        width: 30px;
+        height: 30px;
+        @include border-radius(50%);
+        background-size: cover;
         display: inline-block;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-weight: 700;
-
-        img {
-            width: 30px;
-            height: 30px;
-            @include border-radius(50%);
-            margin: 0 10px 0 0;  
-            display: inline-block;
-            position: relative;
-            top: -2px;
-        }
+        margin-right: 10px;
     }
 
     .entry-body {
@@ -262,10 +174,6 @@ export default {
             display: block;
             font-size: 12px;
         }
-    }
-
-    .category {
-        margin-top: 0;
     }
 
     .footer-buttons {
