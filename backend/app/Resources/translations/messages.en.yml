@@ -212,6 +212,9 @@ message:
     risks_oportunities: Risks & Oportunities
     communication: Communication
     control_measures: Control Measures
+    create_new_status_report: Create New Status Report
+    project_status_reports: Project Status Reports
+    status_reports: Status Reports
     status_report: Status Report
     meetings: Meetings
     infos: Infos

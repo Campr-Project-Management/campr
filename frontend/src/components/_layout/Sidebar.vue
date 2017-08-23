@@ -162,8 +162,8 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-status-report'}" v-bind:title="message.status_report">
-                        <span class="default">{{ message.status_report }}</span>
+                    <router-link :to="{name: 'project-status-reports'}" v-bind:title="message.status_reports">
+                        <span class="default">{{ message.status_reports }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
@@ -210,7 +210,7 @@ export default {
                 risks_oportunities: this.translate('message.risks_oportunities'),
                 comunication: this.translate('message.communication'),
                 control_measures: this.translate('message.control_measures'),
-                status_report: this.translate('message.status_report'),
+                status_reports: this.translate('message.status_reports'),
                 meetings: this.translate('message.meetings'),
                 todos: this.translate('message.todos'),
                 infos: this.translate('message.infos'),
