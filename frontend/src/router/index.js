@@ -46,7 +46,9 @@ import ViewInfo from '../components/Projects/Infos/ViewInfo.vue';
 import ProjectDecisions from '../components/Projects/ProjectDecisions.vue';
 import DecisionCreate from '../components/Projects/Decisions/DecisionCreate.vue';
 import ViewDecision from '../components/Projects/Decisions/ViewDecision.vue';
-import ProjectStatusReport from '../components/Projects/ProjectStatusReport.vue';
+import ProjectStatusReports from '../components/Projects/ProjectStatusReports.vue';
+import StatusReportCreate from '../components/Projects/StatusReports/StatusReportCreate.vue';
+import StatusReportView from '../components/Projects/StatusReports/StatusReportView.vue';
 import RASCIMatrix from '../components/Projects/RASCIMatrix.vue';
 
 Vue.use(VueRouter);
@@ -324,9 +326,19 @@ const routes = [
                 name: 'project-decisions-view-decision',
             },
             {
-                path: 'status-report',
-                component: ProjectStatusReport,
+                path: 'status-reports',
+                component: ProjectStatusReports,
                 name: 'project-status-report',
+            },
+            {
+                path: 'status-reports/create-status-report',
+                component: StatusReportCreate,
+                name: 'project-status-reports-create-status-report',
+            },
+            {
+                path: 'status-reports/view-status-report',
+                component: StatusReportView,
+                name: 'project-status-reports-view-status-report',
             },
             {
                 path: 'rasci-matrix',

@@ -6,12 +6,12 @@
                 <div class="input-holder left">
                     <label class="active">{{ translateText('message.start_date') }}</label>
                     <datepicker @cleared="clearStart()" v-bind:clear-button="true"  v-model="startDate" format="dd - MM - yyyy" :value="startDate"></datepicker>
-                    <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
+                    <calendar-icon fill="middle-fill"></calendar-icon>
                 </div>
                 <div class="input-holder left">
                     <label class="active">{{ translateText('message.finish_date') }}</label>
                     <datepicker @cleared="clearEnd()" v-bind:clear-button="true" v-model="endDate" format="dd - MM - yyyy" :value="endDate"></datepicker>
-                    <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
+                    <calendar-icon fill="middle-fill"></calendar-icon>
                 </div>
             </div>
             <dropdown ref="statuses" :selectedValue="selectedStatusValue" filter="status" item="phase" :title="translateText('message.status')" :options="statusesLabel"></dropdown>
