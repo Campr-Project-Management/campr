@@ -6,7 +6,7 @@
                 <div class="col-md-12">
                     <div class="header">
                         <div class="text-center">                            
-                            <h1>{{ contract.project }}</h1>
+                            <h1>{{ contract.projectName }}</h1>
                         </div>
                     </div>
 
@@ -90,8 +90,8 @@
                         </h3>
                     </div>
                     <div class="text-center">                        
-                        <router-link :to="{name: 'project-organization'}">
-                            <a class="btn-rounded btn-md btn-empty">{{ translateText('message.view_team') }}</a>
+                        <router-link class="btn-rounded btn-md btn-empty" :to="{name: 'project-organization'}">
+                            {{ translateText('message.view_team') }}
                         </router-link>
                     </div>
                     <div class="flex flex-row flex-center members-big" v-if="showSponsorsManagers">
@@ -111,14 +111,15 @@
                     <div v-dragula="colOne" drake="objectives" v-if="project.projectObjectives && project.projectObjectives.length > 0">
                         <drag-box :disabled="freezed" v-for="(item, index) in project.projectObjectives" v-bind:item="item" v-bind:index="index" type="objective"></drag-box>
                     </div>
-                    <p v-else>{{ translateText('label.no_data') }}</p>
+                    <p class="notice" v-else>{{ translateText('label.no_data') }}</p>
+                    <div class="hr small"></div>
                     <input-field v-if="!freezed" v-model="objectiveTitle" :content="objectiveTitle" type="text" v-bind:label="translateText('message.new_objective_title')"></input-field>
                     <error
                             v-if="validationMessages.createProjectObjectiveForm && validationMessages.title && validationMessages.title.length"
                             v-for="message in validationMessages.title"
                             :message="message" />
                     <div v-if="!freezed" class="flex flex-direction-reverse">
-                        <a v-on:click="createProjectObjective()" class="btn-rounded">{{ translateText('message.add_objective') }} +</a>
+                        <a v-on:click="createProjectObjective()" class="btn-rounded btn-auto">{{ translateText('message.add_objective') }} +</a>
                     </div>
                 </div>
                 <!-- /// End Project Objectives /// -->
@@ -130,7 +131,7 @@
                     <div v-dragula="colOne" drake="limitations" v-if="project.projectLimitations && project.projectLimitations.length > 0">
                         <drag-box :disabled="freezed" v-for="(item, index) in project.projectLimitations" v-bind:item="item" v-bind:index="index" type="limitation"></drag-box>
                     </div>
-                    <p v-else>{{ translateText('label.no_data') }}</p>
+                    <p class="notice" v-else>{{ translateText('label.no_data') }}</p>
                     <div class="hr small"></div>
                     <input-field v-if="!freezed" v-model="limitationDescription" :content="limitationDescription" type="text" v-bind:label="translateText('message.new_project_limitation')"></input-field>
                     <error
@@ -138,7 +139,7 @@
                         v-for="message in validationMessages.description"
                         :message="message" />
                     <div v-if="!freezed" class="flex flex-direction-reverse">
-                        <a v-on:click="createProjectLimitation()" class="btn-rounded">{{ translateText('message.add_limitation') }} +</a>
+                        <a v-on:click="createProjectLimitation()" class="btn-rounded btn-auto">{{ translateText('message.add_limitation') }} +</a>
                     </div>
                 </div>
                 <!-- /// End Project Limitations /// -->
@@ -149,7 +150,7 @@
                     <div v-dragula="colOne" drake="deliverables" v-if="project.projectDeliverables && project.projectDeliverables.length > 0">
                         <drag-box :disabled="freezed" v-for="(item, index) in project.projectDeliverables" v-bind:item="item" v-bind:index="index" type="deliverable"></drag-box>
                     </div>
-                    <p v-else>{{ translateText('label.no_data') }}</p>
+                    <p class="notice" v-else>{{ translateText('label.no_data') }}</p>
                     <div class="hr small"></div>
                     <input-field v-if="!freezed" v-model="deliverableDescription" :content="deliverableDescription" type="text" v-bind:label="translateText('message.new_project_deliverable')"></input-field>
                     <error
@@ -157,7 +158,7 @@
                         v-for="message in validationMessages.description"
                         :message="message" />
                     <div v-if="!freezed" class="flex flex-direction-reverse">
-                        <button v-on:click="createProjectDeliverable()" class="btn-rounded">{{ translateText('message.add_deliverable') }} +</button>
+                        <button v-on:click="createProjectDeliverable()" class="btn-rounded btn-auto">{{ translateText('message.add_deliverable') }} +</button>
                     </div>
                 </div>
                 <!-- /// End Project Deliverables /// -->

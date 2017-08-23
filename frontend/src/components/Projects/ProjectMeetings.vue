@@ -93,11 +93,11 @@
                                 </td>
                                 <td>
                                     <div class="text-right">
-                                        <router-link :to="{name: 'project-meetings-view-meeting', params:{meetingId: meeting.id}}">
-                                            <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_meeting')"><view-icon fill="second-fill"></view-icon></a>
+                                        <router-link class="btn-icon" :to="{name: 'project-meetings-view-meeting', params:{meetingId: meeting.id}}" v-tooltip.top-center="translateText('message.view_meeting')">
+                                            <view-icon fill="second-fill"></view-icon>
                                         </router-link>
-                                        <router-link :to="{name: 'project-meetings-edit-meeting', params:{meetingId: meeting.id}}">
-                                            <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_meeting')"><edit-icon fill="second-fill"></edit-icon></a>
+                                        <router-link class="btn-icon" :to="{name: 'project-meetings-edit-meeting', params:{meetingId: meeting.id}}" v-tooltip.top-center="translateText('message.edit_meeting')">
+                                            <edit-icon fill="second-fill"></edit-icon>
                                         </router-link>
                                         <a @click="printMeeting(meeting)" class="btn-icon" v-tooltip.top-center="translateText('message.print_meeting')"><print-icon fill="second-fill"></print-icon></a>
                                         <a @click="initSendNotifications(meeting)" v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.send_notifications')"><notification-icon fill="second-fill"></notification-icon></a>
