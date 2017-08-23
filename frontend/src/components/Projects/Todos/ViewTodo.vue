@@ -68,8 +68,8 @@
                     <!-- /// Header /// -->
                     <div class="margintop20 text-right">
                         <div class="buttons">
-                            <router-link :to="{name: 'project-todos-edit-todo', params:{todoId: todo.id}}">
-                                <a ref="#" class="btn-rounded btn-auto">{{ translateText('button.edit_todo') }}</a>
+                            <router-link class="btn-rounded btn-auto" :to="{name: 'project-todos-edit-todo', params:{todoId: todo.id}}">
+                                {{ translateText('button.edit_todo') }}
                             </router-link>    
                             <router-link :to="{name: 'project-todos-create-todo'}" class="btn-rounded btn-auto second-bg">
                                 {{ translateText('button.new_todo') }}
@@ -86,8 +86,8 @@
             <div class="col-md-12">
                 <div class="text-right footer-buttons">
                     <div class="buttons">
-                        <router-link :to="{name: 'project-todos-edit-todo', params:{todoId: todo.id}}">
-                            <a ref="#" class="btn-rounded btn-auto">{{ translateText('button.edit_todo') }}</a>
+                        <router-link class="btn-rounded btn-auto" :to="{name: 'project-todos-edit-todo', params:{todoId: todo.id}}">
+                            {{ translateText('button.edit_todo') }}
                         </router-link> 
                         <router-link :to="{name: 'project-todos-create-todo'}" class="btn-rounded btn-auto second-bg">
                             {{ translateText('button.new_todo') }}

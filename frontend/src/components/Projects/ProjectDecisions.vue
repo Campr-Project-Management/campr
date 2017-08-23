@@ -48,11 +48,11 @@
                                 </td>
                                 <td>
                                     <div class="text-right">
-                                        <router-link :to="{name: 'project-decisions-view-decision', params:{decisionId: decision.id}}">
-                                            <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_decision')"><view-icon fill="second-fill"></view-icon></a>
+                                        <router-link class="btn-icon" :to="{name: 'project-decisions-view-decision', params:{decisionId: decision.id}}" v-tooltip.top-center="translateText('message.view_decision')">
+                                            <view-icon fill="second-fill"></view-icon>
                                         </router-link>
-                                        <router-link :to="{name: 'project-decisions-edit-decision', params:{decisionId: decision.id}}">
-                                            <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_decision')"><edit-icon fill="second-fill"></edit-icon></a>
+                                        <router-link class="btn-icon" :to="{name: 'project-decisions-edit-decision', params:{decisionId: decision.id}}" v-tooltip.top-center="translateText('message.edit_decision')">
+                                            <edit-icon fill="second-fill"></edit-icon>
                                         </router-link>
                                         <a href="javascript:void(0)" @click="initDeleteModal(decision)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_info')"><delete-icon fill="danger-fill"></delete-icon></a>
                                     </div>
