@@ -1,7 +1,7 @@
 <template>
     <div class="project-status-report page-section">
         <div class="row">
-            <div class="col-lg-6 col-lg-offset-3">
+            <div class="col-lg-8 col-lg-offset-2">
                 <div class="header">
                     <h1>
                         Tesla - SpaceX Mars Project
@@ -58,7 +58,7 @@
                     <div class="col-md-12">
                         <div class="form">
                             <!-- /// Project Status Comment /// -->
-                            <div class="form-group">
+                            <div class="form-group last-form-group">
                                 <div class="vueditor-holder">
                                     <div class="vueditor-header">{{ translateText('placeholder.comment') }}</div>
                                     <Vueditor ref="content" />
@@ -68,6 +68,8 @@
                         </div>
                     </div>
                 </div>
+
+                <hr class="double">
 
                 <div class="row">
                     <div class="col-md-12">
@@ -359,20 +361,20 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex';
-import VisTimeline from '../_common/_phases-and-milestones-components/VisTimeline';
+import VisTimeline from '../../_common/_phases-and-milestones-components/VisTimeline';
 import Vue from 'vue';
 import moment from 'moment';
 import 'jquery-match-height/jquery.matchHeight.js';
 import VueScrollbar from 'vue2-scrollbar';
-import TaskRangeSlider from '../_common/_task-components/TaskRangeSlider';
-import CircleChart from '../_common/_charts/CircleChart';
-import RiskGrid from './Risks/RiskGrid';
-import RiskList from './Risks/RiskList';
-import OpportunityList from './Opportunities/OpportunityList';
-import RiskSummary from './Risks/RiskSummary';
-import OpportunitySummary from './Opportunities/OpportunitySummary';
-import DownloadIcon from '../_common/_icons/DownloadIcon';
-import AtIcon from '../_common/_icons/AtIcon';
+import TaskRangeSlider from '../../_common/_task-components/TaskRangeSlider';
+import CircleChart from '../../_common/_charts/CircleChart';
+import RiskGrid from '../Risks/RiskGrid';
+import RiskList from '../Risks/RiskList';
+import OpportunityList from '../Opportunities/OpportunityList';
+import RiskSummary from '../Risks/RiskSummary';
+import OpportunitySummary from '../Opportunities/OpportunitySummary';
+import DownloadIcon from '../../_common/_icons/DownloadIcon';
+import AtIcon from '../../_common/_icons/AtIcon';
 
 export default {
     components: {
@@ -653,8 +655,8 @@ function renderTooltip(item) {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-    @import '../../css/_variables';
-    @import '../../css/_mixins';
+    @import '../../../css/_variables';
+    @import '../../../css/_mixins';
 
     .page-section {
         .header {

@@ -56,24 +56,24 @@
                         <div class="input-holder left" :class="{disabledpicker: freezed }">
                             <label class="active">{{ translateText('label.proposed_start_date') }}</label>
                             <datepicker v-on:selected="closeDatePicker('proposedStartDate')" id="proposedStartDate" v-model="proposedStartDate" format="dd - MM - yyyy" :value="contract.proposedStartDate"></datepicker>
-                            <calendar-icon @click.native="showDatePicker('proposedStartDate')" fill="middle-fill" stroke="middle-stroke"></calendar-icon>
+                            <calendar-icon @click.native="showDatePicker('proposedStartDate')" fill="middle-fill"></calendar-icon>
                         </div>
                         <div class="input-holder right" :class="{disabledpicker: freezed }">
                             <label class="active">{{ translateText('label.proposed_end_date') }}</label>
                             <datepicker v-on:selected="closeDatePicker('proposedEndDate')" id="proposedEndDate" v-model="proposedEndDate" format="dd - MM - yyyy" :value="contract.proposedEndDate"></datepicker>
-                            <calendar-icon @click.native="showDatePicker('proposedEndDate')" fill="middle-fill" stroke="middle-stroke"></calendar-icon>
+                            <calendar-icon @click.native="showDatePicker('proposedEndDate')" fill="middle-fill"></calendar-icon>
                         </div>
                     </div>
                     <div class="flex flex-space-between dates right">
                         <div class="input-holder left" :class="{disabledpicker: freezed }">
                             <label class="active">{{ translateText('label.forecast_start_date') }}</label>
                             <datepicker v-on:selected="closeDatePicker('forecastStartDate')" id="forecastStartDate" v-model="forecastStartDate" format="dd - MM - yyyy" :value="contract.forecastStartDate"></datepicker>
-                            <calendar-icon @click.native="showDatePicker('forecastStartDate')" fill="middle-fill" stroke="middle-stroke"></calendar-icon>
+                            <calendar-icon @click.native="showDatePicker('forecastStartDate')" fill="middle-fill"></calendar-icon>
                         </div>
                         <div class="input-holder right" :class="{disabledpicker: freezed }">
                             <label class="active">{{ translateText('label.forecast_end_date') }}</label>
                             <datepicker v-on:selected="closeDatePicker('forecastEndDate')" id="forecastEndDate" v-model="forecastEndDate"  format="dd - MM - yyyy" :value="contract.forecastEndDate"></datepicker>
-                            <calendar-icon @click.native="showDatePicker('forecastEndDate')" fill="middle-fill" stroke="middle-stroke"></calendar-icon>
+                            <calendar-icon @click.native="showDatePicker('forecastEndDate')" fill="middle-fill"></calendar-icon>
                         </div>
                     </div>
                 </div>

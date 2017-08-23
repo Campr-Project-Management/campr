@@ -260,7 +260,12 @@ img {
     .calendar-icon {
         position: absolute;
         right: 10px;
-        top: 5px;
+        top: 12px;
+
+        svg {
+            width: 16px;
+            height: 16px;
+        }
     }
 }
 
@@ -318,6 +323,8 @@ textarea {
         svg {
             width: 12px;
             height: 12px;
+            position: relative;
+            top: 2px;
         }
     }
 
@@ -848,6 +855,11 @@ hr {
     position: absolute;
     right: 15px;
     top: 4px;
+
+    svg {
+        width: 16px;
+        height: 16px;
+    }
 }
 
 .form-group {
@@ -922,7 +934,12 @@ hr {
                 padding: 8px 30px;
 
                 .btn-icon {
-                    margin-right: 5px;
+                    margin-right: 15px;
+                    position: relative;
+                    top: 2px;
+                    width: 16px;
+                    height: 16px;
+                    display: inline-block;
 
                     &:last-child{
                         margin-right: 0;

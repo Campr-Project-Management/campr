@@ -1,45 +1,22 @@
 <template>
     <div class="calendar-icon icon">
-        <svg version="1.1" id="Layer_1" width="30px" height="30px" fill="transparent" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-               viewBox="0 0 26.3 26.5" style="enable-background:new 0 0 26.3 26.5;" xml:space="preserve">
-            <g id="XMLID_149_">
-                <rect id="XMLID_152_" x="-327.2" y="67.2" v-bind:class="fill" width="395" height="40"/>
-                <text id="XMLID_150_" transform="matrix(1 0 0 1 -331.875 17.6572)" style="fill:#8894C5; font-family:'Poppins-Regular'; font-size:12px; letter-spacing:1;">10 / 02 / 2016</text>
-                <g id="XMLID_279_">
-                    <g>
-                        <polyline id="XMLID_90_" v-bind:class="stroke" points="6.6,4.8 3.1,4.8 3.1,23 23.1,23 23.1,4.8 19.6,4.8 			"/>
-                        <rect id="XMLID_89_" x="6.6" y="3" v-bind:class="stroke" width="2.6" height="3.5"/>
-                        <rect id="XMLID_88_" x="17" y="3" v-bind:class="stroke" width="2.6" height="3.5"/>
-                        <line id="XMLID_87_" v-bind:class="stroke" x1="9.2" y1="4.8" x2="17" y2="4.8"/>
-                        <line id="XMLID_86_" v-bind:class="stroke" x1="3.1" y1="9.1" x2="23.1" y2="9.1"/>
-                        <line id="XMLID_85_" v-bind:class="stroke" x1="8.3" y1="10.9" x2="8.3" y2="21.3"/>
-                        <line id="XMLID_84_" v-bind:class="stroke" x1="12.7" y1="10.9" x2="12.7" y2="21.3"/>
-                        <line id="XMLID_83_" v-bind:class="stroke" x1="17" y1="10.9" x2="17" y2="21.3"/>
-                        <line id="XMLID_82_" v-bind:class="stroke" x1="4.9" y1="12.6" x2="21.4" y2="12.6"/>
-                        <line id="XMLID_81_" v-bind:class="stroke" x1="4.9" y1="16.1" x2="21.4" y2="16.1"/>
-                        <line id="XMLID_80_" v-bind:class="stroke" x1="4.9" y1="19.6" x2="21.4" y2="19.6"/>
-                    </g>
-                </g>
-                <text id="XMLID_424_" transform="matrix(1 0 0 1 -331.875 -11.9525)" style="fill:#8894C5; font-family:'Poppins-Regular'; font-size:8px; letter-spacing:1;">Proposed Start Date</text>
-            </g>
+        <svg version="1.1" v-bind:class="fill" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
+            <path d="M15.5,1.3h-2.1V0.5c0-0.3-0.2-0.5-0.5-0.5h-2c-0.3,0-0.5,0.2-0.5,0.5v0.8H5.6V0.5C5.6,0.2,5.3,0,5.1,0h-2
+                C2.8,0,2.6,0.2,2.6,0.5v0.8H0.5C0.2,1.3,0,1.5,0,1.8v13.7C0,15.8,0.2,16,0.5,16h15c0.3,0,0.5-0.2,0.5-0.5V1.8
+                C16,1.5,15.8,1.3,15.5,1.3z M11.4,1h1v1.6h-1V1z M3.6,1h1v1.6h-1V1z M2.6,2.3v0.8c0,0.3,0.2,0.5,0.5,0.5h2c0.3,0,0.5-0.2,0.5-0.5
+                V2.3h4.9v0.8c0,0.3,0.2,0.5,0.5,0.5h2c0.3,0,0.5-0.2,0.5-0.5V2.3H15v2.3H1V2.3H2.6z M1,15V5.6h14V15H1z"/>
+            <path d="M14.2,8.2c0.3,0,0.5-0.2,0.5-0.5s-0.2-0.5-0.5-0.5h-2.8V6.4c0-0.3-0.2-0.5-0.5-0.5s-0.5,0.2-0.5,0.5v0.8H8.2V6.4
+                c0-0.3-0.2-0.5-0.5-0.5S7.2,6.1,7.2,6.4v0.8H4.9V6.4c0-0.3-0.2-0.5-0.5-0.5S3.9,6.1,3.9,6.4v0.8H1.8c-0.3,0-0.5,0.2-0.5,0.5
+                s0.2,0.5,0.5,0.5h2.1v1.6H1.8c-0.3,0-0.5,0.2-0.5,0.5s0.2,0.5,0.5,0.5h2.1v1.6H1.8c-0.3,0-0.5,0.2-0.5,0.5s0.2,0.5,0.5,0.5h2.1v0.8
+                c0,0.3,0.2,0.5,0.5,0.5s0.5-0.2,0.5-0.5v-0.8h2.3v0.8c0,0.3,0.2,0.5,0.5,0.5s0.5-0.2,0.5-0.5v-0.8h2.3v0.8c0,0.3,0.2,0.5,0.5,0.5
+                s0.5-0.2,0.5-0.5v-0.8h2.8c0.3,0,0.5-0.2,0.5-0.5s-0.2-0.5-0.5-0.5h-2.8v-1.6h2.8c0.3,0,0.5-0.2,0.5-0.5s-0.2-0.5-0.5-0.5h-2.8V8.2
+                H14.2z M4.9,8.2h2.3v1.6H4.9V8.2z M4.9,12.4v-1.6h2.3v1.6H4.9z M10.4,12.4H8.2v-1.6h2.3V12.4z M10.4,9.8H8.2V8.2h2.3V9.8z"/>
         </svg>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['fill', 'stroke'],
+    props: ['fill'],
 };
 </script>
-
-<style lang="scss">
-  @import '../../../css/_common.scss';
-  @import '../../../css/_variables.scss';
-
-  .st1 {
-      fill:none;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-      stroke-miterlimit:10;
-  }
-</style>
