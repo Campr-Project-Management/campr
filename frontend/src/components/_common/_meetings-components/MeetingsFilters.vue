@@ -11,7 +11,7 @@
                 <label class="active">{{ translateText('label.date') }}</label>
                 <datepicker @cleared="clearDate()" v-bind:clear-button="true" v-model="date" format="dd-MM-yyyy"
                             :value="date"></datepicker>
-                <calendar-icon fill="middle-fill" stroke="middle-stroke"/>
+                <calendar-icon fill="middle-fill"/>
             </div>
             <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>

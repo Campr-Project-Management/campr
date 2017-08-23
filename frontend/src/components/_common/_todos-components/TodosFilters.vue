@@ -7,7 +7,7 @@
             <div class="input-holder">
                 <label class="active">{{ translateText('label.due_date') }}</label>
                 <datepicker v-model="dueDate" format="dd-MM-yyyy" v-bind:clear-button="true" @cleared="clearDate()" />
-                <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                <calendar-icon fill="middle-fill"/>
             </div>
             <dropdown ref="statuses" v-bind:title="translateText('message.status')" v-bind:options="todoStatusesForSelect" :selectedValue="selectedStatus"></dropdown>
             <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>

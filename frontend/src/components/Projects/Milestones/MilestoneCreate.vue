@@ -41,14 +41,14 @@
                                 <div class="input-holder right" :class="{disabledpicker: isEdit }">
                                     <label class="active">{{ translateText('label.base_due_date') }}</label>
                                     <datepicker v-model="schedule.baseDueDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                                    <calendar-icon fill="middle-fill"/>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.forecast_due_date') }}</label>
                                     <datepicker v-model="schedule.forecastDueDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                                    <calendar-icon fill="middle-fill"/>
                                 </div>
                             </div>
                         </div>
