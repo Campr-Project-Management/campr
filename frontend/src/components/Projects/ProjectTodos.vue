@@ -47,11 +47,11 @@
                                 </td>
                                 <td>
                                     <div class="text-right">
-                                        <router-link :to="{name: 'project-todos-view-todo', params:{todoId: todo.id}}">
-                                            <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.view_todo')"><view-icon fill="second-fill"></view-icon></a>
+                                        <router-link class="btn-icon" v-tooltip.top-center="translateText('message.view_todo')" :to="{name: 'project-todos-view-todo', params:{todoId: todo.id}}">
+                                            <view-icon fill="second-fill"></view-icon>
                                         </router-link>
-                                        <router-link :to="{name: 'project-todos-edit-todo', params:{todoId: todo.id}}">
-                                            <a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_todo')"><edit-icon fill="second-fill"></edit-icon></a>
+                                        <router-link class="btn-icon" v-tooltip.top-center="translateText('message.edit_todo')" :to="{name: 'project-todos-edit-todo', params:{todoId: todo.id}}">
+                                            <edit-icon fill="second-fill"></edit-icon>
                                         </router-link>    
                                         <a href="javascript:void(0)" @click="initDeleteModal(todo)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_todo')"><delete-icon fill="danger-fill"></delete-icon></a>
                                     </div>

@@ -95,12 +95,6 @@
                         <span class="tablet"></span>
                     </router-link>
                 </li>
-                <!--<li>-->
-                    <!--<router-link to="todo" v-bind:title="message.plan">-->
-                        <!--<span class="default">{{ message.plan }}</span>-->
-                        <!--<span class="tablet"></span>-->
-                    <!--</router-link>-->
-                <!--</li>-->
                 <li>
                     <router-link :to="{name: 'project-phases-and-milestones'}" v-bind:title="message.phases_milestones">
                         <span class="default">{{ message.phases_milestones }}</span>
@@ -137,18 +131,12 @@
                         <span class="tablet"></span>
                     </router-link>
                 </li>
-                <!--<li>-->
-                    <!--<router-link to="todo" v-bind:title="message.communication">-->
-                        <!--<span class="default">{{ message.comunication }}</span>-->
-                        <!--<span class="tablet"></span>-->
-                    <!--</router-link>-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<router-link to="todo" v-bind:title="message.control_measures">-->
-                        <!--<span class="default">{{ message.control_measures }}</span>-->
-                        <!--<span class="tablet"></span>-->
-                    <!--</router-link>-->
-                <!--</li>-->
+                <li>
+                    <router-link :to="{name: 'project-rasci-matrix'}" v-bind:title="message.rasci_matrix">
+                        <span class="default">{{ message.rasci_matrix }}</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
                 <li>
                     <router-link :to="{name: 'project-meetings'}" v-bind:title="message.meetings">
                         <span class="default">{{ message.meetings }}</span>
@@ -174,17 +162,17 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'project-status-report'}" v-bind:title="message.status_report">
-                        <span class="default">{{ message.status_report }}</span>
+                    <router-link :to="{name: 'project-status-reports'}" v-bind:title="message.status_reports">
+                        <span class="default">{{ message.status_reports }}</span>
                         <span class="tablet"></span>
                     </router-link>
                 </li>
-                <!--<li>-->
-                    <!--<router-link to="todo" v-bind:title="message.close_down_project">-->
-                        <!--<span class="default">{{ message.close_down_project }}</span>-->
-                        <!--<span class="tablet"></span>-->
-                    <!--</router-link>-->
-                <!--</li>-->
+                <li>
+                    <router-link :to="{name: 'project-close-down-report'}" v-bind:title="message.close_down_report">
+                        <span class="default">{{ message.close_down_report }}</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
             </ul>
         </nav>
     </aside>
@@ -222,13 +210,15 @@ export default {
                 risks_oportunities: this.translate('message.risks_oportunities'),
                 comunication: this.translate('message.communication'),
                 control_measures: this.translate('message.control_measures'),
-                status_report: this.translate('message.status_report'),
+                status_reports: this.translate('message.status_reports'),
                 meetings: this.translate('message.meetings'),
                 todos: this.translate('message.todos'),
                 infos: this.translate('message.infos'),
                 decisions: this.translate('message.decisions'),
                 close_down_project: this.translate('message.close_down_project'),
                 gantt_chart: this.translate('message.gantt_chart'),
+                rasci_matrix: this.translate('message.rasci_matrix'),
+                close_down_report: this.translate('message.close_down_report'),
             },
         };
     },
