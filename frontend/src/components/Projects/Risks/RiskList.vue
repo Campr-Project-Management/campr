@@ -3,7 +3,7 @@
         <div class="ro-list-item" v-for="item in listData">
             <div class="avatar" :style="{ backgroundImage: 'url(' + item.responsibilityAvatar + ')' }" v-tooltip.top="item.responsibilityFullName"></div>
             <router-link :to="{name: 'project-risks-view-risk', params:{riskId: item.id}}">
-                <a href="javascript:void(0)" :title="item.title">{{ item.title }}</a>
+                {{ item.title }}
             </router-link>
             <p>{{ translateText('message.potential_cost') }}: <b v-if="item.cost">{{ translateText(item.currency) }} {{ item.cost }}</b><b v-else>-</b></p>
             <p>{{ translateText('message.potential_time_delay') }}: <b v-if="item.delay">{{ item.delay }} {{ translateText(item.delayUnit) }}</b><b v-else>-</b></p>

@@ -6,7 +6,7 @@
                 <div class="input-holder right">
                     <label class="active">{{ translateText('label.due_date') }}</label>
                     <datepicker @cleared="clearDueDate()" v-bind:clear-button="true" v-model="dueDate" format="dd - MM - yyyy" :value="dueDate"></datepicker>
-                    <calendar-icon fill="middle-fill" stroke="middle-stroke"></calendar-icon>
+                    <calendar-icon fill="middle-fill"></calendar-icon>
                 </div>
             </div>
             <dropdown ref="phases" :selectedValue="selectPhase" v-if="projectPhases.items && projectPhases.items.length" v-bind:title="'Phase'" item="milestone" filter="phase" :options="projectPhasesForSelect"></dropdown>
@@ -77,15 +77,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import '../../../css/filters';
+    @import '../../../css/filters';
 
-  .dates {
-      .input-holder {
-          width: 100%;
+    .dates {
+        .input-holder {
+            width: 100%;
 
-          &.right {
-              margin-right: 15px;
-          }
-      }
-  }
+            &.right {
+                margin-right: 15px;
+            }
+        }
+    }
 </style>

@@ -67,7 +67,7 @@
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.expiry_date') }}</label>
                                     <datepicker v-model="expiryDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                                    <calendar-icon fill="middle-fill"/>
                                     <error
                                         v-if="validationMessages.expiryDate && validationMessages.expiryDate.length"
                                         v-for="message in validationMessages.expiryDate"
