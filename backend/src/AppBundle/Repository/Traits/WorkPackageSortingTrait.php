@@ -14,8 +14,20 @@ trait WorkPackageSortingTrait
     {
         foreach ($orderBy as $field => $dir) {
             switch ($field) {
+                case 'milestoneName':
+                    $qb->leftJoin('q.milestone', 'wp');
+                    $qb->orderBy('wp.name', $dir);
+                    unset($orderBy['milestoneName']);
+                    break;
+                case 'phaseName':
+                    $qb->leftJoin('q.phase', 'wp');
+                    $qb->orderBy('wp.name', $dir);
+                    unset($orderBy['phaseName']);
+                    break;
                 case 'workPackageName':
-                    $qb->leftJoin('q.workPackage', 'wp');
+                    if (!in_array('wp', $qb->getAllAliases())) {
+                        $qb->leftJoin('q.workPackage', 'wp');
+                    }
                     $qb->orderBy('wp.name', $dir);
                     unset($orderBy['workPackageName']);
                     break;

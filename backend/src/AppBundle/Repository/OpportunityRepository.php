@@ -2,10 +2,20 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use AppBundle\Entity\Project;
+use AppBundle\Repository\Traits\OpportunityStrategySortingTrait;
+use AppBundle\Repository\Traits\OpportunityStatusSortingTrait;
+use AppBundle\Repository\Traits\UserSortingTrait;
 
 class OpportunityRepository extends BaseRepository
 {
+    use OpportunityStrategySortingTrait, OpportunityStatusSortingTrait, UserSortingTrait {
+        OpportunityStrategySortingTrait::setOrder as setOpportunityStrategyOrder;
+        OpportunityStatusSortingTrait::setOrder as setOpportunityStatusOrder;
+        UserSortingTrait::setOrder as setUserOrder;
+    }
+
     const VERY_LOW = [0, 25];
     const LOW = [25, 50];
     const HIGH = [50, 75];
@@ -186,5 +196,16 @@ class OpportunityRepository extends BaseRepository
             ->getQuery()
             ->getSingleResult()
         ;
+    }
+
+    /**
+     * @param array        $orderBy
+     * @param QueryBuilder $qb
+     */
+    public function setOrder(array &$orderBy, QueryBuilder $qb)
+    {
+        $this->setOpportunityStrategyOrder($orderBy, $qb);
+        $this->setOpportunityStatusOrder($orderBy, $qb);
+        $this->setUserOrder($orderBy, $qb);
     }
 }
