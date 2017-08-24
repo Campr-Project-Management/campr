@@ -289,6 +289,8 @@ class DistributionList
     public function removeUser(User $user)
     {
         $this->users->removeElement($user);
+
+        return $this;
     }
 
     /**

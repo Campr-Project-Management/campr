@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Project;
+
 class SubteamRepository extends BaseRepository
 {
     /**
@@ -9,15 +11,16 @@ class SubteamRepository extends BaseRepository
      *
      * @return Query
      */
-    public function getQueryFiltered($filters)
+    public function getQueryFiltered(Project $project, $filters, $select = [])
     {
-        $qb = $this->createQueryBuilder('s');
+        $qb = $this
+            ->createQueryBuilder('s')
+            ->where('s.project = :project')
+            ->setParameter('project', $project)
+        ;
 
-        if (isset($filters['project'])) {
-            $qb
-                ->where($qb->expr()->eq('s.project', ':project'))
-                ->setParameter('project', $filters['project'])
-            ;
+        if ($select) {
+            $qb->select($select);
         }
 
         if (isset($filters['parent'])) {
@@ -33,6 +36,24 @@ class SubteamRepository extends BaseRepository
             ;
         }
 
-        return $qb->getQuery();
+        return $qb;
+    }
+
+    /**
+     * Counts the filtered subteams.
+     *
+     * @param array $filters
+     *
+     * @return int
+     */
+    public function countTotalByFilters(Project $project, $filters = [])
+    {
+        return (int) $this
+            ->getQueryFiltered($project, $filters, 'COUNT(DISTINCT s.id)')
+            ->setFirstResult(0)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 }
