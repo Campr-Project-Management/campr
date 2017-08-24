@@ -455,8 +455,12 @@ const actions = {
             )
             .then(
                 (response) => {
-                    if (response.status === 201) {
-                        let project = response.data;
+                    if (response.body && response.body.error) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        const project = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                         commit(types.SET_PROJECT, {project});
                     }
                     commit(types.SET_PROJECT_LOADING, {loading: false});
