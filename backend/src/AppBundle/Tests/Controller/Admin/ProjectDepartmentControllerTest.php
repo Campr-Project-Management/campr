@@ -19,16 +19,14 @@ class ProjectDepartmentControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-department/create');
 
-        $this->assertContains('id="create_name"', $crawler->html());
-        $this->assertContains('name="create[name]"', $crawler->html());
-        $this->assertContains('id="create_abbreviation"', $crawler->html());
-        $this->assertContains('name="create[abbreviation]"', $crawler->html());
-        $this->assertContains('id="create_sequence"', $crawler->html());
-        $this->assertContains('name="create[sequence]"', $crawler->html());
-        $this->assertContains('id="create_rate"', $crawler->html());
-        $this->assertContains('name="create[rate]"', $crawler->html());
-        $this->assertContains('id="create_projectWorkCostType"', $crawler->html());
-        $this->assertContains('name="create[projectWorkCostType]"', $crawler->html());
+        $this->assertContains('id="admin_name"', $crawler->html());
+        $this->assertContains('name="admin[name]"', $crawler->html());
+        $this->assertContains('id="admin_abbreviation"', $crawler->html());
+        $this->assertContains('name="admin[abbreviation]"', $crawler->html());
+        $this->assertContains('id="admin_sequence"', $crawler->html());
+        $this->assertContains('name="admin[sequence]"', $crawler->html());
+        $this->assertContains('id="admin_rate"', $crawler->html());
+        $this->assertContains('name="admin[rate]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -44,7 +42,7 @@ class ProjectDepartmentControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-department/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[sequence]'] = '';
+        $form['admin[sequence]'] = '';
 
         $crawler = $this->client->submit($form);
 
@@ -65,9 +63,9 @@ class ProjectDepartmentControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-department/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[name]'] = 'project-department';
-        $form['create[abbreviation]'] = 'abbreviation';
-        $form['create[sequence]'] = 'sequence';
+        $form['admin[name]'] = 'project-department';
+        $form['admin[abbreviation]'] = 'abbreviation';
+        $form['admin[sequence]'] = 'sequence';
 
         $crawler = $this->client->submit($form);
 
@@ -85,9 +83,9 @@ class ProjectDepartmentControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-department/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[name]'] = 'project-department3';
-        $form['create[abbreviation]'] = 'pd3';
-        $form['create[sequence]'] = '3';
+        $form['admin[name]'] = 'project-department3';
+        $form['admin[abbreviation]'] = 'pd3';
+        $form['admin[sequence]'] = '3';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -139,16 +137,14 @@ class ProjectDepartmentControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-department/1/edit');
 
-        $this->assertContains('id="create_name"', $crawler->html());
-        $this->assertContains('name="create[name]"', $crawler->html());
-        $this->assertContains('id="create_abbreviation"', $crawler->html());
-        $this->assertContains('name="create[abbreviation]"', $crawler->html());
-        $this->assertContains('id="create_sequence"', $crawler->html());
-        $this->assertContains('name="create[sequence]"', $crawler->html());
-        $this->assertContains('id="create_rate"', $crawler->html());
-        $this->assertContains('name="create[rate]"', $crawler->html());
-        $this->assertContains('id="create_projectWorkCostType"', $crawler->html());
-        $this->assertContains('name="create[projectWorkCostType]"', $crawler->html());
+        $this->assertContains('id="admin_name"', $crawler->html());
+        $this->assertContains('name="admin[name]"', $crawler->html());
+        $this->assertContains('id="admin_abbreviation"', $crawler->html());
+        $this->assertContains('name="admin[abbreviation]"', $crawler->html());
+        $this->assertContains('id="admin_sequence"', $crawler->html());
+        $this->assertContains('name="admin[sequence]"', $crawler->html());
+        $this->assertContains('id="admin_rate"', $crawler->html());
+        $this->assertContains('name="admin[rate]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 
@@ -165,9 +161,9 @@ class ProjectDepartmentControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-department/1/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[name]'] = '';
-        $form['create[sequence]'] = '';
-        $form['create[abbreviation]'] = '';
+        $form['admin[name]'] = '';
+        $form['admin[sequence]'] = '';
+        $form['admin[abbreviation]'] = '';
 
         $crawler = $this->client->submit($form);
 
@@ -188,7 +184,7 @@ class ProjectDepartmentControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-department/1/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[sequence]'] = 'sequence';
+        $form['admin[sequence]'] = 'sequence';
 
         $crawler = $this->client->submit($form);
 
@@ -206,7 +202,7 @@ class ProjectDepartmentControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-department/2/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[name]'] = 'project-department2';
+        $form['admin[name]'] = 'project-department2';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -227,10 +223,10 @@ class ProjectDepartmentControllerTest extends BaseController
         $this->assertEquals(1, $crawler->filter('#data-table-command')->count());
         $this->assertContains('data-column-id="id"', $crawler->html());
         $this->assertContains('data-column-id="name"', $crawler->html());
+        $this->assertContains('data-column-id="projectName"', $crawler->html());
         $this->assertContains('data-column-id="abbreviation"', $crawler->html());
         $this->assertContains('data-column-id="sequence"', $crawler->html());
         $this->assertContains('data-column-id="rate"', $crawler->html());
-        $this->assertContains('data-column-id="projectWorkCostTypeName"', $crawler->html());
         $this->assertContains('data-column-id="createdAt"', $crawler->html());
         $this->assertContains('data-column-id="updatedAt"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());

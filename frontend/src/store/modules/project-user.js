@@ -10,10 +10,12 @@ const state = {
     projectUsers: [],
     sponsors: [],
     managers: [],
+    currentMember: {},
 };
 
 const getters = {
     projectUsers: state => state.projectUsers,
+    currentMember: state => state.currentMember,
     projectSponsors: state => state.sponsors,
     projectManagers: state => state.managers,
     projectUsersForSelect: state => {
@@ -70,6 +72,20 @@ const actions = {
             });
     },
     /**
+     * Gets the project user by id
+     * @param {function} commit
+     * @param {number} id
+     */
+    getProjectUser({commit}, id) {
+        Vue.http
+            .get(Routing.generate('app_api_project_users_get', {id: id}))
+            .then((response) => {
+                let currentMember = response.data;
+                commit(types.SET_CURRENT_MEMBER, {currentMember});
+            }, (response) => {
+            });
+    },
+    /**
      * Update project user
      * @param {function} commit
      * @param {array} data
@@ -90,6 +106,7 @@ const actions = {
             'departments',
             'subteams',
         ];
+
         const keys = Object.keys(userData);
         const data = new FormData();
         keys.map((key) => {
@@ -114,7 +131,6 @@ const actions = {
                     if (response.body && response.body.error) {
                         const {messages} = response.body;
                         commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    } else {
                     }
                     return response.body;
                 },
@@ -122,6 +138,37 @@ const actions = {
                     return response.body;
                 }
             );
+    },
+    /**
+     * Update team member
+     * @param {function} commit
+     * @param {array} data
+     *
+     * @return {object}
+     */
+    updateTeamMember({commit}, data) {
+        return Vue.http
+            .patch(
+                Routing.generate('app_api_project_team_member_update', {'id': data.id}),
+                JSON.stringify(data)
+            ).then((response) => {
+                return response.body;
+            }, (response) => {
+            });
+    },
+    /**
+     * Delete a new objective on project
+     * @param {function} commit
+     * @param {integer} id
+     */
+    deleteTeamMember({commit}, id) {
+        Vue.http
+            .delete(
+                Routing.generate('app_api_project_users_delete', {id: id})
+            ).then((response) => {
+                commit(types.DELETE_TEAM_MEMBER, {id});
+            }, (response) => {
+            });
     },
 };
 
@@ -167,6 +214,25 @@ const mutations = {
             }
         });
         state.sponsors = sponsors;
+    },
+    /**
+     * Sets the current member on member page to state
+     * @param {Object} state
+     * @param {Object} currentMember
+     */
+    [types.SET_CURRENT_MEMBER](state, {currentMember}) {
+        state.currentMember = currentMember;
+    },
+    /**
+     * Sets project to null on a project user
+     * @param {Object} state
+     * @param {integer} id
+     */
+    [types.DELETE_TEAM_MEMBER](state, {id}) {
+        state.projectUsers.items = state.projectUsers.items.filter((item) => {
+            return item.id !== id ? true : false;
+        });
+        state.projectUsers.totalItems--;
     },
 };
 
