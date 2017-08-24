@@ -272,22 +272,6 @@
                 </g>
                 </svg>
 
-                <svg v-show="id == 'context'" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                   viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
-                <g id="XMLID_118_">
-                  <g id="XMLID_119_">
-                    <polygon id="XMLID_232_" class="st0" points="16.3,23 13.3,23.8 14.2,20.8 20.6,14.4 22.8,16.6 		"/>
-                    <line id="XMLID_231_" class="st0" x1="18.9" y1="16.1" x2="21" y2="18.3"/>
-                    <line id="XMLID_230_" class="st0" x1="14.2" y1="20.8" x2="16.3" y2="23"/>
-                  </g>
-                  <g id="XMLID_147_">
-                    <path id="XMLID_223_" class="st0" d="M11,23.8H6.5c-0.9,0-1.7-0.8-1.7-1.7V5.8"/>
-                    <path id="XMLID_221_" class="st0" d="M21,4.1H6.5c-0.9,0-1.7,0.8-1.7,1.7s0.8,1.7,1.7,1.7H21v3.9"/>
-                    <line id="XMLID_219_" class="st0" x1="6.5" y1="5.8" x2="20.2" y2="5.8"/>
-                  </g>
-                </g>
-                </svg>
-
                 <svg v-show="id == 'decisions'" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                    viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
                 <g id="XMLID_162_">
@@ -324,7 +308,7 @@
         </div>
         <div class="content" v-show="contentVisible" v-bind:class="{'inactive': inactive}">
           <div class="hr top"></div>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ornare sapien auctor interdum molestie. Ut ultrices libero sed justo ornare aliquet. Proin pharetra sem ut felis ullamcorper ultrices. Phasellus at neque vitae mi elementum lacinia. Proin non ligula eu nisi fringilla malesuada non vel dolor.
+          {{ description }}  
         </div>
         <div class="hr bottom"></div>
     </div>
@@ -333,7 +317,7 @@
 <script>
 
 export default {
-    props: ['title', 'id', 'inactive'],
+    props: ['title', 'id', 'inactive', 'description'],
     methods: {
         toggleContent() {
             this.contentVisible = !this.contentVisible;
