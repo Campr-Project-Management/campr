@@ -51,7 +51,7 @@ const actions = {
                 Routing.generate('app_api_programmes_create'),
                 JSON.stringify(data)
             ).then((response) => {
-                if (response.status === 201) {
+                if (response.status === 200) {
                     let programme = response.data;
                     commit(types.ADD_PROGRAMME, {programme});
                 }

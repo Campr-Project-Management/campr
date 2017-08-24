@@ -54,6 +54,7 @@ import infoCategory from './modules/info-category';
 import infoStatus from './modules/info-status';
 import dashboard from './modules/dashboard';
 import cost from './modules/cost';
+import module from './modules/module';
 
 Vue.use(Vuex);
 
@@ -115,6 +116,7 @@ export default new Vuex.Store({
         infoCategory,
         infoStatus,
         cost,
+        module,
     },
     strict: debug,
 });
