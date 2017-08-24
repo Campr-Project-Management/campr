@@ -59,14 +59,14 @@
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.date') }}</label>
                                     <datepicker v-model="date" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                                    <calendar-icon fill="middle-fill"/>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.due_date') }}</label>
                                     <datepicker v-model="dueDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                                    <calendar-icon fill="middle-fill"/>
                                 </div>
                             </div>
                         </div>

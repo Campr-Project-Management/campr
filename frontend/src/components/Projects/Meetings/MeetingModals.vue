@@ -81,7 +81,7 @@
                         <div class="input-holder right">
                             <label class="active">{{ translateText('label.due_date') }}</label>
                             <datepicker v-model="editDecisionObject.dueDate" format="dd-MM-yyyy" />
-                            <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                            <calendar-icon fill="middle-fill"/>
                         </div>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                         <div class="input-holder right">
                             <label class="active">{{ translateText('label.due_date') }}</label>
                             <datepicker v-model="editTodoObject.dueDate" format="dd-MM-yyyy" />
-                            <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                            <calendar-icon fill="middle-fill"/>
                         </div>
                     </div>
                 </div>
@@ -166,7 +166,7 @@
                         <div class="input-holder right">
                             <label class="active">{{ translateText('label.due_date') }}</label>
                             <datepicker v-model="editNoteObject.dueDate" format="dd-MM-yyyy" />
-                            <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                            <calendar-icon fill="middle-fill"/>
                         </div>
                     </div>
                 </div>

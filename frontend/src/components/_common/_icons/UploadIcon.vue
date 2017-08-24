@@ -1,31 +1,16 @@
 <template>
     <div class="download-icon icon">
-        <svg version="1.1" id="Layer_1" width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-           viewBox="0 0 18.5 15" style="enable-background:new 0 0 18.5 15;" xml:space="preserve">
-            <g id="XMLID_462_">
-              <path id="XMLID_657_" class="st0" d="M13.1,9.8v0.7c0,0.6-0.5,1-1,1H6.1c-0.6,0-1-0.5-1-1V9.8"/>
-              <line id="XMLID_552_" class="st0" x1="9.1" y1="3.6" x2="9.1" y2="9.8"/>
-              <polyline id="XMLID_464_" class="st0" points="6.5,6.1 9.1,3.6 11.6,6.1 	"/>
-            </g>
+        <svg version="1.1" v-bind:class="fill" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
+            <path d="M0.5,4.3C0.8,4.3,1,4,1,3.8V2.5C1,1.7,1.7,1,2.5,1h11.1C14.3,1,15,1.7,15,2.5v1.3c0,0.3,0.2,0.5,0.5,0.5S16,4,16,3.8V2.5
+                C16,1.1,14.9,0,13.5,0H2.5C1.1,0,0,1.1,0,2.5v1.3C0,4,0.2,4.3,0.5,4.3z"/>
+            <path d="M8.4,3.5c0,0-0.1-0.1-0.2-0.1c-0.1,0-0.1,0-0.2,0s-0.1,0-0.2,0c-0.1,0-0.1,0.1-0.2,0.1L2.9,8.3C2.7,8.4,2.7,8.8,2.9,9
+                s0.5,0.2,0.7,0L7.5,5v10.5C7.5,15.8,7.7,16,8,16s0.5-0.2,0.5-0.5V5L12.4,9c0.2,0.2,0.5,0.2,0.7,0s0.2-0.5,0-0.7L8.4,3.5z"/>
         </svg>
     </div>
 </template>
 
-<style scoped lang="scss">
-  @import '../../../css/_common.scss';
-  @import '../../../css/_variables.scss';
-
-  .st0 {
-      fill:none;
-      stroke:#191E37;
-      stroke-miterlimit:10;
-  }
-
-  .st0 {
-      fill:none;
-      stroke:#D8DAE5;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-      stroke-miterlimit:10;
-  }
-</style>
+<script>
+export default {
+    props: ['fill'],
+};
+</script>
