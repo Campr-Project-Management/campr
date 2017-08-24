@@ -63,14 +63,14 @@
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.base_start_date') }}</label>
                                     <datepicker v-model="schedule.baseStartDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                                    <calendar-icon fill="middle-fill"/>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.base_end_date') }}</label>
                                     <datepicker v-model="schedule.baseEndDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                                    <calendar-icon fill="middle-fill"/>
                                 </div>
                             </div>
                         </div>
@@ -81,14 +81,14 @@
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.forecast_start_date') }}</label>
                                     <datepicker v-model="schedule.forecastStartDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                                    <calendar-icon fill="middle-fill"/>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.forecast_end_date') }}</label>
                                     <datepicker v-model="schedule.forecastEndDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill" stroke="middle-stroke" />
+                                    <calendar-icon fill="middle-fill"/>
                                 </div>
                             </div>
                         </div>

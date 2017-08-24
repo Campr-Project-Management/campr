@@ -1,4 +1,22 @@
 message:
+    edit_remaining_action: Edit Remaining Action
+    back_to: Back To
+    project_acceptance: Project Acceptance
+    add_new_action: Add New Action
+    remaining_action: Remaining Action
+    project_management: Project Management
+    organization_context: Organization Context
+    performance_schedule: Performance Schedule
+    reflection: Reflection
+    add_new_lesson: Add New Lesson
+    add_new_evaluation_objective: Add New Evaluation Objective
+    new_lesson: New Lesson
+    new_evaluation_objective: New Evaluation Objective
+    lessons_learned: Lessons Learned
+    evaluation_objectives: Evaluation Objectives
+    overall_impression: Overall Impression
+    close_down_report: Close Down Report
+    rasci_matrix: RASCI Matrix
     contract_freezed: Project contract is freezed
     work_package_dependency_constraint: Entry cannot be deleted because there are phases/milestones/tasks that are depending on it!
     opportunities: Opportunities
@@ -211,6 +229,9 @@ message:
     risks_oportunities: Risks & Oportunities
     communication: Communication
     control_measures: Control Measures
+    create_new_status_report: Create New Status Report
+    project_status_reports: Project Status Reports
+    status_reports: Status Reports
     status_report: Status Report
     meetings: Meetings
     infos: Infos
@@ -1032,6 +1053,10 @@ label:
 
 button:
     clear_filters: Clear Filters
+    delete_remaining_action: Delete Remaining Action
+    new_remaining_action: New Remaining Action
+    edit_remaining_action: Edit Remaining Action
+    add_new_remaining_action: Add New Remaining Action
     freeze_contract: Freeze Contract
     email_status_report: Email Status Report
     delete_decision: Delete Decision
@@ -1196,6 +1221,7 @@ add:
     subteam_member: Add new subteam member
 
 placeholder:
+    title: Title
     comment: Comment   
     info_topic: Info Topic
     todo_topic: Todo Topic
@@ -1307,6 +1333,8 @@ placeholder:
     todo_category: Todo Category
 
 table_header_cell:
+    task_title: Task Title
+    task_number: Task No.
     freezed: Freezed
     expiry_date: Expiry Date
     distribution_list: Distribution List

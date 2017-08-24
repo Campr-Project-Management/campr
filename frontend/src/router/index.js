@@ -46,7 +46,14 @@ import ViewInfo from '../components/Projects/Infos/ViewInfo.vue';
 import ProjectDecisions from '../components/Projects/ProjectDecisions.vue';
 import DecisionCreate from '../components/Projects/Decisions/DecisionCreate.vue';
 import ViewDecision from '../components/Projects/Decisions/ViewDecision.vue';
-import ProjectStatusReport from '../components/Projects/ProjectStatusReport.vue';
+import ProjectStatusReports from '../components/Projects/ProjectStatusReports.vue';
+import StatusReportCreate from '../components/Projects/StatusReports/StatusReportCreate.vue';
+import StatusReportView from '../components/Projects/StatusReports/StatusReportView.vue';
+import RASCIMatrix from '../components/Projects/RASCIMatrix.vue';
+import CloseDownReport from '../components/Projects/ProjectCloseDownReport.vue';
+import RemainingActionView from '../components/Projects/CloseDownReport/ViewRemainingAction.vue';
+import RemainingActionEdit from '../components/Projects/CloseDownReport/EditRemainingAction.vue';
+
 
 Vue.use(VueRouter);
 
@@ -323,9 +330,39 @@ const routes = [
                 name: 'project-decisions-view-decision',
             },
             {
-                path: 'status-report',
-                component: ProjectStatusReport,
-                name: 'project-status-report',
+                path: 'status-reports',
+                component: ProjectStatusReports,
+                name: 'project-status-reports',
+            },
+            {
+                path: 'status-reports/create-status-report',
+                component: StatusReportCreate,
+                name: 'project-status-reports-create-status-report',
+            },
+            {
+                path: 'status-reports/view-status-report',
+                component: StatusReportView,
+                name: 'project-status-reports-view-status-report',
+            },
+            {
+                path: 'rasci-matrix',
+                component: RASCIMatrix,
+                name: 'project-rasci-matrix',
+            },
+            {
+                path: 'close-down-report',
+                component: CloseDownReport,
+                name: 'project-close-down-report',
+            },
+            {
+                path: 'close-down-report/view-remaining-action',
+                component: RemainingActionView,
+                name: 'project-close-down-report-view-remaining-action',
+            },
+            {
+                path: 'close-down-report/edit-remaining-action',
+                component: RemainingActionEdit,
+                name: 'project-close-down-report-edit-remaining-action',
             },
         ],
     },
