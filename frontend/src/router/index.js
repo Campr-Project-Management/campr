@@ -114,6 +114,11 @@ const routes = [
                 name: 'project-organization-create-member',
             },
             {
+                path: 'organization/member-edit/:userId',
+                component: MemberCreate,
+                name: 'project-organization-edit-member',
+            },
+            {
                 path: 'organization/view-member/:userId',
                 component: ViewMember,
                 name: 'project-organization-view-member',

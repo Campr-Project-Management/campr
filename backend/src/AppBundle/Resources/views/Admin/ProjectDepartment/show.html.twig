@@ -36,18 +36,12 @@
                                     <td>{{ project_department.name }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'table_header_cell.abbreviation'|trans }}</th>
-                                    <td>{{ project_department.abbreviation }}</td>
+                                    <th>{{ 'table_header_cell.project'|trans }}</th>
+                                    <td>{{ project_department.projectName }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'table_header_cell.project_work_cost_type'|trans }}</th>
-                                    <td>
-                                        {% if project_department.projectWorkCostType %}
-                                            {{ project_department.projectWorkCostType.name }}
-                                        {% else %}
-                                            -
-                                        {% endif %}
-                                    </td>
+                                    <th>{{ 'table_header_cell.abbreviation'|trans }}</th>
+                                    <td>{{ project_department.abbreviation }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ 'table_header_cell.sequence'|trans }}</th>
