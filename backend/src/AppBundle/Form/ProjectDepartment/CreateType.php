@@ -3,8 +3,6 @@
 namespace AppBundle\Form\ProjectDepartment;
 
 use AppBundle\Entity\ProjectDepartment;
-use AppBundle\Entity\ProjectWorkCostType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -51,12 +49,6 @@ class CreateType extends BaseType
                     ]),
                 ],
             ])
-            ->add('projectWorkCostType', EntityType::class, [
-                'class' => ProjectWorkCostType::class,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.project_work_cost_type',
-                'translation_domain' => 'messages',
-            ])
         ;
     }
 
@@ -67,6 +59,7 @@ class CreateType extends BaseType
     {
         $resolver->setDefaults([
             'data_class' => ProjectDepartment::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

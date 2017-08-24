@@ -3,12 +3,10 @@ import * as types from '../mutation-types';
 
 const state = {
     user: {},
-    currentMember: {},
 };
 
 const getters = {
     user: state => state.user,
-    currentMember: state => state.currentMember,
 };
 
 const actions = {
@@ -27,22 +25,6 @@ const actions = {
             commit(types.TOGGLE_LOADER, false);
         });
     },
-    /**
-     * Gets the user info from the API based on id and not the info of the current user
-     * @param {function} commit
-     * @param {number} id
-     */
-    getMemberInfo({commit}, id) {
-        let params = id !== undefined ? {id: id} : null;
-        Vue.http
-        .get(Routing.generate('main_api_users_get', params)).then((response) => {
-            let currentMember = response.data;
-            commit(types.SET_CURRENT_MEMBER, {currentMember});
-            commit(types.TOGGLE_LOADER, false);
-        }, (response) => {
-            commit(types.TOGGLE_LOADER, false);
-        });
-    },
 };
 
 const mutations = {
@@ -53,14 +35,6 @@ const mutations = {
      */
     [types.SET_USER](state, {user}) {
         state.user = user;
-    },
-    /**
-     * Sets the current member on member page to state
-     * @param {Object} state
-     * @param {Object} currentMember
-     */
-    [types.SET_CURRENT_MEMBER](state, {currentMember}) {
-        state.currentMember = currentMember;
     },
 };
 

@@ -4,6 +4,7 @@
         <modal v-if="showEditDepartmentModal" @close="showEditDepartmentModal = false">
             <p class="modal-title">{{ translateText('message.edit_department') }}</p>
             <input-field v-model="editDepartmentName" :content="editDepartmentName" type="text" v-bind:label="translateText('label.department_name')"></input-field>
+            <span v-if="managersForSelect.length === 0">{{ translateText('message.no_managers') }}</span>
             <multi-select-field
                     v-bind:title="translateText('label.select_managers')"
                     v-bind:options="managersForSelect"
@@ -166,7 +167,7 @@
                 <div class="form">
                     <!-- /// Add new Department /// -->
                     <div class="form-group">
-                        <input-field v-model="departmentName" type="text" v-bind:label="translateText('placeholder.new_department')"></input-field>
+                        <input-field :content="departmentName" v-model="departmentName" type="text" v-bind:label="translateText('placeholder.new_department')"></input-field>
                         <error
                             v-if="validationMessages.departmentName && validationMessages.departmentName.length"
                             v-for="message in validationMessages.departmentName"
@@ -224,7 +225,7 @@
                 <div class="form">
                     <!-- /// Add new Subteam /// -->
                     <div class="form-group">
-                        <input-field v-model="subteamName" type="text" v-bind:label="translateText('label.new_subteam')"></input-field>
+                        <input-field :content="subteamName" v-model="subteamName" type="text" v-bind:label="translateText('label.new_subteam')"></input-field>
                         <error
                             v-if="validationMessages.subteamName && validationMessages.subteamName.length"
                             v-for="message in validationMessages.subteamName"
@@ -285,9 +286,11 @@ export default {
         },
         changeDepartmentPage: function(page) {
             this.activeDepartmentPage = page;
+            this.getProjectDepartments({project: this.$route.params.id, page: this.activeDepartmentPage});
         },
         changeSubteamPage: function(page) {
             this.activeSubteamPage = page;
+            this.getSubteams({project: this.$route.params.id, page: this.activeSubteamPage});
         },
         createNewRole() {
             let data = {
@@ -302,11 +305,15 @@ export default {
                 sequence: this.projectDepartments.items ? this.projectDepartments.items.length : 0,
                 rate: 0,
                 abbreviation: this.departmentName.toLowerCase(),
+                project: this.$route.params.id,
             };
             this.createDepartment(data)
                 .then((response) => {
                     if (response.body && response.body.error && response.body.messages) {
                         this.showFailed = true;
+                    } else if (this.projectDepartments.items.length > this.projectDepartments.pageSize) {
+                        this.getProjectDepartments({project: this.$route.params.id, page: this.activeDepartmentPage});
+                        this.departmentName = null;
                     }
                 })
                 .catch((err) => {
@@ -347,7 +354,7 @@ export default {
             this.editSubteamName = subteam.name;
             this.editSubteamMembers = [];
             subteam.subteamMembers.map(member => {
-                this.editSubteamMembers.push({key: member.id, label: member.userName});
+                this.editSubteamMembers.push({key: member.user, label: member.userFullName});
             });
         },
         initDeleteSubteamModal(subteam) {
@@ -363,6 +370,9 @@ export default {
                 .then((response) => {
                     if (response.body && response.body.error && response.body.messages) {
                         this.showFailed = true;
+                    } else if (this.subteams.items.length > this.subteams.pageSize) {
+                        this.getSubteams({project: this.$route.params.id, page: this.activeSubteamPage});
+                        this.subteamName = null;
                     }
                 })
                 .catch((response) => {
@@ -386,9 +396,9 @@ export default {
         },
     },
     created() {
-        this.getProjectDepartments({projectId: this.$route.params.id, page: this.departmentPage});
+        this.getProjectDepartments({project: this.$route.params.id, page: this.activeDepartmentPage});
         this.getProjectUsers({id: this.$route.params.id});
-        this.getSubteams({project: this.$route.params.id, page: this.subteamPage});
+        this.getSubteams({project: this.$route.params.id, page: this.activeSubteamPage});
         this.getProjectRoles();
     },
     computed: {
@@ -404,7 +414,6 @@ export default {
     data() {
         return {
             showFailed: false,
-            departmentPage: 1,
             activeDepartmentPage: 1,
             departmentPages: 0,
             departmentName: '',
@@ -413,7 +422,6 @@ export default {
             editDepartmentName: '',
             showDeleteDepartmentModal: false,
             editDepartmentManagers: [],
-            subteamPage: 1,
             subteamName: '',
             deleteSubteamId: '',
             showEditSubteamModal: false,
@@ -428,6 +436,9 @@ export default {
     watch: {
         projectDepartments(value) {
             this.departmentPages = Math.ceil(this.projectDepartments.totalItems / this.projectDepartments.pageSize);
+        },
+        subteams(value) {
+            this.subteamPages = Math.ceil(this.subteams.totalItems / this.subteams.pageSize);
         },
         projectRoles(value) {
             const distData = this.projectRoles.map(role => {

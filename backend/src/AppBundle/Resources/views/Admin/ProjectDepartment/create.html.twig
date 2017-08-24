@@ -53,6 +53,15 @@
                             }
                         ) }}
                         {{ form_widget(
+                            form.project,
+                            {
+                                'attr': {
+                                    'class': 'selectpicker',
+                                },
+                                'label': 'label.project'|trans
+                            }
+                        ) }}
+                        {{ form_widget(
                             form.abbreviation,
                             {
                                 'attr': {
@@ -77,13 +86,6 @@
                                     'class': 'form-control input-sm',
                                 },
                                 'label': 'label.rate'|trans,
-                            }
-                        ) }}
-                        {{ form_widget(
-                            form.projectWorkCostType,
-                            {
-                                'attr': {'class': 'selectpicker'},
-                                'label': 'label.project_work_cost_type'|trans,
                             }
                         ) }}
 

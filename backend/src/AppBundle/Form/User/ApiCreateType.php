@@ -4,10 +4,12 @@ namespace AppBundle\Form\User;
 
 use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\ProjectDepartment;
+use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\Subteam;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormEvent;
@@ -64,6 +66,10 @@ class ApiCreateType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('company', TextType::class, [
+                'required' => false,
+                'mapped' => false,
+            ])
             ->add('phone', TextType::class, [
                 'required' => false,
             ])
@@ -96,9 +102,14 @@ class ApiCreateType extends AbstractType
                 'required' => false,
                 'mapped' => false,
             ])
-            ->add('distributionLists', EntityType::class, [
-                'class' => DistributionList::class,
-                'multiple' => true,
+            ->add('distributionLists', CollectionType::class, [
+                'entry_type' => EntityType::class,
+                'entry_options' => [
+                    'class' => DistributionList::class,
+                ],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
             ])
             ->add('subteams', EntityType::class, [
                 'class' => Subteam::class,
@@ -106,6 +117,11 @@ class ApiCreateType extends AbstractType
             ])
             ->add('departments', EntityType::class, [
                 'class' => ProjectDepartment::class,
+                'multiple' => true,
+                'mapped' => false,
+            ])
+            ->add('roles', EntityType::class, [
+                'class' => ProjectRole::class,
                 'multiple' => true,
                 'mapped' => false,
             ])

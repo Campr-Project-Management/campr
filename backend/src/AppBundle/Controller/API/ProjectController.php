@@ -16,8 +16,10 @@ use AppBundle\Entity\Note;
 use AppBundle\Entity\Opportunity;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectDeliverable;
+use AppBundle\Entity\ProjectDepartment;
 use AppBundle\Entity\ProjectLimitation;
 use AppBundle\Entity\ProjectObjective;
+use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\ProjectStatus;
 use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
@@ -63,6 +65,7 @@ use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\User;
 use AppBundle\Form\Meeting\ApiCreateType as MeetingApiCreateType;
 use AppBundle\Form\Decision\CreateType as DecisionType;
+use AppBundle\Form\ProjectDepartment\CreateType as ProjectDepartmentType;
 
 /**
  * @Route("/api/projects")
@@ -348,12 +351,10 @@ class ProjectController extends ApiController
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $distributionList = $form->getData();
             $distributionList->setCreatedBy($this->getUser());
             $distributionList->setProject($project);
-            $em->persist($distributionList);
-            $em->flush();
+            $this->persistAndFlush($distributionList);
 
             return $this->createApiResponse($distributionList, JsonResponse::HTTP_CREATED);
         }
@@ -642,7 +643,7 @@ class ProjectController extends ApiController
             ->getQueryByUserFullName($filters)
         ;
 
-        $pageSize = $this->getParameter('front.per_page');
+        $pageSize = $this->getParameter('front.users_per_page');
         $currentPage = isset($filters['page']) ? $filters['page'] : 1;
         $paginator = new Paginator($usersQuery);
         if (!isset($filters['search'])) {
@@ -709,6 +710,7 @@ class ProjectController extends ApiController
         $user = new User();
         $form = $this->createForm(UserApiCreateType::class, $user, ['csrf_protection' => false]);
         $this->processForm($request, $form);
+        $em = $this->getDoctrine()->getManager();
 
         if ($form->isValid()) {
             // @TODO: refactor to use a form and model
@@ -717,6 +719,11 @@ class ProjectController extends ApiController
             $projectUser->setShowInOrg($form->get('showInOrg')->getData());
             $projectUser->setShowInRaci($form->get('showInRaci')->getData());
             $projectUser->setShowInResources($form->get('showInResources')->getData());
+            $projectUser->setCompany($form->get('company')->getData());
+            foreach ($form->get('roles')->getData() as $roleId) {
+                $role = $em->getRepository(ProjectRole::class)->find($roleId);
+                $projectUser->addProjectRole($role);
+            }
             $user->addProjectUser($projectUser);
 
             $request->request->set(
@@ -738,9 +745,7 @@ class ProjectController extends ApiController
             ;
 
             if ($res) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
+                $this->persistAndFlush($user);
             } else {
                 return $this->createApiResponse(
                     [
@@ -755,6 +760,58 @@ class ProjectController extends ApiController
             }
 
             return $this->createApiResponse($user, Response::HTTP_CREATED);
+        }
+
+        return $this->createApiResponse(
+            [
+                'messages' => $this->getFormErrors($form),
+            ],
+            JsonResponse::HTTP_BAD_REQUEST
+        );
+    }
+
+    /**
+     * Update a Team Member.
+     *
+     * @Route("/{id}/team-members", name="app_api_project_team_member_update", options={"expose"=true})
+     * @Method({"PUT", "PATCH"})
+     *
+     * @param Request     $request
+     * @param ProjectUser $projectUser
+     *
+     * @return JsonResponse
+     */
+    public function updateTeamMemberAction(Request $request, ProjectUser $projectUser)
+    {
+        $user = $projectUser->getUser();
+        $form = $this->createForm(UserApiCreateType::class, $user, ['csrf_protection' => false]);
+        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
+        $em = $this->getDoctrine()->getManager();
+
+        if ($form->isValid()) {
+            $projectUser->setShowInOrg($form->get('showInOrg')->getData());
+            $projectUser->setShowInRaci($form->get('showInRaci')->getData());
+            $projectUser->setShowInResources($form->get('showInResources')->getData());
+            $projectUser->setCompany($form->get('company')->getData());
+            foreach ($projectUser->getProjectRoles() as $role) {
+                $projectUser->removeProjectRole($role);
+            }
+            foreach ($form->get('roles')->getData() as $roleId) {
+                $role = $em->getRepository(ProjectRole::class)->find($roleId);
+                $projectUser->addProjectRole($role);
+            }
+            $departments = $form->get('departments')->getData();
+            foreach ($projectUser->getProjectDepartments() as $projectDepartment) {
+                $projectUser->removeProjectDepartment($projectDepartment);
+            }
+            foreach ($departments as $department) {
+                $projectUser->addProjectDepartment($department);
+            }
+
+            $user->addProjectUser($projectUser);
+            $this->persistAndFlush($user);
+
+            return $this->createApiResponse($projectUser, Response::HTTP_ACCEPTED);
         }
 
         return $this->createApiResponse(
@@ -1420,6 +1477,29 @@ class ProjectController extends ApiController
     }
 
     /**
+     * @Route("/{id}/subteams", name="app_api_project_subteams", options={"expose"=true})
+     * @Method({"GET"})
+     */
+    public function subteamsAction(Request $request, Project $project)
+    {
+        $filters = $request->query->all();
+        $subteamRepo = $this->getDoctrine()->getRepository(Subteam::class);
+        if (isset($filters['page'])) {
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('admin.per_page');
+            $result = $subteamRepo->getQueryFiltered($project, $filters)->getQuery()->getResult();
+            $responseArray['totalItems'] = $subteamRepo->countTotalByFilters($project, $filters);
+            $responseArray['pageSize'] = $filters['pageSize'];
+            $responseArray['items'] = $result;
+
+            return $this->createApiResponse($responseArray);
+        }
+
+        return $this->createApiResponse([
+            'items' => $subteamRepo->findAll(),
+        ]);
+    }
+
+    /**
      * @Route("/{id}/subteams", name="app_api_project_create_subteam", options={"expose"=true})
      * @Method({"POST"})
      */
@@ -1865,5 +1945,67 @@ class ProjectController extends ApiController
     public function riskStrategiesAction(Project $project)
     {
         return $this->createApiResponse($project->getRiskStrategies());
+    }
+
+    /**
+     * Get all project departments.
+     *
+     * @Route("/{id}/project-departments", name="app_api_project_departments", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function departmentsAction(Request $request, Project $project)
+    {
+        $filters = $request->query->all();
+        $departmentRepo = $this->getDoctrine()->getRepository(ProjectDepartment::class);
+        if (isset($filters['page'])) {
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('admin.per_page');
+            $result = $departmentRepo->getQueryFiltered($project, $filters)->getQuery()->getResult();
+            $responseArray['totalItems'] = $departmentRepo->countTotalByFilters($project, $filters);
+            $responseArray['pageSize'] = $filters['pageSize'];
+            $responseArray['items'] = $result;
+
+            return $this->createApiResponse($responseArray);
+        }
+
+        return $this->createApiResponse([
+            'items' => $departmentRepo->findAll(),
+        ]);
+    }
+
+    /**
+     * Create a new Project Department.
+     *
+     * @Route("/{id}/project-departments", name="app_api_project_departments_create", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function createDepartmentAction(Request $request, Project $project)
+    {
+        $form = $this->createForm(ProjectDepartmentType::class, new ProjectDepartment(), ['csrf_protection' => false]);
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $projectDepartment = $form->getData();
+            $projectDepartment->setProject($project);
+            $this->persistAndFlush($projectDepartment);
+
+            return $this->createApiResponse($projectDepartment, Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 }

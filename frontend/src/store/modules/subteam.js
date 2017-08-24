@@ -14,8 +14,13 @@ const getters = {
 
 const actions = {
     getSubteams({commit}, data) {
+        let paramObject = {params: {}};
+        if (data.page && data.page !== undefined) {
+            paramObject.params.page = data.page;
+        }
         Vue.http
-            .get(Routing.generate('app_api_subteam', data)).then((response) => {
+            .get(Routing.generate('app_api_project_subteams', {id: data.project}), paramObject)
+            .then((response) => {
                 if (response.status === 200) {
                     let subteams = response.data;
                     commit(types.SET_SUBTEAMS, {subteams});
