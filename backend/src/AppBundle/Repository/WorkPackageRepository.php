@@ -9,9 +9,18 @@ use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\WorkPackageStatus;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use AppBundle\Repository\Traits\WorkPackageSortingTrait;
+use AppBundle\Repository\Traits\WorkPackageCategorySortingTrait;
+use AppBundle\Repository\Traits\UserSortingTrait;
 
 class WorkPackageRepository extends BaseRepository
 {
+    use WorkPackageSortingTrait, WorkPackageCategorySortingTrait, UserSortingTrait {
+        WorkPackageSortingTrait::setOrder as setWorkPackageOrder;
+        WorkPackageCategorySortingTrait::setOrder as setWorkPackageCategoryOrder;
+        UserSortingTrait::setOrder as setUserOrder;
+    }
+
     /**
      * Return all user workpackages filtered.
      *
@@ -659,5 +668,16 @@ class WorkPackageRepository extends BaseRepository
         }
 
         return $qb->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param array        $orderBy
+     * @param QueryBuilder $qb
+     */
+    public function setOrder(array &$orderBy, QueryBuilder $qb)
+    {
+        $this->setWorkPackageOrder($orderBy, $qb);
+        $this->setWorkPackageCategoryOrder($orderBy, $qb);
+        $this->setUserOrder($orderBy, $qb);
     }
 }

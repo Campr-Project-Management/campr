@@ -95,7 +95,7 @@ class Cost
      * @var Unit|null
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Unit")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="unit_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="unit_id", referencedColumnName="id", onDelete="SET NULL")
      * })
      */
     private $unit;
