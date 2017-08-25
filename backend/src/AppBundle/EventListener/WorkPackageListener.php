@@ -27,6 +27,21 @@ class WorkPackageListener
      */
     public function onFlush(OnFlushEventArgs $event)
     {
+        $this->em = $event->getEntityManager();
+        $this->conn = $this->em->getConnection();
+        $uok = $this->em->getUnitOfWork();
+        $updateFromInsert = false;
+
+        foreach ($uok->getScheduledEntityUpdates() as $entity) {
+            if ($entity instanceof WorkPackage && $entity->getType() == WorkPackage::TYPE_MILESTONE) {
+                $entityChanges = $uok->getEntityChangeSet($entity);
+
+                if (isset($entityChanges['phase'])) {
+                    $newPhaseId = $entityChanges['phase'][1]->getId();
+                    $this->moveMilestoneTasksToNewPhase($newPhaseId, $entity->getId());
+                }
+            }
+        }
         // Disabled due to a bug. WorkPackage constructor PUID set.
         return;
         $this->em = $event->getEntityManager();
@@ -619,5 +634,26 @@ class WorkPackageListener
                 $this->reorderWorkPackages($child, $child->getPuid());
             }
         }
+    }
+
+    /**
+     * When the `phase` of a `milestone` is changed
+     * we have to update the `phase` of all tasks that are connected to that milestone.
+     *
+     * @param int $newPhaseId
+     * @param int $milestoneId
+     */
+    private function moveMilestoneTasksToNewPhase($newPhaseId, $milestoneId)
+    {
+        $query = $this->conn->prepare(
+            'UPDATE work_package 
+            SET phase_id  = :phaseId 
+            WHERE 
+                milestone_id = :milestoneId 
+                AND type = ' .WorkPackage::TYPE_TASK
+        );
+        $query->bindParam(':phaseId', $newPhaseId);
+        $query->bindParam(':milestoneId', $milestoneId);
+        $query->execute();
     }
 }

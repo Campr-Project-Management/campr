@@ -116,6 +116,24 @@ class CreateType extends BaseType
                 'placeholder' => 'placeholder.user',
                 'translation_domain' => 'messages',
             ])
+            ->add('accountability', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'username',
+                'placeholder' => 'placeholder.user',
+                'translation_domain' => 'messages',
+            ])
+            ->add('supportUsers', EntityType::class, [
+                'class' => User::class,
+                'multiple' => true,
+            ])
+            ->add('consultedUsers', EntityType::class, [
+                'class' => User::class,
+                'multiple' => true,
+            ])
+            ->add('informedUsers', EntityType::class, [
+                'class' => User::class,
+                'multiple' => true,
+            ])
             ->add('project', EntityType::class, [
                 'class' => Project::class,
                 'choice_label' => 'name',
@@ -244,6 +262,20 @@ class CreateType extends BaseType
                 function (FormEvent $event) use ($formModifier) {
                     $data = $event->getData();
                     $formModifier($event->getForm(), $data->getProject(), $data->getId());
+                }
+            )
+        ;
+
+        $builder
+            ->addEventListener(
+                FormEvents::PRE_SUBMIT,
+                function (FormEvent $event) {
+                    $formData = $event->getData();
+
+                    if (!isset($formData['workPackageStatus'])) {
+                        $formData['workPackageStatus'] = WorkPackageStatus::PENDING;
+                        $event->setData($formData);
+                    }
                 }
             )
         ;
