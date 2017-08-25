@@ -150,9 +150,9 @@ class Contract
     /**
      * @var bool
      *
-     * @ORM\Column(name="freezed", type="boolean", nullable=false, options={"default"=0})
+     * @ORM\Column(name="frozen", type="boolean", nullable=false, options={"default"=0})
      */
-    private $freezed = false;
+    private $frozen = false;
 
     /**
      * Contract constructor.
@@ -602,17 +602,17 @@ class Contract
     /**
      * @return bool
      */
-    public function isFreezed()
+    public function isFrozen()
     {
-        return $this->freezed;
+        return $this->frozen;
     }
 
     /**
-     * @param bool $freezed
+     * @param bool $frozen
      */
-    public function setFreezed($freezed)
+    public function setFrozen($frozen)
     {
-        $this->freezed = $freezed;
+        $this->frozen = $frozen;
 
         return $this;
     }
