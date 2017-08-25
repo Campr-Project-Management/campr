@@ -1,26 +1,12 @@
 <template>
     <div class="project-task-management page-section">
-        <!-- /// Tasks List Header /// -->
+        <!-- /// Tasks List Grid Header /// -->
         <div class="header flex flex-space-between">
             <div class="flex">
-                <h1>{{ translateText('message.project_tasks') }}</h1>
-                <!--<div class="flex flex-v-center" v-if="!boardView">
-                    <a class="btn-rounded btn-auto btn-empty btn-notification active">
-                        <span>Open</span>
-                        <span class="notification-balloon">12</span>
-                    </a>
-                    <a class="btn-rounded btn-auto btn-empty btn-notification">
-                        <span>Closed</span>
-                        <span class="notification-balloon">12</span>
-                    </a>
-                    <a class="btn-rounded btn-auto btn-empty btn-notification">
-                        <span>All</span>
-                        <span class="notification-balloon">12</span>
-                    </a>
-                </div>-->
+                <h1>{{  translateText('message.project_tasks') }}</h1>
             </div>
             <div class="flex flex-v-center">
-                <router-link :to="{name: 'project-task-management-list-grid'}" class="btn-rounded btn-auto">{{ translateText('message.view_grid') }}</router-link>
+                <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{ translateText('message.view_board') }}</router-link>
                 <router-link :to="{name: 'project-task-management-edit-labels'}" class="btn-rounded btn-auto">{{ translateText('message.edit_labels') }}</router-link>
                 <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">{{ translateText('message.new_task') }}</router-link>
             </div>
@@ -31,9 +17,8 @@
         <div class="flex">
             <input-field v-model="searchString" :content="searchString" type="text" v-bind:label="translateText('label.search_for_tasks')" class="search"></input-field>
             <dropdown ref="assignee" :selectedValue="selectAssignee" :title="translateText('message.asignee')" :options="users"></dropdown>
+            <dropdown ref="statuses" :selectedValue="selectStatus"  :title="translateText('label.status')" :options="statusesLabel"></dropdown>
             <dropdown ref="conditions" :selectedValue="selectCondition" :title="translateText('message.condition')" :options="conditions"></dropdown>
-            <!--To be added after disscusion about milestones-->
-            <!--<dropdown title="Milestone" options=""></dropdown>-->
             <a @click="filterTasks" class="btn-rounded btn-auto">{{ translateText('button.show_results') }}</a>
             <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>
@@ -41,7 +26,7 @@
 
         <!-- /// Tasks List /// -->
         <div class="tasks">
-            <BoardView></BoardView>
+            <GridView></GridView>
         </div>
         <!-- /// End Tasks List /// -->
     </div>
@@ -50,7 +35,7 @@
 <script>
 import InputField from '../../_common/_form-components/InputField';
 import Dropdown from '../../_common/Dropdown';
-import BoardView from './BoardView';
+import GridView from './GridView';
 import {mapActions, mapGetters} from 'vuex';
 import Vue from 'vue';
 
@@ -58,7 +43,7 @@ export default {
     components: {
         InputField,
         Dropdown,
-        BoardView,
+        GridView,
     },
     created() {
         if (!this.$store.state.task.taskStatuses || this.$store.state.task.taskStatuses.length === 0) {

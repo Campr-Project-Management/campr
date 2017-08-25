@@ -23,7 +23,7 @@ const actions = {
             paramObject.params.page = data.page;
         }
         Vue.http
-            .get(Routing.generate('app_api_project_departments', {id: data.project}), paramObject)
+            .get(Routing.generate('app_api_project_departments', {id: data.projectId}), paramObject)
             .then((response) => {
                 if (response.status === 200) {
                     let projectDepartments = response.data;

@@ -11,6 +11,7 @@ import ProjectContract from '../components/Projects/ProjectContract.vue';
 import ProjectOrganization from '../components/Projects/ProjectOrganization.vue';
 import TaskManagement from '../components/Projects/TaskManagement/TaskManagement.vue';
 import List from '../components/Projects/TaskManagement/List.vue';
+import ListGrid from '../components/Projects/TaskManagement/ListGrid.vue';
 import View from '../components/Projects/TaskManagement/View.vue';
 import Create from '../components/Projects/TaskManagement/Create.vue';
 import AddLabel from '../components/Projects/TaskManagement/AddLabel.vue';
@@ -136,6 +137,11 @@ const routes = [
                         path: 'list',
                         component: List,
                         name: 'project-task-management-list',
+                    },
+                    {
+                        path: 'list/grid',
+                        component: ListGrid,
+                        name: 'project-task-management-list-grid',
                     },
                     {
                         path: 'view/:taskId',
