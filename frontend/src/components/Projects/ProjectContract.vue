@@ -19,8 +19,8 @@
                         <a class="btn-rounded flex flex-center download-pdf" :href="downloadPdf">
                             {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill"></downloadbutton-icon>
                         </a>
-                        <button v-if="!freezed" @click="freezeContract()" class="btn-rounded second-bg">{{ translateText('button.freeze_contract') }}</button>
-                        <h4 v-else>{{ translateText('message.contract_freezed') }}</h4>
+                        <button v-if="!frozen" @click="freezeContract()" class="btn-rounded second-bg">{{ translateText('button.freeze_contract') }}</button>
+                        <h4 v-else>{{ translateText('message.contract_frozen') }}</h4>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
@@ -29,20 +29,22 @@
             <div class="row">
                 <!-- /// Project Description /// -->
                 <div class="col-md-6">
-                    <!--<input-field :disabled="freezed" v-model="description" type="textarea" v-bind:label="translateText('message.project_description')" :content="contract.description"></input-field>-->
                     <div class="vueditor-holder">
                         <div class="vueditor-header">{{ translateText('message.project_description') }}</div>
-                        <Vueditor :ref="'contract.description'" :disabled="freezed"/>
+                        <div :class="{disabledpicker: frozen }">
+                            <Vueditor id="descriptionEditor" :ref="'contract.description'"/>
+                        </div>
                     </div>
                 </div>
                 <!-- End Project Description -->
 
                 <!-- /// Project Start Event /// -->
                 <div class="col-md-6">
-                    <!--<input-field :disabled="freezed" v-model="projectStartEvent" type="textarea" v-bind:label="translateText('message.project_start_event')" :content="contract.projectStartEvent"></input-field>-->
                     <div class="vueditor-holder">
                         <div class="vueditor-header">{{ translateText('message.project_start_event') }}</div>
-                        <Vueditor :ref="'contract.projectStartEvent'" :disabled="freezed"/>
+                        <div :class="{disabledpicker: frozen }">
+                            <Vueditor id="eventEditor" :ref="'contract.projectStartEvent'"/>
+                        </div>
                     </div>
                 </div>
                 <!-- /// End Project Start Event /// -->
@@ -53,24 +55,24 @@
                 <div class="col-md-6 col-md-offset-3">
                     <h3 class="text-center">{{ translateText('message.schedule') }}</h3>
                     <div class="flex flex-space-between dates">
-                        <div class="input-holder left" :class="{disabledpicker: freezed }">
+                        <div class="input-holder left" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.proposed_start_date') }}</label>
                             <datepicker v-on:selected="closeDatePicker('proposedStartDate')" id="proposedStartDate" v-model="proposedStartDate" format="dd - MM - yyyy" :value="contract.proposedStartDate"></datepicker>
                             <calendar-icon @click.native="showDatePicker('proposedStartDate')" fill="middle-fill"></calendar-icon>
                         </div>
-                        <div class="input-holder right" :class="{disabledpicker: freezed }">
+                        <div class="input-holder right" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.proposed_end_date') }}</label>
                             <datepicker v-on:selected="closeDatePicker('proposedEndDate')" id="proposedEndDate" v-model="proposedEndDate" format="dd - MM - yyyy" :value="contract.proposedEndDate"></datepicker>
                             <calendar-icon @click.native="showDatePicker('proposedEndDate')" fill="middle-fill"></calendar-icon>
                         </div>
                     </div>
                     <div class="flex flex-space-between dates right">
-                        <div class="input-holder left" :class="{disabledpicker: freezed }">
+                        <div class="input-holder left" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.forecast_start_date') }}</label>
                             <datepicker v-on:selected="closeDatePicker('forecastStartDate')" id="forecastStartDate" v-model="forecastStartDate" format="dd - MM - yyyy" :value="contract.forecastStartDate"></datepicker>
                             <calendar-icon @click.native="showDatePicker('forecastStartDate')" fill="middle-fill"></calendar-icon>
                         </div>
-                        <div class="input-holder right" :class="{disabledpicker: freezed }">
+                        <div class="input-holder right" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.forecast_end_date') }}</label>
                             <datepicker v-on:selected="closeDatePicker('forecastEndDate')" id="forecastEndDate" v-model="forecastEndDate"  format="dd - MM - yyyy" :value="contract.forecastEndDate"></datepicker>
                             <calendar-icon @click.native="showDatePicker('forecastEndDate')" fill="middle-fill"></calendar-icon>
@@ -109,16 +111,16 @@
                     <h3>{{ translateText('message.project_objectives') }}</h3>
 
                     <div v-dragula="colOne" drake="objectives" v-if="project.projectObjectives && project.projectObjectives.length > 0">
-                        <drag-box :disabled="freezed" v-for="(item, index) in project.projectObjectives" v-bind:item="item" v-bind:index="index" type="objective"></drag-box>
+                        <drag-box :disabled="frozen" v-for="(item, index) in project.projectObjectives" v-bind:item="item" v-bind:index="index" type="objective"></drag-box>
                     </div>
                     <p class="notice" v-else>{{ translateText('label.no_data') }}</p>
                     <div class="hr small"></div>
-                    <input-field v-if="!freezed" v-model="objectiveTitle" :content="objectiveTitle" type="text" v-bind:label="translateText('message.new_objective_title')"></input-field>
+                    <input-field v-if="!frozen" v-model="objectiveTitle" :content="objectiveTitle" type="text" v-bind:label="translateText('message.new_objective_title')"></input-field>
                     <error
                             v-if="validationMessages.createProjectObjectiveForm && validationMessages.title && validationMessages.title.length"
                             v-for="message in validationMessages.title"
                             :message="message" />
-                    <div v-if="!freezed" class="flex flex-direction-reverse">
+                    <div v-if="!frozen" class="flex flex-direction-reverse">
                         <a v-on:click="createProjectObjective()" class="btn-rounded btn-auto">{{ translateText('message.add_objective') }} +</a>
                     </div>
                 </div>
@@ -129,16 +131,16 @@
                     <h3>{{ translateText('message.project_limitations') }}</h3>
 
                     <div v-dragula="colOne" drake="limitations" v-if="project.projectLimitations && project.projectLimitations.length > 0">
-                        <drag-box :disabled="freezed" v-for="(item, index) in project.projectLimitations" v-bind:item="item" v-bind:index="index" type="limitation"></drag-box>
+                        <drag-box :disabled="frozen" v-for="(item, index) in project.projectLimitations" v-bind:item="item" v-bind:index="index" type="limitation"></drag-box>
                     </div>
                     <p class="notice" v-else>{{ translateText('label.no_data') }}</p>
                     <div class="hr small"></div>
-                    <input-field v-if="!freezed" v-model="limitationDescription" :content="limitationDescription" type="text" v-bind:label="translateText('message.new_project_limitation')"></input-field>
+                    <input-field v-if="!frozen" v-model="limitationDescription" :content="limitationDescription" type="text" v-bind:label="translateText('message.new_project_limitation')"></input-field>
                     <error
                         v-if="validationMessages.createProjectLimitationForm && validationMessages.description && validationMessages.description.length"
                         v-for="message in validationMessages.description"
                         :message="message" />
-                    <div v-if="!freezed" class="flex flex-direction-reverse">
+                    <div v-if="!frozen" class="flex flex-direction-reverse">
                         <a v-on:click="createProjectLimitation()" class="btn-rounded btn-auto">{{ translateText('message.add_limitation') }} +</a>
                     </div>
                 </div>
@@ -148,16 +150,16 @@
                 <div class="col-md-4">
                     <h3>{{ translateText('message.project_deliverables') }}</h3>
                     <div v-dragula="colOne" drake="deliverables" v-if="project.projectDeliverables && project.projectDeliverables.length > 0">
-                        <drag-box :disabled="freezed" v-for="(item, index) in project.projectDeliverables" v-bind:item="item" v-bind:index="index" type="deliverable"></drag-box>
+                        <drag-box :disabled="frozen" v-for="(item, index) in project.projectDeliverables" v-bind:item="item" v-bind:index="index" type="deliverable"></drag-box>
                     </div>
                     <p class="notice" v-else>{{ translateText('label.no_data') }}</p>
                     <div class="hr small"></div>
-                    <input-field v-if="!freezed" v-model="deliverableDescription" :content="deliverableDescription" type="text" v-bind:label="translateText('message.new_project_deliverable')"></input-field>
+                    <input-field v-if="!frozen" v-model="deliverableDescription" :content="deliverableDescription" type="text" v-bind:label="translateText('message.new_project_deliverable')"></input-field>
                     <error
                         v-if="validationMessages.createProjectDeliverableForm && validationMessages.description && validationMessages.description.length"
                         v-for="message in validationMessages.description"
                         :message="message" />
-                    <div v-if="!freezed" class="flex flex-direction-reverse">
+                    <div v-if="!frozen" class="flex flex-direction-reverse">
                         <button v-on:click="createProjectDeliverable()" class="btn-rounded btn-auto">{{ translateText('message.add_deliverable') }} +</button>
                     </div>
                 </div>
@@ -195,12 +197,12 @@
                 <div class="col-md-12">
                     <div class="hr"></div>
                     <div class="flex flex-space-between buttons">
-                        <a v-if="!freezed" v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
+                        <a v-if="!frozen" v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
                         <div class="flex">
                             <a v-if="contract && contract.id" class="btn-rounded flex flex-center download-pdf" :href="downloadPdf">
                                 {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill"></downloadbutton-icon>
                             </a>
-                            <button v-if="!freezed" @click="freezeContract()" class="btn-rounded second-bg">{{ translateText('button.freeze_contract') }}</button>
+                            <button v-if="!frozen" @click="freezeContract()" class="btn-rounded second-bg">{{ translateText('button.freeze_contract') }}</button>
                         </div>
                     </div>
                 </div>
@@ -231,6 +233,8 @@ import datepicker from 'vuejs-datepicker';
 import moment from 'moment';
 import router from '../../router';
 import Error from '../_common/_messages/Error.vue';
+import {createEditor} from 'vueditor';
+import vueditorConfig from '../_common/vueditorConfig';
 
 export default {
     components: {
@@ -260,7 +264,9 @@ export default {
             this.proposedEndDate = this.contract.proposedEndDate ? new Date(this.contract.proposedEndDate) : new Date();
             this.forecastStartDate = this.contract.forecastStartDate ? new Date(this.contract.forecastStartDate) : new Date();
             this.forecastEndDate = this.contract.forecastEndDate ? new Date(this.contract.forecastEndDate) : new Date();
-            this.freezed = this.contract.freezed;
+            this.frozen = this.contract.frozen;
+            this.descriptionEditor.setContent(this.contract.description);
+            this.eventEditor.setContent(this.contract.projectStartEvent);
         },
         costData(value) {
             Object.entries(this.costData.byPhase).map(([key, value]) => {
@@ -311,14 +317,14 @@ export default {
             if (this.contract.id) {
                 let data = {
                     id: this.contract.id,
-                    freezed: true,
+                    frozen: true,
                 };
                 this
                     .updateContract(data)
                     .then(
                         () => {
                             this.showSavedComponent = true;
-                            this.freezed = true;
+                            this.frozen = true;
                         },
                         (response) => {
                             this.showFailed = response.status === 200;
@@ -331,8 +337,8 @@ export default {
             let data = {
                 projectId: this.$route.params.id,
                 name: this.project.name + '-contract',
-                description: this.description,
-                projectStartEvent: this.projectStartEvent,
+                description: this.descriptionEditor.getContent(),
+                projectStartEvent: this.eventEditor.getContent(),
                 proposedStartDate: moment(this.proposedStartDate).format('DD-MM-YYYY'),
                 proposedEndDate: moment(this.proposedEndDate).format('DD-MM-YYYY'),
                 forecastStartDate: moment(this.forecastStartDate).format('DD-MM-YYYY'),
@@ -497,6 +503,10 @@ export default {
             }
             vm.getProjectById(vm.$route.params.id);
         });
+        setTimeout(() => {
+            this.descriptionEditor = createEditor(document.getElementById('descriptionEditor'), {...vueditorConfig, id: 'descriptionEditor'});
+            this.eventEditor = createEditor(document.getElementById('eventEditor'), {...vueditorConfig, id: 'eventEditor'});
+        }, 1000);
     },
     computed: {
         ...mapGetters({
@@ -514,6 +524,8 @@ export default {
     },
     data: function() {
         return {
+            descriptionEditor: null,
+            eventEditor: null,
             showSaved: false,
             showFailed: false,
             showSavedComponent: false,
@@ -584,7 +596,7 @@ export default {
             showSponsorsManagers: false,
             objectiveDescription: null,
             limitationDescription: null,
-            freezed: false,
+            frozen: false,
         };
     },
 };
