@@ -64,6 +64,7 @@ class ProjectUserControllerTest extends BaseController
                 [
                     'user' => 3,
                     'userFullName' => 'FirstName3 LastName3',
+                    'userUsername' => 'user3',
                     'userFacebook' => null,
                     'userTwitter' => null,
                     'userLinkedIn' => null,
@@ -80,6 +81,8 @@ class ProjectUserControllerTest extends BaseController
                     'projectTeam' => 1,
                     'projectTeamName' => 'project-team1',
                     'projectRoleNames' => ['manager'],
+                    'subteams' => [],
+                    'subteamNames' => [],
                     'id' => 1,
                     'showInResources' => true,
                     'showInRaci' => null,
@@ -266,6 +269,7 @@ class ProjectUserControllerTest extends BaseController
                 [
                     'user' => 4,
                     'userFullName' => 'FirstName4 LastName4',
+                    'userUsername' => 'user4',
                     'userFacebook' => null,
                     'userTwitter' => null,
                     'userLinkedIn' => null,
@@ -282,6 +286,8 @@ class ProjectUserControllerTest extends BaseController
                     'projectTeam' => 2,
                     'projectTeamName' => 'project-team2',
                     'projectRoleNames' => ['sponsor'],
+                    'subteams' => [],
+                    'subteamNames' => [],
                     'id' => 2,
                     'showInResources' => true,
                     'showInRaci' => null,

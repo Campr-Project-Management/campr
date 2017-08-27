@@ -18,8 +18,13 @@ const getters = {
 const actions = {
     getProjectDepartments({commit}, data) {
         commit(types.SET_PROJECT_DEPARTMENTS_LOADING, {loading: true});
+        let paramObject = {params: {}};
+        if (data && data.page !== undefined) {
+            paramObject.params.page = data.page;
+        }
         Vue.http
-            .get(Routing.generate('app_api_project_departments_list', data)).then((response) => {
+            .get(Routing.generate('app_api_project_departments', {id: data.project}), paramObject)
+            .then((response) => {
                 if (response.status === 200) {
                     let projectDepartments = response.data;
                     commit(types.SET_PROJECT_DEPARTMENTS, {projectDepartments});
@@ -38,7 +43,7 @@ const actions = {
     createDepartment({commit}, data) {
         return Vue.http
             .post(
-                Routing.generate('app_api_project_departments_create'),
+                Routing.generate('app_api_project_departments_create', {id: data.project}),
                 JSON.stringify(data)
             ).then((response) => {
                 if (response.body && response.body.error && response.body.messages) {

@@ -443,6 +443,19 @@ class ProjectUser
     }
 
     /**
+     * Returns user username.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userUsername")
+     *
+     * @return string
+     */
+    public function getUserUsername()
+    {
+        return $this->user ? $this->user->getUsername() : null;
+    }
+
+    /**
      * Returns user facebook.
      *
      * @Serializer\VirtualProperty()
@@ -765,5 +778,47 @@ class ProjectUser
         }
 
         return $roleNames;
+    }
+
+    /**
+     * Returns subteam ids.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("subteams")
+     *
+     * @return string
+     */
+    public function getSubteamIds()
+    {
+        $subteamIds = [];
+
+        if ($this->user->getSubteams()) {
+            foreach ($this->user->getSubteams() as $subteam) {
+                $subteamIds[] = $subteam->getId();
+            }
+        }
+
+        return $subteamIds;
+    }
+
+    /**
+     * Returns subteam names id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("subteamNames")
+     *
+     * @return string
+     */
+    public function getSubteamNames()
+    {
+        $subteamNames = [];
+
+        if ($this->user->getSubteams()) {
+            foreach ($this->user->getSubteams() as $subteam) {
+                $subteamNames[] = $subteam->getName();
+            }
+        }
+
+        return $subteamNames;
     }
 }
