@@ -443,6 +443,13 @@ class Project
     private $riskStrategies;
 
     /**
+     * @var ArrayCollection|RiskStrategy[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectDepartment", mappedBy="project")
+     */
+    private $projectDepartments;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -478,6 +485,7 @@ class Project
         $this->opportunityStrategies = new ArrayCollection();
         $this->riskStrategies = new ArrayCollection();
         $this->riskStatuses = new ArrayCollection();
+        $this->projectDepartments = new ArrayCollection();
     }
 
     public function __toString()
@@ -2328,8 +2336,44 @@ class Project
         $today = new \DateTime();
         $today->setTime(0, 0, 0);
         $createdAt = clone $this->getCreatedAt();
-        $createdAt->setTime(0,0,0);
+        $createdAt->setTime(0, 0, 0);
 
         return intval($today->diff($createdAt)->format('%a')) <= 7;
+    }
+
+    /**
+     * Get projectDepartments.
+     *
+     * @return ArrayCollection|ProjectDepartment[]
+     */
+    public function getProjectDepartments()
+    {
+        return $this->projectDepartments;
+    }
+
+    /**
+     * Add projectDepartment.
+     *
+     * @param ProjectDepartment $projectDepartment
+     *
+     * @return Project
+     */
+    public function addProjectDepartment(ProjectDepartment $projectDepartment)
+    {
+        $this->projectDepartments[] = $projectDepartment;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectDepartment.
+     *
+     * @param ProjectDepartment $projectDepartment
+     */
+    public function removeProjectDepartment(ProjectDepartment $projectDepartment)
+    {
+        $this->projectDepartments->removeElement($projectDepartment);
+
+        return $this;
     }
 }

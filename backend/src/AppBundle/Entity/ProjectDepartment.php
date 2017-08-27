@@ -32,6 +32,18 @@ class ProjectDepartment
     private $name;
 
     /**
+     * @var Project|null
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="projectDepartments")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id", nullable=true)
+     * })
+     */
+    private $project;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="abbreviation", type="string", length=255)
@@ -372,5 +384,55 @@ class ProjectDepartment
     public function getDepartmentMembersCount()
     {
         return $this->projectUsers->count();
+    }
+
+    /**
+     * Set project.
+     *
+     * @param Project $project
+     *
+     * @return ProjectDepartment
+     */
+    public function setProject(Project $project = null)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get project.
+     *
+     * @return Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * Returns project id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("project")
+     *
+     * @return string
+     */
+    public function getProjectId()
+    {
+        return $this->project ? $this->project->getId() : null;
+    }
+
+    /**
+     * Returns project name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectName")
+     *
+     * @return string
+     */
+    public function getProjectName()
+    {
+        return $this->project ? $this->project->getName() : null;
     }
 }

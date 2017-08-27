@@ -19,28 +19,6 @@ class SubteamController extends ApiController
     const FORM_CLASS = CreateType::class;
 
     /**
-     * @Route("", name="app_api_subteam", options={"expose"=true})
-     * @Method({"GET"})
-     */
-    public function indexAction(Request $request)
-    {
-        $filters = $request->query->all();
-        if (isset($filters['page'])) {
-            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
-            $result = $this->getRepository()->getQueryFiltered($filters)->getResult();
-            $responseArray['totalItems'] = count($result);
-            $responseArray['pageSize'] = $filters['pageSize'];
-            $responseArray['items'] = $result;
-
-            return $this->createApiResponse($responseArray);
-        }
-
-        return $this->createApiResponse([
-            'items' => $this->getRepository()->getQueryFiltered($filters)->getResult(),
-        ]);
-    }
-
-    /**
      * @Route("/{id}", name="app_api_subteam_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
      */

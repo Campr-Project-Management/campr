@@ -491,9 +491,9 @@ const actions = {
                         const {messages} = response.body;
                         commit(types.SET_VALIDATION_MESSAGES, {messages});
                     } else {
-                        const task = response.body;
+                        const distributionList = response.body;
                         commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                        commit(types.SET_TASK, {task});
+                        commit(types.ADD_PROJECT_DISTRIBUTION_LIST, {distributionList});
                     }
                     return response.body;
                 },
@@ -643,6 +643,17 @@ const mutations = {
      */
     [types.SET_PROJECT](state, {project}) {
         state.currentProject = project;
+    },
+
+    /**
+     * Add distribution list to current project
+     * @param {Object} state
+     * @param {Object} distributionList
+     */
+    [types.ADD_PROJECT_DISTRIBUTION_LIST](state, {distributionList}) {
+        if (state.currentProject) {
+            state.currentProject.distributionLists.push(distributionList);
+        }
     },
 
     /**
