@@ -6,6 +6,7 @@ use AppBundle\Entity\Project;
 use AppBundle\Entity\Subteam;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -33,6 +34,12 @@ class CreateType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.subteam',
                 'translation_domain' => 'messages',
+            ])
+            ->add('subteamMembers', CollectionType::class, [
+                'entry_type' => SubteamMemberType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
             ])
         ;
     }

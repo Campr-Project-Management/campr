@@ -1395,6 +1395,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function addDistributionList(DistributionList $distributionList)
     {
         $this->distributionLists[] = $distributionList;
+        $distributionList->addUser($this);
 
         return $this;
     }
@@ -1407,6 +1408,9 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function removeDistributionList(DistributionList $distributionList)
     {
         $this->distributionLists->removeElement($distributionList);
+        $distributionList->removeUser($this);
+
+        return $this;
     }
 
     /**
@@ -1615,8 +1619,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      */
     public function removeSubteamMember(SubteamMember $subteamMember)
     {
-        $this->subteamMembers[] = $subteamMember;
-        $subteamMember->setUser(null);
+        $this->subteamMembers->removeElement($subteamMember);
 
         return $this;
     }

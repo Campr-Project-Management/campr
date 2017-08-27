@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\ProjectDepartment;
-use AppBundle\Form\ProjectDepartment\CreateType as ProjectDepartmentCreateType;
+use AppBundle\Form\ProjectDepartment\AdminType as ProjectDepartmentCreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
