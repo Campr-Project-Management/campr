@@ -4,10 +4,10 @@
             <p class="modal-title">{{ translateText('title.add_distribution_list') }}</p>
             <input-field v-model="distributionTitle" type="text" v-bind:label="translateText('label.distribution_list_title')"></input-field>
             <error
-                                    v-if="validationMessages.name && validationMessages.name.length"
-                                    v-for="message in validationMessages.name"
-                                    :message="message" />
-            <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.search_resources')" v-bind:singleSelect="false"></member-search>
+                v-if="validationMessages.name && validationMessages.name.length"
+                v-for="message in validationMessages.name"
+                :message="message" />
+            <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.search_members')" v-bind:singleSelect="false"></member-search>
             <br />
             <div class="members main-list">
                 <div class="member flex"  v-for="item in distributionList">
@@ -21,6 +21,14 @@
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
                 <a href="javascript:void(0)" @click="createDistributionList()" class="btn-rounded">{{ translateText('button.create_distribution') }} +</a>
+            </div>
+        </modal>
+
+        <modal v-if="showDeleteMemberModal" @close="showDeleteMemberModal = false">
+            <p class="modal-title">{{ translateText('message.delete_team_member') }}</p>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showDeleteMemberModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteMember()" class="btn-rounded">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
 
@@ -68,8 +76,9 @@
             </vue-scrollbar>
         </div>
         <div class="flex flex-space-between actions">
-            <member-search v-model="gridList" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
+            <member-search ref="gridMemberSearch" v-model="gridList" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
             <div class="flex">
+                <button @click="clearFilters" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</button>
                 <router-link :to="{name: 'project-organization-create-member'}" class="btn-rounded btn-auto second-bg">{{ translateText('button.add_new_team_members') }}</router-link>
                 <a href="javascript:void(0)" class="btn-rounded btn-empty" @click="showModal = true">{{ translateText('button.create_distribution') }}</a>
             </div>
@@ -107,13 +116,23 @@
                                 <td class="text-center switchers">
                                     <switches @click.native="updateUserOption(item, 'resource')" v-model="showInResources" :selected="item.showInResources"></switches>
                                 </td>
-                                <td>{{ item.company }}</td>
+                                <td v-if="item.company">{{ item.company }}</td><td v-else>-</td>
                                 <td>{{ item.userFullName }}</td>
                                 <td>
-                                    <span v-for="role in item.projectRoleNames">{{ translateText(role) }}</span>
+                                    <span v-for="role in item.projectRoleNames">
+                                        {{ translateText(role) }}<span v-if="index < item.projectRoleNames.length - 1">,</span>
+                                    </span>
                                 </td>
-                                <td>{{ item.projecTeamName }}</td>
-                                <td>{{ item.projectDepartmentName }}</td>
+                                <td>
+                                    <span v-for="(subteamName, index) in item.subteamNames">
+                                        {{ subteamName }}<span v-if="index < item.subteamNames.length - 1">,</span>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span v-for="(departmentName, index) in item.projectDepartmentNames">
+                                        {{ departmentName }}<span v-if="index < item.projectDepartmentNames.length - 1">,</span>
+                                    </span>
+                                </td>
                                 <td>
                                     <social-links align="left" size="20px" v-bind:facebook="item.userFacebook" v-bind:twitter="item.userTwitter" v-bind:linkedin="item.userLinkedIn" v-bind:gplus="item.userGplus" v-bind:email="item.userEmail" v-bind:phone="item.userPhone"></social-links>
                                 </td>
@@ -127,13 +146,13 @@
                                     <switches :modelChanged="updateDistributionItem(item, dl)" v-model="inDistribution" :selected="inDistributionList(item.user, dl)"></switches>
                                 </td>
                                 <td>
-                                    <router-link :to="{name: 'project-organization-view-member', params: {userId: item.user} }" class="btn-icon">
+                                    <router-link :to="{name: 'project-organization-view-member', params: {id: projectId, userId: item.id} }" class="btn-icon">
                                         <view-icon fill="second-fill"></view-icon>
                                     </router-link>
-                                    <router-link :to="{name: 'project-organization-create-member'}" class="btn-icon">
+                                    <router-link :to="{name: 'project-organization-edit-member', params: {id: projectId, userId: item.id}}" class="btn-icon">
                                         <edit-icon fill="second-fill"></edit-icon>
                                     </router-link>
-                                    <button data-target="#phase-1-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
+                                    <button @click="initDeleteMemberModal(item)" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -185,23 +204,23 @@ export default {
         Error,
     },
     methods: {
-        ...mapActions(['getProjectById', 'createDistribution', 'updateProjectUser',
+        ...mapActions(['getProjectById', 'createDistribution', 'updateProjectUser', 'deleteTeamMember',
             'getProjectUsers', 'addToDistribution', 'removeFromDistribution', 'getSubteams',
         ]),
         translateText: function(text) {
             return this.translate(text);
         },
-        changePage(page) {
+        changePage: function(page) {
             this.activePage = page;
             this.getProjectUsers({id: this.$route.params.id, page: page, users: this.gridList});
         },
-        toggleTeam(id) {
+        toggleTeam: function(id) {
             this.showTeam = Object.assign({}, this.showTeam, {[id]: !this.showTeam[id]});
         },
-        toggleActivation(item) {
+        toggleActivation: function(item) {
             item.checked = !item.checked;
         },
-        createDistributionList() {
+        createDistributionList: function() {
             let data = {
                 name: this.distributionTitle,
                 sequence: 0,
@@ -224,7 +243,7 @@ export default {
                     }
                 );
         },
-        inDistributionList(userId, distribution) {
+        inDistributionList: function(userId, distribution) {
             for (let i = 0; i < distribution.users.length; i++) {
                 if (distribution.users[i].id == userId) {
                     return true;
@@ -253,13 +272,13 @@ export default {
                 break;
             };
         },
-        updateDistribution(item, distribution) {
+        updateDistribution: function(item, distribution) {
             this.inDistribution
                 ? this.addToDistribution({id: distribution.id, user: item.user})
                 : this.removeFromDistribution({id: distribution.id, user: item.user})
             ;
         },
-        updateDistributionItem(item, distribution) {
+        updateDistributionItem: function(item, distribution) {
             const self = this;
             return function(value) {
                 value
@@ -267,6 +286,18 @@ export default {
                     : self.removeFromDistribution({id: distribution.id, user: item.user})
                 ;
             };
+        },
+        clearFilters: function() {
+            this.$refs.gridMemberSearch.clearValue();
+        },
+        initDeleteMemberModal: function(member) {
+            this.showDeleteMemberModal = true;
+            this.memberId = member.id;
+        },
+        deleteMember: function() {
+            this.deleteTeamMember(this.memberId);
+            this.showDeleteMemberModal = false;
+            this.memberId = null;
         },
     },
     created() {
@@ -296,6 +327,9 @@ export default {
             activePage: 1,
             showTeam: {},
             showModal: false,
+            projectId: this.$route.params.id,
+            showDeleteMemberModal: false,
+            memberId: null,
         };
     },
     watch: {
@@ -303,7 +337,7 @@ export default {
             this.pages = this.projectUsers.totalItems / this.projectUsers.items.length;
         },
         gridList(value) {
-            this.getProjectUsers({id: this.$route.params.id, users: this.gridList});
+            this.getProjectUsers({id: this.$route.params.id, page: this.page, users: this.gridList});
         },
         selectedDistribution(value) {
             let distribution = [];

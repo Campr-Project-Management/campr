@@ -40,6 +40,9 @@
                 </div>
             </vue-scrollbar>
         </div>
+        <div class="results team" v-if="noData && query !== ''">
+            <div>{{ translateText('label.no_data') }}</div>
+        </div>
     </div>
 </template>
 
@@ -84,6 +87,7 @@ export default {
                 }
                 users.push(user);
             });
+            this.noData = users.length === 0 ? true : false;
 
             return users;
         },
@@ -105,14 +109,16 @@ export default {
         clearValue() {
             this.query = '';
             this.items = [];
+            this.noData = false;
             this.updateSelected();
         },
     },
     data() {
         return {
-            src: Routing.generate('app_api_project_project_users', {'id': this.$route.params.id}),
+            src: Routing.generate('app_api_project_project_users', {id: this.$route.params.id}),
             queryParamName: 'search',
-            minChars: 3,
+            noData: null,
+            minChars: 1,
             selectedUsers: [],
         };
     },

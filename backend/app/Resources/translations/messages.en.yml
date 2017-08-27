@@ -17,6 +17,9 @@ message:
     overall_impression: Overall Impression
     close_down_report: Close Down Report
     rasci_matrix: RASCI Matrix
+    edit_team_member: Edit team member
+    delete_team_member: Delete team member
+    no_managers: There are no managers defined on this project. Please set up managers in order to asign them to this department.
     contract_freezed: Project contract is freezed
     work_package_dependency_constraint: Entry cannot be deleted because there are phases/milestones/tasks that are depending on it!
     opportunities: Opportunities
@@ -1055,6 +1058,7 @@ label:
     add: Add +
 
 button:
+    edit_member: Edit Member
     clear_filters: Clear Filters
     delete_remaining_action: Delete Remaining Action
     new_remaining_action: New Remaining Action

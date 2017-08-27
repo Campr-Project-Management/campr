@@ -21,7 +21,7 @@ class ProjectUserController extends ApiController
     /**
      * Get Project User by id.
      *
-     * @Route("/{id}", name="app_api_project_users_get")
+     * @Route("/{id}", name="app_api_project_users_get", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param ProjectUser $projectUser
@@ -80,7 +80,7 @@ class ProjectUserController extends ApiController
     /**
      * Delete a specific Project User.
      *
-     * @Route("/{id}", name="app_api_project_users_delete")
+     * @Route("/{id}", name="app_api_project_users_delete", options={"expose"=true})
      * @Method({"DELETE"})
      *
      * @param ProjectUser $projectUser
@@ -95,9 +95,8 @@ class ProjectUserController extends ApiController
         }
         $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($projectUser);
-        $em->flush();
+        $projectUser->setProject();
+        $this->persistAndFlush($projectUser);
 
         return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
