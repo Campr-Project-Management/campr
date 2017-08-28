@@ -77,7 +77,7 @@ class ContractControllerTest extends BaseController
                     'forecastEndDate' => null,
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
-                    'freezed' => false,
+                    'frozen' => false,
                 ],
             ],
         ];
@@ -320,7 +320,7 @@ class ContractControllerTest extends BaseController
                     'forecastEndDate' => null,
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
-                    'freezed' => false,
+                    'frozen' => false,
                 ],
             ],
         ];

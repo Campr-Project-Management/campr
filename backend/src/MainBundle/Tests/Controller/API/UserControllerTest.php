@@ -221,7 +221,7 @@ class UserControllerTest extends BaseController
                             'forecastEndDate' => null,
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
-                            'freezed' => false,
+                            'frozen' => false,
                         ],
                         [
                             'project' => 1,
@@ -241,7 +241,7 @@ class UserControllerTest extends BaseController
                             'forecastEndDate' => null,
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
-                            'freezed' => false,
+                            'frozen' => false,
                         ],
                     ],
                     'ownedMeetings' => [
