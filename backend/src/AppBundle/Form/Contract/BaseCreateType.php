@@ -55,7 +55,7 @@ class BaseCreateType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'dd-MM-yyyy',
             ])
-            ->add('freezed', CheckboxType::class)
+            ->add('frozen', CheckboxType::class)
         ;
     }
 
