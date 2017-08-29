@@ -830,6 +830,11 @@ export default {
         countCompletedSubtasks: function() {
             let completed = 0;
 
+            // @TODO: see why this would become undefined
+            if (!this.task || !this.task.children) {
+                return completed;
+            }
+
             for (let task of this.task.children) {
                 // TODO: use constants
                 if (task.workPackageStatus === 4) {
@@ -857,7 +862,9 @@ export default {
                 'message.subtasks_summary',
                 {
                     'completed_tasks': this.countCompletedSubtasks(),
-                    'total_tasks': this.task.children.length,
+                    'total_tasks': this.task && this.task.children
+                        ? this.task.children.length
+                        : 0,
                 }
             );
         },

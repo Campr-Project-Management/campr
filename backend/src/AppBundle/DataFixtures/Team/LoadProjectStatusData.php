@@ -17,22 +17,20 @@ class LoadProjectStatusData extends AbstractFixture implements OrderedFixtureInt
      */
     public function load(ObjectManager $manager)
     {
-        $statusNotStarted = (new ProjectStatus())
-            ->setName('Not started')
-            ->setSequence(1)
-        ;
-        $statusInProgress = (new ProjectStatus())
-            ->setName('In progress')
-            ->setSequence(1)
-        ;
-        $statusFinished = (new ProjectStatus())
-            ->setName('Finished')
-            ->setSequence(1)
-        ;
+        $data = [
+            ['label.not_started', -1],
+            ['label.in_progress', 0],
+            ['label.pending', 1],
+            ['label.open', 2],
+            ['label.closed', -1],
+        ];
 
-        $manager->persist($statusNotStarted);
-        $manager->persist($statusInProgress);
-        $manager->persist($statusFinished);
+        foreach ($data as $row) {
+            $ps = new ProjectStatus();
+            $ps->setName($row[0]);
+            $ps->setSequence($row[1]);
+            $manager->persist($ps);
+        }
 
         $manager->flush();
     }

@@ -16,9 +16,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class ProjectStatus
 {
-    const STATUS_NOT_STARTED = 1;
-    const STATUS_IN_PROGRESS = 2;
-    const STATUS_FINISHED = 3;
+    const NOT_STARTED = 1;
+    const IN_PROGRESS = 2;
+    const PENDING = 3;
+    const OPEN = 4;
+    const CLOSED = 5;
 
     /**
      * @var int
