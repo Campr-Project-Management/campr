@@ -492,7 +492,7 @@ export default {
             showEditExternalCostModal: false,
             showDeleteExternalCostModal: false,
             editExternalCostObj: {},
-            isEditExternalCost: false,
+//            isEditExternalCost: false,
             showEditExternalForecastCostModal: false,
             externalForecastCost: 0,
             showEditExternalActualCostModal: false,

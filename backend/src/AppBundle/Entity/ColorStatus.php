@@ -2,7 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Color Status - green/yellow/red.
@@ -48,6 +51,18 @@ class ColorStatus
      * @ORM\Column(name="sequence", type="integer", nullable=false, options={"default"=0})
      */
     private $sequence = 0;
+
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="colorStatus")
+     * @Serializer\Exclude()
+     */
+    private $workPackages;
+
+    public function __construct()
+    {
+        $this->workPackages = new ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -145,5 +160,39 @@ class ColorStatus
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @param WorkPackage $workPackage
+     *
+     * @return ColorStatus
+     */
+    public function addWorkPackage(WorkPackage $workPackage): self
+    {
+        $this->workPackages[] = $workPackage;
+        $workPackage->setColorStatus($this);
+
+        return $this;
+    }
+
+    /**
+     * @param WorkPackage $workPackage
+     *
+     * @return ColorStatus
+     */
+    public function removeWorkPackage(WorkPackage $workPackage): self
+    {
+        $this->workPackages->removeElement($workPackage);
+        $workPackage->setColorStatus(null);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getWorkPackages(): Collection
+    {
+        return $this->workPackages;
     }
 }
