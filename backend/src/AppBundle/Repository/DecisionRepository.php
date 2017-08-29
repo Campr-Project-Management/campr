@@ -3,9 +3,17 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Project;
+use Doctrine\ORM\QueryBuilder;
+use AppBundle\Repository\Traits\UserSortingTrait;
+use AppBundle\Repository\Traits\ProjectSortingTrait;
 
 class DecisionRepository extends BaseRepository
 {
+    use UserSortingTrait, ProjectSortingTrait {
+        UserSortingTrait::setOrder as setUserOrder;
+        ProjectSortingTrait::setOrder as setProjectOrder;
+    }
+
     /**
      * Creates the query builder that  returns the project decisions.
      *
@@ -67,5 +75,15 @@ class DecisionRepository extends BaseRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
+    }
+
+    /**
+     * @param array        $orderBy
+     * @param QueryBuilder $qb
+     */
+    public function setOrder(array &$orderBy, QueryBuilder $qb)
+    {
+        $this->setUserOrder($orderBy, $qb);
+        $this->setProjectOrder($orderBy, $qb);
     }
 }
