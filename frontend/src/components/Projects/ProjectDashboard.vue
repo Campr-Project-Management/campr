@@ -117,20 +117,25 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="flex flex-direction-reverse margintop20">
-                            <a href="#path-to-close-project" class="btn-rounded btn-md btn-auto danger-bg">{{ translateText('button.close_project') }}</a>
+
+                        <div class="flex flex-direction-reverse margintop20" v-if="project.status != projectStatus.PROJECT_STATUS_CLOSED">
+                            <button v-on:click="doCloseProject()" class="btn-rounded btn-md btn-auto danger-bg">{{ translateText('button.close_project') }}</button>
                         </div>
                         <hr>
+
                         <h4 class="widget-title">{{ translateText('message.team_members') }} - <b class="second-color" v-if="project.projectUsers">{{ project.projectUsers.length }}</b></h4>
                         <router-link :to="{name: 'project-organization'}" class="btn-rounded btn-md btn-empty btn-auto">View entire team</router-link>
                         <hr>
-                        <h4 class="widget-title">{{ translateText('message.project_status') }} - <b style="color:#5FC3A5;">Green</b> <b style="color:#CCBA54;">Yellow</b> <b style="color:#C87369;">Red</b></h4>
-                        <div class="status-boxes flex flex-v-center">
-                            <div class="status-box" style="background-color:#5FC3A5"></div>
-                            <div class="status-box" style=""></div>
-                            <div class="status-box" style=""></div>
+
+                        <h4 class="widget-title" v-if="colorStatuses && colorStatuses.length">
+                            {{ translateText('message.project_status') }} -
+                            <b v-for="colorStatus in colorStatuses" :style="{color: colorStatus.color}"> {{ translateText(colorStatus.name) }} </b>
+                        </h4>
+                        <div class="status-boxes flex flex-v-center" v-if="colorStatuses && colorStatuses.length">
+                            <div v-for="colorStatus in colorStatuses" class="status-box" :style="{backgroundColor: (project.colorStatus === colorStatus.id ? colorStatus.color : null)}"></div>
                         </div>
-                        <hr>
+                        <hr v-if="colorStatuses && colorStatuses.length">
+
                         <button type="button" class="btn-rounded btn-md btn-empty btn-auto">{{ translateText('button.print_project_handbook') }}</button>
                     </div>
                 </div>
@@ -169,6 +174,9 @@
                 <!-- /// End Task Status Widget /// -->
             </div>
         </div>
+
+        <alert-modal v-if="showClosed" body="message.project_closed" @close="showClosed = false;" />
+        <alert-modal v-if="showFailed" body="message.unable_to_save" @close="showFailed = false;" />
     </div>
 </template>
 
@@ -176,16 +184,27 @@
 import {mapGetters, mapActions} from 'vuex';
 import CircleChart from '../_common/_charts/CircleChart';
 import SmallTaskBox from '../Dashboard/SmallTaskBox';
+import AlertModal from '../_common/AlertModal.vue';
 import moment from 'moment';
+import * as projectStatus from '../../store/modules/project-status';
 
 export default {
     components: {
         CircleChart,
         SmallTaskBox,
         moment,
+        AlertModal,
     },
     methods: {
-        ...mapActions(['getProjectById', 'getRecentTasksByProject', 'getProjectUsers', 'getTasksForSchedule', 'getColorStatuses', 'getTasksStatus']),
+        ...mapActions([
+            'getProjectById',
+            'getRecentTasksByProject',
+            'getProjectUsers',
+            'getTasksForSchedule',
+            'getColorStatuses',
+            'getTasksStatus',
+            'closeProject',
+        ]),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -195,6 +214,24 @@ export default {
             let diff = end.diff(start, 'days');
 
             return !isNaN(diff) ? diff : '-';
+        },
+        doCloseProject() {
+            const {id} = this.project;
+            this
+                .closeProject({id})
+                .then(
+                    (response) => {
+                        if (response.status === 200) {
+                            this.showClosed = true;
+                        } else {
+                            this.showFailed = true;
+                        }
+                    },
+                    () => {
+                        this.showFailed = true;
+                    }
+                )
+            ;
         },
     },
     created() {
@@ -218,7 +255,10 @@ export default {
     }),
     data() {
         return {
+            showClosed: false,
+            showFailed: false,
             activePage: 1,
+            projectStatus,
         };
     },
 };
@@ -337,7 +377,8 @@ export default {
             width: 30px;
             height: 30px;
             margin-right: 5px;
-            background-color:$fadeColor;
+            background-color: $fadeColor;
+            cursor: auto;
         }
     }
 

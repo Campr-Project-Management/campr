@@ -54,6 +54,7 @@ use AppBundle\Form\Opportunity\BaseType as OpportunityCreateType;
 use AppBundle\Repository\MeetingRepository;
 use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\ProjectVoter;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use MainBundle\Controller\API\ApiController;
@@ -123,13 +124,11 @@ class ProjectController extends ApiController
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
+            /** @var EntityManager $em */
             $em = $this->getDoctrine()->getManager();
 
             if (!$project->getStatus()) {
-                $projectStatus = $em
-                    ->getRepository(ProjectStatus::class)
-                    ->find(ProjectStatus::STATUS_NOT_STARTED)
-                ;
+                $projectStatus = $em->getReference(ProjectStatus::class, ProjectStatus::NOT_STARTED);
 
                 $project->setStatus($projectStatus);
             }

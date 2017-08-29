@@ -60,9 +60,9 @@
                 <!--<span class="notification-balloon">5</span>-->
             <!--</a>-->
         </div>
-        <div v-show="this.$route.name.indexOf('project-') != -1" class="project-title">
+        <div v-show="currentProjectName" class="project-title">
             <p>{{ message.project }}</p>
-            <h4>{{ currentProjectTitle }}</h4>
+            <h4>{{ currentProjectName }}</h4>
         </div>
     </header>
 </template>
@@ -75,7 +75,7 @@ export default {
     props: ['user'],
     computed: {
         ...mapGetters({
-            currentProjectTitle: 'currentProjectTitle',
+            currentProjectName: 'currentProjectName',
         }),
         userAvatar: function() {
             if (this.user.avatar === null) {
