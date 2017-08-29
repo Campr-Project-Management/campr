@@ -21,6 +21,9 @@ trait UserSortingTrait
                     unset($orderBy['responsibilityFullName']);
                     break;
                 case 'userFullName':
+                    if (!in_array('u', $qb->getAllAliases())) {
+                        $qb->leftJoin('q.user', 'u');
+                    }
                     $qb->addSelect('CONCAT(u.firstName, \' \', u.lastName) AS HIDDEN full_name');
                     $qb->orderBy('full_name', $dir);
                     unset($orderBy['userFullName']);
