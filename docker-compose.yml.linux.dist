@@ -15,6 +15,7 @@ services:
             - MYSQL_ROOT_PASSWORD=root
         volumes:
             - db-data:/var/lib/mysql
+            - ./config/docker/mysql/docker.cnf:/etc/mysql/conf.d/docker.cnf
     redis:
         image: redis
     phpmyadmin:
