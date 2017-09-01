@@ -450,6 +450,13 @@ class Project
     private $projectDepartments;
 
     /**
+     * @var ColorStatus
+     *
+     * @Serializer\Exclude()
+     */
+    private $colorStatus;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -2375,5 +2382,64 @@ class Project
         $this->projectDepartments->removeElement($projectDepartment);
 
         return $this;
+    }
+
+    /**
+     * @param ColorStatus|null $colorStatus
+     *
+     * @return Project
+     */
+    public function setColorStatus(ColorStatus $colorStatus = null)
+    {
+        $this->colorStatus = $colorStatus;
+
+        return $this;
+    }
+
+    /**
+     * @return ColorStatus|null
+     */
+    public function getColorStatus()
+    {
+        return $this->colorStatus;
+    }
+
+    /**
+     * @return null|int
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("colorStatus")
+     */
+    public function getColorStatusId()
+    {
+        return $this->colorStatus
+            ? $this->colorStatus->getId()
+            : null
+        ;
+    }
+
+    /**
+     * @return null|string
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("colorStatusName")
+     */
+    public function getColorStatusName()
+    {
+        return $this->colorStatus
+            ? $this->colorStatus->getName()
+            : null
+        ;
+    }
+
+    /**
+     * @return null|string
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("colorStatusColor")
+     */
+    public function getColorStatusColor()
+    {
+        return $this->colorStatus
+            ? $this->colorStatus->getColor()
+            : null
+        ;
     }
 }

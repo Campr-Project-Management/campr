@@ -61,6 +61,7 @@ message:
     role: Role
     saved: Saved!
     unable_to_save: Unable to save.
+    project_closed: Project has been closed.
     created: Created
     back_to_todos: Back to Todos
     delete_todo: Delete Todo
@@ -791,6 +792,12 @@ subtitle:
 
 label:
     frozen: Frozen
+    not_started: Not Started
+    in_progress: In progress
+    pending: Pending
+    open: Open
+    closed: Closed
+    freezed: Freezed
     event: Event
     time: Time
     new_role: New Role
