@@ -101,7 +101,7 @@ class WorkPackage
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ColorStatus")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ColorStatus", inversedBy="workPackages")
      * @ORM\JoinColumn(name="color_status_id")
      */
     private $colorStatus;
