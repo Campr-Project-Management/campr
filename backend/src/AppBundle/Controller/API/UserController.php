@@ -7,6 +7,7 @@ use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -14,6 +15,23 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class UserController extends ApiController
 {
+    /**
+     * @Route("", name="app_api_users", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @return JsonResponse
+     */
+    public function getAction(Request $request)
+    {
+        $users = $this
+            ->getDoctrine()
+            ->getRepository(User::class)
+            ->findBy($request->query->all())
+        ;
+
+        return $this->createApiResponse($users);
+    }
+
     /**
      * Sync user information from main website.
      *
