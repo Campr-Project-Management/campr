@@ -40,9 +40,13 @@
                 </div>
             </vue-scrollbar>
         </div>
-        <div class="results team" v-if="noData && query !== ''">
+        <div class="results team no-data" v-if="noData && query !== ''">
             <div>{{ translateText('label.no_data') }}</div>
         </div>
+        <p v-if="users && users.length" v-for="user in users" class="selected-item">
+            {{ user.firstName }} {{ user.lastName }}
+            <a @click="removeSelectedOption(user.id)"> <i class="fa fa-times"></i></a>
+        </p>
     </div>
 </template>
 
@@ -50,7 +54,7 @@
 import VueTypeahead from 'vue-typeahead';
 import VueScrollbar from 'vue2-scrollbar';
 import 'vue2-scrollbar/dist/style/vue2-scrollbar.css';
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     extends: VueTypeahead,
@@ -58,8 +62,20 @@ export default {
     components: {
         VueScrollbar,
     },
+    computed: {
+        ...mapGetters(['users']),
+    },
+    watch: {
+        value(val) {
+            if (val.length) {
+                this.getUsers({id: val});
+            } else {
+                this.clearUsers();
+            }
+        },
+    },
     methods: {
-        ...mapActions(['getProjectUsers']),
+        ...mapActions(['getUsers', 'clearUsers']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -112,6 +128,9 @@ export default {
             this.noData = false;
             this.updateSelected();
         },
+        removeSelectedOption(id) {
+            this.$emit('input', this.value.filter(item => parseInt(item, 10) !== parseInt(id, 10)));
+        },
     },
     data() {
         return {
@@ -121,6 +140,9 @@ export default {
             minChars: 1,
             selectedUsers: [],
         };
+    },
+    created() {
+        this.clearUsers();
     },
     mounted() {
         const $this = window.$('#input' + this._uid);
@@ -142,7 +164,7 @@ export default {
 
         if ($this.disabled = true) {
             $this.next().addClass('active');
-        };
+        }
 
         if ($this.val() === '' || $this.val() === 'blank') {
             $this.next().removeClass();
@@ -166,6 +188,7 @@ export default {
 <style lang="scss">
     @import '../../css/page-section';
     @import '../../css/_variables';
+    @import '../../css/_mixins.scss';
 
     .modal .modal-inner {
         width: 600px;
@@ -271,12 +294,18 @@ export default {
         position: absolute;
         width: 420px;
         background: $darkColor;
-        top: 100%;
+        top: 40px;
         margin-top: 10px;
         padding: 0 20px;
         max-height: 400px;
         z-index: 10;
         box-shadow: 0 0 8px -2px #000;
+
+        &.no-data {
+            width: 100% !important;
+            position: absolute;
+            padding: 5px 20px;
+        }
     }
 
     .member {
@@ -312,5 +341,27 @@ export default {
         font-size: 8px;
         color: $middleColor;
         letter-spacing: 1.2px;
+    }
+
+    .selected-item {
+        padding: 11px 20px 9px;
+        background-color: $fadeColor;
+        margin-top: 3px;
+        color: $secondColor;
+        position: relative;
+
+        i.fa {
+            position: absolute;
+            right: 20px;
+            top: 13px;
+            color: $dangerColor;
+            cursor: pointer;
+            @include transition(opacity, 0.2s, ease-in);
+
+            &:hover,
+            &:active {
+                @include opacity(0.8);
+            }
+        }
     }
 </style>
