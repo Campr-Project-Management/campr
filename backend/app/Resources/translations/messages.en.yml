@@ -47,6 +47,7 @@ message:
     expiry_date: Expiry Date
     back_to_infos: Back to Infos
     create_new_info: Create New Info
+    edit_info: Edit Info
     project_infos: Project Infos
     infos: Infos
     delete_objective: Delete objective
@@ -1081,6 +1082,7 @@ button:
     delete_info: Delete Info
     new_info: New Info
     edit_info: Edit Info
+    view_info: View Info
     create_info: Create Info
     delete_todo: Delete Todo
     reschedule_todo: Reschedule todo  

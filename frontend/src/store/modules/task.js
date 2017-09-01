@@ -209,27 +209,28 @@ const actions = {
                 (response) => {}
             );
     },
-    getUsers({commit}) {
-        Vue.http
-            .post(
-                Routing.generate('app_api_workpackage_edit', {'id': data.taskId}),
-                data.data
-            ).then(
-            (response) => {
-                if (response.status === 200) {
-                    alert('Saved!');
-                } else {
-                    alert(response.status);
-                }
-            },
-            (response) => {
-                alert('Validation issues');
-                if (response.status === 400) {
-                    // implement system to dispay errors
-                }
-            }
-        );
-    },
+    // something is weird here :\
+    // getUsers({commit}) {
+    //     Vue.http
+    //         .post(
+    //             Routing.generate('app_api_workpackage_edit', {'id': data.taskId}),
+    //             data.data
+    //         ).then(
+    //         (response) => {
+    //             if (response.status === 200) {
+    //                 alert('Saved!');
+    //             } else {
+    //                 alert(response.status);
+    //             }
+    //         },
+    //         (response) => {
+    //             alert('Validation issues');
+    //             if (response.status === 400) {
+    //                 // implement system to dispay errors
+    //             }
+    //         }
+    //     );
+    // },
 
     setFilters({commit}, filters) {
         commit(types.SET_TASKS_FILTERS, {filters});
