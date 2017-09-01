@@ -9,7 +9,7 @@
                             <i class="fa fa-angle-left"></i>
                             {{ translateText('message.back_to_infos') }}
                         </router-link>
-                        <h1>{{ translateText('message.create_new_info') }}</h1>
+                        <h1>{{ translateText(info && info.id ? 'message.edit_info' : 'message.create_new_info') }}</h1>
                     </div>
                 </div>
                 <!-- /// End Header /// -->

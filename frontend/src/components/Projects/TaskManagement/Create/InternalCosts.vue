@@ -145,7 +145,7 @@ export default {
             this.addInternalCost();
         }
 
-        this.getProjectDepartments({projectId: this.$route.params.id});
+        this.getProjectDepartments({project: this.$route.params.id});
         this.getProjectResources(this.$route.params.id);
     },
     computed: {
