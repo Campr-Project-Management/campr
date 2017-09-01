@@ -35,7 +35,7 @@
                         </thead>
                         <tbody>
                             <tr v-if="!infos || !infos.length">
-                                <td colspan="7">{{ translateText('message.no_data') }}</td>
+                                <td colspan="7">{{ translateText('label.no_data') }}</td>
                             </tr>
                             <tr v-if="infos && infos.length" v-for="info in infos">
                                 <td>{{ info.id }}</td>
@@ -53,10 +53,10 @@
                                 </td>
                                 <td>
                                     <div class="text-right">
-                                        <router-link :to="{name: 'project-infos-view', params: {projectId: info.project, infoId: info.id}}" class="btn-icon" v-tooltip.top-center="translateText('message.view_info')">
+                                        <router-link :to="{name: 'project-infos-view', params: {projectId: info.project, infoId: info.id}}" class="btn-icon" v-tooltip.top-center="translateText('button.view_info')">
                                             <view-icon fill="second-fill"></view-icon>
                                         </router-link>
-                                        <router-link :to="{name: 'project-infos-edit', params: {projectId: info.project, infoId: info.id}}" class="btn-icon" v-tooltip.top-center="translateText('message.edit_info')">
+                                        <router-link :to="{name: 'project-infos-edit', params: {projectId: info.project, infoId: info.id}}" class="btn-icon" v-tooltip.top-center="translateText('button.edit_info')">
                                             <edit-icon fill="second-fill"></edit-icon>
                                         </router-link>
                                         <a href="javascript:void(0)" @click="tryDeleteInfo(info.id)" class="btn-icon" v-tooltip.top-center="translateText('button.delete_info')">
