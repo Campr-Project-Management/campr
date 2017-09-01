@@ -1,6 +1,13 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
 
+// constants!
+export const PROJECT_STATUS_NOT_STARTED = 1;
+export const PROJECT_STATUS_IN_PROGRESS = 2;
+export const PROJECT_STATUS_PENDING = 3;
+export const PROJECT_STATUS_OPEN = 4;
+export const PROJECT_STATUS_CLOSED = 5;
+
 const state = {
     projectStatuses: [],
 };
