@@ -2,6 +2,8 @@
 
 #app.bg{
     background: url('../../assets/bg-1.jpg') repeat-y;
+    background-attachment: fixed;
+    background-position: bottom;
 
     .page {
         background: none !important;

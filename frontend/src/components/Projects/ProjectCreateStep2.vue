@@ -189,22 +189,10 @@ export default {
 
 <style lang="scss">
     @import '../../css/project-create';
-</style>
-
-<style lang="scss">
-@import '../../css/_common';
+    @import '../../css/_common';
 
     input[type=text] {
         margin-bottom: 0 !important;
-    }
-
-    #app.bg{
-        background: url('../../assets/bg-1.jpg');
-        background-size: cover;
-
-        .page {
-            background: none !important;
-        }
     }
 
     .slider-holder {
