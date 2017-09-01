@@ -30,7 +30,7 @@ class ProjectStatusController extends ApiController
         $projectStatus = $this
             ->getDoctrine()
             ->getRepository(ProjectStatus::class)
-            ->findAll()
+            ->findAllDisplayable()
         ;
 
         return $this->createApiResponse($projectStatus);

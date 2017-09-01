@@ -2,6 +2,7 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 import _ from 'lodash';
 import router from '../../router';
+import * as projectStatus from './project-status';
 
 const state = {
     currentProject: {},
@@ -25,9 +26,7 @@ const getters = {
     projects: state => state.filteredProjects.items,
     projectLoading: state => state.loading,
     labels: state => state.projects,
-    currentProjectTitle: function(state) {
-        return state.currentProject.title;
-    },
+    currentProjectName: (state) => state.currentProject && state.currentProject.name,
     projectsForFilter: state => state.projectsForFilter,
     labelsForChoice: state => state.labelsForChoice,
     label: state => state.label,
@@ -41,6 +40,32 @@ const getters = {
 };
 
 const actions = {
+    /**
+     * Closes a project by setting the closed project status
+     * and calls SET_PROJECT
+     *
+     * @param {function} commit
+     * @param {number} id
+     * @return {object}
+     */
+    closeProject({commit}, {id}) {
+        return Vue
+            .http
+            .patch(Routing.generate('app_api_project_edit', {id}), {status: projectStatus.PROJECT_STATUS_CLOSED})
+            .then(
+                (response) => {
+                    if (response.status === 200) {
+                        let project = response.data;
+                        commit(types.SET_PROJECT, {project});
+                    }
+
+                    return response;
+                },
+                (response) => response
+            )
+        ;
+    },
+
     /**
      * Calls edit project API to set 'favorite' property
      * and commits TOGGLE_FAVORITE mutation
