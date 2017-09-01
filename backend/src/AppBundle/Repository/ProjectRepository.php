@@ -2,12 +2,26 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Project;
 use AppBundle\Entity\User;
 use AppBundle\Repository\Traits\CategorySortingTrait;
+use Doctrine\ORM\QueryBuilder;
 
 class ProjectRepository extends BaseRepository
 {
     use CategorySortingTrait;
+
+    /**
+     * @param string $name
+     *
+     * @return null|Project
+     */
+    public function findOneByName(string $name)
+    {
+        return $this->findOneBy([
+            'name' => $name,
+        ]);
+    }
 
     /**
      * Return all projects for current user.
@@ -15,7 +29,7 @@ class ProjectRepository extends BaseRepository
      * @param User  $user
      * @param array $filters
      *
-     * @return array
+     * @return QueryBuilder
      */
     public function findByUserAndFilters(User $user, $filters = [], $select = null)
     {
@@ -53,8 +67,8 @@ class ProjectRepository extends BaseRepository
     /**
      * Counts the filtered projects.
      *
-     * @param Project $project
-     * @param array   $filters
+     * @param User  $user
+     * @param array $filters
      *
      * @return int
      */
