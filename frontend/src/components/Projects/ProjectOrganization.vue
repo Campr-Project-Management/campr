@@ -302,7 +302,7 @@ export default {
     },
     created() {
         this.getProjectById(this.$route.params.id);
-        this.getProjectUsers({id: this.$route.params.id, page: this.page});
+        this.getProjectUsers({id: this.$route.params.id, page: this.activePage});
         this.getSubteams({project: this.$route.params.id, parent: false});
     },
     computed: mapGetters({
@@ -323,7 +323,6 @@ export default {
             showInResources: '',
             inDistribution: '',
             pages: 0,
-            page: 1,
             activePage: 1,
             showTeam: {},
             showModal: false,
@@ -337,7 +336,7 @@ export default {
             this.pages = this.projectUsers.totalItems / this.projectUsers.items.length;
         },
         gridList(value) {
-            this.getProjectUsers({id: this.$route.params.id, page: this.page, users: this.gridList});
+            this.getProjectUsers({id: this.$route.params.id, page: this.activePage, users: this.gridList});
         },
         selectedDistribution(value) {
             let distribution = [];
