@@ -318,7 +318,7 @@ success:
             from_edit: Working time successfully deleted!
             from_data_table: Working time with ID
     team:
-        create: Team successfully created!
+        create: Team successfully created! Login into team section will be available in a few moments after the database queries are executed.
         edit: Team successfully edited!
         delete: Team successfully deleted!
     team_member:
