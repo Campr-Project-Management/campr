@@ -40,13 +40,22 @@ class ProjectUserRepository extends BaseRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getQueryByUserFullName($filters)
+    public function getQueryByUserFullName(Project $project, $filters = [], $select = null)
     {
-        $qb = $this->createQueryBuilder('q')->leftJoin('q.user', 'u');
+        $qb = $this
+            ->createQueryBuilder('q')
+            ->where('q.project = :project')
+            ->leftJoin('q.user', 'u')
+            ->setParameter('project', $project)
+        ;
+
+        if ($select) {
+            $qb->select($select);
+        }
 
         if (isset($filters['search'])) {
             $qb
-                ->where(
+                ->andWhere(
                     $qb->expr()->orX(
                         $qb->expr()->like('u.firstName', ':searchString'),
                         $qb->expr()->like('u.lastName', ':searchString')
@@ -60,14 +69,33 @@ class ProjectUserRepository extends BaseRepository
             $qb->andWhere($qb->expr()->in('u.id', $filters['users']));
         }
 
-        if (isset($filters['project'])) {
+        if (isset($filters['pageSize']) && isset($filters['page'])) {
             $qb
-                ->andWhere($qb->expr()->eq('q.project', ':project'))
-                ->setParameter('project', $filters['project'])
+                ->setFirstResult($filters['pageSize'] * ($filters['page'] - 1))
+                ->setMaxResults($filters['pageSize'])
             ;
         }
 
-        return $qb->getQuery();
+        return $qb;
+    }
+
+    /**
+     * Counts the filtered decisions.
+     *
+     * @param Project $project
+     * @param array   $filters
+     *
+     * @return int
+     */
+    public function countTotalByProjectAndFilters(Project $project, $filters = [])
+    {
+        return (int) $this
+            ->getQueryByUserFullName($project, $filters, 'COUNT(DISTINCT q.id)')
+            ->setFirstResult(0)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 
     public function getUserAndDepartment(Project $project)

@@ -629,33 +629,23 @@ class ProjectController extends ApiController
     public function projectUsersAction(Request $request, Project $project)
     {
         $filters = $request->query->all();
-        if (empty($filters)) {
-            return $this->createApiResponse(
-                ['items' => $project->getProjectUsers()]
-            );
+        $projectUserRepo = $this->getDoctrine()->getRepository(ProjectUser::class);
+
+        if (isset($filters['page'])) {
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.users_per_page');
+            $result = $projectUserRepo->getQueryByUserFullName($project, $filters)->getQuery()->getResult();
+            $responseArray['totalItems'] = $projectUserRepo->countTotalByProjectAndFilters($project, $filters);
+            $responseArray['pageSize'] = $filters['pageSize'];
+            $responseArray['items'] = $result;
+
+            return $this->createApiResponse($responseArray);
         }
 
-        $filters['project'] = $project;
-        $usersQuery = $this
-            ->getDoctrine()
-            ->getRepository(ProjectUser::class)
-            ->getQueryByUserFullName($filters)
-        ;
-
-        $pageSize = $this->getParameter('front.users_per_page');
-        $currentPage = isset($filters['page']) ? $filters['page'] : 1;
-        $paginator = new Paginator($usersQuery);
-        if (!isset($filters['search'])) {
-            $paginator
-                ->getQuery()
-                ->setFirstResult($pageSize * ($currentPage - 1))
-                ->setMaxResults($pageSize)
-            ;
-        }
-        $responseArray['totalItems'] = count($paginator);
-        $responseArray['items'] = $paginator->getIterator()->getArrayCopy();
-
-        return $this->createApiResponse($responseArray);
+        return $this->createApiResponse([
+            'items' => isset($filters['search'])
+                ? $projectUserRepo->getQueryByUserFullName($project, $filters)->getQuery()->getResult()
+                : $project->getProjectUsers(),
+        ]);
     }
 
     /**
