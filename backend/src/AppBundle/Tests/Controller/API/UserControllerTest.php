@@ -89,6 +89,7 @@ class UserControllerTest extends BaseController
                         ],
                         'teamSlugs' => [],
                         'teamInvites' => [],
+                        'available' => false,
                         'logo' => null,
                     ],
                     [
@@ -103,6 +104,7 @@ class UserControllerTest extends BaseController
                         'teamMembers' => [],
                         'teamSlugs' => [],
                         'teamInvites' => [],
+                        'available' => false,
                         'logo' => null,
                     ],
                     [
@@ -117,6 +119,7 @@ class UserControllerTest extends BaseController
                         'teamMembers' => [],
                         'teamSlugs' => [],
                         'teamInvites' => [],
+                        'available' => false,
                         'logo' => null,
                     ],
                 ],

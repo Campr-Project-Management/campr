@@ -78,5 +78,12 @@ class TeamSubscriber implements EventSubscriberInterface
                 $team->getSlug()
             ),
         ]);
+        $this->redis->rpush(RedisQueueManagerCommand::DEFAULT, [
+            sprintf(
+                '--env=%s app:unlock-team %s',
+                $this->env,
+                $team->getSlug()
+            ),
+        ]);
     }
 }
