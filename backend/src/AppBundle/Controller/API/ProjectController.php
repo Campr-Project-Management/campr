@@ -1484,7 +1484,7 @@ class ProjectController extends ApiController
         }
 
         return $this->createApiResponse([
-            'items' => $subteamRepo->findAll(),
+            'items' => $subteamRepo->findBy(['project' => $project]),
         ]);
     }
 
