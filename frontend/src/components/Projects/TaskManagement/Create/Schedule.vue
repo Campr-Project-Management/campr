@@ -169,6 +169,9 @@ export default {
     },
     created() {
         this.getWorkPackages(this.$route.params.id);
+        this.schedule = this.editSchedule;
+        this.visibleAutomaticSchedule = this.schedule.automatic;
+        this.visibleManualSchedule = !this.schedule.automatic;
     },
     computed: {
         ...mapGetters({
