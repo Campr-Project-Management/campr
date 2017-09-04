@@ -161,7 +161,7 @@
             </vue-scrollbar>
 
             <div class="flex flex-direction-reverse flex-v-center">
-                <div class="pagination" v-if="pages > 0">
+                <div class="pagination" v-if="pages > 1">
                     <span v-for="page in pages" :class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
                 </div>
                 <div v-if='projectUsers.items'>
