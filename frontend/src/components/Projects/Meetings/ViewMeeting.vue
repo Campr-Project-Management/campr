@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row">
-            <meeting-modals
+            <meeting-modals ref="meetingmodal"
                     v-bind:editObjectiveModal="showEditObjectiveModal"
                     v-bind:deleteObjectiveModal="showDeleteObjectiveModal"
                     v-bind:objectiveObject="editObjectiveObject"
@@ -168,7 +168,7 @@
                 <h3>{{ translateText('message.documents') }}</h3>
                 <ul class="attachments" v-if="meeting.medias">
                     <li v-for="media in meeting.medias">
-                        <a @click="downloadMedia()" :title="translateText('message.download_attachment')">{{ media.path }} <downloadbutton-icon fill="second-fill"></downloadbutton-icon></a>
+                        <a :href="downloadMedia(media)" :title="translateText('message.download_attachment')">{{ media.path }} <downloadbutton-icon fill="second-fill"></downloadbutton-icon></a>
                     </li>
                 </ul>
                 <!-- /// End Meeting Documents /// -->
@@ -199,9 +199,7 @@
                                 <b>{{ decision.responsibilityFullName }}</b>
                             </div>
                         </div>
-                        <div class="entry-body">
-                            {{ decision.description }}
-                        </div>
+                        <div class="entry-body" v-html="decision.description"></div>
                     </div>
                     <!-- /// End Decision /// -->
                 </div>
@@ -217,7 +215,7 @@
                     <div class="entry" v-for="todo in meeting.todos">
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
-                                <h4>{{ todo.title }}</h4>  | {{ translateText('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.status') }}: <b v-if="todo.status">{{ todo.statusName }}</b><b v-else>-</b>
+                                <h4>{{ todo.title }}</h4>  | {{ translateText('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.status') }}: <b v-if="todo.status">{{ translateText(todo.statusName) }}</b><b v-else>-</b>
                             </div>
                             <div class="entry-buttons">
                                 <button @click="initEditTodo(todo)"  class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
@@ -233,9 +231,7 @@
                                 <b>{{ todo.responsibilityFullName }}</b>
                             </div>
                         </div>
-                        <div class="entry-body">
-                            {{ todo.description }}
-                        </div>
+                        <div class="entry-body" v-html="todo.description"></div>
                     </div>
                     <!-- /// End ToDo /// -->
                 </div>
@@ -267,9 +263,7 @@
                                 <b>{{ note.responsibilityFullName }}</b>
                             </div>
                         </div>
-                        <div class="entry-body">
-                            {{ note.description }}
-                        </div>
+                        <div class="entry-body" v-html="note.description"></div>
                     </div>
                     <!-- /// End Info /// -->
                 </div>
@@ -344,6 +338,8 @@ import MeetingParticipants from './MeetingParticipants';
 import Modal from '../../_common/Modal';
 import VueTimepicker from 'vue2-timepicker';
 import datepicker from 'vuejs-datepicker';
+import {createEditor} from 'vueditor';
+import vueditorConfig from '../../_common/vueditorConfig';
 
 export default {
     components: {
@@ -422,10 +418,13 @@ export default {
                 id: decision.id,
                 title: decision.title,
                 responsibility: [decision.responsibility],
-                dueDate: decision.date ? new Date(decision.date) : new Date(),
+                responsibilityFullName: decision.responsibilityFullName,
+                dueDate: decision.dueDate ? new Date(decision.dueDate) : new Date(),
                 meeting: this.$route.params.meetingId,
             };
-            this.$refs.editDecisionDescription.setContent(decision.description);
+            setTimeout(() => {
+                this.$refs.meetingmodal.$refs.editDecisionDescription.setContent(decision.description);
+            }, 100);
         },
         initDeleteDecision: function(decision) {
             this.showDeleteDecisionModal = true;
@@ -437,11 +436,14 @@ export default {
                 id: todo.id,
                 title: todo.title,
                 responsibility: [todo.responsibility],
-                dueDate: todo.date ? new Date(todo.date) : new Date(),
+                responsibilityFullName: todo.responsibilityFullName,
+                dueDate: todo.dueDate ? new Date(todo.dueDate) : new Date(),
                 status: {key: todo.status, label: todo.statusName},
                 meeting: this.$route.params.meetingId,
             };
-            this.$refs.editTodoDescription.setContent(todo.description);
+            setTimeout(() => {
+                this.$refs.meetingmodal.$refs.editTodoDescription.setContent(todo.description);
+            }, 100);
         },
         initDeleteTodo: function(todo) {
             this.showDeleteTodoModal = true;
@@ -453,11 +455,14 @@ export default {
                 id: note.id,
                 title: note.title,
                 responsibility: [note.responsibility],
-                dueDate: note.date ? new Date(note.date) : new Date(),
+                responsibilityFullName: note.responsibilityFullName,
+                dueDate: note.dueDate ? new Date(note.dueDate) : new Date(),
                 status: {key: note.status, label: note.statusName},
                 meeting: this.$route.params.meetingId,
             };
-            this.$refs.editNoteDescription.setContent(note.description);
+            setTimeout(() => {
+                this.$refs.meetingmodal.$refs.editNoteDescription.setContent(note.description);
+            }, 100);
         },
         initDeleteNote: function(note) {
             this.showDeleteNoteModal = true;
@@ -481,6 +486,16 @@ export default {
             this.sendMeetingNotifications(this.$route.params.id);
             this.showNotificationModal = false;
         },
+        downloadMedia: function(media) {
+            return Routing.generate('app_media_download', {id: media.id});
+        },
+        initVueEditors: function() {
+            setTimeout(() => {
+                this.decisionDescriptionEditor = createEditor(document.getElementById('decisionDescription'), {...vueditorConfig, id: 'decisionDescription'});
+                this.todoDescriptionEditor = createEditor(document.getElementById('todoDescription'), {...vueditorConfig, id: 'todoDescription'});
+                this.noteDescriptionEditor = createEditor(document.getElementById('noteDescription'), {...vueditorConfig, id: 'noteDescription'});
+            }, 100);
+        },
     },
     computed: {
         ...mapGetters({
@@ -500,6 +515,9 @@ export default {
             },
         });
         this.getMeetingParticipants({id: this.$route.params.meetingId});
+    },
+    mounted() {
+        this.initVueEditors();
     },
     data() {
         return {

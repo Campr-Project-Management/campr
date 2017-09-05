@@ -32,7 +32,7 @@
                     <p>
                         <span class="title">{{ message.status }}:</span>
                         <span class="status-label btn-rounded btn-auto">
-                            {{ project.statusName }}
+                            {{ translateText(project.statusName) }}
                         </span>
                     </p>
                 </div>
