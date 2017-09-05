@@ -14,23 +14,23 @@
             <div class="content flex flex-space-between">
                 <div class="info">
                     <p>
-                        <span class="title">{{ message.started_on }}:</span>
+                        <span class="title">{{ translateText('message.started_on') }}:</span>
                         <span class="data">{{ project.date | moment('DD.MM.YYYY') }}</span>
                     </p>
                     <p>
-                        <span class="title">{{ message.customer }}:</span>
+                        <span class="title">{{ translateText('message.customer') }}:</span>
                         <span class="data">{{ project.companyName }}</span>
                     </p>
                     <p>
-                        <span class="title">{{ message.project_manager }}</span>
+                        <span class="title">{{ translateText('message.project_manager') }}</span>
                         <span class="data" v-if="project.projectManager">{{ project.projectManagerName }}</span><span class="data" v-else>-</span>
                     </p>
                     <p>
-                        <span class="title">{{ message.project_sponsor }}</span>
+                        <span class="title">{{ translateText('message.project_sponsor') }}</span>
                         <span class="data" v-if="project.projectSponsor">{{ project.projectSponsorName }}</span><span class="data" v-else>-</span>
                     </p>
                     <p>
-                        <span class="title">{{ message.status }}:</span>
+                        <span class="title">{{ translateText('message.status') }}:</span>
                         <span class="status-label btn-rounded btn-auto">
                             {{ translateText(project.statusName) }}
                         </span>
@@ -52,16 +52,10 @@ export default {
         StarIcon,
     },
     props: ['project'],
-    data() {
-        return {
-            message: {
-                started_on: Translator.trans('message.started_on'),
-                customer: Translator.trans('message.customer'),
-                status: Translator.trans('message.status'),
-                project_manager: Translator.trans('message.project_manager'),
-                project_sponsor: Translator.trans('message.project_sponsor'),
-            },
-        };
+    methods: {
+        translateText: function(text) {
+            return this.translate(text);
+        },
     },
 };
 </script>
