@@ -139,6 +139,13 @@ class Team
      */
     private $encryptionKey;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="available", type="boolean", options={"default" = 0})
+     */
+    private $available = false;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -519,5 +526,23 @@ class Team
     public function getEncryptionKey(): string
     {
         return $this->encryptionKey;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAvailable()
+    {
+        return $this->available;
+    }
+
+    /**
+     * @param bool $available
+     */
+    public function setAvailable($available)
+    {
+        $this->available = $available;
+
+        return $this;
     }
 }
