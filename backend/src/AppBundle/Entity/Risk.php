@@ -15,6 +15,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Risk
 {
+    const PRIORITY_VERY_LOW = 0;
+    const PRIORITY_LOW = 1;
+    const PRIORITY_MEDIUM = 2;
+    const PRIORITY_HIGH = 3;
+    const PRIORITY_VERY_HIGH = 4;
+
     /**
      * @var int
      *

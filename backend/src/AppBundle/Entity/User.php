@@ -367,6 +367,12 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     private $projectUsers;
 
     /**
+     * @var StatusReport[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\StatusReport", mappedBy="createdBy")
+     */
+    private $statusReports;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -388,6 +394,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
         $this->favoriteProjects = new ArrayCollection();
         $this->subteamMembers = new ArrayCollection();
         $this->projectUsers = new ArrayCollection();
+        $this->statusReports = new ArrayCollection();
     }
 
     public function __toString()
@@ -914,7 +921,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
             $this->id,
             $this->email,
             $this->password
-        ) = unserialize($serialized);
+            ) = unserialize($serialized);
     }
 
     /**
@@ -1696,5 +1703,37 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
         return $this->subteamMembers->map(function (SubteamMember $subteamMember) {
             return $subteamMember->getSubteam();
         });
+    }
+
+    /**
+     * @param StatusReport $statusReport
+     *
+     * @return User
+     */
+    public function addStatusReport(StatusReport $statusReport)
+    {
+        $this->statusReports[] = $statusReport;
+
+        return $this;
+    }
+
+    /**
+     * @param StatusReport $statusReport
+     *
+     * @return User
+     */
+    public function removeStatusReport(StatusReport $statusReport)
+    {
+        $this->statusReports->removeElement($statusReport);
+
+        return $this;
+    }
+
+    /**
+     * @return StatusReport[]|ArrayCollection
+     */
+    public function getStatusReports()
+    {
+        return $this->statusReports;
     }
 }

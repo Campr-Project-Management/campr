@@ -19,6 +19,9 @@ const state = {
     risksOpportunitiesStats: [],
     costData: {},
     resourceData: {},
+    projectCostsAndResources: {},
+    progresses: {},
+    statusReportAvailability: {},
 };
 
 const getters = {
@@ -37,6 +40,9 @@ const getters = {
     projectsPerPage: state => state.projects.pageSize,
     costData: state => state.costData,
     resourceData: state => state.resourceData,
+    projectCostsAndResources: state => state.projectCostsAndResources,
+    progresses: state => state.progresses,
+    statusReportAvailability: state => state.statusReportAvailability,
 };
 
 const actions = {
@@ -635,6 +641,47 @@ const actions = {
             )
         ;
     },
+    /**
+     * Gets the project/tasks/cost progresses
+     * @param {function} commit
+     * @param {number} id
+     * @return {object}
+     */
+    getProgress({commit}, id) {
+        return Vue
+            .http
+            .get(Routing.generate('app_api_project_progress', {'id': id}))
+            .then(
+                (response) => {
+                    if (response.status === 200) {
+                        let progresses = response.data;
+                        commit(types.SET_PROJECT_PROGRESSES, {progresses});
+                    }
+                },
+                (response) => {}
+            )
+        ;
+    },
+    /**
+     * Check if the user cand create a status report
+     * @param {function} commit
+     * @param {integer} id
+     */
+    checkReportAvailability({commit}, id) {
+        Vue.http
+            .get(
+                Routing.generate('app_api_project_status_reports_availability', {id: id})
+            ).then((response) => {
+                if (response.body && response.body.error) {
+                    const error = response.body.error;
+                    commit(types.SET_STATUS_REPORT_AVAILABILITY, {error});
+                } else {
+                    const error = null;
+                    commit(types.SET_STATUS_REPORT_AVAILABILITY, {error});
+                }
+            }, (response) => {
+            });
+    },
 };
 
 const mutations = {
@@ -645,6 +692,14 @@ const mutations = {
      */
     [types.SET_PROJECT_FILTERS](state, {filters}) {
         state.projectFilters = !filters.clear ? Object.assign({}, state.projectFilters, filters) : [];
+    },
+    /**
+     * Sets the status report availability
+     * @param {Object} state
+     * @param {string} error
+     */
+    [types.SET_STATUS_REPORT_AVAILABILITY](state, {error}) {
+        state.statusReportAvailability = error;
     },
     /**
      * Sets projects to state
@@ -800,6 +855,15 @@ const mutations = {
     [types.SET_PROJECT_RESOURCES_GRAPH_DATA](state, {resourceData}) {
         state.resourceData = resourceData;
     },
+    /**
+     * Set project/task/cost progresses
+     * @param {Object} state
+     * @param {array} progresses
+     */
+    [types.SET_PROJECT_PROGRESSES](state, {progresses}) {
+        state.progresses = progresses;
+    },
+
 };
 
 export default {

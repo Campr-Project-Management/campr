@@ -48,6 +48,9 @@ class TodoRepository extends BaseRepository
         if (isset($filters['todoCategory'])) {
             $qb->andWhere('td.todoCategory = :todoCategory')->setParameter('todoCategory', $filters['todoCategory']);
         }
+        if (isset($filters['statusReport'])) {
+            $qb->andWhere($qb->expr()->in('td.status', $filters['statusReport']));
+        }
 
         if (isset($filters['pageSize']) && isset($filters['page'])) {
             $qb

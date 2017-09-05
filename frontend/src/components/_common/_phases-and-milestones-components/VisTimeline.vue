@@ -7,17 +7,22 @@ import vis from 'vis';
 import VisTimelineTooltip from './VisTimelineTooltip';
 
 export default {
-    props: ['pmData'],
+    props: ['pmData', 'withPhases'],
     components: {
         vis,
         VisTimelineTooltip,
     },
     data: function() {
+        let groups = [];
+        if (this.withPhases) {
+            groups.push({id: 0, content: 'Phases', value: 1});
+            groups.push({id: 1, content: 'Milestones', value: 2});
+        } else {
+            groups.push({id: 0, content: 'Milestones', value: 1});
+        }
+
         return {
-            groups: [
-                {id: 0, content: 'Phases', value: 1},
-                {id: 1, content: 'Milestones', value: 2},
-            ],
+            groups: groups,
             items: [
                 {
                     id: 0,
@@ -127,17 +132,19 @@ export default {
         visOptions: function() {
             let min = new Date();
             let max = new Date(0);
-            this.pmData.map((item) => {
-                if (min > item.start) {
-                    min = new Date(item.start);
-                }
-                if (max < item.start) {
-                    max = new Date(item.start);
-                }
-                if (max < item.end) {
-                    max = new Date(item.end);
-                }
-            });
+            if (this.pmData) {
+                this.pmData.map((item) => {
+                    if (min > item.start) {
+                        min = new Date(item.start);
+                    }
+                    if (max < item.start) {
+                        max = new Date(item.start);
+                    }
+                    if (max < item.end) {
+                        max = new Date(item.end);
+                    }
+                });
+            }
             min.setFullYear(min.getFullYear() - 2);
             max.setFullYear(max.getFullYear() + 1);
             return {
