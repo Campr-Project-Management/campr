@@ -403,7 +403,11 @@ message:
     edit_forecast_total: Edit forecast total
     edit_actual_total: Edit actual total
     confirm_open_task: Are you sure you wan to open this task ?
-    confirm_close_task: Are you sure you wan to close this task ?  
+    confirm_close_task: Are you sure you wan to close this task ?
+    select_phase_milestone: Select a phase&milestone
+    label_none: None
+    condition: Condition
+    change_accountable: Change Accountable
 
 menu:
     users: Users
@@ -1086,7 +1090,12 @@ label:
     loading: Loading
     no_data: No data
     add: Add +
-
+    accountable: Accountable
+    select_support_users: Select support users
+    select_consulted_users: Select consulted users
+    select_informed_users: Select informed users
+    select_sci_users: Select support, consulted & informed users
+      
 button:
     edit_member: Edit Member
     clear_filters: Clear Filters

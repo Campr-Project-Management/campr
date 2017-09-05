@@ -338,10 +338,39 @@ export default {
                 id: this.task.colorStatus,
                 name: this.task.colorStatusName,
             };
+
+            let supportUsers = [];
+            this.task.supportUsers.map(function(user) {
+                supportUsers.push({
+                    key: user.id,
+                    label: user.firstName + ' ' + user.lastName,
+                });
+            });
+            let consultedUsers = [];
+            this.task.consultedUsers.map(function(user) {
+                consultedUsers.push({
+                    key: user.id,
+                    label: user.firstName + ' ' + user.lastName,
+                });
+            });
+            let informedUsers = [];
+            this.task.informedUsers.map(function(user) {
+                informedUsers.push({
+                    key: user.id,
+                    label: user.firstName + ' ' + user.lastName,
+                });
+            });
+
             this.details = {
                 assignee: this.task.responsibility
                     ? {key: this.task.responsibility, label: this.task.responsibilityFullName}
                     : null,
+                accountable: this.task.accountability
+                    ? {key: this.task.accountability, label: this.task.accountabilityFullName}
+                    : null,
+                supportUsers: supportUsers,
+                consultedUsers: consultedUsers,
+                informedUsers: informedUsers,
                 status: this.task.workPackageStatus
                     ? {key: this.task.workPackageStatus, label: this.translate(this.task.workPackageStatusName)}
                     : null,
@@ -349,6 +378,7 @@ export default {
                     ? {key: this.task.label, label: this.task.labelName}
                     : null,
             };
+
             let children = [];
             this.task.children.map(function(child) {
                 children.push({
@@ -414,7 +444,12 @@ export default {
                 }
             });
             this.internalCosts.items = internal;
+            this.internalCosts.forecast = this.task.internalForecastCost;
+            this.internalCosts.actual = this.task.internalActualCost;
+
             this.externalCosts.items = external;
+            this.externalCosts.forecast = this.task.externalForecastCost;
+            this.externalCosts.actual = this.task.externalActualCost;
 
             this.medias = this.task.medias;
         },
@@ -469,6 +504,10 @@ export default {
             details: {
                 status: null,
                 assignee: null,
+                accountable: null,
+                supportUsers: [],
+                consultedUsers: [],
+                informedUsers: [],
                 label: null,
             },
             statusColor: {},

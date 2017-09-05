@@ -10,7 +10,7 @@
         <div class="attachments">
             <div v-for="media, index in medias" class="attachment">
                 <view-icon />
-                <span class="attachment-name">{{ media.name || media.path }}</span>
+                <span class="attachment-name"><a @click="getMediaFile(media)">{{ media.name || media.path }}</a></span>
                 <i class="fa fa-times" v-on:click="deleteMedia(index);"></i>
             </div>
         </div>
@@ -22,6 +22,7 @@
 
 <script>
 import ViewIcon from '../../../_common/_icons/ViewIcon';
+import Vue from 'vue';
 
 export default {
     props: {
@@ -58,6 +59,22 @@ export default {
             ];
 
             this.$emit('input', newFiles);
+        },
+        getMediaFile: function(media) {
+            if(media.id == undefined) {
+                return;
+            }
+            Vue.http
+            .get(Routing.generate('app_api_media_download', {id: media.id})).then((response) => {
+                if (response.status === 200) {
+                    let blob = new Blob([response.body], {type: 'mime/type'});
+                    let link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = media.fileName;
+                    link.click();
+                }
+            }, (response) => {
+            });
         },
     },
     created() {
@@ -119,6 +136,11 @@ export default {
             &:hover,
             &:active {
                 @include opacity(0.8);
+            }
+        }
+        .attachment-name {
+            a {
+                cursor: pointer;
             }
         }
     }
