@@ -104,7 +104,7 @@
 
                     <!-- /// Add new Role /// -->
                     <div class="form-group">
-                        <input-field v-model="roleName" type="text" :label="translateText('label.new_role')"></input-field>
+                        <input-field v-model="roleName" type="text" :content="roleName" :label="translateText('label.new_role')"></input-field>
                         <error
                             v-if="validationMessages.name && validationMessages.name.length"
                             v-for="message in validationMessages.name"
@@ -298,6 +298,7 @@ export default {
                 sequence: this.projectRoles.length + 1,
             };
             this.createProjectRole(data);
+            this.roleName = null;
         },
         createNewDepartment() {
             let data = {
