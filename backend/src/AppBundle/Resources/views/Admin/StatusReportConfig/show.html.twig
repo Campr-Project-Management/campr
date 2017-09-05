@@ -1,0 +1,67 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'title.status_report_config.list'|trans }}<small>{{ config.projectName|default('-') }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_status_report_config_create') }}">{{ 'add.status_report_config'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_status_report_config_edit', {'id': config.id}) }}">{{ 'button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_status_report_config_list') }}">{{ 'button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body m-t-10 card-padding">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <th>{{ 'table_header_cell.id'|trans }}</th>
+                                <td>{{ config.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.project'|trans }}</th>
+                                <td>{{ config.projectName|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.per_day'|trans }}</th>
+                                <td>{{ config.perDay|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.minutes_interval'|trans }}</th>
+                                <td>{{ config.minutesInterval }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.is_default'|trans }}</th>
+                                <td>
+                                    {% if config.isDefault %}
+                                        <span class="c-green">{{ 'message.yes'|trans }}</span>
+                                    {% else %}
+                                        <span class="c-red">{{ 'message.no'|trans }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

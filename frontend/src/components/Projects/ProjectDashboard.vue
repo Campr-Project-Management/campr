@@ -163,7 +163,14 @@
                         <ul class="widget-list">
                             <li v-for="(item, index) in projectTasksStatus">
                                 <span>{{ translateText(index) }}:</span>
-                                <b>{{ item }}</b>
+                                <div v-if="index !== 'conditions'">
+                                    <b>{{ item }}</b>
+                                </div>
+                                <div v-else>
+                                    <p v-bind:style="{color: item['color_status.not_started'].color}">{{ translateText('color_status.not_started') }}: {{ item['color_status.not_started'].count }}</p>
+                                    <p v-bind:style="{color: item['color_status.in_progress'].color}">{{ translateText('color_status.in_progress') }}: {{ item['color_status.in_progress'].count }}</p>
+                                    <p v-bind:style="{color: item['color_status.finished'].color}">{{ translateText('color_status.finished') }}: {{ item['color_status.finished'].count }}</p>
+                                </div>
                             </li>
                         </ul>
                         <div class="task-status">

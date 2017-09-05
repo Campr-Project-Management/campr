@@ -116,6 +116,9 @@ const actions = {
         if (state.decisionFilters && state.decisionFilters.decisionCategory) {
             paramObject.params.decisionCategory = state.decisionFilters.decisionCategory;
         }
+        if (state.decisionFilters && state.decisionFilters.statusReport) {
+            paramObject.params.statusReport = state.decisionFilters.statusReport;
+        }
 
         Vue.http
             .get(

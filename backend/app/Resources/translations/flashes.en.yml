@@ -8,6 +8,16 @@ success:
         delete:
             from_edit: Decision Status successfully deleted!
             from_data_table: Decision Status with ID
+    status_report:
+        delete:
+            from_edit: Status report successfully deleted!
+            from_data_table: Status report Status with ID
+    status_report_config:
+        create: Status report config successfully created!
+        edit: Status report config successfully edited!
+        delete:
+            from_edit: Status report config successfully deleted!
+            from_data_table: Status report config with ID
     todo_status:
         create: Todo Status successfully created!
         edit: Todo Status successfully edited!
