@@ -260,7 +260,7 @@ const actions = {
             .then((response) => {
                 if (response.status === 200) {
                     let tasks = response.data;
-                    commit(types.SET_ALL_TASKS, tasks);
+                    commit(types.SET_ALL_TASKS, {tasks});
                     // commit(types.TOGGLE_LOADER, false);
                 }
             }, (response) => {

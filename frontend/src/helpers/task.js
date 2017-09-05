@@ -17,6 +17,18 @@ export const createFormData = (data) => {
     if (data.details.assignee) {
         formData.append('responsibility', data.details.assignee.key);
     }
+    if (data.details.accountable) {
+        formData.append('accountability', data.details.accountable.key);
+    }
+    if (data.details.supportUsers) {
+        data.details.supportUsers.map(user => formData.append('supportUsers[]', user.key));
+    }
+    if (data.details.consultedUsers) {
+        data.details.consultedUsers.map(user => formData.append('consultedUsers[]', user.key));
+    }
+    if (data.details.informedUsers) {
+        data.details.informedUsers.map(user => formData.append('informedUsers[]', user.key));
+    }
     if (data.statusColor) {
         formData.append('colorStatus', data.statusColor.id);
     }
