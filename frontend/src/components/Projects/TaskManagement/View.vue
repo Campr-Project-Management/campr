@@ -538,14 +538,14 @@
                     <h3>{{ translateText('message.asignee')}}</h3>
                     <div class="row">
                         <div class="col-md-8">
-                            <div class="user-avatar flex flex-v-center" v-if="editableData.assignee">
-                                <div><img :src="editableData.assignee.avatar" :alt="task.responsibilityFullName"/></div>
+                            <div class="user-avatar flex flex-v-center" v-if="responsibilityObj">
+                                <div><img :src="responsibilityObj.avatar" :alt="responsibilityObj.label"/></div>
                                 <div>
-                                    <b> {{editableData.assignee.label}}</b><br/>
+                                    <b> {{responsibilityObj.label}}</b><br/>
                                     <router-link
-                                        :to="{name: 'project-organization-view-member', params: {userId: editableData.assignee.key} }"
+                                        :to="{name: 'project-organization-view-member', params: {userId: responsibilityObj.key} }"
                                         class="simple-link">
-                                        {{ editableData.assignee.email }}
+                                        {{ responsibilityObj.email }}
                                     </router-link>
                                 </div>
                             </div>
@@ -553,14 +553,72 @@
                         <div class="col-md-4">
                             <select-field
                                 v-bind:title="translateText('message.change_assignee')"
-                                v-bind:options="assigneesForSelect"
+                                v-bind:options="projectUsersForSelect"
                                 v-model="editableData.assignee"
-                                v-bind:currentOption="editableData.assignee"
+                                v-bind:currentOption="responsibilityObj"
                                 v-on:input="updateAssignee" />
                         </div>
                     </div>
                     <!-- /// End Task Assignee /// -->
+                    <hr class="double">
+                    <!-- /// Task Accountable /// -->
+                    <h3>{{ translateText('label.accountable')}}</h3>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="user-avatar flex flex-v-center" v-if="accountabilityObj">
+                                <div><img :src="accountabilityObj.avatar" :alt="accountabilityObj.label"/></div>
+                                <div>
+                                    <b> {{accountabilityObj.label}}</b><br/>
+                                    <router-link
+                                        :to="{name: 'project-organization-view-member', params: {userId: accountabilityObj.key} }"
+                                        class="simple-link">
+                                        {{ accountabilityObj.email }}
+                                    </router-link>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <select-field
+                                v-bind:title="translateText('message.change_accountable')"
+                                v-bind:options="projectUsersForSelect"
+                                v-model="editableData.accountable"
+                                v-bind:currentOption="accountabilityObj"
+                                v-on:input="updateAccountable" />
+                        </div>
+                    </div>
+                    <!-- /// End Task Accountable /// -->
+                    <hr class="double">
+                    <!-- /// Task support & informed & consulted users  /// -->
+                    <h3>{{ translateText('label.select_sci_users')}}</h3>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <multi-select-field
+                                v-bind:title="translateText('label.select_support_users')"
+                                v-bind:options="projectUsersForSupportSelect"
+                                v-bind:selectedOptions="editableData.supportUsers"
+                                v-model="editableData.supportUsers"
+                                v-on:input="updateSupportUsers" />
+                        </div>
+                        <div class="col-md-4">
+                            <multi-select-field
+                                v-bind:title="translateText('label.select_consulted_users')"
+                                v-bind:options="projectUsersForConsultedSelect"
+                                v-bind:selectedOptions="editableData.consultedUsers"
+                                v-model="editableData.consultedUsers"
+                                v-on:input="updateConsultedUsers" />
 
+                        </div>
+                        <div class="col-md-4">
+                            <multi-select-field
+                                v-bind:title="translateText('label.select_informed_users')"
+                                v-bind:options="projectUsersForInformedSelect"
+                                v-bind:selectedOptions="editableData.informedUsers"
+                                v-model="editableData.informedUsers"
+                                v-on:input="updateInformedUsers" />
+
+                        </div>
+                    </div>
+                    <!-- /// End Task support & informed & consulted users /// -->
                     <hr class="double">
 
                     <!-- /// Task Completion /// -->
@@ -651,6 +709,7 @@ import Attachments from './Create/Attachments';
 import Switches from '../../3rdparty/vue-switches';
 import VueScrollbar from 'vue2-scrollbar';
 import SelectField from '../../_common/_form-components/SelectField';
+import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import RangeSlider from '../../_common/_form-components/RangeSlider';
 import Modal from '../../_common/Modal';
 import router from '../../../router';
@@ -667,6 +726,7 @@ export default {
         Switches,
         VueScrollbar,
         SelectField,
+        MultiSelectField,
         RangeSlider,
         Modal,
         router,
@@ -689,7 +749,8 @@ export default {
             taskHistory: 'taskHistory',
             colorStatuses: 'colorStatuses',
             colorStatusesForSelect: 'colorStatusesForSelect',
-            assigneesForSelect: 'projectUsersForSelectOnViewTask',
+            projectUsersForSelect: 'projectUsersForSelectOnViewTask',
+            projectUsersForMultipleSelect: 'projectUsersForSelect',
             workPackageStatusesForSelect: 'workPackageStatusesForSelect',
             labelsForSelect: 'labelsForChoice',
             projectUsers: 'projectUsers',
@@ -728,6 +789,58 @@ export default {
             }
             return totalCapexCost;
         },
+        responsibilityObj: function() {
+            for (let user of this.projectUsersForSelect) {
+                if(user.key == this.task.responsibility) {
+                    return user;
+                }
+            }
+        },
+        accountabilityObj: function() {
+            for (let user of this.projectUsersForSelect) {
+                if(user.key == this.task.accountability) {
+                    return user;
+                }
+            }
+        },
+        projectUsersForSupportSelect: function() {
+            let usersForSelect = JSON.parse(JSON.stringify(this.projectUsersForMultipleSelect));
+            usersForSelect.shift();
+
+            let selectedIds = [];
+            for( let i =0; i< this.editableData.supportUsers.length; i++) {
+                selectedIds.push(this.editableData.supportUsers[i].key);
+            }
+            return usersForSelect.filter((item) => {
+                return selectedIds.indexOf(item.key) === -1;
+            });
+        },
+        projectUsersForConsultedSelect: function() {
+            let usersForSelect = JSON.parse(JSON.stringify(this.projectUsersForMultipleSelect));
+            usersForSelect.shift();
+
+            let selectedIds = [];
+            for( let i =0; i< this.editableData.consultedUsers.length; i++) {
+                selectedIds.push(this.editableData.consultedUsers[i].key);
+            }
+
+            return usersForSelect.filter((item) => {
+                return selectedIds.indexOf(item.key) === -1;
+            });
+        },
+        projectUsersForInformedSelect: function() {
+            let usersForSelect = JSON.parse(JSON.stringify(this.projectUsersForMultipleSelect));
+            usersForSelect.shift();
+
+            let selectedIds = [];
+            for( let i =0; i< this.editableData.informedUsers.length; i++) {
+                selectedIds.push(this.editableData.informedUsers[i].key);
+            }
+
+            return usersForSelect.filter((item) => {
+                return selectedIds.indexOf(item.key) === -1;
+            });
+        },
     },
     watch: {
         task(value) {
@@ -761,15 +874,6 @@ export default {
                 durationInDays: this.task.duration,
             };
 
-            this.editableData.assignee = this.task.responsibility
-                ? {
-                    key: this.task.responsibility,
-                    label: this.task.responsibilityFullName,
-                    avatar: this.task.responsibilityAvatar,
-                    email: this.task.responsibilityEmail,
-                }
-                : null
-            ;
             this.editableData.label = this.task.label
                 ? {key: this.task.label, label: this.task.labelName, color: this.task.labelColor}
                 : null
@@ -809,6 +913,33 @@ export default {
             });
             this.editableData.internalCosts = internal;
             this.editableData.externalCosts = external;
+
+            let supportUsers = [];
+            this.task.supportUsers.map(function(user) {
+                supportUsers.push({
+                    key: user.id,
+                    label: user.firstName + ' ' + user.lastName,
+                });
+            });
+            this.editableData.supportUsers = supportUsers;
+
+            let informedUsers = [];
+            this.task.informedUsers.map(function(user) {
+                informedUsers.push({
+                    key: user.id,
+                    label: user.firstName + ' ' + user.lastName,
+                });
+            });
+            this.editableData.informedUsers = informedUsers;
+
+            let consultedUsers = [];
+            this.task.consultedUsers.map(function(user) {
+                consultedUsers.push({
+                    key: user.id,
+                    label: user.firstName + ' ' + user.lastName,
+                });
+            });
+            this.editableData.consultedUsers = consultedUsers;
         },
     },
     methods: {
@@ -1061,9 +1192,50 @@ export default {
             });
         },
         updateAssignee: function() {
-            console.log(this.editableData.assignee);
             let data = {
                 responsibility: this.editableData.assignee.key,
+            };
+            this.patchTask({
+                data: data,
+                taskId: this.$route.params.taskId,
+            });
+        },
+        updateAccountable: function() {
+            let data = {
+                accountability: this.editableData.accountable.key,
+            };
+            this.patchTask({
+                data: data,
+                taskId: this.$route.params.taskId,
+            });
+        },
+        updateSupportUsers: function() {
+            let data = {
+                supportUsers: this.editableData.supportUsers.map(function(item) {
+                    return item.key;
+                }),
+            };
+            this.patchTask({
+                data: data,
+                taskId: this.$route.params.taskId,
+            });
+        },
+        updateConsultedUsers: function() {
+            let data = {
+                consultedUsers: this.editableData.consultedUsers.map(function(item) {
+                    return item.key;
+                }),
+            };
+            this.patchTask({
+                data: data,
+                taskId: this.$route.params.taskId,
+            });
+        },
+        updateInformedUsers: function() {
+            let data = {
+                informedUsers: this.editableData.informedUsers.map(function(item) {
+                    return item.key;
+                }),
             };
             this.patchTask({
                 data: data,
@@ -1085,6 +1257,7 @@ export default {
             }
             return '-';
         },
+
     },
     data: function() {
         return {
@@ -1105,6 +1278,10 @@ export default {
             editableData: {
                 workPackageStatus: false,
                 assignee: null,
+                accountable: null,
+                supportUsers: [],
+                consultedUsers: [],
+                informedUsers: [],
                 colorStatus: false,
                 label: null,
                 medias: [],

@@ -122,6 +122,7 @@
                                     v-bind:title="translateText('label.resource')"
                                     v-bind:options="resourcesForSelect"
                                     v-bind:currentOption="editInternalCostObj.resource"
+                                    v-on:input="populateRateField"
                                     v-model="editInternalCostObj.resource" />
                              </div>
                             <div class="col-md-2">
@@ -475,6 +476,9 @@ export default {
             });
             this.showOpenTaskModal = false;
             this.$emit('input', this.showOpenTaskModal);
+        },
+        populateRateField: function(value) {
+            this.editInternalCostObj.daily_rate = value.rate;
         },
     },
     created() {
