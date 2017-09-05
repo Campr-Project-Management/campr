@@ -138,12 +138,12 @@ export default {
         toggleManualSchedule: function() {
             this.visibleManualSchedule = !this.visibleManualSchedule;
             this.visibleAutomaticSchedule = !this.visibleManualSchedule;
-            this.automatic = this.visibleAutomaticSchedule;
+            this.schedule.automatic = this.visibleAutomaticSchedule;
         },
         toggleAutomaticSchedule: function() {
             this.visibleAutomaticSchedule = !this.visibleAutomaticSchedule;
             this.visibleManualSchedule = !this.visibleAutomaticSchedule;
-            this.automatic = this.visibleAutomaticSchedule;
+            this.schedule.automatic = this.visibleAutomaticSchedule;
         },
         togglePredecessor: function() {
             this.visiblePredecessor = !this.visiblePredecessor;
