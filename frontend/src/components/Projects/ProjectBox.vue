@@ -27,7 +27,7 @@
                     <p>
                         <span class="title">{{ translateText('message.status') }}:</span>
                         <span v-bind:class="{ finished: project.statusName === 'Finished' }" class="status-label btn-rounded btn-auto">
-                            {{ project.statusName }}
+                            {{ translateText(project.statusName) }}
                         </span>
                     </p>
                 </div>
