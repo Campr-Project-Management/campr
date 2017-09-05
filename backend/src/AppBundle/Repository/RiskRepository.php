@@ -30,6 +30,17 @@ class RiskRepository extends BaseRepository
         ;
     }
 
+    public function findTopByProject(Project $project)
+    {
+        return $this
+            ->getQueryBuilderByProject($project)
+            ->orderBy('r.priority', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function findFiltered(Project $project, $filters = [])
     {
         $qb = $this->getQueryBuilderByProject($project);

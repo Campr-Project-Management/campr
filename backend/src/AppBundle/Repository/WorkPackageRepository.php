@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\ColorStatus;
 use AppBundle\Entity\Cost;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\User;
@@ -468,6 +469,25 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
+     * Average progress value.
+     *
+     * @param Project $project
+     * @param array   $filters
+     *
+     * @return int
+     */
+    public function averageProgressByProjectAndFilters(Project $project, $filters = [])
+    {
+        return (float) $this
+            ->getQueryBuilderByProjectAndFilters($project, $filters, 'AVG(wp.progress)')
+            ->setFirstResult(0)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
      * Return the query builder for all project workpackages filtered.
      *
      * @param Project $project
@@ -531,11 +551,8 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
-        if (isset($filters['milestone'])) {
-            $qb
-                ->andWhere('wp.isKeyMilestone = :milestone')
-                ->setParameter('milestone', $filters['milestone'])
-            ;
+        if (isset($filters['isKeyMilestone'])) {
+            $qb->andWhere($qb->expr()->eq('wp.isKeyMilestone', $filters['isKeyMilestone']));
         }
 
         if (isset($filters['startDate'])) {
@@ -622,7 +639,7 @@ class WorkPackageRepository extends BaseRepository
      *
      * @return int
      */
-    public function countTotalByTypeProjectAndStatus($type, Project $project = null, WorkPackageStatus $status = null)
+    public function countTotalByTypeProjectAndStatus($type, Project $project = null, WorkPackageStatus $status = null, ColorStatus $colorStatus = null)
     {
         $qb = $this
             ->createQueryBuilder('wp')
@@ -642,6 +659,13 @@ class WorkPackageRepository extends BaseRepository
             $qb
                 ->andWhere('wp.workPackageStatus = :status')
                 ->setParameter('status', $status)
+            ;
+        }
+
+        if ($colorStatus) {
+            $qb
+                ->andWhere('wp.colorStatus = :colorStatus')
+                ->setParameter('colorStatus', $colorStatus)
             ;
         }
 
@@ -668,6 +692,21 @@ class WorkPackageRepository extends BaseRepository
         }
 
         return $qb->getQuery()->getArrayResult();
+    }
+
+    public function getTotalExternalInternalCosts(Project $project)
+    {
+        $qb = $this->getQueryBuilderByProjectAndFilters($project, ['type' => WorkPackage::TYPE_TASK]);
+        $selectInternal = 'SUM(wp.internalActualCost) as actual, SUM(wp.internalForecastCost) as forecast';
+        $selectExternal = 'SUM(wp.externalActualCost) as actual, SUM(wp.externalForecastCost) as forecast';
+
+        $internalResult = $qb->select($selectInternal)->getQuery()->getSingleResult();
+        $externalResult = $qb->select($selectExternal)->getQuery()->getSingleResult();
+
+        return [
+            'forecast' => (int) $internalResult['forecast'] + (int) $externalResult['forecast'],
+            'actual' => (int) $internalResult['actual'] + (int) $externalResult ['actual'],
+        ];
     }
 
     /**

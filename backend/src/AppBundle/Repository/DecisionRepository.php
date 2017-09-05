@@ -48,6 +48,10 @@ class DecisionRepository extends BaseRepository
         if (isset($filters['status'])) {
             $qb->andWhere('d.status = :status')->setParameter('status', $filters['status']);
         }
+        if (isset($filters['createdAt'])) {
+            $qb->andWhere('d.createdAt >= :createdAt')->setParameter('createdAt', $filters['createdAt']);
+        }
+
         if (isset($filters['pageSize']) && isset($filters['page'])) {
             $qb
                 ->setFirstResult($filters['pageSize'] * ($filters['page'] - 1))

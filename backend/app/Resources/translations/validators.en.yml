@@ -1,4 +1,6 @@
 not_blank:
+    per_day: Per day field should not be blank
+    minutes_interval: Minutes interval field should not be blank
     priority: The priority field should not be blank
     probability: The probability field should not be blank
     name: The name field should not be blank
@@ -126,6 +128,8 @@ length:
     number: Your project number cannot be longer than 128 characters
 
 greater_than_or_equal:
+    per_day: Per day field should contain numbers greater than or equal to 0
+    minutes_interval: Minutes interval field should contain numbers greater than or equal to 0
     milestone: The milestone field should contain numbers greater than or equal to 0
     work_percent: The work percent field should contain numbers greater than or equal to 0
     type: The type field should contain numbers greater than or equal to 0

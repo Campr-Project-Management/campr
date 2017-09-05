@@ -20,6 +20,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Project
 {
+    const STATUS_RED = 0;
+    const STATUS_YELLOW = 1;
+    const STATUS_GREEN = 2;
+
     /**
      * @var int
      *
@@ -457,6 +461,20 @@ class Project
     private $colorStatus;
 
     /**
+     * @var ArrayCollection|StatusReport[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\StatusReport", mappedBy="project")
+     */
+    private $statusReports;
+
+    /**
+     * @var ArrayCollection|StatusReportConfig[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\StatusReportConfig", mappedBy="project")
+     */
+    private $statusReportConfigs;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -493,6 +511,8 @@ class Project
         $this->riskStrategies = new ArrayCollection();
         $this->riskStatuses = new ArrayCollection();
         $this->projectDepartments = new ArrayCollection();
+        $this->statusReports = new ArrayCollection();
+        $this->statusReportConfigs = new ArrayCollection();
     }
 
     public function __toString()
@@ -1425,6 +1445,8 @@ class Project
     public function removeLabel(Label $label)
     {
         $this->labels->removeElement($label);
+
+        return $this;
     }
 
     /**
@@ -2295,6 +2317,78 @@ class Project
     }
 
     /**
+     * Add StatusReport.
+     *
+     * @param StatusReport $statusReport
+     *
+     * @return Project
+     */
+    public function addStatusReport(StatusReport $statusReport)
+    {
+        $this->statusReports[] = $statusReport;
+
+        return $this;
+    }
+
+    /**
+     * Remove StatusReport.
+     *
+     * @param StatusReport $statusReport
+     */
+    public function removeStatusReport(StatusReport $statusReport)
+    {
+        $this->statusReports->removeElement($statusReport);
+
+        return $this;
+    }
+
+    /**
+     * Get StatusReports.
+     *
+     * @return ArrayCollection|StatusReport[]
+     */
+    public function getStatusReports()
+    {
+        return $this->statusReports;
+    }
+
+    /**
+     * Add StatusReportConfig.
+     *
+     * @param StatusReportConfig $statusReportConfig
+     *
+     * @return Project
+     */
+    public function addStatusReportConfig(StatusReportConfig $statusReportConfig)
+    {
+        $this->statusReportConfigs[] = $statusReportConfig;
+
+        return $this;
+    }
+
+    /**
+     * Remove StatusReportConfig.
+     *
+     * @param StatusReportConfig $statusReportConfig
+     */
+    public function removeStatusReportConfig(StatusReportConfig $statusReportConfig)
+    {
+        $this->statusReportConfigs->removeElement($statusReportConfig);
+
+        return $this;
+    }
+
+    /**
+     * Get StatusReportConfigs.
+     *
+     * @return ArrayCollection|StatusReportConfig[]
+     */
+    public function getStatusReportConfigs()
+    {
+        return $this->statusReportConfigs;
+    }
+
+    /**
      * Get riskStatuses.
      *
      * @return ArrayCollection|Status[]
@@ -2441,5 +2535,31 @@ class Project
             ? $this->colorStatus->getColor()
             : null
         ;
+    }
+
+    /**
+     * Returns the project overall status.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("overallStatus")
+     *
+     * @return string
+     */
+    public function getOverallStatus()
+    {
+        $status = self::STATUS_GREEN;
+        foreach ($this->workPackages as $wp) {
+            $colorStatus = $wp->getColorStatus();
+            if ($colorStatus) {
+                if ($colorStatus->getName() === ColorStatus::STATUS_IN_PROGRESS) {
+                    $status = self::STATUS_YELLOW;
+                } elseif ($colorStatus->getName() === ColorStatus::STATUS_NOT_STARTED) {
+                    $status = self::STATUS_RED;
+                    break;
+                }
+            }
+        }
+
+        return $status;
     }
 }
