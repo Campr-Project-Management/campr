@@ -16,7 +16,7 @@
                 <!-- /// Project Opportunities /// -->
                 <div class="ro-grid-wrapper clearfix">
                     <!-- /// Project Opportunities Grid /// -->
-                    <risk-grid :gridData="opportunityGridData" :isRisk="false"></risk-grid>
+                    <risk-grid :gridData="opportunityGridData" :isRisk="false" :clickable="true"></risk-grid>
                     <!-- /// End Project Opportunities Grid /// -->
 
                     <!-- /// Project Opportunities List /// -->
@@ -44,7 +44,7 @@
                 <!-- /// Project Risks /// -->
                 <div class="ro-grid-wrapper clearfix">
                     <!-- /// Project Risks Grid /// -->
-                    <risk-grid :gridData="riskGridData" :isRisk="true"></risk-grid>
+                    <risk-grid :gridData="riskGridData" :isRisk="true" :clickable="true"></risk-grid>
                     <!-- /// End Project Risks Grid /// -->
 
                     <!-- /// Project Risks List /// -->
