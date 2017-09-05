@@ -133,6 +133,16 @@ class WorkPackage
     private $responsibility;
 
     /**
+     * @var User|null
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="accountability_id")
+     */
+    private $accountability;
+
+    /**
      * @var \DateTime|null
      *
      * @Serializer\Type("DateTime<'Y-m-d'>")
@@ -343,6 +353,54 @@ class WorkPackage
     private $comments;
 
     /**
+     * @var ArrayCollection|User[]
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinTable(
+     *     name="work_package_support_user",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="work_package_id")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="user_id")
+     *     }
+     *)
+     */
+    private $supportUsers;
+
+    /**
+     * @var ArrayCollection|User[]
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinTable(
+     *     name="work_package_consulted_user",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="work_package_id")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="user_id")
+     *     }
+     *)
+     */
+    private $consultedUsers;
+
+    /**
+     * @var ArrayCollection|User[]
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinTable(
+     *     name="work_package_informed_user",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="work_package_id")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="user_id")
+     *     }
+     *)
+     */
+    private $informedUsers;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
@@ -401,6 +459,9 @@ class WorkPackage
         $this->medias = new ArrayCollection();
         $this->costs = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->supportUsers = new ArrayCollection();
+        $this->consultedUsers = new ArrayCollection();
+        $this->informedUsers = new ArrayCollection();
         $this->puid = microtime(true) * 1000000;
     }
 
@@ -806,6 +867,10 @@ class WorkPackage
     public function setMilestone(WorkPackage $workPackage = null)
     {
         $this->milestone = $workPackage;
+
+        if ($workPackage !== null) {
+            $this->phase = $workPackage->getPhase();
+        }
         foreach ($this->getChildren() as $child) {
             $child->setMilestone($workPackage);
         }
@@ -950,6 +1015,68 @@ class WorkPackage
     public function getResponsibilityEmail()
     {
         return $this->responsibility ? $this->responsibility->getEmail() : null;
+    }
+    /**
+     * Set accountability.
+     *
+     * @param User accountability
+     *
+     * @return WorkPackage
+     */
+    public function setAccountability(User $accountability = null)
+    {
+        $this->accountability = $accountability;
+
+        return $this;
+    }
+
+    /**
+     * Get accountability.
+     *
+     * @return User
+     */
+    public function getAccountability()
+    {
+        return $this->accountability;
+    }
+
+    /**
+     * Returns accountability id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("accountability")
+     *
+     * @return string
+     */
+    public function getAccountabilityId()
+    {
+        return $this->accountability ? $this->accountability->getId() : null;
+    }
+
+    /**
+     * Returns accountability full name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("accountabilityFullName")
+     *
+     * @return string
+     */
+    public function getAccountabilityFullName()
+    {
+        return $this->accountability ? $this->accountability->getFullName() : null;
+    }
+
+    /**
+     * Returns accountability email address.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("accountabilityEmail")
+     *
+     * @return string
+     */
+    public function getAccountabilityEmail()
+    {
+        return $this->accountability ? $this->accountability->getEmail() : null;
     }
 
     /**
@@ -1605,7 +1732,7 @@ class WorkPackage
      */
     public function removeComment(Comment $comment)
     {
-        $this->comments->removeComment($comment);
+        $this->comments->remove($comment);
 
         return $this;
     }
@@ -1744,5 +1871,119 @@ class WorkPackage
     public function getNoSubtasks()
     {
         return (int) $this->children->count();
+    }
+
+    /**
+     * Add support user.
+     *
+     * @param User $user
+     *
+     * @return WorkPackage
+     */
+    public function addSupportUser(User $user)
+    {
+        $this->supportUsers[] = $user;
+
+        return $this;
+    }
+
+    /**
+     * Remove suport user.
+     *
+     * @param User $user
+     *
+     * @return WorkPackage
+     */
+    public function removeSupportUser(User $user)
+    {
+        $this->supportUsers->remove($user);
+
+        return $this;
+    }
+
+    /**
+     * Get support users.
+     *
+     * @return ArrayCollection
+     */
+    public function getSupportUsers()
+    {
+        return $this->supportUsers;
+    }
+
+    /**
+     * Add consulted user.
+     *
+     * @param User $user
+     *
+     * @return WorkPackage
+     */
+    public function addConsultedUser(User $user)
+    {
+        $this->consultedUsers[] = $user;
+
+        return $this;
+    }
+
+    /**
+     * Remove consulted user.
+     *
+     * @param User $user
+     *
+     * @return WorkPackage
+     */
+    public function removeConsultedUser(User $user)
+    {
+        $this->consultedUsers->remove($user);
+
+        return $this;
+    }
+
+    /**
+     * Get consulted users.
+     *
+     * @return ArrayCollection
+     */
+    public function getConsultedUsers()
+    {
+        return $this->consultedUsers;
+    }
+
+    /**
+     * Add informed user.
+     *
+     * @param User $user
+     *
+     * @return WorkPackage
+     */
+    public function addInformedUser(User $user)
+    {
+        $this->informedUsers[] = $user;
+
+        return $this;
+    }
+
+    /**
+     * Remove informed user.
+     *
+     * @param User $user
+     *
+     * @return WorkPackage
+     */
+    public function removeInformedUser(User $user)
+    {
+        $this->informedUsers->remove($user);
+
+        return $this;
+    }
+
+    /**
+     * Get informed users.
+     *
+     * @return ArrayCollection
+     */
+    public function getInformedUsers()
+    {
+        return $this->informedUsers;
     }
 }

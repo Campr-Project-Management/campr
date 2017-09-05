@@ -77,7 +77,7 @@
                     <input-field
                         type="text"
                         v-bind:label="label.forecast_total"
-                        v-bind:content="internalCosts.forecast"
+                        v-bind:content="forecastContent"
                         v-model="internalCosts.forecast" />
                 </div>
                 <div class="col-md-4">
@@ -129,6 +129,7 @@ export default {
         setCostProperty(property, index, value) {
             this.internalCosts.items[index][property] = value;
             if (property === 'resource') {
+                this.internalCosts.items[index]['rate'] = value.rate;
                 this.internalCosts.items[index].selectedResource = value;
             }
             this.$emit('input', this.internalCosts);
@@ -163,6 +164,12 @@ export default {
                 item.total = this.itemTotal(item);
                 return item;
             });
+        },
+        forecastContent: function() {
+            if (this.$route.params.taskId) {
+                return this.internalCosts.forecast;
+            }
+            return this.baseTotal;
         },
     },
     watch: {
