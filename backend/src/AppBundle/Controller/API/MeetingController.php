@@ -11,7 +11,7 @@ use AppBundle\Entity\Note;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\User;
-use AppBundle\Form\Meeting\CreateType;
+use AppBundle\Form\Meeting\ApiCreateType;
 use AppBundle\Security\MeetingVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -62,7 +62,7 @@ class MeetingController extends ApiController
     {
         $this->denyAccessUnlessGranted(MeetingVoter::EDIT, $meeting);
         $project = $meeting->getProject();
-        $form = $this->createForm(CreateType::class, $meeting, ['csrf_protection' => false, 'method' => $request->getMethod()]);
+        $form = $this->createForm(ApiCreateType::class, $meeting, ['csrf_protection' => false, 'method' => $request->getMethod()]);
         $this->processForm(
             $request,
             $form,

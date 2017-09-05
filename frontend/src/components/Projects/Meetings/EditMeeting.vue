@@ -113,7 +113,7 @@
                         </li>
                     </ul>
                     <div class="form-group">
-                        <input-field type="text" v-bind:label="translateText('message.new_objective')" v-model="objectiveDescription" v-bind:content="objectiveDescription" />
+                        <input-field type="text" v-bind:label="translateText('message.new_objective')" v-model="objectiveDescription" :content="objectiveDescription" />
                     </div>
                     <div class="flex flex-direction-reverse">
                         <a @click="addObjective()" class="btn-rounded btn-auto">{{ translateText('message.add_new_objective') }}</a>
@@ -231,14 +231,12 @@
                                     <b>{{ decision.responsibilityFullName }}</b>
                                 </div>
                             </div>
-                            <div class="entry-body">
-                                {{ decision.description }}
-                            </div>  
+                            <div class="entry-body" v-html="decision.description"></div>
                         </div>
                         <!-- /// End Decision /// -->
                     </div>
 
-                    <input-field type="text" v-bind:label="translateText('placeholder.decision_title')" v-model="decision.title" v-bind:content="decision.title" />
+                    <input-field type="text" v-bind:label="translateText('placeholder.decision_title')" v-model="decision.title" :content="decision.title" />
                     <div class="form-group">
                         <div class="vueditor-holder">
                             <div class="vueditor-header">{{ translateText('placeholder.decision_description') }}</div>
@@ -296,9 +294,7 @@
                                     <b>{{ todo.responsibilityFullName }}</b>
                                 </div>
                             </div>
-                            <div class="entry-body">
-                                {{ todo.description }}
-                            </div>  
+                            <div class="entry-body" v-html="todo.description"></div>
                         </div>
                         <!-- /// End ToDo /// -->
                     </div>
@@ -369,9 +365,7 @@
                                     <b>{{ note.responsibilityFullName }}</b>
                                 </div>
                             </div>
-                            <div class="entry-body">
-                                {{ note.description }}
-                            </div>  
+                            <div class="entry-body" v-html="note.description"></div>
                         </div>
                         <!-- /// End Info /// -->
                     </div>
@@ -545,6 +539,7 @@ export default {
                 id: this.$route.params.meetingId,
                 description: this.objectiveDescription,
             });
+            this.objectiveDescription = null;
         },
         initEditObjective: function(objective) {
             this.showEditObjectiveModal = true;
@@ -565,6 +560,8 @@ export default {
                 start: this.agenda.startTime.HH + ':' + this.agenda.startTime.mm,
                 end: this.agenda.endTime.HH + ':' + this.agenda.endTime.mm,
             });
+            this.agenda.responsible = [];
+            this.agenda.topic = null;
         },
         initEditAgenda: function(agenda) {
             this.showEditAgendaModal = true;
@@ -595,6 +592,9 @@ export default {
                 dueDate: moment(this.decision.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 status: this.decision.status ? this.decision.status.key : null,
             });
+            this.decision.responsibility = [];
+            this.decision.title = null;
+            this.initVueEditors();
         },
         initEditDecision: function(decision) {
             this.showEditDecisionModal = true;
@@ -603,7 +603,7 @@ export default {
                 title: decision.title,
                 responsibility: [decision.responsibility],
                 responsibilityFullName: decision.responsibilityFullName,
-                dueDate: decision.date ? new Date(decision.date) : new Date(),
+                dueDate: decision.dueDate ? new Date(decision.dueDate) : new Date(),
                 status: {key: decision.status, label: decision.statusName},
                 meeting: this.$route.params.meetingId,
             };
@@ -624,6 +624,9 @@ export default {
                 dueDate: moment(this.todo.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 status: this.todo.status ? this.todo.status.key : null,
             });
+            this.todo.responsibility = [];
+            this.todo.title = null;
+            this.initVueEditors();
         },
         initEditTodo: function(todo) {
             this.showEditTodoModal = true;
@@ -632,7 +635,7 @@ export default {
                 title: todo.title,
                 responsibility: [todo.responsibility],
                 responsibilityFullName: todo.responsibilityFullName,
-                dueDate: todo.date ? new Date(todo.date) : new Date(),
+                dueDate: todo.dueDate ? new Date(todo.dueDate) : new Date(),
                 status: {key: todo.status, label: todo.statusName},
                 meeting: this.$route.params.meetingId,
             };
@@ -653,6 +656,9 @@ export default {
                 dueDate: moment(this.note.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 status: this.note.status ? this.note.status.key : null,
             });
+            this.note.title = null;
+            this.note.responsibility = [];
+            this.initVueEditors();
         },
         initEditNote: function(note) {
             this.showEditNoteModal = true;
@@ -661,7 +667,7 @@ export default {
                 title: note.title,
                 responsibility: [note.responsibility],
                 responsibilityFullName: note.responsibilityFullName,
-                dueDate: note.date ? new Date(note.date) : new Date(),
+                dueDate: note.dueDate ? new Date(note.dueDate) : new Date(),
                 status: {key: note.status, label: note.statusName},
                 meeting: this.$route.params.meetingId,
             };
