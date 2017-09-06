@@ -1309,7 +1309,7 @@ class ProjectController extends ApiController
                 'class' => $class,
             ],
             'cost_progress' => [
-                'value' => ($actualForecastCosts['actual'] * 100) / $baseCost,
+                'value' => $baseCost > 0 ? ($actualForecastCosts['actual'] * 100) / $baseCost : 0,
                 'class' => $costClass,
             ],
         ]);
