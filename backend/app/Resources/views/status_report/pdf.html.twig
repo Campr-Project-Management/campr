@@ -47,11 +47,11 @@
     </tr>
     <tr>
         <th>{{ 'label.open'|trans }}</th>
-        <td>{{ statusReport.information.projectTasksStatus['label.open']  }}</td>
+        <td>{{ statusReport.information.projectTasksStatus['label.open']|default('-') }}</td>
     </tr>
     <tr>
         <th>{{ 'label.closed'|trans }}</th>
-        <td>{{ statusReport.information.projectTasksStatus['label.closed']  }}</td>
+        <td>{{ statusReport.information.projectTasksStatus['label.closed']|default('-')  }}</td>
     </tr>
     <tr>
         <th>{{ 'label.top_risk'|trans }}</th>
