@@ -9,7 +9,8 @@
                             <i class="fa fa-angle-left"></i>
                             {{ translateText('message.back_to_phases_and_milestones') }}
                         </router-link>
-                        <h1>{{ translateText('message.create_new_milestone')}}</h1>
+                        <h1 v-if="!isEdit">{{ translateText('message.create_new_milestone') }}</h1>
+                        <h1 v-else>{{ translateText('message.edit_milestone') }} - {{ name }}</h1>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
@@ -26,7 +27,7 @@
                     <!-- /// Milestone Description /// -->
                     <div class="vueditor-holder">
                         <div class="vueditor-header">{{ translateText('placeholder.milestone_description') }}</div>
-                        <Vueditor ref="content" />
+                        <Vueditor id="contentEditor" ref="content" />
                     </div>
                     <!-- /// End Milestone Description /// -->
 
@@ -94,6 +95,12 @@
                                     v-model="details.phase"
                                     v-bind:currentOption="details.phase" />
                             </div>
+                            <div class="col-md-6">
+                                <div class="checkbox-input clearfix">
+                                    <input v-model="isKeyMilestone" id="is_key_milestone" type="checkbox" name="" value="">
+                                    <label class="no-margin-bottom" for="is_key_milestone">{{ translateText('label.is_key_milestone') }}</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- /// End Milestone Planning /// -->
@@ -122,6 +129,8 @@ import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
 import MemberSearch from '../../_common/MemberSearch';
+import {createEditor} from 'vueditor';
+import vueditorConfig from '../../_common/vueditorConfig';
 
 export default {
     components: {
@@ -145,12 +154,13 @@ export default {
                 project: this.$route.params.id,
                 name: this.name,
                 type: 1,
-                content: this.$refs.content.getContent(),
+                content: this.contentEditor.getContent(),
                 scheduledFinishAt: moment(this.schedule.baseDueDate).format('DD-MM-YYYY'),
                 forecastFinishAt: moment(this.schedule.forecastDueDate).format('DD-MM-YYYY'),
                 responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
                 workPackageStatus: this.details.status ? this.details.status.key: null,
                 phase: this.details.phase ? this.details.phase.key : null,
+                isKeyMilestone: this.isKeyMilestone,
             };
             this.createProjectMilestone(data);
         },
@@ -160,12 +170,13 @@ export default {
                 project: this.$route.params.id,
                 name: this.name,
                 type: 1,
-                content: this.$refs.content.getContent(),
+                content: this.contentEditor.getContent(),
                 scheduledFinishAt: moment(this.schedule.baseDueDate).format('DD-MM-YYYY'),
                 forecastFinishAt: moment(this.schedule.forecastDueDate).format('DD-MM-YYYY'),
                 responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
                 workPackageStatus: this.details.status ? this.details.status.key: null,
                 phase: this.details.phase ? this.details.phase.key : null,
+                isKeyMilestone: this.isKeyMilestone,
             };
             this.editProjectMilestone(data);
         },
@@ -181,7 +192,6 @@ export default {
     watch: {
         milestone(value) {
             this.name = this.milestone.name;
-            this.$refs.content.setContent(this.milestone.content);
             this.schedule.baseDueDate = new Date(this.milestone.scheduledFinishAt);
             this.schedule.forecastDueDate = new Date(this.milestone.forecastFinishAt);
             this.details.status = this.milestone.workPackageStatus
@@ -193,6 +203,8 @@ export default {
                 ? {key: this.milestone.phase, label: this.translateText(this.milestone.phaseName)}
                 : null
             ;
+            this.isKeyMilestone = this.milestone.isKeyMilestone;
+            this.contentEditor.setContent(this.milestone.content);
         },
     },
     created() {
@@ -203,10 +215,16 @@ export default {
             this.getProjectMilestone(this.$route.params.milestoneId);
         }
     },
+    mounted() {
+        setTimeout(() => {
+            this.contentEditor = createEditor(document.getElementById('contentEditor'), {...vueditorConfig, id: 'contentEditor'});
+        }, 100);
+    },
     data() {
         return {
             name: '',
             content: '',
+            contentEditor: null,
             schedule: {
                 baseDueDate: new Date(),
                 forecastDueDate: new Date(),
@@ -216,6 +234,7 @@ export default {
                 responsible: [],
                 phase: null,
             },
+            isKeyMilestone: false,
             isEdit: this.$route.params.milestoneId,
         };
     },
