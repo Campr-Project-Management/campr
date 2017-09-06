@@ -1,4 +1,5 @@
 message:
+    edit_milestone: Edit milestone
     per_day_reports_exceeded: You exceeded the number of reports per day. Please check with your manager.
     minutes_under_interval: You cannot generate another report due to time interval restriction. Please check with your manager.
     email_report: Are you sure you want to email thie status report?
