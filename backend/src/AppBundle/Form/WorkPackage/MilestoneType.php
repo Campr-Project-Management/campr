@@ -3,6 +3,7 @@
 namespace AppBundle\Form\WorkPackage;
 
 use AppBundle\Entity\WorkPackageStatus;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -44,6 +45,7 @@ class MilestoneType extends BaseType
             ->add('phase', EntityType::class, [
                 'class' => WorkPackage::class,
             ])
+            ->add('isKeyMilestone', CheckboxType::class)
         ;
     }
 
