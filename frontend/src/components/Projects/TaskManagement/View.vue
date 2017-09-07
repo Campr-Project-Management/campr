@@ -659,7 +659,7 @@
 
                     <!-- /// Task Attachmets /// -->
                     
-                    <attachments v-on:input="setMedias" v-bind:editMedias="editableData.medias" />
+                    <attachments v-on:input="updateMedias" v-bind:editMedias="editableData.medias" v-model="editableData.medias" />
                     <!-- /// End Task Attachments /// -->
                     <hr class="double">
 
@@ -715,6 +715,7 @@ import Modal from '../../_common/Modal';
 import router from '../../../router';
 import Condition from './Create/Condition';
 import moment from 'moment';
+import {createFormData} from '../../../helpers/task';
 
 export default {
     components: {
@@ -1023,25 +1024,63 @@ export default {
             let total = item.rate * item.quantity * duration;
             return !isNaN(total) ? total : 0;
         },
-        setMedias(value) {
-            let formData = new FormData();
+        updateMedias() {
+            let data = {
+                project: this.$route.params.id,
+                name: this.task.name,
+                type: 2,
+                description: this.task.content,
+                schedule: this.editableData.schedule,
+                details: {
+                    assignee: this.task.responsibility
+                        ? {key: this.task.responsibility, label: this.task.responsibilityFullName}
+                        : null,
+                    accountable: this.task.accountability
+                        ? {key: this.task.accountability, label: this.task.accountabilityFullName}
+                        : null,
+                    supportUsers: this.task.supportUsers,
+                    consultedUsers: this.task.consultedUsers,
+                    informedUsers: this.task.informedUsers,
+                    status: this.task.workPackageStatus
+                        ? {key: this.task.workPackageStatus, label: ''}
+                        : null,
+                    label: this.task.label
+                        ? {key: this.task.label, label: this.task.labelName}
+                        : null,
+                },
+                planning: {
+                    milestone: this.task.milestone
+                        ? {key: this.task.milestone.toString(), label: this.task.milestoneName}
+                        : null,
+                    phase: this.task.phase
+                        ? {key: this.task.phase.toString(), label: this.task.phaseName}
+                        : null,
+                },
+                internalCosts: {items: [], actual: 0, forecast: 0},
+                externalCosts: {items: [], actual: 0, forecast: 0},
+                subtasks: [],
+                medias: this.editableData.medias,
+                statusColor: {id: this.task.colorStatus},
+            };
 
-            if (value.length) {
-                for (let i = 0; i < value.length; i++) {
-                    formData.append(
-                        'medias[' + i + '][file]',
-                        value[i] instanceof window.File
-                            ? value[i]
-                            : ''
-                    );
-                }
-            }
-
-            this.patchTask({
-                data: formData,
-                taskId: this.$route.params.taskId,
-            });
-            this.editableData.medias = value;
+            this
+                .editTask({
+                    data: createFormData(data),
+                    taskId: this.$route.params.taskId,
+                })
+                .then(
+                    () => {
+                        if (this.task.id) {
+                            this.showSaved = true;
+                        } else {
+                            this.showFailed = true;
+                        }
+                    },
+                    () => {
+                        this.showFailed = true;
+                    }
+                )
+            ;
         },
         totalCostsForType: function(costType) {
             let totalCostForType = 0;
