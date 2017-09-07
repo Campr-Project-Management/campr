@@ -16,6 +16,7 @@ use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Note;
 use AppBundle\Entity\Opportunity;
 use AppBundle\Entity\Project;
+use AppBundle\Entity\ProjectCloseDown;
 use AppBundle\Entity\ProjectDeliverable;
 use AppBundle\Entity\ProjectDepartment;
 use AppBundle\Entity\ProjectLimitation;
@@ -75,6 +76,7 @@ use AppBundle\Form\Meeting\ApiCreateType as MeetingApiCreateType;
 use AppBundle\Form\Decision\CreateType as DecisionType;
 use AppBundle\Form\ProjectDepartment\CreateType as ProjectDepartmentType;
 use AppBundle\Form\StatusReport\CreateType as StatusReportCreateType;
+use AppBundle\Form\ProjectCloseDown\CreateType as ProjectCloseDownCreateType;
 
 /**
  * @Route("/api/projects")
@@ -2254,5 +2256,52 @@ class ProjectController extends ApiController
             ],
             Response::HTTP_BAD_REQUEST
         );
+    }
+
+    /**
+     * Get project close down.
+     *
+     * @Route("/{id}/close-downs", name="app_api_project_close_downs", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function getProjectCloseDownAction(Project $project)
+    {
+        return $this->createApiResponse($project->getProjectCloseDowns());
+    }
+
+    /**
+     * Create a new Project Close Down.
+     *
+     * @Route("/{id}/close-downs", name="app_api_project_close_down_create", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function createProjectCloseDownAction(Request $request, Project $project)
+    {
+        $form = $this->createForm(ProjectCloseDownCreateType::class, new ProjectCloseDown(), ['csrf_protection' => false]);
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $projectCloseDown = $form->getData();
+            $projectCloseDown->setProject($project);
+            $this->persistAndFlush($projectCloseDown);
+
+            return $this->createApiResponse($projectCloseDown, Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 }

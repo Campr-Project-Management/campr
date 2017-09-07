@@ -1,5 +1,9 @@
 message:
     costs_chart: Costs Chart
+    reschedule_remaining_action: Reschedule remaining action
+    delete_remaining_action: Delete remaining action
+    edit_evaluation: Edit evaluation
+    edit_lesson: Edit lesson
     edit_milestone: Edit milestone
     per_day_reports_exceeded: You exceeded the number of reports per day. Please check with your manager.
     minutes_under_interval: You cannot generate another report due to time interval restriction. Please check with your manager.
@@ -165,7 +169,7 @@ message:
     total_potential_cost: Total Potential Cost
     total_potential_delay: Total Potential Delay
     total_number_of_measures: Total Number of Measures
-    total_cost_of_measures: Total Cost of Measures 
+    total_cost_of_measures: Total Cost of Measures
     potential_cost: Potential Cost
     potential_time_delay: Potential Time Delay
     strategy: Strategy
@@ -307,7 +311,7 @@ message:
     project_duration: Project Duration
     project_budget: Project Budget
     project_involved: Project Involved
-    team_members_involved: Team Members Involved 
+    team_members_involved: Team Members Involved
     departments_involved: Departments Involved
     strategical_meaning: Strategical Meaning
     risks: Risks
@@ -352,14 +356,14 @@ message:
     task_schedule: Task Schedule
     task_details: Task Details
     back_to_task_management: Back to task management
-    subtasks_summary: %completed_tasks% of %total_tasks% 
+    subtasks_summary: %completed_tasks% of %total_tasks%
     planning: Planning
     subtasks: Subtasks
     project_tasks: Project Tasks
     edit_labels: Edit Labels
     edit_task: Edit Task
     close_task: Close Task
-    delete_task: Delete Task 
+    delete_task: Delete Task
     import_project: Import project
     all_programmes: All Programmes
     all_projects_filter: All Projects
@@ -395,12 +399,12 @@ message:
     this_task_part_of: This task is part of
     task_completion: Task completion
     task_condition: Task condition
-    add_internal_costs: Add internal costs  
+    add_internal_costs: Add internal costs
     add_external_costs: Add external costs
     delete_external_cost: Delete this external cost ?
-    delete_internal_cost: Delete this internal cost ?  
+    delete_internal_cost: Delete this internal cost ?
     edit_external_costs: Edit external cost
-    edit_internal_costs: Edit internal cost  
+    edit_internal_costs: Edit internal cost
     reschedule_todo: Reschedule todo
     edit_forecast_total: Edit forecast total
     edit_actual_total: Edit actual total
@@ -434,6 +438,22 @@ title:
     risk_and_opportunities: Risk & Opportunities
     status_report:
         list: Status Report
+    project_close_down:
+        list: Project Close Down
+        create: Create new project close down
+        edit: Edit project close down
+    evaluation_objective:
+        list: Evaluation Objective
+        create: Create new Evaluation Objective
+        edit: Edit Evaluation Objective
+    lesson:
+        list: Lesson
+        create: Create new lesson
+        edit: Edit lesson
+    close_down_action:
+        list: Close Down Action
+        create: Create new close down action
+        edit: Edit close down action
     status_report_config:
         list: Status Report Config
         create: Create new status report config
@@ -719,7 +739,7 @@ title:
     todo_category:
         list: Todo Category
         create: Create Todo Category
-        edit: Edit Todo Category    
+        edit: Edit Todo Category
     note_status:
         list: Note Status
         create: Create Note Status
@@ -736,9 +756,13 @@ title:
         list: Info category
         create: Create new info category
         edit: Edit info category
-    project_add_error: There where some errors while saving the project 
+    project_add_error: There where some errors while saving the project
 
 subtitle:
+    project_close_down: List of project close downs
+    evaluation_objective: List of evaluation objectives
+    lesson: List of lessons
+    close_down_action: List of close down actions
     status_report_config: List of status report configs
     status_report: List of status reports
     decision_status: List of decision statuses
@@ -777,7 +801,7 @@ subtitle:
     risk_category: List of risk categories
     risk_strategy: List of risk strategies
     todo: List of todos
-    todo_category: List of todo categories   
+    todo_category: List of todo categories
     unit: List of units
     wppcwct: List of Work Package Project Work Cost Type
     impact: List of impacts
@@ -818,6 +842,13 @@ label:
     view_status_report: View Status Report
     email_status_report: Email Status Report
     download_status_report: Download Status Report
+    project_close_down: Project Close Down
+    overall_impression: Overall Impression
+    performance_schedule: Performance Schedule
+    organization_context: Organization Context
+    project_management: Project Management
+    project_sponsors: Project Sponsors
+    project_managers: Project Managers
     is_default: Is default
     minutes_interval: Minutes Interval
     per_day: Per Day
@@ -844,7 +875,7 @@ label:
     time_unit: Time Unit
     delay_unit: Delay Unit
     opportunity_status: Opportunity Status
-    opportunity_strategy: Opportunity Strategy    
+    opportunity_strategy: Opportunity Strategy
     currency: Currency
     risk: Risk
     opportunity: Opportunity
@@ -1102,12 +1133,13 @@ label:
     select_consulted_users: Select consulted users
     select_informed_users: Select informed users
     select_sci_users: Select support, consulted & informed users
-      
+
 button:
     edit_member: Edit Member
     clear_filters: Clear Filters
     delete_remaining_action: Delete Remaining Action
     new_remaining_action: New Remaining Action
+    view_remaining_action: View Remaining Action
     edit_remaining_action: Edit Remaining Action
     add_new_remaining_action: Add New Remaining Action
     freeze_contract: Freeze Contract
@@ -1123,9 +1155,9 @@ button:
     view_info: View Info
     create_info: Create Info
     delete_todo: Delete Todo
-    reschedule_todo: Reschedule todo  
+    reschedule_todo: Reschedule todo
     new_todo: New Todo
-    edit_todo: Edit Todo 
+    edit_todo: Edit Todo
     create_todo: Create Todo
     reschedule: Reschedule
     delete_meeting: Delete Meeting
@@ -1190,7 +1222,7 @@ button:
     add_new_subtask: Add new subtask
     create_task: Create Task
     edit_task: Edit Task
-    start_task: Start Task  
+    start_task: Start Task
     show_results: Show Results
     import: Import
     add_internal_cost: Add internal cost
@@ -1200,18 +1232,22 @@ button:
     comment: Comment
     edit_schedule: Edit Schedule
     save_status: Save Status
-    save_todo: Save Todo  
+    save_todo: Save Todo
 
 checkbox:
     checked: Yes
     unchecked: No
 
 add:
+    project_close_down: Add new project close down
+    evaluation_objective: Add new evaluation objective
+    lesson: Add new lesson
+    close_down_action: Add new close down action
     status_report_config: Add new status report config
     decision_status: Add new decision status
     decision_category: Add new decision category
     todo_status: Add new todo status
-    todo_category: Add new todo category  
+    todo_category: Add new todo category
     note_status: Add new note status
     meeting_category: Add new meeting category
     meeting_objective: Add new meeting objective
@@ -1277,7 +1313,7 @@ add:
 
 placeholder:
     title: Title
-    comment: Comment   
+    comment: Comment
     info_topic: Info Topic
     todo_topic: Todo Topic
     measure_description: Measure description
@@ -1734,7 +1770,7 @@ modules:
     phases_milestones:
         title: Phases & Milestones
         description: Phases & Milestones Description
-    costs: 
+    costs:
         title: Costs
         description: Costs Description
     resources:
@@ -1752,7 +1788,7 @@ modules:
     status_report:
         title: Status Report
         description: Status Report Description
-    meetings: 
+    meetings:
         title: Meetings
         description: Meetings Description
     todos:
@@ -1760,7 +1796,7 @@ modules:
         description: Todos Description
     notes:
         title: Notes
-        description: Notes Description    
+        description: Notes Description
     close_down_project:
         title: Close Down Project
         description: Close Down Project Description
@@ -1775,4 +1811,4 @@ modules:
         description: Gantt chart Description
     decisions:
         title: Decisions
-        description: Decisions Description 
+        description: Decisions Description

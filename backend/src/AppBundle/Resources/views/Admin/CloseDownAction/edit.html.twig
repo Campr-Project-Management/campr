@@ -1,0 +1,99 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'title.close_down_action.edit'|trans }}</h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_close_down_action_create') }}">{{ 'add.close_down_action'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_close_down_action_list') }}">{{ 'button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body card-padding">
+                    {{ form_start(
+                        form,
+                        {
+                            'method': 'POST',
+                            'action': path('app_admin_close_down_action_edit', {'id': closeDownAction.id}),
+                            'attr': {
+                                'id': 'edit-form',
+                                'class': 'form-horizontal',
+                                'novalidate': 'novalidate',
+                            },
+                        }
+                    ) }}
+                    {% if form.vars.valid == false %}
+                        <div class="alert alert-danger">
+                            {% for field in form.children %}
+
+                                {{ form_errors(field) }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {{ form_widget(
+                        form.title,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'label.title'|trans,
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.projectCloseDown,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'label.project_close_down'|trans,
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.responsibility,
+                        {
+                            'attr': {'class': 'selectpicker'},
+                            'label': 'label.responsibility'|trans,
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.dueDate,
+                        {
+                            'attr': {
+                            'class': 'form-control date-picker',
+                            'addon_front': 'calendar',
+                        },
+                            'label': 'label.due_date'|trans
+                        }
+                    ) }}
+
+                    {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
+                        with {
+                            'delete_path': 'app_admin_close_down_action_delete',
+                            'id': closeDownAction.id,
+                        }
+                    %}
+
+                    <span class="hidden">{{ form_row(form._token) }}</span>
+                    {{ form_end(form, {'render_rest': false}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

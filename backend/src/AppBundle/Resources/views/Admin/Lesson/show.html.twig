@@ -1,0 +1,57 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'title.lesson.list'|trans }}<small>{{ lesson.title }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_lesson_create') }}">{{ 'add.lesson'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_lesson_edit', {'id': lesson.id}) }}">{{ 'button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_lesson_list') }}">{{ 'button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <th>{{ 'table_header_cell.id'|trans }}</th>
+                                <td>{{ lesson.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.title'|trans }}</th>
+                                <td>{{ lesson.title }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.project'|trans }}</th>
+                                <td>{{ lesson.projectCloseDown.id }} - {{ lesson.projectName }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.sequence'|trans }}</th>
+                                <td>{{ lesson.sequence }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
