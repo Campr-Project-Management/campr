@@ -2,14 +2,20 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\User;
+use AppBundle\Repository\Traits\ProjectStatusSortingTrait;
 use AppBundle\Repository\Traits\CategorySortingTrait;
-use Doctrine\ORM\QueryBuilder;
+use AppBundle\Repository\Traits\ProjectPortfolioSortingTrait;
 
 class ProjectRepository extends BaseRepository
 {
-    use CategorySortingTrait;
+    use CategorySortingTrait, ProjectStatusSortingTrait, ProjectPortfolioSortingTrait {
+        CategorySortingTrait::setOrder as setCategoryOrder;
+        ProjectStatusSortingTrait::setOrder as setProjectStatusOrder;
+        ProjectPortfolioSortingTrait::setOrder as setProjectPortfolioOrder;
+    }
 
     /**
      * @param string $name
@@ -81,5 +87,16 @@ class ProjectRepository extends BaseRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
+    }
+
+    /**
+     * @param array        $orderBy
+     * @param QueryBuilder $qb
+     */
+    public function setOrder(array &$orderBy, QueryBuilder $qb)
+    {
+        $this->setProjectStatusOrder($orderBy, $qb);
+        $this->setCategoryOrder($orderBy, $qb);
+        $this->setProjectPortfolioOrder($orderBy, $qb);
     }
 }
