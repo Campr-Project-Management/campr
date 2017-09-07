@@ -1,0 +1,57 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'title.evaluation_objective.list'|trans }}<small>{{ evaluationObjective.title }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_evaluation_objective_create') }}">{{ 'add.evaluation_objective'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_evaluation_objective_edit', {'id': evaluationObjective.id}) }}">{{ 'button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_evaluation_objective_list') }}">{{ 'button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <th>{{ 'table_header_cell.id'|trans }}</th>
+                                <td>{{ evaluationObjective.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.title'|trans }}</th>
+                                <td>{{ evaluationObjective.title }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.project'|trans }}</th>
+                                <td>{{ evaluationObjective.projectCloseDown.id }} - {{ evaluationObjective.projectName }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.sequence'|trans }}</th>
+                                <td>{{ evaluationObjective.sequence }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

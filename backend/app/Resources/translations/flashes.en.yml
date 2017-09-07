@@ -2,6 +2,30 @@ success:
     delete_common: successfully deleted!
     account:
         edit: Your account was succesfully edited!
+    project_close_down:
+        create: Project Close Down successfully created!
+        edit: Project Close Down successfully edited!
+        delete:
+            from_edit: Project Close Down successfully deleted!
+            from_data_table: Project Close Down config with ID
+    evaluation_objective:
+        create: Evaluation Objective successfully created!
+        edit: Evaluation Objective successfully edited!
+        delete:
+            from_edit: Evaluation Objective successfully deleted!
+            from_data_table: Evaluation Objective config with ID
+    lesson:
+        create: Lesson successfully created!
+        edit: Lesson successfully edited!
+        delete:
+            from_edit: Lesson successfully deleted!
+            from_data_table: Lesson config with ID
+    close_down_action:
+        create: Close Down Action successfully created!
+        edit: Close Down Action successfully edited!
+        delete:
+            from_edit: Close Down Action successfully deleted!
+            from_data_table: Close Down Action config with ID
     decision_status:
         create: Decision Status successfully created!
         edit: Decision Status successfully edited!

@@ -366,12 +366,12 @@ const routes = [
                 name: 'project-close-down-report',
             },
             {
-                path: 'close-down-report/view-remaining-action',
+                path: 'close-down-report/view-remaining-action/:actionId',
                 component: RemainingActionView,
                 name: 'project-close-down-report-view-remaining-action',
             },
             {
-                path: 'close-down-report/edit-remaining-action',
+                path: 'close-down-report/edit-remaining-action/:actionId',
                 component: RemainingActionEdit,
                 name: 'project-close-down-report-edit-remaining-action',
             },
