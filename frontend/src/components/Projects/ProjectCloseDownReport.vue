@@ -1,12 +1,20 @@
 <template>
     <div class="project-contract">
         <div class="page-section">
+            <modal v-if="showDeleteModal" @close="showDeleteModal = false">
+                <p class="modal-title">{{ translateText('message.delete_remaining_action') }}</p>
+                <div class="flex flex-space-between">
+                    <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="removeAction" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                </div>
+            </modal>
+
             <div class="row">
                 <!-- /// Header /// -->
                 <div class="col-md-12">
                     <div class="header">
                         <div class="text-center">                            
-                            <h1>Project Name</h1>
+                            <h1>{{ projectCloseDown.projectName }}</h1>
                         </div>
                     </div>
 
@@ -27,9 +35,9 @@
             <div class="row">
                 <!-- /// Overall Impression /// -->
                 <div class="col-md-6 col-md-offset-3">
-                    <div class="vueditor-holder">
+                    <div class="vueditor-holder" :class="{disabledpicker: projectCloseDown.frozen }">
                         <div class="vueditor-header">{{ translateText('message.overall_impression') }}</div>
-                        <Vueditor :ref="'overall-impression'"/>
+                        <Vueditor id="overallImpression" ref="overallImpression" />
                     </div>
                 </div>
                 <!-- End Overall Impression -->
@@ -40,16 +48,20 @@
                 <div class="col-md-6">
                     <h3>{{ translateText('message.evaluation_objectives') }}</h3>
 
-                    <div v-dragula="colOne" v-if="'add if condition'">
-                        <drag-box></drag-box>
+                    <div v-dragula="colOne" drake="evaluations" v-if="projectCloseDown.evaluationObjectives && projectCloseDown.evaluationObjectives.length > 0">
+                        <drag-box :disabled="projectCloseDown.frozen" v-for="(item, index) in projectCloseDown.evaluationObjectives" v-bind:item="item" v-bind:index="index" type="evaluation"></drag-box>
                     </div>
                     <p class="notice" v-else>{{ translateText('label.no_data') }}</p>
                     <div class="hr small"></div>
-                    <div class="form-group">
-                        <input-field type="text" v-bind:label="translateText('message.new_evaluation_objective')"></input-field>
+                    <div class="form-group" v-if="!projectCloseDown.frozen">
+                        <input-field v-model="evaluationObjective" :content="evaluationObjective" type="text" v-bind:label="translateText('message.new_evaluation_objective')"></input-field>
+                        <error
+                            v-if="validationMessages.evaluationForm && validationMessages.title && validationMessages.title.length"
+                            v-for="message in validationMessages.title"
+                            :message="message" />
                     </div>
-                    <div class="flex flex-direction-reverse">
-                        <a class="btn-rounded btn-auto">{{ translateText('message.add_new_evaluation_objective') }} +</a>
+                    <div class="flex flex-direction-reverse" v-if="!projectCloseDown.frozen">
+                        <a @click="createObjective" class="btn-rounded btn-auto">{{ translateText('message.add_new_evaluation_objective') }} +</a>
                     </div>
                 </div>
                 <!-- /// End Evaluation Objectives /// -->
@@ -58,16 +70,20 @@
                 <div class="col-md-6">
                     <h3>{{ translateText('message.lessons_learned') }}</h3>
 
-                    <div v-dragula="colOne" v-if="'add if condition'">
-                        <drag-box></drag-box>
+                    <div v-dragula="colOne" drake="lessons" v-if="projectCloseDown.lessons && projectCloseDown.lessons.length > 0">
+                        <drag-box :disabled="projectCloseDown.frozen" v-for="(item, index) in projectCloseDown.lessons" v-bind:item="item" v-bind:index="index" type="lesson"></drag-box>
                     </div>
                     <p class="notice" v-else>{{ translateText('label.no_data') }}</p>
                     <div class="hr small"></div>
-                    <div class="form-group">
-                        <input-field type="text" v-bind:label="translateText('message.new_lesson')"></input-field>
+                    <div class="form-group" v-if="!projectCloseDown.frozen">
+                        <input-field v-model="lesson" :content="lesson" type="text" v-bind:label="translateText('message.new_lesson')"></input-field>
+                        <error
+                            v-if="validationMessages.lessonForm && validationMessages.title && validationMessages.title.length"
+                            v-for="message in validationMessages.title"
+                            :message="message" />
                     </div>
-                    <div class="flex flex-direction-reverse">
-                        <a href="#" class="btn-rounded btn-auto">{{ translateText('message.add_new_lesson') }} +</a>
+                    <div class="flex flex-direction-reverse" v-if="!projectCloseDown.frozen">
+                        <a @click="createCloseDownLesson" class="btn-rounded btn-auto">{{ translateText('message.add_new_lesson') }} +</a>
                     </div>
                 </div>
                 <!-- /// End Lessons Learned /// -->
@@ -77,8 +93,8 @@
                 <!-- /// Reflection: Performance / Schedule /// -->
                 <div class="col-md-4">
                     <h4>{{ translateText('message.reflection') }}: {{ translateText('message.performance_schedule') }}</h4>
-                    <div class="vueditor-holder">
-                        <Vueditor :ref="'reflexion-performance-shcedule'"/>
+                    <div class="vueditor-holder" :class="{disabledpicker: projectCloseDown.frozen }">
+                        <Vueditor id="performanceSchedule" ref="performanceSchedule" />
                     </div>
                 </div>
                 <!-- /// End Reflection: Performance / Schedule /// -->
@@ -86,8 +102,8 @@
                 <!-- /// Reflection: Organization / Context /// -->
                 <div class="col-md-4">
                     <h4>{{ translateText('message.reflection') }}: {{ translateText('message.organization_context') }}</h4>
-                    <div class="vueditor-holder">
-                        <Vueditor :ref="'reflexion-organization-context'"/>
+                    <div class="vueditor-holder" :class="{disabledpicker: projectCloseDown.frozen }">
+                        <Vueditor id="organizationContext" ref="organizationContext" />
                     </div>
                 </div>
                 <!-- /// End Reflection: Organization / Context /// -->
@@ -95,8 +111,8 @@
                 <!-- /// Reflection: Project Management /// -->
                 <div class="col-md-4">
                     <h4>{{ translateText('message.reflection') }}: {{ translateText('message.project_management') }}</h4>
-                    <div class="vueditor-holder">
-                        <Vueditor :ref="'reflexion-project-management`'"/>
+                    <div class="vueditor-holder" :class="{disabledpicker: projectCloseDown.frozen }">
+                        <Vueditor id="projectManagement" ref="projectManagement" />
                     </div>
                 </div>
                 <!-- /// End Reflection: Project Management /// -->
@@ -106,8 +122,8 @@
                 <!-- /// Remaining Actions Table /// -->
                 <div class="col-md-6">
                     <h3>{{ translateText('message.remaining_action') }}</h3>
-                    <div class="table-wrapper">
-                        <table class="table table-striped table-responsive">
+                    <div class="table-wrapper" v-if="closeDownActions">
+                        <table class="table table-striped table-responsive" v-if="closeDownActions.items && closeDownActions.items.length > 0">
                             <thead>
                                 <tr>
                                     <th class="date-cell">{{ translateText('table_header_cell.due_date') }}</th>
@@ -118,139 +134,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>15.08.2018</td>
-                                    <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
+                                <tr v-for="action in closeDownActions.items">
+                                    <td>{{ action.dueDate|moment('DD.MM.YYYY') }}</td>
+                                    <td>{{ action.title }}</td>
                                     <td>
-                                        <p class="action-description">Nulla quis quam id arcu tincidunt hendrerit. Aenean volutpat tincidunt posuere. Nulla arcu dolor, dapibus ut augue a, tincidunt semper felis. Curabitur in mauris risus. Vivamus sit amet quam dui. Fusce nec nunc pharetra, consectetur est a, eleifend justo.</p>
+                                        <p class="action-description" v-html="action.description"></p>
                                     </td>
                                     <td class="text-center">
-                                        <div class="avatar" v-tooltip.top-center="'David Gilmore'" style="background-image:url(http://dev.campr.biz/uploads/avatars/49.jpg"></div>
+                                        <div class="avatar" v-tooltip.top-center="action.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + action.responsibilityAvatar + ')' }"></div>
                                     </td>
                                     <td>
-                                        <div class="text-right">
-                                            <router-link class="btn-icon" :to="{name: 'project-close-down-report-view-remaining-action'}" v-tooltip.top-center="translateText('message.view_remaining_action')">
+                                        <div class="text-right" v-if="!projectCloseDown.frozen">
+                                            <router-link class="btn-icon" :to="{name: 'project-close-down-report-view-remaining-action', params:{actionId: action.id}}" v-tooltip.top-center="translateText('message.view_remaining_action')">
                                                 <view-icon fill="second-fill"></view-icon>
                                             </router-link>
-                                            <router-link class="btn-icon" :to="{name: 'project-close-down-report-edit-remaining-action'}" v-tooltip.top-center="translateText('message.edit_remaining_action')">
+                                            <router-link class="btn-icon" :to="{name: 'project-close-down-report-edit-remaining-action', params:{actionId: action.id}}" v-tooltip.top-center="translateText('message.edit_remaining_action')">
                                                 <edit-icon fill="second-fill"></edit-icon>
                                             </router-link>
-                                            <button data-target="#action-1-delete" data-toggle="modal" type="button" class="btn-icon" v-tooltip.top-center="translateText('message.delete_remaining_action')">
-                                                <delete-icon fill="danger-fill"></delete-icon>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>15.08.2018</td>
-                                    <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
-                                    <td>
-                                        <p class="action-description">Nulla quis quam id arcu tincidunt hendrerit. Aenean volutpat tincidunt posuere. Nulla arcu dolor, dapibus ut augue a, tincidunt semper felis. Curabitur in mauris risus. Vivamus sit amet quam dui. Fusce nec nunc pharetra, consectetur est a, eleifend justo.</p>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="avatar" v-tooltip.top-center="'David Gilmore'" style="background-image:url(http://dev.campr.biz/uploads/avatars/49.jpg"></div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right">
-                                            <router-link class="btn-icon" :to="{name: 'project-close-down-report-view-remaining-action'}" v-tooltip.top-center="translateText('message.view_remaining_action')">
-                                                <view-icon fill="second-fill"></view-icon>
-                                            </router-link>
-                                            <router-link class="btn-icon" :to="{name: 'project-close-down-report-edit-remaining-action'}" v-tooltip.top-center="translateText('message.edit_remaining_action')">
-                                                <edit-icon fill="second-fill"></edit-icon>
-                                            </router-link>
-                                            <button data-target="#action-1-delete" data-toggle="modal" type="button" class="btn-icon" v-tooltip.top-center="translateText('message.delete_remaining_action')">
-                                                <delete-icon fill="danger-fill"></delete-icon>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>15.08.2018</td>
-                                    <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
-                                    <td>
-                                        <p class="action-description">Nulla quis quam id arcu tincidunt hendrerit. Aenean volutpat tincidunt posuere. Nulla arcu dolor, dapibus ut augue a, tincidunt semper felis. Curabitur in mauris risus. Vivamus sit amet quam dui. Fusce nec nunc pharetra, consectetur est a, eleifend justo.</p>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="avatar" v-tooltip.top-center="'David Gilmore'" style="background-image:url(http://dev.campr.biz/uploads/avatars/49.jpg"></div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right">
-                                            <router-link class="btn-icon" :to="{name: 'project-close-down-report-view-remaining-action'}" v-tooltip.top-center="translateText('message.view_remaining_action')">
-                                                <view-icon fill="second-fill"></view-icon>
-                                            </router-link>
-                                            <router-link class="btn-icon" :to="{name: 'project-close-down-report-edit-remaining-action'}" v-tooltip.top-center="translateText('message.edit_remaining_action')">
-                                                <edit-icon fill="second-fill"></edit-icon>
-                                            </router-link>
-                                            <button data-target="#action-1-delete" data-toggle="modal" type="button" class="btn-icon" v-tooltip.top-center="translateText('message.delete_remaining_action')">
-                                                <delete-icon fill="danger-fill"></delete-icon>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>15.08.2018</td>
-                                    <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
-                                    <td>
-                                        <p class="action-description">Nulla quis quam id arcu tincidunt hendrerit. Aenean volutpat tincidunt posuere. Nulla arcu dolor, dapibus ut augue a, tincidunt semper felis. Curabitur in mauris risus. Vivamus sit amet quam dui. Fusce nec nunc pharetra, consectetur est a, eleifend justo.</p>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="avatar" v-tooltip.top-center="'David Gilmore'" style="background-image:url(http://dev.campr.biz/uploads/avatars/49.jpg"></div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right">
-                                            <router-link class="btn-icon" :to="{name: 'project-close-down-report-view-remaining-action'}" v-tooltip.top-center="translateText('message.view_remaining_action')">
-                                                <view-icon fill="second-fill"></view-icon>
-                                            </router-link>
-                                            <router-link class="btn-icon" :to="{name: 'project-close-down-report-edit-remaining-action'}" v-tooltip.top-center="translateText('message.edit_remaining_action')">
-                                                <edit-icon fill="second-fill"></edit-icon>
-                                            </router-link>
-                                            <button data-target="#action-1-delete" data-toggle="modal" type="button" class="btn-icon" v-tooltip.top-center="translateText('message.delete_remaining_action')">
-                                                <delete-icon fill="danger-fill"></delete-icon>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>15.08.2018</td>
-                                    <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
-                                    <td>
-                                        <p class="action-description">Nulla quis quam id arcu tincidunt hendrerit. Aenean volutpat tincidunt posuere. Nulla arcu dolor, dapibus ut augue a, tincidunt semper felis. Curabitur in mauris risus. Vivamus sit amet quam dui. Fusce nec nunc pharetra, consectetur est a, eleifend justo.</p>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="avatar" v-tooltip.top-center="'David Gilmore'" style="background-image:url(http://dev.campr.biz/uploads/avatars/49.jpg"></div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right">
-                                            <router-link class="btn-icon" :to="{name: 'project-close-down-report-view-remaining-action'}" v-tooltip.top-center="translateText('message.view_remaining_action')">
-                                                <view-icon fill="second-fill"></view-icon>
-                                            </router-link>
-                                            <router-link class="btn-icon" :to="{name: 'project-close-down-report-edit-remaining-action'}" v-tooltip.top-center="translateText('message.edit_remaining_action')">
-                                                <edit-icon fill="second-fill"></edit-icon>
-                                            </router-link>
-                                            <button data-target="#action-1-delete" data-toggle="modal" type="button" class="btn-icon" v-tooltip.top-center="translateText('message.delete_remaining_action')">
-                                                <delete-icon fill="danger-fill"></delete-icon>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>15.08.2018</td>
-                                    <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
-                                    <td>
-                                        <p class="action-description">Nulla quis quam id arcu tincidunt hendrerit. Aenean volutpat tincidunt posuere. Nulla arcu dolor, dapibus ut augue a, tincidunt semper felis. Curabitur in mauris risus. Vivamus sit amet quam dui. Fusce nec nunc pharetra, consectetur est a, eleifend justo.</p>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="avatar" v-tooltip.top-center="'David Gilmore'" style="background-image:url(http://dev.campr.biz/uploads/avatars/49.jpg"></div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right">
-                                            <router-link class="btn-icon" :to="{name: 'project-close-down-report-view-remaining-action'}" v-tooltip.top-center="translateText('message.view_remaining_action')">
-                                                <view-icon fill="second-fill"></view-icon>
-                                            </router-link>
-                                            <router-link class="btn-icon" :to="{name: 'project-close-down-report-edit-remaining-action'}" v-tooltip.top-center="translateText('message.edit_remaining_action')">
-                                                <edit-icon fill="second-fill"></edit-icon>
-                                            </router-link>
-                                            <button data-target="#action-1-delete" data-toggle="modal" type="button" class="btn-icon" v-tooltip.top-center="translateText('message.delete_remaining_action')">
+                                            <button @click="initDeleteModal(action)" data-toggle="modal" type="button" class="btn-icon" v-tooltip.top-center="translateText('message.delete_remaining_action')">
                                                 <delete-icon fill="danger-fill"></delete-icon>
                                             </button>
                                         </div>
@@ -258,23 +159,38 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div v-else>{{ translateText('label.no_data') }}</div>
+                    </div>
+                    <div v-else>{{ translateText('label.no_data') }}</div>
+                    <div class="flex flex-direction-reverse flex-v-center" v-if="pages > 0">
+                        <div class="pagination">
+                            <span v-if="pages > 1" v-for="page in pages" v-bind:class="{'active': page == activePage}" @click="changePage(page)" >{{ page }}</span>
+                        </div>
+                        <div>
+                            <span class="pagination-info">{{ translateText('message.displaying') }} {{ closeDownActions.items.length }} {{ translateText('message.results_out_of') }} {{ closeDownActions.totalItems }}</span>
+                        </div>
                     </div>
                 </div>
+
                 <!-- /// End Remaining Actions Table /// -->
 
                 <!-- /// Remaining Actions Form /// -->
-                <div class="col-md-6" id="addAction">
+                <div class="col-md-6" id="addAction" v-if="!projectCloseDown.frozen">
                     <h3>{{ translateText('message.add_new_action') }}</h3>
                     <div class="form">
                         <!-- /// Title and Description /// -->
                         <div class="form-group">
-                            <input-field type="text" v-bind:label="translateText('placeholder.title')" v-model="title" v-bind:content="title" />
+                            <input-field type="text" v-model="actionTitle" :content="actionTitle" v-bind:label="translateText('placeholder.title')" />
+                            <error
+                                v-if="validationMessages.actionForm && validationMessages.title && validationMessages.title.length"
+                                v-for="message in validationMessages.title"
+                                :message="message" />
                         </div>
 
                         <div class="form-group">
                             <div class="vueditor-holder">
                                 <div class="vueditor-header">{{ translateText('placeholder.description') }}</div>
-                                <Vueditor ref="description" />
+                                <Vueditor id="actionDescription" ref="actionDescription" />
                             </div>
                         </div>
                         <!-- /// End Title and Description /// -->
@@ -283,12 +199,12 @@
                         <div class="row">
                             <div class="form-group">
                                 <div class="col-md-6">
-                                    <member-search v-model="responsible" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                                    <member-search v-model="actionResponsible" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-holder right">
                                         <label class="active">{{ translateText('label.due_date') }}</label>
-                                        <datepicker v-model="schedule.dueDate" format="dd-MM-yyyy" />
+                                        <datepicker v-model="actionDueDate" format="dd-MM-yyyy" />
                                         <calendar-icon fill="middle-fill"/>
                                     </div>
                                 </div>
@@ -298,7 +214,7 @@
 
                         <!-- /// Actions /// -->
                         <div class="flex flex-direction-reverse">
-                            <a href="#" class="btn-rounded btn-auto">{{ translateText('button.add_new_remaining_action') }} +</a>
+                            <a @click="addCloseDownAction" class="btn-rounded btn-auto">{{ translateText('button.add_new_remaining_action') }} +</a>
                         </div>
                         <!-- /// End Actions /// -->
                     </div>
@@ -315,10 +231,10 @@
                         <div class="col-md-6">
                             <div class="project-acceptance">
                                 <div class="job-title">
-                                    Project Sponsor
+                                    {{ translateText('label.project_sponsors') }}
                                 </div>
-                                <div class="member-name">
-                                    Ian McKellen
+                                <div class="member-name" v-for="sponsor in sponsors">
+                                    {{ sponsor.userFullName }}
                                 </div>
                                 <div class="signature-holder"></div>
                             </div>
@@ -326,10 +242,10 @@
                         <div class="col-md-6">
                             <div class="project-acceptance">
                                 <div class="job-title">
-                                    Project Manager
+                                    {{ translateText('label.project_managers') }}
                                 </div>
-                                <div class="member-name">
-                                    David Gilmour
+                                <div class="member-name" v-for="manager in managers">
+                                    {{ manager.userFullName }}
                                 </div>
                                 <div class="signature-holder"></div>
                             </div>
@@ -344,7 +260,7 @@
                 <div class="col-md-12">
                     <div class="hr"></div>
                     <div class="flex flex-space-between buttons">
-                        <a href="#" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
+                        <a v-if="!projectCloseDown.frozen" @click="saveCloseDown" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
                         <a class="btn-rounded flex flex-center download-pdf" :href="downloadPdf">
                             {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill"></downloadbutton-icon>
                         </a>
@@ -353,10 +269,14 @@
                 <!-- /// End Footer Buttons /// -->
             </div>
         </div>
+        <alert-modal v-if="showSavedComponent" @close="showSavedComponent = false" body="message.saved" />
+        <alert-modal v-if="showFailedComponent" @close="showFailedComponent = false" body="message.saved" />
     </div>
 </template>
 
 <script>
+import Vue from 'vue';
+import {mapGetters, mapActions} from 'vuex';
 import DragBox from './TaskManagement/DragBox.vue';
 import InputField from '../_common/_form-components/InputField.vue';
 import CalendarIcon from '../_common/_icons/CalendarIcon.vue';
@@ -367,6 +287,11 @@ import ViewIcon from '../_common/_icons/ViewIcon';
 import EditIcon from '../_common/_icons/EditIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
 import MemberSearch from '../_common/MemberSearch';
+import {createEditor} from 'vueditor';
+import vueditorConfig from '../_common/vueditorConfig';
+import Error from '../_common/_messages/Error.vue';
+import AlertModal from '../_common/AlertModal.vue';
+import Modal from '../_common/Modal';
 
 export default {
     components: {
@@ -380,19 +305,216 @@ export default {
         EditIcon,
         DeleteIcon,
         MemberSearch,
+        Error,
+        AlertModal,
+        Modal,
+    },
+    mounted() {
+        this.initVueEditors();
     },
     methods: {
+        ...mapActions([
+            'getProjectCloseDown', 'getProjectUsers', 'createProjectCloseDown',
+            'editProjectCloseDown', 'createEvaluationObjective', 'createLesson',
+            'editEvaluationObjective', 'editLesson', 'reorderEvaluationObjectives', 'reorderLessons',
+            'getCloseDownActions', 'createCloseDownAction', 'deleteCloseDownAction',
+        ]),
         translateText: function(text) {
             return this.translate(text);
+        },
+        initVueEditors: function() {
+            setTimeout(() => {
+                this.overallImpressionEditor = createEditor(document.getElementById('overallImpression'), {...vueditorConfig, id: 'overallImpression'});
+                this.performanceScheduleEditor = createEditor(document.getElementById('performanceSchedule'), {...vueditorConfig, id: 'performanceSchedule'});
+                this.organizationContextEditor = createEditor(document.getElementById('organizationContext'), {...vueditorConfig, id: 'organizationContext'});
+                this.projectManagementEditor = createEditor(document.getElementById('projectManagement'), {...vueditorConfig, id: 'projectManagement'});
+                this.actionDescription = createEditor(document.getElementById('actionDescription'), {...vueditorConfig, id: 'actionDescription'});
+            }, 100);
+        },
+        changePage: function(page) {
+            this.activePage = page;
+            this.getCloseDownActions({
+                closeDownId: this.projectCloseDown.id,
+                queryParams: {
+                    page: this.activePage,
+                },
+            });
+        },
+        reorderSequences: function(values, dragIndex, dropIndex) {
+            let data = [];
+            data.push({id: values[dragIndex].id, sequence: values[dropIndex].sequence});
+            if (dropIndex > dragIndex) {
+                for (let i = dragIndex + 1; i <= dropIndex; i++) {
+                    data.push({
+                        id: values[i].id,
+                        sequence: values[i-1].sequence,
+                    });
+                }
+            } else {
+                for (let i = dragIndex - 1; i >= dropIndex; i--) {
+                    data.push({
+                        id: values[i].id,
+                        sequence: values[i+1].sequence,
+                    });
+                }
+            }
+            return data;
+        },
+        saveCloseDown: function() {
+            let data = {
+                id: this.projectCloseDown.id,
+                overallImpression: this.overallImpressionEditor.getContent(),
+                performanceSchedule: this.performanceScheduleEditor.getContent(),
+                organizationContext: this.organizationContextEditor.getContent(),
+                projectManagement: this.projectManagementEditor.getContent(),
+                frozen: true,
+            };
+            this.editProjectCloseDown(data);
+        },
+        createObjective: function() {
+            this.createEvaluationObjective({
+                closeDownId: this.projectCloseDown.id,
+                title: this.evaluationObjective,
+                sequence: this.projectCloseDown.evaluationObjectives.length,
+            }).then(
+                (response) => {
+                    this.evaluationObjective = null;
+                },
+            );
+        },
+        createCloseDownLesson: function() {
+            this.createLesson({
+                closeDownId: this.projectCloseDown.id,
+                title: this.lesson,
+                sequence: this.projectCloseDown.lessons.length,
+            }).then(
+                (response) => {
+                    this.lesson = null;
+                },
+            );
+        },
+        addCloseDownAction: function() {
+            let data = {
+                closeDownId: this.projectCloseDown.id,
+                title: this.actionTitle,
+                description: this.actionDescription.getContent(),
+                responsibility: this.actionResponsible.length > 0 ? this.actionResponsible[0] : null,
+                dueDate: moment(this.actionDueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
+            };
+            this.createCloseDownAction(data)
+                .then(
+                    (response) => {
+                        this.actionTitle = null;
+                        this.actionDescription.setContent('');
+                        this.actionResponsible = [];
+                        this.dueDate = new Date();
+                    },
+                );
+        },
+        initDeleteModal: function(closeDownAction) {
+            this.showDeleteModal = true;
+            this.closeDownActionId = closeDownAction.id;
+        },
+        removeAction: function() {
+            this.deleteCloseDownAction(this.closeDownActionId);
+            this.showDeleteModal = false;
+        },
+    },
+    created() {
+        this.getProjectCloseDown(this.$route.params.id);
+        this.getProjectUsers({id: this.$route.params.id});
+        const service = Vue.$dragula.$service;
+        let vm = this;
+        service.eventBus.$on('dropModel', function(args) {
+            if (!vm.projectCloseDown.frozen) {
+                switch(args.name) {
+                case 'evaluations':
+                    vm
+                        .reorderEvaluationObjectives(vm.reorderSequences(vm.projectCloseDown.evaluationObjectives, args.dragIndex, args.dropIndex))
+                        .then(
+                            () => {
+                                this.showSavedComponent = true;
+                                vm.getProjectCloseDown(vm.$route.params.id);
+                            },
+                            () => {
+                                this.showFailedComponent = true;
+                            }
+                        )
+                    ;
+                    break;
+                case 'lessons':
+                    vm
+                        .reorderLessons(vm.reorderSequences(vm.projectCloseDown.lessons, args.dragIndex, args.dropIndex))
+                        .then(
+                            () => {
+                                this.showSavedComponent = true;
+                                vm.getProjectCloseDown(vm.$route.params.id);
+                            },
+                            () => {
+                                this.showFailedComponent = true;
+                            }
+                        )
+                    ;
+                    break;
+                default:
+                    break;
+                }
+            }
+        });
+    },
+    computed: {
+        ...mapGetters({
+            projectCloseDown: 'projectCloseDown',
+            managers: 'projectManagers',
+            sponsors: 'projectSponsors',
+            validationMessages: 'validationMessages',
+            closeDownActions: 'closeDownActions',
+        }),
+        pages: function() {
+            return Math.ceil(this.closeDownActions.totalItems / this.perPage);
+        },
+        perPage: function() {
+            return this.closeDownActions.pageSize;
+        },
+        downloadPdf() {
+            return Routing.generate('app_project_close_down_pdf', {id: this.projectCloseDown.id});
+        },
+    },
+    watch: {
+        projectCloseDown(value) {
+            if (!this.projectCloseDown.id) {
+                this.createProjectCloseDown({projectId: this.$route.params.id});
+            } else {
+                this.overallImpressionEditor.setContent(this.projectCloseDown.overallImpression);
+                this.performanceScheduleEditor.setContent(this.projectCloseDown.performanceSchedule);
+                this.organizationContextEditor.setContent(this.projectCloseDown.organizationContext);
+                this.projectManagementEditor.setContent(this.projectCloseDown.projectManagement);
+                this.getCloseDownActions({
+                    closeDownId: this.projectCloseDown.id,
+                    queryParams: {
+                        page: this.activePage,
+                    },
+                });
+            }
         },
     },
     data() {
         return {
-            title: '',
-            responsible: [],
-            schedule: {
-                dueDate: new Date(),
-            },
+            actionTitle: '',
+            actionResponsible: [],
+            actionDueDate: new Date(),
+            overallImpressionEditor: null,
+            performanceScheduleEditor: null,
+            organizationContextEditor: null,
+            projectManagementEditor: null,
+            actionDescription: null,
+            evaluationObjective: null,
+            lesson: null,
+            showSavedComponent: false,
+            showFailedComponent: false,
+            activePage: 1,
+            showDeleteModal: false,
+            closeDownActionId: null,
         };
     },
 };
@@ -500,5 +622,10 @@ export default {
             height: 100px;
             border-bottom: 3px solid $darkColor;
         }
+    }
+
+    .disabledpicker {
+        pointer-events: none;
+        opacity: .5;
     }
 </style>

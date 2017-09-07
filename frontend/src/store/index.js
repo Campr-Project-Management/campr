@@ -57,6 +57,10 @@ import cost from './modules/cost';
 import module from './modules/module';
 import statusReport from './modules/status-report';
 import rasci from './modules/rasci';
+import projectCloseDown from './modules/project-close-down';
+import evaluationObjective from './modules/evaluation-objective';
+import lesson from './modules/lesson';
+import closeDownAction from './modules/close-down-action';
 
 Vue.use(Vuex);
 
@@ -120,7 +124,14 @@ export default new Vuex.Store({
         cost,
         module,
         statusReport,
+<<<<<<< 57ff0408f7cd0e4590888f4da6def81071aa38bf
         rasci,
+=======
+        projectCloseDown,
+        evaluationObjective,
+        lesson,
+        closeDownAction,
+>>>>>>> Project close down
     },
     strict: debug,
 });

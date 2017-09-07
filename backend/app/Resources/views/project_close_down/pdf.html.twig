@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+<head>
+    <title>{{ 'label.project_close_down'|trans }} - {{ projectCloseDown.projectName }} : {{ projectCloseDown.createdAt|date('d-m-Y') }}</title>
+    <style type="text/css">
+        tr {
+            vertical-align: top;
+        }
+        ul, dl {
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+<table>
+    <tr>
+        <th colspan="2">{{ projectCloseDown.projectName }} : {{ projectCloseDown.createdAt|date('d-m-Y') }}</th>
+    </tr>
+    <tr>
+        <td colspan="2"><br></td>
+    </tr>
+    <tr>
+        <th>{{ 'message.overall_impression'|trans }}</th>
+        <td>{{ projectCloseDown.overallImpression|raw }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'message.reflection'|trans }}: {{ 'message.performance_schedule'|trans }}</th>
+        <td>{{ projectCloseDown.performanceSchedule|raw }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'message.reflection'|trans }}: {{ 'message.organization_context'|trans }}</th>
+        <td>{{ projectCloseDown.organizationContext|raw }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'message.reflection'|trans }}: {{ 'message.project_management'|trans }}</th>
+        <td>{{ projectCloseDown.projectManagement|raw }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'message.evaluation_objectives'|trans }}:</th>
+        <td>
+            <dl>
+                {% for evalaution in projectCloseDown.evaluationObjectives %}
+                    <dt>{{ evalaution.title }}</dt>
+                    {% if not loop.last %}
+                        <hr>
+                    {% endif %}
+                {% else %}
+                    <span>-</span>
+                {% endfor %}
+            </dl>
+        </td>
+    </tr>
+    <tr>
+        <th>{{ 'message.lessons_learned'|trans }}:</th>
+        <td>
+            <dl>
+                {% for lesson in projectCloseDown.lessons %}
+                    <dt>{{ lesson.title }}</dt>
+                    {% if not loop.last %}
+                        <hr>
+                    {% endif %}
+                {% else %}
+                    <span>-</span>
+                {% endfor %}
+            </dl>
+        </td>
+    </tr>
+    <tr>
+        <th>{{ 'message.remaining_action'|trans }}:</th>
+        <td>
+            <table>
+                <thead>
+                <tr>
+                    <th>{{ 'table_header_cell.due_date'|trans }}</th>
+                    <th>{{ 'table_header_cell.topic'|trans }}</th>
+                    <th>{{ 'table_header_cell.description'|trans }}</th>
+                    <th>{{ 'table_header_cell.responsible'|trans }}</th>
+                </tr>
+                <tbody>
+                    {% for action in projectCloseDown.closeDownActions %}
+                        <tr>
+                            <td>{{ action.dueDate|date('d-m-Y') }}</td>
+                            <td>{{ action.title }}</td>
+                            <td>{{ action.description|raw }}</td>
+                            <td>{{ action.responsibilityFullName }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <th>{{ 'message.project_sponsor'|trans }}:</th>
+        <td>{{  projectCloseDown.project.projectSponsorName }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'message.project_managers'|trans }}:</th>
+        <td>{{  projectCloseDown.project.projectManagerName }}</td>
+    </tr>
+</table>
+</body>
+</html>
