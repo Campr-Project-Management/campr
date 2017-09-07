@@ -7,31 +7,25 @@
                         <p class="modal-title">{{ translateText('message.delete_remaining_action') }}</p>
                         <div class="flex flex-space-between">
                             <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                            <a href="javascript:void(0)" @click="removeDecision()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                            <a href="javascript:void(0)" @click="removeAction()" class="btn-rounded">{{ translateText('message.yes') }}</a>
                         </div>
                     </modal>
 
-                    <modal v-if="showRescheduleModal" @close="cancelRescheduleModal()">
+                    <modal v-if="showRescheduleModal" @close="showRescheduleModal = false">
                         <p class="modal-title">{{ translateText('message.reschedule_remaining_action') }}</p>
                         <div class="form-group last-form-group">
-                            <div class="col-md-4">
-                                <div class="input-holder">
-                                    <label class="active">{{ translateText('label.select_date') }}</label>
-                                    <datepicker :clear-button="false" v-model="reschedule.date" format="dd-MM-yyyy" :value="reschedule.date"></datepicker>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
+                            <div class="col-md-8">
                                 <div class="input-holder">
                                     <label class="active">{{ translateText('label.select_due_date') }}</label>
-                                    <datepicker :clear-button="false" v-model="reschedule.dueDate" format="dd-MM-yyyy" :value="reschedule.dueDate"></datepicker>
+                                    <datepicker :clear-button="false" v-model="dueDate" format="dd-MM-yyyy" :value="dueDate"></datepicker>
                                 </div>
                             </div>
                         </div>
                         <hr class="double">
 
                         <div class="flex flex-space-between">
-                            <a href="javascript:void(0)" @click="cancelRescheduleModal()" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                            <a href="javascript:void(0)" @click="rescheduleDecision()" class="btn-rounded">{{ translateText('button.save') }}</a>
+                            <a href="javascript:void(0)" @click="showRescheduleModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
+                            <a href="javascript:void(0)" @click="rescheduleAction" class="btn-rounded">{{ translateText('button.save') }}</a>
                         </div>
                     </modal>
                     <!-- /// Header /// -->
@@ -41,31 +35,29 @@
                                 <i class="fa fa-angle-left"></i>
                                 {{ translateText('message.back_to') }} {{ translateText('message.close_down_report') }}
                             </router-link>
-                            <h1>Current Remaining Action Name</h1>
-                            <h4>{{ translateText('message.created') }}: <b>23.08.2017</b> | {{ translateText('message.due_date') }}: <b>25.05.2018</b></h4>
+                            <h1>{{ currentCloseDownAction.title }}</h1>
+                            <h4>{{ translateText('message.created') }}: <b>{{ currentCloseDownAction.createdAt|moment('DD.MM.YYYY') }}</b> | {{ translateText('message.due_date') }}: <b>{{ dueDate|moment('DD.MM.YYYY')  }}</b></h4>
                             <div class="entry-responsible flex flex-v-center">
-                                <div class="avatar" v-tooltip.top-center="'David Gilmore'" style="background-image:url(http://dev.campr.biz/uploads/avatars/49.jpg"></div>
+                                <div class="avatar" v-tooltip.top-center="currentCloseDownAction.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + currentCloseDownAction.responsibilityAvatar + ')' }"></div>
                                 <div>
                                     {{ translateText('message.responsible') }}:
-                                    <b>David Gilmour</b>
+                                    <b>{{ currentCloseDownAction.responsibilityFullName }}</b>
                                 </div>
                             </div>
-                            <a @click="showRescheduleModal = true" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.reschedule') }} <reschedule-icon></reschedule-icon></a>
+                            <a @click="initReschedule" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.reschedule') }} <reschedule-icon></reschedule-icon></a>
                         </div>
                     </div>
                     <!-- /// End Header /// -->
                 </div>
 
-                <div class="entry-body">
-                    Nulla quis quam id arcu tincidunt hendrerit. Aenean volutpat tincidunt posuere. Nulla arcu dolor, dapibus ut augue a, tincidunt semper felis. Curabitur in mauris risus. Vivamus sit amet quam dui. Fusce nec nunc pharetra, consectetur est a, eleifend justo.
-                </div>
+                <div class="entry-body" v-html="currentCloseDownAction.description"></div>
             </div>
             <div class="col-md-6">
                 <div class="create-meeting page-section">
                     <!-- /// Header /// -->
                     <div class="margintop20 text-right">
                         <div class="buttons">
-                            <router-link class="btn-rounded btn-auto" :to="{name: 'project-close-down-report-edit-remaining-action'}">
+                            <router-link class="btn-rounded btn-auto" :to="{name: 'project-close-down-report-edit-remaining-action', params: {actionId: currentCloseDownAction.id}}">
                                 {{ translateText('button.edit_remaining_action') }}
                             </router-link>
                             <router-link class="btn-rounded btn-auto second-bg" :to="{name: 'project-decisions-create-decision'}">
@@ -100,25 +92,73 @@
 <script>
 import RescheduleIcon from '../../_common/_icons/RescheduleIcon';
 import Modal from '../../_common/Modal';
+import {mapActions, mapGetters} from 'vuex';
+import router from '../../../router';
+import datepicker from 'vuejs-datepicker';
+import moment from 'moment';
 
 export default {
     components: {
         RescheduleIcon,
         Modal,
+        datepicker,
     },
     methods: {
+        ...mapActions(['getCloseDownAction', 'editCloseDownAction', 'deleteCloseDownAction']),
         translateText: function(text) {
             return this.translate(text);
+        },
+        removeAction: function() {
+            this.deleteCloseDownAction(this.currentCloseDownAction.id)
+                .then(
+                    (response) => {
+                        this.showDeleteModal = false;
+                        router.push({
+                            name: 'project-close-down-report',
+                            params: {
+                                id: this.$route.params.id,
+                            },
+                        });
+                    },
+                );
+        },
+        initReschedule: function() {
+            this.showRescheduleModal= true;
+            this.dueDate = new Date(this.currentCloseDownAction.dueDate);
+        },
+        rescheduleAction: function() {
+            this.editCloseDownAction({
+                id: this.currentCloseDownAction.id,
+                dueDate: moment(this.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
+            }).then(
+                (response) => {
+                    if (response && response.body && !response.body.error) {
+                        let data = response.body;
+                        this.dueDate.dueDate = data.dueDate;
+                        this.showRescheduleModal= false;
+                    }
+                },
+            );
+        },
+    },
+    computed: {
+        ...mapGetters({currentCloseDownAction: 'currentCloseDownAction'}),
+    },
+    created() {
+        if (this.$route.params.actionId) {
+            this.getCloseDownAction(this.$route.params.actionId);
+        }
+    },
+    watch: {
+        currentCloseDownAction(value) {
+            this.dueDate = new Date(this.currentCloseDownAction.dueDate);
         },
     },
     data() {
         return {
             showDeleteModal: false,
             showRescheduleModal: false,
-            reschedule: {
-                date: new Date(),
-                dueDate: new Date(),
-            },
+            dueDate: new Date(),
         };
     },
 };

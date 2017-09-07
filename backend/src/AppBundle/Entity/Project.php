@@ -475,6 +475,13 @@ class Project
     private $statusReportConfigs;
 
     /**
+     * @var ArrayCollection|ProjectCloseDown[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectCloseDown", mappedBy="project")
+     */
+    private $projectCloseDowns;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -513,6 +520,7 @@ class Project
         $this->projectDepartments = new ArrayCollection();
         $this->statusReports = new ArrayCollection();
         $this->statusReportConfigs = new ArrayCollection();
+        $this->projectCloseDowns = new ArrayCollection();
     }
 
     public function __toString()
@@ -2561,5 +2569,41 @@ class Project
         }
 
         return $status;
+    }
+
+    /**
+     * Get projectCloseDowns.
+     *
+     * @return ArrayCollection|ProjectCloseDown[]
+     */
+    public function getProjectCloseDowns()
+    {
+        return $this->projectCloseDowns;
+    }
+
+    /**
+     * Add projectCloseDown.
+     *
+     * @param ProjectCloseDown $projectCloseDown
+     *
+     * @return Project
+     */
+    public function addProjectCloseDown(ProjectCloseDown $projectCloseDown)
+    {
+        $this->projectCloseDowns[] = $projectCloseDown;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectCloseDown.
+     *
+     * @param ProjectCloseDown $projectCloseDown
+     */
+    public function removeProjectCloseDown(ProjectCloseDown $projectCloseDown)
+    {
+        $this->projectCloseDowns->removeElement($projectCloseDown);
+
+        return $this;
     }
 }

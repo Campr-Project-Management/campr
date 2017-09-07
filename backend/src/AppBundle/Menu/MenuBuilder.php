@@ -483,6 +483,27 @@ class MenuBuilder
             ->getParent()
         ;
 
+        $menu
+            ->addChild($this->translator->trans('title.project_close_down.list', [], 'messages'), [])
+            ->setAttributes([
+                'class' => 'sub-menu main-category',
+                'dropdown' => true,
+            ])
+            ->setLinkAttribute('icon', 'zmdi zmdi-case-check')
+            ->addChild($this->translator->trans('title.project_close_down.list', [], 'messages'), [
+                'route' => 'app_admin_project_close_down_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.evaluation_objective.list', [], 'messages'), [
+                'route' => 'app_admin_evaluation_objective_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.lesson.list', [], 'messages'), [
+                'route' => 'app_admin_lesson_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.close_down_action.list', [], 'messages'), [
+                'route' => 'app_admin_close_down_action_list',
+            ])->getParent()
+        ;
+
         $this->filterMenu($menu);
 
         return $menu;

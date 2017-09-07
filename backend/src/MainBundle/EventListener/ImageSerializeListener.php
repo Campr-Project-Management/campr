@@ -2,6 +2,7 @@
 
 namespace MainBundle\EventListener;
 
+use AppBundle\Entity\CloseDownAction;
 use AppBundle\Entity\Decision;
 use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\Measure;
@@ -88,6 +89,7 @@ class ImageSerializeListener
             case $object instanceof Note:
             case $object instanceof DistributionList:
             case $object instanceof StatusReport:
+            case $object instanceof CloseDownAction:
                 if (method_exists($object, 'getResponsibility') && $object->getResponsibility() instanceof User) {
                     if ($object->getResponsibility()->getAvatar()) {
                         $visitor->addData('responsibilityAvatar', $this->getUri($object->getResponsibility(), 'avatarFile'));

@@ -18,12 +18,16 @@
                     <!-- /// Title and Description /// -->
                     <div class="form-group">
                         <input-field type="text" v-bind:label="translateText('placeholder.title')" v-model="title" v-bind:content="title" />
+                        <error
+                            v-if="validationMessages.title && validationMessages.title.length"
+                            v-for="message in validationMessages.title"
+                            :message="message" />
                     </div>
 
                     <div class="form-group">
                         <div class="vueditor-holder">
                             <div class="vueditor-header">{{ translateText('placeholder.description') }}</div>
-                            <Vueditor ref="description" />
+                            <Vueditor id="descriptionEditor" ref="description" />
                         </div>
                     </div>
                     <!-- /// Title and Description /// -->
@@ -37,7 +41,7 @@
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.due_date') }}</label>
-                                    <datepicker v-model="schedule.dueDate" format="dd-MM-yyyy" />
+                                    <datepicker v-model="dueDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill"/>
                                 </div>
                             </div>
@@ -50,7 +54,7 @@
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
                         <router-link :to="{name: 'project-close-down-report'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
-                        <a href="#" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
+                        <a @click="saveAction" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
@@ -65,6 +69,11 @@ import datepicker from 'vuejs-datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
 import moment from 'moment';
+import {mapActions, mapGetters} from 'vuex';
+import {createEditor} from 'vueditor';
+import vueditorConfig from '../../_common/vueditorConfig';
+import Error from '../../_common/_messages/Error.vue';
+import router from '../../../router';
 
 export default {
     components: {
@@ -73,19 +82,59 @@ export default {
         CalendarIcon,
         MemberSearch,
         moment,
+        Error,
     },
     methods: {
+        ...mapActions(['getCloseDownAction', 'editCloseDownAction']),
         translateText: function(text) {
             return this.translate(text);
+        },
+        saveAction: function() {
+            this.editCloseDownAction({
+                id: this.currentCloseDownAction.id,
+                title: this.title,
+                description: this.descriptionEditor.getContent(),
+                responsibility: this.responsible.length > 0 ? this.responsible[0] : null,
+                dueDate: moment(this.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
+            }).then(
+                (response) => {
+                    if (response && response.body && !response.body.error) {
+                        router.push({
+                            name: 'project-close-down-report',
+                            params: {
+                                id: this.$route.params.id,
+                            },
+                        });
+                    }
+                },
+            );
+        },
+    },
+    computed: {
+        ...mapGetters({currentCloseDownAction: 'currentCloseDownAction', validationMessages: 'validationMessages'}),
+    },
+    created() {
+        if (this.$route.params.actionId) {
+            this.getCloseDownAction(this.$route.params.actionId);
+        }
+        setTimeout(() => {
+            this.descriptionEditor = createEditor(document.getElementById('descriptionEditor'), {...vueditorConfig, id: 'descriptionEditor'});
+        }, 100);
+    },
+    watch: {
+        currentCloseDownAction(value) {
+            this.title = this.currentCloseDownAction.title;
+            this.descriptionEditor.setContent(this.currentCloseDownAction.description);
+            this.responsible.push(this.currentCloseDownAction.responsibility);
+            this.dueDate = new Date(this.currentCloseDownAction.dueDate);
         },
     },
     data() {
         return {
             title: '',
             responsible: [],
-            schedule: {
-                dueDate: new Date(),
-            },
+            dueDate: new Date(),
+            descriptionEditor: null,
         };
     },
 };

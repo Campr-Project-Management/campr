@@ -1,0 +1,79 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'title.project_close_down.list'|trans }}<small>{{ projectCloseDown.projectName|default('-') }}</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_project_close_down_create') }}">{{ 'add.project_close_down'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_project_close_down_edit', {'id': projectCloseDown.id}) }}">{{ 'button.edit'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_project_close_down_list') }}">{{ 'button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <th>{{ 'table_header_cell.id'|trans }}</th>
+                                <td>{{ projectCloseDown.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.project'|trans }}</th>
+                                <td>{{ projectCloseDown.projectName|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.overall_impression'|trans }}</th>
+                                <td>{{ projectCloseDown.overallImpression|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.performance_schedule'|trans }}</th>
+                                <td>{{ projectCloseDown.performanceSchedule|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.organization_context'|trans }}</th>
+                                <td>{{ projectCloseDown.organizationContext|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.project_management'|trans }}</th>
+                                <td>{{ projectCloseDown.projectManagement|default('-') }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'label.frozen'|trans }}</th>
+                                <td>
+                                    {% if projectCloseDown.frozen %}
+                                        {{ 'message.yes'|trans }}
+                                    {% else %}
+                                        {{ 'message.no'|trans }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'table_header_cell.created_at'|trans }}</th>
+                                <td>{{ projectCloseDown.createdAt|date('d/m/Y')|default('-') }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
