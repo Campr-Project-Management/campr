@@ -3,9 +3,17 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Project;
+use Doctrine\ORM\QueryBuilder;
+use AppBundle\Repository\Traits\WorkPackageSortingTrait;
+use AppBundle\Repository\Traits\ProjectWorkCostTypeSortingTrait;
 
 class WorkPackageProjectWorkCostTypeRepository extends BaseRepository
 {
+    use WorkPackageSortingTrait, ProjectWorkCostTypeSortingTrait {
+        WorkPackageSortingTrait::setOrder as setWorkPackageOrder;
+        ProjectWorkCostTypeSortingTrait::setOrder as setProjectWorkCostTypeOrder;
+    }
+
     /**
      * @param Project $project
      *
@@ -47,5 +55,15 @@ class WorkPackageProjectWorkCostTypeRepository extends BaseRepository
         $qb = $isInternal ? $qb->andWhere($qb->expr()->isNull('w.externalId')) : $qb->andWhere($qb->expr()->isNotNull('w.externalId'));
 
         return $qb->getQuery()->getSingleResult();
+    }
+
+    /**
+     * @param array        $orderBy
+     * @param QueryBuilder $qb
+     */
+    public function setOrder(array &$orderBy, QueryBuilder $qb)
+    {
+        $this->setWorkPackageOrder($orderBy, $qb);
+        $this->setProjectWorkCostTypeOrder($orderBy, $qb);
     }
 }
