@@ -324,11 +324,12 @@ export default {
             return this.translate(text);
         },
         addMeasure: function() {
-            this.measures.push({
+            let measure = {
                 title: '',
                 description: this.$refs['measure.description'+this.measures.length],
                 cost: '',
-            });
+            };
+
             let thisRef = 'measure.description'+this.measures.length;
             setTimeout(() => {
                 measure.element = createEditor(document.getElementById(thisRef), {...vueditorConfig, id: thisRef});
