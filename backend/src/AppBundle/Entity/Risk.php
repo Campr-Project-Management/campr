@@ -123,7 +123,7 @@ class Risk
     /**
      * @var ArrayCollection|Measure[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Measure", mappedBy="risk", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Measure", mappedBy="risk", cascade={"persist"})
      */
     private $measures;
 
