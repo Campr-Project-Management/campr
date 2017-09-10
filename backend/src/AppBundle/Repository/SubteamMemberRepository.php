@@ -26,8 +26,8 @@ class SubteamMemberRepository extends BaseRepository
     public function findByWithLike(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $qb = $this
-            ->createQueryBuilder('sm')
-            ->leftJoin('sm.user', 'u')
+            ->createQueryBuilder('q')
+            ->leftJoin('q.user', 'u')
         ;
 
         foreach ($criteria as $key => $value) {

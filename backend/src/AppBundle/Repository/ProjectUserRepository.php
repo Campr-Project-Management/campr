@@ -2,12 +2,19 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use AppBundle\Entity\Project;
 use AppBundle\Repository\Traits\ProjectSortingTrait;
+use AppBundle\Repository\Traits\CategorySortingTrait;
+use AppBundle\Repository\Traits\ProjectTeamSortingTrait;
 
 class ProjectUserRepository extends BaseRepository
 {
-    use ProjectSortingTrait;
+    use ProjectSortingTrait, CategorySortingTrait, ProjectTeamSortingTrait {
+        ProjectSortingTrait::setOrder as setProjectOrder;
+        CategorySortingTrait::setOrder as setCategoryOrder;
+        ProjectTeamSortingTrait::setOrder as setProjectTeamOrder;
+    }
 
     public function findByWithLike(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
@@ -110,5 +117,16 @@ class ProjectUserRepository extends BaseRepository
         ;
 
         return $qb->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param array        $orderBy
+     * @param QueryBuilder $qb
+     */
+    public function setOrder(array &$orderBy, QueryBuilder $qb)
+    {
+        $this->setProjectOrder($orderBy, $qb);
+        $this->setCategoryOrder($orderBy, $qb);
+        $this->setProjectTeamOrder($orderBy, $qb);
     }
 }
