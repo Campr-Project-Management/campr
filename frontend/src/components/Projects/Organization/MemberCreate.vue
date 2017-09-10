@@ -115,9 +115,9 @@
                             <hr class="nomarginbottom">
                         </div>
                         <div class="col-md-4">
-                            <h3>{{ translateText('table_header_cell.raci') }}</h3>
+                            <h3>{{ translateText('table_header_cell.rasci') }}</h3>
                             <div class="flex flex-v-center">
-                                <switches v-model="raci" :selected="raci"></switches>
+                                <switches v-model="rasci" :selected="rasci"></switches>
                             </div>
                             <hr class="nomarginbottom">
                         </div>
@@ -260,7 +260,7 @@ export default {
                 'username': this.username,
                 'company': this.company,
                 'showInResources': this.resource,
-                'showInRaci': this.raci,
+                'showInRasci': this.rasci,
                 'showInOrg': this.org,
                 'email': this.email,
                 'phone': this.phone,
@@ -302,7 +302,7 @@ export default {
                 'id': this.member.id,
                 'company': this.company,
                 'showInResources': this.resource,
-                'showInRaci': this.raci,
+                'showInRasci': this.rasci,
                 'showInOrg': this.org,
                 'distributionLists': list,
                 'roles': this.selectedRoles.filter((item) => item.key).map((item) => item.key),
@@ -368,7 +368,7 @@ export default {
                 this.subteams.push({key: this.member.subteams[i], label: this.member.subteamNames[i]});
             }
             this.resource = this.member.showInResource;
-            this.raci = this.member.showInRaci;
+            this.rasci = this.member.showInRasci;
             this.org = this.member.showInOrg;
         },
         distributionLists(value) {
@@ -399,7 +399,7 @@ export default {
             department: '',
             role: '',
             resource: false,
-            raci: false,
+            rasci: false,
             org: false,
             email: '',
             phone: '',

@@ -128,7 +128,7 @@ class ApiCreateType extends AbstractType
             ->add('showInResources', CheckboxType::class, [
                 'mapped' => false,
             ])
-            ->add('showInRaci', CheckboxType::class, [
+            ->add('showInRasci', CheckboxType::class, [
                 'mapped' => false,
             ])
             ->add('showInOrg', CheckboxType::class, [
@@ -146,7 +146,7 @@ class ApiCreateType extends AbstractType
                     $form->remove('subteams');
                     $form->remove('departments');
                     $form->remove('showInResources');
-                    $form->remove('showInRaci');
+                    $form->remove('showInRasci');
                     $form->remove('showInOrg');
                 }
             }

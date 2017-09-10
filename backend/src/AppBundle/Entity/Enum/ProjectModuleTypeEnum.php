@@ -19,7 +19,7 @@ class ProjectModuleTypeEnum
     const TODOS = 'todos';
     const NOTES = 'notes';
     const CLOSE_DOWN_PROJECT = 'close_down_project';
-    const RACI_MATRIX = 'raci_matrix';
+    const RASCI_MATRIX = 'rasci_matrix';
     const TASK_CHART = 'task_chart';
     const GANTT_CHART = 'gantt_chart';
     const DECISIONS = 'decisions';
@@ -85,9 +85,9 @@ class ProjectModuleTypeEnum
            'title' => 'modules.close_down_project.title',
             'description' => 'modules.close_down_project.description',
         ],
-        self::RACI_MATRIX => [
-            'title' => 'modules.raci_matrix.title',
-            'description' => 'modules.raci_matrix.description',
+        self::RASCI_MATRIX => [
+            'title' => 'modules.rasci_matrix.title',
+            'description' => 'modules.rasci_matrix.description',
         ],
         self::TASK_CHART => [
             'title' => 'modules.task_chart.title',

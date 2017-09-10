@@ -6,12 +6,12 @@ use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Raci.
+ * Rasci.
  *
- * @ORM\Table(name="raci")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\RaciRepository")
+ * @ORM\Table(name="rasci")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\RasciRepository")
  */
-class Raci
+class Rasci
 {
     /**
      * @var int
@@ -64,7 +64,7 @@ class Raci
      *
      * @param string $data
      *
-     * @return Raci
+     * @return Rasci
      */
     public function setData($data)
     {
@@ -88,7 +88,7 @@ class Raci
      *
      * @param WorkPackage $workPackage
      *
-     * @return Raci
+     * @return Rasci
      */
     public function setWorkPackage(WorkPackage $workPackage = null)
     {
@@ -123,7 +123,7 @@ class Raci
      *
      * @param User $user
      *
-     * @return Raci
+     * @return Rasci
      */
     public function setUser(User $user = null)
     {

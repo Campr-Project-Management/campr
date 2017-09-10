@@ -118,9 +118,9 @@ class ProjectUser
     /**
      * @var bool
      *
-     * @ORM\Column(name="show_in_raci", type="boolean", nullable=true)
+     * @ORM\Column(name="show_in_rasci", type="boolean", nullable=true)
      */
-    private $showInRaci;
+    private $showInRasci;
 
     /**
      * @var bool
@@ -205,27 +205,27 @@ class ProjectUser
     }
 
     /**
-     * Set showInRaci.
+     * Set showInRasci.
      *
-     * @param bool $showInRaci
+     * @param bool $showInRasci
      *
      * @return ProjectUser
      */
-    public function setShowInRaci($showInRaci)
+    public function setShowInRasci($showInRasci)
     {
-        $this->showInRaci = $showInRaci;
+        $this->showInRasci = $showInRasci;
 
         return $this;
     }
 
     /**
-     * Get showInRaci.
+     * Get showInRasci.
      *
      * @return bool
      */
-    public function getShowInRaci()
+    public function getShowInRasci()
     {
-        return $this->showInRaci;
+        return $this->showInRasci;
     }
 
     /**

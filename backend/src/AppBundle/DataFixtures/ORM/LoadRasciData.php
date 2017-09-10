@@ -2,15 +2,15 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\Raci;
+use AppBundle\Entity\Rasci;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
- * Insert database entries for Raci entity.
+ * Insert database entries for Rasci entity.
  */
-class LoadRaciData extends AbstractFixture implements OrderedFixtureInterface
+class LoadRasciData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @param ObjectManager $manager
@@ -21,13 +21,13 @@ class LoadRaciData extends AbstractFixture implements OrderedFixtureInterface
         $workPackage = $this->getReference('work-package1');
 
         for ($i = 1; $i <= 2; ++$i) {
-            $raci = (new Raci())
+            $rasci = (new Rasci())
                 ->setData('data'.$i)
                 ->setUser($user)
                 ->setWorkPackage($workPackage)
             ;
 
-            $manager->persist($raci);
+            $manager->persist($rasci);
         }
 
         $manager->flush();
