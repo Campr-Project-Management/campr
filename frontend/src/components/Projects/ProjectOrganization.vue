@@ -102,7 +102,7 @@
                                 <th>{{ translateText('table_header_cell.subteam') }}</th>
                                 <th>{{ translateText('table_header_cell.department') }}</th>
                                 <th>{{ translateText('table_header_cell.contact') }}</th>
-                                <th class="text-center switchers">{{ translateText('table_header_cell.raci') }}</th>
+                                <th class="text-center switchers">{{ translateText('table_header_cell.rasci') }}</th>
                                 <th class="text-center switchers">{{ translateText('table_header_cell.org') }}</th>
                                 <th class="text-center switchers" v-if='project.distributionLists' v-for="dl in project.distributionLists">{{ dl.name }}</th>
                                 <th>{{ translateText('table_header_cell.actions') }}</th>
@@ -137,7 +137,7 @@
                                     <social-links align="left" size="20px" v-bind:facebook="item.userFacebook" v-bind:twitter="item.userTwitter" v-bind:linkedin="item.userLinkedIn" v-bind:gplus="item.userGplus" v-bind:email="item.userEmail" v-bind:phone="item.userPhone"></social-links>
                                 </td>
                                 <td class="text-center switchers">
-                                    <switches @click.native="updateUserOption(item, 'raci')" v-model="showInRaci" :selected="item.showInRaci"></switches>
+                                    <switches @click.native="updateUserOption(item, 'rasci')" v-model="showInRasci" :selected="item.showInRasci"></switches>
                                 </td>
                                 <td class="text-center switchers">
                                     <switches @click.native="updateUserOption(item, 'org')" v-model="showInOrg" :selected="item.showInOrg"></switches>
@@ -253,10 +253,10 @@ export default {
         },
         updateUserOption(item, value) {
             switch(value) {
-            case 'raci':
+            case 'rasci':
                 this.updateProjectUser({
                     id: item.id,
-                    showInRaci: this.showInRaci,
+                    showInRasci: this.showInRasci,
                 });
                 break;
             case 'org':
@@ -318,7 +318,7 @@ export default {
             selectedDistribution: [],
             distributionList: [],
             gridList: [],
-            showInRaci: '',
+            showInRasci: '',
             showInOrg: '',
             showInResources: '',
             inDistribution: '',

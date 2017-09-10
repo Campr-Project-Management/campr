@@ -7,7 +7,7 @@
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header bgm-teal">
-                    <h2>{{ 'title.raci.list'|trans }}<small>{{ raci.workPackage.name|default('-') }}</small></h2>
+                    <h2>{{ 'title.rasci.list'|trans }}<small>{{ rasci.workPackage.name|default('-') }}</small></h2>
                     <ul class="actions">
                         <li class="dropdown">
                             <a href="" data-toggle="dropdown">
@@ -15,13 +15,13 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <a href="{{ path('app_admin_raci_create') }}">{{ 'add.raci'|trans }}</a>
+                                    <a href="{{ path('app_admin_rasci_create') }}">{{ 'add.rasci'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_raci_edit', {'id': raci.id}) }}">{{ 'button.edit'|trans }}</a>
+                                    <a href="{{ path('app_admin_rasci_edit', {'id': rasci.id}) }}">{{ 'button.edit'|trans }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app_admin_raci_list') }}">{{ 'button.back_to_list'|trans }}</a>
+                                    <a href="{{ path('app_admin_rasci_list') }}">{{ 'button.back_to_list'|trans }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -33,19 +33,19 @@
                             <tbody>
                                 <tr>
                                     <th>{{ 'table_header_cell.id'|trans }}</th>
-                                    <td>{{ raci.id }}</td>
+                                    <td>{{ rasci.id }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ 'table_header_cell.workpackage'|trans }}</th>
-                                    <td>{{ raci.workPackage.name|default('-') }}</td>
+                                    <td>{{ rasci.workPackage.name|default('-') }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ 'table_header_cell.user'|trans }}</th>
-                                    <td>{{ raci.user.username|default('-') }}</td>
+                                    <td>{{ rasci.user.username|default('-') }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ 'table_header_cell.data'|trans }}</th>
-                                    <td>{{ raci.data|default('-') }}</td>
+                                    <td>{{ rasci.data|default('-') }}</td>
                                 </tr>
                             </tbody>
                         </table>

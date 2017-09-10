@@ -111,7 +111,7 @@ export default {
         },
         moduleIsRecommended(moduleKey) {
             /* we will have to implement an algoritm for this*/
-            let notRecomandedModules = ['raci_matrix', 'task_chart', 'gantt_chart', 'decisions'];
+            let notRecomandedModules = ['rasci_matrix', 'task_chart', 'gantt_chart', 'decisions'];
             return notRecomandedModules.indexOf(moduleKey) === -1;
         },
         submitProject: function(e) {

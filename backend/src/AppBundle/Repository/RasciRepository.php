@@ -2,7 +2,7 @@
 
 namespace AppBundle\Repository;
 
-class RaciRepository extends BaseRepository
+class RasciRepository extends BaseRepository
 {
     public function findByWithLike(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {

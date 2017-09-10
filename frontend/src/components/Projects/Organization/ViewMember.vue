@@ -51,9 +51,9 @@
                         <hr class="nomarginbottom">
                     </div>
                     <div class="col-md-4">
-                        <h3>{{ translateText('table_header_cell.raci') }}</h3>
+                        <h3>{{ translateText('table_header_cell.rasci') }}</h3>
                         <div class="flex flex-v-center">
-                            <switches :selected="member.showInRaci" :disabled="true"></switches>
+                            <switches :selected="member.showInRasci" :disabled="true"></switches>
                         </div>
                         <hr class="nomarginbottom">
                     </div>

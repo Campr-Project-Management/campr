@@ -5,8 +5,8 @@
 {% block body_content %}
     <div class="card">
         <div class="card-header bgm-teal">
-            <h2>{{ 'title.raci.list'|trans }}<small>{{ 'subtitle.raci'|trans }}</small></h2>
-            <a href="{{ path('app_admin_raci_create') }}">
+            <h2>{{ 'title.rasci.list'|trans }}<small>{{ 'subtitle.rasci'|trans }}</small></h2>
+            <a href="{{ path('app_admin_rasci_create') }}">
                 <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
             </a>
         </div>
@@ -18,7 +18,7 @@
             {% endfor %}
             <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                 <strong>
-                    {{ 'success.raci.delete.from_data_table'|trans({}, 'flashes') }}
+                    {{ 'success.rasci.delete.from_data_table'|trans({}, 'flashes') }}
                     <span id="object-id">
                         {% for flash_message in app.session.flashBag.get('success') %}
                             {{ flash_message }}
@@ -31,10 +31,10 @@
                 <table
                         id="data-table-command"
                         class="table table-condensed table-striped table-vmiddle"
-                        data-url="{{ path('app_admin_raci_list_filtered') }}"
-                        data-show="app_admin_raci_show"
-                        data-edit="app_admin_raci_edit"
-                        data-delete="app_admin_raci_delete">
+                        data-url="{{ path('app_admin_rasci_list_filtered') }}"
+                        data-show="app_admin_rasci_show"
+                        data-edit="app_admin_rasci_edit"
+                        data-delete="app_admin_rasci_delete">
                     <thead>
                     <tr>
                         <th data-column-id="id" data-identifier="true" data-type="numeric">{{ 'table_header_cell.id'|trans }}</th>

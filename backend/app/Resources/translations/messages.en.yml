@@ -316,7 +316,7 @@ message:
     medium: Medium
     recommended_modules: based on your estimations we recommend the following modules
     not_recommended_modules: we don’t recommend using the remaining modules but you can still activate them
-    raci_matrix: Raci Matrix
+    rasci_matrix: Rasci Matrix
     task_chart: Task Chart
     gantt_chart: Gantt Chart
     context: Context
@@ -450,10 +450,10 @@ title:
         list: Schedule
         create: Create new schedule
         edit: Edit schedule
-    raci:
-        list: Raci
-        create: Create new raci
-        edit: Edit raci
+    rasci:
+        list: Rasci
+        create: Create new rasci
+        edit: Edit rasci
     workpackage:
         list: Work Package
         create: Create new work package
@@ -755,7 +755,7 @@ subtitle:
     user: List of users
     status: List of statuses
     schedule: List of schedules
-    raci: List of raci
+    rasci: List of rasci
     workpackage: List of workpackages
     portfolio: List of portfolios
     project: List of projects
@@ -917,7 +917,7 @@ label:
     project_department: Project Department
     project_team: Project Team
     show_in_resources: Show In Resources
-    show_in_raci: Show In Raci
+    show_in_rasci: Show In Rasci
     show_in_org: Show In Org
     show_in_status: Show in status report
     impact: Impact
@@ -1219,7 +1219,7 @@ add:
     user: Add new user
     status: Add new status
     schedule: Add new schedule
-    raci: Add new raci
+    rasci: Add new rasci
     workpackage: Add new workpackage
     portfolio: Add new portfolio
     project: Add new project
@@ -1416,7 +1416,7 @@ table_header_cell:
     department_name: Department Name
     rate: Rate
     quantity: Quantity
-    raci: Raci
+    rasci: Rasci
     org: Org
     distribution_lists: Distribution Lists
     subteam: Subteam
@@ -1482,7 +1482,7 @@ table_header_cell:
     module: Module
     lead: Lead
     show_in_resources: Show In Resources
-    show_in_raci: Show In Raci
+    show_in_rasci: Show In Rasci
     show_in_org: Show In Org
     color: Color
     title: Title
@@ -1755,9 +1755,9 @@ modules:
     close_down_project:
         title: Close Down Project
         description: Close Down Project Description
-    raci_matrix:
-        title: Raci matrix
-        description: Raci matrix Description
+    rasci_matrix:
+        title: Rasci matrix
+        description: Rasci matrix Description
     task_chart:
         title: Task chart
         description: Task chart Description
