@@ -243,12 +243,12 @@ success:
         delete:
             from_edit: Project work cost type successfully deleted!
             from_data_table: Project work cost type with ID
-    raci:
-        create: Raci successfully created!
-        edit: Raci successfully edited!
+    rasci:
+        create: Rasci successfully created!
+        edit: Rasci successfully edited!
         delete:
-            from_edit: Raci successfully deleted!
-            from_data_table: Raci with ID
+            from_edit: Rasci successfully deleted!
+            from_data_table: Rasci with ID
     risk_category:
         create: Risk category successfully created!
         edit: Risk category successfully edited!

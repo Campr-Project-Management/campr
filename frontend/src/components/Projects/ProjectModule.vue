@@ -234,7 +234,7 @@
                 </g>
                 </svg>
 
-                <svg v-show="id == 'raci-matrix'" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg v-show="id == 'rasci-matrix'" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                    viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
                 <g id="XMLID_114_">
                   <rect id="XMLID_752_" x="10.3" y="4.5" class="st0" width="4.9" height="4.9"/>

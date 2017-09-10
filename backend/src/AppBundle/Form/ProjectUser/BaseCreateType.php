@@ -62,7 +62,7 @@ class BaseCreateType extends AbstractType
                 'translation_domain' => 'messages',
             ])
             ->add('showInResources', CheckboxType::class)
-            ->add('showInRaci', CheckboxType::class)
+            ->add('showInRasci', CheckboxType::class)
             ->add('showInOrg', CheckboxType::class)
         ;
     }
