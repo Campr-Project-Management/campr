@@ -3,9 +3,12 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Project;
+use AppBundle\Repository\Traits\ProjectSortingTrait;
 
 class MeetingRepository extends BaseRepository
 {
+    use ProjectSortingTrait;
+
     /**
      * Return the query builder for all project meetings filtered.
      *
