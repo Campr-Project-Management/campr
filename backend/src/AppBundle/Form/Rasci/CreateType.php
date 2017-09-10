@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Form\Raci;
+namespace AppBundle\Form\Rasci;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use AppBundle\Entity\Raci;
+use AppBundle\Entity\Rasci;
 use AppBundle\Entity\User;
 use AppBundle\Entity\WorkPackage;
 
@@ -50,7 +50,7 @@ class CreateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Raci::class,
+            'data_class' => Rasci::class,
         ]);
     }
 }

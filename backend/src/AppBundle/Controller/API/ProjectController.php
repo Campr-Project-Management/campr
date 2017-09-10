@@ -711,7 +711,7 @@ class ProjectController extends ApiController
             $projectUser = new ProjectUser();
             $projectUser->setProject($project);
             $projectUser->setShowInOrg($form->get('showInOrg')->getData());
-            $projectUser->setShowInRaci($form->get('showInRaci')->getData());
+            $projectUser->setShowInRasci($form->get('showInRasci')->getData());
             $projectUser->setShowInResources($form->get('showInResources')->getData());
             $projectUser->setCompany($form->get('company')->getData());
             foreach ($form->get('roles')->getData() as $roleId) {
@@ -784,7 +784,7 @@ class ProjectController extends ApiController
 
         if ($form->isValid()) {
             $projectUser->setShowInOrg($form->get('showInOrg')->getData());
-            $projectUser->setShowInRaci($form->get('showInRaci')->getData());
+            $projectUser->setShowInRasci($form->get('showInRasci')->getData());
             $projectUser->setShowInResources($form->get('showInResources')->getData());
             $projectUser->setCompany($form->get('company')->getData());
             foreach ($projectUser->getProjectRoles() as $role) {

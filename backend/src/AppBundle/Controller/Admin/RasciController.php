@@ -9,21 +9,21 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Raci;
-use AppBundle\Form\Raci\CreateType;
+use AppBundle\Entity\Rasci;
+use AppBundle\Form\Rasci\CreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Raci admin controller.
+ * Rasci admin controller.
  *
- * @Route("/admin/raci")
+ * @Route("/admin/rasci")
  */
-class RaciController extends BaseController
+class RasciController extends BaseController
 {
     /**
-     * List all Raci entities.
+     * List all Rasci entities.
      *
-     * @Route("/list", name="app_admin_raci_list")
+     * @Route("/list", name="app_admin_rasci_list")
      * @Method({"GET"})
      * @Secure(roles="ROLE_SUPER_ADMIN")
      *
@@ -31,24 +31,24 @@ class RaciController extends BaseController
      */
     public function listAction()
     {
-        $raci = $this
+        $rasci = $this
             ->getDoctrine()
-            ->getRepository(Raci::class)
+            ->getRepository(Rasci::class)
             ->findAll()
         ;
 
         return $this->render(
-            'AppBundle:Admin/Raci:list.html.twig',
+            'AppBundle:Admin/Rasci:list.html.twig',
             [
-                'raci' => $raci,
+                'rasci' => $rasci,
             ]
         );
     }
 
     /**
-     * Lists all Raci entities filtered and paginated.
+     * Lists all Rasci entities filtered and paginated.
      *
-     * @Route("/list/filtered", name="app_admin_raci_list_filtered", options={"expose"=true})
+     * @Route("/list/filtered", name="app_admin_rasci_list_filtered", options={"expose"=true})
      * @Method("POST")
      *
      * @param Request $request
@@ -59,35 +59,35 @@ class RaciController extends BaseController
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginateByColumn(Raci::class, 'name', $requestParams);
+        $response = $dataTableService->paginateByColumn(Rasci::class, 'name', $requestParams);
 
         return $this->createApiResponse($response);
     }
 
     /**
-     * Display a specific Raci entity.
+     * Display a specific Rasci entity.
      *
-     * @Route("/{id}/show", name="app_admin_raci_show", options={"expose"=true})
+     * @Route("/{id}/show", name="app_admin_rasci_show", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Raci $raci
+     * @param Rasci $rasci
      *
      * @return Response
      */
-    public function showAction(Raci $raci)
+    public function showAction(Rasci $rasci)
     {
         return $this->render(
-            'AppBundle:Admin/Raci:show.html.twig',
+            'AppBundle:Admin/Rasci:show.html.twig',
             [
-                'raci' => $raci,
+                'rasci' => $rasci,
             ]
         );
     }
 
     /**
-     * Creates a new Raci entity.
+     * Creates a new Rasci entity.
      *
-     * @Route("/create", name="app_admin_raci_create")
+     * @Route("/create", name="app_admin_rasci_create")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -111,15 +111,15 @@ class RaciController extends BaseController
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('success.raci.create', [], 'flashes')
+                        ->trans('success.rasci.create', [], 'flashes')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_raci_list');
+            return $this->redirectToRoute('app_admin_rasci_list');
         }
 
         return $this->render(
-            'AppBundle:Admin/Raci:create.html.twig',
+            'AppBundle:Admin/Rasci:create.html.twig',
             [
                 'form' => $form->createView(),
             ]
@@ -127,24 +127,24 @@ class RaciController extends BaseController
     }
 
     /**
-     * Displays a form to edit an existing Raci entity.
+     * Displays a form to edit an existing Rasci entity.
      *
-     * @Route("/{id}/edit", name="app_admin_raci_edit", options={"expose"=true})
+     * @Route("/{id}/edit", name="app_admin_rasci_edit", options={"expose"=true})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
-     * @param Raci    $raci
+     * @param Rasci   $rasci
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Request $request, Raci $raci)
+    public function editAction(Request $request, Rasci $rasci)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(CreateType::class, $raci);
+        $form = $this->createForm(CreateType::class, $rasci);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($raci);
+            $em->persist($rasci);
             $em->flush();
 
             $this
@@ -154,37 +154,37 @@ class RaciController extends BaseController
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('success.raci.edit', [], 'flashes')
+                        ->trans('success.rasci.edit', [], 'flashes')
                 )
             ;
 
-            return $this->redirectToRoute('app_admin_raci_list');
+            return $this->redirectToRoute('app_admin_rasci_list');
         }
 
         return $this->render(
-            'AppBundle:Admin/Raci:edit.html.twig',
+            'AppBundle:Admin/Rasci:edit.html.twig',
             [
-                'id' => $raci->getId(),
+                'id' => $rasci->getId(),
                 'form' => $form->createView(),
             ]
         );
     }
 
     /**
-     * Deletes a specific Raci entity.
+     * Deletes a specific Rasci entity.
      *
-     * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_raci_delete")
+     * @Route("/{id}/delete", options={"expose"=true}, name="app_admin_rasci_delete")
      * @Method({"GET"})
      *
      * @param Request $request
-     * @param Raci    $raci
+     * @param Rasci   $rasci
      *
      * @return RedirectResponse|JsonResponse
      */
-    public function deleteAction(Request $request, Raci $raci)
+    public function deleteAction(Request $request, Rasci $rasci)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($raci);
+        $em->remove($rasci);
         $em->flush();
 
         if ($request->isXmlHttpRequest()) {
@@ -202,10 +202,10 @@ class RaciController extends BaseController
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.raci.delete.from_edit', [], 'flashes')
+                    ->trans('success.rasci.delete.from_edit', [], 'flashes')
             )
         ;
 
-        return $this->redirectToRoute('app_admin_raci_list');
+        return $this->redirectToRoute('app_admin_rasci_list');
     }
 }

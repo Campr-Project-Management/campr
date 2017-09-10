@@ -2,14 +2,14 @@
 
 namespace AppBundle\Tests\Controller\Admin;
 
-use AppBundle\Entity\Raci;
+use AppBundle\Entity\Rasci;
 use AppBundle\Entity\WorkPackage;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class RaciControllerTest extends BaseController
+class RasciControllerTest extends BaseController
 {
     public function testFormIsDisplayedOnCreatePage()
     {
@@ -18,7 +18,7 @@ class RaciControllerTest extends BaseController
         $this->assertNotNull($this->user, 'User not found');
 
         /** @var Crawler $crawler */
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/raci/create');
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/rasci/create');
 
         $this->assertContains('id="create_workPackage"', $crawler->html());
         $this->assertContains('name="create[workPackage]"', $crawler->html());
@@ -38,7 +38,7 @@ class RaciControllerTest extends BaseController
         $this->assertNotNull($this->user, 'User not found');
 
         /** @var Crawler $crawler */
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/raci/create');
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/rasci/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
 
@@ -64,7 +64,7 @@ class RaciControllerTest extends BaseController
         $this->em->persist($workPackage);
         $this->em->flush();
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/raci/create');
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/rasci/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[workPackage]'] = $workPackage->getId();
@@ -75,16 +75,16 @@ class RaciControllerTest extends BaseController
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
-        $this->assertContains('Raci successfully created!', $this->client->getResponse()->getContent());
+        $this->assertContains('Rasci successfully created!', $this->client->getResponse()->getContent());
 
-        $raci = $this
+        $rasci = $this
             ->em
-            ->getRepository(Raci::class)
+            ->getRepository(Rasci::class)
             ->findOneBy([
                 'data' => 'data3',
             ])
         ;
-        $this->em->remove($raci);
+        $this->em->remove($rasci);
     }
 
     public function testDeleteAction()
@@ -101,22 +101,22 @@ class RaciControllerTest extends BaseController
         ;
         $this->em->persist($workPackage);
 
-        $raci = (new Raci())
+        $rasci = (new Rasci())
             ->setWorkPackage($workPackage)
             ->setUser($this->user)
             ->setData('data4')
         ;
-        $this->em->persist($raci);
+        $this->em->persist($rasci);
         $this->em->flush();
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/raci/%d/edit', $raci->getId()));
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/rasci/%d/edit', $rasci->getId()));
 
         $link = $crawler->selectLink('Delete')->link();
         $this->client->click($link);
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
-        $this->assertContains('Raci successfully deleted!', $this->client->getResponse()->getContent());
+        $this->assertContains('Rasci successfully deleted!', $this->client->getResponse()->getContent());
     }
 
     public function testFormIsDisplayedOnEditPage()
@@ -126,7 +126,7 @@ class RaciControllerTest extends BaseController
         $this->assertNotNull($this->user, 'User not found');
 
         /** @var Crawler $crawler */
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/raci/1/edit');
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/rasci/1/edit');
 
         $this->assertContains('id="create_workPackage"', $crawler->html());
         $this->assertContains('name="create[workPackage]"', $crawler->html());
@@ -147,7 +147,7 @@ class RaciControllerTest extends BaseController
         $this->assertNotNull($this->user, 'User not found');
 
         /** @var Crawler $crawler */
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/raci/1/edit');
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/rasci/1/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['create[data]'] = '';
@@ -165,7 +165,7 @@ class RaciControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/raci/2/edit');
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/rasci/2/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['create[data]'] = 'data2';
@@ -174,7 +174,7 @@ class RaciControllerTest extends BaseController
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
-        $this->assertContains('Raci successfully edited!', $this->client->getResponse()->getContent());
+        $this->assertContains('Rasci successfully edited!', $this->client->getResponse()->getContent());
     }
 
     public function testDataTableOnListPage()
@@ -184,7 +184,7 @@ class RaciControllerTest extends BaseController
         $this->assertNotNull($this->user, 'User not found');
 
         /** @var Crawler $crawler */
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/raci/list');
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/rasci/list');
 
         $this->assertEquals(1, $crawler->filter('#data-table-command')->count());
         $this->assertContains('data-column-id="id"', $crawler->html());
@@ -203,7 +203,7 @@ class RaciControllerTest extends BaseController
         $this->assertNotNull($this->user, 'User not found');
 
         /** @var Crawler $crawler */
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/raci/1/show');
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/rasci/1/show');
 
         $this->assertEquals(1, $crawler->filter('.dropdown-menu-right')->count());
         $this->assertEquals(1, $crawler->filter('.table-responsive')->count());
