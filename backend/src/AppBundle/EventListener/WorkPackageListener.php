@@ -2,6 +2,7 @@
 
 namespace AppBundle\EventListener;
 
+use AppBundle\Entity\WorkPackageStatus;
 use AppBundle\Repository\WorkPackageRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
@@ -33,12 +34,18 @@ class WorkPackageListener
         $updateFromInsert = false;
 
         foreach ($uok->getScheduledEntityUpdates() as $entity) {
-            if ($entity instanceof WorkPackage && $entity->getType() == WorkPackage::TYPE_MILESTONE) {
+            if ($entity instanceof WorkPackage) {
                 $entityChanges = $uok->getEntityChangeSet($entity);
 
-                if (isset($entityChanges['phase'])) {
-                    $newPhaseId = $entityChanges['phase'][1]->getId();
-                    $this->moveMilestoneTasksToNewPhase($newPhaseId, $entity->getId());
+                if ($entity->getType() == WorkPackage::TYPE_MILESTONE) {
+                    if (isset($entityChanges['phase'])) {
+                        $newPhaseId = $entityChanges['phase'][1]->getId();
+                        $this->moveMilestoneTasksToNewPhase($newPhaseId, $entity->getId());
+                    }
+                }
+
+                if ($entity->getType() == WorkPackage::TYPE_TASK && isset($entityChanges['workPackageStatus'])) {
+                    $this->setStartOrFinishDateToTask($entity, $entityChanges);
                 }
             }
         }
@@ -655,5 +662,89 @@ class WorkPackageListener
         $query->bindParam(':phaseId', $newPhaseId);
         $query->bindParam(':milestoneId', $milestoneId);
         $query->execute();
+    }
+
+    /**
+     *  Updates the actualStartAt&actualFinishAt fields of the task
+     *  together with the one from phase&milestone when the change of status occurs.
+     *
+     * @param WorkPackage $task
+     * @param array       $entityChanges
+     */
+    private function setStartOrFinishDateToTask($task, $entityChanges)
+    {
+        $newWpStatus = $entityChanges['workPackageStatus'][1];
+
+        if ($newWpStatus->getId() == WorkPackageStatus::OPEN) {
+            if ($task->getActualStartAt() === null) {
+                $task->setActualStartAt(new \DateTime());
+                $this->em->persist($task);
+            }
+            if ($task->getPhase() instanceof WorkPackage && $task->getPhase()->getActualStartAt() === null) {
+                $phase = $task->getPhase();
+                $phase->setActualStartAt(new \DateTime());
+                $this->em->persist($phase);
+                $this->em->flush();
+            }
+            if ($task->getMilestone() instanceof WorkPackage && $task->getMilestone()->getActualStartAt() === null) {
+                $milestone = $task->getMilestone();
+                $milestone->setActualStartAt(new \DateTime());
+                $this->em->persist($milestone);
+                $this->em->flush();
+            }
+        }
+
+        if ($newWpStatus->getId() == WorkPackageStatus::COMPLETED) {
+            if ($task->getActualFinishAt() === null) {
+                $task->setActualFinishAt(new \DateTime());
+                $this->em->persist($task);
+            }
+        }
+
+        if ($task->getPhase() instanceof WorkPackage) {
+            $phaseHasAllTasksCompleted = true;
+            $tasksAttachedToPhase = $this->em
+                ->getRepository(WorkPackage::class)
+                ->findBy([
+                    'type' => WorkPackage::TYPE_TASK,
+                    'phase' => $task->getPhase(),
+                ])
+            ;
+            foreach ($tasksAttachedToPhase as $task) {
+                if ($task->getWorkPackageStatusId() !== WorkPackageStatus::COMPLETED) {
+                    $phaseHasAllTasksCompleted = 0;
+                    break;
+                }
+            }
+            if ($phaseHasAllTasksCompleted) {
+                $phase = $task->getPhase();
+                $phase->setActualFinishAt(new \DateTime());
+                $this->em->persist($phase);
+                $this->em->flush();
+            }
+        }
+
+        if ($task->getMilestone() instanceof WorkPackage) {
+            $milestoneHasAllTasksCompleted = true;
+            $tasksAttachedToMilestone = $this->em
+                ->getRepository(WorkPackage::class)
+                ->findBy([
+                    'type' => WorkPackage::TYPE_TASK,
+                    'milestone' => $task->getMilestone(),
+                ])
+            ;
+            foreach ($tasksAttachedToMilestone as $task) {
+                if ($task->getWorkPackageStatusId() !== WorkPackageStatus::COMPLETED) {
+                    $milestoneHasAllTasksCompleted = 0;
+                    break;
+                }
+            }
+            if ($milestoneHasAllTasksCompleted) {
+                $milestone = $task->getMilestone();
+                $milestone->setActualFinishAt(new \DateTime());
+                $this->em->persist($milestone);
+                $this->em->flush();
+            }
+        }
     }
 }
