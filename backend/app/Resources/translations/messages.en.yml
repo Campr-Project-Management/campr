@@ -1,4 +1,5 @@
 message:
+    costs_chart: Costs Chart
     edit_milestone: Edit milestone
     per_day_reports_exceeded: You exceeded the number of reports per day. Please check with your manager.
     minutes_under_interval: You cannot generate another report due to time interval restriction. Please check with your manager.
@@ -812,6 +813,11 @@ subtitle:
     task_precedesor: Task predecesor
 
 label:
+    edit_topic: Edit topic
+    delete_topic: Delete topic
+    view_status_report: View Status Report
+    email_status_report: Email Status Report
+    download_status_report: Download Status Report
     is_default: Is default
     minutes_interval: Minutes Interval
     per_day: Per Day
@@ -1276,6 +1282,7 @@ placeholder:
     todo_topic: Todo Topic
     measure_description: Measure description
     info_description: Info Description
+    todo_description: Todo Description
     action: Action
     decision_description: Decision Description
     decision_title: Decision Title
