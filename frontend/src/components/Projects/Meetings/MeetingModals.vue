@@ -102,7 +102,7 @@
         <!-- /// TODOS /// -->
         <modal v-if="showEditTodoModal" @close="showEditTodoModal = false; $emit('input', showEditTodoModal);">
             <p class="modal-title">{{ translateText('message.edit_todo') }}</p>
-            <input-field type="text" v-bind:label="translateText('placeholder.todo_title')" v-model="editTodoObject.title" v-bind:content="editTodoObject.title" />
+            <input-field type="text" v-bind:label="translateText('placeholder.todo_topic')" v-model="editTodoObject.title" v-bind:content="editTodoObject.title" />
             <div class="form-group">
                 <div class="vueditor-holder">
                     <div class="vueditor-header">{{ translateText('placeholder.todo_description') }}</div>
@@ -150,7 +150,7 @@
         <!-- /// INFOS /// -->
         <modal v-if="showEditNoteModal" @close="showEditNoteModal = false; $emit('input', showEditNoteModal);">
             <p class="modal-title">{{ translateText('message.edit_info') }}</p>
-            <input-field type="text" v-bind:label="translateText('placeholder.info_title')" v-model="editNoteObject.title" v-bind:content="editNoteObject.title" />
+            <input-field type="text" v-bind:label="translateText('placeholder.info_topic')" v-model="editNoteObject.title" v-bind:content="editNoteObject.title" />
             <div class="form-group">
                 <div class="vueditor-holder">
                     <div class="vueditor-header">{{ translateText('placeholder.info_description') }}</div>
