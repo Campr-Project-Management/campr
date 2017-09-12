@@ -34,11 +34,11 @@
                         </td>
                         <td>
                             <div class="text-right">
-                                <router-link :to="{name: 'project-status-reports-view-status-report', params:{reportId: report.id}}" class="btn-icon" v-tooltip.top-center="translateText('message.view_status_report')"><view-icon fill="second-fill"></view-icon>
+                                <router-link :to="{name: 'project-status-reports-view-status-report', params:{reportId: report.id}}" class="btn-icon" v-tooltip.top-center="translateText('label.view_status_report')"><view-icon fill="second-fill"></view-icon>
                                 </router-link>
                                 <!--<a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.print_status_report')"><print-icon fill="second-fill"></print-icon></a>-->
-                                <a @click="initEmailModal(report)" class="btn-icon" v-tooltip.top-center="translateText('message.email_status_report')"><notification-icon fill="second-fill"></notification-icon></a>
-                                <a :href="downloadPdf(report)" class="btn-icon" v-tooltip.top-center="translateText('message.download_status_report')"><download-icon fill="second-fill"></download-icon></a>
+                                <a @click="initEmailModal(report)" class="btn-icon" v-tooltip.top-center="translateText('label.email_status_report')"><notification-icon fill="second-fill"></notification-icon></a>
+                                <a :href="downloadPdf(report)" class="btn-icon" v-tooltip.top-center="translateText('label.download_status_report')"><download-icon fill="second-fill"></download-icon></a>
                             </div>
                         </td>                                
                     </tr>
