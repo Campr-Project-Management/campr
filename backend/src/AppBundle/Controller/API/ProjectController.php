@@ -134,7 +134,6 @@ class ProjectController extends ApiController
 
             if (!$project->getStatus()) {
                 $projectStatus = $em->getReference(ProjectStatus::class, ProjectStatus::NOT_STARTED);
-
                 $project->setStatus($projectStatus);
             }
 
@@ -704,6 +703,7 @@ class ProjectController extends ApiController
         $user = new User();
         $form = $this->createForm(UserApiCreateType::class, $user, ['csrf_protection' => false]);
         $this->processForm($request, $form);
+        /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
         if ($form->isValid()) {
@@ -717,6 +717,16 @@ class ProjectController extends ApiController
             foreach ($form->get('roles')->getData() as $roleId) {
                 $role = $em->getRepository(ProjectRole::class)->find($roleId);
                 $projectUser->addProjectRole($role);
+                if ($role->getName() === ProjectRole::ROLE_SPONSOR) {
+                    $specialDistribution = $em->getRepository(DistributionList::class)->findOneBy([
+                        'project' => $project,
+                        'sequence' => -1,
+                    ]);
+                    if ($specialDistribution) {
+                        $specialDistribution->addUser($user);
+                        $em->persist($specialDistribution);
+                    }
+                }
             }
             $user->addProjectUser($projectUser);
 

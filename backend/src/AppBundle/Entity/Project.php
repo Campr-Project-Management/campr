@@ -165,7 +165,7 @@ class Project
     /**
      * @var ArrayCollection|DistributionList[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\DistributionList", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\DistributionList", mappedBy="project", cascade={"all"})
      */
     private $distributionLists;
 
