@@ -21,6 +21,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class DistributionList
 {
+    const STATUS_REPORT_DISTRIBUTION = 'label.status_report_distribution';
+
     /**
      * @var int
      *
@@ -62,7 +64,7 @@ class DistributionList
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="distributionLists")
-     * @ORM\JoinColumn(name="project_id", nullable=false)
+     * @ORM\JoinColumn(name="project_id", nullable=false, onDelete="CASCADE")
      */
     private $project;
 
