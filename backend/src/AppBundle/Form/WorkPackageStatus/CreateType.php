@@ -47,11 +47,6 @@ class CreateType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.project',
                 'translation_domain' => 'messages',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.project',
-                    ]),
-                ],
             ])
             ->add('visible', CheckboxType::class)
         ;
