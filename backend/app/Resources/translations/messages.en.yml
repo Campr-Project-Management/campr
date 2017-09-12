@@ -813,11 +813,19 @@ subtitle:
     task_precedesor: Task predecesor
 
 label:
+    status_report_distribution: Status Report Distribution
     edit_topic: Edit topic
     delete_topic: Delete topic
     view_status_report: View Status Report
     email_status_report: Email Status Report
     download_status_report: Download Status Report
+    project_close_down: Project Close Down
+    overall_impression: Overall Impression
+    performance_schedule: Performance Schedule
+    organization_context: Organization Context
+    project_management: Project Management
+    project_sponsors: Project Sponsors
+    project_managers: Project Managers
     is_default: Is default
     minutes_interval: Minutes Interval
     per_day: Per Day
