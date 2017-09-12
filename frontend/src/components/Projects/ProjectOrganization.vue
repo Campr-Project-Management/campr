@@ -305,13 +305,21 @@ export default {
         this.getProjectUsers({id: this.$route.params.id, page: this.activePage});
         this.getSubteams({project: this.$route.params.id, parent: false});
     },
-    computed: mapGetters({
-        project: 'project',
-        projectUsers: 'projectUsers',
-        projectSponsors: 'projectSponsors',
-        subteams: 'subteams',
-        validationMessages: 'validationMessages',
-    }),
+    computed: {
+        ...mapGetters({
+            project: 'project',
+            projectUsers: 'projectUsers',
+            projectSponsors: 'projectSponsors',
+            subteams: 'subteams',
+            validationMessages: 'validationMessages',
+        }),
+        pages: function() {
+            return Math.ceil(this.projectUsers.totalItems / this.perPage);
+        },
+        perPage: function() {
+            return this.projectUsers.pageSize;
+        },
+    },
     data: function() {
         return {
             showFailed: false,
@@ -333,7 +341,7 @@ export default {
     },
     watch: {
         projectUsers(value) {
-            this.pages = this.projectUsers.totalItems / this.projectUsers.items.length;
+            this.pages = Math.ceil(this.projectUsers.totalItems / this.perPage);
         },
         gridList(value) {
             this.getProjectUsers({id: this.$route.params.id, page: this.activePage, users: this.gridList});
