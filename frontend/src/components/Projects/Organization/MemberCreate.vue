@@ -135,7 +135,8 @@
                     <h3>{{ translateText('table_header_cell.distribution_lists') }}</h3>
                     <div class="row">
                         <div class="col-md-4" v-for="(dl, index) in distributionLists">
-                            <h4>{{ dl.name }}</h4>
+                            <h4 v-if="dl.sequence === -1">{{ translateText(dl.name) }}</h4>
+                            <h4 v-else>{{ dl.name }}</h4>
                             <div class="flex flex-v-center">
                                 <switches v-model="distribution[dl.id]" :selected="distribution[dl.id]"></switches>
                             </div>
