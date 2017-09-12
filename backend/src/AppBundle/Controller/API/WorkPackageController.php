@@ -20,6 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Gaufrette\Exception\FileAlreadyExists;
 
 /**
  * @Route("/api/workpackages")
@@ -152,18 +153,25 @@ class WorkPackageController extends ApiController
             }
         }
 
-        if ($form->isValid()) {
-            foreach ($wp->getMedias() as $media) {
-                $media->setFileSystem($fileSystem);
-            }
-            $em->persist($wp);
-            $em->flush();
+        try {
+            if ($form->isValid()) {
+                foreach ($wp->getMedias() as $media) {
+                    $media->setFileSystem($fileSystem);
+                }
+                $em->persist($wp);
+                $em->flush();
 
+                return $this->createApiResponse(
+                    $wp,
+                    $request->isMethod(Request::METHOD_POST)
+                        ? Response::HTTP_OK
+                        : Response::HTTP_ACCEPTED
+                );
+            }
+        } catch (FileAlreadyExists $ex) {
             return $this->createApiResponse(
-                $wp,
-                $request->isMethod(Request::METHOD_POST)
-                    ? Response::HTTP_OK
-                    : Response::HTTP_ACCEPTED
+                ['messages' => ['medias' => $ex->getMessage()]],
+                Response::HTTP_BAD_REQUEST
             );
         }
 

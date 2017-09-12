@@ -170,9 +170,8 @@
                                     </router-link>
                                     {{ translateText('message.has_commented_task') }} {{ getHumanTimeDiff(item.createdAt) }}
                                 </div>
-                                <div class="comment-body">
-                                    {{ item.newValue.comment}}
-                                </div>     
+                                <div class="comment-body" v-html="item.newValue.comment">
+                                </div>
                             </div>
                             <hr class="double">
                         </div>    
@@ -696,6 +695,7 @@
                 <!-- /// End Task Sidebar /// -->
             </div>
         </div>
+        <alert-modal v-if="showFileUploadFailed" @close="showFileUploadFailed = false" :body="fileUploadErrorMessage" />
     </div>
 </template>
 
@@ -712,6 +712,7 @@ import SelectField from '../../_common/_form-components/SelectField';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import RangeSlider from '../../_common/_form-components/RangeSlider';
 import Modal from '../../_common/Modal';
+import AlertModal from '../../_common/AlertModal.vue';
 import router from '../../../router';
 import Condition from './Create/Condition';
 import moment from 'moment';
@@ -733,6 +734,7 @@ export default {
         router,
         Condition,
         moment,
+        AlertModal,
     },
     created() {
         if (this.$route.params.taskId) {
@@ -1069,15 +1071,21 @@ export default {
                     taskId: this.$route.params.taskId,
                 })
                 .then(
-                    () => {
-                        if (this.task.id) {
-                            this.showSaved = true;
-                        } else {
-                            this.showFailed = true;
+                    (response) => {
+                        if (response.body && response.body.error && response.body.messages) {
+                            this.fileUploadErrorMessage = response.body.messages.medias;
+                            this.showFileUploadFailed = true;
+                            this.editableData.medias.pop();
+                        } else if (response.status == 0) {
+                            this.fileUploadErrorMessage = this.translateText('message.uploading_file_failed');
+                            this.showFileUploadFailed = true;
+                            this.editableData.medias.pop();
                         }
                     },
                     () => {
-                        this.showFailed = true;
+                        this.fileUploadErrorMessage = this.translateText('message.uploading_file_failed');
+                        this.showFileUploadFailed = true;
+                        this.editableData.medias.pop();
                     }
                 )
             ;
@@ -1300,6 +1308,8 @@ export default {
     },
     data: function() {
         return {
+            fileUploadErrorMessage: '',
+            showFileUploadFailed: false,
             showDeleteModal: false,
             showEditStatusModal: false,
             showEditScheduleModal: false,
