@@ -183,11 +183,11 @@ export default {
                     projectId: this.$route.params.id,
                 })
                 .then(
-                    () => {
-                        if (this.task.id) {
-                            this.showSaved = true;
-                        } else {
+                    (response) => {
+                        if (response.body && response.body.error && response.body.messages) {
                             this.showFailed = true;
+                        } else {
+                            this.showSaved = true;
                         }
                     },
                     () => {
@@ -217,11 +217,11 @@ export default {
                     taskId: this.$route.params.taskId,
                 })
                 .then(
-                    () => {
-                        if (this.task.id) {
-                            this.showSaved = true;
-                        } else {
+                    (response) => {
+                        if (response.body && response.body.error && response.body.messages) {
                             this.showFailed = true;
+                        } else {
+                            this.showSaved = true;
                         }
                     },
                     () => {
