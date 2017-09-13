@@ -24,6 +24,7 @@ use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\ProjectStatus;
 use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
+use AppBundle\Entity\Rasci;
 use AppBundle\Entity\Risk;
 use AppBundle\Entity\StatusReport;
 use AppBundle\Entity\StatusReportConfig;
@@ -42,6 +43,7 @@ use AppBundle\Form\DistributionList\BaseCreateType as DistributionCreateType;
 use AppBundle\Form\Note\BaseCreateType as NoteCreateType;
 use AppBundle\Form\ProjectTeam\BaseCreateType as ProjectTeamCreateType;
 use AppBundle\Form\ProjectUser\BaseCreateType as ProjectUserCreateType;
+use AppBundle\Form\Rasci\DataType as RasciDataType;
 use AppBundle\Form\Subteam\CreateType as SubteamCreateType;
 use AppBundle\Form\Todo\BaseCreateType as TodoCreateType;
 use AppBundle\Form\ProjectObjective\CreateType as ProjectObjectiveCreateType;
@@ -61,8 +63,9 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use MainBundle\Controller\API\ApiController;
-use Proxies\__CG__\AppBundle\Entity\Status;
+use AppBundle\Entity\Status;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -2184,5 +2187,72 @@ class ProjectController extends ApiController
         ];
 
         return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @Route("/{id}/rasci", name="app_api_project_rasci_get", options={"expose"=true})
+     * @Method({"GET"})
+     */
+    public function getRasciAction(Project $project)
+    {
+        $rasciData = $this
+            ->get('app.service.rasci_matrix')
+            ->getDataForProject($project)
+        ;
+
+        return $this->createApiResponse($rasciData);
+    }
+
+    /**
+     * @Route("/{id}/rasci/{workPackage}/user/{user}", name="app_api_project_rasci_put", options={"expose"=true})
+     * @ParamConverter("id", class="AppBundle\Entity\Project")
+     * @ParamConverter("workPackage", class="AppBundle\Entity\WorkPackage", options={"id"="workPackage"})
+     * @ParamConverter("user", class="AppBundle\Entity\User", options={"id"="user"})
+     * @Method({"PUT"})
+     */
+    public function putRasciAction(Request $request, Project $project, WorkPackage $workPackage, User $user)
+    {
+        if ($workPackage->getProject() !== $project) {
+            throw $this->createAccessDeniedException(
+                $this
+                    ->get('translator')
+                    ->trans('exception.workpackage_must_belong_to_project')
+            );
+        }
+
+        if (!$project->getProjectUsers()->map(function (ProjectUser $projectUser) {
+            return $projectUser->getUser();
+        })->contains($user)) {
+            throw $this->createAccessDeniedException(
+                $this
+                    ->get('translator')
+                    ->trans('exception.user_must_be_part_of_the_project')
+            );
+        }
+
+        $rasci = $this
+            ->getDoctrine()
+            ->getRepository(Rasci::class)
+            ->findOrCreateOneByWorkPackageAndUser($workPackage, $user)
+        ;
+        $isNew = !$rasci->getId();
+        $form = $this->createForm(RasciDataType::class, $rasci, ['method' => Request::METHOD_PUT, 'csrf_protection' => false]);
+
+        $this->processForm($request, $form, false);
+
+        if ($form->isValid()) {
+            $em = $this->get('doctrine.orm.entity_manager');
+            $em->persist($rasci);
+            $em->flush();
+
+            return $this->createApiResponse($rasci, $isNew ? Response::HTTP_CREATED : Response::HTTP_ACCEPTED);
+        }
+
+        return $this->createApiResponse(
+            [
+                'messages' => $this->getFormErrors($form),
+            ],
+            Response::HTTP_BAD_REQUEST
+        );
     }
 }

@@ -13,6 +13,24 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Rasci
 {
+    const DATA_RESPONSIBLE = 'responsible';
+    const DATA_ACCOUNTABLE = 'accountable';
+    const DATA_SUPPORT = 'support';
+    const DATA_CONSULTED = 'consulted';
+    const DATA_INFORMED = 'informed';
+
+    public static function getDataChoices()
+    {
+        return [
+            '' => '',
+            self::DATA_RESPONSIBLE => self::DATA_RESPONSIBLE,
+            self::DATA_ACCOUNTABLE => self::DATA_ACCOUNTABLE,
+            self::DATA_SUPPORT => self::DATA_SUPPORT,
+            self::DATA_CONSULTED => self::DATA_CONSULTED,
+            self::DATA_INFORMED => self::DATA_INFORMED,
+        ];
+    }
+
     /**
      * @var int
      *
@@ -109,9 +127,16 @@ class Rasci
 
     /**
      * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("workPackage")
+     */
+    public function getWorkPackageId()
+    {
+        return $this->workPackage ? $this->workPackage->getId() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("workPackageName")
-     *
-     * @return string
      */
     public function getWorkPackageName()
     {
