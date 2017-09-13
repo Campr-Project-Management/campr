@@ -1,17 +1,79 @@
 <template>
-    <ul class="rasci-select" v-bind:class="responsibillity">
-        <li class="rasci-default"><span></span></li>
-        <li class="rasci-r"><span>R</span></li>
-        <li class="rasci-a"><span>A</span></li>
-        <li class="rasci-s"><span>S</span></li>
-        <li class="rasci-c"><span>C</span></li>
-        <li class="rasci-i"><span>I</span></li>
+    <ul class="rasci-select" v-bind:class="{
+        default: !responsibilityValue,
+        responsible: responsibilityValue === 'responsible',
+        accountable: responsibilityValue === 'accountable',
+        support: responsibilityValue === 'support',
+        consulted: responsibilityValue === 'consulted',
+        informed: responsibilityValue === 'informed',
+        disabled: disabled,
+        active: active,
+        last: isLast,
+        'second-to-last': isSecondToLast,
+    }" @click="!disabled && (active = !active)">
+        <li class="rasci-default">
+            <span></span>
+        </li>
+        <li class="rasci-r" @click="responsibilityValue = 'responsible'">
+            <span>R</span>
+        </li>
+        <li class="rasci-a" @click="responsibilityValue = 'accountable'">
+            <span>A</span>
+        </li>
+        <li class="rasci-s" @click="responsibilityValue = 'support'">
+            <span>S</span>
+        </li>
+        <li class="rasci-c" @click="responsibilityValue = 'consulted'">
+            <span>C</span>
+        </li>
+        <li class="rasci-i" @click="responsibilityValue = 'informed'">
+            <span>I</span>
+        </li>
     </ul>
 </template>
 
 <script>
+import {mapActions} from 'vuex';
+
 export default {
-    props: ['responsibillity'],
+    props: {
+        isLast: {},
+        isSecondToLast: {},
+        project: {},
+        user: {},
+        workPackage: {},
+        responsibility: {},
+        disabled: {
+            default() {
+                return false;
+            },
+        },
+    },
+    methods: {
+        ...mapActions(['setRaci']),
+    },
+    computed: {
+        getClass() {
+            return this.responsibility;
+        },
+    },
+    watch: {
+        responsibilityValue(value) {
+            if (value === this.responsibility) {
+                return;
+            }
+            this.$emit('value', value);
+        },
+    },
+    data() {
+        return {
+            active: false,
+            responsibilityValue: null,
+        };
+    },
+    created() {
+        this.responsibilityValue = this.responsibility;
+    },
 };
 </script>
 
@@ -196,6 +258,14 @@ export default {
         }
 
         &.active {
+            &.last {
+                left: -80px;
+            }
+
+            &.second-to-last {
+                left: -40px;
+            }
+
             li {
                 z-index: 2;
                 @include opacity(1);
