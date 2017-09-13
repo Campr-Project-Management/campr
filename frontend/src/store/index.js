@@ -56,6 +56,7 @@ import dashboard from './modules/dashboard';
 import cost from './modules/cost';
 import module from './modules/module';
 import statusReport from './modules/status-report';
+import rasci from './modules/rasci';
 
 Vue.use(Vuex);
 
@@ -119,6 +120,7 @@ export default new Vuex.Store({
         cost,
         module,
         statusReport,
+        rasci,
     },
     strict: debug,
 });
