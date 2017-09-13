@@ -70,6 +70,12 @@ services:
         arguments:
             - "@doctrine.orm.entity_manager"
 
+    app.service.rasci_matrix:
+        class: AppBundle\Services\RasciMatrixService
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@jms_serializer"
+
     redis.client:
         class: Predis\Client
         arguments:
