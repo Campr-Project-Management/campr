@@ -124,14 +124,11 @@ export default new Vuex.Store({
         cost,
         module,
         statusReport,
-<<<<<<< 57ff0408f7cd0e4590888f4da6def81071aa38bf
         rasci,
-=======
         projectCloseDown,
         evaluationObjective,
         lesson,
         closeDownAction,
->>>>>>> Project close down
     },
     strict: debug,
 });
