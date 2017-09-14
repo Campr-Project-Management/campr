@@ -14,18 +14,18 @@
     </div>
     <div v-else-if="showEdit">
         <div class="hr small"></div>
-        <input-field v-if="item.title" v-model="title" :content="title" type="text" v-bind:label="dynamicLabels(type, 'title')"></input-field>
+        <input-field v-if="item.title" v-model="title" :content="title" type="text" v-bind:label="dynamicLabels(type)"></input-field>
         <error
             v-if="item.title && validationMessages.dragbox && validationMessages.title && validationMessages.title.length"
             v-for="message in validationMessages.title"
             :message="message" />
-        <input-field v-if="!item.title" v-model="description" :content="description" type="text" v-bind:label="dynamicLabels(type, 'description')"></input-field><br />
+        <input-field v-if="!item.title" v-model="description" :content="description" type="text" v-bind:label="dynamicLabels(type)"></input-field><br />
         <error
             v-if="!item.title && validationMessages.dragbox && validationMessages.description && validationMessages.description.length"
             v-for="message in validationMessages.description"
             :message="message" />
         <div class="flex flex-direction-reverse">
-            <a v-on:click="edit(type)" class="btn-rounded">{{ dynamicLabels(type, 'button') }}</a>
+            <a v-on:click="edit(type)" class="btn-rounded">{{ translateText('button.save') }}</a>
         </div>
         <br />
     </div>
@@ -48,32 +48,17 @@ export default {
     data: function() {
         return {
             showEdit: false,
-            message: {
-                new_objective_title: Translator.trans('message.new_objective_title'),
-                new_objective_description: Translator.trans('message.new_objective_description'),
-                edit_objective: Translator.trans('message.edit_objective'),
-                new_project_limitation: Translator.trans('message.new_project_limitation'),
-                edit_limitation: Translator.trans('message.edit_limitation'),
-                new_project_deliverable: Translator.trans('message.new_project_deliverable'),
-                edit_deliverable: Translator.trans('message.edit_deliverable'),
-            },
             title: this.item.title,
             description: this.item.description,
             validationMessages: {},
         };
     },
     methods: {
-        dynamicLabels: function(type, message) {
-            let x = '';
-            if (type !== 'objective' && message !== 'button') {
-                x = 'this.message.new_project_'+ type;
-            } else if (type === 'objective' && message !== 'button') {
-                x = 'this.message.new_'+ type + '_' + message;
-            } else if (message === 'button') {
-                x = 'this.message.edit_'+ type;
-            }
-
-            return eval(x);
+        translateText: function(text) {
+            return this.translate(text);
+        },
+        dynamicLabels: function(type) {
+            return this.translateText('message.edit_'+type);
         },
         showEditBox: function() {
             this.showEdit = true;
@@ -133,6 +118,50 @@ export default {
                 this
                     .$parent
                     .editDeliverable(data)
+                    .then(
+                        (response) => {
+                            this.$parent.showSavedComponent = true;
+                            if (response.body && response.body.error) {
+                                const {messages} = response.body;
+                                messages.dragbox = true;
+                                this.validationMessages = messages;
+                            } else {
+                                this.validationMessages = {};
+                                this.showEdit = false;
+                            }
+                        },
+                        () => {
+                            this.$parent.showFailedComponent = true;
+                        }
+                    )
+                ;
+                break;
+            case 'evaluation':
+                this
+                    .$parent
+                    .editEvaluationObjective(data)
+                    .then(
+                        (response) => {
+                            this.$parent.showSavedComponent = true;
+                            if (response.body && response.body.error) {
+                                const {messages} = response.body;
+                                messages.dragbox = true;
+                                this.validationMessages = messages;
+                            } else {
+                                this.validationMessages = {};
+                                this.showEdit = false;
+                            }
+                        },
+                        () => {
+                            this.$parent.showFailedComponent = true;
+                        }
+                    )
+                ;
+                break;
+            case 'lesson':
+                this
+                    .$parent
+                    .editLesson(data)
                     .then(
                         (response) => {
                             this.$parent.showSavedComponent = true;
