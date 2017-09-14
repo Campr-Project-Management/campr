@@ -104,7 +104,10 @@
                                 <th>{{ translateText('table_header_cell.contact') }}</th>
                                 <th class="text-center switchers">{{ translateText('table_header_cell.rasci') }}</th>
                                 <th class="text-center switchers">{{ translateText('table_header_cell.org') }}</th>
-                                <th class="text-center switchers" v-if='project.distributionLists' v-for="dl in project.distributionLists">{{ dl.name }}</th>
+                                <th class="text-center switchers" v-if='project.distributionLists' v-for="dl in project.distributionLists">
+                                    <span v-if="dl.sequence === -1">{{ translateText(dl.name) }}</span>
+                                    <span v-else>{{ dl.name }}</span>
+                                </th>
                                 <th>{{ translateText('table_header_cell.actions') }}</th>
                             </tr>
                         </thead>
@@ -271,12 +274,6 @@ export default {
                 });
                 break;
             };
-        },
-        updateDistribution: function(item, distribution) {
-            this.inDistribution
-                ? this.addToDistribution({id: distribution.id, user: item.user})
-                : this.removeFromDistribution({id: distribution.id, user: item.user})
-            ;
         },
         updateDistributionItem: function(item, distribution) {
             const self = this;
