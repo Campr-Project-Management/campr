@@ -265,8 +265,8 @@ export default {
             this.forecastStartDate = this.contract.forecastStartDate ? new Date(this.contract.forecastStartDate) : new Date();
             this.forecastEndDate = this.contract.forecastEndDate ? new Date(this.contract.forecastEndDate) : new Date();
             this.frozen = this.contract.frozen;
-            this.descriptionEditor.setContent(this.contract.description);
-            this.eventEditor.setContent(this.contract.projectStartEvent);
+            this.descriptionEditor.setContent(this.contract.description ? this.contract.description : '');
+            this.eventEditor.setContent(this.contract.projectStartEvent ? this.contract.projectStartEvent : '');
         },
         costData(value) {
             Object.entries(this.costData.byPhase).map(([key, value]) => {
