@@ -3,6 +3,7 @@
 namespace AppBundle\EventListener;
 
 use AppBundle\Entity\ColorStatus;
+use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\ProjectUser;
@@ -55,6 +56,16 @@ class ProjectListener
             $projectUser->addProjectRole($role);
 
             $em->persist($projectUser);
+
+            $specialDistribution = new DistributionList();
+            $specialDistribution->setName(DistributionList::STATUS_REPORT_DISTRIBUTION);
+            $specialDistribution->setSequence(-1);
+            $specialDistribution->setPosition(0);
+            $specialDistribution->setProject($entity);
+            $specialDistribution->addUser($user);
+            $specialDistribution->setCreatedBy($user);
+
+            $em->persist($specialDistribution);
 
             $tasks = $this->getTasksFromTranslation();
             foreach ($tasks as $task) {

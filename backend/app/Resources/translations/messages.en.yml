@@ -837,6 +837,7 @@ subtitle:
     task_precedesor: Task predecesor
 
 label:
+    status_report_distribution: Status Report Distribution
     edit_topic: Edit topic
     delete_topic: Delete topic
     view_status_report: View Status Report
