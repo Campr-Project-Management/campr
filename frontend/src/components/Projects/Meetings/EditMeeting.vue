@@ -153,8 +153,8 @@
                                             <td>{{ getDuration(agenda.start, agenda.end) }} {{ translateText('message.min') }}</td>
                                             <td>
                                                 <div class="text-right">
-                                                    <a @click="initEditAgenda(agenda)"  class="btn-icon" v-tooltip.top-center="translateText('message.edit_topic')"><edit-icon fill="second-fill"></edit-icon></a>
-                                                    <a @click="initDeleteAgenda(agenda)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_topic')"><delete-icon fill="danger-fill"></delete-icon></a>
+                                                    <a @click="initEditAgenda(agenda)"  class="btn-icon" v-tooltip.top-center="translateText('label.edit_topic')"><edit-icon fill="second-fill"></edit-icon></a>
+                                                    <a @click="initDeleteAgenda(agenda)" class="btn-icon" v-tooltip.top-center="translateText('label.delete_topic')"><delete-icon fill="danger-fill"></delete-icon></a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -636,7 +636,7 @@ export default {
                 responsibility: [todo.responsibility],
                 responsibilityFullName: todo.responsibilityFullName,
                 dueDate: todo.dueDate ? new Date(todo.dueDate) : new Date(),
-                status: {key: todo.status, label: todo.statusName},
+                status: {key: todo.status, label: this.translateText(todo.statusName)},
                 meeting: this.$route.params.meetingId,
             };
             setTimeout(() => {
