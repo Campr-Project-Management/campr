@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\API;
 
+use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\StatusReport;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -42,6 +43,7 @@ class StatusReportController extends ApiController
     public function emailAction(StatusReport $statusReport)
     {
         $mailerService = $this->get('app.service.mailer');
+        $em = $this->getDoctrine()->getManager();
         $html = $this->renderView(':status_report:pdf.html.twig', ['statusReport' => $statusReport]);
         $pdf = $this
             ->get('app.service.pdf')
@@ -49,10 +51,13 @@ class StatusReportController extends ApiController
             ->pageSize('A4')
             ->get()
         ;
-        // TODO: retrive the special reports distribution list of users
-        $distributionLists = [];
-        foreach ($distributionLists as $distributionList) {
-            $users = $distributionList->getUsers();
+
+        $specialDistribution = $em->getRepository(DistributionList::class)->findOneBy([
+            'project' => $statusReport->getProject(),
+            'sequence' => -1,
+        ]);
+        if ($specialDistribution) {
+            $users = $specialDistribution->getUsers();
             foreach ($users as $user) {
                 $mailerService->sendEmail(
                     ':status_report:email_report.html.twig',
