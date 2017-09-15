@@ -9,8 +9,8 @@
               </p>
           </div>
           <p v-show="titleLeft" class="title-left"><span>Status: </span> {{ titleLeft }}</p>
-          <div class="filled" v-bind:style="{ background: color }" v-show="percentage != 0"></div>
-          <div class="zero-fill" v-bind:style="{ background: color }" v-show="percentage == 0"></div>
+          <div class="filled" v-bind:style="{ background: color }" v-if="!isZeroFill"></div>
+          <div class="zero-fill" v-if="isZeroFill"></div>
       </div>
     </div>
 </template>
@@ -18,6 +18,11 @@
 <script>
 export default {
     props: ['percentage', 'color', 'titleLeft', 'titleRight', 'position'],
+    computed: {
+        isZeroFill: function() {
+            return this.percentage == 0;
+        },
+    },
     mounted() {
         const $this = window.$('#chart' + this._uid);
         let speed = 1000;
@@ -25,7 +30,7 @@ export default {
         const $percentageNumber = $this.find('.number');
 
         $this.find('.filled')
-        .animate({'width': $this.data('number') + '%'}, speed);
+        .animate({'width': this.percentage + '%'}, speed);
 
         window.$({Counter: 0})
             .animate({Counter: $this.data('number')}, {
