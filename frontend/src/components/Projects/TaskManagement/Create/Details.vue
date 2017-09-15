@@ -17,6 +17,8 @@
                         v-model="details.accountable"
                         v-bind:currentOption="details.accountable" />
                 </div>
+            </div>
+            <div class="form-group">
                 <div class="col-md-4">
                     <multi-select-field
                         v-bind:title="translateText('label.select_support_users')"
@@ -24,8 +26,6 @@
                         v-bind:selectedOptions="details.supportUsers"
                         v-model="details.supportUsers" />
                 </div>
-            </div>
-            <div class="form-group">
                 <div class="col-md-4">
                     <multi-select-field
                         v-bind:title="translateText('label.select_consulted_users')"
