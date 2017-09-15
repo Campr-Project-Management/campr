@@ -155,8 +155,8 @@ export default {
         addExternalCost: function() {
             this.externalCosts.items.push({
                 description: '',
-                qty: 1,
-                unitRate: 1,
+                quantity: 0,
+                rate: 0,
                 capex: 0,
                 opex: 1,
                 customUnit: '',
@@ -216,10 +216,6 @@ export default {
         },
     },
     created() {
-        if (!this.externalCosts.items.length) {
-            this.addExternalCost();
-        }
-
         this.getProjectUnits(this.$route.params.id);
     },
     data() {
