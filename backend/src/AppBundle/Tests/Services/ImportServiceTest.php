@@ -19,6 +19,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Validator\Validator\RecursiveValidator;
 
 class ImportServiceTest extends KernelTestCase
 {
@@ -54,6 +55,9 @@ class ImportServiceTest extends KernelTestCase
     /** @var string */
     private $path;
 
+    /** @var Validator */
+    private $validator;
+
     public function setUp()
     {
         self::bootKernel();
@@ -78,6 +82,11 @@ class ImportServiceTest extends KernelTestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
+        $this->validator = $this
+            ->getMockBuilder(RecursiveValidator::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this
             ->projectRepository
@@ -92,10 +101,16 @@ class ImportServiceTest extends KernelTestCase
             ->willReturn(null)
         ;
 
+        $this->validator
+            ->expects($this->any())
+            ->method('validate')
+            ->willReturn([])
+        ;
+
         $this->container = self::$kernel->getContainer();
         $this->path = $this->container->getParameter('tests_import_folder');
         $this->finder = new Finder();
-        $this->importService = new ImportService($this->entityManager);
+        $this->importService = new ImportService($this->entityManager, $this->validator);
     }
 
     public function testImportCalendars()
@@ -207,6 +222,7 @@ class ImportServiceTest extends KernelTestCase
         ;
 
         $this->files = $this->finder->files()->in($this->path)->name(self::IMPORT_TASKS);
+
         foreach ($this->files as $file) {
             $content = file_get_contents($file->getRealPath());
             $this->importService->importProjects(new Project(), $content);

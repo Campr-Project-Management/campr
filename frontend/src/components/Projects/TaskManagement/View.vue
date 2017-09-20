@@ -691,6 +691,10 @@
                         </div>
                     </div>
                     <!-- /// End Labels /// -->
+                    <hr class="double">
+                    <div class="footer-buttons">
+                        <a href="javascript:void(0)" @click="getXmlFile" class="btn-rounded btn-auto btn-empty">{{ translateText('label.export_task') }}</a>
+                    </div>
                 </div>
                 <!-- /// End Task Sidebar /// -->
             </div>
@@ -717,6 +721,7 @@ import router from '../../../router';
 import Condition from './Create/Condition';
 import moment from 'moment';
 import {createFormData} from '../../../helpers/task';
+import Vue from 'vue';
 
 export default {
     components: {
@@ -1304,7 +1309,19 @@ export default {
             }
             return '-';
         },
-
+        getXmlFile: function() {
+            Vue.http
+                .get(Routing.generate('app_api_workpackage_export', {id: this.task.id})).then((response) => {
+                    if (response.status === 200) {
+                        let blob = new Blob([response.body], {type: 'mime/type'});
+                        let link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = 'task_' + this.task.id + '.xml';
+                        link.click();
+                    }
+                }, (response) => {}
+            );
+        },
     },
     data: function() {
         return {

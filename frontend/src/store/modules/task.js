@@ -317,6 +317,33 @@ const actions = {
             }, (response) => {
             });
     },
+    /**
+     * Import
+     * @param {function} commit
+     * @param {array} data
+     * @return {object}
+     */
+    importTask({commit}, data) {
+        return Vue.http
+            .post(
+                Routing.generate('app_api_project_tasks_import', {'id': data.projectId}),
+                data.data
+            ).then(
+                (response) => {
+                    if (response.body && response.body.error) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    }
+                    return response;
+                },
+                (response) => {
+                    return response;
+                }
+            )
+        ;
+    },
 };
 
 const mutations = {
