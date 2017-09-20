@@ -3,6 +3,7 @@
 namespace AppBundle\Services;
 
 use AppBundle\Entity\Assignment;
+use AppBundle\Entity\Company;
 use AppBundle\Entity\CustomField;
 use AppBundle\Entity\CustomFieldValue;
 use AppBundle\Entity\Timephase;
@@ -16,6 +17,7 @@ use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Day;
 use AppBundle\Entity\WorkingTime;
 use AppBundle\Utils\ImportConstants;
+use Symfony\Component\Validator\Validator\RecursiveValidator;
 
 /**
  * Class ImportService
@@ -29,11 +31,13 @@ class ImportService
     /**
      * ImportService constructor.
      *
-     * @param EntityManager $em
+     * @param EntityManager      $em
+     * @param RecursiveValidator $validator
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, RecursiveValidator $validator)
     {
         $this->em = $em;
+        $this->validator = $validator;
         $this->customFieldRepo = $this->em->getRepository(CustomField::class);
     }
 
@@ -73,6 +77,9 @@ class ImportService
                     if ($this->checkIsDate((string) $element)) {
                         $date = str_replace('T', ' ', (string) $element);
                         $project->$action(new \DateTime($date));
+                    } elseif ($tag === ImportConstants::PROJECT_COMPANY_TAG) {
+                        $company = $this->importCompany((string) $element);
+                        $project->$action($company);
                     } else {
                         $project->$action((string) $element);
                     }
@@ -309,6 +316,13 @@ class ImportService
                 }
             }
             $newWorkPackage->setProject($project);
+            $newWorkPackage->setType(WorkPackage::TYPE_TASK);
+
+            $errors = $this->validator->validate($newWorkPackage);
+            if (count($errors) > 0) {
+                throw new \Exception((string) $errors);
+            }
+
             $this->em->persist($newWorkPackage);
             $this->em->flush();
             $this->saveQueueItems($workPackageSaveQueue);
@@ -502,6 +516,24 @@ class ImportService
             $this->em->flush();
             $this->saveQueueItems($timephaseSaveQueue);
         }
+    }
+
+    private function importCompany($companyName)
+    {
+        $company = $this
+            ->em
+            ->getRepository(Company::class)
+            ->findOneBy([
+                'name' => $companyName,
+            ])
+        ;
+        if ($company) {
+            return $company;
+        }
+
+        return (new Company())
+            ->setName($companyName)
+        ;
     }
 
     private function addCustomField($fieldName, $value, $object, $className, $saveQueue)
