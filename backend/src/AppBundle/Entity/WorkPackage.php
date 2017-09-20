@@ -117,7 +117,7 @@ class WorkPackage
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="workPackages")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="workPackages", cascade={"persist"})
      * @ORM\JoinColumn(name="project_id")
      */
     private $project;

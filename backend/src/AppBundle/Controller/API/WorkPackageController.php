@@ -405,4 +405,24 @@ class WorkPackageController extends ApiController
 
         return $this->createApiResponse($history);
     }
+
+    /**
+     * Export WorkPackage as Xml.
+     *
+     * @Route("/{id}/export", name="app_api_workpackage_export", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param WorkPackage $workPackage
+     *
+     * @return xml file
+     */
+    public function exportAction(WorkPackage $workPackage)
+    {
+        $this->denyAccessUnlessGranted(WorkPackageVoter::VIEW, $workPackage);
+
+        $exportService = $this->get('app.service.export');
+        $xmlTask = $exportService->exportTask($workPackage);
+
+        return new Response($xmlTask->asXML());
+    }
 }
