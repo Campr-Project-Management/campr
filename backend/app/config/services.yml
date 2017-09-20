@@ -115,6 +115,11 @@ services:
         arguments:
             - '%app.path.wkhtmltopdf%'
 
+    app.service.wbs:
+        class: AppBundle\Services\WBSService
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
 ### MENU BUILDER ###
     app.menu.menu_builder:
         class: AppBundle\Menu\MenuBuilder

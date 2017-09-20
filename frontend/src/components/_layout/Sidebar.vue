@@ -162,6 +162,12 @@
                     </router-link>
                 </li>
                 <li>
+                    <router-link :to="{name: 'project-wbs'}" v-bind:title="message.wbs">
+                        <span class="default">{{ message.wbs }}</span>
+                        <span class="tablet"></span>
+                    </router-link>
+                </li>
+                <li>
                     <router-link :to="{name: 'project-status-reports'}" v-bind:title="message.status_reports">
                         <span class="default">{{ message.status_reports }}</span>
                         <span class="tablet"></span>
@@ -219,6 +225,7 @@ export default {
                 gantt_chart: this.translate('message.gantt_chart'),
                 rasci_matrix: this.translate('message.rasci_matrix'),
                 close_down_report: this.translate('message.close_down_report'),
+                wbs: this.translate('message.wbs'),
             },
         };
     },

@@ -61,6 +61,7 @@ import projectCloseDown from './modules/project-close-down';
 import evaluationObjective from './modules/evaluation-objective';
 import lesson from './modules/lesson';
 import closeDownAction from './modules/close-down-action';
+import wbs from './modules/wbs';
 
 Vue.use(Vuex);
 
@@ -129,6 +130,7 @@ export default new Vuex.Store({
         evaluationObjective,
         lesson,
         closeDownAction,
+        wbs,
     },
     strict: debug,
 });
