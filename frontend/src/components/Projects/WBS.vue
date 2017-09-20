@@ -198,8 +198,6 @@ export default {
             let canvasNodesUpdate = canvasNodesEnter.merge(canvasNodes);
 
             canvasNodesUpdate
-                .transition()
-                .duration(this.animationSpeed)
                 .attr('transform', (d) => `translate(${d.y}, ${d.x})`)
             ;
 
@@ -212,17 +210,11 @@ export default {
                 .attr('cursor', 'pointer')
             ;
 
-//            let canvasNodesExit =
             canvasNodes
                 .exit()
-                .transition()
-                .duration(this.animationSpeed)
                 .attr('transform', (d) => `translate(${source.y}, ${source.x})`)
                 .remove()
             ;
-
-//            canvasNodesExit.select('circle').attr('r', 0);
-//            canvasNodesExit.select('text').attr('fill-opacity', 0);
 
             let canvasLinks = this.g
                 .selectAll('path.link')
@@ -247,7 +239,8 @@ export default {
             canvasLinksUpdate
                 .attr('d', (d) => {
                     return this.diagonal(d, d.parent);
-                });
+                })
+            ;
 
             canvasLinks
                 .exit()
@@ -303,7 +296,7 @@ export default {
             // zoom
             const zoom = d3.zoom()
                 .scaleExtent([0.1, 4])
-                .on('zoom', (event) => {
+                .on('zoom', () => {
                     this.g.attr('transform', d3.event.transform);
                 })
             ;
@@ -336,16 +329,12 @@ export default {
 </script>
 
 <style lang="scss">
-    /*#tree_container { !* , #tree_container svg *!*/
-        /*overflow: hidden;*/
-    /*}*/
-
     .node {
         cursor: pointer;
     }
 
     .overlay {
-        background-color:#EEE;
+        background-color: #eeeeee;
     }
 
     .node circle {
@@ -370,19 +359,5 @@ export default {
 
     .title {
         font-weight: bold;
-    }
-
-    .templink {
-        fill: none;
-        stroke: red;
-        stroke-width: 3px;
-    }
-
-    .ghostCircle.show{
-        display:block;
-    }
-
-    .ghostCircle, .activeDrag .ghostCircle{
-        display: none;
     }
 </style>
