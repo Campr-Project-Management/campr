@@ -2314,4 +2314,13 @@ class ProjectController extends ApiController
 
         return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
+
+    /**
+     * @Route("/{id}/wbs", name="app_api_project_wbs", options={"expose"=true})
+     * @Method({"GET"})
+     */
+    public function getWBSAction(Project $project)
+    {
+        return $this->createApiResponse($this->get('app.service.wbs')->getData($project));
+    }
 }
