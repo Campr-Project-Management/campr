@@ -54,6 +54,7 @@ import RASCIMatrix from '../components/Projects/RASCIMatrix.vue';
 import CloseDownReport from '../components/Projects/ProjectCloseDownReport.vue';
 import RemainingActionView from '../components/Projects/CloseDownReport/ViewRemainingAction.vue';
 import RemainingActionEdit from '../components/Projects/CloseDownReport/EditRemainingAction.vue';
+import WBS from '../components/Projects/WBS.vue';
 
 
 Vue.use(VueRouter);
@@ -374,6 +375,11 @@ const routes = [
                 path: 'close-down-report/edit-remaining-action/:actionId',
                 component: RemainingActionEdit,
                 name: 'project-close-down-report-edit-remaining-action',
+            },
+            {
+                path: 'wbs',
+                component: WBS,
+                name: 'project-wbs',
             },
         ],
     },
