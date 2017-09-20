@@ -415,6 +415,7 @@ message:
     condition: Condition
     change_accountable: Change Accountable
     uploading_file_failed: There was an error while uploading the file
+    wbs: WBS
 
 menu:
     users: Users
