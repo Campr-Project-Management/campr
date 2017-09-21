@@ -1040,9 +1040,9 @@ export default {
                     accountable: this.task.accountability
                         ? {key: this.task.accountability, label: this.task.accountabilityFullName}
                         : null,
-                    supportUsers: this.task.supportUsers,
-                    consultedUsers: this.task.consultedUsers,
-                    informedUsers: this.task.informedUsers,
+                    supportUsers: this.editableData.supportUsers,
+                    consultedUsers: this.editableData.consultedUsers,
+                    informedUsers: this.editableData.informedUsers,
                     status: this.task.workPackageStatus
                         ? {key: this.task.workPackageStatus, label: ''}
                         : null,
