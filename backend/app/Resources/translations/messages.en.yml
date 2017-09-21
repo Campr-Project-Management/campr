@@ -759,6 +759,8 @@ title:
         create: Create new info category
         edit: Edit info category
     project_add_error: There where some errors while saving the project
+    status:
+      edit: Edit
 
 subtitle:
     project_close_down: List of project close downs
