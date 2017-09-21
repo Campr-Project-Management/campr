@@ -67,7 +67,7 @@ export default {
     },
     watch: {
         value(val) {
-            if (val.length) {
+            if (val.length && val[0] != null) {
                 this.getUsers({id: val});
             } else {
                 this.clearUsers();
