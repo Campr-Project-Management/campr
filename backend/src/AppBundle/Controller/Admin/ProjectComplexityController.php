@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\ProjectComplexity;
 use AppBundle\Form\ProjectComplexity\CreateType as ProjectComplexityCreateType;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
  * ProjectComplexity admin controller.
@@ -187,15 +188,43 @@ class ProjectComplexityController extends BaseController
      */
     public function deleteAction(Request $request, ProjectComplexity $projectComplexity)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($projectComplexity);
-        $em->flush();
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($projectComplexity);
+            $em->flush();
 
-        if ($request->isXmlHttpRequest()) {
             $message = [
                 'delete' => 'success',
             ];
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('success.project_complexity.delete.from_edit', [], 'flashes')
+            ;
+            $flashKey = 'success';
+        } catch (ForeignKeyConstraintViolationException $ex) {
+            $message = [
+                'delete' => 'failed',
+            ];
 
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('failed.project_complexity.delete.dependency_constraint', [], 'flashes')
+            ;
+            $flashKey = 'failed';
+        } catch (\Exception $ex) {
+            $message = [
+                'delete' => 'failed',
+            ];
+
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('failed.project_complexity.delete.generic', [], 'flashes')
+            ;
+            $flashKey = 'failed';
+        }
+
+        if ($request->isXmlHttpRequest()) {
+            $message['message'] = $flashMessage;
             return new JsonResponse($message);
         }
 
@@ -203,10 +232,8 @@ class ProjectComplexityController extends BaseController
             ->get('session')
             ->getFlashBag()
             ->set(
-                'success',
-                $this
-                    ->get('translator')
-                    ->trans('success.project_complexity.delete.from_edit', [], 'flashes')
+                $flashKey,
+                $flashMessage
             )
         ;
 

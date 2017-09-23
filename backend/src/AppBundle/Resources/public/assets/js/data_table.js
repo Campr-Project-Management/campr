@@ -82,10 +82,16 @@ $(function () {
                         }, 2500);
                     }
                     if (data.delete === 'failed') {
-                        $('#delete-item-alert-failure').removeClass('hidden');
+                        if (data.message != 'undefined') {
+                            $('#delete-item-alert-failure').html('<strong>' + data.message + '</strong>');
+                        }
+                        $('#delete-item-alert-failure')
+                            .removeClass('hidden')
+                            .show()
+                        ;
                         $('#object-id').html(routeParams['id']);
                         setTimeout(function () {
-                            $('#delete-item-alert').fadeOut('slow');
+                            $('#delete-item-alert-failure').fadeOut('slow');
                         }, 2500);
                     }
                 }
