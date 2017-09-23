@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\ProjectStatus;
 use AppBundle\Form\ProjectStatus\CreateType as ProjectStatusCreateType;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
  * ProjectStatus admin controller.
@@ -187,15 +188,45 @@ class ProjectStatusController extends BaseController
      */
     public function deleteAction(Request $request, ProjectStatus $projectStatus)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($projectStatus);
-        $em->flush();
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($projectStatus);
+            $em->flush();
 
-        if ($request->isXmlHttpRequest()) {
             $message = [
                 'delete' => 'success',
             ];
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('success.project_status.delete.from_edit', [], 'flashes')
+            ;
+            $flashKey = 'success';
+        } catch (ForeignKeyConstraintViolationException $ex) {
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('failed.project_status.delete.dependency_constraint', [], 'flashes')
+            ;
+            $flashKey = 'failed';
 
+            $message = [
+                'delete' => 'failed',
+                'message' => $flashMessage,
+            ];
+        } catch (\Exception $ex) {
+            echo get_class($ex); die;
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('failed.project_status.delete.generic', [], 'flashes')
+            ;
+            $flashKey = 'failed';
+
+            $message = [
+                'delete' => 'failed',
+                'message' => $flashMessage,
+            ];
+        }
+
+        if ($request->isXmlHttpRequest()) {
             return new JsonResponse($message);
         }
 
@@ -203,10 +234,8 @@ class ProjectStatusController extends BaseController
             ->get('session')
             ->getFlashBag()
             ->set(
-                'success',
-                $this
-                    ->get('translator')
-                    ->trans('success.project_status.delete.from_edit', [], 'flashes')
+                $flashKey,
+                $flashMessage
             )
         ;
 
