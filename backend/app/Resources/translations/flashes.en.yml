@@ -486,6 +486,30 @@ failed:
         remove:
             yourself: You are not able to remove yourself from the %team_name%.
             not_part_of_the_team: User %team_member_name% is not part of the team %team_name%.
+    project:
+        delete:
+            generic: There was an error  when deleting a project.
+            dependency_constraint: Project cannot be deleted because there are other entities that are depending on it!
+    project_complexity:
+        delete:
+            generic: There was an error  when deleting a project complexity.
+            dependency_constraint: Project complexity cannot be deleted because there are other entities that are depending on it!
+    project_status:
+        delete:
+            generic: There was an error  when deleting this project status.
+            dependency_constraint: Project status cannot be deleted because there are other entities that are depending on it!
+    project_category:
+        delete:
+            generic: There was an error  when deleting this project category.
+            dependency_constraint: Project category cannot be deleted because there are other entities that are depending on it!
+    project_scope:
+        delete:
+            generic: There was an error  when deleting this project scope.
+            dependency_constraint: Project scope cannot be deleted because there are other entities that are depending on it!
+    project_team:
+        delete:
+            generic: There was an error  when deleting this project team.
+            dependency_constraint: Project team cannot be deleted because there are other entities that are depending on it!
 
 activation:
     not_found: No account activation found!
