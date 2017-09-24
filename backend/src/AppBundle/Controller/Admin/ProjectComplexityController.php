@@ -225,6 +225,7 @@ class ProjectComplexityController extends BaseController
 
         if ($request->isXmlHttpRequest()) {
             $message['message'] = $flashMessage;
+
             return new JsonResponse($message);
         }
 

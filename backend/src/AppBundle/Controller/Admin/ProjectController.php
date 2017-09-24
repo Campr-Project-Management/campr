@@ -203,7 +203,7 @@ class ProjectController extends ApiController
     {
         $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
 
-        try{
+        try {
             $em = $this->getDoctrine()->getManager();
             $em->remove($project);
             $em->flush();

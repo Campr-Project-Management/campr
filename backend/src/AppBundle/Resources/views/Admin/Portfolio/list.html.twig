@@ -16,6 +16,11 @@
                     <strong>{{ flash_message }}</strong>
                 </div>
             {% endfor %}
+            {% for flash_message in app.session.flashBag.get('failed') %}
+                <div id="general-alert" class="alert alert-danger m-t-15">
+                    <strong>{{ flash_message }}</strong>
+                </div>
+            {% endfor %}
             <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                 <strong>
                     {{ 'success.portfolio.delete.from_data_table'|trans({}, 'flashes') }}
@@ -25,6 +30,11 @@
                         {% endfor %}
                     </span>
                     {{ 'success.delete_common'|trans({}, 'flashes') }}
+                </strong>
+            </div>
+            <div id="delete-item-alert-failure" class="alert alert-danger m-t-15 hidden">
+                <strong>
+                    {{ 'failed.portofolio.delete.generic'|trans({}, 'flashes') }}
                 </strong>
             </div>
             <div class="table-responsive">

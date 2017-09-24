@@ -510,6 +510,34 @@ failed:
         delete:
             generic: There was an error  when deleting this project team.
             dependency_constraint: Project team cannot be deleted because there are other entities that are depending on it!
+    calendar:
+        delete:
+            generic: There was an error  when deleting this calendar.
+            dependency_constraint: Calendar cannot be deleted because there are other entities that are depending on it!
+    day:
+        delete:
+            generic: There was an error  when deleting this day.
+            dependency_constraint: Day cannot be deleted because there are other entities that are depending on it!
+    portofolio:
+        delete:
+            generic: There was an error  when deleting this portofolio.
+            dependency_constraint: Portofolio cannot be deleted because there are other entities that are depending on it!
+    workpackage:
+        delete:
+            generic: There was an error  when deleting this workpackage.
+            dependency_constraint: WorkPackage cannot be deleted because there are other entities that are depending on it!
+    risk_strategy:
+        delete:
+            generic: There was an error  when deleting this risk strategy.
+            dependency_constraint: Risk Strategy  cannot be deleted because there are other entities that are depending on it!
+    opportunity_strategy:
+        delete:
+            generic: There was an error  when deleting this opportunity strategy.
+            dependency_constraint: Opportunity Strategy  cannot be deleted because there are other entities that are depending on it!
+    meeting_category:
+        delete:
+            generic: There was an error  when deleting this meeting category.
+            dependency_constraint: Meeting Category cannot be deleted because there are other entities that are depending on it!
 
 activation:
     not_found: No account activation found!
