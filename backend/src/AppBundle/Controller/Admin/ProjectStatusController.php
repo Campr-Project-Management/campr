@@ -213,7 +213,6 @@ class ProjectStatusController extends BaseController
                 'message' => $flashMessage,
             ];
         } catch (\Exception $ex) {
-            echo get_class($ex); die;
             $flashMessage = $this
                 ->get('translator')
                 ->trans('failed.project_status.delete.generic', [], 'flashes')
