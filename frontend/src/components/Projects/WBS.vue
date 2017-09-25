@@ -174,7 +174,7 @@ export default {
                 .attr('class', 'color-status')
                 .attr('text-anchor', 'middle')
                 .attr('x', -(100 * 0.66))
-                .attr('y', 220 - 10)
+                .attr('y', 220 - 11)
                 .attr('fill', d => d.data.colorStatusColor || '#8794c4')
                 .attr('transform', 'rotate(-90)')
                 .text(d => {
@@ -210,7 +210,7 @@ export default {
                 .attr('text-anchor', 'middle')
                 .attr('dy', '20px')
                 .attr('x', -(100 * 0.166))
-                .attr('y', 220 - 30)
+                .attr('y', 220 - 31)
                 .attr('fill', '#8794c4')
                 .attr('transform', 'rotate(-90)')
                 .text(d => {
