@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Portfolio;
 use AppBundle\Form\Portfolio\CreateType as PortfolioCreateType;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
  * Portfolio admin controller.
@@ -188,15 +189,44 @@ class PortfolioController extends BaseController
      */
     public function deleteAction(Request $request, Portfolio $portfolio)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($portfolio);
-        $em->flush();
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($portfolio);
+            $em->flush();
 
-        if ($request->isXmlHttpRequest()) {
             $message = [
                 'delete' => 'success',
             ];
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('success.portfolio.delete.from_edit', [], 'flashes')
+            ;
+            $flashKey = 'success';
+        } catch (ForeignKeyConstraintViolationException $ex) {
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('failed.portofolio.delete.dependency_constraint', [], 'flashes')
+            ;
+            $flashKey = 'failed';
 
+            $message = [
+                'delete' => 'failed',
+                'message' => $flashMessage,
+            ];
+        } catch (\Exception $ex) {
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('failed.portofolio.delete.generic', [], 'flashes')
+            ;
+            $flashKey = 'failed';
+
+            $message = [
+                'delete' => 'failed',
+                'message' => $flashMessage,
+            ];
+        }
+
+        if ($request->isXmlHttpRequest()) {
             return new JsonResponse($message);
         }
 
@@ -204,10 +234,8 @@ class PortfolioController extends BaseController
             ->get('session')
             ->getFlashBag()
             ->set(
-                'success',
-                $this
-                    ->get('translator')
-                    ->trans('success.portfolio.delete.from_edit', [], 'flashes')
+                $flashKey,
+                $flashMessage
             )
         ;
 
