@@ -72,8 +72,9 @@ class WBSService
 
         $out = [
             'id' => $wp->getId(),
+            'project' => $wp->getProjectId(),
             'name' => (string) $wp,
-            'children' =>  [],
+            'children' => [],
             'type' => $wp->getType(),
             'colorStatus' => $wp->getColorStatusId(),
             'colorStatusName' => $wp->getColorStatusName(),
