@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\MeetingCategory;
 use AppBundle\Form\MeetingCategory\BaseType;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
  * MeetingCategory admin controller.
@@ -177,15 +178,43 @@ class MeetingCategoryController extends BaseController
      */
     public function deleteAction(Request $request, MeetingCategory $meetingCategory)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($meetingCategory);
-        $em->flush();
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($meetingCategory);
+            $em->flush();
 
-        if ($request->isXmlHttpRequest()) {
             $message = [
                 'delete' => 'success',
             ];
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('success.meeting_category.delete.from_edit', [], 'flashes')
+            ;
+            $flashKey = 'success';
+        } catch (ForeignKeyConstraintViolationException $ex) {
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('failed.meeting_category.delete.dependency_constraint', [], 'flashes')
+            ;
+            $flashKey = 'failed';
 
+            $message = [
+                'delete' => 'failed',
+                'message' => $flashMessage,
+            ];
+        } catch (\Exception $ex) {
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('failed.meeting_category.delete.generic', [], 'flashes')
+            ;
+            $flashKey = 'failed';
+
+            $message = [
+                'delete' => 'failed',
+                'message' => $flashMessage,
+            ];
+        }
+        if ($request->isXmlHttpRequest()) {
             return new JsonResponse($message);
         }
 
@@ -193,10 +222,8 @@ class MeetingCategoryController extends BaseController
             ->get('session')
             ->getFlashBag()
             ->set(
-                'success',
-                $this
-                    ->get('translator')
-                    ->trans('success.meeting_category.delete.from_edit', [], 'flashes')
+                $flashKey,
+                $flashMessage
             )
         ;
 

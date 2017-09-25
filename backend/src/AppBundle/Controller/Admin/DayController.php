@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Day;
 use AppBundle\Form\Day\CreateType;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
  * Day admin controller.
@@ -180,15 +181,43 @@ class DayController extends BaseController
      */
     public function deleteAction(Request $request, Day $day)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($day);
-        $em->flush();
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($day);
+            $em->flush();
 
-        if ($request->isXmlHttpRequest()) {
             $message = [
                 'delete' => 'success',
             ];
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('success.day.delete.from_edit', [], 'flashes')
+            ;
+            $flashKey = 'success';
+        } catch (ForeignKeyConstraintViolationException $ex) {
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('failed.day.delete.dependency_constraint', [], 'flashes')
+            ;
+            $flashKey = 'failed';
 
+            $message = [
+                'delete' => 'failed',
+                'message' => $flashMessage,
+            ];
+        } catch (\Exception $ex) {
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('failed.day.delete.generic', [], 'flashes')
+            ;
+            $flashKey = 'failed';
+
+            $message = [
+                'delete' => 'failed',
+                'message' => $flashMessage,
+            ];
+        }
+        if ($request->isXmlHttpRequest()) {
             return new JsonResponse($message);
         }
 
@@ -196,10 +225,8 @@ class DayController extends BaseController
             ->get('session')
             ->getFlashBag()
             ->set(
-                'success',
-                $this
-                    ->get('translator')
-                    ->trans('success.day.delete.from_edit', [], 'flashes')
+                $flashKey,
+                $flashMessage
             )
         ;
 
