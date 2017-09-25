@@ -180,7 +180,7 @@ export default {
                 .text(d => {
                     return d.data.colorStatusName
                         ? this.translate(d.data.colorStatusName)
-                        : ''
+                        : 'N/A'
                     ;
                 })
                 .on('click', d => {
