@@ -184,7 +184,7 @@ export default {
                     ;
                 })
                 .on('click', d => {
-                    if (d === this.root) {
+                    if (d === this.root || d.data.type !== 2) {
                         return;
                     }
 
@@ -217,7 +217,7 @@ export default {
                     return (+d.data.progress || 0) + '%';
                 })
                 .on('click', d => {
-                    if (d === this.root) {
+                    if (d === this.root || d.data.type !== 2) {
                         return;
                     }
 
