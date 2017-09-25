@@ -124,8 +124,41 @@ export default {
                 .attr('xmlns', 'http://www.w3.org/1999/xhtml')
                 .attr('class', 'title-body')
                 .html(d => {
-                    let url = d.data.puid
-                        ? router
+                    /*
+                        {
+                            path: 'phases-and-milestones/edit-milestone/:milestoneId',
+                            component: MilestoneCreate,
+                            name: 'project-milestones-edit-milestone',
+                        },
+                     */
+                    let url = '#';
+                    switch (d.data.type) {
+                    case 0:
+                        url = router
+                            .resolve({
+                                name: 'project-phases-edit-phase',
+                                params: {
+                                    id: d.data.project,
+                                    phaseId: d.data.id,
+                                },
+                            })
+                            .href
+                        ;
+                        break;
+                    case 1:
+                        url = router
+                            .resolve({
+                                name: 'project-milestones-edit-milestone',
+                                params: {
+                                    id: d.data.project,
+                                    milestoneId: d.data.id,
+                                },
+                            })
+                            .href
+                        ;
+                        break;
+                    case 2:
+                        url = router
                             .resolve({
                                 name: 'project-task-management-edit',
                                 params: {
@@ -134,7 +167,10 @@ export default {
                                 },
                             })
                             .href
-                        : router
+                        ;
+                        break;
+                    default:
+                        url = router
                             .resolve({
                                 name: 'project-dashboard',
                                 params: {
@@ -142,7 +178,9 @@ export default {
                                 },
                             })
                             .href
-                    ;
+                        ;
+                        break;
+                    }
 
                     // tables are supposed to be ugly, but god damn it they can be the prettiest thing when they work better than anything
                     return `<table>
