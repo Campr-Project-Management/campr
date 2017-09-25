@@ -1,4 +1,5 @@
 message:
+    error: Error!
     costs_chart: Costs Chart
     reschedule_remaining_action: Reschedule remaining action
     delete_remaining_action: Delete remaining action
