@@ -760,7 +760,7 @@ title:
         edit: Edit info category
     project_add_error: There where some errors while saving the project
     status:
-      edit: Edit
+        edit: Edit
 
 subtitle:
     project_close_down: List of project close downs
