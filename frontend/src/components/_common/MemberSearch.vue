@@ -29,18 +29,6 @@
                             <p class="description">{{ item.projectRoleName }}</p>
                         </div>
                     </div>
-                    <div class="member flex flex-v-center" v-for="item in items">
-                        <div class="checkbox-input clearfix" :class="{'inactive': !item.checked}">
-                            <input v-if="singleSelect" :id="item.id"  type="radio" :name="item.userFullName" :checked="item.checked" @click="toogleRadioButton(item)">
-                            <input v-else="singleSelect" :id="item.id"  type="checkbox" :name="item.userFullName" :checked="item.checked" @click="toggleActivation(item)">
-                            <label :for="item.id"></label>
-                        </div>
-                        <div class="avatar" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
-                        <div class="info">
-                            <p class="title">{{ item.userFullName }}</p>
-                            <p class="description">{{ item.projectRoleName }}</p>
-                        </div>
-                    </div>
                 </div>
             </vue-scrollbar>
             <div class="footer">
