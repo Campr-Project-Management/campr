@@ -22,7 +22,7 @@
                             <h1 class="title">{{ phase.name }}</h1>
 
                             <router-link v-if="phase.parent" :to="{name: 'project-phases-view-phase', params:{id: projectId, phaseId: phase.parent}}" class="parent-phase router-link-active uppercase middle-color">
-                                {{ translateText('message.parent_phaze') }}
+                                {{ translateText('message.parent_phase') }}
                                 <span class="second-color">{{ phase.parentName }}</span>
                             </router-link>
                         </div>
