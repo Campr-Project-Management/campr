@@ -30,6 +30,42 @@ const actions = {
             }, (response) => {
             });
     },
+    /**
+     * Set color status for work package
+     * @param {function} commit
+     * @param {Number} id
+     * @param {Number} colorStatus
+     * @return {object}
+     */
+    setWorkPackageColorStatus({commit}, {id, colorStatus}) {
+        return actions.patchWorkPackage({commit}, {id, data: {colorStatus}});
+    },
+    /**
+     * Set color status for work package
+     * @param {function} commit
+     * @param {Number} id
+     * @param {Number} progress
+     * @return {object}
+     */
+    setWorkPackageProgress({commit}, {id, progress}) {
+        return actions.patchWorkPackage({commit}, {id, data: {progress}});
+    },
+    /**
+     * Set color status for work package
+     * @param {function} commit
+     * @param {Number} id
+     * @param {object} data
+     * @return {object}
+     */
+    patchWorkPackage({commit}, {id, data}) {
+        return Vue
+            .http
+            .patch(
+                Routing.generate('app_api_workpackage_edit', {id}),
+                data
+            )
+        ;
+    },
 };
 
 const mutations = {

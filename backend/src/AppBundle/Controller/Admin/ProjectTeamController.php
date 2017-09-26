@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\ProjectTeam;
 use AppBundle\Form\ProjectTeam\CreateType as ProjectTeamCreateType;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
  * ProjectTeam admin controller.
@@ -186,15 +187,44 @@ class ProjectTeamController extends BaseController
      */
     public function deleteAction(Request $request, ProjectTeam $projectTeam)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($projectTeam);
-        $em->flush();
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($projectTeam);
+            $em->flush();
 
-        if ($request->isXmlHttpRequest()) {
             $message = [
                 'delete' => 'success',
             ];
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('success.project_team.delete.from_edit', [], 'flashes')
+            ;
+            $flashKey = 'success';
+        } catch (ForeignKeyConstraintViolationException $ex) {
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('failed.project_team.delete.dependency_constraint', [], 'flashes')
+            ;
+            $flashKey = 'failed';
 
+            $message = [
+                'delete' => 'failed',
+                'message' => $flashMessage,
+            ];
+        } catch (\Exception $ex) {
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('failed.project_team.delete.generic', [], 'flashes')
+            ;
+            $flashKey = 'failed';
+
+            $message = [
+                'delete' => 'failed',
+                'message' => $flashMessage,
+            ];
+        }
+
+        if ($request->isXmlHttpRequest()) {
             return new JsonResponse($message);
         }
 
@@ -202,10 +232,8 @@ class ProjectTeamController extends BaseController
             ->get('session')
             ->getFlashBag()
             ->set(
-                'success',
-                $this
-                    ->get('translator')
-                    ->trans('success.project_team.delete.from_edit', [], 'flashes')
+                $flashKey,
+                $flashMessage
             )
         ;
 
