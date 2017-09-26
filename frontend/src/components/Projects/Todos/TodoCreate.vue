@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <!-- /// End Header /// -->
-                
+
                 <div class="form">
                     <!-- /// Todo Category /// -->
                     <div class="row">
@@ -85,9 +85,9 @@
                                     v-bind:currentOption="todoStatus" />
                             </div>
                         </div>
-                    </div>     
+                    </div>
 
-                    <hr class="double">               
+                    <hr class="double">
 
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
@@ -184,7 +184,7 @@ export default {
             this.$refs.description.setContent(this.todo.description);
             this.dueDate = this.todo.dueDate;
             this.date = this.todo.date;
-            this.responsibility = this.todo.responsibility;
+            this.responsibility = [this.todo.responsibility];
             this.responsibilityFullName = this.todo.responsibilityFullName;
             this.todoCategory = {key: this.todo.todoCategory, label: this.todo.todoCategoryName};
         },
@@ -206,5 +206,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-    
+
 </style>
