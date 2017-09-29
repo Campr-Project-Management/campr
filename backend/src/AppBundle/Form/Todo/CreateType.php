@@ -21,6 +21,7 @@ class CreateType extends BaseCreateType
         $builder
             ->add('project', EntityType::class, [
                 'class' => Project::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.project',
                 'translation_domain' => 'messages',

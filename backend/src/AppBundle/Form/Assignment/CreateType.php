@@ -21,6 +21,7 @@ class CreateType extends BaseCreateType
         $builder
             ->add('workPackage', EntityType::class, [
                 'class' => WorkPackage::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.workpackage',
                 'translation_domain' => 'messages',
