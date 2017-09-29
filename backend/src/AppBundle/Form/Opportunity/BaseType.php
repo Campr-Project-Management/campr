@@ -123,12 +123,14 @@ class BaseType extends AbstractType
             ])
             ->add('opportunityStrategy', EntityType::class, [
                 'class' => OpportunityStrategy::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.name',
                 'translation_domain' => 'messages',
             ])
             ->add('opportunityStatus', EntityType::class, [
                 'class' => OpportunityStatus::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.name',
                 'translation_domain' => 'messages',
@@ -140,6 +142,7 @@ class BaseType extends AbstractType
             ])
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
+                'required' => false,
                 'choice_label' => 'username',
                 'placeholder' => 'placeholder.user',
                 'translation_domain' => 'messages',

@@ -35,12 +35,14 @@ class BaseCreateType extends AbstractType
             ])
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
+                'required' => false,
                 'choice_label' => 'username',
                 'placeholder' => 'placeholder.user',
                 'translation_domain' => 'messages',
             ])
             ->add('status', EntityType::class, [
                 'class' => NoteStatus::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.status',
                 'translation_domain' => 'messages',
@@ -54,10 +56,12 @@ class BaseCreateType extends AbstractType
                 ],
             ])
             ->add('date', DateType::class, [
+                'required' => false,
                 'widget' => 'single_text',
                 'format' => 'dd-MM-yyyy',
             ])
             ->add('dueDate', DateType::class, [
+                'required' => false,
                 'widget' => 'single_text',
                 'format' => 'dd-MM-yyyy',
             ])

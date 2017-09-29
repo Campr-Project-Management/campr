@@ -34,18 +34,21 @@ class CreateType extends AbstractType
             ])
             ->add('workPackage', EntityType::class, [
                 'class' => WorkPackage::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.workpackage',
                 'translation_domain' => 'messages',
             ])
             ->add('projectWorkCostType', EntityType::class, [
                 'class' => ProjectWorkCostType::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.project_work_cost_type',
                 'translation_domain' => 'messages',
             ])
             ->add('calendar', EntityType::class, [
                 'class' => Calendar::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.calendar',
                 'translation_domain' => 'messages',
