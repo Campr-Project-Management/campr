@@ -38,6 +38,7 @@ class CreateType extends BaseType
         $builder
             ->add('workPackageStatus', EntityType::class, [
                 'class' => WorkPackageStatus::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.status',
                 'query_builder' => function (EntityRepository $er) {
@@ -84,6 +85,7 @@ class CreateType extends BaseType
             ])
             ->add('parent', EntityType::class, [
                 'class' => WorkPackage::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.workpackage',
                 'translation_domain' => 'messages',
@@ -100,18 +102,21 @@ class CreateType extends BaseType
             ])
             ->add('workPackageCategory', EntityType::class, [
                 'class' => WorkPackageCategory::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.workpackage_category',
                 'translation_domain' => 'messages',
             ])
             ->add('colorStatus', EntityType::class, [
                 'class' => ColorStatus::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.color_status',
                 'translation_domain' => 'messages',
             ])
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
+                'required' => false,
                 'choice_label' => 'username',
                 'placeholder' => 'placeholder.user',
                 'translation_domain' => 'messages',
@@ -136,12 +141,14 @@ class CreateType extends BaseType
             ])
             ->add('project', EntityType::class, [
                 'class' => Project::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.project',
                 'translation_domain' => 'messages',
             ])
             ->add('calendar', EntityType::class, [
                 'class' => Calendar::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.calendar',
                 'translation_domain' => 'messages',
@@ -214,6 +221,7 @@ class CreateType extends BaseType
         $formModifier = function (FormInterface $form, $project = null, $wpId = null) {
             $form->add('labels', EntityType::class, [
                 'class' => Label::class,
+                'required' => false,
                 'choice_label' => 'title',
                 'multiple' => true,
                 'query_builder' => function (EntityRepository $er) use ($project) {
@@ -232,6 +240,7 @@ class CreateType extends BaseType
             ]);
             $dependencyFieldOptions = [
                 'class' => WorkPackage::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'multiple' => true,
                 'query_builder' => function (EntityRepository $er) use ($project, $wpId) {

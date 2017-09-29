@@ -25,6 +25,7 @@ class BaseCreateType extends AbstractType
         $builder
             ->add('workPackageProjectWorkCostType', EntityType::class, [
                 'class' => WorkPackageProjectWorkCostType::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.wppcwct',
                 'translation_domain' => 'messages',

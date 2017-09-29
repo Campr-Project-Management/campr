@@ -32,6 +32,7 @@ class BaseCreateType extends AbstractType
             ->add('isBased', CheckboxType::class)
             ->add('parent', EntityType::class, [
                 'class' => Calendar::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.calendar',
                 'translation_domain' => 'messages',
