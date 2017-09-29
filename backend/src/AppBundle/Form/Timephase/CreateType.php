@@ -37,6 +37,7 @@ class CreateType extends AbstractType
             ])
             ->add('assignment', EntityType::class, [
                 'class' => Assignment::class,
+                'required' => false,
                 'choice_label' => 'id',
                 'placeholder' => 'placeholder.assignment',
                 'translation_domain' => 'messages',

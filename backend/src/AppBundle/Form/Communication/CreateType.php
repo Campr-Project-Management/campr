@@ -44,6 +44,7 @@ class CreateType extends AbstractType
             ])
             ->add('participants', EntityType::class, [
                 'class' => User::class,
+                'required' => false,
                 'choice_label' => 'username',
                 'multiple' => true,
             ])
@@ -56,7 +57,6 @@ class CreateType extends AbstractType
                 ],
             ])
             ->add('content', TextareaType::class, [
-                'required' => false,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'not_blank.content',

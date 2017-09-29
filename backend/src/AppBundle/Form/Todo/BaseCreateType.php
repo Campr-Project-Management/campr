@@ -29,6 +29,7 @@ class BaseCreateType extends AbstractType
         $builder
             ->add('meeting', EntityType::class, [
                 'class' => Meeting::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.meeting',
                 'translation_domain' => 'messages',
@@ -51,6 +52,7 @@ class BaseCreateType extends AbstractType
             ])
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
+                'required' => false,
                 'choice_label' => 'username',
                 'placeholder' => 'placeholder.user',
                 'translation_domain' => 'messages',
@@ -67,12 +69,14 @@ class BaseCreateType extends AbstractType
             ])
             ->add('status', EntityType::class, [
                 'class' => TodoStatus::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.status',
                 'translation_domain' => 'messages',
             ])
             ->add('todoCategory', EntityType::class, [
                 'class' => TodoCategory::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.todo_category',
                 'translation_domain' => 'messages',

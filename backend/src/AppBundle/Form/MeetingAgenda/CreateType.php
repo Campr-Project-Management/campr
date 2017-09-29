@@ -24,6 +24,7 @@ class CreateType extends AbstractType
         $builder
             ->add('meeting', EntityType::class, [
                 'class' => Meeting::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.meeting',
                 'translation_domain' => 'messages',
@@ -38,6 +39,7 @@ class CreateType extends AbstractType
             ])
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
+                'required' => false,
                 'choice_label' => 'username',
                 'placeholder' => 'placeholder.user',
                 'translation_domain' => 'messages',

@@ -31,27 +31,31 @@ class CreateType extends AbstractType
     {
         $builder
             ->add('project', EntityType::class, [
+                'required' => false,
                 'class' => Project::class,
                 'choice_label' => 'name',
             ])
             ->add('workPackage', EntityType::class, [
                 'class' => WorkPackage::class,
+                'required' => false,
                 'choice_label' => 'name',
             ])
             ->add('resource', EntityType::class, [
                 'class' => Resource::class,
+                'required' => false,
                 'choice_label' => 'name',
             ])
-            ->add('name', TextType::class)
+            ->add('name', TextType::class, ['required' => false])
             ->add('type', IntegerType::class)
             ->add('expenseType', IntegerType::class)
             ->add('rate', NumberType::class)
             ->add('quantity', NumberType::class)
             ->add('unit', EntityType::class, [
                 'class' => Unit::class,
+                'required' => false,
                 'choice_label' => 'name',
             ])
-            ->add('duration', TextType::class)
+            ->add('duration', TextType::class, ['required' => false])
             ->add('customUnit', TextType::class, ['mapped' => false])
         ;
 
