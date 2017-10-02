@@ -29,6 +29,7 @@ class BaseCreateType extends AbstractType
             ])
             ->add('parent', EntityType::class, [
                 'class' => ProjectTeam::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.project_team',
                 'translation_domain' => 'messages',

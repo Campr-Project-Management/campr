@@ -60,18 +60,21 @@ class CreateType extends AbstractType
             ])
             ->add('project', EntityType::class, [
                 'class' => Project::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.project',
                 'translation_domain' => 'messages',
             ])
             ->add('meeting', EntityType::class, [
                 'class' => Meeting::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.meeting',
                 'translation_domain' => 'messages',
             ])
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
+                'required' => false,
                 'choice_label' => 'username',
                 'placeholder' => 'placeholder.user',
                 'translation_domain' => 'messages',

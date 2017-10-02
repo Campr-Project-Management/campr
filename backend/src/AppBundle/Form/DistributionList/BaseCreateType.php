@@ -41,11 +41,13 @@ class BaseCreateType extends AbstractType
             ])
             ->add('users', EntityType::class, [
                 'class' => User::class,
+                'required' => false,
                 'choice_label' => 'username',
                 'multiple' => true,
             ])
             ->add('meetings', EntityType::class, [
                 'class' => Meeting::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'multiple' => true,
             ])
