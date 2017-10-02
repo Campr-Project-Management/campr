@@ -57,18 +57,21 @@ class BaseType extends AbstractType
             ])
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
+                'required' => false,
                 'choice_label' => 'username',
                 'placeholder' => 'placeholder.user',
                 'translation_domain' => 'messages',
             ])
             ->add('risk', EntityType::class, [
                 'class' => Risk::class,
+                'required' => false,
                 'choice_label' => 'title',
                 'placeholder' => 'placeholder.risk',
                 'translation_domain' => 'messages',
             ])
             ->add('opportunity', EntityType::class, [
                 'class' => Opportunity::class,
+                'required' => false,
                 'choice_label' => 'title',
                 'placeholder' => 'placeholder.opportunity',
                 'translation_domain' => 'messages',

@@ -37,12 +37,14 @@ class BaseCreateType extends AbstractType
             ])
             ->add('projectCategory', EntityType::class, [
                 'class' => ProjectCategory::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.project_category',
                 'translation_domain' => 'messages',
             ])
             ->add('projectRoles', EntityType::class, [
                 'class' => ProjectRole::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'multiple' => true,
                 'placeholder' => 'placeholder.project_role',
@@ -50,6 +52,7 @@ class BaseCreateType extends AbstractType
             ])
             ->add('projectDepartments', EntityType::class, [
                 'class' => ProjectDepartment::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'multiple' => true,
                 'placeholder' => 'placeholder.project_department',
@@ -57,6 +60,7 @@ class BaseCreateType extends AbstractType
             ])
             ->add('projectTeam', EntityType::class, [
                 'class' => ProjectTeam::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.project_team',
                 'translation_domain' => 'messages',

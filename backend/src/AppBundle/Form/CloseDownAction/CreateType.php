@@ -38,6 +38,7 @@ class CreateType extends AbstractType
             ])
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
+                'required' => false,
                 'choice_label' => 'username',
                 'placeholder' => 'placeholder.user',
                 'translation_domain' => 'messages',

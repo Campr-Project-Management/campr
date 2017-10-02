@@ -30,6 +30,7 @@ class BaseType extends AbstractType
             ])
             ->add('meeting', EntityType::class, [
                 'class' => Meeting::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.meeting',
                 'translation_domain' => 'messages',
