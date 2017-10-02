@@ -1409,11 +1409,10 @@ class ProjectController extends ApiController
                 $media->setFileSystem($fileSystem);
             }
             $wp->setProject($project);
-            $wp->setPuid(microtime(true) * 1000000); // remove when listener is fixed
             $this->persistAndFlush($wp);
+            $this->refreshEntity($wp);
 
-            // VueJS sucks at interpreting 201 as a success
-            return $this->createApiResponse($wp, Response::HTTP_OK);
+            return $this->createApiResponse($wp, Response::HTTP_CREATED);
         }
 
         $errors = $this->getFormErrors($form);
