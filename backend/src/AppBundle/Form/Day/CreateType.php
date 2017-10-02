@@ -45,6 +45,7 @@ class CreateType extends AbstractType
             ])
             ->add('calendar', EntityType::class, [
                 'class' => Calendar::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.calendar',
                 'translation_domain' => 'messages',

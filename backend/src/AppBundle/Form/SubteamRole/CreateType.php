@@ -24,7 +24,7 @@ class CreateType extends AbstractType
             ])
             ->add('subteamMembers', EntityType::class, [
                 'class' => SubteamMember::class,
-                'required' => true,
+                'required' => false,
                 'multiple' => true,
                 'attr' => [
                     'class' => 'selectpicker',
