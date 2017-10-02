@@ -12,9 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * WorkPackage.
  *
- * @ORM\Table(name="work_package", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="puid_project_unique", columns={"puid", "project_id"}),
- * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\WorkPackageRepository")
  */
 class WorkPackage
@@ -37,9 +34,11 @@ class WorkPackage
      *
      * @var string
      *
-     * @ORM\Column(name="puid", type="string", length=128)
+     * @Serializer\Exclude()
+     *
+     * @ORM\Column(name="puid", type="integer", options={"default"=0})
      */
-    private $puid;
+    private $puid = 0;
 
     /**
      * @var int
@@ -462,7 +461,7 @@ class WorkPackage
         $this->supportUsers = new ArrayCollection();
         $this->consultedUsers = new ArrayCollection();
         $this->informedUsers = new ArrayCollection();
-        $this->puid = microtime(true) * 1000000;
+        $this->puid = 1558; // will be changed by the listener anyway
     }
 
     public function __toString()
@@ -501,6 +500,40 @@ class WorkPackage
      */
     public function getPuid()
     {
+        return $this->puid;
+    }
+
+    /**
+     * Get PUID for display.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("puid")
+     *
+     * @return string
+     */
+    public function getPUIDForDisplay()
+    {
+        if ($this->parent) {
+            return $this->parent->getPUIDForDisplay().'.'.$this->puid;
+        }
+
+        switch ($this->type) {
+//            case self::TYPE_PHASE: // placeholder
+//                break;
+            case self::TYPE_MILESTONE:
+                if ($this->phase) {
+                    return $this->phase->getPUIDForDisplay().'.'.$this->puid;
+                }
+                break;
+            case self::TYPE_TASK:
+                if ($this->milestone) {
+                    return $this->milestone->getPUIDForDisplay().'.'.$this->puid;
+                } elseif ($this->phase) {
+                    return $this->phase->getPUIDForDisplay().'.'.$this->puid;
+                }
+                break;
+        }
+
         return $this->puid;
     }
 
@@ -866,6 +899,7 @@ class WorkPackage
      */
     public function setMilestone(WorkPackage $workPackage = null)
     {
+        $this->phase = $workPackage->getPhase();
         $this->milestone = $workPackage;
 
         if ($workPackage !== null) {
