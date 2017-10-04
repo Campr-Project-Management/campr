@@ -63,13 +63,21 @@ class DistributionListControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/distribution-list/create');
 
+        $project = $this
+            ->em
+            ->getRepository(Project::class)
+            ->findOneBy([
+                'name' => 'project1',
+            ])
+        ;
+
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[name]'] = 'distribution-list-1';
+        $form['create[project]'] = $project->getId();
 
         $crawler = $this->client->submit($form);
 
         $this->assertContains('That name is taken', $crawler->html());
-        $this->assertContains('The project field should not be blank. Choose one project', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
