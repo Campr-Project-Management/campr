@@ -23,8 +23,8 @@ class ExportService
         $xmlNode->addChild('OutlineNumber', 0);
         $xmlNode->addChild('OutlineLevel', 0);
         $xmlNode->addChild('Priority', 0);
-        $xmlNode->addChild('Start', $package->getActualStartAt()->format('Y-m-d H:i:s'));
-        $xmlNode->addChild('Finish', $package->getActualFinishAt()->format('Y-m-d H:i:s'));
+        $xmlNode->addChild('Start', $package->getActualStartAt() ? $package->getActualStartAt()->format('Y-m-d H:i:s'): '');
+        $xmlNode->addChild('Finish', $package->getActualFinishAt() ? $package->getActualFinishAt()->format('Y-m-d H:i:s'): '');
         $xmlNode->addChild('Duration', $package->getDuration());
         $xmlNode->addChild('Start', '0');
         $xmlNode->addChild('Finish', '0');
