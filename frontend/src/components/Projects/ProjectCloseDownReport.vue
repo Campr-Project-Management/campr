@@ -236,7 +236,6 @@
                                 <div class="member-name" v-for="sponsor in sponsors">
                                     {{ sponsor.userFullName }}
                                 </div>
-                                <div class="signature-holder"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -247,6 +246,17 @@
                                 <div class="member-name" v-for="manager in managers">
                                     {{ manager.userFullName }}
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="project-acceptance">
+                                <div class="signature-holder"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="project-acceptance">
                                 <div class="signature-holder"></div>
                             </div>
                         </div>
