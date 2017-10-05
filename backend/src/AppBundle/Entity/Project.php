@@ -771,6 +771,26 @@ class Project
     }
 
     /**
+     * Returns all the project managers.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectManagers")
+     *
+     * @return string
+     */
+    public function getProjectManagers()
+    {
+        $managers = [];
+        foreach ($this->projectUsers as $projectUser) {
+            if ($projectUser->hasProjectRole(ProjectRole::ROLE_MANAGER)) {
+                $managers[] = $projectUser->getUser();
+            }
+        }
+
+        return $managers;
+    }
+
+    /**
      * Returns the project sponsor's id.
      *
      * @Serializer\VirtualProperty()
@@ -805,6 +825,26 @@ class Project
         }
 
         return null;
+    }
+
+    /**
+     * Returns all the project sponsors.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectSponsors")
+     *
+     * @return string
+     */
+    public function getProjectSponsors()
+    {
+        $sponsors = [];
+        foreach ($this->projectUsers as $projectUser) {
+            if ($projectUser->hasProjectRole(ProjectRole::ROLE_SPONSOR)) {
+                $sponsors[] = $projectUser->getUser();
+            }
+        }
+
+        return $sponsors;
     }
 
     /**
