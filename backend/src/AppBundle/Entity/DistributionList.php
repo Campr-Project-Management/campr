@@ -11,10 +11,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * DistributionList.
  *
- * @ORM\Table(name="distribution_list")
+ * @ORM\Table(name="distribution_list", uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="name_project_unique", columns={"name", "project_id"}),
+ * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DistributionListRepository")
  * @UniqueEntity(
- *     fields="name",
+ *     fields={"name","project"},
  *     errorPath="name",
  *     message="unique.name"
  *  )
@@ -35,7 +37,7 @@ class DistributionList
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
