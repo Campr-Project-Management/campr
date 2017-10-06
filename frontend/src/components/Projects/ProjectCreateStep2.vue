@@ -8,7 +8,7 @@
                 v-bind:title="translateText('message.project_duration')"
                 min="0"
                 v-bind:max="durationMaxValue"
-                minSuffix=" Months"
+                minSuffix="Months"
                 type="single"
                 v-model="projectDuration"
                 v-bind:value="projectDuration" />
@@ -146,23 +146,24 @@ export default {
         budgetValues: function() {
             let result = '';
             for (let i=0; i<20; i++) {
-                result += i * 10000 + ', ';
+                result += i * 10000 + ',';
             }
             if(!this.projectHasProgrammeAndPortofolio()) {
                 for (let i=0; i<6; i++) {
-                    result += 200000 + (i * 50000) + ', ';
+                    result += 200000 + (i * 50000) + ',';
                 }
                 result +='500000';
                 return result;
             }
 
             for (let i=0; i<16; i++) {
-                result += 200000 + (i * 50000) + ', ';
+                result += 200000 + (i * 50000) + ',';
             }
             for (let i=0; i<10; i++) {
-                result += 1000000 + (i * 100000) + ', ';
+                result += 1000000 + (i * 100000) + ',';
             }
             result +='2000000';
+
             return result;
         },
     },
