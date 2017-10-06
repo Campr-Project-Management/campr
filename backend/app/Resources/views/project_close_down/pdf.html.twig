@@ -91,11 +91,21 @@
     </tr>
     <tr>
         <th>{{ 'message.project_sponsor'|trans }}:</th>
-        <td>{{  projectCloseDown.project.projectSponsorName }}</td>
+        <td>
+        {% for user in projectCloseDown.project.projectSponsors %}
+            {% if loop.index > 1 %}, {% endif %}
+            {{  user.fullName}}
+        {% endfor %}
+        </td>
     </tr>
     <tr>
         <th>{{ 'message.project_managers'|trans }}:</th>
-        <td>{{  projectCloseDown.project.projectManagerName }}</td>
+        <td>
+            {% for user in projectCloseDown.project.projectManagers %}
+                {% if loop.index > 1 %}, {% endif %}
+                {{  user.fullName}}
+            {% endfor %}
+        </td>
     </tr>
 </table>
 </body>

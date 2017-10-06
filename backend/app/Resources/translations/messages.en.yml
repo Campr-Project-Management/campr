@@ -11,6 +11,7 @@ message:
     email_report: Are you sure you want to email thie status report?
     project_trend: Project Trend
     edit_remaining_action: Edit Remaining Action
+    view_remaining_action: View Remaining Action
     back_to: Back To
     project_acceptance: Project Acceptance
     add_new_action: Add New Action
