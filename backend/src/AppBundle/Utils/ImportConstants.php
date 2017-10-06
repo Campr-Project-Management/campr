@@ -10,6 +10,7 @@ class ImportConstants
 {
     // TAGS
     const PROJECT_NAME_TAG = 'Name';
+    const PROJECT_COMPANY_TAG = 'Company';
     const CALENDARS_TAG = 'Calendars';
     const TASKS_TAG = 'Tasks';
     const RESOURCES_TAG = 'Resources';
@@ -28,6 +29,7 @@ class ImportConstants
         'Name' => 'setName',
         'CreationDate' => 'setCreatedAt',
         'LastSaved' => 'setUpdatedAt',
+        'Company' => 'setCompany',
     ];
 
     const CALENDAR_KEY_FUNCTION = [
@@ -54,6 +56,7 @@ class ImportConstants
         'Name' => 'setName',
         'Start' => 'setScheduledStartAt',
         'Finish' => 'setScheduledFinishAt',
+        'Type' => 'setType',
     ];
 
     const WPPWCT_KEY_FUNCTION = [
