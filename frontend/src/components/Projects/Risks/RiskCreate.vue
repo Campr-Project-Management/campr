@@ -328,6 +328,7 @@ export default {
                 title: '',
                 description: this.$refs['measure.description'+this.measures.length],
                 cost: '',
+                responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
             };
 
             let thisRef = 'measure.description'+this.measures.length;
@@ -339,6 +340,7 @@ export default {
         getFormData: function() {
             this.measures.map((item, index) => {
                 item.description = item.element.getContent();
+                item.responsibility = this.memberList.length > 0 ? this.memberList[0] : null;
                 delete item.element;
             });
             let data = {
