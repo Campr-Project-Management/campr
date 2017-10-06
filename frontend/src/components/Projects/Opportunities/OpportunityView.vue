@@ -127,7 +127,7 @@
                         
                         <div class="ro-info">
                             <p>{{ translateText('message.measures') }}: <b v-if="opportunity.measures">{{ opportunity.measures.length }}</b></p>
-                            <p>{{ translateText('message.measures_cost') }}: <b v-if="risksOpportunitiesStats.opportunities">$ {{ risksOpportunitiesStats.opportunities.measure_data.totalCost }}</b></p>
+                            <p>{{ translateText('message.measures_cost') }}: <b v-if="risksOpportunitiesStats.opportunities">{{ opportunity.currency }} {{ risksOpportunitiesStats.opportunities.measure_data.totalCost }}</b></p>
                         </div>
                     </div>
                 </div>
@@ -221,7 +221,7 @@
                         </div>
                         <div class="comment-body">
                             <b class="title">{{ measure.title }}</b>
-                            <p class="cost">{{ translateText('message.cost') }}: <b>$ {{ measure.cost }}</b></p>
+                            <p class="cost">{{ translateText('message.cost') }}: <b>{{opportunity.currency}} {{ measure.cost }}</b></p>
                             <p v-html="measure.description"></p>
                         </div>  
                         <div class="comment-footer" v-if="measure.medias.length > 0">
@@ -393,6 +393,7 @@ export default {
                 title: this.measureTitle,
                 description: this.$refs['measureDescription'].getContent(),
                 cost: this.measureCost,
+                responsibility: this.opportunity.responsibility,
             };
             this.createOpportunityMeasure(data);
         },
