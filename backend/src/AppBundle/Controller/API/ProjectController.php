@@ -55,6 +55,7 @@ use AppBundle\Form\User\ApiCreateType as UserApiCreateType;
 use AppBundle\Form\WorkPackage\ApiCreateType;
 use AppBundle\Form\WorkPackage\MilestoneType;
 use AppBundle\Form\WorkPackage\PhaseType;
+use AppBundle\Form\WorkPackage\ImportType as ImportWorkPackageType;
 use AppBundle\Form\Risk\CreateType as RiskCreateType;
 use AppBundle\Form\Opportunity\BaseType as OpportunityCreateType;
 use AppBundle\Repository\MeetingRepository;
@@ -77,6 +78,8 @@ use AppBundle\Form\Decision\CreateType as DecisionType;
 use AppBundle\Form\ProjectDepartment\CreateType as ProjectDepartmentType;
 use AppBundle\Form\StatusReport\CreateType as StatusReportCreateType;
 use AppBundle\Form\ProjectCloseDown\CreateType as ProjectCloseDownCreateType;
+use AppBundle\Utils\ImportConstants;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 /**
  * @Route("/api/projects")
@@ -1411,6 +1414,70 @@ class ProjectController extends ApiController
 
             // VueJS sucks at interpreting 201 as a success
             return $this->createApiResponse($wp, Response::HTTP_OK);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * import task from xml file.
+     *
+     * @Route("/{id}/tasks/import", name="app_api_project_tasks_import", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     */
+    public function importTaskAction(Request $request, Project $project)
+    {
+        $form = $this->createForm(ImportWorkPackageType::class, null, ['csrf_protection' => false, 'method' => $request->getMethod()]);
+        $this->processForm(
+            $request,
+            $form,
+            in_array($request->getMethod(), [Request::METHOD_PUT, Request::METHOD_POST])
+        );
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('file')->getData();
+            $fileContent = file_get_contents($file->getPathname());
+
+            try {
+                $xml = new \SimpleXMLElement($fileContent);
+                foreach ($xml->children() as $tag => $element) {
+                    if ($tag === ImportConstants::TASKS_TAG) {
+                        $this->get('app.service.import')->importWorkPackages($project, (array) $element);
+                    }
+                }
+            } catch (UniqueConstraintViolationException $e) {
+                return $this->createApiResponse(
+                   [
+                       'messages' => [
+                           'file' => [
+                                $this
+                                    ->get('translator')
+                                    ->trans('exception.unique_contraint_exception'),
+                           ],
+                       ],
+                   ],
+                   Response::HTTP_BAD_REQUEST
+               );
+            } catch (\Exception $e) {
+                return $this->createApiResponse(
+                   [
+                       'messages' => [
+                           'file' => [$e->getMessage()],
+                       ],
+                   ],
+                   Response::HTTP_BAD_REQUEST
+               );
+            }
+
+            return $this->createApiResponse(null, Response::HTTP_OK);
         }
 
         $errors = $this->getFormErrors($form);

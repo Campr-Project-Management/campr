@@ -59,6 +59,10 @@ services:
         class: AppBundle\Services\ImportService
         arguments:
             - "@doctrine.orm.entity_manager"
+            - "@validator"
+
+    app.service.export:
+            class: AppBundle\Services\ExportService
 
     app.service.chat:
         class: AppBundle\Services\ChatService

@@ -12,11 +12,21 @@
                         <h1 v-if="!isEdit">{{ message.create_new_task }}</h1>
                         <h1 v-if="isEdit">{{ message.edit_task }} - {{ task.name }}</h1>
                     </div>
-                    <a class="btn-rounded btn-auto btn-empty flex">
+                    <input
+                        id="importXmlFile"
+                        type="file"
+                        name="importXmlFile"
+                        style="display: none;"
+                        v-on:change="uploadImportTaskFile" />
+                    <a class="btn-rounded btn-auto btn-empty flex" v-on:click="openFileSelection">
                         <span>{{ message.import_task }}</span>
                         <upload-icon></upload-icon>
                     </a>
                 </div>
+                <error
+                    v-if="validationMessages && validationMessages.file && validationMessages.file.length"
+                    v-for="message in validationMessages.file"
+                    :message="message" />
                 <!-- /// End Header /// -->
 
                 <div class="form">
@@ -160,7 +170,7 @@ export default {
         AlertModal,
     },
     methods: {
-        ...mapActions(['createNewTask', 'getTaskById', 'editTask']),
+        ...mapActions(['createNewTask', 'getTaskById', 'editTask', 'importTask']),
         createTask: function() {
             let data = {
                 project: this.$route.params.id,
@@ -229,6 +239,34 @@ export default {
                     }
                 )
             ;
+        },
+        openFileSelection: function() {
+            document.getElementById('importXmlFile').click();
+        },
+        uploadImportTaskFile: function(e) {
+            let files = e.target.files || e.dataTransfer.files;
+            if (!files.length) {
+                return;
+            }
+            let formData = new FormData();
+            formData.append('file', files[0]);
+
+            this.importTask({
+                data: formData,
+                projectId: this.$route.params.id,
+            })
+            .then(
+                (response) => {
+                    if (response.body && response.body.error && response.body.messages) {
+                        this.showFailed = true;
+                    } else {
+                        this.showSaved = true;
+                    }
+                },
+                () => {
+                    this.showFailed = true;
+                }
+            );
         },
         // event methods
         setInternalCosts(value) {
