@@ -1140,6 +1140,7 @@ label:
     select_consulted_users: Select consulted users
     select_informed_users: Select informed users
     select_sci_users: Select support, consulted & informed users
+    export_task: Export task
 
 button:
     edit_member: Edit Member
