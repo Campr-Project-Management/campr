@@ -1,8 +1,8 @@
 <template>
     <div>
-        <h3>{{ message.condition }}</h3>
+        <h3>{{ translateText('message.task_condition') }}</h3>
         <p v-for="status in colorStatuses" class="condition-info">
-            <span class="caps" v-bind:style="{ color: status.color }">{{ status.name }}:</span>
+            <span class="caps" v-bind:style="{ color: status.color }">{{ translateText(status.name) }}:</span>
             {{ status.description }}
         </p>
         <div class="flex flex-space-between flex-v-center margintop20">
@@ -28,6 +28,9 @@ export default {
         selectColorStatus: function(status) {
             this.$emit('input', status);
         },
+        translateText: function(text) {
+            return this.translate(text);
+        },
     },
     created() {
         if (!this.$store.state.colorStatuses || this.$store.state.colorStatuses.length == 0) {
@@ -36,17 +39,8 @@ export default {
     },
     computed: mapGetters({
         colorStatuses: 'colorStatuses',
-    }),
-    data: function() {
-        return {
-            label: {
-                status: this.translate('label.status'),
-            },
-            message: {
-                condition: this.translate('message.task_condition'),
-            },
-        };
-    },
+    })
+    ,
 };
 </script>
 
