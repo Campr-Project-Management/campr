@@ -57,7 +57,7 @@ use AppBundle\Form\WorkPackage\MilestoneType;
 use AppBundle\Form\WorkPackage\PhaseType;
 use AppBundle\Form\WorkPackage\ImportType as ImportWorkPackageType;
 use AppBundle\Form\Risk\CreateType as RiskCreateType;
-use AppBundle\Form\Opportunity\BaseType as OpportunityCreateType;
+use AppBundle\Form\Opportunity\ApiType as OpportunityCreateType;
 use AppBundle\Repository\MeetingRepository;
 use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\ProjectVoter;
@@ -1744,7 +1744,6 @@ class ProjectController extends ApiController
         $form = $this->createForm(OpportunityCreateType::class, $opportunity, ['csrf_protection' => false]);
 
         $this->processForm($request, $form);
-
         if ($form->isValid()) {
             $opportunity->setProject($project);
             $opportunity->setCreatedBy($this->getUser());
