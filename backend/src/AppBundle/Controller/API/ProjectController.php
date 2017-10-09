@@ -1677,7 +1677,6 @@ class ProjectController extends ApiController
         $form = $this->createForm(OpportunityCreateType::class, $opportunity, ['csrf_protection' => false]);
 
         $this->processForm($request, $form);
-//var_dump($opportunity->getMeasures()); die;
         if ($form->isValid()) {
             $opportunity->setProject($project);
             $opportunity->setCreatedBy($this->getUser());
