@@ -21,6 +21,7 @@ class WBSService
             'id' => $project->getId(),
             'name' => (string) $project,
             'children' => $this->getPhases($project),
+            'progress' => $project->getProgress(),
             'colorStatus' => $project->getColorStatusId(),
             'colorStatusName' => $project->getColorStatusName(),
             'colorStatusColor' => $project->getColorStatusColor(),
@@ -80,7 +81,7 @@ class WBSService
             'colorStatusName' => $wp->getColorStatusName(),
             'colorStatusColor' => $wp->getColorStatusColor(),
             'progress' => $wp->getProgress(),
-            'puid' => $wp->getPuid(),
+            'puid' => $wp->getPUIDForDisplay(),
             'startDate' => $startDate ? $startDate->format('m/d/Y') : 'N/A',
             'endDate' => $endDate ? $endDate->format('m/d/Y') : 'N/A',
         ];
@@ -91,8 +92,8 @@ class WBSService
                     ->getProject()
                     ->getWorkPackages()
                     ->filter(function (WorkPackage $package) use ($wp) {
-                        return in_array($package->getType(), [WorkPackage::TYPE_PHASE, WorkPackage::TYPE_MILESTONE])
-                            && ($package->getParent() === $wp || $package->getPhase() === $wp)
+                        return ($package->getType() === WorkPackage::TYPE_PHASE && $package->getParent() === $wp)
+                            || ($package->getType() === WorkPackage::TYPE_MILESTONE && $package->getPhase() === $wp && !$package->getParent())
                         ;
                     })
                     ->map(function (WorkPackage $wp) {
@@ -106,9 +107,8 @@ class WBSService
                     ->getProject()
                     ->getWorkPackages()
                     ->filter(function (WorkPackage $package) use ($wp) {
-                        return in_array($package->getType(), [WorkPackage::TYPE_MILESTONE, WorkPackage::TYPE_TASK])
-                            && ($package->getParent() === $wp || $package->getMilestone() === $wp)
-                            && !$package->getParent()
+                        return ($package->getType() === WorkPackage::TYPE_MILESTONE && $package->getParent() === $wp)
+                            || ($package->getType() === WorkPackage::TYPE_TASK && $package->getMilestone() === $wp && !$package->getParent())
                         ;
                     })
                     ->map(function (WorkPackage $wp) {
@@ -122,9 +122,7 @@ class WBSService
                     ->getProject()
                     ->getWorkPackages()
                     ->filter(function (WorkPackage $package) use ($wp) {
-                        return in_array($package->getType(), [WorkPackage::TYPE_TASK])
-                            && $package->getParent() === $wp
-                        ;
+                        return $package->getType() === WorkPackage::TYPE_TASK && $package->getParent() === $wp;
                     })
                     ->map(function (WorkPackage $wp) {
                         return $this->getChildren($wp);
