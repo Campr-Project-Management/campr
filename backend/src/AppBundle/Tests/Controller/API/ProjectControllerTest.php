@@ -1873,7 +1873,7 @@ class ProjectControllerTest extends BaseController
                     'label' => null,
                     'labelName' => null,
                     'userFavorites' => [],
-                    'progress' => 0,
+                    'progress' => 100,
                     'programme' => null,
                     'programmeName' => null,
                     'isNew' => false,
@@ -3095,7 +3095,7 @@ class ProjectControllerTest extends BaseController
         $responseContent['puid'] = $task['puid'];
         $responseContent['createdAt'] = $task['createdAt'];
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($isResponseSuccessful, $response->getStatusCode() === 201);
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
     }
@@ -3114,8 +3114,9 @@ class ProjectControllerTest extends BaseController
                     'duration' => 0,
                 ],
                 true,
-                Response::HTTP_OK,
+                Response::HTTP_CREATED,
                 [
+                    'puid' => 5,
                     'phase' => null,
                     'phaseName' => null,
                     'milestone' => null,
@@ -3146,7 +3147,6 @@ class ProjectControllerTest extends BaseController
                     'noComments' => 0,
                     'noSubtasks' => 0,
                     'id' => 5,
-                    'puid' => '5',
                     'name' => 'task',
                     'children' => [],
                     'progress' => 0,
