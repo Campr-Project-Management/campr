@@ -2,26 +2,28 @@
     <div>
         <h3>{{ translateText('message.planning') }}</h3>
         <div class="row">
-            <div class="form-group last-form-group">
-                <div class="dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ phaseOrMilestoneLabel }}
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        <li>
-                            <a href="javascript:void(0)" v-on:click="clearPhaseMilestone()">{{ translateText('message.select_phase_milestone') }}</a>
-                        </li>    
-                        <li v-for="phase in nestedPhasesAndMilestone">
-                            <a href="javascript:void(0)" class="unselectable">{{ phase.label }}</a>
-                            <ul class="nested">
-                                <li v-for="milestone in phase.children">
-                                    <a href="javascript:void(0)" v-on:click="updateMilestone(phase, milestone)">{{ milestone.label }}</a>
-                                </li>
-                            </ul>    
-                        </li>
-                    </ul>
+            <div class="col-md-12">
+                <div class="form-group last-form-group">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ phaseOrMilestoneLabel }}
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="javascript:void(0)" v-on:click="clearPhaseMilestone()">{{ translateText('message.select_phase_milestone') }}</a>
+                            </li>    
+                            <li v-for="phase in nestedPhasesAndMilestone">
+                                <a href="javascript:void(0)" class="unselectable">{{ phase.label }}</a>
+                                <ul class="nested">
+                                    <li v-for="milestone in phase.children">
+                                        <a href="javascript:void(0)" v-on:click="updateMilestone(phase, milestone)">{{ milestone.label }}</a>
+                                    </li>
+                                </ul>    
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>   
+            </div>
         </div>
     </div>
 </template>
