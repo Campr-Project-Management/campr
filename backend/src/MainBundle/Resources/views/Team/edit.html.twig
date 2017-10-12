@@ -3,68 +3,80 @@
 {% extends 'MainBundle::base.html.twig' %}
 
 {% block body_content %}
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">
-                <p class="text-primary">
-                    {{ 'title.team.edit'|trans }}: {{ team.name }}
-                    <a href="{{ path('main_team_list') }}" class="btn btn-sm btn-primary pull-right">{{ 'button.back_to_list'|trans }}</a>
-                </p>
-            </h1>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6">
-            {{ form_start(
-                form,
-                {
-                    'method': 'POST',
-                    'action': path('main_team_edit', {'id': team.id}),
-                    'attr': {
-                        'id': 'edit-team',
-                        'novalidate': 'novalidate',
-                    },
-                }
-            ) }}
-            {% if form.vars.valid == false %}
-                <div class="alert alert-danger">
-                    {% for field in form.children %}
-                        {{ form_errors(field) }}
-                    {% endfor %}
-                </div>
-            {% endif %}
-            <div class="control-group form-group {% if form_errors(form.name) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.name'|trans }}</label>
-                    {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+    <div class="container">
+        <section class="section first-section">
+            <div class="row">
+                <div class="col-lg-6 ml-lg-auto mr-lg-auto">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-md-auto">
+                            <h3 class="page-header">
+                                <span class="note">{{ 'title.team.edit'|trans }}:</span> 
+                                {{ team.name }}
+                            </h3>
+                        </div>
+                        <div class="col-md-auto">
+                            <a href="{{ path('main_team_list') }}" class="small-link">< {{ 'button.back_to_list'|trans }}</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="control-group form-group {% if form_errors(form.slug) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.slug'|trans }}</label>
-                    {{ form_widget(form.slug, {'attr': {'class': 'form-control'}}) }}
+            <div class="row mt-30">
+                <div class="col-lg-6 ml-lg-auto mr-lg-auto">
+                    {{ form_start(
+                        form,
+                        {
+                            'method': 'POST',
+                            'action': path('main_team_edit', {'id': team.id}),
+                            'attr': {
+                                'id': 'edit-team',
+                                'class': 'form',
+                                'novalidate': 'novalidate',
+                            },
+                        }
+                    ) }}
+                    {% if form.vars.valid == false %}
+                        <div class="alert alert-danger">
+                            {% for field in form.children %}
+                                {{ form_errors(field) }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class="control-group form-group {% if form_errors(form.name) %}has-error{% endif %}">
+                        <div class="input-holder">
+                            {{ form_widget(form.name, {'attr': {'class': 'input-field'}}) }}
+                            <label class="label">{{ 'label.name'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="control-group form-group {% if form_errors(form.slug) %}has-error{% endif %}">
+                        <div class="input-holder">
+                            {{ form_widget(form.slug, {'attr': {'class': 'input-field'}}) }}
+                            <label class="label">{{ 'label.slug'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-holder">
+                            <label class="custom-label">{{ 'label.logo'|trans }}</label>
+                            {{ form_widget(form.logoFile) }}
+                        </div>
+                    </div>
+                    <div class="control-group form-group {% if form_errors(form.description) %}has-error{% endif %}">
+                        <div class="input-holder">
+                            {{ form_widget(form.description, {'attr': {'class': 'input-field'}}) }}
+                            <label class="label">{{ 'label.description'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="control-group form-group">
+                        <div class="checkbox-input clearfix">
+                            {{ form_widget(form.enabled) }}
+                            <label class="label" for="create_enabled">{{ 'label.enabled'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="button" type="submit">{{ 'button.save'|trans }}</button>
+                    </div>
+                    {{ form_end(form, {'render_rest': true}) }}
                 </div>
             </div>
-            <div class="form-group">
-                <label>{{ 'label.logo'|trans }}</label>
-                {{ form_widget(form.logoFile) }}
-            </div>
-            <div class="control-group form-group {% if form_errors(form.description) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.description'|trans }}</label>
-                    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </div>
-            <div class="control-group form-group">
-                <label class="checkbox-inline">
-                    {{ form_widget(form.enabled) }}
-                    {{ 'label.enabled'|trans }}
-                </label>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-primary" type="submit">{{ 'button.save'|trans }}</button>
-            </div>
-            {{ form_end(form, {'render_rest': true}) }}
-        </div>
+        </section>
     </div>
 {% endblock %}
