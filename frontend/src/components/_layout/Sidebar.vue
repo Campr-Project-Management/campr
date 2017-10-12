@@ -112,7 +112,8 @@ export default {
         },
         displayModule(module) {
             return module.module === null
-                || (this.project && this.project.projectModules && this.project.projectModules.indexOf(module.module) !== -1);
+                || (this.project && this.project.projectModules && this.project.projectModules.indexOf(module.module) !== -1)
+                || (this.project && this.project.projectModules && !this.project.projectModules.length);
         },
     },
     data: function() {
