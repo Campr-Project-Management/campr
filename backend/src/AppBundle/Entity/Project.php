@@ -1972,6 +1972,23 @@ class Project
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectModules")
+     *
+     * @return string[]
+     */
+    public function getProjectModulesList()
+    {
+        return $this
+            ->projectModules
+            ->map(function (ProjectModule $projectModule) {
+                return $projectModule->getModule();
+            })
+            ->toArray()
+        ;
+    }
+
+    /**
      * Add workPackageStatus.
      *
      * @param WorkPackageStatus $workPackageStatus
