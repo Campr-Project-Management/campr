@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\API;
 
+use AppBundle\Entity\Enum\ProjectModuleTypeEnum;
 use AppBundle\Entity\ProjectModule;
 use AppBundle\Form\ProjectModule\CreateType;
 use AppBundle\Security\ProjectVoter;
@@ -20,20 +21,14 @@ class ProjectModuleController extends ApiController
     /**
      * Get all project modules.
      *
-     * @Route(name="app_api_project_modules_list")
+     * @Route(name="app_api_project_modules", options={"expose"=true})
      * @Method({"GET"})
      *
      * @return JsonResponse
      */
     public function listAction()
     {
-        $projectModules = $this
-            ->getDoctrine()
-            ->getRepository(ProjectModule::class)
-            ->findAll()
-        ;
-
-        return $this->createApiResponse($projectModules);
+        return $this->createApiResponse(ProjectModuleTypeEnum::ELEMENTS);
     }
 
     /**
