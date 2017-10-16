@@ -127,7 +127,6 @@ class TeamControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/team/list');
 
-        $this->assertContains('class="table table-condensed table-responsive"', $crawler->html());
         $this->assertContains('Id', $crawler->html());
         $this->assertContains('Name', $crawler->html());
         $this->assertContains('Slug', $crawler->html());
@@ -250,8 +249,8 @@ class TeamControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/team/%d/show', $this->team->getId()));
 
-        $this->assertContains('<strong>Name: </strong>test-team', $crawler->html());
-        $this->assertContains('<strong>Slug: </strong>test-team', $crawler->html());
+        $this->assertContains('Name: <strong>test-team</strong>', $crawler->html());
+        $this->assertContains('Slug: <strong>test-team</strong>', $crawler->html());
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $this->removeTeam('test-team');
