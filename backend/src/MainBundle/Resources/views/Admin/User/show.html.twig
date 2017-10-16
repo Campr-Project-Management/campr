@@ -4,36 +4,43 @@
 
 {% block body_content %}
     <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">
-                <p class="text-primary">
-                    {{ user.fullName }}
-                    <a href="{{ path('main_admin_user_list') }}" class="btn btn-sm btn-primary pull-right">{{ 'button.back_to_list'|trans }}</span></a>
-                </p>
-            </h1>
+        <div class="col-lg-6 ml-lg-auto mr-lg-auto">
+            <ul class="thumb-list">
+                <li>
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-md-auto">                                    
+                            <div class="team-img" style="background-image: url({{ vich_uploader_asset(user, 'avatarFile') }})"></div>
+                            <div class="team-info">
+                                <div class="team-name">{{ user.fullName }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-auto text-right">
+                            <a href="{{ path('main_admin_user_list') }}" class="small-link">< {{ 'button.back_to_list'|trans }}</a>
+                        </div>
+                    </div> 
+                </li>
+            </ul>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="caption">
-                <ul class="list-unstyled">
-                    <li class="list-group-item">
-                        <strong>{{ 'table_header_cell.id'|trans }}: </strong>{{ user.id }}
-                    </li>
-                    <li class="list-group-item">
-                        <strong>{{ 'table_header_cell.full_name'|trans }}: </strong>{{ user.fullName }}
-                    </li>
-                    <li class="list-group-item">
-                        <strong>{{ 'table_header_cell.username'|trans }}: </strong>{{ user.username }}
-                    </li>
-                    <li class="list-group-item">
-                        <strong>{{ 'table_header_cell.email'|trans }}: </strong>{{ user.email }}
-                    </li>
-                    <li class="list-group-item">
-                        <strong>{{ 'table_header_cell.phone'|trans }}: </strong>{{ user.phone }}
-                    </li>
-                </ul>
-            </div>
+    <div class="row mt-30">
+        <div class="col-lg-6 ml-lg-auto mr-lg-auto">
+            <ul class="custom-list">
+                <li>
+                    {{ 'table_header_cell.id'|trans }}: <strong>{{ user.id }}</strong>
+                </li>
+                <li>
+                    {{ 'table_header_cell.full_name'|trans }}: <strong>{{ user.fullName }}</strong>
+                </li>
+                <li>
+                    {{ 'table_header_cell.username'|trans }}: <strong>{{ user.username }}</strong>
+                </li>
+                <li>
+                    {{ 'table_header_cell.email'|trans }}: <strong>{{ user.email }}</strong>
+                </li>
+                <li>
+                    {{ 'table_header_cell.phone'|trans }}: <strong>{{ user.phone }}</strong>
+                </li>
+            </ul>
         </div>
     </div>
 {% endblock %}

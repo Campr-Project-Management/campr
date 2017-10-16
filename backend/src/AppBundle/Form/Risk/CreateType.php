@@ -169,6 +169,7 @@ class CreateType extends AbstractType
             ])
             ->add('measures', CollectionType::class, [
                 'entry_type' => MeasureBaseType::class,
+                'by_reference' => false,
                 'allow_add' => true,
             ])
         ;
