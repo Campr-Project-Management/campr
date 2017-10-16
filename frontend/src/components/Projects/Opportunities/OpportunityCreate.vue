@@ -322,6 +322,7 @@ export default {
                 title: '',
                 description: this.$refs[thisRef],
                 cost: '',
+                responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
             };
             setTimeout(() => {
                 measure.element = createEditor(document.getElementById(thisRef), {...vueditorConfig, id: thisRef});
@@ -333,6 +334,7 @@ export default {
                 description: item.element.getContent(),
                 title: item.title,
                 cost: item.cost,
+                responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
             }));
             let data = {
                 title: this.title,

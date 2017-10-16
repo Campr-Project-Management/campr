@@ -4,6 +4,7 @@ namespace AppBundle\Entity\Enum;
 
 class ProjectModuleTypeEnum
 {
+    // if you change any of these, remember to update frontend/src/components/_layout/Sidebar.vue
     const PROJECT_CONTRACT = 'project_contract';
     const PROJECT_ORGANIZATION = 'project_organization';
     const PLAN = 'plan';
