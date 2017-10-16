@@ -2,143 +2,150 @@
 
 {% extends 'MainBundle::base.html.twig' %}
 
-{% block body_content %}
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">
-                <p class="text-primary">{{ 'title.my_account'|trans }}: {{ user.fullName }}</p>
-            </h1>
-            {% for flashMessage in app.session.flashbag.get('success') %}
-                <div class="alert alert-success">
-                    {{ flashMessage }}
+{% block body_content %}        
+    <div class="container">
+        <section class="section first-section">
+            <div class="row">
+                {% for flashMessage in app.session.flashbag.get('success') %}
+                    <div class="alert alert-success">
+                        {{ flashMessage }}
+                    </div>
+                {% endfor %}
+                {% for flashMessage in app.session.flashbag.get('error') %}
+                    <div class="alert alert-danger">
+                        {{ flashMessage }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                <div class="col-lg-6 ml-lg-auto mr-lg-auto">
+                    <h3 class="page-header">
+                        {{ 'title.my_account'|trans }}: {{ user.fullName }}
+                    </h3>
                 </div>
-            {% endfor %}
-            {% for flashMessage in app.session.flashbag.get('error') %}
-                <div class="alert alert-danger">
-                    {{ flashMessage }}
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6">
-            {{ form_start(
-                form,
-                {
-                    'method': 'POST',
-                    'action': path('main_user_account'),
-                    'attr': {
-                        'id': 'edit-account',
-                        'novalidate': 'novalidate',
-                    },
-                }
-            ) }}
-            {% if form.vars.valid == false %}
-                <div class="alert alert-danger">
-                    {% for field in form.children %}
-                        {{ form_errors(field) }}
-                        {% if field.children %}
-                            {% for child in field.children %}
-                                {{ form_errors(child) }}
+            </div>
+            <div class="row mt-30">
+                <div class="col-lg-6 ml-lg-auto mr-lg-auto">
+                    {{ form_start(
+                        form,
+                        {
+                            'method': 'POST',
+                            'action': path('main_user_account'),
+                            'attr': {
+                                'id': 'edit-account',
+                                'class': 'form',
+                                'novalidate': 'novalidate',
+                            },
+                        }
+                    ) }}
+                    {% if form.vars.valid == false %}
+                        <div class="alert alert-danger">
+                            {% for field in form.children %}
+                                {{ form_errors(field) }}
+                                {% if field.children %}
+                                    {% for child in field.children %}
+                                        {{ form_errors(child) }}
+                                    {% endfor %}
+                                {% endif %}
                             {% endfor %}
-                        {% endif %}
-                    {% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class="control-group form-group {% if form_errors(form.username) %}has-error{% endif %}">
+                        <div class="input-holder">
+                            {{ form_widget(form.username, {'attr': {'class': 'input-field'}}) }}
+                            <label class="label">{{ 'label.username'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="control-group form-group {% if form_errors(form.email) %}has-error{% endif %}">
+                        <div class="input-holder">
+                            {{ form_widget(form.email, {'attr': {'class': 'input-field'}}) }}
+                            <label class="label">{{ 'label.email'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="control-group form-group {% if form_errors(form.firstName) %}has-error{% endif %}">
+                        <div class="input-holder">
+                            {{ form_widget(form.firstName, {'attr': {'class': 'input-field'}}) }}
+                            <label class="label">{{ 'label.first_name'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="control-group form-group {% if form_errors(form.lastName) %}has-error{% endif %}">
+                        <div class="input-holder">
+                            {{ form_widget(form.lastName, {'attr': {'class': 'input-field'}}) }}
+                            <label class="label">{{ 'label.last_name'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="control-group form-group {% if form_errors(form.avatarFile) %}has-error{% endif %}">
+                        {{ form_widget(form.avatarFile, {'attr': {'class': 'input-field'}}) }}
+                    </div>
+                    <div class="control-group form-group {% if form_errors(form.phone) %}has-error{% endif %}">
+                        <div class="input-holder">
+                            {{ form_widget(form.phone, {'attr': {'class': 'input-field'}}) }}
+                            <label class="label">{{ 'label.phone'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="control-group form-group {% if form_errors(form.facebook) %}has-error{% endif %}">
+                        <div class="input-holder">
+                            {{ form_widget(form.facebook, {'attr': {'class': 'input-field'}}) }}
+                            <label class="label">{{ 'label.facebook'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="control-group form-group {% if form_errors(form.twitter) %}has-error{% endif %}">
+                        <div class="input-holder">
+                            {{ form_widget(form.twitter, {'attr': {'class': 'input-field'}}) }}
+                            <label class="label">{{ 'label.twitter'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="control-group form-group {% if form_errors(form.instagram) %}has-error{% endif %}">
+                        <div class="input-holder">
+                            {{ form_widget(form.instagram, {'attr': {'class': 'input-field'}}) }}
+                            <label class="label">{{ 'label.instagram'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="control-group form-group {% if form_errors(form.gplus) %}has-error{% endif %}">
+                        <div class="input-holder">
+                            {{ form_widget(form.gplus, {'attr': {'class': 'input-field'}}) }}
+                            <label class="label">{{ 'label.gplus'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="control-group form-group {% if form_errors(form.linkedIn) %}has-error{% endif %}">
+                        <div class="input-holder">
+                            {{ form_widget(form.linkedIn, {'attr': {'class': 'input-field'}}) }}
+                            <label class="label">{{ 'label.linked_in'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="control-group form-group {% if form_errors(form.medium) %}has-error{% endif %}">
+                        <div class="input-holder">
+                            {{ form_widget(form.medium, {'attr': {'class': 'input-field'}}) }}
+                            <label class="label">{{ 'label.medium'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="control-group form-group {% if form_errors(form.plainPassword.first) %}has-error{% endif %}">
+                        <div class="input-holder">
+                            {{ form_widget(form.plainPassword.first, {'attr': {'class': 'input-field'}}) }}
+                            <label class="label">{{ 'label.password.first'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="control-group form-group {% if form_errors(form.plainPassword.second) %}has-error{% endif %}">
+                        <div class="input-holder">
+                            {{ form_widget(form.plainPassword.second, {'attr': {'class': 'input-field'}}) }}
+                            <label class="label">{{ 'label.password.repeat'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="control-group form-group {% if form_errors(form.twoFactor) %}has-error{% endif %}">
+                        <div class="checkbox-input clearfix">
+                            {{ form_widget(form.twoFactor) }}
+                            <label class="label" for="account_twoFactor">{{ 'label.two_factor_auth'|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="button" type="submit">{{ 'button.save'|trans }}</button>
+                    </div>
+                    {{ form_end(form, {'render_rest': true}) }}
                 </div>
-            {% endif %}
-            <div class="control-group form-group {% if form_errors(form.username) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.username'|trans }}</label>
-                    {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
-                </div>
+                {% if qr_code %}
+                    <img src="{{ qr_code }}"/>
+                {% endif %}
             </div>
-            <div class="control-group form-group {% if form_errors(form.email) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.email'|trans }}</label>
-                    {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </div>
-            <div class="control-group form-group {% if form_errors(form.firstName) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.first_name'|trans }}</label>
-                    {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </div>
-            <div class="control-group form-group {% if form_errors(form.lastName) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.last_name'|trans }}</label>
-                    {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </div>
-            <div class="control-group form-group {% if form_errors(form.avatarFile) %}has-error{% endif %}">
-                {{ form_widget(form.avatarFile, {'attr': {'class': 'form-control'}}) }}
-            </div>
-            <div class="control-group form-group {% if form_errors(form.phone) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.phone'|trans }}</label>
-                    {{ form_widget(form.phone, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </div>
-            <div class="control-group form-group {% if form_errors(form.facebook) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.facebook'|trans }}</label>
-                    {{ form_widget(form.facebook, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </div>
-            <div class="control-group form-group {% if form_errors(form.twitter) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.twitter'|trans }}</label>
-                    {{ form_widget(form.twitter, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </div>
-            <div class="control-group form-group {% if form_errors(form.instagram) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.instagram'|trans }}</label>
-                    {{ form_widget(form.instagram, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </div>
-            <div class="control-group form-group {% if form_errors(form.gplus) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.gplus'|trans }}</label>
-                    {{ form_widget(form.gplus, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </div>
-            <div class="control-group form-group {% if form_errors(form.linkedIn) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.linked_in'|trans }}</label>
-                    {{ form_widget(form.linkedIn, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </div>
-            <div class="control-group form-group {% if form_errors(form.medium) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.medium'|trans }}</label>
-                    {{ form_widget(form.medium, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </div>
-            <div class="control-group form-group {% if form_errors(form.plainPassword.first) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.password.first'|trans }}</label>
-                    {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </div>
-            <div class="control-group form-group {% if form_errors(form.plainPassword.second) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.password.repeat'|trans }}</label>
-                    {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </div>
-            <div class="control-group form-group {% if form_errors(form.twoFactor) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.two_factor_auth'|trans }}</label>
-                    {{ form_widget(form.twoFactor, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-primary" type="submit">{{ 'button.save'|trans }}</button>
-            </div>
-            {{ form_end(form, {'render_rest': true}) }}
-        </div>
-        {% if qr_code %}
-            <img src="{{ qr_code }}"/>
-        {% endif %}
+        </section>
     </div>
 {% endblock %}

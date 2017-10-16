@@ -4,44 +4,81 @@
     {% trans_default_domain 'messages' %}
     {% block meta %}
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Twitter -->
+        <meta name="twitter:site" content="@campr">
+        <meta name="twitter:creator" content="@campr">
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:title" content="C A M P R">
+        <meta name="twitter:description" content="{{ 'title.meta_description'|trans }}">
+        <meta name="twitter:image" content="assets/img/campr-social-logo.png">
+
+        <!-- Facebook -->
+        <meta property="og:url" content="https://getbootstrap.com/docs/4.0/layout/grid/">
+        <meta property="og:title" content="C A M P R">
+        <meta property="og:description" content="{{ 'title.meta_description'|trans }}">
+        <meta property="og:type" content="website">
+
+        <meta property="og:image" content="assets/img/campr-social-logo.png">
+        <meta property="og:image:secure_url" content="assets/img/campr-social-logo.png">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+
+        <!-- Meta -->
+        <meta name="description" content="{{ 'title.meta_description'|trans }}">
+        <meta name="author" content="C A M P R">
     {% endblock %}
+
     <title>{% block title %}{{ 'title.homepage_main'|trans }}{% endblock %}</title>
+
     {% block stylesheets %}
-        <link href="{{ asset('assets/admin/vendors/bower_components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('assets/admin/vendors/bower_components/bootstrap/dist/css/bootstrap-theme.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('bundles/main/assets/css/main.css') }}" rel="stylesheet">
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
+
+        <!-- Bootstrap core CSS -->
+        <link href="{{ asset('assets/admin/vendors/bower_components/bootstrap4/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="{{ asset('bundles/main/assets/css/custom.css') }}" rel="stylesheet">
     {% endblock %}
+
     {% block icon %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <!-- Favicon -->
+        <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     {% endblock %}
 </head>
-<body>
+<body class="backend">
 {% block body %}
     {% include 'MainBundle:Layout:header.html.twig' %}
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="row">
+    <div id="wrapper">
+        <div class="container-fluid">
+            <div class="row flex-xl-nowrap">
+                <div class="col-12 col-md-3 col-xl-2 bd-sidebar">
                     {{ knp_menu_render('admin_main', {'template': 'MainBundle:Admin/Layout:sidebar.html.twig'}) }}
                 </div>
-            </div>
-            <div class="col-md-9">
-                {% block body_content %}{% endblock %}
+                <main class="col-12 col-md-9 col-xl-8 bd-content" role="main">
+                    {% block body_content %}{% endblock %}
+                </div>
+        
+                {% include 'MainBundle:Layout:footer.html.twig' %}
             </div>
         </div>
-
-        {% include 'MainBundle:Layout:footer.html.twig' %}
     </div>
 {% endblock %}
 
 {% block javascripts %}
     <!-- Javascript Libraries -->
-    <script src="{{ asset('assets/admin/vendors/bower_components/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/vendors/bower_components/jquery/dist/jquery.min.js') }}"></script>       
+    <script src="{{ asset('assets/admin/vendors/bower_components/popper.js/dist/umd/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/vendors/bower_components/bootstrap4/dist/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/admin/vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/vendors/bower_components/bootstrap-offcanvas/dist/js/bootstrap.offcanvas.min.js') }}"></script>
+    <script src="{{ asset('bundles/main/assets/js/main-script.js') }}"></script>
 {% endblock %}
 </body>
 </html>
