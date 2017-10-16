@@ -682,6 +682,13 @@ const actions = {
             }, (response) => {
             });
     },
+    /**
+     * Clears projects.
+     * @param {function} commit
+     */
+    clearProjects({commit}) {
+        commit(types.SET_PROJECTS, {projects: [], projectsForFilter: [{'key': '', 'label': Translator.trans('message.all_projects_filter')}]});
+    },
 };
 
 const mutations = {
@@ -710,9 +717,11 @@ const mutations = {
         state.projects = projects;
         state.filteredProjects = JSON.parse(JSON.stringify(projects));
         let projectsForFilter = [{'key': '', 'label': Translator.trans('message.all_projects_filter')}];
-        state.projects.items.map( function(project) {
-            projectsForFilter.push({'key': project.id, 'label': project.name});
-        });
+        if (state.projects.items !== undefined) {
+            state.projects.items.map( function(project) {
+                projectsForFilter.push({'key': project.id, 'label': project.name});
+            });
+        }
         state.projectsForFilter = projectsForFilter;
     },
 
