@@ -2,6 +2,7 @@
 
 namespace AppBundle\Tests\Controller\API;
 
+use AppBundle\Entity\Enum\ProjectModuleTypeEnum;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectModule;
 use MainBundle\Tests\Controller\BaseController;
@@ -37,10 +38,6 @@ class ProjectModuleControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
-        for ($i = 1; $i <= 3; ++$i) {
-            $pm = $this->em->getRepository(ProjectModule::class)->find($i);
-            $responseContent[$i - 1]['updatedAt'] = $pm->getUpdatedAt()->format('Y-m-d H:i:s');
-        }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -57,41 +54,7 @@ class ProjectModuleControllerTest extends BaseController
                 '/api/project-modules',
                 true,
                 Response::HTTP_OK,
-                [
-                    [
-                        'project' => 1,
-                        'projectName' => 'project1',
-                        'id' => 1,
-                        'module' => 'project-module1',
-                        'isEnabled' => true,
-                        'isRequired' => null,
-                        'isPrint' => null,
-                        'createdAt' => '2017-01-01 12:00:00',
-                        'updatedAt' => null,
-                    ],
-                    [
-                        'project' => 1,
-                        'projectName' => 'project1',
-                        'id' => 2,
-                        'module' => 'project-module2',
-                        'isEnabled' => true,
-                        'isRequired' => null,
-                        'isPrint' => null,
-                        'createdAt' => '2017-01-01 12:00:00',
-                        'updatedAt' => null,
-                    ],
-                    [
-                        'project' => 1,
-                        'projectName' => 'project1',
-                        'id' => 3,
-                        'module' => 'project-module3',
-                        'isEnabled' => true,
-                        'isRequired' => true,
-                        'isPrint' => null,
-                        'createdAt' => '2017-01-01 12:00:00',
-                        'updatedAt' => null,
-                    ],
-                ],
+                ProjectModuleTypeEnum::ELEMENTS,
             ],
         ];
     }

@@ -3,82 +3,114 @@
 {% extends 'MainBundle::base.html.twig' %}
 
 {% block body_content %}
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">
-                <p class="text-primary">
-                    <div class="col-sm-4 col-md-2">
-                        <div class="thumbnail">
-                            <img src="{{ vich_uploader_asset(team, 'logoFile') }}" alt="{{ team.name }}">
+    <section class="section first-section">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    {% for flash_message in app.session.flashBag.get('success') %}
+                        <div id="general-alert" class="alert alert-success m-t-15">
+                            <strong>{{ flash_message }}</strong>
                         </div>
-                    </div>
-                    {{ team.name }}
-                    <a href="{{ path('main_team_list') }}" class="btn btn-sm btn-primary pull-right">{{ 'button.back_to_list'|trans }}</a>
-                </p>
-            </h1>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="caption">
-                {% for flash_message in app.session.flashBag.get('success') %}
-                    <div id="general-alert" class="alert alert-success m-t-15">
-                        <strong>{{ flash_message }}</strong>
-                    </div>
-                {% endfor %}
-                {% for flash_message in app.session.flashBag.get('error') %}
-                    <div id="general-alert" class="alert alert-warning m-t-15">
-                        <strong>{{ flash_message }}</strong>
-                    </div>
-                {% endfor %}
-                <ul class="list-unstyled">
-                    <li class="list-group-item">
-                        <strong>{{ 'table_header_cell.id'|trans }}: </strong>{{ team.id }}
-                    </li>
-                    <li class="list-group-item">
-                        <strong>{{ 'table_header_cell.name'|trans }}: </strong>{{ team.name }}
-                    </li>
-                    <li class="list-group-item">
-                        <strong>{{ 'table_header_cell.slug'|trans }}: </strong>{{ team.slug }}
-                    </li>
-                    <li class="list-group-item">
-                        <strong>{{ 'table_header_cell.enabled'|trans }}: </strong>
-                        {% if team.enabled %}
-                            <span class="c-green">{{ 'message.yes'|trans }}</span>
-                        {% else %}
-                            <span class="c-red">{{ 'message.no'|trans }}</span>
-                        {% endif %}
-                    </li>
-                    <li class="list-group-item">
-                        <strong>{{ 'table_header_cell.members'|trans }}: </strong>
-                        {%  if team.teamMembers %}
-                            <ul>
-                                {% for teamMember in team.teamMembers %}
-                                    <li>
-                                        {{ teamMember.user.username }}
-                                        {% if "ROLE_SUPER_ADMIN" in current_team_member.roles %}
-                                            {% if teamMember.user != app.user %}
-                                                <a href="{{ path('main_team_remove_team_member', {'team': team.id, 'id': teamMember.id}) }}" data-toggle="tooltip" title="Remove team member">
-                                                    <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
-                                                </a>
-                                            {% endif %}
-                                        {% endif %}
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            {{ '-' }}
-                        {% endif %}
-                    </li>
-                </ul>
-            </div>
-            {% if (current_team_member and team.user == current_team_member.user) or team.user == app.user %}
-                <div class="col-lg-12">
-                    <a href="{{ path('main_team_invite_user', {'id': team.id}) }}" class="btn btn-primary">
-                        {{ 'button.invite_user'|trans }}
-                    </a>
+                    {% endfor %}
+                    {% for flash_message in app.session.flashBag.get('error') %}
+                        <div id="general-alert" class="alert alert-warning m-t-15">
+                            <strong>{{ flash_message }}</strong>
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endif %}
+            </div>
+            <div class="row">
+                <div class="col-lg-6 ml-lg-auto mr-lg-auto">
+                    <ul class="thumb-list">
+                        <li>
+                            <div class="row justify-content-between align-items-center">
+                                <div class="col-md-auto">                                    
+                                    <div class="team-img" style="background-image: url({{ vich_uploader_asset(team, 'logoFile') }})"></div>
+                                    <div class="team-info">
+                                        <div class="team-name">{{ team.name }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-auto text-right">
+                                    <a href="{{ path('main_team_list') }}" class="small-link">< {{ 'button.back_to_list'|trans }}</a>
+                                </div>
+                            </div> 
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row mt-30">
+                <div class="col-lg-6 ml-lg-auto mr-lg-auto">
+                    <ul class="custom-list">
+                        <li>
+                            {{ 'table_header_cell.id'|trans }}: <strong>{{ team.id }}</strong>
+                        </li>
+                        <li>
+                            {{ 'table_header_cell.name'|trans }}: <strong>{{ team.name }}</strong>
+                        </li>
+                        <li>
+                            {{ 'table_header_cell.slug'|trans }}: <strong>{{ team.slug }}</strong>
+                        </li>
+                        <li>
+                            {{ 'table_header_cell.enabled'|trans }}: 
+                            {% if team.enabled %}
+                                <strong><span class="success-color">{{ 'message.yes'|trans }}</span></strong>
+                            {% else %}
+                                <strong><span class="danger-color">{{ 'message.no'|trans }}</span></strong>
+                            {% endif %}
+                        </li>
+                    </ul>
+                    <div class="table-wrapper table-responsive">
+                        <table class="table table-stripped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        {{ 'table_header_cell.members'|trans }}
+                                    </th>
+                                    {% if "ROLE_SUPER_ADMIN" in current_team_member.roles %}
+                                    <th  class="text-right">
+                                        {{ 'table_header_cell.actions'|trans }}
+                                    </th>
+                                    {% endif %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {%  if team.teamMembers %}
+                                    {% for teamMember in team.teamMembers %}
+                                        <tr>                                        
+                                            <td>
+                                                {{ teamMember.user.username }}
+                                            </td>
+                                            {% if "ROLE_SUPER_ADMIN" in current_team_member.roles %}
+                                            <td class="text-right">
+                                                <a href="{{ path('main_team_remove_team_member', {'team': team.id, 'id': teamMember.id}) }}" data-toggle="tooltip" class="button button-small button-danger" title="Remove team member">
+                                                        Remove
+                                                    </a>
+                                                {% if teamMember.user != app.user %}                                                    
+                                                    <a href="{{ path('main_team_remove_team_member', {'team': team.id, 'id': teamMember.id}) }}" data-toggle="tooltip" class="button button-small button-danger" title="Remove team member">
+                                                        Remove
+                                                    </a>
+                                                {% endif %}
+                                            </td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td>
+                                            {{ '-' }}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% if (current_team_member and team.user == current_team_member.user) or team.user == app.user %}
+                        <a href="{{ path('main_team_invite_user', {'id': team.id}) }}" class="button mt-30">
+                            {{ 'button.invite_user'|trans }} +
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 {% endblock %}

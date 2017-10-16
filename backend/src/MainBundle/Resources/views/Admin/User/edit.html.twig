@@ -4,17 +4,22 @@
 
 {% block body_content %}
     <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">
-                <p class="text-primary">
-                    {{ 'title.user.edit'|trans }} - {{ user.fullName }}
-                    <a href="{{ path('main_admin_user_list') }}" class="btn btn-sm btn-primary pull-right">{{ 'button.back_to_list'|trans }}</span></a>
-                </p>
-            </h1>
+        <div class="col-lg-6 ml-lg-auto mr-lg-auto">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-md-auto">
+                    <h3 class="page-header">
+                        <span class="note">{{ 'title.user.edit'|trans }}:</span> 
+                        {{ user.fullName }}
+                    </h3>
+                </div>
+                <div class="col-md-auto">
+                    <a href="{{ path('main_admin_user_list') }}" class="small-link">< {{ 'button.back_to_list'|trans }}</a>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-8">
+    <div class="row mt-30">
+        <div class="col-lg-6 ml-lg-auto mr-lg-auto">
             {{ form_start(
             form,
             {
@@ -22,6 +27,7 @@
                 'action': path('main_admin_user_edit', {'id': user.id}),
                 'attr': {
                 'id': 'edit-user',
+                'class': 'form',
                 'novalidate': 'novalidate',
             },
             }
@@ -34,50 +40,45 @@
                 </div>
             {% endif %}
             <div class="control-group form-group {% if form_errors(form.firstName) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.first_name'|trans }}</label>
-                    {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
+                <div class="input-holder">
+                    {{ form_widget(form.firstName, {'attr': {'class': 'input-field'}}) }}
+                    <label class="label">{{ 'label.first_name'|trans }}</label>
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.lastName) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.last_name'|trans }}</label>
-                    {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
+                <div class="input-holder">
+                    {{ form_widget(form.lastName, {'attr': {'class': 'input-field'}}) }}
+                    <label class="label">{{ 'label.last_name'|trans }}</label>
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.phone) %}has-error{% endif %}">
-                <div class="controls">
-                    <label>{{ 'label.phone'|trans }}</label>
-                    {{ form_widget(form.phone, {'attr': {'class': 'form-control'}}) }}
+                <div class="input-holder">
+                    {{ form_widget(form.phone, {'attr': {'class': 'input-field'}}) }}
+                    <label class="label">{{ 'label.phone'|trans }}</label>
                 </div>
             </div>
-            <div class="control-group form-group">
-                {% for roleChild in form.roles.children %}
-                    <label class="radio-inline">
-                        {{ form_widget(
-                        roleChild,
-                        {
-                            'attr': {
-                            'class': 'form-control',
-                        },
-                        }
-                        ) }}
-                        {{ roleChild.vars.label|trans }}
-                    </label>
+            <div class="control-group form-group control-group-inline">
+                {% set i = 0 %}
+                {% for roleChild in form.roles.children %}             
+                    <div class="checkbox-input clearfix">
+                        {{ form_widget( roleChild ) }}
+                        <label class="label" for="edit_roles_{{ i }}">{{ roleChild.vars.label|trans }}</label>
+                    </div>
+                {% set i = i + 1 %}
                 {% endfor %}
             </div>
-            <div class="control-group form-group">
-                <label class="checkbox-inline">
+            <div class="control-group form-group control-group-inline">
+                <div class="checkbox-input clearfix">
                     {{ form_widget(form.isEnabled) }}
-                    <label>{{ 'label.enabled'|trans }}</label>
-                </label>
-                <label class="checkbox-inline">
+                    <label class="label" for="edit_isEnabled">{{ 'label.enabled'|trans }}</label>
+                </div>
+                <div class="checkbox-input clearfix">
                     {{ form_widget(form.isSuspended) }}
-                    <label>{{ 'label.suspended'|trans }}</label>
-                </label>
+                    <label class="label" for="edit_isSuspended">{{ 'label.suspended'|trans }}</label>
+                </div>
             </div>
             <div class="form-group">
-                <button class="btn btn-primary" type="submit">{{ 'button.save'|trans }}</button>
+                <button class="button" type="submit">{{ 'button.save'|trans }}</button>
             </div>
             {{ form_end(form, {'render_rest': true}) }}
         </div>

@@ -482,6 +482,12 @@ class Project
     private $projectCloseDowns;
 
     /**
+     * @var int
+     * @ORM\Column(name="progress", type="integer", options={"default"=0})
+     */
+    private $progress = 0;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -1722,6 +1728,18 @@ class Project
     }
 
     /**
+     * @param int $progress
+     *
+     * @return $this
+     */
+    public function setProgress(int $progress)
+    {
+        $this->progress = $progress;
+
+        return $this;
+    }
+
+    /**
      * Get project progress.
      *
      * @Serializer\VirtualProperty()
@@ -1731,12 +1749,7 @@ class Project
      */
     public function getProgress()
     {
-        $counter = 0;
-        foreach ($this->getWorkPackages() as $wp) {
-            $counter += $wp->getProgress();
-        }
-
-        return !$this->getWorkPackages()->isEmpty() ? $counter / $this->getWorkPackages()->count() : 0;
+        return $this->progress;
     }
 
     /**
@@ -1956,6 +1969,23 @@ class Project
     public function getProjectModules()
     {
         return $this->projectModules;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectModules")
+     *
+     * @return string[]
+     */
+    public function getProjectModulesList()
+    {
+        return $this
+            ->projectModules
+            ->map(function (ProjectModule $projectModule) {
+                return $projectModule->getModule();
+            })
+            ->toArray()
+        ;
     }
 
     /**

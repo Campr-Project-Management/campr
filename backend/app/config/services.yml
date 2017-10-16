@@ -252,6 +252,7 @@ services:
         class: AppBundle\EventListener\WorkPackageListener
         tags :
             - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: postFlush }
 
     app.listener.project:
         class: AppBundle\EventListener\ProjectListener

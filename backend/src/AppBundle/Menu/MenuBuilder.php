@@ -511,32 +511,28 @@ class MenuBuilder
 
     public function createAdminMainMenu(FactoryInterface $factory)
     {
-        $menu = $factory->createItem('root')->setChildrenAttribute('class', ' list-unstyled');
+        $menu = $factory->createItem('root')->setChildrenAttribute('class', 'sidebar-menu');
 
         $menu
             ->addChild($this->translator->trans('menu.users', [], 'messages'), [
                 'route' => 'main_admin_user_list',
             ])
-            ->setAttribute('class', 'list-group-item')
-            ->setLinkAttribute('icon', 'glyphicon glyphicon-user')
+            ->setAttribute('class', 'sidebar-menu-item')
             ->getParent()
             ->addChild($this->translator->trans('menu.teams', [], 'messages'), [
                 'route' => 'main_admin_team_list',
             ])
-            ->setAttribute('class', 'list-group-item')
-            ->setLinkAttribute('icon', 'glyphicon glyphicon-align-justify')
-            ->getParent()
-            ->addChild($this->translator->trans('menu.payment_methods', [], 'messages'), [
-                'route' => 'main_admin_payment_method_list',
-            ])
-            ->setAttribute('class', 'list-group-item')
-            ->setLinkAttribute('icon', 'glyphicon glyphicon-cog')
-            ->getParent()
-            ->addChild($this->translator->trans('menu.payments', [], 'messages'), [
-                'route' => 'main_admin_payment_list',
-            ])
-            ->setAttribute('class', 'list-group-item')
-            ->setLinkAttribute('icon', 'glyphicon glyphicon-euro')
+            // ->setAttribute('class', 'sidebar-menu-item')
+            // ->getParent()
+            // ->addChild($this->translator->trans('menu.payment_methods', [], 'messages'), [
+            //     'route' => 'main_admin_payment_method_list',
+            // ])
+            // ->setAttribute('class', 'sidebar-menu-item')
+            // ->getParent()
+            // ->addChild($this->translator->trans('menu.payments', [], 'messages'), [
+            //     'route' => 'main_admin_payment_list',
+            // ])
+            ->setAttribute('class', 'sidebar-menu-item')
         ;
 
         $this->filterMenu($menu);

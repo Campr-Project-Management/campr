@@ -4,6 +4,7 @@ namespace AppBundle\Command\Update;
 
 use AppBundle\Entity\Project;
 use AppBundle\Entity\WorkPackage;
+use AppBundle\Helper\WorkPackageTreeBuilder;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -23,58 +24,50 @@ class PUIDsCommand extends BaseUpdateCommand
             return;
         }
         $this->getEm()->clear();
+
         // reset all PUIDs before updating
         $this
             ->getEm()
             ->createQuery(sprintf(
-                'UPDATE %s AS wp SET wp.puid = CONCAT(wp.id, :rand)',
+                'UPDATE %s AS wp SET wp.puid = wp.id',
                 WorkPackage::class
             ))
-            ->execute([
-                'rand' => random_int(0, time()),
-            ])
         ;
+
         foreach ($projects as $project) {
-            $output->writeln(sprintf(
-                '<info>Processing: %s</info>',
-                $project
-            ));
-            $this->updateWorkPackages($project);
+            $stmt = $this
+                ->getEm()
+                ->getConnection()
+                ->prepare('SELECT * FROM work_package WHERE project_id = :project')
+            ;
+
+            $stmt->execute(['project' => $project->getId()]);
+
+            $tree = WorkPackageTreeBuilder::buildFromRawData($stmt->fetchAll());
+
+            array_walk($tree, [$this, 'updateWorkPackages']);
         }
     }
 
-    private function printWps(array $workPackages, $level = 0)
+    private function updateWorkPackages(array $item)
     {
-        foreach ($workPackages as $wp) {
-            echo str_repeat('  ', $level), "ID: {$wp['id']} / Type: {$wp['type']} / Puid: {$wp['puid']}, Name: {$wp['name']}", PHP_EOL;
-            $this->printWps($wp['children'], $level + 1);
-        }
-    }
+        $this->output->writeln(sprintf(
+            '<comment>Setting PUID %s for WP %s (%d)</comment>',
+            $item['puid'],
+            $item['name'],
+            $item['id']
+        ));
 
-    private function updateWorkPackages(Project $project, string $puidPrefix = '', array $workPackageParent = null)
-    {
-        static $done = [];
-        $wps = $this->getWorkPackages($project, $workPackageParent);
-        $c = 0;
-        foreach ($wps as $wp) {
-            if (in_array($wp['id'], $done)) {
-                continue;
-            }
-            $done[] = $wp['id'];
-            ++$c;
-            $sql = 'UPDATE work_package wp SET wp.puid = ? WHERE wp.id = ?';
-            $params = [
-                $puidPrefix ? $puidPrefix.'.'.$c : $c,
-                $wp['id'],
-            ];
-            $this->getEm()->getConnection()->executeUpdate($sql, $params);
-            $this->output->writeln(sprintf(
-                '<comment>Setting puid %s for WP %s (%d)</comment>',
-                $params[0],
-                $wp['name'],
-                $wp['id']
-            ));
-            $this->updateWorkPackages($project, $params[0], $wp);
+        $sql = 'UPDATE work_package SET puid = ?, progress = ? WHERE id = ?';
+        $params = [
+            $item['puid'],
+            $item['progress'],
+            $item['id'],
+        ];
+        $this->getEm()->getConnection()->executeUpdate($sql, $params);
+
+        if (count($item['children'])) {
+            array_walk($item['children'], [$this, 'updateWorkPackages']);
         }
     }
 }

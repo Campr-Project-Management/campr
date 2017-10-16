@@ -1,4 +1,8 @@
 message:
+    member: member
+    members: members
+    roles: Roles
+    campr_moto: Campr - The tool for industrious people
     error: Error!
     costs_chart: Costs Chart
     reschedule_remaining_action: Reschedule remaining action
@@ -342,8 +346,8 @@ message:
     return: to return to your original user.
     no_chat_rooms: Chat list is empty for this project
     no_private_messages: There are no private messages on this project
-    your_teams: Your teams:
-    teams: Teams you are a part of:
+    your_teams: Your teams
+    teams: Teams you are a part of
     invoce: Invoice for payment:
     reset_password: Please enter your email address to reset the account password. An email will be sent with instructions.
     wait: Please wait...
@@ -431,6 +435,7 @@ menu:
     admin: Admin
 
 title:
+    meta_description: Campr is the tool for industrious people. Project management, team organization, risk management, project meetings, GANTT Charts, RASCI Matrix and much more.
     subteams: Subteams
     add_distribution_list: Add Distribution List
     homepage_main: Campr Main Site
@@ -463,7 +468,7 @@ title:
         create: Create new status report config
         edit: Edit status report config
     user:
-        list: User
+        list: Users
         create: Create new user
         edit: Edit user
         invite: Invite user
@@ -669,6 +674,7 @@ title:
         create: Create new team
         edit: Edit team
     team_member:
+        for: Team member list for
         list: Team member list
         create: Create new team member
         edit: Edit team member
@@ -1433,6 +1439,7 @@ placeholder:
     todo_category: Todo Category
 
 table_header_cell:
+    avatar: Avatar
     per_day: Per Day
     minutes_interval: Minutes Interval
     is_default: Is default

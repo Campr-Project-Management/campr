@@ -26,6 +26,14 @@ abstract class BaseController extends Controller
         $em->flush();
     }
 
+    protected function refreshEntity($obj)
+    {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $em->refresh($obj);
+    }
+
     protected function assertClassExists(string $class)
     {
         if (empty($class) || !class_exists($class)) {
