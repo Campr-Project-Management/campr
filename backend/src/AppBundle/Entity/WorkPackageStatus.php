@@ -54,6 +54,8 @@ class WorkPackageStatus
     /**
      * @var ArrayCollection|WorkPackage[]
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="workPackageStatus")
      */
     private $workPackages;

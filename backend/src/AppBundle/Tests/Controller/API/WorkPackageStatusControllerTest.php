@@ -53,7 +53,6 @@ class WorkPackageStatusControllerTest extends BaseController
                         'name' => 'label.open',
                         'sequence' => 0,
                         'visible' => true,
-                        'workPackages' => [],
                         'createdAt' => null,
                     ],
                     [
@@ -63,7 +62,6 @@ class WorkPackageStatusControllerTest extends BaseController
                         'name' => 'label.pending',
                         'sequence' => 1,
                         'visible' => true,
-                        'workPackages' => [],
                         'createdAt' => null,
                     ],
                     [
@@ -73,7 +71,6 @@ class WorkPackageStatusControllerTest extends BaseController
                         'name' => 'label.ongoing',
                         'sequence' => 2,
                         'visible' => true,
-                        'workPackages' => [],
                         'createdAt' => null,
                     ],
                     [
@@ -83,7 +80,6 @@ class WorkPackageStatusControllerTest extends BaseController
                         'name' => 'label.completed',
                         'sequence' => 3,
                         'visible' => true,
-                        'workPackages' => [],
                         'createdAt' => null,
                     ],
                     [
@@ -93,7 +89,6 @@ class WorkPackageStatusControllerTest extends BaseController
                         'name' => 'label.closed',
                         'sequence' => -1,
                         'visible' => false,
-                        'workPackages' => [],
                         'createdAt' => null,
                     ],
                 ],
@@ -151,7 +146,6 @@ class WorkPackageStatusControllerTest extends BaseController
                     'name' => 'workpackage-status',
                     'sequence' => 1,
                     'visible' => true,
-                    'workPackages' => [],
                     'createdAt' => null,
                 ],
             ],
