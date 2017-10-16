@@ -40,7 +40,8 @@
                         <tr>
                             <th class="task-number">{{ translateText('table_header_cell.task_number') }}</th>
                             <th>{{ translateText('table_header_cell.task_title') }}</th>
-                            <th class="rasci-cell" v-for="user in rasci.users">
+                            <th v-for="(user, userIndex) in rasci.users"
+                                :class="{'rasci-cell': true, 'active-cell': activeCell === userIndex}">
                                 <div
                                     class="avatar"
                                     v-tooltip.top-center="user.firstName + ' ' + user.lastName"
@@ -50,14 +51,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(workPackage, rasciIndex) in rasci.workPackages">
-                            <td :colspan="workPackage.rasci.length + 3" v-if="workPackage.type === 0">{{ workPackage.name }}</td>
+                        <tr v-for="(workPackage, rasciIndex) in rasci.workPackages"
+                            :class="{'active-row': activeRow === rasciIndex}"
+                            v-on:mouseover="activeRow = rasciIndex"
+                            v-on:mouseout="activeRow = null">
+                            <td v-if="workPackage.type === 0">{{ workPackage.name }}</td>
                             <td class="task-number" v-if="workPackage.type !== 0">
                                 <span class="light-color">#{{ workPackage.id }}</span>
                             </td>
-                            <td v-if="workPackage.type !== 0">{{ workPackage.name }}</td>
-                            <td class="rasci-cell" v-if="workPackage.type !== 0" v-for="(user, userIndex) in workPackage.rasci">
-                                <responsibility-select
+                            <td>
+                                <span v-if="workPackage.type !== 0">{{ workPackage.name }}</span>
+                            </td>
+                            <td v-for="(user, userIndex) in workPackage.rasci"
+                                v-on:mouseover="activeCell = workPackage.type !== 0 && userIndex"
+                                v-on:mouseout="activeCell = null"
+                                :class="{'rasci-cell': true, 'active-cell': activeCell === userIndex}">
+                                <responsibility-select v-if="workPackage.type !== 0"
                                     :is-last="userIndex + 1 === workPackage.rasci.length"
                                     :is-second-to-last="userIndex + 2 === workPackage.rasci.length"
                                     :project="workPackage.project"
@@ -66,7 +75,7 @@
                                     :responsibility="user.data"
                                     v-on:value="setRaciData({project: workPackage.project, user: user.user, workPackage: workPackage.id, data: $event})"/>
                             </td>
-                            <td class="rasci-cell last-cell" v-if="workPackage.type !== 0"></td>
+                            <td class="rasci-cell last-cell"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -98,6 +107,12 @@ export default {
     created() {
         const {id} = this.$route.params;
         this.getRasci({id});
+    },
+    data() {
+        return {
+            activeCell: null,
+            activeRow: null,
+        };
     },
 };
 </script>
@@ -158,40 +173,13 @@ export default {
             }
         }
 
-        thead,
-        tbody {
-            td.rasci-cell,
-            th.rasci-cell {
-                &:after {
-                    content: '';
-                    height: 1000000px;
-                    left: 0;
-                    position: absolute;
-                    top: -50000px;
-                    width: 100%;
-                    z-index: 0;
-                    background-color: rgba($lighterColor,.05);
-                    @include opacity(0);
-                }
-
-                &:hover,
-                &:focus {
-                    &:after {
-                        @include opacity(1);
-                    }
-                }
-
-                &.last-cell {
-                    pointer-events: none;
-                }
+        tbody, thead {
+            th.rasci-cell.active-cell, td.rasci-cell.active-cell {
+                background-color: rgba($lighterColor,.05);
+                @include opacity(1);
             }
-        }
-
-        tbody { 
-            tr:not(.rasci-phase) {
-                &:hover {
-                    background-color: rgba($lighterColor,.05);
-                }
+            tr.active-row {
+                background-color: rgba($lighterColor,.05);
             }
         }
     }
