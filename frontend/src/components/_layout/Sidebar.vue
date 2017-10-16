@@ -77,106 +77,10 @@
             </ul>
             <ul v-show="this.$route.name.indexOf('project-') != -1">
                 <li class="separator"></li>
-                <li>
-                    <router-link :to="{name: 'project-dashboard'}" v-bind:title="message.project_dashboard">
-                        <span class="default">{{ message.project_dashboard }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name: 'project-organization'}" v-bind:title="message.organization">
-                        <span class="default">{{ message.organization }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name: 'project-contract'}" v-bind:title="message.contract">
-                        <span class="default">{{ message.contract }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name: 'project-phases-and-milestones'}" v-bind:title="message.phases_milestones">
-                        <span class="default">{{ message.phases_milestones }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name: 'project-task-management-list'}" v-bind:title="message.task_management">
-                        <span class="default">{{ message.task_management }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name: 'project-costs'}" v-bind:title="message.costs">
-                        <span class="default">{{ message.costs }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name: 'project-resources'}" v-bind:title="message.resources">
-                        <span class="default">{{ message.resources }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name: 'project-risks-and-opportunities'}" v-bind:title="message.risks_oportunities">
-                        <span class="default">{{ message.risks_oportunities }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name: 'project-gantt-chart'}" v-bind:title="message.gantt_chart">
-                        <span class="default">{{ message.gantt_chart }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name: 'project-rasci-matrix'}" v-bind:title="message.rasci_matrix">
-                        <span class="default">{{ message.rasci_matrix }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name: 'project-meetings'}" v-bind:title="message.meetings">
-                        <span class="default">{{ message.meetings }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name: 'project-todos'}" v-bind:title="message.todos">
-                        <span class="default">{{ message.todos }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name: 'project-infos'}" v-bind:title="message.infos">
-                        <span class="default">{{ message.infos }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name: 'project-decisions'}" v-bind:title="message.decisions">
-                        <span class="default">{{ message.decisions }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name: 'project-wbs'}" v-bind:title="message.wbs">
-                        <span class="default">{{ message.wbs }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name: 'project-status-reports'}" v-bind:title="message.status_reports">
-                        <span class="default">{{ message.status_reports }}</span>
-                        <span class="tablet"></span>
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{name: 'project-close-down-report'}" v-bind:title="message.close_down_report">
-                        <span class="default">{{ message.close_down_report }}</span>
-                        <span class="tablet"></span>
+                <li v-for="module in modules" v-if="displayModule(module)">
+                    <router-link :to="module.route" v-bind:title="module.title">
+                        <span class="default">{{ module.title }}</span>
+                        <span v-bind:class="module.icon"></span>
                     </router-link>
                 </li>
             </ul>
@@ -192,15 +96,135 @@ export default {
     name: 'sidebar',
     created() {
         this.getSidebarInformation();
+        this.getProjectModules();
+    },
+    computed: {
+        ...mapGetters({
+            project: 'project',
+            sidebarStats: 'sidebarStats',
+            projectModules: 'projectModules',
+        }),
     },
     methods: {
-        ...mapActions(['getSidebarInformation']),
+        ...mapActions(['getSidebarInformation', 'getProjectModules']),
         translate(key) {
             return Vue.translate(key);
+        },
+        displayModule(module) {
+            return module.module === null
+                || (this.project && this.project.projectModules && this.project.projectModules.indexOf(module.module) !== -1)
+                || (this.project && this.project.projectModules && !this.project.projectModules.length);
         },
     },
     data: function() {
         return {
+            modules: [
+                // plan
+                // communication
+                // control_measures
+                {
+                    route: {name: 'project-dashboard'},
+                    title: this.translate('message.project_dashboard'),
+                    icon: 'tablet',
+                    module: null,
+                },
+                {
+                    route: {name: 'project-organization'},
+                    title: this.translate('message.organization'),
+                    icon: 'tablet',
+                    module: 'project_organization',
+                },
+                {
+                    route: {name: 'project-contract'},
+                    title: this.translate('message.contract'),
+                    icon: 'tablet',
+                    module: 'project_contract',
+                },
+                {
+                    route: {name: 'project-phases-and-milestones'},
+                    title: this.translate('message.phases_milestones'),
+                    icon: 'tablet',
+                    module: 'phases_milestones',
+                },
+                {
+                    route: {name: 'project-task-management-list'},
+                    title: this.translate('message.task_management'),
+                    icon: 'tablet',
+                    module: 'task_management',
+                },
+                {
+                    route: {name: 'project-costs'},
+                    title: this.translate('message.costs'),
+                    icon: 'tablet',
+                    module: 'costs',
+                },
+                {
+                    route: {name: 'project-resources'},
+                    title: this.translate('message.resources'),
+                    icon: 'tablet',
+                    module: 'resources',
+                },
+                {
+                    route: {name: 'project-risks-and-opportunities'},
+                    title: this.translate('message.risks_oportunities'),
+                    icon: 'tablet',
+                    module: 'risks_opportunities',
+                },
+                {
+                    route: {name: 'project-gantt-chart'},
+                    title: this.translate('message.gantt_chart'),
+                    icon: 'tablet',
+                    module: 'gantt_chart',
+                },
+                {
+                    route: {name: 'project-rasci-matrix'},
+                    title: this.translate('message.rasci_matrix'),
+                    icon: 'tablet',
+                    module: 'rasci_matrix',
+                },
+                {
+                    route: {name: 'project-meetings'},
+                    title: this.translate('message.meetings'),
+                    icon: 'tablet',
+                    module: 'meetings',
+                },
+                {
+                    route: {name: 'project-todos'},
+                    title: this.translate('message.todos'),
+                    icon: 'tablet',
+                    module: 'todos',
+                },
+                {
+                    route: {name: 'project-infos'},
+                    title: this.translate('message.infos'),
+                    icon: 'tablet',
+                    module: 'notes',
+                },
+                {
+                    route: {name: 'project-decisions'},
+                    title: this.translate('message.decisions'),
+                    icon: 'tablet',
+                    module: 'decisions',
+                },
+                {
+                    route: {name: 'project-wbs'},
+                    title: this.translate('message.wbs'),
+                    icon: 'tablet',
+                    module: 'task_chart',
+                },
+                {
+                    route: {name: 'project-status-reports'},
+                    title: this.translate('message.status_reports'),
+                    icon: 'tablet',
+                    module: 'status_report',
+                },
+                {
+                    route: {name: 'project-close-down-report'},
+                    title: this.translate('message.close_down_report'),
+                    icon: 'tablet',
+                    module: 'close_down_project',
+                },
+            ],
             message: {
                 dashboard: this.translate('message.dashboard'),
                 projects: this.translate('message.projects'),
@@ -228,11 +252,6 @@ export default {
                 wbs: this.translate('message.wbs'),
             },
         };
-    },
-    computed: {
-        ...mapGetters({
-            sidebarStats: 'sidebarStats',
-        }),
     },
 };
 </script>
