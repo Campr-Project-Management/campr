@@ -61,6 +61,13 @@
                                 'label': 'label.sequence'|trans,
                             }
                         ) }}
+                        {{ form_widget(
+                            form.parent,
+                            {
+                                'attr': {'class': 'selectpicker'},
+                                'label': 'label.parent'|trans
+                            }
+                        ) }}
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 {{ form_widget(
