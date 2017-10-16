@@ -16,10 +16,10 @@ const actions = {
             .get(Routing.generate('app_api_project_modules'))
             .then(
                 (response) => {
-                    console.log(response.body);
+                    commit(types.SET_PROJECT_MODULES, {projectModules: response.body});
                 },
-                (response) => {
-                    console.log(response.body);
+                () => {
+                    commit(types.SET_PROJECT_MODULES, {projectModules: []});
                 }
             )
         ;
