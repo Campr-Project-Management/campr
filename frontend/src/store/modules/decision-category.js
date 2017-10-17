@@ -8,7 +8,7 @@ const state = {
 const getters = {
     decisionCategories: state => state.decisionCategories,
     decisionCategoriesForSelect: state => {
-        let categoriesSelect = [{'key': null, 'label': Translator.trans('message.category')}];
+        let categoriesSelect = [];
         state.decisionCategories.map(function(item) {
             categoriesSelect.push({'key': item.id, 'label': item.name});
         });

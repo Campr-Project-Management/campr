@@ -8,7 +8,7 @@ const state = {
 const getters = {
     riskStatuses: state => state.riskStatuses,
     riskStatusesForSelect: state => {
-        let statusesSelect = [{'key': null, 'label': Translator.trans('placeholder.risk_status')}];
+        let statusesSelect = [];
         state.riskStatuses.map(function(item) {
             statusesSelect.push({'key': item.id, 'label': item.name});
         });
