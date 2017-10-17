@@ -9,7 +9,7 @@ const state = {
 const getters = {
     riskStrategies: state => state.riskStrategies,
     riskStrategiesForSelect: state => {
-        let strategiesSelect = [{'key': null, 'label': Translator.trans('placeholder.risk_strategy')}];
+        let strategiesSelect = [];
         _.isArray(state.riskStrategies) && state.riskStrategies.map(function(item) {
             strategiesSelect.push({'key': item.id, 'label': item.name});
         });
