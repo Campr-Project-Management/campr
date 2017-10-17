@@ -23,7 +23,7 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <select-field
-                                    v-bind:title="translateText('label.category')"
+                                    v-bind:title="translateText('placeholder.category')"
                                     v-bind:options="todoCategoriesForSelect"
                                     v-model="todoCategory"
                                     v-bind:currentOption="todoCategory" />
@@ -79,7 +79,7 @@
                             </div>
                             <div class="col-md-6">
                                 <select-field
-                                    v-bind:title="translateText('label.select_status')"
+                                    v-bind:title="translateText('placeholder.status')"
                                     v-bind:options="todoStatusesForSelect"
                                     v-model="todoStatus"
                                     v-bind:currentOption="todoStatus" />
@@ -179,7 +179,7 @@ export default {
     },
     watch: {
         todo(val) {
-            this.todoStatus = {key: this.todo.status, label: this.todo.statusName};
+            this.todoStatus = {key: this.todo.status, label: this.translateText(this.todo.statusName)};
             this.title = this.todo.title;
             this.$refs.description.setContent(this.todo.description);
             this.dueDate = this.todo.dueDate;
