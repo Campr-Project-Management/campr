@@ -19,7 +19,7 @@ export default {
         Dropdown,
     },
     methods: {
-        ...mapActions(['getProjects']),
+        ...mapActions(['getProjectsForDropdown', 'setProjectFilters', 'clearProjects']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -36,7 +36,9 @@ export default {
         },
     },
     created() {
-        this.getProjects();
+        this.clearProjects();
+        this.setProjectFilters({clear: true});
+        this.getProjectsForDropdown();
     },
     computed: {
         ...mapGetters({

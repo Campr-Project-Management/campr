@@ -34,7 +34,7 @@ export default {
         Pagination,
     },
     methods: {
-        ...mapActions(['getProjects', 'setProjectFilters']),
+        ...mapActions(['getProjects', 'setProjectFilters', 'clearProjects']),
         changePage(page) {
             this.activePage = page;
             this.getProjectsData();
@@ -58,6 +58,7 @@ export default {
     },
     created() {
         this.setProjectFilters({clear: true});
+        this.clearProjects();
         this.getProjectsData();
     },
     computed: {
