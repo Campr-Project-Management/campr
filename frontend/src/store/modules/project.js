@@ -148,6 +148,29 @@ const actions = {
         ;
     },
 
+    /**
+     * Gets projects from the API and commits SET_PROJECTS_FOR_DROPDOWN mutation
+     * @param {function} commit
+     *
+     * @return {object}
+     */
+    getProjectsForDropdown({commit}) {
+        let paramObject = {params: {}};
+        return Vue
+            .http
+            .get(Routing.generate('app_api_project_list'), paramObject)
+            .then(
+                (response) => {
+                    if (response.status === 200) {
+                        let projects = response.data;
+                        commit(types.SET_PROJECTS_FOR_DROPDOWN, {projects});
+                    }
+                },
+                (response) => {}
+            )
+            ;
+    },
+
     setProjectFilters({commit}, filters) {
         commit(types.SET_PROJECT_FILTERS, {filters});
     },
@@ -687,7 +710,7 @@ const actions = {
      * @param {function} commit
      */
     clearProjects({commit}) {
-        commit(types.SET_PROJECTS, {projects: [], projectsForFilter: [{'key': '', 'label': Translator.trans('message.all_projects_filter')}]});
+        commit(types.SET_PROJECTS, {projects: []});
     },
 };
 
@@ -716,9 +739,18 @@ const mutations = {
     [types.SET_PROJECTS](state, {projects}) {
         state.projects = projects;
         state.filteredProjects = JSON.parse(JSON.stringify(projects));
+    },
+
+     /**
+     * Sets projectsForFilter to state
+     * @param {Object} state
+     * @param {array} projects
+     */
+    [types.SET_PROJECTS_FOR_DROPDOWN](state, {projects}) {
+        let projectsTmp = projects;
         let projectsForFilter = [{'key': '', 'label': Translator.trans('message.all_projects_filter')}];
-        if (state.projects.items !== undefined) {
-            state.projects.items.map( function(project) {
+        if (projectsTmp.items !== undefined) {
+            projectsTmp.items.map( function(project) {
                 projectsForFilter.push({'key': project.id, 'label': project.name});
             });
         }
