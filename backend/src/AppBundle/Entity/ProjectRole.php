@@ -53,6 +53,23 @@ class ProjectRole
     private $isLead;
 
     /**
+     * @var ProjectRole
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectRole", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $parent;
+
+    /**
+     * @var ArrayCollection|ProjectRole[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectRole", mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $children;
+
+    /**
      * @var \DateTime
      *
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
@@ -89,6 +106,7 @@ class ProjectRole
         $this->createdAt = new \DateTime();
         $this->isLead = false;
         $this->projectUsers = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     /**
@@ -171,6 +189,64 @@ class ProjectRole
     public function getIsLead()
     {
         return $this->isLead;
+    }
+
+    /**
+     * Set parent.
+     *
+     * @param ProjectRole $parent
+     *
+     * @return ProjectRole
+     */
+    public function setParent(ProjectRole $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent.
+     *
+     * @return ProjectRole
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Add child.
+     *
+     * @param ProjectRole $child
+     *
+     * @return ProjectRole
+     */
+    public function addChild(ProjectRole $child)
+    {
+        $this->children[] = $child;
+
+        return $this;
+    }
+
+    /**
+     * Remove child.
+     *
+     * @param ProjectRole $child
+     */
+    public function removeChild(ProjectRole $child)
+    {
+        $this->children->removeElement($child);
+    }
+
+    /**
+     * Get children.
+     *
+     * @return ArrayCollection|ProjectRole[]
+     */
+    public function getChildren()
+    {
+        return $this->children;
     }
 
     /**
