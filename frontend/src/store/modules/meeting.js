@@ -10,7 +10,7 @@ const state = {
 const getters = {
     projectMeetings: state => state.projectMeetings,
     projectMeetingsForSelect: state => {
-        let meetings = [{'key': null, 'label': Translator.trans('message.event')}];
+        let meetings = [];
         if (state.projectMeetings.items) {
             state.projectMeetings.items.map(function(item) {
                 meetings.push({'key': item.id, 'label': item.name});

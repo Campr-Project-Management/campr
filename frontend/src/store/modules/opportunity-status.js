@@ -8,7 +8,7 @@ const state = {
 const getters = {
     opportunityStatuses: state => state.opportunityStatuses,
     opportunityStatusesForSelect: state => {
-        let statusesSelect = [{'key': null, 'label': Translator.trans('placeholder.opportunity_status')}];
+        let statusesSelect = [];
         state.opportunityStatuses.map(function(item) {
             statusesSelect.push({'key': item.id, 'label': item.name});
         });
