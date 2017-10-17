@@ -8,7 +8,7 @@ const state = {
 const getters = {
     todoCategories: state => state.todoCategories,
     todoCategoriesForSelect: state => {
-        let categoriesSelect = [{'key': null, 'label': Translator.trans('placeholder.category')}];
+        let categoriesSelect = [];
         state.todoCategories.map(function(item) {
             categoriesSelect.push({'key': item.id, 'label': item.name});
         });

@@ -42,7 +42,7 @@
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
                                 <multi-select-field
-                                    v-bind:title="translateText('label.distribution_list')"
+                                    v-bind:title="translateText('placeholder.distribution_list')"
                                     v-bind:options="distributionListsForSelect"
                                     v-bind:selectedOptions="details.distributionLists"
                                     v-model="details.distributionLists" />
