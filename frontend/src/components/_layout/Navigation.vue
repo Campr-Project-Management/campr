@@ -166,6 +166,7 @@ export default {
     border-radius: 50%;
     display: block;
     margin-right: 20px;
+    object-fit: cover;
   }
 
   .notifications {
