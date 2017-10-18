@@ -428,6 +428,8 @@ export default {
         margin: 0 auto 20px;
         display: block;
         height: 255px;
+        width: 255px;
+        object-fit: cover;
         @include border-radius(50%);
     }
 
