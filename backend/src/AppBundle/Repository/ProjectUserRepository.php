@@ -7,13 +7,15 @@ use AppBundle\Entity\Project;
 use AppBundle\Repository\Traits\ProjectSortingTrait;
 use AppBundle\Repository\Traits\CategorySortingTrait;
 use AppBundle\Repository\Traits\ProjectTeamSortingTrait;
+use AppBundle\Repository\Traits\UserSortingTrait;
 
 class ProjectUserRepository extends BaseRepository
 {
-    use ProjectSortingTrait, CategorySortingTrait, ProjectTeamSortingTrait {
+    use ProjectSortingTrait, CategorySortingTrait, ProjectTeamSortingTrait, UserSortingTrait {
         ProjectSortingTrait::setOrder as setProjectOrder;
         CategorySortingTrait::setOrder as setCategoryOrder;
         ProjectTeamSortingTrait::setOrder as setProjectTeamOrder;
+        UserSortingTrait::setOrder as setUserOrder;
     }
 
     public function findByWithLike(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -128,5 +130,6 @@ class ProjectUserRepository extends BaseRepository
         $this->setProjectOrder($orderBy, $qb);
         $this->setCategoryOrder($orderBy, $qb);
         $this->setProjectTeamOrder($orderBy, $qb);
+        $this->setUserOrder($orderBy, $qb);
     }
 }
