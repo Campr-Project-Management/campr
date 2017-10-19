@@ -28,6 +28,12 @@ trait UserSortingTrait
                     $qb->orderBy('full_name', $dir);
                     unset($orderBy['userFullName']);
                     break;
+                case 'createdByFullName':
+                    $qb->leftJoin('q.createdBy', 'c');
+                    $qb->addSelect('CONCAT(c.firstName, \' \', c.lastName) AS HIDDEN full_name');
+                    $qb->orderBy('full_name', $dir);
+                    unset($orderBy['createdByFullName']);
+                    break;
                 case 'userEmail':
                     $qb->orderBy('u.email', $dir);
                     unset($orderBy['userEmail']);
