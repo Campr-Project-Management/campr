@@ -49,6 +49,7 @@ class ApiCreateType extends CreateType
         $resolver->setDefaults([
             'data_class' => WorkPackage::class,
             'csrf_protection' => false,
+            'entity_manager' => null,
         ]);
     }
 }
