@@ -26,7 +26,7 @@
                         <div class="avatar" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
                         <div class="info">
                             <p class="title">{{ item.userFullName }}</p>
-                            <p class="description">{{ item.projectRoleName }}</p>
+                            <p class="description"><span v-for="roleName in item.projectRoleNames">{{ translateText(roleName) }}, </span></p>
                         </div>
                     </div>
                 </div>
