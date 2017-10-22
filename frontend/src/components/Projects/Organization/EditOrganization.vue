@@ -59,65 +59,6 @@
                     </div>
                 </div>
 
-                <div class="form">
-                    <!-- /// Roles /// -->
-                    <h3>{{ translateText('message.project_roles') }}</h3>
-                    <!--<ul class="roles-hierarchy">
-                        <organization-distribution-item :item='distributionHierarchy'></organization-distribution-item>
-                    </ul>-->
-                    <div class="dd" id="domenu-0">
-                        <!--<button class="dd-new-item">+</button>-->
-                        <li class="dd-item-blueprint">
-                        <div class="dd-handle dd3-handle">
-                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
-                                <path d="M6.5,5.5L2.3,1.3H4c0.4,0,0.7-0.3,0.7-0.7S4.4,0,4,0H0.7C0.3,0,0,0.3,0,0.7V4 c0,0.4,0.3,0.7,0.7,0.7S1.3,4.4,1.3,4V2.3l4.2,4.2c0.3,0.3,0.7,0.3,0.9,0C6.7,6.2,6.7,5.8,6.5,5.5z"/>
-                                <path d="M9.5,5.5l4.2-4.2H12c-0.4,0-0.7-0.3-0.7-0.7S11.6,0,12,0h3.3C15.7,0,16,0.3,16,0.7V4 c0,0.4-0.3,0.7-0.7,0.7c-0.4,0-0.7-0.3-0.7-0.7V2.3l-4.2,4.2c-0.3,0.3-0.7,0.3-0.9,0C9.3,6.2,9.3,5.8,9.5,5.5z"/>
-                                <path d="M5.5,9.5l-4.2,4.2V12c0-0.4-0.3-0.7-0.7-0.7S0,11.6,0,12v3.3C0,15.7,0.3,16,0.7,16H4 c0.4,0,0.7-0.3,0.7-0.7c0-0.4-0.3-0.7-0.7-0.7H2.3l4.2-4.2c0.3-0.3,0.3-0.7,0-0.9C6.2,9.3,5.8,9.3,5.5,9.5z"/>
-                                <path d="M10.5,9.5l4.2,4.2V12c0-0.4,0.3-0.7,0.7-0.7c0.4,0,0.7,0.3,0.7,0.7v3.3 c0,0.4-0.3,0.7-0.7,0.7H12c-0.4,0-0.7-0.3-0.7-0.7c0-0.4,0.3-0.7,0.7-0.7h1.7l-4.2-4.2c-0.3-0.3-0.3-0.7,0-0.9 C9.8,9.3,10.2,9.3,10.5,9.5z"/>
-                            </svg>
-                        </div>
-                        <div class="dd3-content">
-                            <span class="item-name">[item_name]</span>
-                            <div class="dd-button-container">
-                                <button class="item-remove" data-confirm-class="item-remove-confirm">
-                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
-                                        <path d="M15.2,2h-2.3h-2.1V0.5c0-0.3-0.2-0.5-0.5-0.5H5.1C4.8,0,4.6,0.2,4.6,0.5V2H2.5H0.8C0.5,2,0.3,2.2,0.3,2.5S0.5,3,0.8,3H2 v12.5C2,15.8,2.2,16,2.5,16h10.4c0.3,0,0.5-0.2,0.5-0.5V3h1.8c0.3,0,0.5-0.2,0.5-0.5S15.5,2,15.2,2z M5.6,1h4.2v1H5.6V1z M12.4,15 H3V3h2.1h5.2h2.1V15z"/>
-                                        <path d="M5.1,4.2c-0.3,0-0.5,0.2-0.5,0.5v7.8c0,0.3,0.2,0.5,0.5,0.5s0.5-0.2,0.5-0.5V4.7C5.6,4.5,5.3,4.2,5.1,4.2z"/>
-                                        <path d="M7.7,4.2c-0.3,0-0.5,0.2-0.5,0.5v7.8c0,0.3,0.2,0.5,0.5,0.5s0.5-0.2,0.5-0.5V4.7C8.2,4.5,8,4.2,7.7,4.2z"/>
-                                        <path d="M9.8,4.7v7.8c0,0.3,0.2,0.5,0.5,0.5s0.5-0.2,0.5-0.5V4.7c0-0.3-0.2-0.5-0.5-0.5S9.8,4.5,9.8,4.7z"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="dd-edit-box" style="display: none;">
-                            <input type="text" name="title" autocomplete="off" placeholder="Item"
-                                data-placeholder="Any nice idea for the title?"
-                                v-bind:data-default-value="departmentPage">
-                            <i class="end-edit">{{ translateText('button.save') }}</i>
-                            </div>
-                        </div>
-                        </li>
-                        <ol class="dd-list"></ol>
-                    </div>
-                    <!-- /// End Roles /// -->
-
-                    <hr>
-
-                    <!-- /// Add new Role /// -->
-                    <div class="form-group">
-                        <input-field v-model="roleName" type="text" :content="roleName" :label="translateText('label.new_role')"></input-field>
-                        <error
-                            v-if="validationMessages.name && validationMessages.name.length"
-                            v-for="message in validationMessages.name"
-                            :message="message" />
-                    </div>
-                    <div class="flex flex-space-between">
-                        <a @click="createNewRole()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
-                    </div>
-                    <!-- /// End Add new Role /// -->
-                </div>
-
-                <hr class="double">
-
                 <!-- /// Departments /// -->
                 <h3>{{ translateText('message.departments') }}</h3>
                 <vue-scrollbar class="table-wrapper">
@@ -254,7 +195,6 @@ import moment from 'moment';
 import Modal from '../../_common/Modal';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import OrganizationDistributionItem from './OrganizationDistributionItem';
-import 'domenu';
 import AlertModal from '../../_common/AlertModal.vue';
 import Error from '../../_common/_messages/Error.vue';
 
@@ -276,7 +216,7 @@ export default {
         ...mapActions([
             'getProjectDepartments', 'createDepartment', 'editDepartment',
             'deleteDepartment', 'getProjectUsers', 'getSubteams', 'createSubteam',
-            'editSubteam', 'deleteSubteam', 'createProjectRole', 'getProjectRoles',
+            'editSubteam', 'deleteSubteam',
         ]),
         moment: function(date) {
             return moment(date);
@@ -291,14 +231,6 @@ export default {
         changeSubteamPage: function(page) {
             this.activeSubteamPage = page;
             this.getSubteams({project: this.$route.params.id, page: this.activeSubteamPage});
-        },
-        createNewRole() {
-            let data = {
-                name: this.roleName,
-                sequence: this.projectRoles.length + 1,
-            };
-            this.createProjectRole(data);
-            this.roleName = null;
         },
         createNewDepartment() {
             let data = {
@@ -400,11 +332,9 @@ export default {
         this.getProjectDepartments({project: this.$route.params.id, page: this.activeDepartmentPage});
         this.getProjectUsers({id: this.$route.params.id});
         this.getSubteams({project: this.$route.params.id, page: this.activeSubteamPage});
-        this.getProjectRoles();
     },
     computed: {
         ...mapGetters({
-            projectRoles: 'projectRoles',
             projectDepartments: 'projectDepartments',
             managersForSelect: 'managersForSelect',
             projectUsersForSelect: 'projectUsersForSelect',
@@ -441,16 +371,6 @@ export default {
         subteams(value) {
             this.subteamPages = Math.ceil(this.subteams.totalItems / this.subteams.pageSize);
         },
-        projectRoles(value) {
-            const distData = this.projectRoles.map(role => {
-                return {
-                    title: this.translateText(role.name),
-                    id: role.id,
-                    children: [],
-                };
-            });
-            $('#domenu-0').domenu({'data': JSON.stringify(distData)}).parseJson();
-        },
     },
 };
 </script>
@@ -458,7 +378,6 @@ export default {
 <style lang="scss">
     @import '../../../css/_variables';
     @import '../../../css/_mixins';
-    @import '../../../css/do-menu';
 </style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
