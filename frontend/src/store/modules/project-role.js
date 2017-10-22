@@ -27,12 +27,14 @@ const actions = {
     /**
      * Get all project role
      * @param {function} commit
+     * @param {integer} projectId
      */
-    getProjectRoles({commit}) {
+    getProjectRoles({commit}, projectId) {
         Vue.http
-            .get(Routing.generate('app_api_project_roles_list')).then((response) => {
+            .get(Routing.generate('app_api_project_roles', {id: projectId})).then((response) => {
                 if (response.status === 200) {
                     let roles = response.data;
+                    roles.map(role => (_.merge(role, {name: Translator.trans(role.name)})));
                     commit(types.SET_PROJECT_ROLES, {roles});
                 }
             }, (response) => {
