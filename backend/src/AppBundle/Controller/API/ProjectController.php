@@ -2390,4 +2390,19 @@ class ProjectController extends ApiController
     {
         return $this->createApiResponse($this->get('app.service.wbs')->getData($project));
     }
+
+    /**
+     * Get all projectRoles for a specific Project.
+     *
+     * @Route("/{id}/project-roles", name="app_api_project_roles", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function projectRolesAction(Project $project)
+    {
+        return $this->createApiResponse($project->getProjectRoles());
+    }
 }
