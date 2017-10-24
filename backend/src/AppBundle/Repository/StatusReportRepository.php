@@ -3,9 +3,16 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Project;
+use Doctrine\ORM\QueryBuilder;
+use AppBundle\Repository\Traits\ProjectSortingTrait;
+use AppBundle\Repository\Traits\UserSortingTrait;
 
 class StatusReportRepository extends BaseRepository
 {
+    use ProjectSortingTrait, UserSortingTrait {
+        ProjectSortingTrait::setOrder as setProjectOrder;
+        UserSortingTrait::setOrder as setUserOrder;
+    }
     public function findLastByProject(Project $project)
     {
         return $this
@@ -99,7 +106,16 @@ class StatusReportRepository extends BaseRepository
             ->setFirstResult(0)
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @param array        $orderBy
+     * @param QueryBuilder $qb
+     */
+    public function setOrder(array &$orderBy, QueryBuilder $qb)
+    {
+        $this->setProjectOrder($orderBy, $qb);
+        $this->setUserOrder($orderBy, $qb);
     }
 }
