@@ -1372,7 +1372,9 @@ class ProjectController extends ApiController
     public function createTaskAction(Request $request, Project $project)
     {
         $wp = new WorkPackage();
-        $form = $this->createForm(ApiCreateType::class, $wp);
+        $form = $this->createForm(ApiCreateType::class, $wp, [
+            'entity_manager' => $this->getDoctrine()->getManager(),
+        ]);
         $this->processForm($request, $form);
 
         // @TODO: Make filesystem selection dynamic
