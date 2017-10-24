@@ -27,7 +27,7 @@ const actions = {
 };
 
 const mutations = {
-    [types.SET_PROJECT_MODULES]({state}, {projectModules}) {
+    [types.SET_PROJECT_MODULES](state, {projectModules}) {
         state.projectModules = projectModules;
     },
 };
