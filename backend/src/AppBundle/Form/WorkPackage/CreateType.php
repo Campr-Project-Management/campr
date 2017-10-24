@@ -27,6 +27,8 @@ use Symfony\Component\Validator\Constraints\Regex;
 
 class CreateType extends BaseType
 {
+    private $em;
+
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
@@ -34,6 +36,10 @@ class CreateType extends BaseType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
+
+        if (isset($options['entity_manager'])) {
+            $this->em = $options['entity_manager'];
+        }
 
         $builder
             ->add('workPackageStatus', EntityType::class, [
@@ -277,12 +283,17 @@ class CreateType extends BaseType
 
         $builder
             ->addEventListener(
-                FormEvents::PRE_SUBMIT,
+                FormEvents::SUBMIT,
                 function (FormEvent $event) {
                     $formData = $event->getData();
-
-                    if (!isset($formData['workPackageStatus'])) {
-                        $formData['workPackageStatus'] = WorkPackageStatus::PENDING;
+                    $form = $event->getForm();
+                    $wp = $form->getData();
+                    if ($wp->getWorkpackageStatus() == null && $this->em !== null) {
+                        $formData->setWorkPackageStatus($this
+                            ->em
+                            ->getRepository(WorkPackageStatus::class)
+                            ->find(WorkPackageStatus::PENDING)
+                        );
                         $event->setData($formData);
                     }
                 }
