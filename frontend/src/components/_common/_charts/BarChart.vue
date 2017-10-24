@@ -4,12 +4,12 @@
           <div class="progress-area">
               <p class="title-right">{{ titleRight }}</p>
               <p class="percentage">
-                  <span class="number">0</span>
+                  <span class="number">{{ percentage }}</span>
                   <span class="percentage-sign">%</span>
               </p>
           </div>
           <p v-show="titleLeft" class="title-left"><span>Status: </span> {{ titleLeft }}</p>
-          <div class="filled" v-bind:style="{ background: color }" v-if="!isZeroFill"></div>
+          <div class="filled" v-bind:style="{ background: color, width: percentage + '%' }" v-if="!isZeroFill"></div>
           <div class="zero-fill" v-if="isZeroFill"></div>
       </div>
     </div>
@@ -22,23 +22,6 @@ export default {
         isZeroFill: function() {
             return this.percentage == 0;
         },
-    },
-    mounted() {
-        const $this = window.$('#chart' + this._uid);
-        let speed = 1000;
-
-        const $percentageNumber = $this.find('.number');
-
-        $this.find('.filled')
-        .animate({'width': this.percentage + '%'}, speed);
-
-        window.$({Counter: 0})
-            .animate({Counter: $this.data('number')}, {
-                duration: speed,
-                step: function() {
-                    $percentageNumber.text(Math.ceil(this.Counter));
-                },
-            });
     },
 };
 </script>
@@ -120,6 +103,12 @@ export default {
       width: 0;
       background: $middleColor;
       height: 100%;
+
+      -webkit-transition: all ease 0.75s;
+      -moz-transition: all ease 0.75s;
+      -ms-transition: all ease 0.75s;
+      -o-transition: all ease 0.75s;
+      transition: all ease 0.75s;
 
       &.finished {
         background: $secondColor;
