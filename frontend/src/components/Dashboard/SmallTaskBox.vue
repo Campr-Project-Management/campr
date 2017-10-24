@@ -107,4 +107,8 @@ export default {
           }
       }
   }
+
+  .task-box.box.small-box {
+      white-space: normal;
+  }
 </style>

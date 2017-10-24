@@ -43,22 +43,25 @@
                             </li>
                             <li>
                                 <span>{{ translateText('message.project_sponsor') }}:</span>
-                                <b v-if="projectSponsors" v-for="(sponsor, index) in projectSponsors">
-                                    {{ sponsor.userFullName }}
-                                    <span v-if="index != projectSponsors.length - 1">, </span>
-                                </b>
-                                <b v-else>-</b>
+                                <div>
+                                    <b v-if="projectSponsors" v-for="(sponsor, index) in projectSponsors">
+                                        {{ sponsor.userFullName }}
+                                        <span v-if="index != projectSponsors.length - 1">, </span>
+                                    </b>
+                                    <b v-else>-</b>
+                                </div>
                             </li>
                             <li>
                                 <span>{{ translateText('message.project_managers') }}:</span>
-                                <b v-if="projectManagers" v-for="(manager, index) in projectManagers">
-                                    {{ manager.userFullName }}
-                                    <span v-if="index != projectManagers.length - 1">, </span>
-                                </b>
-                                <b v-else>-</b>
+                                <div>
+                                    <b v-if="projectManagers" v-for="(manager, index) in projectManagers">
+                                        {{ manager.userFullName }}
+                                        <span v-if="index != projectManagers.length - 1">, </span>
+                                    </b>
+                                    <b v-else>-</b>
+                                </div>
                             </li>
                         </ul>
-
                         <h4 class="widget-title">{{ translateText('message.project_schedule') }}</h4>
                         <table class="table table-small">
                             <thead>
