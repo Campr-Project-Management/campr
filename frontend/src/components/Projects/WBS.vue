@@ -124,6 +124,38 @@ export default {
                 .attr('xmlns', 'http://www.w3.org/1999/xhtml')
                 .attr('class', 'title-body')
                 .html(d => {
+                    // tables are supposed to be ugly, but god damn it they can be the prettiest thing when they work better than anything
+                    return `<table>
+                        <tr>
+                            <td>
+                                ${d.data.name}
+                            </td>
+                        </tr>
+                    </table>`;
+                })
+                .on('click', d => {
+                    if (d.children) {
+                        d._children = d.children;
+                        d.children = null;
+                    } else {
+                        d.children = d._children;
+                        d._children = null;
+                    }
+
+                    this.updateTree(d);
+                })
+            ;
+
+            canvasNodesEnter
+                .append('foreignObject')
+                .attr('x', 175)
+                .attr('y', 0)
+                .attr('width', 15)
+                .attr('height', 15)
+                .append('xhtml:body')
+                .attr('xmlns', 'http://www.w3.org/1999/xhtml')
+                .attr('class', 'node-link')
+                .html(d => {
                     /*
                         {
                             path: 'phases-and-milestones/edit-milestone/:milestoneId',
@@ -182,27 +214,12 @@ export default {
                         break;
                     }
 
-                    // tables are supposed to be ugly, but god damn it they can be the prettiest thing when they work better than anything
-                    return `<table>
-                        <tr>
-                            <td>
-                                <a href="${url}" target="_blank">
-                                    ${d.data.name}
-                                </a>
-                            </td>
-                        </tr>
-                    </table>`;
+                    return `<a href="${url}" target="_blank">\ue164</a>`;
                 })
                 .on('click', d => {
-                    if (d.children) {
-                        d._children = d.children;
-                        d.children = null;
-                    } else {
-                        d.children = d._children;
-                        d._children = null;
-                    }
-
-                    this.updateTree(d);
+                    d3.event.stopImmediatePropagation();
+                    d3.event.stopPropagation();
+                    console.log(d3.event);
                 })
             ;
 
@@ -720,6 +737,14 @@ export default {
         fill: #fff;
         stroke: steelblue;
         stroke-width: 1.5px;
+    }
+
+    .node-link {
+        content: '\e164';
+        color: #ffffff;
+        background: transparent;
+        height: auto;
+        min-height: inherit;
     }
 
     .node text {
