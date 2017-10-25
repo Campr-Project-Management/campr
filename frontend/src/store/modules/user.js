@@ -5,11 +5,13 @@ import _ from 'lodash';
 const state = {
     user: {},
     users: [],
+    localUser: {},
 };
 
 const getters = {
     user: state => state.user,
     users: state => state.users,
+    localUser: state => state.localUser,
 };
 
 const actions = {
@@ -19,6 +21,20 @@ const actions = {
      * @return {Object}
      */
     getUserInfo({commit}) {
+        Vue
+            .http
+            .get(Routing.generate('app_api_users_me'))
+            .then(
+                (response) => {
+                    let localUser = response.data;
+                    commit(types.SET_LOCAL_USER, {localUser});
+                },
+                (response) => {
+                    commit(types.SET_LOCAL_USER, {localUser: {}});
+                }
+            )
+        ;
+
         return Vue
             .http
             .get(Routing.generate('main_api_users_get'))
@@ -84,6 +100,14 @@ const mutations = {
      */
     [types.SET_USERS](state, {users}) {
         state.users = users;
+    },
+    /**
+     * Sets local user (local from the team domain).
+     * @param {Object} state
+     * @param {Object} users
+     */
+    [types.SET_LOCAL_USER](state, {localUser}) {
+        state.localUser = localUser;
     },
 };
 

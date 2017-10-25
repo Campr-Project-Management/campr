@@ -33,6 +33,17 @@ class UserController extends ApiController
     }
 
     /**
+     * @Route("/me", name="app_api_users_me", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @return JsonResponse
+     */
+    public function meAction()
+    {
+        return $this->createApiResponse($this->getUser());
+    }
+
+    /**
      * Sync user information from main website.
      *
      * @Route("/sync", name="app_api_users_sync", options={"expose"=true})
