@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
-import _ from 'lodash';
 import router from '../../router';
 import * as projectStatus from './project-status';
 
@@ -84,11 +83,10 @@ const actions = {
             .http
             .patch(Routing.generate('app_api_project_edit', {id: data.project.id}), {favorite: data.favorite})
             .then(
-                () => {
-                    commit(types.TOGGLE_FAVORITE, data.project);
+                (response) => {
+                    commit(types.TOGGLE_FAVORITE, response.body);
                 },
                 () => {
-                    commit(types.TOGGLE_FAVORITE, data.project);
                 }
             )
         ;
@@ -783,8 +781,19 @@ const mutations = {
      * @param {Object} project
      */
     [types.TOGGLE_FAVORITE](state, project) {
-        let stateProject = _.find(state.projects.items, {id: project.id});
-        stateProject.favorite = !project.favorite;
+        state.projects.items = state.projects.items.map((item) => {
+            return item.id === project.id
+                ? project
+                : item
+            ;
+        });
+
+        state.filteredProjects.items = state.filteredProjects.items.map((item) => {
+            return item.id === project.id
+                ? project
+                : item
+            ;
+        });
     },
     /**
      * Edit project
