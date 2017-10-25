@@ -16,23 +16,19 @@ export default {
     methods: {
         ...mapActions(['toggleFavorite']),
         toggleProjectFavorite() {
-            this.isFavorite = !this.isFavorite;
-            this.toggleFavorite({project: this.item, favorite: this.isFavorite});
-        },
-        checkIsFavorite() {
-            return this.item.userFavorites.indexOf(this.user.id) !== -1;
+            this.toggleFavorite({
+                project: this.item,
+                favorite: !this.isFavorite,
+            });
         },
     },
-    computed: mapGetters({
-        user: 'user',
-    }),
-    created() {
-        this.isFavorite = this.checkIsFavorite();
-    },
-    data() {
-        return {
-            isFavorite: true,
-        };
+    computed: {
+        ...mapGetters({
+            localUser: 'localUser',
+        }),
+        isFavorite() {
+            return this.item.userFavorites.indexOf(this.localUser.id) !== -1;
+        },
     },
 };
 </script>
