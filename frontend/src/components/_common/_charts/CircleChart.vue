@@ -1,13 +1,9 @@
 <template>
     <div :data-percentage="percentage" class="chart relative" :id="'chart-' + _uid">
-        <svg viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="49" class="empty" stroke-width="1" fill="transparent"/>
-            <circle cx="50" cy="50" r="49" class="full" stroke-width="1" fill="transparent"/>
-        </svg>
         <div class="text">
             <div class="title">{{ title }}</div>
             <div class="value">
-                <div class="percentage">0</div>
+                <div class="percentage">{{percentage}}</div>
                 <div class="percentage-sign">%</div>
             </div>
         </div>
@@ -15,39 +11,89 @@
 </template>
 
 <script>
+import * as d3 from 'd3';
+
 export default {
     props: ['percentage', 'title'],
     mounted() {
-        const $this = window.$('#chart-' + this._uid);
-        let speed = 1000;
+        const arc = d3
+            .arc()
+            .innerRadius(175)
+            .outerRadius(177)
+            .startAngle(0)
+        ;
 
-        const $percentageNumber = $this.find('.percentage');
-        const animatedCircle = $this.find('.full');
-        const percentage = $this.data('percentage');
-        const c = Math.PI*(animatedCircle.attr('r')*2);
+        const svg = d3
+            .select('#chart-' + this._uid)
+            .insert('svg', ':first-child')
+            .attr('width', 360)
+            .attr('height', 360)
+        ;
 
-        let strokeDasharray = 0;
-        let pct = percentage/100*c;
-        let animation = setInterval(function() {
-            strokeDasharray++;
+        const g = svg
+            .append('g')
+            .attr('transform', 'translate(180, 180)')
+        ;
 
-            animatedCircle[0]
-            .style.strokeDasharray = strokeDasharray + ', 10000';
-            if (strokeDasharray >= pct) {
-                clearInterval(animation);
-            };
-        }, 1);
+        // draw main circle
+        const main = g
+            .append('path')
+            .datum({endAngle: 0})
+            .attr('fill', 'transparent')
+            .attr('stroke-width', 1)
+            .attr('stroke', '#232D4B')
+            .attr('d', d => arc(d))
+        ;
 
-        window.$({Counter: 0})
-        .animate({Counter: $this.data('percentage')}, {
-            duration: speed,
-            step: function() {
-                $percentageNumber.text(this.Counter.toFixed(2));
-            },
-            complete: function() {
-                $percentageNumber.text(this.Counter.toFixed(2));
-            },
-        });
+        setTimeout(() => {
+            const interpolate = d3.interpolate(0, Math.PI * 2);
+
+            main
+                .transition()
+                .duration(2048)
+                .attrTween('d', d => {
+                    return t => {
+                        d.endAngle = interpolate(t);
+
+                        return arc(d);
+                    };
+                })
+            ;
+        }, 1024);
+
+        let percentage = parseInt(this.percentage, 10);
+        if (isNaN(percentage)) {
+            percentage = 0;
+        }
+
+        if (percentage) {
+            // draw status arc/circle
+            const progress = g
+                .append('path')
+                .datum({endAngle: 0})
+                .attr('fill', 'transparent')
+                .attr('stroke-width', 1)
+                .attr('stroke', '#5FC3A5')
+                .attr('d', d => arc(d))
+            ;
+
+            setTimeout(() => {
+                const interpolate = d3.interpolate(0, Math.PI * percentage / 50);
+
+                progress
+                    .transition()
+                    .duration(2048)
+                    .attrTween('d', d => {
+                        return t => {
+                            d.endAngle = interpolate(t);
+                            console.log(d.endAngle);
+
+                            return arc(d);
+                        };
+                    })
+                ;
+            }, 2048);
+        }
     },
 };
 </script>
