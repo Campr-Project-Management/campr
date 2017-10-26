@@ -177,7 +177,7 @@
                             </li>
                         </ul>
                         <div class="task-status">
-                            <circle-chart :percentage="project.task_status" v-bind:title="translateText('message.task_status')" class="left"></circle-chart>
+                            <circle-chart :percentage="project.progress" v-bind:title="translateText('message.task_status')" class="left"></circle-chart>
                         </div>
                     </div>
                 </div>
@@ -374,6 +374,12 @@ export default {
                 text-align: right;
                 width: 60%;
                 padding-left: 20px;
+            }
+
+            div {
+                b {
+                    padding-left: 5px;
+                }
             }
 
             &:last-child {
