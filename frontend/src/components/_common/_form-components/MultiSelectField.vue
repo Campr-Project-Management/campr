@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" @click="dropdownToggle()" ref="btn-dropdown">
                 {{ title }}
                 <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu dropdown-menu-right">
+            <ul class="dropdown-menu dropdown-menu-right nicescroll">
                 <li v-for="option in processedOptions">
                     <a href="javascript:void(0)" @click="updateValue(option)">
                         {{ option.label }}
@@ -13,14 +13,17 @@
                 </li>
             </ul>
         </div>
-        <p v-for="option in selectedOptions" class="multiselect-option">
-            {{ option.label }}
-            <a @click="removeSelectedOption(option)"> <i class="fa fa-times"></i></a>
-        </p>
+        <div class="multiselect-content nicescroll" ref="multiselect-content">
+            <p v-for="option in selectedOptions" class="multiselect-option">
+                {{ option.label }}
+                <a @click="removeSelectedOption(option)"> <i class="fa fa-times"></i></a>
+            </p>
+        </div>
     </div>
 </template>
 
 <script>
+import 'jquery.nicescroll/jquery.nicescroll.js';
 export default {
     props: ['title', 'options', 'selectedOptions'],
     computed: {
@@ -40,6 +43,35 @@ export default {
         removeSelectedOption: function(value) {
             this.$emit('input', this.selectedOptions.filter(option => option.key !== value.key));
         },
+        dropdownToggle: function() {
+            let scrollTop = $(window).scrollTop();
+            let elementOffset = $(this.$el).offset().top;
+            let currentElementOffset = (elementOffset - scrollTop);
+
+            let windowInnerHeight = window.innerHeight;
+
+            if (windowInnerHeight - currentElementOffset < 3*this.dropdownItemHeight) {
+                $(this.$el).find('.dropdown-menu').css('top', -3*this.dropdownItemHeight + 'px');
+            }else{
+                $(this.$el).find('.dropdown-menu').css('top', this.dropdownItemHeight + 'px');
+            }
+        },
+    },
+    mounted() {
+        this.dropdownItemHeight = this.$refs['btn-dropdown'].clientHeight;
+        $(this.$el).find('.dropdown-menu').css('height', 3*this.dropdownItemHeight + 'px');
+        $(this.$el).find('.multiselect-content').css('height', 3*this.multiSelectItemHeight + 'px');
+        window.$(document).ready(function() {
+            window.$('.nicescroll').niceScroll({
+                autohidemode: false,
+            });
+        });
+    },
+    data() {
+        return {
+            dropdownItemHeight: null,
+            multiSelectItemHeight: 42,
+        };
     },
 };
 </script>
@@ -48,6 +80,18 @@ export default {
 <style scoped lang="scss">
     @import '../../../css/_variables.scss';
     @import '../../../css/_mixins.scss';
+
+    .dropdown-menu{
+        &.nicescroll{
+             max-height : 200px;
+         }
+    }
+
+    .multiselect-content{
+        &.nicescroll{
+             max-height : 200px;
+         }
+    }
 
     .btn-primary {
         background: $darkColor;
