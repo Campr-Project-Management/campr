@@ -78,7 +78,7 @@
             <ul v-show="this.$route.name.indexOf('project-') != -1">
                 <li class="separator"></li>
                 <li v-for="module in modules" v-if="displayModule(module)">
-                    <router-link :to="module.route" v-bind:title="module.title">
+                    <router-link :to="{name: module.route.name, params: {id: projectId}}" v-bind:title="module.title">
                         <span class="default">{{ module.title }}</span>
                         <span v-bind:class="module.icon"></span>
                     </router-link>
@@ -104,6 +104,9 @@ export default {
             sidebarStats: 'sidebarStats',
             projectModules: 'projectModules',
         }),
+        projectId() {
+            return this.$route.params.id;
+        },
     },
     methods: {
         ...mapActions(['getSidebarInformation', 'getProjectModules']),
