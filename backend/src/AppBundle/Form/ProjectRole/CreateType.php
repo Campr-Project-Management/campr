@@ -64,7 +64,7 @@ class CreateType extends AbstractType
 
                     $qb = function (EntityRepository $er) use ($projectRole) {
                         $qb = $er->createQueryBuilder('pr');
-                        if ($projectRole instanceof ProjectRole AND $projectRole->getId()) {
+                        if ($projectRole instanceof ProjectRole and $projectRole->getId()) {
                             $qb
                                 ->andWhere('pr.id != :projectRoleId')
                                 ->andWhere('pr.parent != :parentId OR pr.parent IS NULL')
