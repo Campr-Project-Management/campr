@@ -11,7 +11,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * ProjectRole.
  *
- * @ORM\Table(name="project_role")
+ * @ORM\Table(name="project_role",  uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="name_project_unique", columns={"name", "project_id"}),
+ * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRoleRepository")
  * @UniqueEntity(fields="name", message="unique.name")
  */
@@ -34,7 +36,7 @@ class ProjectRole
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
@@ -68,6 +70,16 @@ class ProjectRole
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectRole", mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
      */
     private $children;
+
+    /**
+     * @var Project|null
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="projectRoles")
+     * @ORM\JoinColumn(name="project_id")
+     */
+    private $project;
 
     /**
      * @var \DateTime
@@ -247,6 +259,30 @@ class ProjectRole
     public function getChildren()
     {
         return $this->children;
+    }
+
+    /**
+     * Set project.
+     *
+     * @param Project $project
+     *
+     * @return ProjectRole
+     */
+    public function setProject(Project $project = null)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get project.
+     *
+     * @return Project
+     */
+    public function getProject()
+    {
+        return $this->project;
     }
 
     /**
