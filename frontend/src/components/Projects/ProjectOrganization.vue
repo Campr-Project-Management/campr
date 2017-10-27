@@ -14,7 +14,7 @@
                     <img v-bind:src="item.userAvatar">
                     <div class="info">
                         <p class="title">{{ item.userFullName }}</p>
-                        <p class="description">{{ item.projectRoleName }}</p>
+                        <p class="description">{{ item.projectRoleNames }}</p>
                     </div>
                 </div>
             </div>

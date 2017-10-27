@@ -3,6 +3,7 @@
 namespace AppBundle\Form\ProjectRole;
 
 use AppBundle\Entity\ProjectRole;
+use AppBundle\Entity\Project;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -45,6 +46,13 @@ class CreateType extends AbstractType
                 ],
             ])
             ->add('isLead', CheckboxType::class)
+            ->add('project', EntityType::class, [
+                'required' => false,
+                'class' => Project::class,
+                'choice_label' => 'name',
+                'placeholder' => 'placeholder.project',
+                'translation_domain' => 'messages',
+            ])
         ;
 
         $builder
