@@ -9,9 +9,11 @@ use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\WorkPackageStatus;
+use AppBundle\Helper\ProjectRoleDefaultListBuilder;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+
 
 class ProjectListener
 {
@@ -48,12 +50,19 @@ class ProjectListener
             $projectUser->setShowInResources(true);
             $projectUser->setShowInOrg(true);
 
-            $role = $args
-                ->getEntityManager()
-                ->getRepository(ProjectRole::class)
-                ->findOneByName(ProjectRole::ROLE_MANAGER)
-            ;
-            $projectUser->addProjectRole($role);
+            $defaultRoles = ProjectRoleDefaultListBuilder::buildDefaultListForProject($entity);
+            $managerRoles = array_values(
+                array_filter(
+                    $defaultRoles,
+                    function ($role) {
+                        return $role->getName() === ProjectRole::ROLE_MANAGER;
+                    }
+                )
+            );
+            $entity->setProjectRoles($defaultRoles);
+            // we make sure that manager roles has at least one element and we grab it
+            $managerRole = count($managerRoles) ? $managerRoles[0] : null;
+            $projectUser->addProjectRole($managerRole);
 
             $em->persist($projectUser);
 

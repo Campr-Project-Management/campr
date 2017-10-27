@@ -488,6 +488,12 @@ class Project
     private $progress = 0;
 
     /**
+     * @var ArrayCollection|ProjectRoles[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectRole", mappedBy="project",  cascade={"all"})
+     */
+    private $projectRoles;
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -527,6 +533,7 @@ class Project
         $this->statusReports = new ArrayCollection();
         $this->statusReportConfigs = new ArrayCollection();
         $this->projectCloseDowns = new ArrayCollection();
+        $this->projectRoles = new ArrayCollection();
     }
 
     public function __toString()
@@ -2676,4 +2683,56 @@ class Project
 
         return $this;
     }
+    /**
+     * Add projectRole.
+     *
+     * @param ProjectRole $projectRole
+     *
+     * @return Project
+     */
+    public function addProjectRole(ProjectRole $projectRole)
+    {
+        $this->projectRoles[] = $projectRole;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectRole.
+     *
+     * @param ProjectRole $projectRole
+     *
+     * @return Project;
+     */
+    public function removeProjectRole(ProjectRole $projectRole)
+    {
+        $this->projectRoles->removeElement($projectRole);
+
+        return $this;
+    }
+
+    /**
+     * Remove projectRole.
+     *
+     * @param ProjectRole[] $projectRole
+     *
+     * @return Project;
+     */
+    public function setProjectRoles($projectRoles)
+    {
+        $this->projectRoles = $projectRoles;
+
+        return $this;
+    }
+
+    /**
+     * Get projectRoles.
+     *
+     * @return ArrayCollection|ProjectRole[]
+     */
+    public function getProjectRoles()
+    {
+        return $this->projectRoles;
+    }
+
 }
