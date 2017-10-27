@@ -34,8 +34,8 @@
               </div>
             <bar-chart :percentage="project.progress" :status="project.statusName" title-right="Progress"></bar-chart>
             <div class="content-bottom flex">
-              <circle-chart :percentage="project.task_status" v-bind:title="translateText('message.task_status')" class="left"></circle-chart>
-              <circle-chart :percentage="project.costs_status" v-bind:title="translateText('message.cost_status')" class="right"></circle-chart>
+              <circle-chart :width="150" :height="150" :percentage="project.progress" v-bind:title="translateText('message.task_status')" class="left"></circle-chart>
+              <circle-chart :width="150" :height="150" :percentage="project.costs_status" v-bind:title="translateText('message.cost_status')" class="right"></circle-chart>
             </div>
             <div class="flex flex-space-between notes-title">
                 <span class="uppercase">{{ translateText('message.notes') }}</span>
