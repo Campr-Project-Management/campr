@@ -102,9 +102,7 @@ function svgFix(w,h,img,wimg,himg) {
         });
         newwimg = img.width();
         newhimg = img.height();
-        console.log('w | newwimg: = ' + w + ' | ' + newwimg + ' h | newhimg = ' + h + ' | ' + newhimg);
-        difw = w - newwimg; 
-        console.log('difw = ' + difw);
+        difw = w - newwimg;
 
         if (difw >= 0) {
             img.css({
@@ -138,12 +136,9 @@ function svgFix(w,h,img,wimg,himg) {
 
     difh = h - newhimg;
 
-    console.log('w | wimg: = ' + w + ' | ' + wimg + ' h | himg = ' + h + ' | ' + himg);
-
     if (difh > 0) {
         horizontalAlign();
-    } else {
-        console.log('newhimg = ' + newhimg + ' difh = ' + difh);     
+    } else {    
         img.css({
             'top' : difh / 2,
             'left' : 0
