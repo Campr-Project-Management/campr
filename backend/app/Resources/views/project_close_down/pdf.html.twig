@@ -9,18 +9,72 @@
         ul, dl {
             margin: 0 5px;
         }
+
+        body {
+            background-color: #232D4B;
+            font-family: 'Poppins', sans-serif;
+            color: #D8DAE5;
+            padding: 0px;
+            margin:0px;
+            min-height: 1407px;
+        }
+        .text-center {
+            text-align: center;
+        }
+
+        .hero-text {
+            font-size: 3em;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-weight: 300;
+            letter-spacing: 2.2px;
+            text-transform: uppercase;
+            font-size: 20px;
+        }
+        tr {
+            vertical-align: top;
+        }
+
+        .alternate-color:nth-of-type(even) {
+            background-color: #1E2643;
+        }
+        dt {
+            padding: 15px 5px;
+        }
+        ul, dl {
+            margin: 0 5px;
+        }
+        .double-line {
+            display: block;
+            -webkit-margin-before: 0.5em;
+            -webkit-margin-after: 0.5em;
+            -webkit-margin-start: auto;
+            -webkit-margin-end: auto;
+            border-top: 4px double;
+            border-color: #111526;
+            margin: 40px 0;
+            box-sizing: content-box;
+            height: 0px;
+        }
     </style>
+    <link href="{{ asset('bundles/main/assets/css/custom.css') }}" rel="stylesheet">
 </head>
 <body>
 <table>
     <tr>
-        <th colspan="2">{{ projectCloseDown.projectName }} : {{ projectCloseDown.createdAt|date('d-m-Y') }}</th>
+        <th colspan="2"> <h1 class="text-center">{{ projectCloseDown.projectName }} : {{ projectCloseDown.createdAt|date('d-m-Y') }}</h1></th>
     </tr>
     <tr>
         <td colspan="2"><br></td>
     </tr>
     <tr>
-        <th>{{ 'message.overall_impression'|trans }}</th>
+        <th style="width: 33%;">{{ 'message.overall_impression'|trans }}</th>
         <td>{{ projectCloseDown.overallImpression|raw }}</td>
     </tr>
     <tr>
@@ -36,34 +90,36 @@
         <td>{{ projectCloseDown.projectManagement|raw }}</td>
     </tr>
     <tr>
+        <td></td>
+        <td> <hr class="double-line"> </td>
+    </tr>
+    <tr>
         <th>{{ 'message.evaluation_objectives'|trans }}:</th>
         <td>
             <dl>
                 {% for evalaution in projectCloseDown.evaluationObjectives %}
-                    <dt>{{ evalaution.title }}</dt>
-                    {% if not loop.last %}
-                        <hr>
-                    {% endif %}
-                {% else %}
-                    <span>-</span>
+                    <dt class="alternate-color">{{ evalaution.title }}</dt>
                 {% endfor %}
             </dl>
         </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td> <hr class="double-line"> </td>
     </tr>
     <tr>
         <th>{{ 'message.lessons_learned'|trans }}:</th>
         <td>
             <dl>
                 {% for lesson in projectCloseDown.lessons %}
-                    <dt>{{ lesson.title }}</dt>
-                    {% if not loop.last %}
-                        <hr>
-                    {% endif %}
-                {% else %}
-                    <span>-</span>
+                    <dt class="alternate-color">{{ lesson.title }}</dt>
                 {% endfor %}
             </dl>
         </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td> <hr class="double-line"> </td>
     </tr>
     <tr>
         <th>{{ 'message.remaining_action'|trans }}:</th>
@@ -73,12 +129,12 @@
                 <tr>
                     <th>{{ 'table_header_cell.due_date'|trans }}</th>
                     <th>{{ 'table_header_cell.topic'|trans }}</th>
-                    <th>{{ 'table_header_cell.description'|trans }}</th>
+                    <th style="width: 25%;">{{ 'table_header_cell.description'|trans }}</th>
                     <th>{{ 'table_header_cell.responsible'|trans }}</th>
                 </tr>
                 <tbody>
                     {% for action in projectCloseDown.closeDownActions %}
-                        <tr>
+                        <tr class="alternate-color">
                             <td>{{ action.dueDate|date('d-m-Y') }}</td>
                             <td>{{ action.title }}</td>
                             <td>{{ action.description|raw }}</td>
