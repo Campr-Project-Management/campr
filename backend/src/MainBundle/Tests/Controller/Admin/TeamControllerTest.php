@@ -285,8 +285,8 @@ class TeamControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/team/list');
 
-        $this->assertEquals(1, $crawler->filter('div.table-wrapper.table-responsive table.table')->count());
-        $this->assertEquals(7, $crawler->filter('div.table-wrapper.table-responsive table.table th')->count());
+        $this->assertEquals(1, $crawler->filter('div.table-wrapper.table-responsive table.custom-table')->count());
+        $this->assertEquals(7, $crawler->filter('div.table-wrapper.table-responsive table.custom-table th')->count());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
