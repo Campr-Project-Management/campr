@@ -29,7 +29,7 @@
 
         <!-- Meta -->
         <meta name="description" content="{{ 'title.meta_description'|trans }}">
-        <meta name="author" content="C A M P R">
+        <meta name="author" content="CAMPR">
     {% endblock %}
 
     <title>{% block title %}{{ 'title.homepage_main'|trans }}{% endblock %}</title>
@@ -51,7 +51,7 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     {% endblock %}
 </head>
-<body class="backend">
+<body {% if app.user is object %}class="backend"{% endif %}>
 {% block body %}
     {% include 'MainBundle:Layout:header.html.twig' %}
 
