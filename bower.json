@@ -43,6 +43,14 @@
     "jquery": "^3.2.1",
     "moment": "^2.12.0",
     "chosen": "^1.5.1",
-    "bootstrap": "^3.3.6"
+    "bootstrap": "v4.0.0-beta",
+    "popper.js": "^1.12.6",
+    "bootstrap-offcanvas": "^2.4.0",
+    "vanilla-lazyload": "^10.3.3",
+    "vivus": "^0.4.2",
+    "plax": "^1.5.0",
+    "matchHeight": "matchheight#^0.7.2",
+    "waypoints": "^4.0.1",
+    "ion.rangeSlider": "ionrangeslider#^2.2.0"
   }
 }
