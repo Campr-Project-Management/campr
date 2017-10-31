@@ -1,21 +1,49 @@
 <template>
     <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ currentOption ? currentOption.label : title }}
+        <button ref="btn-dropdown" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" @click="dropdownToggle()">{{ currentOption ? currentOption.label : title }}
             <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu dropdown-menu-right">
+        <ul class="dropdown-menu dropdown-menu-right nicescroll">
             <li v-for="option in options"><a href="javascript:void(0)" v-on:click="updateValue(option)">{{ option.label }}</a></li>
         </ul>
     </div>
 </template>
 
 <script>
+import 'jquery.nicescroll/jquery.nicescroll.js';
 export default {
     props: ['title', 'options', 'currentOption'],
     methods: {
         updateValue: function(value) {
             this.$emit('input', value);
         },
+        dropdownToggle: function() {
+            let scrollTop = $(window).scrollTop();
+            let elementOffset = $(this.$el).offset().top;
+            let currentElementOffset = (elementOffset - scrollTop);
+
+            let windowInnerHeight = window.innerHeight;
+
+            if (windowInnerHeight - currentElementOffset < 3*this.dropdownItemHeight) {
+                $(this.$el).find('.dropdown-menu').css('top', -3*this.dropdownItemHeight + 'px');
+            }else{
+                $(this.$el).find('.dropdown-menu').css('top', this.dropdownItemHeight + 'px');
+            }
+        },
+    },
+    mounted() {
+        this.dropdownItemHeight = this.$refs['btn-dropdown'].clientHeight;
+        $(this.$el).find('.dropdown-menu').css('height', 3*this.dropdownItemHeight + 'px');
+        window.$(document).ready(function() {
+            window.$('.nicescroll').niceScroll({
+                autohidemode: false,
+            });
+        });
+    },
+    data() {
+        return {
+            dropdownItemHeight: null,
+        };
     },
 };
 </script>
@@ -24,6 +52,12 @@ export default {
 <style scoped lang="scss">
     @import '../../../css/_variables.scss';
     @import '../../../css/_mixins.scss';
+
+    .dropdown-menu{
+        &.nicescroll{
+            max-height : 200px;
+         }
+    }
 
     .btn-primary {
         background: $darkColor;
