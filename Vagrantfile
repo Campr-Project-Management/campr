@@ -6,20 +6,19 @@ Vagrant.configure("2") do |config|
     config.vm.provision :shell, :inline => "echo Welcome to Campr VM"
 
     config.vm.define :dev do |_config|
-        _config.vm.box = "radutopala/symfony20160526"
+        _config.vm.box = "trisoft/php71apache24mysql57redis-201706261411"
 
         _config.vm.hostname = "campr"
 
-        #use :nfs => true only if on mac/linux; use :nfs => false on win
         _config.vm.synced_folder ".", "/var/www", :nfs => true
 
         _config.vm.provision "file", source: "~/.ssh/id_rsa", destination: "~/.ssh/id_rsa"
-        _config.vm.provision :shell, path: "bin/vagrant-provision"
+        _config.vm.provision :shell, :inline => "sudo service apache2 start; sudo service php7.1-fpm start", run: "always"
 
         _config.vm.provider :virtualbox do |vb, override|
             vb.customize ["modifyvm", :id, "--memory", 4096]
             vb.customize ["modifyvm", :id, "--cpus", "4"]
-            override.vm.box_url = "https://www.trisoft.ro/symfony20160526.box"
+            override.vm.box_url = "http://labs.io.trisoft.ro/box/php71apache24mysql57redis-201706261411.box"
             override.vm.network :private_network, ip: "192.168.33.147"
         end
     end
