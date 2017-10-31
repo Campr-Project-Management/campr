@@ -52,5 +52,8 @@
     "matchHeight": "matchheight#^0.7.2",
     "waypoints": "^4.0.1",
     "ion.rangeSlider": "ionrangeslider#^2.2.0"
+  },
+  "resolutions": {
+    "jquery": "3.2.1"
   }
 }
