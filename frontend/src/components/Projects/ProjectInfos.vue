@@ -208,6 +208,16 @@ export default {
     .table-wrapper {
         width: 100%;
         padding-bottom: 40px;
+
+        .scroll-wrapper {
+            width: 100%;
+
+            tbody {
+                tr {
+                    min-height: 50px;
+                }
+            }
+        }
     } 
 
     .avatar {
