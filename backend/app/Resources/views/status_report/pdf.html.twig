@@ -3,32 +3,82 @@
 <head>
     <title>{{ 'label.status_report'|trans }} - {{ statusReport.project.name }} : {{ statusReport.createdAt|date('d-m-Y') }}</title>
     <style type="text/css">
+        body {
+            background-color: #232D4B;
+            font-family: 'Poppins', sans-serif;
+            color: #D8DAE5;
+            padding: 0px;
+            margin:0px;
+            min-height: 1407px;
+        }
+        .text-center {
+            text-align: center;
+        }
+
+        .hero-text {
+            font-size: 3em;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-weight: 300;
+            letter-spacing: 2.2px;
+            text-transform: uppercase;
+            font-size: 20px;
+        }
         tr {
             vertical-align: top;
         }
+
+        .alternate-color:nth-of-type(even) {
+            background-color: #1E2643;
+        }
+
+        dt {
+            padding: 15px 5px;
+        }
         ul, dl {
             margin: 0 5px;
+        }
+        .double-line {
+            display: block;
+            -webkit-margin-before: 0.5em;
+            -webkit-margin-after: 0.5em;
+            -webkit-margin-start: auto;
+            -webkit-margin-end: auto;
+            border-top: 4px double;
+            border-color: #111526;
+            margin: 40px 0;
+            box-sizing: content-box;
+            height: 0px;
         }
     </style>
 </head>
 <body>
 <table>
     <tr>
-        <th colspan="2">{{ statusReport.project.name }} : {{ statusReport.createdAt|date('d-m-Y') }}</th>
+        <th colspan="2" ><h1 class="text-center">{{ statusReport.project.name }} : {{ statusReport.createdAt|date('d-m-Y') }}</h1></th>
+    </tr>
+    <tr>
+        <th colspan="2" ><span class="hero-text">{{ 'message.status_report'|trans }}</span></th>
     </tr>
     <tr>
         <td colspan="2"><br></td>
     </tr>
     <tr>
-        <th>{{ 'table_header_cell.week'|trans }}</th>
+        <th width="40%">{{ 'table_header_cell.week'|trans }}</th>
         <td>{{ statusReport.information.week }}</td>
     </tr>
     <tr>
         <th>{{ 'table_header_cell.status'|trans }}</th>
         <td>
-            {% if statusReport.information.project.overallStatus == 2 %}<span style="background: #5FC3A5">Green</span>{% endif %}
-            {% if statusReport.information.project.overallStatus == 1 %}<span style="background: #ccba54">Yellow</span>{% endif %}
-            {% if statusReport.information.project.overallStatus == 0 %}<span style="background: #c87369">Red</span>{% endif %}
+            {% if statusReport.information.project.overallStatus == 2 %}<span style="background: #5FC3A5">{{ 'choices.green'|trans }}</span>{% endif %}
+            {% if statusReport.information.project.overallStatus == 1 %}<span style="background: #ccba54">{{ 'choices.yellow'|trans }}</span>{% endif %}
+            {% if statusReport.information.project.overallStatus == 0 %}<span style="background: #c87369">{{ 'choices.red'|trans }}</span>{% endif %}
         </td>
     </tr>
     <tr>
@@ -62,29 +112,29 @@
         <td>{{ statusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.title|default('-')  }}</td>
     </tr>
     <tr>
+        <td></td>
+        <td> <hr class="double-line"> </td>
+    </tr>
+    <tr>
         <th>{{ 'message.todos'|trans }}:</th>
         <td>
             <dl>
                 {% for todo in statusReport.information.todos.items %}
-                    <dt>{{ todo.title }}</dt>
-                    {% if not loop.last %}
-                        <hr>
-                    {% endif %}
+                    <dt class="alternate-color">{{ todo.title }}</dt>
                 {% endfor %}
             </dl>
         </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td> <hr class="double-line"> </td>
     </tr>
     <tr>
         <th>{{ 'message.decisions'|trans }}:</th>
         <td>
             <dl>
                 {% for decision in statusReport.information.decisions.items %}
-                    <dt>{{ decision.title }}</dt>
-                    {% if not loop.last %}
-                        <hr>
-                    {% endif %}
-                {% else %}
-                    <span>-</span>
+                    <dt class="alternate-color">{{ decision.title }}</dt>
                 {% endfor %}
             </dl>
         </td>

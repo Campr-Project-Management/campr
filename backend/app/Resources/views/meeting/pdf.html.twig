@@ -9,18 +9,72 @@
         ul, dl {
             margin: 0 5px;
         }
+
+        body {
+            background-color: #232D4B;
+            font-family: 'Poppins', sans-serif;
+            color: #D8DAE5;
+            padding: 0px;
+            margin:0px;
+            min-height: 1407px;
+        }
+        .text-center {
+            text-align: center;
+        }
+
+        .hero-text {
+            font-size: 3em;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-weight: 300;
+            letter-spacing: 2.2px;
+            text-transform: uppercase;
+            font-size: 20px;
+        }
+        tr {
+            vertical-align: top;
+        }
+
+        .alternate-color:nth-of-type(even) {
+            background-color: #1E2643;
+        }
+
+        dt {
+            padding: 15px 5px;
+        }
+        ul, dl {
+            margin: 0 5px;
+        }
+        .double-line {
+            display: block;
+            -webkit-margin-before: 0.5em;
+            -webkit-margin-after: 0.5em;
+            -webkit-margin-start: auto;
+            -webkit-margin-end: auto;
+            border-top: 4px double;
+            border-color: #111526;
+            margin: 40px 0;
+            box-sizing: content-box;
+            height: 0px;
+        }
     </style>
 </head>
 <body>
 <table>
     <tr>
-        <th colspan="2">{{ meeting.name }}</th>
+        <th colspan="2"><h1 class="text-center">{{ meeting.name }}</h1></th>
     </tr>
     <tr>
         <td colspan="2"><br></td>
     </tr>
     <tr>
-        <th>{{ 'table_header_cell.project'|trans }}</th>
+        <th style="width: 33%;">{{ 'table_header_cell.project'|trans }}</th>
         <td>{{ meeting.project.name|default('-') }}</td>
     </tr>
     <tr>
