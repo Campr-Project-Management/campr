@@ -75,6 +75,8 @@ export default {
         }),
     },
     created() {
+        console.log('SECOND_STEP_LOCALSTORAGE_KEY', JSON.parse(localStorage.getItem(SECOND_STEP_LOCALSTORAGE_KEY)));
+
         this.getModules();
     },
     watch: {
