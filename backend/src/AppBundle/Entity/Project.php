@@ -2734,5 +2734,4 @@ class Project
     {
         return $this->projectRoles;
     }
-
 }

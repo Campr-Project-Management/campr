@@ -4,7 +4,6 @@ namespace AppBundle\Helper;
 
 use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\Project;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class ProjectRoleDefaultListBuilder
 {
