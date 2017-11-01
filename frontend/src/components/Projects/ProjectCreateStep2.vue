@@ -10,8 +10,8 @@
                 v-bind:max="durationMaxValue"
                 minSuffix="Months"
                 type="single"
-                v-model="projectDuration"
-                v-bind:value="projectDuration" />
+                :model="projectDuration"
+                :modelName="'projectDuration'"/>
             <range-slider
                 v-bind:title="translateText('message.project_budget')"
                 min="0"
@@ -19,36 +19,36 @@
                 v-bind:values="budgetValues"
                 minPrefix="€"
                 type="single"
-                v-model="projectBudget"
-                v-bind:value="projectBudget" />
+                :model="projectBudget"
+                :modelName="'projectBudget'" />
             <range-slider
                 v-bind:title="translateText('message.team_members_involved')"
                 min="1"
                 max="20"
                 type="double"
-                v-model="projectInvolved"
-                v-bind:value="projectInvolved" />
+                :model="projectInvolved"
+                :modelName="'projectInvolved'"/>
             <range-slider
                 v-bind:title="translateText('message.departments_involved')"
                 min="1"
                 max="20"
                 type="double"
-                v-model="departmentsInvolved"
-                v-bind:value="departmentsInvolved" />
+                :model="departmentsInvolved"
+                :modelName="'departmentsInvolved'"/>
             <range-slider
                 v-bind:title="translateText('message.strategical_meaning')"
                 min="few"
                 values="few,medium,high"
                 type="single"
-                v-model="strategicalMeaning"
-                v-bind:value="strategicalMeaning" />
+                :model="strategicalMeaning"
+                :modelName="'strategicalMeaning'"/>
             <range-slider
                 v-bind:title="translateText('message.risks')"
                 min="few"
                 values="few,medium,high"
                 type="single"
-                v-model="risks"
-                v-bind:value="risks" />
+                :model="risks"
+                :modelName="'risks'" />
 
             <div class="dropdowns">
                 <select-field
@@ -170,6 +170,10 @@ export default {
     created() {
         this.getProjectCategories();
         this.getProjectScopes();
+
+        this.$on('changeRangeSliderValue', valueObj => {
+            this[valueObj.modelName] = valueObj.value;
+        });
     },
     data: function() {
         const stepData = JSON.parse(localStorage.getItem(SECOND_STEP_LOCALSTORAGE_KEY));
