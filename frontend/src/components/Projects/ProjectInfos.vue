@@ -214,7 +214,7 @@ export default {
 
             tbody {
                 tr {
-                    min-height: 50px;
+                    height: 50px;
                 }
             }
         }
