@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use AppBundle\Entity\WorkPackage;
+use AppBundle\Entity\WorkPackageStatus;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 
@@ -58,6 +59,18 @@ class WorkPackageListener
         foreach ($uok->getScheduledEntityUpdates() as $entity) {
             if (!($entity instanceof WorkPackage)) {
                 continue;
+            }
+
+            $entityChanges = $uok->getEntityChangeSet($entity);
+            if ($entity->getType() == WorkPackage::TYPE_MILESTONE) {
+                if (isset($entityChanges['phase'])) {
+                    $newPhaseId = $entityChanges['phase'][1]->getId();
+                    $this->moveMilestoneTasksToNewPhase($newPhaseId, $entity->getId());
+                }
+            }
+
+            if ($entity->getType() == WorkPackage::TYPE_TASK && isset($entityChanges['workPackageStatus'])) {
+                $this->setStartOrFinishDateToTask($entity, $entityChanges);
             }
 
             if ($entity->getProject() && !$this->projectsToUpdate->contains($entity->getProject())) {
@@ -180,5 +193,106 @@ class WorkPackageListener
         $stmt->execute();
 
         return $stmt->fetchAll();
+    }
+
+    /**
+     * When the `phase` of a `milestone` is changed
+     * we have to update the `phase` of all tasks that are connected to that milestone.
+     *
+     * @param int $newPhaseId
+     * @param int $milestoneId
+     */
+    private function moveMilestoneTasksToNewPhase($newPhaseId, $milestoneId)
+    {
+        $this->runUpdateQuery(
+            $this->em,
+            'UPDATE work_package 
+            SET phase_id  = :phaseId 
+            WHERE 
+                milestone_id = :milestoneId 
+                AND type = ' .WorkPackage::TYPE_TASK,
+            [
+                'phaseId' => $newPhaseId,
+                'milestoneId' => $milestoneId,
+            ]
+        );
+    }
+
+    /**
+     *  Updates the actualStartAt&actualFinishAt fields of the task
+     *  together with the one from phase&milestone when the change of status occurs.
+     *
+     * @param WorkPackage $task
+     * @param array       $entityChanges
+     */
+    private function setStartOrFinishDateToTask($task, $entityChanges)
+    {
+        $newWpStatus = $entityChanges['workPackageStatus'][1];
+
+        if ($newWpStatus->getId() == WorkPackageStatus::OPEN) {
+            $this->runUpdateQuery(
+                $this->em,
+                'UPDATE work_package 
+            SET actual_start_at  = :actualStartAt 
+            WHERE
+                actual_start_at IS NULL
+                AND id IN (:taskId, :phaseId, :milestoneId)',
+                [
+                    'actualStartAt' => (new \DateTime())->format('Y-m-d'),
+                    'taskId' => $task->getId(),
+                    'phaseId' => $task->getPhaseId(),
+                    'milestoneId' => $task->getMilestoneId(),
+                ]
+            );
+        }
+
+        if ($newWpStatus->getId() == WorkPackageStatus::COMPLETED) {
+            $this->runUpdateQuery(
+                $this->em,
+                'UPDATE work_package 
+                SET actual_finish_at  = :actualFinishAt 
+                WHERE
+                    actual_finish_at IS NULL
+                    AND id = :taskId',
+                [
+                    'actualFinishAt' => (new \DateTime())->format('Y-m-d'),
+                    'taskId' => $task->getId(),
+                ]
+            );
+
+            $repo = $this
+                ->em
+                ->getRepository(WorkPackage::class);
+
+            if (1 == $repo->countUncompletedTasksByPhase($task->getPhase())) {
+                $this->runUpdateQuery(
+                    $this->em,
+                    'UPDATE work_package 
+                SET actual_finish_at  = :actualFinishAt 
+                WHERE
+                    actual_finish_at IS NULL
+                    AND id = :phaseId',
+                    [
+                        'actualFinishAt' => (new \DateTime())->format('Y-m-d'),
+                        'phaseId' => $task->getPhaseId(),
+                    ]
+                );
+            }
+
+            if (1 == $repo->countUncompletedTasksByMilestone($task->getMilestone())) {
+                $this->runUpdateQuery(
+                    $this->em,
+                    'UPDATE work_package 
+                SET actual_finish_at  = :actualFinishAt 
+                WHERE
+                    actual_finish_at IS NULL
+                    AND id = :milestoneId',
+                    [
+                        'actualFinishAt' => (new \DateTime())->format('Y-m-d'),
+                        'milestoneId' => $task->getMilestoneId(),
+                    ]
+                );
+            }
+        }
     }
 }

@@ -719,4 +719,52 @@ class WorkPackageRepository extends BaseRepository
         $this->setWorkPackageCategoryOrder($orderBy, $qb);
         $this->setUserOrder($orderBy, $qb);
     }
+
+    /**
+     * Counts the Uncompleted tasks of a phase.
+     *
+     * @param Project $project
+     * @param array   $filters
+     *
+     * @return int
+     */
+    public function countUncompletedTasksByPhase(WorkPackage $phase)
+    {
+        return (int) $this
+            ->createQueryBuilder('wp')
+            ->select('COUNT(DISTINCT wp.id)')
+            ->where('wp.phase = :phase')
+            ->andWhere('wp.type = '.WorkPackage::TYPE_TASK)
+            ->andWhere('wp.workPackageStatus != '.WorkPackageStatus::COMPLETED)
+            ->setParameter('phase', $phase)
+            ->setFirstResult(0)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * Counts the Uncompleted tasks of a milestone.
+     *
+     * @param Project $project
+     * @param array   $filters
+     *
+     * @return int
+     */
+    public function countUncompletedTasksByMilestone(WorkPackage $milestone)
+    {
+        return (int) $this
+            ->createQueryBuilder('wp')
+            ->select('COUNT(DISTINCT wp.id)')
+            ->where('wp.milestone = :milestone')
+            ->andWhere('wp.type = '.WorkPackage::TYPE_TASK)
+            ->andWhere('wp.workPackageStatus != '.WorkPackageStatus::COMPLETED)
+            ->setParameter('milestone', $milestone)
+            ->setFirstResult(0)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
 }
