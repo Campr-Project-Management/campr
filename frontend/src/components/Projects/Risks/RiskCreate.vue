@@ -90,8 +90,8 @@
                         minSuffix=" %"
                         type="single"
                         step="5"
-                        v-model="riskImpact"
-                        v-bind:value="riskImpact" />
+                        :model="riskImpact"
+                        :modelName="'riskImpact'"/>
                         <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
                             <indicator-icon fill="middle-fill" v-if="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact" :position="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact" :title="translateText('message.average_impact_risk')"></indicator-icon>
                         </div>
@@ -107,8 +107,8 @@
                         minSuffix=" %"
                         type="single"
                         step="5"
-                        v-model="riskProbability"
-                        v-bind:value="riskProbability" />
+                        :model="riskProbability"
+                        :modelName="'riskProbability'"/>
                         <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
                             <indicator-icon fill="middle-fill" v-if="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability" :position="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability" :title="translateText('message.average_probability_risk')"></indicator-icon>
                         </div>
@@ -463,6 +463,10 @@ export default {
         if (this.$route.params.riskId) {
             this.getProjectRisk(this.$route.params.riskId);
         }
+
+        this.$on('changeRangeSliderValue', valueObj => {
+            this[valueObj.modelName] = valueObj.value;
+        });
     },
     data: function() {
         return {
