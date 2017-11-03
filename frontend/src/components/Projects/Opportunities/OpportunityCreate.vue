@@ -90,8 +90,8 @@
                         minSuffix=" %"
                         type="single"
                         step="5"
-                        v-model="opportunityImpact"
-                        v-bind:value="opportunityImpact" />
+                        :model="opportunityImpact"
+                        :modelName="'opportunityImpact'"/>
                         <div class="slider-indicator" v-if="risksOpportunitiesStats.opportunities">
                             <indicator-icon fill="middle-fill" v-if="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact" :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact" :title="translateText('message.average_impact_opportunity')"></indicator-icon>
                         </div>
@@ -107,8 +107,8 @@
                         minSuffix=" %"
                         type="single"
                         step="5"
-                        v-model="opportunityProbability"
-                        v-bind:value="opportunityProbability" />
+                        :model="opportunityProbability"
+                        :modelName="'opportunityProbability'"/>
                         <div class="slider-indicator" v-if="risksOpportunitiesStats.opportunities">
                             <indicator-icon fill="middle-fill" v-if="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability" :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability" :title="translateText('message.average_probability_opportunity')"></indicator-icon>
                         </div>
@@ -456,6 +456,10 @@ export default {
         if (this.$route.params.opportunityId) {
             this.getProjectOpportunity(this.$route.params.opportunityId);
         }
+
+        this.$on('changeRangeSliderValue', valueObj => {
+            this[valueObj.modelName] = valueObj.value;
+        });
     },
     mounted() {
         this.$refs.description.id = 1;

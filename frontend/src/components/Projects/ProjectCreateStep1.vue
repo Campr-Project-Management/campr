@@ -255,8 +255,9 @@ export default {
   .avatar {
       margin: 28px auto;
       display: block;
+      width: 122px;
       height: 122px;
-      @include border-radius(50%);
+      border-radius: 122px;
   }
 
   .input-holder {
