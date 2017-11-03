@@ -493,13 +493,11 @@ export default {
             riskImpact: 0,
             riskProbability: 0,
             currencyLabel: [
-                {label: this.translateText('label.currency'), key: null},
                 {label: '$', key: 'USD'},
                 {label: '€', key: 'EUR'},
                 {label: '₤', key: 'GBP'},
             ],
             timeLabel: [
-                {label: this.translateText('label.time'), key: null},
                 {label: this.translateText('choices.hours'), key: 'choices.hours'},
                 {label: this.translateText('choices.days'), key: 'choices.days'},
                 {label: this.translateText('choices.weeks'), key: 'choices.weeks'},

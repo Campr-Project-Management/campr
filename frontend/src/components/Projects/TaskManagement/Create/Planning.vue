@@ -9,9 +9,6 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li>
-                                <a href="javascript:void(0)" v-on:click="clearPhaseMilestone()">{{ translateText('message.select_phase_milestone') }}</a>
-                            </li>    
                             <li v-for="phase in nestedPhasesAndMilestone">
                                 <a href="javascript:void(0)" class="unselectable">{{ phase.label }}</a>
                                 <ul class="nested">

@@ -28,7 +28,6 @@ const getters = {
                 };
             });
         }
-        usersSelect.unshift({label: Vue.translate('label.responsible'), key: null});
         return usersSelect;
     },
     projectUsersForSelectOnViewTask: state => {
