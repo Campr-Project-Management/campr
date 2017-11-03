@@ -276,6 +276,8 @@ export default {
                 'departments': this.departments.filter((item) => item.key).map((item) => item.key),
                 'subteams': this.subteams.filter((item) => item.key).map((item) => item.key),
             };
+
+            console.log(data);
             this.saveProjectUser(data)
                 .then(
                     (data) => {

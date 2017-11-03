@@ -423,7 +423,7 @@ export default {
                 description: this.$refs['todo.description'+this.todos.length],
                 responsible: [],
                 dueDate: new Date(),
-                status: {},
+                status: {label: this.translateText('label.select_status')},
             });
         },
         addInfo() {
@@ -432,7 +432,7 @@ export default {
                 description: this.$refs['info.description'+this.infos.length],
                 responsible: [],
                 dueDate: new Date(),
-                status: {},
+                status: {label: this.translateText('label.select_status')},
             });
         },
         saveMeeting() {
