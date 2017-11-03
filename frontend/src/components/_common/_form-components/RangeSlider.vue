@@ -3,7 +3,7 @@
         <div class="heading flex flex-space-between">
             <span class="title">{{ title }}</span>
             <span class="value">
-                <span class="text">{{ minPrefix}}</span><span class="from number">{{ rangeSliderModel }}</span><span class="text">{{ minSuffix }}</span>
+                <span class="text">{{ minPrefix}}</span><span class="from number">{{ rangeSliderModel | valueInterval }}</span><span class="text">{{ minSuffix }}</span>
             </span>
         </div>
 
@@ -40,16 +40,36 @@ export default {
 
         const vm = this;
 
-        $this.ionRangeSlider({
+        this.rangeSliderModel = this.model;
+
+        let valueTmp;
+        if (this.type === 'double') {
+            valueTmp = this.model.split(';');
+            valueTmp[0] = parseInt(valueTmp[0]);
+            valueTmp[1] = parseInt(valueTmp[1]);
+        }else{
+            valueTmp = this.model;
+        }
+
+        let rangeParams = {
             type: this.type,
             min: this.min,
             max: this.max,
-            from: this.from,
-            to: (values instanceof Array) ? values.indexOf(this.to) : this.to,
+            from: null,
+            to: null,
             values: values,
             disable: this.disabled,
             step: this.step,
-        });
+        };
+
+        if (this.type == 'double') {
+            rangeParams.from = (values instanceof Array) ? values.indexOf(valueTmp[0]) : valueTmp[0];
+            rangeParams.to = (values instanceof Array) ? values.indexOf(valueTmp[1]) : valueTmp[1];
+        }else{
+            rangeParams.from = (values instanceof Array) ? values.indexOf(valueTmp) : valueTmp;
+        }
+
+        $this.ionRangeSlider(rangeParams);
 
         $this.on('change', function(e) {
             vm.updateValue(e.target.value);
@@ -74,6 +94,14 @@ export default {
                     from: val,
                 });
             }
+        },
+    },
+    filters: {
+        valueInterval: function(value) {
+            if (typeof value === 'string') {
+                return value.replace(';', ' - ');
+            }
+            return value;
         },
     },
     data: function() {
