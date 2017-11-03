@@ -179,7 +179,7 @@ export default {
     },
     watch: {
         todo(val) {
-            this.todoStatus = {key: this.todo.status, label: this.translateText(this.todo.statusName)};
+            this.todoStatus = {key: this.todo.todoStatus, label: this.translateText(this.todo.statusName)};
             this.title = this.todo.title;
             this.$refs.description.setContent(this.todo.description);
             this.dueDate = this.todo.dueDate;
@@ -192,7 +192,7 @@ export default {
     data() {
         return {
             isEdit: this.$route.params.todoId,
-            todoStatus: {},
+            todoStatus: null,
             title: '',
             dueDate: new Date(),
             date: new Date(),

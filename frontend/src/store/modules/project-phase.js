@@ -24,7 +24,6 @@ const getters = {
                 };
             });
         }
-        phaseSelect.unshift({label: Vue.translate('label.phase'), key: null});
         return phaseSelect;
     },
     allProjectPhases: state => state.allProjectPhases,
