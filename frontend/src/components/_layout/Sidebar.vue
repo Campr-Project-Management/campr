@@ -97,6 +97,10 @@ export default {
     created() {
         this.getSidebarInformation();
         this.getProjectModules();
+        this.getProjectModules();
+        if(this.$route.params.id) {
+            this.getProjectById(this.$route.params.id);
+        }
     },
     computed: {
         ...mapGetters({
@@ -109,7 +113,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions(['getSidebarInformation', 'getProjectModules']),
+        ...mapActions(['getSidebarInformation', 'getProjectModules', 'getProjectById', 'getProjectModules']),
         translate(key) {
             return Vue.translate(key);
         },
