@@ -330,7 +330,7 @@ export default {
     created() {
         this.getDistributionLists({projectId: this.$route.params.id});
         this.getProjectRoles(this.$route.params.id);
-        this.getProjectDepartments({projectId: this.$route.params.id});
+        this.getProjectDepartments({project: this.$route.params.id});
         this.getSubteams({project: this.$route.params.id});
         if (this.$route.params.userId) {
             this.getProjectUser(this.$route.params.userId);

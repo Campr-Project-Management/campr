@@ -14,7 +14,6 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-
 class ProjectListener
 {
     /** @var TokenStorageInterface */
