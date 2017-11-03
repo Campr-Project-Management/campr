@@ -23,7 +23,6 @@ const getters = {
                 };
             });
         }
-        milestonesSelect.unshift({label: Vue.translate('label.milestone'), key: null});
         return milestonesSelect;
     },
     allProjectMilestones: state => state.allMilestones,

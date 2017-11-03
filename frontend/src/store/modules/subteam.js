@@ -97,7 +97,7 @@ const mutations = {
      */
     [types.SET_SUBTEAMS](state, {subteams}) {
         state.subteams = subteams;
-        let subteamsForSelect = [{'key': null, 'label': Translator.trans('placeholder.subteam'), 'rate': 0}];
+        let subteamsForSelect = [];
         state.subteams.items.map((item) => {
             subteamsForSelect.push({'key': item.id, 'label': item.name});
         });
