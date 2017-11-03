@@ -45,7 +45,6 @@ export default {
         }),
         statusesLabel: function() {
             let statuses = this.taskStatuses.map(item => ({label: this.translate(item.name), key: item.id}));
-            statuses.unshift({label: this.translate('message.status'), key: null});
             return statuses;
         },
     },
