@@ -3,14 +3,11 @@
         <div class="heading flex flex-space-between">
             <span class="title">{{ title }}</span>
             <span class="value">
-                <span class="text">{{ minPrefix}}</span><span class="from number">{{ from }}</span><span class="text">{{ minSuffix }}</span>
-                <span v-show="type == 'double'">
-                - <span class="text">{{ maxPrefix }}</span><span class="to number">{{ to }}</span><span class="text">{{ maxSuffix }}</span>
-                </span>
+                <span class="text">{{ minPrefix}}</span><span class="from number">{{ rangeSliderModel | valueInterval }}</span><span class="text">{{ minSuffix }}</span>
             </span>
         </div>
 
-        <input type="text" class="range" v-bind:id="'slider' + _uid" ref="slider" />
+        <input type="text" class="range" v-bind:id="'slider' + _uid" ref="slider" v-model="rangeSliderModel" />
     </div>
 </template>
 
@@ -20,7 +17,7 @@ import 'ion-rangeslider/css/ion.rangeSlider.css';
 import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
 
 export default {
-    props: ['title', 'min', 'max', 'type', 'minPrefix', 'minSuffix', 'maxPrefix', 'maxSuffix', 'values', 'value', 'disabled', 'step'],
+    props: ['title', 'min', 'max', 'type', 'minPrefix', 'minSuffix', 'maxPrefix', 'maxSuffix', 'values', 'value', 'disabled', 'step', 'model', 'modelName'],
     computed: {
         from: function() {
             if (!this.value) {
@@ -40,18 +37,39 @@ export default {
     mounted() {
         const $this = window.$('#slider' + this._uid);
         const values = this.values ? this.values.split(',') : '';
+
         const vm = this;
 
-        $this.ionRangeSlider({
+        this.rangeSliderModel = this.model;
+
+        let valueTmp;
+        if (this.type === 'double') {
+            valueTmp = this.model.split(';');
+            valueTmp[0] = parseInt(valueTmp[0]);
+            valueTmp[1] = parseInt(valueTmp[1]);
+        }else{
+            valueTmp = this.model;
+        }
+
+        let rangeParams = {
             type: this.type,
             min: this.min,
             max: this.max,
-            from: (values instanceof Array) ? values.indexOf(this.from) : this.from,
-            to: (values instanceof Array) ? values.indexOf(this.to) : this.to,
+            from: null,
+            to: null,
             values: values,
             disable: this.disabled,
             step: this.step,
-        });
+        };
+
+        if (this.type == 'double') {
+            rangeParams.from = (values instanceof Array) ? values.indexOf(valueTmp[0]) : valueTmp[0];
+            rangeParams.to = (values instanceof Array) ? values.indexOf(valueTmp[1]) : valueTmp[1];
+        }else{
+            rangeParams.from = (values instanceof Array) ? values.indexOf(valueTmp) : valueTmp;
+        }
+
+        $this.ionRangeSlider(rangeParams);
 
         $this.on('change', function(e) {
             vm.updateValue(e.target.value);
@@ -59,7 +77,8 @@ export default {
     },
     methods: {
         updateValue: function(value) {
-            this.$emit('input', value);
+            this.rangeSliderModel = value;
+            this.$parent.$emit('changeRangeSliderValue', {modelName: this.modelName, value: value});
         },
     },
     watch: {
@@ -76,6 +95,19 @@ export default {
                 });
             }
         },
+    },
+    filters: {
+        valueInterval: function(value) {
+            if (typeof value === 'string') {
+                return value.replace(';', ' - ');
+            }
+            return value;
+        },
+    },
+    data: function() {
+        return {
+            rangeSliderModel: 0,
+        };
     },
 };
 </script>

@@ -118,13 +118,13 @@
                             <p>{{ translateText('message.strategy') }}: <b>{{ opportunity.opportunityStrategyName }}</b></p>
                             <p>{{ translateText('message.status') }}: <b>{{ opportunity.opportunityStatusName }}</b></p>
                         </div>
-                        
+
                         <div class="ro-info">
                             <p>{{ translateText('message.budget_saved') }}: <b>{{ opportunity.currency }} {{ opportunity.budget }}</b></p>
                             <p>{{ translateText('message.time_saved') }}: <b>{{ opportunity.timeSavings }} {{ translateText(opportunity.timeUnit) }}</b></p>
                             <p>{{ translateText('message.due_date') }}: <b>{{ opportunity.dueDate | moment('DD.MM.YYYY') }}</b></p>
                         </div>
-                        
+
                         <div class="ro-info">
                             <p>{{ translateText('message.measures') }}: <b v-if="opportunity.measures">{{ opportunity.measures.length }}</b></p>
                             <p>{{ translateText('message.measures_cost') }}: <b v-if="risksOpportunitiesStats.opportunities">{{ opportunity.currency }} {{ risksOpportunitiesStats.opportunities.measure_data.totalCost }}</b></p>
@@ -136,7 +136,7 @@
                     <div class="col-md-12">
                         <div class="status-info">
                             {{ translateText('message.created_on') }} {{ opportunity.createdAt | moment('DD.MM.YYYY') }}, {{ opportunity.createdAt | moment('HH:mm') }} {{ translateText('message.by') }}
-                            <div class="user-avatar"> 
+                            <div class="user-avatar">
                                 <img :src="opportunity.createdByAvatar" :alt="opportunity.createdByFullName"/>
                                 <b>{{ opportunity.createdByFullName }}</b>
                             </div>
@@ -147,7 +147,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="status-info">
-                            {{ translateText('message.responsible') }}: 
+                            {{ translateText('message.responsible') }}:
                             <div class="user-avatar">
                                 <img :src="opportunity.responsibilityAvatar" :alt="opportunity.responsibilityFullName"/>
                                 <b>{{ opportunity.responsibilityFullName }}</b>
@@ -207,7 +207,7 @@
                     <div class="comment">
                         <div class="comment-header flex flex-space-between flex-v-center">
                             <div>
-                                <div class="user-avatar"> 
+                                <div class="user-avatar">
                                     <img :src="measure.responsibilityAvatar" :alt="measure.responsibilityFullName"/>
                                     <b>{{ measure.responsibilityFullName }}</b>
                                 </div>
@@ -223,7 +223,7 @@
                             <b class="title">{{ measure.title }}</b>
                             <p class="cost">{{ translateText('message.cost') }}: <b>{{opportunity.currency}} {{ measure.cost }}</b></p>
                             <p v-html="measure.description"></p>
-                        </div>  
+                        </div>
                         <div class="comment-footer" v-if="measure.medias.length > 0">
                             <attach-icon fill="second-fill"></attach-icon>
                             <ul class="comment-attachments">
@@ -236,7 +236,7 @@
                             <div class="comment" v-for="comment in measure.comments">
                                 <div class="comment-header flex flex-space-between flex-v-center">
                                     <div>
-                                        <div class="user-avatar"> 
+                                        <div class="user-avatar">
                                             <img :src="comment.responsibilityAvatar" :alt="comment.responsibilityFullName"/>
                                             <b>{{ comment.responsibilityFullName }}</b>
                                         </div>
@@ -580,7 +580,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
     @import '../../../css/_variables';
-    @import '../../../css/_mixins';  
+    @import '../../../css/_mixins';
     @import '../../../css/risks-and-opportunities/view';
 
     .ro-summary {
