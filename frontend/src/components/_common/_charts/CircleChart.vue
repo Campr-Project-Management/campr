@@ -3,7 +3,7 @@
         <div class="text">
             <div class="title">{{ title }}</div>
             <div class="value">
-                <div class="percentage">{{percentage}}</div>
+                <div class="percentage">{{formatPercentage(percentage)}}</div>
                 <div class="percentage-sign">%</div>
             </div>
         </div>
@@ -25,6 +25,11 @@ export default {
         height: {
             default() {
                 return 360;
+            },
+        },
+        precision: {
+            default() {
+                return 2;
             },
         },
     },
@@ -112,6 +117,13 @@ export default {
                     ;
                 }, 2048);
             }
+        },
+        formatPercentage(percentage) {
+            if (isNaN(percentage)) {
+                return 0;
+            }
+            let pivotNumber = Math.pow(10, this.precision);
+            return Math.floor(percentage * pivotNumber) / pivotNumber;
         },
     },
     watch: {

@@ -94,7 +94,6 @@ export default {
         projectUsersForSelectAccountable: function() {
             let rez = JSON.parse(JSON.stringify(this.projectUsersForSelect));
             rez.shift();
-            rez.unshift({label: this.translateText('label.accountable'), key: null});
             return rez;
         },
         projectUsersForSupportSelect: function() {
