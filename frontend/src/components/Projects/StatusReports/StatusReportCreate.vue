@@ -15,7 +15,7 @@
 
                 <div class="row large-half-columns">
                     <div class="col-md-6">
-                        <div class="widget same-height">
+                        <div class="widget same-height" v-resize="onResizeSameHeightDiv">
                             <h3>{{ translateText('message.overall_status') }}</h3>
                             <div class="flex flex-center">
                                 <div class="status-boxes big-status-boxes flex flex-v-center">
@@ -54,7 +54,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="widget same-height">
+                        <div class="widget same-height" v-resize="onResizeSameHeightDiv">
                             <h3>{{ translateText('message.project_trend') }}</h3>
                             <h4>{{ translateText('message.current_date') }}: {{ today | moment('DD.MM.YYYY') }}</h4>
                             <vue-chart
@@ -217,17 +217,17 @@
                 <div class="row statuses">
                     <div class="col-md-4">
                         <div class="status" v-if="progresses.project_progress">
-                            <circle-chart :percentage="progresses.project_progress.value" v-bind:title="translateText('message.overall_progress')" class="left dark-chart medium-chart" v-bind:class="progresses.project_progress.class"></circle-chart>
+                            <circle-chart :percentage="progresses.project_progress.value"  width="320" height="320" v-bind:title="translateText('message.overall_progress')" class="left dark-chart medium-chart" v-bind:class="progresses.project_progress.class"></circle-chart>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="status" v-if="progresses.task_progress">
-                            <circle-chart v-bind:percentage="progresses.task_progress.value" v-bind:title="translateText('message.task_progress')" class="left dark-chart medium-chart" v-bind:class="progresses.task_progress.class"></circle-chart>
+                            <circle-chart v-bind:percentage="progresses.task_progress.value" width="320" height="320" v-bind:title="translateText('message.task_progress')" class="left"></circle-chart>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="status" v-if="progresses.cost_progress">
-                            <circle-chart :percentage="progresses.cost_progress.value" v-bind:title="translateText('message.costs_progress')" class="left dark-chart medium-chart" v-bind:class="progresses.cost_progress.class"></circle-chart>
+                            <circle-chart :percentage="progresses.cost_progress.value" width="320" height="320" v-bind:title="translateText('message.costs_progress')" class="left"></circle-chart>
                         </div>
                     </div>
                 </div>
@@ -441,6 +441,7 @@ import RiskSummary from '../Risks/RiskSummary';
 import OpportunitySummary from '../Opportunities/OpportunitySummary';
 import DownloadIcon from '../../_common/_icons/DownloadIcon';
 import AtIcon from '../../_common/_icons/AtIcon';
+import resize from 'vue-resize-directive';
 
 export default {
     components: {
@@ -455,6 +456,9 @@ export default {
         OpportunityList,
         DownloadIcon,
         AtIcon,
+    },
+    directives: {
+        resize,
     },
     created() {
         this.getProjectStatusReports({
@@ -511,9 +515,6 @@ export default {
                 page: this.activePage,
             },
         });
-    },
-    mounted() {
-        window.$('.same-height').matchHeight();
     },
     methods: {
         ...mapActions([
@@ -573,6 +574,9 @@ export default {
                 },
             };
             this.createStatusReport(data);
+        },
+        onResizeSameHeightDiv: function() {
+            window.$('.same-height').matchHeight();
         },
     },
     computed: {
@@ -1000,6 +1004,8 @@ function renderTooltip(item) {
         .status {
             max-width: 400px;
             margin:20px auto 0;
+            background-color: $darkColor;
+            padding: 25px 20px;
 
             .chart {
                 .text {

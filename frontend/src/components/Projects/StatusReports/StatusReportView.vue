@@ -23,7 +23,7 @@
 
                 <div class="row large-half-columns">
                     <div class="col-md-6">
-                        <div class="widget same-height">
+                        <div class="widget same-height" v-resize="onResizeSameHeightDiv">
                             <h3>{{ translateText('message.overall_status') }}</h3>
                             <div class="flex flex-center">
                                 <div class="status-boxes big-status-boxes flex flex-v-center">
@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="widget same-height">
+                        <div class="widget same-height" v-resize="onResizeSameHeightDiv">
                             <h3>{{ translateText('message.project_trend') }}</h3>
                             <h4>{{ translateText('message.current_date') }}: {{ today | moment('DD.MM.YYYY') }}</h4>
                             <vue-chart
@@ -224,17 +224,17 @@
                 <div class="row statuses">
                     <div class="col-md-4">
                         <div class="status" v-if="currentStatusReport.information.progresses.project_progress">
-                            <circle-chart :percentage="currentStatusReport.information.progresses.project_progress.value" v-bind:title="translateText('message.overall_progress')" class="left dark-chart medium-chart" v-bind:class="currentStatusReport.information.progresses.project_progress.class"></circle-chart>
+                            <circle-chart :percentage="currentStatusReport.information.progresses.project_progress.value" v-bind:title="translateText('message.overall_progress')" width="320" height="320" class="left dark-chart medium-chart" v-bind:class="currentStatusReport.information.progresses.project_progress.class"></circle-chart>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="status" v-if="currentStatusReport.information.progresses.task_progress">
-                            <circle-chart v-bind:percentage="currentStatusReport.information.progresses.task_progress.value" v-bind:title="translateText('message.task_progress')" class="left dark-chart medium-chart" v-bind:class="currentStatusReport.information.progresses.task_progress.class"></circle-chart>
+                            <circle-chart v-bind:percentage="currentStatusReport.information.progresses.task_progress.value" v-bind:title="translateText('message.task_progress')" width="320" height="320" class="left dark-chart medium-chart" v-bind:class="currentStatusReport.information.progresses.task_progress.class"></circle-chart>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="status" v-if="currentStatusReport.information.progresses.cost_progress">
-                            <circle-chart :percentage="currentStatusReport.information.progresses.cost_progress.value" v-bind:title="translateText('message.costs_progress')" class="left dark-chart medium-chart" v-bind:class="currentStatusReport.information.progresses.cost_progress.class"></circle-chart>
+                            <circle-chart :percentage="currentStatusReport.information.progresses.cost_progress.value" v-bind:title="translateText('message.costs_progress')"  width="320" height="320"  class="left dark-chart medium-chart" v-bind:class="currentStatusReport.information.progresses.cost_progress.class"></circle-chart>
                         </div>
                     </div>
                 </div>
@@ -454,6 +454,7 @@ import DownloadIcon from '../../_common/_icons/DownloadIcon';
 import AtIcon from '../../_common/_icons/AtIcon';
 import Modal from '../../_common/Modal';
 import AlertModal from '../../_common/AlertModal.vue';
+import resize from 'vue-resize-directive';
 
 export default {
     components: {
@@ -471,11 +472,11 @@ export default {
         Modal,
         AlertModal,
     },
+    directives: {
+        resize,
+    },
     created() {
         this.getStatusReport(this.$route.params.reportId);
-    },
-    mounted() {
-        window.$('.same-height').matchHeight();
     },
     methods: {
         ...mapActions(['getStatusReport', 'emailStatusReport']),
@@ -485,6 +486,9 @@ export default {
             let diff = end.diff(start, unit);
 
             return !isNaN(diff) ? diff : '-';
+        },
+        onResizeSameHeightDiv: function() {
+            window.$('.same-height').matchHeight();
         },
         translateText: function(text) {
             return this.translate(text);
@@ -897,6 +901,8 @@ function renderTooltip(item) {
         .status {
             max-width: 400px;
             margin:20px auto 0;
+            background-color: $darkColor;
+            padding: 25px 20px;
 
             .chart {
                 .text {
