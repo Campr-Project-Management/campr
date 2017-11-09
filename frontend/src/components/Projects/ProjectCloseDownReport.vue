@@ -291,7 +291,7 @@ import DragBox from './TaskManagement/DragBox.vue';
 import InputField from '../_common/_form-components/InputField.vue';
 import CalendarIcon from '../_common/_icons/CalendarIcon.vue';
 import DownloadbuttonIcon from '../_common/_icons/DownloadbuttonIcon.vue';
-import datepicker from 'vuejs-datepicker';
+import datepicker from '../_common/_form-components/Datepicker';
 import moment from 'moment';
 import ViewIcon from '../_common/_icons/ViewIcon';
 import EditIcon from '../_common/_icons/EditIcon';

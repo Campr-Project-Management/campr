@@ -141,7 +141,7 @@ import Planning from './Create/Planning';
 import Condition from './Create/Condition';
 import TaskDetails from './Create/Details';
 import Attachments from './Create/Attachments';
-import datepicker from 'vuejs-datepicker';
+import datepicker from '../../_common/_form-components/Datepicker';
 import Switches from '../../3rdparty/vue-switches';
 import Error from '../../_common/_messages/Error.vue';
 import AlertModal from '../../_common/AlertModal.vue';
