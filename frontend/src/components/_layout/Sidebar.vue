@@ -160,6 +160,12 @@ export default {
                     module: 'task_management',
                 },
                 {
+                    route: {name: 'project-gantt-chart'},
+                    title: this.translate('message.gantt_chart'),
+                    icon: 'tablet',
+                    module: 'gantt_chart',
+                },
+                {
                     route: {name: 'project-costs'},
                     title: this.translate('message.costs'),
                     icon: 'tablet',
@@ -176,12 +182,6 @@ export default {
                     title: this.translate('message.risks_oportunities'),
                     icon: 'tablet',
                     module: 'risks_opportunities',
-                },
-                {
-                    route: {name: 'project-gantt-chart'},
-                    title: this.translate('message.gantt_chart'),
-                    icon: 'tablet',
-                    module: 'gantt_chart',
                 },
                 {
                     route: {name: 'project-rasci-matrix'},
