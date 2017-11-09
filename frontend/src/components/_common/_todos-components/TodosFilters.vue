@@ -18,7 +18,7 @@
 <script>
 import Dropdown from '../../_common/Dropdown';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
-import datepicker from 'vuejs-datepicker';
+import datepicker from '../_form-components/Datepicker';
 import MemberSearch from '../../_common/MemberSearch';
 import {mapGetters, mapActions} from 'vuex';
 import moment from 'moment';

@@ -337,7 +337,7 @@ import MeetingModals from './MeetingModals';
 import MeetingParticipants from './MeetingParticipants';
 import Modal from '../../_common/Modal';
 import VueTimepicker from 'vue2-timepicker';
-import datepicker from 'vuejs-datepicker';
+import datepicker from '../../_common/_form-components/Datepicker';
 import {createEditor} from 'vueditor';
 import vueditorConfig from '../../_common/vueditorConfig';
 

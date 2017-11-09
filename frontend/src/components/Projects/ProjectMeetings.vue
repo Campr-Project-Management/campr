@@ -135,7 +135,7 @@ import RescheduleIcon from '../_common/_icons/RescheduleIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
 import moment from 'moment';
 import Modal from '../_common/Modal';
-import datepicker from 'vuejs-datepicker';
+import datepicker from '../_common/_form-components/Datepicker';
 import VueTimepicker from 'vue2-timepicker';
 
 export default {

@@ -120,7 +120,7 @@
 import InputField from '../../../_common/_form-components/InputField';
 import MultiSelectField from '../../../_common/_form-components/MultiSelectField';
 import CalendarIcon from '../../../_common/_icons/CalendarIcon';
-import datepicker from 'vuejs-datepicker';
+import datepicker from '../../../_common/_form-components/Datepicker';
 import Switches from '../../../3rdparty/vue-switches';
 import {mapActions, mapGetters} from 'vuex';
 
