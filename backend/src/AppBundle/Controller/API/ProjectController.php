@@ -736,6 +736,12 @@ class ProjectController extends ApiController
                     }
                 }
             }
+
+            $request->request->set(
+                'roles',
+                null
+            );
+
             $user->addProjectUser($projectUser);
 
             $request->request->set(

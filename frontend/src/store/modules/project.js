@@ -911,7 +911,6 @@ const mutations = {
      * @param {array} progresses
      */
     [types.SET_PROJECT_PROGRESSES](state, {progresses}) {
-        console.log(progresses);
         for (let key in progresses) {
             if (!progresses.hasOwnProperty(key)) continue;
             progresses[key].value = Math.floor(progresses[key].value * 100) / 100;
