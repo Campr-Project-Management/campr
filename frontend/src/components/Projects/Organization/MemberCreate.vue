@@ -277,7 +277,6 @@ export default {
                 'subteams': this.subteams.filter((item) => item.key).map((item) => item.key),
             };
 
-            console.log(data);
             this.saveProjectUser(data)
                 .then(
                     (data) => {

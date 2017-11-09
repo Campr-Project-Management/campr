@@ -1,11 +1,21 @@
 <template>
-    <div class="page-section">
+    <div class="page-section position-relative">
         <div class="header flex flex-space-between">
             <h1>{{ translateText('message.gantt_chart') }}</h1>
-        </div>       
+        </div>
+
+        <input
+            type="button"
+            id="toggle_minimap"
+            value="Toggle minimap"
+            class="btn btn-primary"
+            v-on:click="showMinimap = !showMinimap">
+
         <div ref="gantt_chart" id="gantt_chart" class="gantt-chart">
             <p>Loading...</p>
         </div>
+
+        <svg id="gantt_map" :class={hidden:!showMinimap}></svg>
     </div>
 </template>
 
@@ -13,8 +23,11 @@
 import 'dhtmlx-gantt';
 import {mapActions, mapGetters} from 'vuex';
 import router from '../../router';
+import * as d3 from 'd3';
+import $ from 'jquery';
 
 const DAY_IN_MILISECONDS = 86400000;
+const MOTNH_IN_SECONDS = 2592000;
 
 export default {
     name: 'gantt',
@@ -27,6 +40,162 @@ export default {
         translateText: function(text) {
             return this.translate(text);
         },
+        removeAllEvents: function() {
+            let event = null;
+
+            while (event = this.ganttEvents.pop()) {
+                gantt.detachEvent(event);
+            }
+        },
+        initGanttMap: function() {
+            const $ganttDataArea = $('.gantt_data_area');
+            const $ganttTask = $('.gantt_task');
+            const $ganttTaskBG = $('.gantt_task_bg');
+
+            const ratio = $ganttTask.width() / $ganttTask.height();
+            let svgWidth = 200;
+            let svgHeight = Math.ceil(svgWidth / ratio);
+            const rectWidth = svgWidth * 0.2;
+            const rectHeight = svgHeight * 0.2;
+
+            if (svgHeight < 120) {
+                svgHeight = 120;
+                svgWidth = Math.ceil(svgHeight * ratio);
+            }
+
+            this.svg = d3.select('#gantt_map');
+
+            this.svg.selectAll('g').remove();
+
+            this.preview = this
+                .svg
+                .append('g')
+                .attr('id', 'preview')
+                .attr('transform', `scale(${svgWidth / $ganttTaskBG.width()} ${svgHeight / $ganttTaskBG.height()})`)
+            ;
+
+            this.g = this.svg.append('g');
+
+            this.svg
+                .attr('width', svgWidth)
+                .attr('height', svgHeight)
+            ;
+
+            this.rect = this.g
+                .append('rect')
+                .attr('fill', 'transparent')
+                .attr('stroke', '#000000')
+                .attr('stroke-width', 1)
+                .attr('width', rectWidth)
+                .attr('height', rectHeight)
+            ;
+
+            let chartData = $('.gantt_bars_area [task_id]')
+                .map((_, item) => {
+                    const $item = $(item);
+
+                    return {
+                        width: $item.width(),
+                        height: $item.height(),
+                        x: $item.css('left').replace(/(\d+)(\w*)/gi, '$1'),
+                        y: $item.css('top').replace(/(\d+)(\w*)/gi, '$1'),
+                    };
+                })
+            ;
+
+            this
+                .preview
+                .selectAll('rect')
+                .data(chartData)
+                .enter()
+                    .append('rect')
+                    .attr('fill', 'green')
+                    .attr('width', d => d.width)
+                    .attr('height', d => d.height)
+                    .attr('x', d => d.x)
+                    .attr('y', d => d.y)
+                .exit()
+            ;
+
+            let that = this;
+
+            this
+                .rect
+                .call(
+                    d3
+                        .drag()
+                        .on('start', function(d) {
+                            that.dragScroll = true;
+
+                            let node = d3.select(this);
+                            node
+                                .attr('original-x', node.attr('x'))
+                                .attr('original-y', node.attr('y'))
+                                .raise()
+                                .classed('active', true)
+                            ;
+                        })
+                        .on('drag', function(d) {
+                            const node = d3.select(this);
+
+                            let originalX = parseInt(node.attr('original-x'), 10);
+                            let originalY = parseInt(node.attr('original-y'), 10);
+
+                            if (isNaN(originalX)) {
+                                originalX = 0;
+                            }
+                            if (isNaN(originalY)) {
+                                originalY = 0;
+                            }
+
+                            const offsetX = originalX - d3.event.subject.x;
+                            const offsetY = originalY - d3.event.subject.y;
+
+                            let x = d3.event.x + offsetX;
+                            let y = d3.event.y + offsetY;
+
+                            if (x < 0) {
+                                x = 0;
+                            }
+
+                            if (y < 0) {
+                                y = 0;
+                            }
+
+                            if (x > (svgWidth - rectWidth)) {
+                                x = svgWidth - rectWidth;
+                            }
+
+                            if (y > (svgHeight - rectHeight)) {
+                                y = svgHeight - rectHeight;
+                            }
+
+                            node
+                                .attr('x', x)
+                                .attr('y', y)
+                            ;
+
+                            // there's some border or padding here
+                            let scrollableAreaY = $('.gantt_ver_scroll > div').height() - $ganttDataArea.height() - 2;
+                            let scrollableAreaX = $ganttDataArea.width() - $('.gantt_task').width();
+
+                            let scrollX = (scrollableAreaX / 100) * ((x / svgWidth) * 100) / 8 * 10;
+                            let scrollY = (scrollableAreaY / 100) * ((y / svgHeight) * 100) / 8 * 10;
+                            gantt.scrollTo(scrollX, scrollY);
+                        })
+                        .on('end', function(d) {
+                            that.dragScroll = false;
+
+                            d3
+                                .select(this)
+                                .attr('original-x', null)
+                                .attr('original-y', null)
+                                .classed('active', false)
+                            ;
+                        })
+                )
+            ;
+        },
     },
     mounted() {
         gantt.init(this.$refs.gantt_chart);
@@ -35,6 +204,17 @@ export default {
         ganttData(value) {
             if (value && value.length) {
                 // config
+                const startDate = new Date(this.ganttStartDate);
+                const endDate = new Date();
+                const realEndDate = new Date(this.ganttEndDate);
+                const now = new Date();
+
+                if (realEndDate.getTime() > now.getTime()) {
+                    endDate.setTime(realEndDate.getTime() + MOTNH_IN_SECONDS);
+                } else {
+                    endDate.setTime(now.getTime() + MOTNH_IN_SECONDS);
+                }
+
                 gantt.config.auto_scheduling_descendant_links = false;
                 gantt.config.columns = [
                     {name: 'text', tree: true, width: '*', resize: true},
@@ -43,6 +223,8 @@ export default {
                 ];
                 gantt.config.drag_links = false;
                 gantt.config.show_unscheduled = true;
+                gantt.config.start_date = startDate;
+                gantt.config.end_date = endDate;
 
                 // init!
                 gantt.init(this.$refs.gantt_chart);
@@ -51,75 +233,143 @@ export default {
                     links: this.ganttDataLinks,
                 });
 
+                this.removeAllEvents();
                 // disable link double clicks
-                gantt.attachEvent('onLinkDblClick', (id, e) => false);
+                this
+                    .ganttEvents
+                    .push(
+                        gantt
+                            .attachEvent('onLinkDblClick', (id, e) => false)
+                    )
+                ;
 
                 // instead of opening default edit, confirm if user wants to go to the edit page
-                gantt.attachEvent('onTaskDblClick', (id, e) => {
-                    id = parseInt(id, 10);
-                    const task = this.ganttData.filter(item => item.id === id)[0];
-                    const types = [
-                        'phase',
-                        'milestone',
-                        'task',
-                    ];
+                this
+                    .ganttEvents
+                    .push(
+                        gantt.attachEvent('onTaskDblClick', (id, e) => {
+                            id = parseInt(id, 10);
+                            const task = this.ganttData.filter(item => item.id === id)[0];
+                            const types = [
+                                'phase',
+                                'milestone',
+                                'task',
+                            ];
 
-                    gantt.confirm(this.translate('message.edit_' + types[task.type]) + ' <strong>' + task.name + '</strong>?', answer => {
-                        if (answer) {
-                            router.push({
-                                name: 'project-task-management-edit',
-                                params: {
-                                    'projectId': task.name,
-                                    'taskId': id,
-                                },
-                            });
-                        }
-                    });
-                    return false;
-                });
-
-                gantt.attachEvent('onBeforeTaskChanged', (id, mode, oldEvent) => {
-                    const task = gantt.getTask(id);
-                    const progress = parseInt(task.progress * 100, 10);
-                    const convert = gantt.date.date_to_str('%d-%m-%Y');
-                    const params = {
-                        progress,
-                        scheduledStartAt: convert(task.start_date),
-                        scheduledFinishAt: convert(task.end_date),
-                    };
-
-                    this
-                        .$http
-                        .patch(
-                            Routing.generate('app_api_workpackage_edit', {id}),
-                            params
-                        )
-                        .then(
-                            (response) => {
-                                gantt.message(this.translate('message.saved'));
-                            },
-                            (response) => {
-                                if (response.status === 202) {
-                                    gantt.message(this.translate('message.saved'));
-                                } else {
-                                    task.progress = oldEvent.progress;
-                                    gantt.updateTask(id);
-                                    gantt.message({
-                                        'type': 'error',
-                                        'message': this.translate('message.unable_to_save'),
+                            gantt.confirm(this.translate('message.edit_' + types[task.type]) + ' <strong>' + task.name + '</strong>?', answer => {
+                                if (answer) {
+                                    router.push({
+                                        name: 'project-task-management-edit',
+                                        params: {
+                                            'projectId': task.name,
+                                            'taskId': id,
+                                        },
                                     });
                                 }
-                            }
-                        )
-                    ;
+                            });
 
-                    return true;
-                });
+                            return false;
+                        })
+                    )
+                ;
+
+                this
+                    .ganttEvents
+                    .push(
+                        gantt.attachEvent('onBeforeTaskChanged', (id, mode, oldEvent) => {
+                            const task = gantt.getTask(id);
+                            const progress = parseInt(task.progress * 100, 10);
+                            const convert = gantt.date.date_to_str('%d-%m-%Y');
+                            const params = {
+                                progress,
+                                scheduledStartAt: convert(task.start_date),
+                                scheduledFinishAt: convert(task.end_date),
+                            };
+
+                            this
+                                .$http
+                                .patch(
+                                    Routing.generate('app_api_workpackage_edit', {id}),
+                                    params
+                                )
+                                .then(
+                                    (response) => {
+                                        gantt.message(this.translate('message.saved'));
+                                    },
+                                    (response) => {
+                                        if (response.status === 202) {
+                                            gantt.message(this.translate('message.saved'));
+                                        } else {
+                                            task.progress = oldEvent.progress;
+                                            gantt.updateTask(id);
+                                            gantt.message({
+                                                'type': 'error',
+                                                'message': this.translate('message.unable_to_save'),
+                                            });
+                                        }
+                                    }
+                                )
+                            ;
+
+                            return true;
+                        })
+                    )
+                ;
+
+                this
+                    .ganttEvents
+                    .push(
+                        gantt.attachEvent('onGanttScroll', (left, top) => {
+                            if (this.dragScroll) {
+                                return;
+                            }
+
+                            let svgWidth = parseInt(this.svg.attr('width'), 10);
+                            let svgHeight = parseInt(this.svg.attr('height'), 10);
+
+                            // there's some border or padding here
+                            let scrollableAreaY = $('.gantt_ver_scroll > div').height() - $('.gantt_data_area').height() - 2;
+                            let scrollableAreaX = $('.gantt_data_area').width() - $('.gantt_task').width();
+
+                            let {x, y} = gantt.getScrollState();
+
+                            this
+                                .rect
+                                .attr('x', (d) => {
+                                    return (svgWidth * 0.8 / 100)
+                                        * (x / scrollableAreaX * 100);
+                                })
+                                .attr('y', (d) => {
+                                    return (svgHeight * 0.8 / 100)
+                                        * (y / scrollableAreaY * 100);
+                                })
+                            ;
+                        })
+                    )
+                ;
+
+                this.initGanttMap();
             }
         },
     },
     computed: {
         ...mapGetters(['ganttData']),
+        ganttStartDate() {
+            return this
+                .ganttData
+                .map(item => item.actualStartAt || item.forecastStartAt || item.scheduledStartAt)
+                .filter(item => item !== null)
+                .reduce((a, b) => a < b ? a : b)
+            ;
+        },
+        ganttEndDate() {
+            return this
+                .ganttData
+                .map(item => item.actualFinishAt || item.forecastFinishAt || item.scheduledFinishAt)
+                .filter(item => item !== null)
+                .reduce((a, b) => a > b ? a : b)
+            ;
+        },
         ganttDataLinks() {
             // {"id":"10","source":"11","target":"12","type":"1"}
             return this
@@ -146,6 +396,7 @@ export default {
                 gantt.config.types.milestone,
                 gantt.config.types.task,
             ];
+
             return this
                 .ganttData
                 .map(item => {
@@ -159,8 +410,8 @@ export default {
                         type: ganttType2WorkPackageType[item.type],
                     };
 
-                    let start = item.scheduledStartAt || item.forecastStartAt || item.actualStartAt;
-                    let end = item.scheduledFinishAt || item.forecastFinishAt || item.actualFinishAt;
+                    let start = item.actualStartAt || item.forecastStartAt || item.scheduledStartAt;
+                    let end = item.actualFinishAt || item.forecastFinishAt || item.scheduledFinishAt;
 
                     if (start && end) {
                         let dtStart = new Date(start);
@@ -206,6 +457,17 @@ export default {
             ;
         },
     },
+    data() {
+        return {
+            showMinimap: true,
+            ganttEvents: [],
+            svg: null,
+            g: null,
+            preview: null,
+            rect: null,
+            dragScroll: false,
+        };
+    },
 };
 </script>
 
@@ -216,6 +478,29 @@ export default {
 <style lang="scss">
     @import '../../css/_variables';
     @import '../../css/_mixins';
+
+    .position-relative {
+        position: relative;
+    }
+
+    #toggle_minimap {
+        top: 32px;
+        right: 10px;
+        position: absolute;
+        font-size: 0.75em;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    #gantt_map {
+        position: absolute;
+        bottom: 40px;
+        right: 20px;
+        background: #232D4B;
+        border: 2px solid #000000;
+    }
 
     .gantt_add {
         display: none !important;
