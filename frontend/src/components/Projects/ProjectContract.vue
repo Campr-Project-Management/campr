@@ -229,7 +229,7 @@ import DownloadbuttonIcon from '../_common/_icons/DownloadbuttonIcon.vue';
 import EyeIcon from '../_common/_icons/EyeIcon.vue';
 import MemberBadge from '../_common/MemberBadge.vue';
 import AlertModal from '../_common/AlertModal.vue';
-import datepicker from 'vuejs-datepicker';
+import datepicker from '../_common/_form-components/Datepicker';
 import moment from 'moment';
 import router from '../../router';
 import Error from '../_common/_messages/Error.vue';

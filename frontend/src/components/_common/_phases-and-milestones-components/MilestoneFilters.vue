@@ -20,7 +20,7 @@
 <script>
 import Dropdown from '../Dropdown2';
 import {mapActions, mapGetters} from 'vuex';
-import datepicker from 'vuejs-datepicker';
+import datepicker from '../_form-components/Datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 
 export default {
