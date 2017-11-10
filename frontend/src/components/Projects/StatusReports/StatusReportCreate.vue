@@ -42,7 +42,7 @@
                                 <div
                                     v-for="condition in projectTasksStatus.conditions"
                                     class="bar flex-v-center"
-                                    v-bind:style="{width: (condition.count * 100) / (projectTasksStatus.conditions.total) + '%', background: condition.color}">
+                                    v-bind:style="{width: computeWidth(condition), background: condition.color}">
                                     {{ condition.count }}
                                 </div>
                             </div>
@@ -577,6 +577,13 @@ export default {
         },
         onResizeSameHeightDiv: function() {
             window.$('.same-height').matchHeight();
+        },
+        computeWidth: function(condition) {
+            let width = (condition.count * 100) / (this.projectTasksStatus.conditions.total);
+            if (!width) {
+                width = 2;
+            }
+            return width + '%';
         },
     },
     computed: {
