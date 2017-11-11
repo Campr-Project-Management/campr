@@ -105,7 +105,7 @@ import RescheduleIcon from '../../_common/_icons/RescheduleIcon';
 import {mapGetters, mapActions} from 'vuex';
 import Modal from '../../_common/Modal';
 import router from '../../../router';
-import datepicker from 'vuejs-datepicker';
+import datepicker from '../../_common/_form-components/Datepicker';
 import moment from 'moment';
 
 export default {

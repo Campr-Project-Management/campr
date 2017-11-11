@@ -295,7 +295,7 @@ import TooltipIcon from '../../_common/_icons/TooltipQuestionMark';
 import IndicatorIcon from '../../_common/_icons/IndicatorIcon';
 import MemberSearch from '../../_common/MemberSearch';
 import SelectField from '../../_common/_form-components/SelectField';
-import datepicker from 'vuejs-datepicker';
+import datepicker from '../../_common/_form-components/Datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
