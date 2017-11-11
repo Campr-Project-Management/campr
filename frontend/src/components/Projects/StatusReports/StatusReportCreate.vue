@@ -28,10 +28,10 @@
                             <h4>{{ translateText('message.tasks_status') }}</h4>
                             <div class="status-bar clearfix flex">
                                 <!-- bar width calculated as (data-number * 100)/(bar1_data-number + bar2_data-number + ...) -->
-                                <div class="bar middle-bg flex-v-center" v-bind:style="{width: (projectTasksStatus['label.open'] * 100) / (projectTasksStatus['label.open'] + projectTasksStatus['label.closed']) + '%'}">
+                                <div class="bar middle-bg flex-v-center status-bar" v-bind:style="{width: (projectTasksStatus['label.open'] * 100) / (projectTasksStatus['label.open'] + projectTasksStatus['label.closed']) + '%'}">
                                     {{ translateText('label.open') }}: {{ projectTasksStatus['label.open'] }}
                                 </div>
-                                <div class="bar main-bg flex-v-center" v-bind:style="{width: (projectTasksStatus['label.closed'] * 100) / (projectTasksStatus['label.open'] + projectTasksStatus['label.closed']) + '%'}">
+                                <div class="bar main-bg flex-v-center status-bar" v-bind:style="{width: (projectTasksStatus['label.closed'] * 100) / (projectTasksStatus['label.open'] + projectTasksStatus['label.closed']) + '%'}">
                                     {{ translateText('label.closed') }}: {{ projectTasksStatus['label.closed'] }}
                                 </div>
                             </div>
@@ -42,7 +42,7 @@
                                 <div
                                     v-for="condition in projectTasksStatus.conditions"
                                     class="bar flex-v-center"
-                                    v-bind:style="{width: (condition.count * 100) / (projectTasksStatus.conditions.total) + '%', background: condition.color}">
+                                    v-bind:style="{width: computeWidth(condition), background: condition.color}">
                                     {{ condition.count }}
                                 </div>
                             </div>
@@ -577,6 +577,13 @@ export default {
         },
         onResizeSameHeightDiv: function() {
             window.$('.same-height').matchHeight();
+        },
+        computeWidth: function(condition) {
+            let width = (condition.count * 100) / (this.projectTasksStatus.conditions.total);
+            if (!width) {
+                width = 2;
+            }
+            return width + '%';
         },
     },
     computed: {
@@ -1167,5 +1174,11 @@ function renderTooltip(item) {
     .table-small > thead > tr > th {
         height: 60px;
         padding: 0 15px;
+    }
+
+    .status-bar {
+        min-width: 10%;
+        max-width: 90%;
+        display: inline-table;
     }
 </style>
