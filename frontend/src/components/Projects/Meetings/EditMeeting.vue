@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <!-- /// End Header /// -->
-                
+
                 <div class="form">
                     <!-- /// Meeting Distribution List (Event Name) and Category /// -->
                     <div class="row">
@@ -223,7 +223,7 @@
                                 </div>
                             </div>
                             <div class="entry-responsible flex flex-v-center">
-                                <div class="user-avatar"> 
+                                <div class="user-avatar">
                                     <img :src="decision.responsibilityAvatar" :alt="decision.responsibilityFullName"/>
                                 </div>
                                 <div>
@@ -286,7 +286,7 @@
                                 </div>
                             </div>
                             <div class="entry-responsible flex flex-v-center">
-                                <div class="user-avatar"> 
+                                <div class="user-avatar">
                                     <img :src="todo.responsibilityAvatar" :alt="todo.responsibilityFullName"/>
                                 </div>
                                 <div>
@@ -357,7 +357,7 @@
                                 </div>
                             </div>
                             <div class="entry-responsible flex flex-v-center">
-                                <div class="user-avatar"> 
+                                <div class="user-avatar">
                                     <img :src="note.responsibilityAvatar" :alt="note.responsibilityFullName"/>
                                 </div>
                                 <div>
@@ -453,7 +453,7 @@
 <script>
 import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
-import datepicker from 'vuejs-datepicker';
+import datepicker from '../../_common/_form-components/Datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
 import MeetingAttachments from './MeetingAttachments';
@@ -974,7 +974,7 @@ export default {
     .table-wrapper {
         width: 100%;
         padding-bottom: 40px;
-    }  
+    }
 
     .avatars {
         > div {
@@ -1000,12 +1000,12 @@ export default {
         &:last-child {
             margin-right: 0;
         }
-    } 
+    }
 
     .topic {
         white-space: normal;
         text-transform: none;
-    } 
+    }
 
     .user-avatar {
         display: inline-block;
@@ -1017,7 +1017,7 @@ export default {
             width: 30px;
             height: 30px;
             @include border-radius(50%);
-            margin: 0 10px 0 0;  
+            margin: 0 10px 0 0;
             display: inline-block;
             position: relative;
             top: -2px;
@@ -1037,7 +1037,7 @@ export default {
             .entry-title {
                 text-transform: uppercase;
                 letter-spacing: 0.1em;
-                font-size: 10px;  
+                font-size: 10px;
                 margin-bottom: 10px;
 
                 h4 {

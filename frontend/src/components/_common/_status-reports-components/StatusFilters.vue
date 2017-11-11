@@ -21,7 +21,7 @@
 <script>
     import MemberSearch from '../../_common/MemberSearch';
     import CalendarIcon from '../../_common/_icons/CalendarIcon';
-    import datepicker from 'vuejs-datepicker';
+    import datepicker from '../_form-components/Datepicker';
     import moment from 'moment';
 
     export default {
