@@ -7,7 +7,10 @@
 {% endblock %}
 
 {% block message %}
-    <p>{{ 'email.general.hello'|trans }} {{ full_name }},
+    <p>{{ 'email.general.hello'|trans }} {{ full_name }},</p>
+    {% if plain_password is defined %}
+    <p>{{ 'email.general.plain_password'|trans }} <strong>{{ plain_password }}</strong></p>
+    {% endif %}
     <p>{{ 'email.message.user.register'|trans }} <a href="{{ url('main_user_activate', {'token': token}) }}">{{ 'email.general.link'|trans }}</a></p>
     <p>{{ 'email.expiration.user.activation'|transchoice(expiration_time, {'%expiration_time%': expiration_time}) }}</p>
 {% endblock %}
