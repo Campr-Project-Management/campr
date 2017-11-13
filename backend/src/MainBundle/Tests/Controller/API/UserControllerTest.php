@@ -277,6 +277,7 @@ class UserControllerTest extends BaseController
                     'subteamMembers' => [],
                     'projectUsers' => [],
                     'statusReports' => [],
+                    'signUpDetails' => [],
                     'avatar' => null,
                 ],
             ],
