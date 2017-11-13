@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -24,13 +25,15 @@ use Scheb\TwoFactorBundle\Model\TrustedComputerInterface;
  * @UniqueEntity(
  *      fields="email",
  *      errorPath="email",
- *      message="unique.email"
- *  )
+ *      message="unique.email",
+ *      groups={"", "Default", "HomepageSignUp"}
+ * )
  * @UniqueEntity(
  *      fields="username",
  *      errorPath="username",
- *      message="unique.username"
- *  )
+ *      message="unique.username",
+ *      groups={"", "Default", "HomepageSignUp"}
+ * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")\
  * @Vich\Uploadable
  */
@@ -54,6 +57,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=128, nullable=false)
+     * @Assert\NotBlank(message="not_blank.username")
      */
     private $username;
 
@@ -61,6 +65,8 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=128, nullable=false)
+     * @Assert\Email(message="invalid.email", groups={"HomepageSignUp"})
+     * @Assert\NotBlank(message="not_blank.email", groups={"HomepageSignUp"})
      */
     private $email;
 
@@ -74,6 +80,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      * @var string
      *
      * @ORM\Column(name="first_name", type="string", length=128, nullable=false)
+     * @Assert\NotBlank(message="invalid.full_name", groups={"HomepageSignUp"})
      */
     private $firstName;
 
@@ -373,6 +380,12 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     private $statusReports;
 
     /**
+     * @var array
+     * @ORM\Column(name="sign_up_details", type="json_array")
+     */
+    private $signUpDetails = [];
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -470,7 +483,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      */
     public function getUsername()
     {
-        return $this->username;
+        return $this->username ?? $this->email;
     }
 
     /**
@@ -483,6 +496,10 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setEmail($email)
     {
         $this->email = $email;
+
+        if (empty($this->username)) {
+            $this->username = $email;
+        }
 
         return $this;
     }
@@ -560,14 +577,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     }
 
     /**
-     * @return string
-     */
-    public function getFullName()
-    {
-        return sprintf('%s %s', $this->firstName, $this->lastName);
-    }
-
-    /**
      * Get lastName.
      *
      * @return string
@@ -575,6 +584,31 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function getLastName()
     {
         return $this->lastName;
+    }
+
+    public function setFullName($fullName)
+    {
+        $parts = explode(' ', $fullName);
+
+        switch (true) {
+            case count($parts) >= 2:
+                $this->lastName = array_pop($parts);
+                $this->firstName = implode(' ', $parts);
+                break;
+            case count($parts) == 1:
+                $this->lastName = $fullName;
+                break;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        return trim(sprintf('%s %s', $this->firstName, $this->lastName));
     }
 
     /**
@@ -1735,5 +1769,21 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function getStatusReports()
     {
         return $this->statusReports;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSignUpDetails()
+    {
+        return $this->signUpDetails;
+    }
+
+    /**
+     * @param array $signUpDetails
+     */
+    public function setSignUpDetails($signUpDetails)
+    {
+        $this->signUpDetails = $signUpDetails;
     }
 }

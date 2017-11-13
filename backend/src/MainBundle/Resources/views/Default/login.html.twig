@@ -2,6 +2,10 @@
 
 {% trans_default_domain 'messages' %}
 
+{% block body_attributes -%}
+    class="login"
+{%- endblock %}
+
 {% block body %}
     <div class="login-content">
         <div class="lc-block {% if login is defined %}toggled{% endif %}" id="l-login">

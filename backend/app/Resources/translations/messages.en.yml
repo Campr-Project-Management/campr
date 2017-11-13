@@ -1666,9 +1666,9 @@ not_found:
 email:
     subject:
         user:
-          register: Campr - Account registration
-          activation: Campr - Account activation code
-          reset: Campr - Reset account psasword
+            register: Campr - Account registration
+            activation: Campr - Account activation code
+            reset: Campr - Reset account psasword
         invoice: Campr - Payment Invoice
         contact: Campr contact
         team_member:
@@ -1705,6 +1705,7 @@ email:
         hello: Hello
         email: Email
         password: Password
+        plain_password: Your password is
 
 authentication:
     account_disabled: Account disabled
