@@ -2,10 +2,13 @@
 
 namespace MainBundle\Controller;
 
+use AppBundle\Entity\User;
 use AppBundle\Form\User\LoginType;
 use AppBundle\Form\User\RegisterType;
 use AppBundle\Form\User\ResetPasswordType;
 use MainBundle\Form\ContactType;
+use MainBundle\Form\User\HomepageRegisterType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,7 +22,68 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('MainBundle:Default:index.html.twig');
+        $user = new User();
+        $signUpForm = $this->createForm(HomepageRegisterType::class, $user, [
+            'method' => Request::METHOD_POST,
+            'action' => $this->generateUrl('main_register'),
+        ]);
+
+        return $this->render('MainBundle:Default:index.html.twig', [
+            'signUpForm' => $signUpForm->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/register", name="main_register", options={"expose"=true})
+     * @Method({"GET","POST"})
+     */
+    public function registerAction(Request $request)
+    {
+        if ($request->isMethod(Request::METHOD_GET)) {
+            return $this->redirectToRoute('main_homepage');
+        }
+
+        $user = new User();
+        $signUpForm = $this->createForm(HomepageRegisterType::class, $user, [
+            'method' => Request::METHOD_POST,
+            'action' => $this->generateUrl('main_register'),
+        ]);
+
+        $signUpForm->handleRequest($request);
+        if ($request->isMethod(Request::METHOD_POST) && $signUpForm->isValid()) {
+            $em = $this->getDoctrine()->getEntityManager();
+            $mailer = $this->get('app.service.mailer');
+            $activationToken = $this->get('app.service.user')->generateActivationResetToken();
+
+            $user->setActivationToken($activationToken);
+            $user->setActivationTokenCreatedAt(new \DateTime());
+            $user->setPlainPassword(substr(md5(microtime()), rand(0, 26), 6));
+
+            $em->persist($user);
+            $em->flush();
+
+            $mailer
+                ->sendEmail(
+                    'MainBundle:Email:user_register.html.twig',
+                    'info',
+                    $user->getEmail(),
+                    [
+                        'token' => $activationToken,
+                        'full_name' => $user->getFullName(),
+                        'plain_password' => $user->getPlainPassword(),
+                        'expiration_time' => $this->getParameter('activation_token_expiration_number'),
+                    ]
+                )
+            ;
+
+            $this->addFlash('registration_success', 'flash.registration_success');
+
+            return $this->redirectToRoute('main_homepage');
+        }
+
+        return $this->render('MainBundle:Default:index.html.twig', [
+            'signUpForm' => $signUpForm->createView(),
+        ]);
     }
 
     /**

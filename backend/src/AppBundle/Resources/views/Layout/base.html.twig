@@ -16,14 +16,13 @@
             <link href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css" rel="stylesheet">
             <link href="{{ asset('assets/admin/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css') }}" rel="stylesheet">
             <!-- CSS -->
-            <link href="{{ asset('assets/admin/css/app_1.min.css')}}" rel="stylesheet">
-            <link href="{{ asset('assets/admin/css/app_2.min.css')}}" rel="stylesheet">
+            <link href="{{ asset('assets/admin/css/app.css')}}" rel="stylesheet">
         {% endblock %}
         {% block icon %}
             <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         {% endblock %}
     </head>
-    <body>
+    <body {% block body_attributes %}{% endblock %}>
     {% block body %}
         {% include 'AppBundle:Admin/Layout:header.html.twig' %}
 
