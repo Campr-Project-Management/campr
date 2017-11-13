@@ -107,7 +107,8 @@ invalid:
     slug: The slug is invalid. Slug must start/end only with alphanumeric values and contain alphanumeric or '-' characters
     module: Invalid module name provided
     milestone:
-        work_package_status: A milestone can have only the Opened and Completed statuses 
+        work_package_status: A milestone can have only the Opened and Completed statuses
+    full_name: The full name must contain a first and last name
 
 format:
     color: 'Invalid color format. Should be a valid RGB color starting with a "#" and followed by 6 characters from a to z and 0 to 9. E.g.: #abc123, #123456, #ffffff'
@@ -141,5 +142,9 @@ greater_than_or_equal:
 invite:
     yourself: You are already part of the team.
     team_member: User with this email is already part of the team.
+
 invitation:
     sent: You already sent an invitation to this email.
+
+flash:
+    registration_success: You have successfuly registered. Please check your email for the activation link.

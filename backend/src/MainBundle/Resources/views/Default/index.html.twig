@@ -15,11 +15,13 @@
                             {% for team in app.user.teams %}
                             <li>
                                 <div class="row justify-content-between align-items-center">
-                                    <div class="col-md-auto">                                    
-                                        <!-- {% if team.enabled and team.available %}
-                                            <a href="{{ path('main_team_sso', {id: team.id}) }}" class="team-img" style="background-image: url({{ vich_uploader_asset(team, 'logoFile') }})"></a>
-                                        {% endif %} -->
-                                        <a href="{{ path('main_team_sso', {id: team.id}) }}" class="team-img" style="background-image: url({{ vich_uploader_asset(team, 'logoFile') }})"></a>
+                                    <div class="col-md-auto">
+                                        {% if team.logo %}
+                                            {% set teamStyle = 'background-image: ' ~ vich_uploader_asset(team, 'logoFile') %}
+                                        {% else %}
+                                            {% set teamStyle = 'background: #123456;' %}
+                                        {% endif %}
+                                        <a href="{{ path('main_team_sso', {id: team.id}) }}" class="team-img" style="{{ teamStyle }}"></a>
                                         <div class="team-info">
                                             <div class="team-name">{{ team }}</div>
                                             <div class="team-details">
@@ -30,14 +32,7 @@
                                                 {% endif %}
                                             </div>
                                         </div>
-                                    </div>                                       
-                                    <!-- {% if team.enabled and team.available %}                                          
-                                        <div class="col-md-auto text-right">
-                                            <a href="{{ path('main_team_sso', {id: team.id}) }}" class="button button-small">
-                                                {{ 'button.login'|trans }}
-                                            </a>
-                                        </div>
-                                    {% endif %} -->
+                                    </div>
                                     <div class="col-md-auto text-right">
                                         <a href="{{ path('main_team_sso', {id: team.id}) }}" class="button button-small">
                                             {{ 'button.login'|trans }}
@@ -58,11 +53,13 @@
                             {% for teamMember in app.user.teamMembers %}
                             <li>
                                 <div class="row justify-content-between align-items-center">
-                                    <div class="col-md-auto">                                    
-                                        <!-- {% if teamMember.team.enabled and teamMember.team.available %}
-                                            <a href="{{ path('main_team_sso', {id: teamMember.team.id}) }}" class="team-img" style="background-image: url({{ vich_uploader_asset(teamMember.team, 'logoFile') }})"></a>
-                                        {% endif %} -->
-                                        <a href="{{ path('main_team_sso', {id: teamMember.team.id}) }}" class="team-img" style="background-image: url({{ vich_uploader_asset(teamMember.team, 'logoFile') }})"></a>
+                                    <div class="col-md-auto">
+                                        {% if teamMember.team and teamMember.team.logo %}
+                                            {% set teamStyle = 'background-image: ' ~ vich_uploader_asset(teamMember.team, 'logoFile') %}
+                                        {% else %}
+                                            {% set teamStyle = 'background: #123456;' %}
+                                        {% endif %}
+                                        <a href="{{ path('main_team_sso', {id: teamMember.team.id}) }}" class="team-img" style="{{ teamStyle }}"></a>
                                         <div class="team-info">
                                             <div class="team-name">
                                                 {{ teamMember.team }}                                                    
@@ -78,14 +75,7 @@
                                                 {% endif %}
                                             </div>
                                         </div>
-                                    </div>                                
-                                    <!-- {% if teamMember.team.enabled and teamMember.team.available %}
-                                        <div class="col-md-auto text-right">
-                                            <a href="{{ path('main_team_sso', {id: teamMember.team.id}) }}" class="button button-small">
-                                                {{ 'button.login'|trans }}
-                                            </a>
-                                        </div>
-                                    {% endif %} -->
+                                    </div>
                                     <div class="col-md-auto text-right">
                                         <a href="{{ path('main_team_sso', {id: teamMember.team.id}) }}" class="button button-small">
                                             {{ 'button.login'|trans }}
@@ -1563,45 +1553,103 @@
         <div class="container">
             <div class="row">                    
                 <div class="col-lg-10 col-sm-12 ml-lg-auto mr-lg-auto">
-                    <form class="form login-form">
+                    <a name="registration_success"></a>
+                    {% for message in app.session.flashBag.get('registration_success') %}
+                        <div class="registration_success">{{ message|trans }}</div>
+                    {% endfor %}
+
+                    {{ form_errors(signUpForm) }}
+                    {{ form_start(signUpForm, {attr: {class: 'form login-form'}}) }}
                         <div class="slider-holder" id="slider_holder_1" data-min="0" data-max="36" data-step="1" data-type="single">
                             <div class="heading flex flex-space-between">
                                 <span class="title">Project Duration</span>
                                 <span class="value">
-                                    <span id="slider_from_1" class="number"></span> <span class="text">Months</span>
+                                    <span id="slider_from_1" class="number"></span>
+                                    <span class="text">Months</span>
                                 </span>
                             </div>
-                            <input type="text" class="range-slider" id="slider_1" data-from="slider_from_1" value=""/>
+                            {{
+                                form_widget(
+                                    signUpForm.projectDuration,
+                                    {
+                                        id: 'slider_1',
+                                        attr: {
+                                            class: 'range-slider',
+                                            'data-from': 'slider_from_1'
+                                        }
+                                    }
+                                )
+                            }}
                         </div>
     
                         <div class="slider-holder" id="slider_holder_2" data-min="0" data-max="3000000" data-step="10000" data-type="single">
                             <div class="heading flex flex-space-between">
                                 <span class="title">Project Budget</span>
                                 <span class="value">
-                                    <span class="text">$</span> <span id="slider_from_2" class="number"></span>
+                                    <span class="text">$</span>
+                                    <span id="slider_from_2" class="number"></span>
                                 </span>
                             </div>
-                            <input type="text" class="range-slider" id="slider_2" data-from="slider_from_2" value=""/>
+                            {{
+                                form_widget(
+                                    signUpForm.projectBudget,
+                                    {
+                                        id: 'slider_2',
+                                        attr: {
+                                            class: 'range-slider',
+                                            'data-from': 'slider_from_2'
+                                        }
+                                    }
+                                )
+                            }}
                         </div>
     
                         <div class="slider-holder" id="slider_holder_3" data-min="1" data-max="20" data-step="1" data-type="double">
                             <div class="heading flex flex-space-between">
                                 <span class="title">People Involved</span>
                                 <span class="value">
-                                    <span id="slider_from_3" class="number"></span> <span class="text"> - </span> <span id="slider_to_3" class="number"></span>
+                                    <span id="slider_from_3" class="number"></span>
+                                    <span class="text"> - </span>
+                                    <span id="slider_to_3" class="number"></span>
                                 </span>
                             </div>
-                            <input type="text" class="range-slider" id="slider_3" data-from="slider_from_3" data-to="slider_to_3" value=""/>
+                            {{
+                                form_widget(
+                                    signUpForm.peopleInvolved,
+                                    {
+                                        id: 'slider_3',
+                                        attr: {
+                                            class: 'range-slider',
+                                            'data-from': 'slider_from_3',
+                                            'data-to': 'slider_from_3'
+                                        }
+                                    }
+                                )
+                            }}
                         </div>
     
                         <div class="slider-holder" id="slider_holder_4" data-min="1" data-max="20" data-step="1" data-type="double">
                             <div class="heading flex flex-space-between">
                                 <span class="title">Departments Involved</span>
                                 <span class="value">
-                                    <span id="slider_from_4" class="number"></span> <span class="text"> - </span> <span id="slider_to_4" class="number"></span>
+                                    <span id="slider_from_4" class="number"></span>
+                                    <span class="text"> - </span>
+                                    <span id="slider_to_4" class="number"></span>
                                 </span>
                             </div>
-                            <input type="text" class="range-slider" id="slider_4" data-from="slider_from_4" data-to="slider_to_4" value=""/>
+                            {{
+                                form_widget(
+                                    signUpForm.departmentsInvolved,
+                                    {
+                                        id: 'slider_4',
+                                        attr: {
+                                            class: 'range-slider',
+                                            'data-from': 'slider_from_4',
+                                            'data-to': 'slider_to_4'
+                                        }
+                                    }
+                                )
+                            }}
                         </div>
     
                         <div class="slider-holder" id="slider_holder_5" data-type="single" data-values="Very Low, Low, Medium, High, Very High">
@@ -1611,7 +1659,19 @@
                                     <span id="slider_from_5" class="number"></span>
                                 </span>
                             </div>
-                            <input type="text" class="range-slider" id="slider_5" data-from="slider_from_5" value=""/>
+                            {{
+                                form_widget(
+                                    signUpForm.strategicalMeaning,
+                                    {
+                                        id: 'slider_5',
+                                        attr: {
+                                            class: 'range-slider',
+                                            'data-from': 'slider_from_5',
+                                            'data-to': 'slider_from_5'
+                                        }
+                                    }
+                                )
+                            }}
                         </div>
     
                         <div class="slider-holder" id="slider_holder_6" data-type="single" data-values="Very Few, Few, Many, Very Many">
@@ -1621,13 +1681,34 @@
                                     <span id="slider_from_6" class="number"></span>
                                 </span>
                             </div>
-                            <input type="text" class="range-slider" id="slider_6" data-from="slider_from_6" value=""/>
+                            {{
+                                form_widget(
+                                    signUpForm.risks,
+                                    {
+                                        id: 'slider_6',
+                                        attr: {
+                                            class: 'range-slider',
+                                            'data-from': 'slider_from_6'
+                                        }
+                                    }
+                                )
+                            }}
                         </div>
     
                         <div class="row">
                             <div class="col-md-4">
                                 <span class="input">
-                                    <input class="input__field" type="text" id="input-29" />
+                                    {{
+                                        form_widget(
+                                            signUpForm.email,
+                                            {
+                                                id: 'input-29',
+                                                attr: {
+                                                    class: 'input__field'
+                                                }
+                                            }
+                                        )
+                                    }}
                                     <label class="input__label" for="input-29">
                                         <span class="icon">
                                             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
@@ -1645,7 +1726,17 @@
                             </div>
                             <div class="col-md-4">
                                 <span class="input">
-                                    <input class="input__field" type="text" id="input-30" />
+                                    {{
+                                        form_widget(
+                                            signUpForm.fullName,
+                                            {
+                                                id: 'input-30',
+                                                attr: {
+                                                    class: 'input__field'
+                                                }
+                                            }
+                                        )
+                                    }}
                                     <label class="input__label" for="input-30">
                                         <span class="icon">
                                             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
@@ -1662,7 +1753,7 @@
                                 <button class="button button-block" type="submit">Sign up</button>
                             </div>
                         </div>                          
-                    </form>
+                    {{ form_end(signUpForm) }}
                 </div>
             </div>
         </div>
