@@ -53,10 +53,7 @@ class DefaultController extends Controller
         if ($request->isMethod(Request::METHOD_POST) && $signUpForm->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
             $mailer = $this->get('app.service.mailer');
-            $activationToken = $this->get('app.service.user')->generateActivationResetToken();
 
-            $user->setActivationToken($activationToken);
-            $user->setActivationTokenCreatedAt(new \DateTime());
             $user->setPlainPassword(substr(md5(microtime()), rand(0, 26), 6));
 
             $em->persist($user);
@@ -68,7 +65,7 @@ class DefaultController extends Controller
                     'info',
                     $user->getEmail(),
                     [
-                        'token' => $activationToken,
+                        'token' => $user->getActivationToken(),
                         'full_name' => $user->getFullName(),
                         'plain_password' => $user->getPlainPassword(),
                         'expiration_time' => $this->getParameter('activation_token_expiration_number'),
