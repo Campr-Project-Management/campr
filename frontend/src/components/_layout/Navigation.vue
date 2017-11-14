@@ -60,7 +60,7 @@
                 <!--<span class="notification-balloon">5</span>-->
             <!--</a>-->
         </div>
-        <div v-show="currentProjectName" class="project-title">
+        <div v-show="currentProjectName" class="project-title" v-if="showProjectName">
             <p>{{ message.project }}</p>
             <h4>{{ currentProjectName }}</h4>
         </div>
@@ -86,6 +86,11 @@ export default {
         },
         showDashboard: function() {
             return this.user.isAdmin;
+        },
+        showProjectName: function() {
+            let path = this.$route.fullPath;
+            let regx = /^\/projects\//;
+            return regx.exec(path);
         },
     },
     data: function() {

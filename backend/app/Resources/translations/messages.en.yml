@@ -1185,6 +1185,7 @@ button:
     view_all_tasks: View all tasks
     view_tasks_board: View tasks board
     print_project_handbook: Print Project Handbook
+    print_project_contract: Print Project Contract
     close_project: Close Project
     delete_phase: Delete Phase
     delete_milestone: Delete Milestone
