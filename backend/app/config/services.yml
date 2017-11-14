@@ -244,7 +244,8 @@ services:
 
     app.subscriber.api_problem:
         class: AppBundle\EventListener\ApiExceptionSubscriber
-        arguments: ['%kernel.debug%']
+        arguments:
+            - '@service_container'
         tags:
             - { name: kernel.event_subscriber }
 
