@@ -139,7 +139,7 @@
                         </div>
                         <hr v-if="colorStatuses && colorStatuses.length">
 
-                        <button type="button" class="btn-rounded btn-md btn-empty btn-auto">{{ translateText('button.print_project_handbook') }}</button>
+                        <a class="btn-rounded btn-md btn-empty btn-auto" :href="downloadPdf">{{ translateText('button.print_project_contract') }}</a>
                     </div>
                 </div>
                 <!-- /// End Project Summary Widget /// -->
@@ -254,15 +254,26 @@ export default {
             this.getColorStatuses();
         }
     },
-    computed: mapGetters({
-        project: 'project',
-        tasks: 'tasks',
-        colorStatuses: 'colorStatuses',
-        projectSponsors: 'projectSponsors',
-        projectManagers: 'projectManagers',
-        tasksForSchedule: 'tasksForSchedule',
-        projectTasksStatus: 'projectTasksStatus',
-    }),
+    computed: {
+        ...mapGetters({
+            project: 'project',
+            tasks: 'tasks',
+            colorStatuses: 'colorStatuses',
+            projectSponsors: 'projectSponsors',
+            projectManagers: 'projectManagers',
+            tasksForSchedule: 'tasksForSchedule',
+            projectTasksStatus: 'projectTasksStatus',
+        }),
+        projectContractId() {
+            if (this.project.contracts && this.project.contracts.length) {
+                return this.project.contracts[0].id;
+            }
+            return null;
+        },
+        downloadPdf() {
+            return Routing.generate('app_contract_pdf', {id: this.projectContractId});
+        },
+    },
     data() {
         return {
             showClosed: false,
