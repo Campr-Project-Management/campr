@@ -9,22 +9,22 @@
                 </div>
             </div>
             <select-field
-                    v-if="projectPhases.items && projectPhases.items.length"
-                    v-bind:title="'Phase'"
-                    v-bind:options="projectPhasesForSelect"
-                    v-model="phaseModel"
-                    v-bind:currentOption="phaseModel" />
+                v-if="projectPhases.items && projectPhases.items.length"
+                v-bind:title="'Phase'"
+                v-bind:options="projectPhasesForSelect"
+                v-model="phaseModel"
+                v-bind:currentOption="phaseModel" />
             <select-field
-                    v-if="!boardView"
-                    v-bind:title="translateText('message.status')"
-                    v-bind:options="workPackageStatusesForMilestone"
-                    v-model="statusModel"
-                    v-bind:currentOption="statusModel" />
+                v-if="!boardView"
+                v-bind:title="translateText('message.status')"
+                v-bind:options="workPackageStatusesForMilestone"
+                v-model="statusModel"
+                v-bind:currentOption="statusModel" />
             <select-field
-                    v-bind:title="translateText('label.responsible')"
-                    v-bind:options="projectUsersForSelect"
-                    v-model="responsibleModel"
-                    v-bind:currentOption="responsibleModel" />
+                v-bind:title="translateText('label.responsible')"
+                v-bind:options="projectUsersForSelect"
+                v-model="responsibleModel"
+                v-bind:currentOption="responsibleModel" />
             <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>
     </div>
@@ -92,23 +92,23 @@ export default {
             this.selectDueDate(value);
         },
         statusModel: function(value) {
-            if (this.statusModel != null) {
+            if (this.statusModel !== null) {
                 this.selectStatus(value.key);
-            }else {
+            } else {
                 this.selectStatus(null);
             }
         },
         responsibleModel: function(value) {
-            if (this.responsibleModel != null) {
+            if (this.responsibleModel !== null) {
                 this.selectResponsible(value.key);
-            }else {
+            } else {
                 this.selectResponsible(null);
             }
         },
         phaseModel: function(value) {
-            if (this.phaseModel != null) {
+            if (this.phaseModel !== null) {
                 this.selectPhase(value.key);
-            }else {
+            } else {
                 this.selectPhase(null);
             }
         },
