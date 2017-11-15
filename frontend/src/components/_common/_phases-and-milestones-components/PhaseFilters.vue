@@ -13,15 +13,15 @@
                 </div>
             </div>
             <select-field
-                    v-bind:title="translateText('message.status')"
-                    v-bind:options="statusesLabel"
-                    v-model="statusModel"
-                    v-bind:currentOption="statusModel" />
+                v-bind:title="translateText('message.status')"
+                v-bind:options="statusesLabel"
+                v-model="statusModel"
+                v-bind:currentOption="statusModel" />
             <select-field
-                    v-bind:title="translateText('label.responsible')"
-                    v-bind:options="projectUsersForSelect"
-                    v-model="responsibleModel"
-                    v-bind:currentOption="responsibleModel" />
+                v-bind:title="translateText('label.responsible')"
+                v-bind:options="projectUsersForSelect"
+                v-model="responsibleModel"
+                v-bind:currentOption="responsibleModel" />
             <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>
     </div>
@@ -100,16 +100,16 @@ export default {
             this.endDate = value;
         },
         statusModel: function(value) {
-            if (this.statusModel != null) {
+            if (this.statusModel !== null) {
                 this.selectStatus(value.key);
-            }else {
+            } else {
                 this.selectStatus(null);
             }
         },
         responsibleModel: function(value) {
-            if (this.responsibleModel != null) {
+            if (this.responsibleModel !== null) {
                 this.selectResponsible(value.key);
-            }else {
+            } else {
                 this.selectResponsible(null);
             }
         },
