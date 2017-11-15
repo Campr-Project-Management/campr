@@ -19,12 +19,12 @@
         <!-- /// P&M Header /// -->
         <div class="header">
             <h1>{{ translateText('message.phases_milestones') }}</h1>
-        </div>  
-        <!-- /// End P&M Header /// --> 
+        </div>
+        <!-- /// End P&M Header /// -->
 
         <!-- /// P&M Timeline /// -->
         <vis-timeline :pmData="pmData" :withPhases="true"></vis-timeline>
-        <!-- /// End P&M Timeline /// -->    
+        <!-- /// End P&M Timeline /// -->
 
         <!-- /// Phases Header /// -->
         <div class="header flex flex-space-between margintop30">
@@ -117,13 +117,13 @@
                                             <td class="text-center">{{ phase.actualFinishAt }}</td>
                                             <td class="text-center">{{ getDuration(phase.actualStartAt, phase.actualFinishAt) }}</td>
                                         </tr>
-                                    </table> 
-                                </td> 
+                                    </table>
+                                </td>
                                 <td>{{ translateText(phase.workPackageStatusName) }}</td>
                                 <td class="small-avatar text-center">
                                     <div class="user-avatar" v-tooltip.top-center="translateText('message.phase_responsible') + phase.responsibilityFullName">
                                         <img :src="phase.responsibilityAvatar"/>
-                                    </div>                                    
+                                    </div>
                                 </td>
                                 <td>
                                     <router-link :to="{name: 'project-phases-view-phase', params: { id: projectId, phaseId: phase.id } }" class="btn-icon">
@@ -191,7 +191,7 @@
                                 <td class="small-avatar text-center">
                                     <div class="user-avatar" v-tooltip.top-center="translateText('message.milestone_responsible') + milestone.responsibilityFullName">
                                         <img :src="milestone.responsibilityAvatar">
-                                    </div>                                    
+                                    </div>
                                 </td>
                                 <td>
                                     <router-link :to="{name: 'project-phases-view-milestone', params: { id: projectId, milestoneId: milestone.id } }" class="btn-icon">
@@ -518,7 +518,7 @@ function renderTooltip(item, type) {
 }
 </script>
 
-<style lang="scss"> 
+<style lang="scss">
     @import '../../css/page-section';
     @import '../../css/_variables';
 
