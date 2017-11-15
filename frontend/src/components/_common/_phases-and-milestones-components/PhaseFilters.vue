@@ -4,18 +4,24 @@
         <div class="dropdowns">
             <div class="flex flex-space-between dates">
                 <div class="input-holder left">
-                    <label class="active">{{ translateText('message.start_date') }}</label>
-                    <datepicker @cleared="clearStart()" v-bind:clear-button="true"  v-model="startDate" format="dd - MM - yyyy" :value="startDate"></datepicker>
+                    <datepicker :placeholder="translateText('message.start_date')" @cleared="clearStart()" v-bind:clear-button="true"  v-model="startDate" format="dd - MM - yyyy" :value="startDate"></datepicker>
                     <calendar-icon fill="middle-fill"></calendar-icon>
                 </div>
                 <div class="input-holder left">
-                    <label class="active">{{ translateText('message.finish_date') }}</label>
-                    <datepicker @cleared="clearEnd()" v-bind:clear-button="true" v-model="endDate" format="dd - MM - yyyy" :value="endDate"></datepicker>
+                    <datepicker :placeholder="translateText('message.finish_date')" @cleared="clearEnd()" v-bind:clear-button="true" v-model="endDate" format="dd - MM - yyyy" :value="endDate"></datepicker>
                     <calendar-icon fill="middle-fill"></calendar-icon>
                 </div>
             </div>
-            <dropdown ref="statuses" :selectedValue="selectedStatusValue" filter="status" item="phase" :title="translateText('message.status')" :options="statusesLabel"></dropdown>
-            <dropdown ref="responsibles" :selectedValue="selectedResponsible" filter="responsible" item="phase" :title="translateText('label.responsible')" :options="projectUsersForSelect"></dropdown>
+            <select-field
+                    v-bind:title="translateText('message.status')"
+                    v-bind:options="statusesLabel"
+                    v-model="statusModel"
+                    v-bind:currentOption="statusModel" />
+            <select-field
+                    v-bind:title="translateText('label.responsible')"
+                    v-bind:options="projectUsersForSelect"
+                    v-model="responsibleModel"
+                    v-bind:currentOption="responsibleModel" />
             <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>
     </div>
@@ -26,6 +32,7 @@ import Dropdown from '../Dropdown2';
 import {mapActions, mapGetters} from 'vuex';
 import datepicker from '../_form-components/Datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
+import SelectField from '../../_common/_form-components/SelectField';
 
 export default {
     props: ['clearAllFilters', 'selectStatus', 'selectResponsible', 'selectStartDate', 'selectEndDate'],
@@ -37,6 +44,7 @@ export default {
         Dropdown,
         datepicker,
         CalendarIcon,
+        SelectField,
     },
     computed: {
         ...mapGetters({
@@ -68,7 +76,8 @@ export default {
         clearFilters: function() {
             this.clearStart();
             this.clearEnd();
-            this.$refs.statuses.resetCustomTitle();
+            this.statusModel = null;
+            this.responsibleModel = null;
             this.$refs.responsibles.resetCustomTitle();
             this.clearAllFilters(true);
         },
@@ -77,6 +86,8 @@ export default {
         return {
             startDate: '',
             endDate: '',
+            statusModel: null,
+            responsibleModel: null,
         };
     },
     watch: {
@@ -87,6 +98,20 @@ export default {
         endDate: function(value) {
             this.selectEndDate(value);
             this.endDate = value;
+        },
+        statusModel: function(value) {
+            if (this.statusModel != null) {
+                this.selectStatus(value.key);
+            }else {
+                this.selectStatus(null);
+            }
+        },
+        responsibleModel: function(value) {
+            if (this.responsibleModel != null) {
+                this.selectResponsible(value.key);
+            }else {
+                this.selectResponsible(null);
+            }
         },
     },
 };
