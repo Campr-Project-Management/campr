@@ -30,11 +30,17 @@ class WorkPackageListener
     private $projectsToUpdate;
 
     /**
+     * @var ArrayCollection|Project[]
+     */
+    private $workpackagesToUpdate;
+
+    /**
      * WorkPackageListener constructor.
      */
     public function __construct()
     {
         $this->projectsToUpdate = new ArrayCollection();
+        $this->workpackagesToUpdate = new ArrayCollection();
     }
 
     /**
@@ -54,6 +60,8 @@ class WorkPackageListener
             if ($entity->getProject() && !$this->projectsToUpdate->contains($entity->getProject())) {
                 $this->projectsToUpdate->add($entity->getProject());
             }
+
+            $this->workpackagesToUpdate->add($entity);
         }
 
         foreach ($uok->getScheduledEntityUpdates() as $entity) {
@@ -75,6 +83,10 @@ class WorkPackageListener
 
             if ($entity->getProject() && !$this->projectsToUpdate->contains($entity->getProject())) {
                 $this->projectsToUpdate->add($entity->getProject());
+            }
+
+            if (isset($entityChanges['forecastStartAt']) || isset($entityChanges['forecastFinishAt'])) {
+                $this->workpackagesToUpdate->add($entity);
             }
         }
 
@@ -156,6 +168,17 @@ class WorkPackageListener
                 $this->em->refresh($project);
             }
         }
+
+        foreach ($this->workpackagesToUpdate as $workPackage) {
+            $this->setUpForecastDatesForMilestone($workPackage->getMilestoneId());
+            $this->setUpForecastDatesForPhase($workPackage->getPhaseId());
+            // maybe rename this to more sugestive way
+            $this->setUpForecastDatesForParent($workPackage);
+
+            foreach ($workPackage->getDependants() as $dependant) {
+                $this->setUpForecastDatesForDependant($dependant);
+            }
+        }
     }
 
     private function updateWorkPackages(array $item)
@@ -216,6 +239,133 @@ class WorkPackageListener
                 'milestoneId' => $milestoneId,
             ]
         );
+    }
+
+    /**
+     * Updates the forecastFinishAt&forecastStartAt for a milestone when a new task is added or changed to that milestone.
+     * The new values are the max/min values of forecastFinishAt/forecastStartAt from all the tasks
+     * that belong to that milestone.
+     *
+     * @param $milestoneId int
+     */
+    private function setUpForecastDatesForMilestone($milestoneId)
+    {
+        if (!$milestoneId) {
+            return;
+        }
+
+        $this->runUpdateQuery(
+            $this->em,
+            'UPDATE work_package 
+            SET 
+                forecast_start_at  = (SELECT min(forecast_start_at) FROM  (SELECT forecast_start_at FROM work_package WHERE type = ' .WorkPackage::TYPE_TASK.' AND milestone_id = :milestoneId) as temp1),
+                forecast_finish_at  = (SELECT max(forecast_finish_at) FROM (SELECT forecast_finish_at FROM work_package WHERE type = ' .WorkPackage::TYPE_TASK.' AND milestone_id = :milestoneId) as temp2)  
+            WHERE 
+                id = :milestoneId',
+            [
+                'milestoneId' => $milestoneId,
+            ]
+        );
+    }
+
+    /**
+     * Updates the forecastFinishAt&forecastStartAt for a phase when a new task is added or changed to that phase.
+     * The new values are the max/min values of forecastFinishAt/forecastStartAt from all the tasks
+     * that belong to that phase.
+     *
+     * @param $phaseId int
+     */
+    public function setUpForecastDatesForPhase($phaseId)
+    {
+        if (!$phaseId) {
+            return;
+        }
+
+        $this->runUpdateQuery(
+            $this->em,
+            'UPDATE work_package 
+            SET 
+                forecast_start_at  = (SELECT min(forecast_start_at) FROM  (SELECT forecast_start_at FROM work_package WHERE type = ' .WorkPackage::TYPE_TASK.' AND phase_id = :phaseId) as temp1),
+                forecast_finish_at  = (SELECT max(forecast_finish_at) FROM (SELECT forecast_finish_at FROM work_package WHERE type = ' .WorkPackage::TYPE_TASK.' AND phase_id = :phaseId) as temp2) 
+            WHERE 
+                id = :phaseId',
+            [
+                'phaseId' => $phaseId,
+            ]
+        );
+    }
+
+    /**
+     * Updates the forecastFinishAt&forecastStartAt for the parent when a new task is added to it's children.
+     * The new values are the max/min values of forecastFinishAt/forecastStartAt from all the  child tasks.
+     *
+     * @param $workpackage WorkPackage
+     */
+    public function setUpForecastDatesForParent($workpackage)
+    {
+        if (!$workpackage->getParentId()) {
+            return;
+        }
+
+        $this->runUpdateQuery(
+            $this->em,
+            'UPDATE work_package 
+            SET 
+                forecast_start_at  = (SELECT min(forecast_start_at) FROM  (SELECT forecast_start_at FROM work_package WHERE parent_id = :parentId) as temp1),
+                forecast_finish_at  = (SELECT max(forecast_finish_at) FROM (SELECT forecast_finish_at FROM work_package WHERE parent_id = :parentId) as temp2) 
+            WHERE 
+                id = :parentId',
+            [
+                'parentId' => $workpackage->getParentId(),
+            ]
+        );
+
+        $this->setUpForecastDatesForParent($workpackage->getParent());
+    }
+
+    /**
+     * Updates the forecastFinishAt&forecastStartAt for a dependant when a new task is added or changed to that dependant.
+     * The new values are the max/min values of forecastFinishAt/forecastStartAt from all the tasks
+     * that are dependencies  to that dependant.
+     *
+     * @param $dependant WorkPackage
+     */
+    public function setUpForecastDatesForDependant($dependant)
+    {
+        if (!($dependant instanceof WorkPackage)) {
+            return;
+        }
+
+        $this->runUpdateQuery(
+            $this->em,
+            'UPDATE work_package 
+            SET 
+                forecast_start_at  = (
+                    SELECT min(forecast_start_at) 
+                    FROM (
+                        SELECT forecast_start_at FROM work_package 
+                        INNER JOIN  work_package_dependency on work_package.id = work_package_dependency.dependency_id 
+                        WHERE type = ' .WorkPackage::TYPE_TASK.' AND dependant_id = :dependantId
+                    ) as temp1
+                ),
+                forecast_finish_at  = (
+                    SELECT max(forecast_finish_at) 
+                    FROM (
+                        SELECT forecast_finish_at FROM work_package 
+                        INNER JOIN  work_package_dependency on work_package.id = work_package_dependency.dependency_id 
+                        WHERE type = ' .WorkPackage::TYPE_TASK.' AND dependant_id = :dependantId
+                    ) as temp2    
+                )
+            WHERE 
+                id = :dependantId',
+            [
+                'dependantId' => $dependant->getId(),
+            ]
+        );
+        // set up the dependants of the dependant, if they exists
+        foreach ($dependant->getDependants() as $supraDependant) {
+            $this->setUpForecastDatesForDependant($supraDependant);
+        }
     }
 
     /**
