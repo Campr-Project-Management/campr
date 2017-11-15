@@ -132,7 +132,10 @@ export default {
 
             formData.append('name', firstStepData.projectName);
             formData.append('number', firstStepData.projectNumber);
-            formData.append('company', firstStepData.selectedCompany.key);
+
+            if(firstStepData.selectedCompany) {
+                formData.append('company', firstStepData.selectedCompany.key);
+            }
 
             if (firstStepData.projectLogo) {
                 formData.append('logoFile[file]', convertImageToBlog(firstStepData.projectLogo));
@@ -143,8 +146,14 @@ export default {
             if (firstStepData.visibleProgramme) {
                 formData.append('programme', firstStepData.selectedProgramme.key);
             }
-            formData.append('projectCategory', secondStepData.selectedCategory.key);
-            formData.append('projectScope', secondStepData.selectedScope.key);
+
+            if(secondStepData.selectedCategory) {
+                formData.append('projectCategory', secondStepData.selectedCategory.key);
+            }
+
+            if(secondStepData.selectedScope) {
+                formData.append('projectScope', secondStepData.selectedScope.key);
+            }
 
             for (let key in configuration) {
                 if (configuration.hasOwnProperty(key)) {
