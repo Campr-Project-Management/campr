@@ -52,7 +52,6 @@ export default {
             'getTodoCategories',
         ]),
         selectedStatus: function(value) {
-            console.log('statusss', value);
             this.updateFilters('status', value);
         },
         selectedCategory: function(value) {
@@ -82,10 +81,8 @@ export default {
         },
         statusModel: function(value) {
             if (this.statusModel != null) {
-                console.log('statusss222', value.key);
                 this.updateFilters('status', value.key);
             }else {
-                console.log('statusss222', null);
                 this.updateFilters('status', null);
             }
         },
