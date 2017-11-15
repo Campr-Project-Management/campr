@@ -39,9 +39,11 @@ class UserListener
                     ->encodePassword($entity, $entity->getPlainPassword())
                 ;
                 $entity->setPassword($password);
-                $activationToken = substr(md5(microtime()), rand(0, 26), 6);
-                $entity->setActivationToken($activationToken);
-                $entity->setActivationTokenCreatedAt(new \DateTime());
+                if (!$entity->getActivationToken() && !$entity->getActivationTokenCreatedAt()) {
+                    $activationToken = substr(md5(microtime()), rand(0, 26), 6);
+                    $entity->setActivationToken($activationToken);
+                    $entity->setActivationTokenCreatedAt(new \DateTime());
+                }
                 $uok->recomputeSingleEntityChangeSet(
                     $em->getClassMetadata(User::class),
                     $entity
