@@ -4,14 +4,27 @@
         <div class="dropdowns">
             <div class="flex flex-space-between dates">
                 <div class="input-holder right">
-                    <label class="active">{{ translateText('label.due_date') }}</label>
-                    <datepicker @cleared="clearDueDate()" v-bind:clear-button="true" v-model="dueDate" format="dd - MM - yyyy" :value="dueDate"></datepicker>
+                    <datepicker :placeholder="translateText('label.due_date')" @cleared="clearDueDate()" v-bind:clear-button="true" v-model="dueDate" format="dd - MM - yyyy" :value="dueDate"></datepicker>
                     <calendar-icon fill="middle-fill"></calendar-icon>
                 </div>
             </div>
-            <dropdown ref="phases" :selectedValue="selectPhase" v-if="projectPhases.items && projectPhases.items.length" v-bind:title="'Phase'" item="milestone" filter="phase" :options="projectPhasesForSelect"></dropdown>
-            <dropdown ref="statuses" :selectedValue="selectStatus" v-if="!boardView" title="Status" :options="workPackageStatusesForMilestone"></dropdown>
-            <dropdown ref="responsibles" :selectedValue="selectResponsible" v-bind:title="'Responsible'" item="phase" filter="responsible" :options="projectUsersForSelect"></dropdown>
+            <select-field
+                    v-if="projectPhases.items && projectPhases.items.length"
+                    v-bind:title="'Phase'"
+                    v-bind:options="projectPhasesForSelect"
+                    v-model="phaseModel"
+                    v-bind:currentOption="phaseModel" />
+            <select-field
+                    v-if="!boardView"
+                    v-bind:title="translateText('message.status')"
+                    v-bind:options="workPackageStatusesForMilestone"
+                    v-model="statusModel"
+                    v-bind:currentOption="statusModel" />
+            <select-field
+                    v-bind:title="translateText('label.responsible')"
+                    v-bind:options="projectUsersForSelect"
+                    v-model="responsibleModel"
+                    v-bind:currentOption="responsibleModel" />
             <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>
     </div>
@@ -22,6 +35,7 @@ import Dropdown from '../Dropdown2';
 import {mapActions, mapGetters} from 'vuex';
 import datepicker from '../_form-components/Datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
+import SelectField from '../../_common/_form-components/SelectField';
 
 export default {
     props: ['clearAllFilters', 'selectStatus', 'selectResponsible', 'selectPhase', 'selectDueDate'],
@@ -36,6 +50,7 @@ export default {
         Dropdown,
         datepicker,
         CalendarIcon,
+        SelectField,
     },
     computed: {
         ...mapGetters({
@@ -56,7 +71,9 @@ export default {
         clearFilters: function() {
             this.clearDueDate();
             this.$refs.phases.resetCustomTitle();
-            this.$refs.statuses.resetCustomTitle();
+            this.statusModel = null;
+            this.phaseModel = null;
+            this.responsibleModel = null;
             this.$refs.responsibles.resetCustomTitle();
             this.clearAllFilters(true);
         },
@@ -64,12 +81,36 @@ export default {
     data() {
         return {
             dueDate: '',
+            statusModel: null,
+            responsibleModel: null,
+            phaseModel: null,
         };
     },
     watch: {
         dueDate: function(value) {
             this.dueDate = value;
             this.selectDueDate(value);
+        },
+        statusModel: function(value) {
+            if (this.statusModel != null) {
+                this.selectStatus(value.key);
+            }else {
+                this.selectStatus(null);
+            }
+        },
+        responsibleModel: function(value) {
+            if (this.responsibleModel != null) {
+                this.selectResponsible(value.key);
+            }else {
+                this.selectResponsible(null);
+            }
+        },
+        phaseModel: function(value) {
+            if (this.phaseModel != null) {
+                this.selectPhase(value.key);
+            }else {
+                this.selectPhase(null);
+            }
         },
     },
 };

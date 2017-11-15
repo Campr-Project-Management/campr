@@ -5,11 +5,14 @@
             <member-search ref="responsibles" v-model="responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
             <dropdown ref="categories" v-bind:title="translateText('message.category')" v-bind:options="todoCategoriesForSelect" :selectedValue="selectedCategory"></dropdown>
             <div class="input-holder">
-                <label class="active">{{ translateText('label.due_date') }}</label>
-                <datepicker v-model="dueDate" format="dd-MM-yyyy" v-bind:clear-button="true" @cleared="clearDate()" />
+                <datepicker :placeholder="translateText('label.due_date')" v-model="dueDate" format="dd-MM-yyyy" v-bind:clear-button="true" @cleared="clearDate()" />
                 <calendar-icon fill="middle-fill"/>
             </div>
-            <dropdown ref="statuses" v-bind:title="translateText('message.status')" v-bind:options="todoStatusesForSelect" :selectedValue="selectedStatus"></dropdown>
+            <select-field
+                    v-bind:title="translateText('message.status')"
+                    v-bind:options="todoStatusesForSelect"
+                    v-model="statusModel"
+                    v-bind:currentOption="statusModel" />
             <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>
     </div>
@@ -20,6 +23,7 @@ import Dropdown from '../../_common/Dropdown';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import datepicker from '../_form-components/Datepicker';
 import MemberSearch from '../../_common/MemberSearch';
+import SelectField from '../../_common/_form-components/SelectField';
 import {mapGetters, mapActions} from 'vuex';
 import moment from 'moment';
 
@@ -30,6 +34,7 @@ export default {
         CalendarIcon,
         datepicker,
         MemberSearch,
+        SelectField,
     },
     computed: {
         ...mapGetters({
@@ -47,6 +52,7 @@ export default {
             'getTodoCategories',
         ]),
         selectedStatus: function(value) {
+            console.log('statusss', value);
             this.updateFilters('status', value);
         },
         selectedCategory: function(value) {
@@ -61,7 +67,7 @@ export default {
         clearFilters: function() {
             this.updateFilters('clear', true);
             this.clearDate();
-            this.$refs.statuses.resetCustomTitle();
+            this.statusModel = null;
             this.$refs.categories.resetCustomTitle();
             this.$refs.responsibles.clearValue();
         },
@@ -74,6 +80,15 @@ export default {
             let date = value ? moment(value).format('YYYY-MM-DD') : null;
             this.updateFilters('dueDate', date);
         },
+        statusModel: function(value) {
+            if (this.statusModel != null) {
+                console.log('statusss222', value.key);
+                this.updateFilters('status', value.key);
+            }else {
+                console.log('statusss222', null);
+                this.updateFilters('status', null);
+            }
+        },
     },
     data() {
         return {
@@ -81,6 +96,7 @@ export default {
             status: [],
             responsibility: null,
             dueDate: null,
+            statusModel: null,
         };
     },
 };
