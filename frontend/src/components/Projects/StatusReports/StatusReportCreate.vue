@@ -214,20 +214,20 @@
 
                 <hr class="double">
 
-                <div class="row statuses">
+                <div class="row statuses min-status">
                     <div class="col-md-4">
                         <div class="status" v-if="progresses.project_progress">
-                            <circle-chart :percentage="progresses.project_progress.value"  width="320" height="320" v-bind:title="translateText('message.overall_progress')" class="left dark-chart medium-chart" v-bind:class="progresses.project_progress.class"></circle-chart>
+                            <circle-chart :percentage="progresses.project_progress.value"  width="170" height="170" v-bind:title="translateText('message.overall_progress')" class="left dark-chart medium-chart center-content" v-bind:class="progresses.project_progress.class"></circle-chart>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="status" v-if="progresses.task_progress">
-                            <circle-chart v-bind:percentage="progresses.task_progress.value" width="320" height="320" v-bind:title="translateText('message.task_progress')" class="left"></circle-chart>
+                            <circle-chart v-bind:percentage="progresses.task_progress.value" width="170" height="170" v-bind:title="translateText('message.task_progress')" class="left center-content"></circle-chart>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="status" v-if="progresses.cost_progress">
-                            <circle-chart :percentage="progresses.cost_progress.value" width="320" height="320" v-bind:title="translateText('message.costs_progress')" class="left"></circle-chart>
+                            <circle-chart :percentage="progresses.cost_progress.value" width="170" height="170" v-bind:title="translateText('message.costs_progress')" class="left center-content"></circle-chart>
                         </div>
                     </div>
                 </div>
@@ -1180,5 +1180,15 @@ function renderTooltip(item) {
         min-width: 10%;
         max-width: 90%;
         display: inline-table;
+    }
+
+    .center-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .min-status {
+        min-width: 716px;
     }
 </style>
