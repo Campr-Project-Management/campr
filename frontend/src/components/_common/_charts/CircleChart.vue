@@ -32,6 +32,11 @@ export default {
                 return 2;
             },
         },
+        bgStrokeColor: {
+            default() {
+                return '#232D4B';
+            },
+        },
     },
     methods: {
         init() {
@@ -65,7 +70,7 @@ export default {
                 .datum({endAngle: 0})
                 .attr('fill', 'transparent')
                 .attr('stroke-width', 1)
-                .attr('stroke', '#232D4B')
+                .attr('stroke', this.bgStrokeColor)
                 .attr('d', d => arc(d))
             ;
 
