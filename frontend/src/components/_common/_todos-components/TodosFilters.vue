@@ -9,10 +9,10 @@
                 <calendar-icon fill="middle-fill"/>
             </div>
             <select-field
-                    v-bind:title="translateText('message.status')"
-                    v-bind:options="todoStatusesForSelect"
-                    v-model="statusModel"
-                    v-bind:currentOption="statusModel" />
+                v-bind:title="translateText('message.status')"
+                v-bind:options="todoStatusesForSelect"
+                v-model="statusModel"
+                v-bind:currentOption="statusModel" />
             <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>
     </div>
@@ -82,7 +82,7 @@ export default {
         statusModel: function(value) {
             if (this.statusModel != null) {
                 this.updateFilters('status', value.key);
-            }else {
+            } else {
                 this.updateFilters('status', null);
             }
         },
