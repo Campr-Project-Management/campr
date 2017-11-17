@@ -765,22 +765,29 @@ export default {
                 hAxis: {
                     gridlines: {
                         count: 5,
+                        zeroLineColor: '#CCCCCC',
+                        color: '#CCCCCC',
                     },
                     minValue: 0,
                     maxValue: 4,
                     textStyle: {
                         color: '#D8DAE5',
                     },
+                    baselineColor: '#CCCCCC',
                 },
                 vAxis: {
                     gridlines: {
                         count: 5,
+                        zeroLineColor: '#CCCCCC',
+                        color: '#CCCCCC',
+                        drawBorder: false,
                     },
                     minValue: -2,
                     maxValue: 2,
                     textStyle: {
                         color: '#D8DAE5',
                     },
+                    baselineColor: '#CCCCCC',
                 },
                 width: '100%',
                 height: 350,
