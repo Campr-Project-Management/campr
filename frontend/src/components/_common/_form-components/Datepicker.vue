@@ -16,12 +16,12 @@
             <header>
                 <span
                         @click="previousMonth"
-                        class="prev_custom"
+                        class="prev_custom no-select"
                         v-bind:class="{ 'disabled' : previousMonthDisabled(currDate) }">&lt;</span>
                 <span @click="showMonthCalendar" class="up">{{ currYear }} <br> {{ currMonthName }}</span>
                 <span
                         @click="nextMonth"
-                        class="next_custom"
+                        class="next_custom no-select"
                         v-bind:class="{ 'disabled' : nextMonthDisabled(currDate) }">&gt;</span>
             </header>
             <span class="cell day-header" v-for="d in daysOfWeek">{{ d }}</span>
@@ -38,12 +38,12 @@
             <header>
                 <span
                         @click="previousYear"
-                        class="prev_custom"
+                        class="prev_custom no-select"
                         v-bind:class="{ 'disabled' : previousYearDisabled(currDate) }">&lt;</span>
                 <span @click="showYearCalendar" class="up">{{ getYear() }}</span>
                 <span
                         @click="nextYear"
-                        class="next_custom"
+                        class="next_custom no-select"
                         v-bind:class="{ 'disabled' : nextYearDisabled(currDate) }">&gt;</span>
             </header>
             <span class="cell month"
@@ -56,10 +56,10 @@
         <!-- Year View -->
         <div class="calendar" v-show="showYearView" v-bind:style="calendarStyleSecondary">
             <header>
-                <span @click="previousDecade" class="prev_custom"
+                <span @click="previousDecade" class="prev_custom no-select"
                       v-bind:class="{ 'disabled' : previousDecadeDisabled(currDate) }">&lt;</span>
                 <span>{{ getDecade() }}</span>
-                <span @click="nextDecade" class="next_custom"
+                <span @click="nextDecade" class="next_custom no-select"
                       v-bind:class="{ 'disabled' : nextMonthDisabled(currDate) }">&gt;</span>
             </header>
             <span
@@ -86,7 +86,7 @@
 
                 let windowInnerHeight = window.innerHeight;
 
-                if (windowInnerHeight - currentElementOffset < 290) {
+                if (windowInnerHeight - currentElementOffset < 350) {
                     $(this.$el).find('.calendar').addClass('bottom-up');
                 }else{
                     $(this.$el).find('.calendar').removeClass('bottom-up');
@@ -156,6 +156,7 @@
                          position: relative;
                          font-weight: 100;
                          padding-right: 22px;
+                         cursor: pointer;
                     }
                     &.prev_custom{
                         width: 14.28%;
@@ -164,18 +165,19 @@
                         position: relative;
                         font-weight: 100;
                         padding-left: 22px;
+                        cursor: pointer;
                     }
                  }
             }
             .cell{
                 color: #282114;
                 border-radius: 4px;
-                height: 25px;
-                width: 37px;;
+                height: 24px;
+                width: 35px;;
                 line-height: 25px;
                 &.day-header{
                     font-weight: 600;
-                    width: 32px;
+                    width: 30px;
                 }
                 &.month, &.year{
                     width: 33.333%;
