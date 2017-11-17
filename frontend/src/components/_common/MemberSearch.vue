@@ -15,22 +15,20 @@
         </div>
         <i class="member-search-clear-button" @click="clearValue">×</i>
         <div class="results team" v-show="hasItems">
-            <vue-scrollbar class="scroll-list">
-                <div class="members">
-                    <div class="member flex flex-v-center" v-for="item in items">
-                        <div class="checkbox-input clearfix" :class="{'inactive': !item.checked}">
-                            <input v-if="singleSelect" :id="item.id"  type="radio" :name="item.userFullName" :checked="item.checked" @click="toogleRadioButton(item)">
-                            <input v-else="singleSelect" :id="item.id"  type="checkbox" :name="item.userFullName" :checked="item.checked" @click="toggleActivation(item)">
-                            <label :for="item.id"></label>
-                        </div>
-                        <div class="avatar" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
-                        <div class="info">
-                            <p class="title">{{ item.userFullName }}</p>
-                            <p class="description"><span v-for="roleName in item.projectRoleNames">{{ translateText(roleName) }}, </span></p>
-                        </div>
+            <div class="members">
+                <div class="member flex flex-v-center" v-for="item in items">
+                    <div class="checkbox-input clearfix" :class="{'inactive': !item.checked}">
+                        <input v-if="singleSelect" :id="item.id"  type="radio" :name="item.userFullName" :checked="item.checked" @click="toogleRadioButton(item)">
+                        <input v-else="singleSelect" :id="item.id"  type="checkbox" :name="item.userFullName" :checked="item.checked" @click="toggleActivation(item)">
+                        <label :for="item.id"></label>
+                    </div>
+                    <div class="avatar" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
+                    <div class="info">
+                        <p class="title">{{ item.userFullName }}</p>
+                        <p class="description"><span v-for="roleName in item.projectRoleNames">{{ translateText(roleName) }}, </span></p>
                     </div>
                 </div>
-            </vue-scrollbar>
+            </div>
             <div class="footer">
                 <p v-show="!singleSelect">Selected: <span v-for="item in items"><span v-if="item.checked">{{ item.userFullName }}, </span></span></p>
                 <div class="flex flex-space-between">
