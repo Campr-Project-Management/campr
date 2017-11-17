@@ -7,8 +7,7 @@
                 <div class="dropdowns">
                     <div class="flex flex-space-between dates">
                         <div class="input-holder">
-                            <label class="active">{{ translateText('label.date') }}</label>
-                            <datepicker @cleared="clearDate()" v-bind:clear-button="true" v-model="date" format="dd-MM-yyyy" :value="date"></datepicker>
+                            <datepicker :placeholder="translateText('label.date')" @cleared="clearDate()" v-bind:clear-button="true" v-model="date" format="dd-MM-yyyy" :value="date"></datepicker>
                             <calendar-icon fill="middle-fill"/>
                         </div>
                     </div>
