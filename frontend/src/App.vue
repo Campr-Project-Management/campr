@@ -161,6 +161,15 @@ export default {
     background: $dangerColor !important;
   }
 
+  .no-select{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
   #app {
     font-family: 'Poppins', sans-serif;
     color: #D8DAE5;
