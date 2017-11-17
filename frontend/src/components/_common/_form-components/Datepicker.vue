@@ -12,16 +12,16 @@
                 readonly>
         <i class="datepicker-clear-button" v-if="clearButton" @click="clearDate()">&times;</i>
         <!-- Day View -->
-        <div class="calendar" v-show="showDayView" v-bind:style="calendarStyle">
+        <div class="calendar day-view" v-show="showDayView" v-bind:style="calendarStyle">
             <header>
                 <span
                         @click="previousMonth"
-                        class="prev"
+                        class="prev_custom"
                         v-bind:class="{ 'disabled' : previousMonthDisabled(currDate) }">&lt;</span>
-                <span @click="showMonthCalendar" class="up">{{ currMonthName }} {{ currYear }}</span>
+                <span @click="showMonthCalendar" class="up">{{ currYear }} <br> {{ currMonthName }}</span>
                 <span
                         @click="nextMonth"
-                        class="next"
+                        class="next_custom"
                         v-bind:class="{ 'disabled' : nextMonthDisabled(currDate) }">&gt;</span>
             </header>
             <span class="cell day-header" v-for="d in daysOfWeek">{{ d }}</span>
@@ -38,12 +38,12 @@
             <header>
                 <span
                         @click="previousYear"
-                        class="prev"
+                        class="prev_custom"
                         v-bind:class="{ 'disabled' : previousYearDisabled(currDate) }">&lt;</span>
                 <span @click="showYearCalendar" class="up">{{ getYear() }}</span>
                 <span
                         @click="nextYear"
-                        class="next"
+                        class="next_custom"
                         v-bind:class="{ 'disabled' : nextYearDisabled(currDate) }">&gt;</span>
             </header>
             <span class="cell month"
@@ -56,10 +56,10 @@
         <!-- Year View -->
         <div class="calendar" v-show="showYearView" v-bind:style="calendarStyleSecondary">
             <header>
-                <span @click="previousDecade" class="prev"
+                <span @click="previousDecade" class="prev_custom"
                       v-bind:class="{ 'disabled' : previousDecadeDisabled(currDate) }">&lt;</span>
                 <span>{{ getDecade() }}</span>
-                <span @click="nextDecade" class="next"
+                <span @click="nextDecade" class="next_custom"
                       v-bind:class="{ 'disabled' : nextMonthDisabled(currDate) }">&gt;</span>
             </header>
             <span
@@ -101,32 +101,61 @@
         .calendar{
             top: 40px;
             background: white;
-            padding: 25px;
+            padding: 15px;
             &.bottom-up{
                 top: -280px;
+            }
+            &.day-view{
+                header{
+                    .up{
+                        line-height: 20px;
+                        text-align: center;
+                    }
+                }
             }
             header{
                 overflow: hidden;
                 background: #009F7E;
-                margin: -25px;
+                margin: -15px;
                 margin-bottom: 10px;
                 >span{
-                     display: block;
-                     padding: 34px 0px;
-                     font-size: 16px;
-                     font-weight: 600;
-                     &:hover{
-                        background: transparent;
-                      }
+                    display: block;
+                    padding: 34px 0px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    &:hover{
+                       background: transparent;
+                    }
+                    &.next_custom{
+                         width: 14.28%;
+                         float: right;
+                         font-size: 44px;
+                         position: relative;
+                         font-weight: 100;
+                         padding-right: 22px;
+                    }
+                    &.prev_custom{
+                        width: 14.28%;
+                        float: left;
+                        font-size: 44px;
+                        position: relative;
+                        font-weight: 100;
+                        padding-left: 22px;
+                    }
                  }
             }
             .cell{
                 color: #282114;
                 border-radius: 4px;
-                height: 29px;
-                line-height: 29px;
+                height: 25px;
+                width: 37px;;
+                line-height: 25px;
                 &.day-header{
                     font-weight: 600;
+                    width: 32px;
+                }
+                &.month, &.year{
+                    width: 33.333%;
                 }
                 &.selected{
                     background: #FF0055;
