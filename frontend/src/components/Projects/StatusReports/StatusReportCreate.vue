@@ -217,17 +217,17 @@
                 <div class="row statuses min-status">
                     <div class="col-md-4">
                         <div class="status" v-if="progresses.project_progress">
-                            <circle-chart :percentage="progresses.project_progress.value"  width="170" height="170" v-bind:title="translateText('message.overall_progress')" class="left dark-chart medium-chart center-content" v-bind:class="progresses.project_progress.class"></circle-chart>
+                            <circle-chart :bgStrokeColor="options.backgroundColor" :percentage="progresses.project_progress.value"  width="165" height="165" v-bind:title="translateText('message.overall_progress')" class="left dark-chart medium-chart center-content" v-bind:class="progresses.project_progress.class"></circle-chart>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="status" v-if="progresses.task_progress">
-                            <circle-chart v-bind:percentage="progresses.task_progress.value" width="170" height="170" v-bind:title="translateText('message.task_progress')" class="left center-content"></circle-chart>
+                            <circle-chart :bgStrokeColor="options.backgroundColor" v-bind:percentage="progresses.task_progress.value" width="165" height="165" v-bind:title="translateText('message.task_progress')" class="left center-content"></circle-chart>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="status" v-if="progresses.cost_progress">
-                            <circle-chart :percentage="progresses.cost_progress.value" width="170" height="170" v-bind:title="translateText('message.costs_progress')" class="left center-content"></circle-chart>
+                            <circle-chart :bgStrokeColor="options.backgroundColor" :percentage="progresses.cost_progress.value" width="165" height="165" v-bind:title="translateText('message.costs_progress')" class="left center-content"></circle-chart>
                         </div>
                     </div>
                 </div>
@@ -1011,7 +1011,6 @@ function renderTooltip(item) {
         .status {
             max-width: 400px;
             margin:20px auto 0;
-            background-color: $darkColor;
             padding: 25px 20px;
 
             .chart {
