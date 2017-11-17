@@ -8,8 +8,7 @@
             <dropdown ref="categories" :selectedValue="selectedCategory" :title="translateText('message.category')"
                       :options="meetingCategoriesForSelect" item="meetings" filter="category"></dropdown>
             <div class="input-holder right">
-                <label class="active">{{ translateText('label.date') }}</label>
-                <datepicker @cleared="clearDate()" v-bind:clear-button="true" v-model="date" format="dd-MM-yyyy"
+                <datepicker @cleared="clearDate()" v-bind:clear-button="true" v-model="date" format="dd-MM-yyyy" :placeholder="translateText('label.date')"
                             :value="date"></datepicker>
                 <calendar-icon fill="middle-fill"/>
             </div>
