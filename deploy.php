@@ -179,6 +179,7 @@ task('project:supervisor:restart', function () {
 });
 task('project:apache:restart', function () {
     run('sudo service apache2 restart');
+    run('if service --status-all | grep "php7.1-fpm"; then service php7.1-fpm restart; fi');
 });
 task('project:front-static', function () {
     run('cd {{release_path}} && bin/front-static');
