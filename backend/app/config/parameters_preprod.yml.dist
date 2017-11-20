@@ -19,7 +19,7 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    domain: qa.campr.biz
+    domain: campr.biz
 
     #redis
     redis_host: localhost
