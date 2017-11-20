@@ -290,6 +290,6 @@ task('deploy', [
 ]);
 
 task('deploy:failed', [
-    //'deploy:unlock',
+    'deploy:unlock',
     'hivebot:deploy-failed',
 ])->setPrivate();
