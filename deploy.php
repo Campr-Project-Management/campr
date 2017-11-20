@@ -77,8 +77,8 @@ set('assets_backup_path', function () {
 server('prod', '94.130.224.105')
     ->user('root')
     ->stage('prod')
+    ->pemFile(null)
     ->set('pemFile', '~/.ssh/id_rsa')
-    ->set('pemFile', null)
     ->set('env', 'prod')
     ->set('branch', 'production')
     ->set('domain', 'campr.biz')
@@ -290,6 +290,6 @@ task('deploy', [
 ]);
 
 task('deploy:failed', [
-    'deploy:unlock',
+    //'deploy:unlock',
     'hivebot:deploy-failed',
 ])->setPrivate();
