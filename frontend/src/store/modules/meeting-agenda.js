@@ -40,8 +40,14 @@ const actions = {
                 Routing.generate('app_api_meeting_agendas_create', {'id': data.id}),
                 data
             ).then((response) => {
-                let meetingAgenda = response.data;
-                commit(types.ADD_MEETING_AGENDA, {meetingAgenda});
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    let meetingAgenda = response.data;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    commit(types.ADD_MEETING_AGENDA, {meetingAgenda});
+                }
             }, (response) => {
             });
     },

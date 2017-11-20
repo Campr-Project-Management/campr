@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
 
+export const NOTE_VALIDATION_ORIGIN = 'note';
+
 const state = {};
 
 const getters = {};
@@ -17,8 +19,16 @@ const actions = {
                 Routing.generate('app_api_meeting_notes_create', {'id': data.id}),
                 data
             ).then((response) => {
-                let note = response.data;
-                commit(types.ADD_MEETING_NOTE, {note});
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    commit(types.SET_VALIDATION_ORIGIN, {NOTE_VALIDATION_ORIGIN});
+                } else {
+                    let note = response.data;
+                    commit(types.ADD_MEETING_NOTE, {note});
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    commit(types.SET_VALIDATION_ORIGIN, '');
+                }
             }, (response) => {
             });
     },
