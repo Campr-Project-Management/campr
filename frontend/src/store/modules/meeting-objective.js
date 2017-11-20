@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
 
+export const MEETING_OBJECTIVE_VALIDATION_ORIGIN = 'meeting-objective';
+
 const state = {};
 
 const getters = {};
@@ -17,8 +19,17 @@ const actions = {
                 Routing.generate('app_api_meeting_objectives_create', {'id': data.id}),
                 data
             ).then((response) => {
-                let meetingObjective = response.data;
-                commit(types.ADD_MEETING_OBJECTIVE, {meetingObjective});
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    alert(MEETING_OBJECTIVE_VALIDATION_ORIGIN);
+                    commit(types.SET_VALIDATION_ORIGIN, {MEETING_OBJECTIVE_VALIDATION_ORIGIN});
+                } else {
+                    let meetingObjective = response.data;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    commit(types.ADD_MEETING_OBJECTIVE, {meetingObjective});
+                    commit(types.SET_VALIDATION_ORIGIN, '');
+                }
             }, (response) => {
             });
     },
