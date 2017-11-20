@@ -133,7 +133,7 @@ export default {
             formData.append('name', firstStepData.projectName);
             formData.append('number', firstStepData.projectNumber);
 
-            if(firstStepData.selectedCompany) {
+            if (firstStepData.selectedCompany) {
                 formData.append('company', firstStepData.selectedCompany.key);
             }
 
@@ -147,11 +147,11 @@ export default {
                 formData.append('programme', firstStepData.selectedProgramme.key);
             }
 
-            if(secondStepData.selectedCategory) {
+            if (secondStepData.selectedCategory) {
                 formData.append('projectCategory', secondStepData.selectedCategory.key);
             }
 
-            if(secondStepData.selectedScope) {
+            if (secondStepData.selectedScope) {
                 formData.append('projectScope', secondStepData.selectedScope.key);
             }
 
