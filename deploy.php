@@ -86,7 +86,7 @@ server('prod', '94.130.224.105')
     ->set('mysql_password', 'campr')
     ->set('mysql_database', 'campr')
 ;
-server('qa', '138.201.187.161')
+server('preprod', '138.201.187.161')
     ->user('root')
     ->stage('preprod')
     ->pemFile(null)
