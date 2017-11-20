@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+killall -9 mailcatcher > /dev/null 2>&1 || true
+
+/usr/local/bin/mailcatcher "$@"
