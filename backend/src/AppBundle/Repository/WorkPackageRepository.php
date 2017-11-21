@@ -578,6 +578,10 @@ class WorkPackageRepository extends BaseRepository
 
         if (isset($filters['orderBy']) && isset($filters['order'])) {
             $qb->orderBy('wp.'.$filters['orderBy'], $filters['order']);
+
+            if (isset($filters['excludeNullValuesFromOrderBy']) && $filters['excludeNullValuesFromOrderBy'] === true) {
+                $qb->andWhere('wp.'.$filters['orderBy'] . ' is NOT NULL');
+            }
         }
 
         if (isset($filters['pageSize']) && isset($filters['page'])) {
@@ -592,7 +596,7 @@ class WorkPackageRepository extends BaseRepository
     public function getScheduleForProjectSchedule(Project $project)
     {
         $baseStart = $this
-            ->getQueryByProjectAndFilters($project, ['orderBy' => 'scheduledStartAt', 'order' => 'ASC'])
+            ->getQueryByProjectAndFilters($project, ['orderBy' => 'scheduledStartAt', 'order' => 'ASC', 'excludeNullValuesFromOrderBy' => true])
             ->setMaxResults(1)
             ->getResult()
         ;
@@ -602,7 +606,7 @@ class WorkPackageRepository extends BaseRepository
             ->getResult()
         ;
         $forecastStart = $this
-            ->getQueryByProjectAndFilters($project, ['orderBy' => 'forecastStartAt', 'order' => 'ASC'])
+            ->getQueryByProjectAndFilters($project, ['orderBy' => 'forecastStartAt', 'order' => 'ASC', 'excludeNullValuesFromOrderBy' => true])
             ->setMaxResults(1)
             ->getResult()
         ;
@@ -612,7 +616,7 @@ class WorkPackageRepository extends BaseRepository
             ->getResult()
         ;
         $actualStart = $this
-            ->getQueryByProjectAndFilters($project, ['orderBy' => 'actualStartAt', 'order' => 'ASC'])
+            ->getQueryByProjectAndFilters($project, ['orderBy' => 'actualStartAt', 'order' => 'ASC', 'excludeNullValuesFromOrderBy' => true])
             ->setMaxResults(1)
             ->getResult()
         ;
