@@ -114,6 +114,10 @@
                     </ul>
                     <div class="form-group">
                         <input-field type="text" v-bind:label="translateText('message.new_objective')" v-model="objectiveDescription" :content="objectiveDescription" />
+                        <error
+                            v-if="validationOrigin==MEETING_OBJECTIVE_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
+                            v-for="message in validationMessages.description"
+                            :message="message" />
                     </div>
                     <div class="flex flex-direction-reverse">
                         <a @click="addObjective()" class="btn-rounded btn-auto">{{ translateText('message.add_new_objective') }}</a>
@@ -174,6 +178,10 @@
                     <hr>
                     <div class="form-group">
                         <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="agenda.topic" v-bind:content="agenda.topic" />
+                        <error
+                            v-if="validationMessages.topic && validationMessages.topic.length"
+                            v-for="message in validationMessages.topic"
+                            :message="message" />
                     </div>
                     <div class="row">
                         <div class="form-group form-group">
@@ -184,12 +192,20 @@
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.start_time') }}</label>
                                     <vue-timepicker v-model="agenda.startTime" hide-clear-button></vue-timepicker>
+                                    <error
+                                        v-if="validationMessages.start && validationMessages.start.length"
+                                        v-for="message in validationMessages.start"
+                                        :message="message" />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.finish_time') }}</label>
                                     <vue-timepicker v-model="agenda.endTime" hide-clear-button></vue-timepicker>
+                                    <error
+                                        v-if="validationMessages.end && validationMessages.end.length"
+                                        v-for="message in validationMessages.end"
+                                        :message="message" />
                                 </div>
                             </div>
                         </div>
@@ -237,12 +253,20 @@
                     </div>
 
                     <input-field type="text" v-bind:label="translateText('placeholder.decision_title')" v-model="decision.title" :content="decision.title" />
+                    <error
+                        v-if="validationOrigin==DECISION_VALIDATION_ORIGIN && validationMessages.title && validationMessages.title.length"
+                        v-for="message in validationMessages.title"
+                        :message="message" />
                     <div class="form-group">
                         <div class="vueditor-holder">
                             <div class="vueditor-header">{{ translateText('placeholder.decision_description') }}</div>
                             <div id="decisionDescription" ref="decisionDescription"></div>
                         </div>
                     </div>
+                    <error
+                        v-if="validationOrigin==DECISION_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
+                        v-for="message in validationMessages.description"
+                        :message="message" />
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
@@ -300,6 +324,10 @@
                     </div>
 
                     <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="todo.title" v-bind:content="todo.title" />
+                    <error
+                        v-if="validationOrigin==TODO_VALIDATION_ORIGIN && validationMessages.title && validationMessages.title.length"
+                        v-for="message in validationMessages.title"
+                        :message="message" />
                     <div class="form-group">
                         <div class="vueditor-holder">
                             <div class="vueditor-header">{{ translateText('placeholder.action') }}</div>
@@ -307,6 +335,10 @@
                             </div>
                         </div>
                     </div>
+                    <error
+                        v-if="validationOrigin==TODO_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
+                        v-for="message in validationMessages.description"
+                        :message="message" />
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
@@ -371,6 +403,10 @@
                     </div>
 
                     <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="note.title" v-bind:content="note.title" />
+                    <error
+                        v-if="validationOrigin==NOTE_VALIDATION_ORIGIN && validationMessages.title && validationMessages.title.length"
+                        v-for="message in validationMessages.title"
+                        :message="message" />
                     <div class="form-group">
                         <div class="vueditor-holder">
                             <div class="vueditor-header">{{ translateText('placeholder.info_description') }}</div>
@@ -378,6 +414,10 @@
                             </div>
                         </div>
                     </div>
+                    <error
+                        v-if="validationOrigin==NOTE_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
+                        v-for="message in validationMessages.description"
+                        :message="message" />
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
@@ -469,6 +509,7 @@ import MeetingModals from './MeetingModals';
 import MeetingParticipants from './MeetingParticipants';
 import {createEditor} from 'vueditor';
 import vueditorConfig from '../../_common/vueditorConfig';
+import Error from '../../_common/_messages/Error.vue';
 
 export default {
     components: {
@@ -486,6 +527,7 @@ export default {
         MultiSelectField,
         MeetingModals,
         MeetingParticipants,
+        Error,
     },
     methods: {
         ...mapActions([
@@ -714,6 +756,8 @@ export default {
             meetingAgendas: 'meetingAgendas',
             distributionLists: 'distributionLists',
             meetingParticipants: 'meetingParticipants',
+            validationMessages: 'validationMessages',
+            validationOrigin: 'validationOrigin',
         }),
         agendasPerPage: function() {
             return this.meetingAgendas.pageSize;
