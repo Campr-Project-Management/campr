@@ -38,6 +38,15 @@ services:
             - "@twig"
             - "%emails%"
 
+    app.service.automailer.plugin.redis:
+        class: AppBundle\Services\AutomailerRedisPlugin
+        public: false
+        arguments:
+            - '%kernel.environment%'
+            - '@redis.client'
+        tags:
+            - { name: 'swiftmailer.default.plugin' }
+
     app.service.user:
         class: AppBundle\Services\UserService
         parent: app.service.base_client
