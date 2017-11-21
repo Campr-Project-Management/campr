@@ -24,16 +24,6 @@ services:
             - { name: validator.constraint_validator }
 
 ### LISTENERS ###
-    main.listener.automailer:
-        class: MainBundle\EventListener\AutomailerListener
-        arguments:
-            - '%kernel.environment%'
-            - '%kernel.team_slug%'
-            - '@redis.client'
-        tags:
-            - { name: doctrine.event_listener, event: onFlush }
-            - { name: doctrine.event_listener, event: postFlush }
-
     main.listener.team:
         class: MainBundle\EventListener\TeamListener
         tags:
