@@ -277,7 +277,7 @@ task('deploy', [
     'deploy:writable',
     'deploy:symlink',
     'project:front-static',
-    'project:build:frontend',
+//    'project:build:frontend',
     'deploy:cache:warmup',
     'database:cleanup',
     'database:migrate',
