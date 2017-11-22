@@ -221,9 +221,11 @@ task('server:provision', function () {
         writeln('<info>Skipping...</info>');
     }
 });
-task('project:build:frontend', function () {
-    run('cd {{release_path}}/frontend && npm install && npm run build');
-});
+// disabled
+// @TODO: build frontend in CI
+//task('project:build:frontend', function () {
+//    run('cd {{release_path}}/frontend && npm install && npm run build');
+//});
 task('hivebot:deploy-whois', function () {
     set('localUser', sprintf(
         '%s',
@@ -275,7 +277,7 @@ task('deploy', [
     'deploy:writable',
     'deploy:symlink',
     'project:front-static',
-    'project:build:frontend',
+//    'project:build:frontend',
     'deploy:cache:warmup',
     'database:cleanup',
     'database:migrate',
