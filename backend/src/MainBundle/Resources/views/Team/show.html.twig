@@ -24,8 +24,10 @@
                     <ul class="thumb-list">
                         <li>
                             <div class="row justify-content-between align-items-center">
-                                <div class="col-md-auto">                                    
-                                    <div class="team-img" style="background-image: url({{ vich_uploader_asset(team, 'logoFile') }})"></div>
+                                <div class="col-md-auto">
+                                    {% if team.logo %}
+                                        <div class="team-img" style="background-image: url("{{ vich_uploader_asset(team, 'logoFile') }}")"></div>
+                                    {% endif %}
                                     <div class="team-info">
                                         <div class="team-name">{{ team.name }}</div>
                                     </div>
