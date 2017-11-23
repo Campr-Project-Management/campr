@@ -295,6 +295,7 @@ export default {
                                 .then(
                                     (response) => {
                                         gantt.message(this.translate('message.saved'));
+                                        this.initGanttMap();
                                     },
                                     (response) => {
                                         if (response.status === 202) {
@@ -307,6 +308,7 @@ export default {
                                                 'message': this.translate('message.unable_to_save'),
                                             });
                                         }
+                                        this.initGanttMap();
                                     }
                                 )
                             ;
@@ -357,7 +359,7 @@ export default {
         ganttStartDate() {
             return this
                 .ganttData
-                .map(item => item.actualStartAt || item.forecastStartAt || item.scheduledStartAt)
+                .map(item => item.actualStartAt || item.scheduledStartAt || item.forecastStartAt)
                 .filter(item => item !== null)
                 .reduce((a, b) => a < b ? a : b)
             ;
@@ -365,7 +367,7 @@ export default {
         ganttEndDate() {
             return this
                 .ganttData
-                .map(item => item.actualFinishAt || item.forecastFinishAt || item.scheduledFinishAt)
+                .map(item => item.actualFinishAt || item.scheduledFinishAt || item.forecastFinishAt)
                 .filter(item => item !== null)
                 .reduce((a, b) => a > b ? a : b)
             ;
@@ -410,8 +412,8 @@ export default {
                         type: ganttType2WorkPackageType[item.type],
                     };
 
-                    let start = item.actualStartAt || item.forecastStartAt || item.scheduledStartAt;
-                    let end = item.actualFinishAt || item.forecastFinishAt || item.scheduledFinishAt;
+                    let start = item.actualStartAt || item.scheduledStartAt || item.forecastStartAt;
+                    let end = item.actualFinishAt || item.scheduledFinishAt || item.forecastFinishAt;
 
                     if (start && end) {
                         let dtStart = new Date(start);
