@@ -397,8 +397,8 @@ export default {
                         id: item.id,
                         group: 0,
                         content: item.name,
-                        start: new Date(item.scheduledStartAt),
-                        end: new Date(item.scheduledFinishAt),
+                        start: new Date(item.actualStartAt || item.scheduledStartAt || item.forecastStartAt),
+                        end: new Date(item.actualFinishAt || item.scheduledFinishAt || item.forecastFinishAt),
                         value: item.workPackageStatus,
                         title: renderTooltip(item, 'phase'),
                     };
@@ -411,12 +411,13 @@ export default {
                         id: item.id,
                         group: 1,
                         content: item.name,
-                        start: new Date(item.forecastFinishAt),
+                        start: new Date(item.actualFinishAt || item.scheduledFinishAt || item.forecastFinishAt),
                         value: item.workPackageStatus,
                         title: renderTooltip(item, 'milestone'),
                     };
                 }));
             }
+
             return items;
         },
     },
