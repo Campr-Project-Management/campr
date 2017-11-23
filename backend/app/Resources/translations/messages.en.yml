@@ -136,6 +136,7 @@ message:
     print_meeting: Print Meeting
     edit_meeting: Edit Meeting
     view_meeting: View Meeting
+    view_decision: View Decision
     less: less
     more: more
     event: Event
