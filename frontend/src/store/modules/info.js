@@ -73,7 +73,6 @@ const actions = {
                         commit(types.SET_VALIDATION_MESSAGES, {messages});
                     } else {
                         const info = response.body;
-                        console.log(info);
                         commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                         commit(types.SET_INFO, info);
                     }
