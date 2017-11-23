@@ -31,6 +31,7 @@ function extractValidationMessages(object) {
 
 const state = {
     validationMessages: {},
+    validationOrigin: '',
 };
 
 const getters = {
@@ -38,6 +39,7 @@ const getters = {
         return state.validationMessages;
     },
     allValidationMessages: state => extractValidationMessages(state.validationMessages),
+    validationOrigin: state => state.validationOrigin,
 };
 
 const actions = {
@@ -49,6 +51,9 @@ const actions = {
 const mutations = {
     [types.SET_VALIDATION_MESSAGES](state, {messages}) {
         state.validationMessages = messages;
+    },
+    [types.SET_VALIDATION_ORIGIN](state, {origin}) {
+        state.validationOrigin = origin;
     },
 };
 
