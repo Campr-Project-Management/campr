@@ -49,7 +49,11 @@
                             <td>{{ team_member.id }}</td>
                             <td class="avatar text-center">
                                 <div class="user-avatar-wrapper">
-                                    <img src="{{ vich_uploader_asset(team_member.user, 'avatarFile') }}">
+                                    {% if team_member.user.avatar %}
+                                        <img src="{{ vich_uploader_asset(team_member.user, 'avatarFile') }}">
+                                    {% else %}
+                                        <img src="{{ team_member.user.gravatar }}">
+                                    {% endif %}
                                 </div>
                             </td>
                             <td>{{ team_member.user.username }}</td>
