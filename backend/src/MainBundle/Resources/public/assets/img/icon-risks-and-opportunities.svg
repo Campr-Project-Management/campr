@@ -1,0 +1,17 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
+	<g>
+		<polyline fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="41.5,41.5 0.5,41.5 0.5,0.5 	"/>
+		<circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="13" cy="29" r="2.7"/>
+		<line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="29.8" y1="14.4" x2="37" y2="5.1"/>
+		<line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="17.3" y1="12.9" x2="25.5" y2="15.8"/>
+		<line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="20.6" x2="12.5" y2="13.5"/>
+		<line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="28.7" y1="27.7" x2="36.5" y2="23.2"/>
+		<line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="15.7" y1="29" x2="23.7" y2="29"/>
+		<line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="37" x2="10.7" y2="30.4"/>
+		<circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="14.8" cy="12.1" r="2.7"/>
+		<circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="28.1" cy="16.5" r="2.7"/>
+		<circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="38.8" cy="3.2" r="2.7"/>
+		<circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="38.8" cy="21.9" r="2.7"/>
+		<circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="26.3" cy="29" r="2.7"/>
+	</g>
+</svg>
