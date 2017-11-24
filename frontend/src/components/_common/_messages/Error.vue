@@ -28,12 +28,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
+    @import '../../../css/_variables';
     .error {
-        border: 1px solid #000000;
-        background: #ff463f;
-        color: #000000;
-        border-radius: 5px;
-        padding: 5px;
-        margin: 10px;
+        background: $dangerColor;
+        color: $blackColor;
+        border-radius: 2px;
+        padding: 10px 15px;
+        margin: 10px 0 0 0;
     }
 </style>
