@@ -58,11 +58,12 @@
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
                                 <input-field :disabled="isEdit" :content="username" v-model="username" type="text" v-bind:label="translateText('placeholder.username')"></input-field>
-                            </div>
-                            <error
+                                <error
                                     v-if="validationMessages.username && validationMessages.username.length"
                                     v-for="message in validationMessages.username"
                                     :message="message" />
+                            </div>
+                            
                             <div class="col-md-6">
                                 <multi-select-field
                                         v-bind:title="translateText('placeholder.role')"
