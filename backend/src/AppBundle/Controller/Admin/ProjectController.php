@@ -447,7 +447,7 @@ class ProjectController extends ApiController
     }
 
     /**
-     * @Route("/import", name="app_admin_project_import")
+     * @Route("/import", name="app_admin_project_import", options={"expose"=true})
      *
      * @Method({"GET", "POST"})
      *
