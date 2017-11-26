@@ -4,23 +4,46 @@
             <h1>{{ translateText('message.gantt_chart') }}</h1>
         </div>
 
-        <input
-            type="button"
-            id="toggle_minimap"
-            value="Toggle minimap"
-            class="btn btn-primary"
-            v-on:click="showMinimap = !showMinimap">
+        <div class="right-sided">
+            <input
+                id="importXmlFile"
+                type="file"
+                name="importXmlFile"
+                style="display: none;"
+                v-on:change="uploadImportTaskFile" />
+
+            <a class="btn-rounded btn-auto btn-empty flex" v-on:click="openFileSelection">
+                <span>{{ translateText('message.import_tasks') }}</span>
+                <upload-icon></upload-icon>
+            </a>
+
+            <a v-if="project && project.id" :href="exportProjectURL" class="btn-rounded btn-auto btn-empty flex" id="export_project_button">
+                {{ translateText('message.export_project') }}
+            </a>
+
+            <input
+                type="button"
+                id="toggle_minimap"
+                value="Toggle minimap"
+                class="btn-rounded btn-auto btn-empty flex"
+                v-on:click="showMinimap = !showMinimap">
+        </div>
 
         <div ref="gantt_chart" id="gantt_chart" class="gantt-chart">
             <p>Loading...</p>
         </div>
 
         <svg id="gantt_map" :class={hidden:!showMinimap}></svg>
+
+        <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved" />
+        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
 </template>
 
 <script>
 import 'dhtmlx-gantt';
+import AlertModal from '../_common/AlertModal';
+import UploadIcon from '../_common/_icons/UploadIcon';
 import {mapActions, mapGetters} from 'vuex';
 import router from '../../router';
 import * as d3 from 'd3';
@@ -30,13 +53,50 @@ const DAY_IN_MILISECONDS = 86400000;
 const MOTNH_IN_SECONDS = 2592000;
 
 export default {
+    components: {
+        AlertModal,
+        UploadIcon,
+    },
     name: 'gantt',
     created() {
+        if (!this.project) {
+            this.getProjectById(this.$route.params.id);
+        }
         this.getGanttData(this.$route.params.id);
     },
     methods: {
-        ...mapActions(['getGanttData']),
+        ...mapActions(['getGanttData', 'getProjectById', 'importTask']),
 
+        openFileSelection: function() {
+            $('#importXmlFile').click();
+        },
+        uploadImportTaskFile: function(e) {
+            let files = e.target.files || e.dataTransfer.files;
+            if (!files.length) {
+                return;
+            }
+            let formData = new FormData();
+            formData.append('file', files[0]);
+
+            this
+                .importTask({
+                    data: formData,
+                    projectId: this.$route.params.id,
+                })
+                .then(
+                    (response) => {
+                        if (response.body && response.body.error && response.body.messages) {
+                            this.showFailed = true;
+                        } else {
+                            this.showSaved = true;
+                        }
+                    },
+                    () => {
+                        this.showFailed = true;
+                    }
+                )
+            ;
+        },
         translateText: function(text) {
             return this.translate(text);
         },
@@ -355,7 +415,10 @@ export default {
         },
     },
     computed: {
-        ...mapGetters(['ganttData']),
+        ...mapGetters(['ganttData', 'localUser', 'project']),
+        exportProjectURL() {
+            return Routing.generate('main_project_xml', {id: this.project.id});
+        },
         ganttStartDate() {
             return this
                 .ganttData
@@ -461,6 +524,8 @@ export default {
     },
     data() {
         return {
+            showSaved: false,
+            showFailed: false,
             showMinimap: true,
             ganttEvents: [],
             svg: null,
@@ -485,11 +550,14 @@ export default {
         position: relative;
     }
 
-    #toggle_minimap {
-        top: 32px;
+    .right-sided {
+        top: 22px;
         right: 10px;
         position: absolute;
-        font-size: 0.75em;
+
+        & .btn-rounded {
+            display: inline-block !important;
+        }
     }
 
     .hidden {

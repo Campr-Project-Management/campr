@@ -1440,7 +1440,7 @@ class ProjectController extends ApiController
      * @param Request $request
      * @param Project $project
      */
-    public function importTaskAction(Request $request, Project $project)
+    public function importTasksAction(Request $request, Project $project)
     {
         $form = $this->createForm(ImportWorkPackageType::class, null, ['csrf_protection' => false, 'method' => $request->getMethod()]);
         $this->processForm(

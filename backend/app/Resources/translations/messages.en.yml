@@ -360,6 +360,7 @@ message:
     label_note: Note':' the Label text color is white so pick a background color that makes it easy to read the white text above it.
     create_new_task: Create New Task
     import_task: Import Task
+    import_tasks: Import Tasks
     task_schedule: Task Schedule
     task_details: Task Details
     back_to_task_management: Back to task management
@@ -372,6 +373,7 @@ message:
     close_task: Close Task
     delete_task: Delete Task
     import_project: Import project
+    export_project: Export project
     all_programmes: All Programmes
     all_projects_filter: All Projects
     all_customers: All Customers
