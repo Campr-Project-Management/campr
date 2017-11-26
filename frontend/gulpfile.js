@@ -1,15 +1,17 @@
 var gulp = require('gulp'),
-    minifyCSS = require('gulp-csso'),
-    less = require('gulp-less');
+	less = require('gulp-less'),
+	watch = require('gulp-watch'),
+	cleanCSS = require('gulp-clean-css');
 
-
-gulp.task('admin:less', function () {
-    process.chdir('../web/assets/admin');
-
-    return gulp.src('less/*.less')
-        .pipe(less())
-        .pipe(minifyCSS())
-        .pipe(gulp.dest('css'));
+gulp.task('less', function () {
+	return gulp.src('../web/assets/admin/less/*.less')
+		.pipe(less())
+		.pipe(cleanCSS())
+		.pipe(gulp.dest('../web/assets/admin/css/'));
 });
 
-gulp.task('default', ['admin:less']);
+gulp.task('watch-css', function (){
+    gulp.watch('../web/assets/admin/less/*.less', ['less']);
+});
+
+gulp.task('default', ['less']);
