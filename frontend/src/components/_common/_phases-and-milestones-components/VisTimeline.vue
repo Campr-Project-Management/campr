@@ -160,11 +160,9 @@ export default {
                 max: max,
                 zoomMax: 31536000000000,
                 zoomMin: 315360000,
-                order: function(a, b) {
-                    return a.id - b.id;
-                },
+                order: (a, b) => b.id - a.id,
                 tooltip: {
-                    followMouse: true,
+                    followMouse: false,
                     overflowMethod: 'cap',
                 },
                 visibleFrameTemplate: function(item) {
@@ -179,7 +177,7 @@ export default {
     },
     watch: {
         pmData: function() {
-            if(this.timeline) {
+            if (this.timeline) {
                 this.timeline.destroy();
             }
             this.timeline = new vis.Timeline(this.container, this.pmData, this.groups, this.visOptions);
