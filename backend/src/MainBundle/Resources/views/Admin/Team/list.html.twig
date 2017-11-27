@@ -43,9 +43,11 @@
                         <tr>
                             <td>{{ team.id }}</td>
                             <td class="avatar text-center">
-                                <div class="user-avatar-wrapper">
-                                    <img src="{{ vich_uploader_asset(team, 'logoFile') }}">
-                                </div>
+                                {% if team.logo %}
+                                    <div class="user-avatar-wrapper">
+                                        <img src="{{ vich_uploader_asset(team, 'logoFile') }}">
+                                    </div>
+                                {% endif %}
                             </td>
                             <td>{{ team.name }}</td>
                             <td>{{ team.slug }}</td>
