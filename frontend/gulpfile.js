@@ -4,7 +4,7 @@ var gulp = require('gulp'),
 	cleanCSS = require('gulp-clean-css');
 
 gulp.task('less', function () {
-    process.chdir('../web/assets/admin');
+    process.chdir('/app/web/assets/admin');
 
 	return gulp
 		.src('less/*.less')
@@ -15,7 +15,7 @@ gulp.task('less', function () {
 });
 
 gulp.task('watch-css', function () {
-    process.chdir('../web/assets/admin');
+    process.chdir('/app/web/assets/admin');
 
     gulp.watch('less/*.less', ['less']);
 });
