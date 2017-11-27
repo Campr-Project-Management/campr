@@ -1,57 +1,46 @@
 <template>
     <transition type="modal">
-        <div class="modal-mask">
+        <div class="modal modal-mask">
             <div class="modal-wrapper">
                 <div class="modal-container">
-                    <div class="modal-header" v-if="header">
-                        <slot name="header">
+                    <div class="modal-inner">
+                        <slot name="header" v-if="header">
                             <a href="javascript:void(0)" class="modal-close" @click="$emit('close')">
                                 <svg
                                     version="1.1"
-                                    id="Layer_1"
                                     width="32px"
                                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                    x="0px"
-                                    y="0px"
-                                    viewBox="0 0 28.8 28.8"
-                                    style="enable-background:new 0 0 28.8 28.8;"
-                                    xml:space="preserve">
-                                    <g id="XMLID_630_">
+                                    viewBox="0 0 28.8 28.8">
+                                    <g>
                                         <line id="XMLID_530_" class="st0" x1="3.1" y1="2.9" x2="26.1" y2="25.9"/>
                                         <line id="XMLID_529_" class="st0" x1="26.1" y1="2.9" x2="3.1" y2="25.9"/>
                                     </g>
                                 </svg>
                             </a>
-                            {{ translateText(header) }}
+                            <p class="modal-title danger-color">{{ translateText(header) }}</p>
                         </slot>
-                    </div>
-                    <div class="modal-body" v-if="body">
-                        <slot name="body">
+                        <slot name="body" v-if="body">
                             <a href="javascript:void(0)" class="modal-close" @click="$emit('close')" v-if="!header">
                                 <svg
                                     version="1.1"
-                                    id="Layer_1"
                                     width="32px"
                                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                    x="0px"
-                                    y="0px"
-                                    viewBox="0 0 28.8 28.8"
-                                    style="enable-background:new 0 0 28.8 28.8;"
-                                    xml:space="preserve">
-                                    <g id="XMLID_630_">
-                                        <line id="XMLID_530_" class="st0" x1="3.1" y1="2.9" x2="26.1" y2="25.9"/>
-                                        <line id="XMLID_529_" class="st0" x1="26.1" y1="2.9" x2="3.1" y2="25.9"/>
+                                    viewBox="0 0 28.8 28.8">
+                                    <g>
+                                        <line class="st0" x1="3.1" y1="2.9" x2="26.1" y2="25.9"/>
+                                        <line class="st0" x1="26.1" y1="2.9" x2="3.1" y2="25.9"/>
                                     </g>
                                 </svg>
                             </a>
-                            {{ translateText(body) }}
+                            <h3 class="text-center">{{ translateText(body) }}</h3>
                         </slot>
-                    </div>
-                    <div class="modal-footer">
+                        <br>
                         <slot name="footer">
-                            <button class="modal-default-button btn-rounded btn-empty danger-color danger-border" @click="$emit('close')">
-                                {{ translateText(buttonText) }}
-                            </button>
+                            <div class="flex flex-center">
+                                <button class="btn-rounded btn-empty danger-color danger-border" @click="$emit('close')">
+                                    {{ translateText(buttonText) }}
+                                </button>
+                            </div>
                         </slot>
                     </div>
                 </div>
@@ -128,7 +117,7 @@ export default {
         position: relative;
     }
 
-    .modal-body {
+    .modal-inner {
         margin: 0 auto;
     }
 

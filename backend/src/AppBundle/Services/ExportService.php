@@ -2,6 +2,7 @@
 
 namespace AppBundle\Services;
 
+use AppBundle\Entity\Project;
 use AppBundle\Entity\WorkPackage;
 
 /**
@@ -10,9 +11,42 @@ use AppBundle\Entity\WorkPackage;
  */
 class ExportService
 {
-    public function exportTask(WorkPackage $package)
+    public function xmlToString(\SimpleXMLElement $xmlNode)
     {
-        $xmlNode = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Task></Task>');
+        return $xmlNode->asXML();
+    }
+
+    public function exportProject(Project $project)
+    {
+        $xmlNode = new \SimpleXMLElement(
+            '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'.
+            '<Project xmlns="http://schemas.microsoft.com/project"></Project>'
+        );
+
+        $xmlNode->addChild('Name', $project->getName());
+        if ($project->getApprovedAt()) {
+            $xmlNode->addChild(
+                'StartDate',
+                $project->getApprovedAt()->format(\DateTime::ISO8601)
+            );
+        }
+
+        $tasks = $xmlNode->addChild('Tasks');
+
+        foreach ($project->getWorkPackages() as $wp) {
+            $task = $tasks->addChild('Task');
+            $this->exportTask($wp, $task);
+        }
+
+        return $xmlNode;
+    }
+
+    public function exportTask(WorkPackage $package, \SimpleXMLElement $xmlNode = null)
+    {
+        if ($xmlNode === null) {
+            $xmlNode = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Task></Task>');
+        }
+
         $xmlNode->addChild('UID', $package->getPuid());
         $xmlNode->addChild('ID', $package->getId());
         $xmlNode->addChild('Name', $package->getName());
