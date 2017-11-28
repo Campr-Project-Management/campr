@@ -184,7 +184,7 @@
                         <div class="form-group">
                             <div class="vueditor-holder">
                                 <div class="vueditor-header">{{ translateText('placeholder.decision_description') }}</div>
-                                <Vueditor :ref="'decision.description'+index" />
+                                <Vueditor :id="'decision.description'+index" :ref="'decision.description'+index" />
                             </div>
                         </div>
                         <div class="row">
@@ -367,6 +367,8 @@ import {createFormData} from '../../../helpers/meeting';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import AlertModal from '../../_common/AlertModal.vue';
 import Error from '../../_common/_messages/Error.vue';
+import {createEditor} from 'vueditor';
+import vueditorConfig from '../../_common/vueditorConfig';
 
 export default {
     components: {
@@ -412,10 +414,15 @@ export default {
         addDecision() {
             this.decisions.push({
                 title: '',
-                description: this.$refs['decision.description'+this.decisions.length],
+                description: '',
                 responsible: [],
                 dueDate: new Date(),
             });
+            setTimeout(() => {
+                this.decisions[this.decisions.length - 1].description =
+                    createEditor(document.getElementById('decision.description' + (this.decisions.length - 1))
+                    , {...vueditorConfig, id: 'decision.description' + (this.decisions.length - 1)});
+            }, 500);
         },
         addTodo() {
             this.todos.push({
@@ -429,11 +436,24 @@ export default {
         addInfo() {
             this.infos.push({
                 title: '',
-                description: this.$refs['info.description'+this.infos.length],
+                description: '',
                 responsible: [],
                 dueDate: new Date(),
                 status: {label: this.translateText('label.select_status')},
             });
+        },
+        getDecisions() {
+            let decisionsTmp = [];
+            for (let i = 0; i < this.decisions.length; i++) {
+                let elemTmp = {
+                    title: this.decisions[i].title,
+                    description: this.decisions[i].description.getContent(),
+                    responsible: this.decisions[i].responsible,
+                    dueDate: this.decisions[i].dueDate,
+                };
+                decisionsTmp.push(elemTmp);
+            }
+            return decisionsTmp;
         },
         saveMeeting() {
             let data = {
@@ -446,7 +466,7 @@ export default {
                 objectives: this.objectives,
                 agendas: this.agendas,
                 medias: this.medias,
-                decisions: this.decisions,
+                decisions: this.getDecisions(),
                 todos: this.todos,
                 infos: this.infos,
             };
@@ -457,7 +477,6 @@ export default {
                     data.name += index !== length - 1 ? item.label + '|' : item.label;
                 });
             }
-
             this.createProjectMeeting({
                 data: createFormData(data),
                 projectId: this.$route.params.id,
