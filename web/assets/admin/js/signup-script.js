@@ -1,54 +1,7 @@
-function moreText(container) {
-    var maxLength = 140;
-    $(container).each(function(){
-        var myStr = $(this).text();
-        var newStr = myStr.substring(0, maxLength);
-        var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
-        $(this).empty().html(newStr);
-        $(this).append('<span class="more-dots">...</span>');
-        $(this).append('<a href="javascript:void(0);" class="more-link"> more</a>');
-        $(this).append('<span class="more-text">' + removedStr + '</span>');
-    });
-}
-
 (function($) {
-    "use strict"; // Start of use strict
+    "use strict"; // Start of use strict 
 
-    $('.same-height').matchHeight();
-
-    moreText(".module-content p:first-of-type");
-
-    $(document).delegate('.more-link', 'click', function(){
-        $("body").addClass("body-hidden");
-        $(this).closest(".module").addClass("module-show");
-        $(this).siblings(".more-text").contents().unwrap();
-        $(this).siblings(".more-dots").remove();
-        $(this).remove();
-    });
-
-    $(document).delegate('.more-title', 'click', function(){
-        $("body").addClass("body-hidden");
-        $(this).siblings("p").find('.more-link').click();
-    });
-
-    $(document).delegate('.close-module', 'click', function(){
-        $("body").removeClass("body-hidden");
-        $(this).closest(".module").removeClass("module-show");
-        moreText($(this).siblings(".module-content").find("p:first-of-type"));
-    }); 
-
-    var $i;  
-
-    $('.svg svg').attr('id', function(i) {
-        return 'svg-' + (i + 1);
-    });
-
-    for ($i = 1; $i < 17; $i ++) { 
-        var svgAnimate = new Vivus('svg-' + $i, {
-            type: 'delayed'
-        });
-        svgAnimate.play();
-    };
+    var $i; 
 
     for ($i = 1; $i < 7; $i ++) {
         var $holder = $("#slider_holder_" + $i),
