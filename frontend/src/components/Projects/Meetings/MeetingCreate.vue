@@ -229,7 +229,7 @@
                         <div class="form-group">
                             <div class="vueditor-holder">
                                 <div class="vueditor-header">{{ translateText('placeholder.action') }}</div>
-                                <Vueditor :ref="'todo.description'+index" />
+                                <Vueditor :id="'todo.description'+index" :ref="'todo.description'+index" />
                             </div>
                         </div>
                         <div class="row">
@@ -291,7 +291,7 @@
                         <div class="form-group">
                             <div class="vueditor-holder">
                                 <div class="vueditor-header">{{ translateText('placeholder.info_description') }}</div>
-                                <Vueditor :ref="'info.description'+index" />
+                                <Vueditor :id="'info.description'+index" :ref="'info.description'+index" />
                             </div>
                         </div>
                         <div class="row">
@@ -427,11 +427,16 @@ export default {
         addTodo() {
             this.todos.push({
                 title: '',
-                description: this.$refs['todo.description'+this.todos.length],
+                description: '',
                 responsible: [],
                 dueDate: new Date(),
                 status: {label: this.translateText('label.select_status')},
             });
+            setTimeout(() => {
+                this.todos[this.todos.length - 1].description =
+                    createEditor(document.getElementById('todo.description' + (this.todos.length - 1))
+                            , {...vueditorConfig, id: 'todo.description' + (this.todos.length - 1)});
+            }, 500);
         },
         addInfo() {
             this.infos.push({
@@ -441,6 +446,11 @@ export default {
                 dueDate: new Date(),
                 status: {label: this.translateText('label.select_status')},
             });
+            setTimeout(() => {
+                this.infos[this.infos.length - 1].description =
+                    createEditor(document.getElementById('info.description' + (this.infos.length - 1))
+                            , {...vueditorConfig, id: 'info.description' + (this.infos.length - 1)});
+            }, 500);
         },
         getDecisions() {
             let decisionsTmp = [];
@@ -455,6 +465,34 @@ export default {
             }
             return decisionsTmp;
         },
+        getTodos() {
+            let todosTmp = [];
+            for (let i = 0; i < this.todos.length; i++) {
+                let elemTmp = {
+                    title: this.todos[i].title,
+                    description: this.todos[i].description.getContent(),
+                    responsible: this.todos[i].responsible,
+                    dueDate: this.todos[i].dueDate,
+                    status: this.todos[i].status,
+                };
+                todosTmp.push(elemTmp);
+            }
+            return todosTmp;
+        },
+        getInfos() {
+            let infosTmp = [];
+            for (let i = 0; i < this.infos.length; i++) {
+                let elemTmp = {
+                    title: this.infos[i].title,
+                    description: this.infos[i].description.getContent(),
+                    responsible: this.infos[i].responsible,
+                    dueDate: this.infos[i].dueDate,
+                    status: this.infos[i].status,
+                };
+                infosTmp.push(elemTmp);
+            }
+            return infosTmp;
+        },
         saveMeeting() {
             let data = {
                 distributionLists: this.details.distributionLists,
@@ -467,8 +505,8 @@ export default {
                 agendas: this.agendas,
                 medias: this.medias,
                 decisions: this.getDecisions(),
-                todos: this.todos,
-                infos: this.infos,
+                todos: this.getTodos(),
+                infos: this.getInfos(),
             };
             if (this.details.distributionLists.length > 0) {
                 data.name = '';
