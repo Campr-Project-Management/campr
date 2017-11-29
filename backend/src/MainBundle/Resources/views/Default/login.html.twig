@@ -25,7 +25,7 @@
                     }
                 ) }}
                 <div class="input-group m-b-20 fg-float">
-                    <span class="input-group-addon"><i class="zmdi zmdi-account"></i></span>
+                    <span class="input-group-addon"><i class="zmdi zmdi-email"></i></span>
                     <div class="fg-line {% if error %}has-error{% endif %}">
                         {{ form_widget(form.email, {'attr': {'class': 'form-control', 'value': last_username}}) }}
                         <label class="fg-label" for="email">
@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="input-group m-b-20 fg-float">
-                    <span class="input-group-addon"><i class="zmdi zmdi-male"></i></span>
+                    <span class="input-group-addon"><i class="zmdi zmdi-lock"></i></span>
                     <div class="fg-line {% if error %}has-error{% endif %}">
                         {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
                         <label class="fg-label" for="email">

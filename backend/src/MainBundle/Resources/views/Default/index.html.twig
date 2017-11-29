@@ -98,16 +98,16 @@
     <section id="home" class="landing-section">
         <div class="full-screen" id="homepage-landing">
             <div class="custom-placeholder">
-                <img class="landing-tiny" media="(min-width: 0px)" srcset="{{ asset('bundles/main/assets/img/Campr-landing-image-tiny.jpg') }}" alt="{{ 'message.campr_moto'|trans }}" width="100%" style="position:absolute;width:100%;height:100%;top:0;left:0;">
+                <img class="landing-tiny" media="(min-width: 0px)" srcset="{{ asset('assets/admin/img/Campr-landing-image-tiny.jpg') }}" alt="{{ 'message.campr_moto'|trans }}" width="100%" style="position:absolute;width:100%;height:100%;top:0;left:0;">
                 <picture>
                     <!--[if IE 9]><video style="display: none;"><![endif]-->
-                    <source srcset="{{ asset('bundles/main/assets/img/Campr-landing-image.jpg') }}" media="(min-width: 1200px)">
-                    <source srcset="{{ asset('bundles/main/assets/img/Campr-landing-image-large.jpg') }}" media="(min-width: 992px)">
-                    <source srcset="{{ asset('bundles/main/assets/img/Campr-landing-image-medium.jpg') }}" media="(min-width: 768px)">
-                    <source srcset="{{ asset('bundles/main/assets/img/Campr-landing-image-small.jpg') }}" media="(min-width: 400px)">
-                    <source srcset="{{ asset('bundles/main/assets/img/Campr-landing-image-very-small.jpg') }}" media="(min-width: 0px)">
+                    <source srcset="{{ asset('assets/admin/img/Campr-landing-image.jpg') }}" media="(min-width: 1200px)">
+                    <source srcset="{{ asset('assets/admin/img/Campr-landing-image-large.jpg') }}" media="(min-width: 992px)">
+                    <source srcset="{{ asset('assets/admin/img/Campr-landing-image-medium.jpg') }}" media="(min-width: 768px)">
+                    <source srcset="{{ asset('assets/admin/img/Campr-landing-image-small.jpg') }}" media="(min-width: 400px)">
+                    <source srcset="{{ asset('assets/admin/img/Campr-landing-image-very-small.jpg') }}" media="(min-width: 0px)">
                     <!--[if IE 9]></video><![endif]-->
-                    <img class="landing-image lazy full-screen-image" srcset="{{ asset('bundles/main/assets/img/Campr-landing-image-small.jpg') }}" alt="{{ 'message.campr_moto'|trans }}">
+                    <img class="landing-image lazy full-screen-image" srcset="{{ asset('assets/admin/img/Campr-landing-image-small.jpg') }}" alt="{{ 'message.campr_moto'|trans }}">
                 </picture>
             </div>
             
@@ -711,7 +711,7 @@
     
                         <div class="buttons buttons-center">
                             <a href="#features" class="button button-white-border">Features</a>
-                            <a href="#signup" class="button">Sign up</a>
+                            <a href="{{ path('main_signup') }}" class="button">Sign up</a>
                         </div>
                     </div>
                 </div>
@@ -748,7 +748,10 @@
                                         <p>
                                             The Project Organization lists the project participants of the project in a hierarchical order. This module visualizes the project organization chart, defines the roles, and the relationships between the project teams. Also, you can create individual distribution lists for reports and meeting invites. 
                                         </p>
-                                        <a href="#sign-up" class="button mt-30">Start organizing</a>
+                                        <div class="buttons mt-30">
+                                            <a href="{{ path('main_signup') }}" class="button">Start organizing</a>
+                                            <a href="{{ path('main_modules') }}" class="button button-white-border">All Modules</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -759,7 +762,7 @@
                     <div class="big-feature-image-wrapper">
                         <div class="table">
                             <div class="cell">
-                                <img id="organization-img" class="big-feature-image img-right img-fluid" src="{{ asset('bundles/main/assets/img/Campr-project-organization.jpg') }}" alt="Campr Organization Module - Organize your project team">
+                                <img id="organization-img" class="big-feature-image img-right img-fluid" src="{{ asset('assets/admin/img/Campr-project-organization.jpg') }}" alt="Campr Organization Module - Organize your project team">
                             </div>
                         </div>
                     </div>
@@ -791,7 +794,10 @@
                                         <p>
                                             Work packages can be grouped in a phase according to project sequences. Particularly important events in the project progress are defined and terminated as milestones.
                                         </p>
-                                        <a href="#sign-up" class="button mt-30">Start planning</a>
+                                        <div class="buttons mt-30">
+                                            <a href="{{ path('main_signup') }}" class="button">Start planning</a>
+                                            <a href="{{ path('main_modules') }}" class="button button-white-border">All Modules</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -803,7 +809,7 @@
                     <div class="big-feature-image-wrapper">
                         <div class="table">
                             <div class="cell">
-                                <img id="phases-and-milestones-img" class="big-feature-image img-left img-fluid" src="{{ asset('bundles/main/assets/img/Campr-project-phases-and-milestones.jpg') }}" alt="Campr Phase and Milestones Module - Plan your project to the last detail">
+                                <img id="phases-and-milestones-img" class="big-feature-image img-left img-fluid" src="{{ asset('assets/admin/img/Campr-project-phases-and-milestones.jpg') }}" alt="Campr Phase and Milestones Module - Plan your project to the last detail">
                             </div>
                         </div>
                     </div>
@@ -833,7 +839,10 @@
                                         <p>
                                             The Task Management provides an overview of all work packages assigned to the project. A work package is a group of associated tasks. Typical categories for grouped tasks are geographical area, engineering discipline, technology, or the time needed to accomplish them.
                                         </p>
-                                        <a href="#sign-up" class="button mt-30">Start managing</a>
+                                        <div class="buttons mt-30">
+                                            <a href="{{ path('main_signup') }}" class="button">Start managing</a>
+                                            <a href="{{ path('main_modules') }}" class="button button-white-border">All Modules</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -844,7 +853,7 @@
                     <div class="big-feature-image-wrapper">
                         <div class="table">
                             <div class="cell">
-                                <img id="task-management-img" class="big-feature-image img-right img-fluid" src="{{ asset('bundles/main/assets/img/Campr-project-task-management-grid.jpg') }}" alt="Campr Task Management Module - Grid and Kanban task views for better project management">
+                                <img id="task-management-img" class="big-feature-image img-right img-fluid" src="{{ asset('assets/admin/img/Campr-project-task-management-grid.jpg') }}" alt="Campr Task Management Module - Grid and Kanban task views for better project management">
                             </div>
                         </div>
                     </div>
@@ -853,512 +862,6 @@
         </div>
     </section>
     <!-- Big Features Section End -->
-
-    <!-- All Features Section Start -->
-    <section id="more-features" class="section features-section purple-light-bkg">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <h2 class="text-center">
-                        And much more
-                    </h2>
-                </div>
-                <div class="col-xl-4 col-lg-6 col-md-10 mr-md-auto ml-md-auto">                        
-                    <p class="subtitle text-center">
-                        The Campr App has 16 usefull modules that can be manually activated or used based on our Project Creation Wizard algorithm
-                    </p>
-                </div>
-            </div>
-            <div class="modules">
-                <div class="row">
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="module">
-                            <button class="close-module">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="0.5" x2="41.5" y2="41.5"/>
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="41.5" x2="41.5" y2="0.5"/>
-                                </svg>
-                            </button> 
-                            <div class="svg">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <g>
-                                        <polyline fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="33.5,4.1 37,4.1 37,41.5 5,41.5 5,4.1 8.5,4.1"/>
-                                        <path fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M24.6,4.1c0-2-1.6-3.6-3.6-3.6c-2,0-3.6,1.6-3.6,3.6h-5.3v5.3h17.8V4.1H24.6z"/>
-                                        <polyline fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12.1,7.6 8.5,7.6 8.5,37.9 26.3,37.9 26.3,30.8 33.5,30.8 33.5,7.6 29.9,7.6"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="33.5" y1="30.8" x2="26.3" y2="37.9"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="13.9" y1="16.5" x2="28.1" y2="16.5"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="13.9" y1="20.1" x2="28.1" y2="20.1"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="13.9" y1="23.7" x2="28.1" y2="23.7"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="13.9" y1="27.2" x2="21.9" y2="27.2"/>
-                                    </g>
-                                </svg>
-                            </div>                           
-                            <div class="module-image">
-                                <img class="lazy" src="{{ asset('bundles/main/assets/img/Campr-project-contract.jpg') }}" alt="Campr Contract Module - Quick project contract builder and pdf exporter">
-                            </div>
-                            <div class="module-content">
-                                <h3 class="more-title">Project Contract</h3>
-                                <p>The goal of the project contract is to make a written agreement between the project sponsor and the project manager. This agreement will contain a briefly description of the framework of the project as well as the usage of required resources for this endeavor.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="module">
-                            <button class="close-module">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="0.5" x2="41.5" y2="41.5"/>
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="41.5" x2="41.5" y2="0.5"/>
-                                </svg>
-                            </button> 
-                            <div class="svg">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <g>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="21" cy="5" r="4.5"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="21" cy="37" r="4.5"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="36.2" cy="37" r="4.5"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="5.8" cy="37" r="4.5"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="21" y1="9.4" x2="21" y2="32.6"/>
-                                        <path fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M5.8,32.6c0-5.9,3.9-10.7,9.8-10.7h9.8c5.9,0,10.7,4.8,10.7,10.7"/>
-                                    </g>
-                                </svg>
-                            </div>                                                           
-                            <div class="module-image">
-                                <img class="lazy" src="{{ asset('bundles/main/assets/img/Campr-project-organization.jpg') }}" alt="Campr Organization Module - Organize your project team">
-                            </div>
-                            <div class="module-content">
-                                <h3 class="more-title">Organization</h3>
-                                <p>The Project Organization lists the project participants of the project in a hierarchical order. This module visualizes the project organization chart, defines the roles, and the relationships between the project teams. Also, you can create individual distribution lists for reports and meeting invites. </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="module">
-                            <button class="close-module">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="0.5" x2="41.5" y2="41.5"/>
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="41.5" x2="41.5" y2="0.5"/>
-                                </svg>
-                            </button> 
-                            <div class="svg">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <g>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="5.1" cy="21" r="4.4"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="21" cy="21" r="4.4"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="36.9" cy="21" r="4.4"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="5.1" y1="16.6" x2="5.1" y2="0.5"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="21" y1="25.4" x2="21" y2="41.5"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="36.9" y1="16.6" x2="36.9" y2="0.5"/>
-                                    </g>
-                                </svg>
-                            </div>
-                            <div class="module-image">
-                                <img class="lazy" src="{{ asset('bundles/main/assets/img/Campr-project-phases-and-milestones.jpg') }}" alt="Campr Phases and Milestones Module - Plan your work packages and add project milestones. Group everything into phases.">
-                            </div>
-                            <div class="module-content">
-                                <h3 class="more-title">Phases &amp; Milestones</h3>
-                                <p>Work packages can be grouped in a phase according to project sequences. Particularly important events in the project progress are defined and terminated as milestones.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="module">
-                            <button class="close-module">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="0.5" x2="41.5" y2="41.5"/>
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="41.5" x2="41.5" y2="0.5"/>
-                                </svg>
-                            </button> 
-                            <div class="svg">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <g>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="14.8" cy="27.2" r="5.3"/>
-                                        <path fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M26.1,24.8l2.8-1.6L25.4,17l-2.8,1.6c-1.2-1.1-2.6-1.9-4.2-2.4V13h-7.1v3.2 c-1.6,0.5-3,1.3-4.2,2.4L4.2,17l-3.6,6.2l2.8,1.6c-0.3,1.6-0.4,3.2,0,4.8l-2.8,1.6l3.6,6.2L7,35.8c1.2,1.1,2.6,1.9,4.2,2.4v3.2 h7.1v-3.2c1.6-0.5,3-1.3,4.2-2.4l2.8,1.6l3.6-6.2l-2.8-1.6C26.4,28.1,26.5,26.5,26.1,24.8z"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="33.5" cy="8.5" r="2.7"/>
-                                        <path fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M39.5,7.1l1.8-1L39.6,3l-1.8,1c-0.7-0.6-1.5-1.2-2.5-1.4V0.5h-3.6v2.1 c-0.9,0.3-1.8,0.8-2.5,1.4l-1.8-1l-1.8,3.1l1.8,1c-0.2,1-0.2,2,0,2.9l-1.8,1l1.8,3.1l1.8-1c0.7,0.6,1.5,1.2,2.5,1.4v2.1h3.6v-2.1 c0.9-0.3,1.8-0.8,2.5-1.4l1.8,1l1.8-3.1l-1.8-1C39.8,9,39.8,8,39.5,7.1z"/>
-                                    </g>
-                                </svg>
-                            </div>
-                            <div class="module-image">
-                                <img class="lazy" src="{{ asset('bundles/main/assets/img/Campr-project-task-management-grid.jpg') }}" alt="Campr Task Management Module - Manage all the project's work packages in one view">
-                            </div>
-                            <div class="module-content">
-                                <h3 class="more-title">Task Management</h3>
-                                <p>The Task Management provides an overview of all work packages assigned to the project. A work package is a group of associated tasks. Typical categories for grouped tasks are geographical area, engineering discipline, technology, or the time needed to accomplish them.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="module">
-                            <button class="close-module">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="0.5" x2="41.5" y2="41.5"/>
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="41.5" x2="41.5" y2="0.5"/>
-                                </svg>
-                            </button> 
-                            <div class="svg">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <g>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="29.9" cy="24.6" r="0.9"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="7.6" y1="13" x2="9.4" y2="13"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="13" y1="13" x2="14.8" y2="13"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="18.3" y1="13" x2="20.1" y2="13"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="23.7" y1="13" x2="25.5" y2="13"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="29" y1="13" x2="30.8" y2="13"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="7.6" y1="36.2" x2="9.4" y2="36.2"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="13" y1="36.2" x2="14.8" y2="36.2"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="18.3" y1="36.2" x2="20.1" y2="36.2"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="23.7" y1="36.2" x2="25.5" y2="36.2"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="29" y1="36.2" x2="30.8" y2="36.2"/>
-                                        <path fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M41.5,25.5c0,2-1.6,3.6-3.6,3.6H29c-2,0-3.6-1.6-3.6-3.6v-1.8c0-2,1.6-3.6,3.6-3.6h8.9 c2,0,3.6,1.6,3.6,3.6V25.5z"/>
-                                        <path fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M36.2,20.1c0,0,0-2.4,0-5.3s-2.4-5.3-5.3-5.3h-25"/>
-                                        <path fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M27.2,5.8H5.8c-2.4,0-2.4,3.6,0,3.6"/>
-                                        <path fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M36.2,29v5.3c0,2.9-2.4,5.3-5.3,5.3h-25c-2.9,0-5.3-2.4-5.3-5.3V7.6c0-2.9,2.4-5.3,5.3-5.3 h21.4c2.9,0,5.3,1.6,5.3,3.6c0,2,0,3.6,0,3.6"/>
-                                    </g>
-                                </svg>
-                            </div>                           
-                            <div class="module-image">
-                                <img class="lazy" src="{{ asset('bundles/main/assets/img/Campr-project-internal-costs.jpg') }}" alt="Campr Internal Costs Module - Keep track of your costs">
-                            </div>
-                            <div class="module-content">
-                                <h3 class="more-title">Internal Costs</h3>
-                                <p>Keeping track of the project internal costs is crucial. Cost planning allows you to calculate the cost per work package, and then to calculate the total cost of the project. A distinction is made between internal costs and external costs as well as operative costs and invest. </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="module">
-                            <button class="close-module">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="0.5" x2="41.5" y2="41.5"/>
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="41.5" x2="41.5" y2="0.5"/>
-                                </svg>
-                            </button> 
-                            <div class="svg">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <g>
-                                        <polygon fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="21.9,18.3 0.5,9.4 0.5,32.6 21.9,41.5    "/>
-                                        <polygon fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="21.9,18.3 41.5,9.4 41.5,32.6 21.9,41.5  "/>
-                                        <polyline fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="0.5,9.4 21,0.5 41.5,9.4    "/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="12.4" y1="4.2" x2="32.2" y2="13.6"/>
-                                        <polygon fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="16.5,22.8 5.8,17.4 5.8,26.3 16.5,31.7   "/>
-                                    </g>
-                                </svg>
-                            </div>                           
-                            <div class="module-image">
-                                <img class="lazy" src="{{ asset('bundles/main/assets/img/Campr-project-external-costs.jpg') }}" alt="Campr External Costs Module - Intuitive resource planning">
-                            </div>
-                            <div class="module-content">
-                                <h3 class="more-title">External Costs</h3>
-                                <p>Resource planning allows you to calculate the necessary personnel usage per work package.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="module">
-                            <button class="close-module">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="0.5" x2="41.5" y2="41.5"/>
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="41.5" x2="41.5" y2="0.5"/>
-                                </svg>
-                            </button> 
-                            <div class="svg">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <g>
-                                        <polyline fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="41.5,41.5 0.5,41.5 0.5,0.5     "/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="13" cy="29" r="2.7"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="29.8" y1="14.4" x2="37" y2="5.1"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="17.3" y1="12.9" x2="25.5" y2="15.8"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="20.6" x2="12.5" y2="13.5"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="28.7" y1="27.7" x2="36.5" y2="23.2"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="15.7" y1="29" x2="23.7" y2="29"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="37" x2="10.7" y2="30.4"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="14.8" cy="12.1" r="2.7"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="28.1" cy="16.5" r="2.7"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="38.8" cy="3.2" r="2.7"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="38.8" cy="21.9" r="2.7"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="26.3" cy="29" r="2.7"/>
-                                    </g>
-                                </svg>
-                            </div>                           
-                            <div class="module-image">
-                                <img class="lazy" src="{{ asset('bundles/main/assets/img/Campr-project-risks-and-opportunities.jpg') }}" alt="Campr Risks and Opportunities Module - Keep track of potential project hazards as well as expediences">
-                            </div>
-                            <div class="module-content">
-                                <h3 class="more-title">Risks &amp; Opportunities</h3>
-                                <p>Regular risk analysis, indicating potential hazards, as well as uncovering opportunities within your project helps you to react proactively in all situations. This module supports you in collecting, structuring, tracking and visualizing risks and opportunities.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="module">
-                            <button class="close-module">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="0.5" x2="41.5" y2="41.5"/>
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="41.5" x2="41.5" y2="0.5"/>
-                                </svg>
-                            </button> 
-                            <div class="svg">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <g>
-                                        <rect x="0.5" y="0.5" fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="23.2" height="5.3"/>
-                                        <rect x="18.3" y="20.1" fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="23.2" height="5.3"/>
-                                        <rect x="0.5" y="36.2" fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="23.2" height="5.3"/>
-                                        <path fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M13,5.8v6.2c0,1.5,1.2,2.7,2.7,2.7H21c1.5,0,2.7,1.2,2.7,2.7v2.7"/>
-                                        <path fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M32.6,25.5v9.8c0,1.5-1.2,2.7-2.7,2.7h-6.2"/>
-                                    </g>
-                                </svg>
-                            </div>                           
-                            <div class="module-image">
-                                <img class="lazy" src="{{ asset('bundles/main/assets/img/Campr-project-gantt-chart.jpg') }}" alt="Campr Gantt Chart Module - Quick overall view of all your project">
-                            </div>
-                            <div class="module-content">
-                                <h3 class="more-title">Gantt Chart</h3>
-                                <p>The Gantt Chart is a standard visualization of all phases, work packages, tasks and milestones on a timeline according to the planned project execution. All items have dedicated start and finish date and are displayed in individual bars on the time axis. Correlations between those items, such as predecessor and successor tasks, can be defined and are displayed as well.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="module">
-                            <button class="close-module">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="0.5" x2="41.5" y2="41.5"/>
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="41.5" x2="41.5" y2="0.5"/>
-                                </svg>
-                            </button> 
-                            <div class="svg">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <g>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="6.1" cy="6.1" r="5.6"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="21" cy="6.1" r="5.6"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="35.9" cy="6.1" r="5.6"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="6.1" cy="21" r="5.6"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="21" cy="21" r="5.6"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="35.9" cy="21" r="5.6"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="6.1" cy="35.9" r="5.6"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="21" cy="35.9" r="5.6"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="35.9" cy="35.9" r="5.6"/>
-                                    </g>
-                                </svg>
-                            </div>                           
-                            <div class="module-image">
-                                <img class="lazy" src="{{ asset('bundles/main/assets/img/Campr-project-rasci-matrix.jpg') }}" alt="Campr RASCI Matrix Module - Assign Responsible, Accountable, Supportable, Consulted, and Informed team members to each Work Package">
-                            </div>
-                            <div class="module-content">
-                                <h3 class="more-title">RASCI Matrix</h3>
-                                <p>A responsibility assignment matrix, describes the participation by various roles in completing tasks or deliverables for a project execution. It is especially useful in clarifying roles and responsibilities in cross-functional projects and processes.</p>
-                                <p>RASCI is an acronym and stands for the five different roles within the execution process of a work package or task: Responsible, Accountable, Supportable, Consulted, and Informed.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="module">
-                            <button class="close-module">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="0.5" x2="41.5" y2="41.5"/>
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="41.5" x2="41.5" y2="0.5"/>
-                                </svg>
-                            </button> 
-                            <div class="svg">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <g>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="20.1" y1="8.5" x2="20.1" y2="31.7"/>
-                                        <rect x="7.6" y="1.4" fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="26.7" height="7.1"/>
-                                        <rect x="16.5" y="31.7" fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="8.9" height="8.9"/>
-                                        <rect x="0.5" y="31.7" fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="8.9" height="8.9"/>
-                                        <rect x="32.6" y="31.7" fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="8.9" height="8.9"/>
-                                        <polyline fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="36.2,31.7 36.2,21 5.8,21 5.8,31.7  "/>
-                                    </g>
-                                </svg>
-                            </div>                           
-                            <div class="module-image">
-                                <img class="lazy" src="{{ asset('bundles/main/assets/img/Campr-project-wbs.jpg') }}" alt="Campr WBS Module - Work breakdown structure - break your project into smaller components">
-                            </div>
-                            <div class="module-content">
-                                <h3 class="more-title">WBS</h3>
-                                <p>The Work Breakdown Structure (WBS) is a deliverable-oriented breakdown of a project into smaller components. A work breakdown structure is a key project deliverable that organizes the team's work into manageable sections. This module visualizes the breakdown in a “tree”- structure starting with the project phases and work packages, tasks, and milestones in the branches. The structure can be manipulated within the module for restructuring purposes.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="module">
-                            <button class="close-module">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="0.5" x2="41.5" y2="41.5"/>
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="41.5" x2="41.5" y2="0.5"/>
-                                </svg>
-                            </button> 
-                            <div class="svg">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <g>
-                                        <path fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M4.1,25.5v4.5c0,1.5,0.3,2.7,1.8,2.7v8.9h5.3v-8.9c1.5,0,1.8-1.2,1.8-2.7v-4.5H4.1z"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="8.5" cy="19.2" r="2.7"/>
-                                        <path fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M29,25.5v4.5c0,1.5,0.3,2.7,1.8,2.7v8.9h5.3v-8.9c1.5,0,1.8-1.2,1.8-2.7v-4.5H29z"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="33.5" cy="19.2" r="2.7"/>
-                                        <polygon fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="11.2,11.2 16.5,11.2 16.5,15.7 21,11.2 30.8,11.2 30.8,0.5 11.2,0.5"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="14.8" y1="7.7" x2="23.7" y2="7.7"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="14.8" y1="4.1" x2="27.2" y2="4.1"/>
-                                    </g>
-                                </svg>
-                            </div>                           
-                            <div class="module-image">
-                                <img class="lazy" src="{{ asset('bundles/main/assets/img/Campr-project-meetings.jpg') }}" alt="Campr Meetings Module - Manage your team meetings">
-                            </div>
-                            <div class="module-content">
-                                <h3 class="more-title">Meetings</h3>
-                                <p>CAMPR supports you in the coordination of meetings with project participants. You can create invitations for meetings, schedule your meetings, and can keep track on them. Also, meeting minutes can be entered in a structured form and send out to all relevant meeting participants according to predefined distribution lists.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="module">
-                            <button class="close-module">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="0.5" x2="41.5" y2="41.5"/>
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="41.5" x2="41.5" y2="0.5"/>
-                                </svg>
-                            </button> 
-                            <div class="svg">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <g>
-                                        <polygon fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="25.5,21.9 25.5,34.4 4.1,34.4 4.1,0.5 37.9,0.5 37.9,21.9"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="37.9" y1="21.9" x2="25.5" y2="34.4"/>
-                                        <polyline fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="5.8,37.9 36.2,37.9 36.2,29.9"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="7.6" y1="41.5" x2="34.4" y2="41.5"/>
-                                        <polyline fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="29,9.4 17.2,22.6 13,18.5"/>
-                                    </g>
-                                </svg>
-                            </div>                           
-                            <div class="module-image">
-                                <img class="lazy" src="{{ asset('bundles/main/assets/img/Campr-project-todos.jpg') }}" alt="Campr Todos Module - Manage your To-Do's">
-                            </div>
-                            <div class="module-content">
-                                <h3 class="more-title">Todos</h3>
-                                <p>The central To-Do list is used to document the agreed or necessary To-Do's during your project.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="module">
-                            <button class="close-module">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="0.5" x2="41.5" y2="41.5"/>
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="41.5" x2="41.5" y2="0.5"/>
-                                </svg>
-                            </button> 
-                            <div class="svg">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <g>
-                                        <polygon fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="25.5,21.9 25.5,34.4 4.1,34.4 4.1,0.5 37.9,0.5 37.9,21.9"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="37.9" y1="21.9" x2="25.5" y2="34.4"/>
-                                        <polyline fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="5.8,37.9 36.2,37.9 36.2,29.9"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="7.6" y1="41.5" x2="34.4" y2="41.5"/>
-                                        <polyline fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="29,9.4 17.2,22.6 13,18.5"/>
-                                    </g>
-                                </svg>
-                            </div>                           
-                            <div class="module-image">
-                                <img class="lazy" src="{{ asset('bundles/main/assets/img/Campr-project-infos.jpg') }}" alt="Campr Infos Module - Document your project's general information">
-                            </div>
-                            <div class="module-content">
-                                <h3 class="more-title">Infos</h3>
-                                <p>With the "Infos"-module, you can document general information related to your project or your team. Information such as changes to the project scope, new team members joining, new events planned, etc.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="module">
-                            <button class="close-module">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="0.5" x2="41.5" y2="41.5"/>
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="41.5" x2="41.5" y2="0.5"/>
-                                </svg>
-                            </button> 
-                            <div class="svg">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <g>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="23.7" cy="18.3" r="7.1"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="3.2" cy="9.4" r="2.7"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="38.8" cy="3.2" r="2.7"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="3.2" cy="38.8" r="2.7"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="23.7" cy="38.8" r="2.7"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="5.1" y1="36.9" x2="18.6" y2="23.4"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="28.7" y1="13.3" x2="36.9" y2="5.1"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="5.6" y1="10.6" x2="17.1" y2="15.5"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="36.3" y1="24.6" x2="29.8" y2="22"/>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="23.7" y1="36.2" x2="23.7" y2="25.5"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="38.8" cy="25.5" r="2.7"/>
-                                    </g>
-                                </svg>
-                            </div>                           
-                            <div class="module-image">
-                                <img class="lazy" src="{{ asset('bundles/main/assets/img/Campr-project-decisions.jpg') }}" alt="Campr Decisions Module - Manage meeting or general project decisions">
-                            </div>
-                            <div class="module-content">
-                                <h3 class="more-title">Decisions</h3>
-                                <p>In the "Decisions"-module, you can document the decisions made during project execution. </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="module">
-                            <button class="close-module">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="0.5" x2="41.5" y2="41.5"/>
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="41.5" x2="41.5" y2="0.5"/>
-                                </svg>
-                            </button> 
-                            <div class="svg">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <g>
-                                        <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="40.6" x2="41.5" y2="40.6"/>
-                                        <polyline fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="7.6,40.6 7.6,31.7 2.3,31.7 2.3,40.6"/>
-                                        <polyline fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="18.3,40.6 18.3,22.8 13,22.8 13,40.6"/>
-                                        <polyline fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="29,40.6 29,26.3 23.7,26.3 23.7,40.6"/>
-                                        <polyline fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="39.7,40.6 39.7,13.9 34.4,13.9 34.4,40.6"/>
-                                        <polyline fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="37.9,1.4 26.3,13.9 15.7,10.3 5,19.2"/>
-                                        <polyline fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="30.8,1.4 37.9,1.4 37.9,8.5"/>
-                                    </g>
-                                </svg>
-                            </div>                           
-                            <div class="module-image">
-                                <img class="lazy" src="{{ asset('bundles/main/assets/img/Campr-project-status-report.jpg') }}" alt="Campr Status Report Module - Overall project condition at a certain point in time">
-                            </div>
-                            <div class="module-content">
-                                <h3 class="more-title">Status Report</h3>
-                                <p>The project status report provides an overview of the overall project condition regarding services, deadlines, resources, costs, organization and context and shows planned measures and necessary decisions. </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="module">
-                            <button class="close-module">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="0.5" x2="41.5" y2="41.5"/>
-                                    <line fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="41.5" x2="41.5" y2="0.5"/>
-                                </svg>
-                            </button> 
-                            <div class="svg">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
-                                    <g>
-                                        <polyline fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="29.9,14.8 16.5,27.2 12.1,22.8"/>
-                                        <circle fill="none" stroke="#61C3A5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="21" cy="21" r="20.5"/>
-                                    </g>
-                                </svg>
-                            </div>                           
-                            <div class="module-image">
-                                <img class="lazy" src="{{ asset('bundles/main/assets/img/Campr-project-close-down-report.jpg') }}" alt="Campr Close Down Report Module - Final document for project evaluation">
-                            </div>
-                            <div class="module-content">
-                                <h3 class="more-title">Close Down Report</h3>
-                                <p>The project final report serves as a final document for the evaluation of the project and for the planning of residual tasks and the post-project phase. The project final report is the basis for the final project commissioning process.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- All Features Section End -->
 
     <!-- About Section Start -->
     <section id="about" class="section about-section green-bkg">
@@ -1385,8 +888,8 @@
                             <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus sem tortor, bibendum in varius quis, mollis sed purus. In ut blandit metus. Maecenas auctor felis sed sapien placerat, ut pretium felis pulvinar. Curabitur at leo volutpat sapien tincidunt fermentum. In sodales tincidunt neque quis pretium. Nulla tempus vestibulum quam, ut egestas quam rhoncus in. Nunc sodales ac urna nec sagittis.</p>
     
                             <div class="buttons mt-30">
-                                <a href="/about.html" class="button button-white-border">Read More</a>
-                                <a href="#signup" class="button button-purple-lighter">Sign Up for Campr</a>
+                                <a href="{{ path('main_about') }}" class="button button-white-border">Read More</a>
+                                <a href="{{ path('main_signup') }}" class="button button-purple-lighter">Sign Up for Campr</a>
                             </div>
                         </div>
                     </div>
@@ -1396,7 +899,7 @@
                     <div class="row">
                         <div class="col-sm-6 text-center">
                             <div class="team-member">
-                                <div class="team-member-image" style="background-image:url({{ asset('bundles/main/assets/img/team-member-1.jpg') }})"></div>
+                                <div class="team-member-image" style="background-image:url({{ asset('assets/admin/img/team-member-1.jpg') }})"></div>
                             
                                 <h3 class="team-member-name">
                                     Christoph Pohl
@@ -1407,7 +910,7 @@
                                 </div>
                             
                                 <p class="team-member-description">
-                                    Aliquam luctus rutrum suscipit. Sed pellentesque metus ac ligula vehicula volutpat. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nulla vitae turpis non ... <a href="#" class="more-link" title="Read more about Christoph Pohl">more</a>
+                                    I'm a certified Project Management Professional by the Project Management Insitute, certified Project Manager by the German TÜV, and a certified Quality Manager in ISO9001... <a href="{{ path('main_about') }}#christoph-pohl" class="more-link" title="Read more about Christoph Pohl">more</a>
                                 </p>
                             
                                 <div class="social-list">
@@ -1463,7 +966,7 @@
                         
                         <div class="col-sm-6 text-center">
                             <div class="team-member">
-                                <div class="team-member-image" style="background-image:url({{ asset('bundles/main/assets/img/team-member-2.jpg') }})"></div>
+                                <div class="team-member-image" style="background-image:url({{ asset('assets/admin/img/team-member-2.jpg') }})"></div>
                             
                                 <h3 class="team-member-name">
                                     Manuel Weiler
@@ -1474,11 +977,11 @@
                                 </div>
                             
                                 <p class="team-member-description">
-                                    Phasellus tellus nisl, finibus eget imperdiet ac, porta non lectus. Donec fringilla sapien sed ex egestas egestas. Nunc ut dui quam. Interdum et malesuada fames ac ante ipsum... <a href="#" class="more-link" title="Read more about Christoph Pohl">more</a>
+                                    I’m a Project Manager with extensive experience in the Automotive Industry. I have over a decade of experience in large scale projects in Germany, China, Romania and the United States... <a href="{{ path('main_about') }}#manuel-weiler" class="more-link" title="Read more about Manuel Weiler">more</a>
                                 </p>
                             
                                 <div class="social-list">
-                                    <a href="mailto:christoph.pohl@campr.biz">
+                                    <a href="mailto:manuel.weiler@campr.biz ">
                                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
                                             <g>
                                                 <path d="M18,6H6C4.9,6,4,6.9,4,8v8c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2V8C20,6.9,19.1,6,18,6z M19,16c0,0.6-0.4,1-1,1 H6c-0.6,0-1-0.4-1-1V8c0-0.6,0.4-1,1-1h12c0.6,0,1,0.4,1,1V16z"/>
@@ -1766,11 +1269,11 @@
 {% block javascripts %}
     {{ parent() }}    
 
-    <script src="{{ asset('assets/admin/vendors/bower_components/vanilla-lazyload/dist/lazyload.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/lazyload.min.js') }}"></script>
     <script src="{{ asset('assets/admin/vendors/bower_components/vivus/dist/vivus.min.js') }}"></script>
     <script src="{{ asset('assets/admin/vendors/bower_components/plax/js/plax.js') }}"></script>
     <script src="{{ asset('assets/admin/vendors/bower_components/matchHeight/dist/jquery.matchHeight-min.js') }}"></script>
     <script src="{{ asset('assets/admin/vendors/bower_components/waypoints/lib/jquery.waypoints.min.js') }}"></script>
     <script src="{{ asset('assets/admin/vendors/bower_components/ion.rangeSlider/js/ion.rangeSlider.min.js') }}"></script>
-    <script src="{{ asset('bundles/main/assets/js/homepage-script.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/homepage-script.js') }}"></script>
 {% endblock %}
