@@ -288,7 +288,7 @@
     transform: rotate(-180deg)
 }
 .ve-btn-box {
-    float: right
+    display: flex;
 }
 .ve-input-box {
     display: -webkit-box;
@@ -423,23 +423,83 @@
 .ve-dialog .wrap {
     position: relative;
     top: 50%;
-    background: #fff;
+    background: #232D4B;
     margin: 0 auto;
     -webkit-transform: translateY(-80%);
-    transform: translateY(-80%)
+    transform: translateY(-80%);
 }
 .dialog-header {
-    background: #f7f7f7;
-    padding: 10px
+    padding: 10px;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 300;
+    letter-spacing: 1.6px;
+    margin-bottom: 20px;
+    text-align: center;
+    padding-top: 30px;
 }
 .dialog-header .ve-close {
-    float: right
+    float: right;
+    position: absolute;
+    right: 27px;
+    top: 27px;
+    font-size: 48px;
+    font-weight: lighter;
+    color: #57b49b;
+}
+.dialog-footer .ve-btn {
+    text-transform: uppercase;
+    text-align: center;
+    height: 40px;
+    line-height: 41px;
+    padding: 0 30px;
+    font-size: 11px;
+    border-radius: 30px;
+    background-clip: padding-box;
+    display: inline-block;
+    width: 200px;
+    letter-spacing: 1.2px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+    flex: 1;
+    margin: 10px;
+    color: #D8DAE5;
+    background: transparent;
 }
 .dialog-body {
-    padding: 10px
+    padding: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+}
+
+.dialog-body input::-webkit-file-upload-button {
+    visibility: hidden;
+}
+.dialog-body input::before {
+    content: 'Select image';
+    display: flex;
+    background: transparent;
+    border: 1px solid #57b49b;
+    border-radius: 30px;
+    padding: 0 30px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    text-shadow: 1px 1px #fff;
+    font-weight: 400;
+    font-size: 16px;
+    width: 100%;
+    text-align: center;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
 }
 .dialog-footer {
-    padding: 10px;
+    padding: 15px;
     overflow: hidden
 }
 .vueditor [class^=icon] {
