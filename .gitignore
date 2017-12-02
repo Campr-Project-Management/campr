@@ -12,13 +12,14 @@
 /backend/vendor/
 /web/bundles/
 /web/uploads/
-/web/static/js/fos_js_routes*
+/web/static/
 .idea
 .vagrant
 /web/assets/admin/vendors/bower_components/
 .DS_Store
 /frontend/node_modules
 /backend/app/config/parameters_test.yml
+/backend/src/AppBundle/Resources/views/Default/index.html.twig
 /backend/src/AppBundle/Tests/Resources/
 /backend/src/AppBundle/Resources/docs/cache/
 /backend/src/AppBundle/Resources/docs/build/

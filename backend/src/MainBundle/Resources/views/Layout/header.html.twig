@@ -39,30 +39,24 @@
                     <li>
                         <a class="nav-link{% if app.request.get('_route') == 'main_team_list' %} active{% endif %}" href="{{ path('main_team_list') }}">{{ 'menu.teams'|trans }}</a>
                     </li>
-                    <!-- <li>
-                        <a class="nav-link{% if app.request.get('_route') == 'main_payment_method_list' %}active{% endif %}" href="{{ path('main_payment_method_list') }}">{{ 'menu.payment_methods'|trans }}</a>
-                    </li>
-                    <li>
-                        <a class="nav-link{% if app.request.get('_route') == 'main_payment_list' %}active{% endif %}" href="{{ path('main_payment_list') }}">{{ 'menu.payments'|trans }}</a>
-                    </li> -->
                     <li>
                         <a class="nav-link{% if app.request.get('_route') == 'main_logout' %} active{% endif %}" href="{{ path('main_logout') }}">{{ 'button.logout'|trans }}</a>
                     </li>
                 {% else %} 
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#home">Home</a>
+                        <a class="nav-link{% if app.request.get('_route') == 'main_homepage' %} active{% endif %}" href="{{ path('main_homepage') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#features">Features</a>
+                        <a class="nav-link{% if app.request.get('_route') == 'main_modules' %} active{% endif %}" href="{{ path('main_modules') }}">Modules</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#about">About</a>
+                        <a class="nav-link{% if app.request.get('_route') == 'main_about' %} active{% endif %}" href="{{ path('main_about') }}">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#signup">Signup</a>
+                        <a class="nav-link{% if app.request.get('_route') == 'main_signup' %} active{% endif %}" href="{{ path('main_signup') }}">Signup</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+                        <a class="nav-link" href="#contact">Contact</a>
                     </li>
                     <li>
                         <a class="nav-link" href="{{ path('main_login') }}" class="btn btn-blue">{{ 'button.sign_in'|trans }}</a>
