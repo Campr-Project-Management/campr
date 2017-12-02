@@ -84,6 +84,42 @@ class DefaultController extends Controller
     }
 
     /**
+     * Modules page.
+     *
+     * @Route("/modules", name="main_modules")
+     *
+     * @return Response|RedirectResponse
+     */
+    public function modulesAction(Request $request)
+    {
+        return $this->render('MainBundle:Default:modules.html.twig');
+    }
+
+    /**
+     * About page.
+     *
+     * @Route("/about", name="main_about")
+     *
+     * @return Response|RedirectResponse
+     */
+    public function aboutAction(Request $request)
+    {
+        return $this->render('MainBundle:Default:about.html.twig');
+    }
+
+    /**
+     * Signup page.
+     *
+     * @Route("/signup", name="main_signup")
+     *
+     * @return Response|RedirectResponse
+     */
+    public function signupAction(Request $request)
+    {
+        return $this->render('MainBundle:Default:signup.html.twig');
+    }
+
+    /**
      * Contact page.
      *
      * @Route("/contact", name="main_contact")
