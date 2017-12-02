@@ -33,10 +33,6 @@ class DefaultController extends Controller
      */
     public function registerAction(Request $request)
     {
-        if ($request->isMethod(Request::METHOD_GET)) {
-            return $this->redirectToRoute('main_homepage');
-        }
-
         $user = new User();
         $signUpForm = $this->createForm(HomepageRegisterType::class, $user, [
             'method' => Request::METHOD_POST,
