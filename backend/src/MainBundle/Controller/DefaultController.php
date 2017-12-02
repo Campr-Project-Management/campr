@@ -23,14 +23,8 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $user = new User();
-        $signUpForm = $this->createForm(HomepageRegisterType::class, $user, [
-            'method' => Request::METHOD_POST,
-            'action' => $this->generateUrl('main_register'),
-        ]);
 
-        return $this->render('MainBundle:Default:index.html.twig', [
-            'signUpForm' => $signUpForm->createView(),
-        ]);
+        return $this->render('MainBundle:Default:index.html.twig');
     }
 
     /**
@@ -78,7 +72,22 @@ class DefaultController extends Controller
             return $this->redirectToRoute('main_homepage');
         }
 
-        return $this->render('MainBundle:Default:index.html.twig', [
+        return $this->render('MainBundle:Default:register.html.twig', [
+            'signUpForm' => $signUpForm->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/register-form", name="main_register_form", options={"expose"=true})
+     */
+    public function registerFormAction()
+    {
+        $signUpForm = $this->createForm(HomepageRegisterType::class, new User(), [
+            'method' => Request::METHOD_POST,
+            'action' => $this->generateUrl('main_register'),
+        ]);
+
+        return $this->render('MainBundle:Default:_registration_form.html.twig', [
             'signUpForm' => $signUpForm->createView(),
         ]);
     }
@@ -105,18 +114,6 @@ class DefaultController extends Controller
     public function aboutAction(Request $request)
     {
         return $this->render('MainBundle:Default:about.html.twig');
-    }
-
-    /**
-     * Signup page.
-     *
-     * @Route("/signup", name="main_signup")
-     *
-     * @return Response|RedirectResponse
-     */
-    public function signupAction(Request $request)
-    {
-        return $this->render('MainBundle:Default:signup.html.twig');
     }
 
     /**
