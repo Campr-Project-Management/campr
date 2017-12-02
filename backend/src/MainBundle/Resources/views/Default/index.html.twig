@@ -89,6 +89,13 @@
                     </div>
                 </div>
                 {% endif %}
+
+
+                {% if app.user.teams.count == 0 and app.user.teamMembers.count == 0 %}
+                <div class="col-xl-12" style="text-align: center;">
+                    <p>Looks like you are new here, why don't you go ahead and <a href="">create a new team</a>?</p>
+                </div>
+                {% endif %}
                 <div class="col-lg-1"></div>
             </div>
         </section>
