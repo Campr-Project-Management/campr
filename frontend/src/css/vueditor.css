@@ -218,8 +218,9 @@
     padding: 0
 }
 .vueditor a {
-    color: #000;
-    text-decoration: none
+    color: #7566e8;
+    text-decoration: underline;
+    cursor: pointer;
 }
 .vueditor hr {
     margin: 10px 0
@@ -301,10 +302,10 @@
     -webkit-flex: 1;
     -moz-box-flex: 1;
     -ms-flex: 1;
-    flex: 1
-}
-.ve-input-box .ve-btn {
-    border-left: none
+    flex: 1;
+    background: #ccc;
+    color: #191E37;
+    margin-right: 5px;
 }
 .ve-input {
     display: block;
