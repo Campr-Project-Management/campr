@@ -10,7 +10,7 @@ gulp.task('less', function () {
 		.src('less/*.less')
 		.pipe(less())
 		.pipe(cleanCSS())
-		.pipe(gulp.dest('/app/web/assets/admin/css/'))
+		.pipe(gulp.dest('../admin/css/'))
 	;
 });
 

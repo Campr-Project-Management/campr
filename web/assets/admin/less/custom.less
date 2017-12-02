@@ -512,6 +512,20 @@ p {
 	}
 }
 
+address {
+	.poppins-bold;
+
+	a {
+		color: @secondColor;
+		.transition(all 0.2s ease);
+
+		&:hover {
+			color: @secondDarkColor;
+			text-decoration: none;
+		}
+	} 
+}
+
 .caps {
 	text-transform: uppercase;
 	letter-spacing: 0.2em;
@@ -1108,6 +1122,7 @@ FEATURES SECTION
 .features-section {
 	position: relative;
 	padding: 120px 0 60px;
+	z-index: auto;
 
 	@media (max-width: 1024px) {
 	    padding: 60px 0 30px;
@@ -2252,6 +2267,16 @@ FOOTER
 		text-transform: uppercase;
 		letter-spacing: 0.2em;
 		margin: 30px 0 0;
+
+		a {
+			color: @lightColor;
+			.transition(all 0.2s ease);
+
+			&:hover {
+				color: lighten(@lightColor, 10%);
+				text-decoration: none;
+			}
+		}
 	}
 
 	@media (max-width: 767px) {
