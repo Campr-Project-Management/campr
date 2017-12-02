@@ -1,0 +1,57 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'MainBundle::base.html.twig' %}
+
+{% block body_content %}
+	<!-- Landing Section Start -->
+    <section id="imprint" class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="mt-120">
+                        Imprint
+                    </h3>
+
+                    <p class="mt-30">
+                        <address>
+                            CAMPR GmbH
+                            <br><a href="https://maps.google.com/?q=Friedrich-Bergius-Ring+15+97076+W%C3%BCrzburg&amp;entry=gmail&amp;source=g">Friedrich-Bergius-Ring 15</a>
+                            <br><a href="https://maps.google.com/?q=Friedrich-Bergius-Ring+15+97076+W%C3%BCrzburg&amp;entry=gmail&amp;source=g">97076 Würzburg</a>
+                            <br>Tel.: <a href="tel:+49%20931%202705814" value="+499312705814" target="_blank">+49 931 270 5814</a>
+                            <br>E-Mail: <a href="mailto:info@ampr.biz" target="_blank">info@ampr.biz</a>
+                            <br>CEO: Christoph Pohl, Manuel Weiler\
+                            <br>Registered office: Würzburg
+                            <br>​HRB 13625, Amtsgericht Würzburg
+                        </address>
+                    </p>
+
+                    <h4 class="mt-60">Disclaimer for website content</h4>
+
+                    <p class="mt-30">The author accepts no liability for the timeliness of the information provided, its correctness, completeness or the quality thereof. Liability claims against the author concerning either material or intellectual damage resulting from the use or non-use of the offered information resp. from the use of faulty or incomplete information are generally excluded as long as such faults are not the result of the respective author’s verifiably intentional or grossly negligent culpable acts. All offers are non-binding. The author explicitly reserves the right to change parts of the pages or the entire offer without prior announcement, to complete, delete or stop publication for good or for a certain amount of time.</p>
+
+                    <h4 class="mt-60">References and links</h4>
+
+                    <p class="mt-30">The Hamburg district court ruled on 12 May, 1998 that homepage owners are liable for the contents of sites to which they have provided links. According to the district court, this can only be prevented if the homepage owner expressly distances himself from these contents. We have placed links to other internet sites on our website. For all these links, we want to expressly point out that we have no influence whatsoever on either design or content of the linked pages. Furthermore, we herewith distance ourselves explicitly from all contents of pages which are linked on our homepage and declare this for all such links on our homepage.</p>
+
+                    <h4 class="mt-60">Data protection</h4>
+
+                    <p class="mt-30">As long as it is possible to pass on personal or business data (email addresses, names, and addresses) within the internet offer, the user passes on any such information expressly on a voluntary basis. As long as technically possible and reasonable, the offered services may be used and paid for even without the submission of such data resp. by anonymously entering data or by using an alias.</p>
+
+                    <h4 class="mt-60">Legal validity of this disclaimer</h4>
+
+                    <p class="mt-30">This liability disclaimer is to be regarded as part of the internet offer from which this page has been referred to. In case parts or some wording of this text do not, no longer or not entirely comply with current legislation, all other parts of this document shall remain unaffected thereof in their content and validity.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}    
+
+    <script src="{{ asset('assets/admin/js/lazyload.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/vendors/bower_components/vivus/dist/vivus.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/vendors/bower_components/matchHeight/dist/jquery.matchHeight-min.js') }}"></script>
+    <script src="{{ asset('assets/admin/vendors/bower_components/ion.rangeSlider/js/ion.rangeSlider.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/about-script.js') }}"></script>
+{% endblock %}

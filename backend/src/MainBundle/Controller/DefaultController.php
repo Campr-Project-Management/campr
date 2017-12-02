@@ -117,6 +117,33 @@ class DefaultController extends Controller
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Signup page.
+     *
+     * @Route("/signup", name="main_signup")
+     *
+     * @return Response|RedirectResponse
+     */
+    public function signupAction(Request $request)
+    {
+        return $this->render('MainBundle:Default:signup.html.twig');
+    }
+
+    /**
+     * Imprint page.
+     *
+     * @Route("/imprint", name="main_imprint")
+     *
+     * @return Response|RedirectResponse
+     */
+    public function imprintAction(Request $request)
+    {
+        return $this->render('MainBundle:Default:imprint.html.twig');
+    }
+
+    /**
+>>>>>>> Changes to portal site
      * Contact page.
      *
      * @Route("/contact", name="main_contact")
