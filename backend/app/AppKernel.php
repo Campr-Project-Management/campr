@@ -49,6 +49,7 @@ class AppKernel extends Kernel
             new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
             new Lexik\Bundle\TranslationBundle\LexikTranslationBundle(),
             new Scheb\TwoFactorBundle\SchebTwoFactorBundle(),
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
 
             //internals
             new AppBundle\AppBundle(),
@@ -58,7 +59,6 @@ class AppKernel extends Kernel
         if (in_array($this->getRealEnvironment(), ['dev', 'test', 'qa'], true)) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
         }
 
         if (in_array($this->getRealEnvironment(), ['dev', 'test'], true)) {
