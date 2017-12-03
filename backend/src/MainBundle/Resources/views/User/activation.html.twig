@@ -18,11 +18,14 @@
                         {% for msg in app.session.flashBag.get('message') %}
                             <p>{{ msg }}</p>
                         {% endfor %}
+                        <p><a href="{{ url('main_login') }}">Click here to go log in.</a></p>
                     {% endif %}
+
                     {% if app.session.flashBag.has('link') %}
                         {% for msg in app.session.flashBag.get('link') %}
                             <p><a class="c-cyan" href="{{ path('main_user_resend_activation', {'token': token}) }}">{{ msg }}</a></p>
                         {% endfor %}
+                        <p><a href="{{ url('main_homepage') }}">Click here to go back.</a></p>
                     {% endif %}
                 </div>
             </div>
