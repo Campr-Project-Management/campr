@@ -1,3 +1,7 @@
+ROLE_SUPER_ADMIN: Super Admin
+ROLE_ADMIN: Admin
+ROLE_USER: User
+
 message:
     member: member
     members: members
