@@ -1,7 +1,7 @@
 <template>
     <div class="filters">
         <span class="title">{{ translateText('message.filter_by') }}</span>
-        <div class="dropdowns">            
+        <div class="dropdowns">
             <member-search ref="responsibles" v-model="responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
             <dropdown ref="categories" v-bind:title="translateText('message.category')" v-bind:options="todoCategoriesForSelect" :selectedValue="selectedCategory"></dropdown>
             <div class="input-holder">
