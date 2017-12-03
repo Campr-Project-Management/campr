@@ -22,8 +22,6 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $user = new User();
-
         return $this->render('MainBundle:Default:index.html.twig');
     }
 
@@ -117,20 +115,6 @@ class DefaultController extends Controller
     }
 
     /**
-<<<<<<< HEAD
-=======
-     * Signup page.
-     *
-     * @Route("/signup", name="main_signup")
-     *
-     * @return Response|RedirectResponse
-     */
-    public function signupAction(Request $request)
-    {
-        return $this->render('MainBundle:Default:signup.html.twig');
-    }
-
-    /**
      * Imprint page.
      *
      * @Route("/imprint", name="main_imprint")
@@ -143,7 +127,6 @@ class DefaultController extends Controller
     }
 
     /**
->>>>>>> Changes to portal site
      * Contact page.
      *
      * @Route("/contact", name="main_contact")
