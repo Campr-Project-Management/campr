@@ -66,7 +66,10 @@
                                                 {{ teamMember.team }}                                                    
                                             </div>
                                             <div class="team-details">
-                                                <span>{{ 'message.roles'|trans }}:</span> {{ teamMember.roles|join(', ') }}
+                                                <span>{{ 'message.roles'|trans }}:</span>
+                                                {% for role in teamMember.roles %}
+                                                    {{ role|trans }}{% if not loop.last %}, {% endif %}
+                                                {% endfor %}
                                             </div>
                                             <div class="team-details">
                                                 {% if teamMember.team.teamMembers.count > "1" %}
