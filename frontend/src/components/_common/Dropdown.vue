@@ -1,9 +1,9 @@
 <template>
     <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ translateText(activeTitle) }}
+        <button ref="btn-dropdown" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" @click="dropdownToggle()">{{ translateText(activeTitle) }}
             <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu dropdown-menu-right">
+        <ul class="dropdown-menu dropdown-menu-right nicescroll">
             <li v-for="option in options">
                 <a
                     href="javascript:void(0)"
@@ -17,7 +17,7 @@
 
 <script>
 import {mapActions} from 'vuex';
-
+import 'jquery.nicescroll/jquery.nicescroll.js';
 export default {
     props: ['title', 'filter', 'options', 'item', 'selectedValue'],
     methods: {
@@ -28,10 +28,33 @@ export default {
         resetCustomTitle: function() {
             this.customTitle = null;
         },
+        dropdownToggle: function() {
+            let scrollTop = $(window).scrollTop();
+            let elementOffset = $(this.$el).offset().top;
+            let currentElementOffset = (elementOffset - scrollTop);
+
+            let windowInnerHeight = window.innerHeight;
+
+            if (windowInnerHeight - currentElementOffset < 3*this.dropdownItemHeight) {
+                $(this.$el).find('.dropdown-menu').css('top', -3*this.dropdownItemHeight + 'px');
+            }else{
+                $(this.$el).find('.dropdown-menu').css('top', this.dropdownItemHeight + 'px');
+            }
+        },
+    },
+    mounted() {
+        this.dropdownItemHeight = this.$refs['btn-dropdown'].clientHeight;
+        $(this.$el).find('.dropdown-menu').css('height', 3*this.dropdownItemHeight + 'px');
+        window.$(document).ready(function() {
+            window.$('.nicescroll').niceScroll({
+                autohidemode: false,
+            });
+        });
     },
     data: function() {
         return {
             customTitle: null,
+            dropdownItemHeight: null,
         };
     },
     computed: {
@@ -46,6 +69,12 @@ export default {
 <style scoped lang="scss">
   @import '../../css/_variables';
   @import '../../css/_mixins';
+
+  .dropdown-menu{
+      &.nicescroll{
+           max-height : 200px;
+       }
+  }
 
   .btn-primary {
     background: $darkColor;
