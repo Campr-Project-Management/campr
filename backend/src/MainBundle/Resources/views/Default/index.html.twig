@@ -17,7 +17,7 @@
                                 <div class="row justify-content-between align-items-center">
                                     <div class="col-md-auto">
                                         {% if team.logo %}
-                                            {% set teamStyle = 'background-image: url("' ~ vich_uploader_asset(team, 'logoFile') ~ '")' %}
+                                            {% set teamStyle = 'background-image: url(\'' ~ vich_uploader_asset(team, 'logoFile') ~ '\')' %}
                                         {% else %}
                                             {% set teamStyle = 'background: #123456;' %}
                                         {% endif %}
@@ -56,7 +56,7 @@
                                 <div class="row justify-content-between align-items-center">
                                     <div class="col-md-auto">
                                         {% if teamMember.team and teamMember.team.logo %}
-                                            {% set teamStyle = 'background-image: url("' ~ vich_uploader_asset(teamMember.team, 'logoFile') ~ '")' %}
+                                            {% set teamStyle = 'background-image: url(\'' ~ vich_uploader_asset(teamMember.team, 'logoFile') ~ '\')' %}
                                         {% else %}
                                             {% set teamStyle = 'background: #123456;' %}
                                         {% endif %}
@@ -93,7 +93,7 @@
 
                 {% if app.user.teams.count == 0 and app.user.teamMembers.count == 0 %}
                 <div class="col-xl-12" style="text-align: center;">
-                    <p>Looks like you are new here, why don't you go ahead and <a href="">create a new team</a>?</p>
+                    <p>Looks like you are new here, why don't you go ahead and <a href="{{ path('main_team_create') }}">create a new team</a>?</p>
                 </div>
                 {% endif %}
                 <div class="col-lg-1"></div>
