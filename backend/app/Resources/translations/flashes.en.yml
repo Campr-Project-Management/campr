@@ -1,4 +1,5 @@
 success:
+    registration_success: Thank you for registering. Please check your email for the activation link.
     delete_common: successfully deleted!
     account:
         edit: Your account was succesfully edited!
