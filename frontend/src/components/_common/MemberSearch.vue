@@ -15,7 +15,7 @@
         </div>
         <i class="member-search-clear-button" @click="clearValue">×</i>
         <div class="results team" v-show="hasItems">
-            <div class="members">
+            <div class="members nicescroll">
                 <div class="member flex flex-v-center" v-for="item in items">
                     <div class="checkbox-input clearfix" :class="{'inactive': !item.checked}">
                         <input v-if="singleSelect" :id="item.id"  type="radio" :name="item.userFullName" :checked="item.checked" @click="toogleRadioButton(item)">
@@ -50,16 +50,12 @@
 
 <script>
 import VueTypeahead from 'vue-typeahead';
-import VueScrollbar from 'vue2-scrollbar';
-import 'vue2-scrollbar/dist/style/vue2-scrollbar.css';
 import {mapActions, mapGetters} from 'vuex';
+import 'jquery.nicescroll/jquery.nicescroll.js';
 
 export default {
     extends: VueTypeahead,
     props: ['placeholder', 'singleSelect', 'value', 'selectedUser'],
-    components: {
-        VueScrollbar,
-    },
     computed: {
         ...mapGetters(['users']),
     },
@@ -222,6 +218,15 @@ export default {
 
         .results {
             width: 600px;
+            .members.nicescroll{
+                max-height: 265px;
+            }
+        }
+    }
+
+    .results {
+        .members.nicescroll{
+            max-height: 265px;
         }
     }
 
