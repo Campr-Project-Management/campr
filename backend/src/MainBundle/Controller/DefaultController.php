@@ -22,8 +22,6 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $user = new User();
-
         return $this->render('MainBundle:Default:index.html.twig');
     }
 
@@ -110,6 +108,18 @@ class DefaultController extends Controller
     public function aboutAction(Request $request)
     {
         return $this->render('MainBundle:Default:about.html.twig');
+    }
+
+    /**
+     * Imprint page.
+     *
+     * @Route("/imprint", name="main_imprint")
+     *
+     * @return Response|RedirectResponse
+     */
+    public function imprintAction(Request $request)
+    {
+        return $this->render('MainBundle:Default:imprint.html.twig');
     }
 
     /**
