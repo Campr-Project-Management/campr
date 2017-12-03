@@ -61,7 +61,7 @@ class DefaultController extends Controller
                 )
             ;
 
-            $this->addFlash('registration_success', 'flash.registration_success');
+            $this->addFlash('registration_success', 'success.registration_success');
 
             return $this->redirectToRoute('main_homepage');
         }
