@@ -362,7 +362,7 @@ import datepicker from '../../_common/_form-components/Datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
 import MeetingAttachments from './MeetingAttachments';
-import VueTimepicker from 'vue2-timepicker';
+import VueTimepicker from '../../_common/_form-components/Timepicker';
 import {createFormData} from '../../../helpers/meeting';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import AlertModal from '../../_common/AlertModal.vue';
@@ -532,5 +532,8 @@ export default {
         text-transform: uppercase;
         letter-spacing: 0.1em;
         font-weight: 700;
+    }
+    input.display-time {
+        height: 3.2em;
     }
 </style>

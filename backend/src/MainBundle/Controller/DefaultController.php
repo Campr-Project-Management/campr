@@ -22,15 +22,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $user = new User();
-        $signUpForm = $this->createForm(HomepageRegisterType::class, $user, [
-            'method' => Request::METHOD_POST,
-            'action' => $this->generateUrl('main_register'),
-        ]);
-
-        return $this->render('MainBundle:Default:index.html.twig', [
-            'signUpForm' => $signUpForm->createView(),
-        ]);
+        return $this->render('MainBundle:Default:index.html.twig');
     }
 
     /**
@@ -39,10 +31,6 @@ class DefaultController extends Controller
      */
     public function registerAction(Request $request)
     {
-        if ($request->isMethod(Request::METHOD_GET)) {
-            return $this->redirectToRoute('main_homepage');
-        }
-
         $user = new User();
         $signUpForm = $this->createForm(HomepageRegisterType::class, $user, [
             'method' => Request::METHOD_POST,
@@ -78,9 +66,60 @@ class DefaultController extends Controller
             return $this->redirectToRoute('main_homepage');
         }
 
-        return $this->render('MainBundle:Default:index.html.twig', [
+        return $this->render('MainBundle:Default:register.html.twig', [
             'signUpForm' => $signUpForm->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/register-form", name="main_register_form", options={"expose"=true})
+     */
+    public function registerFormAction()
+    {
+        $signUpForm = $this->createForm(HomepageRegisterType::class, new User(), [
+            'method' => Request::METHOD_POST,
+            'action' => $this->generateUrl('main_register'),
+        ]);
+
+        return $this->render('MainBundle:Default:_registration_form.html.twig', [
+            'signUpForm' => $signUpForm->createView(),
+        ]);
+    }
+
+    /**
+     * Modules page.
+     *
+     * @Route("/modules", name="main_modules")
+     *
+     * @return Response|RedirectResponse
+     */
+    public function modulesAction(Request $request)
+    {
+        return $this->render('MainBundle:Default:modules.html.twig');
+    }
+
+    /**
+     * About page.
+     *
+     * @Route("/about", name="main_about")
+     *
+     * @return Response|RedirectResponse
+     */
+    public function aboutAction(Request $request)
+    {
+        return $this->render('MainBundle:Default:about.html.twig');
+    }
+
+    /**
+     * Imprint page.
+     *
+     * @Route("/imprint", name="main_imprint")
+     *
+     * @return Response|RedirectResponse
+     */
+    public function imprintAction(Request $request)
+    {
+        return $this->render('MainBundle:Default:imprint.html.twig');
     }
 
     /**
