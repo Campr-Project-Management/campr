@@ -18,6 +18,7 @@
 <script>
 import {mapActions} from 'vuex';
 import 'jquery.nicescroll/jquery.nicescroll.js';
+
 export default {
     props: ['title', 'filter', 'options', 'item', 'selectedValue'],
     methods: {
@@ -35,16 +36,16 @@ export default {
 
             let windowInnerHeight = window.innerHeight;
 
-            if (windowInnerHeight - currentElementOffset < 3*this.dropdownItemHeight) {
-                $(this.$el).find('.dropdown-menu').css('top', -3*this.dropdownItemHeight + 'px');
-            }else{
+            if ((windowInnerHeight - currentElementOffset) < (3 * this.dropdownItemHeight)) {
+                $(this.$el).find('.dropdown-menu').css('top', (-3 * this.dropdownItemHeight) + 'px');
+            } else {
                 $(this.$el).find('.dropdown-menu').css('top', this.dropdownItemHeight + 'px');
             }
         },
     },
     mounted() {
         this.dropdownItemHeight = this.$refs['btn-dropdown'].clientHeight;
-        $(this.$el).find('.dropdown-menu').css('height', 3*this.dropdownItemHeight + 'px');
+        $(this.$el).find('.dropdown-menu').css('height', (3 * this.dropdownItemHeight) + 'px');
         window.$(document).ready(function() {
             window.$('.nicescroll').niceScroll({
                 autohidemode: false,
