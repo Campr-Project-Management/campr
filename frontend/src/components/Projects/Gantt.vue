@@ -50,7 +50,7 @@ import * as d3 from 'd3';
 import $ from 'jquery';
 
 const DAY_IN_MILISECONDS = 86400000;
-const MOTNH_IN_SECONDS = 2592000;
+const MOTNH_IN_MILISECONDS = 2592000000;
 
 export default {
     components: {
@@ -270,9 +270,9 @@ export default {
                 const now = new Date();
 
                 if (realEndDate.getTime() > now.getTime()) {
-                    endDate.setTime(realEndDate.getTime() + MOTNH_IN_SECONDS);
+                    endDate.setTime(realEndDate.getTime() + MOTNH_IN_MILISECONDS);
                 } else {
-                    endDate.setTime(now.getTime() + MOTNH_IN_SECONDS);
+                    endDate.setTime(now.getTime() + MOTNH_IN_MILISECONDS);
                 }
 
                 gantt.config.auto_scheduling_descendant_links = false;
