@@ -45,7 +45,6 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-//            new Nelmio\CorsBundle\NelmioCorsBundle(),
             new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
             new Lexik\Bundle\TranslationBundle\LexikTranslationBundle(),
             new Scheb\TwoFactorBundle\SchebTwoFactorBundle(),
@@ -55,6 +54,10 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new MainBundle\MainBundle(),
         ];
+
+        if (in_array($this->getRealEnvironment(), ['prod'], true)) {
+            $bundles[] = new Nelmio\CorsBundle\NelmioCorsBundle();
+        }
 
         if (in_array($this->getRealEnvironment(), ['dev', 'test', 'qa'], true)) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
