@@ -349,6 +349,7 @@
                 </div>
             </div>
         </div>
+
         <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved" />
         <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
@@ -367,6 +368,7 @@ import {createFormData} from '../../../helpers/meeting';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import AlertModal from '../../_common/AlertModal.vue';
 import Error from '../../_common/_messages/Error.vue';
+import router from '../../../router';
 
 export default {
     components: {
@@ -458,20 +460,24 @@ export default {
                 });
             }
 
-            this.createProjectMeeting({
-                data: createFormData(data),
-                projectId: this.$route.params.id,
-            })
-            .then((response) => {
-                if (response.body && response.body.error && response.body.messages) {
-                    this.showFailed = true;
-                } else {
-                    this.showSaved = true;
-                }
-            },
-            (response) => {
-                this.showFailed = true;
-            });
+            this
+                .createProjectMeeting({
+                    data: createFormData(data),
+                    projectId: this.$route.params.id,
+                })
+                .then(
+                    (response) => {
+                        if (response.body && response.body.error && response.body.messages) {
+                            this.showFailed = true;
+                        } else {
+                            this.showSaved = true;
+                        }
+                    },
+                    () => {
+                        this.showFailed = true;
+                    }
+                )
+            ;
         },
     },
     computed: {
@@ -482,6 +488,18 @@ export default {
             todoStatusesForSelect: 'todoStatusesForSelect',
             validationMessages: 'validationMessages',
         }),
+    },
+    watch: {
+        showSaved(value) {
+            if (value === false) {
+                router.push({
+                    name: 'project-meetings',
+                    params: {
+                        id: this.$route.params.id,
+                    },
+                });
+            }
+        },
     },
     created() {
         this.getDistributionLists({projectId: this.$route.params.id});

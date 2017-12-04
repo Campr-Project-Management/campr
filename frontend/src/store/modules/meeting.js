@@ -69,27 +69,59 @@ const actions = {
      * Edit a subteam
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     editProjectMeeting({commit}, data) {
         if (data.withPost) {
-            Vue.http
+            return Vue.http
                 .post(
                     Routing.generate('app_api_meeting_edit', {id: data.id}),
                     data.data
-                ).then((response) => {
-                }, (response) => {
-                });
+                ).then(
+                    (response) => {
+                        if (response.body && response.body.error && response.body.messages) {
+                            const {messages} = response.body;
+                            commit(types.SET_VALIDATION_MESSAGES, {messages});
+                        } else {
+                            commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+
+                            let meeting = response.body;
+                            let id = data.id;
+                            commit(types.EDIT_PROJECT_MEETING, {id, meeting});
+                        }
+
+                        return response;
+                    },
+                    (response) => {
+                        return response;
+                    }
+                )
+            ;
         } else {
-            Vue.http
+            return Vue.http
                 .patch(
                     Routing.generate('app_api_meeting_edit', {id: data.id}),
                     JSON.stringify(data)
-                ).then((response) => {
-                    let meeting = response.data;
-                    let id = data.id;
-                    commit(types.EDIT_PROJECT_MEETING, {id, meeting});
-                }, (response) => {
-                });
+                ).then(
+                    (response) => {
+                        if (response.body && response.body.error && response.body.messages) {
+                            const {messages} = response.body;
+                            commit(types.SET_VALIDATION_MESSAGES, {messages});
+                        } else {
+                            commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+
+                            let meeting = response.body;
+                            let id = data.id;
+                            commit(types.EDIT_PROJECT_MEETING, {id, meeting});
+                        }
+
+                        return response;
+                    },
+                    (response) => {
+                        return response;
+                    }
+                )
+            ;
         }
     },
     /**
@@ -103,17 +135,22 @@ const actions = {
             .post(
                 Routing.generate('app_api_project_meeting_create', {'id': data.projectId}),
                 data.data
-            ).then((response) => {
-                if (response.body && response.body.error && response.body.messages) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                } else {
-                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+            ).then(
+                (response) => {
+                    if (response.body && response.body.error && response.body.messages) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    }
+
+                    return response;
+                },
+                (response) => {
+                    return response;
                 }
-                return response;
-            }, (response) => {
-                return response;
-            });
+            )
+        ;
     },
     /**
      * Gets project meeting
