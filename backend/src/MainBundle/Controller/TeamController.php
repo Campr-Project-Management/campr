@@ -391,10 +391,15 @@ class TeamController extends Controller
             ;
         } else {
             if ($teamInvite->getEmail()) {
-                $user = $em->getRepository(User::class)->findOneBy(['email' => $teamInvite->getEmail()]);
+                $user = $em
+                    ->getRepository(User::class)
+                    ->findOneBy(['email' => $teamInvite->getEmail()])
+                ;
             } elseif ($teamInvite->getUser()) {
                 $user = $teamInvite->getUser();
-            } else {
+            }
+
+            if (!$user) {
                 $user = new User();
                 $user->setFirstName('new');
                 $user->setLastName('user');
