@@ -93,23 +93,23 @@
     </tr>
     <tr>
         <th>{{ 'message.comment'|trans }}</th>
-        <td>{{ statusReport.information.comment|raw|default('-')  }}</td>
+        <td>{{ statusReport.information.comment|default('-')|raw  }}</td>
     </tr>
     <tr>
         <th>{{ 'label.open'|trans }}</th>
-        <td>{{ statusReport.information.projectTasksStatus['label.open']|default('-') }}</td>
+        <td>{{ statusReport.information.projectTasksStatus['label.open']|default('-')|raw }}</td>
     </tr>
     <tr>
         <th>{{ 'label.closed'|trans }}</th>
-        <td>{{ statusReport.information.projectTasksStatus['label.closed']|default('-')  }}</td>
+        <td>{{ statusReport.information.projectTasksStatus['label.closed']|default('-')|raw  }}</td>
     </tr>
     <tr>
         <th>{{ 'label.top_risk'|trans }}</th>
-        <td>{{ statusReport.information.risksOpportunitiesStats.risks.top_risk.title|default('-')  }}</td>
+        <td>{{ statusReport.information.risksOpportunitiesStats.risks.top_risk.title|default('-')|raw  }}</td>
     </tr>
     <tr>
         <th>{{ 'label.top_opportunity'|trans }}</th>
-        <td>{{ statusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.title|default('-')  }}</td>
+        <td>{{ statusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.title|default('-')|raw  }}</td>
     </tr>
     <tr>
         <td></td>
@@ -120,7 +120,7 @@
         <td>
             <dl>
                 {% for todo in statusReport.information.todos.items %}
-                    <dt class="alternate-color">{{ todo.title }}</dt>
+                    <dt class="alternate-color">{{ todo.title|raw }}</dt>
                 {% endfor %}
             </dl>
         </td>
@@ -134,7 +134,7 @@
         <td>
             <dl>
                 {% for decision in statusReport.information.decisions.items %}
-                    <dt class="alternate-color">{{ decision.title }}</dt>
+                    <dt class="alternate-color">{{ decision.title|raw }}</dt>
                 {% endfor %}
             </dl>
         </td>
