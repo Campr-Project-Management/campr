@@ -102,7 +102,7 @@ class AppKernel extends Kernel
 
     public function getTeamSlug()
     {
-        $env = explode('_', $this->getEnvironment());
+        $env = explode('_', getenv('SYMFONY_ENV') ?: 'prod');
         if (count($env) === 1) {
             return null;
         }
@@ -110,6 +110,31 @@ class AppKernel extends Kernel
         array_pop($env);
 
         return implode('_', $env);
+    }
+
+    public function getRequestContext()
+    {
+        $sfEnv = getenv('SYMFONY_ENV') ?: 'prod';
+        $sfEnvParts = explode('_', $sfEnv);
+        $realEnv = array_pop($sfEnvParts);
+        $scheme = $realEnv === 'prod'
+            ? 'https'
+            : 'http'
+        ;
+
+        if (!$sfEnvParts) {
+            $out = [
+                'router.request_context.host' => '%domain%',
+                'router.request_context.scheme' => $_SERVER['REQUEST_SCHEME'] ?? $scheme,
+            ];
+        } else {
+            $out = [
+                'router.request_context.host' => sprintf('%s.%%domain%%', implode('_', $sfEnvParts)),
+                'router.request_context.scheme' => $_SERVER['REQUEST_SCHEME'] ?? $scheme,
+            ];
+        }
+
+        return $out;
     }
 
     public function getKernelParameters()
