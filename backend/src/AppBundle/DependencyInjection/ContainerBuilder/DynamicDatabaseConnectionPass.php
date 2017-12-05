@@ -10,12 +10,13 @@ class DynamicDatabaseConnectionPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $slug = $container->getParameter('kernel.team_slug');
+        $slug = str_replace('-', '_', $slug);
         if (empty($slug) || in_array($slug, ['team', 'www'])) {
             return;
         }
         $definition = $container->getDefinition('doctrine.dbal.default_connection');
         $args = $definition->getArguments();
-        $args[0]['dbname'] .= '_'.$container->getParameter('kernel.team_slug');
+        $args[0]['dbname'] .= '_'.$slug;
         $definition->setArguments($args);
     }
 }
