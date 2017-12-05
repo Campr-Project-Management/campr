@@ -55,7 +55,7 @@ class Team
      * @var string
      *
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
-     * @Gedmo\Slug(fields={"name"}, updatable=false)
+     * @Gedmo\Slug(fields={"name"}, updatable=false, separator="")
      */
     private $slug;
 
