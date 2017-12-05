@@ -55,7 +55,7 @@ class AppKernel extends Kernel
             new MainBundle\MainBundle(),
         ];
 
-        if (in_array($this->getRealEnvironment(), ['prod'], true)) {
+        if (in_array($this->getRealEnvironment(), ['prod', 'qa'], true)) {
             $bundles[] = new Nelmio\CorsBundle\NelmioCorsBundle();
         }
 
