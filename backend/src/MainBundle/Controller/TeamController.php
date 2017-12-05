@@ -390,6 +390,7 @@ class TeamController extends Controller
                 )
             ;
         } else {
+            $user = null;
             if ($teamInvite->getEmail()) {
                 $user = $em
                     ->getRepository(User::class)
