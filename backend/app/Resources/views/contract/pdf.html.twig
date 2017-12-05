@@ -98,11 +98,11 @@
             </tr>
             <tr>
                 <th>{{ 'label.description'|trans }}:</th>
-                <td>{{ contract.description|default('-') }}</td>
+                <td>{{ contract.description|default('-')|raw }}</td>
             </tr>
             <tr>
                 <th>{{ 'message.project_start_event'|trans }}:</th>
-                <td>{{ contract.projectStartEvent|default('-') }}</td>
+                <td>{{ contract.projectStartEvent|default('-')|raw }}</td>
             </tr>
             <tr>
                 <th>{{ 'label.proposed_start_date'|trans }}:</th>
@@ -125,7 +125,7 @@
                 <td>
                     <ul>
                         {% for limitation in contract.project.projectLimitations %}
-                            <li >{{ limitation.description }}</li>
+                            <li >{{ limitation.description|raw }}</li>
                         {% endfor %}
                     </ul>
                 </td>
@@ -135,7 +135,7 @@
                 <td>
                     <dl>
                         {% for objective in contract.project.projectObjectives %}
-                            <dt class="alternate-color">{{ objective.title }}</dt>
+                            <dt class="alternate-color">{{ objective.title|raw }}</dt>
                         {% endfor %}
                     </dl>
                 </td>
@@ -145,7 +145,7 @@
                 <td>
                     <ul>
                         {% for deliverable in contract.project.projectDeliverables %}
-                            <li>{{ deliverable.description }}</li>
+                            <li>{{ deliverable.description|raw }}</li>
                         {% endfor %}
                     </ul>
                 </td>
