@@ -299,16 +299,28 @@ class TeamController extends Controller
                 ])
             ;
 
-            $token = uniqid(rand(1000, 9999), true);
-            $teamInvite = (new TeamInvite())
-                ->setTeam($team)
-                ->setToken($token)
+            // check for already existing invite
+            $teamInvite = $em
+                ->getRepository(TeamInvite::class)
+                ->findOneByEmailAndTeam($email, $team)
             ;
+
+            if (!$teamInvite) {
+                $teamInvite = new TeamInvite();
+                $teamInvite->setTeam($team);
+            }
+
+            // if there's a team invite by email but the user registered in the mean time
+            // this will associate the invite with the existing user
             if ($user) {
                 $teamInvite->setUser($user);
             } else {
                 $teamInvite->setEmail($email);
             }
+
+            $token = uniqid(rand(1000, 9999), true);
+            $teamInvite->setToken($token);
+
             $em->persist($teamInvite);
             $em->flush();
 
@@ -366,21 +378,11 @@ class TeamController extends Controller
             ])
         ;
 
-        if ($teamInvite->getUser() == $this->getUser() ||
-            $teamInvite->getEmail() == $this->getUser()->getEmail()
-        ) {
-            $teamMember = (new TeamMember())
-                ->setUser($this->getUser())
-                ->setTeam($teamInvite->getTeam())
-                ->setRoles([User::ROLE_USER])
-            ;
-            $em->persist($teamMember);
-            $em->remove($teamInvite);
-            $em->flush();
-
+        if ($teamInvite->getAcceptedAt()) {
             $message = $this
                 ->get('translator')
-                ->trans('success.team_member.invitation.accepted',
+                ->trans(
+                    'success.team_member.invitation.already_accepted',
                     [
                         '%team_name%' => $teamInvite->getTeam()->getName(),
                     ],
@@ -388,16 +390,85 @@ class TeamController extends Controller
                 )
             ;
         } else {
-            $email = $teamInvite->getUser() ? $teamInvite->getUser()->getEmail() : $teamInvite->getEmail();
+            if ($teamInvite->getEmail()) {
+                $user = $em->getRepository(User::class)->findOneBy(['email' => $teamInvite->getEmail()]);
+            } elseif ($teamInvite->getUser()) {
+                $user = $teamInvite->getUser();
+            } else {
+                $user = new User();
+                $user->setFirstName('new');
+                $user->setLastName('user');
+                $user->setEmail($teamInvite->getEmail());
+                $user->setRoles([User::ROLE_USER]);
+                $user->setPlainPassword(substr(md5(microtime()), rand(0, 26), 6));
+                $em->persist($user);
+            }
+
+            if ($user->getId() && $teamInvite->getTeam()->userIsMember($user)) {
+                $message = $this
+                    ->get('translator')
+                    ->trans(
+                        'invite.team_member',
+                        [
+                            '%team_name%' => $teamInvite->getTeam()->getName(),
+                        ],
+                        'validators'
+                    )
+                ;
+
+                return $this->render(
+                    'MainBundle:Team:invitation_accepted.html.twig',
+                    [
+                        'message' => $message,
+                    ]
+                );
+            }
+
+            $teamMember = (new TeamMember())
+                ->setUser($this->getUser())
+                ->setTeam($teamInvite->getTeam())
+                ->setRoles([User::ROLE_USER])
+            ;
+            $em->persist($teamMember);
+
+            $teamInvite->setUser($user);
+            $teamInvite->setAcceptedAt(new \DateTime());
+            $em->persist($teamInvite);
+
+            $em->flush();
+
+            $mailer = $this->get('app.service.mailer');
+            $mailer
+                ->sendEmail(
+                    'MainBundle:Email:user_register.html.twig',
+                    'info',
+                    $user->getEmail(),
+                    [
+                        'token' => $user->getActivationToken(),
+                        'full_name' => $user->getFullName(),
+                        'plain_password' => $user->getPlainPassword(),
+                        'expiration_time' => $this->getParameter('activation_token_expiration_number'),
+                    ]
+                )
+            ;
+
             $message = $this
                 ->get('translator')
-                ->trans('failed.team_member.invitation.denied',
+                ->trans(
+                    'success.team_member.invitation.new_user',
                     [
-                        '%user_email%' => $email,
+                        '%team_name%' => $teamInvite->getTeam()->getName(),
                     ],
                     'flashes'
                 )
             ;
+
+            return $this->render(
+                'MainBundle:Team:invitation_accepted.html.twig',
+                [
+                    'message' => $message,
+                ]
+            );
         }
 
         return $this->render(
