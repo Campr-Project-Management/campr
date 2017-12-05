@@ -393,6 +393,22 @@ class Team
     }
 
     /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function userIsMember(User $user)
+    {
+        return $this
+            ->teamMembers
+            ->map(function (TeamMember $teamMember) {
+                return $teamMember->getUser();
+            })
+            ->contains($user)
+        ;
+    }
+
+    /**
      * Add teamSlug.
      *
      * @param TeamSlug $teamSlug

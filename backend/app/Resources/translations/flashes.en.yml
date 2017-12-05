@@ -362,7 +362,12 @@ success:
         delete: Team member successfully deleted!
         invite: New invitation sent to user with email %user_email%.
         invitation:
+            already_a_member: The invite user is already a member.
+            already_accepted: The invitation you're trying to accept has already been accepted or does not exist.
             accepted: Congratulation! You are now part of the team %team_name%.
+            new_user: >
+                Congratulation! You are now part of the team %team_name%.
+                Your user user has been created and the login information has been emailed to you.
         remove: User %team_member_name% has been removed from the team %team_name%.
     payment_method:
         create: Payment method successfully created!
