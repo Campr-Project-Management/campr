@@ -102,7 +102,7 @@ class AppKernel extends Kernel
 
     public function getTeamSlug()
     {
-        $env = explode('_', getenv('SYMFONY_ENV') ?: 'prod');
+        $env = explode('_', $this->getEnvironment());
         if (count($env) === 1) {
             return null;
         }
@@ -114,7 +114,7 @@ class AppKernel extends Kernel
 
     public function getRequestContext()
     {
-        $sfEnv = getenv('SYMFONY_ENV') ?: 'prod';
+        $sfEnv = $this->getEnvironment();
         $sfEnvParts = explode('_', $sfEnv);
         $realEnv = array_pop($sfEnvParts);
         $scheme = $realEnv === 'prod'
