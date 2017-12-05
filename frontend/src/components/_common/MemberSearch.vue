@@ -67,6 +67,21 @@ export default {
                 this.clearUsers();
             }
         },
+        hasItems(val) {
+            if (val) {
+                let scrollTop = $(window).scrollTop();
+                let elementOffset = $(this.$el).offset().top;
+                let currentElementOffset = (elementOffset - scrollTop);
+
+                let windowInnerHeight = window.innerHeight;
+
+                if (windowInnerHeight - currentElementOffset < 420) {
+                    $(this.$el).find('.results.team').css('top', '-340px');
+                }else{
+                    $(this.$el).find('.results.team').css('top', '41px');
+                }
+            }
+        },
     },
     methods: {
         ...mapActions(['getUsers', 'clearUsers']),
@@ -173,6 +188,13 @@ export default {
         if (textValue !== '') {
             $this.next().addClass('active');
         }
+
+        // nicescroll
+        window.$(document).ready(function() {
+            window.$('.nicescroll').niceScroll({
+                autohidemode: false,
+            });
+        });
 
         $('select').next().removeClass();
     },
