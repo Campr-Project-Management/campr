@@ -14,7 +14,7 @@ class LoadCompanyData extends AbstractFixture implements OrderedFixtureInterface
         $company = new Company();
         $company->setName('Default');
 
-        $manager->persist($manager);
+        $manager->persist($company);
         $manager->flush();
 
         $this->setReference('company-default', $company);
