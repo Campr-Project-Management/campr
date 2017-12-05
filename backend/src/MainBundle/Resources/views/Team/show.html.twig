@@ -84,9 +84,6 @@
                                             </td>
                                             {% if "ROLE_SUPER_ADMIN" in current_team_member.roles %}
                                             <td class="text-right">
-                                                <a href="{{ path('main_team_remove_team_member', {'team': team.id, 'id': teamMember.id}) }}" data-toggle="tooltip" class="button button-small button-danger" title="Remove team member">
-                                                        Remove
-                                                    </a>
                                                 {% if teamMember.user != app.user %}                                                    
                                                     <a href="{{ path('main_team_remove_team_member', {'team': team.id, 'id': teamMember.id}) }}" data-toggle="tooltip" class="button button-small button-danger" title="Remove team member">
                                                         Remove
