@@ -899,7 +899,6 @@ class WorkPackage
      */
     public function setMilestone(WorkPackage $workPackage = null)
     {
-        $this->phase = $workPackage->getPhase();
         $this->milestone = $workPackage;
 
         if ($workPackage !== null) {

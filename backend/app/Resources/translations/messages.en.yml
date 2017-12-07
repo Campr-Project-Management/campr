@@ -410,6 +410,7 @@ message:
     has_commented_task: has commented task
     new_comment: New Comment
     this_task_part_of: This task is part of
+    this_task_has_no_planning: This task has no planning data configured
     task_completion: Task completion
     task_condition: Task condition
     add_internal_costs: Add internal costs

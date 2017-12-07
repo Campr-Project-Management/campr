@@ -280,7 +280,7 @@
                     <!-- /// Phase & Milestone /// -->
                     <h3>{{ translateText('message.planning') }}</h3>
                     <div class="flex flex-space-between flex-v-center margintop20">
-                        <div>
+                        <div v-if="task.phase || task.milestone">
                             {{ translateText('message.this_task_part_of') }}
                             <router-link
                                 :to="{name: 'project-phases-view-phase', params: {phaseId: task.phase}}"
@@ -293,13 +293,18 @@
                                 {{ task.milestoneName }}
                             </router-link>
                         </div>
+                        <div v-else>
+                            {{ translateText('message.this_task_has_no_planning') }}
+                        </div>
                         <div>
                             <router-link
+                                v-if="task.phase"
                                 :to="{name: 'project-phases-edit-phase', params: {phaseId: task.phase}}"
                                 class="btn-rounded btn-md btn-empty btn-auto">
                                 {{ translateText('message.edit_phase') }}
                             </router-link>
                             <router-link
+                                v-if="task.milestone"
                                 :to="{name: 'project-milestones-edit-milestone', params: {milestoneId: task.milestone}}"
                                 class="btn-rounded btn-md btn-empty btn-auto">
                                 {{ translateText('button.edit_milestone') }}
@@ -813,7 +818,6 @@ export default {
         },
         projectUsersForSupportSelect: function() {
             let usersForSelect = JSON.parse(JSON.stringify(this.projectUsersForMultipleSelect));
-            usersForSelect.shift();
 
             let selectedIds = [];
             for( let i =0; i< this.editableData.supportUsers.length; i++) {
@@ -825,7 +829,6 @@ export default {
         },
         projectUsersForConsultedSelect: function() {
             let usersForSelect = JSON.parse(JSON.stringify(this.projectUsersForMultipleSelect));
-            usersForSelect.shift();
 
             let selectedIds = [];
             for( let i =0; i< this.editableData.consultedUsers.length; i++) {
@@ -838,7 +841,6 @@ export default {
         },
         projectUsersForInformedSelect: function() {
             let usersForSelect = JSON.parse(JSON.stringify(this.projectUsersForMultipleSelect));
-            usersForSelect.shift();
 
             let selectedIds = [];
             for( let i =0; i< this.editableData.informedUsers.length; i++) {
@@ -991,7 +993,7 @@ export default {
             let end = moment(endDate);
             let start = moment(startDate);
 
-            return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') : '-';
+            return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') + 1 : '-';
         },
         getHumanTimeDiff: function(date) {
             return moment(date).from(new Date(), false);
