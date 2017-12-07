@@ -5,10 +5,11 @@
             <div class="col-md-12">
                 <div class="form-group last-form-group">
                     <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ phaseOrMilestoneLabel }}
+                        <button ref="btn-dropdown" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" @click="dropdownToggle()">
+                            {{ phaseOrMilestoneLabel }}
                             <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-right">
+                        <ul class="dropdown-menu dropdown-menu-right nicescroll" ref="dropdown-menu-planning">
                             <li v-for="phase in nestedPhasesAndMilestone">
                                 <a href="javascript:void(0)" class="unselectable">{{ phase.label }}</a>
                                 <ul class="nested">
@@ -27,6 +28,7 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex';
+import 'jquery.nicescroll/jquery.nicescroll.js';
 
 export default {
 //    props: ['phase', 'milestone'],
@@ -55,12 +57,34 @@ export default {
                 milestone: null,
             };
         },
+        dropdownToggle: function() {
+            let scrollTop = $(window).scrollTop();
+            let elementOffset = $(this.$el).offset().top;
+            let currentElementOffset = (elementOffset - scrollTop);
+
+            let windowInnerHeight = window.innerHeight;
+
+            if (windowInnerHeight - currentElementOffset < 279) {
+                $(this.$el).find('.dropdown-menu').css('top', -5*this.dropdownItemHeight + 'px');
+            }else{
+                $(this.$el).find('.dropdown-menu').css('top', this.dropdownItemHeight + 'px');
+            }
+        },
     },
     created() {
         this.getProjectPhases({projectId: this.$route.params.id});
         this.getProjectMilestones({projectId: this.$route.params.id});
 
         this.planning = this.editPlanning;
+    },
+    mounted() {
+        this.dropdownItemHeight = this.$refs['btn-dropdown'].clientHeight;
+        $(this.$el).find('.dropdown-menu').css('height', 5*this.dropdownItemHeight + 'px');
+        window.$(document).ready(function() {
+            window.$('.nicescroll').niceScroll({
+                autohidemode: false,
+            });
+        });
     },
     computed: {
         ...mapGetters({
@@ -138,6 +162,7 @@ export default {
             planning: {
                 phase: null,
                 milestone: null,
+                dropdownItemHeight: null,
             },
         };
     },
@@ -184,6 +209,12 @@ export default {
             outline: 0;
         }
         
+    }
+
+    .dropdown-menu{
+        &.nicescroll{
+             max-height : 210px;
+        }
     }
 
     .btn-primary.active, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
