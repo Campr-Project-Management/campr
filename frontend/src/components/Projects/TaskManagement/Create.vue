@@ -98,6 +98,10 @@
                     <!-- /// Task Attachments /// -->
                     <!--<attachments v-model="medias" v-bind:editMedias="medias" />-->
                     <attachments v-on:input="setMedias" v-bind:editMedias="medias" />
+                    <error
+                        v-if="validationMessages.medias && validationMessages.medias.length"
+                        v-for="message in validationMessages.medias"
+                        :message="message" />
                     <!-- /// End Task Attachments /// -->
 
                     <hr class="double">
