@@ -143,6 +143,7 @@
                             </div>
                             <div class="col-md-4">
                                 <input-field
+                                    class="time-delay"
                                     type="text"
                                     v-model="timeDelay" v-bind:content="timeDelay"
                                     v-bind:label="translateText('placeholder.potential_time_delay')" />
@@ -212,7 +213,7 @@
 
                     <div class="row">
                         <div class="form-group last-form-group">
-                            <div class="col-md-12">
+                            <div class="col-md-12 member-search-container">
                                 <member-search singleSelect="false" v-model="memberList" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
                             </div>
                         </div>
@@ -264,7 +265,7 @@
                         <hr class="double">
                     </div>
                     <div class="row">
-                        <div class="form-group last-form-group">
+                        <div class="form-group last-form-group btn-row">
                             <div class="col-md-12 text-right">
                                 <a @click="addMeasure()" class="btn-rounded btn-auto">{{ translateText('button.add_new_measure') }}</a>
                             </div>
@@ -618,5 +619,17 @@ export default {
         .ro-very-low-priority {
             color: $secondDarkColor;
         }
+    }
+    .member-search-container {
+        padding-top: 20px;
+        padding-bottom: 25px;
+    }
+    .btn-row {
+        padding-bottom: 15px;
+    }
+    .time-delay {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 </style>
