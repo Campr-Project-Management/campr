@@ -349,6 +349,7 @@
                 </div>
             </div>
         </div>
+
         <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved" />
         <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
@@ -362,11 +363,12 @@ import datepicker from '../../_common/_form-components/Datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
 import MeetingAttachments from './MeetingAttachments';
-import VueTimepicker from 'vue2-timepicker';
+import VueTimepicker from '../../_common/_form-components/Timepicker';
 import {createFormData} from '../../../helpers/meeting';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import AlertModal from '../../_common/AlertModal.vue';
 import Error from '../../_common/_messages/Error.vue';
+import router from '../../../router';
 import {createEditor} from 'vueditor';
 import vueditorConfig from '../../_common/vueditorConfig';
 
@@ -515,6 +517,7 @@ export default {
                     data.name += index !== length - 1 ? item.label + '|' : item.label;
                 });
             }
+
             this.createProjectMeeting({
                 data: createFormData(data),
                 projectId: this.$route.params.id,
@@ -539,6 +542,18 @@ export default {
             todoStatusesForSelect: 'todoStatusesForSelect',
             validationMessages: 'validationMessages',
         }),
+    },
+    watch: {
+        showSaved(value) {
+            if (value === false) {
+                router.push({
+                    name: 'project-meetings',
+                    params: {
+                        id: this.$route.params.id,
+                    },
+                });
+            }
+        },
     },
     created() {
         this.getDistributionLists({projectId: this.$route.params.id});
@@ -589,5 +604,8 @@ export default {
         text-transform: uppercase;
         letter-spacing: 0.1em;
         font-weight: 700;
+    }
+    input.display-time {
+        height: 3.2em;
     }
 </style>

@@ -1,3 +1,7 @@
+ROLE_SUPER_ADMIN: Super Admin
+ROLE_ADMIN: Admin
+ROLE_USER: User
+
 message:
     member: member
     members: members
@@ -443,7 +447,7 @@ title:
     add_distribution_list: Add Distribution List
     homepage_main: Campr Main Site
     homepage: Campr Admin
-    header: Campr Administration
+    header: Administration
     my_account: My Account
     account_activation: Account activation
     reset: Please enter your email address to reset the account password. An email will be sent with instructions.

@@ -487,6 +487,9 @@
                 </meeting-participants>
             </div>
         </div>
+
+        <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved" />
+        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
 </template>
 
@@ -510,6 +513,8 @@ import MeetingParticipants from './MeetingParticipants';
 import {createEditor} from 'vueditor';
 import vueditorConfig from '../../_common/vueditorConfig';
 import Error from '../../_common/_messages/Error.vue';
+import AlertModal from '../../_common/AlertModal.vue';
+import router from '../../../router';
 
 export default {
     components: {
@@ -528,6 +533,7 @@ export default {
         MeetingModals,
         MeetingParticipants,
         Error,
+        AlertModal,
     },
     methods: {
         ...mapActions([
@@ -732,11 +738,25 @@ export default {
                 location: this.location,
                 medias: this.medias,
             };
-            this.editProjectMeeting({
-                id: this.$route.params.meetingId,
-                data: createFormData(data),
-                withPost: true,
-            });
+            this
+                .editProjectMeeting({
+                    id: this.$route.params.meetingId,
+                    data: createFormData(data),
+                    withPost: true,
+                })
+                .then(
+                    (response) => {
+                        if (response.body && response.body.error && response.body.messages) {
+                            this.showFailed = true;
+                        } else {
+                            this.showSaved = true;
+                        }
+                    },
+                    () => {
+                        this.showFailed = true;
+                    }
+                )
+            ;
         },
         initVueEditors: function() {
             setTimeout(() => {
@@ -785,6 +805,8 @@ export default {
     },
     data() {
         return {
+            showSaved: false,
+            showFailed: false,
             agendasActivePage: 1,
             participantsPerPage: 10,
             participantsPages: 0,
@@ -948,6 +970,16 @@ export default {
                 };
             });
             this.initVueEditors();
+        },
+        showSaved(value) {
+            if (value === false) {
+                router.push({
+                    name: 'project-meetings',
+                    params: {
+                        id: this.$route.params.id,
+                    },
+                });
+            }
         },
     },
 };

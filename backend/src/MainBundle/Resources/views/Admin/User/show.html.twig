@@ -10,7 +10,7 @@
                     <div class="row justify-content-between align-items-center">
                         <div class="col-md-auto">
                             {% if user.avatar %}
-                                <div class="team-img" style="background-image: url("{{ vich_uploader_asset(user, 'avatarFile') }}")"></div>
+                                <div class="team-img" style="background-image: url('{{ vich_uploader_asset(user, 'avatarFile') }}')"></div>
                             {% else %}
                                 <div class="team-img" style="background-image: url('{{ user.gravatar }}')"></div>
                             {% endif %}

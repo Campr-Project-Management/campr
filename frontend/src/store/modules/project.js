@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
-import router from '../../router';
 import * as projectStatus from './project-status';
 
 const state = {
@@ -259,8 +258,9 @@ const actions = {
                         commit(types.SET_VALIDATION_MESSAGES, {messages});
                     } else {
                         commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                        router.push({name: 'project-task-management-edit-labels'});
                     }
+
+                    return response;
                 },
                 () => {}
             )
@@ -287,8 +287,9 @@ const actions = {
                         commit(types.SET_VALIDATION_MESSAGES, {messages});
                     } else {
                         commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                        router.push({name: 'project-task-management-edit-labels'});
                     }
+
+                    return response;
                 },
                 () => {}
             )

@@ -67,6 +67,12 @@ class TeamInvite
      */
     private $createdAt;
 
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="accepted_at", type="datetime", nullable=true)
+     */
+    private $acceptedAt;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -200,5 +206,25 @@ class TeamInvite
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getAcceptedAt()
+    {
+        return $this->acceptedAt;
+    }
+
+    /**
+     * @param \DateTime $acceptedAt
+     *
+     * @return TeamInvite
+     */
+    public function setAcceptedAt(\DateTime $acceptedAt = null)
+    {
+        $this->acceptedAt = $acceptedAt;
+
+        return $this;
     }
 }

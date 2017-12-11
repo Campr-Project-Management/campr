@@ -26,7 +26,7 @@
                             <div class="row justify-content-between align-items-center">
                                 <div class="col-md-auto">
                                     {% if team.logo %}
-                                        <div class="team-img" style="background-image: url("{{ vich_uploader_asset(team, 'logoFile') }}")"></div>
+                                        <div class="team-img" style="background-image: url('{{ vich_uploader_asset(team, 'logoFile') }}')"></div>
                                     {% endif %}
                                     <div class="team-info">
                                         <div class="team-name">{{ team.name }}</div>
@@ -84,9 +84,6 @@
                                             </td>
                                             {% if "ROLE_SUPER_ADMIN" in current_team_member.roles %}
                                             <td class="text-right">
-                                                <a href="{{ path('main_team_remove_team_member', {'team': team.id, 'id': teamMember.id}) }}" data-toggle="tooltip" class="button button-small button-danger" title="Remove team member">
-                                                        Remove
-                                                    </a>
                                                 {% if teamMember.user != app.user %}                                                    
                                                     <a href="{{ path('main_team_remove_team_member', {'team': team.id, 'id': teamMember.id}) }}" data-toggle="tooltip" class="button button-small button-danger" title="Remove team member">
                                                         Remove
