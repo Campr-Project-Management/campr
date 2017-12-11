@@ -45,20 +45,23 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            new Nelmio\CorsBundle\NelmioCorsBundle(),
             new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
             new Lexik\Bundle\TranslationBundle\LexikTranslationBundle(),
             new Scheb\TwoFactorBundle\SchebTwoFactorBundle(),
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
 
             //internals
             new AppBundle\AppBundle(),
             new MainBundle\MainBundle(),
         ];
 
+        if (in_array($this->getRealEnvironment(), ['prod', 'qa'], true)) {
+            $bundles[] = new Nelmio\CorsBundle\NelmioCorsBundle();
+        }
+
         if (in_array($this->getRealEnvironment(), ['dev', 'test', 'qa'], true)) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
         }
 
         if (in_array($this->getRealEnvironment(), ['dev', 'test'], true)) {
@@ -107,6 +110,31 @@ class AppKernel extends Kernel
         array_pop($env);
 
         return implode('_', $env);
+    }
+
+    public function getRequestContext()
+    {
+        $sfEnv = $this->getEnvironment();
+        $sfEnvParts = explode('_', $sfEnv);
+        $realEnv = array_pop($sfEnvParts);
+        $scheme = $realEnv === 'prod'
+            ? 'https'
+            : 'http'
+        ;
+
+        if (!$sfEnvParts) {
+            $out = [
+                'router.request_context.host' => '%domain%',
+                'router.request_context.scheme' => $_SERVER['REQUEST_SCHEME'] ?? $scheme,
+            ];
+        } else {
+            $out = [
+                'router.request_context.host' => sprintf('%s.%%domain%%', implode('_', $sfEnvParts)),
+                'router.request_context.scheme' => $_SERVER['REQUEST_SCHEME'] ?? $scheme,
+            ];
+        }
+
+        return $out;
     }
 
     public function getKernelParameters()

@@ -15,7 +15,7 @@
         </div>
         <i class="member-search-clear-button" @click="clearValue">×</i>
         <div class="results team" v-show="hasItems">
-            <div class="members">
+            <div class="members nicescroll">
                 <div class="member flex flex-v-center" v-for="item in items">
                     <div class="checkbox-input clearfix" :class="{'inactive': !item.checked}">
                         <input v-if="singleSelect" :id="item.id"  type="radio" :name="item.userFullName" :checked="item.checked" @click="toogleRadioButton(item)">
@@ -50,16 +50,12 @@
 
 <script>
 import VueTypeahead from 'vue-typeahead';
-import VueScrollbar from 'vue2-scrollbar';
-import 'vue2-scrollbar/dist/style/vue2-scrollbar.css';
 import {mapActions, mapGetters} from 'vuex';
+import 'jquery.nicescroll/jquery.nicescroll.js';
 
 export default {
     extends: VueTypeahead,
     props: ['placeholder', 'singleSelect', 'value', 'selectedUser'],
-    components: {
-        VueScrollbar,
-    },
     computed: {
         ...mapGetters(['users']),
     },
@@ -69,6 +65,21 @@ export default {
                 this.getUsers({id: val});
             } else {
                 this.clearUsers();
+            }
+        },
+        hasItems(val) {
+            if (val) {
+                let scrollTop = $(window).scrollTop();
+                let elementOffset = $(this.$el).offset().top;
+                let currentElementOffset = (elementOffset - scrollTop);
+
+                let windowInnerHeight = window.innerHeight;
+
+                if (windowInnerHeight - currentElementOffset < 420) {
+                    $(this.$el).find('.results.team').css('top', '-340px');
+                }else{
+                    $(this.$el).find('.results.team').css('top', '41px');
+                }
             }
         },
     },
@@ -178,6 +189,13 @@ export default {
             $this.next().addClass('active');
         }
 
+        // nicescroll
+        window.$(document).ready(function() {
+            window.$('.nicescroll').niceScroll({
+                autohidemode: false,
+            });
+        });
+
         $('select').next().removeClass();
     },
 };
@@ -222,6 +240,15 @@ export default {
 
         .results {
             width: 600px;
+            .members.nicescroll{
+                max-height: 265px;
+            }
+        }
+    }
+
+    .results {
+        .members.nicescroll{
+            max-height: 265px;
         }
     }
 

@@ -30,6 +30,9 @@
                 <a v-if="isEdit" @click="editLabel" class="btn-rounded btn-auto">{{ button.edit_label }}</a>
             </div>
         </div>
+
+        <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved" />
+        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
 </template>
 
@@ -38,12 +41,15 @@ import InputField from '../../_common/_form-components/InputField';
 import {Sketch} from 'vue-color';
 import {mapGetters, mapActions} from 'vuex';
 import Error from '../../_common/_messages/Error.vue';
+import AlertModal from '../../_common/AlertModal';
+import router from '../../../router';
 
 export default {
     components: {
         InputField,
         'sketch-picker': Sketch,
         Error,
+        AlertModal,
     },
     created() {
         if (this.$route.params.labelId) this.getProjectLabel(this.$route.params.labelId);
@@ -59,6 +65,16 @@ export default {
             this.color = this.label.color;
             this.colors.hex = this.label.color;
             this.css = 'background: ' + this.label.color;
+        },
+        showSaved(value) {
+            if (value === false) {
+                router.push({
+                    name: 'project-task-management-edit-labels',
+                    params: {
+                        id: this.$route.params.id,
+                    },
+                });
+            }
         },
     },
     methods: {
@@ -77,7 +93,21 @@ export default {
                 description: this.description,
                 color: this.color,
             };
-            this.createProjectLabel(data);
+            this
+                .createProjectLabel(data)
+                .then(
+                    (response) => {
+                        if (response.body && response.body.error) {
+                            this.showFailed = true;
+                        } else {
+                            this.showSaved = true;
+                        }
+                    },
+                    () => {
+                        this.showFailed = true;
+                    }
+                )
+            ;
         },
         editLabel: function() {
             let data = {
@@ -86,11 +116,27 @@ export default {
                 description: this.description,
                 color: this.color,
             };
-            this.editProjectLabel(data);
+            this
+                .editProjectLabel(data)
+                .then(
+                    (response) => {
+                        if (response.body && response.body.error) {
+                            this.showFailed = true;
+                        } else {
+                            this.showSaved = true;
+                        }
+                    },
+                    () => {
+                        this.showFailed = true;
+                    },
+                )
+            ;
         },
     },
     data() {
         return {
+            showSaved: false,
+            showFailed: false,
             color: '',
             title: '',
             description: '',
