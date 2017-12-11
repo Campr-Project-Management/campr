@@ -488,7 +488,7 @@ class Project
     private $progress = 0;
 
     /**
-     * @var ArrayCollection|ProjectRoles[]
+     * @var ArrayCollection|ProjectRole[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectRole", mappedBy="project",  cascade={"all"})
      */
