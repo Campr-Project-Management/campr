@@ -44,9 +44,13 @@ export default {
 
         let valueTmp;
         if (this.type === 'double') {
-            valueTmp = this.model.split(';');
-            valueTmp[0] = parseInt(valueTmp[0]);
-            valueTmp[1] = parseInt(valueTmp[1]);
+            if (typeof valueTmp !== 'undefined') {
+                valueTmp = this.model.split(';');
+                valueTmp[0] = parseInt(valueTmp[0]);
+                valueTmp[1] = parseInt(valueTmp[1]);
+            }else {
+                valueTmp = [0, 0];
+            }
         }else{
             valueTmp = this.model;
         }

@@ -68,26 +68,28 @@
 {%- endblock choice_widget_collapsed -%}
 
 {%- block checkbox_widget -%}
-    <div class="col-md-offset-2">
-        {% if attr.toggle is defined %}
-            <div class="toggle-switch toggle-switch-demo m-t-10">
-                <label for="{{ name }}" class="ts-label">{{ label }}:</label>
-                <input type="checkbox" id="{{ id }}" name="{{ full_name }}"  {% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
-                <label for="ts1" class="ts-helper"></label>
-            </div>
-        {% else %}
-            <label class="checkbox checkbox-inline m-r-10">
-                <label for="{{ name }}">
-                    {% if label is not none %}
-                        {{ label }}
-                    {% else %}
-                        {{ 'label.label'|trans({}, 'messages') }}
-                    {% endif %}
+    <div class="form-group fg-float">
+        <div class="col-md-10 col-md-offset-2">
+            {% if attr.toggle is defined %}
+                <div class="toggle-switch toggle-switch-demo m-t-10">
+                    <label for="{{ name }}" class="ts-label">{{ label }}:</label>
+                    <input type="checkbox" id="{{ id }}" name="{{ full_name }}"  {% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+                    <label for="ts1" class="ts-helper"></label>
+                </div>
+            {% else %}
+                <label class="checkbox checkbox-inline m-r-10">
+                    <label for="{{ name }}">
+                        {% if label is not none %}
+                            {{ label }}
+                        {% else %}
+                            {{ 'label.label'|trans({}, 'messages') }}
+                        {% endif %}
+                    </label>
+                    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+                    <i class="input-helper"></i>
                 </label>
-                <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
-                <i class="input-helper"></i>
-            </label>
-        {% endif %}
+            {% endif %}
+        </div>
     </div>
 {%- endblock checkbox_widget -%}
 
