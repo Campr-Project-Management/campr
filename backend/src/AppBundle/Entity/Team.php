@@ -55,7 +55,7 @@ class Team
      * @var string
      *
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
-     * @Gedmo\Slug(fields={"name"}, updatable=false)
+     * @Gedmo\Slug(fields={"name"}, updatable=false, separator="")
      */
     private $slug;
 
@@ -390,6 +390,22 @@ class Team
     public function getTeamMembers()
     {
         return $this->teamMembers;
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function userIsMember(User $user)
+    {
+        return $this
+            ->teamMembers
+            ->map(function (TeamMember $teamMember) {
+                return $teamMember->getUser();
+            })
+            ->contains($user)
+        ;
     }
 
     /**

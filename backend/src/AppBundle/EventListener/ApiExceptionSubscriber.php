@@ -2,6 +2,7 @@
 
 namespace AppBundle\EventListener;
 
+use Symfony\Component\Debug\Exception\UndefinedMethodException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,7 +31,10 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
         if (strpos($request->getPathInfo(), '/api') !== 0) {
             $exception = $event->getException();
 
-            if ($exception instanceof HttpException) {
+            if ($exception instanceof UndefinedMethodException) {
+                $errorCode = $exception->getCode();
+                $errorMessage = $exception->getMessage();
+            } elseif ($exception instanceof HttpException) {
                 $errorCode = $exception->getStatusCode();
                 $errorMessage = $exception->getMessage();
             } else {
@@ -59,16 +63,28 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
         }
 
         /** @var HttpExceptionInterface $e */
-        $e = $event->getException();
+        $exception = $event->getException();
+
+        if ($exception instanceof UndefinedMethodException) {
+            $errorCode = $exception->getCode();
+            $errorMessage = $exception->getMessage();
+        } elseif ($exception instanceof HttpException) {
+            $errorCode = $exception->getStatusCode();
+            $errorMessage = $exception->getMessage();
+        } else {
+            $errorCode = 500;
+            $errorMessage = 'Something went terribly wrong.';
+        }
 
         $data = [
-            'messages' => isset(Response::$statusTexts[$e->getStatusCode()])
-                ? Response::$statusTexts[$e->getStatusCode()]
-                : 'Unknown status code',
+            'messages' => isset(Response::$statusTexts[$errorCode])
+                ? Response::$statusTexts[$errorCode]
+                : ($errorMessage ?? 'Unknown status code'),
         ];
+
         $response = new JsonResponse(
             $data,
-            $e->getStatusCode()
+            $errorCode
         );
 
         $event->setResponse($response);

@@ -154,14 +154,31 @@ class WorkPackageListener
                 );
             } catch (\Exception $e) {
                 // AVG() returns null in MySQL if there's no data and this goes boom
-                $this->runUpdateQuery(
-                    $this->em,
-                    'UPDATE project SET progress = :progress WHERE id = :id',
-                    [
-                        'progress' => 100,
-                        'id' => $project->getId(),
-                    ]
-                );
+                try {
+                    $this->runUpdateQuery(
+                        $this->em,
+                        'UPDATE project SET progress = (
+                            SELECT AVG(wp.progress)
+                            FROM work_package wp
+                            WHERE wp.project_id = project.id
+                            AND wp.type = :type
+                            AND wp.parent_id IS NULL
+                        ) WHERE id = :id',
+                        [
+                            'type' => WorkPackage::TYPE_TASK,
+                            'id' => $project->getId(),
+                        ]
+                    );
+                } catch (\Exception $e) {
+                    $this->runUpdateQuery(
+                        $this->em,
+                        'UPDATE project SET progress = :progress WHERE id = :id',
+                        [
+                            'progress' => 100,
+                            'id' => $project->getId(),
+                        ]
+                    );
+                }
             }
 
             if (in_array($this->em->getUnitOfWork()->getEntityState($project), [UnitOfWork::STATE_NEW, UnitOfWork::STATE_MANAGED])) {
