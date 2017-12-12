@@ -12,10 +12,11 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ProjectController extends Controller
 {
-
     /**
      * @Route("/{id}/xml", name="main_project_xml", options={"expose"=true})
+     *
      * @param Project $project
+     *
      * @return Response
      */
     public function getXMLAction(Project $project)
