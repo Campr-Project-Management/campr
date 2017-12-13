@@ -378,6 +378,10 @@ class TeamController extends Controller
             ])
         ;
 
+        if (!$teamInvite) {
+            throw $this->createNotFoundException();
+        }
+
         if ($teamInvite->getAcceptedAt()) {
             $message = $this
                 ->get('translator')
@@ -391,6 +395,8 @@ class TeamController extends Controller
             ;
         } else {
             $user = null;
+            $newUser = false;
+
             if ($teamInvite->getEmail()) {
                 $user = $em
                     ->getRepository(User::class)
@@ -408,6 +414,7 @@ class TeamController extends Controller
                 $user->setRoles([User::ROLE_USER]);
                 $user->setPlainPassword(substr(md5(microtime()), rand(0, 26), 6));
                 $em->persist($user);
+                $newUser = true;
             }
 
             if ($user->getId() && $teamInvite->getTeam()->userIsMember($user)) {
@@ -431,7 +438,7 @@ class TeamController extends Controller
             }
 
             $teamMember = (new TeamMember())
-                ->setUser($this->getUser())
+                ->setUser($user)
                 ->setTeam($teamInvite->getTeam())
                 ->setRoles([User::ROLE_USER])
             ;
@@ -443,20 +450,21 @@ class TeamController extends Controller
 
             $em->flush();
 
-            $mailer = $this->get('app.service.mailer');
-            $mailer
-                ->sendEmail(
-                    'MainBundle:Email:user_register.html.twig',
-                    'info',
-                    $user->getEmail(),
-                    [
-                        'token' => $user->getActivationToken(),
-                        'full_name' => $user->getFullName(),
-                        'plain_password' => $user->getPlainPassword(),
-                        'expiration_time' => $this->getParameter('activation_token_expiration_number'),
-                    ]
-                )
-            ;
+            if ($newUser) {
+                $mailer = $this->get('app.service.mailer');
+                $mailer
+                    ->sendEmail(
+                        'MainBundle:Email:user_register.html.twig',
+                        'info',
+                        $user->getEmail(),
+                        [
+                            'token' => $user->getActivationToken(),
+                            'full_name' => $user->getFullName(),
+                            'plain_password' => $user->getPlainPassword(),
+                            'expiration_time' => $this->getParameter('activation_token_expiration_number'),
+                        ]
+                    );
+            }
 
             $message = $this
                 ->get('translator')
