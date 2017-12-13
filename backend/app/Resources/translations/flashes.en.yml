@@ -554,3 +554,6 @@ activation:
 reset:
     not_found: No reset token found!
     expired: Reset token expired!
+
+registration:
+    disabled: Registration is currently disabled.
