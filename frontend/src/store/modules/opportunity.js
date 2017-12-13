@@ -10,6 +10,7 @@ const state = {
 const getters = {
     opportunities: state => state.opportunities,
     currentOpportunity: state => state.currentOpportunity,
+    currentOpportunityMeasures: state => state.currentOpportunity.measures,
 };
 
 const actions = {
