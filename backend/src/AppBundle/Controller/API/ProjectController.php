@@ -80,7 +80,7 @@ use AppBundle\Form\StatusReport\CreateType as StatusReportCreateType;
 use AppBundle\Form\ProjectCloseDown\CreateType as ProjectCloseDownCreateType;
 use AppBundle\Utils\ImportConstants;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-
+use Gaufrette\Exception\FileAlreadyExists;
 /**
  * @Route("/api/projects")
  */
@@ -1412,18 +1412,26 @@ class ProjectController extends ApiController
             }
         }
 
+        $entitySaveErrors = [];
         if ($form->isValid()) {
             foreach ($wp->getMedias() as $media) {
                 $media->setFileSystem($fileSystem);
             }
-            $wp->setProject($project);
-            $this->persistAndFlush($wp);
-            $this->refreshEntity($wp);
 
-            return $this->createApiResponse($wp, Response::HTTP_CREATED);
+            try {
+                $wp->setProject($project);
+                $this->persistAndFlush($wp);
+                $this->refreshEntity($wp);
+
+                return $this->createApiResponse($wp, Response::HTTP_CREATED);
+            } catch (FileAlreadyExists $exception) {
+                $entitySaveErrors['medias'][] = $exception->getMessage();
+            }
         }
 
         $errors = $this->getFormErrors($form);
+        $errors = array_merge($errors, $entitySaveErrors);
+
         $errors = [
             'messages' => $errors,
         ];
