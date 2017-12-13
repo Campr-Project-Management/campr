@@ -3,6 +3,7 @@
 namespace AppBundle\EventListener;
 
 use AppBundle\Entity\Project;
+use AppBundle\Entity\ProjectStatus;
 use AppBundle\Helper\WorkPackageTreeBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
@@ -179,6 +180,35 @@ class WorkPackageListener
                         ]
                     );
                 }
+            }
+
+            $sql = sprintf(
+                'SELECT count(*) > 0 as is_started
+                FROM work_package wp
+                WHERE project_id = %d
+                AND wp.type = %d
+                AND (
+                    wp.work_package_status_id = %d
+                    OR
+                    wp.work_package_status_id = %d
+                )',
+                $project->getId(),
+                WorkPackage::TYPE_TASK,
+                WorkPackageStatus::ONGOING,
+                WorkPackageStatus::PENDING
+            );
+
+            $projectIsStarted = $this->runSelectQuery($this->em, $sql)[0]['is_started'];
+
+            if ($projectIsStarted === '1') {
+                $this->runUpdateQuery(
+                    $this->em,
+                    'UPDATE project SET project_status_id = :project_status_id WHERE id = :id',
+                    [
+                        'project_status_id' => ProjectStatus::IN_PROGRESS,
+                        'id' => $project->getId(),
+                    ]
+                );
             }
 
             if (in_array($this->em->getUnitOfWork()->getEntityState($project), [UnitOfWork::STATE_NEW, UnitOfWork::STATE_MANAGED])) {

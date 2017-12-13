@@ -153,9 +153,6 @@ const actions = {
                         commit(types.SET_TASK, {task});
                     }
                     return response;
-                },
-                (response) => {
-                    return response;
                 }
             )
         ;
@@ -182,9 +179,6 @@ const actions = {
                         commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                         commit(types.SET_TASK, {task});
                     }
-                    return response;
-                },
-                (response) => {
                     return response;
                 }
             );

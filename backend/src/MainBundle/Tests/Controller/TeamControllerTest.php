@@ -250,7 +250,7 @@ class TeamControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/team/%d/show', $this->team->getId()));
 
         $this->assertContains('Name: <strong>test-team</strong>', $crawler->html());
-        $this->assertContains('Slug: <strong>test-team</strong>', $crawler->html());
+        $this->assertContains('Slug: <strong>testteam</strong>', $crawler->html());
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $this->removeTeam('test-team');
@@ -477,7 +477,7 @@ class TeamControllerTest extends BaseController
         $this->login($user);
 
         /** @var Crawler $crawler */
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/team/invitation-accepted/%s', $token));
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/team/invitation-accepted/%s', $teamInvite->getToken()));
 
         $this->assertContains(sprintf('Congratulation! You are now part of the team %s.', $this->team->getName()), $crawler->html());
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
