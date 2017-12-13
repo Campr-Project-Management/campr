@@ -32,6 +32,20 @@ class UserController extends Controller
      */
     public function registerAction(Request $request)
     {
+        if (true) { // this is for PHPStorm to stop complaining
+            $flashBag = $this->get('session')->getFlashBag();
+            $flashBag
+                ->add(
+                    'message',
+                    $this
+                        ->get('translator')
+                        ->trans('registration.disabled', [], 'flashes')
+                )
+            ;
+
+            return $this->redirectToRoute('main_homepage');
+        }
+
         if ($this->getUser()) {
             return $this->redirectToRoute('main_homepage');
         }

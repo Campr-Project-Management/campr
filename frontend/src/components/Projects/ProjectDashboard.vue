@@ -75,31 +75,31 @@
                             <tbody>
                                 <tr>
                                     <td>{{ translateText('table_header_cell.base') }}</td>
-                                    <td v-if="tasksForSchedule.base_start && tasksForSchedule.base_start.scheduledStartAt">
-                                        {{ tasksForSchedule.base_start.scheduledStartAt }}
+                                    <td v-if="projectContract && projectContract.proposedStartDate">
+                                        {{ projectContract.proposedStartDate }}
                                     </td>
                                     <td v-else>-</td>
-                                    <td v-if="tasksForSchedule.base_finish && tasksForSchedule.base_finish.scheduledFinishAt">
-                                        {{ tasksForSchedule.base_finish.scheduledFinishAt }}
+                                    <td v-if="projectContract && projectContract.proposedEndDate">
+                                        {{ projectContract.proposedEndDate }}
                                     </td>
                                     <td v-else>-</td>
-                                    <td  v-if="tasksForSchedule.base_start && tasksForSchedule.base_finish">
-                                        {{ getDuration(tasksForSchedule.base_start.scheduledStartAt, tasksForSchedule.base_finish.scheduledFinishAt) }}
+                                    <td  v-if="projectContract && projectContract.proposedEndDate">
+                                        {{ getDuration(projectContract.proposedStartDate, projectContract.proposedEndDate) }}
                                     </td>
                                     <td v-else>-</td>
                                 </tr>
                                 <tr>
                                     <td>{{ translateText('table_header_cell.forecast') }}</td>
-                                    <td v-if="tasksForSchedule.forecast_start && tasksForSchedule.forecast_start.forecastStartAt">
-                                        {{ tasksForSchedule.forecast_start.forecastStartAt }}
+                                    <td v-if="projectContract && projectContract.forecastStartDate">
+                                        {{ projectContract.forecastStartDate }}
                                     </td>
                                     <td v-else>-</td>
-                                    <td v-if="tasksForSchedule.forecast_finish && tasksForSchedule.forecast_finish.forecastFinishAt">
-                                        {{ tasksForSchedule.forecast_finish.forecastFinishAt }}
+                                    <td v-if="projectContract && projectContract.forecastEndDate">
+                                        {{ projectContract.forecastEndDate }}
                                     </td>
                                     <td v-else>-</td>
-                                    <td  v-if="tasksForSchedule.forecast_start && tasksForSchedule.forecast_finish">
-                                        {{ getDuration(tasksForSchedule.forecast_start.forecastStartAt, tasksForSchedule.forecast_finish.forecastFinishAt) }}
+                                    <td  v-if="projectContract && projectContract.forecastEndDate">
+                                        {{ getDuration(projectContract.forecastStartDate, projectContract.forecastEndDate) }}
                                     </td>
                                     <td v-else>-</td>
                                 </tr>
@@ -223,7 +223,7 @@ export default {
             let start = moment(startDate);
             let diff = end.diff(start, 'days');
 
-            return !isNaN(diff) ? diff : '-';
+            return !isNaN(diff) ? diff + 1 : '-';
         },
         doCloseProject() {
             const {id} = this.project;
@@ -267,6 +267,12 @@ export default {
         projectContractId() {
             if (this.project.contracts && this.project.contracts.length) {
                 return this.project.contracts[0].id;
+            }
+            return null;
+        },
+        projectContract() {
+            if (this.project.contracts && this.project.contracts.length) {
+                return this.project.contracts[0];
             }
             return null;
         },
