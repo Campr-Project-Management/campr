@@ -103,7 +103,7 @@
                         <h1>{{ risk.title }}</h1>
                     </div>
                     <div>
-                        <div class="header-buttons" v-if="risk">
+                        <div class="header-buttons" v-if="risk.id">
                             <router-link :to="{name: 'project-risks-edit-risk', params: {riskId: risk.id}}" class="btn-icon">
                                 <edit-icon fill="second-fill"></edit-icon>
                             </router-link>
@@ -221,7 +221,7 @@
                         </div>
                         <div class="comment-body">
                             <b class="title">{{ measure.title }}</b>
-                            <p class="cost">{{ translateText('message.cost') }}: <b>{{rick.currency}} {{ measure.cost }}</b></p>
+                            <p class="cost">{{ translateText('message.cost') }}: <b>{{risk.currency}} {{ measure.cost }}</b></p>
                             <p v-html="measure.description "></p>
                         </div>
                         <div class="comment-footer" v-if="measure.medias.length > 0">
@@ -496,6 +496,7 @@ export default {
             risk: 'currentRisk',
             risksOpportunitiesStats: 'risksOpportunitiesStats',
             validationMessages: 'validationMessages',
+            measures: 'measures',
         }),
     },
     created() {
@@ -530,6 +531,11 @@ export default {
             this.currentRiskImpact = this.risk.impact;
             this.currentRiskProbability = this.risk.probability;
             this.updateGridView();
+        },
+        measures(value) {
+            this.$refs['measureDescription'].setContent('');
+            this.measureTitle = '';
+            this.measureCost = '';
         },
     },
 };
@@ -567,5 +573,8 @@ export default {
         .ro-very-low-priority {
             color: $secondDarkColor;
         }
+    }
+    .btn-icon {
+        cursor: pointer;
     }
 </style>
