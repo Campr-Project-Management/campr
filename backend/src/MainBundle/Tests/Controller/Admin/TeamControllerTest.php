@@ -192,7 +192,7 @@ class TeamControllerTest extends BaseController
 
         $form = $crawler->filter('#edit-team')->first()->form();
         $form['edit[name]'] = '';
-        $form['edit[slug]'] = 'team-2';
+        $form['edit[slug]'] = 'team2';
 
         $crawler = $this->client->submit($form);
 
