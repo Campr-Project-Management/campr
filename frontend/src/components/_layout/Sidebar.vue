@@ -75,7 +75,7 @@
                     </router-link>
                 </li>
             </ul>
-            <ul v-show="this.$route.name.indexOf('project-') != -1">
+            <ul v-show="this.$route.name && this.$route.name.indexOf('project-') != -1">
                 <li class="separator"></li>
                 <li v-for="module in modules" v-if="displayModule(module)">
                     <router-link :to="{name: module.route.name, params: {id: projectId}}" v-bind:title="module.title">
