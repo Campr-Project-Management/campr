@@ -184,7 +184,7 @@
                         <div class="form-group">
                             <div class="vueditor-holder">
                                 <div class="vueditor-header">{{ translateText('placeholder.decision_description') }}</div>
-                                <Vueditor :ref="'decision.description'+index" />
+                                <Vueditor :id="'decision.description'+index" :ref="'decision.description'+index" />
                             </div>
                         </div>
                         <div class="row">
@@ -229,7 +229,7 @@
                         <div class="form-group">
                             <div class="vueditor-holder">
                                 <div class="vueditor-header">{{ translateText('placeholder.action') }}</div>
-                                <Vueditor :ref="'todo.description'+index" />
+                                <Vueditor :id="'todo.description'+index" :ref="'todo.description'+index" />
                             </div>
                         </div>
                         <div class="row">
@@ -291,7 +291,7 @@
                         <div class="form-group">
                             <div class="vueditor-holder">
                                 <div class="vueditor-header">{{ translateText('placeholder.info_description') }}</div>
-                                <Vueditor :ref="'info.description'+index" />
+                                <Vueditor :id="'info.description'+index" :ref="'info.description'+index" />
                             </div>
                         </div>
                         <div class="row">
@@ -369,6 +369,8 @@ import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import AlertModal from '../../_common/AlertModal.vue';
 import Error from '../../_common/_messages/Error.vue';
 import router from '../../../router';
+import {createEditor} from 'vueditor';
+import vueditorConfig from '../../_common/vueditorConfig';
 
 export default {
     components: {
@@ -414,28 +416,84 @@ export default {
         addDecision() {
             this.decisions.push({
                 title: '',
-                description: this.$refs['decision.description'+this.decisions.length],
+                description: '',
                 responsible: [],
                 dueDate: new Date(),
             });
+            setTimeout(() => {
+                this.decisions[this.decisions.length - 1].description =
+                    createEditor(document.getElementById('decision.description' + (this.decisions.length - 1))
+                    , {...vueditorConfig, id: 'decision.description' + (this.decisions.length - 1)});
+            }, 500);
         },
         addTodo() {
             this.todos.push({
                 title: '',
-                description: this.$refs['todo.description'+this.todos.length],
+                description: '',
                 responsible: [],
                 dueDate: new Date(),
                 status: {label: this.translateText('label.select_status')},
             });
+            setTimeout(() => {
+                this.todos[this.todos.length - 1].description =
+                    createEditor(document.getElementById('todo.description' + (this.todos.length - 1))
+                            , {...vueditorConfig, id: 'todo.description' + (this.todos.length - 1)});
+            }, 500);
         },
         addInfo() {
             this.infos.push({
                 title: '',
-                description: this.$refs['info.description'+this.infos.length],
+                description: '',
                 responsible: [],
                 dueDate: new Date(),
                 status: {label: this.translateText('label.select_status')},
             });
+            setTimeout(() => {
+                this.infos[this.infos.length - 1].description =
+                    createEditor(document.getElementById('info.description' + (this.infos.length - 1))
+                            , {...vueditorConfig, id: 'info.description' + (this.infos.length - 1)});
+            }, 500);
+        },
+        getDecisions() {
+            let decisionsTmp = [];
+            for (let i = 0; i < this.decisions.length; i++) {
+                let elemTmp = {
+                    title: this.decisions[i].title,
+                    description: this.decisions[i].description.getContent(),
+                    responsible: this.decisions[i].responsible,
+                    dueDate: this.decisions[i].dueDate,
+                };
+                decisionsTmp.push(elemTmp);
+            }
+            return decisionsTmp;
+        },
+        getTodos() {
+            let todosTmp = [];
+            for (let i = 0; i < this.todos.length; i++) {
+                let elemTmp = {
+                    title: this.todos[i].title,
+                    description: this.todos[i].description.getContent(),
+                    responsible: this.todos[i].responsible,
+                    dueDate: this.todos[i].dueDate,
+                    status: this.todos[i].status,
+                };
+                todosTmp.push(elemTmp);
+            }
+            return todosTmp;
+        },
+        getInfos() {
+            let infosTmp = [];
+            for (let i = 0; i < this.infos.length; i++) {
+                let elemTmp = {
+                    title: this.infos[i].title,
+                    description: this.infos[i].description.getContent(),
+                    responsible: this.infos[i].responsible,
+                    dueDate: this.infos[i].dueDate,
+                    status: this.infos[i].status,
+                };
+                infosTmp.push(elemTmp);
+            }
+            return infosTmp;
         },
         saveMeeting() {
             let data = {
@@ -448,9 +506,9 @@ export default {
                 objectives: this.objectives,
                 agendas: this.agendas,
                 medias: this.medias,
-                decisions: this.decisions,
-                todos: this.todos,
-                infos: this.infos,
+                decisions: this.getDecisions(),
+                todos: this.getTodos(),
+                infos: this.getInfos(),
             };
             if (this.details.distributionLists.length > 0) {
                 data.name = '';
@@ -460,24 +518,20 @@ export default {
                 });
             }
 
-            this
-                .createProjectMeeting({
-                    data: createFormData(data),
-                    projectId: this.$route.params.id,
-                })
-                .then(
-                    (response) => {
-                        if (response.body && response.body.error && response.body.messages) {
-                            this.showFailed = true;
-                        } else {
-                            this.showSaved = true;
-                        }
-                    },
-                    () => {
-                        this.showFailed = true;
-                    }
-                )
-            ;
+            this.createProjectMeeting({
+                data: createFormData(data),
+                projectId: this.$route.params.id,
+            })
+            .then((response) => {
+                if (response.body && response.body.error && response.body.messages) {
+                    this.showFailed = true;
+                } else {
+                    this.showSaved = true;
+                }
+            },
+            (response) => {
+                this.showFailed = true;
+            });
         },
     },
     computed: {
