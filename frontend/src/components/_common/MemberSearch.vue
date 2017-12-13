@@ -41,7 +41,7 @@
         <div class="results team no-data" v-if="noData && query !== ''">
             <div>{{ translateText('label.no_data') }}</div>
         </div>
-        <p v-if="users && users.length" v-for="user in users" class="selected-item">
+        <p v-if="usersList && usersList.length" v-for="user in usersList" class="selected-item">
             {{ user.firstName }} {{ user.lastName }}
             <a @click="removeSelectedOption(user.id)"> <i class="fa fa-times"></i></a>
         </p>
@@ -60,6 +60,11 @@ export default {
         ...mapGetters(['users']),
     },
     watch: {
+        users(val) {
+            if (this.displaySelectedMembers()) {
+                this.usersList = this.users;
+            }
+        },
         value(val) {
             if (val.length && val[0] != null) {
                 this.getUsers({id: val});
@@ -75,7 +80,7 @@ export default {
 
                 let windowInnerHeight = window.innerHeight;
 
-                if (windowInnerHeight - currentElementOffset < 420) {
+                if (windowInnerHeight - currentElementOffset < 260) {
                     $(this.$el).find('.results.team').css('top', '-340px');
                 }else{
                     $(this.$el).find('.results.team').css('top', '41px');
@@ -140,6 +145,17 @@ export default {
         removeSelectedOption(id) {
             this.$emit('input', this.value.filter(item => parseInt(item, 10) !== parseInt(id, 10)));
         },
+        displaySelectedMembers() {
+            if (this.value.length <= 0) {
+                return false;
+            }
+            for (let i = 0; i < this.value.length; i++) {
+                if (this.value[i] !== this.users[i].id) {
+                    return false;
+                }
+            }
+            return true;
+        },
     },
     data() {
         return {
@@ -148,6 +164,7 @@ export default {
             noData: null,
             minChars: 1,
             selectedUsers: [],
+            usersList: [],
         };
     },
     created() {
