@@ -38,7 +38,7 @@ class TeamControllerTest extends BaseController
     {
         return [
             [
-                '/api/teams/team-marvel',
+                '/api/teams/teammarvel',
                 false,
                 Response::HTTP_NOT_FOUND,
                 [
@@ -54,7 +54,7 @@ class TeamControllerTest extends BaseController
                     'userFullName' => 'FirstName3 LastName3',
                     'id' => 1,
                     'name' => 'team_1',
-                    'slug' => 'team-1',
+                    'slug' => 'team1',
                     'description' => null,
                     'enabled' => false,
                     'createdAt' => '2017-01-01 00:00:00',
@@ -91,7 +91,7 @@ class TeamControllerTest extends BaseController
                 ],
             ],
             [
-                '/api/teams/team-2',
+                '/api/teams/team2',
                 true,
                 Response::HTTP_OK,
                 [
@@ -99,7 +99,7 @@ class TeamControllerTest extends BaseController
                     'userFullName' => 'FirstName3 LastName3',
                     'id' => 2,
                     'name' => 'team_2',
-                    'slug' => 'team-2',
+                    'slug' => 'team2',
                     'description' => null,
                     'enabled' => false,
                     'createdAt' => '2017-01-01 00:00:00',
