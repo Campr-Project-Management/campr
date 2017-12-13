@@ -38,7 +38,7 @@ class TeamControllerTest extends BaseController
     {
         return [
             [
-                '/api/teams/team-marvel',
+                '/api/teams/teammarvel',
                 false,
                 Response::HTTP_NOT_FOUND,
                 [
@@ -91,7 +91,7 @@ class TeamControllerTest extends BaseController
                 ],
             ],
             [
-                '/api/teams/team-2',
+                '/api/teams/team2',
                 true,
                 Response::HTTP_OK,
                 [

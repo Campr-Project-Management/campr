@@ -80,7 +80,7 @@ export default {
 
                 let windowInnerHeight = window.innerHeight;
 
-                if (windowInnerHeight - currentElementOffset < 420) {
+                if (windowInnerHeight - currentElementOffset < 260) {
                     $(this.$el).find('.results.team').css('top', '-340px');
                 }else{
                     $(this.$el).find('.results.team').css('top', '41px');

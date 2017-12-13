@@ -580,7 +580,7 @@ class WorkPackageRepository extends BaseRepository
             $qb->orderBy('wp.'.$filters['orderBy'], $filters['order']);
 
             if (isset($filters['excludeNullValuesFromOrderBy']) && $filters['excludeNullValuesFromOrderBy'] === true) {
-                $qb->andWhere('wp.'.$filters['orderBy'] . ' is NOT NULL');
+                $qb->andWhere('wp.'.$filters['orderBy'].' is NOT NULL');
             }
         }
 

@@ -93,12 +93,10 @@ export default {
         }),
         projectUsersForSelectAccountable: function() {
             let rez = JSON.parse(JSON.stringify(this.projectUsersForSelect));
-            rez.shift();
             return rez;
         },
         projectUsersForSupportSelect: function() {
             let usersForSelect = JSON.parse(JSON.stringify(this.projectUsersForSelect));
-            usersForSelect.shift();
 
             let selectedIds = [];
             for( let i =0; i< this.details.supportUsers.length; i++) {
@@ -111,7 +109,6 @@ export default {
         },
         projectUsersForConsultedSelect: function() {
             let usersForSelect = JSON.parse(JSON.stringify(this.projectUsersForSelect));
-            usersForSelect.shift();
 
             let selectedIds = [];
             for( let i =0; i< this.details.consultedUsers.length; i++) {
@@ -124,7 +121,6 @@ export default {
         },
         projectUsersForInformedSelect: function() {
             let usersForSelect = JSON.parse(JSON.stringify(this.projectUsersForSelect));
-            usersForSelect.shift();
 
             let selectedIds = [];
             for( let i =0; i< this.details.informedUsers.length; i++) {
