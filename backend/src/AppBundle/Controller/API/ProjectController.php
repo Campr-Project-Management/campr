@@ -1843,13 +1843,24 @@ class ProjectController extends ApiController
         $costRepo = $em->getRepository(Cost::class);
         $wpRepo = $em->getRepository(WorkPackage::class);
 
-        $baseCosts = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_EXTERNAL);
-        $actualForecastCosts = $wpRepo->getTotalExternalInternalCostsByPhase($project, Cost::TYPE_EXTERNAL);
+        $baseCosts = array_merge(
+            $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_EXTERNAL),
+            $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_INTERNAL)
+        );
+        $actualForecastCosts = array_merge(
+            $wpRepo->getTotalExternalInternalCostsByPhase($project, Cost::TYPE_EXTERNAL),
+            $wpRepo->getTotalExternalInternalCostsByPhase($project, Cost::TYPE_INTERNAL)
+        );
+
         $dataByPhase = [];
         foreach (array_merge($baseCosts, $actualForecastCosts) as $cost) {
             foreach ($cost as $key => $value) {
                 if ($key !== 'phaseName') {
-                    $dataByPhase[$cost['phaseName']][$key] = $value;
+                    if (isset($dataByPhase[$cost['phaseName']][$key])) {
+                        $dataByPhase[$cost['phaseName']][$key] = $dataByPhase[$cost['phaseName']][$key] + $value;
+                    } else {
+                        $dataByPhase[$cost['phaseName']][$key] = $value;
+                    }
                 }
             }
         }
@@ -1870,11 +1881,22 @@ class ProjectController extends ApiController
             $dataByDepartment[$userDepartment['department']]['userIds'][] = $userDepartment['uid'];
         }
         foreach ($dataByDepartment as $key => $value) {
-            $base = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_EXTERNAL, $value['userIds']);
-            $actualForecast = $wpRepo->getTotalExternalInternalCostsByPhase($project, Cost::TYPE_EXTERNAL, $value['userIds']);
-            $dataByDepartment[$key]['base'] = !empty($base) ? $base[0]['base'] : 0;
-            $dataByDepartment[$key]['actual'] = !empty($actualForecast) ? $actualForecast[0]['actual'] : 0;
-            $dataByDepartment[$key]['forecast'] = !empty($actualForecast) ? $actualForecast[0]['forecast'] : 0;
+            $baseExternalCostArr = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_EXTERNAL, $value['userIds']);
+            $baseInternalCostArr = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_INTERNAL, $value['userIds']);
+            $baseExternalCost = !empty($baseExternalCostArr) ? $baseExternalCostArr[0]['base'] : 0;
+            $baseInternalCost = !empty($baseInternalCostArr) ? $baseInternalCostArr[0]['base'] : 0;
+
+            $actualForecastExternalArr = $wpRepo->getTotalExternalInternalCostsByPhase($project, Cost::TYPE_EXTERNAL, $value['userIds']);
+            $externalActualCost = !empty($actualForecastExternalArr) ? $actualForecastExternalArr[0]['actual'] : 0;
+            $externalForecastCost = !empty($actualForecastExternalArr) ? $actualForecastExternalArr[0]['forecast'] : 0;
+
+            $actualForecastInternalArr = $wpRepo->getTotalExternalInternalCostsByPhase($project, Cost::TYPE_INTERNAL, $value['userIds']);
+            $internalActualCost = !empty($actualForecastInternalArr) ? $actualForecastInternalArr[0]['actual'] : 0;
+            $internalForecastCost = !empty($actualForecastInternalArr) ? $actualForecastInternalArr[0]['forecast'] : 0;
+
+            $dataByDepartment[$key]['base'] = $baseExternalCost + $baseInternalCost;
+            $dataByDepartment[$key]['actual'] = $externalActualCost + $internalActualCost;
+            $dataByDepartment[$key]['forecast'] = $externalForecastCost + $internalForecastCost;
         }
 
         return $this->createApiResponse([

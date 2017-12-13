@@ -20,6 +20,7 @@ class AutomailerRedisPlugin implements \Swift_Events_SendListener
 
     /**
      * AutomailerRedisPlugin constructor.
+     *
      * @param string $environment
      * @param Client $redis
      */
@@ -28,7 +29,6 @@ class AutomailerRedisPlugin implements \Swift_Events_SendListener
         $this->environment = $environment;
         $this->redis = $redis;
     }
-
 
     public function beforeSendPerformed(Swift_Events_SendEvent $evt)
     {
