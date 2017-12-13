@@ -170,7 +170,7 @@ class WorkPackageController extends ApiController
             }
         } catch (FileAlreadyExists $ex) {
             return $this->createApiResponse(
-                ['messages' => ['medias' => $ex->getMessage()]],
+                ['messages' => ['medias' => [$ex->getMessage()]]],
                 Response::HTTP_BAD_REQUEST
             );
         }
