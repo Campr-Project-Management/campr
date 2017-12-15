@@ -11,14 +11,14 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Team.
+ * Team a.k.a. Workspace.
  *
  * @ORM\Table(name="team", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="slug_unique", columns={"slug"}),
  * }))
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TeamRepository")
- * @UniqueEntity(fields={"name"}, message="unique.team.name")
- * @UniqueEntity(fields={"slug"}, message="unique.team.slug")
+ * @UniqueEntity(fields={"name"}, message="unique.workspace.name")
+ * @UniqueEntity(fields={"slug"}, message="unique.workspace.slug")
  * @Vich\Uploadable
  */
 class Team
