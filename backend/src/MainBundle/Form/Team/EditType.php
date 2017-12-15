@@ -25,7 +25,7 @@ class EditType extends AbstractType
                 'label' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'not_blank.team.name',
+                        'message' => 'not_blank.workspace.name',
                     ]),
                 ],
             ])
@@ -34,7 +34,7 @@ class EditType extends AbstractType
                 'disabled' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'not_blank.team.slug',
+                        'message' => 'not_blank.workspace.slug',
                     ]),
                     new Regex([
                         'pattern' => '/^[a-z0-9]*([a-z0-9-]+[a-z0-9])?$/iD',
