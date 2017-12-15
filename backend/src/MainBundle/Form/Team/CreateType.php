@@ -21,7 +21,7 @@ class CreateType extends AbstractType
             ->add('name', TextType::class, [
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'not_blank.team.name',
+                        'message' => 'not_blank.workspace.name',
                     ]),
                 ],
             ])
