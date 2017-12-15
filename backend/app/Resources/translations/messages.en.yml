@@ -677,10 +677,10 @@ title:
         create: Create new label
         edit: Edit label
     messages: Messages
-    team:
-        list: Team list
-        create: Create new team
-        edit: Edit team
+    workspace:
+        list: Workspace list
+        create: Create new workspace
+        edit: Edit workspace
     team_member:
         for: Team member list for
         list: Team member list
@@ -1680,8 +1680,8 @@ email:
             reset: Campr - Reset account psasword
         invoice: Campr - Payment Invoice
         contact: Campr contact
-        team_member:
-            invite: Campr - Team member invitation
+        workspace_member:
+            invite: Campr - Workspace member invitation
         general: Subject
         new_meeting_notification: You have a new meeting notification
         status_report: Campr Status Report
@@ -1693,9 +1693,9 @@ email:
             credential: Your credentials are
         invoice: You have your invoice for payment %payment% attached in this email.
         contact: Message
-        team_member:
+        workspace_member:
             invite:
-                first: You are invited to be part of the team %team_name%.
+                first: You are invited to be part of the workspace %team_name%.
                 second: If you don't have an account with this email please make one in order to accept invitation.
                 third: Please click on the following
                 link: invitation
@@ -1733,7 +1733,7 @@ exception:
     workpackage_must_belong_to_project: Workpackage must belong to the project.
     user_must_be_part_of_the_project: User must be part of the project.
     user:
-        already_member_of_team: This user is already a part of this team.
+        already_member_of_workspace: This user is already a part of this team.
         unable_to_create: Unable to create user.
     add:
         team: Please add one team as option parameter
