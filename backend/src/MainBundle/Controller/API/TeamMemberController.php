@@ -80,7 +80,7 @@ class TeamMemberController extends ApiController
                     return $this->createApiResponse(
                         [
                             'messages' => [
-                                $translator->trans('exception.user.already_member_of_team', [], 'messages'),
+                                $translator->trans('exception.user.already_member_of_workspace', [], 'messages'),
                             ],
                         ],
                         Response::HTTP_BAD_REQUEST

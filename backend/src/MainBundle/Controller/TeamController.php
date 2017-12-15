@@ -88,7 +88,7 @@ class TeamController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('success.team.create', [], 'flashes')
+                        ->trans('success.workspace.create', [], 'flashes')
                 )
             ;
 
@@ -134,7 +134,7 @@ class TeamController extends Controller
                     'success',
                     $this
                         ->get('translator')
-                        ->trans('success.team.edit', [], 'flashes')
+                        ->trans('success.workspace.edit', [], 'flashes')
                 )
             ;
 
@@ -259,7 +259,7 @@ class TeamController extends Controller
                 'success',
                 $this
                     ->get('translator')
-                    ->trans('success.team.delete', [], 'flashes')
+                    ->trans('success.workspace.delete', [], 'flashes')
             );
 
         return $this->redirectToRoute('main_team_list');
@@ -338,7 +338,7 @@ class TeamController extends Controller
 
             $message = $this
                 ->get('translator')
-                ->trans('success.team_member.invite', ['%user_email%' => $email], 'flashes')
+                ->trans('success.workspace_member.invite', ['%user_email%' => $email], 'flashes')
             ;
             $this
                 ->get('session')
@@ -386,7 +386,7 @@ class TeamController extends Controller
             $message = $this
                 ->get('translator')
                 ->trans(
-                    'success.team_member.invitation.already_accepted',
+                    'success.workspace_member.invitation.already_accepted',
                     [
                         '%team_name%' => $teamInvite->getTeam()->getName(),
                     ],
@@ -469,7 +469,7 @@ class TeamController extends Controller
             $message = $this
                 ->get('translator')
                 ->trans(
-                    'success.team_member.invitation.new_user',
+                    'success.workspace_member.invitation.new_user',
                     [
                         '%team_name%' => $teamInvite->getTeam()->getName(),
                     ],
@@ -511,7 +511,7 @@ class TeamController extends Controller
             $message = $this
                 ->get('translator')
                 ->trans(
-                    'failed.team_member.remove.not_part_of_the_team',
+                    'failed.workspace_member.remove.not_part_of_the_team',
                     [
                         '%team_member_name%' => $teamMember->getUser()->getUsername(),
                         '%team_name%' => $team->getName(),
@@ -532,7 +532,7 @@ class TeamController extends Controller
             $message = $this
                 ->get('translator')
                 ->trans(
-                    'failed.team_member.remove.yourself',
+                    'failed.workspace_member.remove.yourself',
                     [
                         '%team_name%' => $team->getName(),
                     ],
@@ -555,7 +555,7 @@ class TeamController extends Controller
         $message = $this
             ->get('translator')
             ->trans(
-                'success.team_member.remove',
+                'success.workspace_member.remove',
                 [
                     '%team_member_name%' => $teamMember->getUser()->getUsername(),
                     '%team_name%' => $team->getName(),
