@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraint;
 
 class TeamSlugUsable extends Constraint
 {
-    public $message = 'used.team.slug';
+    public $message = 'used.workspace.slug';
 
     protected $team;
 
