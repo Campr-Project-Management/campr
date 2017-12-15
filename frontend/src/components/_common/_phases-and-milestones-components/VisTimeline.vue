@@ -163,7 +163,7 @@ export default {
                 order: (a, b) => b.id - a.id,
                 tooltip: {
                     followMouse: false,
-                    overflowMethod: 'cap',
+                    overflowMethod: 'flip',
                 },
                 visibleFrameTemplate: function(item) {
                     if (item.visibleFrameTemplate) {
