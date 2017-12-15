@@ -3,7 +3,7 @@
         <pulse-loader :loading="loading" :color="color" :size="size" v-show="loader"></pulse-loader>
         <sidebar></sidebar>
         <div class="page">
-            <navigation v-bind:user="user"></navigation>
+            <navigation v-bind:user="localUser"></navigation>
             <router-view></router-view>
         </div>
     </div>
@@ -28,6 +28,7 @@ export default {
     computed: mapGetters({
         user: 'user',
         loader: 'loader',
+        localUser: 'localUser',
     }),
     data: function() {
         return {

@@ -3,14 +3,14 @@
 {% trans_default_domain 'messages' %}
 
 {% block subject %}
-    {{ 'email.subject.team_member.invite'|trans }}
+    {{ 'email.subject.workspace_member.invite'|trans }}
 {% endblock %}
 
 {% block message %}
     <p>{{'email.general.hello'|trans }} {{ user_email }},
-    <p>{{ 'email.message.team_member.invite.first'|trans({'%team_name%': team.name}) }}</p>
-    <p>{{ 'email.message.team_member.invite.second'|trans }}</p>
-    <p>{{ 'email.message.team_member.invite.third'|trans }} <a href="{{ url('main_team_invitation_accepted', {'token': token}) }}">{{ 'email.message.team_member.invite.link'|trans }}</a></p>
+    <p>{{ 'email.message.workspace_member.invite.first'|trans({'%team_name%': team.name}) }}</p>
+    <p>{{ 'email.message.workspace_member.invite.second'|trans }}</p>
+    <p>{{ 'email.message.workspace_member.invite.third'|trans }} <a href="{{ url('main_team_invitation_accepted', {'token': token}) }}">{{ 'email.message.workspace_member.invite.link'|trans }}</a></p>
     {% if plain_password is defined %}
         <p>{{ 'email.general.plain_password'|trans }} <strong>{{ plain_password }}</strong></p>
     {% endif %}
