@@ -66,17 +66,10 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
 
-            $mailerService = $this->get('app.service.mailer');
-            $mailerService->sendEmail(
-                'MainBundle:Email:user_register.html.twig',
-                'info',
-                $user->getEmail(),
-                [
-                    'token' => $user->getActivationToken(),
-                    'full_name' => $user->getFullName(),
-                    'expiration_time' => $this->getParameter('activation_token_expiration_number'),
-                ]
-            );
+            $this
+                ->get('app.service.mailer')
+                ->sentRegistrationEmail($user)
+            ;
 
             return $this->redirectToRoute('main_homepage');
         }
@@ -191,17 +184,10 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
 
-            $mailerService = $this->get('app.service.mailer');
-            $mailerService->sendEmail(
-                'MainBundle:Email:user_register.html.twig',
-                'info',
-                $user->getEmail(),
-                [
-                    'token' => $activationToken,
-                    'full_name' => $user->getFullName(),
-                    'expiration_time' => $this->getParameter('activation_token_expiration_number'),
-                ]
-            );
+            $this
+                ->get('app.service.mailer')
+                ->sentRegistrationEmail($user)
+            ;
         } else {
             $message = $this->get('translator')->trans('activation.not_found', [], 'flashes');
             throw $this->createNotFoundException($message);
