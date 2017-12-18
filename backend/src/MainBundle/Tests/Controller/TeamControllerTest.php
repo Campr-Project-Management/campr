@@ -50,7 +50,7 @@ class TeamControllerTest extends BaseController
         $form = $crawler->filter('#create-team')->first()->form();
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('Team name should not be blank.', $crawler->html());
+        $this->assertContains('Workspace name should not be blank.', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -70,7 +70,7 @@ class TeamControllerTest extends BaseController
         $form['create[name]'] = 'test-team';
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('Team name already used.', $crawler->html());
+        $this->assertContains('Workspace name already used.', $crawler->html());
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $this->removeTeam('test-team');
@@ -93,7 +93,7 @@ class TeamControllerTest extends BaseController
 
         $crawler = $this->client->followRedirect();
 
-        $this->assertContains('Team successfully created!', $crawler->html());
+        $this->assertContains('Workspace successfully created!', $crawler->html());
         $this->assertContains('test-team', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -181,7 +181,7 @@ class TeamControllerTest extends BaseController
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('Team name should not be blank.', $crawler->html());
+        $this->assertContains('Workspace name should not be blank.', $crawler->html());
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $this->removeTeam('test-team');
@@ -204,7 +204,7 @@ class TeamControllerTest extends BaseController
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('Team name already used.', $crawler->html());
+        $this->assertContains('Workspace name already used.', $crawler->html());
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $this->removeTeam('test-team1');
@@ -232,7 +232,7 @@ class TeamControllerTest extends BaseController
         $this->assertEquals(sprintf('/team/%d/show', $this->team->getId()), $target);
         $crawler = $this->client->followRedirect();
 
-        $this->assertContains('Team successfully edited!', $crawler->html());
+        $this->assertContains('Workspace successfully edited!', $crawler->html());
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $this->removeTeam('test-team');
@@ -479,7 +479,7 @@ class TeamControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/team/invitation-accepted/%s', $teamInvite->getToken()));
 
-        $this->assertContains(sprintf('Congratulation! You are now part of the team %s.', $this->team->getName()), $crawler->html());
+        $this->assertContains(sprintf('Congratulation! You are now part of the workspace %s.', $this->team->getName()), $crawler->html());
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $user = $this
