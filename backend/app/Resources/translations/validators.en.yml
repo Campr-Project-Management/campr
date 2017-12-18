@@ -55,8 +55,8 @@ not_blank:
     file: You must select a file
     meeting_participant:
         user: An user should be selected
-    team:
-        name: Team name should not be blank.
+    workspace:
+        name: Workspace name should not be blank.
         slug: Please enter a slug!
     payment_method: Please enter a payment method name!
     subject: Please enter a subject!
@@ -93,9 +93,9 @@ unique:
     username: The username is already used
     email: The email is already used
     number: That number is taken
-    team:
-        name: Team name already used.
-        slug: Team slug already used.
+    workspace:
+        name: Workspace name already used.
+        slug: Workspace slug already used.
 
 invalid:
     sequence: The sequence field should contain numbers greater than or equal to 0

@@ -42,7 +42,7 @@ class TeamMemberControllerTest extends BaseController
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
-        $this->assertContains('Team member successfully created!', $this->client->getResponse()->getContent());
+        $this->assertContains('Workspace member successfully created!', $this->client->getResponse()->getContent());
 
         $teamMember = $this
             ->em
@@ -78,7 +78,7 @@ class TeamMemberControllerTest extends BaseController
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $this->client->followRedirect();
 
-        $this->assertContains('Team member successfully deleted!', $this->client->getResponse()->getContent());
+        $this->assertContains('Workspace member successfully deleted!', $this->client->getResponse()->getContent());
     }
 
     public function testFormIsDisplayedOnEditPage()
@@ -120,7 +120,7 @@ class TeamMemberControllerTest extends BaseController
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
-        $this->assertContains('Team member successfully edited!', $this->client->getResponse()->getContent());
+        $this->assertContains('Workspace member successfully edited!', $this->client->getResponse()->getContent());
     }
 
     public function testListActionPage()

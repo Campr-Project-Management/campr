@@ -10,6 +10,7 @@ const state = {
 const getters = {
     risks: state => state.risks,
     currentRisk: state => state.currentRisk,
+    measures: state => state.currentRisk.measures,
 };
 
 const actions = {

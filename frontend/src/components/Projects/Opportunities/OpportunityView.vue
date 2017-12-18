@@ -103,7 +103,7 @@
                         <h1>{{ opportunity.title }}</h1>
                     </div>
                     <div>
-                        <div class="header-buttons" v-if="opportunity">
+                        <div class="header-buttons" v-if="opportunity.id">
                             <router-link :to="{name: 'project-opportunities-edit-opportunity', params: {opportunityId: opportunity.id}}" class="btn-icon">
                                 <edit-icon fill="second-fill"></edit-icon>
                             </router-link>
@@ -496,6 +496,7 @@ export default {
             opportunity: 'currentOpportunity',
             risksOpportunitiesStats: 'risksOpportunitiesStats',
             validationMessages: 'validationMessages',
+            measures: 'currentOpportunityMeasures',
         }),
     },
     created() {
@@ -537,6 +538,11 @@ export default {
             this.opportunityImpact = this.opportunity.impact;
             this.opportunityProbability = this.opportunity.probability;
             this.updateGridView();
+        },
+        measures(value) {
+            this.measureTitle = '';
+            this.$refs['measureDescription'].setContent('');
+            this.measureCost = '';
         },
     },
 };
