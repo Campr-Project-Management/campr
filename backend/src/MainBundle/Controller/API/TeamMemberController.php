@@ -96,6 +96,11 @@ class TeamMemberController extends ApiController
                 $user->addTeamMember($teamMember);
                 $em->persist($user);
                 $em->flush();
+
+                $this
+                    ->get('app.service.mailer')
+                    ->sentRegistrationEmail($user)
+                ;
             }
 
             return $this->createApiResponse($user);
