@@ -81,6 +81,7 @@ use AppBundle\Form\ProjectCloseDown\CreateType as ProjectCloseDownCreateType;
 use AppBundle\Utils\ImportConstants;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Gaufrette\Exception\FileAlreadyExists;
+
 /**
  * @Route("/api/projects")
  */
