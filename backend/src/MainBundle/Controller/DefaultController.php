@@ -40,25 +40,15 @@ class DefaultController extends Controller
         $signUpForm->handleRequest($request);
         if ($request->isMethod(Request::METHOD_POST) && $signUpForm->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
-            $mailer = $this->get('app.service.mailer');
 
             $user->setPlainPassword(substr(md5(microtime()), rand(0, 26), 6));
 
             $em->persist($user);
             $em->flush();
 
-            $mailer
-                ->sendEmail(
-                    'MainBundle:Email:user_register.html.twig',
-                    'info',
-                    $user->getEmail(),
-                    [
-                        'token' => $user->getActivationToken(),
-                        'full_name' => $user->getFullName(),
-                        'plain_password' => $user->getPlainPassword(),
-                        'expiration_time' => $this->getParameter('activation_token_expiration_number'),
-                    ]
-                )
+            $this
+                ->get('app.service.mailer')
+                ->sentRegistrationEmail($user)
             ;
 
             $this->addFlash('registration_success', 'success.registration_success');
