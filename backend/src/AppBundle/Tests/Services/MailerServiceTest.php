@@ -59,6 +59,9 @@ class MailerServiceTest extends \PHPUnit_Framework_TestCase
                 'from_name' => [
                     'info' => 'Info Campr',
                 ],
+            ],
+            [
+                'activation_token_expiration_number' => 1,
             ]
         );
     }
