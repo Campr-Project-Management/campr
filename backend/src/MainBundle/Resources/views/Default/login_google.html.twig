@@ -1,13 +1,44 @@
-<form class="form" action="" method="post">
-    {% for flashMessage in app.session.flashbag.get("two_factor") %}
-        <p class="error">{{ flashMessage|trans }}</p>
-    {% endfor %}
+{% extends 'AppBundle:Layout:base.html.twig' %}
 
-    <p class="label"><label for="_auth_code">{{ "scheb_two_factor.auth_code"|trans }}</label></p>
-    <p class="widget"><input id="_auth_code" type="text" autocomplete="off" name="_auth_code" /></p>
-    {% if useTrustedOption %}<p class="widget"><label for="_trusted"><input id="_trusted" type="checkbox" name="_trusted" /> {{ "scheb_two_factor.trusted"|trans }}</label></p>{% endif %}
-    <p class="submit"><input type="submit" value="{{ "scheb_two_factor.login"|trans }}" /></p>
+{% trans_default_domain 'messages' %}
 
-    {# The logout link gives the user a way out if they can't complete the second step #}
-    <p class="cancel"><a href="{{ path("main_logout") }}">{{ "scheb_two_factor.cancel"|trans }}</a></p>
-</form>
+{% block body_attributes -%}
+    class="login"
+{%- endblock %}
+
+{% block body %}
+    <div class="login-content">
+        <div class="lc-block toggled">
+            <div class="lcb-form">
+                <form class="form" action="" method="post">
+                    {% for flashMessage in app.session.flashbag.get("two_factor") %}
+                        <p class="error">{{ flashMessage|trans }}</p>
+                    {% endfor %}
+
+                    <p class="label">
+                        <label for="_auth_code" class="fg-label">{{ "scheb_two_factor.auth_code"|trans }}</label>
+                    </p>
+                    <p class="widget">
+                        <input id="_auth_code" type="text" autocomplete="off" name="_auth_code" class="form-control" />
+                    </p>
+                    {% if useTrustedOption %}
+                        <p class="widget">
+                            <label for="_trusted" class="fg-label">
+                                <input id="_trusted" type="checkbox" name="_trusted" /> {{ "scheb_two_factor.trusted"|trans }}
+                            </label>
+                        </p>
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-login btn-success btn-float">
+                        <i class="zmdi zmdi-check"></i>
+                    </button>
+
+                    {# The logout link gives the user a way out if they can't complete the second step #}
+                    <p class="cancel">
+                        <a href="{{ path("main_logout") }}">{{ "scheb_two_factor.cancel"|trans }}</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
