@@ -140,10 +140,25 @@ export default {
             this.query = '';
             this.items = [];
             this.noData = false;
+            this.usersList = [];
+            this.selectedUsers = [];
             this.updateSelected();
         },
         removeSelectedOption(id) {
             this.$emit('input', this.value.filter(item => parseInt(item, 10) !== parseInt(id, 10)));
+            if (this.singleSelect) {
+                this.usersList = [];
+                this.selectedUsers = [];
+            }else {
+                let indexTmp;
+                this.usersList.map(function(user, index) {
+                    if (user.id == id) {
+                        indexTmp = index;
+                    }
+                });
+                this.usersList.splice(indexTmp, 1);
+                this.selectedUsers.splice(indexTmp, 1);
+            }
         },
         displaySelectedMembers() {
             if (this.value.length <= 0) {
