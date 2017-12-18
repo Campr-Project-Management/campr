@@ -2,6 +2,8 @@
 
 namespace AppBundle\Services;
 
+use AppBundle\Entity\User;
+
 /**
  * Class MailerService
  * Service used for sending emails.
@@ -14,6 +16,8 @@ class MailerService
 
     private $parameters = [];
 
+    private $options;
+
     /**
      * MailerService constructor.
      *
@@ -21,11 +25,16 @@ class MailerService
      * @param \Twig_Environment $twig
      * @param $fromParameters
      */
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, $fromParameters)
-    {
+    public function __construct(
+        \Swift_Mailer $mailer,
+        \Twig_Environment $twig,
+        array $fromParameters,
+        array $options
+    ) {
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->parameters = $fromParameters;
+        $this->options = $options;
     }
 
     /**
@@ -85,6 +94,28 @@ class MailerService
         }
 
         return $this->mailer->send($message);
+    }
+
+    public function sentRegistrationEmail(User $user)
+    {
+        $params = [
+            'token' => $user->getActivationToken(),
+            'full_name' => $user->getFullName(),
+            'expiration_time' => $this->options['activation_token_expiration_number'],
+        ];
+
+        if (!empty($user->getPlainPassword())) {
+            $params['plain_password'] = $user->getPlainPassword();
+        }
+
+        return $this
+            ->sendEmail(
+                'MainBundle:Email:user_register.html.twig',
+                'info',
+                $user->getEmail(),
+                $params
+            )
+        ;
     }
 
     public function addFromParameter($name, $data)
