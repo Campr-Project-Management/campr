@@ -451,19 +451,10 @@ class TeamController extends Controller
             $em->flush();
 
             if ($newUser) {
-                $mailer = $this->get('app.service.mailer');
-                $mailer
-                    ->sendEmail(
-                        'MainBundle:Email:user_register.html.twig',
-                        'info',
-                        $user->getEmail(),
-                        [
-                            'token' => $user->getActivationToken(),
-                            'full_name' => $user->getFullName(),
-                            'plain_password' => $user->getPlainPassword(),
-                            'expiration_time' => $this->getParameter('activation_token_expiration_number'),
-                        ]
-                    );
+                $this
+                    ->get('app.service.mailer')
+                    ->sentRegistrationEmail($user)
+                ;
             }
 
             $message = $this

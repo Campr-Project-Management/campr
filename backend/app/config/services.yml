@@ -37,6 +37,8 @@ services:
             - "@mailer"
             - "@twig"
             - "%emails%"
+            -
+                activation_token_expiration_number: '%activation_token_expiration_number%'
 
     app.service.automailer.plugin.redis:
         class: AppBundle\Services\AutomailerRedisPlugin
