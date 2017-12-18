@@ -119,7 +119,7 @@ class AccountType extends AbstractType
                     $form = $event->getForm();
 
                     $plainPassword = $data['plainPassword'];
-                    if (empty($plainPassword['first']) || empty($plainPassword['second'])) {
+                    if (empty($plainPassword['first']) && empty($plainPassword['second'])) {
                         $form->remove('plainPassword');
                         unset($data['plainPassword']);
                         $event->setData($data);
