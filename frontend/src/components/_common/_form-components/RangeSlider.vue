@@ -48,10 +48,10 @@ export default {
                 valueTmp = this.model.split(';');
                 valueTmp[0] = parseInt(valueTmp[0]);
                 valueTmp[1] = parseInt(valueTmp[1]);
-            }else {
+            } else {
                 valueTmp = [0, 0];
             }
-        }else{
+        } else {
             valueTmp = this.model;
         }
 
@@ -69,7 +69,7 @@ export default {
         if (this.type == 'double') {
             rangeParams.from = (values instanceof Array) ? values.indexOf(valueTmp[0]) : valueTmp[0];
             rangeParams.to = (values instanceof Array) ? values.indexOf(valueTmp[1]) : valueTmp[1];
-        }else{
+        } else {
             rangeParams.from = (values instanceof Array) ? values.indexOf(valueTmp) : valueTmp;
         }
 
