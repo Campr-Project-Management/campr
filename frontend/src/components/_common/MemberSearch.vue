@@ -82,7 +82,7 @@ export default {
 
                 if (windowInnerHeight - currentElementOffset < 260) {
                     $(this.$el).find('.results.team').css('top', '-340px');
-                }else{
+                } else {
                     $(this.$el).find('.results.team').css('top', '41px');
                 }
             }
@@ -146,10 +146,11 @@ export default {
         },
         removeSelectedOption(id) {
             this.$emit('input', this.value.filter(item => parseInt(item, 10) !== parseInt(id, 10)));
+
             if (this.singleSelect) {
                 this.usersList = [];
                 this.selectedUsers = [];
-            }else {
+            } else {
                 let indexTmp;
                 this.usersList.map(function(user, index) {
                     if (user.id == id) {
@@ -164,6 +165,7 @@ export default {
             if (this.value.length <= 0) {
                 return false;
             }
+
             for (let i = 0; i < this.value.length; i++) {
                 if (this.value[i] !== this.users[i].id) {
                     return false;

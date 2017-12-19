@@ -37,7 +37,7 @@
                         <a class="nav-link {% if app.request.get('_route') == 'main_user_account' %} active{% endif %}" href="{{ path('main_user_account') }}">{{ 'menu.settings'|trans }}</a>
                     </li>
                     <li>
-                        <a class="nav-link{% if app.request.get('_route') == 'main_team_list' %} active{% endif %}" href="{{ path('main_team_list') }}">{{ 'menu.teams'|trans }}</a>
+                        <a class="nav-link{% if app.request.get('_route') == 'main_team_list' %} active{% endif %}" href="{{ path('main_team_list') }}">{{ 'menu.workspaces'|trans }}</a>
                     </li>
                     <li>
                         <a class="nav-link{% if app.request.get('_route') == 'main_logout' %} active{% endif %}" href="{{ path('main_logout') }}">{{ 'button.logout'|trans }}</a>
