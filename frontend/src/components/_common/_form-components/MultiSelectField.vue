@@ -52,7 +52,7 @@ export default {
 
             if (windowInnerHeight - currentElementOffset < 3*this.dropdownItemHeight) {
                 $(this.$el).find('.dropdown-menu').css('top', -3*this.dropdownItemHeight + 'px');
-            }else{
+            } else {
                 $(this.$el).find('.dropdown-menu').css('top', this.dropdownItemHeight + 'px');
             }
         },
