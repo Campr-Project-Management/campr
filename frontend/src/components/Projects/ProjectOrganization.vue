@@ -375,9 +375,8 @@ export default {
             let distribution = [];
             let selected = this.selectedDistribution;
             this.project.projectUsers.map(function(user) {
-                if (selected.indexOf(user.id) > -1) distribution.push(user);
+                if (selected.indexOf(user.user) > -1) distribution.push(user);
             });
-            console.log('dl', this.project.projectUsers);
             this.distributionList = distribution;
         },
     },

@@ -125,7 +125,7 @@ export default {
             let users = [];
             this.items.map(function(user) {
                 if (user.checked) {
-                    users.push(user.id);
+                    users.push(user.user);
                 }
             });
             this.selectedUsers = users;
