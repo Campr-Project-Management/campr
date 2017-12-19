@@ -88,7 +88,7 @@
 
                 if (windowInnerHeight - currentElementOffset < 350) {
                     $(this.$el).find('.calendar').addClass('bottom-up');
-                }else{
+                } else {
                     $(this.$el).find('.calendar').removeClass('bottom-up');
                 }
             },
