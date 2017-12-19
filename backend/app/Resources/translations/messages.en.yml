@@ -352,7 +352,9 @@ message:
     no_chat_rooms: Chat list is empty for this project
     no_private_messages: There are no private messages on this project
     your_teams: Your teams
+    your_workspaces: Your workspaces
     teams: Teams you are a part of
+    workspaces: Workspaces you are a part of
     invoce: Invoice for payment:
     reset_password: Please enter your email address to reset the account password. An email will be sent with instructions.
     wait: Please wait...
@@ -434,10 +436,10 @@ message:
 menu:
     users: Users
     teams: Teams
+    workspaces: Workspaces
     payment_methods: Payment Methods
     payments: Payments
     account: Account
-    teams: Teams
     settings: Settings
     contact: Contact
     admin: Admin
