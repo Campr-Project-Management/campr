@@ -10,7 +10,7 @@
                 {% if app.user.teams.count %}
                 <div class="col-xl-6">
                     <div class="team-list-wrapper">
-                        <h3 class="page-header">{{ 'message.your_teams'|trans }}</h3>
+                        <h3 class="page-header">{{ 'message.your_workspaces'|trans }}</h3>
                         <ul class="thumb-list">
                             {% for team in app.user.teams %}
                             <li>
@@ -49,7 +49,7 @@
                 {% if app.user.teamMembers.count %}
                 <div class="col-xl-6">
                     <div class="team-list-wrapper">
-                        <h3 class="page-header">{{ 'message.teams'|trans }}</h3>
+                        <h3 class="page-header">{{ 'message.workspaces'|trans }}</h3>
                         <ul class="thumb-list">
                             {% for teamMember in app.user.teamMembers %}
                             <li>
