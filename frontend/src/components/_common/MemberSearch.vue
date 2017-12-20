@@ -162,12 +162,12 @@ export default {
             }
         },
         displaySelectedMembers() {
-            if (this.value.length <= 0) {
+            if (!this.value || this.value.length <= 0) {
                 return false;
             }
 
             for (let i = 0; i < this.value.length; i++) {
-                if (this.value[i] !== this.users[i].id) {
+                if (this.users[i] && this.value[i] !== this.users[i].id) {
                     return false;
                 }
             }
