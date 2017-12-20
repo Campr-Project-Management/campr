@@ -24,6 +24,22 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row error-row">
+                        <div class="form-group last-form-group">
+                            <div class="col-md-10">
+                                <error
+                                    v-if="validationMessages.name && validationMessages.name.length"
+                                    v-for="message in validationMessages.name"
+                                    :message="message" />
+                            </div>
+                            <div class="col-md-2">
+                                <error
+                                    v-if="validationMessages.quantity && validationMessages.quantity.length"
+                                    v-for="message in validationMessages.quantity"
+                                    :message="message" />
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-8">
@@ -47,6 +63,25 @@
                                     v-bind:label="translateText('label.external_cost_unit_rate')"
                                     v-model="editExternalCostObj.rate"
                                     v-bind:content="editExternalCostObj.rate" />
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="row error-row">
+                        <div class="form-group last-form-group">
+                            <div class="col-md-8">
+                            </div>
+                            <div class="col-md-2">
+                                <error
+                                    v-if="validationMessages.customUnit && validationMessages.customUnit.length"
+                                    v-for="message in validationMessages.customUnit"
+                                    :message="message" />
+                            </div>
+                            <div class="col-md-2">
+                                <error
+                                    v-if="validationMessages.rate && validationMessages.rate.length"
+                                    v-for="message in validationMessages.rate"
+                                    :message="message" />
                             </div>
                         </div>
                     </div>
@@ -79,6 +114,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row error-row">
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <error
+                                    v-if="validationMessages.externalForecastCost && validationMessages.externalForecastCost.length"
+                                    v-for="message in validationMessages.externalForecastCost"
+                                    :message="message" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex flex-space-between">
                     <a href="javascript:void(0)" @click="showEditExternalForecastCostModal = false; $emit('input', showEditExternalForecastCostModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
@@ -98,6 +143,16 @@
                                     v-bind:label="translateText('label.actual_total')"
                                     v-model="externalActualCost"
                                     v-bind:content="externalActualCost" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row error-row">
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <error
+                                    v-if="validationMessages.externalActualCost && validationMessages.externalActualCost.length"
+                                    v-for="message in validationMessages.externalActualCost"
+                                    :message="message" />
                             </div>
                         </div>
                     </div>
@@ -148,6 +203,24 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row error-row">
+                        <div class="form-group">
+                            <div class="col-md-6">
+                            </div>
+                            <div class="col-md-2">
+                                <error
+                                    v-if="validationMessages.rate && validationMessages.rate.length"
+                                    v-for="message in validationMessages.rate"
+                                    :message="message" />
+                            </div>
+                            <div class="col-md-2">
+                                <error
+                                    v-if="validationMessages.quantity && validationMessages.quantity.length"
+                                    v-for="message in validationMessages.quantity"
+                                    :message="message" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex flex-space-between">
                     <a href="javascript:void(0)" @click="showEditInternalCostModal = false; $emit('input', showEditInternalCostModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
@@ -177,6 +250,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row error-row">
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <error
+                                    v-if="validationMessages.internalForecastCost && validationMessages.internalForecastCost.length"
+                                    v-for="message in validationMessages.internalForecastCost"
+                                    :message="message" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex flex-space-between">
                     <a href="javascript:void(0)" @click="showEditInternalForecastCostModal = false; $emit('input', showEditInternalForecastCostModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
@@ -196,6 +279,16 @@
                                     v-bind:label="translateText('label.actual_total')"
                                     v-model="internalActualCost"
                                     v-bind:content="internalActualCost" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row error-row">
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <error
+                                    v-if="validationMessages.internalActualCost && validationMessages.internalActualCost.length"
+                                    v-for="message in validationMessages.internalActualCost"
+                                    :message="message" />
                             </div>
                         </div>
                     </div>
@@ -241,6 +334,7 @@
 import InputField from '../../../_common/_form-components/InputField';
 import RadioField from '../../../_common/_form-components/RadioField';
 import SelectField from '../../../_common/_form-components/SelectField';
+import Error from '../../../_common/_messages/Error.vue';
 import Schedule from '../Create/Schedule';
 import Modal from '../../../_common/Modal';
 import {mapActions, mapGetters} from 'vuex';
@@ -270,6 +364,7 @@ export default {
         SelectField,
         Schedule,
         Modal,
+        Error,
     },
     watch: {
         editExternalCostModal(value) {
@@ -347,14 +442,20 @@ export default {
             } else if (this.editExternalCostObj.selectedUnit && this.editExternalCostObj.selectedUnit.length) {
                 data.unit = this.editExternalCostObj.selectedUnit;
             }
-            if (this.editExternalCostObj.id === 0) {
-                this.createTaskCost(data);
-            } else {
-                this.editTaskCost({costId: this.editExternalCostObj.id, data: data});
-            }
 
-            this.showEditExternalCostModal = false;
-            this.$emit('input', this.showEditExternalCostModal);
+            let that = this;
+            let successHandler = function(response) {
+                if (response.body.error == undefined) {
+                    that.showEditExternalCostModal = false;
+                    that.$emit('input', that.showEditExternalCostModal);
+                }
+            };
+
+            if (this.editExternalCostObj.id === 0) {
+                this.createTaskCost(data).then(successHandler);
+            } else {
+                this.editTaskCost({costId: this.editExternalCostObj.id, data: data}).then(successHandler);
+            }
         },
         deleteExternalCost: function() {
             this.deleteTaskCost(this.editExternalCostObj.id);
@@ -371,9 +472,16 @@ export default {
             this.patchTask({
                 data: data,
                 taskId: this.$route.params.taskId,
-            });
-            this.showEditExternalForecastCostModal = false;
-            this.$emit('input', this.showEditExternalForecastCostModal);
+            })
+            .then(
+                (response) => {
+                    if (response.body.error == undefined) {
+                        this.showEditExternalForecastCostModal = false;
+                        this.$emit('input', this.showEditExternalForecastCostModal);
+                    }
+                },
+                () => {}
+            );
         },
         saveExternalActualCost: function() {
             let data = {
@@ -382,9 +490,15 @@ export default {
             this.patchTask({
                 data: data,
                 taskId: this.$route.params.taskId,
-            });
-            this.showEditExternalActualCostModal = false;
-            this.$emit('input', this.showEditExternalActualCostModal);
+            })
+            .then(
+                (response) => {
+                    if (response.body.error == undefined) {
+                        this.showEditExternalActualCostModal = false;
+                        this.$emit('input', this.showEditExternalActualCostModal);
+                    }
+                }
+            );
         },
         saveInternalCost: function() {
             let data = {
@@ -396,14 +510,20 @@ export default {
                 duration: this.editInternalCostObj.duration,
                 type: 0,
             };
-            if (this.editInternalCostObj.id === 0) {
-                this.createTaskCost(data);
-            } else {
-                this.editTaskCost({costId: this.editInternalCostObj.id, data: data});
-            }
 
-            this.showEditInternalCostModal = false;
-            this.$emit('input', this.showEditInternalCostModal);
+            let that = this;
+            let successHandler = function(response) {
+                if (response.body.error == undefined) {
+                    that.showEditInternalCostModal = false;
+                    that.$emit('input', that.showEditInternalCostModal);
+                }
+            };
+
+            if (this.editInternalCostObj.id === 0) {
+                this.createTaskCost(data).then(successHandler);
+            } else {
+                this.editTaskCost({costId: this.editInternalCostObj.id, data: data}).then(successHandler);
+            }
         },
         deleteInternalCost: function() {
             this.deleteTaskCost(this.editInternalCostObj.id);
@@ -417,9 +537,15 @@ export default {
             this.patchTask({
                 data: data,
                 taskId: this.$route.params.taskId,
-            });
-            this.showEditInternalForecastCostModal = false;
-            this.$emit('input', this.showEditInternalForecastCostModal);
+            })
+            .then(
+                (response) => {
+                    if (response.body.error == undefined) {
+                        this.showEditInternalForecastCostModal = false;
+                        this.$emit('input', this.showEditInternalForecastCostModal);
+                    }
+                }
+            );
         },
         saveInternalActualCost: function() {
             let data = {
@@ -428,9 +554,15 @@ export default {
             this.patchTask({
                 data: data,
                 taskId: this.$route.params.taskId,
-            });
-            this.showEditInternalActualCostModal = false;
-            this.$emit('input', this.showEditInternalActualCostModal);
+            })
+            .then(
+                (response) => {
+                    if (response.body.error == undefined) {
+                        this.showEditInternalActualCostModal = false;
+                        this.$emit('input', this.showEditInternalActualCostModal);
+                    }
+                }
+            );
         },
         changeSchedule: function() {
             let data = {
@@ -447,13 +579,17 @@ export default {
                     return item.key;
                 }),
             };
+            let that = this;
 
             this.patchTask({
                 data: data,
                 taskId: this.$route.params.taskId,
+            }).then(function(response) {
+                if (response.body.error == undefined) {
+                    that.showEditScheduleModal = false;
+                    that.$emit('input', that.showEditScheduleModal);
+                }
             });
-            this.showEditScheduleModal = false;
-            this.$emit('input', this.showEditScheduleModal);
         },
         closeTask: function() {
             let data = {
@@ -489,6 +625,7 @@ export default {
         ...mapGetters({
             projectUnitsForSelect: 'projectUnitsForSelect',
             resourcesForSelect: 'projectResourcesForSelect',
+            validationMessages: 'validationMessages',
         }),
     },
     data() {
@@ -517,3 +654,13 @@ export default {
     },
 };
 </script>
+
+<style scoped lang="scss">
+    .error-row {
+        .error {
+            position:relative;
+            top: -60px;
+        }
+    }
+</style>
+

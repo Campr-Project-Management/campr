@@ -18,17 +18,29 @@ const actions = {
      * Creates a new cost
      * @param {function} commit
      * @param {array} data
+     * @return {Object}
      */
     createTaskCost({commit}, data) {
-        Vue.http
+        return Vue.http
             .post(
                 Routing.generate('app_api_cost_create'),
                 data
-            ).then((response) => {
-                let cost = response.data;
-                commit(types.ADD_TASK_COST, {cost});
-            }, (response) => {
-            });
+            ).then(
+                (response) => {
+                    if (response.body && response.body.error && response.body.messages) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        let cost = response.data;
+                        commit(types.ADD_TASK_COST, {cost});
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    }
+                    return response;
+                },
+                (response) => {
+                    return response;
+                }
+            );
     },
     /**
      * Delete cost
@@ -48,17 +60,29 @@ const actions = {
      * Edit an existing cost
      * @param {function} commit
      * @param {array} data
+     * @return {Object}
      */
     editTaskCost({commit}, data) {
-        Vue.http
+        return Vue.http
             .patch(
                 Routing.generate('app_api_cost_edit', {id: data.costId}),
                 data.data
-            ).then((response) => {
-                let cost = response.data;
-                commit(types.SET_TASK_COST, {cost});
-            }, (response) => {
-            });
+            ).then(
+                (response) => {
+                    if (response.body && response.body.error && response.body.messages) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        let cost = response.data;
+                        commit(types.SET_TASK_COST, {cost});
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    }
+                    return response;
+                },
+                (response) => {
+                    return response;
+                }
+            );
     },
 };
 

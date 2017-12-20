@@ -224,6 +224,7 @@ export default {
                 medias: this.medias,
                 details: this.details,
                 statusColor: this.statusColor,
+                parent: this.task.parent,
             };
             this
                 .editTask({
@@ -357,10 +358,10 @@ export default {
             this.title = this.task.name;
             this.$refs.description.setContent(this.task.content);
             this.schedule = {
-                baseStartDate: new Date(this.task.scheduledStartAt),
-                baseEndDate: new Date(this.task.scheduledFinishAt),
-                forecastStartDate: new Date(this.task.forecastStartAt),
-                forecastEndDate: new Date(this.task.forecastFinishAt),
+                baseStartDate: this.task.scheduledStartAt ? new Date(this.task.scheduledStartAt) : new Date(),
+                baseEndDate: this.task.scheduledFinishAt ? new Date(this.task.scheduledFinishAt) : new Date(),
+                forecastStartDate: this.task.forecastStartAt ? new Date(this.task.forecastStartAt) : new Date(),
+                forecastEndDate: this.task.forecastFinishAt ? new Date(this.task.forecastFinishAt) : new Date(),
                 automatic: this.task.automaticSchedule,
                 successors: this.task.dependants.map((item) => {
                     return {
