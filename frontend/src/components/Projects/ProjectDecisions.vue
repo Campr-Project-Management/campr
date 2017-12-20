@@ -22,7 +22,7 @@
         </div>
 
         <div class="meetings-list">
-            <vue-scrollbar class="table-wrapper">
+            <vue-scrollbar class="table-wrapper" ref="projectDecisions">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive table-fixed">
                         <thead>
@@ -143,6 +143,9 @@ export default {
     },
     created() {
         this.getData();
+    },
+    beforeDestroy() {
+        this.$refs.projectDecisions.getSize = () => [0, 0];
     },
     data: function() {
         return {
