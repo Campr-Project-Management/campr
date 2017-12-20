@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CostRepository")
@@ -490,5 +491,54 @@ class Cost
     public function getWorkPackageName()
     {
         return $this->getWorkPackage() ? $this->getWorkPackage()->getName() : null;
+    }
+
+    /**
+     * @Serializer\SerializedName("actualValue")
+     * @Serializer\VirtualProperty()
+     *
+     * @return int|null
+     */
+    public function getActualValue()
+    {
+        $durationFactor = intval($this->duration) > 0
+            ?
+            intval($this->duration)
+            :
+            1
+        ;
+
+        return $this->getQuantity() * $this->getRate() * $durationFactor;
+    }
+
+    /**
+     * Validation for the actual value,the sum of all values of
+     * the children cannot excede the actual value of the parent.
+     *
+     * @Assert\Callback
+     *
+     * @param ExecutionContextInterface $context
+     */
+    public function actualValueValidator(ExecutionContextInterface $context)
+    {
+        $parent = $this->getWorkPackage()->getParent();
+        if (is_null($parent)) {
+            return;
+        }
+
+        $siblingsActualCost = $parent->getChildrenTotalCosts();
+        if (!$this->getId()) {
+            $siblingsActualCost += $this->getActualValue();
+        }
+
+        if ($siblingsActualCost > $parent->getTotalCosts()) {
+            $context
+                ->buildViolation('invalid.cost.value_exceeds_parent_costs', [
+                    '%cost_actual_value%' => $this->getActualValue(),
+                ])
+                ->atPath('rate')
+                ->addViolation()
+            ;
+        }
     }
 }
