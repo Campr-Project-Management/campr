@@ -75,7 +75,9 @@
                             </tr>
                         </thead>
                         <tbody v-if="projectMeetings">
-                            <tr v-for="meeting in projectMeetings.items" :class="{'inactive': isInactive(meeting)}">
+                            <tr v-for="(meeting, index) in projectMeetings.items"
+                                :key="index"
+                                :class="{'inactive': isInactive(meeting)}">
                                 <td>{{ meeting.name }}</td>
                                 <td>{{ meeting.meetingCategoryName }}</td>
                                 <td>{{ meeting.date | moment('DD.MM.YYYY') }}</td>
@@ -84,7 +86,8 @@
                                 <td>
                                     <div class="avatars collapse in" id="m1" v-if="meeting.meetingParticipants.length > 0">
                                         <div>
-                                            <span v-for="participant in meeting.meetingParticipants">
+                                            <span v-for="(participant, index) in meeting.meetingParticipants"
+                                                :key="index">
                                                 <div class="avatar" v-tooltip.top-center="participant.userFullName" :style="{ backgroundImage: 'url('+participant.userAvatar+')' }"></div>
                                             </span>
                                             <button type="button" data-toggle="collapse" data-target="#m1" class="two-state collapsed"><span class="more">{{ translateText('message.more') }} +</span><span class="less">{{ translateText('message.less') }} -</span></button>
@@ -104,7 +107,7 @@
                                         <a @click="initRescheduleModal(meeting)" v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.reschedule_meeting')"><reschedule-icon fill="second-fill"></reschedule-icon></a>
                                         <a @click="initDeleteModal(meeting)" v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_meeting')"><delete-icon fill="danger-fill"></delete-icon></a>
                                     </div>
-                                </td>                                
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -113,7 +116,13 @@
 
             <div v-if="projectMeetings && projectMeetings.items" class="flex flex-direction-reverse flex-v-center">
                 <div class="pagination flex flex-center" v-if="projectMeetings && projectMeetings.totalItems > 0">
-                    <span v-if="pages > 1" v-for="page in pages" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
+                    <span v-if="pages > 1"
+                        v-for="(page, index) in pages"
+                        :key="index"
+                        v-bind:class="{'active': page == activePage}"
+                        @click="changePage(page)">
+                            {{ page }}
+                    </span>
                 </div>
                 <div>
                     <span class="pagination-info">{{ translateText('message.displaying') }} {{ projectMeetings.items.length }} {{ translateText('message.results_out_of') }} {{ projectMeetings.totalItems }}</span>
@@ -154,8 +163,14 @@ export default {
         VueTimepicker,
     },
     methods: {
-        ...mapActions(['getProjectMeetings', 'setMeetingsFilters', 'deleteProjectMeeting', 'editProjectMeeting', 'sendMeetingNotifications']),
-        translateText: function(text) {
+        ...mapActions([
+            'getProjectMeetings',
+            'setMeetingsFilters',
+            'deleteProjectMeeting',
+            'editProjectMeeting',
+            'sendMeetingNotifications',
+        ]),
+        translateText(text) {
             return this.translate(text);
         },
         isInactive(meeting) {
@@ -164,17 +179,17 @@ export default {
 
             return meetingDate < currentDate;
         },
-        getDuration: function(startDate, endDate) {
+        getDuration(startDate, endDate) {
             let end = moment(endDate, 'HH:mm');
             let start = moment(startDate, 'HH:mm');
 
             return !isNaN(end.diff(start, 'minutes')) ? end.diff(start, 'minutes') : '-';
         },
-        changePage: function(page) {
+        changePage(page) {
             this.activePage = page;
             this.refreshData();
         },
-        refreshData: function() {
+        refreshData() {
             this.getProjectMeetings({
                 projectId: this.$route.params.id,
                 apiParams: {
@@ -182,33 +197,33 @@ export default {
                 },
             });
         },
-        setFilterCategory: function(value) {
+        setFilterCategory(value) {
             this.setMeetingsFilters({category: value});
             this.refreshData();
         },
-        setFilterDate: function(value) {
+        setFilterDate(value) {
             this.setMeetingsFilters({date: value ? moment(value).format('YYYY-MM-DD') : null});
             this.refreshData();
         },
-        setEventFilter: function(value) {
+        setEventFilter(value) {
             this.setMeetingsFilters({event: value});
             this.refreshData();
         },
-        clearMeetingsFilters: function(value) {
+        clearMeetingsFilters(value) {
             this.setMeetingsFilters({clear: value});
             this.refreshData();
         },
-        initDeleteModal: function(meeting) {
+        initDeleteModal(meeting) {
             this.showDeleteModal = true;
             this.meetingId = meeting.id;
         },
-        deleteMeeting: function() {
+        deleteMeeting() {
             if (this.meetingId) {
                 this.deleteProjectMeeting(this.meetingId);
                 this.showDeleteModal = false;
             }
         },
-        initRescheduleModal: function(meeting) {
+        initRescheduleModal(meeting) {
             this.showRescheduleModal = true;
             this.meetingId = meeting.id;
             this.date = new Date(meeting.date);
@@ -222,7 +237,7 @@ export default {
                 mm: moment(meeting.end, 'HH:mm').format('mm'),
             };
         },
-        rescheduleMeeting: function() {
+        rescheduleMeeting() {
             let data = {
                 id: this.meetingId,
                 date: moment(this.date).format('DD-MM-YYYY'),
@@ -232,14 +247,15 @@ export default {
             this.editProjectMeeting(data);
             this.showRescheduleModal = false;
         },
-        initSendNotifications: function(meeting) {
+        initSendNotifications(meeting) {
             this.showNotificationModal = true;
             this.meetingId = meeting.id;
         },
-        printMeeting: function(meeting) {
-            window.location.href = Routing.generate('app_meeting_pdf', {id: meeting.id});
+        printMeeting(meeting) {
+            let pdfURL = Routing.generate('app_meeting_pdf', {id: meeting.id});
+            window.location = pdfURL;
         },
-        sendNotifications: function() {
+        sendNotifications() {
             this.sendMeetingNotifications(this.meetingId);
             this.showNotificationModal = false;
         },
@@ -256,14 +272,14 @@ export default {
         ...mapGetters({
             projectMeetings: 'projectMeetings',
         }),
-        pages: function() {
+        pages() {
             return Math.ceil(this.projectMeetings.totalItems / this.perPage);
         },
-        perPage: function() {
+        perPage() {
             return this.projectMeetings.pageSize;
         },
     },
-    data: function() {
+    data() {
         return {
             activePage: 1,
             showDeleteModal: false,
@@ -299,7 +315,7 @@ export default {
     .table-wrapper {
         width: 100%;
         padding-bottom: 40px;
-    }  
+    }
 
     .avatars {
         > div {
@@ -319,11 +335,11 @@ export default {
         &:last-child {
             margin-right: 0;
         }
-    }  
+    }
 
     .two-state {
         position: relative;
-        top: -12px;        
+        top: -12px;
         background-color: transparent;
         border: none;
         color: $secondColor;
@@ -332,5 +348,9 @@ export default {
         &:hover {
             color: $secondDarkColor;
         }
+    }
+
+    .btn-icon {
+        cursor: pointer;
     }
 </style>
