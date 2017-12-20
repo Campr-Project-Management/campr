@@ -19,7 +19,7 @@
         </div>
 
         <div class="meetings-list">
-            <vue-scrollbar class="table-wrapper">
+            <vue-scrollbar class="table-wrapper" ref="projectInfos">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive table-fixed">
                         <thead>
@@ -177,6 +177,9 @@ export default {
                 ;
             }
         },
+    },
+    beforeDestroy() {
+        this.$refs.projectInfos.getSize = () => [0, 0];
     },
     computed: {
         ...mapGetters(['infos', 'infosFilters']),
