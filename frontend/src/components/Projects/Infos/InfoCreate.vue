@@ -189,7 +189,7 @@ export default {
         info(val) {
             if (val) {
                 this.topic = val.topic;
-                this.$refs.descriptionEditor.setContent(val.description);
+                this.$refs.descriptionEditor.setContent(val.description || '');
                 this.expiryDate = val.expiryDate;
                 this.infoCategory = {
                     key: val.infoCategory,
@@ -211,6 +211,15 @@ export default {
         this.getInfoStatuses();
         if (this.$route.params.infoId) {
             this.getInfo(this.$route.params.infoId);
+        }
+    },
+    mounted() {
+        if (this.info) {
+            this.$refs.descriptionEditor.setContent('');
+            setTimeout(() => {
+                const {description} = this.info;
+                this.$refs.descriptionEditor.setContent(description || '');
+            }, 256);
         }
     },
     data() {
