@@ -153,6 +153,15 @@ export default {
             this.getDecision(this.$route.params.decisionId);
         }
     },
+    mounted() {
+        if (this.currentDecision) {
+            this.$refs.description.setContent('');
+            setTimeout(() => {
+                const {description} = this.currentDecision;
+                this.$refs.description.setContent(description || '');
+            }, 256);
+        }
+    },
     data() {
         return {
             title: '',
@@ -170,7 +179,7 @@ export default {
     watch: {
         currentDecision(value) {
             this.title = this.currentDecision.title;
-            this.$refs.description.setContent(this.currentDecision.description);
+            this.$refs.description.setContent(this.currentDecision.description || '');
             this.details.meeting = this.currentDecision.meeting
                 ? {key: this.currentDecision.meeting, label: this.currentDecision.meetingName}
                 : null
