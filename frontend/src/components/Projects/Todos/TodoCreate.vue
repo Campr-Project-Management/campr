@@ -177,6 +177,15 @@ export default {
             todoCategoriesForSelect: 'todoCategoriesForSelect',
         }),
     },
+    mounted() {
+        if (this.todo) {
+            this.$refs.description.setContent('');
+            setTimeout(() => {
+                const {description} = this.todo;
+                this.$refs.description.setContent(description || '');
+            }, 256);
+        }
+    },
     watch: {
         todo(val) {
             this.todoStatus = {key: this.todo.todoStatus, label: this.translateText(this.todo.statusName)};
