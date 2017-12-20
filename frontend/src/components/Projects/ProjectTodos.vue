@@ -21,7 +21,7 @@
         </div>
 
         <div class="meetings-list">
-            <vue-scrollbar class="table-wrapper">
+            <vue-scrollbar class="table-wrapper" ref="projectTodos">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive table-fixed">
                         <thead>
@@ -108,9 +108,11 @@ export default {
                 this.deleteTodo({id: this.todoId});
                 this.showDeleteModal = false;
                 this.todoId = false;
+
                 if(this.todos.items.length == 1 && this.activePage > 1) {
                     this.activePage--;
-                };
+                }
+
                 this.getData();
             }
         },
@@ -144,6 +146,9 @@ export default {
     },
     created() {
         this.getData();
+    },
+    beforeDestroy() {
+        this.$refs.projectTodos.getSize = () => [0, 0];
     },
     data: function() {
         return {

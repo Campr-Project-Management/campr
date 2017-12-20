@@ -10,9 +10,9 @@
             <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.search_members')" v-bind:singleSelect="false"></member-search>
             <br />
             <div class="members main-list">
-                <div class="member flex"  v-for="item in distributionList">
-                    <img v-bind:src="item.userAvatar">
-                    <div class="info">
+                <div class="member flex member-row"  v-for="item in distributionList">
+                    <img class="member-img" height="60" v-bind:src="item.userAvatar">
+                    <div class="info member-info">
                         <p class="title">{{ item.userFullName }}</p>
                         <p class="description">{{ item.projectRoleNames }}</p>
                     </div>
@@ -375,7 +375,7 @@ export default {
             let distribution = [];
             let selected = this.selectedDistribution;
             this.project.projectUsers.map(function(user) {
-                if (selected.indexOf(user.id) > -1) distribution.push(user);
+                if (selected.indexOf(user.user) > -1) distribution.push(user);
             });
             this.distributionList = distribution;
         },
@@ -646,6 +646,20 @@ export default {
                 border-top: none;
             }
         }
+    }
+
+    .member-img {
+        flex: 1;
+    }
+
+    .member-info {
+        text-align: center;
+        flex: 6;
+    }
+
+    .member-row {
+        padding-top: 10px;
+        padding-bottom: 10px;
     }
 
     .lead {
