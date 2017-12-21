@@ -1157,6 +1157,23 @@ label:
     select_informed_users: Select informed users
     select_sci_users: Select support, consulted & informed users
     export_task: Export task
+    # risk strategy
+    avoid: Avoid
+    transfer: Transfer
+    mitigate: Mitigate
+    accept: Accept
+    # risk status
+    not_entered: Not Entered
+    entered: Entered
+    # opportunity strategy
+    exploit: Exploit
+    share: Share
+    enhance: Enhance
+    ignore: Ignore
+    # opportunity status
+    not_taken: Not Taken
+    taken: Taken
+
 
 button:
     edit_member: Edit Member
