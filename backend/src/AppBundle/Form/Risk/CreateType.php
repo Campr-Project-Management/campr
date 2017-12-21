@@ -2,6 +2,11 @@
 
 namespace AppBundle\Form\Risk;
 
+use AppBundle\Entity\Risk;
+use AppBundle\Entity\RiskCategory;
+use AppBundle\Entity\RiskStrategy;
+use AppBundle\Entity\RiskStatus;
+use AppBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -14,11 +19,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
-use AppBundle\Entity\Risk;
-use AppBundle\Entity\User;
-use AppBundle\Entity\Status;
-use AppBundle\Entity\RiskStrategy;
-use AppBundle\Entity\RiskCategory;
 use AppBundle\Form\Measure\BaseType as MeasureBaseType;
 use Symfony\Component\Validator\Constraints\NotNull;
 
@@ -160,8 +160,8 @@ class CreateType extends AbstractType
                 'format' => 'dd-MM-yyyy',
                 'required' => false,
             ])
-            ->add('status', EntityType::class, [
-                'class' => Status::class,
+            ->add('riskStatus', EntityType::class, [
+                'class' => RiskStatus::class,
                 'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.status',
