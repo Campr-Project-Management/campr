@@ -64,6 +64,9 @@ export default {
             values: values,
             disable: this.disabled,
             step: this.step,
+            onFinish: function(data) {
+                vm.finishChangingValue(data.from);
+            },
         };
 
         if (this.type == 'double') {
@@ -84,6 +87,9 @@ export default {
             this.rangeSliderModel = value;
             this.$parent.$emit('changeRangeSliderValue', {modelName: this.modelName, value: value});
         },
+        finishChangingValue: function(value) {
+            this.$parent.$emit('finishChangeRangeSliderValue', {modelName: this.modelName, value: value});
+        },
     },
     watch: {
         value: function(val) {
@@ -96,6 +102,19 @@ export default {
             if (irs && !irs.dragging) {
                 irs.update({
                     from: val,
+                });
+            }
+        },
+        disabled: function(val) {
+            const $slider = window.$('#slider' + this._uid);
+            if (!$slider.length) {
+                return;
+            }
+
+            const irs = $slider.data().ionRangeSlider;
+            if (irs) {
+                irs.update({
+                    disable: val,
                 });
             }
         },
