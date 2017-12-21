@@ -1,167 +1,245 @@
 <!doctype html>
 <html>
-<head>
-    <title>{{ 'label.meeting'|trans }} - {{ meeting.projectName }}</title>
-    <style type="text/css">
-        tr {
-            vertical-align: top;
-        }
-        ul, dl {
-            margin: 0 5px;
-        }
-
-        body {
-            background-color: #232D4B;
-            font-family: 'Poppins', sans-serif;
-            color: #D8DAE5;
-            padding: 0px;
-            margin:0px;
-            min-height: 1407px;
-        }
-        .text-center {
-            text-align: center;
-        }
-
-        .hero-text {
-            font-size: 3em;
-            font-weight: 700;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 30px;
-        }
-
-        h1 {
-            font-weight: 300;
-            letter-spacing: 2.2px;
-            text-transform: uppercase;
-            font-size: 20px;
-        }
-        tr {
-            vertical-align: top;
-        }
-
-        .alternate-color:nth-of-type(even) {
-            background-color: #1E2643;
-        }
-
-        dt {
-            padding: 15px 5px;
-        }
-        ul, dl {
-            margin: 0 5px;
-        }
-        .double-line {
-            display: block;
-            -webkit-margin-before: 0.5em;
-            -webkit-margin-after: 0.5em;
-            -webkit-margin-start: auto;
-            -webkit-margin-end: auto;
-            border-top: 4px double;
-            border-color: #111526;
-            margin: 40px 0;
-            box-sizing: content-box;
-            height: 0px;
-        }
-    </style>
-</head>
-<body>
-<table>
-    <tr>
-        <th colspan="2"><h1 class="text-center">{{ meeting.name }}</h1></th>
-    </tr>
-    <tr>
-        <td colspan="2"><br></td>
-    </tr>
-    <tr>
-        <th style="width: 33%;">{{ 'table_header_cell.project'|trans }}</th>
-        <td>{{ meeting.project.name|default('-') }}</td>
-    </tr>
-    <tr>
-        <th>{{ 'table_header_cell.location'|trans }}</th>
-        <td>{{ meeting.location|default('-') }}</td>
-    </tr>
-    <tr>
-        <th>{{ 'table_header_cell.date'|trans }}</th>
-        <td>{{ meeting.date|date('d.m.Y') }}</td>
-    </tr>
-    <tr>
-        <th>{{ 'table_header_cell.start'|trans }}</th>
-        <td>{{ meeting.start|date('H:i') }}</td>
-    </tr>
-    <tr>
-        <th>{{ 'table_header_cell.end'|trans }}</th>
-        <td>{{ meeting.end|date('H:i') }}</td>
-    </tr>
-    <tr>
-        <th>{{ 'table_header_cell.objectives'|trans }}</th>
-        <td>
-            {% for objective in meeting.meetingObjectives %}
-                <p>{{ objective.description|default('-') }}</p>
-            {% endfor %}
-        </td>
-    </tr>
-    <tr>
-        <th>{{ 'table_header_cell.participants'|trans }}</th>
-        <td>
-            {% for participant in meeting.meetingParticipants %}
-                {{ participant.user.username|default('-') }}{% if not loop.last %}, {% endif %}
-            {% endfor %}
-            {% for dlist in meeting.distributionLists %}
-                {% for member in dlist.users %}
-                    {{ member.username|default('-') }}{% if not loop.last %}, {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </td>
-    </tr>
-    <tr>
-        <th>{{ 'table_header_cell.agendas'|trans }}</th>
-        <td>
+    <head>
+        <title>{{ 'label.meeting'|trans }} - {{ meeting.projectName }}</title>
+        <style type="text/css">
+            tr {
+                vertical-align: top;
+            }
+            ul,
+            dl {
+                margin: 0 5px;
+            }
+            body {
+                background-color: #232D4B;
+                font-family: 'Poppins', sans-serif;
+                color: #D8DAE5;
+                padding: 0;
+                margin: 0;
+                min-height: 1407px;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            h1 {
+                font-weight: 300;
+                margin: 0;
+                padding: 0;
+                text-transform: uppercase;
+                font-size: 20px;
+            }
+            tr,
+            th,
+            td {
+                vertical-align: top;
+            }
+            .alternate-color:nth-of-type(even) {
+                background-color: #1E2643;
+            }
+            ul,
+            dl {
+                margin: 0 5px;
+            }
+            .table-header {
+                border-bottom: 1px solid #646EA0;
+            }
+            .table-header:not(:last-child),
+            .table-body:not(:last-child) {
+                padding-right: 20px;
+            }
+            .table-body {
+                padding: 5px 0;
+            }
+            .table-row:not(:last-child) {
+                border-bottom: 1px solid #646EA0;
+            }
+            .table-section:nth-child(even) {
+                background: #191E37;
+            }
+            .table-section > td,
+            .table-section > th {
+                padding: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <table style="width: 100%; text-align: left;">
+            <tr class="table-section">
+                <th colspan="2" style="text-align: left;">
+                    <h1>{{ meeting.name }}</h1>
+                </th>
+            </tr>
+            <tr class="table-section">
+                <td colspan="2" style="width: 100%;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="table-header">{{ 'table_header_cell.project'|trans }}</th>
+                                <th class="table-header">{{ 'table_header_cell.location'|trans }}</th>
+                                <th class="table-header">{{ 'table_header_cell.date'|trans }}</th>
+                                <th class="table-header">{{ 'table_header_cell.start'|trans }}</th>
+                                <th class="table-header">{{ 'table_header_cell.end'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-spacing: 5px;" class="table-row">
+                                <td class="table-body">{{ meeting.project.name|default('-') }}</td>
+                                <td class="table-body">{{ meeting.location|default('-') }}</td>
+                                <td class="table-body">{{ meeting.date|date('d.m.Y') }}</td>
+                                <td class="table-body" style="width: 10%;">{{ meeting.start|date('H:i') }}</td>
+                                <td class="table-body" style="width: 10%;">{{ meeting.end|date('H:i') }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr class="table-section">
+                <th style="width: 15%;">{{ 'table_header_cell.objectives'|trans }}</th>
+                <td>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="table-header" style="width: 30%;">{{ 'table_header_cell.description'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for objective in meeting.meetingObjectives %}
+                                <tr>
+                                    <td class="table-body">{{ objective.description|default('-') }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr class="table-section">
+                <th>{{ 'table_header_cell.participants'|trans }}</th>
+                <td>
+                    {% for participant in meeting.meetingParticipants %}
+                        {{ participant.user.username|default('-') }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                    {% for dlist in meeting.distributionLists %}
+                        {% for member in dlist.users %}
+                            {{ member.username|default('-') }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </td>
+            </tr>
             {% if meeting.meetingAgendas|length %}
-                {% for agendas in meeting.meetingAgendas %}
-                    <p>{{ agendas.topic }}</p>
-                {% endfor %}
-            {% else %}
-                -
+            <tr class="table-section">
+                <th>{{ 'table_header_cell.agendas'|trans }}</th>
+                <td>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="table-header">{{ 'table_header_cell.topic'|trans }}</th>
+                                <th class="table-header">{{ 'table_header_cell.start'|trans }}</th>
+                                <th class="table-header">{{ 'table_header_cell.end'|trans }}</th>
+                                <th class="table-header">{{ 'table_header_cell.participants'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for agendas in meeting.meetingAgendas %}
+                            <tr style="border-spacing: 5px;" class="table-row">
+                                <td class="table-body">{{ agendas.topic }}</td>
+                                <td class="table-body">{{ agendas.start|date('H:i') }}</td>
+                                <td class="table-body">{{ agendas.end|date('H:i') }}</td>
+                                <td class="table-body">{{ agendas.responsibilityFullName }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
             {% endif %}
-        </td>
-    </tr>
-    <tr>
-        <th>{{ 'table_header_cell.decisions'|trans }}</th>
-        <td>
             {% if meeting.decisions|length %}
-                {% for decision in meeting.decisions %}
-                    <p>{{ decision.title }}</p>
-                {% endfor %}
-            {% else %}
-                -
+            <tr class="table-section">
+                <th>{{ 'table_header_cell.decisions'|trans }}</th>
+                <td>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="table-header" style="width: 15%;">{{ 'table_header_cell.title'|trans }}</th>
+                                <th class="table-header">{{ 'table_header_cell.due_date'|trans }}</th>
+                                <th class="table-header">{{ 'table_header_cell.participants'|trans }}</th>
+                                <th class="table-header" style="width: 30%;">{{ 'table_header_cell.description'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for decision in meeting.decisions %}
+                            <tr style="border-spacing: 5px;" class="table-row">
+                                <td class="table-body">{{ decision.title }}</td>
+                                <td class="table-body">{{ decision.dueDate|date('y/m/d h:m') }}</td>
+                                <td class="table-body">{{ decision.responsibilityFullName }}</td>
+                                <td class="table-body">{{ decision.description }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
             {% endif %}
-        </td>
-    </tr>
-    <tr>
-        <th>{{ 'table_header_cell.todos'|trans }}</th>
-        <td>
             {% if meeting.todos|length %}
-                {% for todo in meeting.todos %}
-                    <p>{{ todo.title }}</p>
-                {% endfor %}
-            {% else %}
-                -
+            <tr class="table-section">
+                <th>{{ 'table_header_cell.todos'|trans }}</th>
+                <td>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="table-header" style="width: 15%;">{{ 'table_header_cell.title'|trans }}</th>
+                                <th class="table-header">{{ 'table_header_cell.due_date'|trans }}</th>
+                                <th class="table-header">{{ 'table_header_cell.participants'|trans }}</th>
+                                <th class="table-header">{{ 'table_header_cell.status'|trans }}</th>
+                                <th class="table-header" style="width: 30%;">{{ 'table_header_cell.description'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for todo in meeting.todos %}
+                            <tr style="border-spacing: 5px;" class="table-row">
+                                <td class="table-body">{{ todo.title }}</td>
+                                <td class="table-body">{{ todo.dueDate|date('d.m.Y H:i') }}</td>
+                                <td class="table-body">{{ todo.responsibilityFullName }}</td>
+                                <td class="table-body">{{ todo.statusName }}</td>
+                                <td class="table-body">{{ todo.description }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
             {% endif %}
-        </td>
-    </tr>
-    <tr>
-        <th>{{ 'table_header_cell.notes'|trans }}</th>
-        <td>
             {% if meeting.notes|length %}
-                {% for note in meeting.notes %}
-                    <p>{{ participant.title|default('-') }}</p>
-                {% endfor %}
-            {% else %}
-                -
+            <tr class="table-section">
+                <th>{{ 'table_header_cell.notes'|trans }}</th>
+                <td>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="table-header" style="width: 15%;">{{ 'table_header_cell.title'|trans }}</th>
+                                <th class="table-header">{{ 'table_header_cell.due_date'|trans }}</th>
+                                <th class="table-header">{{ 'table_header_cell.participants'|trans }}</th>
+                                <th class="table-header">{{ 'table_header_cell.status'|trans }}</th>
+                                <th class="table-header" style="width: 30%;">{{ 'table_header_cell.description'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for note in meeting.notes %}
+                            <tr style="border-spacing: 5px;" class="table-row">
+                                <td class="table-body">{{ note.title }}</td>
+                                <td class="table-body">{{ note.dueDate|date('d.m.Y H:i') }}</td>
+                                <td class="table-body">{{ note.responsibilityFullName }}</td>
+                                <td class="table-body">{{ note.statusName }}</td>
+                                <td class="table-body">{{ note.description }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
             {% endif %}
-        </td>
-    </tr>
-</table>
-</body>
+        </table>
+    </body>
 </html>
