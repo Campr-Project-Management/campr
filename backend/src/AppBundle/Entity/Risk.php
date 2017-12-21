@@ -167,14 +167,14 @@ class Risk
     private $dueDate;
 
     /**
-     * @var Status|null
+     * @var RiskStatus|null
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Status")
-     * @ORM\JoinColumn(name="status_id")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\RiskStatus")
+     * @ORM\JoinColumn(name="risk_status_id")
      */
-    private $status;
+    private $riskStatus;
 
     /**
      * @var \DateTime
@@ -681,13 +681,13 @@ class Risk
     /**
      * Set status.
      *
-     * @param Status $status
+     * @param RiskStatus $riskStatus
      *
      * @return Risk
      */
-    public function setStatus(Status $status = null)
+    public function setRiskStatus(RiskStatus $riskStatus = null)
     {
-        $this->status = $status;
+        $this->riskStatus = $riskStatus;
 
         return $this;
     }
@@ -695,11 +695,11 @@ class Risk
     /**
      * Get status.
      *
-     * @return Status
+     * @return RiskStatus|null
      */
-    public function getStatus()
+    public function getRiskStatus()
     {
-        return $this->status;
+        return $this->riskStatus;
     }
 
     /**
@@ -712,7 +712,7 @@ class Risk
      */
     public function getStatusId()
     {
-        return $this->status ? $this->status->getId() : null;
+        return $this->riskStatus ? $this->riskStatus->getId() : null;
     }
 
     /**
@@ -725,7 +725,7 @@ class Risk
      */
     public function getStatusName()
     {
-        return $this->status ? $this->status->getName() : null;
+        return $this->riskStatus ? $this->riskStatus->getName() : null;
     }
 
     /**

@@ -28,3 +28,5 @@
 /web/app_dev.php
 /frontend/config/dev.local.js
 docker-compose.yml
+.history/
+npm-debug.log

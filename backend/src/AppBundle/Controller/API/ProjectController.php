@@ -15,6 +15,8 @@ use AppBundle\Entity\Measure;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Note;
 use AppBundle\Entity\Opportunity;
+use AppBundle\Entity\OpportunityStatus;
+use AppBundle\Entity\OpportunityStrategy;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectCloseDown;
 use AppBundle\Entity\ProjectDeliverable;
@@ -27,6 +29,7 @@ use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Rasci;
 use AppBundle\Entity\Risk;
+use AppBundle\Entity\RiskStatus;
 use AppBundle\Entity\StatusReport;
 use AppBundle\Entity\StatusReportConfig;
 use AppBundle\Entity\Subteam;
@@ -2092,7 +2095,13 @@ class ProjectController extends ApiController
      */
     public function opportunityStatusesAction(Project $project)
     {
-        return $this->createApiResponse($project->getOpportunityStatuses());
+        $opportunityStatuses = $this
+            ->getEntityManager()
+            ->getRepository(OpportunityStatus::class)
+            ->findAllByProjectNullable($project)
+        ;
+
+        return $this->createApiResponse($opportunityStatuses);
     }
 
     /**
@@ -2105,7 +2114,13 @@ class ProjectController extends ApiController
      */
     public function opportunityStrategiesAction(Project $project)
     {
-        return $this->createApiResponse($project->getOpportunityStrategies());
+        $opportunityStrategies = $this
+            ->getEntityManager()
+            ->getRepository(OpportunityStrategy::class)
+            ->findAllByProjectNullable($project)
+        ;
+
+        return $this->createApiResponse($opportunityStrategies);
     }
 
     /**
@@ -2118,7 +2133,13 @@ class ProjectController extends ApiController
      */
     public function riskStatusesAction(Project $project)
     {
-        return $this->createApiResponse($project->getRiskStatuses());
+        $statuses = $this
+            ->getEntityManager()
+            ->getRepository(RiskStatus::class)
+            ->findAll()
+        ;
+
+        return $this->createApiResponse($statuses);
     }
 
     /**
