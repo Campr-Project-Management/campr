@@ -3,6 +3,7 @@
 namespace AppBundle\Tests\Controller\Admin;
 
 use AppBundle\Entity\Risk;
+use AppBundle\Entity\RiskStatus;
 use AppBundle\Entity\Status;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
@@ -44,8 +45,8 @@ class RiskControllerTest extends BaseController
         $this->assertContains('name="admin[responsibility]"', $crawler->html());
         $this->assertContains('id="admin_dueDate"', $crawler->html());
         $this->assertContains('name="admin[dueDate]"', $crawler->html());
-        $this->assertContains('id="admin_status"', $crawler->html());
-        $this->assertContains('name="admin[status]"', $crawler->html());
+        $this->assertContains('id="admin_riskStatus"', $crawler->html());
+        $this->assertContains('name="admin[riskStatus]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -78,7 +79,7 @@ class RiskControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
-        $status = (new Status())
+        $status = (new RiskStatus())
             ->setName('status-test')
         ;
         $this->em->persist($status);
@@ -97,7 +98,7 @@ class RiskControllerTest extends BaseController
         $form['admin[delay]'] = 1;
         $form['admin[delayUnit]'] = 'choices.days';
         $form['admin[priority]'] = 'risk-priority';
-        $form['admin[status]'] = $status->getId();
+        $form['admin[riskStatus]'] = $status->getId();
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -114,7 +115,7 @@ class RiskControllerTest extends BaseController
         ;
         $status = $this
             ->em
-            ->getRepository(Status::class)
+            ->getRepository(RiskStatus::class)
             ->findOneBy([
                 'name' => 'status-test',
             ])
@@ -130,7 +131,7 @@ class RiskControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
-        $status = (new Status())
+        $status = (new RiskStatus())
             ->setName('status-test')
         ;
         $this->em->persist($status);
@@ -146,7 +147,7 @@ class RiskControllerTest extends BaseController
             ->setDelay(1)
             ->setDelayUnit('days')
             ->setPriority('risk-priority')
-            ->setStatus($status)
+            ->setRiskStatus($status)
         ;
 
         $this->em->persist($risk);
@@ -163,7 +164,7 @@ class RiskControllerTest extends BaseController
 
         $status = $this
             ->em
-            ->getRepository(Status::class)
+            ->getRepository(RiskStatus::class)
             ->findOneBy([
                 'name' => 'status-test',
             ])
@@ -205,8 +206,8 @@ class RiskControllerTest extends BaseController
         $this->assertContains('name="admin[responsibility]"', $crawler->html());
         $this->assertContains('id="admin_dueDate"', $crawler->html());
         $this->assertContains('name="admin[dueDate]"', $crawler->html());
-        $this->assertContains('id="admin_status"', $crawler->html());
-        $this->assertContains('name="admin[status]"', $crawler->html());
+        $this->assertContains('id="admin_riskStatus"', $crawler->html());
+        $this->assertContains('name="admin[riskStatus]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 

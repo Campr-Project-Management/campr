@@ -69,7 +69,7 @@ class RiskStrategyControllerTest extends BaseController
                 [
                     'project' => null,
                     'projectName' => null,
-                    'id' => 3,
+                    'id' => 7,
                     'name' => 'risk-strategy3',
                     'sequence' => 1,
                 ],
@@ -244,7 +244,7 @@ class RiskStrategyControllerTest extends BaseController
         return [
             [
                 [
-                    'name' => 'risk-strategy3',
+                    'name' => sprintf('risk-strategy%d', time()),
                     'sequence' => 'risk-strategy',
                 ],
                 true,
@@ -277,7 +277,7 @@ class RiskStrategyControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/risk-strategies/1',
+            '/api/risk-strategies/5',
             [],
             [],
             [
@@ -308,7 +308,7 @@ class RiskStrategyControllerTest extends BaseController
                 [
                     'project' => null,
                     'projectName' => null,
-                    'id' => 1,
+                    'id' => 5,
                     'name' => 'risk-strategy1',
                     'sequence' => 1,
                 ],
@@ -473,7 +473,7 @@ class RiskStrategyControllerTest extends BaseController
         return [
             [
                 [
-                    'name' => 'risk-strategy1',
+                    'name' => sprintf('risk-strategy%d', time()),
                     'sequence' => 'risk-strategy',
                 ],
                 true,
@@ -586,8 +586,8 @@ class RiskStrategyControllerTest extends BaseController
                     'project' => null,
                     'projectName' => null,
                     'id' => 1,
-                    'name' => 'risk-strategy1',
-                    'sequence' => 1,
+                    'name' => 'label.avoid',
+                    'sequence' => 0,
                 ],
             ],
         ];
