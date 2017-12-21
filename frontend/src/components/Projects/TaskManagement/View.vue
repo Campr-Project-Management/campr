@@ -254,6 +254,7 @@
                         {{ translateText('button.start_task') }}
                     </button>
                     <router-link
+                        v-if="task.id"
                         :to="{name: 'project-task-management-edit', params: {id: task.project, taskId: task.id}}"
                         class="btn-rounded btn-auto">
                         {{ translateText('message.edit_task') }}
@@ -635,8 +636,10 @@
                                 max="100"
                                 minSuffix=" %"
                                 type="single"
-                                v-bind:value="transformToString(task.progress)" 
-                                v-bind:disabled="true" />
+                                step='25'
+                                v-bind:value="transformToString(task.progress)"
+                                :modelName="'editableData.completion'"
+                                :disabled="taskProgressEditIsDisabled"/>
                         </div>
                          <div class="col-md-8">
                             <h4>{{editableData.workPackageStatus.label}}</h4>
@@ -755,6 +758,10 @@ export default {
         this.getProjectUsers({id: this.$route.params.id});
         this.getWorkPackageStatuses();
         this.getProjectLabels(this.$route.params.id);
+
+        this.$on('finishChangeRangeSliderValue', valueObj => {
+            this.updateProgress(valueObj.value);
+        });
     },
     computed: {
         ...mapGetters({
@@ -850,6 +857,11 @@ export default {
             return usersForSelect.filter((item) => {
                 return selectedIds.indexOf(item.key) === -1;
             });
+        },
+        taskProgressEditIsDisabled: function() {
+            return this.task.parent == null &&
+                this.task.noSubtasks > 0
+            ;
         },
     },
     watch: {
@@ -968,6 +980,15 @@ export default {
             'patchTask',
             'editTaskCost',
         ]),
+        updateProgress: function(value) {
+            let data = {
+                taskId: this.task.id,
+                data: {
+                    progress: value,
+                },
+            };
+            this.patchTask(data);
+        },
         countCompletedSubtasks: function() {
             let completed = 0;
 
