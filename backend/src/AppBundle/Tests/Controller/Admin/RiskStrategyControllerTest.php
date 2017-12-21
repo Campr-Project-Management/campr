@@ -98,7 +98,8 @@ class RiskStrategyControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-strategy/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['admin[name]'] = 'risk-strategy3';
+        $name = sprintf('risk-strategy%d', time());
+        $form['admin[name]'] = $name;
         $form['admin[sequence]'] = '3';
 
         $this->client->submit($form);
@@ -111,7 +112,7 @@ class RiskStrategyControllerTest extends BaseController
             ->em
             ->getRepository(RiskStrategy::class)
             ->findOneBy([
-                'name' => 'risk-strategy3',
+                'name' => $name,
             ])
         ;
         $this->em->remove($riskStrategy);
@@ -227,7 +228,7 @@ class RiskStrategyControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-strategy/2/edit');
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-strategy/6/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['admin[name]'] = 'risk-strategy2';
