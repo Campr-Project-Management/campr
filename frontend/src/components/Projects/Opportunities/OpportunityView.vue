@@ -262,11 +262,11 @@
                             <div class="new-comment-body">
                                 <div class="vueditor-holder">
                                     <div class="vueditor-header">{{ translateText('message.new_comment') }}</div>
-                                    <Vueditor :ref="'comment'+measure.id" />
+                                    <Vueditor :id="'comment'+measure.id" :ref="'comment'+measure.id" />
                                     <error
                                         v-if="measureCommentValidationMessages.description && measureCommentValidationMessages.description.length"
                                         v-for="message in measureCommentValidationMessages.description"
-                                        :message="message" />
+                                        :message="message" /> 
                                 </div>
                                 <div class="footer-buttons flex flex-space-between">
                                     <button @click="addMeasureComment(measure.id)" type="button" :data-target="'#measure-'+measure.id+'-new-comment'" :data-parent="'#measure-'+measure.id" aria-expanded="false" class="btn-rounded btn-auto btn-md second-bg">{{ translateText('message.add_comment') }}</button>
@@ -295,7 +295,7 @@
                         <div class="col-md-12">
                             <div class="vueditor-holder measure-vueditor-holder">
                                 <div class="vueditor-header">{{ translateText('placeholder.new_measure') }}</div>
-                                <Vueditor ref="measureDescription" />
+                                <Vueditor id="measureDescription" ref="measureDescription" />
                                 <error
                                     v-if="validationMessages.description && validationMessages.description.length"
                                     v-for="message in validationMessages.description"
@@ -366,7 +366,7 @@ export default {
         addMeasureComment: function(measureId) {
             let data = {
                 measure: measureId,
-                description: this.$refs['comment'+measureId][0].getContent(),
+                description: this.newCommentsRefs['comment'+measureId].getContent(),
             };
             this
                 .createMeasureComment(data)
@@ -531,6 +531,7 @@ export default {
             ],
             editMeasureValidationMessages: {},
             measureCommentValidationMessages: {},
+            newCommentsRefs: {},
         };
     },
     watch: {
@@ -538,6 +539,14 @@ export default {
             this.opportunityImpact = this.opportunity.impact;
             this.opportunityProbability = this.opportunity.probability;
             this.updateGridView();
+
+            setTimeout(() => {
+                this.opportunity.measures.forEach(measure => {
+                    const ref = 'comment' + measure.id;
+                    const elm = createEditor(document.getElementById(ref), {...vueditorConfig, id: ref});
+                    this.newCommentsRefs[ref] = elm;
+                });
+            }, 1000);
         },
         measures(value) {
             this.measureTitle = '';
