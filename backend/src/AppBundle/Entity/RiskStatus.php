@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\RiskStatusRepository")
  * @ORM\Table(name="risk_status")
  */
 class RiskStatus
@@ -49,7 +49,7 @@ class RiskStatus
      */
     public function getName(): string
     {
-        return $this->name;
+        return (string) $this->name;
     }
 
     /**
@@ -57,7 +57,7 @@ class RiskStatus
      *
      * @return RiskStatus
      */
-    public function setName(string $name): RiskStatus
+    public function setName($name): RiskStatus
     {
         $this->name = $name;
 
