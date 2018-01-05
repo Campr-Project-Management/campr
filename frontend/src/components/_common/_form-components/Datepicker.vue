@@ -125,6 +125,7 @@
             top: 40px;
             background: white;
             padding: 15px;
+            width: 246px;
             &.bottom-up{
                 top: -280px;
             }
