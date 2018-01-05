@@ -214,13 +214,7 @@ export default {
         }
     },
     mounted() {
-        if (this.info) {
-            this.$refs.descriptionEditor.setContent('');
-            setTimeout(() => {
-                const {description} = this.info;
-                this.$refs.descriptionEditor.setContent(description || '');
-            }, 256);
-        }
+        this.$refs.descriptionEditor.setContent('');
     },
     data() {
         return {
