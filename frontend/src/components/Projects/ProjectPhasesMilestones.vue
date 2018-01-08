@@ -283,7 +283,7 @@ export default {
             let end = moment(endDate);
             let start = moment(startDate);
 
-            return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') : '-';
+            return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') +1 : '-';
         },
         translateText: function(text) {
             return this.translate(text);
@@ -414,6 +414,7 @@ export default {
                         start: new Date(item.actualFinishAt || item.scheduledFinishAt || item.forecastFinishAt),
                         value: item.workPackageStatus,
                         title: renderTooltip(item, 'milestone'),
+                        className: item.isKeyMilestone ? 'key-milestone' : '',
                     };
                 }));
             }
@@ -483,7 +484,7 @@ function renderTooltip(item, type) {
                             `<td>` + (item.scheduledFinishAt ? item.scheduledFinishAt : '-') + `</td>` +
                              (type === 'phase'
                                 ? `<td>` + (!isNaN(moment(item.scheduledFinishAt).diff(moment(item.scheduledStartAt), 'days'))
-                                    ? moment(item.scheduledFinishAt).diff(moment(item.scheduledStartAt), 'days')
+                                    ? moment(item.scheduledFinishAt).diff(moment(item.scheduledStartAt), 'days') +1
                                     : '-') + `</td>`
                                 : '') +
                         `</tr>
@@ -493,7 +494,7 @@ function renderTooltip(item, type) {
                             `<td>` + (item.forecastFinishAt ? item.forecastFinishAt: '-') + `</td>` +
                             (type === 'phase'
                                 ? `<td>` + (!isNaN(moment(item.forecastFinishAt).diff(moment(item.forecastStartAt), 'days'))
-                                    ? moment(item.forecastFinishAt).diff(moment(item.forecastStartAt), 'days')
+                                    ? moment(item.forecastFinishAt).diff(moment(item.forecastStartAt), 'days') +1
                                     : '-') + `</td>`
                                 : '') +
                         `</tr>` +
@@ -503,7 +504,7 @@ function renderTooltip(item, type) {
                                 <td>` + (item.actualStartAt ? item.actualStartAt : '-') + `</td>
                                 <td>` + (item.actualFinishAt ? item.actualFinishAt : '-') + `</td>
                                 <td>` + (!isNaN(moment(item.actualFinishAt).diff(moment(item.actualStartAt), 'days'))
-                                    ? moment(item.actualFinishAt).diff(moment(item.actualStartAt), 'days')
+                                    ? moment(item.actualFinishAt).diff(moment(item.actualStartAt), 'days') +1
                                     : '-') + `</td>`
                             : ``) +
                         `</tr>
