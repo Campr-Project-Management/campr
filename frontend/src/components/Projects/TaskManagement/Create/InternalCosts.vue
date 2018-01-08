@@ -142,10 +142,6 @@ export default {
         },
     },
     created() {
-        if (!this.internalCosts.length) {
-            this.addInternalCost();
-        }
-
         this.getProjectDepartments({project: this.$route.params.id});
         this.getProjectResources(this.$route.params.id);
     },

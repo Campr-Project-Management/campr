@@ -64,7 +64,7 @@
 
                 <!-- /// Task Status /// -->
                 <div class="task-status flex flex-v-center">
-                    <div>
+                    <div v-if="editableData.workPackageStatus">
                         <span class="small">{{ translateText('table_header_cell.status') }}:</span>
                         <div class="task-status-box">{{ editableData.workPackageStatus.label }}</div>
                         <a @click="initChangeStatusModal()" class="simple-link small">{{ translateText('message.edit') }}</a>
@@ -637,11 +637,11 @@
                                 minSuffix=" %"
                                 type="single"
                                 step='25'
-                                v-bind:value="transformToString(task.progress)"
                                 :modelName="'editableData.completion'"
-                                :disabled="taskProgressEditIsDisabled"/>
+                                :disabled="taskProgressEditIsDisabled"
+                                v-bind:value="transformToString(task.progress)" />
                         </div>
-                         <div class="col-md-8">
+                         <div class="col-md-8" v-if="editableData.workPackageStatus">
                             <h4>{{editableData.workPackageStatus.label}}</h4>
                         </div>
                         <div class="col-md-4">
@@ -1325,10 +1325,12 @@ export default {
         },
         getResponsibityUsername: function(userId) {
             let users = this.projectUsers.items;
-            for (let i = 0; i < users.length; i++) {
-                if (users[i].user == userId) {
-                    return users[i].userFullName;
-                };
+            if(users != undefined) {
+                for (let i = 0; i < users.length; i++) {
+                    if (users[i].user == userId) {
+                        return users[i].userFullName;
+                    };
+                }
             }
             return '-';
         },
