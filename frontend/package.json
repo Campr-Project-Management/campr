@@ -16,6 +16,7 @@
     "bazinga-translator": "2.6.4",
     "bootstrap": "3.3.7",
     "d3": "4.10.0",
+    "deferred-callback-queue": "github:cristiandan/deferred-callback-queue",
     "dhtmlx-gantt": "4.1.0",
     "domenu": "github:cristiandan/domenu",
     "exports-loader": "0.6.4",
