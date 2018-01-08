@@ -34,6 +34,10 @@
                             <datepicker v-model="schedule.baseStartDate" format="dd-MM-yyyy" />
                             <calendar-icon fill="middle-fill"/>
                         </div>
+                        <error
+                            v-if="validationMessages.scheduledStartAt && validationMessages.scheduledStartAt.length"
+                            v-for="message in validationMessages.scheduledStartAt"
+                            :message="message" />
                     </div>
                     <div class="col-md-6">
                         <div class="input-holder right">
@@ -41,6 +45,10 @@
                             <datepicker v-model="schedule.baseEndDate" format="dd-MM-yyyy" />
                             <calendar-icon fill="middle-fill"/>
                         </div>
+                        <error
+                            v-if="validationMessages.scheduledFinishAt && validationMessages.scheduledFinishAt.length"
+                            v-for="message in validationMessages.scheduledFinishAt"
+                            :message="message" />
                     </div>
                 </div>
             </div>
@@ -52,6 +60,10 @@
                             <datepicker v-model="schedule.forecastStartDate" format="dd-MM-yyyy" />
                             <calendar-icon fill="middle-fill"/>
                         </div>
+                        <error
+                            v-if="validationMessages.forecastStartAt && validationMessages.forecastStartAt.length"
+                            v-for="message in validationMessages.forecastStartAt"
+                            :message="message" />
                     </div>
                     <div class="col-md-6">
                         <div class="input-holder right">
@@ -59,6 +71,10 @@
                             <datepicker v-model="schedule.forecastEndDate" format="dd-MM-yyyy" />
                             <calendar-icon fill="middle-fill"/>
                         </div>
+                        <error
+                            v-if="validationMessages.forecastFinishAt && validationMessages.forecastFinishAt.length"
+                            v-for="message in validationMessages.forecastFinishAt"
+                            :message="message" />
                     </div>
                 </div>
             </div>
@@ -89,6 +105,10 @@
                                 v-bind:label="label.duration_in_days"
                                 v-bind:content="schedule.durationInDays"
                                 v-model="schedule.durationInDays" />
+                            <error
+                                v-if="validationMessages.duration && validationMessages.duration.length"
+                                v-for="message in validationMessages.duration"
+                                :message="message" />
                         </div>
                     </div>
                 </div>
@@ -101,6 +121,10 @@
                                 <datepicker v-model="schedule.forecastStartDate" format="dd-MM-yyyy" />
                                 <calendar-icon fill="middle-fill"/>
                             </div>
+                            <error
+                                v-if="validationMessages.forecastStartAt && validationMessages.forecastStartAt.length"
+                                v-for="message in validationMessages.forecastStartAt"
+                                :message="message" />
                         </div>
                         <div class="col-md-6">
                             <div class="input-holder right">
@@ -108,6 +132,10 @@
                                 <datepicker v-model="schedule.forecastEndDate" format="dd-MM-yyyy" />
                                 <calendar-icon fill="middle-fill"/>
                             </div>
+                            <error
+                                v-if="validationMessages.forecastFinishAt && validationMessages.forecastFinishAt.length"
+                                v-for="message in validationMessages.forecastFinishAt"
+                                :message="message" />
                         </div>
                     </div>
                 </div>
@@ -121,6 +149,7 @@ import InputField from '../../../_common/_form-components/InputField';
 import MultiSelectField from '../../../_common/_form-components/MultiSelectField';
 import CalendarIcon from '../../../_common/_icons/CalendarIcon';
 import datepicker from '../../../_common/_form-components/Datepicker';
+import Error from '../../../_common/_messages/Error.vue';
 import Switches from '../../../3rdparty/vue-switches';
 import {mapActions, mapGetters} from 'vuex';
 
@@ -131,6 +160,7 @@ export default {
         MultiSelectField,
         CalendarIcon,
         datepicker,
+        Error,
         Switches,
     },
     methods: {
@@ -177,6 +207,7 @@ export default {
         ...mapGetters({
             tasks: 'projectTasks',
             tasksForSelect: 'projectTasksForSelect',
+            validationMessages: 'validationMessages',
         }),
         predecessorsForSelect: function() {
             if (!this.schedule.successors || !this.schedule.successors.length) {
