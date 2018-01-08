@@ -292,6 +292,12 @@ success:
         delete:
             from_edit: Risk strategy successfully deleted!
             from_data_table: Risk strategy with ID
+    risk_status:
+        create: Risk status successfully created!
+        edit: Risk status successfully edited!
+        delete:
+            from_edit: Risk status successfully deleted!
+            from_data_table: Risk status with ID
     schedule:
         create: Schedule successfully created!
         edit: Schedule successfully edited!
