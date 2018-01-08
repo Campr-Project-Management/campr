@@ -502,10 +502,8 @@ class Cost
     public function getActualValue()
     {
         $durationFactor = intval($this->duration) > 0
-            ?
-            intval($this->duration)
-            :
-            1
+            ? intval($this->duration)
+            : 1
         ;
 
         return $this->getQuantity() * $this->getRate() * $durationFactor;
@@ -522,7 +520,7 @@ class Cost
     public function actualValueValidator(ExecutionContextInterface $context)
     {
         $parent = $this->getWorkPackage()->getParent();
-        if (is_null($parent)) {
+        if (!$parent) {
             return;
         }
 
