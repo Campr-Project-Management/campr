@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import DeferredCallbackQueue from 'deferred-callback-queue';
 import 'ion-rangeslider/js/ion.rangeSlider.js';
 import 'ion-rangeslider/css/ion.rangeSlider.css';
 import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
@@ -19,14 +20,14 @@ import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
 export default {
     props: ['title', 'min', 'max', 'type', 'minPrefix', 'minSuffix', 'maxPrefix', 'maxSuffix', 'values', 'value', 'disabled', 'step', 'model', 'modelName'],
     computed: {
-        from: function() {
+        from() {
             if (!this.value) {
                 return this.min;
             }
             const values = this.value.split(';');
             return values[0];
         },
-        to: function() {
+        to() {
             if (!this.value) {
                 return this.from;
             }
@@ -86,6 +87,19 @@ export default {
         updateValue: function(value) {
             this.rangeSliderModel = value;
             this.$parent.$emit('changeRangeSliderValue', {modelName: this.modelName, value: value});
+            let queue = this.getDeferredSaveQueue();
+            queue.addCall(this.emitValue, 2048);
+        },
+        emitValue() {
+            this.$emit('onRangeSliderUpdate', this.rangeSliderModel);
+        },
+        getDeferredSaveQueue() {
+            if (this.deferredQueue) {
+                return this.deferredQueue;
+            } else {
+                this.deferredQueue = new DeferredCallbackQueue(1000, true);
+                return this.deferredQueue;
+            }
         },
         finishChangingValue: function(value) {
             this.$parent.$emit('finishChangeRangeSliderValue', {modelName: this.modelName, value: value});
@@ -120,14 +134,14 @@ export default {
         },
     },
     filters: {
-        valueInterval: function(value) {
+        valueInterval(value) {
             if (typeof value === 'string') {
                 return value.replace(';', ' - ');
             }
             return value;
         },
     },
-    data: function() {
+    data() {
         return {
             rangeSliderModel: 0,
         };
