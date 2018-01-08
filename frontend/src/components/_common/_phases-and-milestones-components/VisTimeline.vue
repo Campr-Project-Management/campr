@@ -156,6 +156,10 @@ export default {
                         vertical: 5,
                     },
                 },
+                hiddenDates: [
+                    {start: '2018-01-06 00:00:00', end: '2018-01-08 00:00:00', repeat: 'weekly'},
+                    {start: '2018-01-03 18:00:00', end: '2018-01-04 08:00:00', repeat: 'daily'},
+                ],
                 min: min,
                 max: max,
                 zoomMax: 31536000000000,
@@ -303,7 +307,9 @@ export default {
                 background-color: $dangerColor;
             }
         }
-
+        &.key-milestone {
+            background-color: $dangerColor;
+        }
         &.vis-dot {
             border: none;
             width: 12px;
