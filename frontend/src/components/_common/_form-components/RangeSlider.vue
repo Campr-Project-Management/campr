@@ -3,7 +3,9 @@
         <div class="heading flex flex-space-between">
             <span class="title">{{ title }}</span>
             <span class="value">
-                <span class="text">{{ minPrefix}}</span><span class="from number">{{ rangeSliderModel | valueInterval }}</span><span class="text">{{ minSuffix }}</span>
+                <span class="text">{{ minPrefix}}</span>
+                <span class="from number" v-text="rangeSliderModel | valueInterval"></span>
+                <span class="text">{{ minSuffix }}</span>
             </span>
         </div>
 
@@ -18,7 +20,22 @@ import 'ion-rangeslider/css/ion.rangeSlider.css';
 import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
 
 export default {
-    props: ['title', 'min', 'max', 'type', 'minPrefix', 'minSuffix', 'maxPrefix', 'maxSuffix', 'values', 'value', 'disabled', 'step', 'model', 'modelName'],
+    props: [
+        'title',
+        'min',
+        'max',
+        'type',
+        'minPrefix',
+        'minSuffix',
+        'maxPrefix',
+        'maxSuffix',
+        'values',
+        'value',
+        'disabled',
+        'step',
+        'model',
+        'modelName',
+    ],
     computed: {
         from() {
             if (!this.value) {
@@ -39,9 +56,8 @@ export default {
         const $this = window.$('#slider' + this._uid);
         const values = this.values ? this.values.split(',') : '';
 
-        const vm = this;
-
         this.rangeSliderModel = this.model;
+        const vm = this;
 
         let valueTmp;
         if (this.type === 'double') {
@@ -65,7 +81,7 @@ export default {
             values: values,
             disable: this.disabled,
             step: this.step,
-            onFinish: function(data) {
+            onFinish(data) {
                 vm.finishChangingValue(data.from);
             },
         };
@@ -78,21 +94,8 @@ export default {
         }
 
         $this.ionRangeSlider(rangeParams);
-
-        $this.on('change', function(e) {
-            vm.updateValue(e.target.value);
-        });
     },
     methods: {
-        updateValue: function(value) {
-            this.rangeSliderModel = value;
-            this.$parent.$emit('changeRangeSliderValue', {modelName: this.modelName, value: value});
-            let queue = this.getDeferredSaveQueue();
-            queue.addCall(this.emitValue, 2048);
-        },
-        emitValue() {
-            this.$emit('onRangeSliderUpdate', this.rangeSliderModel);
-        },
         getDeferredSaveQueue() {
             if (this.deferredQueue) {
                 return this.deferredQueue;
@@ -101,13 +104,15 @@ export default {
                 return this.deferredQueue;
             }
         },
-        finishChangingValue: function(value) {
-            this.$parent.$emit('finishChangeRangeSliderValue', {modelName: this.modelName, value: value});
+        finishChangingValue(value) {
+            this.rangeSliderModel = value;
+            this.$emit('onRangeSliderUpdate', `${value}`);
         },
     },
     watch: {
-        value: function(val) {
+        value(val) {
             const $slider = window.$('#slider' + this._uid);
+            this.rangeSliderModel = parseInt(val, 10);
             if (!$slider.length) {
                 return;
             }
@@ -119,7 +124,7 @@ export default {
                 });
             }
         },
-        disabled: function(val) {
+        disabled(val) {
             const $slider = window.$('#slider' + this._uid);
             if (!$slider.length) {
                 return;
