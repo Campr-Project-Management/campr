@@ -642,6 +642,7 @@
                                 step='25'
                                 :modelName="'editableData.completion'"
                                 @onRangeSliderUpdate="updateTaskStatusProgress"
+                                :disabled="taskProgressEditIsDisabled"
                                 v-bind:value="transformToString(task.progress)" />
                         </div>
                          <div class="col-md-8" v-if="editableData.workPackageStatus">
