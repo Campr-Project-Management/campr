@@ -41,7 +41,7 @@
             v-bind:taskObj="task"
             v-bind:closeTaskModal="showCloseTaskModal"
             v-bind:openTaskModal="showOpenTaskModal"
-            v-on:input="setModals" />
+            @input="setModals"/>
 
         <div class="row">
             <div class="col-md-6">
@@ -763,10 +763,6 @@ export default {
         this.getProjectUsers({id: this.$route.params.id});
         this.getWorkPackageStatuses();
         this.getProjectLabels(this.$route.params.id);
-
-        this.$on('finishChangeRangeSliderValue', valueObj => {
-            this.updateProgress(valueObj.value);
-        });
     },
     computed: {
         ...mapGetters({
@@ -985,15 +981,6 @@ export default {
             'patchTask',
             'editTaskCost',
         ]),
-        updateProgress: function(value) {
-            let data = {
-                taskId: this.task.id,
-                data: {
-                    progress: value,
-                },
-            };
-            this.patchTask(data);
-        },
         countCompletedSubtasks() {
             let completed = 0;
 
@@ -1011,17 +998,17 @@ export default {
 
             return completed;
         },
-        deleteSubtask: function(subtaskId) {
+        deleteSubtask(subtaskId) {
             this.deleteTaskSubtask(subtaskId);
             this.showDeleteModal = false;
         },
-        getDuration: function(startDate, endDate) {
+        getDuration(startDate, endDate) {
             let end = moment(endDate);
             let start = moment(startDate);
 
             return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') + 1 : '-';
         },
-        getHumanTimeDiff: function(date) {
+        getHumanTimeDiff(date) {
             return moment(date).from(new Date(), false);
         },
         getSubtaskSummary() {
@@ -1123,7 +1110,7 @@ export default {
                 )
             ;
         },
-        totalCostsForType: function(costType) {
+        totalCostsForType(costType) {
             let totalCostForType = 0;
             // to be removed and replace with a computed prop
             for (let cost of this.task.costs) {
@@ -1133,47 +1120,41 @@ export default {
             }
             return totalCostForType;
         },
-        transformToString: function(value) {
+        transformToString(value) {
             return value ? value.toString() : '';
         },
-        translateText: function(text) {
+        translateText(text) {
             return this.translate(text);
         },
         updateTaskStatusProgress(sliderValue) {
-            let data = {
+            let params = {
                 taskId: this.task.id,
                 data: {
                     progress: sliderValue,
                 },
             };
-            this.patchTask(data).then(() => {
-                let parsedSliderVal = parseInt(sliderValue, 10);
-                if (parsedSliderVal === 100) {
-                    // set workPackageStatus to 'Completed'
-                    this.editableData.workPackageStatus = this.$refs.projectStatus.options.filter(item => item.key === 4)[0];
-                    this.changeStatus();
-                } else if (parsedSliderVal > 0) {
-                    // set workPackageStatus to 'Ongoing'
-                    this.editableData.workPackageStatus = this.$refs.projectStatus.options.filter(item => item.key === 3)[0];
-                    this.changeStatus();
-                }
-            });
-        },
-        updateActualDate() {
-            let actualStartData = {
-                taskId: this.task.id,
-                data: {},
-            };
+
+            let parsedSliderVal = parseInt(sliderValue, 10);
+            if (parsedSliderVal === 100) {
+                // set workPackageStatus to 'Completed'
+                this.editableData.workPackageStatus = this.$refs.projectStatus.options.filter(item => item.key === 4)[0];
+                params.data.workPackageStatus = this.editableData.workPackageStatus.key;
+            } else if (parsedSliderVal > 0) {
+                // set workPackageStatus to 'Ongoing'
+                this.editableData.workPackageStatus = this.$refs.projectStatus.options.filter(item => item.key === 3)[0];
+                params.data.workPackageStatus = this.editableData.workPackageStatus.key;
+            }
+
             if (this.editableData.workPackageStatus.key === 4) {
                 // status 'Completed'
-                actualStartData.data.actualFinishAt = moment().format('D-MM-YYYY');
-                this.patchTask(actualStartData);
+                params.data.actualFinishAt = moment().format('D-MM-YYYY');
             } else if (this.editableData.workPackageStatus.key === 3) {
                 // status 'Ongoing'
-                actualStartData.data.actualStartAt = moment().format('D-MM-YYYY');
-                actualStartData.data.actualFinishAt = '';
-                this.patchTask(actualStartData);
+                params.data.actualStartAt = moment().format('D-MM-YYYY');
+                params.data.actualFinishAt = '';
             }
+
+            this.patchTask(params);
         },
         initChangeStatusModal() {
             this.showEditStatusModal = true;
@@ -1186,9 +1167,7 @@ export default {
                 },
             };
 
-            this.patchTask(data).then(() => {
-                this.updateActualDate();
-            });
+            this.patchTask(data);
 
             this.showEditStatusModal = false;
         },
@@ -1270,7 +1249,6 @@ export default {
             this.showEditInternalActualCostModal = true;
         },
         setModals(value) {
-            this.getTaskById(this.$route.params.taskId);
             this.showEditExternalCostModal = value;
             this.showDeleteExternalCostModal = value;
             this.showEditExternalForecastCostModal = value;
@@ -1282,6 +1260,7 @@ export default {
             this.showEditScheduleModal = value;
             this.showCloseTaskModal = value;
             this.showOpenTaskModal = value;
+            this.getTaskById(this.$route.params.taskId);
         },
         updateColorStatus() {
             let data = {
@@ -1331,7 +1310,7 @@ export default {
         },
         updateSupportUsers() {
             let data = {
-                supportUsers: this.editableData.supportUsers.map(function(item) {
+                supportUsers: this.editableData.supportUsers.map(item => {
                     return item.key;
                 }),
             };
@@ -1342,7 +1321,7 @@ export default {
         },
         updateConsultedUsers() {
             let data = {
-                consultedUsers: this.editableData.consultedUsers.map(function(item) {
+                consultedUsers: this.editableData.consultedUsers.map(item => {
                     return item.key;
                 }),
             };
@@ -1353,7 +1332,7 @@ export default {
         },
         updateInformedUsers() {
             let data = {
-                informedUsers: this.editableData.informedUsers.map(function(item) {
+                informedUsers: this.editableData.informedUsers.map(item => {
                     return item.key;
                 }),
             };
@@ -1368,7 +1347,7 @@ export default {
         initOpenTaskModal() {
             this.showOpenTaskModal = true;
         },
-        getResponsibityUsername: function(userId) {
+        getResponsibityUsername(userId) {
             let users = this.projectUsers.items;
             if(users != undefined) {
                 for (let i = 0; i < users.length; i++) {
