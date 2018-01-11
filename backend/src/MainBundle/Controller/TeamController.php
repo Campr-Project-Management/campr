@@ -218,6 +218,7 @@ class TeamController extends Controller
             'gplus' => $user->getGplus(),
             'linked_in' => $user->getLinkedIn(),
             'medium' => $user->getMedium(),
+            'locale' => $user->getLocale(),
         ];
 
         $signer = $this->get('app.jwt_signer');
