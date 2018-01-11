@@ -29,14 +29,16 @@
                             <div class="col-md-10">
                                 <error
                                     v-if="validationMessages.name && validationMessages.name.length"
-                                    v-for="message in validationMessages.name"
-                                    :message="message" />
+                                    v-for="(message, index) in validationMessages.name"
+                                    :key="index"
+                                    :message="message"/>
                             </div>
                             <div class="col-md-2">
                                 <error
                                     v-if="validationMessages.quantity && validationMessages.quantity.length"
-                                    v-for="message in validationMessages.quantity"
-                                    :message="message" />
+                                    v-for="(message, index) in validationMessages.quantity"
+                                    :key="index"
+                                    :message="message"/>
                             </div>
                         </div>
                     </div>
@@ -74,14 +76,16 @@
                             <div class="col-md-2">
                                 <error
                                     v-if="validationMessages.customUnit && validationMessages.customUnit.length"
-                                    v-for="message in validationMessages.customUnit"
-                                    :message="message" />
+                                    v-for="(message, index) in validationMessages.customUnit"
+                                    :key="index"
+                                    :message="message"/>
                             </div>
                             <div class="col-md-2">
                                 <error
                                     v-if="validationMessages.rate && validationMessages.rate.length"
-                                    v-for="message in validationMessages.rate"
-                                    :message="message" />
+                                    v-for="(message, index) in validationMessages.rate"
+                                    :key="index"
+                                    :message="message"/>
                             </div>
                         </div>
                     </div>
@@ -119,8 +123,9 @@
                             <div class="col-md-10">
                                 <error
                                     v-if="validationMessages.externalForecastCost && validationMessages.externalForecastCost.length"
-                                    v-for="message in validationMessages.externalForecastCost"
-                                    :message="message" />
+                                    v-for="(message, index) in validationMessages.externalForecastCost"
+                                    :key="index"
+                                    :message="message"/>
                             </div>
                         </div>
                     </div>
@@ -151,8 +156,9 @@
                             <div class="col-md-10">
                                 <error
                                     v-if="validationMessages.externalActualCost && validationMessages.externalActualCost.length"
-                                    v-for="message in validationMessages.externalActualCost"
-                                    :message="message" />
+                                    v-for="(message, index) in validationMessages.externalActualCost"
+                                    :key="index"
+                                    :message="message"/>
                             </div>
                         </div>
                     </div>
@@ -210,14 +216,16 @@
                             <div class="col-md-2">
                                 <error
                                     v-if="validationMessages.rate && validationMessages.rate.length"
-                                    v-for="message in validationMessages.rate"
-                                    :message="message" />
+                                    v-for="(message, index) in validationMessages.rate"
+                                    :key="index"
+                                    :message="message"/>
                             </div>
                             <div class="col-md-2">
                                 <error
                                     v-if="validationMessages.quantity && validationMessages.quantity.length"
-                                    v-for="message in validationMessages.quantity"
-                                    :message="message" />
+                                    v-for="(message, index) in validationMessages.quantity"
+                                    :key="index"
+                                    :message="message"/>
                             </div>
                         </div>
                     </div>
@@ -255,8 +263,9 @@
                             <div class="col-md-10">
                                 <error
                                     v-if="validationMessages.internalForecastCost && validationMessages.internalForecastCost.length"
-                                    v-for="message in validationMessages.internalForecastCost"
-                                    :message="message" />
+                                    v-for="(message, index) in validationMessages.internalForecastCost"
+                                    :key="index"
+                                    :message="message"/>
                             </div>
                         </div>
                     </div>
@@ -287,8 +296,9 @@
                             <div class="col-md-10">
                                 <error
                                     v-if="validationMessages.internalActualCost && validationMessages.internalActualCost.length"
-                                    v-for="message in validationMessages.internalActualCost"
-                                    :message="message" />
+                                    v-for="(message, index) in validationMessages.internalActualCost"
+                                    :key="index"
+                                    :message="message"/>
                             </div>
                         </div>
                     </div>
@@ -425,10 +435,10 @@ export default {
             'patchTask',
             'getProjectResources',
         ]),
-        translateText: function(text) {
+        translateText(text) {
             return this.translate(text);
         },
-        saveExternalCost: function() {
+        saveExternalCost() {
             let data = {
                 project: this.$route.params.id,
                 workPackage: this.$route.params.taskId,
@@ -443,29 +453,22 @@ export default {
                 data.unit = this.editExternalCostObj.selectedUnit;
             }
 
-            let that = this;
-            let successHandler = function(response) {
-                if (response.body.error == undefined) {
-                    that.showEditExternalCostModal = false;
-                    that.$emit('input', that.showEditExternalCostModal);
-                }
-            };
-
             if (this.editExternalCostObj.id === 0) {
-                this.createTaskCost(data).then(successHandler);
+                this.createTaskCost(data)
+                    .then(response => this.successHandler(this.showEditExternalCostModal, response.body.error));
             } else {
-                this.editTaskCost({costId: this.editExternalCostObj.id, data: data}).then(successHandler);
+                this.editTaskCost({costId: this.editExternalCostObj.id, data: data})
+                    .then(response => this.successHandler(this.showEditExternalCostModal, response.body.error));
             }
         },
-        deleteExternalCost: function() {
-            this.deleteTaskCost(this.editExternalCostObj.id);
-            this.showDeleteExternalCostModal = false;
-            this.$emit('input', this.showDeleteExternalCostModal);
+        deleteExternalCost() {
+            this.deleteTaskCost(this.editExternalCostObj.id)
+                .then(response => this.successHandler(this.showDeleteExternalCostModal));
         },
-        isEditExternalCost: function() {
+        isEditExternalCost() {
             return this.editExternalCostObj.id != 0;
         },
-        saveExternalForecastCost: function() {
+        saveExternalForecastCost() {
             let data = {
                 externalForecastCost: this.externalForecastCost,
             };
@@ -473,17 +476,9 @@ export default {
                 data: data,
                 taskId: this.$route.params.taskId,
             })
-            .then(
-                (response) => {
-                    if (response.body.error == undefined) {
-                        this.showEditExternalForecastCostModal = false;
-                        this.$emit('input', this.showEditExternalForecastCostModal);
-                    }
-                },
-                () => {}
-            );
+                .then(response => this.successHandler(this.showEditExternalForecastCostModal, response.body.error));
         },
-        saveExternalActualCost: function() {
+        saveExternalActualCost() {
             let data = {
                 externalActualCost: this.externalActualCost,
             };
@@ -491,16 +486,9 @@ export default {
                 data: data,
                 taskId: this.$route.params.taskId,
             })
-            .then(
-                (response) => {
-                    if (response.body.error == undefined) {
-                        this.showEditExternalActualCostModal = false;
-                        this.$emit('input', this.showEditExternalActualCostModal);
-                    }
-                }
-            );
+                .then(response => this.successHandler(this.showEditExternalActualCostModal, response.body.error));
         },
-        saveInternalCost: function() {
+        saveInternalCost() {
             let data = {
                 project: this.$route.params.id,
                 workPackage: this.$route.params.taskId,
@@ -511,26 +499,19 @@ export default {
                 type: 0,
             };
 
-            let that = this;
-            let successHandler = function(response) {
-                if (response.body.error == undefined) {
-                    that.showEditInternalCostModal = false;
-                    that.$emit('input', that.showEditInternalCostModal);
-                }
-            };
-
             if (this.editInternalCostObj.id === 0) {
-                this.createTaskCost(data).then(successHandler);
+                this.createTaskCost(data)
+                    .then(response => this.successHandler(this.showEditInternalCostModal, response.body.error));
             } else {
-                this.editTaskCost({costId: this.editInternalCostObj.id, data: data}).then(successHandler);
+                this.editTaskCost({costId: this.editInternalCostObj.id, data: data})
+                    .then(response => this.successHandler(this.showEditInternalCostModal, response.body.error));
             }
         },
-        deleteInternalCost: function() {
-            this.deleteTaskCost(this.editInternalCostObj.id);
-            this.showDeleteInternalCostModal = false;
-            this.$emit('input', this.showDeleteInternalCostModal);
+        deleteInternalCost() {
+            this.deleteTaskCost(this.editInternalCostObj.id)
+                .then(response => this.successHandler(this.showDeleteInternalCostModal));
         },
-        saveInternalForecastCost: function() {
+        saveInternalForecastCost() {
             let data = {
                 internalForecastCost: this.internalForecastCost,
             };
@@ -538,16 +519,9 @@ export default {
                 data: data,
                 taskId: this.$route.params.taskId,
             })
-            .then(
-                (response) => {
-                    if (response.body.error == undefined) {
-                        this.showEditInternalForecastCostModal = false;
-                        this.$emit('input', this.showEditInternalForecastCostModal);
-                    }
-                }
-            );
+                .then(response => this.successHandler(this.showEditInternalForecastCostModal, response.body.error));
         },
-        saveInternalActualCost: function() {
+        saveInternalActualCost() {
             let data = {
                 internalActualCost: this.internalActualCost,
             };
@@ -555,16 +529,9 @@ export default {
                 data: data,
                 taskId: this.$route.params.taskId,
             })
-            .then(
-                (response) => {
-                    if (response.body.error == undefined) {
-                        this.showEditInternalActualCostModal = false;
-                        this.$emit('input', this.showEditInternalActualCostModal);
-                    }
-                }
-            );
+                .then(response => this.successHandler(this.showEditInternalActualCostModal, response.body.error));
         },
-        changeSchedule: function() {
+        changeSchedule() {
             let data = {
                 scheduledStartAt: moment(this.editScheduleObj.baseStartDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 scheduledFinishAt: moment(this.editScheduleObj.baseEndDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
@@ -579,42 +546,41 @@ export default {
                     return item.key;
                 }),
             };
-            let that = this;
 
             this.patchTask({
                 data: data,
                 taskId: this.$route.params.taskId,
-            }).then(function(response) {
-                if (response.body.error == undefined) {
-                    that.showEditScheduleModal = false;
-                    that.$emit('input', that.showEditScheduleModal);
-                }
-            });
+            })
+                .then(response => this.successHandler(this.showEditScheduleModal, response.body.error));
         },
-        closeTask: function() {
+        closeTask() {
             let data = {
                 workPackageStatus: 5,
             };
             this.patchTask({
                 data: data,
                 taskId: this.$route.params.taskId,
-            });
-            this.showCloseTaskModal = false;
-            this.$emit('input', this.showCloseTaskModal);
+            })
+                .then(response => this.successHandler(this.showCloseTaskModal, response.body.error));
         },
-        openTask: function() {
+        openTask() {
             let data = {
                 workPackageStatus: 1,
             };
             this.patchTask({
                 data: data,
                 taskId: this.$route.params.taskId,
-            });
-            this.showOpenTaskModal = false;
-            this.$emit('input', this.showOpenTaskModal);
+            })
+                .then(response => this.successHandler(this.showOpenTaskModal, response.body.error));
         },
-        populateRateField: function(value) {
+        populateRateField(value) {
             this.editInternalCostObj.daily_rate = value.rate;
+        },
+        successHandler(modal, errors) {
+            if (errors == undefined) {
+                modal = false;
+                this.$emit('input', modal);
+            }
         },
     },
     created() {
