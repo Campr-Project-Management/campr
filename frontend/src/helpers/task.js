@@ -32,6 +32,9 @@ export const createFormData = (data) => {
     if (data.statusColor) {
         formData.append('colorStatus', data.statusColor.id);
     }
+    if (data.parent) {
+        formData.append('parent', data.parent);
+    }
 
     // Attachments
     if (data.medias.length) {
@@ -67,8 +70,14 @@ export const createFormData = (data) => {
             formData.append('costs[' + i + '][workPackage]', data.externalCosts.items[i].workPackage);
         }
     }
-    formData.append('externalActualCost', data.externalCosts.actual);
-    formData.append('externalForecastCost', data.externalCosts.forecast);
+
+    if (data.externalCosts.actual) {
+        formData.append('externalActualCost', data.externalCosts.actual);
+    }
+
+    if (data.externalCosts.forecast) {
+        formData.append('externalForecastCost', data.externalCosts.forecast);
+    }
 
     // Internal Costs
     for (let i = 0; i < data.internalCosts.items.length; i++) {
@@ -85,8 +94,14 @@ export const createFormData = (data) => {
             formData.append('costs[' + costIndex + '][workPackage]', data.internalCosts.items[i].workPackage);
         }
     }
-    formData.append('internalActualCost', data.internalCosts.actual);
-    formData.append('internalForecastCost', data.internalCosts.forecast);
+
+    if (data.internalCosts.actual) {
+        formData.append('internalActualCost', data.internalCosts.actual);
+    }
+
+    if (data.internalCosts.forecast) {
+        formData.append('internalForecastCost', data.internalCosts.forecast);
+    }
 
     // Schedule Data
     formData.append('scheduledStartAt', moment(data.schedule.baseStartDate).format('DD-MM-YYYY'));
