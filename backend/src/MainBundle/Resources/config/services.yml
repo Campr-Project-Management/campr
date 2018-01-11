@@ -14,6 +14,12 @@ services:
         tags:
             - { name: form.type }
 
+    main.form.locale_type:
+        class: MainBundle\Form\LocaleType
+        arguments:
+            - '@lexik_translation.locale.manager'
+        tags:
+            - { name: form.type }
 
 ### VALIDATION CONSTRAINTS ###
     main.team_slug_usable_constraint:
@@ -36,6 +42,18 @@ services:
             - "@request_stack"
         tags:
             - { name: jms_serializer.event_listener, event: serializer.post_serialize, method: onPostSerialize }
+
+    main.listener.user_locale:
+        class: MainBundle\EventListener\UserLocaleListener
+        arguments: ['@session']
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin }
+
+    main.listener.locale:
+        class: MainBundle\EventListener\LocaleListener
+        arguments: ['%kernel.default_locale%']
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 15 }
 
 ### VOTERS ###
     main.team_voter:
