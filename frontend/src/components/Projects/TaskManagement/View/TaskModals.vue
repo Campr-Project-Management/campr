@@ -24,6 +24,24 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row error-row">
+                        <div class="form-group last-form-group">
+                            <div class="col-md-10">
+                                <error
+                                    v-if="validationMessages.name && validationMessages.name.length"
+                                    v-for="(message, index) in validationMessages.name"
+                                    :key="index"
+                                    :message="message"/>
+                            </div>
+                            <div class="col-md-2">
+                                <error
+                                    v-if="validationMessages.quantity && validationMessages.quantity.length"
+                                    v-for="(message, index) in validationMessages.quantity"
+                                    :key="index"
+                                    :message="message"/>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-8">
@@ -47,6 +65,27 @@
                                     v-bind:label="translateText('label.external_cost_unit_rate')"
                                     v-model="editExternalCostObj.rate"
                                     v-bind:content="editExternalCostObj.rate" />
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="row error-row">
+                        <div class="form-group last-form-group">
+                            <div class="col-md-8">
+                            </div>
+                            <div class="col-md-2">
+                                <error
+                                    v-if="validationMessages.customUnit && validationMessages.customUnit.length"
+                                    v-for="(message, index) in validationMessages.customUnit"
+                                    :key="index"
+                                    :message="message"/>
+                            </div>
+                            <div class="col-md-2">
+                                <error
+                                    v-if="validationMessages.rate && validationMessages.rate.length"
+                                    v-for="(message, index) in validationMessages.rate"
+                                    :key="index"
+                                    :message="message"/>
                             </div>
                         </div>
                     </div>
@@ -79,6 +118,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row error-row">
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <error
+                                    v-if="validationMessages.externalForecastCost && validationMessages.externalForecastCost.length"
+                                    v-for="(message, index) in validationMessages.externalForecastCost"
+                                    :key="index"
+                                    :message="message"/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex flex-space-between">
                     <a href="javascript:void(0)" @click="showEditExternalForecastCostModal = false; $emit('input', showEditExternalForecastCostModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
@@ -98,6 +148,17 @@
                                     v-bind:label="translateText('label.actual_total')"
                                     v-model="externalActualCost"
                                     v-bind:content="externalActualCost" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row error-row">
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <error
+                                    v-if="validationMessages.externalActualCost && validationMessages.externalActualCost.length"
+                                    v-for="(message, index) in validationMessages.externalActualCost"
+                                    :key="index"
+                                    :message="message"/>
                             </div>
                         </div>
                     </div>
@@ -148,6 +209,26 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row error-row">
+                        <div class="form-group">
+                            <div class="col-md-6">
+                            </div>
+                            <div class="col-md-2">
+                                <error
+                                    v-if="validationMessages.rate && validationMessages.rate.length"
+                                    v-for="(message, index) in validationMessages.rate"
+                                    :key="index"
+                                    :message="message"/>
+                            </div>
+                            <div class="col-md-2">
+                                <error
+                                    v-if="validationMessages.quantity && validationMessages.quantity.length"
+                                    v-for="(message, index) in validationMessages.quantity"
+                                    :key="index"
+                                    :message="message"/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex flex-space-between">
                     <a href="javascript:void(0)" @click="showEditInternalCostModal = false; $emit('input', showEditInternalCostModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
@@ -177,6 +258,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row error-row">
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <error
+                                    v-if="validationMessages.internalForecastCost && validationMessages.internalForecastCost.length"
+                                    v-for="(message, index) in validationMessages.internalForecastCost"
+                                    :key="index"
+                                    :message="message"/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex flex-space-between">
                     <a href="javascript:void(0)" @click="showEditInternalForecastCostModal = false; $emit('input', showEditInternalForecastCostModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
@@ -196,6 +288,17 @@
                                     v-bind:label="translateText('label.actual_total')"
                                     v-model="internalActualCost"
                                     v-bind:content="internalActualCost" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row error-row">
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <error
+                                    v-if="validationMessages.internalActualCost && validationMessages.internalActualCost.length"
+                                    v-for="(message, index) in validationMessages.internalActualCost"
+                                    :key="index"
+                                    :message="message"/>
                             </div>
                         </div>
                     </div>
@@ -241,6 +344,7 @@
 import InputField from '../../../_common/_form-components/InputField';
 import RadioField from '../../../_common/_form-components/RadioField';
 import SelectField from '../../../_common/_form-components/SelectField';
+import Error from '../../../_common/_messages/Error.vue';
 import Schedule from '../Create/Schedule';
 import Modal from '../../../_common/Modal';
 import {mapActions, mapGetters} from 'vuex';
@@ -270,6 +374,7 @@ export default {
         SelectField,
         Schedule,
         Modal,
+        Error,
     },
     watch: {
         editExternalCostModal(value) {
@@ -330,10 +435,10 @@ export default {
             'patchTask',
             'getProjectResources',
         ]),
-        translateText: function(text) {
+        translateText(text) {
             return this.translate(text);
         },
-        saveExternalCost: function() {
+        saveExternalCost() {
             let data = {
                 project: this.$route.params.id,
                 workPackage: this.$route.params.taskId,
@@ -347,46 +452,43 @@ export default {
             } else if (this.editExternalCostObj.selectedUnit && this.editExternalCostObj.selectedUnit.length) {
                 data.unit = this.editExternalCostObj.selectedUnit;
             }
-            if (this.editExternalCostObj.id === 0) {
-                this.createTaskCost(data);
-            } else {
-                this.editTaskCost({costId: this.editExternalCostObj.id, data: data});
-            }
 
-            this.showEditExternalCostModal = false;
-            this.$emit('input', this.showEditExternalCostModal);
+            if (this.editExternalCostObj.id === 0) {
+                this.createTaskCost(data)
+                    .then(response => this.successHandler(this.showEditExternalCostModal, response.body.error));
+            } else {
+                this.editTaskCost({costId: this.editExternalCostObj.id, data: data})
+                    .then(response => this.successHandler(this.showEditExternalCostModal, response.body.error));
+            }
         },
-        deleteExternalCost: function() {
-            this.deleteTaskCost(this.editExternalCostObj.id);
-            this.showDeleteExternalCostModal = false;
-            this.$emit('input', this.showDeleteExternalCostModal);
+        deleteExternalCost() {
+            this.deleteTaskCost(this.editExternalCostObj.id)
+                .then(response => this.successHandler(this.showDeleteExternalCostModal));
         },
-        isEditExternalCost: function() {
+        isEditExternalCost() {
             return this.editExternalCostObj.id != 0;
         },
-        saveExternalForecastCost: function() {
+        saveExternalForecastCost() {
             let data = {
                 externalForecastCost: this.externalForecastCost,
             };
             this.patchTask({
                 data: data,
                 taskId: this.$route.params.taskId,
-            });
-            this.showEditExternalForecastCostModal = false;
-            this.$emit('input', this.showEditExternalForecastCostModal);
+            })
+                .then(response => this.successHandler(this.showEditExternalForecastCostModal, response.body.error));
         },
-        saveExternalActualCost: function() {
+        saveExternalActualCost() {
             let data = {
                 externalActualCost: this.externalActualCost,
             };
             this.patchTask({
                 data: data,
                 taskId: this.$route.params.taskId,
-            });
-            this.showEditExternalActualCostModal = false;
-            this.$emit('input', this.showEditExternalActualCostModal);
+            })
+                .then(response => this.successHandler(this.showEditExternalActualCostModal, response.body.error));
         },
-        saveInternalCost: function() {
+        saveInternalCost() {
             let data = {
                 project: this.$route.params.id,
                 workPackage: this.$route.params.taskId,
@@ -396,43 +498,40 @@ export default {
                 duration: this.editInternalCostObj.duration,
                 type: 0,
             };
-            if (this.editInternalCostObj.id === 0) {
-                this.createTaskCost(data);
-            } else {
-                this.editTaskCost({costId: this.editInternalCostObj.id, data: data});
-            }
 
-            this.showEditInternalCostModal = false;
-            this.$emit('input', this.showEditInternalCostModal);
+            if (this.editInternalCostObj.id === 0) {
+                this.createTaskCost(data)
+                    .then(response => this.successHandler(this.showEditInternalCostModal, response.body.error));
+            } else {
+                this.editTaskCost({costId: this.editInternalCostObj.id, data: data})
+                    .then(response => this.successHandler(this.showEditInternalCostModal, response.body.error));
+            }
         },
-        deleteInternalCost: function() {
-            this.deleteTaskCost(this.editInternalCostObj.id);
-            this.showDeleteInternalCostModal = false;
-            this.$emit('input', this.showDeleteInternalCostModal);
+        deleteInternalCost() {
+            this.deleteTaskCost(this.editInternalCostObj.id)
+                .then(response => this.successHandler(this.showDeleteInternalCostModal));
         },
-        saveInternalForecastCost: function() {
+        saveInternalForecastCost() {
             let data = {
                 internalForecastCost: this.internalForecastCost,
             };
             this.patchTask({
                 data: data,
                 taskId: this.$route.params.taskId,
-            });
-            this.showEditInternalForecastCostModal = false;
-            this.$emit('input', this.showEditInternalForecastCostModal);
+            })
+                .then(response => this.successHandler(this.showEditInternalForecastCostModal, response.body.error));
         },
-        saveInternalActualCost: function() {
+        saveInternalActualCost() {
             let data = {
                 internalActualCost: this.internalActualCost,
             };
             this.patchTask({
                 data: data,
                 taskId: this.$route.params.taskId,
-            });
-            this.showEditInternalActualCostModal = false;
-            this.$emit('input', this.showEditInternalActualCostModal);
+            })
+                .then(response => this.successHandler(this.showEditInternalActualCostModal, response.body.error));
         },
-        changeSchedule: function() {
+        changeSchedule() {
             let data = {
                 scheduledStartAt: moment(this.editScheduleObj.baseStartDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 scheduledFinishAt: moment(this.editScheduleObj.baseEndDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
@@ -451,34 +550,37 @@ export default {
             this.patchTask({
                 data: data,
                 taskId: this.$route.params.taskId,
-            });
-            this.showEditScheduleModal = false;
-            this.$emit('input', this.showEditScheduleModal);
+            })
+                .then(response => this.successHandler(this.showEditScheduleModal, response.body.error));
         },
-        closeTask: function() {
+        closeTask() {
             let data = {
                 workPackageStatus: 5,
             };
             this.patchTask({
                 data: data,
                 taskId: this.$route.params.taskId,
-            });
-            this.showCloseTaskModal = false;
-            this.$emit('input', this.showCloseTaskModal);
+            })
+                .then(response => this.successHandler(this.showCloseTaskModal, response.body.error));
         },
-        openTask: function() {
+        openTask() {
             let data = {
                 workPackageStatus: 1,
             };
             this.patchTask({
                 data: data,
                 taskId: this.$route.params.taskId,
-            });
-            this.showOpenTaskModal = false;
-            this.$emit('input', this.showOpenTaskModal);
+            })
+                .then(response => this.successHandler(this.showOpenTaskModal, response.body.error));
         },
-        populateRateField: function(value) {
+        populateRateField(value) {
             this.editInternalCostObj.daily_rate = value.rate;
+        },
+        successHandler(modal, errors) {
+            if (errors == undefined) {
+                modal = false;
+                this.$emit('input', modal);
+            }
         },
     },
     created() {
@@ -489,6 +591,7 @@ export default {
         ...mapGetters({
             projectUnitsForSelect: 'projectUnitsForSelect',
             resourcesForSelect: 'projectResourcesForSelect',
+            validationMessages: 'validationMessages',
         }),
     },
     data() {
@@ -517,3 +620,13 @@ export default {
     },
 };
 </script>
+
+<style scoped lang="scss">
+    .error-row {
+        .error {
+            position:relative;
+            top: -60px;
+        }
+    }
+</style>
+

@@ -14,6 +14,11 @@
                         {{ translateText('message.project_contract') }}
                     </div>
 
+                    <div class="project-info">
+                        <span>{{ translateText('message.scope') }}: {{ project.projectScopeName || '-' }}</span>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <span>{{ translateText('message.category') }}: {{ project.projectCategoryName || '-' }}</span>
+                    </div>
 
                     <div class="flex buttons flex-center" v-if="contract && contract.id">
                         <a class="btn-rounded flex flex-center download-pdf" :href="downloadPdf">
@@ -294,7 +299,8 @@ export default {
         },
     },
     methods: {
-        ...mapActions(['getProjectById', 'getContractByProjectId', 'updateContract',
+        ...mapActions([
+            'getProjectById', 'getContractByProjectId', 'updateContract',
             'createContract', 'createObjective', 'createLimitation', 'createDeliverable',
             'editObjective', 'editLimitation', 'editDeliverable', 'reorderObjectives',
             'reorderLimitations', 'reorderDeliverables', 'getProjectCostsGraphData',
@@ -608,6 +614,7 @@ export default {
 <style lang="scss">
     @import '../../css/_common';
 </style>
+
 <style scoped lang="scss">
     @import '../../css/page-section';
 
@@ -617,14 +624,24 @@ export default {
             text-align: center;
 
             h1 {
-                padding-bottom: 20px;
+                padding-bottom: 1.25em;
 
                 span {
                     font-size: 0.75em;
                     display: block;
-                    margin-top: 10px;
+                    margin-top: 0.6em;
                 }
             }
+        }
+    }
+
+    .project-info {
+        text-align: center;
+        margin-bottom: 2em;
+
+        span {
+            display: inline-block;
+            font-size: 1.5em;
         }
     }
 
@@ -634,15 +651,15 @@ export default {
         text-align: center;
         text-transform: uppercase;
         letter-spacing: 0.1em;
-        margin-bottom: 30px; 
+        margin-bottom: 1.9em;
     }
 
     .header .btn-md {
-        margin-top: 24px;
+        margin-top: 1.5em;
     }
 
     .members-big {
-        margin: 30px 0 0;
+        margin: 1.9em 0 0;
     }
 
     .member-badge {
@@ -697,7 +714,7 @@ export default {
     }
 
     .pdf {
-        margin: 30px 13px;
+        margin: 1.9em 13px;
     }
 
     .download-pdf {
@@ -705,7 +722,7 @@ export default {
     }
 
     .hr {
-        margin: 30px 0;
+        margin: 1.9em 0;
 
         &.small {
             margin: 20px 0;

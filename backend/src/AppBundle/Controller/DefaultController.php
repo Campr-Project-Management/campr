@@ -32,6 +32,7 @@ class DefaultController extends Controller
             $userData = $this->renderView(':partials:user_data.html.twig', [
                 'user' => [
                     'api_token' => $this->getUser()->getApiToken(),
+                    'locale' => $this->getUser()->getLocale(),
                 ],
             ]);
             $content = $response->getContent();
@@ -149,6 +150,7 @@ class DefaultController extends Controller
         $user->setGplus($userData['gplus']);
         $user->setLinkedIn($userData['linked_in']);
         $user->setMedium($userData['medium']);
+        $user->setLocale($userData['locale']);
 
         $em->persist($user);
         $em->flush();
