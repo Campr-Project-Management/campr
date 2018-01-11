@@ -2,6 +2,7 @@
 
 namespace MainBundle\Form\User;
 
+use MainBundle\Form\LocaleType;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -74,6 +75,7 @@ class AccountType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('locale', LocaleType::class)
             ->add('phone', TextType::class, [
                 'required' => false,
             ])

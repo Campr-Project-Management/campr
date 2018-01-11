@@ -1805,6 +1805,105 @@ class WorkPackage
     }
 
     /**
+     * Validation for task duration, the sum of the duration of all the children
+     * cannot excede the duration of their parent.
+     *
+     * @Assert\Callback
+     *
+     * @param ExecutionContextInterface $context
+     */
+    public function workPackageDurationValidator(ExecutionContextInterface $context)
+    {
+        if (is_null($this->getParent())) {
+            return;
+        }
+
+        $futureDuration = $this->getParent()->getChildrenTotalDuration();
+        if (!$this->getId()) {
+            $futureDuration += $this->getDuration();
+        }
+        if ($futureDuration > $this->getParent()->getDuration()) {
+            $context
+                ->buildViolation('invalid.work_package.duration', [
+                    '%duration%' => $this->getDuration(),
+                ])
+                ->atPath('duration')
+                ->addViolation()
+            ;
+        }
+    }
+
+    /**
+     * Validation for task schedule, the dates from the schedule cannot excede the corresponding dates of their parent.
+     *
+     * @Assert\Callback
+     *
+     * @param ExecutionContextInterface $context
+     */
+    public function workPackageScheduleValidator(ExecutionContextInterface $context)
+    {
+        if ($this->getScheduledFinishAt() < $this->getScheduledStartAt()) {
+            $context
+                ->buildViolation('greater_than_or_equal.scheduled_finish_at')
+                ->atPath('scheduledFinishAt')
+                ->addViolation()
+            ;
+        }
+
+        if ($this->getForecastFinishAt() < $this->getForecastStartAt()) {
+            $context
+                ->buildViolation('greater_than_or_equal.forecast_finish_at')
+                ->atPath('forecastFinishAt')
+                ->addViolation()
+            ;
+        }
+
+        if (is_null($this->getParent())) {
+            return;
+        }
+
+        if ($this->getScheduledStartAt() && $this->getScheduledStartAt() < $this->getParent()->getScheduledStartAt()) {
+            $context
+                ->buildViolation('invalid.work_package.scheduled_start_at', [
+                    '%date%' => $this->getScheduledStartAt()->format('Y-m-d'),
+                ])
+                ->atPath('scheduledStartAt')
+                ->addViolation()
+            ;
+        }
+
+        if ($this->getScheduledFinishAt() && $this->getScheduledFinishAt() > $this->getParent()->getScheduledFinishAt()) {
+            $context
+                ->buildViolation('invalid.work_package.scheduled_finish_at', [
+                    '%date%' => $this->getScheduledFinishAt()->format('Y-m-d'),
+                ])
+                ->atPath('scheduledFinishAt')
+                ->addViolation()
+            ;
+        }
+
+        if ($this->getForecastStartAt() && $this->getForecastStartAt() < $this->getParent()->getForecastStartAt()) {
+            $context
+                ->buildViolation('invalid.work_package.forecast_start_at', [
+                    '%date%' => $this->getForecastStartAt()->format('Y-m-d'),
+                ])
+                ->atPath('forecastStartAt')
+                ->addViolation()
+            ;
+        }
+
+        if ($this->getForecastFinishAt() && $this->getForecastFinishAt() > $this->getParent()->getForecastFinishAt()) {
+            $context
+                ->buildViolation('invalid.work_package.forecast_finish_at', [
+                    '%date%' => $this->getForecastFinishAt()->format('Y-m-d'),
+                ])
+                ->atPath('forecastFinishAt')
+                ->addViolation()
+            ;
+        }
+    }
+
+    /**
      * @return decimal
      */
     public function getExternalActualCost()
@@ -2018,5 +2117,62 @@ class WorkPackage
     public function getInformedUsers()
     {
         return $this->informedUsers;
+    }
+
+    /**
+     * Get the total costs of the task.
+     *
+     * @return int
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("totalCosts")
+     */
+    public function getTotalCosts()
+    {
+        $totalCost = 0;
+
+        foreach ($this->costs as $cost) {
+            $totalCost += $cost->getActualValue();
+        }
+
+        return $totalCost;
+    }
+
+    /**
+     * Get the total costs of the task's children.
+     *
+     * @return int
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("childrenTotalCosts")
+     */
+    public function getChildrenTotalCosts()
+    {
+        $totalChildrenCost = 0;
+
+        foreach ($this->children as $child) {
+            $totalChildrenCost += $child->getTotalCosts();
+        }
+
+        return $totalChildrenCost;
+    }
+
+    /**
+     * Get the sum of the duration for the task's children.
+     *
+     * @return int
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("childrenTotalDuration")
+     */
+    public function getChildrenTotalDuration()
+    {
+        $totalChildrenDuration = 0;
+
+        foreach ($this->children as $child) {
+            $totalChildrenDuration += $child->getDuration();
+        }
+
+        return $totalChildrenDuration;
     }
 }
