@@ -32,6 +32,16 @@
                                 <b v-else>-</b>
                             </li>
                             <li>
+                                <span>{{ translateText('message.category') }}:</span>
+                                <b v-if="project.projectCategoryName">{{ project.projectCategoryName }}</b>
+                                <b v-else>-</b>
+                            </li>
+                            <li>
+                                <span>{{ translateText('message.scope') }}:</span>
+                                <b v-if="project.projectScopeName">{{ project.projectScopeName }}</b>
+                                <b v-else>-</b>
+                            </li>
+                            <li>
                                 <span>{{ translateText('message.customer') }}:</span>
                                 <b v-if="project.company">{{ project.companyName }}</b>
                                 <b v-else>-</b>
@@ -45,8 +55,7 @@
                                 <span>{{ translateText('message.project_sponsor') }}:</span>
                                 <div>
                                     <b v-if="projectSponsors" v-for="(sponsor, index) in projectSponsors">
-                                        {{ sponsor.userFullName }}
-                                        <span v-if="index != projectSponsors.length - 1">, </span>
+                                        {{ sponsor.userFullName }}<span v-if="index != projectSponsors.length - 1">, </span>
                                     </b>
                                     <b v-else>-</b>
                                 </div>
@@ -55,8 +64,7 @@
                                 <span>{{ translateText('message.project_managers') }}:</span>
                                 <div>
                                     <b v-if="projectManagers" v-for="(manager, index) in projectManagers">
-                                        {{ manager.userFullName }}
-                                        <span v-if="index != projectManagers.length - 1">, </span>
+                                        {{ manager.userFullName }}<span v-if="index != projectManagers.length - 1">, </span>
                                     </b>
                                     <b v-else>-</b>
                                 </div>

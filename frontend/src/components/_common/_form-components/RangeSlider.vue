@@ -3,7 +3,9 @@
         <div class="heading flex flex-space-between">
             <span class="title">{{ title }}</span>
             <span class="value">
-                <span class="text">{{ minPrefix}}</span><span class="from number">{{ rangeSliderModel | valueInterval }}</span><span class="text">{{ minSuffix }}</span>
+                <span class="text">{{ minPrefix}}</span>
+                <span class="from number" v-text="rangeSliderModel | valueInterval"></span>
+                <span class="text">{{ minSuffix }}</span>
             </span>
         </div>
 
@@ -12,21 +14,37 @@
 </template>
 
 <script>
+import DeferredCallbackQueue from 'deferred-callback-queue';
 import 'ion-rangeslider/js/ion.rangeSlider.js';
 import 'ion-rangeslider/css/ion.rangeSlider.css';
 import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
 
 export default {
-    props: ['title', 'min', 'max', 'type', 'minPrefix', 'minSuffix', 'maxPrefix', 'maxSuffix', 'values', 'value', 'disabled', 'step', 'model', 'modelName'],
+    props: [
+        'title',
+        'min',
+        'max',
+        'type',
+        'minPrefix',
+        'minSuffix',
+        'maxPrefix',
+        'maxSuffix',
+        'values',
+        'value',
+        'disabled',
+        'step',
+        'model',
+        'modelName',
+    ],
     computed: {
-        from: function() {
+        from() {
             if (!this.value) {
                 return this.min;
             }
             const values = this.value.split(';');
             return values[0];
         },
-        to: function() {
+        to() {
             if (!this.value) {
                 return this.from;
             }
@@ -38,9 +56,8 @@ export default {
         const $this = window.$('#slider' + this._uid);
         const values = this.values ? this.values.split(',') : '';
 
-        const vm = this;
-
         this.rangeSliderModel = this.model;
+        const vm = this;
 
         let valueTmp;
         if (this.type === 'double') {
@@ -64,7 +81,7 @@ export default {
             values: values,
             disable: this.disabled,
             step: this.step,
-            onFinish: function(data) {
+            onFinish(data) {
                 vm.finishChangingValue(data.from);
             },
         };
@@ -77,23 +94,25 @@ export default {
         }
 
         $this.ionRangeSlider(rangeParams);
-
-        $this.on('change', function(e) {
-            vm.updateValue(e.target.value);
-        });
     },
     methods: {
-        updateValue: function(value) {
-            this.rangeSliderModel = value;
-            this.$parent.$emit('changeRangeSliderValue', {modelName: this.modelName, value: value});
+        getDeferredSaveQueue() {
+            if (this.deferredQueue) {
+                return this.deferredQueue;
+            } else {
+                this.deferredQueue = new DeferredCallbackQueue(1000, true);
+                return this.deferredQueue;
+            }
         },
-        finishChangingValue: function(value) {
-            this.$parent.$emit('finishChangeRangeSliderValue', {modelName: this.modelName, value: value});
+        finishChangingValue(value) {
+            this.rangeSliderModel = value;
+            this.$emit('onRangeSliderUpdate', `${value}`);
         },
     },
     watch: {
-        value: function(val) {
+        value(val) {
             const $slider = window.$('#slider' + this._uid);
+            this.rangeSliderModel = parseInt(val, 10);
             if (!$slider.length) {
                 return;
             }
@@ -105,7 +124,7 @@ export default {
                 });
             }
         },
-        disabled: function(val) {
+        disabled(val) {
             const $slider = window.$('#slider' + this._uid);
             if (!$slider.length) {
                 return;
@@ -120,14 +139,14 @@ export default {
         },
     },
     filters: {
-        valueInterval: function(value) {
+        valueInterval(value) {
             if (typeof value === 'string') {
                 return value.replace(';', ' - ');
             }
             return value;
         },
     },
-    data: function() {
+    data() {
         return {
             rangeSliderModel: 0,
         };

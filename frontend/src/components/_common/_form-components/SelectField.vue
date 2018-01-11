@@ -1,16 +1,28 @@
 <template>
     <div class="dropdown">
-        <button ref="btn-dropdown" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" @click="dropdownToggle()">{{ currentOption ? currentOption.label : title }}
+        <button
+            ref="btn-dropdown"
+            class="btn btn-primary dropdown-toggle"
+            type="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            @click="dropdownToggle()"
+        >
+            {{ currentOption ? currentOption.label : title }}
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right nicescroll">
-            <li v-for="option in options"><a href="javascript:void(0)" v-on:click="updateValue(option)">{{ option.label }}</a></li>
+            <li v-for="option in options">
+                <a href="javascript:void(0)" v-on:click="updateValue(option)">{{ option.label }}</a>
+            </li>
         </ul>
     </div>
 </template>
 
 <script>
 import 'jquery.nicescroll/jquery.nicescroll.js';
+
 export default {
     props: ['title', 'options', 'currentOption'],
     methods: {
@@ -24,8 +36,8 @@ export default {
 
             let windowInnerHeight = window.innerHeight;
 
-            if (windowInnerHeight - currentElementOffset < 3*this.dropdownItemHeight) {
-                $(this.$el).find('.dropdown-menu').css('top', -3*this.dropdownItemHeight + 'px');
+            if (windowInnerHeight - currentElementOffset < 3 * this.dropdownItemHeight) {
+                $(this.$el).find('.dropdown-menu').css('top', -3 * this.dropdownItemHeight + 'px');
             } else {
                 $(this.$el).find('.dropdown-menu').css('top', this.dropdownItemHeight + 'px');
             }
@@ -33,11 +45,9 @@ export default {
     },
     mounted() {
         this.dropdownItemHeight = this.$refs['btn-dropdown'].clientHeight;
-        $(this.$el).find('.dropdown-menu').css('height', 3*this.dropdownItemHeight + 'px');
-        window.$(document).ready(function() {
-            window.$('.nicescroll').niceScroll({
-                autohidemode: false,
-            });
+        $(this.$el).find('.dropdown-menu').css('height', 3 * this.dropdownItemHeight + 'px');
+        $(this.$el).find('.nicescroll').niceScroll({
+            autohidemode: false,
         });
     },
     data() {

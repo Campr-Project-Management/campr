@@ -22,6 +22,11 @@
                         {{ translateText('message.close_down_report') }}
                     </div>
 
+                    <div class="project-info">
+                        <span>{{ translateText('message.scope') }}: {{ project.projectScopeName || '-' }}</span>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <span>{{ translateText('message.category') }}: {{ project.projectCategoryName || '-' }}</span>
+                    </div>
 
                     <div class="flex buttons flex-center" v-if="contract && contract.id">
                         <a class="btn-rounded flex flex-center download-pdf" :href="downloadPdf">
@@ -328,6 +333,7 @@ export default {
             'editProjectCloseDown', 'createEvaluationObjective', 'createLesson',
             'editEvaluationObjective', 'editLesson', 'reorderEvaluationObjectives', 'reorderLessons',
             'getCloseDownActions', 'createCloseDownAction', 'deleteCloseDownAction',
+            'getProjectById',
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -431,6 +437,7 @@ export default {
         },
     },
     created() {
+        this.getProjectById(this.$route.params.id);
         this.getProjectCloseDown(this.$route.params.id);
         this.getProjectUsers({id: this.$route.params.id});
         const service = Vue.$dragula.$service;
@@ -474,6 +481,7 @@ export default {
     },
     computed: {
         ...mapGetters({
+            project: 'project',
             projectCloseDown: 'projectCloseDown',
             managers: 'projectManagers',
             sponsors: 'projectSponsors',
@@ -560,6 +568,16 @@ export default {
         text-transform: uppercase;
         letter-spacing: 0.1em;
         margin-bottom: 30px; 
+    }
+
+    .project-info {
+        text-align: center;
+        margin-bottom: 2em;
+
+        span {
+            display: inline-block;
+            font-size: 1.5em;
+        }
     }
 
     .header .btn-md {
