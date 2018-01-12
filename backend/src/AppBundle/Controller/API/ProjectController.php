@@ -2461,6 +2461,12 @@ class ProjectController extends ApiController
      */
     public function projectRolesAction(Project $project)
     {
-        return $this->createApiResponse($project->getProjectRoles());
+        $roles = $this
+            ->getDoctrine()
+            ->getRepository(ProjectRole::class)
+            ->findBy(['project' => null])
+        ;
+
+        return $this->createApiResponse($roles);
     }
 }
