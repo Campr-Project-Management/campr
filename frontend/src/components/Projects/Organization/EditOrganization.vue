@@ -29,10 +29,18 @@
             <p class="modal-title">{{ translateText('message.edit_subteam') }}</p>
             <input-field v-model="editSubteamName" :content="editSubteamName" type="text" v-bind:label="translateText('label.subteam_name')"></input-field>
             <multi-select-field
-                    v-bind:title="translateText('label.select_users')"
-                    v-bind:options="projectUsersForSelect"
-                    v-bind:selectedOptions="editSubteamMembers"
-                    v-model="editSubteamMembers" />
+                v-bind:title="translateText('label.select_users')"
+                v-bind:options="projectUsersForSelect"
+                v-bind:selectedOptions="editSubteamMembers"
+                v-model="editSubteamMembers"
+            />
+            <br />
+            <select-field
+                v-bind:title="translateText('roles.team_leader')"
+                v-bind:options="editSubteamMembers"
+                v-bind:current-option="editSubteamLead"
+                v-model="editSubteamLead"
+            />
             <br />
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showEditSubteamModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
@@ -193,6 +201,7 @@ import VTooltip from 'v-tooltip';
 import VueScrollbar from 'vue2-scrollbar';
 import moment from 'moment';
 import Modal from '../../_common/Modal';
+import SelectField from '../../_common/_form-components/SelectField';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import OrganizationDistributionItem from './OrganizationDistributionItem';
 import AlertModal from '../../_common/AlertModal.vue';
@@ -207,6 +216,7 @@ export default {
         VTooltip,
         VueScrollbar,
         Modal,
+        SelectField,
         MultiSelectField,
         OrganizationDistributionItem,
         AlertModal,
@@ -286,8 +296,12 @@ export default {
             this.editSubteamId = subteam.id;
             this.editSubteamName = subteam.name;
             this.editSubteamMembers = [];
+            this.editSubteamLead = null;
             subteam.subteamMembers.map(member => {
                 this.editSubteamMembers.push({key: member.user, label: member.userFullName});
+                if (member.isLead) {
+                    this.editSubteamLead = {key: member.user, label: member.userFullName};
+                }
             });
         },
         initDeleteSubteamModal(subteam) {
@@ -317,7 +331,7 @@ export default {
                 id: this.editSubteamId,
                 name: this.editSubteamName,
                 subteamMembers: this.editSubteamMembers.map(member => {
-                    return {'user': member.key};
+                    return {'user': member.key, 'isLead': !! (this.editSubteamLead && this.editSubteamLead.key === member.key)};
                 }),
             };
             this.editSubteam(data);
@@ -344,24 +358,25 @@ export default {
     },
     data() {
         return {
-            showFailed: false,
             activeDepartmentPage: 1,
-            departmentPages: 0,
+            activeSubteamPage: 1,
             departmentName: '',
-            showEditDepartmentModal: false,
-            editdepartmentId: '',
-            editDepartmentName: '',
-            showDeleteDepartmentModal: false,
-            editDepartmentManagers: [],
-            subteamName: '',
+            departmentPages: 0,
+            departmentsPerPage: 6,
             deleteSubteamId: '',
+            editDepartmentId: '',
+            editDepartmentName: '',
+            editDepartmentManagers: [],
+            editSubteamMembers: [],
+            editSubteamLead: [],
+            roleName: null,
+            showEditDepartmentModal: false,
+            showDeleteDepartmentModal: false,
             showEditSubteamModal: false,
             showDeleteSubteamModal: false,
-            editSubteamMembers: [],
             subteamPages: 0,
-            activeSubteamPage: 1,
-            departmentsPerPage: 6,
-            roleName: null,
+            subteamName: '',
+            showFailed: false,
         };
     },
     watch: {
