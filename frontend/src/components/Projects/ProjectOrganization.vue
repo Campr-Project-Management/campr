@@ -40,7 +40,7 @@
         </div>
 
         <div class="team-graph">
-            <vue-scrollbar class="team-graph-wrapper">
+            <vue-scrollbar class="team-graph-wrapper" ref="projectOrganizationChart">
                 <div class="scroll-wrapper">
                     <member-badge v-for="(item, index) in projectSponsors" v-bind:item="item" size="big first-member-badge"></member-badge>
                     <div :class="['subteams-container', subteams.items.length > 1 ? 'multiple-teams' : '']"  v-if="countSubteamsToShow() > 0">
@@ -88,7 +88,7 @@
             </div>
         </div>
         <div class="team-list">
-            <vue-scrollbar class="table-wrapper">
+            <vue-scrollbar class="table-wrapper" ref="projectOrganizationMembers">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive">
                         <thead>
@@ -271,13 +271,14 @@ export default {
                     id: item.id,
                     showInOrg: this.showInOrg,
                 });
+                break;
             case 'resource':
                 this.updateProjectUser({
                     id: item.id,
                     showInResources: this.showInResources,
                 });
                 break;
-            };
+            }
         },
         updateDistributionItem: function(item, distribution) {
             const self = this;
@@ -329,6 +330,10 @@ export default {
         this.getProjectById(this.$route.params.id);
         this.getProjectUsers({id: this.$route.params.id, page: this.activePage});
         this.getSubteams({project: this.$route.params.id, parent: false});
+    },
+    beforeDestroy() {
+        this.$refs.projectOrganizationChart.getSize = () => [0, 0];
+        this.$refs.projectOrganizationMembers.getSize = () => [0, 0];
     },
     computed: {
         ...mapGetters({
