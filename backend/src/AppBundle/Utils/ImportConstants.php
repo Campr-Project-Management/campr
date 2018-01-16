@@ -23,6 +23,7 @@ class ImportConstants
     const TIMEPHASED_TAG = 'TimephasedData';
     const UID = 'UID';
     const WORKING_TIMES_TAG = 'WorkingTimes';
+    const OUTLINE_NUMBER = 'OutlineNumber';
 
     const PROJECT_KEY_FUNCTION = [
         'SaveVersion' => 'setNumber',

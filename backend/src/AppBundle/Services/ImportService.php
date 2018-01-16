@@ -9,6 +9,7 @@ use AppBundle\Entity\CustomFieldValue;
 use AppBundle\Entity\Timephase;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\WorkPackageProjectWorkCostType;
+use AppBundle\Entity\WorkPackageStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManager;
@@ -261,6 +262,9 @@ class ImportService
     public function importWorkPackages($project, $workPackages)
     {
         $workPackageSaveQueue = new ArrayCollection();
+        /** @var ArrayCollection|WorkPackage[] $processedWorkPackages */
+        $processedWorkPackages = new ArrayCollection();
+        $outlineNumber2Entity = [];
 
         if (is_array($workPackages) && is_object($workPackages['Task'])) {
             $workPackage = $workPackages['Task'];
@@ -309,14 +313,37 @@ class ImportService
                             }
                             break;
                         default:
+                            if ($workPackageTag === ImportConstants::OUTLINE_NUMBER) {
+                                $outlineNumber2Entity[(string) $element] = $newWorkPackage;
+                            }
                             if (!is_array($element)) {
                                 $this->addCustomField($workPackageTag, $element, $newWorkPackage, WorkPackage::class, $workPackageSaveQueue);
                             }
                     }
                 }
             }
+
+            // set type
+            switch (true) {
+                case stripos($newWorkPackage->getName(), 'phase') !== false:
+                    $newWorkPackage->setType(WorkPackage::TYPE_PHASE);
+                    break;
+                case stripos($newWorkPackage->getName(), 'milestone') !== false:
+                    $newWorkPackage->setType(WorkPackage::TYPE_MILESTONE);
+                    break;
+                default:
+                    $newWorkPackage->setType(WorkPackage::TYPE_TASK);
+            }
+
             $newWorkPackage->setProject($project);
-            $newWorkPackage->setType(WorkPackage::TYPE_TASK);
+            $newWorkPackage->setWorkPackageStatus(
+                $this
+                    ->em
+                    ->getReference(
+                        WorkPackageStatus::class,
+                        WorkPackageStatus::OPEN
+                    )
+            );
 
             $errors = $this->validator->validate($newWorkPackage);
             if (count($errors) > 0) {
@@ -326,6 +353,47 @@ class ImportService
             $this->em->persist($newWorkPackage);
             $this->em->flush();
             $this->saveQueueItems($workPackageSaveQueue);
+
+            $processedWorkPackages->add($newWorkPackage);
+        }
+
+        foreach ($processedWorkPackages as $processedWorkPackage) {
+            $puid = null;
+            foreach ($outlineNumber2Entity as $outlineNumber => $entity) {
+                if ($entity === $processedWorkPackage) {
+                    $puid = $outlineNumber;
+                    break;
+                }
+            }
+            // exclude weird stuff
+            if (!$puid) {
+                continue;
+            }
+            // exclude 1st level items
+            $pos = strpos($puid, '.');
+            if ($pos === false) {
+                continue;
+            }
+            $parentPuid = substr($puid, 0, $pos);
+
+            $parent = $outlineNumber2Entity[$parentPuid] ?: null;
+            if (!$parent) {
+                continue;
+            }
+
+            switch ($parent->getType()) {
+                case WorkPackage::TYPE_PHASE:
+                    $processedWorkPackage->setPhase($parent);
+                    break;
+                case WorkPackage::TYPE_MILESTONE:
+                    $processedWorkPackage->setMilestone($parent);
+                    break;
+                default:
+                    $processedWorkPackage->setParent($parent);
+            }
+
+            $this->em->persist($processedWorkPackage);
+            $this->em->flush($processedWorkPackage);
         }
     }
 
