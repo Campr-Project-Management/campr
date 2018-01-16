@@ -499,8 +499,8 @@ export default {
             }
         }
 
-        .flex-center {       
-            position: relative;     
+        .flex-center {
+            position: relative;
             margin-top: 45px;
 
             &:after {
@@ -626,7 +626,7 @@ export default {
 
             .info {
                 text-transform: uppercase;
-                padding: 0 0 0 10px;    
+                padding: 0 0 0 10px;
 
                 .title {
                     font-size: 10px;
@@ -697,5 +697,5 @@ export default {
     .table-wrapper {
         width: 100%;
         padding-bottom: 40px;
-    }    
+    }
 </style>
