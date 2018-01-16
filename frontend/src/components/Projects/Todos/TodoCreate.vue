@@ -178,13 +178,7 @@ export default {
         }),
     },
     mounted() {
-        if (this.todo) {
-            this.$refs.description.setContent('');
-            setTimeout(() => {
-                const {description} = this.todo;
-                this.$refs.description.setContent(description || '');
-            }, 256);
-        }
+        this.$refs.description.setContent('');
     },
     watch: {
         todo(val) {
