@@ -283,7 +283,7 @@ export default {
             let end = moment(endDate);
             let start = moment(startDate);
 
-            return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') +1 : '-';
+            return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') : '-';
         },
         translateText: function(text) {
             return this.translate(text);
@@ -484,7 +484,7 @@ function renderTooltip(item, type) {
                             `<td>` + (item.scheduledFinishAt ? item.scheduledFinishAt : '-') + `</td>` +
                              (type === 'phase'
                                 ? `<td>` + (!isNaN(moment(item.scheduledFinishAt).diff(moment(item.scheduledStartAt), 'days'))
-                                    ? moment(item.scheduledFinishAt).diff(moment(item.scheduledStartAt), 'days') +1
+                                    ? moment(item.scheduledFinishAt).diff(moment(item.scheduledStartAt), 'days')
                                     : '-') + `</td>`
                                 : '') +
                         `</tr>
@@ -494,7 +494,7 @@ function renderTooltip(item, type) {
                             `<td>` + (item.forecastFinishAt ? item.forecastFinishAt: '-') + `</td>` +
                             (type === 'phase'
                                 ? `<td>` + (!isNaN(moment(item.forecastFinishAt).diff(moment(item.forecastStartAt), 'days'))
-                                    ? moment(item.forecastFinishAt).diff(moment(item.forecastStartAt), 'days') +1
+                                    ? moment(item.forecastFinishAt).diff(moment(item.forecastStartAt), 'days')
                                     : '-') + `</td>`
                                 : '') +
                         `</tr>` +
@@ -504,7 +504,7 @@ function renderTooltip(item, type) {
                                 <td>` + (item.actualStartAt ? item.actualStartAt : '-') + `</td>
                                 <td>` + (item.actualFinishAt ? item.actualFinishAt : '-') + `</td>
                                 <td>` + (!isNaN(moment(item.actualFinishAt).diff(moment(item.actualStartAt), 'days'))
-                                    ? moment(item.actualFinishAt).diff(moment(item.actualStartAt), 'days') +1
+                                    ? moment(item.actualFinishAt).diff(moment(item.actualStartAt), 'days')
                                     : '-') + `</td>`
                             : ``) +
                         `</tr>
