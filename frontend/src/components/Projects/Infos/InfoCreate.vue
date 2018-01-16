@@ -132,7 +132,7 @@ export default {
         AlertModal,
     },
     methods: {
-        ...mapActions(['getInfoCategories', 'getInfoStatuses', 'getInfo', 'createInfo', 'editInfo']),
+        ...mapActions(['getInfoCategories', 'getInfoStatuses', 'getInfo', 'createInfo', 'editInfo', 'emptyValidationMessages']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -215,6 +215,9 @@ export default {
     },
     mounted() {
         this.$refs.descriptionEditor.setContent('');
+    },
+    beforeDestroy() {
+        this.emptyValidationMessages();
     },
     data() {
         return {
