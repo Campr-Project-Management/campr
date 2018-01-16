@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
-// import router from '../../router';
 
 const state = {
     ganttData: [],
@@ -12,19 +11,18 @@ const getters = {
 
 const actions = {
     getGanttData({commit}, id) {
-        Vue
+        return Vue
             .http
             .get(Routing.generate('app_api_project_gantt', {id}))
             .then(
-                (response) => { // win
+                (response) => {
+                    commit(types.SET_GANTT_DATA, {data: []});
                     if (response.status === 200) {
                         const data = response.body;
                         commit(types.SET_GANTT_DATA, {data});
                     }
                 },
-                () => { // fail
-                    // display error
-                },
+                () => {},
             )
         ;
     },
