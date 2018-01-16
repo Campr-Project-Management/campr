@@ -5,7 +5,7 @@
                 <!-- /// Header /// -->
                 <div class="col-md-12">
                     <div class="header">
-                        <div class="text-center">                            
+                        <div class="text-center">
                             <h1>{{ contract.projectName }}</h1>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                             <i class="fa fa-angle-up" v-if="showSponsorsManagers"></i>
                         </h3>
                     </div>
-                    <div class="text-center">                        
+                    <div class="text-center">
                         <router-link class="btn-rounded btn-md btn-empty" :to="{name: 'project-organization'}">
                             {{ translateText('message.view_team') }}
                         </router-link>
@@ -304,7 +304,7 @@ export default {
             'createContract', 'createObjective', 'createLimitation', 'createDeliverable',
             'editObjective', 'editLimitation', 'editDeliverable', 'reorderObjectives',
             'reorderLimitations', 'reorderDeliverables', 'getProjectCostsGraphData',
-            'getProjectUsers', 'getProjectResourcesGraphData',
+            'getProjectUsers', 'getProjectResourcesGraphData', 'emptyValidationMessages',
         ]),
         showDatePicker: function(id) {
             const picker = $('#'+id);
@@ -515,6 +515,9 @@ export default {
             this.descriptionEditor = createEditor(document.getElementById('descriptionEditor'), {...vueditorConfig, id: 'descriptionEditor'});
             this.eventEditor = createEditor(document.getElementById('eventEditor'), {...vueditorConfig, id: 'eventEditor'});
         }, 1000);
+    },
+    beforeDestroy() {
+        this.emptyValidationMessages();
     },
     computed: {
         ...mapGetters({

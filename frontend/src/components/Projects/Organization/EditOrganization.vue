@@ -186,7 +186,7 @@
                     <!-- /// End Add new Subteam /// -->
                 </div>
             </div>
-        </div>  
+        </div>
         <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
 </template>
@@ -226,7 +226,7 @@ export default {
         ...mapActions([
             'getProjectDepartments', 'createDepartment', 'editDepartment',
             'deleteDepartment', 'getProjectUsers', 'getSubteams', 'createSubteam',
-            'editSubteam', 'deleteSubteam',
+            'editSubteam', 'deleteSubteam', 'emptyValidationMessages',
         ]),
         moment: function(date) {
             return moment(date);
@@ -346,6 +346,9 @@ export default {
         this.getProjectDepartments({project: this.$route.params.id, page: this.activeDepartmentPage});
         this.getProjectUsers({id: this.$route.params.id});
         this.getSubteams({project: this.$route.params.id, page: this.activeSubteamPage});
+    },
+    beforeDestroy() {
+        this.emptyValidationMessages();
     },
     computed: {
         ...mapGetters({
@@ -471,5 +474,5 @@ export default {
     .pagination-info {
         text-transform: uppercase;
         margin-top: 27px;
-    } 
+    }
 </style>

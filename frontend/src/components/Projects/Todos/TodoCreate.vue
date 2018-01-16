@@ -129,6 +129,7 @@ export default {
             'getTodoStatuses',
             'getTodoById',
             'getTodoCategories',
+            'emptyValidationMessages',
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -179,6 +180,9 @@ export default {
     },
     mounted() {
         this.$refs.description.setContent('');
+    },
+    beforeDestroy() {
+        this.emptyValidationMessages();
     },
     watch: {
         todo(val) {

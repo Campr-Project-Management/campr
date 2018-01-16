@@ -227,7 +227,7 @@ export default {
     methods: {
         ...mapActions([
             'getDistributionLists', 'getProjectRoles', 'getProjectDepartments',
-            'saveProjectUser', 'getSubteams', 'getProjectUser', 'updateTeamMember',
+            'saveProjectUser', 'getSubteams', 'getProjectUser', 'updateTeamMember', 'emptyValidationMessages',
         ]),
         openAvatarFileSelection() {
             document.getElementById('avatar').click();
@@ -338,6 +338,9 @@ export default {
             this.getProjectUser(this.$route.params.userId);
             this.isEdit = true;
         }
+    },
+    beforeDestroy() {
+        this.emptyValidationMessages();
     },
     computed: mapGetters({
         distributionLists: 'distributionLists',
