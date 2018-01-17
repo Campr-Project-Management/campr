@@ -319,7 +319,7 @@ export default {
     methods: {
         ...mapActions([
             'getProjectRiskAndOpportunitiesStats', 'getRiskStrategies', 'getRiskStatuses',
-            'createProjectRisk', 'getProjectRisk', 'editProjectRisk',
+            'createProjectRisk', 'getProjectRisk', 'editProjectRisk', 'emptyValidationMessages',
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -468,6 +468,9 @@ export default {
         this.$on('changeRangeSliderValue', valueObj => {
             this[valueObj.modelName] = valueObj.value;
         });
+    },
+    beforeDestroy() {
+        this.emptyValidationMessages();
     },
     data: function() {
         return {
