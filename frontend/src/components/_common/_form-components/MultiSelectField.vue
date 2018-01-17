@@ -27,7 +27,7 @@ import 'jquery.nicescroll/jquery.nicescroll.js';
 export default {
     props: ['title', 'options', 'selectedOptions'],
     computed: {
-        processedOptions: function() {
+        processedOptions() {
             if (!this.selectedOptions || !this.options.length) {
                 return this.options;
             }
@@ -37,13 +37,13 @@ export default {
         },
     },
     methods: {
-        updateValue: function(value) {
+        updateValue(value) {
             this.$emit('input', [...this.selectedOptions, value]);
         },
-        removeSelectedOption: function(value) {
+        removeSelectedOption(value) {
             this.$emit('input', this.selectedOptions.filter(option => option.key !== value.key));
         },
-        dropdownToggle: function() {
+        dropdownToggle() {
             let scrollTop = $(window).scrollTop();
             let elementOffset = $(this.$el).offset().top;
             let currentElementOffset = (elementOffset - scrollTop);
@@ -61,7 +61,7 @@ export default {
             $(this.$el).find('.multiselect-content').css('height', 3*this.multiSelectItemHeight + 'px');
         },
         addNiceSCrollEvent() {
-            window.$(document).ready(function() {
+            window.$(document).ready(() => {
                 window.$('.nicescroll').niceScroll({
                     autohidemode: false,
                 });
@@ -134,7 +134,6 @@ export default {
             color: $lighterColor;
             outline: 0;
         }
-        
     }
 
     .btn-primary.active, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
