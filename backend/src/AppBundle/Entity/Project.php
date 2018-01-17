@@ -2734,4 +2734,152 @@ class Project
     {
         return $this->projectRoles;
     }
+
+    /**
+     * @param string $propertyMethod
+     * @param int    $mode
+     *
+     * @return null|\DateTime
+     */
+    private function getDatesFromTasks($propertyMethod, $mode = 1)
+    {
+        $out = $this
+            ->workPackages
+            ->filter(function (WorkPackage $workPackage) {
+                return $workPackage->getType() === WorkPackage::TYPE_TASK;
+            })
+            ->map(function (WorkPackage $workPackage) use ($propertyMethod) {
+                return $workPackage->{$propertyMethod}();
+            })
+        ;
+
+        $out = array_reduce(
+            $out->toArray(),
+            function ($item, $carry) use ($mode) {
+                if ($item instanceof \DateTime && $carry instanceof \DateTime) {
+                    if ($mode === 1) {
+                        return $carry > $item ? $carry : $item;
+                    } else {
+                        return $carry < $item ? $carry : $item;
+                    }
+                }
+
+                if (!$item && $carry) {
+                    return $carry;
+                } elseif ($item && !$carry) {
+                    return $item;
+                } else {
+                    return null;
+                }
+            },
+            null
+        );
+
+        if (!$out && stripos($propertyMethod, 'start') !== false) {
+            $out = $this->createdAt;
+        }
+
+        return $out;
+    }
+
+    private function getDatesFromTasksDiff($startPropertyMethod, $endPropertyMethod)
+    {
+        $start = $this->getDatesFromTasks($startPropertyMethod, -1);
+        $end = $this->getDatesFromTasks($endPropertyMethod, 1);
+
+        if ($start && $end) {
+            return $end->diff($start)->days;
+        } elseif (!$start && $end) {
+            return $this->createdAt->diff($end)->days;
+        } else {
+            return 1;
+        }
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("scheduledStartAt")
+     * @Serializer\Type("DateTime<'Y-m-d'>")
+     */
+    public function getScheduledStartDate()
+    {
+        return $this->getDatesFromTasks('getScheduledStartAt', -1);
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("scheduledFinishAt")
+     * @Serializer\Type("DateTime<'Y-m-d'>")
+     */
+    public function getScheduledFinishDate()
+    {
+        return $this->getDatesFromTasks('getScheduledFinishAt', 1);
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("scheduledDuration")
+     */
+    public function getScheduledDuration()
+    {
+        return $this->getDatesFromTasksDiff('getScheduledStartAt', 'getScheduledFinishAt');
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("forecastStartAt")
+     * @Serializer\Type("DateTime<'Y-m-d'>")
+     */
+    public function getForecastStartDate()
+    {
+        return $this->getDatesFromTasks('getForecastStartAt', -1);
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("forecastFinishAt")
+     * @Serializer\Type("DateTime<'Y-m-d'>")
+     */
+    public function getForecastFinishDate()
+    {
+        return $this->getDatesFromTasks('getForecastFinishAt', 1);
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("forecastDuration")
+     */
+    public function getForecastDuration()
+    {
+        return $this->getDatesFromTasksDiff('getForecastStartAt', 'getForecastFinishAt');
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("actualStartAt")
+     * @Serializer\Type("DateTime<'Y-m-d'>")
+     */
+    public function getActualStartDate()
+    {
+        return $this->getDatesFromTasks('getActualStartAt', -1);
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("actualFinishAt")
+     * @Serializer\Type("DateTime<'Y-m-d'>")
+     */
+    public function getActualFinishDate()
+    {
+        return $this->getDatesFromTasks('getActualFinishAt', 1);
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("actualDuration")
+     */
+    public function getActualDuration()
+    {
+        return $this->getDatesFromTasksDiff('getActualStartAt', 'getActualFinishAt');
+    }
 }
