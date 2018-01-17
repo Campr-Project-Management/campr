@@ -6,7 +6,7 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right nicescroll">
-                <li v-for="option in processedOptions">
+                <li v-for="(option, index) in processedOptions" :key="index">
                     <a href="javascript:void(0)" @click="updateValue(option)">
                         {{ option.label }}
                     </a>
@@ -14,7 +14,7 @@
             </ul>
         </div>
         <div class="multiselect-content nicescroll" ref="multiselect-content">
-            <p v-for="option in selectedOptions" class="multiselect-option">
+            <p v-for="(option, index) in selectedOptions" :key="index" class="multiselect-option">
                 {{ option.label }}
                 <a @click="removeSelectedOption(option)"> <i class="fa fa-times"></i></a>
             </p>
@@ -56,20 +56,25 @@ export default {
                 $(this.$el).find('.dropdown-menu').css('top', this.dropdownItemHeight + 'px');
             }
         },
+        setDropdownMenuHeight() {
+            $(this.$el).find('.dropdown-menu').css('height', 3*this.dropdownItemHeight + 'px');
+            $(this.$el).find('.multiselect-content').css('height', 3*this.multiSelectItemHeight + 'px');
+        },
+        addNiceSCrollEvent() {
+            window.$(document).ready(function() {
+                window.$('.nicescroll').niceScroll({
+                    autohidemode: false,
+                });
+            });
+        },
     },
     mounted() {
-        this.dropdownItemHeight = this.$refs['btn-dropdown'].clientHeight;
-        $(this.$el).find('.dropdown-menu').css('height', 3*this.dropdownItemHeight + 'px');
-        $(this.$el).find('.multiselect-content').css('height', 3*this.multiSelectItemHeight + 'px');
-        window.$(document).ready(function() {
-            window.$('.nicescroll').niceScroll({
-                autohidemode: false,
-            });
-        });
+        this.setDropdownMenuHeight();
+        this.addNiceSCrollEvent();
     },
     data() {
         return {
-            dropdownItemHeight: null,
+            dropdownItemHeight: 42,
             multiSelectItemHeight: 42,
         };
     },

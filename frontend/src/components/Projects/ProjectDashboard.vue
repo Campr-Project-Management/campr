@@ -63,7 +63,7 @@
                             <li>
                                 <span>{{ translateText('message.project_managers') }}:</span>
                                 <div>
-                                    <b v-if="projectManagers" v-for="(manager, index) in projectManagers":key="index">
+                                    <b v-if="projectManagers" v-for="(manager, index) in projectManagers" :key="index">
                                         {{ manager.userFullName }}<span v-if="index != projectManagers.length - 1">, </span>
                                     </b>
                                     <b v-else>-</b>
@@ -113,10 +113,10 @@
 
                         <h4 class="widget-title" v-if="colorStatuses && colorStatuses.length">
                             {{ translateText('message.project_status') }} -
-                            <b v-for="colorStatus in colorStatuses" :key="index" :style="{color: colorStatus.color}"> {{ translateText(colorStatus.name) }} </b>
+                            <b v-for="(colorStatus, index) in colorStatuses" :key="index" :style="{color: colorStatus.color}"> {{ translateText(colorStatus.name) }} </b>
                         </h4>
                         <div class="status-boxes flex flex-v-center" v-if="colorStatuses && colorStatuses.length">
-                            <div v-for="colorStatus in colorStatuses" :key="index" class="status-box" :style="{backgroundColor: (project.colorStatus === colorStatus.id ? colorStatus.color : null)}"></div>
+                            <div v-for="(colorStatus, index) in colorStatuses" :key="index" class="status-box" :style="{backgroundColor: (project.colorStatus === colorStatus.id ? colorStatus.color : null)}"></div>
                         </div>
                         <hr v-if="colorStatuses && colorStatuses.length">
 
@@ -130,7 +130,7 @@
                     <div class="widget-content">
                         <h4 class="widget-title">{{ translateText('message.project_summary') }}</h4>
                         <div>
-                            <small-task-box v-for="task in tasks" :key="index" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></small-task-box>
+                            <small-task-box v-for="(task, index) in tasks" :key="index" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></small-task-box>
                         </div>
                         <div class="margintop20 buttons">
                             <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-md btn-empty btn-auto">{{ translateText('button.view_all_tasks') }}</router-link>
