@@ -54,7 +54,7 @@
                             <li>
                                 <span>{{ translateText('message.project_sponsor') }}:</span>
                                 <div>
-                                    <b v-if="projectSponsors" v-for="(sponsor, index) in projectSponsors">
+                                    <b v-if="projectSponsors" v-for="(sponsor, index) in projectSponsors" :key="index">
                                         {{ sponsor.userFullName }}<span v-if="index != projectSponsors.length - 1">, </span>
                                     </b>
                                     <b v-else>-</b>
@@ -63,7 +63,7 @@
                             <li>
                                 <span>{{ translateText('message.project_managers') }}:</span>
                                 <div>
-                                    <b v-if="projectManagers" v-for="(manager, index) in projectManagers">
+                                    <b v-if="projectManagers" v-for="(manager, index) in projectManagers":key="index">
                                         {{ manager.userFullName }}<span v-if="index != projectManagers.length - 1">, </span>
                                     </b>
                                     <b v-else>-</b>
@@ -83,48 +83,21 @@
                             <tbody>
                                 <tr>
                                     <td>{{ translateText('table_header_cell.base') }}</td>
-                                    <td v-if="projectContract && projectContract.proposedStartDate">
-                                        {{ projectContract.proposedStartDate }}
-                                    </td>
-                                    <td v-else>-</td>
-                                    <td v-if="projectContract && projectContract.proposedEndDate">
-                                        {{ projectContract.proposedEndDate }}
-                                    </td>
-                                    <td v-else>-</td>
-                                    <td  v-if="projectContract && projectContract.proposedEndDate">
-                                        {{ getDuration(projectContract.proposedStartDate, projectContract.proposedEndDate) }}
-                                    </td>
-                                    <td v-else>-</td>
+                                    <td>{{ project.scheduledStartAt || '-' }}</td>
+                                    <td>{{ project.scheduledFinishAt || '-' }}</td>
+                                    <td>{{ project.scheduledDuration || '-' }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ translateText('table_header_cell.forecast') }}</td>
-                                    <td v-if="projectContract && projectContract.forecastStartDate">
-                                        {{ projectContract.forecastStartDate }}
-                                    </td>
-                                    <td v-else>-</td>
-                                    <td v-if="projectContract && projectContract.forecastEndDate">
-                                        {{ projectContract.forecastEndDate }}
-                                    </td>
-                                    <td v-else>-</td>
-                                    <td  v-if="projectContract && projectContract.forecastEndDate">
-                                        {{ getDuration(projectContract.forecastStartDate, projectContract.forecastEndDate) }}
-                                    </td>
-                                    <td v-else>-</td>
+                                    <td>{{ project.forecastStartAt || '-' }}</td>
+                                    <td>{{ project.forecastFinishAt || '-' }}</td>
+                                    <td>{{ project.forecastDuration || '-' }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ translateText('table_header_cell.actual') }}</td>
-                                    <td v-if="tasksForSchedule.actual_start && tasksForSchedule.actual_start.actualStartAt">
-                                        {{ tasksForSchedule.actual_start.actualStartAt }}
-                                    </td>
-                                    <td v-else>-</td>
-                                    <td v-if="tasksForSchedule.actual_finish && tasksForSchedule.actual_finish.actualFinishAt">
-                                        {{ tasksForSchedule.actual_finish.actualFinishAt }}
-                                    </td>
-                                    <td v-else>-</td>
-                                    <td  v-if="tasksForSchedule.actual_start && tasksForSchedule.actual_finish">
-                                        {{ getDuration(tasksForSchedule.actual_start.actualStartAt, tasksForSchedule.actual_finish.actualFinishAt) }}
-                                    </td>
-                                    <td v-else>-</td>
+                                    <td>{{ project.actualStartAt || '-' }}</td>
+                                    <td>{{ project.actualFinishAt || '-' }}</td>
+                                    <td>{{ project.actualDuration || '-' }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -140,10 +113,10 @@
 
                         <h4 class="widget-title" v-if="colorStatuses && colorStatuses.length">
                             {{ translateText('message.project_status') }} -
-                            <b v-for="colorStatus in colorStatuses" :style="{color: colorStatus.color}"> {{ translateText(colorStatus.name) }} </b>
+                            <b v-for="colorStatus in colorStatuses" :key="index" :style="{color: colorStatus.color}"> {{ translateText(colorStatus.name) }} </b>
                         </h4>
                         <div class="status-boxes flex flex-v-center" v-if="colorStatuses && colorStatuses.length">
-                            <div v-for="colorStatus in colorStatuses" class="status-box" :style="{backgroundColor: (project.colorStatus === colorStatus.id ? colorStatus.color : null)}"></div>
+                            <div v-for="colorStatus in colorStatuses" :key="index" class="status-box" :style="{backgroundColor: (project.colorStatus === colorStatus.id ? colorStatus.color : null)}"></div>
                         </div>
                         <hr v-if="colorStatuses && colorStatuses.length">
 
@@ -157,7 +130,7 @@
                     <div class="widget-content">
                         <h4 class="widget-title">{{ translateText('message.project_summary') }}</h4>
                         <div>
-                            <small-task-box v-for="task in tasks" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></small-task-box>
+                            <small-task-box v-for="task in tasks" :key="index" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></small-task-box>
                         </div>
                         <div class="margintop20 buttons">
                             <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-md btn-empty btn-auto">{{ translateText('button.view_all_tasks') }}</router-link>
@@ -172,7 +145,7 @@
                     <div class="widget-content">
                         <h4 class="widget-title">{{ translateText('message.task_status') }}</h4>
                         <ul class="widget-list">
-                            <li v-for="(item, index) in projectTasksStatus">
+                            <li v-for="(item, index) in projectTasksStatus" :key="index">
                                 <span>{{ translateText(index) }}:</span>
                                 <div v-if="index !== 'conditions'">
                                     <b>{{ item }}</b>
