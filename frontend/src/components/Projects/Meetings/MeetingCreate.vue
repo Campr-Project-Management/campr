@@ -414,6 +414,7 @@ export default {
             'getNoteStatuses',
             'getTodoStatuses',
             'createProjectMeeting',
+            'emptyValidationMessages',
         ]),
         translateText(text) {
             return this.translate(text);
@@ -587,6 +588,9 @@ export default {
         this.getMeetingCategories();
         this.getTodoStatuses();
         this.getNoteStatuses();
+    },
+    beforeDestroy() {
+        this.emptyValidationMessages();
     },
     data() {
         return {

@@ -177,7 +177,7 @@ export default {
     methods: {
         ...mapActions([
             'getProjectUsers', 'getWorkPackageStatuses', 'getProjectPhases',
-            'createProjectPhase', 'getProjectPhase', 'editProjectPhase',
+            'createProjectPhase', 'getProjectPhase', 'editProjectPhase', 'emptyValidationMessages',
         ]),
         visibleSubphase: function() {
             this.visibleSubphase = !this.visibleSubphase;
@@ -254,6 +254,9 @@ export default {
         if (this.$route.params.phaseId) {
             this.getProjectPhase(this.$route.params.phaseId);
         }
+    },
+    beforeDestroy() {
+        this.emptyValidationMessages();
     },
     data() {
         return {
