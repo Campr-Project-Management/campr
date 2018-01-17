@@ -196,10 +196,10 @@ export default {
             'getTasksStatus',
             'closeProject',
         ]),
-        translateText: function(text) {
+        translateText(text) {
             return this.translate(text);
         },
-        getDuration: function(startDate, endDate) {
+        getDuration(startDate, endDate) {
             let end = moment(endDate);
             let start = moment(startDate);
             let diff = end.diff(start, 'days');
