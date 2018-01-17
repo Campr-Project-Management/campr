@@ -174,7 +174,7 @@ export default {
         AlertModal,
     },
     methods: {
-        ...mapActions(['createNewTask', 'getTaskById', 'editTask', 'importTask']),
+        ...mapActions(['createNewTask', 'getTaskById', 'editTask', 'importTask', 'emptyValidationMessages']),
         createTask: function() {
             let data = {
                 project: this.$route.params.id,
@@ -288,6 +288,9 @@ export default {
         if (this.$route.params.taskId) {
             this.getTaskById(this.$route.params.taskId);
         }
+    },
+    beforeDestroy() {
+        this.emptyValidationMessages();
     },
     computed: {
         ...mapGetters({
