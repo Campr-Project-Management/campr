@@ -12,6 +12,9 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    managed_locales:
+        - en
+        - de
 
 framework:
     #esi:             ~
@@ -116,13 +119,11 @@ lexik_jwt_authentication:
 
 # Bazinga JS translation
 bazinga_js_translation:
-    locale_fallback: en
+    locale_fallback: "%locale%"
     default_domain: messages
-    active_locales:
-        - en
-        - de
+    active_locales: %managed_locales%
 
 # Lexik Translation Configuration
 lexik_translation:
-    fallback_locale: [en] #default locale(s) to use
-    managed_locales: [en, de] #locales that the bundle has to manage
+    fallback_locale: ["%locale%"] #default locale(s) to use
+    managed_locales: %managed_locales% #locales that the bundle has to manage

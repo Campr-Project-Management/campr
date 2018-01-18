@@ -1,0 +1,72 @@
+{% extends 'AppBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header bgm-teal">
+                    <h2>{{ 'title.risk_status.edit'|trans }}</h2>
+                    <ul class="actions">
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert c-white"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="{{ path('app_admin_risk_status_create') }}">{{ 'add.risk_status'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_admin_risk_status_list') }}">{{ 'button.back_to_list'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body m-t-0 card-padding">
+                    {{ form_start(
+                        form,
+                        {
+                            'method': 'POST',
+                            'action': path('app_admin_risk_status_edit', {'id': id}),
+                            'attr': {
+                                'id': 'edit-form',
+                                'class': 'form-horizontal',
+                                'novalidate': 'novalidate',
+                            },
+                        }
+                    ) }}
+                    {% if form.vars.valid == false %}
+                        <div class="alert alert-danger">
+                            {% for field in form.children %}
+                                {{ form_errors(field) }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {{ form_widget(
+                        form.name,
+                        {
+                            'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                            'label': 'label.name'|trans,
+                        }
+                    ) }}
+
+                    {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
+                        with {
+                            'delete_path': 'app_admin_risk_status_delete',
+                            'id': id,
+                        }
+                    %}
+
+                    <span class="hidden">{{ form_row(form._token) }}</span>
+                    {{ form_end(form, {'render_rest': false}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

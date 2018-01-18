@@ -857,6 +857,7 @@ subtitle:
     subteam_member: List of subteam members
     task_schedule: Task schedule
     task_precedesor: Task predecesor
+    risk_status: List of Risk Statuses
 
 label:
     status_report_distribution: Status Report Distribution
@@ -921,6 +922,7 @@ label:
     first_name: First name
     last_name: Last name
     phone: Phone
+    locale: Language
     avatar: Avatar
     roles: Roles
     enabled: Enabled
@@ -1322,6 +1324,7 @@ add:
     risk: Add new risk
     risk_category: Add new risk category
     risk_strategy: Add new risk strategy
+    risk_status: Add new risk status
     todo: Add todo
     unit: Add unit
     wppcwct: Add Work Package Project Work Cost Type

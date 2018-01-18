@@ -22,6 +22,7 @@ class SubteamMemberType extends AbstractType
                     'class' => 'selectpicker',
                 ],
             ])
+            ->add('isLead')
             ->add('subteamRoles', EntityType::class, [
                 'class' => SubteamRole::class,
                 'required' => true,

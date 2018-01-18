@@ -386,6 +386,12 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     private $signUpDetails = [];
 
     /**
+     * @var string
+     * @ORM\Column(name="locale", type="string", length=8, nullable=false, options={"default":"en"})
+     */
+    private $locale = 'en';
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -1785,5 +1791,25 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setSignUpDetails($signUpDetails)
     {
         $this->signUpDetails = $signUpDetails;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @param string $locale
+     *
+     * @return User
+     */
+    public function setLocale(string $locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
     }
 }

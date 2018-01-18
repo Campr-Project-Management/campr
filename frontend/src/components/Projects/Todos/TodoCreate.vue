@@ -129,6 +129,7 @@ export default {
             'getTodoStatuses',
             'getTodoById',
             'getTodoCategories',
+            'emptyValidationMessages',
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -178,13 +179,10 @@ export default {
         }),
     },
     mounted() {
-        if (this.todo) {
-            this.$refs.description.setContent('');
-            setTimeout(() => {
-                const {description} = this.todo;
-                this.$refs.description.setContent(description || '');
-            }, 256);
-        }
+        this.$refs.description.setContent('');
+    },
+    beforeDestroy() {
+        this.emptyValidationMessages();
     },
     watch: {
         todo(val) {
