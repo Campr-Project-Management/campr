@@ -41,7 +41,7 @@
             v-bind:taskObj="task"
             v-bind:closeTaskModal="showCloseTaskModal"
             v-bind:openTaskModal="showOpenTaskModal"
-            v-on:input="setModals" />
+            @input="setModals"/>
 
         <div class="row">
             <div class="col-md-6">
@@ -64,7 +64,7 @@
 
                 <!-- /// Task Status /// -->
                 <div class="task-status flex flex-v-center">
-                    <div>
+                    <div v-if="editableData.workPackageStatus">
                         <span class="small">{{ translateText('table_header_cell.status') }}:</span>
                         <div class="task-status-box">{{ editableData.workPackageStatus.label }}</div>
                         <a @click="initChangeStatusModal()" class="simple-link small">{{ translateText('message.edit') }}</a>
@@ -95,8 +95,8 @@
 
                 <!-- ///Subtasks /// -->
                 <h3>{{ translateText('message.subtasks') }} | {{ getSubtaskSummary() }} {{ translateText('label.completed') }}</h3>
-                <div v-for="subtask in task.children" class="subtasks">
-                    <div class="subtask flex flex-space-between">
+                <div v-for="(subtask, index) in task.children" :key="index" class="subtasks">
+                <div class="subtask flex flex-space-between">
                         <div class="checkbox-input clearfix">
                             <input :id="'subtask-'+subtask.puid" type="checkbox" name="" value="">
                             <label :for="'subtask-'+subtask.puid">{{ subtask.name }}</label>
@@ -127,7 +127,7 @@
 
                 <!-- /// Task History /// -->
                 <div class="task-history">
-                    <div v-for="item in taskHistory">
+                    <div v-for="(item, index) in taskHistory" :key="index">
 
                         <!-- /// Task assignement /// -->
                         <div v-if="item.isResponsibilityAdded">
@@ -174,7 +174,7 @@
                                 </div>
                             </div>
                             <hr class="double">
-                        </div>    
+                        </div>
                         <!-- /// End Task Comment /// -->
 
                         <!-- /// Task Label added /// -->
@@ -220,7 +220,7 @@
                         </div>
                         <!-- /// End Task Edited /// -->
                     </div>
-                </div>    
+                </div>
                 <!-- /// End Task History /// -->
 
                 <!-- /// New Task Description /// -->
@@ -368,7 +368,10 @@
                             </tbody>
                         </table>
                     </vue-scrollbar>
-                    <div v-for="dependancy in task.dependencies" class="flex flex-space-between flex-v-center margintop20">
+                    <div v-for="(dependancy, index) in task.dependencies"
+                         :key="index"
+                         class="flex flex-space-between flex-v-center margintop20">
+
                         {{ translateText('subtitle.task_precedesor') }}:
                         <router-link
                             :to="{name: 'project-task-management-view', params: { id: task.project, taskId: task.id }}"
@@ -377,7 +380,7 @@
                         </router-link>
                     </div>
                     <div class="flex flex-space-between flex-v-center margintop20">
-                        <div></div>      
+                        <div></div>
                         <button
                             @click="initChangeScheduleModal()"
                             data-target="#edit-schedule-module"
@@ -406,7 +409,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(item, index) in editableData.internalCosts">
+                                <tr v-for="(item, index) in editableData.internalCosts" :key="index">
                                     <td>{{item.resourceName}}</td>
                                     <td>{{item.rate}}</td>
                                     <td>{{item.quantity}}</td>
@@ -414,9 +417,9 @@
                                     <td><b><i class="fa fa-dollar"></i> {{item.total}}</b></td>
                                     <td>
                                         <button @click="initEditInternalCostModal(item)" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                        <button 
-                                            data-target="#logistics-delete-modal" 
-                                            @click="initDeleteInternalCostModal(item)"     
+                                        <button
+                                            data-target="#logistics-delete-modal"
+                                            @click="initDeleteInternalCostModal(item)"
                                             data-toggle="modal"
                                             type="button"
                                             class="btn-icon">
@@ -424,7 +427,7 @@
                                         </button>
                                     </td>
                                 </tr>
-                               
+
                                 <tr>
                                     <td colspan="4" class="text-right"><b>{{ translateText('label.internal_costs_total') }}</b></td>
                                     <td colspan="2"><b><i class="fa fa-dollar"></i>  {{ internalBaseTotal }}</b></td>
@@ -477,7 +480,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(cost, index) in editableData.externalCosts">
+                                <tr v-for="(cost, index) in editableData.externalCosts" :key="index">
                                     <td>{{cost.name}}</td>
                                     <td>{{cost.quantity}}</td>
                                     <td>{{cost.unit}}</td>
@@ -486,22 +489,22 @@
                                     <td><b><b><i class="fa fa-dollar"></i> {{itemTotal(cost)}}</b></b></td>
                                     <td>
                                         <button @click="initEditExternalCostModal(cost)" data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill" ></edit-icon></button>
-                                        <button 
+                                        <button
                                             data-target="#logistics-delete-modal"
                                             data-toggle="modal"
                                             @click="initDeleteExternalCostModal(cost)"
-                                            type="button" 
+                                            type="button"
                                             class="btn-icon">
                                             <delete-icon fill="danger-fill"></delete-icon>
                                         </button>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5" class="text-right">{{ translateText('message.capex_subtotal') }}</b></td>
+                                    <td colspan="5" class="text-right"><b>{{ translateText('message.capex_subtotal') }}</b></td>
                                     <td colspan="2"><i class="fa fa-dollar"></i> {{totalCapex}}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5" class="text-right">{{ translateText('message.opex_subtotal') }}</b></td>
+                                    <td colspan="5" class="text-right"><b>{{ translateText('message.opex_subtotal') }}</b></td>
                                     <td colspan="2"><i class="fa fa-dollar"></i> {{totalOpex}}</td>
                                 </tr>
                                 <tr>
@@ -637,11 +640,12 @@
                                 minSuffix=" %"
                                 type="single"
                                 step='25'
-                                v-bind:value="transformToString(task.progress)"
                                 :modelName="'editableData.completion'"
-                                :disabled="taskProgressEditIsDisabled"/>
+                                @onRangeSliderUpdate="updateTaskStatusProgress"
+                                :disabled="taskProgressEditIsDisabled"
+                                v-bind:value="transformToString(task.progress)" />
                         </div>
-                         <div class="col-md-8">
+                         <div class="col-md-8" v-if="editableData.workPackageStatus">
                             <h4>{{editableData.workPackageStatus.label}}</h4>
                         </div>
                         <div class="col-md-4">
@@ -649,14 +653,15 @@
                                 v-bind:title="translateText('message.change_status')"
                                 v-bind:options="workPackageStatusesForSelect"
                                 v-model="editableData.workPackageStatus"
-                                v-bind:currentOption="editableData.workPackageStatus" 
-                                v-on:input="changeStatus" />
+                                v-bind:currentOption="editableData.workPackageStatus"
+                                v-on:input="changeStatus"
+                                ref="projectStatus" />
                         </div>
                     </div>
                     <!-- /// End Task Completion /// -->
 
                     <hr class="double">
-                    
+
                     <!-- /// Task Condition /// -->
                     <condition v-model="editableData.colorStatus" v-bind:selectedStatusColor="editableData.colorStatus" v-on:input="updateColorStatus"/>
 
@@ -665,7 +670,7 @@
                     <hr class="double">
 
                     <!-- /// Task Attachmets /// -->
-                    
+
                     <attachments v-on:input="updateMedias" v-bind:editMedias="editableData.medias" v-model="editableData.medias" />
                     <!-- /// End Task Attachments /// -->
                     <hr class="double">
@@ -758,10 +763,6 @@ export default {
         this.getProjectUsers({id: this.$route.params.id});
         this.getWorkPackageStatuses();
         this.getProjectLabels(this.$route.params.id);
-
-        this.$on('finishChangeRangeSliderValue', valueObj => {
-            this.updateProgress(valueObj.value);
-        });
     },
     computed: {
         ...mapGetters({
@@ -776,20 +777,20 @@ export default {
             projectUsers: 'projectUsers',
             currentUser: 'user',
         }),
-        isClosed: function() {
+        isClosed() {
             return this.task.workPackageStatus === 5;
         },
-        internalBaseTotal: function() {
+        internalBaseTotal() {
             return this.editableData.internalCosts.reduce((prev, next) => {
                 return prev + next.total;
             }, 0);
         },
-        externalBaseTotal: function() {
+        externalBaseTotal() {
             return this.editableData.externalCosts.reduce((prev, next) => {
                 return prev + next.total;
             }, 0);
         },
-        totalOpex: function() {
+        totalOpex() {
             let totalOpexCost = 0;
             // remove and replace with coputed prop
             for (let cost of this.editableData.externalCosts) {
@@ -799,7 +800,7 @@ export default {
             }
             return totalOpexCost;
         },
-        totalCapex: function() {
+        totalCapex() {
             let totalCapexCost = 0;
 
             for (let cost of this.editableData.externalCosts) {
@@ -809,21 +810,21 @@ export default {
             }
             return totalCapexCost;
         },
-        responsibilityObj: function() {
+        responsibilityObj() {
             for (let user of this.projectUsersForSelect) {
                 if(user.key == this.task.responsibility) {
                     return user;
                 }
             }
         },
-        accountabilityObj: function() {
+        accountabilityObj() {
             for (let user of this.projectUsersForSelect) {
                 if(user.key == this.task.accountability) {
                     return user;
                 }
             }
         },
-        projectUsersForSupportSelect: function() {
+        projectUsersForSupportSelect() {
             let usersForSelect = JSON.parse(JSON.stringify(this.projectUsersForMultipleSelect));
 
             let selectedIds = [];
@@ -834,7 +835,7 @@ export default {
                 return selectedIds.indexOf(item.key) === -1;
             });
         },
-        projectUsersForConsultedSelect: function() {
+        projectUsersForConsultedSelect() {
             let usersForSelect = JSON.parse(JSON.stringify(this.projectUsersForMultipleSelect));
 
             let selectedIds = [];
@@ -846,7 +847,7 @@ export default {
                 return selectedIds.indexOf(item.key) === -1;
             });
         },
-        projectUsersForInformedSelect: function() {
+        projectUsersForInformedSelect() {
             let usersForSelect = JSON.parse(JSON.stringify(this.projectUsersForMultipleSelect));
 
             let selectedIds = [];
@@ -858,7 +859,7 @@ export default {
                 return selectedIds.indexOf(item.key) === -1;
             });
         },
-        taskProgressEditIsDisabled: function() {
+        taskProgressEditIsDisabled() {
             return this.task.parent == null &&
                 this.task.noSubtasks > 0
             ;
@@ -907,7 +908,7 @@ export default {
             let external = [];
             let itemTotal = this.itemTotal;
 
-            this.task.costs.map(function(cost) {
+            this.task.costs.map(cost => {
                 if (cost.type === 0) {
                     internal.push({
                         id: cost.id,
@@ -937,7 +938,7 @@ export default {
             this.editableData.externalCosts = external;
 
             let supportUsers = [];
-            this.task.supportUsers.map(function(user) {
+            this.task.supportUsers.map(user => {
                 supportUsers.push({
                     key: user.id,
                     label: user.firstName + ' ' + user.lastName,
@@ -946,7 +947,7 @@ export default {
             this.editableData.supportUsers = supportUsers;
 
             let informedUsers = [];
-            this.task.informedUsers.map(function(user) {
+            this.task.informedUsers.map(user => {
                 informedUsers.push({
                     key: user.id,
                     label: user.firstName + ' ' + user.lastName,
@@ -955,7 +956,7 @@ export default {
             this.editableData.informedUsers = informedUsers;
 
             let consultedUsers = [];
-            this.task.consultedUsers.map(function(user) {
+            this.task.consultedUsers.map(user => {
                 consultedUsers.push({
                     key: user.id,
                     label: user.firstName + ' ' + user.lastName,
@@ -980,16 +981,7 @@ export default {
             'patchTask',
             'editTaskCost',
         ]),
-        updateProgress: function(value) {
-            let data = {
-                taskId: this.task.id,
-                data: {
-                    progress: value,
-                },
-            };
-            this.patchTask(data);
-        },
-        countCompletedSubtasks: function() {
+        countCompletedSubtasks() {
             let completed = 0;
 
             // @TODO: see why this would become undefined
@@ -1006,20 +998,20 @@ export default {
 
             return completed;
         },
-        deleteSubtask: function(subtaskId) {
+        deleteSubtask(subtaskId) {
             this.deleteTaskSubtask(subtaskId);
             this.showDeleteModal = false;
         },
-        getDuration: function(startDate, endDate) {
+        getDuration(startDate, endDate) {
             let end = moment(endDate);
             let start = moment(startDate);
 
             return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') + 1 : '-';
         },
-        getHumanTimeDiff: function(date) {
+        getHumanTimeDiff(date) {
             return moment(date).from(new Date(), false);
         },
-        getSubtaskSummary: function() {
+        getSubtaskSummary() {
             return Translator.trans(
                 'message.subtasks_summary',
                 {
@@ -1030,7 +1022,7 @@ export default {
                 }
             );
         },
-        createNewComment: function() {
+        createNewComment() {
             let authorId = null;
             let projectUsers = this.projectUsers.items;
             for (let i = 0; i < projectUsers.length; i++) {
@@ -1118,7 +1110,7 @@ export default {
                 )
             ;
         },
-        totalCostsForType: function(costType) {
+        totalCostsForType(costType) {
             let totalCostForType = 0;
             // to be removed and replace with a computed prop
             for (let cost of this.task.costs) {
@@ -1128,26 +1120,58 @@ export default {
             }
             return totalCostForType;
         },
-        transformToString: function(value) {
+        transformToString(value) {
             return value ? value.toString() : '';
         },
-        translateText: function(text) {
+        translateText(text) {
             return this.translate(text);
         },
-        initChangeStatusModal: function() {
+        updateTaskStatusProgress(sliderValue) {
+            let params = {
+                taskId: this.task.id,
+                data: {
+                    progress: sliderValue,
+                },
+            };
+
+            let parsedSliderVal = parseInt(sliderValue, 10);
+            if (parsedSliderVal === 100) {
+                // set workPackageStatus to 'Completed'
+                this.editableData.workPackageStatus = this.$refs.projectStatus.options.filter(item => item.key === 4)[0];
+                params.data.workPackageStatus = this.editableData.workPackageStatus.key;
+            } else if (parsedSliderVal > 0) {
+                // set workPackageStatus to 'Ongoing'
+                this.editableData.workPackageStatus = this.$refs.projectStatus.options.filter(item => item.key === 3)[0];
+                params.data.workPackageStatus = this.editableData.workPackageStatus.key;
+            }
+
+            if (this.editableData.workPackageStatus.key === 4) {
+                // status 'Completed'
+                params.data.actualFinishAt = moment().format('D-MM-YYYY');
+            } else if (this.editableData.workPackageStatus.key === 3) {
+                // status 'Ongoing'
+                params.data.actualStartAt = moment().format('D-MM-YYYY');
+                params.data.actualFinishAt = '';
+            }
+
+            this.patchTask(params);
+        },
+        initChangeStatusModal() {
             this.showEditStatusModal = true;
         },
-        changeStatus: function() {
+        changeStatus() {
             let data = {
                 taskId: this.task.id,
                 data: {
                     workPackageStatus: this.editableData.workPackageStatus.key,
                 },
             };
+
             this.patchTask(data);
+
             this.showEditStatusModal = false;
         },
-        initChangeScheduleModal: function() {
+        initChangeScheduleModal() {
             this.editScheduleObj = this.editableData.schedule;
             this.showEditScheduleModal = true;
         },
@@ -1225,7 +1249,6 @@ export default {
             this.showEditInternalActualCostModal = true;
         },
         setModals(value) {
-            this.getTaskById(this.$route.params.taskId);
             this.showEditExternalCostModal = value;
             this.showDeleteExternalCostModal = value;
             this.showEditExternalForecastCostModal = value;
@@ -1237,8 +1260,9 @@ export default {
             this.showEditScheduleModal = value;
             this.showCloseTaskModal = value;
             this.showOpenTaskModal = value;
+            this.getTaskById(this.$route.params.taskId);
         },
-        updateColorStatus: function() {
+        updateColorStatus() {
             let data = {
                 colorStatus: this.editableData.colorStatus.id,
             };
@@ -1247,7 +1271,7 @@ export default {
                 taskId: this.$route.params.taskId,
             });
         },
-        updateLabel: function() {
+        updateLabel() {
             let data = {
                 labels: [this.editableData.label.key],
             };
@@ -1256,7 +1280,7 @@ export default {
                 taskId: this.$route.params.taskId,
             });
         },
-        removeLabel: function() {
+        removeLabel() {
             this.editableData.label = null;
             let data = {
                 labels: [],
@@ -1266,7 +1290,7 @@ export default {
                 taskId: this.$route.params.taskId,
             });
         },
-        updateAssignee: function() {
+        updateAssignee() {
             let data = {
                 responsibility: this.editableData.assignee.key,
             };
@@ -1275,7 +1299,7 @@ export default {
                 taskId: this.$route.params.taskId,
             });
         },
-        updateAccountable: function() {
+        updateAccountable() {
             let data = {
                 accountability: this.editableData.accountable.key,
             };
@@ -1284,9 +1308,9 @@ export default {
                 taskId: this.$route.params.taskId,
             });
         },
-        updateSupportUsers: function() {
+        updateSupportUsers() {
             let data = {
-                supportUsers: this.editableData.supportUsers.map(function(item) {
+                supportUsers: this.editableData.supportUsers.map(item => {
                     return item.key;
                 }),
             };
@@ -1295,9 +1319,9 @@ export default {
                 taskId: this.$route.params.taskId,
             });
         },
-        updateConsultedUsers: function() {
+        updateConsultedUsers() {
             let data = {
-                consultedUsers: this.editableData.consultedUsers.map(function(item) {
+                consultedUsers: this.editableData.consultedUsers.map(item => {
                     return item.key;
                 }),
             };
@@ -1306,9 +1330,9 @@ export default {
                 taskId: this.$route.params.taskId,
             });
         },
-        updateInformedUsers: function() {
+        updateInformedUsers() {
             let data = {
-                informedUsers: this.editableData.informedUsers.map(function(item) {
+                informedUsers: this.editableData.informedUsers.map(item => {
                     return item.key;
                 }),
             };
@@ -1317,22 +1341,24 @@ export default {
                 taskId: this.$route.params.taskId,
             });
         },
-        initCloseTaskModal: function() {
+        initCloseTaskModal() {
             this.showCloseTaskModal = true;
         },
-        initOpenTaskModal: function() {
+        initOpenTaskModal() {
             this.showOpenTaskModal = true;
         },
-        getResponsibityUsername: function(userId) {
+        getResponsibityUsername(userId) {
             let users = this.projectUsers.items;
-            for (let i = 0; i < users.length; i++) {
-                if (users[i].user == userId) {
-                    return users[i].userFullName;
-                };
+            if(users != undefined) {
+                for (let i = 0; i < users.length; i++) {
+                    if (users[i].user == userId) {
+                        return users[i].userFullName;
+                    };
+                }
             }
             return '-';
         },
-        getXmlFile: function() {
+        getXmlFile() {
             Vue.http
                 .get(Routing.generate('app_api_workpackage_export', {id: this.task.id})).then((response) => {
                     if (response.status === 200) {
@@ -1346,7 +1372,7 @@ export default {
             );
         },
     },
-    data: function() {
+    data() {
         return {
             fileUploadErrorMessage: '',
             showFileUploadFailed: false,

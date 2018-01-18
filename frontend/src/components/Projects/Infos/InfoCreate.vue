@@ -132,7 +132,7 @@ export default {
         AlertModal,
     },
     methods: {
-        ...mapActions(['getInfoCategories', 'getInfoStatuses', 'getInfo', 'createInfo', 'editInfo']),
+        ...mapActions(['getInfoCategories', 'getInfoStatuses', 'getInfo', 'createInfo', 'editInfo', 'emptyValidationMessages']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -214,13 +214,10 @@ export default {
         }
     },
     mounted() {
-        if (this.info) {
-            this.$refs.descriptionEditor.setContent('');
-            setTimeout(() => {
-                const {description} = this.info;
-                this.$refs.descriptionEditor.setContent(description || '');
-            }, 256);
-        }
+        this.$refs.descriptionEditor.setContent('');
+    },
+    beforeDestroy() {
+        this.emptyValidationMessages();
     },
     data() {
         return {

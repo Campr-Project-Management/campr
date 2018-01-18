@@ -414,6 +414,7 @@ export default {
             'getNoteStatuses',
             'getTodoStatuses',
             'createProjectMeeting',
+            'emptyValidationMessages',
         ]),
         translateText(text) {
             return this.translate(text);
@@ -539,28 +540,26 @@ export default {
                 data.name = '';
                 const length = this.details.distributionLists.length;
                 this.details.distributionLists.map((item, index) => {
-                    if (index !== length - 1) {
-                        item.label + '|';
-                    } else {
-                        item.label;
-                    }
+                    data.name += index !== length - 1 ? item.label + '|' : item.label;
                 });
             }
 
-            this.createProjectMeeting({
-                data: createFormData(data),
-                projectId: this.$route.params.id,
-            })
-            .then((response) => {
-                if (response.body && response.body.error && response.body.messages) {
+            this
+                .createProjectMeeting({
+                    data: createFormData(data),
+                    projectId: this.$route.params.id,
+                })
+                .then((response) => {
+                    if (response.body && response.body.error && response.body.messages) {
+                        this.showFailed = true;
+                    } else {
+                        this.showSaved = true;
+                    }
+                },
+                (response) => {
                     this.showFailed = true;
-                } else {
-                    this.showSaved = true;
-                }
-            },
-            (response) => {
-                this.showFailed = true;
-            });
+                })
+            ;
         },
     },
     computed: {
@@ -589,6 +588,9 @@ export default {
         this.getMeetingCategories();
         this.getTodoStatuses();
         this.getNoteStatuses();
+    },
+    beforeDestroy() {
+        this.emptyValidationMessages();
     },
     data() {
         return {

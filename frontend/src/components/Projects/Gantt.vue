@@ -29,6 +29,11 @@
                 v-on:click="showMinimap = !showMinimap">
         </div>
 
+        <ul class="gantt-tabs">
+            <li role="presentation" v-for="availableDate in availableDates" :class="{active: availableDate === currentDate}">
+                <button v-on:click="setCurrentDate(availableDate)">{{ availableDate }}</button>
+            </li>
+        </ul>
         <div ref="gantt_chart" id="gantt_chart" class="gantt-chart">
             <p>Loading...</p>
         </div>
@@ -50,7 +55,7 @@ import * as d3 from 'd3';
 import $ from 'jquery';
 
 const DAY_IN_MILISECONDS = 86400000;
-const MOTNH_IN_MILISECONDS = 2592000000;
+const MONTH_IN_MILISECONDS = 2592000000;
 
 export default {
     components: {
@@ -89,6 +94,8 @@ export default {
                             this.showFailed = true;
                         } else {
                             this.showSaved = true;
+
+                            this.getGanttData(this.$route.params.id);
                         }
                     },
                     () => {
@@ -256,6 +263,33 @@ export default {
                 )
             ;
         },
+        setCurrentDate(value) {
+            this.currentDate = value;
+
+            // config
+            const startDate = new Date(this.ganttStartDate);
+            const endDate = new Date();
+            const realEndDate = new Date(this.ganttEndDate);
+            const now = new Date();
+
+            if (realEndDate.getTime() > now.getTime()) {
+                endDate.setTime(realEndDate.getTime() + MONTH_IN_MILISECONDS);
+            } else {
+                endDate.setTime(now.getTime() + MONTH_IN_MILISECONDS);
+            }
+
+            startDate.setTime(startDate.getTime() - MONTH_IN_MILISECONDS);
+
+            gantt.config.start_date = startDate;
+            gantt.config.end_date = endDate;
+
+            gantt.parse({
+                data: this.ganttDataFormatted,
+                links: this.ganttDataLinks,
+            });
+
+            this.initGanttMap();
+        },
     },
     mounted() {
         gantt.init(this.$refs.gantt_chart);
@@ -270,10 +304,12 @@ export default {
                 const now = new Date();
 
                 if (realEndDate.getTime() > now.getTime()) {
-                    endDate.setTime(realEndDate.getTime() + MOTNH_IN_MILISECONDS);
+                    endDate.setTime(realEndDate.getTime() + MONTH_IN_MILISECONDS);
                 } else {
-                    endDate.setTime(now.getTime() + MOTNH_IN_MILISECONDS);
+                    endDate.setTime(now.getTime() + MONTH_IN_MILISECONDS);
                 }
+
+                startDate.setTime(startDate.getTime() - MONTH_IN_MILISECONDS);
 
                 gantt.config.auto_scheduling_descendant_links = false;
                 gantt.config.columns = [
@@ -340,11 +376,10 @@ export default {
                             const task = gantt.getTask(id);
                             const progress = parseInt(task.progress * 100, 10);
                             const convert = gantt.date.date_to_str('%d-%m-%Y');
-                            const params = {
-                                progress,
-                                scheduledStartAt: convert(task.start_date),
-                                scheduledFinishAt: convert(task.end_date),
-                            };
+                            const params = {progress};
+
+                            params[this.currentDate + 'StartAt'] = convert(task.start_date);
+                            params[this.currentDate + 'FinishAt'] = convert(task.end_date);
 
                             this
                                 .$http
@@ -355,7 +390,19 @@ export default {
                                 .then(
                                     (response) => {
                                         gantt.message(this.translate('message.saved'));
-                                        this.initGanttMap();
+                                        let {x, y} = gantt.getScrollState();
+
+                                        this
+                                            .getGanttData(this.$route.params.id)
+                                            .then(
+                                                () => {
+                                                    gantt.scrollTo(x, y);
+                                                },
+                                                () => {
+                                                    gantt.scrollTo(x, y);
+                                                }
+                                            );
+                                        ;
                                     },
                                     (response) => {
                                         if (response.status === 202) {
@@ -368,7 +415,19 @@ export default {
                                                 'message': this.translate('message.unable_to_save'),
                                             });
                                         }
-                                        this.initGanttMap();
+                                        let {x, y} = gantt.getScrollState();
+
+                                        this
+                                            .getGanttData(this.$route.params.id)
+                                            .then(
+                                                () => {
+                                                    gantt.scrollTo(x, y);
+                                                },
+                                                () => {
+                                                    gantt.scrollTo(x, y);
+                                                }
+                                            );
+                                        ;
                                     }
                                 )
                             ;
@@ -420,20 +479,24 @@ export default {
             return Routing.generate('main_project_xml', {id: this.project.id});
         },
         ganttStartDate() {
+            const key = this.currentDate + 'StartAt';
+
             return this
                 .ganttData
-                .map(item => item.actualStartAt || item.scheduledStartAt || item.forecastStartAt)
+                .map(item => item[key] || item.createdAt)
                 .filter(item => item !== null)
                 .reduce((a, b) => a < b ? a : b)
             ;
         },
         ganttEndDate() {
-            return this
+            const key = this.currentDate + 'FinishAt';
+            const data = this
                 .ganttData
-                .map(item => item.actualFinishAt || item.scheduledFinishAt || item.forecastFinishAt)
+                .map(item => item[key])
                 .filter(item => item !== null)
-                .reduce((a, b) => a > b ? a : b)
             ;
+
+            return data.length ? data.reduce((a, b) => a > b ? a : b) : null;
         },
         ganttDataLinks() {
             // {"id":"10","source":"11","target":"12","type":"1"}
@@ -475,14 +538,14 @@ export default {
                         type: ganttType2WorkPackageType[item.type],
                     };
 
-                    let start = item.actualStartAt || item.scheduledStartAt || item.forecastStartAt;
-                    let end = item.actualFinishAt || item.scheduledFinishAt || item.forecastFinishAt;
+                    let start = item[this.currentDate + 'StartAt'];
+                    let end = item[this.currentDate + 'FinishAt'];
 
                     if (start && end) {
                         let dtStart = new Date(start);
                         let dtEnd = new Date(end);
                         out.start_date = start.split('-').reverse().join('-');
-                        out.duration = (dtEnd.getTime() - dtStart.getTime()) / DAY_IN_MILISECONDS;
+                        out.duration = ((dtEnd.getTime() - dtStart.getTime()) / DAY_IN_MILISECONDS);
                     } else if (item.createdAt && item.createdAt.match(/^(\d{4}-\d{2}-\d{2})/)) {
                         out.start_date = item
                             .createdAt
@@ -524,6 +587,8 @@ export default {
     },
     data() {
         return {
+            currentDate: 'scheduled',
+            availableDates: ['scheduled', 'actual', 'forecast'],
             showSaved: false,
             showFailed: false,
             showMinimap: true,
@@ -545,6 +610,34 @@ export default {
 <style lang="scss">
     @import '../../css/_variables';
     @import '../../css/_mixins';
+
+    .gantt-tabs {
+        margin-bottom: 0px !important;
+
+        li {
+            border-top: 1px solid #646EA0;
+            border-left: 1px solid #646EA0;
+            display: inline-block;
+            padding: 0.5em;
+
+            &:last-child {
+                border-right: 1px solid #646EA0;
+            }
+
+            button {
+                background: transparent;
+                border: none;
+                outline: none;
+                text-transform: uppercase;
+            }
+
+            &.active {
+                button {
+                    color: #5FC3A5;
+                }
+            }
+        }
+    }
 
     .position-relative {
         position: relative;

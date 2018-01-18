@@ -311,7 +311,7 @@ export default {
     methods: {
         ...mapActions([
             'getProjectRiskAndOpportunitiesStats', 'getOpportunityStrategies', 'getOpportunityStatuses',
-            'createProjectOpportunity', 'getProjectOpportunity', 'editProjectOpportunity',
+            'createProjectOpportunity', 'getProjectOpportunity', 'editProjectOpportunity', 'emptyValidationMessages',
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -463,6 +463,9 @@ export default {
     },
     mounted() {
         this.$refs.description.id = 1;
+    },
+    beforeDestroy() {
+        this.emptyValidationMessages();
     },
     watch: {
         opportunityImpact: function(value) {

@@ -46,9 +46,12 @@ class CostController extends ApiController
             return $this->createApiResponse($cost, JsonResponse::HTTP_CREATED);
         }
 
-        return $this->createApiResponse([
-            'messages' => $this->getFormErrors($form),
-        ]);
+        return $this->createApiResponse(
+            [
+                'messages' => $this->getFormErrors($form),
+            ],
+            JsonResponse::HTTP_BAD_REQUEST
+        );
     }
 
     /**
@@ -76,9 +79,12 @@ class CostController extends ApiController
             return $this->createApiResponse($cost, JsonResponse::HTTP_CREATED);
         }
 
-        return $this->createApiResponse([
+        return $this->createApiResponse(
+            [
             'messages' => $this->getFormErrors($form),
-        ]);
+            ],
+            JsonResponse::HTTP_BAD_REQUEST
+        );
     }
 
     /**

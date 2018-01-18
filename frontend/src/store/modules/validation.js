@@ -46,6 +46,9 @@ const actions = {
     setValidationMessages({commit}, {messages}) {
         commit(types.SET_VALIDATION_MESSAGES, {messages});
     },
+    emptyValidationMessages({commit}) {
+        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+    },
 };
 
 const mutations = {
