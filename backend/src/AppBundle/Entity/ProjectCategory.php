@@ -76,6 +76,11 @@ class ProjectCategory
         $this->createdAt = new \DateTime();
     }
 
+    public function __toString()
+    {
+        return (string) $this->name;
+    }
+
     /**
      * Get id.
      *

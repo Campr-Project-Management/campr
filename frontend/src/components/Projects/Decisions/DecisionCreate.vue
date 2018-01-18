@@ -111,7 +111,7 @@ export default {
     methods: {
         ...mapActions([
             'getProjectMeetings', 'getDecisionCategories',
-            'createDecision', 'getDecision', 'editDecision',
+            'createDecision', 'getDecision', 'editDecision', 'emptyValidationMessages',
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -175,6 +175,9 @@ export default {
             },
             isEdit: this.$route.params.decisionId,
         };
+    },
+    beforeDestroy() {
+        this.emptyValidationMessages();
     },
     watch: {
         currentDecision(value) {

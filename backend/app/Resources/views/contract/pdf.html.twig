@@ -93,6 +93,14 @@
                 <td>{{ contract.project.programme|default('-') }}</td>
             </tr>
             <tr>
+                <th>{{ 'label.category'|trans }}:</th>
+                <td>{{ contract.project.projectCategory|default('-') }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'message.scope'|trans }}:</th>
+                <td>{{ contract.project.projectScope|default('-') }}</td>
+            </tr>
+            <tr>
                 <th>{{ 'message.customer'|trans }}:</th>
                 <td>{{ contract.project.customer|default('-') }}</td>
             </tr>

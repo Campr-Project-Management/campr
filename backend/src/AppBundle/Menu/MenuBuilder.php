@@ -338,7 +338,7 @@ class MenuBuilder
                 'route' => 'app_admin_risk_strategy_list',
             ])->getParent()
             ->addChild($this->translator->trans('title.risk_status.list', [], 'messages'), [
-                'route' => 'app_admin_status_list',
+                'route' => 'app_admin_risk_status_list',
             ])
             ->getParent()
             ->addChild($this->translator->trans('title.opportunity.list', [], 'messages'), [

@@ -25,9 +25,17 @@
                         <span class="data"> {{ project.programmeName }}</span>
                     </p>
                     <p>
+                        <span class="title">{{ translateText('message.category') }}:</span>
+                        <span class="data">{{ project.projectCategoryName || '-' }}</span>
+                    </p>
+                    <p>
+                        <span class="title">{{ translateText('message.scope') }}:</span>
+                        <span class="data">{{ project.projectScopeName || '-' }}</span>
+                    </p>
+                    <p>
                         <span class="title">{{ translateText('message.status') }}:</span>
                         <span v-bind:class="{ finished: project.statusName === 'Finished' }" class="status-label btn-rounded btn-auto">
-                            {{ translateText(project.statusName) }}
+                            {{ translateText(project.statusName) || '-' }}
                         </span>
                     </p>
                 </div>
