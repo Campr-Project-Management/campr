@@ -27,7 +27,7 @@
                 <input id="project-portfolio" type="checkbox" v-model="visiblePortfolio">
                 <label for="project-portfolio">{{ translateText('message.project_portfolio') }}</label>
             </div>
-            <div v-show="visiblePortfolio">
+            <div v-if="visiblePortfolio">
                 <select-field
                     v-bind:title="translateText('message.select_portfolio')"
                     v-bind:options="portfolios"

@@ -144,7 +144,7 @@ export default {
     methods: {
         ...mapActions([
             'getProjectUsers', 'getWorkPackageStatuses', 'getProjectPhases',
-            'createProjectMilestone', 'getProjectMilestone', 'editProjectMilestone',
+            'createProjectMilestone', 'getProjectMilestone', 'editProjectMilestone', 'emptyValidationMessages',
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -219,6 +219,9 @@ export default {
         setTimeout(() => {
             this.contentEditor = createEditor(document.getElementById('contentEditor'), {...vueditorConfig, id: 'contentEditor'});
         }, 100);
+    },
+    beforeDestroy() {
+        this.emptyValidationMessages();
     },
     data() {
         return {

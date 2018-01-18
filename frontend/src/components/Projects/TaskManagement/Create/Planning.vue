@@ -16,7 +16,7 @@
                                     <li v-for="milestone in phase.children">
                                         <a href="javascript:void(0)" v-on:click="updateMilestone(phase, milestone)">{{ milestone.label }}</a>
                                     </li>
-                                </ul>    
+                                </ul>
                             </li>
                         </ul>
                     </div>
@@ -208,7 +208,7 @@ export default {
             color: $lighterColor;
             outline: 0;
         }
-        
+
     }
 
     .dropdown-menu{
@@ -221,7 +221,7 @@ export default {
         background: $middleColor;
         color: $lighterColor;
     }
-    
+
     .nested {
         margin-left: 45px;
     }
@@ -230,6 +230,6 @@ export default {
         color: $lightColor;
         background-color: $darkColor;
     }
-    
+
 </style>
 

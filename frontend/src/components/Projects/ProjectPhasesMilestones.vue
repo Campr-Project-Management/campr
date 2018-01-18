@@ -414,6 +414,7 @@ export default {
                         start: new Date(item.actualFinishAt || item.scheduledFinishAt || item.forecastFinishAt),
                         value: item.workPackageStatus,
                         title: renderTooltip(item, 'milestone'),
+                        className: item.isKeyMilestone ? 'key-milestone' : '',
                     };
                 }));
             }
