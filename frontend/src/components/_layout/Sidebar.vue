@@ -1,7 +1,7 @@
 <template>
     <aside>
         <a href="/" class="logo"></a>
-        <nav>
+        <nav class="nicescroll-side">
             <ul>
                 <li class="active">
                     <router-link :to="{name: 'dashboard'}" title="Dashboard">
@@ -91,6 +91,7 @@
 <script>
 import Vue from 'vue';
 import {mapActions, mapGetters} from 'vuex';
+import 'jquery.nicescroll/jquery.nicescroll.js';
 
 export default {
     name: 'sidebar',
@@ -101,6 +102,14 @@ export default {
         if(this.$route.params.id) {
             this.getProjectById(this.$route.params.id);
         }
+    },
+    mounted() {
+        // nicescroll
+        window.$(document).ready(function() {
+            window.$('.nicescroll-side').niceScroll({
+                autohidemode: false,
+            });
+        });
     },
     computed: {
         ...mapGetters({
@@ -334,6 +343,11 @@ export default {
       color: $lightColor;
       font-size: 11px;
       text-transform: uppercase;
+      position: absolute;
+      top: 60px;
+      left : 10px;
+      right : 10px;
+      bottom: 0px;
 
       li {
         padding: 2px 0;
