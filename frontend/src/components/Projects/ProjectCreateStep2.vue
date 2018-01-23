@@ -11,7 +11,8 @@
                 minSuffix="Months"
                 type="single"
                 :model="projectDuration"
-                :modelName="'projectDuration'"/>
+                :modelName="'projectDuration'"
+                @onRangeSliderUpdate="updateSlider"/>
             <range-slider
                 v-bind:title="translateText('message.project_budget')"
                 min="0"
@@ -20,35 +21,40 @@
                 minPrefix="€"
                 type="single"
                 :model="projectBudget"
-                :modelName="'projectBudget'" />
+                :modelName="'projectBudget'"
+                @onRangeSliderUpdate="updateSlider"/>
             <range-slider
                 v-bind:title="translateText('message.team_members_involved')"
                 min="1"
                 max="20"
                 type="double"
                 :model="projectInvolved"
-                :modelName="'projectInvolved'"/>
+                :modelName="'projectInvolved'"
+                @onRangeSliderUpdate="updateSlider"/>
             <range-slider
                 v-bind:title="translateText('message.departments_involved')"
                 min="1"
                 max="20"
                 type="double"
                 :model="departmentsInvolved"
-                :modelName="'departmentsInvolved'"/>
+                :modelName="'departmentsInvolved'"
+                @onRangeSliderUpdate="updateSlider"/>
             <range-slider
                 v-bind:title="translateText('message.strategical_meaning')"
                 min="few"
                 values="few,medium,high"
                 type="single"
                 :model="strategicalMeaning"
-                :modelName="'strategicalMeaning'"/>
+                :modelName="'strategicalMeaning'"
+                @onRangeSliderUpdate="updateSlider"/>
             <range-slider
                 v-bind:title="translateText('message.risks')"
                 min="few"
                 values="few,medium,high"
                 type="single"
                 :model="risks"
-                :modelName="'risks'" />
+                :modelName="'risks'"
+                @onRangeSliderUpdate="updateSlider"/>
 
             <div class="dropdowns">
                 <select-field
@@ -129,6 +135,9 @@ export default {
             }
             return false;
         },
+        updateSlider(sliderResult) {
+            this[sliderResult.modelName] = sliderResult.value;
+        },
     },
     computed: {
         ...mapGetters({
@@ -170,10 +179,6 @@ export default {
     created() {
         this.getProjectCategories();
         this.getProjectScopes();
-
-        this.$on('changeRangeSliderValue', valueObj => {
-            this[valueObj.modelName] = valueObj.value;
-        });
     },
     data: function() {
         const stepData = JSON.parse(localStorage.getItem(SECOND_STEP_LOCALSTORAGE_KEY));
