@@ -91,7 +91,8 @@
                         type="single"
                         step="5"
                         :model="opportunityImpact"
-                        :modelName="'opportunityImpact'"/>
+                        :modelName="'opportunityImpact'"
+                        @onRangeSliderUpdate="updateSlider"/>
                         <div class="slider-indicator" v-if="risksOpportunitiesStats.opportunities">
                             <indicator-icon fill="middle-fill" v-if="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact" :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact" :title="translateText('message.average_impact_opportunity')"></indicator-icon>
                         </div>
@@ -108,7 +109,8 @@
                         type="single"
                         step="5"
                         :model="opportunityProbability"
-                        :modelName="'opportunityProbability'"/>
+                        :modelName="'opportunityProbability'"
+                        @onRangeSliderUpdate="updateSlider"/>
                         <div class="slider-indicator" v-if="risksOpportunitiesStats.opportunities">
                             <indicator-icon fill="middle-fill" v-if="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability" :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability" :title="translateText('message.average_probability_opportunity')"></indicator-icon>
                         </div>
@@ -438,6 +440,9 @@ export default {
             };
 
             this.priority = priorityNames[type];
+        },
+        updateSlider(sliderResult) {
+            this[sliderResult.modelName] = sliderResult.value;
         },
     },
     computed: {

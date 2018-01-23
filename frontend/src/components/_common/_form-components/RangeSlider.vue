@@ -106,7 +106,7 @@ export default {
         },
         finishChangingValue(value) {
             this.rangeSliderModel = value;
-            this.$emit('onRangeSliderUpdate', `${value}`);
+            this.$emit('onRangeSliderUpdate', {value: value, modelName: this.modelName});
         },
     },
     watch: {
