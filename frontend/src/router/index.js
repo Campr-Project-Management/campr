@@ -18,7 +18,6 @@ import AddLabel from '../components/Projects/TaskManagement/AddLabel.vue';
 import EditLabels from '../components/Projects/TaskManagement/EditLabels.vue';
 import ViewTask from '../components/Tasks/ViewTask.vue';
 import Tasks from '../components/Tasks/Tasks.vue';
-import MemberCreate from '../components/Projects/Organization/MemberCreate.vue';
 import ViewMember from '../components/Projects/Organization/ViewMember.vue';
 import EditOrganization from '../components/Projects/Organization/EditOrganization.vue';
 import ProjectPhasesMilestones from '../components/Projects/ProjectPhasesMilestones.vue';
@@ -109,16 +108,6 @@ const routes = [
                 path: 'organization',
                 component: ProjectOrganization,
                 name: 'project-organization',
-            },
-            {
-                path: 'organization/member-create',
-                component: MemberCreate,
-                name: 'project-organization-create-member',
-            },
-            {
-                path: 'organization/member-edit/:userId',
-                component: MemberCreate,
-                name: 'project-organization-edit-member',
             },
             {
                 path: 'organization/view-member/:userId',

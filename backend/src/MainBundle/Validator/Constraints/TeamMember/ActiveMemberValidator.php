@@ -19,6 +19,10 @@ class ActiveMemberValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
+        if (empty($value)) {
+            return;
+        }
+
         $user = $this
             ->em
             ->getRepository(User::class)
