@@ -83,7 +83,9 @@
             <member-search ref="gridMemberSearch" v-model="gridList" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
             <div class="flex">
                 <button @click="clearFilters" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</button>
-                <router-link :to="{name: 'project-organization-create-member'}" class="btn-rounded btn-auto second-bg">{{ translateText('button.add_new_team_members') }}</router-link>
+                <a href="javascript:void(0)" class="btn-rounded btn-auto second-bg" @click="showWorkspaceMemberInviteModal = true">
+                    {{ translateText('label.invite_workspace_member') }}
+                </a>
                 <a href="javascript:void(0)" class="btn-rounded btn-empty" @click="showModal = true">{{ translateText('button.create_distribution') }}</a>
             </div>
         </div>
@@ -156,9 +158,6 @@
                                     <router-link :to="{name: 'project-organization-view-member', params: {id: projectId, userId: item.id} }" class="btn-icon">
                                         <view-icon fill="second-fill"></view-icon>
                                     </router-link>
-                                    <router-link :to="{name: 'project-organization-edit-member', params: {id: projectId, userId: item.id}}" class="btn-icon">
-                                        <edit-icon fill="second-fill"></edit-icon>
-                                    </router-link>
                                     <button @click="initDeleteMemberModal(item)" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
                                 </td>
                             </tr>
@@ -176,7 +175,9 @@
                 </div>
             </div>
         </div>
+
         <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
+        <workspace-member-invite-modal v-if="showWorkspaceMemberInviteModal" @close="showWorkspaceMemberInviteModal = false" />
     </div>
 </template>
 
@@ -194,6 +195,7 @@ import DeleteIcon from '../_common/_icons/DeleteIcon';
 import ViewIcon from '../_common/_icons/ViewIcon';
 import AlertModal from '../_common/AlertModal.vue';
 import Error from '../_common/_messages/Error.vue';
+import WorkspaceMemberInviteModal from './Organization/WorkspaceMemberInviteModal.vue';
 
 export default {
     components: {
@@ -209,6 +211,7 @@ export default {
         ViewIcon,
         AlertModal,
         Error,
+        WorkspaceMemberInviteModal,
     },
     methods: {
         ...mapActions(['getProjectById', 'createDistribution', 'updateProjectUser', 'deleteTeamMember',
@@ -350,8 +353,9 @@ export default {
             return this.projectUsers.pageSize;
         },
     },
-    data: function() {
+    data() {
         return {
+            showWorkspaceMemberInviteModal: false,
             showFailed: false,
             selectedDistribution: [],
             distributionList: [],
