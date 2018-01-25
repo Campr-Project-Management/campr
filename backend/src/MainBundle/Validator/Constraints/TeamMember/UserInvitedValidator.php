@@ -18,6 +18,10 @@ class UserInvitedValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
+        if (empty($value)) {
+            return;
+        }
+
         $teamInvite = $this
             ->em
             ->getRepository(TeamInvite::class)

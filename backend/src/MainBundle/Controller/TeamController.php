@@ -65,7 +65,8 @@ class TeamController extends Controller
      */
     public function createAction(Request $request)
     {
-        $form = $this->createForm(CreateType::class);
+        $team = new Team();
+        $form = $this->createForm(CreateType::class, $team);
         $form->handleRequest($request);
 
         if ($request->isMethod('POST') && $form->isValid()) {
