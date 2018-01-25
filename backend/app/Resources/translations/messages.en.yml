@@ -860,6 +860,7 @@ subtitle:
     risk_status: List of Risk Statuses
 
 label:
+    invite_workspace_member: Invite member to workspace
     status_report_distribution: Status Report Distribution
     edit_topic: Edit topic
     delete_topic: Delete topic
@@ -1220,7 +1221,6 @@ button:
     delete_milestone: Delete Milestone
     add_new_phase: Add New Phase
     add_new_milestone: Add New Milestone
-    add_new_team_members: Add New Team Members
     create_phase: Create Phase
     create_milestone: Create Milestone
     edit_phase: Edit Phase
@@ -1301,7 +1301,6 @@ add:
     opportunity: Add new opportunity
     resource: Add new resource
     cost: Add new cost
-    new_team_members: Add New Team Members
     user: Add new user
     status: Add new status
     schedule: Add new schedule
