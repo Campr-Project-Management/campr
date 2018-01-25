@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import * as actions from './actions';
-import * as getters from './getters';
-import * as mutations from './mutations';
+import actions from './actions';
+import getters from './getters';
+import mutations from './mutations';
 import closeDownAction from './modules/close-down-action';
 import colorStatus from './modules/color_status';
 import cost from './modules/cost';
@@ -63,6 +63,7 @@ import validation from './modules/validation';
 import wbs from './modules/wbs';
 import workPackage from './modules/work-package';
 import workPackageStatus from './modules/work-package-status';
+import workspace from './modules/workspace';
 
 Vue.use(Vuex);
 
@@ -133,6 +134,7 @@ export default new Vuex.Store({
         wbs,
         workPackage,
         workPackageStatus,
+        workspace,
     },
     strict: debug,
 });
