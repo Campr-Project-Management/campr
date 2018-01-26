@@ -331,7 +331,7 @@ export default {
                 id: this.editSubteamId,
                 name: this.editSubteamName,
                 subteamMembers: this.editSubteamMembers.map(member => {
-                    return {'user': member.key, 'isLead': (this.editSubteamLead && this.editSubteamLead.key === member.key ? 1 : 0)};
+                    return {'user': member.key, 'isLead': !! (this.editSubteamLead && this.editSubteamLead.key === member.key)};
                 }),
             };
             this.editSubteam(data);
