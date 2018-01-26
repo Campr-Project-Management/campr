@@ -7,8 +7,11 @@ use AppBundle\Entity\SubteamRole;
 use AppBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Range;
 
 class SubteamMemberType extends AbstractType
 {
@@ -22,7 +25,14 @@ class SubteamMemberType extends AbstractType
                     'class' => 'selectpicker',
                 ],
             ])
-            ->add('isLead')
+            ->add('isLead', IntegerType::class, [
+                'constraints' => [
+                    new Range([
+                        'min' => 0,
+                        'max' => 1,
+                    ]),
+                ],
+            ])
             ->add('subteamRoles', EntityType::class, [
                 'class' => SubteamRole::class,
                 'required' => true,
@@ -31,6 +41,20 @@ class SubteamMemberType extends AbstractType
                     'class' => 'selectpicker',
                 ],
             ])
+        ;
+
+        $builder
+            ->get('isLead')
+            ->addModelTransformer(
+                new CallbackTransformer(
+                    function ($val) {
+                        return intval($val);
+                    },
+                    function ($val) {
+                        return intval($val);
+                    }
+                )
+            )
         ;
     }
 
