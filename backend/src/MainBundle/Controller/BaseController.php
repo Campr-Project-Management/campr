@@ -15,7 +15,7 @@ abstract class BaseController extends Controller
         if (!is_object($obj)) {
             throw new HttpException(
                 Response::HTTP_INTERNAL_SERVER_ERROR,
-                sprintf('Only objects can be persisted and flushed.')
+                'Only objects can be persisted and flushed.'
             );
         }
 

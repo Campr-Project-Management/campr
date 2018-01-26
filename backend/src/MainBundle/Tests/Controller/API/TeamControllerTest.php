@@ -56,7 +56,7 @@ class TeamControllerTest extends BaseController
                     'name' => 'team_1',
                     'slug' => 'team1',
                     'description' => null,
-                    'enabled' => false,
+                    'enabled' => true,
                     'createdAt' => '2017-01-01 00:00:00',
                     'teamMembers' => [
                         [
@@ -101,7 +101,7 @@ class TeamControllerTest extends BaseController
                     'name' => 'team_2',
                     'slug' => 'team2',
                     'description' => null,
-                    'enabled' => false,
+                    'enabled' => true,
                     'createdAt' => '2017-01-01 00:00:00',
                     'teamMembers' => [],
                     'teamSlugs' => [],

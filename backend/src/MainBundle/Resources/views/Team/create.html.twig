@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div class="control-group form-group {% if form_errors(form.description) %}has-error{% endif %}">
-                        <div class="input-holder">
+                        <div class="input-holder input-filled">
                             {{ form_widget(form.description, {'attr': {'class': 'input-field'}}) }}
                             <label class="label">{{ 'label.description'|trans }}</label>
                         </div>
@@ -61,7 +61,7 @@
                     <div class="control-group form-group">
                         <div class="checkbox-input clearfix">
                             {{ form_widget(form.enabled) }}
-                            <label class="label" for="create_enabled">{{ 'label.enabled'|trans }}</label>
+                            <label class="label" for="{{ form.enabled.vars.id }}">{{ 'label.enabled'|trans }}</label>
                         </div>
                     </div>
                     <div class="form-group">

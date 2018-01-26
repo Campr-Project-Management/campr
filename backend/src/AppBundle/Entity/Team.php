@@ -69,9 +69,9 @@ class Team
     /**
      * @var bool
      *
-     * @ORM\Column(name="enabled", type="boolean", options={"default" = 0})
+     * @ORM\Column(name="enabled", type="boolean", options={"default" = 1})
      */
-    private $enabled = false;
+    private $enabled = true;
 
     /**
      * @Vich\UploadableField(mapping="team_images", fileNameProperty="logo")
