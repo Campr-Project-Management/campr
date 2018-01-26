@@ -38,7 +38,7 @@ class CreateType extends AbstractType
                 'translation_domain' => 'messages',
             ])
             ->add('subteamMembers', CollectionType::class, [
-                'entry_type' => SubteamMemberType::class,
+                'entry_type' => MemberType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
