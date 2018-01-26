@@ -59,7 +59,7 @@ class UserControllerTest extends BaseController
                         'name' => 'team_1',
                         'slug' => 'team1',
                         'description' => null,
-                        'enabled' => false,
+                        'enabled' => true,
                         'createdAt' => '2017-01-01 00:00:00',
                         'teamMembers' => [
                             [
@@ -99,7 +99,7 @@ class UserControllerTest extends BaseController
                         'name' => 'team_2',
                         'slug' => 'team2',
                         'description' => null,
-                        'enabled' => false,
+                        'enabled' => true,
                         'createdAt' => '2017-01-01 00:00:00',
                         'teamMembers' => [],
                         'teamSlugs' => [],
@@ -114,7 +114,7 @@ class UserControllerTest extends BaseController
                         'name' => 'team_3',
                         'slug' => 'team3',
                         'description' => null,
-                        'enabled' => false,
+                        'enabled' => true,
                         'createdAt' => '2017-01-01 00:00:00',
                         'teamMembers' => [],
                         'teamSlugs' => [],
