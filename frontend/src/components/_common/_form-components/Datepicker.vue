@@ -125,7 +125,7 @@
             top: 40px;
             background: white;
             padding: 15px;
-            width: 246px;
+            width: 277px;
             &.bottom-up{
                 top: -280px;
             }
@@ -178,7 +178,7 @@
                 line-height: 25px;
                 &.day-header{
                     font-weight: 600;
-                    width: 30px;
+                    width: 35px;
                 }
                 &.month, &.year{
                     width: 33.333%;
