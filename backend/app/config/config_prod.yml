@@ -10,6 +10,7 @@ imports:
 
 parameters:
     database_password: campr
+    show_tracking_code: true
 
 doctrine:
     orm:
