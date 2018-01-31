@@ -9,9 +9,9 @@
             <p>{{ translateText('message.recommended_modules') }}</p>
             <project-module v-for="module, key in modules"
                 v-if="moduleIsRecommended(key)"
-                v-bind:title="translateText(modules[key].title)"
-                v-bind:description="translateText(modules[key].description)"
-                v-bind:id="getModuleId(key)"
+                v-bind:title="translateText(module.title)"
+                v-bind:description="translateText(module.description)"
+                v-bind:id="key"
                 v-model="modulesConfiguration[key]"
                 v-bind:inactive="!modulesConfiguration[key]" />
          
@@ -19,9 +19,9 @@
 
             <project-module v-for="module, key in modules"
                 v-if="!moduleIsRecommended(key)"
-                v-bind:title="translateText(modules[key].title)"
-                v-bind:description="translateText(modules[key].description)"
-                v-bind:id="getModuleId(key)"
+                v-bind:title="translateText(module.title)"
+                v-bind:description="translateText(module.description)"
+                v-bind:id="key"
                 v-model="modulesConfiguration[key]"
                 v-bind:inactive="!modulesConfiguration[key]" />
 
@@ -75,7 +75,9 @@ export default {
         }),
     },
     created() {
-        this.getModules();
+        if (!this.modules || !this.modules.length) {
+            this.getModules();
+        }
     },
     watch: {
         project(value) {
@@ -94,7 +96,7 @@ export default {
                 if (value.hasOwnProperty(module)) {
                     this.modulesConfiguration[module] = this.moduleIsRecommended(module);
                 }
-            };
+            }
             this.modulesConfiguration = JSON.parse(JSON.stringify(this.modulesConfiguration));
         },
         validationMessages(value) {
