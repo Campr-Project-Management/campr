@@ -119,7 +119,7 @@ class ProjectModuleControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-module/2/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[module]'] = 'project_contract';
+        $form['create[module]'] = 'contract';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
