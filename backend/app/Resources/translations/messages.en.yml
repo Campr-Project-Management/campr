@@ -1801,60 +1801,55 @@ filter:
     clear: Clear filters
 
 modules:
-    project_contract:
-        title: Project Contract
-        description: Project Contract Description
-    project_organization:
-        title: Project Organization
-        description: Project Organization Description
-    plan:
-        title: Plan
-        description: Plan Description
+    contract:
+        title: Contract
+        description: The goal of the project contract is to make a written agreement between the project sponsor and the project manager. This agreement shall contain a brief description of the framework of the project as well as the usage of required resources for this endeavor.
+    organization:
+        title: Organization
+        description: The Project Organization lists the project participants of the project in a hierarchical order. This module visualizes the project organization chart, defines the roles, and the relationships between the project teams. Also, you can create individual distribution lists for reports and meeting invites.
+    phases_and_milestones:
+        title: Phases & Milestones
+        description: Work packages can be grouped in a phase according to project sequences. Particularly important events in the project progress are defined and terminated as milestones.
     task_management:
         title: Task Management
-        description: Task Management Description
-    phases_milestones:
-        title: Phases & Milestones
-        description: Phases & Milestones Description
-    costs:
+        description: The Task Management provides an overview of all work packages assigned to the project. A work package is a group of associated tasks. Typical categories for grouped tasks are a geographical area, engineering discipline, technology, or the time needed to accomplish them.
+    internal_costs:
+#        title: Internal Costs
         title: Costs
-        description: Costs Description
-    resources:
+        description: Keeping track of the project costs is crucial. Cost planning allows you to calculate the cost per work package, and then to calculate the total cost of the project. A distinction is made between internal costs and external costs as well as operative costs and invest.
+    external_costs:
+#        title: External Costs
         title: Resources
-        description: Resources description
-    risks_opportunities:
+        description: Resource planning allows you to calculate the necessary personnel usage per work package.
+    risks_and_opportunities:
         title: Risks & Oportunities
-        description: Risks & Oportunities Description
-    communication:
-        title: Communication
-        description: Communication Description
-    control_measures:
-        title: Control Measures
-        description: Control Measures
-    status_report:
-        title: Status Report
-        description: Status Report Description
-    meetings:
-        title: Meetings
-        description: Meetings Description
-    todos:
-        title: Todos
-        description: Todos Description
-    notes:
-        title: Notes
-        description: Notes Description
-    close_down_project:
-        title: Close Down Project
-        description: Close Down Project Description
-    rasci_matrix:
-        title: Rasci matrix
-        description: Rasci matrix Description
-    task_chart:
-        title: Task chart
-        description: Task chart Description
+        description: Regular risk analysis, indicating potential hazards, as well as uncovering opportunities within your project helps you to react proactively in all situations. This module supports you in collecting, structuring, tracking and visualizing risks and opportunities.
     gantt_chart:
         title: Gantt chart
-        description: Gantt chart Description
+        description: The Gantt Chart is a standard visualization of all phases, work packages, tasks and milestones on a timeline according to the planned project execution. All items have dedicated start and finish date and are displayed in individual bars on the time axis. Correlations between those items, such as predecessor and successor tasks, can be defined and are displayed as well.
+    rasci_matrix:
+        title: Rasci matrix
+        description: >
+            A responsibility assignment matrix describes the participation by various roles in completing tasks or deliverables for a project execution. It is especially useful in clarifying roles and responsibilities in cross-functional projects and processes.
+            RASCI is an acronym and stands for the five different roles within the execution process of a work package or task: Responsible, Accountable, Supportable, Consulted, and Informed.
+    wbs:
+        title: WBS
+        description: The Work Breakdown Structure (WBS) is a deliverable-oriented breakdown of a project into smaller components. A work breakdown structure is a key project deliverable that organizes the team's work into manageable sections. This module visualizes the breakdown in a “tree”- structure starting with the project phases and work packages, tasks, and milestones in the branches. The structure can be manipulated within the module for restructuring purposes.
+    meetings:
+        title: Meetings
+        description: CAMPR supports you in the coordination of meetings with project participants. You can create invitations for meetings, schedule your meetings, and can keep track on them. Also, meeting minutes can be entered in a structured form and send out to all relevant meeting participants according to predefined distribution lists.
+    todos:
+        title: Todos
+        description: The central to-do list is used to document the agreed or necessary to-dos during your project.
+    infos:
+        title: Infos
+        description: With the "Info"-module, you can document general information related to your project or your team. Information such as changes to the project scope, new team members joining, new events planned, etc.
     decisions:
         title: Decisions
-        description: Decisions Description
+        description: In the "Decisions"-module, you can document the decisions made during project execution.
+    status_report:
+        title: Status Report
+        description: The project status report provides an overview of the overall project condition regarding services, deadlines, resources, costs, organization and context and shows planned measures and necessary decisions.
+    close_down_project:
+        title: Close Down Project
+        description: The project final report serves as a final document for the evaluation of the project and for the planning of residual tasks and the post-project phase. The project final report is the basis for the final project commissioning process.
