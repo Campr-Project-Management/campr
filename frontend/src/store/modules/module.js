@@ -15,16 +15,22 @@ const actions = {
      * @param {function} commit
      */
     getModules({commit}) {
-        Vue.http
-            .get(
-                Routing.generate('app_api_modules_list')
-            ).then((response) => {
-                if (response.status === 200) {
-                    let modules = response.data;
-                    commit(types.SET_MODULES, {modules});
+        Vue
+            .http
+            .get(Routing.generate('app_api_modules_list'))
+            .then(
+                (response) => {
+                    if (response.status === 200) {
+                        let modules = response.data;
+                        commit(types.SET_MODULES, {modules});
+                    } else {
+                        commit(types.SET_MODULES, {modules: []});
+                    }
+                }, (response) => {
+                    commit(types.SET_MODULES, {modules: []});
                 }
-            }, (response) => {
-            });
+            )
+        ;
     },
 };
 
