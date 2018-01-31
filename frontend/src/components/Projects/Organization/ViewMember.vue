@@ -54,21 +54,21 @@
                     <div class="col-md-4">
                         <h3>{{ translateText('message.resources') }}</h3>
                         <div class="flex flex-v-center">
-                            <switches :selected="member.showInResources" :disabled="true"></switches>
+                            <switches @click.native="updateUserOption(member, 'resource')" v-model="showInResources" :selected="member.showInResources"></switches>
                         </div>
                         <hr class="nomarginbottom">
                     </div>
                     <div class="col-md-4">
                         <h3>{{ translateText('table_header_cell.rasci') }}</h3>
                         <div class="flex flex-v-center">
-                            <switches :selected="member.showInRasci" :disabled="true"></switches>
+                            <switches @click.native="updateUserOption(member, 'rasci')" v-model="showInRasci" :selected="member.showInRasci"></switches>
                         </div>
                         <hr class="nomarginbottom">
                     </div>
                     <div class="col-md-4">
                         <h3>{{ translateText('table_header_cell.org') }}</h3>
                         <div class="flex flex-v-center">
-                            <switches :selected="member.showInOrg" :disabled="true"></switches>
+                            <switches @click.native="updateUserOption(member, 'org')" v-model="showInOrg" :selected="member.showInOrg"></switches>
                         </div>
                         <hr class="nomarginbottom">
                     </div>
@@ -155,8 +155,15 @@ export default {
     components: {
         Switches,
     },
+    data() {
+        return {
+            showInRasci: null,
+            showInOrg: null,
+            showInResources: null,
+        };
+    },
     methods: {
-        ...mapActions(['getDistributionLists', 'getProjectUser']),
+        ...mapActions(['getDistributionLists', 'getProjectUser', 'updateProjectUser']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -167,6 +174,28 @@ export default {
                 }
             }
             return false;
+        },
+        updateUserOption(item, value) {
+            switch(value) {
+            case 'rasci':
+                this.updateProjectUser({
+                    id: item.id,
+                    showInRasci: this.showInRasci,
+                });
+                break;
+            case 'org':
+                this.updateProjectUser({
+                    id: item.id,
+                    showInOrg: this.showInOrg,
+                });
+                break;
+            case 'resource':
+                this.updateProjectUser({
+                    id: item.id,
+                    showInResources: this.showInResources,
+                });
+                break;
+            }
         },
     },
     created() {
