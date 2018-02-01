@@ -2,8 +2,38 @@
 
 namespace AppBundle\Twig;
 
-class AppExtension extends \Twig_Extension
+class AppExtension extends \Twig_Extension implements \Twig_Extension_InitRuntimeInterface
 {
+    /**
+     * @var bool
+     */
+    private $showTrackingCode;
+
+    /**
+     * @var \Twig_Environment
+     */
+    public $twig;
+
+    public function __construct($showTrackingCode)
+    {
+        $this->showTrackingCode = $showTrackingCode;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initRuntime(\Twig_Environment $environment)
+    {
+        $this->twig = $environment;
+    }
+
+    public function getFunctions()
+    {
+        return [
+            new \Twig_SimpleFunction('piwik_tracking', [$this, 'piwikTracking'], ['is_safe' => ['html' => true]]),
+        ];
+    }
+
     public function getFilters()
     {
         return [
@@ -29,6 +59,11 @@ class AppExtension extends \Twig_Extension
             ? $date->format('H:i')
             : $date->format('d/m/Y H:i')
         ;
+    }
+
+    public function piwikTracking()
+    {
+        return $this->twig->render(':tracking:piwik.html.twig');
     }
 
     public function getName()

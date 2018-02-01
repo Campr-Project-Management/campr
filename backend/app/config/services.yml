@@ -279,6 +279,8 @@ services:
     app.app_extension:
         class: AppBundle\Twig\AppExtension
         public: false
+        arguments:
+            - %show_tracking_code%
         tags:
             - { name: twig.extension }
 

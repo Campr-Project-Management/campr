@@ -15,7 +15,7 @@ parameters:
     managed_locales:
         - en
         - de
-    show_tracking_code: false
+    show_tracking_code: true
 
 framework:
     #esi:             ~
