@@ -21,6 +21,8 @@
         {% block icon %}
             <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         {% endblock %}
+
+        {{ piwik_tracking() }}
     </head>
     <body {% block body_attributes %}{% endblock %}>
     {% block body %}

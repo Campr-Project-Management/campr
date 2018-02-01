@@ -50,6 +50,8 @@
         <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     {% endblock %}
+
+    {{ piwik_tracking() }}
 </head>
 <body class="backend">
 {% block body %}
@@ -63,7 +65,7 @@
                 </div>
                 <main class="col-12 col-md-9 col-xl-8 bd-content" role="main">
                     {% block body_content %}{% endblock %}
-                </div>
+                </main>
             </div>
         </div>
 
