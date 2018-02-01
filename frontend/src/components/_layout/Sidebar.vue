@@ -77,9 +77,15 @@
             </ul>
             <ul v-show="this.$route.name && this.$route.name.indexOf('project-') != -1">
                 <li class="separator"></li>
-                <li v-for="module in modules" v-if="displayModule(module)">
-                    <router-link :to="{name: module.route.name, params: {id: projectId}}" v-bind:title="module.title">
-                        <span class="default">{{ module.title }}</span>
+                <li>
+                    <router-link :to="{name:'project-dashboard', params: {id: projectId}}" v-bind:title="translate('message.project_dashboard')">
+                        <span class="default">{{ translate('message.project_dashboard') }}</span>
+                        <span v-bind:class="'tablet'"></span>
+                    </router-link>
+                </li>
+                <li v-for="module, key in modules" v-if="displayModule(key)">
+                    <router-link :to="{name: moduleToRoute[key], params: {id: projectId}}" v-bind:title="translate(module.title)">
+                        <span class="default">{{ translate(module.title) }}</span>
                         <span v-bind:class="module.icon"></span>
                     </router-link>
                 </li>
@@ -96,167 +102,63 @@ export default {
     name: 'sidebar',
     created() {
         this.getSidebarInformation();
-        this.getProjectModules();
-        this.getProjectModules();
+        if (!this.modules || !this.modules.length) {
+            this.getModules();
+        }
         if(this.$route.params.id) {
             this.getProjectById(this.$route.params.id);
         }
     },
     computed: {
         ...mapGetters({
+            modules: 'modules',
             project: 'project',
             sidebarStats: 'sidebarStats',
-            projectModules: 'projectModules',
         }),
         projectId() {
             return this.$route.params.id;
         },
     },
     methods: {
-        ...mapActions(['getSidebarInformation', 'getProjectModules', 'getProjectById', 'getProjectModules']),
+        ...mapActions([
+            'getModules',
+            'getProjectById',
+            'getSidebarInformation',
+        ]),
         translate(key) {
             return Vue.translate(key);
         },
         displayModule(module) {
-            return module.module === null
-                || (this.project && this.project.projectModules && this.project.projectModules.indexOf(module.module) !== -1)
-                || (this.project && this.project.projectModules && !this.project.projectModules.length);
+            return this.project && this.project.projectModules && (
+                this.project.projectModules.indexOf(module) !== -1
+                || !this.project.projectModules.length
+            );
         },
     },
     data: function() {
         return {
-            modules: [
-                // plan
-                // communication
-                // control_measures
-                {
-                    route: {name: 'project-dashboard'},
-                    title: this.translate('message.project_dashboard'),
-                    icon: 'tablet',
-                    module: null,
-                },
-                {
-                    route: {name: 'project-organization'},
-                    title: this.translate('message.organization'),
-                    icon: 'tablet',
-                    module: 'project_organization',
-                },
-                {
-                    route: {name: 'project-contract'},
-                    title: this.translate('message.contract'),
-                    icon: 'tablet',
-                    module: 'project_contract',
-                },
-                {
-                    route: {name: 'project-phases-and-milestones'},
-                    title: this.translate('message.phases_milestones'),
-                    icon: 'tablet',
-                    module: 'phases_milestones',
-                },
-                {
-                    route: {name: 'project-task-management-list'},
-                    title: this.translate('message.task_management'),
-                    icon: 'tablet',
-                    module: 'task_management',
-                },
-                {
-                    route: {name: 'project-gantt-chart'},
-                    title: this.translate('message.gantt_chart'),
-                    icon: 'tablet',
-                    module: 'gantt_chart',
-                },
-                {
-                    route: {name: 'project-costs'},
-                    title: this.translate('message.costs'),
-                    icon: 'tablet',
-                    module: 'costs',
-                },
-                {
-                    route: {name: 'project-resources'},
-                    title: this.translate('message.resources'),
-                    icon: 'tablet',
-                    module: 'resources',
-                },
-                {
-                    route: {name: 'project-risks-and-opportunities'},
-                    title: this.translate('message.risks_oportunities'),
-                    icon: 'tablet',
-                    module: 'risks_opportunities',
-                },
-                {
-                    route: {name: 'project-rasci-matrix'},
-                    title: this.translate('message.rasci_matrix'),
-                    icon: 'tablet',
-                    module: 'rasci_matrix',
-                },
-                {
-                    route: {name: 'project-meetings'},
-                    title: this.translate('message.meetings'),
-                    icon: 'tablet',
-                    module: 'meetings',
-                },
-                {
-                    route: {name: 'project-todos'},
-                    title: this.translate('message.todos'),
-                    icon: 'tablet',
-                    module: 'todos',
-                },
-                {
-                    route: {name: 'project-infos'},
-                    title: this.translate('message.infos'),
-                    icon: 'tablet',
-                    module: 'notes',
-                },
-                {
-                    route: {name: 'project-decisions'},
-                    title: this.translate('message.decisions'),
-                    icon: 'tablet',
-                    module: 'decisions',
-                },
-                {
-                    route: {name: 'project-wbs'},
-                    title: this.translate('message.wbs'),
-                    icon: 'tablet',
-                    module: 'task_chart',
-                },
-                {
-                    route: {name: 'project-status-reports'},
-                    title: this.translate('message.status_reports'),
-                    icon: 'tablet',
-                    module: 'status_report',
-                },
-                {
-                    route: {name: 'project-close-down-report'},
-                    title: this.translate('message.close_down_report'),
-                    icon: 'tablet',
-                    module: 'close_down_project',
-                },
-            ],
+            moduleToRoute: {
+                contract: 'project-contract',
+                organization: 'project-organization',
+                phases_and_milestones: 'project-phases-and-milestones',
+                task_management: 'project-task-management-list',
+                internal_costs: 'project-costs',
+                external_costs: 'project-resources',
+                risks_and_opportunities: 'project-risks-and-opportunities',
+                gantt_chart: 'project-gantt-chart',
+                rasci_matrix: 'project-rasci-matrix',
+                wbs: 'project-wbs',
+                meetings: 'project-meetings',
+                todos: 'project-todos',
+                infos: 'project-infos',
+                decisions: 'project-decisions',
+                status_report: 'project-status-reports',
+                close_down_project: 'project-close-down-report',
+            },
             message: {
                 dashboard: this.translate('message.dashboard'),
                 projects: this.translate('message.projects'),
                 tasks: this.translate('message.tasks'),
-                project_dashboard: this.translate('message.project_dashboard'),
-                contract: this.translate('message.contract'),
-                organization: this.translate('message.organization'),
-                plan: this.translate('message.plan'),
-                task_management: this.translate('message.task_management'),
-                phases_milestones: this.translate('message.phases_milestones'),
-                costs: this.translate('message.costs'),
-                resources: this.translate('message.resources'),
-                risks_oportunities: this.translate('message.risks_oportunities'),
-                comunication: this.translate('message.communication'),
-                control_measures: this.translate('message.control_measures'),
-                status_reports: this.translate('message.status_reports'),
-                meetings: this.translate('message.meetings'),
-                todos: this.translate('message.todos'),
-                infos: this.translate('message.infos'),
-                decisions: this.translate('message.decisions'),
-                close_down_project: this.translate('message.close_down_project'),
-                gantt_chart: this.translate('message.gantt_chart'),
-                rasci_matrix: this.translate('message.rasci_matrix'),
-                close_down_report: this.translate('message.close_down_report'),
-                wbs: this.translate('message.wbs'),
             },
         };
     },
