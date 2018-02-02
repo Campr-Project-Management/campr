@@ -63,7 +63,7 @@ class AppExtension extends \Twig_Extension implements \Twig_Extension_InitRuntim
 
     public function piwikTracking()
     {
-        return $this->twig->render(':tracking:piwik.html.twig');
+        return $this->showTrackingCode ? $this->twig->render(':tracking:piwik.html.twig') : '';
     }
 
     public function getName()
