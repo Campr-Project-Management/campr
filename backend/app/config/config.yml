@@ -15,7 +15,7 @@ parameters:
     managed_locales:
         - en
         - de
-    show_tracking_code: true
+    show_tracking_code: false
 
 framework:
     #esi:             ~
@@ -52,8 +52,6 @@ twig:
     strict_variables: "%kernel.debug%"
     form_themes:
         - 'VichUploaderBundle:Form:fields.html.twig'
-    globals:
-        show_tracking_code: %show_tracking_code%
 
 # Doctrine Configuration
 doctrine:
