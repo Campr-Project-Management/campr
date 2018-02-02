@@ -266,7 +266,7 @@
                                     <error
                                         v-if="measureCommentValidationMessages.description && measureCommentValidationMessages.description.length"
                                         v-for="message in measureCommentValidationMessages.description"
-                                        :message="message" /> 
+                                        :message="message" />
                                 </div>
                                 <div class="footer-buttons flex flex-space-between">
                                     <button @click="addMeasureComment(measure.id)" type="button" :data-target="'#measure-'+measure.id+'-new-comment'" :data-parent="'#measure-'+measure.id" aria-expanded="false" class="btn-rounded btn-auto btn-md second-bg">{{ translateText('message.add_comment') }}</button>
