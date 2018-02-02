@@ -1130,7 +1130,7 @@ export default {
             let params = {
                 taskId: this.task.id,
                 data: {
-                    progress: sliderValue,
+                    progress: sliderValue.value,
                 },
             };
 
