@@ -91,7 +91,8 @@
                         type="single"
                         step="5"
                         :model="riskImpact"
-                        :modelName="'riskImpact'"/>
+                        :modelName="'riskImpact'"
+                        @onRangeSliderUpdate="updateSlider"/>
                         <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
                             <indicator-icon fill="middle-fill" v-if="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact" :position="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact" :title="translateText('message.average_impact_risk')"></indicator-icon>
                         </div>
@@ -108,7 +109,8 @@
                         type="single"
                         step="5"
                         :model="riskProbability"
-                        :modelName="'riskProbability'"/>
+                        :modelName="'riskProbability'"
+                        @onRangeSliderUpdate="updateSlider"/>
                         <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
                             <indicator-icon fill="middle-fill" v-if="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability" :position="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability" :title="translateText('message.average_probability_risk')"></indicator-icon>
                         </div>
@@ -446,6 +448,9 @@ export default {
             };
 
             this.priority = priorityNames[type];
+        },
+        updateSlider(sliderResult) {
+            this[sliderResult.modelName] = sliderResult.value;
         },
     },
     computed: {
