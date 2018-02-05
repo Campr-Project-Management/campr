@@ -56,7 +56,7 @@
         </modal>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-9">
                 <div class="header">
                     <div>
                         <router-link :to="{name: 'project-organization'}" class="small-link">
@@ -67,123 +67,178 @@
                     </div>
                 </div>
 
-                <!-- /// Departments /// -->
-                <h3>{{ translateText('message.departments') }}</h3>
-                <vue-scrollbar class="table-wrapper">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>{{ translateText('table_header_cell.department_name') }}</th>
-                                <th>{{ translateText('table_header_cell.managers') }}</th>
-                                <th>{{ translateText('table_header_cell.no_of_members') }}</th>
-                                <th>{{ translateText('table_header_cell.created_at') }}</th>
-                                <th>{{ translateText('table_header_cell.actions') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                <ul class="tabs">
+                    <li role="presentation" v-for="tab in availableTabs" :key="tab" :class="{active: tab === currentTab}">
+                        <button v-on:click="currentTab = tab">{{ translateText('title.' + tab) }}</button>
+                    </li>
+                </ul>
 
-                            <tr v-for="department in projectDepartments.items">
-                                <td>{{ department.name }}</td>
+                <div v-if="currentTab === 'members'">
+                    <div class="team-list">
+                        <!--<vue-scrollbar class="table-wrapper" ref="projectOrganizationMembers">-->
+                            <div class="scroll-wrapper">
+                                <table class="table table-striped table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th class="avatar"></th>
+                                            <th>{{ translateText('table_header_cell.name') }}</th>
+                                            <th>{{ translateText('table_header_cell.email') }}</th>
+                                            <th>{{ translateText('table_header_cell.project_member') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="user in usersCurrentList" :key="user.id">
+                                            <td class="avatar text-center">
+                                                <div class="user-avatar-wrapper"><img :src="user.avatar || user.gravatar" /></div>
+                                            </td>
+                                            <td>{{ user.firstName + ' ' + user.lastName }}</td>
+                                            <td>{{ user.email }}</td>
+                                            <td>
+                                                <switches
+                                                    v-if="!isSpecial(user)"
+                                                    @input="toggleUserMembership(user, $event)"
+                                                    :emit-on-mount="false"
+                                                    :selected="isUserMember(user)" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4">
+                                                <pagination
+                                                    :current-page="usersCurrentPage"
+                                                    :number-of-pages="usersNumberOfPages"
+                                                    v-on:change-page="changeUsersCurrentPage"
+                                                />
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        <!--</vue-scrollbar>-->
+                    </div>
+                </div>
 
-                                <td class="avatar">
-                                    <div v-for="manager in department.managers">
-                                        <div class="avatar-image" v-tooltip.top-center="manager.userFullName">
-                                            <img v-bind:src="manager.userAvatar"/>
+                <div v-if="currentTab === 'departments'">
+                    <!-- /// Departments /// -->
+                    <h3>{{ translateText('title.departments') }}</h3>
+                    <vue-scrollbar class="table-wrapper">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>{{ translateText('table_header_cell.department_name') }}</th>
+                                    <th>{{ translateText('table_header_cell.managers') }}</th>
+                                    <th>{{ translateText('table_header_cell.no_of_members') }}</th>
+                                    <th>{{ translateText('table_header_cell.created_at') }}</th>
+                                    <th>{{ translateText('table_header_cell.actions') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr v-for="department in projectDepartments.items">
+                                    <td>{{ department.name }}</td>
+
+                                    <td class="avatar">
+                                        <div v-for="manager in department.managers">
+                                            <div class="avatar-image" v-tooltip.top-center="manager.userFullName">
+                                                <img v-bind:src="manager.userAvatar"/>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>{{ department.membersCount }}</td>
-                                <td>{{ moment(department.createdAt).format('DD.MM.YYYY') }}</td>
-                                <td>
-                                    <button @click="initEditDepartmentModal(department)" data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button @click="initDeleteDepartmentModal(department)" data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </vue-scrollbar>
-                <div class="flex flex-direction-reverse">
-                    <div class="pagination flex flex-center" v-if="departmentPages > 1">
-                        <span v-for="page in departmentPages" :class="{'active': page == activeDepartmentPage}" @click="changeDepartmentPage(page)">{{ page }}</span>
-                    </div>
-                    <span class="pagination-info" v-if="projectDepartments && projectDepartments.items">{{ translateText('message.displaying') }} {{ projectDepartments.items.length }} {{ translateText('message.results_out_of') }} {{ projectDepartments.totalItems }}</span>
-
-                </div>
-                <!-- /// End Departments /// -->
-
-                <hr>
-
-                <div class="form">
-                    <!-- /// Add new Department /// -->
-                    <div class="form-group">
-                        <input-field :content="departmentName" v-model="departmentName" type="text" v-bind:label="translateText('placeholder.new_department')"></input-field>
-                        <error
-                            v-if="validationMessages.departmentName && validationMessages.departmentName.length"
-                            v-for="message in validationMessages.departmentName"
-                            :message="message" />
-                    </div>
+                                    </td>
+                                    <td>{{ department.membersCount }}</td>
+                                    <td>{{ moment(department.createdAt).format('DD.MM.YYYY') }}</td>
+                                    <td>
+                                        <button @click="initEditDepartmentModal(department)" data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
+                                        <button @click="initDeleteDepartmentModal(department)" data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </vue-scrollbar>
                     <div class="flex flex-direction-reverse">
-                        <a @click="createNewDepartment()" class="btn-rounded btn-auto">{{ translateText('button.add_new_department') }} +</a>
+                        <div class="pagination flex flex-center" v-if="departmentPages > 1">
+                            <span v-for="page in departmentPages" :class="{'active': page == activeDepartmentPage}" @click="changeDepartmentPage(page)">{{ page }}</span>
+                        </div>
+                        <span class="pagination-info" v-if="projectDepartments && projectDepartments.items">{{ translateText('message.displaying') }} {{ projectDepartments.items.length }} {{ translateText('message.results_out_of') }} {{ projectDepartments.totalItems }}</span>
+
                     </div>
-                    <!-- /// End Add new Department /// -->
+                    <!-- /// End Departments /// -->
+
+                    <hr>
+
+                    <div class="form">
+                        <!-- /// Add new Department /// -->
+                        <div class="form-group">
+                            <input-field :content="departmentName" v-model="departmentName" type="text" v-bind:label="translateText('placeholder.new_department')"></input-field>
+                            <error
+                                v-if="validationMessages.departmentName && validationMessages.departmentName.length"
+                                v-for="message in validationMessages.departmentName"
+                                :message="message" />
+                        </div>
+                        <div class="flex flex-direction-reverse">
+                            <a @click="createNewDepartment()" class="btn-rounded btn-auto">{{ translateText('button.add_new_department') }} +</a>
+                        </div>
+                        <!-- /// End Add new Department /// -->
+                    </div>
                 </div>
 
-                <hr class="double">
 
-                <!-- /// Subteams /// -->
-                <h3>{{ translateText('title.subteams') }}</h3>
-                <vue-scrollbar class="table-wrapper">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>{{ translateText('table_header_cell.subteam_name') }}</th>
-                                <th>{{ translateText('table_header_cell.team_leader') }}</th>
-                                <th>{{ translateText('table_header_cell.no_of_members') }}</th>
-                                <th>{{ translateText('table_header_cell.department') }}</th>
-                                <th>{{ translateText('table_header_cell.actions') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="subteam in subteams.items">
-                                <td>{{ subteam.name }}</td>
-                                <td class="avatar">
-                                    <div v-for="member in subteam.subteamMembers">
-                                        <div v-if="member.isLead" class="avatar-image" v-tooltip.top-center="member.userName">
-                                            <img v-bind:src="member.userAvatar"/>
+                <div v-if="currentTab === 'subteams'">
+                    <!-- /// Subteams /// -->
+                    <h3>{{ translateText('title.subteams') }}</h3>
+                    <vue-scrollbar class="table-wrapper">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>{{ translateText('table_header_cell.subteam_name') }}</th>
+                                    <th>{{ translateText('table_header_cell.team_leader') }}</th>
+                                    <th>{{ translateText('table_header_cell.no_of_members') }}</th>
+                                    <th>{{ translateText('table_header_cell.department') }}</th>
+                                    <th>{{ translateText('table_header_cell.actions') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="subteam in subteams.items">
+                                    <td>{{ subteam.name }}</td>
+                                    <td class="avatar">
+                                        <div v-for="member in subteam.subteamMembers">
+                                            <div v-if="member.isLead" class="avatar-image" v-tooltip.top-center="member.userName">
+                                                <img v-bind:src="member.userAvatar"/>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td v-if="subteam.subteamMembers">{{ subteam.subteamMembers.length }}</td>
-                                <td>-</td>
-                                <td>
-                                    <button @click="initEditSubteamModal(subteam)" data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    <button @click="initDeleteSubteamModal(subteam)" data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </vue-scrollbar>
-                <div class="flex flex-direction-reverse">
-                    <div class="pagination flex flex-center" v-if="subteamPages > 1">
-                        <span v-for="page in subteamPages" :class="{'active': page == activeSubteamPage}" @click="changeSubteamPage(page)">{{ page }}</span>
-                    </div>
-                    <span class="pagination-info" v-if="subteams && subteams.items">{{ translateText('message.displaying') }} {{ subteams.items.length }} {{ translateText('message.results_out_of') }} {{ subteams.totalItems }}</span>
-                </div>
-                <!-- /// End Subteams /// -->
-                <hr>
-                <div class="form">
-                    <!-- /// Add new Subteam /// -->
-                    <div class="form-group">
-                        <input-field :content="subteamName" v-model="subteamName" type="text" v-bind:label="translateText('label.new_subteam')"></input-field>
-                        <error
-                            v-if="validationMessages.subteamName && validationMessages.subteamName.length"
-                            v-for="message in validationMessages.subteamName"
-                            :message="message" />
-                    </div>
+                                    </td>
+                                    <td v-if="subteam.subteamMembers">{{ subteam.subteamMembers.length }}</td>
+                                    <td>-</td>
+                                    <td>
+                                        <button @click="initEditSubteamModal(subteam)" data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
+                                        <button @click="initDeleteSubteamModal(subteam)" data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </vue-scrollbar>
                     <div class="flex flex-direction-reverse">
-                        <a @click="createNewSubteam()" class="btn-rounded btn-auto">{{ translateText('button.add_new_subteam') }} +</a>
+                        <div class="pagination flex flex-center" v-if="subteamPages > 1">
+                            <span v-for="page in subteamPages" :class="{'active': page == activeSubteamPage}" @click="changeSubteamPage(page)">{{ page }}</span>
+                        </div>
+                        <span class="pagination-info" v-if="subteams && subteams.items">{{ translateText('message.displaying') }} {{ subteams.items.length }} {{ translateText('message.results_out_of') }} {{ subteams.totalItems }}</span>
                     </div>
-                    <!-- /// End Add new Subteam /// -->
+                    <!-- /// End Subteams /// -->
+                    <hr>
+                    <div class="form">
+                        <!-- /// Add new Subteam /// -->
+                        <div class="form-group">
+                            <input-field :content="subteamName" v-model="subteamName" type="text" v-bind:label="translateText('label.new_subteam')"></input-field>
+                            <error
+                                v-if="validationMessages.subteamName && validationMessages.subteamName.length"
+                                v-for="message in validationMessages.subteamName"
+                                :message="message" />
+                        </div>
+                        <div class="flex flex-direction-reverse">
+                            <a @click="createNewSubteam()" class="btn-rounded btn-auto">{{ translateText('button.add_new_subteam') }} +</a>
+                        </div>
+                        <!-- /// End Add new Subteam /// -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -206,6 +261,8 @@ import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import OrganizationDistributionItem from './OrganizationDistributionItem';
 import AlertModal from '../../_common/AlertModal.vue';
 import Error from '../../_common/_messages/Error.vue';
+import Switches from '../../3rdparty/vue-switches';
+import Pagination from '../../_common/Pagination';
 
 export default {
     components: {
@@ -221,13 +278,51 @@ export default {
         OrganizationDistributionItem,
         AlertModal,
         Error,
+        Switches,
+        Pagination,
     },
     methods: {
         ...mapActions([
             'getProjectDepartments', 'createDepartment', 'editDepartment',
             'deleteDepartment', 'getProjectUsers', 'getSubteams', 'createSubteam',
-            'editSubteam', 'deleteSubteam', 'emptyValidationMessages',
+            'editSubteam', 'deleteSubteam', 'emptyValidationMessages', 'getUsers', 'clearUsers',
+            'createProjectUser', 'deleteProjectUser', 'getProjectById',
         ]),
+        isSpecial(user) {
+            return (this.project.projectSponsor === user.id) ||
+                (this.project.projectManager === user.id);
+        },
+        toggleUserMembership(user, value) {
+            const projectMemberData = {
+                projectId: this.project.id,
+                userId: user.id,
+            };
+
+            this.userMembershipCached[user.id] = value;
+            if (value) {
+                this.createProjectUser(projectMemberData);
+            } else {
+                this.deleteProjectUser(projectMemberData);
+            }
+        },
+        isUserMember(user) {
+            if (this.userMembershipCached[user.id] !== undefined) {
+                return this.userMembershipCached[user.id];
+            }
+
+            if (!this.project || !this.project.projectUsers) {
+                return false;
+            }
+
+            return this
+                .project
+                .projectUsers
+                .filter((pu) => {
+                    return pu.user === user.id;
+                })
+                .length !== 0
+            ;
+        },
         moment: function(date) {
             return moment(date);
         },
@@ -341,14 +436,19 @@ export default {
             this.showDeleteSubteamModal = false;
             this.deleteSubteam(this.deleteSubteamId);
         },
+        changeUsersCurrentPage(value) {
+            this.usersCurrentPage = value;
+        },
     },
     created() {
         this.getProjectDepartments({project: this.$route.params.id, page: this.activeDepartmentPage});
         this.getProjectUsers({id: this.$route.params.id});
         this.getSubteams({project: this.$route.params.id, page: this.activeSubteamPage});
+        this.getUsers();
     },
     beforeDestroy() {
         this.emptyValidationMessages();
+        this.clearUsers();
     },
     computed: {
         ...mapGetters({
@@ -357,12 +457,35 @@ export default {
             projectUsersForSelect: 'projectUsersForSelect',
             subteams: 'subteams',
             validationMessages: 'validationMessages',
+            users: 'users',
+            project: 'project',
         }),
+        usersCurrentList: {
+            get() {
+                return this.users && this.users.length
+                    ? this.users.slice(
+                        (this.usersCurrentPage - 1) * 10,
+                        this.usersCurrentPage * 10
+                    )
+                    : []
+                ;
+            },
+        },
+        usersNumberOfPages: {
+            get() {
+                return this.users && this.users.length
+                    ? Math.ceil(this.users.length / 10)
+                    : 1
+                ;
+            },
+        },
     },
     data() {
         return {
             activeDepartmentPage: 1,
             activeSubteamPage: 1,
+            availableTabs: ['members', 'departments', 'subteams'],
+            currentTab: 'members',
             departmentName: '',
             departmentPages: 0,
             departmentsPerPage: 6,
@@ -380,6 +503,8 @@ export default {
             subteamPages: 0,
             subteamName: '',
             showFailed: false,
+            usersCurrentPage: 1,
+            userMembershipCached: {},
         };
     },
     watch: {
@@ -393,16 +518,49 @@ export default {
 };
 </script>
 
-<style lang="scss">
-    @import '../../../css/_variables';
-    @import '../../../css/_mixins';
-</style>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
     @import '../../../css/_variables';
     @import '../../../css/_mixins';
     @import '../../../css/page-section';
+
+    .team-list {
+        overflow: hidden;
+    }
+
+    .table-wrapper {
+        width: 100%;
+        padding-bottom: 40px;
+    }
+
+    .tabs {
+        margin-bottom: 0px !important;
+        border-bottom: 1px solid #646EA0;
+
+        li {
+            border-top: 1px solid #646EA0;
+            border-left: 1px solid #646EA0;
+            display: inline-block;
+            padding: 0.5em;
+
+            &:last-child {
+                border-right: 1px solid #646EA0;
+            }
+
+            button {
+                background: transparent;
+                border: none;
+                outline: none;
+                text-transform: uppercase;
+            }
+
+            &.active {
+                button {
+                    color: #5FC3A5;
+                }
+            }
+        }
+    }
 
     .modal {
         .modal-title {
