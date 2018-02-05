@@ -159,15 +159,45 @@ const actions = {
      * Delete a new objective on project
      * @param {function} commit
      * @param {integer} id
+     * @return {object}
      */
     deleteTeamMember({commit}, id) {
-        Vue.http
+        return Vue
+            .http
             .delete(
                 Routing.generate('app_api_project_users_delete', {id: id})
-            ).then((response) => {
-                commit(types.DELETE_TEAM_MEMBER, {id});
-            }, (response) => {
-            });
+            ).then(
+                (response) => {
+                    commit(types.DELETE_TEAM_MEMBER, {id});
+
+                    return response;
+                },
+                (response) => {
+                    return response;
+                }
+            )
+        ;
+    },
+
+    createProjectUser({commit}, {projectId, userId}) {
+        return Vue
+            .http
+            .post(
+                Routing.generate('app_api_project_project_user_create', {id: projectId}),
+                {user: userId}
+            )
+        ;
+    },
+    deleteProjectUser({commit}, {projectId, userId}) {
+        const data = {
+            id: projectId,
+            user: userId,
+        };
+
+        return Vue
+            .http
+            .delete(Routing.generate('app_api_project_users_delete_user', data))
+        ;
     },
 };
 
