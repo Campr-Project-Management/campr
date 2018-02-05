@@ -23,10 +23,16 @@ class UserController extends ApiController
      */
     public function getAction(Request $request)
     {
+        $limit = $request->query->get('limit');
+        $offset = $request->query->get('offset');
+
+        $request->query->remove('limit');
+        $request->query->remove('offset');
+
         $users = $this
             ->getDoctrine()
             ->getRepository(User::class)
-            ->findBy($request->query->all())
+            ->findBy($request->query->all(), [], $limit, $offset)
         ;
 
         return $this->createApiResponse($users);
