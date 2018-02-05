@@ -4,6 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectUser;
+use AppBundle\Entity\User;
 use AppBundle\Form\ProjectUser\BaseCreateType;
 use AppBundle\Security\ProjectVoter;
 use MainBundle\Controller\API\ApiController;
@@ -95,8 +96,33 @@ class ProjectUserController extends ApiController
         }
         $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
 
-        $projectUser->setProject();
-        $this->persistAndFlush($projectUser);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($projectUser);
+        $em->flush();
+
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Delete a specific Project User.
+     *
+     * @Route("/{id}/{user}", name="app_api_project_users_delete_user", options={"expose"=true})
+     * @Method({"DELETE"})
+     *
+     * @param ProjectUser $projectUser
+     * @param User        $user
+     *
+     * @return JsonResponse
+     */
+    public function deleteUserAction(Project $project, User $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $project->getProjectUsers()->map(function (ProjectUser $projectUser) use ($user, $em) {
+            if ($projectUser->getUser() === $user) {
+                $em->remove($projectUser);
+                $em->flush();
+            }
+        });
 
         return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }

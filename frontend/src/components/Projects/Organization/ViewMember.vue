@@ -9,7 +9,15 @@
                             <i class="fa fa-angle-left"></i>
                             {{ translateText('message.back_to_organization') }}
                         </router-link>
-                        <h1>{{member.userFullName}}<br/><span class="small"><b class="second-color">{{ member.userEmail }}</b></span></h1>
+                        <h1>{{member.userFullName}}<br/>
+                            <span class="small">
+                                <b class="second-color">
+                                    <a :href="'mailto:' + member.userEmail">
+                                        {{ member.userEmail }}
+                                    </a>
+                                </b>
+                            </span>
+                        </h1>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
@@ -46,21 +54,21 @@
                     <div class="col-md-4">
                         <h3>{{ translateText('message.resources') }}</h3>
                         <div class="flex flex-v-center">
-                            <switches :selected="member.showInResources" :disabled="true"></switches>
+                            <switches @click.native="updateUserOption(member, 'resource')" v-model="showInResources" :selected="member.showInResources"></switches>
                         </div>
                         <hr class="nomarginbottom">
                     </div>
                     <div class="col-md-4">
                         <h3>{{ translateText('table_header_cell.rasci') }}</h3>
                         <div class="flex flex-v-center">
-                            <switches :selected="member.showInRasci" :disabled="true"></switches>
+                            <switches @click.native="updateUserOption(member, 'rasci')" v-model="showInRasci" :selected="member.showInRasci"></switches>
                         </div>
                         <hr class="nomarginbottom">
                     </div>
                     <div class="col-md-4">
                         <h3>{{ translateText('table_header_cell.org') }}</h3>
                         <div class="flex flex-v-center">
-                            <switches :selected="member.showInOrg" :disabled="true"></switches>
+                            <switches @click.native="updateUserOption(member, 'org')" v-model="showInOrg" :selected="member.showInOrg"></switches>
                         </div>
                         <hr class="nomarginbottom">
                     </div>
@@ -90,7 +98,7 @@
                                 <svg version="1.1" :width="size" :height="size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16.4">
                                     <path class="st0" d="M8,0.4c-4.4,0-8,3.6-8,8s3.6,8,8,8s8-3.6,8-8S12.4,0.4,8,0.4z M10.4,8.1H9c0,2,0,4.7,0,4.7H7 c0,0,0-2.6,0-4.7H5.7V6.7H7V6c0-0.7,0.2-1.9,1.8-1.9l1.6,0v1.5c0,0-0.8,0-0.9,0C9.2,5.6,9,5.7,9,6.1v0.7h1.6L10.4,8.1z"/>
                                 </svg>
-                                {{ translateText('label.facebook') }}: <a :href="member.facebook" v-if="member.userFacebook">{{ member.userFacebook }}</a><span v-else>-</span>
+                                {{ translateText('label.facebook') }}: <a :href="member.userFacebook" v-if="member.userFacebook">{{ member.userFacebook }}</a><span v-else>-</span>
                             </div>
                             <div class="social-contanct">
                                 <svg version="1.1" :width="size" :height="size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16.4">
@@ -119,13 +127,16 @@
                                     <path class="st0" d="M8,0.4c-4.4,0-8,3.6-8,8s3.6,8,8,8s8-3.6,8-8S12.4,0.4,8,0.4z M3.7,7.4l2.9,1.5l-2.9,1.7V7.4z M12.3,12.1H3.7v-0.7l3.6-2.1L8,9.6l0.8-0.4l3.6,2.1V12.1z M12.3,10.6L9.5,8.9l2.9-1.5V10.6z M12.3,5.9L8,8.1L3.7,5.9V4.7h8.7V5.9z"
                                       />
                                 </svg>
-                                {{ translateText('label.email') }}: <a :href="member.email">{{ member.email }}</a>
+                                {{ translateText('label.email') }}: 
+                                <a :href="'mailto:' + member.userEmail">
+                                    {{ member.userEmail }}
+                                </a>
                             </div>
                             <div class="social-contanct">
                                 <svg version="1.1" :width="size" :height="size" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20.5 20.8">
                                 <path class="st0" d="M10.3,0.5c-5.5,0-10,4.5-10,10c0,5.5,4.5,10,10,10s10-4.5,10-10C20.3,5,15.9,0.5,10.3,0.5z M15.9,15.2l-0.7,0.7c-0.7,0.7-1.7,0.8-2.5,0.3c-3.2-2.1-6-4.9-8.1-8.1C4.1,7.3,4.2,6.3,4.9,5.6l0.7-0.7c0.5-0.5,1.4-0.5,1.9,0 l1.3,1.3c0.5,0.5,0.5,1.4,0,1.9L8.5,8.5c1.1,1.4,2.4,2.7,3.8,3.8l0.4-0.4c0.5-0.5,1.4-0.5,1.9,0l1.3,1.3 C16.5,13.8,16.5,14.7,15.9,15.2z"/>
                                 </svg>
-                                {{ translateText('label.phone') }}: <a :href="member.userPhone" v-if="member.userPhone">{{ member.userPhone }}</a><span v-else></span>
+                                {{ translateText('label.phone') }}: <a :href="'tel:' + member.userPhone" v-if="member.userPhone">{{ member.userPhone }}</a><span v-else></span>
                             </div>
                         </div>
                     </div>
@@ -144,8 +155,15 @@ export default {
     components: {
         Switches,
     },
+    data() {
+        return {
+            showInRasci: null,
+            showInOrg: null,
+            showInResources: null,
+        };
+    },
     methods: {
-        ...mapActions(['getDistributionLists', 'getProjectUser']),
+        ...mapActions(['getDistributionLists', 'getProjectUser', 'updateProjectUser']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -156,6 +174,28 @@ export default {
                 }
             }
             return false;
+        },
+        updateUserOption(item, value) {
+            switch(value) {
+            case 'rasci':
+                this.updateProjectUser({
+                    id: item.id,
+                    showInRasci: this.showInRasci,
+                });
+                break;
+            case 'org':
+                this.updateProjectUser({
+                    id: item.id,
+                    showInOrg: this.showInOrg,
+                });
+                break;
+            case 'resource':
+                this.updateProjectUser({
+                    id: item.id,
+                    showInResources: this.showInResources,
+                });
+                break;
+            }
         },
     },
     created() {
