@@ -446,6 +446,8 @@ menu:
 
 title:
     meta_description: Campr is the tool for industrious people. Project management, team organization, risk management, project meetings, GANTT Charts, RASCI Matrix and much more.
+    members: Members
+    departments: Departments
     subteams: Subteams
     add_distribution_list: Add Distribution List
     homepage_main: Campr Main Site
@@ -1530,6 +1532,7 @@ table_header_cell:
     project_team: Project Team
     project_teams: Project Teams
     project_work_cost_type: Project Work Cost Type
+    project_member: Project Member
     status: Status
     portfolio: Portfolio
     workpackage: Work Package

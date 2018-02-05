@@ -214,7 +214,8 @@ export default {
         WorkspaceMemberInviteModal,
     },
     methods: {
-        ...mapActions(['getProjectById', 'createDistribution', 'updateProjectUser', 'deleteTeamMember',
+        ...mapActions([
+            'getProjectById', 'createDistribution', 'updateProjectUser', 'deleteTeamMember',
             'getProjectUsers', 'addToDistribution', 'removeFromDistribution', 'getSubteams',
         ]),
         translateText: function(text) {

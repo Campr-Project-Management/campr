@@ -116,7 +116,7 @@ class Project
     /**
      * @var ArrayCollection|ProjectUser[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectUser", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectUser", mappedBy="project", orphanRemoval=true)
      */
     private $projectUsers;
 
