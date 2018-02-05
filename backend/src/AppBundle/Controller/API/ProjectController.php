@@ -684,6 +684,18 @@ class ProjectController extends ApiController
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
+            $pus = $project
+                ->getProjectUsers()
+                ->filter(function (ProjectUser $pu) use ($form, $projectUser) {
+                    return $projectUser->getProject() === $pu->getProject() &&
+                        $projectUser->getUser() === $pu->getUser();
+                })
+            ;
+
+            if ($pus->count()) {
+                return $this->createApiResponse($pus->first(), JsonResponse::HTTP_CREATED);
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectUser);
             $em->flush();
