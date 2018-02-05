@@ -10,7 +10,7 @@ bin/console assets:install --symlink web
 bin/console assetic:dump web
 bin/console app:dump-routes
 bin/console fos:js-routing:dump --target=web/js/fos_js_routes.js
-bin/console bazinga:js-translation:dump  --format=js --merge-domains web/js
+bin/console bazinga:js-translation:dump --format=js --merge-domains web/js
 rm -rf frontend/static/js
 mkdir -p frontend/static/js
 for file in web/static/js/fos_js_routes*.js;

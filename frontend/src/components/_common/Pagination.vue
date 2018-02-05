@@ -50,13 +50,6 @@ export default {
                     let start = this.currentPage - half;
                     let end = this.currentPage + half;
 
-                    console.log({
-                        half,
-                        start,
-                        end,
-                        currentPage: this.currentPage,
-                    });
-
                     if (end < this.showPages) {
                         start = 1;
                         end = this.showPages;
