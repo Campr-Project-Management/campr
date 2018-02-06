@@ -1812,7 +1812,8 @@ class ProjectControllerTest extends BaseController
 
         $project = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $project['updatedAt'];
-        $responseContent['updatedAt'] = $project['updatedAt'];
+        $responseContent['scheduledStartAt'] = $project['scheduledStartAt'];
+        $responseContent['scheduledFinishAt'] = $project['scheduledFinishAt'];
         $responseContent['projectTeams'][0]['updatedAt'] = $project['projectTeams'][0]['updatedAt'];
         $responseContent['projectTeams'][1]['updatedAt'] = $project['projectTeams'][1]['updatedAt'];
         $responseContent['distributionLists'][0]['updatedAt'] = $project['distributionLists'][0]['updatedAt'];
@@ -1848,7 +1849,6 @@ class ProjectControllerTest extends BaseController
             $responseContent['projectUsers'][$i - 1]['userAvatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
         }
 
-        // abcd
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
