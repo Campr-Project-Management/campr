@@ -55,9 +55,9 @@
                             :class="{'active-row': activeRow === rasciIndex}"
                             v-on:mouseover="activeRow = rasciIndex"
                             v-on:mouseout="activeRow = null">
-                            <td v-if="workPackage.type !== 2">{{ workPackage.name }}</td>
+                            <td v-if="workPackage.type !== 2">{{repeat('&nbsp', workPackage.type * 6)}}{{ workPackage.name }}</td>
                             <td class="task-number" v-if="workPackage.type === 2">
-                                <span class="light-color">#{{ workPackage.id }}</span>
+                                <span class="light-color">{{repeat('&nbsp', workPackage.type * 6)}}#{{ workPackage.id }}</span>
                             </td>
                             <td>
                                 <span v-if="workPackage.type === 2">{{ workPackage.name }}</span>
@@ -99,6 +99,14 @@ export default {
         },
         setRaciData: function({project, user, workPackage, data}) {
             this.setRasci({project, user, workPackage, data});
+        },
+        repeat(str, count) {
+            let c = 0;
+            let out = '';
+            for (; c < count; c++) {
+                out += str;
+            }
+            return out;
         },
     },
     computed: {
