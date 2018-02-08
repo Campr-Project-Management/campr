@@ -475,18 +475,18 @@ export default {
                     &:before {
                         display:none;
                     }
-                },
-
-                &:first-child {
-                    width: 50%;
-
-                    &:before {
-                        left: 50%;
-                    }
                 }
 
+                /*&:first-child {*/
+                    /*width: 50%;*/
+
+                    /*&:before {*/
+                        /*left: 50%;*/
+                    /*}*/
+                /*}*/
+
                 &:last-child {
-                    width: 50%;
+                    /*width: 50%;*/
 
                     &:before {
                         left: -50%;
