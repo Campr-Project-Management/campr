@@ -31,6 +31,9 @@ class MenuBuilder
     /** @var TranslatorInterface */
     private $translator;
 
+    /** @var ApcuCache */
+    private $cacheDriver;
+
     public function __construct(
         Router $router,
         TokenStorage $securityTokenStorage,
@@ -42,6 +45,7 @@ class MenuBuilder
         $this->securityAuthorizationChecker = $securityAuthorizationChecker;
         $this->translator = $translator;
         $this->metadataReader = new AnnotationDriver(new AnnotationReader());
+        $this->cacheDriver = new ApcuCache();
     }
 
     /**
@@ -59,14 +63,20 @@ class MenuBuilder
         $token = $this->securityTokenStorage->getToken();
 
         if ($token->isAuthenticated()) {
-            $cacheDriver = new ApcuCache();
-            if (!$cacheDriver->contains($routeName)) {
+            if (php_sapi_name() === 'cli') {
                 $route = $this->router->getRouteCollection()->get($routeName);
                 $controller = $route->getDefault('_controller');
                 list($class, $method) = explode('::', $controller, 2);
-                $cacheDriver->save($routeName, ['class' => $class, 'method' => $method]);
+                $apcData = ['class' => $class, 'method' => $method];
+            } else {
+                if (!$this->cacheDriver->contains($routeName)) {
+                    $route = $this->router->getRouteCollection()->get($routeName);
+                    $controller = $route->getDefault('_controller');
+                    list($class, $method) = explode('::', $controller, 2);
+                    $this->cacheDriver->save($routeName, ['class' => $class, 'method' => $method]);
+                }
+                $apcData = $this->cacheDriver->fetch($routeName);
             }
-            $apcData = $cacheDriver->fetch($routeName);
             $metadata = $this->getMetadata($apcData['class']);
 
             if (!isset($metadata->methodMetadata[$apcData['method']])) {
