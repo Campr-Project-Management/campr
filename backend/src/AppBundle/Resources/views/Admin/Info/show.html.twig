@@ -39,12 +39,16 @@
                                     <td>{{ info.project }}</td>
                                 </tr>
                                 <tr>
+                                    <th>{{ 'table_header_cell.meeting'|trans }}</th>
+                                    <td>{{ info.meeting|default('-') }}</td>
+                                </tr>
+                                <tr>
                                     <th>{{ 'table_header_cell.info_status'|trans }}</th>
-                                    <td>{{ info.infoStatus }}</td>
+                                    <td>{{ info.infoStatus|trans }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ 'table_header_cell.info_category'|trans }}</th>
-                                    <td>{{ info.infoCategory }}</td>
+                                    <td>{{ info.infoCategory|trans }}</td>
                                 </tr>
                                 </tr>
                                 <tr>
@@ -57,19 +61,11 @@
                                 </tr>
                                 <tr>
                                     <th>{{ 'table_header_cell.expiry_date'|trans }}</th>
-                                    <td>{{ info.expiryDate ? info.expiryDate|date('Y-m-d') : '-' }}</td>
+                                    <td>{{ info.dueDate ? info.dueDate|date('Y-m-d') : '-' }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'table_header_cell.users'|trans }}</th>
-                                    <td>
-                                        {% if info.users|length %}
-                                        <ul>
-                                            {% for user in info.users %}
-                                            <li>{{ user.fullName }}</li>
-                                            {% endfor %}
-                                        </ul>
-                                        {% endif %}
-                                    </td>
+                                    <th>{{ 'table_header_cell.responsibility'|trans }}</th>
+                                    <td>{{ info.responsibility|default('-') }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ 'table_header_cell.created_at'|trans }}</th>

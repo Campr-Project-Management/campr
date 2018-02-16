@@ -1618,6 +1618,7 @@ table_header_cell:
     decisions: Decisions
     todos: TODOs
     notes: Notes
+    infos: Infos
     medias: Medias
     show_in_report: Show in status report
     is_based: Is Based

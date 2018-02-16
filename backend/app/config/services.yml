@@ -136,20 +136,16 @@ services:
             - '@doctrine.orm.default_entity_manager'
 
 ### MENU BUILDER ###
-    app.menu.menu_builder:
+    app.admin.menu.builder:
         class: AppBundle\Menu\MenuBuilder
         arguments:
             - "@router"
             - "@security.token_storage"
             - "@security.authorization_checker"
             - "@translator"
-
-    app.admin_menu:
-        class: Knp\Menu\MenuItem
-        factory: ["@app.menu.menu_builder", createAdminAppMenu]
-        arguments: ["@knp_menu.factory"]
+            - "@knp_menu.factory"
         tags:
-            - { name: knp_menu.menu, alias: admin_app }
+            - { name: knp_menu.menu_builder, method: createAdminAppMenu, alias: admin_app }
 
 ### FORM TYPES ###
     app.form.filesystem.create_type:

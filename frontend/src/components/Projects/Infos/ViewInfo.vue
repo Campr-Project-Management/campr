@@ -16,15 +16,15 @@
                             </router-link>
                             <h1>{{ info.topic }}</h1>
                             <h3 class="category"><b>{{ translateText(info.infoCategoryName) }}</b></h3>
-                            <h4>{{ translateText('message.created') }}: <b>{{ displayDate(info.createdAt) }}</b> | {{ translateText('message.expiry_date') }}: <b>{{ displayDate(info.expiryDate) }}</b> | {{ translateText('message.status') }}: <b :style="{color: info.infoStatusColor}">{{ translateText(info.infoStatusName) }}</b></h4>
+                            <h4>{{ translateText('message.created') }}: <b>{{ displayDate(info.createdAt) }}</b> | {{ translateText('message.due_date') }}: <b>{{ displayDate(info.dueDate) }}</b> | {{ translateText('message.status') }}: <b :style="{color: info.infoStatusColor}">{{ translateText(info.infoStatusName) }}</b></h4>
 
-                            <div class="entry-responsible flex flex-v-center" v-for="(user, key) in info.users">
+                            <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
                                 <div class="user-avatar"> 
-                                    <img :src="(info.usersAvatars[key] ? '/uploads/avatars/' + info.usersAvatars[key] : info.usersGravatars[key])" :alt="info.usersNames[key]"/>
+                                    <img :src="(info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar)" :alt="info.responsibilityFullName"/>
                                 </div>
                                 <div>
                                     {{ translateText('message.responsible') }}:
-                                    <b>{{ info.usersNames[key] }}</b>
+                                    <b>{{ info.responsibilityFullName }}</b>
                                 </div>
                             </div>
                             <router-link :to="{name: 'project-infos-edit'}" class="btn-rounded btn-auto btn-md btn-empty">
@@ -114,6 +114,10 @@ export default {
             return this.translate(text);
         },
         displayDate(d8) {
+            if (!d8) {
+                return '-';
+            }
+
             const dt = new Date(d8);
             if (isNaN(dt.getTime())) {
                 return '-';
