@@ -149,11 +149,11 @@ class Project
     private $calendars;
 
     /**
-     * @var ArrayCollection|Note[]
+     * @var ArrayCollection|Info[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Note", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Info", mappedBy="project")
      */
-    private $notes;
+    private $infos;
 
     /**
      * @var ArrayCollection|Todo[]
@@ -504,7 +504,7 @@ class Project
         $this->chatRooms = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->projectUsers = new ArrayCollection();
-        $this->notes = new ArrayCollection();
+        $this->infos = new ArrayCollection();
         $this->todos = new ArrayCollection();
         $this->distributionLists = new ArrayCollection();
         $this->labels = new ArrayCollection();
@@ -1335,39 +1335,39 @@ class Project
     }
 
     /**
-     * Add note.
+     * Add Info.
      *
-     * @param Note $note
+     * @param Info $info
      *
      * @return Project
      */
-    public function addNote(Note $note)
+    public function addInfo(Info $info)
     {
-        $this->notes[] = $note;
+        $this->infos[] = $info;
 
         return $this;
     }
 
     /**
-     * Remove note.
+     * @param Info $info
      *
-     * @param Note $note
+     * @return Project
      */
-    public function removeNote(Note $note)
+    public function removeInfo(Info $info)
     {
-        $this->notes->removeElement($note);
+        $this->infos->removeElement($info);
 
         return $this;
     }
 
     /**
-     * Get notes.
+     * Get infos.
      *
-     * @return ArrayCollection|Note[]
+     * @return ArrayCollection|Info[]
      */
-    public function getNotes()
+    public function getInfos()
     {
-        return $this->notes;
+        return $this->infos;
     }
 
     /**

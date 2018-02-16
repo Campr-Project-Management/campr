@@ -340,7 +340,7 @@
                                 <div class="col-md-6">
                                     <select-field
                                         v-bind:title="translateText('label.select_status')"
-                                        v-bind:options="noteStatusesForSelect"
+                                        v-bind:options="infoStatusesForDropdown"
                                         v-model="info.status"
                                         v-bind:currentOption="info.status" />
                                     <div v-if="validationMessages.notes && validationMessages.notes[index.toString()]">
@@ -415,6 +415,7 @@ export default {
             'getTodoStatuses',
             'createProjectMeeting',
             'emptyValidationMessages',
+            'getInfoStatuses',
         ]),
         translateText(text) {
             return this.translate(text);
@@ -569,6 +570,7 @@ export default {
             noteStatusesForSelect: 'noteStatusesForSelect',
             todoStatusesForSelect: 'todoStatusesForSelect',
             validationMessages: 'validationMessages',
+            infoStatusesForDropdown: 'infoStatusesForDropdown',
         }),
     },
     watch: {
@@ -588,6 +590,7 @@ export default {
         this.getMeetingCategories();
         this.getTodoStatuses();
         this.getNoteStatuses();
+        this.getInfoStatuses();
     },
     beforeDestroy() {
         this.emptyValidationMessages();
