@@ -25,6 +25,9 @@ const getters = {
 };
 
 const actions = {
+    clearInfo({commit}) {
+        commit(types.SET_INFO, {});
+    },
     getInfo({commit}, id) {
         return Vue
             .http
@@ -54,6 +57,7 @@ const actions = {
                         const info = response.body;
                         commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                         commit(types.SET_INFO, info);
+                        commit(types.ADD_MEETING_INFO, {info});
                     }
 
                     return response;
@@ -75,6 +79,7 @@ const actions = {
                         const info = response.body;
                         commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                         commit(types.SET_INFO, info);
+                        commit(types.EDIT_MEETING_INFO, {info});
                     }
 
                     return response;
@@ -83,10 +88,18 @@ const actions = {
             )
         ;
     },
-    deleteInfo({commit}, id) {
+    deleteInfo({commit}, {id}) {
         return Vue
             .http
             .delete(Routing.generate('app_api_infos_delete', {id}))
+            .then(
+                (response) => {
+                    commit(types.DELETE_MEETING_INFO, {infoId: id});
+
+                    return response;
+                },
+                () => {}
+            )
         ;
     },
     getInfosByProject({commit, state}, {id}) {
