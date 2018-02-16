@@ -130,9 +130,9 @@ class Meeting
     /**
      * @var ArrayCollection|Decision[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Note", mappedBy="meeting", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Info", mappedBy="meeting", cascade={"all"})
      */
-    private $notes;
+    private $infos;
 
     /**
      * @var ArrayCollection|DistributionList[]
@@ -181,9 +181,14 @@ class Meeting
         $this->medias = new ArrayCollection();
         $this->decisions = new ArrayCollection();
         $this->todos = new ArrayCollection();
-        $this->notes = new ArrayCollection();
+        $this->infos = new ArrayCollection();
         $this->distributionLists = new ArrayCollection();
         $this->createdAt = new \DateTime();
+    }
+
+    public function __toString()
+    {
+        return (string) $this->name;
     }
 
     /**
@@ -548,40 +553,42 @@ class Meeting
     }
 
     /**
-     * Add note.
+     * Add Info.
      *
-     * @param Note $note
+     * @param Info $info
      *
      * @return Meeting
      */
-    public function addNote(Note $note)
+    public function addInfo(Info $info)
     {
-        $this->notes[] = $note;
-        $note->setMeeting($this);
+        $this->infos[] = $info;
+        $info->setMeeting($this);
 
         return $this;
     }
 
     /**
-     * Remove note.
+     * Remove Info.
      *
-     * @param Note $note
+     * @param Info $info
+     *
+     * @return Meeting
      */
-    public function removeNote(Note $note)
+    public function removeInfo(Info $info)
     {
-        $this->notes->removeElement($note);
+        $this->infos->removeElement($info);
 
         return $this;
     }
 
     /**
-     * Get notes.
+     * Get Infos.
      *
-     * @return ArrayCollection|Note[]
+     * @return ArrayCollection|Info[]
      */
-    public function getNotes()
+    public function getInfos()
     {
-        return $this->notes;
+        return $this->infos;
     }
 
     /**

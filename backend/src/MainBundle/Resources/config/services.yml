@@ -1,7 +1,7 @@
 services:
     main.admin_menu:
         class: Knp\Menu\MenuItem
-        factory: ["@app.menu.menu_builder", createAdminMainMenu]
+        factory: ["@app.admin.menu.builder", createAdminMainMenu]
         arguments: ["@knp_menu.factory"]
         tags:
             - { name: knp_menu.menu, alias: admin_main }
