@@ -27,7 +27,7 @@
                                 <th class="cell-auto">{{ translateText('table_header_cell.id') }}</th>
                                 <th class="cell-auto">{{ translateText('table_header_cell.category') }}</th>
                                 <th class="cell-auto">{{ translateText('table_header_cell.status') }}</th>
-                                <th class="cell-auto">{{ translateText('table_header_cell.expiry_date') }}</th>
+                                <th class="cell-auto">{{ translateText('table_header_cell.due_date') }}</th>
                                 <th>{{ translateText('table_header_cell.topic') }}</th>
                                 <th>{{ translateText('table_header_cell.responsible') }}</th>
                                 <th class="cell-auto">{{ translateText('table_header_cell.actions') }}</th>
@@ -45,10 +45,10 @@
                                 <td class="cell-wrap">{{ info.topic }}</td>
                                 <td>
                                     <div
-                                        v-for="(user, key) in info.users"
+                                        v-if="info.responsibility"
                                         class="avatar"
-                                        v-tooltip.top-center="info.usersNames[key]"
-                                        :style="{ backgroundImage: (info.usersAvatars[key] ? 'url(/uploads/avatars/' + info.usersAvatars[key] + ')' : 'url('+info.usersGravatars[key]+')') }">
+                                        v-tooltip.top-center="info.responsibilityFullName"
+                                        :style="{ backgroundImage: (info.responsibilityAvatar ? 'url(/uploads/avatars/' + info.responsibilityAvatar + ')' : 'url('+info.responsibilityGravatar+')') }">
                                     </div>
                                 </td>
                                 <td>
@@ -113,8 +113,12 @@ export default {
         translateText: function(text) {
             return this.translate(text);
         },
-        displayDate({expiryDate}) {
-            const dt = new Date(expiryDate);
+        displayDate({dueDate}) {
+            if (!dueDate) {
+                return '-';
+            }
+
+            const dt = new Date(dueDate);
             if (isNaN(dt.getTime())) {
                 return '-';
             }
