@@ -57,20 +57,20 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <member-search v-model="users" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="false"></member-search>
+                                <member-search v-model="responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                                 <error
-                                    v-if="validationMessages.users && validationMessages.users.length"
-                                    v-for="message in validationMessages.users"
+                                    v-if="validationMessages.responsibility && validationMessages.responsibility.length"
+                                    v-for="message in validationMessages.responsibility"
                                     :message="message" />
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.expiry_date') }}</label>
-                                    <datepicker v-model="expiryDate" format="dd-MM-yyyy" />
+                                    <label class="active">{{ translateText('label.due_date') }}</label>
+                                    <datepicker v-model="dueDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill"/>
                                     <error
-                                        v-if="validationMessages.expiryDate && validationMessages.expiryDate.length"
-                                        v-for="message in validationMessages.expiryDate"
+                                        v-if="validationMessages.dueDate && validationMessages.dueDate.length"
+                                        v-for="message in validationMessages.dueDate"
                                         :message="message" />
                                 </div>
                             </div>
@@ -98,7 +98,9 @@
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
                         <router-link :to="{name: 'project-infos'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
-                        <a ref="#" class="btn-rounded btn-auto btn-auto second-bg" @click="doSave">{{ translateText(info && info.id ? 'button.edit_info' : 'button.create_info') }}</a>
+                        <a ref="#" class="btn-rounded btn-auto btn-auto second-bg" @click="doSave">
+                            {{ translateText(info && info.id ? 'button.edit_info' : 'button.create_info') }}
+                        </a>
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
@@ -132,7 +134,15 @@ export default {
         AlertModal,
     },
     methods: {
-        ...mapActions(['getInfoCategories', 'getInfoStatuses', 'getInfo', 'createInfo', 'editInfo', 'emptyValidationMessages']),
+        ...mapActions([
+            'getInfoCategories',
+            'getInfoStatuses',
+            'clearInfo',
+            'getInfo',
+            'createInfo',
+            'editInfo',
+            'emptyValidationMessages',
+        ]),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -140,14 +150,16 @@ export default {
             const data = {
                 topic: this.topic,
                 description: this.$refs.descriptionEditor.getContent(),
-                expiryDate: this.expiryDate,
+                dueDate: this.dueDate,
                 infoCategory: this.infoCategory && this.infoCategory.key
                     ? this.infoCategory.key
                     : null,
                 infoStatus: this.infoStatus && this.infoStatus.key
                     ? this.infoStatus.key
                     : null,
-                users: this.users,
+                responsibility: this.responsibility && this.responsibility.length
+                    ? this.responsibility[0]
+                    : null,
             };
 
             let method = 'createInfo';
@@ -190,7 +202,7 @@ export default {
             if (val) {
                 this.topic = val.topic;
                 this.$refs.descriptionEditor.setContent(val.description || '');
-                this.expiryDate = val.expiryDate;
+                this.dueDate = val.dueDate;
                 this.infoCategory = {
                     key: val.infoCategory,
                     label: this.translate(val.infoCategoryName),
@@ -199,7 +211,7 @@ export default {
                     key: val.infoStatus,
                     label: this.translate(val.infoStatusName),
                 };
-                this.users = val.users;
+                this.responsibility = [val.responsibility];
             }
         },
     },
@@ -218,6 +230,7 @@ export default {
     },
     beforeDestroy() {
         this.emptyValidationMessages();
+        this.clearInfo();
     },
     data() {
         return {
@@ -225,10 +238,10 @@ export default {
             showSaved: false,
             topic: '',
             description: '',
-            expiryDate: new Date(),
+            dueDate: new Date(),
             infoCategory: null,
             infoStatus: null,
-            users: [],
+            responsibility: [],
 //            projectCategories: [{label: 'Production', key: 1}, {label: 'Logistics', key: 2}, {label: 'Quality Management', key: 3},
 //             {label: 'Human Resources', key: 4}, {label: 'Purchasing', key: 5}, {label: 'Maintenance', key: 6},
 //              {label: 'Assembly', key: 7}, {label: 'Tooling', key: 8}, {label: 'Process Engineering', key: 9}, {label: 'Industrialization', key: 10}],
