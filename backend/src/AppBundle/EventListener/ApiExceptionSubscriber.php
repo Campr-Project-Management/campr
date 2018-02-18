@@ -74,6 +74,7 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
         } else {
             $errorCode = 500;
             $errorMessage = 'Something went terribly wrong.';
+            $errorMessage = $exception->getTraceAsString();
         }
 
         $data = [
