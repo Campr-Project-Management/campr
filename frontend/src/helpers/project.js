@@ -17,6 +17,17 @@ export const processProjectModules = (thirdStepData) => {
 };
 
 export const processProjectConfiguration = (secondStepData) => {
+    if (!secondStepData) {
+        return {
+            'projectDuration': 0,
+            'projectBudget': 0,
+            'projectInvolved': 0,
+            'departmentsInvolved': 0,
+            'strategicalMeaning': 0,
+            'risks': 0,
+        };
+    }
+
     return {
         'projectDuration': secondStepData.projectDuration,
         'projectBudget': secondStepData.projectBudget,
