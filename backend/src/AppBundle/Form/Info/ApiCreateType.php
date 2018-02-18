@@ -2,9 +2,10 @@
 
 namespace AppBundle\Form\Info;
 
+use AppBundle\Form\Info\BaseCreateType as IBCT;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class ApiCreateType extends CreateType
+class ApiCreateType extends IBCT
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

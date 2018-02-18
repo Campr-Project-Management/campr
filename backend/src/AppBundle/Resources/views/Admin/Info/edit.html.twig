@@ -56,6 +56,15 @@
                         }
                     ) }}
                     {{ form_widget(
+                        form.meeting,
+                        {
+                            'attr': {
+                            'class': 'form-control input-sm',
+                        },
+                            'label': 'label.meeting'|trans,
+                        }
+                    ) }}
+                    {{ form_widget(
                         form.infoStatus,
                         {
                             'attr': {
@@ -92,7 +101,7 @@
                         }
                     ) }}
                     {{ form_widget(
-                        form.expiryDate,
+                        form.dueDate,
                         {
                             'attr': {
                             'class': 'form-control input-sm',
@@ -101,12 +110,12 @@
                         }
                     ) }}
                     {{ form_widget(
-                        form.users,
+                        form.responsibility,
                         {
                             'attr': {
                             'class': 'form-control input-sm',
                         },
-                            'label': 'label.users'|trans,
+                            'label': 'label.responsibility'|trans,
                         }
                     ) }}
 

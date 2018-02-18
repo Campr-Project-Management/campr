@@ -148,24 +148,32 @@
         </modal>
 
         <!-- /// INFOS /// -->
-        <modal v-if="showEditNoteModal" @close="showEditNoteModal = false; $emit('input', showEditNoteModal);">
+        <modal v-if="showEditInfoModal" @close="showEditInfoModal = false; $emit('input', showEditInfoModal);">
             <p class="modal-title">{{ translateText('message.edit_info') }}</p>
-            <input-field type="text" v-bind:label="translateText('placeholder.info_topic')" v-model="editNoteObject.title" v-bind:content="editNoteObject.title" />
+            <input-field
+                type="text" v-bind:label="translateText('placeholder.info_topic')"
+                v-model="editInfoObject.topic"
+                v-bind:content="editInfoObject.topic" />
             <div class="form-group">
                 <div class="vueditor-holder">
                     <div class="vueditor-header">{{ translateText('placeholder.info_description') }}</div>
-                    <Vueditor ref="editNoteDescription" />
+                    <Vueditor ref="editInfoDescription" />
                 </div>
             </div>
             <div class="row">
                 <div class="form-group">
                     <div class="col-md-6">
-                        <member-search v-bind:selectedUser="editNoteObject.responsibilityFullName" v-model="editNoteObject.responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                        <member-search
+                            v-bind:selectedUser="editInfoObject.responsibilityFullName"
+                            v-model="editInfoObject.responsibility"
+                            :value="editInfoObject.responsibility"
+                            v-bind:placeholder="translateText('placeholder.responsible')"
+                            v-bind:singleSelect="true" />
                     </div>
                     <div class="col-md-6">
                         <div class="input-holder right">
                             <label class="active">{{ translateText('label.due_date') }}</label>
-                            <datepicker v-model="editNoteObject.dueDate" format="dd-MM-yyyy" />
+                            <datepicker v-model="editInfoObject.dueDate" format="dd-MM-yyyy" />
                             <calendar-icon fill="middle-fill"/>
                         </div>
                     </div>
@@ -175,23 +183,30 @@
                 <div class="form-group">
                     <div class="col-md-6">
                         <select-field
-                                v-bind:title="translateText('label.select_status')"
-                                v-bind:options="noteStatusesForSelect"
-                                v-model="editNoteObject.status"
-                                v-bind:currentOption="editNoteObject.status" />
+                            v-bind:title="translateText('label.select_status')"
+                            v-bind:options="infoStatusesForDropdown"
+                            v-model="editInfoObject.infoStatus"
+                            v-bind:currentOption="editInfoObject.infoStatus" />
+                    </div>
+                    <div class="col-md-6">
+                        <select-field
+                            v-bind:title="translateText('label.category')"
+                            v-bind:options="infoCategoriesForDropdown"
+                            v-model="editInfoObject.infoCategory"
+                            v-bind:currentOption="editInfoObject.infoCategory" />
                     </div>
                 </div>
             </div>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditNoteModal = false; $emit('input', showEditNoteModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="saveNote()" class="btn-rounded">{{ translateText('button.save') }}</a>
+                <a href="javascript:void(0)" @click="showEditInfoModal = false; $emit('input', showEditInfoModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="saveInfo()" class="btn-rounded">{{ translateText('button.save') }}</a>
             </div>
         </modal>
-        <modal v-if="showDeleteNoteModal" @close="showDeleteNoteModal = false; $emit('input', showDeleteNoteModal);">
+        <modal v-if="showDeleteInfoModal" @close="showDeleteInfoModal = false; $emit('input', showDeleteInfoModal);">
             <p class="modal-title">{{ translateText('message.delete_info') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteNoteModal = false; $emit('input', showDeleteNoteModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteMeetingNote()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteInfoModal = false; $emit('input', showDeleteInfoModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteMeetingInfo()" class="btn-rounded">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
     </div>
@@ -217,7 +232,7 @@ export default {
         'editAgendaModal', 'deleteAgendaModal', 'agendaObject',
         'editDecisionModal', 'deleteDecisionModal', 'decisionObject',
         'editTodoModal', 'deleteTodoModal', 'todoObject',
-        'editNoteModal', 'deleteNoteModal', 'noteObject',
+        'editInfoModal', 'deleteInfoModal', 'infoObject',
     ],
     components: {
         InputField,
@@ -268,21 +283,21 @@ export default {
         todoObject(value) {
             this.editTodoObject = this.todoObject;
         },
-        editNoteModal(value) {
-            this.showEditNoteModal = this.editNoteModal;
+        editInfoModal(value) {
+            this.showEditInfoModal = this.editInfoModal;
         },
-        deleteNoteModal(value) {
-            this.showDeleteNoteModal = this.deleteNoteModal;
+        deleteInfoModal(value) {
+            this.showDeleteInfoModal = this.deleteInfoModal;
         },
-        noteObject(value) {
-            this.editNoteObject = this.noteObject;
+        infoObject(value) {
+            this.editInfoObject = this.infoObject;
         },
     },
     methods: {
         ...mapActions([
-            'getNoteStatuses', 'getTodoStatuses', 'editMeetingObjective', 'deleteMeetingObjective',
+            'getInfoStatuses', 'getTodoStatuses', 'editMeetingObjective', 'deleteMeetingObjective',
             'editMeetingAgenda', 'deleteMeetingAgenda', 'editDecision', 'deleteDecision', 'editTodo', 'deleteTodo',
-            'editNote', 'deleteNote',
+            'editInfo', 'deleteInfo', 'getInfoStatuses', 'getInfoCategories',
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -327,7 +342,7 @@ export default {
             this.editTodoObject.description = this.$refs.editTodoDescription.getContent();
             this.editTodoObject.dueDate = moment(this.editTodoObject.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY');
             this.editTodoObject.status = this.editTodoObject.status.key;
-            this.editTodoObject.responsibility = this.editTodoObject.responsibility.length > 0 ? this.editTodoObject.responsibility[0] : null,
+            this.editTodoObject.responsibility = this.editTodoObject.responsibility.length > 0 ? this.editTodoObject.responsibility[0] : null;
             this.editTodo(this.editTodoObject);
             this.showEditTodoModal = false;
             this.$emit('input', this.showEditTodoModal);
@@ -337,30 +352,38 @@ export default {
             this.showDeleteTodoModal = false;
             this.$emit('input', this.showDeleteTodoModal);
         },
-        saveNote: function() {
-            this.editNoteObject.description = this.$refs.editNoteDescription.getContent();
-            this.editNoteObject.dueDate = moment(this.editNoteObject.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY');
-            this.editNoteObject.status = this.editNoteObject.status.key;
-            this.editNoteObject.responsibility = this.editNoteObject.responsibility.length > 0 ? this.editNoteObject.responsibility[0] : null,
-            this.editNote(this.editNoteObject);
-            this.showEditNoteModal = false;
-            this.$emit('input', this.showEditNoteModal);
+        saveInfo: function() {
+            this.editInfoObject.description = this.$refs.editInfoDescription.getContent();
+            this.editInfoObject.dueDate = moment(this.editInfoObject.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY');
+            this.editInfoObject.infoStatus = this.editInfoObject.infoStatus.key;
+            this.editInfoObject.infoCategory = this.editInfoObject.infoCategory.key;
+            this.editInfoObject.responsibility = this.editInfoObject.responsibility.length > 0 ? this.editInfoObject.responsibility[0] : null;
+
+            const data = this.editInfoObject;
+            const id = this.editInfoObject.id;
+
+            this.editInfo({id, data});
+            this.showEditInfoModal = false;
+            this.$emit('input', this.showEditInfoModal);
         },
-        deleteMeetingNote: function() {
-            this.deleteNote(this.editNoteObject);
-            this.showDeleteNoteModal = false;
-            this.$emit('input', this.showDeleteNoteModal);
+        deleteMeetingInfo: function() {
+            this.deleteInfo(this.editInfoObject);
+            this.showDeleteInfoModal = false;
+            this.$emit('input', this.showDeleteInfoModal);
         },
     },
     computed: {
         ...mapGetters({
-            noteStatusesForSelect: 'noteStatusesForSelect',
+            infoStatusesForSelect: 'infoStatusesForSelect',
             todoStatusesForSelect: 'todoStatusesForSelect',
+            infoStatusesForDropdown: 'infoStatusesForDropdown',
+            infoCategoriesForDropdown: 'infoCategoriesForDropdown',
         }),
     },
     created() {
         this.getTodoStatuses();
-        this.getNoteStatuses();
+        this.getInfoStatuses();
+        this.getInfoCategories();
     },
     data() {
         return {
@@ -368,8 +391,8 @@ export default {
             editDecisionDescription: '',
             todoDescription: '',
             editTodoDescription: '',
-            noteDescription: '',
-            editNoteDescription: '',
+            infoDescription: '',
+            editInfoDescription: '',
             showEditObjectiveModal: false,
             showDeleteObjectiveModal: false,
             editObjectiveObject: {},
@@ -382,9 +405,9 @@ export default {
             showEditTodoModal: false,
             showDeleteTodoModal: false,
             editTodoObject: {},
-            showEditNoteModal: false,
-            showDeleteNoteModal: false,
-            editNoteObject: {},
+            showEditInfoModal: false,
+            showDeleteInfoModal: false,
+            editInfoObject: {},
         };
     },
 };
