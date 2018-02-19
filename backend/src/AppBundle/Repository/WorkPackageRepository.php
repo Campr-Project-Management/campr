@@ -531,10 +531,17 @@ class WorkPackageRepository extends BaseRepository
         }
 
         if (isset($filters['type'])) {
-            $qb
-                ->andWhere('wp.type = :type')
-                ->setParameter('type', $filters['type'])
-            ;
+            if ($filters['type'] == WorkPackage::TYPE_TASK) {
+                $qb
+                    ->andWhere('wp.type IN (:type)')
+                    ->setParameter('type', [$filters['type'], WorkPackage::TYPE_TUTORIAL])
+                ;
+            } else {
+                $qb
+                    ->andWhere('wp.type = :type')
+                    ->setParameter('type', $filters['type'])
+                ;
+            }
         }
 
         if (isset($filters['projectUser'])) {
