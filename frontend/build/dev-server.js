@@ -63,6 +63,7 @@ var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsS
 
 app.use(staticPath, express.static('./static'))
 app.use('/uploads', express.static(path.join(__dirname, '/../../web/uploads')))
+app.use('/assets', express.static(path.join(__dirname, '/../../web/assets')))
 
 module.exports = app.listen(port, function (err) {
   if (err) {
