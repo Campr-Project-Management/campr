@@ -222,6 +222,11 @@ class TeamController extends Controller
             'locale' => $user->getLocale(),
         ];
 
+        $redirectTo = $request->query->get('redirect_to');
+        if (!empty($redirectTo)) {
+            $userData['redirect_to'] = $redirectTo;
+        }
+
         $signer = $this->get('app.jwt_signer');
         $token = $this->get('app.jwt_builder')
             ->setIssuer(sprintf('%s://%s', $request->getScheme(), $request->getHost()))

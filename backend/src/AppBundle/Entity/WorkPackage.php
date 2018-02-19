@@ -19,6 +19,7 @@ class WorkPackage
     const TYPE_PHASE = 0;
     const TYPE_MILESTONE = 1;
     const TYPE_TASK = 2;
+    const TYPE_TUTORIAL = 1558;
 
     /**
      * @var int
