@@ -59,6 +59,8 @@ class DefaultController extends Controller
      */
     public function loginAction(Request $request)
     {
+        $routeToRedirectTo = 'app_homepage';
+
         // TODO: move this into a request listener
         $enabled = $this->get('app.service.team')->isEnabled($request->attributes->get('subdomain'));
         if (!$enabled) {
@@ -123,6 +125,21 @@ class DefaultController extends Controller
 
         $userData = (array) $token->getClaim('user');
 
+        if (isset($userData['redirect_to'])) {
+            $router = $this->get('router');
+            try {
+                $route = $router->match($userData['redirect_to']);
+
+                $routeToRedirectTo = $route['_route'];
+            } catch (\Exception $e) {
+                throw $this->createNotFoundException(
+                    $this
+                        ->get('translator')
+                        ->trans('unknown_route', [], 'messages')
+                );
+            }
+        }
+
         $em = $this->getDoctrine()->getManager();
 
         $user = $em->getRepository(User::class)->findOneBy([
@@ -165,7 +182,7 @@ class DefaultController extends Controller
 
         $this->get('security.token_storage')->setToken($upt);
 
-        return $this->redirectToRoute('app_homepage', ['subdomain' => $request->attributes->get('subdomain')]);
+        return $this->redirectToRoute($routeToRedirectTo, ['subdomain' => $request->attributes->get('subdomain')]);
     }
 
     /**
