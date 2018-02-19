@@ -70,7 +70,6 @@ export default {
     }
 
     .tasks-scroll {
-        padding-right: 40px;
         margin-bottom: 10px;
     }
 
