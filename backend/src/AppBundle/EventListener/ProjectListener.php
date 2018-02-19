@@ -80,7 +80,7 @@ class ProjectListener
                 $wp = new WorkPackage();
                 $wp->setProject($entity);
                 $wp->setResponsibility($user);
-                $wp->setType(WorkPackage::TYPE_TASK);
+                $wp->setType(WorkPackage::TYPE_TUTORIAL);
                 $wp->setName($task['title']);
                 $wp->setContent($task['description']);
                 $wp->setWorkPackageStatus(
