@@ -479,6 +479,7 @@ class ProjectController extends ApiController
     public function createMeetingAction(Request $request, Project $project)
     {
         $meeting = new Meeting();
+        $meeting->setProject($project);
         $form = $this->createForm(MeetingApiCreateType::class, $meeting, ['csrf_protection' => false]);
         $this->processForm($request, $form);
 
@@ -516,7 +517,9 @@ class ProjectController extends ApiController
             }
 
             $meeting->setCreatedBy($this->getUser());
-            $meeting->setProject($project);
+            foreach ($meeting->getInfos() as $info) {
+                $info->setProject($project);
+            }
             $this->persistAndFlush($meeting);
 
             return $this->createApiResponse($meeting, Response::HTTP_CREATED);

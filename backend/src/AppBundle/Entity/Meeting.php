@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Meeting.
@@ -30,6 +31,7 @@ class Meeting
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="meetings")
+     * @Assert\NotBlank(message="not_blank.project")
      * @ORM\JoinColumn(name="project_id")
      */
     private $project;
@@ -124,6 +126,7 @@ class Meeting
      * @var ArrayCollection|Decision[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Todo", mappedBy="meeting", cascade={"all"})
+     * @Assert\Valid()
      */
     private $todos;
 
@@ -131,6 +134,7 @@ class Meeting
      * @var ArrayCollection|Decision[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Info", mappedBy="meeting", cascade={"all"})
+     * @Assert\Valid()
      */
     private $infos;
 
