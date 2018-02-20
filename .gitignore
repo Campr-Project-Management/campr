@@ -30,3 +30,4 @@
 docker-compose.yml
 .history/
 npm-debug.log
+/config/docker/.env
