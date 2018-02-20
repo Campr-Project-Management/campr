@@ -300,11 +300,11 @@
                     <h3>{{ translateText('message.infos') }}</h3>
                     <div v-for="(info, index) in infos"
                         :key="index">
-                        <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="info.title" v-bind:content="info.title" />
-                        <div v-if="validationMessages.notes && validationMessages.notes[index.toString()]">
+                        <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="info.topic" v-bind:content="info.topic" />
+                        <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
                         <error
-                            v-if="validationMessages.notes[index.toString()].title && validationMessages.notes[index.toString()].title.length"
-                            v-for="(message, index) in validationMessages.notes[index.toString()].title"
+                            v-if="validationMessages.infos[index.toString()].title && validationMessages.infos[index.toString()].title.length"
+                            v-for="(message, index) in validationMessages.infos[index.toString()].title"
                             :key="index"
                             :message="message" />
                         </div>
@@ -318,10 +318,10 @@
                             <div class="form-group">
                                 <div class="col-md-6">
                                     <member-search singleSelect="false" v-model="info.responsible" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
-                                    <div v-if="validationMessages.notes && validationMessages.notes[index.toString()]">
+                                    <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
                                     <error
-                                        v-if="validationMessages.notes[index.toString()].responsibility && validationMessages.notes[index.toString()].responsibility.length"
-                                        v-for="(message, index) in validationMessages.notes[index.toString()].responsibility"
+                                        v-if="validationMessages.infos[index.toString()].responsibility && validationMessages.infos[index.toString()].responsibility.length"
+                                        v-for="(message, index) in validationMessages.infos[index.toString()].responsibility"
                                         :key="index"
                                         :message="message" />
                                     </div>
@@ -340,15 +340,29 @@
                                 <div class="col-md-6">
                                     <select-field
                                         v-bind:title="translateText('label.select_status')"
-                                        v-bind:options="noteStatusesForSelect"
-                                        v-model="info.status"
-                                        v-bind:currentOption="info.status" />
-                                    <div v-if="validationMessages.notes && validationMessages.notes[index.toString()]">
-                                    <error
-                                        v-if="validationMessages.notes[index.toString()].status && validationMessages.notes[index.toString()].status.length"
-                                        v-for="(message, index) in validationMessages.notes[index.toString()].status"
-                                        :key="index"
-                                        :message="message" />
+                                        v-bind:options="infoStatusesForDropdown"
+                                        v-model="info.infoStatus"
+                                        v-bind:currentOption="info.infoStatus" />
+                                    <div v-if="validationMessages.infos && validationMessages.infoStatus[index.toString()]">
+                                        <error
+                                            v-if="validationMessages.infos[index.toString()].infoStatus && validationMessages.infos[index.toString()].infoStatus.length"
+                                            v-for="(message, index) in validationMessages.infos[index.toString()].infoStatus"
+                                            :key="index"
+                                            :message="message" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <select-field
+                                        v-bind:title="'label.category'"
+                                        v-bind:options="infoCategoriesForDropdown"
+                                        v-model="info.infoCategory"
+                                        v-bind:currentOption="info.infoCategory" />
+                                    <div v-if="validationMessages.infos && validationMessages.infoCategory[index.toString()]">
+                                        <error
+                                            v-if="validationMessages.infos[index.toString()].infoCategory && validationMessages.infos[index.toString()].infoCategory.length"
+                                            v-for="(message, index) in validationMessages.infos[index.toString()].infoCategory"
+                                            :key="index"
+                                            :message="message" />
                                     </div>
                                 </div>
                             </div>
@@ -411,7 +425,8 @@ export default {
         ...mapActions([
             'getDistributionLists',
             'getMeetingCategories',
-            'getNoteStatuses',
+            'getInfoStatuses',
+            'getInfoCategories',
             'getTodoStatuses',
             'createProjectMeeting',
             'emptyValidationMessages',
@@ -468,11 +483,12 @@ export default {
         },
         addInfo() {
             this.infos.push({
-                title: '',
+                topic: '',
                 description: '',
                 responsible: [],
                 dueDate: new Date(),
-                status: {label: this.translateText('label.select_status')},
+                infoStatus: {label: this.translateText('label.select_status')},
+                infoCategory: {label: this.translateText('label.category')},
             });
             setTimeout(() => {
                 this.infos[this.infos.length - 1].description =
@@ -511,11 +527,12 @@ export default {
             let infosTmp = [];
             for (let i = 0; i < this.infos.length; i++) {
                 let elemTmp = {
-                    title: this.infos[i].title,
+                    topic: this.infos[i].topic,
                     description: this.infos[i].description.getContent(),
                     responsible: this.infos[i].responsible,
                     dueDate: this.infos[i].dueDate,
-                    status: this.infos[i].status,
+                    infoStatus: this.infos[i].infoStatus,
+                    infoCategory: this.infos[i].infoCategory,
                 };
                 infosTmp.push(elemTmp);
             }
@@ -536,6 +553,7 @@ export default {
                 todos: this.getTodos(),
                 infos: this.getInfos(),
             };
+
             if (this.details.distributionLists.length > 0) {
                 data.name = '';
                 const length = this.details.distributionLists.length;
@@ -566,9 +584,11 @@ export default {
         ...mapGetters({
             distributionListsForSelect: 'distributionListsForSelect',
             meetingCategoriesForSelect: 'meetingCategoriesForSelect',
-            noteStatusesForSelect: 'noteStatusesForSelect',
+            infoStatusesForSelect: 'infoStatusesForSelect',
+            infoCategoriesForDropdown: 'infoCategoriesForDropdown',
             todoStatusesForSelect: 'todoStatusesForSelect',
             validationMessages: 'validationMessages',
+            infoStatusesForDropdown: 'infoStatusesForDropdown',
         }),
     },
     watch: {
@@ -587,7 +607,8 @@ export default {
         this.getDistributionLists({projectId: this.$route.params.id});
         this.getMeetingCategories();
         this.getTodoStatuses();
-        this.getNoteStatuses();
+        this.getInfoCategories();
+        this.getInfoStatuses();
     },
     beforeDestroy() {
         this.emptyValidationMessages();

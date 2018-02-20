@@ -2,16 +2,18 @@
     <div class="search">
         <div class="input-holder">
             <input type="text"
-                   class="float-label"
-                   :id="'input' + _uid"
-                   autocomplete="off"
-                   v-model="query"
-                   @keydown.down="down"
-                   @keydown.up="up"
-                   @keydown.enter="hit"
-                   @keydown.esc="reset"
-                   @input="update"/>
-            <label :class="{ 'active': placeholder }">{{ placeholder }}</label>
+                class="float-label"
+                :id="'input' + _uid"
+                autocomplete="off"
+                v-model="query"
+                @keydown.down="down"
+                @keydown.up="up"
+                @keydown.enter="hit"
+                @keydown.esc="reset"
+                @focus="focused = true"
+                @blur="focused = false"
+                @input="update" />
+            <label :class="{ 'active': isActive }">{{ placeholder }}</label>
         </div>
         <i class="member-search-clear-button" @click="clearValue">×</i>
         <div class="results team" v-show="hasItems">
@@ -52,12 +54,21 @@
 import VueTypeahead from 'vue-typeahead';
 import {mapActions, mapGetters} from 'vuex';
 import 'jquery.nicescroll/jquery.nicescroll.js';
+import _ from 'lodash';
 
 export default {
     extends: VueTypeahead,
     props: ['placeholder', 'singleSelect', 'value', 'selectedUser'],
     computed: {
         ...mapGetters(['users']),
+        isActive: {
+            get: function() {
+                return _.isEmpty(this.placeholder)
+                    || !_.isEmpty(this.value)
+                    || !_.isEmpty(this.query)
+                    || this.focused;
+            },
+        },
     },
     watch: {
         users(val) {
@@ -185,45 +196,19 @@ export default {
             minChars: 1,
             selectedUsers: [],
             usersList: [],
+            focused: false,
         };
     },
     created() {
         this.clearUsers();
     },
     mounted() {
-        const $this = window.$('#input' + this._uid);
-        let textValue = $this.val();
-        let $label = $this.next();
-
         if (this.selectedUser && this.value) {
             this.query = this.selectedUser;
             this.selectedUsers = this.value;
-        }
 
-        $label.on('click', function() {
-            $(this).prev().focus();
-        });
-
-        $this.focus(function() {
-            $this.next().addClass('active');
-        });
-
-        if ($this.disabled = true) {
-            $this.next().addClass('active');
-        }
-
-        if ($this.val() === '' || $this.val() === 'blank') {
-            $this.next().removeClass();
-        }
-
-        $this.blur(function() {
-            if ($this.val() === '' || $this.val() === 'blank') {
-                $this.next().removeClass();
-            }
-        });
-
-        if (textValue !== '') {
-            $this.next().addClass('active');
+            console.log('loading users yo!');
+            this.getUsers({id: this.value});
         }
 
         // nicescroll
@@ -232,8 +217,6 @@ export default {
                 autohidemode: false,
             });
         });
-
-        $('select').next().removeClass();
     },
 };
 </script>
@@ -340,8 +323,9 @@ export default {
         }
         .member-search-clear-button {
             position: absolute;
-            right: 0;
-            top: -14px;
+            right: 0.25em;
+            top: 0.25em;
+            font-size: 1.5em;
             color: $dangerColor;
             cursor: pointer;
             font-style: normal;

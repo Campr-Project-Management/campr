@@ -47,8 +47,10 @@ class MeetingControllerTest extends BaseController
             $responseContent['todos'][$key]['responsibilityAvatar'] = $todo['responsibilityAvatar'];
         }
 
-        foreach ($content['notes'] as $key => $note) {
-            $responseContent['notes'][$key]['responsibilityAvatar'] = $note['responsibilityAvatar'];
+        foreach ($content['infos'] as $key => $info) {
+            $responseContent['infos'][$key]['responsibilityAvatar'] = $info['responsibilityAvatar'];
+            $responseContent['infos'][$key]['createdAt'] = $info['createdAt'];
+            $responseContent['infos'][$key]['updatedAt'] = $info['updatedAt'];
         }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
@@ -69,8 +71,8 @@ class MeetingControllerTest extends BaseController
                 [
                     'project' => 1,
                     'projectName' => 'project1',
-                    'createdBy' => null,
-                    'createdByFullName' => null,
+                    'createdBy' => 1,
+                    'createdByFullName' => 'FirstName1 LastName1',
                     'meetingCategory' => null,
                     'meetingCategoryName' => null,
                     'id' => 1,
@@ -220,40 +222,48 @@ class MeetingControllerTest extends BaseController
                             'responsibilityAvatar' => '',
                         ],
                     ],
-                    'notes' => [
+                    'infos' => [
                         [
-                            'status' => null,
-                            'statusName' => null,
-                            'meeting' => 1,
-                            'meetingName' => 'meeting1',
-                            'project' => 1,
-                            'projectName' => 'project1',
                             'responsibility' => 4,
                             'responsibilityFullName' => 'FirstName4 LastName4',
+                            'responsibilityAvatar' => null,
+                            'responsibilityGravatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'meeting' => 1,
+                            'meetingName' => 'meeting1',
+                            'infoStatus' => 6,
+                            'infoStatusName' => 'Info Status 1',
+                            'infoStatusColor' => '#000000',
+                            'infoCategory' => 11,
+                            'infoCategoryName' => 'Info Category 1',
                             'id' => 1,
-                            'title' => 'note1',
+                            'topic' => 'note1',
                             'description' => 'description1',
-                            'showInStatusReport' => false,
-                            'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
-                            'responsibilityAvatar' => '',
+                            'createdAt' => date('Y-m-d H:i:s'),
+                            'updatedAt' => date('Y-m-d H:i:s'),
                         ],
                         [
-                            'status' => null,
-                            'statusName' => null,
-                            'meeting' => 1,
-                            'meetingName' => 'meeting1',
-                            'project' => 1,
-                            'projectName' => 'project1',
                             'responsibility' => 4,
                             'responsibilityFullName' => 'FirstName4 LastName4',
+                            'responsibilityAvatar' => null,
+                            'responsibilityGravatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'meeting' => 1,
+                            'meetingName' => 'meeting1',
+                            'infoStatus' => 7,
+                            'infoStatusName' => 'Info Status 2',
+                            'infoStatusColor' => '#000000',
+                            'infoCategory' => 12,
+                            'infoCategoryName' => 'Info Category 2',
                             'id' => 2,
-                            'title' => 'note2',
+                            'topic' => 'note2',
                             'description' => 'description2',
-                            'showInStatusReport' => false,
-                            'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
-                            'responsibilityAvatar' => '',
+                            'createdAt' => date('Y-m-d H:i:s'),
+                            'updatedAt' => date('Y-m-d H:i:s'),
                         ],
                     ],
                     'distributionLists' => [],
@@ -336,7 +346,7 @@ class MeetingControllerTest extends BaseController
                     'medias' => [],
                     'decisions' => [],
                     'todos' => [],
-                    'notes' => [],
+                    'infos' => [],
                     'distributionLists' => [],
                     'createdAt' => '',
                     'updatedAt' => '',

@@ -427,7 +427,7 @@ class ProjectControllerTest extends BaseController
                         ],
                     ],
                     'projectTeams' => [],
-                    'notes' => [],
+                    'infos' => [],
                     'todos' => [],
                     'distributionLists' => [],
                     'statusUpdatedAt' => null,
@@ -1205,8 +1205,10 @@ class ProjectControllerTest extends BaseController
         foreach ($responseArray['items'][0]['todos'] as $key => $todo) {
             $responseContent['items'][0]['todos'][$key]['responsibilityAvatar'] = $todo['responsibilityAvatar'];
         }
-        foreach ($responseArray['items'][0]['notes'] as $key => $note) {
-            $responseContent['items'][0]['notes'][$key]['responsibilityAvatar'] = $note['responsibilityAvatar'];
+        foreach ($responseArray['items'][0]['infos'] as $key => $info) {
+            $responseContent['items'][0]['infos'][$key]['createdAt'] = $info['createdAt'];
+            $responseContent['items'][0]['infos'][$key]['updatedAt'] = $info['updatedAt'];
+            $responseContent['items'][0]['infos'][$key]['responsibilityAvatar'] = $info['responsibilityAvatar'];
         }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
@@ -1228,8 +1230,8 @@ class ProjectControllerTest extends BaseController
                         [
                             'project' => 1,
                             'projectName' => 'project1',
-                            'createdBy' => null,
-                            'createdByFullName' => null,
+                            'createdBy' => 1,
+                            'createdByFullName' => 'FirstName1 LastName1',
                             'meetingCategory' => null,
                             'meetingCategoryName' => null,
                             'id' => 1,
@@ -1379,40 +1381,48 @@ class ProjectControllerTest extends BaseController
                                     'responsibilityAvatar' => '',
                                 ],
                             ],
-                            'notes' => [
+                            'infos' => [
                                 [
-                                    'status' => null,
-                                    'statusName' => null,
-                                    'meeting' => 1,
-                                    'meetingName' => 'meeting1',
-                                    'project' => 1,
-                                    'projectName' => 'project1',
                                     'responsibility' => 4,
                                     'responsibilityFullName' => 'FirstName4 LastName4',
+                                    'responsibilityAvatar' => null,
+                                    'responsibilityGravatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
+                                    'project' => 1,
+                                    'projectName' => 'project1',
+                                    'meeting' => 1,
+                                    'meetingName' => 'meeting1',
+                                    'infoStatus' => 6,
+                                    'infoStatusName' => 'Info Status 1',
+                                    'infoStatusColor' => '#000000',
+                                    'infoCategory' => 11,
+                                    'infoCategoryName' => 'Info Category 1',
                                     'id' => 1,
-                                    'title' => 'note1',
+                                    'topic' => 'note1',
                                     'description' => 'description1',
-                                    'showInStatusReport' => false,
-                                    'date' => '2017-01-01 00:00:00',
                                     'dueDate' => '2017-05-01 00:00:00',
-                                    'responsibilityAvatar' => '',
+                                    'createdAt' => date('Y-m-d H:i:s'),
+                                    'updatedAt' => date('Y-m-d H:i:s'),
                                 ],
                                 [
-                                    'status' => null,
-                                    'statusName' => null,
-                                    'meeting' => 1,
-                                    'meetingName' => 'meeting1',
-                                    'project' => 1,
-                                    'projectName' => 'project1',
                                     'responsibility' => 4,
                                     'responsibilityFullName' => 'FirstName4 LastName4',
+                                    'responsibilityAvatar' => null,
+                                    'responsibilityGravatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
+                                    'project' => 1,
+                                    'projectName' => 'project1',
+                                    'meeting' => 1,
+                                    'meetingName' => 'meeting1',
+                                    'infoStatus' => 7,
+                                    'infoStatusName' => 'Info Status 2',
+                                    'infoStatusColor' => '#000000',
+                                    'infoCategory' => 12,
+                                    'infoCategoryName' => 'Info Category 2',
                                     'id' => 2,
-                                    'title' => 'note2',
+                                    'topic' => 'note2',
                                     'description' => 'description2',
-                                    'showInStatusReport' => false,
-                                    'date' => '2017-01-01 00:00:00',
                                     'dueDate' => '2017-05-01 00:00:00',
-                                    'responsibilityAvatar' => '',
+                                    'createdAt' => date('Y-m-d H:i:s'),
+                                    'updatedAt' => date('Y-m-d H:i:s'),
                                 ],
                             ],
                             'distributionLists' => [],
@@ -1491,7 +1501,7 @@ class ProjectControllerTest extends BaseController
                     'medias' => [],
                     'decisions' => [],
                     'todos' => [],
-                    'notes' => [],
+                    'infos' => [],
                     'distributionLists' => [],
                     'createdAt' => null,
                     'updatedAt' => null,
@@ -1501,14 +1511,14 @@ class ProjectControllerTest extends BaseController
     }
 
     /**
-     * @dataProvider getDataForNotesAction()
+     * @dataProvider getDataForInfosAction()
      *
      * @param $url
      * @param $isResponseSuccessful
      * @param $responseStatusCode
      * @param $responseContent
      */
-    public function testNotesAction(
+    public function testInfosAction(
         $url,
         $isResponseSuccessful,
         $responseStatusCode,
@@ -1521,8 +1531,12 @@ class ProjectControllerTest extends BaseController
         $response = $this->client->getResponse();
 
         $responseArray = json_decode($response->getContent(), true);
-        $responseContent[0]['responsibilityAvatar'] = $responseArray[0]['responsibilityAvatar'];
-        $responseContent[1]['responsibilityAvatar'] = $responseArray[1]['responsibilityAvatar'];
+
+        foreach ($responseArray['items'] as $key => $info) {
+            $responseContent['items'][$key]['responsibilityAvatar'] = $info['responsibilityAvatar'];
+            $responseContent['items'][$key]['createdAt'] = $info['createdAt'];
+            $responseContent['items'][$key]['updatedAt'] = $info['updatedAt'];
+        }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -1532,63 +1546,76 @@ class ProjectControllerTest extends BaseController
     /**
      * @return array
      */
-    public function getDataForNotesAction()
+    public function getDataForInfosAction()
     {
         return [
             [
-                '/api/projects/1/notes',
+                '/api/projects/1/infos',
                 true,
                 Response::HTTP_OK,
                 [
-                    [
-
-                        'status' => null,
-                        'statusName' => null,
-                        'meeting' => 1,
-                        'meetingName' => 'meeting1',
-                        'project' => 1,
-                        'projectName' => 'project1',
-                        'responsibility' => 4,
-                        'responsibilityFullName' => 'FirstName4 LastName4',
-                        'id' => 1,
-                        'title' => 'note1',
-                        'description' => 'description1',
-                        'showInStatusReport' => false,
-                        'date' => '2017-01-01 00:00:00',
-                        'dueDate' => '2017-05-01 00:00:00',
-                        'responsibilityAvatar' => '',
+                    'items' => [
+                        [
+                            'responsibility' => 4,
+                            'responsibilityFullName' => 'FirstName4 LastName4',
+                            'responsibilityAvatar' => null,
+                            'responsibilityGravatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'meeting' => 1,
+                            'meetingName' => 'meeting1',
+                            'infoStatus' => 6,
+                            'infoStatusName' => 'Info Status 1',
+                            'infoStatusColor' => '#000000',
+                            'infoCategory' => 11,
+                            'infoCategoryName' => 'Info Category 1',
+                            'id' => 1,
+                            'topic' => 'note1',
+                            'description' => 'description1',
+                            'dueDate' => '2017-05-01 00:00:00',
+                            'createdAt' => date('Y-m-d H:i:s'),
+                            'updatedAt' => date('Y-m-d H:i:s'),
+                        ],
+                        [
+                            'responsibility' => 4,
+                            'responsibilityFullName' => 'FirstName4 LastName4',
+                            'responsibilityAvatar' => null,
+                            'responsibilityGravatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'meeting' => 1,
+                            'meetingName' => 'meeting1',
+                            'infoStatus' => 7,
+                            'infoStatusName' => 'Info Status 2',
+                            'infoStatusColor' => '#000000',
+                            'infoCategory' => 12,
+                            'infoCategoryName' => 'Info Category 2',
+                            'id' => 2,
+                            'topic' => 'note2',
+                            'description' => 'description2',
+                            'dueDate' => '2017-05-01 00:00:00',
+                            'createdAt' => date('Y-m-d H:i:s'),
+                            'updatedAt' => date('Y-m-d H:i:s'),
+                        ],
                     ],
-                    [
-                        'status' => null,
-                        'statusName' => null,
-                        'meeting' => 1,
-                        'meetingName' => 'meeting1',
-                        'project' => 1,
-                        'projectName' => 'project1',
-                        'responsibility' => 4,
-                        'responsibilityFullName' => 'FirstName4 LastName4',
-                        'id' => 2,
-                        'title' => 'note2',
-                        'description' => 'description2',
-                        'showInStatusReport' => false,
-                        'date' => '2017-01-01 00:00:00',
-                        'dueDate' => '2017-05-01 00:00:00',
-                        'responsibilityAvatar' => '',
-                    ],
+                    'currentPage' => 0,
+                    'numberOfPages' => 1,
+                    'numberOfItems' => 2,
+                    'itemsPerPage' => 10,
                 ],
             ],
         ];
     }
 
     /**
-     * @dataProvider getDataForCreateNoteAction()
+     * @dataProvider getDataForCreateInfoAction()
      *
      * @param array $content
      * @param $isResponseSuccessful
      * @param $responseStatusCode
      * @param $responseContent
      */
-    public function testCreateNoteAction(
+    public function testCreateInfoAction(
         array $content,
         $isResponseSuccessful,
         $responseStatusCode,
@@ -1597,11 +1624,13 @@ class ProjectControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('POST', '/api/projects/1/notes', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $this->client->request('POST', '/api/projects/1/infos', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
         $response = $this->client->getResponse();
 
         $responseArray = json_decode($response->getContent(), true);
         $responseContent['id'] = $responseArray['id'];
+        $responseContent['createdAt'] = $responseArray['createdAt'];
+        $responseContent['updatedAt'] = $responseArray['updatedAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -1611,31 +1640,39 @@ class ProjectControllerTest extends BaseController
     /**
      * @return array
      */
-    public function getDataForCreateNoteAction()
+    public function getDataForCreateInfoAction()
     {
         return [
             [
                 [
-                    'title' => 'note project 1',
-                    'description' => 'descript',
+                    'topic' => 'note project 1',
+                    'description' => 'description text',
+                    'infoStatus' => 1,
+                    'infoCategory' => 1,
+                    'responsibility' => 1,
                 ],
                 true,
                 Response::HTTP_CREATED,
                 [
-                    'status' => null,
-                    'statusName' => null,
-                    'meeting' => null,
-                    'meetingName' => null,
+                    'responsibility' => 1,
+                    'responsibilityFullName' => 'FirstName1 LastName1',
+                    'responsibilityAvatar' => null,
+                    'responsibilityGravatar' => 'https://www.gravatar.com/avatar/c759b30d158daaa0820ded76627d0914?d=identicon',
                     'project' => 1,
                     'projectName' => 'project1',
-                    'responsibility' => null,
-                    'responsibilityFullName' => null,
-                    'id' => null,
-                    'title' => 'note project 1',
-                    'description' => 'descript',
-                    'showInStatusReport' => false,
-                    'date' => null,
+                    'meeting' => null,
+                    'meetingName' => null,
+                    'infoStatus' => 1,
+                    'infoStatusName' => 'label.published',
+                    'infoStatusColor' => '#5FC3A5',
+                    'infoCategory' => 1,
+                    'infoCategoryName' => 'label.production',
+                    'id' => 3,
+                    'topic' => 'note project 1',
+                    'description' => 'description text',
                     'dueDate' => null,
+                    'createdAt' => '2018-02-16 04:14:42',
+                    'updatedAt' => '2018-02-16 04:14:42',
                 ],
             ],
         ];
@@ -1812,7 +1849,8 @@ class ProjectControllerTest extends BaseController
 
         $project = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $project['updatedAt'];
-        $responseContent['updatedAt'] = $project['updatedAt'];
+        $responseContent['scheduledStartAt'] = $project['scheduledStartAt'];
+        $responseContent['scheduledFinishAt'] = $project['scheduledFinishAt'];
         $responseContent['projectTeams'][0]['updatedAt'] = $project['projectTeams'][0]['updatedAt'];
         $responseContent['projectTeams'][1]['updatedAt'] = $project['projectTeams'][1]['updatedAt'];
         $responseContent['distributionLists'][0]['updatedAt'] = $project['distributionLists'][0]['updatedAt'];
@@ -1834,8 +1872,15 @@ class ProjectControllerTest extends BaseController
         $responseContent['units'][0]['updatedAt'] = $project['units'][0]['updatedAt'];
         $responseContent['units'][1]['updatedAt'] = $project['units'][1]['updatedAt'];
 
-        $responseContent['notes'][0]['responsibilityAvatar'] = $project['notes'][0]['responsibilityAvatar'];
-        $responseContent['notes'][1]['responsibilityAvatar'] = $project['notes'][1]['responsibilityAvatar'];
+        foreach ($project['infos'] as $key => $info) {
+            $responseContent['infos'][$key]['responsibilityAvatar'] = $info['responsibilityAvatar'];
+            $responseContent['infos'][$key]['createdAt'] = $info['createdAt'];
+            $responseContent['infos'][$key]['updatedAt'] = $info['updatedAt'];
+        }
+
+//        $responseContent['notes'][0]['responsibilityAvatar'] = $project['notes'][0]['responsibilityAvatar'];
+//        $responseContent['notes'][1]['responsibilityAvatar'] = $project['notes'][1]['responsibilityAvatar'];
+
         $responseContent['todos'][0]['responsibilityAvatar'] = $project['todos'][0]['responsibilityAvatar'];
         $responseContent['todos'][1]['responsibilityAvatar'] = $project['todos'][1]['responsibilityAvatar'];
         $responseContent['decisions'][0]['responsibilityAvatar'] = $project['decisions'][0]['responsibilityAvatar'];
@@ -1848,7 +1893,6 @@ class ProjectControllerTest extends BaseController
             $responseContent['projectUsers'][$i - 1]['userAvatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
         }
 
-        // abcd
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -2029,56 +2073,69 @@ class ProjectControllerTest extends BaseController
                             'children' => [],
                         ],
                     ],
-                    'notes' => [
+                    'infos' => [
                         [
-                            'status' => null,
-                            'statusName' => null,
-                            'meeting' => 1,
-                            'meetingName' => 'meeting1',
-                            'project' => 1,
-                            'projectName' => 'project1',
                             'responsibility' => 4,
                             'responsibilityFullName' => 'FirstName4 LastName4',
+                            'responsibilityAvatar' => null,
+                            'responsibilityGravatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'meeting' => 1,
+                            'meetingName' => 'meeting1',
+                            'infoStatus' => 6,
+                            'infoStatusName' => 'Info Status 1',
+                            'infoStatusColor' => '#000000',
+                            'infoCategory' => 11,
+                            'infoCategoryName' => 'Info Category 1',
                             'id' => 1,
-                            'title' => 'note1',
+                            'topic' => 'note1',
                             'description' => 'description1',
-                            'showInStatusReport' => false,
-                            'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
-                            'responsibilityAvatar' => '',
+                            'createdAt' => date('Y-m-d H:i:s'),
+                            'updatedAt' => date('Y-m-d H:i:s'),
                         ],
                         [
-                            'status' => null,
-                            'statusName' => null,
-                            'meeting' => 1,
-                            'meetingName' => 'meeting1',
-                            'project' => 1,
-                            'projectName' => 'project1',
                             'responsibility' => 4,
                             'responsibilityFullName' => 'FirstName4 LastName4',
+                            'responsibilityAvatar' => null,
+                            'responsibilityGravatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'meeting' => 1,
+                            'meetingName' => 'meeting1',
+                            'infoStatus' => 7,
+                            'infoStatusName' => 'Info Status 2',
+                            'infoStatusColor' => '#000000',
+                            'infoCategory' => 12,
+                            'infoCategoryName' => 'Info Category 2',
                             'id' => 2,
-                            'title' => 'note2',
+                            'topic' => 'note2',
                             'description' => 'description2',
-                            'showInStatusReport' => false,
-                            'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
-                            'responsibilityAvatar' => '',
+                            'createdAt' => date('Y-m-d H:i:s'),
+                            'updatedAt' => date('Y-m-d H:i:s'),
                         ],
                         [
-                            'status' => null,
-                            'statusName' => null,
+                            'responsibility' => 1,
+                            'responsibilityFullName' => 'FirstName1 LastName1',
+                            'responsibilityAvatar' => null,
+                            'responsibilityGravatar' => 'https://www.gravatar.com/avatar/c759b30d158daaa0820ded76627d0914?d=identicon',
+                            'project' => 1,
+                            'projectName' => 'project1',
                             'meeting' => null,
                             'meetingName' => null,
-                            'project' => 1,
-                            'projectName' => 'project1',
-                            'responsibility' => null,
-                            'responsibilityFullName' => null,
-                            'id' => 4,
-                            'title' => 'note project 1',
-                            'description' => 'descript',
-                            'showInStatusReport' => false,
-                            'date' => null,
+                            'infoStatus' => 1,
+                            'infoStatusName' => 'label.published',
+                            'infoStatusColor' => '#5FC3A5',
+                            'infoCategory' => 1,
+                            'infoCategoryName' => 'label.production',
+                            'id' => 3,
+                            'topic' => 'note project 1',
+                            'description' => 'description text',
                             'dueDate' => null,
+                            'createdAt' => date('Y-m-d H:i:s'),
+                            'updatedAt' => date('Y-m-d H:i:s'),
                         ],
                     ],
                     'todos' => [

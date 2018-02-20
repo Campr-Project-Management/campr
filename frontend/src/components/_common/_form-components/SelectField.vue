@@ -9,12 +9,12 @@
             aria-expanded="false"
             @click="dropdownToggle()"
         >
-            {{ currentOption ? currentOption.label : title }}
+            {{ translateText(currentOption ? currentOption.label : title) }}
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right nicescroll">
             <li v-for="option in options">
-                <a href="javascript:void(0)" v-on:click="updateValue(option)">{{ option.label }}</a>
+                <a href="javascript:void(0)" v-on:click="updateValue(option)">{{ translateText(option.label) }}</a>
             </li>
         </ul>
     </div>
@@ -41,6 +41,9 @@ export default {
             } else {
                 $(this.$el).find('.dropdown-menu').css('top', this.dropdownItemHeight + 'px');
             }
+        },
+        translateText(text) {
+            return this.translate(text);
         },
     },
     mounted() {

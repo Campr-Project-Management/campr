@@ -522,6 +522,7 @@ class Todo
     {
         return $this->responsibility ? $this->responsibility->getFullName() : null;
     }
+
     /**
      * @return TodoCategory|null
      */
