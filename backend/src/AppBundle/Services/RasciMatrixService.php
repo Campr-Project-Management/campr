@@ -44,6 +44,9 @@ class RasciMatrixService
     {
         $users = $project
             ->getProjectUsers()
+            ->filter(function (ProjectUser $projectUser) {
+                return $projectUser->getShowInRasci();
+            })
             ->map(function (ProjectUser $projectUser) {
                 return $projectUser->getUser();
             })
@@ -119,7 +122,7 @@ class RasciMatrixService
 
         return [
             'workPackages' => $workPackages,
-            'users' => $users,
+            'users' => $users->getValues(),
         ];
     }
 }

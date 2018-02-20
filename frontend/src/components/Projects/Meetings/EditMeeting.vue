@@ -14,12 +14,10 @@
             v-bind:editTodoModal="showEditTodoModal"
             v-bind:deleteTodoModal="showDeleteTodoModal"
             v-bind:todoObject="editTodoObject"
-            v-bind:editNoteModal="showEditNoteModal"
-            v-bind:deleteNoteModal="showDeleteNoteModal"
-            v-bind:noteObject="editNoteObject"
-            v-on:input="setModals"
-        >
-        </meeting-modals>
+            v-bind:editInfoModal="showEditInfoModal"
+            v-bind:deleteInfoModal="showDeleteInfoModal"
+            v-bind:infoObject="editInfoObject"
+            v-on:input="setModals" />
         <!-- /// End Modals /// -->
 
         <div class="col-md-6">
@@ -376,57 +374,62 @@
                     <!-- /// Infos /// -->
                     <h3>{{ translateText('message.infos') }}</h3>
 
-                    <div class="entries-wrapper" v-if="meeting.notes">
+                    <div class="entries-wrapper" v-if="meeting.infos">
                         <!-- /// Info /// -->
-                        <div class="entry" v-for="note in meeting.notes">
+                        <div class="entry" v-for="info in meeting.infos">
                             <div class="entry-header flex flex-space-between flex-v-center">
                                 <div class="entry-title">
-                                    <h4>{{ note.title }}</h4> | {{ translateText('message.due_date') }}: <b>{{ note.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.status') }}: <b v-if="note.status">{{ note.statusName }}</b><b v-else>-</b>
+                                    <h4>{{ info.topic }}</h4> |
+                                    {{ translateText('message.due_date') }}: <b>{{ info.dueDate | moment('DD.MM.YYYY') }}</b> |
+                                    {{ translateText('message.status') }}: <b v-if="info.infoStatus">{{ translateText(info.infoStatusName) }}</b><b v-else>-</b>
+                                    {{ translateText('message.category') }}: <b v-if="info.infoCategory">{{ translateText(info.infoCategoryName) }}</b><b v-else>-</b>
                                 </div>
                                 <div class="entry-buttons">
-                                    <button @click="initEditNote(note)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
-                                    <button @click="initDeleteNote(note)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
+                                    <button @click="initEditInfo(info)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
+                                    <button @click="initDeleteInfo(info)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
                                 </div>
                             </div>
                             <div class="entry-responsible flex flex-v-center">
                                 <div class="user-avatar">
-                                    <img :src="note.responsibilityAvatar" :alt="note.responsibilityFullName"/>
+                                    <img :src="info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar" :alt="info.responsibilityFullName"/>
                                 </div>
                                 <div>
                                     {{ translateText('message.responsible') }}:
-                                    <b>{{ note.responsibilityFullName }}</b>
+                                    <b>{{ info.responsibilityFullName }}</b>
                                 </div>
                             </div>
-                            <div class="entry-body" v-html="note.description"></div>
+                            <div class="entry-body" v-html="info.description"></div>
                         </div>
                         <!-- /// End Info /// -->
                     </div>
 
-                    <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="note.title" v-bind:content="note.title" />
+                    <input-field type="text"
+                        v-bind:label="translateText('placeholder.topic')"
+                        v-model="info.topic"
+                        v-bind:content="info.topic" />
                     <error
-                        v-if="validationOrigin==NOTE_VALIDATION_ORIGIN && validationMessages.title && validationMessages.title.length"
-                        v-for="message in validationMessages.title"
+                        v-if="validationOrigin==INFO_VALIDATION_ORIGIN && validationMessages.topic && validationMessages.topic.length"
+                        v-for="message in validationMessages.topic"
                         :message="message" />
                     <div class="form-group">
                         <div class="vueditor-holder">
                             <div class="vueditor-header">{{ translateText('placeholder.info_description') }}</div>
-                            <div id="noteDescription" ref="noteDescription">
-                            </div>
+                            <div id="infoDescription" ref="infoDescription"></div>
                         </div>
                     </div>
                     <error
-                        v-if="validationOrigin==NOTE_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
+                        v-if="validationOrigin==INFO_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
                         v-for="message in validationMessages.description"
                         :message="message" />
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <member-search v-model="note.responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                                <member-search v-model="info.responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.due_date') }}</label>
-                                    <datepicker v-model="note.dueDate" format="dd-MM-yyyy" />
+                                    <datepicker v-model="info.dueDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill"/>
                                 </div>
                             </div>
@@ -436,14 +439,27 @@
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
                                 <select-field
-                                    v-bind:title="translateText('label.select_status')"
-                                    v-bind:options="noteStatusesForSelect"
-                                    v-model="note.status"
-                                    v-bind:currentOption="note.status" />
+                                    v-bind:title="'label.select_status'"
+                                    v-bind:options="infoStatusesForDropdown"
+                                    v-model="info.infoStatus"
+                                    v-bind:currentOption="info.infoStatus" />
+                            </div>
+                            <div class="col-md-6">
+                                <select-field
+                                    v-bind:title="'label.category'"
+                                    v-bind:options="infoCategoriesForDropdown"
+                                    v-model="info.infoCategory"
+                                    v-bind:currentOption="info.infoCategory" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group last-form-group">
+                            <div class="col-md-6">
                             </div>
                             <div class="col-md-6">
                                 <div class="flex flex-direction-reverse">
-                                    <a @click="addNote()" class="btn-rounded btn-auto">{{ translateText('message.add_new_info') }}</a>
+                                    <a @click="addInfo()" class="btn-rounded btn-auto">{{ translateText('message.add_new_info') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -482,9 +498,7 @@
                     v-bind:meetingParticipants="displayedParticipants"
                     v-bind:participants="participants"
                     v-bind:participantsPages="participantsPages"
-                    v-bind:participantsPerPage="participantsPerPage"
-                >
-                </meeting-participants>
+                    v-bind:participantsPerPage="participantsPerPage" />
             </div>
         </div>
 
@@ -537,9 +551,10 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getDistributionLists', 'getMeetingCategories', 'getNoteStatuses', 'getProjectMeeting', 'createMeetingObjective', 'getTodoStatuses',
+            'getDistributionLists', 'getMeetingCategories', 'getInfoStatuses', 'getProjectMeeting', 'createMeetingObjective', 'getTodoStatuses',
             'createProjectMeeting', 'getMeetingAgendas', 'editProjectMeeting', 'editMeetingObjective', 'deleteMeetingObjective',
-            'createMeetingAgenda', 'createMeetingDecision', 'createMeetingTodo', 'createMeetingNote', 'getMeetingParticipants',
+            'createMeetingAgenda', 'createMeetingDecision', 'createMeetingTodo', 'createInfo', 'getMeetingParticipants',
+            'getInfoCategories',
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -562,8 +577,8 @@ export default {
             this.showDeleteDecisionModal = value;
             this.showEditTodoModal = value;
             this.showDeleteTodoModal = value;
-            this.showEditNoteModal = value;
-            this.showDeleteNoteModal = value;
+            this.showEditInfoModal = value;
+            this.showDeleteInfoModal = value;
         },
         changeAgendasPage: function(page) {
             this.agendasActivePage = page;
@@ -695,37 +710,43 @@ export default {
             this.showDeleteTodoModal = true;
             this.editTodoObject = {id: todo.id, meeting: this.$route.params.meetingId};
         },
-        addNote: function() {
-            this.createMeetingNote({
-                id: this.$route.params.meetingId,
-                title: this.note.title,
-                description: this.noteDescriptionEditor.getContent(),
-                responsibility: this.note.responsibility.length > 0 ? this.note.responsibility[0] : null,
-                dueDate: moment(this.note.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
-                status: this.note.status ? this.note.status.key : null,
-            });
-            this.note.title = null;
-            this.note.responsibility = [];
-            this.initVueEditors();
-        },
-        initEditNote: function(note) {
-            this.showEditNoteModal = true;
-            this.editNoteObject = {
-                id: note.id,
-                title: note.title,
-                responsibility: [note.responsibility],
-                responsibilityFullName: note.responsibilityFullName,
-                dueDate: note.dueDate ? new Date(note.dueDate) : new Date(),
-                status: {key: note.status, label: note.statusName},
+        addInfo: function() {
+            const data = {
+                // id: this.$route.params.meetingId,
+                topic: this.info.topic,
+                description: this.infoDescriptionEditor.getContent(),
+                responsibility: this.info.responsibility.length ? this.info.responsibility[0] : null,
+                dueDate: moment(this.info.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
+                infoStatus: this.info.infoStatus ? this.info.infoStatus.key : null,
+                infoCategory: this.info.infoCategory ? this.info.infoCategory.key : null,
                 meeting: this.$route.params.meetingId,
             };
+            const projectId = this.$route.params.id;
+            this.createInfo({projectId, data});
+            this.info.topic = null;
+            this.info.responsibility = [];
+            this.initVueEditors();
+        },
+        initEditInfo: function(info) {
+            this.showEditInfoModal = true;
+            this.editInfoObject = {
+                id: info.id,
+                topic: info.topic,
+                responsibility: [info.responsibility],
+                responsibilityFullName: info.responsibilityFullName,
+                dueDate: info.dueDate ? new Date(info.dueDate) : new Date(),
+                infoStatus: {key: info.infoStatus, label: info.infoStatusName},
+                infoCategory: {key: info.infoCategory, label: info.infoCategoryName},
+                meeting: this.$route.params.meetingId,
+            };
+
             setTimeout(() => {
-                this.$refs.meetingmodal.$refs.editNoteDescription.setContent(note.description);
+                this.$refs.meetingmodal.$refs.editInfoDescription.setContent(info.description);
             }, 100);
         },
-        initDeleteNote: function(note) {
-            this.showDeleteNoteModal = true;
-            this.editNoteObject = {id: note.id, meeting: this.$route.params.meetingId};
+        initDeleteInfo: function(info) {
+            this.showDeleteInfoModal = true;
+            this.editInfoObject = {id: info.id, meeting: this.$route.params.meetingId};
         },
         saveMeeting: function() {
             let data = {
@@ -762,7 +783,7 @@ export default {
             setTimeout(() => {
                 this.decisionDescriptionEditor = createEditor(document.getElementById('decisionDescription'), {...vueditorConfig, id: 'decisionDescription'});
                 this.todoDescriptionEditor = createEditor(document.getElementById('todoDescription'), {...vueditorConfig, id: 'todoDescription'});
-                this.noteDescriptionEditor = createEditor(document.getElementById('noteDescription'), {...vueditorConfig, id: 'noteDescription'});
+                this.infoDescriptionEditor = createEditor(document.getElementById('infoDescription'), {...vueditorConfig, id: 'infoDescription'});
             }, 100);
         },
     },
@@ -770,7 +791,8 @@ export default {
         ...mapGetters({
             distributionListsForSelect: 'distributionListsForSelect',
             meetingCategoriesForSelect: 'meetingCategoriesForSelect',
-            noteStatusesForSelect: 'noteStatusesForSelect',
+            infoStatusesForDropdown: 'infoStatusesForDropdown',
+            infoCategoriesForDropdown: 'infoCategoriesForDropdown',
             todoStatusesForSelect: 'todoStatusesForSelect',
             meeting: 'meeting',
             meetingAgendas: 'meetingAgendas',
@@ -791,7 +813,8 @@ export default {
         this.getMeetingParticipants({id: this.$route.params.meetingId});
         this.getMeetingCategories();
         this.getTodoStatuses();
-        this.getNoteStatuses();
+        this.getInfoStatuses();
+        this.getInfoCategories();
         this.getProjectMeeting(this.$route.params.meetingId);
         this.getMeetingAgendas({
             meetingId: this.$route.params.meetingId,
@@ -847,18 +870,19 @@ export default {
                 dueDate: new Date(),
                 status: null,
             },
-            note: {
-                title: null,
+            info: {
+                topic: null,
                 responsibility: [],
                 dueDate: new Date(),
-                status: null,
+                infoStatus: null,
+                infoCategory: null,
             },
             decisionDescription: '',
             editDecisionDescription: '',
             todoDescription: '',
             editTodoDescription: '',
-            noteDescription: '',
-            editNoteDescription: '',
+            infoDescription: '',
+            editInfoDescription: '',
             showEditObjectiveModal: false,
             showDeleteObjectiveModal: false,
             editObjectiveObject: {},
@@ -871,14 +895,14 @@ export default {
             showEditTodoModal: false,
             showDeleteTodoModal: false,
             editTodoObject: {},
-            showEditNoteModal: false,
-            showDeleteNoteModal: false,
-            editNoteObject: {},
+            showEditInfoModal: false,
+            showDeleteInfoModal: false,
+            editInfoObject: {},
             participants: [],
             displayedParticipants: [],
             decisionDescriptionEditor: null,
             todoDescriptionEditor: null,
-            noteDescriptionEditor: null,
+            infoDescriptionEditor: null,
         };
     },
     watch: {

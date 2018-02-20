@@ -23,6 +23,7 @@ class LoadMeetingData extends AbstractFixture implements OrderedFixtureInterface
         $end = new \DateTime('2017-01-01 12:00:00');
 
         $meeting = (new Meeting())
+            ->setCreatedBy($this->getReference('superadmin'))
             ->setName('meeting1')
             ->setLocation('location1')
             ->setProject($project)

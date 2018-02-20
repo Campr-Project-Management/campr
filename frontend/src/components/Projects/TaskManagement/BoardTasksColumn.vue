@@ -83,7 +83,7 @@ export default {
 
     .column {
         margin-right: 10px;
-        width: 434px;
+        width: 394px;
     }
 
     .column-header {
@@ -93,7 +93,6 @@ export default {
     }
 
     .tasks-scroll {
-        padding-right: 40px;
         margin-bottom: 10px;
         position: relative;
         overflow: auto;

@@ -36,12 +36,18 @@
             <!-- /// Show errors modal/// -->
             <modal v-if="showErrorAlert" @close="showErrorAlert = false">
                 <p class="modal-title">{{ translateText('title.project_add_error') }}</p>
-                <dl  v-for="field, key in validationMessages">
+                <dl v-for="field, key in validationMessages">
                     <dt class="ucwords">{{key}}:</dt>
                     <dd v-for="item in field" >{{item}}</dd>
                 </dl>
                 <div class="flex flex-space-between">
-                    <a @click.preventDefault="showErrorAlert = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.close') }}</a>
+                    <a
+                        @click.preventDefault="showErrorAlert = false"
+                        class="btn-rounded btn-empty danger-color danger-border"
+                        style="margin: auto"
+                    >
+                        {{ translateText('message.close') }}
+                    </a>
                 </div>
             </modal>
         </div>
@@ -52,6 +58,7 @@
 import ProjectModule from './ProjectModule';
 import Modal from '../_common/Modal';
 import {mapActions, mapGetters} from 'vuex';
+import _ from 'lodash';
 import {
     processProjectModules,
     processProjectConfiguration,
@@ -87,7 +94,7 @@ export default {
             this.$router.push({name: 'project-dashboard', params: {'id': value.id}});
         },
         modules(value) {
-            const stepData = JSON.parse(localStorage.getItem(THIRD_STEP_LOCALSTORAGE_KEY));
+            const stepData = JSON.parse(localStorage.getItem(THIRD_STEP_LOCALSTORAGE_KEY) || '{}');
             if (stepData && stepData.modulesConfiguration != undefined) {
                 this.modulesConfiguration = stepData.modulesConfiguration;
                 return;
@@ -99,8 +106,15 @@ export default {
             }
             this.modulesConfiguration = JSON.parse(JSON.stringify(this.modulesConfiguration));
         },
+        showErrorAlert(val) {
+            if (val === false) {
+                this.validationMessages = [];
+            }
+        },
         validationMessages(value) {
-            this.showErrorAlert = true;
+            if (_.isObject(value) && _.keys(value) && _.keys(value).length) {
+                this.showErrorAlert = true;
+            }
         },
     },
     methods: {
@@ -123,9 +137,9 @@ export default {
             this.startProject();
         },
         startProject: function() {
-            const firstStepData = JSON.parse(localStorage.getItem(FIRST_STEP_LOCALSTORAGE_KEY));
-            const secondStepData = JSON.parse(localStorage.getItem(SECOND_STEP_LOCALSTORAGE_KEY));
-            const thirdStepData = JSON.parse(localStorage.getItem(THIRD_STEP_LOCALSTORAGE_KEY));
+            const firstStepData = JSON.parse(localStorage.getItem(FIRST_STEP_LOCALSTORAGE_KEY) || '{}');
+            const secondStepData = JSON.parse(localStorage.getItem(SECOND_STEP_LOCALSTORAGE_KEY) || '{}');
+            const thirdStepData = JSON.parse(localStorage.getItem(THIRD_STEP_LOCALSTORAGE_KEY) || '{}');
 
             let projectModules = processProjectModules(thirdStepData);
 
@@ -252,4 +266,13 @@ export default {
     .ucwords {
         text-transform: capitalize;
     }
+
+    /*.project-create-wrapper {*/
+        /*.error-modal{*/
+            /*display: none;*/
+            /*&.opened{*/
+                /*display: table;*/
+            /*}*/
+        /*}*/
+    /*}*/
 </style>

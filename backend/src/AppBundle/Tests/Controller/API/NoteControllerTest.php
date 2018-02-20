@@ -23,6 +23,7 @@ class NoteControllerTest extends BaseController
         $responseStatusCode,
         $responseContent
     ) {
+        $this->markTestSkipped();
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
@@ -82,6 +83,7 @@ class NoteControllerTest extends BaseController
         $responseStatusCode,
         $responseContent
     ) {
+        $this->markTestSkipped();
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
@@ -142,6 +144,7 @@ class NoteControllerTest extends BaseController
         $isResponseSuccessful,
         $responseStatusCode
     ) {
+        $this->markTestSkipped();
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 

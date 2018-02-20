@@ -77,7 +77,7 @@
                                 <img :src="task.responsibilityAvatar" :alt="task.responsibilityFullName"/>
                                 <b>{{ task.responsibilityFullName }}</b>
                             </div>
-                            <span class="task-subtasks">
+                            <span class="task-subtasks" v-if="task && task.children && task.children.length">
                                 &nbsp;&nbsp;|&nbsp;&nbsp; {{ getSubtaskSummary() }} {{ translateText('message.subtasks') }} {{ translateText('label.completed') }}
                             </span>
                         </div>
@@ -970,7 +970,6 @@ export default {
             'getTaskById',
             'getTaskHistory',
             'deleteTaskSubtask',
-            'countCompletedSubtasks',
             'addTaskComment',
             'getColorStatuses',
             'editTask',
@@ -1429,6 +1428,25 @@ export default {
     },
 };
 </script>
+
+<!-- scoped css is not applied to elements added via v-html, so we add some global styles here -->
+<style lang="scss">
+    .task-description {
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul {
+            margin-left: 20px;
+            list-style-type: disc;
+        }
+
+        ol {
+            margin-left: 20px;
+            list-style-type: decimal;
+        }
+    }
+</style>
 
 <style scoped lang="scss">
     @import '../../../css/page-section';

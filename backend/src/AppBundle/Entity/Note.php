@@ -28,7 +28,7 @@ class Note
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="Project", inversedBy="notes")
+     * @ORM\ManyToOne(targetEntity="Project")
      * @ORM\JoinColumn(name="project_id")
      */
     private $project;
@@ -38,7 +38,7 @@ class Note
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="notes")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting")
      * @ORM\JoinColumn(name="meeting_id", onDelete="CASCADE")
      */
     private $meeting;
