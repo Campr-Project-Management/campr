@@ -13,7 +13,6 @@ use AppBundle\Entity\Info;
 use AppBundle\Entity\Label;
 use AppBundle\Entity\Measure;
 use AppBundle\Entity\Meeting;
-use AppBundle\Entity\Note;
 use AppBundle\Entity\Opportunity;
 use AppBundle\Entity\OpportunityStatus;
 use AppBundle\Entity\OpportunityStrategy;
@@ -44,7 +43,6 @@ use AppBundle\Form\Project\ApiType;
 use AppBundle\Form\Calendar\BaseCreateType as CalendarCreateType;
 use AppBundle\Form\Contract\BaseCreateType as ContractCreateType;
 use AppBundle\Form\DistributionList\BaseCreateType as DistributionCreateType;
-use AppBundle\Form\Note\BaseCreateType as NoteCreateType;
 use AppBundle\Form\ProjectTeam\BaseCreateType as ProjectTeamCreateType;
 use AppBundle\Form\ProjectUser\BaseCreateType as ProjectUserCreateType;
 use AppBundle\Form\Rasci\DataType as RasciDataType;
@@ -481,6 +479,7 @@ class ProjectController extends ApiController
     public function createMeetingAction(Request $request, Project $project)
     {
         $meeting = new Meeting();
+        $meeting->setProject($project);
         $form = $this->createForm(MeetingApiCreateType::class, $meeting, ['csrf_protection' => false]);
         $this->processForm($request, $form);
 
@@ -518,60 +517,12 @@ class ProjectController extends ApiController
             }
 
             $meeting->setCreatedBy($this->getUser());
-            $meeting->setProject($project);
+            foreach ($meeting->getInfos() as $info) {
+                $info->setProject($project);
+            }
             $this->persistAndFlush($meeting);
 
             return $this->createApiResponse($meeting, Response::HTTP_CREATED);
-        }
-
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
-     * All notes for the current project.
-     *
-     * @Route("/{id}/notes", name="app_api_project_notes")
-     * @Method({"GET"})
-     *
-     * @param Project $project
-     *
-     * @return JsonResponse
-     */
-    public function notesAction(Project $project)
-    {
-        return $this->createApiResponse($project->getNotes());
-    }
-
-    /**
-     * Create a new Note.
-     *
-     * @Route("/{id}/notes", name="app_api_project_note_create")
-     * @Method({"POST"})
-     *
-     * @param Request $request
-     * @param Project $project
-     *
-     * @return JsonResponse
-     */
-    public function createNoteAction(Request $request, Project $project)
-    {
-        $note = new Note();
-        $note->setProject($project);
-
-        $form = $this->createForm(NoteCreateType::class, $note, ['csrf_protection' => false]);
-        $this->processForm($request, $form);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($note);
-            $em->flush();
-
-            return $this->createApiResponse($note, Response::HTTP_CREATED);
         }
 
         $errors = $this->getFormErrors($form);
@@ -2010,7 +1961,10 @@ class ProjectController extends ApiController
     {
         $info = new Info();
         $info->setProject($project);
-        $form = $this->createForm(InfoType::class, $info, ['method' => Request::METHOD_POST, 'csrf_protection' => false]);
+        $form = $this->createForm(InfoType::class, $info, [
+            'method' => Request::METHOD_POST,
+            'csrf_protection' => false,
+        ]);
 
         $this->processForm($request, $form, false);
 

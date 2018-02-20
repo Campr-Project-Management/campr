@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
@@ -27,7 +26,7 @@ class Info
 
     /**
      * @var Project
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="infos")
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="project_id", referencedColumnName="id", nullable=false)
      * })
@@ -35,6 +34,16 @@ class Info
      * @Serializer\Exclude()
      */
     private $project;
+
+    /**
+     * @var Meeting|null
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="infos")
+     * @ORM\JoinColumn(name="meeting_id", onDelete="CASCADE")
+     */
+    private $meeting;
 
     /**
      * @var InfoCategory
@@ -61,29 +70,23 @@ class Info
     private $description;
 
     /**
-     * @var ArrayCollection|User[]
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinTable(
-     *     name="info_user",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="info_id", referencedColumnName="id", nullable=false)
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
-     *     }
-     * )
+     * @var User|null
+     *
      * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="responsibility_id", onDelete="SET NULL")
      */
-    private $users;
+    private $responsibility;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="expiry_date", type="date")
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
-     * @Assert\NotBlank(message="not_blank.expiry_date")
+     * @ORM\Column(name="due_date", type="date", nullable=true)
      */
-    private $expiryDate;
+    private $dueDate;
 
     /**
      * @var InfoStatus
@@ -98,12 +101,14 @@ class Info
 
     /**
      * @var \DateTime
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
 
     /**
      * @var \DateTime
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="update")
      */
@@ -112,7 +117,6 @@ class Info
     public function __construct()
     {
         $this->createdAt = new \DateTime();
-        $this->users = new ArrayCollection();
     }
 
     /**
@@ -176,13 +180,13 @@ class Info
     /**
      * Set expiryDate.
      *
-     * @param \DateTime $expiryDate
+     * @param \DateTime $dueDate
      *
      * @return Info
      */
-    public function setExpiryDate($expiryDate)
+    public function setDueDate(\DateTime $dueDate = null)
     {
-        $this->expiryDate = $expiryDate;
+        $this->dueDate = $dueDate;
 
         return $this;
     }
@@ -192,9 +196,9 @@ class Info
      *
      * @return \DateTime
      */
-    public function getExpiryDate()
+    public function getDueDate()
     {
-        return $this->expiryDate;
+        return $this->dueDate;
     }
 
     /**
@@ -248,11 +252,11 @@ class Info
     /**
      * Set project.
      *
-     * @param \AppBundle\Entity\Project $project
+     * @param Project $project
      *
      * @return Info
      */
-    public function setProject(\AppBundle\Entity\Project $project)
+    public function setProject(Project $project)
     {
         $this->project = $project;
 
@@ -262,11 +266,35 @@ class Info
     /**
      * Get project.
      *
-     * @return \AppBundle\Entity\Project
+     * @return Project
      */
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * @return Meeting|null
+     */
+    public function getMeeting()
+    {
+        return $this->meeting;
+    }
+
+    /**
+     * @param Meeting|null $meeting
+     *
+     * @return Info
+     */
+    public function setMeeting(Meeting $meeting = null)
+    {
+        $this->meeting = $meeting;
+
+        if ($meeting->getProject()) {
+            $this->project = $meeting->getProject();
+        }
+
+        return $this;
     }
 
     /**
@@ -294,37 +322,79 @@ class Info
     }
 
     /**
-     * Add user.
+     * Set responsibility.
      *
-     * @param User $user
+     * @param User $responsibility
      *
      * @return Info
      */
-    public function addUser(User $user)
+    public function setResponsibility(User $responsibility = null)
     {
-        $this->users[] = $user;
+        $this->responsibility = $responsibility;
 
         return $this;
     }
 
     /**
-     * Remove user.
+     * Get responsibility.
      *
-     * @param User $user
+     * @return User
      */
-    public function removeUser(User $user)
+    public function getResponsibility()
     {
-        $this->users->removeElement($user);
+        return $this->responsibility;
     }
 
     /**
-     * Get users.
+     * Returns the responsibility username.
      *
-     * @return ArrayCollection|User[]
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibility")
+     *
+     * @return string
      */
-    public function getUsers()
+    public function getResponsibilityId()
     {
-        return $this->users;
+        return $this->responsibility ? $this->responsibility->getId() : null;
+    }
+
+    /**
+     * Returns the responsibility username.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibilityFullName")
+     *
+     * @return string
+     */
+    public function getResponsibilityFullName()
+    {
+        return $this->responsibility ? $this->responsibility->getFullName() : null;
+    }
+
+    /**
+     * Returns the responsibility username.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibilityAvatar")
+     *
+     * @return string
+     */
+    public function getResponsibilityAvatar()
+    {
+        return $this->responsibility ? $this->responsibility->getAvatar() : null;
+    }
+
+    /**
+     * Returns the responsibility username.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("responsibilityGravatar")
+     *
+     * @return string
+     */
+    public function getResponsibilityGravatar()
+    {
+        return $this->responsibility ? $this->responsibility->getGravatar() : null;
     }
 
     /**
@@ -377,6 +447,30 @@ class Info
 
     /**
      * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("meeting")
+     */
+    public function getMeetingId()
+    {
+        return $this->meeting
+            ? $this->meeting->getId()
+            : null
+        ;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("meetingName")
+     */
+    public function getMeetingName()
+    {
+        return $this->meeting
+            ? $this->meeting->getName()
+            : null
+        ;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("infoStatus")
      */
     public function getInfoStatusId()
@@ -420,7 +514,7 @@ class Info
         return $this->infoCategory
             ? $this->infoCategory->getId()
             : null
-            ;
+        ;
     }
 
     /**
@@ -433,49 +527,5 @@ class Info
             ? $this->infoCategory->getName()
             : null
         ;
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("users")
-     */
-    public function getUsersIds()
-    {
-        return $this->users->map(function (User $user) {
-            return $user->getId();
-        });
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("usersNames")
-     */
-    public function getUsersNames()
-    {
-        return $this->users->map(function (User $user) {
-            return $user->getFullName();
-        });
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("usersAvatars")
-     */
-    public function getUsersAvatars()
-    {
-        return $this->users->map(function (User $user) {
-            return $user->getAvatar();
-        });
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("usersGravatars")
-     */
-    public function getUsersGravatars()
-    {
-        return $this->users->map(function (User $user) {
-            return $user->getGravatar();
-        });
     }
 }

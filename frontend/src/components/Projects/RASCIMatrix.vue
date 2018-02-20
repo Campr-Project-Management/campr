@@ -55,18 +55,18 @@
                             :class="{'active-row': activeRow === rasciIndex}"
                             v-on:mouseover="activeRow = rasciIndex"
                             v-on:mouseout="activeRow = null">
-                            <td v-if="workPackage.type === 0">{{ workPackage.name }}</td>
-                            <td class="task-number" v-if="workPackage.type !== 0">
-                                <span class="light-color">#{{ workPackage.id }}</span>
+                            <td v-if="workPackage.type !== 2">{{repeat('&nbsp', workPackage.type * 6)}}{{ workPackage.name }}</td>
+                            <td class="task-number" v-if="workPackage.type === 2">
+                                <span class="light-color">{{repeat('&nbsp', workPackage.type * 6)}}#{{ workPackage.id }}</span>
                             </td>
                             <td>
-                                <span v-if="workPackage.type !== 0">{{ workPackage.name }}</span>
+                                <span v-if="workPackage.type === 2">{{ workPackage.name }}</span>
                             </td>
                             <td v-for="(user, userIndex) in workPackage.rasci"
-                                v-on:mouseover="activeCell = workPackage.type !== 0 && userIndex"
+                                v-on:mouseover="activeCell = workPackage.type === 2 && userIndex"
                                 v-on:mouseout="activeCell = null"
                                 :class="{'rasci-cell': true, 'active-cell': activeCell === userIndex}">
-                                <responsibility-select v-if="workPackage.type !== 0"
+                                <responsibility-select v-if="workPackage.type === 2"
                                     :is-last="userIndex + 1 === workPackage.rasci.length"
                                     :is-second-to-last="userIndex + 2 === workPackage.rasci.length"
                                     :project="workPackage.project"
@@ -99,6 +99,14 @@ export default {
         },
         setRaciData: function({project, user, workPackage, data}) {
             this.setRasci({project, user, workPackage, data});
+        },
+        repeat(str, count) {
+            let c = 0;
+            let out = '';
+            for (; c < count; c++) {
+                out += str;
+            }
+            return out;
         },
     },
     computed: {
