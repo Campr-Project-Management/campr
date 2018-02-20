@@ -11,7 +11,7 @@ use AppBundle\Form\MeetingObjective\BaseType as ObjectiveType;
 use AppBundle\Form\MeetingAgenda\CreateType as AgendaType;
 use AppBundle\Form\Decision\CreateType as DecisionType;
 use AppBundle\Form\Todo\BaseCreateType as TodoType;
-use AppBundle\Form\Note\BaseCreateType as NoteType;
+use AppBundle\Form\Info\BaseCreateType as InfoType;
 
 class ApiCreateType extends BaseCreateType
 {
@@ -22,6 +22,7 @@ class ApiCreateType extends BaseCreateType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
+
         $builder
             ->add('meetingObjectives', CollectionType::class, [
                 'entry_type' => ObjectiveType::class,
@@ -47,8 +48,8 @@ class ApiCreateType extends BaseCreateType
                 'allow_delete' => true,
                 'by_reference' => false,
             ])
-            ->add('notes', CollectionType::class, [
-                'entry_type' => NoteType::class,
+            ->add('infos', CollectionType::class, [
+                'entry_type' => InfoType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,

@@ -3,25 +3,15 @@
 namespace AppBundle\Form\Info;
 
 use AppBundle\Entity\Info;
-use Symfony\Component\Form\AbstractType;
+use AppBundle\Form\Info\BaseCreateType as IBCT;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CreateType extends AbstractType
+class CreateType extends IBCT
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('project')
-            ->add('topic')
-            ->add('description')
-            ->add('infoStatus')
-            ->add('infoCategory')
-            ->add('expiryDate', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('users')
-        ;
+        parent::buildForm($builder, $options);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -31,17 +31,26 @@ class MenuBuilder
     /** @var TranslatorInterface */
     private $translator;
 
+    /** @var ApcuCache */
+    private $cacheDriver;
+
+    /** @var FactoryInterface */
+    private $factory;
+
     public function __construct(
         Router $router,
         TokenStorage $securityTokenStorage,
         AuthorizationChecker $securityAuthorizationChecker,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        FactoryInterface $factory
     ) {
         $this->router = $router;
         $this->securityTokenStorage = $securityTokenStorage;
         $this->securityAuthorizationChecker = $securityAuthorizationChecker;
         $this->translator = $translator;
         $this->metadataReader = new AnnotationDriver(new AnnotationReader());
+        $this->cacheDriver = new ApcuCache();
+        $this->factory = $factory;
     }
 
     /**
@@ -59,14 +68,20 @@ class MenuBuilder
         $token = $this->securityTokenStorage->getToken();
 
         if ($token->isAuthenticated()) {
-            $cacheDriver = new ApcuCache();
-            if (!$cacheDriver->contains($routeName)) {
+            if (php_sapi_name() === 'cli') {
                 $route = $this->router->getRouteCollection()->get($routeName);
                 $controller = $route->getDefault('_controller');
                 list($class, $method) = explode('::', $controller, 2);
-                $cacheDriver->save($routeName, ['class' => $class, 'method' => $method]);
+                $apcData = ['class' => $class, 'method' => $method];
+            } else {
+                if (!$this->cacheDriver->contains($routeName)) {
+                    $route = $this->router->getRouteCollection()->get($routeName);
+                    $controller = $route->getDefault('_controller');
+                    list($class, $method) = explode('::', $controller, 2);
+                    $this->cacheDriver->save($routeName, ['class' => $class, 'method' => $method]);
+                }
+                $apcData = $this->cacheDriver->fetch($routeName);
             }
-            $apcData = $cacheDriver->fetch($routeName);
             $metadata = $this->getMetadata($apcData['class']);
 
             if (!isset($metadata->methodMetadata[$apcData['method']])) {
@@ -102,9 +117,10 @@ class MenuBuilder
         return $menu;
     }
 
-    public function createAdminAppMenu(FactoryInterface $factory)
+    public function createAdminAppMenu()
     {
-        $menu = $factory
+        $menu = $this
+            ->factory
             ->createItem('root')
             ->setChildrenAttribute('class', 'main-menu sidebar-main-menu')
         ;
@@ -412,20 +428,21 @@ class MenuBuilder
             ])->getParent()
         ;
 
-        $menu
-            ->addChild($this->translator->trans('title.note.list', [], 'messages'), [])
-            ->setAttributes([
-                'class' => 'sub-menu main-category',
-                'dropdown' => true,
-            ])
-            ->setLinkAttribute('icon', 'zmdi zmdi-comment-edit')
-            ->addChild($this->translator->trans('title.note.list', [], 'messages'), [
-                'route' => 'app_admin_note_list',
-            ])->getParent()
-            ->addChild($this->translator->trans('title.note_status.list', [], 'messages'), [
-                'route' => 'app_admin_note_status_list',
-            ])->getParent()
-        ;
+        // @TODO: Remove this when Notes are completely removed
+//        $menu
+//            ->addChild($this->translator->trans('title.note.list', [], 'messages'), [])
+//            ->setAttributes([
+//                'class' => 'sub-menu main-category',
+//                'dropdown' => true,
+//            ])
+//            ->setLinkAttribute('icon', 'zmdi zmdi-comment-edit')
+//            ->addChild($this->translator->trans('title.note.list', [], 'messages'), [
+//                'route' => 'app_admin_note_list',
+//            ])->getParent()
+//            ->addChild($this->translator->trans('title.note_status.list', [], 'messages'), [
+//                'route' => 'app_admin_note_status_list',
+//            ])->getParent()
+//        ;
 
         $menu
             ->addChild($this->translator->trans('title.decision.list', [], 'messages'), [])
@@ -509,9 +526,13 @@ class MenuBuilder
         return $menu;
     }
 
-    public function createAdminMainMenu(FactoryInterface $factory)
+    public function createAdminMainMenu()
     {
-        $menu = $factory->createItem('root')->setChildrenAttribute('class', 'sidebar-menu');
+        $menu = $this
+            ->factory
+            ->createItem('root')
+            ->setChildrenAttribute('class', 'sidebar-menu')
+        ;
 
         $menu
             ->addChild($this->translator->trans('menu.users', [], 'messages'), [

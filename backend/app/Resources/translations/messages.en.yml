@@ -1618,6 +1618,7 @@ table_header_cell:
     decisions: Decisions
     todos: TODOs
     notes: Notes
+    infos: Infos
     medias: Medias
     show_in_report: Show in status report
     is_based: Is Based
@@ -1856,3 +1857,5 @@ modules:
     close_down_project:
         title: Close Down Project
         description: The project final report serves as a final document for the evaluation of the project and for the planning of residual tasks and the post-project phase. The project final report is the basis for the final project commissioning process.
+
+unknown_route: I don't know where you want to go.

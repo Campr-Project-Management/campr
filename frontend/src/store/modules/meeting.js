@@ -323,6 +323,29 @@ const mutations = {
             });
         }
     },
+    [types.ADD_MEETING_INFO](state, {info}) {
+        if (state.meeting && _.isArray(state.meeting.infos)) {
+            state.meeting.infos.push(info);
+        }
+    },
+    [types.EDIT_MEETING_INFO](state, {info}) {
+        if (state.meeting && _.isArray(state.meeting.infos)) {
+            state.meeting.infos.map(item => {
+                if (item.id === info.id) {
+                    _.mapKeys(info, (value, key) => {
+                        item[key] = value;
+                    });
+                }
+            });
+        }
+    },
+    [types.DELETE_MEETING_INFO](state, {infoId}) {
+        if (state.meeting && _.isArray(state.meeting.infos)) {
+            state.meeting.infos = state.meeting.infos.filter((item) => {
+                return item.id !== infoId;
+            });
+        }
+    },
     /**
      * Add new meeting todo
      * @param {Object} state
