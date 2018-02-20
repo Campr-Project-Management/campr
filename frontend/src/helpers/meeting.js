@@ -81,11 +81,12 @@ export const createFormData = (data) => {
 
     if (data.infos) {
         for (let i = 0; i < data.infos.length; i++) {
-            formData.append('notes[' + i + '][title]', data.infos[i].title);
-            formData.append('notes[' + i + '][description]', data.infos[i].description);
-            formData.append('notes[' + i + '][responsibility]', data.infos[i].responsible.length > 0 ? data.infos[i].responsible[0] : null);
-            formData.append('notes[' + i + '][dueDate]', moment(data.infos[i].dueDate).format('DD-MM-YYYY'));
-            formData.append('notes[' + i + '][status]', data.infos[i].status ? data.infos[i].status.key : null);
+            formData.append('infos[' + i + '][topic]', data.infos[i].topic);
+            formData.append('infos[' + i + '][description]', data.infos[i].description);
+            formData.append('infos[' + i + '][responsibility]', data.infos[i].responsible.length > 0 ? data.infos[i].responsible[0] : null);
+            formData.append('infos[' + i + '][dueDate]', moment(data.infos[i].dueDate).format('DD-MM-YYYY'));
+            formData.append('infos[' + i + '][infoStatus]', data.infos[i].infoStatus ? data.infos[i].infoStatus.key : null);
+            formData.append('infos[' + i + '][infoCategory]', data.infos[i].infoCategory ? data.infos[i].infoCategory.key : null);
         }
     }
 
