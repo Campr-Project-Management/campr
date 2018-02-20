@@ -71,6 +71,7 @@ class MeetingControllerTest extends BaseController
         $end = new \DateTime('+1 hour');
 
         $form = $crawler->filter('#create-form')->first()->form();
+        $form['create[project]'] = 1;
         $form['create[name]'] = 'meeting2';
         $form['create[location]'] = 'meeting-location';
         $form['create[date]'] = $date->format('d-m-Y');
