@@ -3,6 +3,7 @@ ROLE_ADMIN: Admin
 ROLE_USER: User
 
 message:
+    user_blocked: User blocked
     member: member
     members: members
     roles: Roles

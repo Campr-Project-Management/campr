@@ -69,6 +69,9 @@ export default {
         }
         this.getGanttData(this.$route.params.id);
     },
+    beforeDestroy() {
+        this.removeAllEvents();
+    },
     methods: {
         ...mapActions(['getGanttData', 'getProjectById', 'importTask']),
 

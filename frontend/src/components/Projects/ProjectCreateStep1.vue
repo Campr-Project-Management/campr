@@ -180,11 +180,12 @@ export default {
         },
     },
     computed: mapGetters({
+        customers: 'customersForSelect',
+        localUser: 'localUser',
         portfolios: 'portfoliosForSelect',
         portfolioLoading: 'portfolioLoading',
         programmes: 'programmesForSelect',
         programmeLoading: 'programmeLoading',
-        customers: 'customersForSelect',
     }),
     created() {
         this.validator = new Validator({
