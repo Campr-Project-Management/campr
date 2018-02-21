@@ -6,10 +6,10 @@ use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamInvite;
 use AppBundle\Entity\TeamMember;
 use AppBundle\Entity\User;
-use Doctrine\Common\Collections\Criteria;
 use MainBundle\Event\TeamEvent;
 use MainBundle\Form\Team\CreateType;
 use MainBundle\Form\Team\EditType;
+use MainBundle\Form\TeamMember\EditRolesType;
 use MainBundle\Security\TeamVoter;
 use MainBundle\Form\InviteUserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -194,14 +194,16 @@ class TeamController extends Controller
         $user = $this->getUser();
         $subdomain = sprintf('%s://%s.%s', $request->getScheme(), $team->getSlug(), $request->getHost());
 
-        $criteria = Criteria::create();
-        $criteria->where(Criteria::expr()->eq('user', $user));
-        $teamMember = $team->getTeamMembers()->matching($criteria)->first();
-        $roles = $teamMember
-            ? $teamMember->getRoles()
-            // if the team member entry is not found return super admin if team belongs to user or user otherwise
-            : ($team->getUser() === $user ? [User::ROLE_SUPER_ADMIN] : [User::ROLE_USER])
-        ;
+        if ($team->getUser() !== $user) {
+            $teamMember = $team->getTeamMemberForUser($user);
+            $roles = $teamMember ? $teamMember->getRoles() : [];
+
+            if (!count($roles)) {
+                throw $this->createAccessDeniedException();
+            }
+        } else {
+            $roles = [User::ROLE_SUPER_ADMIN];
+        }
 
         $userData = [
             'email' => $user->getEmail(),
@@ -568,5 +570,40 @@ class TeamController extends Controller
         ;
 
         return $this->redirectToRoute('main_team_show', ['id' => $team->getId()]);
+    }
+
+    /**
+     * @Route("/{team}/edit-team-member/{teamMember}", name="main_team_edit_team_member")
+     * @Method({"GET", "POST"})
+     */
+    public function editTeamMemberAction(Request $request, Team $team, TeamMember $teamMember)
+    {
+        if ($teamMember->getUser() === $team->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $form = $this->createForm(EditRolesType::class, $teamMember, [
+            'method' => $request->getMethod(),
+        ]);
+
+        if ($request->isMethod(Request::METHOD_POST)) {
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($teamMember);
+                $em->flush();
+
+                return $this->redirectToRoute('main_team_show', [
+                    'id' => $team->getId(),
+                ]);
+            }
+        }
+
+        return $this->render('MainBundle:Team:edit_team_member_roles.html.twig', [
+            'team' => $team,
+            'teamMember' => $teamMember,
+            'form' => $form->createView(),
+        ]);
     }
 }

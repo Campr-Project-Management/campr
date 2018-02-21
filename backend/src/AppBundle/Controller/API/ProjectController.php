@@ -135,6 +135,9 @@ class ProjectController extends ApiController
     public function createAction(Request $request)
     {
         $project = new Project();
+
+        $this->denyAccessUnlessGranted(ProjectVoter::CREATE, $project);
+
         $form = $this->createForm(ApiType::class, $project, ['csrf_protection' => false]);
         $this->processForm($request, $form);
 
