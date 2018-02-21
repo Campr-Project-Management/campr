@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "39496e6125aa1078cd698b31315cb4b1",
+    "content-hash": "7864a4f3707adbc0f4871fc5c7529bb6",
     "packages": [
         {
             "name": "ambta/doctrine-encrypt-bundle",
@@ -1216,7 +1216,6 @@
             "keywords": [
                 "dropbox"
             ],
-            "abandoned": "dropbox/dropbox-sdk",
             "time": "2012-09-10T06:07:54+00:00"
         },
         {
@@ -5067,7 +5066,7 @@
                 "redis",
                 "symfony"
             ],
-            "time": "2016-11-16 11:15:40"
+            "time": "2016-11-16T11:15:40+00:00"
         },
         {
             "name": "sonata-project/google-authenticator",
@@ -5812,6 +5811,7 @@
             ],
             "description": "Symfony Swiftmailer Bridge",
             "homepage": "https://symfony.com",
+            "abandoned": true,
             "time": "2016-08-05T08:07:44+00:00"
         },
         {
@@ -6062,7 +6062,7 @@
                 "swift",
                 "swiftmailer"
             ],
-            "time": "2016-06-08 13:56:54"
+            "time": "2016-06-08T13:56:54+00:00"
         },
         {
             "name": "twig/twig",
@@ -7531,7 +7531,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.0.11"
+        "php": ">=7.1"
     },
     "platform-dev": []
 }
