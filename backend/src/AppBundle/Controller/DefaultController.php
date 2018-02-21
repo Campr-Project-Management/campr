@@ -146,6 +146,10 @@ class DefaultController extends Controller
             'email' => $userData['email'],
         ]);
 
+        if (!count($userData['roles'])) {
+            throw $this->createAccessDeniedException();
+        }
+
         if (!$user) {
             $user = new User();
             $user->setEmail($userData['email']);
