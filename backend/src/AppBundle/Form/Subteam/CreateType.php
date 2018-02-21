@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Subteam;
 
 use AppBundle\Entity\Project;
+use AppBundle\Entity\ProjectDepartment;
 use AppBundle\Entity\Subteam;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -14,43 +15,82 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
-                'required' => true,
-            ])
-            ->add('description', TextareaType::class, [
-                'required' => false,
-            ])
-            ->add('project', EntityType::class, [
-                'class' => Project::class,
-                'required' => false,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.project',
-                'translation_domain' => 'messages',
-            ])
-            ->add('parent', EntityType::class, [
-                'class' => Subteam::class,
-                'required' => false,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.subteam',
-                'translation_domain' => 'messages',
-            ])
-            ->add('subteamMembers', CollectionType::class, [
-                'entry_type' => MemberType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-            ])
-        ;
+            ->add(
+                'name',
+                TextType::class,
+                [
+                    'required' => true,
+                ]
+            )
+            ->add(
+                'description',
+                TextareaType::class,
+                [
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'project',
+                EntityType::class,
+                [
+                    'class' => Project::class,
+                    'required' => false,
+                    'choice_label' => 'name',
+                    'placeholder' => 'placeholder.project',
+                    'translation_domain' => 'messages',
+                ]
+            )
+            ->add(
+                'parent',
+                EntityType::class,
+                [
+                    'class' => Subteam::class,
+                    'required' => false,
+                    'choice_label' => 'name',
+                    'placeholder' => 'placeholder.subteam',
+                    'translation_domain' => 'messages',
+                ]
+            )
+            ->add(
+                'subteamMembers',
+                CollectionType::class,
+                [
+                    'entry_type' => MemberType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                ]
+            )
+            ->add(
+                'department',
+                EntityType::class,
+                [
+                    'class' => ProjectDepartment::class,
+                    'required' => false,
+                    'choice_label' => 'name',
+                    'placeholder' => 'placeholder.department',
+                    'translation_domain' => 'messages',
+                ]
+            );
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Subteam::class,
-            'allow_extra_fields' => true,
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => Subteam::class,
+                'allow_extra_fields' => true,
+            ]
+        );
     }
 }

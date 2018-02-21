@@ -103,12 +103,22 @@ class ProjectDepartment
     private $projectUsers;
 
     /**
+     * @var Subteam[]|ArrayCollection
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Subteam", mappedBy="department")
+     */
+    private $subteams;
+
+    /**
      * ProjectDepartment constructor.
      */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->projectUsers = new ArrayCollection();
+        $this->subteams = new ArrayCollection();
     }
 
     /**
@@ -434,5 +444,29 @@ class ProjectDepartment
     public function getProjectName()
     {
         return $this->project ? $this->project->getName() : null;
+    }
+
+    /**
+     * @return Subteam[]|ArrayCollection
+     */
+    public function getSubteams()
+    {
+        return $this->subteams;
+    }
+
+    /**
+     * @param Subteam[]|ArrayCollection $subteams
+     */
+    public function setSubteams($subteams)
+    {
+        $this->subteams = $subteams;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return (string) $this->getName();
     }
 }

@@ -27,7 +27,12 @@
         <!-- /// SUBTEAM MODALS /// -->
         <modal v-if="showEditSubteamModal" @close="showEditSubteamModal = false">
             <p class="modal-title">{{ translateText('message.edit_subteam') }}</p>
-            <input-field v-model="editSubteamName" :content="editSubteamName" type="text" v-bind:label="translateText('label.subteam_name')"></input-field>
+            <input-field
+                v-model="editSubteamName"
+                :content="editSubteamName"
+                type="text"
+                v-bind:label="translateText('label.subteam_name')">
+            </input-field>
             <multi-select-field
                 v-bind:title="translateText('label.select_users')"
                 v-bind:options="projectUsersForSelect"
@@ -41,7 +46,14 @@
                 v-bind:current-option="editSubteamLead"
                 v-model="editSubteamLead"
             />
-            <br />
+            <br/>
+            <select-field
+                v-bind:title="translateText('label.select_department')"
+                v-bind:options="projectDepartmentsForSelect"
+                v-bind:current-option="editSubteamDepartment"
+                v-model="editSubteamDepartment"
+            />
+            <br/>
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showEditSubteamModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
                 <a href="javascript:void(0)" @click="editSelectedSubteam()" class="btn-rounded">{{ translateText('button.edit_subteam') }} +</a>
@@ -208,7 +220,7 @@
                                         </div>
                                     </td>
                                     <td v-if="subteam.subteamMembers">{{ subteam.subteamMembers.length }}</td>
-                                    <td>-</td>
+                                    <td>{{ subteam.department ? subteam.department.name : '-' }}</td>
                                     <td>
                                         <button @click="initEditSubteamModal(subteam)" data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                         <button @click="initDeleteSubteamModal(subteam)" data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
@@ -392,6 +404,11 @@ export default {
             this.editSubteamName = subteam.name;
             this.editSubteamMembers = [];
             this.editSubteamLead = null;
+            this.editSubteamDepartment = subteam.department && {
+                key: subteam.department.id,
+                label: subteam.department.name,
+            };
+
             subteam.subteamMembers.map(member => {
                 this.editSubteamMembers.push({key: member.user, label: member.userFullName});
                 if (member.isLead) {
@@ -425,10 +442,16 @@ export default {
             let data = {
                 id: this.editSubteamId,
                 name: this.editSubteamName,
+                department: null,
                 subteamMembers: this.editSubteamMembers.map(member => {
                     return {'user': member.key, 'isLead': !! (this.editSubteamLead && this.editSubteamLead.key === member.key)};
                 }),
             };
+
+            if (this.editSubteamDepartment) {
+                data.department = this.editSubteamDepartment.key;
+            }
+
             this.editSubteam(data);
             this.showEditSubteamModal = false;
         },
@@ -459,6 +482,7 @@ export default {
             validationMessages: 'validationMessages',
             users: 'users',
             project: 'project',
+            projectDepartmentsForSelect: 'projectDepartmentsForSelect',
         }),
         usersCurrentList: {
             get() {
@@ -495,6 +519,7 @@ export default {
             editDepartmentManagers: [],
             editSubteamMembers: [],
             editSubteamLead: [],
+            editSubteamDepartment: null,
             roleName: null,
             showEditDepartmentModal: false,
             showDeleteDepartmentModal: false,
