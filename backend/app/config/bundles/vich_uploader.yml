@@ -2,22 +2,22 @@ vich_uploader:
     db_driver: orm
     mappings:
         team_images:
-            uri_prefix:         %main.team.uri_prefix%
-            upload_destination: %main.team.images_path%
+            uri_prefix:         '%main.team.uri_prefix%'
+            upload_destination: '%main.team.images_path%'
             namer:              vich_uploader.namer_uniqid
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
         project_images:
-            uri_prefix:         %main.project.uri_prefix%
-            upload_destination: %main.project.images_path%
+            uri_prefix:         '%main.project.uri_prefix%'
+            upload_destination: '%main.project.images_path%'
             namer:              vich_uploader.namer_uniqid
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
         user_avatars:
-            uri_prefix:         %app.user.uri_prefix%
-            upload_destination: %app.user.avatars_path%
+            uri_prefix:         '%app.user.uri_prefix%'
+            upload_destination: '%app.user.avatars_path%'
             namer:              vich_uploader.namer_uniqid
             inject_on_load:     false
             delete_on_update:   true

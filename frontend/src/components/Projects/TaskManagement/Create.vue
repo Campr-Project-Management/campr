@@ -65,8 +65,8 @@
                     <!-- /// Task Internal Costs /// -->
                     <internal-costs
                         v-model="internalCosts"
-                        v-on:input="setInternalCosts"
-                        :validationMessages="internalValidationMessages" />
+                        :validationMessages="internalValidationMessages"
+                        @add="onInternalCostAdded"/>
                     <!-- /// End Task Internal Costs /// -->
 
                     <hr class="double">
@@ -74,8 +74,8 @@
                     <!-- /// Task External Costs /// -->
                     <external-costs
                         v-model="externalCosts"
-                        v-on:input="setExternalCosts"
-                        :validationMessages="externalValidationMessages" />
+                        :validationMessages="externalValidationMessages"
+                        @add="onExternalCostAdded"/>
                     <!-- /// End Task External Costs /// -->
 
                     <hr class="double">
@@ -174,7 +174,16 @@ export default {
         AlertModal,
     },
     methods: {
-        ...mapActions(['createNewTask', 'getTaskById', 'editTask', 'importTask', 'emptyValidationMessages']),
+        ...mapActions(
+            [
+                'createNewTask',
+                'getTaskById',
+                'editTask',
+                'importTask',
+                'emptyValidationMessages',
+                'getProjectUnits',
+            ]
+        ),
         createTask: function() {
             let data = {
                 project: this.$route.params.id,
@@ -200,9 +209,10 @@ export default {
                     (response) => {
                         if (response.body && response.body.error && response.body.messages) {
                             this.showFailed = true;
-                        } else {
-                            this.showSaved = true;
+                            return;
                         }
+
+                        this.showSaved = true;
                     },
                     () => {
                         this.showFailed = true;
@@ -225,6 +235,9 @@ export default {
                 details: this.details,
                 statusColor: this.statusColor,
             };
+
+            let customUnitAdded = this.wasCustomUnitAdded(this.externalCosts);
+
             this
                 .editTask({
                     data: createFormData(data),
@@ -234,9 +247,14 @@ export default {
                     (response) => {
                         if (response.body && response.body.error && response.body.messages) {
                             this.showFailed = true;
-                        } else {
-                            this.showSaved = true;
+                            return;
                         }
+
+                        if (customUnitAdded) {
+                            this.getProjectUnits(this.$route.params.id);
+                        }
+
+                        this.showSaved = true;
                     },
                     () => {
                         this.showFailed = true;
@@ -272,15 +290,32 @@ export default {
                 }
             );
         },
-        // event methods
-        setInternalCosts(value) {
-            this.internalCosts = value;
-        },
-        setExternalCosts(value) {
-            this.externalCosts = value;
-        },
         setMedias(value) {
             this.medias = value;
+        },
+        onInternalCostAdded() {
+            this.internalCosts.items.push({
+                resource: '',
+                quantity: 1,
+                duration: 1,
+                rate: 0,
+            });
+        },
+        onExternalCostAdded() {
+            this.externalCosts.items.push({
+                description: '',
+                quantity: 0,
+                rate: 0,
+                capex: 0,
+                opex: 1,
+                customUnit: '',
+                unit: null,
+            });
+        },
+        wasCustomUnitAdded(costs) {
+            return !!_.find(costs.items, (item) => {
+                return item.customUnit && item.customUnit.length > 0;
+            });
         },
     },
     created() {
