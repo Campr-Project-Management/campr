@@ -17,6 +17,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 class ProjectVoter extends Voter
 {
+    const CREATE = 'create';
     const VIEW = 'view';
     const EDIT = 'edit';
     const DELETE = 'delete';
@@ -46,7 +47,7 @@ class ProjectVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [self::VIEW, self::EDIT, self::DELETE])) {
+        if (!in_array($attribute, [self::CREATE, self::VIEW, self::EDIT, self::DELETE])) {
             return false;
         }
 
@@ -71,6 +72,11 @@ class ProjectVoter extends Voter
         }
 
         switch ($attribute) {
+            case self::CREATE:
+                return 0 < count(array_intersect(
+                    [User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN],
+                    $user->getRoles()
+                ));
             case self::VIEW:
                 return $this->canView($subject, $user);
             case self::EDIT:

@@ -9,7 +9,11 @@
             </div>
             <div class="grid-view">
                 <project-box v-for="project in projects" v-bind:project="project"></project-box>
-                <router-link :to="{name: 'projects-create-1'}" class="new-box">
+                <router-link
+                    :to="{name: 'projects-create-1'}"
+                    class="new-box"
+                    v-if="localUserIsAdmin"
+                >
                     {{ translateText('message.new_project') }} +
                 </router-link>
             </div>
@@ -65,11 +69,18 @@ export default {
         ...mapGetters({
             projects: 'projects',
             user: 'user',
+            localUser: 'localUser',
             projectsCount: 'projectsCount',
             projectsPerPage: 'projectsPerPage',
         }),
         pages: function() {
             return Math.ceil(this.projectsCount / this.projectsPerPage);
+        },
+        localUserIsAdmin() {
+            return !! (this.localUser && this.localUser.roles && (
+                this.localUser.roles.indexOf('ROLE_SUPER_ADMIN') !== -1 ||
+                this.localUser.roles.indexOf('ROLE_SUPER_ADMIN') !== -1
+            ));
         },
     },
     data() {
