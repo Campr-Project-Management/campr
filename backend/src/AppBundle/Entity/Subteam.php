@@ -70,6 +70,14 @@ class Subteam
     private $children;
 
     /**
+     * @var ProjectDepartment
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectDepartment", inversedBy="subteams")
+     * @ORM\JoinColumn(name="department_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $department;
+
+    /**
      * @return string
      */
     public function __toString(): string
@@ -285,5 +293,21 @@ class Subteam
     public function getProjectName()
     {
         return $this->project ? (string) $this->project : null;
+    }
+
+    /**
+     * @return ProjectDepartment|null
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param ProjectDepartment $department
+     */
+    public function setDepartment(ProjectDepartment $department = null)
+    {
+        $this->department = $department;
     }
 }
