@@ -21,6 +21,11 @@ class SubteamController extends ApiController
     /**
      * @Route("/{id}", name="app_api_subteam_edit", options={"expose"=true})
      * @Method({"PUT", "PATCH"})
+     *
+     * @param Request $request
+     * @param Subteam $subteam
+     *
+     * @return JsonResponse
      */
     public function editAction(Request $request, Subteam $subteam)
     {
