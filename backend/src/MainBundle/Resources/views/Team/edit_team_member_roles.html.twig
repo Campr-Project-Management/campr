@@ -1,0 +1,69 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'MainBundle::base.html.twig' %}
+
+{% block body_content %}
+<div class="container">
+    <section class="section first-section">
+        <div class="row">
+            <div class="col-lg-6 ml-lg-auto mr-lg-auto">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-md-auto">
+                        <h3 class="page-header">
+                            <span class="note">{{ 'title.workspace.edit'|trans }}:</span>
+                            {{ team.name }}
+                        </h3>
+                    </div>
+                    <div class="col-md-auto">
+                        <a href="{{ path('main_team_list') }}" class="small-link">< {{ 'button.back_to_list'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-30">
+            <div class="col-lg-6 ml-lg-auto mr-lg-auto">
+                {{ form_start(
+                    form,
+                    {
+                        'method': 'POST',
+                        'action': path('main_team_edit_team_member', {'team': team.id, 'teamMember': teamMember.id}),
+                        'attr': {
+                            'id': 'edit-team-team-member-roles',
+                            'class': 'form',
+                            'novalidate': 'novalidate',
+                        },
+                    }
+                ) }}
+                {% if form.vars.valid == false %}
+                    <div class="alert alert-danger">
+                        {% for field in form.children %}
+                            {{ form_errors(field) }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="control-group form-group">
+                    <div class="checkbox-input clearfix">
+                        <label class="custom-label">{{ 'label.roles'|trans }}</label>
+                        <br>
+                        {{ form_widget(form.roles) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="button" type="submit">{{ 'button.save'|trans }}</button>
+                </div>
+                {{ form_end(form, {'render_rest': true}) }}
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style type="text/css">
+        #edit_roles_roles > label {
+            clear: both;
+        }
+    </style>
+{% endblock %}

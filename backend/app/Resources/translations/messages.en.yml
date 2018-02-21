@@ -3,6 +3,7 @@ ROLE_ADMIN: Admin
 ROLE_USER: User
 
 message:
+    user_blocked: User blocked
     member: member
     members: members
     roles: Roles
@@ -911,6 +912,7 @@ label:
     phase_is_subphase: This is a subphase
     parent_phase: Select parent phase
     select_users: Select Users
+    select_department: Select Department
     subteam_name: Subteam Name
     select_managers: Select Managers
     department_name: Department Name

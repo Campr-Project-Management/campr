@@ -61,6 +61,10 @@
                             {% endif %}
                         </li>
                     </ul>
+                </div>
+            </div>
+            <div class="row mt-30">
+                <div class="col-lg-10 ml-lg-auto mr-lg-auto">
                     <div class="table-wrapper table-responsive">
                         <table class="custom-table">
                             <thead>
@@ -69,22 +73,43 @@
                                         {{ 'table_header_cell.members'|trans }}
                                     </th>
                                     {% if "ROLE_SUPER_ADMIN" in current_team_member.roles %}
-                                    <th  class="text-right">
-                                        {{ 'table_header_cell.actions'|trans }}
-                                    </th>
+                                        <th>
+                                            {{ 'table_header_cell.role'|trans }}
+                                        </th>
+                                        <th class="text-right">
+                                            {{ 'table_header_cell.actions'|trans }}
+                                        </th>
                                     {% endif %}
                                 </tr>
                             </thead>
                             <tbody>
                                 {%  if team.teamMembers %}
-                                    {% for teamMember in team.teamMembers %}
+                                    {% for teamMember in team.teamMembers if teamMember.user %}
                                         <tr>                                        
                                             <td>
                                                 {{ teamMember.user.username }}
                                             </td>
                                             {% if "ROLE_SUPER_ADMIN" in current_team_member.roles %}
+                                            <td>
+                                                {% if teamMember.roles|length %}
+                                                    {% for role in teamMember.roles %}
+                                                        {{ role|trans }}
+                                                        {% if not loop.last %}, {% endif %}
+                                                    {% endfor %}
+                                                {% else %}
+                                                    {{ 'message.user_blocked'|trans }}
+                                                {% endif %}
+                                            </td>
                                             <td class="text-right">
-                                                {% if teamMember.user != app.user %}                                                    
+                                                {% if teamMember.user != app.user and teamMember.user != team.user %}
+                                                    <a
+                                                        href="{{ path('main_team_edit_team_member', {'team': team.id, 'teamMember': teamMember.id}) }}"
+                                                        data-toggle="tooltip"
+                                                        class="button button-small button-danger"
+                                                        title="Remove team member"
+                                                    >
+                                                        Edit
+                                                    </a>
                                                     <a href="{{ path('main_team_remove_team_member', {'team': team.id, 'id': teamMember.id}) }}" data-toggle="tooltip" class="button button-small button-danger" title="Remove team member">
                                                         Remove
                                                     </a>
