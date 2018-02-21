@@ -395,6 +395,22 @@ class Team
     /**
      * @param User $user
      *
+     * @return TeamMember|null
+     */
+    public function getTeamMemberForUser(User $user)
+    {
+        foreach ($this->teamMembers as $teamMember) {
+            if ($teamMember->getUser() === $user) {
+                return $teamMember;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param User $user
+     *
      * @return bool
      */
     public function userIsMember(User $user)
