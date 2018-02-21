@@ -79,7 +79,6 @@
                     {{ translateText('button.analyze') }} >
                 </a>
             </div>
-            </div>
         </div>
     </div>
 </template>
@@ -141,6 +140,7 @@ export default {
     },
     computed: {
         ...mapGetters({
+            localUser: 'localUser',
             projectCategories: 'projectCategoriesForSelect',
             projectCategoriesLoading: 'projectCategoriesLoading',
             projectScopes: 'projectScopesForSelect',
