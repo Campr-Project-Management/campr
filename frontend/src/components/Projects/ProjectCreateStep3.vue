@@ -75,9 +75,10 @@ export default {
     },
     computed: {
         ...mapGetters({
+            modules: 'modules',
             project: 'project',
             projectLoading: 'projectLoading',
-            modules: 'modules',
+            localUser: 'localUser',
             validationMessages: 'validationMessages',
         }),
     },
