@@ -8,7 +8,7 @@
                     v-bind:name="name + '_' + _uid"
                     v-bind:id="name + '_' + option.key + '_' + _uid"
                     v-bind:value="option.key"
-                    v-bind:checked="option.key.toString() === currentOption"
+                    v-bind:checked="isChecked(option)"
                     v-on:change="updateValue($event.target.value)">
                 <label v-bind:for="name + '_' + option.key + '_' + _uid">
                     {{ option.label }}
@@ -24,6 +24,10 @@ export default {
     methods: {
         updateValue: function(value) {
             this.$emit('input', value);
+        },
+        isChecked(option) {
+            return option.key === this.currentOption ||
+                (this.currentOption && option.key.toString() === this.currentOption.toString());
         },
     },
 };

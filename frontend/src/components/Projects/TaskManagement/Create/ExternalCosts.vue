@@ -2,22 +2,25 @@
     <div>
         <h3>{{ message.external_costs }}</h3>
         <span class="note blue-note">{{ message.project_currency }} <i class="fa fa-dollar"></i> USD</span>
-        <div v-for="(cost, index) in processedExternalCosts">
+        <div v-for="(item, index) in value.items">
             <div class="row">
                 <div class="form-group">
                     <div class="col-md-10">
                         <input-field
                             type="text"
                             v-bind:label="label.external_cost_description"
-                            v-model="cost.name"
-                            v-bind:content="cost.name" />
+                            :value="item.name"
+                            v-bind:content="item.name"
+                            v-on:input="onItemUpdate('name', index, $event)" />
                     </div>
                     <div class="col-md-2">
                         <input-field
-                            type="text"
+                            type="number"
                             v-bind:label="label.external_cost_qty"
-                            v-model="cost.quantity"
-                            v-bind:content="cost.quantity" />
+                            :value="item.quantity"
+                            v-bind:content="item.quantity"
+                            v-on:input="onItemUpdate('quantity', index, $event)"
+                        />
                         <error
                             v-if="getValidationMessages(index, 'quantity').length"
                             v-for="message in getValidationMessages(index, 'quantity')"
@@ -31,16 +34,17 @@
                         <radio-field
                             name="units"
                             v-bind:options="projectUnitsForSelect"
-                            v-bind:currentOption="cost.selectedUnit"
-                            v-model="cost.selectedUnit" />
+                            v-bind:currentOption="(item.unit && item.unit.id) || 'custom'"
+                            v-on:input="onItemUpdate('unit', index, $event)"/>
                     </div>
                     <div class="col-md-2">
                         <input-field
                             type="text"
                             v-bind:label="label.custom"
-                            v-model="cost.customUnit"
-                            v-bind:content="cost.customUnit"
-                            v-bind:disabled="cost.selectedUnit !== 'custom'" />
+                            :value="item.customUnit"
+                            v-bind:content="item.customUnit"
+                            v-bind:disabled="item.unit && item.unit !== 'custom'"
+                            v-on:input="onItemUpdate('customUnit', index, $event)"/>
                         <error
                             v-if="getValidationMessages(index, 'unit').length"
                             v-for="message in getValidationMessages(index, 'unit')"
@@ -48,10 +52,11 @@
                     </div>
                     <div class="col-md-2">
                         <input-field
-                            type="text"
+                            type="number"
                             v-bind:label="label.external_cost_unit_rate"
-                            v-model="cost.rate"
-                            v-bind:content="cost.rate" />
+                            :value="item.rate"
+                            v-bind:content="item.rate"
+                            v-on:input="onItemUpdate('rate', index, $event)"/>
                         <error
                             v-if="getValidationMessages(index, 'rate').length"
                             v-for="message in getValidationMessages(index, 'rate')"
@@ -74,13 +79,21 @@
                 <div class="form-group last-form-group">
                     <div class="col-md-10">
                         <div class="flex flex-v-center">
-                            <switches v-model="cost.capex" v-bind:selected="cost.capex"></switches>
+                            <switches
+                                    :value="item.capex"
+                                    v-bind:selected="item.capex"
+                                    v-on:input="onItemUpdate('capex', index, $event)"/>
                             <span class="note no-margin-bottom"><b>{{ message.note }}</b> {{ message.opex_capex_note }}</span>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="flex flex-direction-reverse">
-                            <span v-on:click="deleteExternalCost(index);"><delete-icon /></span>
+                            <button
+                                    @click="onDelete(index)"
+                                    type="button"
+                                    class="btn-icon">
+                                <delete-icon fill="danger-fill"/>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -88,7 +101,7 @@
             <hr>
         </div>
         <div class="flex flex-direction-reverse">
-            <a v-on:click="addExternalCost()" class="btn-rounded btn-auto">{{ button.add_external_cost }} +</a>
+            <a v-on:click="add" class="btn-rounded btn-auto">{{ button.add_external_cost }} +</a>
         </div>
         <hr>
         <div class="row">
@@ -114,17 +127,19 @@
                 </div>
                 <div class="col-md-4">
                     <input-field
-                        type="text"
+                        type="number"
                         v-bind:label="label.external_cost_forecast"
-                        v-bind:content="externalCosts.forecast"
-                        v-model="externalCosts.forecast" />
+                        v-bind:content="value.forecast"
+                        :value="value.forecast"
+                        v-on:input="onUpdate('forecast', $event)"/>
                 </div>
                 <div class="col-md-4">
                     <input-field
-                        type="text"
+                        type="number"
                         v-bind:label="label.external_cost_actual"
-                        v-bind:content="externalCosts.actual"
-                        v-model="externalCosts.actual" />
+                        v-bind:content="value.actual"
+                        :value="value.actual"
+                        v-on:input="onUpdate('actual', $event)"/>
                 </div>
             </div>
         </div>
@@ -141,7 +156,17 @@ import Error from '../../../_common/_messages/Error.vue';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
-    props: ['validationMessages'],
+    props: {
+        validationMessages: {
+            type: [Object, Array],
+            required: false,
+        },
+        value: {
+            type: Object,
+            required: false,
+            default: {},
+        },
+    },
     components: {
         InputField,
         SelectField,
@@ -152,22 +177,17 @@ export default {
     },
     methods: {
         ...mapActions(['getProjectUnits']),
-        addExternalCost: function() {
-            this.externalCosts.items.push({
-                description: '',
-                quantity: 0,
-                rate: 0,
-                capex: 0,
-                opex: 1,
-                customUnit: '',
-                selectedUnit: 'custom',
-            });
+        add: function() {
+            this.$emit('add');
         },
-        deleteExternalCost: function(index) {
-            this.externalCosts.items = [
-                ...this.externalCosts.items.slice(0, index),
-                ...this.externalCosts.items.slice(index + 1),
+        onDelete(index) {
+            let data = Object.assign({}, this.value);
+            data.items = [
+                ...data.items.slice(0, index),
+                ...data.items.slice(index + 1),
             ];
+
+            this.$emit('input', data);
         },
         itemTotal(item) {
             return !isNaN(item.rate * item.quantity) ? item.rate * item.quantity : 0;
@@ -178,13 +198,17 @@ export default {
             }
             return [];
         },
-    },
-    watch: {
-        externalCosts: {
-            handler: function(value) {
-                this.$emit('input', value);
-            },
-            deep: true,
+        onItemUpdate(property, index, value) {
+            let data = Object.assign({}, this.value);
+            data.items[index][property] = value;
+
+            this.$emit('input', data);
+        },
+        onUpdate(property, value) {
+            let data = Object.assign({}, this.value);
+            data[property] = value;
+
+            this.$emit('input', data);
         },
     },
     computed: {
@@ -192,27 +216,19 @@ export default {
             projectUnitsForSelect: 'projectUnitsForSelect',
         }),
         baseTotal: function() {
-            return this.processedExternalCosts.reduce((prev, next) => {
+            return this.value.items.reduce((prev, next) => {
                 return prev + this.itemTotal(next);
             }, 0);
         },
         opexSubtotal: function() {
-            return this.processedExternalCosts.reduce((prev, next) => {
+            return this.value.items.reduce((prev, next) => {
                 return next.opex ? prev + next.total : prev;
             }, 0);
         },
         capexSubtotal: function() {
-            return this.processedExternalCosts.reduce((prev, next) => {
+            return this.value.items.reduce((prev, next) => {
                 return next.capex ? prev + next.total : prev;
             }, 0);
-        },
-        processedExternalCosts: function() {
-            return this.externalCosts.items.map(item => {
-                item.total = this.itemTotal(item);
-//                item.unit = item.selectedUnit !== 'custom' ? item.selectedUnit : item.customUnit;
-//                item.opex = !item.capex;
-                return item;
-            });
         },
     },
     created() {
@@ -241,11 +257,6 @@ export default {
             },
             button: {
                 add_external_cost: this.translate('button.add_external_cost'),
-            },
-            externalCosts: {
-                items: [],
-                forecast: 0,
-                actual: 0,
             },
         };
     },

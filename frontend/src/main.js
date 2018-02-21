@@ -15,13 +15,14 @@ import Vueditor from 'vueditor';
 import './css/vueditor.css';
 import VueCookie from 'vue-cookie';
 import VeeValidate from 'vee-validate';
-import './util/Translator';
+import Translator from './util/Translator';
 import VTooltip from 'v-tooltip';
 
 Vue.use(VueResource);
 Vue.use(Vue2Dragula);
 Vue.use(VeeValidate);
 Vue.use(VTooltip);
+Vue.use(Translator);
 
 let config = {
     // buttons on the toolbar, you can use '|' or 'divider' as the separator

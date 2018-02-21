@@ -101,7 +101,7 @@ snc_redis:
         default:
             type: predis
             alias: default
-            dsn: redis://%redis_host%
+            dsn: 'redis://%redis_host%'
             options:
                 read_write_timeout: 0
                 connection_timeout: 30
@@ -122,9 +122,9 @@ lexik_jwt_authentication:
 bazinga_js_translation:
     locale_fallback: "%locale%"
     default_domain: messages
-    active_locales: %managed_locales%
+    active_locales: '%managed_locales%'
 
 # Lexik Translation Configuration
 lexik_translation:
     fallback_locale: ["%locale%"] #default locale(s) to use
-    managed_locales: %managed_locales% #locales that the bundle has to manage
+    managed_locales: '%managed_locales%' #locales that the bundle has to manage

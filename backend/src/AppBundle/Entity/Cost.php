@@ -94,7 +94,7 @@ class Cost
 
     /**
      * @var Unit|null
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Unit")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Unit", cascade={"persist"})
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="unit_id", referencedColumnName="id", onDelete="SET NULL")
      * })
@@ -519,7 +519,12 @@ class Cost
      */
     public function actualValueValidator(ExecutionContextInterface $context)
     {
-        $parent = $this->getWorkPackage()->getParent();
+        $workPackage = $this->getWorkPackage();
+        if (!$workPackage) {
+            return;
+        }
+
+        $parent = $workPackage->getParent();
         if (!$parent) {
             return;
         }
