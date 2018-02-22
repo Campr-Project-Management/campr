@@ -125,7 +125,6 @@ export default {
         phaseOrMilestoneLabel: function() {
             const out = [];
 
-            console.log(this.planning);
             if (this.planning.phase) {
                 out.push(this.planning.phase.label);
             }
