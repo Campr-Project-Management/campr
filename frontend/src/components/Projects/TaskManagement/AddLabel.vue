@@ -78,7 +78,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions(['createProjectLabel', 'getProjectLabel', 'editProjectLabel']),
+        ...mapActions(['createProjectLabel', 'getProjectLabel', 'editProjectLabel', 'emptyValidationMessages']),
         onChange(color) {
             this.color = color.hex;
             this.css = 'background: ' + color.hex;
