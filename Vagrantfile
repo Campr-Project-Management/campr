@@ -13,6 +13,7 @@ Vagrant.configure("2") do |config|
         _config.vm.synced_folder ".", "/var/www", :nfs => true
 
         _config.vm.provision "file", source: "~/.ssh/id_rsa", destination: "~/.ssh/id_rsa"
+        _config.vm.provision "file", source: "~/.gitconfig", destination: "~/.gitconfig"
         _config.vm.provision :shell, :inline => "sudo service apache2 start; sudo service php7.1-fpm start", run: "always"
 
         _config.vm.provider :virtualbox do |vb, override|
