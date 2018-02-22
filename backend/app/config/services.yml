@@ -183,6 +183,13 @@ services:
         tags:
             - { name: form.type }
 
+    app.form.cost.api_create_type:
+        class: AppBundle\Form\Cost\ApiCreateType
+        arguments:
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: form.type }
+
 ### LISTENERS ###
     # gedmo listeners are found here
     # https://github.com/Atlantic18/DoctrineExtensions/blob/a3d7ad1cf41f397104bc16d99c0a91fd7b2e6d38/doc/symfony2.md
@@ -276,7 +283,7 @@ services:
         class: AppBundle\Twig\AppExtension
         public: false
         arguments:
-            - %show_tracking_code%
+            - '%show_tracking_code%'
         tags:
             - { name: twig.extension }
 
@@ -284,9 +291,9 @@ services:
     ambta_doctrine_encrypt.subscriber:
         class: AppBundle\Subscribers\EncryptSubscriber
         arguments:
-            - "@annotation_reader"
-            - "%ambta_doctrine_encrypt.encryptor_class_name%"
-            - "%ambta_doctrine_encrypt.secret_key%"
+            - '@annotation_reader'
+            - '%ambta_doctrine_encrypt.encryptor_class_name%'
+            - '%ambta_doctrine_encrypt.secret_key%'
             - '%kernel.team_slug%'
         tags:
             -  { name: doctrine.event_subscriber }

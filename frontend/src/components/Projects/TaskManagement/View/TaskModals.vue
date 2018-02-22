@@ -466,7 +466,7 @@ export default {
                 .then(response => this.successHandler(this.showDeleteExternalCostModal));
         },
         isEditExternalCost() {
-            return this.editExternalCostObj.id != 0;
+            return this.editExternalCostObj.id !== 0;
         },
         saveExternalForecastCost() {
             let data = {
@@ -508,8 +508,10 @@ export default {
             }
         },
         deleteInternalCost() {
-            this.deleteTaskCost(this.editInternalCostObj.id)
-                .then(response => this.successHandler(this.showDeleteInternalCostModal));
+            this
+                .deleteTaskCost(this.editInternalCostObj.id)
+                .then(() => this.successHandler(this.showDeleteInternalCostModal))
+            ;
         },
         saveInternalForecastCost() {
             let data = {
@@ -577,10 +579,11 @@ export default {
             this.editInternalCostObj.daily_rate = value.rate;
         },
         successHandler(modal, errors) {
-            if (errors == undefined) {
-                modal = false;
-                this.$emit('input', modal);
+            if (errors) {
+                return;
             }
+
+            this.$emit('input', false);
         },
     },
     created() {
