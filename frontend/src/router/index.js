@@ -38,8 +38,8 @@ import Gantt from '../components/Projects/Gantt.vue';
 import ProjectTodos from '../components/Projects/ProjectTodos.vue';
 import TodoCreate from '../components/Projects/Todos/TodoCreate.vue';
 import ViewTodo from '../components/Projects/Todos/ViewTodo.vue';
-import Costs from '../components/Projects/Costs.vue';
-import Resources from '../components/Projects/Resources.vue';
+import ExternalCosts from '../components/Projects/ExternalCosts.vue';
+import InternalCosts from '../components/Projects/InternalCosts.vue';
 import ProjectInfos from '../components/Projects/ProjectInfos.vue';
 import InfoCreate from '../components/Projects/Infos/InfoCreate.vue';
 import ViewInfo from '../components/Projects/Infos/ViewInfo.vue';
@@ -281,14 +281,14 @@ const routes = [
                 name: 'project-todos-view-todo',
             },
             {
-                path: 'costs',
-                component: Costs,
-                name: 'project-costs',
+                path: 'external-costs',
+                component: ExternalCosts,
+                name: 'project-external-costs',
             },
             {
-                path: 'resources',
-                component: Resources,
-                name: 'project-resources',
+                path: 'internal-costs',
+                component: InternalCosts,
+                name: 'project-internal-costs',
             },
             {
                 path: 'infos',
