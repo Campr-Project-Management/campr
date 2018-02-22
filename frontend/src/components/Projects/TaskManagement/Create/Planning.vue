@@ -10,13 +10,14 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right nicescroll" ref="dropdown-menu-planning">
-                            <li v-for="phase in nestedPhasesAndMilestone">
-                                <a href="javascript:void(0)" class="unselectable">{{ phase.label }}</a>
-                                <ul class="nested">
-                                    <li v-for="milestone in phase.children">
-                                        <a href="javascript:void(0)" v-on:click="updateMilestone(phase, milestone)">{{ milestone.label }}</a>
-                                    </li>
-                                </ul>
+                            <li v-for="item in dropdownData">
+                                <a
+                                    href="javascript:void(0)"
+                                    v-on:click="updatePlanning(item)"
+                                    :style="{paddingLeft: ((item.level+1) * 10) + 'px'}"
+                                >
+                                    {{ item.name }}
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -33,28 +34,59 @@ import 'jquery.nicescroll/jquery.nicescroll.js';
 export default {
 //    props: ['phase', 'milestone'],
     props: ['editPlanning'],
-    components: {
-    },
     methods: {
-        ...mapActions(['getProjectMilestones', 'getProjectPhases']),
+        ...mapActions(['getWBSByProjectID']),
         translateText(text) {
             return this.translate(text);
         },
-        updateMilestone: function(phase, milestone) {
-            this.planning.phase = {
-                key: phase.key,
-                label: phase.label,
-            };
-
-            this.planning.milestone = {
-                key: milestone.key,
-                label: milestone.label,
-            };
+        updatePlanning: function(wp) {
+            switch (wp.type) {
+            case 0:
+                this.planning = {
+                    phase: {
+                        key: wp.id,
+                        label: wp.name,
+                    },
+                    milestone: null,
+                    parent: null,
+                };
+                break;
+            case 1:
+                this.planning = {
+                    phase: {
+                        key: wp.phase,
+                        label: wp.phaseName,
+                    },
+                    milestone: {
+                        key: wp.id,
+                        label: wp.name,
+                    },
+                    parent: null,
+                };
+                break;
+            case 2:
+                this.planning = {
+                    phase: {
+                        key: wp.phase,
+                        label: wp.phaseName,
+                    },
+                    milestone: {
+                        key: wp.milestone,
+                        label: wp.milestoneName,
+                    },
+                    parent: {
+                        key: wp.id,
+                        label: wp.name,
+                    },
+                };
+                break;
+            }
         },
         clearPhaseMilestone: function() {
             this.planning = {
                 phase: null,
                 milestone: null,
+                parent: null,
             };
         },
         dropdownToggle: function() {
@@ -72,8 +104,9 @@ export default {
         },
     },
     created() {
-        this.getProjectPhases({projectId: this.$route.params.id});
-        this.getProjectMilestones({projectId: this.$route.params.id});
+        // this.getProjectPhases({projectId: this.$route.params.id});
+        // this.getProjectMilestones({projectId: this.$route.params.id});
+        this.getWBSByProjectID(this.$route.params.id);
 
         this.planning = this.editPlanning;
     },
@@ -87,67 +120,30 @@ export default {
         });
     },
     computed: {
-        ...mapGetters({
-//            initialProjectMilestonesForSelect: 'projectMilestonesForSelect',
-            projectMilestonesForSelect: 'projectMilestonesForSelect',
-            allProjectMilestones: 'allProjectMilestones',
-        }),
+        // ...mapGetters(['allProjectPhases']),
+        ...mapGetters(['wbsPhasesAndMilestones']),
         phaseOrMilestoneLabel: function() {
-            if (this.planning.milestone && this.planning.phase) {
-                return this.planning.phase.label + ' > ' +this.planning.milestone.label;
+            const out = [];
+
+            console.log(this.planning);
+            if (this.planning.phase) {
+                out.push(this.planning.phase.label);
             }
-            if (this.planning.phase ) {
-                return this.planning.phase.label;
+            if (this.planning.milestone) {
+                out.push(this.planning.milestone.label);
+            }
+            if (this.planning.parent) {
+                out.push(this.planning.parent.label);
             }
 
-            return this.translateText('message.select_phase_milestone');
+            return out.length ? out.join(' > ') : this.translateText('message.select_phase_milestone');
         },
-        nestedPhasesAndMilestone: function() {
-            let nestedPM = {};
-
-            if (this.allProjectMilestones.items === undefined) {
-                return;
-            }
-
-            for(let i=0; i<this.allProjectMilestones.items.length; i++ ) {
-                let currentMilestone = this.allProjectMilestones.items[i];
-
-                if(currentMilestone.phase === null)
-                    continue;
-
-                if (nestedPM[currentMilestone.phase] == undefined) {
-                    nestedPM[currentMilestone.phase] = {
-                        key: currentMilestone.phase,
-                        label: currentMilestone.phaseName,
-                        children: [
-                            {
-                                key: currentMilestone.id,
-                                label: currentMilestone.name,
-                            },
-                        ],
-                    };
-                } else {
-                    nestedPM[currentMilestone.phase].children.push({
-                        key: currentMilestone.id,
-                        label: currentMilestone.name,
-                    });
-                }
-            }
-            return nestedPM;
+        dropdownData: function() {
+            return this
+                .wbsPhasesAndMilestones
+                .filter(wp => wp.id != this.$route.params.id)
+            ;
         },
-        // @TODO: re-enable this after the milestones and phases modules are implemented
-//        projectMilestonesForSelect: function() {
-//            if (!this.planning.phase) {
-//                return this.initialProjectMilestonesForSelect;
-//            }
-//            let milestones = new Set(this.initialProjectMilestonesForSelect.filter(item => {
-//                return item.parent === parseInt(this.planning.phase.key, 10);
-//            }));
-//            if (this.planning.milestone && !milestones.has(this.planning.milestone)) {
-//                this.planning.milestone = '';
-//            }
-//            return Array.from(milestones);
-//        },
     },
     watch: {
         planning: {
@@ -230,6 +226,4 @@ export default {
         color: $lightColor;
         background-color: $darkColor;
     }
-
 </style>
-
