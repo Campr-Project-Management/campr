@@ -9,7 +9,7 @@
             aria-expanded="false"
             @click="dropdownToggle()"
         >
-            {{ translateText(currentOption ? currentOption.label : title) }}
+            {{ placeholder }}
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right nicescroll">
@@ -22,9 +22,45 @@
 
 <script>
 import 'jquery.nicescroll/jquery.nicescroll.js';
+import _ from 'lodash';
 
 export default {
-    props: ['title', 'options', 'currentOption'],
+    props: {
+        value: {
+            type: Object,
+            required: false,
+            default: null,
+        },
+        title: {
+            type: String,
+            required: false,
+            default: null,
+        },
+        options: {
+            type: Array,
+            required: true,
+            default: [],
+        },
+        currentOption: {
+            required: false,
+        },
+    },
+    computed: {
+        placeholder() {
+            let option = this.currentOption;
+            if (this.value) {
+                option = _.find(this.options, (option) => {
+                    return option.key === this.value.key;
+                });
+            }
+
+            if (option) {
+                return this.translateText(option.label);
+            }
+
+            return this.title;
+        },
+    },
     methods: {
         updateValue: function(value) {
             this.$emit('input', value);
