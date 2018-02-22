@@ -50,7 +50,6 @@
             <select-field
                 v-bind:title="translateText('label.select_department')"
                 v-bind:options="projectDepartmentsForSelect"
-                v-bind:current-option="editSubteamDepartment"
                 v-model="editSubteamDepartment"
             />
             <br/>
@@ -181,7 +180,10 @@
                     <div class="form">
                         <!-- /// Add new Department /// -->
                         <div class="form-group">
-                            <input-field :content="departmentName" v-model="departmentName" type="text" v-bind:label="translateText('placeholder.new_department')"></input-field>
+                            <input-field
+                                    v-model="departmentName"
+                                    type="text"
+                                    v-bind:label="translateText('placeholder.new_department')"/>
                             <error
                                 v-if="validationMessages.departmentName && validationMessages.departmentName.length"
                                 v-for="message in validationMessages.departmentName"
@@ -220,7 +222,7 @@
                                         </div>
                                     </td>
                                     <td v-if="subteam.subteamMembers">{{ subteam.subteamMembers.length }}</td>
-                                    <td>{{ subteam.department ? subteam.department.name : '-' }}</td>
+                                    <td>{{ subteamProjectDepartmentName(subteam.department) }}</td>
                                     <td>
                                         <button @click="initEditSubteamModal(subteam)" data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                         <button @click="initDeleteSubteamModal(subteam)" data-target="#logistics-delete-modal" data-toggle="modal" type="button" class="btn-icon"><delete-icon fill="danger-fill"></delete-icon></button>
@@ -462,6 +464,17 @@ export default {
         changeUsersCurrentPage(value) {
             this.usersCurrentPage = value;
         },
+        subteamProjectDepartmentName(department) {
+            if (department) {
+                department = this.projectDepartmentById(department.id);
+            }
+
+            if (!department) {
+                return '-';
+            }
+
+            return department.name;
+        },
     },
     created() {
         this.getProjectDepartments({project: this.$route.params.id, page: this.activeDepartmentPage});
@@ -474,16 +487,17 @@ export default {
         this.clearUsers();
     },
     computed: {
-        ...mapGetters({
-            projectDepartments: 'projectDepartments',
-            managersForSelect: 'managersForSelect',
-            projectUsersForSelect: 'projectUsersForSelect',
-            subteams: 'subteams',
-            validationMessages: 'validationMessages',
-            users: 'users',
-            project: 'project',
-            projectDepartmentsForSelect: 'projectDepartmentsForSelect',
-        }),
+        ...mapGetters([
+            'projectDepartments',
+            'managersForSelect',
+            'projectUsersForSelect',
+            'subteams',
+            'validationMessages',
+            'users',
+            'project',
+            'projectDepartmentsForSelect',
+            'projectDepartmentById',
+        ]),
         usersCurrentList: {
             get() {
                 return this.users && this.users.length
