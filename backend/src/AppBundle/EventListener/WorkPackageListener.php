@@ -71,14 +71,14 @@ class WorkPackageListener
             }
 
             $entityChanges = $uok->getEntityChangeSet($entity);
-            if ($entity->getType() == WorkPackage::TYPE_MILESTONE) {
+            if (WorkPackage::TYPE_MILESTONE == $entity->getType()) {
                 if (isset($entityChanges['phase'])) {
                     $newPhaseId = $entityChanges['phase'][1]->getId();
                     $this->moveMilestoneTasksToNewPhase($newPhaseId, $entity->getId());
                 }
             }
 
-            if ($entity->getType() == WorkPackage::TYPE_TASK && isset($entityChanges['workPackageStatus'])) {
+            if (WorkPackage::TYPE_TASK == $entity->getType() && isset($entityChanges['workPackageStatus'])) {
                 $this->setStartOrFinishDateToTask($entity, $entityChanges);
             }
 
@@ -126,61 +126,28 @@ class WorkPackageListener
         }
 
         foreach ($this->projectsToUpdate as $project) {
-            $sql = sprintf(
-                'SELECT id, name, progress, type, puid, phase_id, milestone_id, parent_id
-                FROM work_package
-                WHERE project_id = %d
-                ORDER BY puid ASC',
-                $project->getId()
-            );
-            $workPackages = $this->runSelectQuery($this->em, $sql);
+            $workPackages = $this->getRealWorkPackages($project);
             $tree = WorkPackageTreeBuilder::buildFromRawData($workPackages);
 
             array_walk($tree, [$this, 'updateWorkPackages']);
 
-            try {
-                $this->runUpdateQuery(
-                    $this->em,
-                    'UPDATE project SET progress = (
-                        SELECT AVG(wp.progress)
-                        FROM work_package wp
-                        WHERE wp.project_id = project.id
-                        AND wp.type = :type
-                        AND wp.parent_id IS NULL
-                    ) WHERE id = :id',
-                    [
-                        'type' => WorkPackage::TYPE_PHASE,
-                        'id' => $project->getId(),
-                    ]
-                );
-            } catch (\Exception $e) {
-                // AVG() returns null in MySQL if there's no data and this goes boom
-                try {
-                    $this->runUpdateQuery(
-                        $this->em,
-                        'UPDATE project SET progress = (
-                            SELECT AVG(wp.progress)
-                            FROM work_package wp
-                            WHERE wp.project_id = project.id
-                            AND wp.type = :type
-                            AND wp.parent_id IS NULL
-                        ) WHERE id = :id',
-                        [
-                            'type' => WorkPackage::TYPE_TASK,
-                            'id' => $project->getId(),
-                        ]
-                    );
-                } catch (\Exception $e) {
-                    $this->runUpdateQuery(
-                        $this->em,
-                        'UPDATE project SET progress = :progress WHERE id = :id',
-                        [
-                            'progress' => 100,
-                            'id' => $project->getId(),
-                        ]
-                    );
-                }
+            $progress = $this->calculateRootWorkPackagesProgress($project, WorkPackage::TYPE_PHASE);
+            if ($progress < 0) {
+                $progress = $this->calculateRootWorkPackagesProgress($project, WorkPackage::TYPE_TASK);
             }
+
+            if ($progress < 0) {
+                $progress = 0;
+            }
+
+            $this->runUpdateQuery(
+                $this->em,
+                'UPDATE project SET progress = :progress WHERE id = :id',
+                [
+                    'progress' => $progress,
+                    'id' => $project->getId(),
+                ]
+            );
 
             $sql = sprintf(
                 'SELECT count(*) > 0 as is_started
@@ -200,7 +167,7 @@ class WorkPackageListener
 
             $projectIsStarted = $this->runSelectQuery($this->em, $sql)[0]['is_started'];
 
-            if ($projectIsStarted === '1') {
+            if ('1' === $projectIsStarted) {
                 $this->runUpdateQuery(
                     $this->em,
                     'UPDATE project SET project_status_id = :project_status_id WHERE id = :id',
@@ -243,6 +210,13 @@ class WorkPackageListener
         }
     }
 
+    /**
+     * @param EntityManager $em
+     * @param string        $sql
+     * @param array         $params
+     *
+     * @return int
+     */
     private function runUpdateQuery(EntityManager $em, string $sql, array $params)
     {
         $stmt = $em->getConnection()->prepare($sql);
@@ -256,9 +230,20 @@ class WorkPackageListener
         return $stmt->rowCount();
     }
 
-    private function runSelectQuery(EntityManager $em, string $sql)
+    /**
+     * @param EntityManager $em
+     * @param string        $sql
+     * @param array         $params
+     *
+     * @return array
+     */
+    private function runSelectQuery(EntityManager $em, string $sql, array $params = [])
     {
         $stmt = $em->getConnection()->prepare($sql);
+
+        foreach ($params as $param => $value) {
+            $stmt->bindValue($param, $value);
+        }
 
         $stmt->execute();
 
@@ -280,7 +265,7 @@ class WorkPackageListener
             SET phase_id  = :phaseId 
             WHERE 
                 milestone_id = :milestoneId 
-                AND type = ' .WorkPackage::TYPE_TASK,
+                AND type = '.WorkPackage::TYPE_TASK,
             [
                 'phaseId' => $newPhaseId,
                 'milestoneId' => $milestoneId,
@@ -305,8 +290,8 @@ class WorkPackageListener
             $this->em,
             'UPDATE work_package 
             SET 
-                forecast_start_at  = (SELECT min(forecast_start_at) FROM  (SELECT forecast_start_at FROM work_package WHERE type = ' .WorkPackage::TYPE_TASK.' AND milestone_id = :milestoneId) as temp1),
-                forecast_finish_at  = (SELECT max(forecast_finish_at) FROM (SELECT forecast_finish_at FROM work_package WHERE type = ' .WorkPackage::TYPE_TASK.' AND milestone_id = :milestoneId) as temp2)  
+                forecast_start_at  = (SELECT min(forecast_start_at) FROM  (SELECT forecast_start_at FROM work_package WHERE type = '.WorkPackage::TYPE_TASK.' AND milestone_id = :milestoneId) as temp1),
+                forecast_finish_at  = (SELECT max(forecast_finish_at) FROM (SELECT forecast_finish_at FROM work_package WHERE type = '.WorkPackage::TYPE_TASK.' AND milestone_id = :milestoneId) as temp2)  
             WHERE 
                 id = :milestoneId',
             [
@@ -332,8 +317,8 @@ class WorkPackageListener
             $this->em,
             'UPDATE work_package 
             SET 
-                forecast_start_at  = (SELECT min(forecast_start_at) FROM  (SELECT forecast_start_at FROM work_package WHERE type = ' .WorkPackage::TYPE_TASK.' AND phase_id = :phaseId) as temp1),
-                forecast_finish_at  = (SELECT max(forecast_finish_at) FROM (SELECT forecast_finish_at FROM work_package WHERE type = ' .WorkPackage::TYPE_TASK.' AND phase_id = :phaseId) as temp2) 
+                forecast_start_at  = (SELECT min(forecast_start_at) FROM  (SELECT forecast_start_at FROM work_package WHERE type = '.WorkPackage::TYPE_TASK.' AND phase_id = :phaseId) as temp1),
+                forecast_finish_at  = (SELECT max(forecast_finish_at) FROM (SELECT forecast_finish_at FROM work_package WHERE type = '.WorkPackage::TYPE_TASK.' AND phase_id = :phaseId) as temp2) 
             WHERE 
                 id = :phaseId',
             [
@@ -392,7 +377,7 @@ class WorkPackageListener
                     FROM (
                         SELECT forecast_start_at FROM work_package 
                         INNER JOIN  work_package_dependency on work_package.id = work_package_dependency.dependency_id 
-                        WHERE type = ' .WorkPackage::TYPE_TASK.' AND dependant_id = :dependantId
+                        WHERE type = '.WorkPackage::TYPE_TASK.' AND dependant_id = :dependantId
                     ) as temp1
                 ),
                 forecast_finish_at  = (
@@ -400,7 +385,7 @@ class WorkPackageListener
                     FROM (
                         SELECT forecast_finish_at FROM work_package 
                         INNER JOIN  work_package_dependency on work_package.id = work_package_dependency.dependency_id 
-                        WHERE type = ' .WorkPackage::TYPE_TASK.' AND dependant_id = :dependantId
+                        WHERE type = '.WorkPackage::TYPE_TASK.' AND dependant_id = :dependantId
                     ) as temp2    
                 )
             WHERE 
@@ -426,7 +411,7 @@ class WorkPackageListener
     {
         $newWpStatus = $entityChanges['workPackageStatus'][1];
 
-        if ($newWpStatus->getId() == WorkPackageStatus::OPEN) {
+        if (WorkPackageStatus::OPEN == $newWpStatus->getId()) {
             $this->runUpdateQuery(
                 $this->em,
                 'UPDATE work_package 
@@ -443,7 +428,7 @@ class WorkPackageListener
             );
         }
 
-        if ($newWpStatus->getId() == WorkPackageStatus::COMPLETED) {
+        if (WorkPackageStatus::COMPLETED == $newWpStatus->getId()) {
             $this->runUpdateQuery(
                 $this->em,
                 'UPDATE work_package 
@@ -491,5 +476,43 @@ class WorkPackageListener
                 );
             }
         }
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
+    private function getRealWorkPackages(Project $project)
+    {
+        $sql = 'SELECT id, name, progress, type, puid, phase_id, milestone_id, parent_id
+                FROM work_package
+                WHERE project_id = :id AND type <> :type
+                ORDER BY puid ASC';
+
+        return $this->runSelectQuery(
+            $this->em,
+            $sql,
+            ['id' => $project->getId(), 'type' => WorkPackage::TYPE_TUTORIAL]
+        );
+    }
+
+    /**
+     * @param Project $project
+     * @param int     $type
+     *
+     * @return int
+     */
+    private function calculateRootWorkPackagesProgress(Project $project, int $type): int
+    {
+        $sql = 'SELECT AVG(wp.progress) as `progress`
+                FROM work_package wp
+                WHERE wp.project_id = :id
+                AND wp.type = :type
+                AND wp.parent_id IS NULL';
+
+        $results = $this->runSelectQuery($this->em, $sql, ['type' => $type, 'id' => $project->getId()]);
+
+        return (int) ceil($results[0]['progress'] ?? -1);
     }
 }
