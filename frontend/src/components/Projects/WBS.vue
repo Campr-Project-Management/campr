@@ -28,6 +28,17 @@ export default {
             'setWorkPackageColorStatus',
             'setWorkPackageProgress',
         ]),
+        getTaskConditionColor(wp) {
+            const conditions = {
+                1: '#D8DAE5',
+                2: '#5FC3A5',
+                3: '#C87369',
+                4: '#197252',
+                5: '#000000',
+            };
+            // d.data.colorStatusColor || '#8794c4'
+            return conditions[wp.workPackageStatus] || '#8794c4';
+        },
         updateTree(source) {
             let treeData = this.tree(this.root);
 
@@ -57,7 +68,7 @@ export default {
             canvasNodesEnter
                 .append('rect')
                 .attr('fill', '#191E37')
-                .attr('stroke', d => d.data.colorStatusColor || '#8794c4')
+                .attr('stroke', d => this.getTaskConditionColor(d.data))
                 .attr('stroke-width', 1)
                 .attr('width', 220)
                 .attr('height', 100)
@@ -66,7 +77,7 @@ export default {
             // draw the lines
             canvasNodesEnter // side line left
                 .append('line')
-                .attr('stroke', d => d.data.colorStatusColor || '#8794c4')
+                .attr('stroke', d => this.getTaskConditionColor(d.data))
                 .attr('stroke-width', 1)
                 .attr('x1', 30)
                 .attr('y1', 0)
@@ -76,7 +87,7 @@ export default {
 
             canvasNodesEnter // side line right
                 .append('line')
-                .attr('stroke', d => d.data.colorStatusColor || '#8794c4')
+                .attr('stroke', d => this.getTaskConditionColor(d.data))
                 .attr('stroke-width', 1)
                 .attr('x1', 220 - 30)
                 .attr('y1', 0)
@@ -86,7 +97,7 @@ export default {
 
             canvasNodesEnter // right side splitter
                 .append('line')
-                .attr('stroke', d => d.data.colorStatusColor || '#8794c4')
+                .attr('stroke', d => this.getTaskConditionColor(d.data))
                 .attr('stroke-width', 1)
                 .attr('x1', 220 - 30)
                 .attr('y1', 100 / 3)
@@ -96,7 +107,7 @@ export default {
 
             canvasNodesEnter // dates splitter top
                 .append('line')
-                .attr('stroke', d => d.data.colorStatusColor || '#8794c4')
+                .attr('stroke', d => this.getTaskConditionColor(d.data))
                 .attr('stroke-width', 1)
                 .attr('x1', 30)
                 .attr('y1', 100 - 30)
@@ -106,7 +117,7 @@ export default {
 
             canvasNodesEnter // dates splitter center
                 .append('line')
-                .attr('stroke', d => d.data.colorStatusColor || '#8794c4')
+                .attr('stroke', d => this.getTaskConditionColor(d.data))
                 .attr('stroke-width', 1)
                 .attr('x1', 220 / 2)
                 .attr('y1', 100 - 30)
@@ -334,6 +345,28 @@ export default {
                 })
             ;
 
+            // task started
+            canvasNodesEnter
+                .append('line')
+                .attr('stroke', d => this.getTaskConditionColor(d.data))
+                .attr('stroke-width', d => [3, 4].indexOf(d.data.workPackageStatus) !== -1 ? 1 : 0)
+                .attr('x1', 0)
+                .attr('y1', 0)
+                .attr('x2', 220)
+                .attr('y2', 100)
+            ;
+
+            // task completed
+            canvasNodesEnter
+                .append('line')
+                .attr('stroke', d => this.getTaskConditionColor(d.data))
+                .attr('stroke-width', d => [4].indexOf(d.data.workPackageStatus) !== -1 ? 1 : 0)
+                .attr('x1', 0)
+                .attr('y1', 100)
+                .attr('x2', 220)
+                .attr('y2', 0)
+            ;
+
             let canvasNodesUpdate = canvasNodesEnter.merge(canvasNodes);
 
             canvasNodesUpdate
@@ -404,10 +437,11 @@ export default {
                                 d.data.colorStatusName = x.name;
                                 d.showColorStatusSelector = false;
 
-                                group
-                                    .selectAll('line, rect')
-                                    .attr('stroke', x.color)
-                                ;
+                                // update lines to show color status
+                                // group
+                                //     .selectAll('line, rect')
+                                //     .attr('stroke', x.color)
+                                // ;
                                 group
                                     .select('text.color-status')
                                     .text(translate(x.name))
