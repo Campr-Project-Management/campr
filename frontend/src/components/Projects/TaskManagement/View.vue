@@ -418,9 +418,7 @@
                                     <td>
                                         <button @click="initEditInternalCostModal(item)" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                         <button
-                                            data-target="#logistics-delete-modal"
                                             @click="initDeleteInternalCostModal(item)"
-                                            data-toggle="modal"
                                             type="button"
                                             class="btn-icon">
                                             <delete-icon fill="danger-fill"></delete-icon>

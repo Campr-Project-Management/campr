@@ -2,7 +2,7 @@
 
 namespace AppBundle\Form\WorkPackage;
 
-use AppBundle\Form\Cost\CreateType as CostCreateType;
+use AppBundle\Form\Cost\ApiCreateType as CostCreateType;
 use AppBundle\Form\WorkPackage\BaseType as WorkPackageBaseType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
