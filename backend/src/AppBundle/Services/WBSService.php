@@ -20,7 +20,7 @@ class WBSService
         return [
             'id' => $project->getId(),
             'name' => (string) $project,
-            'children' => $this->getPhases($project),
+            'children' => $this->getProjectChildren($project),
             'progress' => $project->getProgress(),
             'colorStatus' => $project->getColorStatusId(),
             'colorStatusName' => $project->getColorStatusName(),
@@ -28,16 +28,20 @@ class WBSService
         ];
     }
 
-    /**
-     * I know this could be refactored into the getChildren() but i'll do it later.
-     * I promise!
-     */
-    private function getPhases(Project $project)
+    private function getProjectChildren(Project $project)
     {
         return $project
             ->getWorkPackages()
             ->filter(function (WorkPackage $wp) {
-                return $wp->getType() === WorkPackage::TYPE_PHASE && !$wp->getParent();
+                return $wp->getType() === WorkPackage::TYPE_PHASE && !$wp->getParent() ||
+                    $wp->getType() === WorkPackage::TYPE_TUTORIAL ||
+                    (
+                        $wp->getType() === WorkPackage::TYPE_TASK &&
+                        !$wp->getPhase() &&
+                        !$wp->getMilestone() &&
+                        !$wp->getParent()
+                    )
+                ;
             })
             ->map(function (WorkPackage $wp) {
                 return $this->getChildren($wp);
@@ -74,6 +78,14 @@ class WBSService
         $out = [
             'id' => $wp->getId(),
             'project' => $wp->getProjectId(),
+            'phase' => $wp->getPhaseId(),
+            'phaseName' => $wp->getPhaseName(),
+            'milestone' => $wp->getMilestoneId(),
+            'milestoneName' => $wp->getMilestoneName(),
+            'parent' => $wp->getParentId(),
+            'parentName' => $wp->getParentName(),
+            'workPackageStatus' => $wp->getWorkPackageStatusId(),
+            'workPackageStatusName' => $wp->getWorkPackageStatusName(),
             'name' => (string) $wp,
             'children' => [],
             'type' => $wp->getType(),
