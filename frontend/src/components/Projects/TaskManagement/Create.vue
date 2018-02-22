@@ -224,7 +224,6 @@ export default {
                 medias: this.medias,
                 details: this.details,
                 statusColor: this.statusColor,
-                parent: this.task.parent,
             };
             this
                 .editTask({
@@ -450,6 +449,13 @@ export default {
                 };
             }
 
+            if (this.task.parent) {
+                this.planning.parent = {
+                    key: this.task.parent.toString(),
+                    label: this.task.parentName,
+                };
+            }
+
             let internal = [];
             let external = [];
             this.task.costs.map((cost) => {
@@ -545,6 +551,7 @@ export default {
             planning: {
                 phase: null,
                 milestone: null,
+                parent: null,
             },
             medias: [],
             details: {
