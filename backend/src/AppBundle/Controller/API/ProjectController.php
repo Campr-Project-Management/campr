@@ -1151,8 +1151,12 @@ class ProjectController extends ApiController
             ->getManager()
             ->getRepository(WorkPackage::class)
         ;
+
         if (isset($filters['page'])) {
-            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+            $filters['pageSize'] = isset($filters['pageSize'])
+                ? $filters['pageSize']
+                : $this->getParameter('front.per_page')
+            ;
             $filters['type'] = WorkPackage::TYPE_MILESTONE;
 
             $result = $repo->getQueryByProjectAndFilters($project, $filters)->getResult();
