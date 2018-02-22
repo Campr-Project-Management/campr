@@ -27,7 +27,6 @@ import _ from 'lodash';
 export default {
     props: {
         value: {
-            type: Object,
             required: false,
             default: null,
         },
