@@ -1076,6 +1076,9 @@ export default {
                     phase: this.task.phase
                         ? {key: this.task.phase.toString(), label: this.task.phaseName}
                         : null,
+                    parent: this.task.parent
+                        ? {key: this.task.parent.toString(), label: this.task.parentName}
+                        : null,
                 },
                 internalCosts: {items: [], actual: 0, forecast: 0},
                 externalCosts: {items: [], actual: 0, forecast: 0},

@@ -39,18 +39,6 @@ class ProjectModuleTypeEnum
             'title' => 'modules.task_management.title',
             'description' => 'modules.task_management.description',
         ],
-        self::INTERNAL_COSTS => [
-            'title' => 'modules.internal_costs.title',
-            'description' => 'modules.internal_costs.description',
-        ],
-        self::EXTERNAL_COSTS => [
-            'title' => 'modules.external_costs.title',
-            'description' => 'modules.external_costs.description',
-        ],
-        self::RISKS_AND_OPPORTUNITIES => [
-            'title' => 'modules.risks_and_opportunities.title',
-            'description' => 'modules.risks_and_opportunities.description',
-        ],
         self::GANTT_CHART => [
             'title' => 'modules.gantt_chart.title',
             'description' => 'modules.gantt_chart.description',
@@ -62,6 +50,18 @@ class ProjectModuleTypeEnum
         self::WBS => [
             'title' => 'modules.wbs.title',
             'description' => 'modules.wbs.description',
+        ],
+        self::INTERNAL_COSTS => [
+            'title' => 'modules.internal_costs.title',
+            'description' => 'modules.internal_costs.description',
+        ],
+        self::EXTERNAL_COSTS => [
+            'title' => 'modules.external_costs.title',
+            'description' => 'modules.external_costs.description',
+        ],
+        self::RISKS_AND_OPPORTUNITIES => [
+            'title' => 'modules.risks_and_opportunities.title',
+            'description' => 'modules.risks_and_opportunities.description',
         ],
         self::MEETINGS => [
             'title' => 'modules.meetings.title',
