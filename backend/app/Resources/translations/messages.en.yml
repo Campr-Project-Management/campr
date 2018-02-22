@@ -371,7 +371,7 @@ message:
     task_schedule: Task Schedule
     task_details: Task Details
     back_to_task_management: Back to task management
-    subtasks_summary: %completed_tasks% of %total_tasks%
+    subtasks_summary: '%completed_tasks% of %total_tasks%'
     planning: Planning
     subtasks: Subtasks
     project_tasks: Project Tasks
@@ -433,6 +433,9 @@ message:
     change_accountable: Change Accountable
     uploading_file_failed: There was an error while uploading the file
     wbs: WBS
+    days: Days
+    weeks: Weeks
+    months: Months
 
 menu:
     users: Users

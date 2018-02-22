@@ -2,16 +2,16 @@
     <div>
         <h3>{{ message.internal_costs }}</h3>
         <span class="note blue-note">{{ message.project_currency }} <i class="fa fa-dollar"></i> USD</span>
-        <div v-for="(cost, index) in processedInternalCosts">
+        <div v-for="(item, index) in value.items">
             <div class="row">
                 <div class="form-group">
                     <div class="col-md-6">
                         <select-field
                             v-bind:title="label.resource"
                             v-bind:options="resourcesForSelect"
-                            v-model="cost.resource"
-                            v-bind:currentOption="cost.selectedResource"
-                            v-on:input="setCostProperty('resource', index, $event)" />
+                            :value="item.resource"
+                            v-bind:currentOption="item.selectedResource"
+                            v-on:input="onItemUpdate('resource', index, $event)" />
                         <error
                             v-if="getValidationMessages(index, 'resource').length"
                             v-for="message in getValidationMessages(index, 'resource')"
@@ -19,27 +19,27 @@
                     </div>
                     <div class="col-md-2">
                         <input-field
-                            type="text"
+                            type="number"
                             v-bind:label="label.daily_rate"
-                            v-model="cost.rate"
-                            v-bind:content="cost.rate" />
-                        <!--v-on:input="setCostProperty('rate', index, $event)"-->
+                            :value="item.rate"
+                            v-bind:content="item.rate"
+                            v-on:input="onItemUpdate('rate', index, $event)" />
                     </div>
                     <div class="col-md-2">
                         <input-field
-                            type="text"
+                            type="number"
                             v-bind:label="label.qty"
-                            v-model="cost.quantity"
-                            v-bind:content="cost.quantity" />
-                        <!--v-on:input="setCostProperty('quantity', index, $event)"-->
+                            :value="item.quantity"
+                            v-bind:content="item.quantity"
+                            v-on:input="onItemUpdate('quantity', index, $event)"/>
                     </div>
                     <div class="col-md-2">
                         <input-field
-                            type="text"
+                            type="number"
                             v-bind:label="label.days"
-                            v-model="cost.duration"
-                            v-bind:content="cost.duration" />
-                        <!--v-on:input="setCostProperty('duration', index, $event)"-->
+                            :value="item.duration"
+                            v-bind:content="item.duration"
+                            v-on:input="onItemUpdate('duration', index, $event)"/>
                     </div>
                 </div>
             </div>
@@ -47,12 +47,17 @@
                 <div class="form-group last-form-group">
                     <div class="col-md-6">
                         <span class="title">
-                            {{ label.internal_cost_subtotal }} <b><i class="fa fa-dollar"></i> {{ cost.total }}</b>
+                            {{ label.internal_cost_subtotal }} <b><i class="fa fa-dollar"></i> {{ itemTotal(item) }}</b>
                         </span>
                     </div>
                     <div class="col-md-6">
                         <div class="pull-right">
-                            <span v-on:click="deleteInternalCost(index);"><delete-icon /></span>
+                            <button
+                                    @click="onDelete(index)"
+                                    type="button"
+                                    class="btn-icon">
+                                <delete-icon fill="danger-fill"/>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -62,7 +67,7 @@
             <div class="form-group last-form-group">
                 <div class="col-md-12">
                     <div class="pull-right">
-                        <a v-on:click="addInternalCost" class="btn-rounded btn-auto">{{ button.add_internal_cost }} +</a>
+                        <a v-on:click="onAdd" class="btn-rounded btn-auto">{{ button.add_internal_cost }} +</a>
                     </div>
                 </div>
             </div>
@@ -75,17 +80,19 @@
                 </div>
                 <div class="col-md-4">
                     <input-field
-                        type="text"
+                        type="number"
                         v-bind:label="label.forecast_total"
                         v-bind:content="forecastContent"
-                        v-model="internalCosts.forecast" />
+                        :value="value.forecast"
+                        @input="onUpdate('forecast', $event)"/>
                 </div>
                 <div class="col-md-4">
                     <input-field
-                        type="text"
+                        type="number"
                         v-bind:label="label.actual_total"
-                        v-bind:content="internalCosts.actual"
-                        v-model="internalCosts.actual" />
+                        v-bind:content="value.actual"
+                        :value="value.actual"
+                        @input="onUpdate('actual', $event)"/>
                 </div>
             </div>
         </div>
@@ -100,7 +107,17 @@ import Error from '../../../_common/_messages/Error.vue';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
-    props: ['validationMessages'],
+    props: {
+        validationMessages: {
+            type: [Object, Array],
+            required: false,
+        },
+        value: {
+            type: Object,
+            required: false,
+            default: {},
+        },
+    },
     components: {
         InputField,
         SelectField,
@@ -108,31 +125,41 @@ export default {
         Error,
     },
     methods: {
-        ...mapActions(['getProjectDepartments', 'getProjectResources']),
-        addInternalCost: function() {
-            this.internalCosts.items.push({
-                resource: '',
-                quantity: 1,
-                duration: 1,
-                rate: 0,
-            });
+        ...mapActions([
+            'getProjectDepartments',
+            'getProjectResources',
+        ]),
+        onAdd: function() {
+            this.$emit('add');
         },
-        deleteInternalCost: function(index) {
-            this.internalCosts.items = [
-                ...this.internalCosts.items.slice(0, index),
-                ...this.internalCosts.items.slice(index + 1),
+        onDelete(index) {
+            let data = Object.assign({}, this.value);
+            data.items = [
+                ...data.items.slice(0, index),
+                ...data.items.slice(index + 1),
             ];
+
+            this.$emit('input', data);
         },
         itemTotal(item) {
             return item.rate * item.quantity * item.duration;
         },
-        setCostProperty(property, index, value) {
-            this.internalCosts.items[index][property] = value;
+        onItemUpdate(property, index, value) {
+            let data = Object.assign({}, this.value);
+            data.items[index][property] = value;
+
             if (property === 'resource') {
-                this.internalCosts.items[index]['rate'] = value.rate;
-                this.internalCosts.items[index].selectedResource = value;
+                data.items[index]['rate'] = value.rate;
+                data.items[index].selectedResource = value;
             }
-            this.$emit('input', this.internalCosts);
+
+            this.$emit('input', data);
+        },
+        onUpdate(property, value) {
+            let data = Object.assign({}, this.value);
+            data[property] = value;
+
+            this.$emit('input', data);
         },
         getValidationMessages(index, key) {
             if (this.validationMessages[index] && this.validationMessages[index][key]) {
@@ -151,29 +178,15 @@ export default {
             resourcesForSelect: 'projectResourcesForSelect',
         }),
         baseTotal: function() {
-            return this.processedInternalCosts.reduce((prev, next) => {
+            return this.value.items.reduce((prev, next) => {
                 return prev + this.itemTotal(next);
             }, 0);
         },
-        processedInternalCosts: function() {
-            return this.internalCosts.items.map(item => {
-                item.total = this.itemTotal(item);
-                return item;
-            });
-        },
         forecastContent: function() {
             if (this.$route.params.taskId) {
-                return this.internalCosts.forecast;
+                return this.value.forecast;
             }
             return this.baseTotal;
-        },
-    },
-    watch: {
-        internalCosts: {
-            handler: function(value) {
-                this.$emit('input', value);
-            },
-            deep: true,
         },
     },
     data() {
@@ -197,11 +210,6 @@ export default {
                 add_internal_cost: this.translate('button.add_internal_cost'),
                 cancel: this.translate('button.cancel'),
                 create_task: this.translate('button.create_task'),
-            },
-            internalCosts: {
-                items: [],
-                forecast: 0,
-                actual: 0,
             },
         };
     },
