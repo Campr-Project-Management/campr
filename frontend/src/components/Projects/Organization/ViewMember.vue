@@ -81,7 +81,7 @@
                     <div class="col-md-4" v-for="dl in distributionLists">
                         <h4>{{ dl.name }}</h4>
                         <div class="flex flex-v-center">
-                            <switches :disabled="true" :selected="inDistributionList(member, dl)"></switches>
+                            <switches :modelChanged="updateDistributionItem(member, dl)" v-model="inDistribution" :selected="inDistributionList(member, dl)"></switches>
                         </div>
                     </div>
                 </div>
@@ -163,7 +163,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions(['getDistributionLists', 'getProjectUser', 'updateProjectUser']),
+        ...mapActions(['getDistributionLists', 'getProjectUser', 'addToDistribution', 'removeFromDistribution', 'updateProjectUser']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -196,6 +196,14 @@ export default {
                 });
                 break;
             }
+        },
+        updateDistributionItem: function(item, distribution) {
+            return (value) => {
+                value
+                    ? this.addToDistribution({id: distribution.id, user: item.user})
+                    : this.removeFromDistribution({id: distribution.id, user: item.user})
+                ;
+            };
         },
     },
     created() {
