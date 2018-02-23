@@ -175,24 +175,14 @@
                 <!-- /// Project Internal Costs /// -->
                 <div class="col-md-6">
                     <h3>{{ translateText('message.internal_resources') }}</h3>
-                    <vue-chart
-                            chart-type="ColumnChart"
-                            :columns="columns"
-                            :rows="rowsInternal"
-                            :options="options"
-                    ></vue-chart>
+                    <chart :data="internalCostsGraphData.byPhase"/>
                 </div>
                 <!-- /// End Project Internal Costs /// -->
 
                 <!-- /// Project External Costs /// -->
                 <div class="col-md-6">
                     <h3>{{ translateText('message.external_resources') }}</h3>
-                    <vue-chart
-                            chart-type="ColumnChart"
-                            :columns="columns"
-                            :rows="rowsExternal"
-                            :options="options"
-                    ></vue-chart>
+                    <chart :data="externalCostsGraphData.byPhase"/>
                 </div>
                 <!-- /// End Project External Costs /// -->
             </div>
@@ -228,6 +218,7 @@
 import Vue from 'vue';
 import {mapGetters, mapActions} from 'vuex';
 import DragBox from './TaskManagement/DragBox.vue';
+import Chart from './Charts/CostsChart.vue';
 import InputField from '../_common/_form-components/InputField.vue';
 import CalendarIcon from '../_common/_icons/CalendarIcon.vue';
 import DownloadbuttonIcon from '../_common/_icons/DownloadbuttonIcon.vue';
@@ -252,6 +243,7 @@ export default {
         MemberBadge,
         AlertModal,
         Error,
+        Chart,
     },
     watch: {
         showSaved(value) {
@@ -275,36 +267,14 @@ export default {
                 this.eventEditor.setContent(this.contract.projectStartEvent ? this.contract.projectStartEvent : '');
             }, 1500);
         },
-        costData(value) {
-            Object.entries(this.costData.byPhase).map(([key, value]) => {
-                this.rowsExternal.push([
-                    key,
-                    value.base ? parseInt(value.base) : 0,
-                    value.actual ? parseInt(value.actual) : 0,
-                    value.forecast ? parseInt(value.forecast) : 0,
-                    value.base && value.actual ? parseInt(value.base) - parseInt(value.actual) : 0,
-                ]);
-            });
-        },
-        resourceData(value) {
-            Object.entries(this.resourceData.byPhase).map(([key, value]) => {
-                this.rowsInternal.push([
-                    key,
-                    value.base ? parseInt(value.base) : 0,
-                    value.actual ? parseInt(value.actual) : 0,
-                    value.forecast ? parseInt(value.forecast) : 0,
-                    value.base && value.actual ? parseInt(value.base) - parseInt(value.actual) : 0,
-                ]);
-            });
-        },
     },
     methods: {
         ...mapActions([
             'getProjectById', 'getContractByProjectId', 'updateContract',
             'createContract', 'createObjective', 'createLimitation', 'createDeliverable',
             'editObjective', 'editLimitation', 'editDeliverable', 'reorderObjectives',
-            'reorderLimitations', 'reorderDeliverables', 'getProjectCostsGraphData',
-            'getProjectUsers', 'getProjectResourcesGraphData', 'emptyValidationMessages',
+            'reorderLimitations', 'reorderDeliverables', 'getProjectExternalCostsGraphData',
+            'getProjectUsers', 'getProjectInternalCostsGraphData', 'emptyValidationMessages',
         ]),
         showDatePicker: function(id) {
             const picker = $('#'+id);
@@ -461,8 +431,8 @@ export default {
         this.getProjectById(this.$route.params.id);
         this.getContractByProjectId(this.$route.params.id);
         this.getProjectUsers({id: this.$route.params.id});
-        this.getProjectCostsGraphData({id: this.$route.params.id});
-        this.getProjectResourcesGraphData({id: this.$route.params.id});
+        this.getProjectInternalCostsGraphData({id: this.$route.params.id});
+        this.getProjectExternalCostsGraphData({id: this.$route.params.id});
         const service = Vue.$dragula.$service;
         let vm = this;
         service.eventBus.$on('dropModel', function(args) {
@@ -521,14 +491,16 @@ export default {
     },
     computed: {
         ...mapGetters({
-            project: 'project',
             contract: 'currentContract',
-            costData: 'costData',
-            resourceData: 'resourceData',
-            projectSponsors: 'projectSponsors',
-            projectManagers: 'projectManagers',
-            validationMessages: 'validationMessages',
         }),
+        ...mapGetters([
+            'project',
+            'externalCostsGraphData',
+            'internalCostsGraphData',
+            'projectSponsors',
+            'projectManagers',
+            'validationMessages',
+        ]),
         downloadPdf() {
             return Routing.generate('app_contract_pdf', {id: this.contract.id});
         },
@@ -541,65 +513,6 @@ export default {
             showFailed: false,
             showSavedComponent: false,
             showFailedComponent: false,
-            columns: [
-                {
-                    'type': 'string',
-                    'label': Translator.trans('message.total'),
-                },
-                {
-                    'type': 'number',
-                    'label': Translator.trans('label.base'),
-                },
-                {
-                    'type': 'number',
-                    'label': Translator.trans('label.actual'),
-                },
-                {
-                    'type': 'number',
-                    'label': Translator.trans('label.remaining'),
-                },
-                {
-                    'type': 'number',
-                    'label': Translator.trans('label.forecast'),
-                },
-            ],
-            rowsInternal: [
-                [Translator.trans('message.total'), 0, 0, 0, 0],
-            ],
-            rowsExternal: [
-                [Translator.trans('message.total'), 0, 0, 0, 0],
-            ],
-            options: {
-                title: Translator.trans('message.resource_chart'),
-                hAxis: {
-                    textStyle: {
-                        color: '#D8DAE5',
-                    },
-                },
-                vAxis: {
-                    title: '',
-                    minValue: 0,
-                    maxValue: 0,
-                    textStyle: {
-                        color: '#D8DAE5',
-                    },
-                },
-                width: '100%',
-                height: 350,
-                curveType: 'function',
-                colors: ['#5FC3A5', '#A05555', '#646EA0', '#2E3D60', '#D8DAE5'],
-                backgroundColor: '#191E37',
-                titleTextStyle: {
-                    color: '#D8DAE5',
-                },
-                legend: {
-                    position: 'bottom',
-                    maxLines: 5,
-                },
-                legendTextStyle: {
-                    color: '#D8DAE5',
-                },
-            },
             proposedStartDate: new Date(),
             proposedEndDate: new Date(),
             forecastStartDate: new Date(),
