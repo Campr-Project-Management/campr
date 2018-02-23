@@ -25,8 +25,9 @@ class WorkPackageRepository extends BaseRepository
     /**
      * Return all user workpackages filtered.
      *
-     * @param User  $user
-     * @param array $filters
+     * @param User       $user
+     * @param array      $filters
+     * @param null|mixed $select
      *
      * @return array
      */
@@ -490,9 +491,10 @@ class WorkPackageRepository extends BaseRepository
     /**
      * Return the query builder for all project workpackages filtered.
      *
-     * @param Project $project
-     * @param array   $filters
-     * @param array   $selects
+     * @param Project    $project
+     * @param array      $filters
+     * @param array      $selects
+     * @param null|mixed $select
      *
      * @return QueryBuilder
      */
@@ -531,7 +533,7 @@ class WorkPackageRepository extends BaseRepository
         }
 
         if (isset($filters['type'])) {
-            if ($filters['type'] == WorkPackage::TYPE_TASK) {
+            if (WorkPackage::TYPE_TASK == $filters['type']) {
                 $qb
                     ->andWhere('wp.type IN (:type)')
                     ->setParameter('type', [$filters['type'], WorkPackage::TYPE_TUTORIAL])
@@ -586,7 +588,7 @@ class WorkPackageRepository extends BaseRepository
         if (isset($filters['orderBy']) && isset($filters['order'])) {
             $qb->orderBy('wp.'.$filters['orderBy'], $filters['order']);
 
-            if (isset($filters['excludeNullValuesFromOrderBy']) && $filters['excludeNullValuesFromOrderBy'] === true) {
+            if (isset($filters['excludeNullValuesFromOrderBy']) && true === $filters['excludeNullValuesFromOrderBy']) {
                 $qb->andWhere('wp.'.$filters['orderBy'].' is NOT NULL');
             }
         }
@@ -687,9 +689,9 @@ class WorkPackageRepository extends BaseRepository
     {
         $qb = $this->getQueryBuilderByProjectAndFilters($project, ['type' => WorkPackage::TYPE_TASK]);
 
-        if (intval($type) === Cost::TYPE_EXTERNAL) {
+        if (Cost::TYPE_EXTERNAL === intval($type)) {
             $qb->select('SUM(wp.externalActualCost) as actual, SUM(wp.externalForecastCost) as forecast');
-        } elseif (intval($type) === Cost::TYPE_INTERNAL) {
+        } elseif (Cost::TYPE_INTERNAL === intval($type)) {
             $qb->select('SUM(wp.internalActualCost) as actual, SUM(wp.internalForecastCost) as forecast');
         }
 
@@ -716,7 +718,7 @@ class WorkPackageRepository extends BaseRepository
 
         return [
             'forecast' => (int) $internalResult['forecast'] + (int) $externalResult['forecast'],
-            'actual' => (int) $internalResult['actual'] + (int) $externalResult ['actual'],
+            'actual' => (int) $internalResult['actual'] + (int) $externalResult['actual'],
         ];
     }
 
@@ -734,8 +736,7 @@ class WorkPackageRepository extends BaseRepository
     /**
      * Counts the Uncompleted tasks of a phase.
      *
-     * @param Project $project
-     * @param array   $filters
+     * @param WorkPackage $phase
      *
      * @return int
      */
@@ -758,8 +759,7 @@ class WorkPackageRepository extends BaseRepository
     /**
      * Counts the Uncompleted tasks of a milestone.
      *
-     * @param Project $project
-     * @param array   $filters
+     * @param WorkPackage $milestone
      *
      * @return int
      */
