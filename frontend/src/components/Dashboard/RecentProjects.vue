@@ -10,13 +10,11 @@
         </div>
         <div class="grid-view">
             <small-project-box v-for="project in projects" v-bind:project="project"></small-project-box>
-            <router-link
-                :to="{name: 'projects-create-1'}"
-                class="new-box"
-                v-if="localUserIsAdmin"
-            >
-                {{ translateText('message.new_project') }} +
-            </router-link>
+            <div class="new-box">
+                <router-link :to="{name: 'projects-create-1'}" v-if="localUserIsAdmin">
+                    <span>{{ translateText('message.new_project') }} +</span>
+                </router-link>
+            </div>
         </div>
     </div>
 </template>
