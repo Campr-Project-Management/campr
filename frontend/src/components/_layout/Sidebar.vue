@@ -83,7 +83,7 @@
                         <span v-bind:class="'tablet'"></span>
                     </router-link>
                 </li>
-                <li v-for="module, key in modules" v-if="displayModule(key)">
+                <li v-for="(module, key) in modules" v-if="displayModule(key)">
                     <router-link :to="{name: moduleToRoute[key], params: {id: projectId}}" v-bind:title="translate(module.title)">
                         <span class="default">{{ translate(module.title) }}</span>
                         <span v-bind:class="module.icon"></span>
@@ -151,8 +151,8 @@ export default {
                 organization: 'project-organization',
                 phases_and_milestones: 'project-phases-and-milestones',
                 task_management: 'project-task-management-list',
-                internal_costs: 'project-costs',
-                external_costs: 'project-resources',
+                external_costs: 'project-external-costs',
+                internal_costs: 'project-internal-costs',
                 risks_and_opportunities: 'project-risks-and-opportunities',
                 gantt_chart: 'project-gantt-chart',
                 rasci_matrix: 'project-rasci-matrix',
