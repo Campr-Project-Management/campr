@@ -148,14 +148,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-@import '../../../css/_common';
-@import '../../../css/_variables.scss';
+    @import '../../../css/_common';
+    @import '../../../css/_variables.scss';
 
     .chart {
         font-size: 22px;
+        text-align: center;
 
         svg {
-            display: block;
+            display: inline-block;
             width: 100%;
             transform: rotate(-90deg);
         }
