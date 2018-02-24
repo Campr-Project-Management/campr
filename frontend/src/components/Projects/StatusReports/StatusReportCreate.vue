@@ -253,17 +253,12 @@
                     <div class="col-md-12">
                         <h3 class="margintop0">{{ translateText('message.internal_costs') }}</h3>
                         <div class="status-boxes flex flex-v-center marginbottom20">
-                            <div class="status-box" v-bind:style="{background: costData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>
-                            <div class="status-box" v-bind:style="{background: costData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>
-                            <div class="status-box" v-bind:style="{background: costData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>
+                            <div class="status-box" v-bind:style="{background: internalCostsGraphData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>
+                            <div class="status-box" v-bind:style="{background: internalCostsGraphData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>
+                            <div class="status-box" v-bind:style="{background: internalCostsGraphData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>
                         </div>
 
-                        <vue-chart
-                                chart-type="ColumnChart"
-                                :columns="columns"
-                                :rows="costRowsByPhase"
-                                :options="options">
-                        </vue-chart>
+                        <chart :data="internalCostsGraphData.byPhase"/>
                     </div>
                 </div>
 
@@ -273,17 +268,12 @@
                     <div class="col-md-12">
                         <h3 class="margintop0">{{ translateText('message.external_costs') }}</h3>
                         <div class="status-boxes flex flex-v-center marginbottom20">
-                            <div class="status-box" v-bind:style="{background: resourceData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>
-                            <div class="status-box" v-bind:style="{background: resourceData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>
-                            <div class="status-box" v-bind:style="{background: resourceData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>
+                            <div class="status-box" v-bind:style="{background: externalCostsGraphData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>
+                            <div class="status-box" v-bind:style="{background: externalCostsGraphData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>
+                            <div class="status-box" v-bind:style="{background: externalCostsGraphData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>
                         </div>
 
-                        <vue-chart
-                                chart-type="ColumnChart"
-                                :columns="columns"
-                                :rows="resourceRowsByPhase"
-                                :options="options">
-                        </vue-chart>
+                        <chart :data="externalCostsGraphData.byPhase"/>
                     </div>
                 </div>
 
@@ -434,6 +424,7 @@ import 'jquery-match-height/jquery.matchHeight.js';
 import VueScrollbar from 'vue2-scrollbar';
 import TaskRangeSlider from '../../_common/_task-components/TaskRangeSlider';
 import CircleChart from '../../_common/_charts/CircleChart';
+import Chart from './../Charts/CostsChart.vue';
 import RiskGrid from '../Risks/RiskGrid';
 import RiskList from '../Risks/RiskList';
 import OpportunityList from '../Opportunities/OpportunityList';
@@ -456,6 +447,7 @@ export default {
         OpportunityList,
         DownloadIcon,
         AtIcon,
+        Chart,
     },
     directives: {
         resize,
@@ -471,8 +463,8 @@ export default {
         this.getTasksStatus(this.$route.params.id);
         this.getTasksForSchedule(this.$route.params.id);
         this.getProgress(this.$route.params.id);
-        this.getProjectCostsGraphData({id: this.$route.params.id});
-        this.getProjectResourcesGraphData({id: this.$route.params.id});
+        this.getProjectInternalCostsGraphData({id: this.$route.params.id});
+        this.getProjectExternalCostsGraphData({id: this.$route.params.id});
         this.setMilestonesFilters(
             {
                 isKeyMilestone: true,
@@ -519,9 +511,9 @@ export default {
     methods: {
         ...mapActions([
             'getProjectById', 'getTasksStatus', 'getTasksForSchedule', 'getProgress',
-            'setMilestonesFilters', 'getProjectMilestones', 'getProjectCostsGraphData',
+            'setMilestonesFilters', 'getProjectMilestones', 'getProjectExternalCostsGraphData',
             'getProjectOpportunities', 'getProjectRisks', 'getProjectRiskAndOpportunitiesStats',
-            'setTodosFilters', 'getProjectTodos', 'getProjectResourcesGraphData',
+            'setTodosFilters', 'getProjectTodos', 'getProjectInternalCostsGraphData',
             'setDecisionsFilters', 'getProjectDecisions', 'createStatusReport', 'getProjectStatusReports',
         ]),
         getDuration: function(startDate, endDate, unit) {
@@ -564,8 +556,8 @@ export default {
                     tasksForSchedule: this.tasksForSchedule,
                     progresses: this.progresses,
                     projectMilestones: this.projectMilestones,
-                    costData: this.costData,
-                    resourceData: this.resourceData,
+                    externalCostsData: Object.assign({}, this.externalCostsGraphData),
+                    internalCostsData: Object.assign({}, this.internalCostsGraphData),
                     opportunities: this.opportunities,
                     risks: this.risks,
                     risksOpportunitiesStats: this.risksOpportunitiesStats,
@@ -573,7 +565,9 @@ export default {
                     decisions: this.decisions,
                 },
             };
-            this.createStatusReport(data);
+            console.info(data);
+            // this needs to be fixed
+            // this.createStatusReport(data);
         },
         onResizeSameHeightDiv: function() {
             window.$('.same-height').matchHeight();
@@ -593,8 +587,8 @@ export default {
             tasksForSchedule: 'tasksForSchedule',
             progresses: 'progresses',
             projectMilestones: 'projectMilestones',
-            costData: 'costData',
-            resourceData: 'resourceData',
+            externalCostsGraphData: 'externalCostsGraphData',
+            internalCostsGraphData: 'internalCostsGraphData',
             opportunities: 'opportunities',
             risks: 'risks',
             risksOpportunitiesStats: 'risksOpportunitiesStats',
@@ -620,28 +614,6 @@ export default {
         },
     },
     watch: {
-        costData(value) {
-            Object.entries(this.costData.byPhase).map(([key, value]) => {
-                this.costRowsByPhase.push([
-                    key,
-                    value.base ? parseInt(value.base) : 0,
-                    value.actual ? parseInt(value.actual) : 0,
-                    value.forecast ? parseInt(value.forecast) : 0,
-                    value.base && value.actual ? parseInt(value.base) - parseInt(value.actual) : 0,
-                ]);
-            });
-        },
-        resourceData(value) {
-            Object.entries(this.resourceData.byPhase).map(([key, value]) => {
-                this.resourceRowsByPhase.push([
-                    key,
-                    value.base ? parseInt(value.base) : 0,
-                    value.actual ? parseInt(value.actual) : 0,
-                    value.forecast ? parseInt(value.forecast) : 0,
-                    value.base && value.actual ? parseInt(value.base) - parseInt(value.actual) : 0,
-                ]);
-            });
-        },
         risksOpportunitiesStats(value) {
             let opportunityGridValues = this.risksOpportunitiesStats.opportunities.opportunity_data.gridValues;
             let riskGridValues = this.risksOpportunitiesStats.risks.risk_data.gridValues;
@@ -737,28 +709,6 @@ export default {
                 'label': Translator.trans('label.trend'),
             }],
             trendRows: [],
-            columns: [{
-                'type': 'string',
-                'label': Translator.trans('message.total'),
-            }, {
-                'type': 'number',
-                'label': Translator.trans('label.base'),
-            }, {
-                'type': 'number',
-                'label': Translator.trans('label.actual'),
-            }, {
-                'type': 'number',
-                'label': Translator.trans('label.forecast'),
-            }, {
-                'type': 'number',
-                'label': Translator.trans('label.remaining'),
-            }],
-            costRowsByPhase: [
-                ['', 0, 0, 0, 0],
-            ],
-            resourceRowsByPhase: [
-                ['', 0, 0, 0, 0],
-            ],
             trendOptions: {
                 title: Translator.trans('message.project_trend'),
                 pointSize: 8,
@@ -805,35 +755,7 @@ export default {
                 },
             },
             options: {
-                title: Translator.trans('message.costs_chart'),
-                hAxis: {
-                    textStyle: {
-                        color: '#D8DAE5',
-                    },
-                },
-                vAxis: {
-                    title: '',
-                    minValue: 0,
-                    maxValue: 0,
-                    textStyle: {
-                        color: '#D8DAE5',
-                    },
-                },
-                width: '100%',
-                height: 350,
-                curveType: 'function',
-                colors: ['#5FC3A5', '#A05555', '#646EA0', '#2E3D60', '#D8DAE5'],
                 backgroundColor: '#191E37',
-                titleTextStyle: {
-                    color: '#D8DAE5',
-                },
-                legend: {
-                    position: 'bottom',
-                    maxLines: 5,
-                },
-                legendTextStyle: {
-                    color: '#D8DAE5',
-                },
             },
         };
     },
