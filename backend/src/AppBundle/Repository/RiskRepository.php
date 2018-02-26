@@ -133,11 +133,16 @@ class RiskRepository extends BaseRepository
         return $data;
     }
 
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
     public function getStatsByProject(Project $project)
     {
         $gridValues = $this->getGridCount($project->getId());
         $averageData = $this->getAverageData($project);
-        $costs = $this->getTotalCosts($project);
+        $costs = $this->getTotalPotentialCostSavings($project);
         $delays = $this->getTotalDelays($project);
 
         $daysTotal = 0;
@@ -174,15 +179,32 @@ class RiskRepository extends BaseRepository
         ];
     }
 
-    public function getTotalCosts($project)
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
+    public function getTotalPotentialCostSavings(Project $project)
     {
-        return $this
+        $data = [];
+        $rows = $this
             ->getQueryBuilderByProject($project)
-            ->select('r.currency, SUM(r.cost) as totalCost')
-            ->groupBy('r.currency')
+            ->select('r.currency, r.cost, r.probability')
             ->getQuery()
             ->getArrayResult()
         ;
+
+        foreach ($rows as $row) {
+            $currency = $row['currency'];
+            $cost = round($row['cost'] * ($row['probability'] / 100), 4);
+            if (empty($data[$currency])) {
+                $data[$currency] = ['totalCost' => 0, 'currency' => $currency];
+            }
+
+            $data[$currency]['totalCost'] += $cost;
+        }
+
+        return array_values($data);
     }
 
     public function getTotalDelays($project)
