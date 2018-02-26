@@ -169,14 +169,13 @@
                 <div class="range-slider-wrapper" v-if="risk">
                     <range-slider
                             :disabled="true"
-                            v-bind:title="translateText('message.impact')"
-                            min="0"
-                            max="100"
+                            :title="translateText('message.impact')"
                             minSuffix=" %"
-                            type="single"
-                            v-bind:value="transformToString(risk.impact)" />
+                            :value="risk.impact"/>
                     <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
-                        <indicator-icon fill="middle-fill" :position="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact" :title="translateText('message.average_impact_risk')"></indicator-icon>
+                        <indicator-icon fill="middle-fill"
+                                        :position="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact"
+                                        :title="translateText('message.average_impact_risk')"></indicator-icon>
                     </div>
                 </div>
                 <!-- /// End Impact /// -->
@@ -185,14 +184,13 @@
                 <div class="range-slider-wrapper" v-if="risk">
                     <range-slider
                             :disabled="true"
-                            v-bind:title="translateText('message.probability')"
-                            min="0"
-                            max="100"
+                            :title="translateText('message.probability')"
                             minSuffix=" %"
-                            type="single"
-                            v-bind:value="transformToString(risk.probability)" />
+                            :value="risk.probability"/>
                     <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
-                        <indicator-icon fill="middle-fill" :position="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability" :title="translateText('message.average_probability_risk')"></indicator-icon>
+                        <indicator-icon fill="middle-fill"
+                                        :position="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability"
+                                        :title="translateText('message.average_probability_risk')"></indicator-icon>
                     </div>
                 </div>
                 <!-- /// End Probability /// -->
