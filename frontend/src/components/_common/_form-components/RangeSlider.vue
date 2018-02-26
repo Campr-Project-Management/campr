@@ -3,134 +3,219 @@
         <div class="heading flex flex-space-between">
             <span class="title">{{ title }}</span>
             <span class="value">
-                <span class="text">{{ minPrefix}}</span>
-                <span class="from number" v-text="rangeSliderModel | valueInterval"></span>
-                <span class="text">{{ minSuffix }}</span>
+                <span class="text" v-if="minPrefix">{{ minPrefix }}</span>
+                <span class="from number">{{ currentValue | rangeValue }}</span>
+                <span class="text" v-if="minSuffix">{{ minSuffix }}</span>
             </span>
         </div>
 
-        <input type="text" class="range" v-bind:id="'slider' + _uid" ref="slider" v-model="rangeSliderModel" />
+        <input type="text"
+               class="range"
+               ref="slider"
+               :value="value"/>
     </div>
 </template>
 
 <script>
-import DeferredCallbackQueue from 'deferred-callback-queue';
 import 'ion-rangeslider/js/ion.rangeSlider.js';
 import 'ion-rangeslider/css/ion.rangeSlider.css';
 import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
 
 export default {
-    props: [
-        'title',
-        'min',
-        'max',
-        'type',
-        'minPrefix',
-        'minSuffix',
-        'maxPrefix',
-        'maxSuffix',
-        'values',
-        'value',
-        'disabled',
-        'step',
-        'model',
-        'modelName',
-    ],
-    computed: {
-        from() {
-            if (!this.value) {
-                return this.min;
-            }
-            const values = this.value.split(';');
-            return values[0];
+    name: 'range-slider',
+    props: {
+        title: {
+            type: String,
+            required: true,
         },
-        to() {
-            if (!this.value) {
-                return this.from;
+        min: {
+            type: [Number, String],
+            required: false,
+            default: 0,
+        },
+        max: {
+            type: [Number],
+            required: false,
+            default: 100,
+        },
+        type: {
+            type: String,
+            required: false,
+            default: 'single',
+            validator(value) {
+                return ['double', 'single'].indexOf(value) >= 0;
+            },
+        },
+        minPrefix: {
+            type: String,
+            required: false,
+        },
+        minSuffix: {
+            type: String,
+            required: false,
+        },
+        maxPrefix: {
+            type: String,
+            required: false,
+        },
+        maxSuffix: {
+            type: String,
+            required: false,
+        },
+        values: {
+            type: Array,
+            required: false,
+            default: () => [],
+        },
+        value: {
+            type: [Number, String, Array],
+            required: false,
+            default: 0,
+            validator(value) {
+                if (Array.isArray(value)) {
+                    return value.length === 2;
+                }
+
+                return true;
+            },
+        },
+        disabled: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+        step: {
+            type: Number,
+            required: false,
+            default: 1,
+        },
+    },
+    computed: {
+        fromIndex() {
+            return this.valueToIndex(this.getFromValue(this.value));
+        },
+        toIndex() {
+            return this.valueToIndex(this.getToValue(this.value));
+        },
+        minIndex() {
+            if (this.values.length > 0) {
+                return 0;
             }
-            const values = this.value.split(';');
-            return values.length > 1 ? values[1] : this.max;
+
+            return this.min;
+        },
+        maxIndex() {
+            if (this.values.length > 0) {
+                return this.values.length - 1;
+            }
+
+            return this.max;
         },
     },
     mounted() {
-        const $this = window.$('#slider' + this._uid);
-        const values = this.values ? this.values.split(',') : '';
+        this.$nextTick(() => {
+            const $slider = this.slider();
 
-        this.rangeSliderModel = this.model;
-        const vm = this;
+            this.currentValue = this.value;
 
-        let valueTmp;
-        if (this.type === 'double') {
-            if (typeof valueTmp !== 'undefined') {
-                valueTmp = this.model.split(';');
-                valueTmp[0] = parseInt(valueTmp[0]);
-                valueTmp[1] = parseInt(valueTmp[1]);
-            } else {
-                valueTmp = [0, 0];
-            }
-        } else {
-            valueTmp = this.model;
-        }
+            let config = {
+                type: this.type,
+                min: this.minIndex,
+                max: this.maxIndex,
+                from: this.fromIndex,
+                to: this.toIndex,
+                values: this.values,
+                disable: this.disabled,
+                step: this.step,
+                onFinish: (data) => {
+                    this.onFinish(data.from, data.to);
+                },
+                onChange: (data) => {
+                    this.onChange(data.from, data.to);
+                },
+            };
 
-        let rangeParams = {
-            type: this.type,
-            min: this.min,
-            max: this.max,
-            from: null,
-            to: null,
-            values: values,
-            disable: this.disabled,
-            step: this.step,
-            onFinish(data) {
-                vm.finishChangingValue(data.from);
-            },
-        };
-
-        if (this.type == 'double') {
-            rangeParams.from = (values instanceof Array) ? values.indexOf(valueTmp[0]) : valueTmp[0];
-            rangeParams.to = (values instanceof Array) ? values.indexOf(valueTmp[1]) : valueTmp[1];
-        } else {
-            rangeParams.from = (values instanceof Array) ? values.indexOf(valueTmp) : valueTmp;
-        }
-
-        $this.ionRangeSlider(rangeParams);
+            $slider.ionRangeSlider(config);
+        });
     },
     methods: {
-        getDeferredSaveQueue() {
-            if (this.deferredQueue) {
-                return this.deferredQueue;
-            } else {
-                this.deferredQueue = new DeferredCallbackQueue(1000, true);
-                return this.deferredQueue;
-            }
+        slider() {
+            return window.$(this.$refs.slider);
         },
-        finishChangingValue(value) {
-            this.rangeSliderModel = value;
-            this.$emit('onRangeSliderUpdate', {value: value, modelName: this.modelName});
+        onChange(frm, to) {
+            this.currentValue = this.outputValue(this.indexToValue(frm), this.indexToValue(to));
+        },
+        onFinish(frm, to) {
+            this.$emit('input', this.outputValue(this.indexToValue(frm), this.indexToValue(to)));
+        },
+        outputValue(frm, to) {
+            if (this.type === 'double') {
+                return [frm, to];
+            }
+
+            return frm;
+        },
+        getFromValue(value) {
+            if (this.type === 'double') {
+                return value[0];
+            }
+
+            return value;
+        },
+        getToValue(value) {
+            if (this.type === 'double') {
+                return value[1];
+            }
+
+            return value;
+        },
+        indexToValue(index) {
+            if (index == null) {
+                return index;
+            }
+
+            if (this.values.length > 0) {
+                let value = this.values[index];
+                return value == null ? this.values[this.minIndex] : value;
+            }
+
+            return index;
+        },
+        valueToIndex(value) {
+            if (value == null) {
+                return value;
+            }
+
+            if (this.values.length > 0) {
+                let index = this.values.indexOf(value);
+                return index < 0 ? this.minIndex : index;
+            }
+
+            return value;
         },
     },
     watch: {
         value(val) {
-            const $slider = window.$('#slider' + this._uid);
-            this.rangeSliderModel = parseInt(val, 10);
-            if (!$slider.length) {
+            this.currentValue = val;
+            const $slider = this.slider();
+            if (!$slider) {
                 return;
             }
 
             const irs = $slider.data().ionRangeSlider;
-            if (irs && !irs.dragging) {
-                irs.update({
-                    from: val,
-                });
+            if (!irs || irs.dragging) {
+                return;
             }
+
+            irs.update({
+                from: this.getFromValue(this.valueToIndex(val)),
+                to: this.getToValue(this.valueToIndex(val)),
+            });
         },
         disabled(val) {
-            const $slider = window.$('#slider' + this._uid);
-            if (!$slider.length) {
-                return;
-            }
-
+            const $slider = this.slider();
             const irs = $slider.data().ionRangeSlider;
+
             if (irs) {
                 irs.update({
                     disable: val,
@@ -139,16 +224,17 @@ export default {
         },
     },
     filters: {
-        valueInterval(value) {
-            if (typeof value === 'string') {
-                return value.replace(';', ' - ');
+        rangeValue(value) {
+            if (Array.isArray(value)) {
+                return `${value[0]} - ${value[1]}`;
             }
+
             return value;
         },
     },
     data() {
         return {
-            rangeSliderModel: 0,
+            currentValue: 0,
         };
     },
 };
