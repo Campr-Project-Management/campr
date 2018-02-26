@@ -743,8 +743,7 @@ class WorkPackageRepository extends BaseRepository
     /**
      * Counts the Uncompleted tasks of a phase.
      *
-     * @param Project $project
-     * @param array   $filters
+     * @param WorkPackage $phase
      *
      * @return int
      */
@@ -767,8 +766,7 @@ class WorkPackageRepository extends BaseRepository
     /**
      * Counts the Uncompleted tasks of a milestone.
      *
-     * @param Project $project
-     * @param array   $filters
+     * @param WorkPackage $milestone
      *
      * @return int
      */
