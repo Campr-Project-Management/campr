@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import _ from 'lodash';
 
 const state = {
     currentTask: {},
@@ -212,6 +213,35 @@ const actions = {
                 }
             );
     },
+    /**
+     * Patch an subtask
+     * @param {function} commit
+     * @param {array} data
+     * @return {Object}
+     * @todo change this to a more suitable version
+     */
+    patchSubtask({commit}, data) {
+        return Vue.http
+        .patch(
+            Routing.generate('app_api_workpackage_edit', {'id': data.taskId}),
+            data.data
+        ).then(
+            (response) => {
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    const task = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    commit(types.SET_SUBTASK, {task});
+                }
+                return response;
+            },
+            (response) => {
+                return response;
+            }
+        );
+    },
     // something is weird here :\
     // getUsers({commit}) {
     //     Vue.http
@@ -362,6 +392,23 @@ const mutations = {
         state.currentTask = task;
     },
     /**
+     * Sets subtask of current task
+     * @param {Object} state
+     * @param {Object} task
+     */
+    [types.SET_SUBTASK](state, {task}) {
+        let index = _.findIndex(state.currentTask.children, (child) => {
+            return child.id === task.id;
+        });
+
+        if (index === -1) {
+            state.currentTask.push(task);
+            return;
+        }
+
+        Vue.set(state.currentTask.children, index, task);
+    },
+    /**
      * Set the history
      * @param {Object} state
      * @param {Object} history
@@ -393,8 +440,8 @@ const mutations = {
      * @param {number} taskId
      */
     [types.DELETE_TASK_SUBTASK](state, taskId) {
-        state.currentTask.children = state.currentTask.children.filter((item) => {
-            return item.id !== taskId ? true : false;
+        state.currentTask.children = _.remove(state.currentTask.children, (item) => {
+            return item.id !== taskId;
         });
 
         let decrementNeeded = false;
