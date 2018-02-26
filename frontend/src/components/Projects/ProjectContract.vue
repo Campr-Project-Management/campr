@@ -62,25 +62,37 @@
                     <div class="flex flex-space-between dates">
                         <div class="input-holder left" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.proposed_start_date') }}</label>
-                            <datepicker v-on:selected="closeDatePicker('proposedStartDate')" id="proposedStartDate" v-model="proposedStartDate" format="dd - MM - yyyy" :value="contract.proposedStartDate"></datepicker>
-                            <calendar-icon @click.native="showDatePicker('proposedStartDate')" fill="middle-fill"></calendar-icon>
+                            <datepicker
+                                    :value="proposedStartDate"
+                                    format="dd - MM - yyyy"
+                                    :disabled-picker="true"/>
+                            <calendar-icon fill="middle-fill"/>
                         </div>
                         <div class="input-holder right" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.proposed_end_date') }}</label>
-                            <datepicker v-on:selected="closeDatePicker('proposedEndDate')" id="proposedEndDate" v-model="proposedEndDate" format="dd - MM - yyyy" :value="contract.proposedEndDate"></datepicker>
-                            <calendar-icon @click.native="showDatePicker('proposedEndDate')" fill="middle-fill"></calendar-icon>
+                            <datepicker
+                                    :value="proposedEndDate"
+                                    format="dd - MM - yyyy"
+                                    :disabled-picker="true"/>
+                            <calendar-icon fill="middle-fill"/>
                         </div>
                     </div>
                     <div class="flex flex-space-between dates right">
                         <div class="input-holder left" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.forecast_start_date') }}</label>
-                            <datepicker v-on:selected="closeDatePicker('forecastStartDate')" id="forecastStartDate" v-model="forecastStartDate" format="dd - MM - yyyy" :value="contract.forecastStartDate"></datepicker>
-                            <calendar-icon @click.native="showDatePicker('forecastStartDate')" fill="middle-fill"></calendar-icon>
+                            <datepicker
+                                    :value="forecastStartDate"
+                                    format="dd - MM - yyyy"
+                                    :disabled-picker="true"/>
+                            <calendar-icon fill="middle-fill"/>
                         </div>
                         <div class="input-holder right" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.forecast_end_date') }}</label>
-                            <datepicker v-on:selected="closeDatePicker('forecastEndDate')" id="forecastEndDate" v-model="forecastEndDate"  format="dd - MM - yyyy" :value="contract.forecastEndDate"></datepicker>
-                            <calendar-icon @click.native="showDatePicker('forecastEndDate')" fill="middle-fill"></calendar-icon>
+                            <datepicker
+                                    :value="forecastEndDate"
+                                    format="dd - MM - yyyy"
+                                    :disabled-picker="true"/>
+                            <calendar-icon fill="middle-fill"/>
                         </div>
                     </div>
                 </div>
@@ -226,11 +238,11 @@ import EyeIcon from '../_common/_icons/EyeIcon.vue';
 import MemberBadge from '../_common/MemberBadge.vue';
 import AlertModal from '../_common/AlertModal.vue';
 import datepicker from '../_common/_form-components/Datepicker';
-import moment from 'moment';
 import router from '../../router';
 import Error from '../_common/_messages/Error.vue';
 import {createEditor} from 'vueditor';
 import vueditorConfig from '../_common/vueditorConfig';
+import moment from 'moment';
 
 export default {
     components: {
@@ -257,10 +269,6 @@ export default {
             }
         },
         contract(value) {
-            this.proposedStartDate = this.contract.proposedStartDate ? new Date(this.contract.proposedStartDate) : new Date();
-            this.proposedEndDate = this.contract.proposedEndDate ? new Date(this.contract.proposedEndDate) : new Date();
-            this.forecastStartDate = this.contract.forecastStartDate ? new Date(this.contract.forecastStartDate) : new Date();
-            this.forecastEndDate = this.contract.forecastEndDate ? new Date(this.contract.forecastEndDate) : new Date();
             this.frozen = this.contract.frozen;
             setTimeout(() => {
                 this.descriptionEditor.setContent(this.contract.description ? this.contract.description : '');
@@ -276,15 +284,6 @@ export default {
             'reorderLimitations', 'reorderDeliverables', 'getProjectExternalCostsGraphData',
             'getProjectUsers', 'getProjectInternalCostsGraphData', 'emptyValidationMessages',
         ]),
-        showDatePicker: function(id) {
-            const picker = $('#'+id);
-            picker.next().toggle();
-            picker.focus();
-        },
-        closeDatePicker: function(id) {
-            const picker = $('#'+id);
-            picker.next().hide();
-        },
         translateText: function(text) {
             return this.translate(text);
         },
@@ -311,17 +310,18 @@ export default {
                 ;
             }
         },
-        updateProjectContract: function() {
+        updateProjectContract() {
             let data = {
                 projectId: this.$route.params.id,
                 name: this.project.name + '-contract',
                 description: this.descriptionEditor.getContent(),
                 projectStartEvent: this.eventEditor.getContent(),
-                proposedStartDate: moment(this.proposedStartDate).format('DD-MM-YYYY'),
-                proposedEndDate: moment(this.proposedEndDate).format('DD-MM-YYYY'),
-                forecastStartDate: moment(this.forecastStartDate).format('DD-MM-YYYY'),
-                forecastEndDate: moment(this.forecastEndDate).format('DD-MM-YYYY'),
+                proposedStartDate: moment(this.project.scheduledStartAt).format('DD-MM-YYYY'),
+                proposedEndDate: moment(this.project.scheduledFinishAt).format('DD-MM-YYYY'),
+                forecastStartDate: moment(this.project.forecastStartAt).format('DD-MM-YYYY'),
+                forecastEndDate: moment(this.project.forecastFinishAt).format('DD-MM-YYYY'),
             };
+
             if (this.contract.id) {
                 data.id = this.contract.id;
                 this
@@ -504,6 +504,34 @@ export default {
         downloadPdf() {
             return Routing.generate('app_contract_pdf', {id: this.contract.id});
         },
+        proposedStartDate() {
+            if (this.contract.frozen) {
+                return this.contract.proposedStartDate;
+            }
+
+            return this.project.scheduledStartAt;
+        },
+        proposedEndDate() {
+            if (this.contract.frozen) {
+                return this.contract.proposedEndDate;
+            }
+
+            return this.project.scheduledFinishAt;
+        },
+        forecastStartDate() {
+            if (this.contract.frozen) {
+                return this.contract.forecastStartDate;
+            }
+
+            return this.project.forecastStartAt;
+        },
+        forecastEndDate() {
+            if (this.contract.frozen) {
+                return this.contract.forecastEndDate;
+            }
+
+            return this.project.forecastFinishAt;
+        },
     },
     data: function() {
         return {
@@ -513,10 +541,6 @@ export default {
             showFailed: false,
             showSavedComponent: false,
             showFailedComponent: false,
-            proposedStartDate: new Date(),
-            proposedEndDate: new Date(),
-            forecastStartDate: new Date(),
-            forecastEndDate: new Date(),
             showSponsorsManagers: false,
             objectiveDescription: null,
             limitationDescription: null,

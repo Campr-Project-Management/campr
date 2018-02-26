@@ -5,7 +5,7 @@
             :class="inputClass"
             :name="name"
             :id="id"
-            @click="showCalendar()"
+            @click="onClick()"
             :value="formattedValue"
             :placeholder="placeholder"
             :clear-button="clearButton"
@@ -75,9 +75,20 @@
 
 <script>
     import datepicker from 'vuejs-datepicker';
+
     export default {
         extends: datepicker,
-        props: ['placeholder'],
+        props: {
+            placeholder: {
+                type: String,
+                required: false,
+            },
+            disabledPicker: {
+                type: Boolean,
+                required: false,
+                default: false,
+            },
+        },
         methods: {
             isOpen() {
                 let scrollTop = $(window).scrollTop();
@@ -91,6 +102,13 @@
                 } else {
                     $(this.$el).find('.calendar').removeClass('bottom-up');
                 }
+            },
+            onClick() {
+                if (this.disabledPicker) {
+                    return;
+                }
+
+                this.showCalendar();
             },
         },
     };
