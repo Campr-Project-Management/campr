@@ -95,26 +95,31 @@
 
                 <!-- ///Subtasks /// -->
                 <h3>{{ translateText('message.subtasks') }} | {{ getSubtaskSummary() }} {{ translateText('label.completed') }}</h3>
-                <div v-for="(subtask, index) in task.children" :key="index" class="subtasks">
-                <div class="subtask flex flex-space-between">
+                <div class="subtasks">
+                    <div v-for="(subtask, index) in task.children" :key="index" class="subtask flex flex-space-between">
                         <div class="checkbox-input clearfix">
-                            <input :id="'subtask-'+subtask.puid" type="checkbox" name="" value="">
+                            <input
+                                    :id="'subtask-'+subtask.puid"
+                                    type="checkbox"
+                                    :value="subtask.id"
+                                    v-model.number="completedSubtasksIds"
+                                    @change="onSubtaskStatusChange"/>
                             <label :for="'subtask-'+subtask.puid">{{ subtask.name }}</label>
                         </div>
                         <div>
                             <div class="text-right">
                                 <router-link
-                                    :to="{name: 'project-task-management-edit', params: {id: task.project, taskId: subtask.id}}"
-                                    class="btn-icon">
+                                        :to="{name: 'project-task-management-edit', params: {id: task.project, taskId: subtask.id}}"
+                                        class="btn-icon">
                                     <edit-icon fill="second-fill"></edit-icon>
                                 </router-link>
 
                                 <button
-                                    @click="showDeleteModal = subtask.id;"
-                                    data-target="#subtask1-delete-modal"
-                                    data-toggle="modal"
-                                    type="button"
-                                    class="btn-icon">
+                                        @click="showDeleteModal = subtask.id;"
+                                        data-target="#subtask1-delete-modal"
+                                        data-toggle="modal"
+                                        type="button"
+                                        class="btn-icon">
                                     <delete-icon fill="danger-fill"></delete-icon>
                                 </button>
                             </div>
@@ -734,6 +739,9 @@ import moment from 'moment';
 import {createFormData} from '../../../helpers/task';
 import Vue from 'vue';
 
+const TASK_STATUS_CLOSED = 5;
+const TASK_STATUS_COMPLETED = 4;
+
 export default {
     components: {
         EditIcon,
@@ -776,7 +784,7 @@ export default {
             currentUser: 'user',
         }),
         isClosed() {
-            return this.task.workPackageStatus === 5;
+            return this.task.workPackageStatus === TASK_STATUS_CLOSED;
         },
         internalBaseTotal() {
             return this.editableData.internalCosts.reduce((prev, next) => {
@@ -861,6 +869,20 @@ export default {
             return this.task.parent == null &&
                 this.task.noSubtasks > 0
             ;
+        },
+        completedSubtasksCount() {
+            if (!this.task || !this.task.children) {
+                return 0;
+            }
+
+            let count = 0;
+            this.task.children.forEach((subtask) => {
+                if (this.isCompleted(subtask)) {
+                    count++;
+                }
+            });
+
+            return count;
         },
     },
     watch: {
@@ -961,6 +983,13 @@ export default {
                 });
             });
             this.editableData.consultedUsers = consultedUsers;
+
+            this.completedSubtasksIds = [];
+            this.task.children.forEach((subtask) => {
+                if (this.isCompleted(subtask)) {
+                    this.completedSubtasksIds.push(subtask.id);
+                }
+            });
         },
     },
     methods: {
@@ -976,24 +1005,23 @@ export default {
             'getWorkPackageStatusesForSelect',
             'getProjectLabels',
             'patchTask',
+            'patchSubtask',
             'editTaskCost',
         ]),
-        countCompletedSubtasks() {
-            let completed = 0;
+        onSubtaskStatusChange(event) {
+            let taskId = Number(event.target.value);
+            let data = {
+                workPackageStatus: null,
+            };
 
-            // @TODO: see why this would become undefined
-            if (!this.task || !this.task.children) {
-                return completed;
+            if (this.completedSubtasksIds.indexOf(taskId) >= 0) {
+                data.workPackageStatus = TASK_STATUS_COMPLETED;
             }
 
-            for (let task of this.task.children) {
-                // TODO: use constants
-                if (task.workPackageStatus === 4) {
-                    completed++;
-                }
-            }
-
-            return completed;
+            this.patchSubtask({taskId, data});
+        },
+        isCompleted(task) {
+            return Number(task.workPackageStatus) === TASK_STATUS_COMPLETED;
         },
         deleteSubtask(subtaskId) {
             this.deleteTaskSubtask(subtaskId);
@@ -1012,7 +1040,7 @@ export default {
             return Translator.trans(
                 'message.subtasks_summary',
                 {
-                    'completed_tasks': this.countCompletedSubtasks(),
+                    'completed_tasks': this.completedSubtasksCount,
                     'total_tasks': this.task && this.task.children
                         ? this.task.children.length
                         : 0,
@@ -1023,9 +1051,9 @@ export default {
             let authorId = null;
             let projectUsers = this.projectUsers.items;
             for (let i = 0; i < projectUsers.length; i++) {
-                if (projectUsers[i].userEmail == this.currentUser.email) {
+                if (projectUsers[i].userEmail === this.currentUser.email) {
                     authorId = projectUsers[i].user;
-                };
+                }
             }
 
             let data = {
@@ -1425,6 +1453,7 @@ export default {
                 predecessors: [],
                 durationInDays: 0,
             },
+            completedSubtasksIds: [],
         };
     },
 };
