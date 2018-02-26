@@ -84,17 +84,15 @@
                     <!-- /// Risk Impact /// -->
                     <div class="range-slider-wrapper">
                         <range-slider
-                        v-bind:title="translateText('message.impact')"
-                        min="0"
-                        max="100"
-                        minSuffix=" %"
-                        type="single"
-                        step="5"
-                        :model="riskImpact"
-                        :modelName="'riskImpact'"
-                        @onRangeSliderUpdate="updateSlider"/>
+                                :title="translateText('message.impact')"
+                                minSuffix=" %"
+                                :step="5"
+                                v-model="riskImpact"/>
                         <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
-                            <indicator-icon fill="middle-fill" v-if="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact" :position="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact" :title="translateText('message.average_impact_risk')"></indicator-icon>
+                            <indicator-icon fill="middle-fill"
+                                            v-if="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact"
+                                            :position="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact"
+                                            :title="translateText('message.average_impact_risk')"></indicator-icon>
                         </div>
                     </div>
                     <!-- /// End Risk Impact /// -->
@@ -102,17 +100,15 @@
                     <!-- /// Risk Probability /// -->
                     <div class="range-slider-wrapper">
                         <range-slider
-                        v-bind:title="translateText('message.probability')"
-                        min="0"
-                        max="100"
-                        minSuffix=" %"
-                        type="single"
-                        step="5"
-                        :model="riskProbability"
-                        :modelName="'riskProbability'"
-                        @onRangeSliderUpdate="updateSlider"/>
+                                :title="translateText('message.probability')"
+                                minSuffix=" %"
+                                :step="5"
+                                v-model="riskProbability"/>
                         <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
-                            <indicator-icon fill="middle-fill" v-if="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability" :position="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability" :title="translateText('message.average_probability_risk')"></indicator-icon>
+                            <indicator-icon fill="middle-fill"
+                                            v-if="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability"
+                                            :position="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability"
+                                            :title="translateText('message.average_probability_risk')"></indicator-icon>
                         </div>
                     </div>
                     <!-- /// End Risk Probability /// -->
@@ -449,9 +445,6 @@ export default {
 
             this.priority = priorityNames[type];
         },
-        updateSlider(sliderResult) {
-            this[sliderResult.modelName] = sliderResult.value;
-        },
     },
     computed: {
         ...mapGetters({
@@ -541,8 +534,8 @@ export default {
         risk(value) {
             this.title = this.risk.title;
             this.$refs.description.setContent(this.risk.description);
-            this.riskImpact = this.risk.impact.toString();
-            this.riskProbability = this.risk.probability.toString();
+            this.riskImpact = this.risk.impact;
+            this.riskProbability = this.risk.probability;
             this.cost = this.risk.cost;
             this.details.currency = this.risk.currency
                 ? {key: this.translateText(this.risk.currency), label: this.getCurrencySymbol(this.risk.currency)}
