@@ -25,6 +25,7 @@
 
 <script>
     export default {
+        name: 'input-field',
         props: {
             value: {
                 required: false,
