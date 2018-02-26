@@ -114,75 +114,99 @@ p {
 .light-fill {
     fill: $lightColor;
 }
+
 .lighter-fill {
     fill: $lighterColor;
 }
+
 .middle-fill {
     fill: $middleColor;
 }
+
 .second-fill {
     fill: $secondColor;
 }
+
 .danger-fill {
     fill: $dangerColor;
 }
+
 .white-fill {
     fill: $whiteColor;
 }
+
 .lighter-stroke {
     stroke: $lighterColor;
 }
+
 .middle-stroke {
     stroke: $middleColor;
 }
+
 .white-stroke {
     stroke: $whiteColor;
 }
+
 .second-bg {
     background: $secondColor !important;
 }
+
 .warning-bg {
     background: $warningColor !important;
 }
+
 .danger-bg {
     background: $dangerColor !important;
 }
+
 .disable-bg {
     background: #5A5A5A !important;
 }
+
 .second-dark-bg {
     background: $secondDarkColor !important;
 }
+
 .middle-bg {
     background-color: $middleColor !important;
 }
+
 .main-bg {
     background-color: $mainColor !important;
 }
+
 .dark-bg {
     background-color: $darkColor !important;
 }
+
 .darker-bg {
     background-color: $darkerColor;
 }
+
 .middle-bg {
     background-color: $middleColor !important;
 }
+
 .middle-color {
     color: $middleColor !important;
 }
+
 .second-color {
     color: $secondColor !important;
 }
+
 .light-color {
     color: $lightColor !important;
 }
+
 .warning-color {
     color: $warningColor !important;
 }
+
 .danger-color {
     color: $dangerColor !important;
 }
+
 .danger-border {
     border: 1px solid $dangerColor !important;
 }
@@ -190,6 +214,7 @@ p {
 .margintop20 {
     margin-top: 20px;
 }
+
 .marginbottom20 {
     margin-bottom: 20px;
 }
@@ -250,7 +275,7 @@ img {
         letter-spacing: 1.5px;
         @include transition(all, 0.2s, ease-in);
 
-        &.active{
+        &.active {
             top: -15px;
             left: 20px;
             font-size: 0.8em;
@@ -287,7 +312,7 @@ textarea {
         color: $lighterColor;
     }
 
-    &[disabled]{
+    &[disabled] {
         background-color: $grayColor;
         color: lighten($grayColor, 25%);
         pointer-events: none;
@@ -331,7 +356,7 @@ textarea {
     &:hover,
     &:active,
     &:focus {
-        outline:0;
+        outline: 0;
         background-color: darken($middleColor, 15%);
     }
 
@@ -341,7 +366,7 @@ textarea {
         &:hover,
         &:active,
         &:focus {
-            outline:0;
+            outline: 0;
             background-color: darken($secondColor, 15%) !important;
         }
     }
@@ -352,7 +377,7 @@ textarea {
         &:hover,
         &:active,
         &:focus {
-            outline:0;
+            outline: 0;
             background-color: darken($dangerColor, 15%) !important;
         }
     }
@@ -423,8 +448,8 @@ textarea {
     &:active,
     &:focus {
         color: $lighterColor;
-        outline:0;
-        background-color: fade-out($middleColor,0.8);
+        outline: 0;
+        background-color: fade-out($middleColor, 0.8);
     }
 }
 
@@ -631,15 +656,15 @@ hr {
     }
 
     input[type=radio]:checked + label:before {
-    //content: '\2713';
-    content: '';
-    text-align: center;
-    background: $secondColor;
-    border: none;
-    line-height: 20px;
-    font-size: 16px;
-    color: $darkColor;
-    font-weight: 700;
+        //content: '\2713';
+        content: '';
+        text-align: center;
+        background: $secondColor;
+        border: none;
+        line-height: 20px;
+        font-size: 16px;
+        color: $darkColor;
+        font-weight: 700;
     }
 
     label {
@@ -667,14 +692,14 @@ hr {
         padding-left: 15px;
     }
 
-    @media (max-width:1500px) {
+    @media (max-width: 1500px) {
         .task-box-wrapper,
         .project-box-wrapper {
             width: 33.3333333%;
         }
     }
 
-    @media (max-width:1280px) {
+    @media (max-width: 1280px) {
         .task-box-wrapper,
         .project-box-wrapper {
             width: 50%;
@@ -884,7 +909,7 @@ hr {
     font-weight: 400;
     letter-spacing: 1.8px;
 
-    .table{
+    .table {
         background-color: transparent;
     }
 
@@ -897,9 +922,9 @@ hr {
         }
     }
 
-    >thead {
-        >tr {
-            >th {
+    > thead {
+        > tr {
+            > th {
                 border-bottom: none;
                 background: $darkColor;
                 text-transform: uppercase;
@@ -925,9 +950,9 @@ hr {
         }
     }
 
-    >tbody {
-        >tr {
-            >td {
+    > tbody {
+        > tr {
+            > td {
                 border: none;
                 vertical-align: middle;
                 text-transform: uppercase;
@@ -942,7 +967,7 @@ hr {
                     height: 16px;
                     display: inline-block;
 
-                    &:last-child{
+                    &:last-child {
                         margin-right: 0;
                     }
                 }
@@ -950,20 +975,20 @@ hr {
         }
     }
 
-    >tbody>tr:nth-of-type(odd) {
+    > tbody > tr:nth-of-type(odd) {
         background: $mainColor;
     }
 
-    >tbody>tr:nth-of-type(even) {
+    > tbody > tr:nth-of-type(even) {
         background: $semiDarkColor;
     }
 
-    >tbody>tr.inactive:nth-of-type(odd) {
-        background: darken($whiteColor,75%);
+    > tbody > tr.inactive:nth-of-type(odd) {
+        background: darken($whiteColor, 75%);
     }
 
-    >tbody>tr.inactive:nth-of-type(even) {
-        background: darken($whiteColor,80%);
+    > tbody > tr.inactive:nth-of-type(even) {
+        background: darken($whiteColor, 80%);
     }
 
     tr.column-warning {
@@ -1073,7 +1098,7 @@ hr {
 
     &.tooltip-target-attached-bottom {
         padding-top: 5px;
-        margin-top: 8px; 
+        margin-top: 8px;
 
         &:after {
             content: "";
