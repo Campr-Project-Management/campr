@@ -137,7 +137,7 @@ class OpportunityRepository extends BaseRepository
     {
         $gridValues = $this->getGridCount($project->getId());
         $averageData = $this->getAverageData($project);
-        $costSavings = $this->getTotalCostSavings($project);
+        $costSavings = $this->getTotalPotentialCostSavings($project);
         $timeSavings = $this->getTotalTimeSavings($project);
 
         $daysTotal = 0;
@@ -177,15 +177,32 @@ class OpportunityRepository extends BaseRepository
         ];
     }
 
-    public function getTotalCostSavings($project)
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
+    public function getTotalPotentialCostSavings(Project $project)
     {
-        return $this
+        $data = [];
+        $rows = $this
             ->getQueryBuilderByProject($project)
-            ->select('o.currency, SUM(o.costSavings) as totalCost')
-            ->groupBy('o.currency')
+            ->select('o.currency, o.costSavings, o.probability')
             ->getQuery()
             ->getArrayResult()
         ;
+
+        foreach ($rows as $row) {
+            $currency = $row['currency'];
+            $cost = round($row['costSavings'] * ($row['probability'] / 100), 2);
+            if (empty($data[$currency])) {
+                $data[$currency] = ['totalCost' => 0, 'currency' => $currency];
+            }
+
+            $data[$currency]['totalCost'] += $cost;
+        }
+
+        return array_values($data);
     }
 
     public function getTotalTimeSavings($project)
