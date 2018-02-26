@@ -60,7 +60,10 @@ use AppBundle\Form\WorkPackage\ImportType as ImportWorkPackageType;
 use AppBundle\Form\Risk\CreateType as RiskCreateType;
 use AppBundle\Form\Opportunity\ApiType as OpportunityCreateType;
 use AppBundle\Repository\CostRepository;
+use AppBundle\Repository\MeasureRepository;
 use AppBundle\Repository\MeetingRepository;
+use AppBundle\Repository\OpportunityRepository;
+use AppBundle\Repository\RiskRepository;
 use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\ProjectVoter;
 use Doctrine\ORM\EntityManager;
@@ -1761,8 +1764,13 @@ class ProjectController extends ApiController
      */
     public function risksOpportunitiesStatsAction(Project $project)
     {
+        /** @var RiskRepository $riskRepo */
         $riskRepo = $this->getDoctrine()->getRepository(Risk::class);
+
+        /** @var OpportunityRepository $opportunityRepo */
         $opportunityRepo = $this->getDoctrine()->getRepository(Opportunity::class);
+
+        /** @var MeasureRepository $measureRepo */
         $measureRepo = $this->getDoctrine()->getRepository(Measure::class);
 
         return $this->createApiResponse([
