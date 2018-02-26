@@ -637,16 +637,12 @@
                     <div class="row">
                         <div class="col-md-12">
                             <range-slider
-                                v-bind:title="translateText('message.task_completion')"
-                                min="0"
-                                max="100"
-                                minSuffix=" %"
-                                type="single"
-                                step='25'
-                                :modelName="'editableData.completion'"
-                                @onRangeSliderUpdate="updateTaskStatusProgress"
-                                :disabled="taskProgressEditIsDisabled"
-                                v-bind:value="transformToString(task.progress)" />
+                                    :title="translateText('message.task_completion')"
+                                    minSuffix=" %"
+                                    :step="25"
+                                    :disabled="taskProgressEditIsDisabled"
+                                    @input="updateTaskStatusProgress"
+                                    :value="task.progress"/>
                         </div>
                          <div class="col-md-8" v-if="editableData.workPackageStatus">
                             <h4>{{editableData.workPackageStatus.label}}</h4>
@@ -866,9 +862,7 @@ export default {
             });
         },
         taskProgressEditIsDisabled() {
-            return this.task.parent == null &&
-                this.task.noSubtasks > 0
-            ;
+            return this.task.parent == null && this.task.noSubtasks > 0;
         },
         completedSubtasksCount() {
             if (!this.task || !this.task.children) {
@@ -1154,20 +1148,19 @@ export default {
         translateText(text) {
             return this.translate(text);
         },
-        updateTaskStatusProgress(sliderValue) {
+        updateTaskStatusProgress(progress) {
             let params = {
                 taskId: this.task.id,
                 data: {
-                    progress: sliderValue.value,
+                    progress,
                 },
             };
 
-            let parsedSliderVal = parseInt(sliderValue, 10);
-            if (parsedSliderVal === 100) {
+            if (progress === 100) {
                 // set workPackageStatus to 'Completed'
                 this.editableData.workPackageStatus = this.$refs.projectStatus.options.filter(item => item.key === 4)[0];
                 params.data.workPackageStatus = this.editableData.workPackageStatus.key;
-            } else if (parsedSliderVal > 0) {
+            } else if (progress > 0) {
                 // set workPackageStatus to 'Ongoing'
                 this.editableData.workPackageStatus = this.$refs.projectStatus.options.filter(item => item.key === 3)[0];
                 params.data.workPackageStatus = this.editableData.workPackageStatus.key;

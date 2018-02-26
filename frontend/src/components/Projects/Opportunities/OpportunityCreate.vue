@@ -84,17 +84,15 @@
                     <!-- /// Opportunity Impact /// -->
                     <div class="range-slider-wrapper">
                         <range-slider
-                        v-bind:title="translateText('message.impact')"
-                        min="0"
-                        max="100"
-                        minSuffix=" %"
-                        type="single"
-                        step="5"
-                        :model="opportunityImpact"
-                        :modelName="'opportunityImpact'"
-                        @onRangeSliderUpdate="updateSlider"/>
+                                :title="translateText('message.impact')"
+                                minSuffix=" %"
+                                :step="5"
+                                v-model="opportunityImpact"/>
                         <div class="slider-indicator" v-if="risksOpportunitiesStats.opportunities">
-                            <indicator-icon fill="middle-fill" v-if="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact" :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact" :title="translateText('message.average_impact_opportunity')"></indicator-icon>
+                            <indicator-icon fill="middle-fill"
+                                            v-if="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact"
+                                            :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact"
+                                            :title="translateText('message.average_impact_opportunity')"></indicator-icon>
                         </div>
                     </div>
                     <!-- /// End Opportunity Impact /// -->
@@ -102,17 +100,15 @@
                     <!-- /// Opportunity Probability /// -->
                     <div class="range-slider-wrapper">
                         <range-slider
-                        v-bind:title="translateText('message.probability')"
-                        min="0"
-                        max="100"
-                        minSuffix=" %"
-                        type="single"
-                        step="5"
-                        :model="opportunityProbability"
-                        :modelName="'opportunityProbability'"
-                        @onRangeSliderUpdate="updateSlider"/>
+                                :title="translateText('message.probability')"
+                                minSuffix=" %"
+                                :step="5"
+                                v-model="opportunityProbability"/>
                         <div class="slider-indicator" v-if="risksOpportunitiesStats.opportunities">
-                            <indicator-icon fill="middle-fill" v-if="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability" :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability" :title="translateText('message.average_probability_opportunity')"></indicator-icon>
+                            <indicator-icon fill="middle-fill"
+                                            v-if="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability"
+                                            :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability"
+                                            :title="translateText('message.average_probability_opportunity')"></indicator-icon>
                         </div>
                     </div>
                     <!-- /// End Opportunity Probability /// -->
@@ -441,9 +437,6 @@ export default {
 
             this.priority = priorityNames[type];
         },
-        updateSlider(sliderResult) {
-            this[sliderResult.modelName] = sliderResult.value;
-        },
     },
     computed: {
         ...mapGetters({
@@ -473,22 +466,18 @@ export default {
         this.emptyValidationMessages();
     },
     watch: {
-        opportunityImpact: function(value) {
+        opportunityImpact() {
             this.updateGridView();
-            this.opportunityImpact = value;
-            return value;
         },
         opportunityProbability(value) {
             this.calculateBudget();
             this.calculateTime();
             this.updateGridView();
-            this.opportunityProbability = value;
-            return value;
         },
-        costSavings(value) {
+        costSavings() {
             this.calculateBudget();
         },
-        timeSavings(value) {
+        timeSavings() {
             this.calculateTime();
         },
         details: {
@@ -501,8 +490,8 @@ export default {
         opportunity(value) {
             this.title = this.opportunity.title;
             this.$refs.description.setContent(this.opportunity.description);
-            this.opportunityImpact = this.opportunity.impact.toString();
-            this.opportunityProbability = this.opportunity.probability.toString();
+            this.opportunityImpact = this.opportunity.impact;
+            this.opportunityProbability = this.opportunity.probability;
             this.costSavings = this.opportunity.costSavings;
             this.details.currency = this.opportunity.currency
                 ? {key: this.translateText(this.opportunity.currency), label: this.getCurrencySymbol(this.opportunity.currency)}

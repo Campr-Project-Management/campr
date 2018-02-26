@@ -168,15 +168,14 @@
                 <!-- ///  Impact /// -->
                 <div class="range-slider-wrapper">
                     <range-slider
-                        :disabled="true"
-                        v-bind:title="translateText('message.impact')"
-                        min="0"
-                        max="100"
-                        minSuffix=" %"
-                        type="single"
-                        v-bind:value="transformToString(opportunity.impact)" />
+                            :disabled="true"
+                            :title="translateText('message.impact')"
+                            minSuffix=" %"
+                            :value="opportunity.impact"/>
                     <div class="slider-indicator" v-if="risksOpportunitiesStats.opportunities">
-                        <indicator-icon fill="middle-fill" :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact" :title="translateText('message.average_impact_opportunity')"></indicator-icon>
+                        <indicator-icon fill="middle-fill"
+                                        :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact"
+                                        :title="translateText('message.average_impact_opportunity')"></indicator-icon>
                     </div>
                 </div>
                 <!-- /// End Impact /// -->
@@ -184,15 +183,14 @@
                 <!-- /// Probability /// -->
                 <div class="range-slider-wrapper">
                     <range-slider
-                        :disabled="true"
-                        v-bind:title="translateText('message.probability')"
-                        min="0"
-                        max="100"
-                        minSuffix=" %"
-                        type="single"
-                        v-bind:value="transformToString(opportunity.probability)" />
+                            :disabled="true"
+                            :title="translateText('message.probability')"
+                            minSuffix=" %"
+                            :value="opportunity.probability"/>
                     <div class="slider-indicator" v-if="risksOpportunitiesStats.opportunities">
-                        <indicator-icon fill="middle-fill" :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability" :title="translateText('message.average_probability_opportunity')"></indicator-icon>
+                        <indicator-icon fill="middle-fill"
+                                        :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability"
+                                        :title="translateText('message.average_probability_opportunity')"></indicator-icon>
                     </div>
                 </div>
                 <!-- /// End Probability /// -->
