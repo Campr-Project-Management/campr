@@ -97,7 +97,7 @@
                                         <tr>
                                             <td class="text-center">{{ phase.scheduledStartAt }}</td>
                                             <td class="text-center">{{ phase.scheduledFinishAt }}</td>
-                                            <td class="text-center">{{ getDuration(phase.scheduledStartAt, phase.scheduledFinishAt) }}</td>
+                                            <td class="text-center">{{ phase.scheduledDurationDays > 0 ? phase.scheduledDurationDays : '-' }}</td>
                                         </tr>
                                     </table>
                                 </td>
@@ -106,7 +106,7 @@
                                         <tr>
                                             <td class="text-center">{{ phase.forecastStartAt }}</td>
                                             <td class="text-center">{{ phase.forecastFinishAt }}</td>
-                                            <td class="text-center">{{ getDuration(phase.forecastStartAt, phase.forecastFinishAt) }}</td>
+                                            <td class="text-center">{{ phase.forecastDurationDays ? phase.forecastDurationDays : '-' }}</td>
                                         </tr>
                                     </table>
                                 </td>
@@ -115,7 +115,7 @@
                                         <tr>
                                             <td class="text-center">{{ phase.actualStartAt }}</td>
                                             <td class="text-center">{{ phase.actualFinishAt }}</td>
-                                            <td class="text-center">{{ getDuration(phase.actualStartAt, phase.actualFinishAt) }}</td>
+                                            <td class="text-center">{{ phase.actualDurationDays ? phase.actualDurationDays : '-' }}</td>
                                         </tr>
                                     </table>
                                 </td>
@@ -279,12 +279,6 @@ export default {
             'setPhasesFilters', 'setMilestonesFilters', 'deleteProjectPhase',
             'deleteProjectMilestone',
         ]),
-        getDuration: function(startDate, endDate) {
-            let end = moment(endDate);
-            let start = moment(startDate);
-
-            return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') : '-';
-        },
         translateText: function(text) {
             return this.translate(text);
         },
