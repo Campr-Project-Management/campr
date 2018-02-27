@@ -96,22 +96,22 @@
                 <!-- ///Subtasks /// -->
                 <h3>{{ translateText('message.subtasks') }} | {{ getSubtaskSummary() }} {{ translateText('label.completed') }}</h3>
                 <div class="subtasks">
-                    <div v-for="(subtask, index) in task.children" :key="index" class="subtask flex flex-space-between">
+                    <div v-for="subtask in task.children" :key="subtask.id" class="subtask flex flex-space-between">
                         <div class="checkbox-input clearfix">
                             <input
-                                    :id="'subtask-'+subtask.puid"
+                                    :id="`subtask-${subtask.id}`"
                                     type="checkbox"
                                     :value="subtask.id"
-                                    v-model.number="completedSubtasksIds"
+                                    v-model="completedSubtasksIds"
                                     @change="onSubtaskStatusChange"/>
-                            <label :for="'subtask-'+subtask.puid">{{ subtask.name }}</label>
+                            <label :for="`subtask-${subtask.id}`">{{ subtask.name }}</label>
                         </div>
                         <div>
                             <div class="text-right">
                                 <router-link
                                         :to="{name: 'project-task-management-edit', params: {id: task.project, taskId: subtask.id}}"
                                         class="btn-icon">
-                                    <edit-icon fill="second-fill"></edit-icon>
+                                    <edit-icon fill="second-fill"/>
                                 </router-link>
 
                                 <button
@@ -120,7 +120,7 @@
                                         data-toggle="modal"
                                         type="button"
                                         class="btn-icon">
-                                    <delete-icon fill="danger-fill"></delete-icon>
+                                    <delete-icon fill="danger-fill"/>
                                 </button>
                             </div>
                         </div>
