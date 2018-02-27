@@ -57,19 +57,19 @@
                                     <td>{{ translateText('table_header_cell.base') }}</td>
                                     <td>{{ phase.scheduledStartAt }}</td>
                                     <td>{{ phase.scheduledFinishAt }}</td>
-                                    <td>{{ getDuration(phase.scheduledStartAt, phase.scheduledFinishAt) }}</td>
+                                    <td>{{ phase.scheduledDurationDays > 0 ? phase.scheduledDurationDays : '-' }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ translateText('table_header_cell.forecast') }}</td>
                                     <td>{{ phase.forecastStartAt }}</td>
                                     <td>{{ phase.forecastFinishAt }}</td>
-                                    <td>{{ getDuration(phase.forecastStartAt, phase.forecastFinishAt) }}</td>
+                                    <td>{{ phase.forecastDurationDays > 0 ? phase.forecastDurationDays : '-' }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ translateText('table_header_cell.actual') }}</td>
                                     <td>{{ phase.actualStartAt }}</td>
                                     <td>{{ phase.actualFinishAt }}</td>
-                                    <td>{{ getDuration(phase.actualStartAt, phase.actualFinishAt) }}</td>
+                                    <td>{{ phase.actualDurationDays > 0 ? phase.actualDurationDays : '-' }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -135,7 +135,6 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex';
-import moment from 'moment';
 import Modal from '../../_common/Modal';
 import router from '../../../router';
 
@@ -148,12 +147,6 @@ export default {
         ...mapActions(['getProjectPhase', 'deleteProjectPhase', 'getPhaseWorkpackages']),
         translateText(text) {
             return this.translate(text);
-        },
-        getDuration: function(startDate, endDate) {
-            let end = moment(endDate);
-            let start = moment(startDate);
-
-            return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') : '-';
         },
         deletePhase: function() {
             this.showDeleteModal = false;

@@ -35,7 +35,7 @@ class BaseController extends WebTestCase
 
         $domain = $this->client->getContainer()->getParameter('domain');
         $bundle = explode('\\', get_class($this));
-        $host = $bundle[0] === 'AppBundle' ? 'team.'.$domain : $domain;
+        $host = 'AppBundle' === $bundle[0] ? 'team.'.$domain : $domain;
 
         $this->client->setServerParameters([
             'HTTP_HOST' => $host,
@@ -78,6 +78,11 @@ class BaseController extends WebTestCase
         return $user;
     }
 
+    /**
+     * @param string $username
+     *
+     * @return User|null
+     */
     public function getUserByUsername($username)
     {
         return $this
