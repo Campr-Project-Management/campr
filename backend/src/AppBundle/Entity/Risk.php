@@ -2,6 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Component\Currency\CurrencyAwareInterface;
+use Component\TimeUnit\TimeUnitAwareInterface;
+use Component\TimeUnit\TimeUnitsConvertor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -13,7 +16,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="risk")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RiskRepository")
  */
-class Risk
+class Risk implements TimeUnitAwareInterface, CurrencyAwareInterface
 {
     const PRIORITY_VERY_LOW = 0;
     const PRIORITY_LOW = 1;
@@ -764,15 +767,17 @@ class Risk
     /**
      * @return string
      */
-    public function getCurrency()
+    public function getCurrency(): string
     {
-        return $this->currency;
+        return (string) $this->currency;
     }
 
     /**
      * @param string $currency
+     *
+     * @return $this
      */
-    public function setCurrency($currency)
+    public function setCurrency(string $currency = null)
     {
         $this->currency = $currency;
 
@@ -788,9 +793,11 @@ class Risk
     }
 
     /**
-     * @param string $delayUnit
+     * @param $delayUnit
+     *
+     * @return $this
      */
-    public function setDelayUnit($delayUnit)
+    public function setDelayUnit(string $delayUnit = null)
     {
         $this->delayUnit = $delayUnit;
 
@@ -845,5 +852,58 @@ class Risk
     public function getCreatedByFullName()
     {
         return $this->createdBy ? $this->createdBy->getFullName() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return float
+     */
+    public function getPotentialCost(): float
+    {
+        return round(($this->getProbability() / 100) * $this->getCost(), 4);
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimeUnit(): string
+    {
+        return (string) $this->getDelayUnit();
+    }
+
+    /**
+     * @param string $timeUnit
+     */
+    public function setTimeUnit(string $timeUnit = null)
+    {
+        $this->setDelay($timeUnit);
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return float
+     */
+    public function getPotentialDelay(): float
+    {
+        return round(($this->getProbability() / 100) * $this->getDelay(), 4);
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return float
+     */
+    public function getPotentialDelayHours(): float
+    {
+        $amount = $this->getPotentialDelay();
+        if (empty($amount)) {
+            return $amount;
+        }
+
+        $convertor = new TimeUnitsConvertor($this);
+
+        return $convertor->toHours($amount);
     }
 }
