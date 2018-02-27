@@ -337,10 +337,16 @@ export default {
             this.measures.push(measure);
         },
         getFormData: function() {
+            let measuresTmp = [];
             this.measures.map((item, index) => {
                 item.description = item.element.getContent();
                 item.responsibility = this.memberList.length > 0 ? this.memberList[0] : null;
-                delete item.element;
+                measuresTmp.push({
+                    cost: item.cost,
+                    description: item.description,
+                    responsibility: item.responsibility,
+                    title: item.title,
+                });
             });
             let data = {
                 title: this.title,
@@ -357,7 +363,7 @@ export default {
                 status: this.details.status ? this.details.status.key : null,
                 dueDate: moment(this.schedule.dueDate).format('DD-MM-YYYY'),
                 responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
-                measures: this.measures,
+                measures: measuresTmp,
             };
 
             return data;
