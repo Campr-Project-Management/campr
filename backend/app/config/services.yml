@@ -126,9 +126,13 @@ services:
             - { name: gos_web_socket.topic }
 
     app.service.pdf:
-        class: CanGelis\PDF\PDF
+        class: AppBundle\Services\PDF
         arguments:
-            - '%app.path.wkhtmltopdf%'
+            - '@request_stack'
+            - '@security.token_storage'
+            - '%app.pdf.google_chrome%'
+            - '%app.pdf.google_chrome_arguments%'
+            - '%app.pdf.service_url%'
 
     app.service.wbs:
         class: AppBundle\Services\WBSService

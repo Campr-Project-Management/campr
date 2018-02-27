@@ -165,7 +165,7 @@ const actions = {
                 },
                 (response) => {}
             )
-            ;
+        ;
     },
 
     setProjectFilters({commit}, filters) {
