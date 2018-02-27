@@ -31,3 +31,6 @@ docker-compose.yml
 .history/
 npm-debug.log
 /config/docker/.env
+
+ssr/.nuxt
+ssr/node_modules
