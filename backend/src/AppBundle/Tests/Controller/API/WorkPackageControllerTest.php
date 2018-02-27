@@ -23,7 +23,14 @@ class WorkPackageControllerTest extends BaseController
         $user = $this->getUserByUsername('user4');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', '/api/workpackages', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'GET',
+            '/api/workpackages',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
 
         $content = json_decode($response->getContent(), true);
@@ -35,7 +42,7 @@ class WorkPackageControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -90,10 +97,13 @@ class WorkPackageControllerTest extends BaseController
                             'progress' => 100,
                             'scheduledStartAt' => '2017-01-01',
                             'scheduledFinishAt' => '2017-01-05',
+                            'scheduledDurationDays' => 5,
                             'forecastStartAt' => null,
                             'forecastFinishAt' => null,
+                            'forecastDurationDays' => 0,
                             'actualStartAt' => null,
                             'actualFinishAt' => null,
+                            'actualDurationDays' => 0,
                             'content' => 'content',
                             'results' => null,
                             'isKeyMilestone' => false,
@@ -157,10 +167,13 @@ class WorkPackageControllerTest extends BaseController
                             'progress' => 100,
                             'scheduledStartAt' => '2017-01-01',
                             'scheduledFinishAt' => '2017-01-05',
+                            'scheduledDurationDays' => 5,
                             'forecastStartAt' => null,
                             'forecastFinishAt' => null,
+                            'forecastDurationDays' => 0,
                             'actualStartAt' => null,
                             'actualFinishAt' => null,
+                            'actualDurationDays' => 0,
                             'content' => 'content4',
                             'results' => null,
                             'isKeyMilestone' => false,
@@ -207,7 +220,14 @@ class WorkPackageControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'GET',
+            $url,
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
 
         $task = json_decode($response->getContent(), true);
@@ -216,7 +236,7 @@ class WorkPackageControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -269,10 +289,13 @@ class WorkPackageControllerTest extends BaseController
                     'progress' => 100,
                     'scheduledStartAt' => '2017-01-01',
                     'scheduledFinishAt' => '2017-01-05',
+                    'scheduledDurationDays' => 5,
                     'forecastStartAt' => null,
                     'forecastFinishAt' => null,
+                    'forecastDurationDays' => 0,
                     'actualStartAt' => null,
                     'actualFinishAt' => null,
+                    'actualDurationDays' => 0,
                     'content' => 'content',
                     'results' => null,
                     'isKeyMilestone' => false,
@@ -317,7 +340,14 @@ class WorkPackageControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('PATCH', '/api/workpackages/5', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $this->client->request(
+            'PATCH',
+            '/api/workpackages/5',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            json_encode($content)
+        );
         $response = $this->client->getResponse();
 
         // Remove the 2 lines bellow when WP listener is fixed
@@ -327,7 +357,7 @@ class WorkPackageControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -383,10 +413,13 @@ class WorkPackageControllerTest extends BaseController
                     'progress' => 0,
                     'scheduledStartAt' => null,
                     'scheduledFinishAt' => null,
+                    'scheduledDurationDays' => 0,
                     'forecastStartAt' => null,
                     'forecastFinishAt' => null,
+                    'forecastDurationDays' => 0,
                     'actualStartAt' => null,
                     'actualFinishAt' => null,
+                    'actualDurationDays' => 0,
                     'content' => null,
                     'results' => null,
                     'isKeyMilestone' => false,
@@ -426,7 +459,14 @@ class WorkPackageControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('DELETE', '/api/workpackages/5', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'DELETE',
+            '/api/workpackages/5',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
@@ -463,11 +503,18 @@ class WorkPackageControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'GET',
+            $url,
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -526,11 +573,18 @@ class WorkPackageControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('POST', '/api/workpackages/1/assignments', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $this->client->request(
+            'POST',
+            '/api/workpackages/1/assignments',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            json_encode($content)
+        );
         $response = $this->client->getResponse();
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -585,7 +639,8 @@ class WorkPackageControllerTest extends BaseController
             '/api/workpackages/1/comments',
             [],
             [],
-            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content)
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            json_encode($content)
         );
 
         $response = $this->client->getResponse();
@@ -599,7 +654,7 @@ class WorkPackageControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
