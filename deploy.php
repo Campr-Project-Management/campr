@@ -55,10 +55,13 @@ set('cron_domain', function () {
     return strtr(get('domain'), ['.' => '_']);
 });
 set('bin/mysql', function () {
-    return '`which mysql` -u{{mysql_user}} -p{{mysql_password}} {{mysql_database}}';
+    return '`which mysql` -u{{mysql_user}}{{mysql_password_usage}} {{mysql_database}}';
+});
+set('mysql_password_usage', function() {
+   return empty(get('mysql_password')) ? '' : ' -p{{mysql_password}}';
 });
 set('bin/mysqldump', function () {
-    return sprintf('`which mysqldump` -u{{mysql_user}}%s {{mysql_database}} --routines', empty(get('mysql_password')) ? '' : ' -p{{mysql_password}}');
+    return '`which mysqldump` -u{{mysql_user}}{{mysql_password_usage}} --routines --databases `mysql -u{{mysql_user}}{{mysql_password_usage}} -Bse "show databases like \'{{mysql_database}}%\'"`';
 });
 set('bin/mc', function () {
     return '{{release_path}}/bin/mc --config-folder={{release_path}}/config/minio/';
