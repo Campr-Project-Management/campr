@@ -2,6 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Component\Currency\CurrencyAwareInterface;
+use Component\TimeUnit\TimeUnitAwareInterface;
+use Component\TimeUnit\TimeUnitsConvertor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -13,7 +16,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="opportunity")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OpportunityRepository")
  */
-class Opportunity
+class Opportunity implements TimeUnitAwareInterface, CurrencyAwareInterface
 {
     const PRIORITY_VERY_LOW = 0;
     const PRIORITY_LOW = 1;
@@ -704,15 +707,17 @@ class Opportunity
     /**
      * @return string
      */
-    public function getCurrency()
+    public function getCurrency(): string
     {
-        return $this->currency;
+        return (string) $this->currency;
     }
 
     /**
-     * @param string $currency
+     * @param string|null $currency
+     *
+     * @return $this
      */
-    public function setCurrency($currency)
+    public function setCurrency(string $currency = null)
     {
         $this->currency = $currency;
 
@@ -722,15 +727,17 @@ class Opportunity
     /**
      * @return string
      */
-    public function getTimeUnit()
+    public function getTimeUnit(): string
     {
-        return $this->timeUnit;
+        return (string) $this->timeUnit;
     }
 
     /**
      * @param string $timeUnit
+     *
+     * @return $this
      */
-    public function setTimeUnit($timeUnit)
+    public function setTimeUnit(string $timeUnit = null)
     {
         $this->timeUnit = $timeUnit;
 
@@ -785,5 +792,42 @@ class Opportunity
     public function getCreatedByFullName()
     {
         return $this->createdBy ? $this->createdBy->getFullName() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return float
+     */
+    public function getPotentialCostSavings(): float
+    {
+        return round(($this->getProbability() / 100) * $this->getCostSavings(), 4);
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return float
+     */
+    public function getPotentialTimeSavings(): float
+    {
+        return round(($this->getProbability() / 100) * $this->getTimeSavings(), 4);
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return float
+     */
+    public function getPotentialTimeSavingsHours(): float
+    {
+        $amount = $this->getPotentialTimeSavings();
+        if (empty($amount)) {
+            return 0;
+        }
+
+        $convertor = new TimeUnitsConvertor($this);
+
+        return $convertor->toHours($amount);
     }
 }
