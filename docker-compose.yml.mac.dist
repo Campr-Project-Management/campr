@@ -52,6 +52,8 @@ services:
     supervisor:
 #        build: config/docker/supervisor
         image: lab.trisoft.ro:4567/trisoft/internal/php-supervisor
+        ports:
+            - 3000:3000
         volumes:
             - .:/app:cached
             - ./config/supervisor/docker_dev.conf:/etc/supervisor/conf.d/docker_dev.conf
