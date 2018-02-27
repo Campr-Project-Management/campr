@@ -3173,7 +3173,15 @@ class ProjectControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('POST', '/api/projects/1/tasks', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $this->client->request(
+            'POST',
+            '/api/projects/1/tasks',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            json_encode($content)
+        );
+
         $response = $this->client->getResponse();
 
         // Remove the 2 lines bellow when WP listener is fixed
@@ -3182,9 +3190,13 @@ class ProjectControllerTest extends BaseController
         $responseContent['puid'] = $task['puid'];
         $responseContent['createdAt'] = $task['createdAt'];
 
-        $this->assertEquals($isResponseSuccessful, $response->getStatusCode() === 201);
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($isResponseSuccessful, $response->getStatusCode() === 201, 'Response is not successfully');
+        $this->assertEquals($responseStatusCode, $response->getStatusCode(), 'Reponse status code is different');
+        $this->assertEquals(
+            $responseContent,
+            json_decode($response->getContent(), true),
+            'Response body is unexpected'
+        );
     }
 
     /**
@@ -3242,10 +3254,13 @@ class ProjectControllerTest extends BaseController
                     'progress' => 0,
                     'scheduledStartAt' => null,
                     'scheduledFinishAt' => null,
+                    'scheduledDurationDays' => 0,
                     'forecastStartAt' => null,
                     'forecastFinishAt' => null,
+                    'forecastDurationDays' => 0,
                     'actualStartAt' => null,
                     'actualFinishAt' => null,
+                    'actualDurationDays' => 0,
                     'content' => null,
                     'results' => null,
                     'isKeyMilestone' => false,
