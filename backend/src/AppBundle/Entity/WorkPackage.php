@@ -636,6 +636,29 @@ class WorkPackage
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return int
+     */
+    public function getScheduledDurationDays(): int
+    {
+        $start = $this->getScheduledStartAt();
+        $end = $this->getScheduledFinishAt();
+        if (!$start || !$end || $start > $end) {
+            return 0;
+        }
+
+        $start = clone $start;
+        $end = clone $end;
+        $start->setTime(0, 0, 0);
+        $end->setTime(23, 59, 59);
+
+        $interval = $end->diff($start);
+
+        return (int) $interval->format('%a') + 1;
+    }
+
+    /**
      * Set forecastStartAt.
      *
      * @param \DateTime $forecastStartAt
@@ -684,6 +707,29 @@ class WorkPackage
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return int
+     */
+    public function getForecastDurationDays(): int
+    {
+        $start = $this->getForecastStartAt();
+        $end = $this->getForecastFinishAt();
+        if (!$start || !$end || $start > $end) {
+            return 0;
+        }
+
+        $start = clone $start;
+        $end = clone $end;
+        $start->setTime(0, 0, 0);
+        $end->setTime(23, 59, 59);
+
+        $interval = $end->diff($start);
+
+        return (int) $interval->format('%a') + 1;
+    }
+
+    /**
      * Set actualStartAt.
      *
      * @param \DateTime $actualStartAt
@@ -729,6 +775,29 @@ class WorkPackage
     public function getActualFinishAt()
     {
         return $this->actualFinishAt;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return int
+     */
+    public function getActualDurationDays(): int
+    {
+        $start = $this->getActualStartAt();
+        $end = $this->getActualFinishAt();
+        if (!$start || !$end || $start > $end) {
+            return 0;
+        }
+
+        $start = clone $start;
+        $end = clone $end;
+        $start->setTime(0, 0, 0);
+        $end->setTime(23, 59, 59);
+
+        $interval = $end->diff($start);
+
+        return (int) $interval->format('%a') + 1;
     }
 
     /**
