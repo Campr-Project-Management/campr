@@ -158,10 +158,7 @@
                             </li>
                         </ul>
                         <div class="task-status">
-                            <circle-chart
-                                    :percentage="project.progress"
-                                    :title="translateText('message.task_status')"
-                                    class="left"/>
+                            <circle-chart :width="280" :height="280" :percentage="project.progress" v-bind:title="translateText('message.task_status')" class="left"></circle-chart>
                         </div>
                     </div>
                 </div>
@@ -411,5 +408,13 @@ export default {
 
     .task-status {
         padding: 0 10%;
+
+        svg {
+            width: 100%;
+        }
+
+        @media (max-width: 1440px) and (min-width:1280px) {
+            padding: 0;
+        }
     }
 </style>

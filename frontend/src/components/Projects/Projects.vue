@@ -9,13 +9,11 @@
             </div>
             <div class="grid-view">
                 <project-box v-for="project in projects" v-bind:project="project"></project-box>
-                <router-link
-                    :to="{name: 'projects-create-1'}"
-                    class="new-box"
-                    v-if="localUserIsAdmin"
-                >
-                    {{ translateText('message.new_project') }} +
-                </router-link>
+                <div class="new-box">
+                    <router-link :to="{name: 'projects-create-1'}">
+                        <span>{{ translateText('message.new_project') }} +</span>
+                    </router-link>
+                </div>
             </div>
         </div>
         <pagination
