@@ -450,7 +450,7 @@ textarea {
     }
 }
 
-&.btn-disabled {
+.btn-disabled {
     pointer-events: none;
     border-color: $grayColor;
     color: $grayColor;
