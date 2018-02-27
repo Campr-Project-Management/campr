@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Risk;
+use Component\TimeUnit\TimeUnitAwareInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -33,7 +34,7 @@ class LoadRiskData extends AbstractFixture implements OrderedFixtureInterface
                 ->setCurrency('USD')
                 ->setBudget(1)
                 ->setDelay(1)
-                ->setDelayUnit('days')
+                ->setDelayUnit(TimeUnitAwareInterface::DAYS)
                 ->setPriority('priority'.$i)
                 ->setDueDate($dueDate)
                 ->setResponsibility($responsible)

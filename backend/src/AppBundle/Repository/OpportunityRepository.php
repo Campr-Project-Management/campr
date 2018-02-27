@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Opportunity;
 use Doctrine\ORM\QueryBuilder;
 use AppBundle\Entity\Project;
 use AppBundle\Repository\Traits\OpportunityStrategySortingTrait;
@@ -21,6 +22,11 @@ class OpportunityRepository extends BaseRepository
     const HIGH = [50, 75];
     const VERY_HIGH = [75, 100];
 
+    /**
+     * @param Project $project
+     *
+     * @return QueryBuilder
+     */
     public function getQueryBuilderByProject(Project $project)
     {
         return $this
@@ -133,42 +139,21 @@ class OpportunityRepository extends BaseRepository
         return $data;
     }
 
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
     public function getStatsByProject(Project $project)
     {
         $gridValues = $this->getGridCount($project->getId());
         $averageData = $this->getAverageData($project);
         $costSavings = $this->getTotalPotentialCostSavings($project);
-        $timeSavings = $this->getTotalTimeSavings($project);
-
-        $daysTotal = 0;
-        $hoursTotal = 0;
-        foreach ($timeSavings as $timeSaving) {
-            switch ($timeSaving['timeUnit']) {
-                case 'choices.months':
-                    $daysTotal += 30 * $timeSaving['totalTime'];
-                    break;
-                case 'choices.weeks':
-                    $daysTotal += 7 * $timeSaving['totalTime'];
-                    break;
-                case 'choices.days':
-                    $daysTotal += $timeSaving['totalTime'];
-                    break;
-                case 'choices.hours':
-                    $daysTotal += intval($timeSaving['totalTime'] / 24);
-                    $hoursTotal = intval($timeSaving['totalTime'] / 24) > 0
-                        ? $timeSaving['totalTime'] - (intval($timeSaving['totalTime'] / 24) * 24)
-                        : $timeSaving['totalTime']
-                    ;
-                    break;
-            }
-        }
+        $timeSaving = $this->getTotalPotentialTimeSaving($project);
 
         return [
             'costSavings' => $costSavings,
-            'timeSavings' => [
-                'days' => $daysTotal,
-                'hours' => $hoursTotal,
-            ],
+            'timeSaving' => round($timeSaving, 2),
             'averageData' => [
                 'averageImpact' => round($averageData['averageImpact'], 2),
                 'averageProbability' => round($averageData['averageProbability'], 2),
@@ -185,35 +170,45 @@ class OpportunityRepository extends BaseRepository
     public function getTotalPotentialCostSavings(Project $project)
     {
         $data = [];
-        $rows = $this
+        $opportunities = $this
             ->getQueryBuilderByProject($project)
-            ->select('o.currency, o.costSavings, o.probability')
             ->getQuery()
-            ->getArrayResult()
+            ->getResult()
         ;
 
-        foreach ($rows as $row) {
-            $currency = $row['currency'];
-            $cost = round($row['costSavings'] * ($row['probability'] / 100), 2);
+        /** @var Opportunity $opportunity */
+        foreach ($opportunities as $opportunity) {
+            $currency = $opportunity->getCurrency();
             if (empty($data[$currency])) {
                 $data[$currency] = ['totalCost' => 0, 'currency' => $currency];
             }
 
-            $data[$currency]['totalCost'] += $cost;
+            $data[$currency]['totalCost'] += $opportunity->getPotentialCostSavings();
         }
 
         return array_values($data);
     }
 
-    public function getTotalTimeSavings($project)
+    /**
+     * @param Project $project
+     *
+     * @return float
+     */
+    public function getTotalPotentialTimeSaving(Project $project)
     {
-        return $this
+        $hours = 0;
+        $opportunities = $this
             ->getQueryBuilderByProject($project)
-            ->select('o.timeUnit, SUM(o.timeSavings) as totalTime')
-            ->groupBy('o.timeUnit')
             ->getQuery()
-            ->getArrayResult()
+            ->getResult()
         ;
+
+        /** @var Opportunity $opportunity */
+        foreach ($opportunities as $opportunity) {
+            $hours += $opportunity->getPotentialTimeSavingsHours();
+        }
+
+        return $hours;
     }
 
     public function getAverageData($project)
