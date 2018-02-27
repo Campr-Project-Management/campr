@@ -2,6 +2,14 @@
  * vueditor v0.2.4
  * https://github.com/hifarer/Vueditor.git
  */
+
+@media print {
+    .vueditor {
+        background: none !important;
+        /*min-height: 50px !important;*/
+    }
+}
+
 .vueditor-holder {
     position: relative;
 }
