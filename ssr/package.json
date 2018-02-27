@@ -1,0 +1,42 @@
+{
+  "name": "campr-ssr",
+  "version": "1.0.0",
+  "description": "Nuxt.js project",
+  "author": "Radu Gribincea <radu.gribincea@trisoft.ro>",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
+  },
+  "dependencies": {
+    "bootstrap": "3.3.7",
+    "css-loader": "^0.28.10",
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-html": "^4.0.2",
+    "isomorphic-fetch": "^2.2.1",
+    "jquery": "^3.3.1",
+    "less": "^3.0.1",
+    "less-loader": "^4.0.5",
+    "moment": "^2.20.1",
+    "node-sass": "^4.7.2",
+    "nuxt": "^1.0.0",
+    "nuxt-sass-resources-loader": "^1.1.1",
+    "sass-loader": "^6.0.6",
+    "vue-charts": "0.2.1",
+    "vue-loader": "^14.1.1",
+    "vue-style-loader": "^4.0.2",
+    "vue2-dragula": "2.4.4",
+    "vuejs-datepicker": "^0.9.26"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.1",
+    "eslint": "^4.15.0",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-loader": "^1.7.1",
+    "eslint-plugin-vue": "^4.0.0"
+  }
+}
