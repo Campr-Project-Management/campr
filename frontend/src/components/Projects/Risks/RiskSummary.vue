@@ -13,8 +13,8 @@
             <p>                
                 <span class="text-right">{{ translateText('message.total_potential_delay') }}:</span>
                 <span class="text-left">
-                    <span v-if="summaryData.risk_data.delays">
-                        <b>{{ summaryData.risk_data.delays.days }} {{ translateText('label.days') }}, {{ summaryData.risk_data.delays.hours }} {{ translateText('label.hours') }}</b>
+                    <span v-if="summaryData.risk_data.delay">
+                        <b>{{ summaryData.risk_data.delay | humanizeHours({ units: ['d', 'h']}) }}</b>
                     </span>
                     <span v-else>-</span>
                 </span>

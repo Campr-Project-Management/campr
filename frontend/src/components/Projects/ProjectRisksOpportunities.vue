@@ -16,17 +16,17 @@
                 <!-- /// Project Opportunities /// -->
                 <div class="ro-grid-wrapper clearfix">
                     <!-- /// Project Opportunities Grid /// -->
-                    <risk-grid :gridData="opportunityGridData" :isRisk="false" :clickable="true"></risk-grid>
+                    <risk-grid :gridData="opportunityGridData" :isRisk="false" :clickable="true"/>
                     <!-- /// End Project Opportunities Grid /// -->
 
                     <!-- /// Project Opportunities List /// -->
-                    <opportunity-list :listData="opportunities"></opportunity-list>
+                    <opportunity-list :listData="opportunities"/>
                     <!-- /// End Project Opportunities List /// -->
                 </div>
                 <!-- /// End Project Opportunities /// -->
 
                 <!-- /// Project Opportunities Summary /// -->
-                <opportunity-summary :summaryData="risksOpportunitiesStats.opportunities"></opportunity-summary>
+                <opportunity-summary :summary="risksOpportunitiesStats.opportunities"/>
                 <!-- /// End Project Opportunities Summary /// -->
             </div>
             <div class="col-lg-6">
@@ -44,17 +44,17 @@
                 <!-- /// Project Risks /// -->
                 <div class="ro-grid-wrapper clearfix">
                     <!-- /// Project Risks Grid /// -->
-                    <risk-grid :gridData="riskGridData" :isRisk="true" :clickable="true"></risk-grid>
+                    <risk-grid :gridData="riskGridData" :isRisk="true" :clickable="true"/>
                     <!-- /// End Project Risks Grid /// -->
 
                     <!-- /// Project Risks List /// -->
-                    <risk-list :listData="risks"></risk-list>
+                    <risk-list :listData="risks"/>
                     <!-- /// End Project Risks List /// -->
                 </div>
                 <!-- /// End Project Risks /// -->
 
                 <!-- /// Project Risks Summary /// -->
-                <risk-summary :summaryData="risksOpportunitiesStats.risks"></risk-summary>
+                <risk-summary :summaryData="risksOpportunitiesStats.risks"/>
                 <!-- /// End Project Risks Summary /// -->
             </div>
         </div>

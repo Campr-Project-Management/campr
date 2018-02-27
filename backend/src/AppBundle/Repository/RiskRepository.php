@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Risk;
 use Doctrine\ORM\QueryBuilder;
 use AppBundle\Entity\Project;
 use AppBundle\Repository\Traits\RiskStrategySortingTrait;
@@ -142,38 +143,12 @@ class RiskRepository extends BaseRepository
     {
         $gridValues = $this->getGridCount($project->getId());
         $averageData = $this->getAverageData($project);
-        $costs = $this->getTotalPotentialCostSavings($project);
-        $delays = $this->getTotalDelays($project);
-
-        $daysTotal = 0;
-        $hoursTotal = 0;
-        foreach ($delays as $delay) {
-            switch ($delay['delayUnit']) {
-                case 'choices.months':
-                    $daysTotal += 30 * $delay['totalDelay'];
-                    break;
-                case 'choices.weeks':
-                    $daysTotal += 7 * $delay['totalDelay'];
-                    break;
-                case 'choices.days':
-                    $daysTotal += $delay['totalDelay'];
-                    break;
-                case 'choices.hours':
-                    $daysTotal += intval($delay['totalDelay'] / 24);
-                    $hoursTotal = intval($delay['totalDelay'] / 24) > 0
-                        ? $delay['totalDelay'] - (intval($delay['totalDelay'] / 24) * 24)
-                        : $delay['totalDelay']
-                    ;
-                    break;
-            }
-        }
+        $costs = $this->getTotalPotentialCosts($project);
+        $delay = $this->getTotalPotentialDelay($project);
 
         return [
             'costs' => $costs,
-            'delays' => [
-                'days' => $daysTotal,
-                'hours' => $hoursTotal,
-            ],
+            'delay' => round($delay, 2),
             'averageData' => $averageData,
             'gridValues' => $gridValues,
         ];
@@ -184,38 +159,47 @@ class RiskRepository extends BaseRepository
      *
      * @return array
      */
-    public function getTotalPotentialCostSavings(Project $project)
+    public function getTotalPotentialCosts(Project $project)
     {
         $data = [];
-        $rows = $this
+        $risks = $this
             ->getQueryBuilderByProject($project)
-            ->select('r.currency, r.cost, r.probability')
             ->getQuery()
-            ->getArrayResult()
+            ->getResult()
         ;
 
-        foreach ($rows as $row) {
-            $currency = $row['currency'];
-            $cost = round($row['cost'] * ($row['probability'] / 100), 4);
+        /** @var Risk $risk */
+        foreach ($risks as $risk) {
+            $currency = $risk->getCurrency();
             if (empty($data[$currency])) {
                 $data[$currency] = ['totalCost' => 0, 'currency' => $currency];
             }
 
-            $data[$currency]['totalCost'] += $cost;
+            $data[$currency]['totalCost'] += $risk->getPotentialCost();
         }
 
         return array_values($data);
     }
 
-    public function getTotalDelays($project)
+    /**
+     * @param Project $project
+     *
+     * @return float
+     */
+    public function getTotalPotentialDelay(Project $project)
     {
-        return $this
+        $hours = 0;
+        $risks = $this
             ->getQueryBuilderByProject($project)
-            ->select('r.delayUnit, SUM(r.delay) as totalDelay')
-            ->groupBy('r.delayUnit')
             ->getQuery()
-            ->getArrayResult()
-        ;
+            ->getResult();
+
+        /** @var Risk $risk */
+        foreach ($risks as $risk) {
+            $hours += $risk->getPotentialDelayHours();
+        }
+
+        return $hours;
     }
 
     public function getAverageData($project)
