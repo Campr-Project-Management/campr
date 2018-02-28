@@ -1,14 +1,20 @@
 <a name="registration_success"></a>
+
 {% for message in app.session.flashBag.get('registration_success') %}
-    <div class="registration_success">{{ message|trans }}</div>
+    <div class="registration_success alert alert-success fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message|trans }}
+    </div>
 {% endfor %}
 
 {% for element in signUpForm %}
-    {{ form_errors(element) }}
+    {{ form_errors(element, {attr: {class: 'alert alert-danger fade show'}}) }}
 {% endfor %}
 
 {{ form_start(signUpForm, {attr: {class: 'form login-form'}}) }}
-    <div class="slider-holder" id="slider_holder_1" data-min="0" data-max="36" data-step="1" data-type="single">
+    <div class="slider-holder" id="slider_holder_1" data-min="0" data-max="60" data-step="1" data-type="single">
         <div class="heading flex flex-space-between">
             <span class="title">Project Duration</span>
             <span class="value">
@@ -28,7 +34,7 @@
         ) }}
     </div>
 
-    <div class="slider-holder" id="slider_holder_2" data-min="0" data-max="3000000" data-step="10000" data-type="single">
+    <div class="slider-holder" id="slider_holder_2" data-min="10000" data-max="2000000" data-type="single" data-values="10 000,20 000,30 000,40 000,50 000,60 000,70 000,80 000,90 000,100 000,110 000,120 000,130 000,140 000,150 000,160 000,170 000,180 000,190 000,200 000,250 000,300 000,350 000,400 000,450 000,500 000,550 000,600 000,650 000,700 000,750 000,800 000,850 000,900 000,950 000,1 000 000,1 100 000,1 200 000,1 300 000,1 400 000,1 500 000,1 600 000,1 700 000,1 800 000,1 900 000,2 000 000" data-type="single">
         <div class="heading flex flex-space-between">
             <span class="title">Project Budget</span>
             <span class="value">
@@ -48,7 +54,7 @@
         ) }}
     </div>
 
-    <div class="slider-holder" id="slider_holder_3" data-min="1" data-max="20" data-step="1" data-type="double">
+    <div class="slider-holder" id="slider_holder_3" data-min="1" data-max="60" data-step="1" data-type="double">
         <div class="heading flex flex-space-between">
             <span class="title">People Involved</span>
             <span class="value">
@@ -92,7 +98,7 @@
         ) }}
     </div>
 
-    <div class="slider-holder" id="slider_holder_5" data-type="single" data-values="Very Low, Low, Medium, High, Very High">
+    <div class="slider-holder" id="slider_holder_5" data-min="Very Low" data-type="single" data-values="Very Low, Low, Medium, High, Very High">
         <div class="heading flex flex-space-between">
             <span class="title">Strategical Meaning</span>
             <span class="value">
@@ -105,14 +111,13 @@
                 id: 'slider_5',
                 attr: {
                 class: 'range-slider',
-                    'data-from': 'slider_from_5',
-                    'data-to': 'slider_from_5'
+                    'data-from': 'slider_from_5'
                 }
             }
         ) }}
     </div>
 
-    <div class="slider-holder" id="slider_holder_6" data-type="single" data-values="Very Few, Few, Many, Very Many">
+    <div class="slider-holder" id="slider_holder_6" data-min="Very Few" data-type="single" data-values="Very Few, Few, Many, Very Many">
         <div class="heading flex flex-space-between">
             <span class="title">Risks</span>
             <span class="value">
