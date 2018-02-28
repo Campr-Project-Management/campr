@@ -1,5 +1,5 @@
 <template>
-    <div class="task-range-slider">
+    <div class="task-range-slider" v-if="show">
         <div class="task-range-slider-title" v-if="this.title">{{ translate(this.title) }}</div>
 
         <div class="task-slider-holder base" v-if="showBase">
@@ -11,41 +11,6 @@
         <div class="task-slider-holder actual" v-if="showActual">
             <input type="text" class="range" ref="actual"/>
         </div>
-
-        <div ref="tooltipOverlay" class="task-slider-holder tooltip-overlay"></div>
-
-        <div ref="tooltip" v-show="false">
-            <table class="table table-small">
-                <thead>
-                <tr>
-                    <th>{{ translate('table_header_cell.schedule') }}</th>
-                    <th>{{ translate('table_header_cell.start') }}</th>
-                    <th>{{ translate('table_header_cell.finish') }}</th>
-                    <th>{{ translate('table_header_cell.duration') }}</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>{{ translate('label.base') }}</td>
-                    <td>{{ task.scheduledStartAt ? formatDate(task.scheduledStartAt) : '-' }}</td>
-                    <td>{{ task.scheduledFinishAt ? formatDate(task.scheduledFinishAt) : '-' }}</td>
-                    <td>{{ task.scheduledDurationDays > 0 ? task.scheduledDurationDays : 0 }}</td>
-                </tr>
-                <tr class="column-warning">
-                    <td>{{ translate('label.forecast') }}</td>
-                    <td>{{ task.forecastStartAt ? formatDate(task.forecastStartAt) : '-' }}</td>
-                    <td>{{ task.forecastFinishAt ? formatDate(task.forecastFinishAt) : '-' }}</td>
-                    <td>{{ task.forecastDurationDays ? task.forecastDurationDays : '' }}</td>
-                </tr>
-                <tr>
-                    <td>{{ translate('label.actual') }}</td>
-                    <td>{{ task.actualStartAt ? formatDate(task.actualStartAt) : '-' }}</td>
-                    <td>{{ task.actualFinishAt ? formatDate(task.actualFinishAt) : '-' }}</td>
-                    <td>{{ task.actualDurationDays > 0 ? task.actualDurationDays : '-' }}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
     </div>
 </template>
 
@@ -53,11 +18,10 @@
     import 'ion-rangeslider/js/ion.rangeSlider.js';
     import 'ion-rangeslider/css/ion.rangeSlider.css';
     import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
-    import moment from 'moment';
     import Tooltip from 'tether-tooltip';
 
     export default {
-        name: 'task-schedule-bar',
+        name: 'task-cost-bar',
         props: {
             task: {
                 type: Object,
@@ -69,103 +33,31 @@
             },
         },
         computed: {
+            show() {
+                return this.showActual || this.showForecast || this.showBase;
+            },
             showActual() {
-                return this.actualStartAt > 0 &&
-                    this.actualStartAt <= this.actualFinishAt;
+                return this.actualCost > 0;
             },
             showBase() {
-                return this.baseStartAt > 0
-                    && this.baseFinishAt > 0
-                    && this.baseStartAt <= this.baseFinishAt;
+                return this.baseCost > 0;
             },
             showForecast() {
-                return this.forecastStartAt > 0 &&
-                    this.forecastFinishAt > 0 &&
-                    this.forecastStartDate <= this.forecastFinishAt;
+                return this.forecastCost > 0;
             },
-            baseStartAt() {
-                return moment(this.task.scheduledStartAt).unix();
+            baseCost() {
+                return Math.ceil(this.task.totalCosts * 100);
             },
-            baseFinishAt() {
-                let date = moment(this.task.scheduledFinishAt).unix();
-                if (date === this.baseStartAt) {
-                    date += 1;
-                }
-
-                return date;
+            actualCost() {
+                return Math.ceil(this.task.totalActualCosts * 100);
             },
-            actualStartAt() {
-                return moment(this.task.actualStartAt).unix();
-            },
-            actualFinishAt() {
-                if (this.task.actualFinishAt) {
-                    return this.task.actualFinishAt;
-                }
-
-                return moment().unix();
-            },
-            forecastStartAt() {
-                return moment(this.task.forecastStartAt).unix();
-            },
-            forecastFinishAt() {
-                let date = moment(this.task.forecastFinishAt).unix();
-                if (this.forecastStartAt === date) {
-                    date += 1;
-                }
-
-                return date;
-            },
-            minDate() {
-                let dates = [];
-
-                if (this.showActual) {
-                    dates.push(this.actualStartAt);
-                }
-
-                if (this.showForecast) {
-                    dates.push(this.forecastStartAt);
-                }
-
-                if (this.showBase) {
-                    dates.push(this.baseStartAt);
-                }
-
-                if (dates.length === 0) {
-                    return;
-                }
-
-                return Math.min(...dates);
-            },
-            maxDate() {
-                let dates = [];
-
-                if (this.showActual) {
-                    dates.push(this.actualFinishAt);
-                }
-
-                if (this.showForecast) {
-                    dates.push(this.forecastFinishAt);
-                }
-
-                if (this.showBase) {
-                    dates.push(this.baseFinishAt);
-                }
-
-                if (dates.length === 0) {
-                    return;
-                }
-
-                return Math.max(...dates);
-            },
-            min() {
-                return this.minDate;
+            forecastCost() {
+                return Math.ceil(this.task.totalForecastCosts * 100);
             },
             max() {
-                if (this.maxDate === this.minDate) {
-                    return this.maxDate + 1;
-                }
+                let costs = [this.baseCost, this.forecastCost, this.actualCost];
 
-                return this.maxDate;
+                return Math.max(...costs);
             },
         },
         mounted() {
@@ -183,8 +75,6 @@
                 this.createBase();
                 this.createForecast();
                 this.createActual();
-
-                this.createOverallTooltip(this.$refs.tooltipOverlay);
             },
             createBase() {
                 if (!this.showBase) {
@@ -193,11 +83,11 @@
 
                 let $el = window.$(this.$refs.base);
                 let options = {
-                    type: 'double',
-                    min: this.min,
+                    type: 'single',
+                    min: 0,
                     max: this.max,
-                    from: this.baseStartAt,
-                    to: this.baseFinishAt,
+                    from: this.baseCost,
+                    to: this.baseCost,
                     from_fixed: true,
                     to_fixed: true,
                 };
@@ -205,11 +95,9 @@
                 $el.ionRangeSlider(options);
 
                 let $parent = $el.parent();
-                let fromHandle = $parent.find('.irs-slider.from')[0];
-                let toHandle = $parent.find('.irs-slider.to')[0];
+                let toHandle = $parent.find('.irs-slider.single')[0];
 
-                this.createFromTooltip(fromHandle, this.baseStartAt * 1000, 'Base');
-                this.createToTooltip(toHandle, this.baseFinishAt * 1000, 'Base');
+                this.createToTooltip(toHandle, this.baseCost / 100, 'label.base');
             },
             createForecast() {
                 if (!this.showForecast) {
@@ -218,11 +106,11 @@
 
                 let $el = window.$(this.$refs.forecast);
                 let options = {
-                    type: 'double',
-                    min: this.min,
+                    type: 'single',
+                    min: 0,
                     max: this.max,
-                    from: this.forecastStartAt,
-                    to: this.forecastFinishAt,
+                    from: this.forecastCost,
+                    to: this.forecastCost,
                     from_fixed: true,
                     to_fixed: true,
                 };
@@ -230,11 +118,9 @@
                 $el.ionRangeSlider(options);
 
                 let $parent = $el.parent();
-                let fromHandle = $parent.find('.irs-slider.from')[0];
-                let toHandle = $parent.find('.irs-slider.to')[0];
+                let toHandle = $parent.find('.irs-slider.single')[0];
 
-                this.createFromTooltip(fromHandle, this.forecastStartAt * 1000, 'Forecast');
-                this.createToTooltip(toHandle, this.forecastFinishAt * 1000, 'Forecast');
+                this.createToTooltip(toHandle, this.forecastCost / 100, 'label.forecast');
             },
             createActual() {
                 if (!this.showActual) {
@@ -243,11 +129,11 @@
 
                 let $el = window.$(this.$refs.actual);
                 let options = {
-                    type: 'double',
-                    min: this.min,
+                    type: 'single',
+                    min: 0,
                     max: this.max,
-                    from: this.actualStartAt,
-                    to: this.actualFinishAt,
+                    from: this.actualCost,
+                    to: this.actualCost,
                     from_fixed: true,
                     to_fixed: true,
                 };
@@ -255,11 +141,9 @@
                 $el.ionRangeSlider(options);
 
                 let $parent = $el.parent();
-                let fromHandle = $parent.find('.irs-slider.from')[0];
-                let toHandle = $parent.find('.irs-slider.to')[0];
+                let toHandle = $parent.find('.irs-slider.single')[0];
 
-                this.createFromTooltip(fromHandle, this.actualStartAt * 1000, 'Actual');
-                this.createToTooltip(toHandle, this.actualFinishAt * 1000, 'Actual');
+                this.createToTooltip(toHandle, this.actualCost / 100, 'label.actual');
             },
             createTooltip(el, text, classes) {
                 if (!el) {
@@ -274,27 +158,10 @@
                     position: 'bottom center',
                 });
             },
-            createFromTooltip(el, date, prefix) {
-                let fromValue = this.formatDate(date) || 'N/A';
-                let text = `${prefix} ${this.translate('message.start')}: ${fromValue}`;
+            createToTooltip(el, value, prefix) {
+                let text = `${this.translate(prefix)} ${this.translate('message.cost')}: ${this.$formatMoney(value)}`;
 
                 return this.createTooltip(el, text);
-            },
-            createToTooltip(el, date, prefix) {
-                let toValue = this.formatDate(date) || 'N/A';
-                let text = `${prefix} ${this.translate('message.finish')}: ${toValue}`;
-
-                return this.createTooltip(el, text);
-            },
-            createOverallTooltip(el) {
-                return this.createTooltip(el, this.$refs.tooltip.innerHTML, 'task-schedule-bar overall-tooltip');
-            },
-            formatDate(date) {
-                if (!date) {
-                    return;
-                }
-
-                return moment(date).format('DD.MM.YYYY');
             },
         },
     };
@@ -460,39 +327,6 @@
         }
         .range {
             display: none;
-        }
-    }
-</style>
-
-<style lang="scss">
-    @import '../../css/_variables.scss';
-
-    .task-schedule-bar {
-        &.overall-tooltip {
-            max-width: 440px;
-            padding: 0;
-
-            .tooltip-content {
-                background-color: $mainColor;
-                box-shadow: 0 0 8px -2px #000;
-                color: $lighterColor;
-                padding: 5px 0;
-                text-align: left;
-            }
-
-            &.tooltip-target-attached-top {
-                &:after {
-                    border-color: transparent transparent $mainColor transparent;
-                    top: -5px;
-                }
-            }
-
-            &.tooltip-target-attached-bottom {
-                &:after {
-                    border-color: transparent transparent $mainColor transparent;
-                    top: -5px;
-                }
-            }
         }
     }
 </style>
