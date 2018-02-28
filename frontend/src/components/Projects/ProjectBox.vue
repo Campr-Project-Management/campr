@@ -41,9 +41,9 @@
                 </div>
               </div>
             <bar-chart :percentage="project.progress" :status="project.statusName" title-right="Progress"></bar-chart>
-            <div class="content-bottom flex">
-              <circle-chart :width="150" :height="150" :percentage="project.progress" v-bind:title="translateText('message.task_status')" class="left"></circle-chart>
-              <circle-chart :width="150" :height="150" :percentage="project.costs_status" v-bind:title="translateText('message.cost_status')" class="right"></circle-chart>
+            <div class="content-bottom flex circles">
+                <circle-chart :percentage="project.progress" v-bind:title="translateText('message.task_status')" class="left"></circle-chart>
+                <circle-chart :percentage="project.costs_status" v-bind:title="translateText('message.cost_status')" class="right"></circle-chart>
             </div>
             <div class="flex flex-space-between notes-title">
                 <span class="uppercase">{{ translateText('message.notes') }}</span>
@@ -106,7 +106,51 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import '../../css/_common';
-  @import '../../css/box';
-  @import '../../css/box-project'; 
+    @import '../../css/_common';
+    @import '../../css/box';
+    @import '../../css/box-project';
+
+    .circles {
+        flex-wrap: wrap;
+
+        .chart {
+            width: calc(50% - 10px);
+        }
+
+        @media (max-width: 1024px) and (min-width: 768px){
+            .chart {
+                margin: 0 0 10px 0;
+                width: 100%;
+
+                &.last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        @media (max-width: 767px) and (min-width: 500){
+            .chart {
+                width: calc(50% - 10px);
+
+                &.left {
+                    margin: 0 10px 0 0;
+                }
+
+                &.right {
+                    margin: 0 0 0 10px;
+                }
+            }
+        }
+
+        @media (max-width: 499px) {
+            .chart {
+                margin: 0 0 10px 0;
+                width: 100%;
+
+                &.last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    } 
 </style>
