@@ -17,7 +17,7 @@ export default {
     props: {
         percentage: {},
         title: {},
-        width: {
+        /* width: {
             default() {
                 return 360;
             },
@@ -26,7 +26,7 @@ export default {
             default() {
                 return 360;
             },
-        },
+        }, */
         precision: {
             default() {
                 return 2;
@@ -40,9 +40,12 @@ export default {
     },
     methods: {
         init() {
-            let width = parseInt(this.width, 10);
+            /* let width = parseInt(this.width, 10);
             let height = parseInt(this.width, 10);
-            let radius = Math.min(width, height) / 2;
+            let radius = Math.min(width, height) / 2; */
+            let width = this.$el.offsetWidth;
+            let height = width;
+            let radius = width / 2;
 
             const arc = d3
                 .arc()
@@ -55,13 +58,16 @@ export default {
             const svg = d3
                 .select('#chart-' + this._uid)
                 .insert('svg', ':first-child')
-                .attr('width', width)
-                .attr('height', height)
+                /* .attr('width', width)
+                .attr('height', height) */
+                .attr('viewBox', '0 0 ' + Math.min(width, height) + ' ' + Math.min(width, height) )
+                .attr('preserveAspectRatio', 'xMinYMin')
             ;
 
             const g = svg
                 .append('g')
-                .attr('transform', `translate(${width / 2}, ${height / 2})`)
+                /* .attr('transform', `translate(${width / 2}, ${height / 2})`) */
+                .attr('transform', 'translate(' + Math.min(width, height) / 2 + ',' + Math.min(width, height) / 2 + ')')
             ;
 
             // draw main circle
@@ -184,6 +190,7 @@ export default {
                 text-transform: uppercase;
                 font-size: 9px;
                 text-align: center;
+                line-height: 1em;
             }
 
             .value {
