@@ -249,49 +249,51 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import '../../css/_mixins';
-  @import '../../css/project-create';
-  @import '../../css/_common';
+    @import '../../css/_mixins';
+    @import '../../css/project-create';
+    @import '../../css/_common';
 
-  .avatar {
-      margin: 28px auto;
-      display: block;
-      width: 122px;
-      height: 122px;
-      border-radius: 122px;
-  }
+    .avatar {
+        margin: 28px auto;
+        display: block;
+        width: 122px;
+        height: 122px;
+        border-radius: 122px;
+        object-fit: cover;
+    }
 
-  .input-holder {
-      margin-bottom: 30px;
-  }
+    .input-holder {
+        margin-bottom: 30px;
+    }
 
-  .btn-empty {
-      margin: 0 auto 30px;
-      width: 140px;
-      font-size: 9px;
-  }
+    .btn-empty {
+        margin: 0 auto 30px;
+        width: 140px;
+        font-size: 9px;
+    }
 
-  .btn-rounded {
-      //padding: 0;
-      width: auto;
-  }
+    .btn-rounded {
+        //padding: 0;
+        width: auto;
+    }
 
-  button.btn-rounded {
-      border: none;
-  }
+    button.btn-rounded {
+        border: none;
+    }
 
-  .checkbox-input {
-      margin-bottom: 23px;
-  }
+    .checkbox-input {
+        margin-bottom: 23px;
+    }
 
-  .dropdown {
-      margin-bottom: 30px;
-  }
+    .dropdown {
+        margin-bottom: 30px;
+    }
 
-  .btn-right {
-      margin: 10px 0 30px;
-  }
-  .btn-add {
-      margin-left: 10px;
-  }  
+    .btn-right {
+        margin: 10px 0 30px;
+    }
+
+    .btn-add {
+        margin-left: 10px;
+    }  
 </style>

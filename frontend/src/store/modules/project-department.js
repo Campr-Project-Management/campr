@@ -1,18 +1,45 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import _ from 'lodash';
 
 const state = {
     projectDepartments: {},
-    projectDepartmentsForSelect: [],
-    projectDepartmentsForMultiSelect: [],
     projectDepartmentLoading: false,
 };
 
 const getters = {
     projectDepartments: state => state.projectDepartments,
-    projectDepartmentsForSelect: state => state.projectDepartmentsForSelect,
+    projectDepartmentsForSelect: ({projectDepartments}) => {
+        let data = [];
+
+        if (!projectDepartments.items) {
+            return data;
+        }
+
+        projectDepartments.items.forEach((department) => {
+            data.push({
+                key: department.id,
+                label: department.name,
+                rate: department.rate,
+            });
+        });
+
+        return data;
+    },
     projectDepartmentsLoading: state => state.projectDepartmentLoading,
-    projectDepartmentsForMultiSelect: state => state.projectDepartmentsForMultiSelect,
+    projectDepartmentsForMultiSelect: ({}, getters) => {
+        return getters.projectDepartmentsForSelect;
+    },
+    projectDepartmentById: ({}, getters) => (id) => {
+        let departments = getters.projectDepartments.items;
+        if (!departments) {
+            return null;
+        }
+
+        return _.find(departments, (department) => {
+            return department.id === id;
+        });
+    },
 };
 
 const actions = {
@@ -103,14 +130,6 @@ const mutations = {
      */
     [types.SET_PROJECT_DEPARTMENTS](state, {projectDepartments}) {
         state.projectDepartments = projectDepartments;
-        let projectDepartmentsForSelect = [];
-        let projectDepartmentsForMultiSelect = [];
-        state.projectDepartments.items.map((item) => {
-            projectDepartmentsForSelect.push({'key': item.id, 'label': item.name, 'rate': item.rate});
-            projectDepartmentsForMultiSelect.push({'key': item.id, 'label': item.name, 'rate': item.rate});
-        });
-        state.projectDepartmentsForSelect = projectDepartmentsForSelect;
-        state.projectDepartmentsForMultiSelect = projectDepartmentsForMultiSelect;
     },
     /**
      * @param {Object} state
