@@ -30,6 +30,12 @@
       right: 0;
     }
 
+    .status-boxes {
+      .status-box {
+        cursor: default;
+      }
+    }
+
     .task-id {
       color: $middleColor;
       font-size: 11px;
