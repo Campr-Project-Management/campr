@@ -15,8 +15,8 @@ const state = {
     tasksForSchedule: {},
     projectTasksStatus: {},
     risksOpportunitiesStats: [],
-    costData: {},
-    resourceData: {},
+    internalCostsGraphData: {},
+    externalCostsGraphData: {},
     projectCostsAndResources: {},
     progresses: {},
     statusReportAvailability: {},
@@ -36,8 +36,8 @@ const getters = {
     risksOpportunitiesStats: state => state.risksOpportunitiesStats,
     projectsCount: state => state.projects.totalItems,
     projectsPerPage: state => state.projects.pageSize,
-    costData: state => state.costData,
-    resourceData: state => state.resourceData,
+    externalCostsGraphData: state => state.externalCostsGraphData,
+    internalCostsGraphData: state => state.internalCostsGraphData,
     projectCostsAndResources: state => state.projectCostsAndResources,
     progresses: state => state.progresses,
     statusReportAvailability: state => state.statusReportAvailability,
@@ -165,7 +165,7 @@ const actions = {
                 },
                 (response) => {}
             )
-            ;
+        ;
     },
 
     setProjectFilters({commit}, filters) {
@@ -622,20 +622,19 @@ const actions = {
     },
 
     /**
-     * Gets project costs data
+     * Gets project external costs data
      * @param {function} commit
      * @param {number} data
      * @return {object}
      */
-    getProjectCostsGraphData({commit}, data) {
+    getProjectExternalCostsGraphData({commit}, data) {
         return Vue
             .http
-            .get(Routing.generate('app_api_project_costs_graph_data', data))
+            .get(Routing.generate('app_api_project_external_costs_graph_data', data))
             .then(
                 (response) => {
                     if (response.status === 200) {
-                        let costData = response.data;
-                        commit(types.SET_PROJECT_COSTS_GRAPH_DATA, {costData});
+                        commit(types.SET_PROJECT_EXTERNAL_COSTS_GRAPH_DATA, response.data);
                     }
                 },
                 (response) => {}
@@ -643,20 +642,19 @@ const actions = {
         ;
     },
     /**
-     * Gets project resource data
+     * Gets project internal costs data
      * @param {function} commit
      * @param {number} data
      * @return {object}
      */
-    getProjectResourcesGraphData({commit}, data) {
+    getProjectInternalCostsGraphData({commit}, data) {
         return Vue
             .http
-            .get(Routing.generate('app_api_project_resources_graph_data', data))
+            .get(Routing.generate('app_api_project_internal_costs_graph_data', data))
             .then(
                 (response) => {
                     if (response.status === 200) {
-                        let resourceData = response.data;
-                        commit(types.SET_PROJECT_RESOURCES_GRAPH_DATA, {resourceData});
+                        commit(types.SET_PROJECT_INTERNAL_COSTS_GRAPH_DATA, response.data);
                     }
                 },
                 (response) => {}
@@ -891,20 +889,20 @@ const mutations = {
         state.risksOpportunitiesStats = roStats;
     },
     /**
-     * Set project costs data
+     * Set project external costs data
      * @param {Object} state
-     * @param {array} costData
+     * @param {array} data
      */
-    [types.SET_PROJECT_COSTS_GRAPH_DATA](state, {costData}) {
-        state.costData = costData;
+    [types.SET_PROJECT_EXTERNAL_COSTS_GRAPH_DATA](state, data) {
+        state.externalCostsGraphData = data;
     },
     /**
-     * Set project resource data
+     * Set project internal costs data
      * @param {Object} state
-     * @param {array} costData
+     * @param {array} data
      */
-    [types.SET_PROJECT_RESOURCES_GRAPH_DATA](state, {resourceData}) {
-        state.resourceData = resourceData;
+    [types.SET_PROJECT_INTERNAL_COSTS_GRAPH_DATA](state, data) {
+        state.internalCostsGraphData = data;
     },
     /**
      * Set project/task/cost progresses

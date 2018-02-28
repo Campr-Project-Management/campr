@@ -32,7 +32,6 @@ import {mapActions, mapGetters} from 'vuex';
 import 'jquery.nicescroll/jquery.nicescroll.js';
 
 export default {
-//    props: ['phase', 'milestone'],
     props: ['editPlanning'],
     methods: {
         ...mapActions(['getWBSByProjectID']),
@@ -104,8 +103,6 @@ export default {
         },
     },
     created() {
-        // this.getProjectPhases({projectId: this.$route.params.id});
-        // this.getProjectMilestones({projectId: this.$route.params.id});
         this.getWBSByProjectID(this.$route.params.id);
 
         this.planning = this.editPlanning;
@@ -125,7 +122,6 @@ export default {
         phaseOrMilestoneLabel: function() {
             const out = [];
 
-            console.log(this.planning);
             if (this.planning.phase) {
                 out.push(this.planning.phase.label);
             }

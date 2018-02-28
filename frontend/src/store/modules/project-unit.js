@@ -11,7 +11,7 @@ const getters = {
         let units = state.projectUnits.map(item => {
             return {
                 'key': item.id,
-                'label': item.name,
+                'label': Translator.trans(item.name),
             };
         });
         units.push({

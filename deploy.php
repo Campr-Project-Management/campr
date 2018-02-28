@@ -7,7 +7,14 @@ require 'recipe/symfony3.php';
 // Set configurations
 set('repository', 'git@lab.trisoft.ro:campr/campr.git');
 set('shared_files', []);
-set('shared_dirs', ['var/logs', 'backend/vendor', 'web/uploads', 'frontend/node_modules', 'var/profiler']);
+set('shared_dirs', [
+    'var/logs',
+    'backend/vendor',
+    'web/uploads',
+    'frontend/node_modules',
+    'ssr/node_modules',
+    'var/profiler',
+]);
 set('writable_dirs', ['var/cache', '../../shared/var/logs', '../../shared/web/uploads', '../../shared/var/profiler']);
 set('http_user', 'www-data');
 
@@ -55,10 +62,13 @@ set('cron_domain', function () {
     return strtr(get('domain'), ['.' => '_']);
 });
 set('bin/mysql', function () {
-    return '`which mysql` -u{{mysql_user}} -p{{mysql_password}} {{mysql_database}}';
+    return '`which mysql` -u{{mysql_user}}{{mysql_password_usage}} {{mysql_database}}';
+});
+set('mysql_password_usage', function() {
+   return empty(get('mysql_password')) ? '' : ' -p{{mysql_password}}';
 });
 set('bin/mysqldump', function () {
-    return sprintf('`which mysqldump` -u{{mysql_user}}%s {{mysql_database}} --routines', empty(get('mysql_password')) ? '' : ' -p{{mysql_password}}');
+    return '`which mysqldump` -u{{mysql_user}}{{mysql_password_usage}} --routines --databases `mysql -u{{mysql_user}}{{mysql_password_usage}} -Bse "show databases like \'{{mysql_database}}%\'"`';
 });
 set('bin/mc', function () {
     return '{{release_path}}/bin/mc --config-folder={{release_path}}/config/minio/';
@@ -224,6 +234,9 @@ task('server:provision', function () {
 task('project:build:frontend', function () {
     run('cd {{release_path}}/frontend && npm install && npm run build');
 });
+task('project:build:ssr', function () {
+    run('cd {{release_path}}/ssr && npm install && npm run build');
+});
 task('hivebot:deploy-whois', function () {
     set('localUser', sprintf(
         '%s',
@@ -276,6 +289,7 @@ task('deploy', [
     'deploy:symlink',
     'project:front-static',
     'project:build:frontend',
+    'project:build:ssr',
     'deploy:cache:warmup',
     'database:cleanup',
     'database:migrate',
