@@ -57,7 +57,7 @@ parameters:
     jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
 
     app.pdf.google_chrome: '/usr/bin/xvfb-run /usr/bin/google-chrome'
-    app.pdf.google_chrome_arguments: '--webkit-print-color-adjust --headless --disable-gpu --start-fullscreen --no-sandbox --print-to-pdf=%%file%% %%url%%'
+    app.pdf.google_chrome_arguments: '--webkit-print-color-adjust --headless --disable-gpu --start-fullscreen --no-sandbox --print-to-pdf="%%file%%" "%%url%%"'
     app.pdf.service_url: 'http://localhost:3000/'
 
     app.token_duration: 5
