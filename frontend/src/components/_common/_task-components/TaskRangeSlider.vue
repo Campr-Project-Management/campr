@@ -11,38 +11,38 @@
 </template>
 
 <script>
-import 'ion-rangeslider/js/ion.rangeSlider.js';
-import 'ion-rangeslider/css/ion.rangeSlider.css';
-import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
-import moment from 'moment';
+    import 'ion-rangeslider/js/ion.rangeSlider.js';
+    import 'ion-rangeslider/css/ion.rangeSlider.css';
+    import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
+    import moment from 'moment';
 
-export default {
-    props: ['message', 'min', 'max', 'from', 'to', 'type'],
-    mounted() {
-        const $this = window.$('#slider' + this._uid);
-        $this.ionRangeSlider({
-            type: this.type,
-            min: +moment(this.min, 'YYYY-MM-DD'),
-            max: +moment(this.max, 'YYYY-MM-DD'),
-            from: +moment(this.from, 'YYYY-MM-DD'),
-            to: +moment(this.to, 'YYYY-MM-DD'),
-            from_fixed: true,
-            to_fixed: true,
-        });
-        $this.prev().find('.irs-slider.from').hover(() => {
-            this.fromTooltip = !this.fromTooltip;
-        });
-        $this.prev().find('.irs-slider.to').hover(() => {
-            this.toTooltip = !this.toTooltip;
-        });
-    },
-    data() {
-        return {
-            fromTooltip: false,
-            toTooltip: false,
-        };
-    },
-};
+    export default {
+        props: ['message', 'min', 'max', 'from', 'to', 'type'],
+        mounted() {
+            const $this = window.$('#slider' + this._uid);
+            $this.ionRangeSlider({
+                type: this.type,
+                min: +moment(this.min, 'YYYY-MM-DD'),
+                max: +moment(this.max, 'YYYY-MM-DD'),
+                from: +moment(this.from, 'YYYY-MM-DD'),
+                to: +moment(this.to, 'YYYY-MM-DD'),
+                from_fixed: true,
+                to_fixed: true,
+            });
+            $this.prev().find('.irs-slider.from').hover(() => {
+                this.fromTooltip = !this.fromTooltip;
+            });
+            $this.prev().find('.irs-slider.to').hover(() => {
+                this.toTooltip = !this.toTooltip;
+            });
+        },
+        data() {
+            return {
+                fromTooltip: false,
+                toTooltip: false,
+            };
+        },
+    };
 </script>
 
 <style lang="scss">
@@ -52,7 +52,7 @@ export default {
         margin-bottom: 20px;
         height: 45px;
         position: relative;
-    
+
         .task-range-slider-title {
             text-transform: uppercase;
             color: $lightColor;
@@ -134,7 +134,7 @@ export default {
                     background: $warningColor !important;
                 }
 
-            .irs-slider {
+                .irs-slider {
                     background-color: $warningColor !important;
                 }
             }
