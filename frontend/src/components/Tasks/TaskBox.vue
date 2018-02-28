@@ -40,6 +40,7 @@
                     </span>
 
                     <task-schedule-bar :task="task" title="message.schedule" />
+                    <task-cost-bar :task="task" title="message.cost" />
                 </div>
             </div>
             <bar-chart :percentage="task.progress" :status="task.colorStatusName" :color="task.colorStatusColor" :title-left="'' + translateText(task.workPackageStatusName)"></bar-chart>
@@ -97,12 +98,14 @@ import BarChart from '../_common/_charts/BarChart';
 import 'jquery.nicescroll/jquery.nicescroll.js';
 import moment from 'moment';
 import TaskScheduleBar from './TaskScheduleBar.vue';
+import TaskCostBar from './TaskCostBar.vue';
 import _ from 'lodash';
 
 export default {
     components: {
         BarChart,
         TaskScheduleBar,
+        TaskCostBar,
     },
     created() {
         window.$(document).ready(function() {
