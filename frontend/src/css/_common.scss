@@ -705,6 +705,13 @@ hr {
             width: 50%;
         }
     }
+
+    @media (max-width: 767px) {
+        .task-box-wrapper,
+        .project-box-wrapper {
+            width: 100%;
+        }
+    }
 }
 
 .pagination {
