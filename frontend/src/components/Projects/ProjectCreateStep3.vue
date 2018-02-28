@@ -7,7 +7,7 @@
             <h3>{{ translateText('message.project_size') }}: <span>{{ translateText('message.medium') }}</span></h3>
 
             <p>{{ translateText('message.recommended_modules') }}</p>
-            <project-module v-for="module, key in modules"
+            <project-module v-for="(module, key) in modules"
                 v-if="moduleIsRecommended(key)"
                 v-bind:title="translateText(module.title)"
                 v-bind:description="translateText(module.description)"
@@ -17,7 +17,7 @@
          
             <p>{{ translateText('message.not_recommended_modules') }}</p>
 
-            <project-module v-for="module, key in modules"
+            <project-module v-for="(module, key) in modules"
                 v-if="!moduleIsRecommended(key)"
                 v-bind:title="translateText(module.title)"
                 v-bind:description="translateText(module.description)"
@@ -96,7 +96,7 @@ export default {
         },
         modules(value) {
             const stepData = JSON.parse(localStorage.getItem(THIRD_STEP_LOCALSTORAGE_KEY) || '{}');
-            if (stepData && stepData.modulesConfiguration != undefined) {
+            if (stepData && stepData.modulesConfiguration != null) {
                 this.modulesConfiguration = stepData.modulesConfiguration;
                 return;
             }

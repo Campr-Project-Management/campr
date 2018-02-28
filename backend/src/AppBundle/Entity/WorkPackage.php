@@ -333,6 +333,7 @@ class WorkPackage
     /**
      * @var Cost[]|ArrayCollection
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Cost", mappedBy="workPackage", cascade={"persist"})
+     * @Assert\Valid()
      */
     private $costs;
 
@@ -635,6 +636,29 @@ class WorkPackage
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return int
+     */
+    public function getScheduledDurationDays(): int
+    {
+        $start = $this->getScheduledStartAt();
+        $end = $this->getScheduledFinishAt();
+        if (!$start || !$end || $start > $end) {
+            return 0;
+        }
+
+        $start = clone $start;
+        $end = clone $end;
+        $start->setTime(0, 0, 0);
+        $end->setTime(23, 59, 59);
+
+        $interval = $end->diff($start);
+
+        return (int) $interval->format('%a') + 1;
+    }
+
+    /**
      * Set forecastStartAt.
      *
      * @param \DateTime $forecastStartAt
@@ -683,6 +707,29 @@ class WorkPackage
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return int
+     */
+    public function getForecastDurationDays(): int
+    {
+        $start = $this->getForecastStartAt();
+        $end = $this->getForecastFinishAt();
+        if (!$start || !$end || $start > $end) {
+            return 0;
+        }
+
+        $start = clone $start;
+        $end = clone $end;
+        $start->setTime(0, 0, 0);
+        $end->setTime(23, 59, 59);
+
+        $interval = $end->diff($start);
+
+        return (int) $interval->format('%a') + 1;
+    }
+
+    /**
      * Set actualStartAt.
      *
      * @param \DateTime $actualStartAt
@@ -728,6 +775,29 @@ class WorkPackage
     public function getActualFinishAt()
     {
         return $this->actualFinishAt;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return int
+     */
+    public function getActualDurationDays(): int
+    {
+        $start = $this->getActualStartAt();
+        $end = $this->getActualFinishAt();
+        if (!$start || !$end || $start > $end) {
+            return 0;
+        }
+
+        $start = clone $start;
+        $end = clone $end;
+        $start->setTime(0, 0, 0);
+        $end->setTime(23, 59, 59);
+
+        $interval = $end->diff($start);
+
+        return (int) $interval->format('%a') + 1;
     }
 
     /**
@@ -855,7 +925,7 @@ class WorkPackage
      *
      * @return WorkPackage
      */
-    public function setPhase(WorkPackage $workPackage = null)
+    public function setPhase(self $workPackage = null)
     {
         $this->phase = $workPackage;
         foreach ($this->getChildren() as $child) {
@@ -898,11 +968,11 @@ class WorkPackage
      *
      * @return WorkPackage
      */
-    public function setMilestone(WorkPackage $workPackage = null)
+    public function setMilestone(self $workPackage = null)
     {
         $this->milestone = $workPackage;
 
-        if ($workPackage !== null) {
+        if (null !== $workPackage) {
             $this->phase = $workPackage->getPhase();
         }
         foreach ($this->getChildren() as $child) {
@@ -947,7 +1017,7 @@ class WorkPackage
      *
      * @return WorkPackage
      */
-    public function setParent(WorkPackage $parent = null)
+    public function setParent(self $parent = null)
     {
         $this->parent = $parent;
 
@@ -1050,6 +1120,7 @@ class WorkPackage
     {
         return $this->responsibility ? $this->responsibility->getEmail() : null;
     }
+
     /**
      * Set accountability.
      *
@@ -1530,7 +1601,7 @@ class WorkPackage
      *
      * @return WorkPackage
      */
-    public function addDependency(WorkPackage $workPackage)
+    public function addDependency(self $workPackage)
     {
         $this->dependencies[] = $workPackage;
 
@@ -1544,7 +1615,7 @@ class WorkPackage
      *
      * @return WorkPackage
      */
-    public function removeDependency(WorkPackage $workPackage)
+    public function removeDependency(self $workPackage)
     {
         $this->dependencies->removeElement($workPackage);
 
@@ -1568,7 +1639,7 @@ class WorkPackage
      *
      * @return WorkPackage
      */
-    public function addDependant(WorkPackage $workPackage)
+    public function addDependant(self $workPackage)
     {
         $this->dependants[] = $workPackage;
         $workPackage->addDependency($this);
@@ -1583,7 +1654,7 @@ class WorkPackage
      *
      * @return WorkPackage
      */
-    public function removeDependant(WorkPackage $workPackage)
+    public function removeDependant(self $workPackage)
     {
         $this->dependants->removeElement($workPackage);
         $workPackage->removeDependency($this);
@@ -1608,7 +1679,7 @@ class WorkPackage
      *
      * @return WorkPackage
      */
-    public function addChild(WorkPackage $child)
+    public function addChild(self $child)
     {
         $child->setPhase($this->getPhase());
         $child->setMilestone($this->getMilestone());
@@ -1625,7 +1696,7 @@ class WorkPackage
      *
      * @param WorkPackage $child
      */
-    public function removeChild(WorkPackage $child)
+    public function removeChild(self $child)
     {
         $this->children->removeElement($child);
         $child->setParent(null);
@@ -1692,7 +1763,7 @@ class WorkPackage
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getDuration()
     {
@@ -1700,7 +1771,9 @@ class WorkPackage
     }
 
     /**
-     * @param $duration
+     * @param int $duration
+     *
+     * @return $this
      */
     public function setDuration($duration)
     {
@@ -1716,9 +1789,13 @@ class WorkPackage
      */
     public function addCost(Cost $cost)
     {
+        if ($this->costs->contains($cost)) {
+            return $this;
+        }
+
         $cost->setWorkPackage($this);
         $cost->setProject($this->getProject());
-        $this->costs[] = $cost;
+        $this->costs->add($cost);
 
         return $this;
     }
@@ -1790,7 +1867,7 @@ class WorkPackage
      */
     public function workPackageStatusValidator(ExecutionContextInterface $context)
     {
-        if ($this->getType() != self::TYPE_MILESTONE) {
+        if (self::TYPE_MILESTONE !== $this->getType()) {
             return;
         }
 

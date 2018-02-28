@@ -59,14 +59,17 @@ use AppBundle\Form\WorkPackage\PhaseType;
 use AppBundle\Form\WorkPackage\ImportType as ImportWorkPackageType;
 use AppBundle\Form\Risk\CreateType as RiskCreateType;
 use AppBundle\Form\Opportunity\ApiType as OpportunityCreateType;
+use AppBundle\Repository\CostRepository;
+use AppBundle\Repository\MeasureRepository;
 use AppBundle\Repository\MeetingRepository;
+use AppBundle\Repository\OpportunityRepository;
+use AppBundle\Repository\RiskRepository;
 use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\ProjectVoter;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use MainBundle\Controller\API\ApiController;
-use AppBundle\Entity\Status;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -490,7 +493,7 @@ class ProjectController extends ApiController
         $fileSystem = $project
             ->getFileSystems()
             ->filter(function (FileSystem $fs) {
-                return $fs->getDriver() === FileSystem::LOCAL_ADAPTER;
+                return FileSystem::LOCAL_ADAPTER === $fs->getDriver();
             })
             ->first()
         ;
@@ -695,7 +698,7 @@ class ProjectController extends ApiController
             foreach ($form->get('roles')->getData() as $roleId) {
                 $role = $em->getRepository(ProjectRole::class)->find($roleId);
                 $projectUser->addProjectRole($role);
-                if ($role->getName() === ProjectRole::ROLE_SPONSOR) {
+                if (ProjectRole::ROLE_SPONSOR === $role->getName()) {
                     $specialDistribution = $em->getRepository(DistributionList::class)->findOneBy([
                         'project' => $project,
                         'sequence' => -1,
@@ -1286,9 +1289,9 @@ class ProjectController extends ApiController
         $baseCost = $em->getRepository(Cost::class)->getTotalBaseCost($project);
         $actualForecastCosts = $em->getRepository(WorkPackage::class)->getTotalExternalInternalCosts($project, Cost::TYPE_EXTERNAL);
         $costClass = '';
-        if ($project->getOverallStatus() === 0) {
+        if (0 === $project->getOverallStatus()) {
             $class = 'danger';
-        } elseif ($project->getOverallStatus() === 1) {
+        } elseif (1 === $project->getOverallStatus()) {
             $class = 'warning';
         }
         if ($actualForecastCosts['forecast'] > $baseCost) {
@@ -1362,7 +1365,7 @@ class ProjectController extends ApiController
         $fileSystem = $project
             ->getFileSystems()
             ->filter(function (FileSystem $fs) {
-                return $fs->getDriver() === FileSystem::LOCAL_ADAPTER;
+                return FileSystem::LOCAL_ADAPTER === $fs->getDriver();
             })
             ->first()
         ;
@@ -1438,7 +1441,7 @@ class ProjectController extends ApiController
             try {
                 $xml = new \SimpleXMLElement($fileContent);
                 foreach ($xml->children() as $tag => $element) {
-                    if ($tag === ImportConstants::TASKS_TAG) {
+                    if (ImportConstants::TASKS_TAG === $tag) {
                         $this->get('app.service.import')->importWorkPackages($project, (array) $element);
                     }
                 }
@@ -1761,8 +1764,13 @@ class ProjectController extends ApiController
      */
     public function risksOpportunitiesStatsAction(Project $project)
     {
+        /** @var RiskRepository $riskRepo */
         $riskRepo = $this->getDoctrine()->getRepository(Risk::class);
+
+        /** @var OpportunityRepository $opportunityRepo */
         $opportunityRepo = $this->getDoctrine()->getRepository(Opportunity::class);
+
+        /** @var MeasureRepository $measureRepo */
         $measureRepo = $this->getDoctrine()->getRepository(Measure::class);
 
         return $this->createApiResponse([
@@ -1808,42 +1816,51 @@ class ProjectController extends ApiController
     }
 
     /**
-     * @Route("/{id}/costs-graph-data", name="app_api_project_costs_graph_data", options={"expose"=true})
+     * @Route("/{id}/external-costs-graph-data", name="app_api_project_external_costs_graph_data", options={"expose"=true})
      * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
      */
-    public function costsGraphDataAction(Project $project)
+    public function externalCostsGraphDataAction(Project $project)
     {
         $em = $this->getDoctrine()->getManager();
+
+        /** @var CostRepository $costRepo */
         $costRepo = $em->getRepository(Cost::class);
+
+        /** @var WorkPackageRepository $wpRepo */
         $wpRepo = $em->getRepository(WorkPackage::class);
 
-        $baseCosts = array_merge(
-            $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_EXTERNAL),
-            $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_INTERNAL)
-        );
-        $actualForecastCosts = array_merge(
-            $wpRepo->getTotalExternalInternalCostsByPhase($project, Cost::TYPE_EXTERNAL),
-            $wpRepo->getTotalExternalInternalCostsByPhase($project, Cost::TYPE_INTERNAL)
-        );
+        $baseCosts = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_EXTERNAL);
+        $actualCosts = $wpRepo->getTotalActualCostsByPhase($project, Cost::TYPE_EXTERNAL);
 
         $dataByPhase = [];
-        foreach (array_merge($baseCosts, $actualForecastCosts) as $cost) {
-            foreach ($cost as $key => $value) {
-                if ($key !== 'phaseName') {
-                    if (isset($dataByPhase[$cost['phaseName']][$key])) {
-                        $dataByPhase[$cost['phaseName']][$key] = $dataByPhase[$cost['phaseName']][$key] + $value;
-                    } else {
-                        $dataByPhase[$cost['phaseName']][$key] = $value;
-                    }
-                }
+        foreach (array_merge($baseCosts, $actualCosts) as $cost) {
+            $phaseName = $cost['phaseName'];
+            unset($cost['phaseName']);
+
+            if (!isset($dataByPhase[$phaseName])) {
+                $dataByPhase[$phaseName] = [
+                    'base' => 0,
+                    'actual' => 0,
+                    'forecast' => 0,
+                    'remaining' => 0,
+                ];
             }
+
+            $dataByPhase[$phaseName] = array_merge($dataByPhase[$phaseName], $cost);
         }
+
         $trafficLight = Project::STATUS_GREEN;
-        foreach ($dataByPhase as $phase) {
-            if (isset($phase['forecast']) && isset($phase['base']) && (float) $phase['forecast'] > (float) $phase['base']) {
+        foreach ($dataByPhase as $name => $phase) {
+            $dataByPhase[$name]['remaining'] = $phase['base'] - $phase['actual'];
+
+            if ((float) $phase['forecast'] > (float) $phase['base']) {
                 $trafficLight = Project::STATUS_YELLOW;
             }
-            if (isset($phase['actual']) && isset($phase['forecast']) && (float) $phase['actual'] > (float) $phase['forecast']) {
+            if ((float) $phase['actual'] > (float) $phase['forecast']) {
                 $trafficLight = Project::STATUS_RED;
                 break;
             }
@@ -1854,58 +1871,78 @@ class ProjectController extends ApiController
         foreach ($userDepartments as $userDepartment) {
             $dataByDepartment[$userDepartment['department']]['userIds'][] = $userDepartment['uid'];
         }
+
         foreach ($dataByDepartment as $key => $value) {
-            $baseExternalCostArr = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_EXTERNAL, $value['userIds']);
-            $baseInternalCostArr = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_INTERNAL, $value['userIds']);
-            $baseExternalCost = !empty($baseExternalCostArr) ? $baseExternalCostArr[0]['base'] : 0;
-            $baseInternalCost = !empty($baseInternalCostArr) ? $baseInternalCostArr[0]['base'] : 0;
+            $baseCostArr = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_EXTERNAL, $value['userIds']);
+            $actualCostArr = $wpRepo->getTotalActualCostsByPhase($project, Cost::TYPE_EXTERNAL, $value['userIds']);
 
-            $actualForecastExternalArr = $wpRepo->getTotalExternalInternalCostsByPhase($project, Cost::TYPE_EXTERNAL, $value['userIds']);
-            $externalActualCost = !empty($actualForecastExternalArr) ? $actualForecastExternalArr[0]['actual'] : 0;
-            $externalForecastCost = !empty($actualForecastExternalArr) ? $actualForecastExternalArr[0]['forecast'] : 0;
-
-            $actualForecastInternalArr = $wpRepo->getTotalExternalInternalCostsByPhase($project, Cost::TYPE_INTERNAL, $value['userIds']);
-            $internalActualCost = !empty($actualForecastInternalArr) ? $actualForecastInternalArr[0]['actual'] : 0;
-            $internalForecastCost = !empty($actualForecastInternalArr) ? $actualForecastInternalArr[0]['forecast'] : 0;
-
-            $dataByDepartment[$key]['base'] = $baseExternalCost + $baseInternalCost;
-            $dataByDepartment[$key]['actual'] = $externalActualCost + $internalActualCost;
-            $dataByDepartment[$key]['forecast'] = $externalForecastCost + $internalForecastCost;
+            $dataByDepartment[$key]['base'] = (float) $baseCostArr[0]['base'] ?? 0;
+            $dataByDepartment[$key]['actual'] = (float) $actualCostArr[0]['actual'] ?? 0;
+            $dataByDepartment[$key]['forecast'] = (float) $actualCostArr[0]['forecast'] ?? 0;
+            $dataByDepartment[$key]['remaining'] = $dataByDepartment[$key]['base'] - $actualCostArr[0]['actual'];
         }
 
-        return $this->createApiResponse([
-            'byPhase' => $dataByPhase,
-            'byPhaseTraffic' => $trafficLight,
-            'byDepartment' => $dataByDepartment,
-        ]);
+        return $this->createApiResponse(
+            [
+                'byPhase' => $dataByPhase,
+                'byPhaseTraffic' => $trafficLight,
+                'byDepartment' => $dataByDepartment,
+            ]
+        );
     }
 
     /**
-     * @Route("/{id}/resources-graph-data", name="app_api_project_resources_graph_data", options={"expose"=true})
+     * @Route("/{id}/internal-costs-graph-data", name="app_api_project_internal_costs_graph_data", options={"expose"=true})
      * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
      */
-    public function resourcesGraphDataAction(Project $project)
+    public function internalCostsGraphDataAction(Project $project)
     {
         $em = $this->getDoctrine()->getManager();
+
+        /** @var CostRepository $costRepo */
         $costRepo = $em->getRepository(Cost::class);
+
+        /** @var WorkPackageRepository $wpRepo */
         $wpRepo = $em->getRepository(WorkPackage::class);
 
         $baseCosts = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_INTERNAL);
-        $actualForecastCosts = $wpRepo->getTotalExternalInternalCostsByPhase($project, Cost::TYPE_INTERNAL);
+        $actualCosts = $wpRepo->getTotalActualCostsByPhase($project, Cost::TYPE_INTERNAL);
         $dataByPhase = [];
-        foreach (array_merge($baseCosts, $actualForecastCosts) as $cost) {
-            foreach ($cost as $key => $value) {
-                if ($key !== 'phaseName') {
-                    $dataByPhase[$cost['phaseName']][$key] = $value;
-                }
+        foreach (array_merge($baseCosts, $actualCosts) as $cost) {
+            $phaseName = $cost['phaseName'];
+            unset($cost['phaseName']);
+
+            if (!isset($dataByPhase[$phaseName])) {
+                $dataByPhase[$phaseName] = [
+                    'base' => 0,
+                    'actual' => 0,
+                    'forecast' => 0,
+                    'remaining' => 0,
+                ];
             }
+
+            $dataByPhase[$phaseName] = array_merge($dataByPhase[$phaseName], $cost);
         }
+
         $trafficLight = Project::STATUS_GREEN;
-        foreach ($dataByPhase as $phase) {
-            if (isset($phase['forecast']) && isset($phase['base']) && (float) $phase['forecast'] > (float) $phase['base']) {
+        foreach ($dataByPhase as $name => $phase) {
+            $dataByPhase[$name] = array_map(
+                function ($value) {
+                    return (float) $value;
+                },
+                $phase
+            );
+
+            $dataByPhase[$name]['remaining'] = $phase['base'] - $phase['actual'];
+
+            if ((float) $phase['forecast'] > (float) $phase['base']) {
                 $trafficLight = Project::STATUS_YELLOW;
             }
-            if (isset($phase['actual']) && isset($phase['forecast']) && (float) $phase['actual'] > (float) $phase['forecast']) {
+            if ((float) $phase['actual'] > (float) $phase['forecast']) {
                 $trafficLight = Project::STATUS_RED;
                 break;
             }
@@ -1916,12 +1953,15 @@ class ProjectController extends ApiController
         foreach ($userDepartments as $userDepartment) {
             $dataByDepartment[$userDepartment['department']]['userIds'][] = $userDepartment['uid'];
         }
+
         foreach ($dataByDepartment as $key => $value) {
             $base = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_INTERNAL, $value['userIds']);
-            $actualForecast = $wpRepo->getTotalExternalInternalCostsByPhase($project, Cost::TYPE_INTERNAL, $value['userIds']);
-            $dataByDepartment[$key]['base'] = !empty($base) ? $base[0]['base'] : 0;
-            $dataByDepartment[$key]['actual'] = !empty($actualForecast) ? $actualForecast[0]['actual'] : 0;
-            $dataByDepartment[$key]['forecast'] = !empty($actualForecast) ? $actualForecast[0]['forecast'] : 0;
+            $actual = $wpRepo->getTotalActualCostsByPhase($project, Cost::TYPE_INTERNAL, $value['userIds']);
+
+            $dataByDepartment[$key]['base'] = (float) $base[0]['base'] ?? 0;
+            $dataByDepartment[$key]['actual'] = (float) $actual[0]['actual'] ?? 0;
+            $dataByDepartment[$key]['forecast'] = (float) $actual[0]['forecast'] ?? 0;
+            $dataByDepartment[$key]['remaining'] = $dataByDepartment[$key]['base'] - $dataByDepartment[$key]['actual'];
         }
 
         return $this->createApiResponse([
