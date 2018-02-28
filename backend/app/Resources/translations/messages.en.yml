@@ -99,10 +99,8 @@ message:
     from: from
     min: Min
     starting_on: Starting On
-    costs_chart_by_phase: Costs By Phase
-    costs_chart_by_department: Costs By Department
-    resources_chart_by_phase: Resources By Phase
-    resources_chart_by_department: Resources By Department
+    by_phase: By Phase
+    by_department: By Department
     delete_opportunity: Delete Opoortunity
     delete_risk: Delete Risk
     edit_measure: Edit Measure
@@ -254,8 +252,6 @@ message:
     plan: Plan
     task_management: Task Management
     phases_milestones: Phases & Milestones
-    costs: Costs
-    resources: Resources
     risks_oportunities: Risks & Oportunities
     communication: Communication
     control_measures: Control Measures
@@ -371,7 +367,7 @@ message:
     task_schedule: Task Schedule
     task_details: Task Details
     back_to_task_management: Back to task management
-    subtasks_summary: %completed_tasks% of %total_tasks%
+    subtasks_summary: '%completed_tasks% of %total_tasks%'
     planning: Planning
     subtasks: Subtasks
     project_tasks: Project Tasks
@@ -433,6 +429,9 @@ message:
     change_accountable: Change Accountable
     uploading_file_failed: There was an error while uploading the file
     wbs: WBS
+    days: Days
+    weeks: Weeks
+    months: Months
 
 menu:
     users: Users
@@ -1820,12 +1819,10 @@ modules:
         title: Task Management
         description: The Task Management provides an overview of all work packages assigned to the project. A work package is a group of associated tasks. Typical categories for grouped tasks are a geographical area, engineering discipline, technology, or the time needed to accomplish them.
     internal_costs:
-#        title: Internal Costs
-        title: Costs
+        title: Internal Costs
         description: Keeping track of the project costs is crucial. Cost planning allows you to calculate the cost per work package, and then to calculate the total cost of the project. A distinction is made between internal costs and external costs as well as operative costs and invest.
     external_costs:
-#        title: External Costs
-        title: Resources
+        title: External Costs
         description: Resource planning allows you to calculate the necessary personnel usage per work package.
     risks_and_opportunities:
         title: Risks & Oportunities

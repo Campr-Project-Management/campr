@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Assignment;
+use AppBundle\Entity\Cost;
 use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\Log;
@@ -13,6 +14,7 @@ use AppBundle\Form\WorkPackage\PhaseType;
 use AppBundle\Security\WorkPackageVoter;
 use AppBundle\Form\Assignment\BaseCreateType as AssignmentCreateType;
 use AppBundle\Form\Comment\CreateType as CommentCreateType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -116,7 +118,17 @@ class WorkPackageController extends ApiController
     {
         $this->denyAccessUnlessGranted(WorkPackageVoter::EDIT, $wp);
 
-        $form = $this->createForm(ApiCreateType::class, $wp, ['csrf_protection' => false, 'method' => $request->getMethod()]);
+        $form = $this->createForm(
+            ApiCreateType::class,
+            $wp,
+            ['csrf_protection' => false, 'method' => $request->getMethod()]
+        );
+
+        $originalCosts = new ArrayCollection();
+        foreach ($wp->getCosts() as $cost) {
+            $originalCosts->add($cost);
+        }
+
         $this->processForm(
             $request,
             $form,
@@ -155,6 +167,14 @@ class WorkPackageController extends ApiController
 
         try {
             if ($form->isValid()) {
+
+                /** @var Cost $originalCost */
+                foreach ($originalCosts as $originalCost) {
+                    if (!$wp->getCosts()->contains($originalCost)) {
+                        $em->remove($originalCost);
+                    }
+                }
+
                 foreach ($wp->getMedias() as $media) {
                     $media->setFileSystem($fileSystem);
                 }

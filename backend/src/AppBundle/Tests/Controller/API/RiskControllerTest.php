@@ -3,6 +3,7 @@
 namespace AppBundle\Tests\Controller\API;
 
 use AppBundle\Entity\Risk;
+use Component\TimeUnit\TimeUnitAwareInterface;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -43,7 +44,7 @@ class RiskControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -77,10 +78,13 @@ class RiskControllerTest extends BaseController
                     'impact' => 10,
                     'probability' => 10,
                     'cost' => 1.00,
+                    'potentialCost' => 0.1,
                     'currency' => 'USD',
                     'budget' => 1.00,
                     'delay' => 1.00,
-                    'delayUnit' => 'days',
+                    'delayUnit' => TimeUnitAwareInterface::DAYS,
+                    'potentialDelay' => 0.1,
+                    'potentialDelayHours' => round(0.1 * 24, 2),
                     'priority' => 'priority1',
                     'measures' => [],
                     'dueDate' => '2017-03-03 00:00:00',
@@ -123,7 +127,7 @@ class RiskControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -176,7 +180,7 @@ class RiskControllerTest extends BaseController
             ->setCurrency('USD')
             ->setBudget(3)
             ->setDelay(3)
-            ->setDelayUnit('choices.days')
+            ->setDelayUnit(TimeUnitAwareInterface::DAYS)
             ->setPriority('priority3')
         ;
         $this->em->persist($risk);
@@ -250,7 +254,7 @@ class RiskControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -282,10 +286,13 @@ class RiskControllerTest extends BaseController
                     'impact' => 20,
                     'probability' => 20,
                     'cost' => 1.00,
+                    'potentialCost' => 0.2,
                     'currency' => 'USD',
                     'budget' => 1.00,
                     'delay' => 1.00,
-                    'delayUnit' => 'days',
+                    'potentialDelay' => 0.2,
+                    'potentialDelayHours' => round(0.2 * 24, 2),
+                    'delayUnit' => TimeUnitAwareInterface::DAYS,
                     'priority' => 'priority2',
                     'measures' => [],
                     'dueDate' => '2017-03-03 00:00:00',

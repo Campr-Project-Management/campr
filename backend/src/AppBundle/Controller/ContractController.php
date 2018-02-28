@@ -7,6 +7,7 @@ use AppBundle\Entity\Project;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 
 /**
  * @Route("/contract")
@@ -18,18 +19,16 @@ class ContractController extends Controller
      */
     public function pdfAction(Contract $contract)
     {
-        $html = $this->renderView(':contract:pdf.html.twig', [
-            'contract' => $contract,
-        ]);
-
         $pdf = $this
             ->get('app.service.pdf')
-            ->loadHTML($html)
-            ->pageSize('A4')
-            ->get()
+            ->getContractPDF($contract->getId())
         ;
 
-        return new Response($pdf, Response::HTTP_OK, [
+        if (!$pdf) {
+            throw new ServiceUnavailableHttpException();
+        }
+
+        return new Response(file_get_contents($pdf), Response::HTTP_OK, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => sprintf('attachment; filename="contract-%010d.pdf"', $contract->getId()),
         ]);
