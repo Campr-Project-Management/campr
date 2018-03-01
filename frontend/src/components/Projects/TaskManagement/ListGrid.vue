@@ -116,13 +116,17 @@ export default {
                 searchString: this.searchString ? this.searchString : undefined,
                 status: this.statusFilter ? this.statusFilter : undefined,
             };
+
             this.setFilters(filters);
             this.resetTasks(project);
             this.getAllTasksGrid({project, page: 1});
         },
         clearFilters: function() {
             const project = this.$route.params.id;
-            this.searchString = null,
+            this.searchString = null;
+            this.conditionFilter = null;
+            this.assigneeFilter = null;
+            this.statusFilter = null;
             this.$refs.assignee.resetCustomTitle();
             if (this.$refs.statuses) {
                 this.$refs.statuses.resetCustomTitle();
