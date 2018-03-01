@@ -15,10 +15,27 @@
 
         <!-- /// Tasks Filters /// -->
         <div class="flex">
-            <input-field v-model="searchString" :content="searchString" type="text" v-bind:label="translateText('label.search_for_tasks')" class="search"></input-field>
-            <dropdown ref="assignee" :selectedValue="selectAssignee" :title="translateText('message.asignee')" :options="users"></dropdown>
-            <dropdown ref="statuses" :selectedValue="selectStatus"  :title="translateText('label.status')" :options="statusesLabel"></dropdown>
-            <dropdown ref="conditions" :selectedValue="selectCondition" :title="translateText('message.condition')" :options="conditions"></dropdown>
+            <input-field
+                    v-model="searchString"
+                    :content="searchString"
+                    type="text"
+                    v-bind:label="translateText('label.search_for_tasks')"
+                    class="search"/>
+            <dropdown
+                    ref="assignee"
+                    :selectedValue="selectAssignee"
+                    :title="translateText('message.asignee')"
+                    :options="users"/>
+            <dropdown
+                    ref="statuses"
+                    :selectedValue="selectStatus"
+                    :title="translateText('label.status')"
+                    :options="statusesLabel"/>
+            <dropdown
+                    ref="conditions"
+                    :selectedValue="selectCondition"
+                    :title="translateText('message.condition')"
+                    :options="conditions"/>
             <a @click="filterTasks" class="btn-rounded btn-auto">{{ translateText('button.show_results') }}</a>
             <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>
@@ -58,8 +75,7 @@ export default {
             taskStatuses: 'taskStatuses',
         }),
         statusesLabel: function() {
-            let statuses = this.taskStatuses.map(item => ({label: this.translate(item.name), key: item.id}));
-            return statuses;
+            return this.taskStatuses.map(item => ({label: this.translate(item.name), key: item.id}));
         },
     },
     methods: {
@@ -68,11 +84,8 @@ export default {
             return this.translate(text);
         },
         getUsers: function(statusId) {
-            Vue.http
-            .get(Routing.generate('app_api_project_project_users', {id: statusId})).then((response) => {
-                if (response.status === 200) {
-                    this.users = response.data.items.map((item) => ({label: item.userFullName, key: item.id}));
-                }
+            Vue.http.get(Routing.generate('app_api_project_project_users', {id: statusId})).then((response) => {
+                this.users = response.data.items.map((item) => ({label: item.userFullName, key: item.user}));
             }, (response) => {
             });
         },
