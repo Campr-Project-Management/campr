@@ -34,6 +34,7 @@
     "normalise.scss": "1.0.1",
     "perfect-scrollbar": "0.7.0",
     "reset-css": "2.2.0",
+    "tether-tooltip": "^1.2.0",
     "v-tooltip": "1.1.6",
     "vee-validate": "2.0.0-beta.25",
     "vis": "4.19.1",

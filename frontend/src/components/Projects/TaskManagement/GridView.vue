@@ -1,11 +1,16 @@
 <template>
     <div>
         <div class="grid-view" v-if="allTasks">
-            <task-box v-bind:task="task" user="user" :colorStatuses="colorStatuses" v-for="task in allTasks.items">
+            <task-box
+                    :task="task"
+                    user="user"
+                    :colorStatuses="colorStatuses"
+                    v-for="task in allTasks.items"
+                    :key="task.id">
             </task-box>
         </div>
         <div class="pagination flex flex-center" v-if="allTasks && allTasks.totalItems > 0">
-            <span v-for="page in pages" v-bind:class="{'active': page == activePage}" @click="getTaskPerPage(page)">{{ page }}</span>
+            <span v-for="page in pages" :key="page" v-bind:class="{'active': page == activePage}" @click="getTaskPerPage(page)">{{ page }}</span>
         </div>
     </div>
 </template>

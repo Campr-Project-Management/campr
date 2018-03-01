@@ -22,9 +22,11 @@ module.exports = {
     */
     plugins: [
         '~/plugins/bootstrap',
+        '~/plugins/fetch',
         '~/plugins/translator',
         '~/plugins/vue-charts',
-        '~/plugins/vueditor'
+        '~/plugins/vueditor',
+        '~/plugins/vue-moment'
     ],
     /*
     ** CSS
