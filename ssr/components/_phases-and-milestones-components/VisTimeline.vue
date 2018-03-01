@@ -196,11 +196,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-    @import '../../../css/_variables';
-    @import '../../../css/_mixins';
-    @import '../../../../node_modules/vis/dist/vis-timeline-graph2d.min.css';
-    @import '../../../css/box';
-    @import '../../../css/box-task';
+    @import '../../../frontend/src/css/_variables';
+    @import '../../../frontend/src/css/_mixins';
+    @import '../../node_modules/vis/dist/vis-timeline-graph2d.min.css';
+    @import '../../../frontend/src/css/box';
+    @import '../../../frontend/src/css/box-task';
 
     .vis-timeline,
     .vis-panel.vis-bottom,
