@@ -415,11 +415,11 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(item, index) in editableData.internalCosts" :key="index">
-                                    <td>{{item.resourceName}}</td>
-                                    <td>{{item.rate}}</td>
+                                    <td>{{ item.resourceName }}</td>
+                                    <td>{{ item.rate | formatMoney }}</td>
                                     <td>{{item.quantity}}</td>
                                     <td>{{item.duration}}</td>
-                                    <td><b><i class="fa fa-dollar"></i> {{item.total}}</b></td>
+                                    <td><b>{{ item.total | formatMoney }}</b></td>
                                     <td>
                                         <button @click="initEditInternalCostModal(item)" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                         <button
@@ -433,18 +433,18 @@
 
                                 <tr>
                                     <td colspan="4" class="text-right"><b>{{ translateText('label.internal_costs_total') }}</b></td>
-                                    <td colspan="2"><b><i class="fa fa-dollar"></i>  {{ internalBaseTotal }}</b></td>
+                                    <td colspan="2"><b>{{ internalBaseTotal | formatMoney }}</b></td>
                                 </tr>
                                 <tr class="column-warning">
                                     <td colspan="4" class="text-right"><b>{{ translateText('label.forecast_total') }}</b></td>
-                                    <td><b><i class="fa fa-dollar"></i> {{task.internalForecastCost}}</b></td>
+                                    <td><b>{{ task.internalForecastCost | formatMoney }}</b></td>
                                     <td>
                                         <button @click="initEditInternalForecastCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="4" class="text-right"><b>{{ translateText('label.actual_total') }}</b></td>
-                                    <td><b><i class="fa fa-dollar"></i> {{task.internalActualCost}}</b></td>
+                                    <td><b>{{ task.internalActualCost | formatMoney }}</b></td>
                                     <td>
                                         <button @click="initEditInternalActualCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
@@ -489,7 +489,7 @@
                                     <td>{{cost.unit}}</td>
                                     <td><i class="fa fa-dollar"></i> {{cost.rate}}</td>
                                     <td><switches @click.native="updateCostType(cost)" v-model="cost.expenseType" v-bind:selected="cost.capex === 1"></switches></td>
-                                    <td><b><b><i class="fa fa-dollar"></i> {{itemTotal(cost)}}</b></b></td>
+                                    <td><b>{{ itemTotal(cost) | formatMoney }}</b></td>
                                     <td>
                                         <button @click="initEditExternalCostModal(cost)" data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill" ></edit-icon></button>
                                         <button
@@ -504,26 +504,26 @@
                                 </tr>
                                 <tr>
                                     <td colspan="5" class="text-right"><b>{{ translateText('message.capex_subtotal') }}</b></td>
-                                    <td colspan="2"><i class="fa fa-dollar"></i> {{totalCapex}}</td>
+                                    <td colspan="2">{{ totalCapex | formatMoney }}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="5" class="text-right"><b>{{ translateText('message.opex_subtotal') }}</b></td>
-                                    <td colspan="2"><i class="fa fa-dollar"></i> {{totalOpex}}</td>
+                                    <td colspan="2">{{ totalOpex | formatMoney }}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="5" class="text-right"><b>{{ translateText('label.external_cost_total') }}</b></td>
-                                    <td colspan="2"><b> <i class="fa fa-dollar"></i> {{ externalBaseTotal }}</b></td>
+                                    <td colspan="2"><b> {{ externalBaseTotal | formatMoney }}</b></td>
                                 </tr>
                                 <tr class="column-warning">
                                     <td colspan="5" class="text-right"><b>{{ translateText('label.forecast_total') }}</b></td>
-                                    <td><b><i class="fa fa-dollar"></i> {{task.externalForecastCost}}</b></td>
+                                    <td><b>{{ task.externalForecastCost | formatMoney }}</b></td>
                                     <td>
                                         <button @click="initEditExternalForecastCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
                                 </tr>
                                 <tr class="column-alert">
                                     <td colspan="5" class="text-right"><b>{{ translateText('label.actual_total') }}</b></td>
-                                    <td><b><i class="fa fa-dollar"></i> {{task.externalActualCost}}</b></td>
+                                    <td><b>{{ task.externalActualCost | formatMoney }}</b></td>
                                     <td>
                                         <button data-toggle="modal" @click="initEditExternalActualCostModal()" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
