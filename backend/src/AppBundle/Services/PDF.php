@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class PDF
 {
     const CONTRACT_URL = 'projects/%id%/contract';
+    const PROJECT_CLOSE_DOWN_URL = 'projects/%id%/close-down-report';
 
     /** @var RequestStack */
     private $requestStack;
@@ -28,6 +29,7 @@ class PDF
 
     /**
      * PDF constructor.
+     *
      * @param string $binaryPath
      * @param string $binaryOptions
      * @param string $serviceUrl
@@ -48,6 +50,7 @@ class PDF
 
     /**
      * @return User
+     *
      * @throws \LogicException
      */
     private function getUser()
@@ -76,6 +79,8 @@ class PDF
             'key' => $this->getUser()->getApiToken(),
         ];
 
+        $query['host'] = str_replace('.dev.', '.qa.', $query['host']);
+
         $options = strtr($this->binaryOptions, [
             '%url%' => $this->serviceUrl.strtr($url, $params).'?'.http_build_query($query),
             '%file%' => $tmpFile,
@@ -94,5 +99,10 @@ class PDF
     public function getContractPDF(int $id)
     {
         return $this->run(self::CONTRACT_URL, ['%id%' => $id]);
+    }
+
+    public function getProjectCloseDownPDF(int $id)
+    {
+        return $this->run(self::PROJECT_CLOSE_DOWN_URL, ['%id%' => $id]);
     }
 }
