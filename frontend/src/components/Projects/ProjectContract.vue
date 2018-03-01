@@ -63,17 +63,17 @@
                         <div class="input-holder left" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.proposed_start_date') }}</label>
                             <datepicker
-                                    :value="proposedStartDate"
-                                    format="dd - MM - yyyy"
-                                    :disabled-picker="true"/>
+                                :value="proposedStartDate"
+                                format="dd - MM - yyyy"
+                                :disabled-picker="true"/>
                             <calendar-icon fill="middle-fill"/>
                         </div>
                         <div class="input-holder right" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.proposed_end_date') }}</label>
                             <datepicker
-                                    :value="proposedEndDate"
-                                    format="dd - MM - yyyy"
-                                    :disabled-picker="true"/>
+                                :value="proposedEndDate"
+                                format="dd - MM - yyyy"
+                                :disabled-picker="true"/>
                             <calendar-icon fill="middle-fill"/>
                         </div>
                     </div>
@@ -81,17 +81,17 @@
                         <div class="input-holder left" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.forecast_start_date') }}</label>
                             <datepicker
-                                    :value="forecastStartDate"
-                                    format="dd - MM - yyyy"
-                                    :disabled-picker="true"/>
+                                :value="forecastStartDate"
+                                format="dd - MM - yyyy"
+                                :disabled-picker="true"/>
                             <calendar-icon fill="middle-fill"/>
                         </div>
                         <div class="input-holder right" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.forecast_end_date') }}</label>
                             <datepicker
-                                    :value="forecastEndDate"
-                                    format="dd - MM - yyyy"
-                                    :disabled-picker="true"/>
+                                :value="forecastEndDate"
+                                format="dd - MM - yyyy"
+                                :disabled-picker="true"/>
                             <calendar-icon fill="middle-fill"/>
                         </div>
                     </div>
