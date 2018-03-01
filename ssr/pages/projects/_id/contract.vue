@@ -19,14 +19,6 @@
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                         <span>{{ translateText('message.category') }}: {{ project.projectCategoryName || '-' }}</span>
                     </div>
-
-                    <!--<div class="flex buttons flex-center" v-if="contract && contract.id">-->
-                        <!--<a class="btn-rounded flex flex-center download-pdf" :href="downloadPdf">-->
-                            <!--{{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill"></downloadbutton-icon>-->
-                        <!--</a>-->
-                        <!--<button v-if="!frozen" @click="freezeContract()" class="btn-rounded second-bg">{{ translateText('button.freeze_contract') }}</button>-->
-                        <!--<h4 v-else>{{ translateText('message.contract_frozen') }}</h4>-->
-                    <!--</div>-->
                 </div>
                 <!-- /// End Header /// -->
             </div>
@@ -71,32 +63,45 @@
                         <div class="input-holder left" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.proposed_start_date') }}</label>
                             <no-ssr>
-                                <datepicker v-on:selected="closeDatePicker('proposedStartDate')" id="proposedStartDate" v-model="proposedStartDate" format="dd - MM - yyyy" :value="contract.proposedStartDate"></datepicker>
+                                <datepicker
+                                    :value="proposedStartDate"
+                                    format="dd - MM - yyyy"
+                                    :disabled-picker="true"/>
                             </no-ssr>
-                            <calendar-icon @click.native="showDatePicker('proposedStartDate')" fill="middle-fill"></calendar-icon>
+                            <calendar-icon fill="middle-fill" />
                         </div>
                         <div class="input-holder right" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.proposed_end_date') }}</label>
                             <no-ssr>
-                                <datepicker v-on:selected="closeDatePicker('proposedEndDate')" id="proposedEndDate" v-model="proposedEndDate" format="dd - MM - yyyy" :value="contract.proposedEndDate"></datepicker>
+
+                                <datepicker
+                                    :value="proposedEndDate"
+                                    format="dd - MM - yyyy"
+                                    :disabled-picker="true"/>
                             </no-ssr>
-                            <calendar-icon @click.native="showDatePicker('proposedEndDate')" fill="middle-fill"></calendar-icon>
+                            <calendar-icon fill="middle-fill" />
                         </div>
                     </div>
                     <div class="flex flex-space-between dates right">
                         <div class="input-holder left" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.forecast_start_date') }}</label>
                             <no-ssr>
-                                <datepicker v-on:selected="closeDatePicker('forecastStartDate')" id="forecastStartDate" v-model="forecastStartDate" format="dd - MM - yyyy" :value="contract.forecastStartDate"></datepicker>
+                                <datepicker
+                                    :value="forecastStartDate"
+                                    format="dd - MM - yyyy"
+                                    :disabled-picker="true"/>
                             </no-ssr>
-                            <calendar-icon @click.native="showDatePicker('forecastStartDate')" fill="middle-fill"></calendar-icon>
+                            <calendar-icon fill="middle-fill" />
                         </div>
                         <div class="input-holder right" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.forecast_end_date') }}</label>
                             <no-ssr>
-                                <datepicker v-on:selected="closeDatePicker('forecastEndDate')" id="forecastEndDate" v-model="forecastEndDate"  format="dd - MM - yyyy" :value="contract.forecastEndDate"></datepicker>
+                                <datepicker
+                                    :value="forecastEndDate"
+                                    format="dd - MM - yyyy"
+                                    :disabled-picker="true"/>
                             </no-ssr>
-                            <calendar-icon @click.native="showDatePicker('forecastEndDate')" fill="middle-fill"></calendar-icon>
+                            <calendar-icon fill="middle-fill" />
                         </div>
                     </div>
                 </div>
@@ -203,8 +208,6 @@
 </template>
 
 <script>
-import fetch from 'isomorphic-fetch';
-
 import CalendarIcon from '~/components/_icons/CalendarIcon.vue';
 import Chart from '~/components/Charts/CostsChart.vue';
 import Datepicker from '~/components/_form-components/Datepicker';
@@ -212,14 +215,7 @@ import DownloadbuttonIcon from '~/components/_icons/DownloadbuttonIcon.vue';
 import EyeIcon from '~/components/_icons/EyeIcon.vue';
 import InputField from '~/components/_form-components/InputField.vue';
 import MemberBadge from '~/components/MemberBadge.vue';
-
-async function doFetch(url, token) {
-    return fetch(url, {
-        headers: {
-            'Authorization': 'Bearer ' + token
-        }
-    });
-}
+import Vue from 'vue';
 
 export default {
     components: {
@@ -244,6 +240,34 @@ export default {
         downloadPdf() {
             return ''; //Routing.generate('app_contract_pdf', {id: this.contract.id});
         },
+        proposedStartDate() {
+            if (this.contract.frozen) {
+                return this.contract.proposedStartDate;
+            }
+
+            return this.project.scheduledStartAt;
+        },
+        proposedEndDate() {
+            if (this.contract.frozen) {
+                return this.contract.proposedEndDate;
+            }
+
+            return this.project.scheduledFinishAt;
+        },
+        forecastStartDate() {
+            if (this.contract.frozen) {
+                return this.contract.forecastStartDate;
+            }
+
+            return this.project.forecastStartAt;
+        },
+        forecastEndDate() {
+            if (this.contract.frozen) {
+                return this.contract.forecastEndDate;
+            }
+
+            return this.project.forecastFinishAt;
+        },
     },
     async asyncData({params, query}) {
         let project = {};
@@ -255,23 +279,23 @@ export default {
 
         if (query.host && query.key) {
             // project
-            let res = await doFetch(`http://${query.host}/api/projects/${params.id}`, query.key);
+            let res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}`, query.key);
             project = await res.json();
 
             // contract
-            res = await doFetch(`http://${query.host}/api/projects/${params.id}/contracts`, query.key);
+            res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}/contracts`, query.key);
             contracts = await res.json();
 
             // external cost data
-            res = await doFetch(`http://${query.host}/api/projects/${params.id}/external-costs-graph-data`, query.key);
+            res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}/external-costs-graph-data`, query.key);
             externalCostsGraphData = await res.json();
 
             // internal cost data
-            res = await doFetch(`http://${query.host}/api/projects/${params.id}/internal-costs-graph-data`, query.key);
+            res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}/internal-costs-graph-data`, query.key);
             internalCostsGraphData = await res.json();
 
             // project users
-            res = await doFetch(`http://${query.host}/api/projects/${params.id}/project-users`, query.key);
+            res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}/project-users`, query.key);
             const users = await res.json();
             projectSponsors = users && users.items
                 ? users.items.filter(projectUser => projectUser.projectRoleNames.indexOf('roles.project_sponsor') !== -1)
@@ -302,10 +326,6 @@ export default {
             showFailed: false,
             showSavedComponent: false,
             showFailedComponent: false,
-            proposedStartDate: new Date(),
-            proposedEndDate: new Date(),
-            forecastStartDate: new Date(),
-            forecastEndDate: new Date(),
             showSponsorsManagers: true,
             objectiveDescription: null,
             limitationDescription: null,
@@ -320,7 +340,6 @@ export default {
     @import '../../../../frontend/src/css/_common.scss';
     @import '../../../../frontend/src/css/vueditor.css';
 </style>
-
 
 <style scoped lang="scss">
     @import '../../../../frontend/src/css/page-section';
