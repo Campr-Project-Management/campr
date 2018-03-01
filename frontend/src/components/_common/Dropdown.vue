@@ -7,7 +7,7 @@
             <li v-for="option in options">
                 <a
                     href="javascript:void(0)"
-                    v-on:click="filterItems([filter, option.key, item]), customTitle = option.label, selectedValue(option.key)">
+                    v-on:click="customTitle = option.label, selectedValue(option.key)">
                     {{ translateText(option.label) }}
                 </a>
             </li>
@@ -16,13 +16,11 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
 import 'jquery.nicescroll/jquery.nicescroll.js';
 
 export default {
     props: ['title', 'filter', 'options', 'item', 'selectedValue'],
     methods: {
-        ...mapActions(['filterItems']),
         translateText: function(text) {
             return this.translate(text);
         },
