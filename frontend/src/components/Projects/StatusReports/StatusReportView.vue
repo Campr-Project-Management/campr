@@ -224,17 +224,17 @@
                 <div class="row statuses">
                     <div class="col-md-4">
                         <div class="status" v-if="currentStatusReport.information.progresses.project_progress">
-                            <circle-chart :percentage="currentStatusReport.information.progresses.project_progress.value" v-bind:title="translateText('message.overall_progress')" width="320" height="320" class="left dark-chart medium-chart" v-bind:class="currentStatusReport.information.progresses.project_progress.class"></circle-chart>
+                            <circle-chart :percentage="currentStatusReport.information.progresses.project_progress.value" v-bind:title="translateText('message.overall_progress')" class="left dark-chart medium-chart" v-bind:class="currentStatusReport.information.progresses.project_progress.class"></circle-chart>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="status" v-if="currentStatusReport.information.progresses.task_progress">
-                            <circle-chart v-bind:percentage="currentStatusReport.information.progresses.task_progress.value" v-bind:title="translateText('message.task_progress')" width="320" height="320" class="left dark-chart medium-chart" v-bind:class="currentStatusReport.information.progresses.task_progress.class"></circle-chart>
+                            <circle-chart v-bind:percentage="currentStatusReport.information.progresses.task_progress.value" v-bind:title="translateText('message.task_progress')" class="left dark-chart medium-chart" v-bind:class="currentStatusReport.information.progresses.task_progress.class"></circle-chart>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="status" v-if="currentStatusReport.information.progresses.cost_progress">
-                            <circle-chart :percentage="currentStatusReport.information.progresses.cost_progress.value" v-bind:title="translateText('message.costs_progress')"  width="320" height="320"  class="left dark-chart medium-chart" v-bind:class="currentStatusReport.information.progresses.cost_progress.class"></circle-chart>
+                            <circle-chart :percentage="currentStatusReport.information.progresses.cost_progress.value" v-bind:title="translateText('message.costs_progress')"  class="left dark-chart medium-chart" v-bind:class="currentStatusReport.information.progresses.cost_progress.class"></circle-chart>
                         </div>
                     </div>
                 </div>
@@ -909,6 +909,10 @@ function renderTooltip(item) {
                     .title {
                         font-size: 12px;
                     }
+                }
+
+                &.center-content {
+                    display: block;
                 }
             }
 

@@ -13,7 +13,13 @@
                 </h2>
                 <p class="task-id">#{{ task.id }}</p>
                 <div class="status-boxes">
-                    <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? task.colorStatusColor : '', cursor: 'default' }"></span>
+                    <span
+                            v-for="cs in colorStatuses"
+                            :key="cs.id"
+                            class="status-box"
+                            :style="{ background: statusColor(cs) }"
+                            v-tooltip="hasColorStatus(cs) && colorStatusTooltip">
+                    </span>
                 </div>
             </div>
             <div class="content">
@@ -33,18 +39,8 @@
                             {{ task.milestoneName }}
                         </router-link>
                     </span>
-                    <div class="task-range-slider">
-                        <div class="task-range-slider-title">Schedule</div>
-                        <task-range-slider class="base" id="scheduleBase" message="Base" min="2017-01-01" max="2017-12-31" v-bind:from="task.scheduledStartAt" v-bind:to="task.scheduledFinishAt" type="double"></task-range-slider>
-                        <task-range-slider class="forecast" id="scheduleForecast" message="Forecast" min="2017-01-01" max="2017-12-31" v-bind:from="task.forecastStartAt" v-bind:to="task.forecastFinishAt" type="double"></task-range-slider>
-                        <task-range-slider class="actual" id="scheduleActual" message="Actual" min="2017-01-01" max="2017-12-31" v-bind:from="task.actualStartAt" v-bind:to="task.actualFinishAt" type="double"></task-range-slider>
-                    </div>
-                    <div class="task-range-slider">
-                        <div class="task-range-slider-title">Costs</div>
-                        <task-range-slider class="base" id="costsBase" message="Base" min="0" max="10000" from="10000" type="single"></task-range-slider>
-                        <task-range-slider class="forecast" id="costsForecast" message="Forecast" min="0" max="10000" from="9000" type="single"></task-range-slider>
-                        <task-range-slider class="actual" id="costsActual" message="Actual" min="0" max="10000" from="7500" type="single"></task-range-slider>
-                    </div>
+
+                    <task-schedule-bar :task="task" title="message.schedule" />
                 </div>
             </div>
             <bar-chart :percentage="task.progress" :status="task.colorStatusName" :color="task.colorStatusColor" :title-left="'' + translateText(task.workPackageStatusName)"></bar-chart>
@@ -101,12 +97,13 @@
 import BarChart from '../_common/_charts/BarChart';
 import 'jquery.nicescroll/jquery.nicescroll.js';
 import moment from 'moment';
-import TaskRangeSlider from '../_common/_task-components/TaskRangeSlider';
+import TaskScheduleBar from './TaskScheduleBar.vue';
+import _ from 'lodash';
 
 export default {
     components: {
         BarChart,
-        TaskRangeSlider,
+        TaskScheduleBar,
     },
     created() {
         window.$(document).ready(function() {
@@ -114,6 +111,24 @@ export default {
                 autohidemode: false,
             });
         });
+    },
+    computed: {
+        colorStatusTooltip() {
+            let tooltip = '';
+            if (!this.task.colorStatus) {
+                return tooltip;
+            }
+
+            let colorStatus = _.find(this.colorStatuses, (colorStatus) => {
+                return colorStatus.id === this.task.colorStatus;
+            });
+
+            if (!colorStatus) {
+                return tooltip;
+            }
+
+            return this.translate(colorStatus.name);
+        },
     },
     methods: {
         duration: function(startDate, endDate) {
@@ -123,6 +138,16 @@ export default {
         },
         translateText: function(text) {
             return this.translate(text);
+        },
+        hasColorStatus(colorStatus) {
+            return !!(this.task.colorStatus && this.task.colorStatus === colorStatus.id);
+        },
+        statusColor(colorStatus) {
+            if (!this.hasColorStatus(colorStatus)) {
+                return false;
+            }
+
+            return colorStatus.color;
         },
     },
     props: ['task', 'colorStatuses', 'user'],
