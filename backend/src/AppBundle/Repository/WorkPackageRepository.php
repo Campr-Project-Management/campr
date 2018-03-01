@@ -402,9 +402,8 @@ class WorkPackageRepository extends BaseRepository
     /**
      * Return all project workpackages filtered and sorted in a custom order of the status.
      *
-     * @param Project           $project
-     * @param array             $filters
-     * @param WorkPackageStatus $workPackageStatus
+     * @param Project $project
+     * @param array   $filters
      *
      * @return Query
      */
@@ -493,7 +492,6 @@ class WorkPackageRepository extends BaseRepository
      *
      * @param Project    $project
      * @param array      $filters
-     * @param array      $selects
      * @param null|mixed $select
      *
      * @return QueryBuilder
