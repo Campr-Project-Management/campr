@@ -10,7 +10,11 @@
             </task-box>
         </div>
         <div class="pagination flex flex-center" v-if="allTasks && allTasks.totalItems > 0">
-            <span v-for="page in pages" :key="page" v-bind:class="{'active': page == activePage}" @click="getTaskPerPage(page)">{{ page }}</span>
+            <span
+                    v-for="page in pages"
+                    :key="page"
+                    v-bind:class="{'active': page === activePage}"
+                    @click="getTaskPerPage(page)">{{ page }}</span>
         </div>
     </div>
 </template>

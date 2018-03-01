@@ -29,9 +29,22 @@
 
         <!-- /// Tasks Filters /// -->
         <div class="flex">
-            <input-field v-model="searchString" :content="searchString" type="text" v-bind:label="translateText('label.search_for_tasks')" class="search"></input-field>
-            <dropdown ref="assignee" :selectedValue="selectAssignee" :title="translateText('message.asignee')" :options="users"></dropdown>
-            <dropdown ref="conditions" :selectedValue="selectCondition" :title="translateText('message.condition')" :options="conditions"></dropdown>
+            <input-field
+                    v-model="searchString"
+                    :content="searchString"
+                    type="text"
+                    v-bind:label="translateText('label.search_for_tasks')"
+                    class="search"/>
+            <dropdown
+                    ref="assignee"
+                    :selectedValue="selectAssignee"
+                    :title="translateText('message.asignee')"
+                    :options="users"/>
+            <dropdown
+                    ref="conditions"
+                    :selectedValue="selectCondition"
+                    :title="translateText('message.condition')"
+                    :options="conditions"/>
             <!--To be added after disscusion about milestones-->
             <!--<dropdown title="Milestone" options=""></dropdown>-->
             <a @click="filterTasks" class="btn-rounded btn-auto">{{ translateText('button.show_results') }}</a>
@@ -87,7 +100,7 @@ export default {
             Vue.http
             .get(Routing.generate('app_api_project_project_users', {id: statusId})).then((response) => {
                 if (response.status === 200) {
-                    this.users = response.data.items.map((item) => ({label: item.userFullName, key: item.id}));
+                    this.users = response.data.items.map((item) => ({label: item.userFullName, key: item.user}));
                 }
             }, (response) => {
             });
@@ -125,7 +138,10 @@ export default {
         },
         clearFilters: function() {
             const project = this.$route.params.id;
-            this.searchString = null,
+            this.searchString = null;
+            this.conditionFilter = null;
+            this.assigneeFilter = null;
+            this.statusFilter = null;
             this.$refs.assignee.resetCustomTitle();
             if (this.$refs.statuses) {
                 this.$refs.statuses.resetCustomTitle();
