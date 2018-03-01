@@ -738,7 +738,7 @@ const mutations = {
         state.filteredProjects = JSON.parse(JSON.stringify(projects));
     },
 
-     /**
+    /**
      * Sets projectsForFilter to state
      * @param {Object} state
      * @param {array} projects
