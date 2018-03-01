@@ -419,28 +419,28 @@ class WorkPackage
     private $updatedAt;
 
     /**
-     * @var decimal
+     * @var float
      *
      * @ORM\Column(name="external_actual_cost", type="decimal", precision=9, scale=2, nullable=true)
      */
     private $externalActualCost;
 
     /**
-     * @var decimal
+     * @var float
      *
      * @ORM\Column(name="external_forecast_cost", type="decimal", precision=9, scale=2, nullable=true)
      */
     private $externalForecastCost;
 
     /**
-     * @var decimal
+     * @var float
      *
      * @ORM\Column(name="internal_actual_cost", type="decimal", precision=9, scale=2, nullable=true)
      */
     private $internalActualCost;
 
     /**
-     * @var decimal
+     * @var float
      *
      * @ORM\Column(name="internal_forecast_cost", type="decimal", precision=9, scale=2, nullable=true)
      */
@@ -1982,15 +1982,17 @@ class WorkPackage
     }
 
     /**
-     * @return decimal
+     * @return float
      */
     public function getExternalActualCost()
     {
-        return $this->externalActualCost;
+        return (float) $this->externalActualCost;
     }
 
     /**
-     * @param decimal $externalActualCost
+     * @param float $externalActualCost
+     *
+     * @return $this
      */
     public function setExternalActualCost($externalActualCost)
     {
@@ -2000,15 +2002,17 @@ class WorkPackage
     }
 
     /**
-     * @return decimal
+     * @return float
      */
     public function getExternalForecastCost()
     {
-        return $this->externalForecastCost;
+        return (float) $this->externalForecastCost;
     }
 
     /**
-     * @param decimal $externalForecastCost
+     * @param float $externalForecastCost
+     *
+     * @return $this
      */
     public function setExternalForecastCost($externalForecastCost)
     {
@@ -2018,15 +2022,17 @@ class WorkPackage
     }
 
     /**
-     * @return decimal
+     * @return float
      */
     public function getInternalActualCost()
     {
-        return $this->internalActualCost;
+        return (float) $this->internalActualCost;
     }
 
     /**
-     * @param decimal $internalActualCost
+     * @param float $internalActualCost
+     *
+     * @return $this
      */
     public function setInternalActualCost($internalActualCost)
     {
@@ -2036,15 +2042,17 @@ class WorkPackage
     }
 
     /**
-     * @return decimal
+     * @return float
      */
     public function getInternalForecastCost()
     {
-        return $this->internalForecastCost;
+        return (float) $this->internalForecastCost;
     }
 
     /**
-     * @param decimal $internalForecastCost
+     * @param float $internalForecastCost
+     *
+     * @return $this
      */
     public function setInternalForecastCost($internalForecastCost)
     {
@@ -2200,7 +2208,7 @@ class WorkPackage
     /**
      * Get the total costs of the task.
      *
-     * @return int
+     * @return float
      *
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("totalCosts")
@@ -2210,10 +2218,34 @@ class WorkPackage
         $totalCost = 0;
 
         foreach ($this->costs as $cost) {
-            $totalCost += $cost->getActualValue();
+            $totalCost += (float) $cost->getActualValue();
         }
 
         return $totalCost;
+    }
+
+    /**
+     * Get the total forecast costs of the task.
+     *
+     * @return float
+     *
+     * @Serializer\VirtualProperty()
+     */
+    public function getTotalForecastCosts()
+    {
+        return round($this->getExternalForecastCost() + $this->getInternalForecastCost(), 2);
+    }
+
+    /**
+     * Get the total actual costs of the task.
+     *
+     * @return float
+     *
+     * @Serializer\VirtualProperty()
+     */
+    public function getTotalActualCosts()
+    {
+        return round($this->getExternalActualCost() + $this->getInternalActualCost(), 2);
     }
 
     /**
