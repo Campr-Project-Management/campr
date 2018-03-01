@@ -1,13 +1,14 @@
 <template>
-  <VuePerfectScrollbar class="categories-scroll">
+    <VuePerfectScrollbar class="categories-scroll">
         <div class="board-view">
             {{ tasksByStatus }}
             <div class="flex">
-                <div v-for="(taskStatus, index) in taskStatuses"
-                    :key="index"
-                    v-if="taskStatuses && tasksByStatuses && taskStatus && tasksByStatuses[taskStatus.id]">
-                    <board-tasks-column v-bind:tasks="tasksByStatuses[taskStatus.id].items" v-bind:tasksNumber="tasksByStatuses[taskStatus.id].totalItems"
-                    v-bind:status="taskStatus">
+                <div v-for="taskStatus in taskStatuses"
+                     :key="taskStatus.id"
+                     v-if="taskStatuses && tasksByStatuses && taskStatus && tasksByStatuses[taskStatus.id]">
+                    <board-tasks-column v-bind:tasks="tasksByStatuses[taskStatus.id].items"
+                                        v-bind:tasksNumber="tasksByStatuses[taskStatus.id].totalItems"
+                                        v-bind:status="taskStatus">
                     </board-tasks-column>
                 </div>
             </div>
