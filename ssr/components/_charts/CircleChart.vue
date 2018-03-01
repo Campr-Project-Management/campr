@@ -11,105 +11,67 @@
 </template>
 
 <script>
-import * as d3 from 'd3';
+    import * as d3 from 'd3';
 
-export default {
-    props: {
-        percentage: {},
-        title: {},
-        width: {
-            default() {
-                return 360;
+    export default {
+        ssr: false,
+        props: {
+            percentage: {},
+            title: {},
+            precision: {
+                default() {
+                    return 2;
+                },
+            },
+            bgStrokeColor: {
+                default() {
+                    return '#232D4B';
+                },
             },
         },
-        height: {
-            default() {
-                return 360;
-            },
-        },
-        precision: {
-            default() {
-                return 2;
-            },
-        },
-        bgStrokeColor: {
-            default() {
-                return '#232D4B';
-            },
-        },
-    },
-    methods: {
-        init() {
-            let width = parseInt(this.width, 10);
-            let height = parseInt(this.width, 10);
-            let radius = Math.min(width, height) / 2;
+        methods: {
+            init() {
+                let width = this.$el.offsetWidth;
+                let height = width;
+                let radius = width / 2;
 
-            const arc = d3
-                .arc()
-                .innerRadius(radius - 2)
-                .outerRadius(radius - 1)
-                .startAngle(0)
-            ;
-
-            d3.selectAll('#chart-' + this._uid + ' svg').remove();
-            const svg = d3
-                .select('#chart-' + this._uid)
-                .insert('svg', ':first-child')
-                .attr('width', width)
-                .attr('height', height)
-            ;
-
-            const g = svg
-                .append('g')
-                .attr('transform', `translate(${width / 2}, ${height / 2})`)
-            ;
-
-            // draw main circle
-            const main = g
-                .append('path')
-                .datum({endAngle: 0})
-                .attr('fill', 'transparent')
-                .attr('stroke-width', 1)
-                .attr('stroke', this.bgStrokeColor)
-                .attr('d', d => arc(d))
-            ;
-
-            setTimeout(() => {
-                const interpolate = d3.interpolate(0, Math.PI * 2);
-
-                main
-                    .transition()
-                    .duration(2048)
-                    .attrTween('d', d => {
-                        return t => {
-                            d.endAngle = interpolate(t);
-
-                            return arc(d);
-                        };
-                    })
+                const arc = d3
+                    .arc()
+                    .innerRadius(radius - 2)
+                    .outerRadius(radius - 1)
+                    .startAngle(0)
                 ;
-            }, 1024);
 
-            let percentage = parseInt(this.percentage, 10);
-            if (isNaN(percentage)) {
-                percentage = 0;
-            }
+                d3.selectAll('#chart-' + this._uid + ' svg').remove();
+                const svg = d3
+                    .select('#chart-' + this._uid)
+                    .insert('svg', ':first-child')
+                    /* .attr('width', width)
+                    .attr('height', height) */
+                    .attr('viewBox', '0 0 ' + Math.min(width, height) + ' ' + Math.min(width, height) )
+                    .attr('preserveAspectRatio', 'xMinYMin')
+                ;
 
-            if (percentage) {
-                // draw status arc/circle
-                const progress = g
+                const g = svg
+                    .append('g')
+                    /* .attr('transform', `translate(${width / 2}, ${height / 2})`) */
+                    .attr('transform', 'translate(' + Math.min(width, height) / 2 + ',' + Math.min(width, height) / 2 + ')')
+                ;
+
+                // draw main circle
+                const main = g
                     .append('path')
                     .datum({endAngle: 0})
                     .attr('fill', 'transparent')
                     .attr('stroke-width', 1)
-                    .attr('stroke', '#5FC3A5')
+                    .attr('stroke', this.bgStrokeColor)
                     .attr('d', d => arc(d))
                 ;
 
                 setTimeout(() => {
-                    const interpolate = d3.interpolate(0, Math.PI * percentage / 50);
+                    const interpolate = d3.interpolate(0, Math.PI * 2);
 
-                    progress
+                    main
                         .transition()
                         .duration(2048)
                         .attrTween('d', d => {
@@ -120,42 +82,75 @@ export default {
                             };
                         })
                     ;
-                }, 2048);
-            }
-        },
-        formatPercentage(percentage) {
-            if (isNaN(percentage)) {
-                return 0;
-            }
-            let pivotNumber = Math.pow(10, this.precision);
-            return Math.floor(percentage * pivotNumber) / pivotNumber;
-        },
-    },
-    watch: {
-        percentage(value) {
-            if (value === undefined) {
-                return;
-            }
+                }, 1024);
 
+                let percentage = parseInt(this.percentage, 10);
+                if (isNaN(percentage)) {
+                    percentage = 0;
+                }
+
+                if (percentage) {
+                    // draw status arc/circle
+                    const progress = g
+                        .append('path')
+                        .datum({endAngle: 0})
+                        .attr('fill', 'transparent')
+                        .attr('stroke-width', 1)
+                        .attr('stroke', '#5FC3A5')
+                        .attr('d', d => arc(d))
+                    ;
+
+                    setTimeout(() => {
+                        const interpolate = d3.interpolate(0, Math.PI * percentage / 50);
+
+                        progress
+                            .transition()
+                            .duration(2048)
+                            .attrTween('d', d => {
+                                return t => {
+                                    d.endAngle = interpolate(t);
+
+                                    return arc(d);
+                                };
+                            })
+                        ;
+                    }, 2048);
+                }
+            },
+            formatPercentage(percentage) {
+                if (isNaN(percentage)) {
+                    return 0;
+                }
+                let pivotNumber = Math.pow(10, this.precision);
+                return Math.floor(percentage * pivotNumber) / pivotNumber;
+            },
+        },
+        watch: {
+            percentage(value) {
+                if (value === undefined) {
+                    return;
+                }
+
+                this.init();
+            },
+        },
+        mounted() {
             this.init();
         },
-    },
-    mounted() {
-        this.init();
-    },
-};
+    };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-@import '../../../css/_common';
-@import '../../../css/_variables.scss';
+    @import '../../../frontend/src/css/_common';
+    @import '../../../frontend/src/css/_variables';
 
     .chart {
         font-size: 22px;
+        text-align: center;
 
         svg {
-            display: block;
+            display: inline-block;
             width: 100%;
             transform: rotate(-90deg);
         }
@@ -183,6 +178,7 @@ export default {
                 text-transform: uppercase;
                 font-size: 9px;
                 text-align: center;
+                line-height: 1em;
             }
 
             .value {
