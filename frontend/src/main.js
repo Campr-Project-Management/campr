@@ -18,6 +18,7 @@ import VeeValidate from 'vee-validate';
 import Translator from './util/Translator';
 import VTooltip from 'v-tooltip';
 import HumanizeDuration from './plugins/humanize-duration';
+import Numeral from './plugins/numeral';
 
 Vue.use(VueResource);
 Vue.use(Vue2Dragula);
@@ -25,6 +26,7 @@ Vue.use(VeeValidate);
 Vue.use(VTooltip);
 Vue.use(Translator);
 Vue.use(HumanizeDuration);
+Vue.use(Numeral);
 
 let config = {
     // buttons on the toolbar, you can use '|' or 'divider' as the separator
