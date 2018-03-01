@@ -62,10 +62,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-  @import '../../../css/_variables';
-  @import '../../../css/_mixins';
-  @import '../../../css/box';
-  @import '../../../css/box-task';
+  @import '../../../frontend/src/css/_variables';
+  @import '../../../frontend/src/css/_mixins';
+  @import '../../../frontend/src/css/box';
+  @import '../../../frontend/src/css/box-task';
 
   h2 {
     line-height: 15px;

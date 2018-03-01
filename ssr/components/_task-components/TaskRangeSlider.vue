@@ -11,30 +11,32 @@
 </template>
 
 <script>
-import 'ion-rangeslider/js/ion.rangeSlider.js';
-import 'ion-rangeslider/css/ion.rangeSlider.css';
-import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
-import moment from 'moment';
+// import 'ion-rangeslider/js/ion.rangeSlider.js';
+// import 'ion-rangeslider/css/ion.rangeSlider.css';
+// import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
+// import moment from 'moment';
+// import $ from 'jquery';
 
 export default {
+    ssr: false,
     props: ['message', 'min', 'max', 'from', 'to', 'type'],
     mounted() {
-        const $this = window.$('#slider' + this._uid);
-        $this.ionRangeSlider({
-            type: this.type,
-            min: +moment(this.min, 'YYYY-MM-DD'),
-            max: +moment(this.max, 'YYYY-MM-DD'),
-            from: +moment(this.from, 'YYYY-MM-DD'),
-            to: +moment(this.to, 'YYYY-MM-DD'),
-            from_fixed: true,
-            to_fixed: true,
-        });
-        $this.prev().find('.irs-slider.from').hover(() => {
-            this.fromTooltip = !this.fromTooltip;
-        });
-        $this.prev().find('.irs-slider.to').hover(() => {
-            this.toTooltip = !this.toTooltip;
-        });
+        // const $this = $('#slider' + this._uid);
+        // $this.ionRangeSlider({
+        //     type: this.type,
+        //     min: +moment(this.min, 'YYYY-MM-DD'),
+        //     max: +moment(this.max, 'YYYY-MM-DD'),
+        //     from: +moment(this.from, 'YYYY-MM-DD'),
+        //     to: +moment(this.to, 'YYYY-MM-DD'),
+        //     from_fixed: true,
+        //     to_fixed: true,
+        // });
+        // $this.prev().find('.irs-slider.from').hover(() => {
+        //     this.fromTooltip = !this.fromTooltip;
+        // });
+        // $this.prev().find('.irs-slider.to').hover(() => {
+        //     this.toTooltip = !this.toTooltip;
+        // });
     },
     data() {
         return {
@@ -46,7 +48,7 @@ export default {
 </script>
 
 <style lang="scss">
-    @import '../../../css/_variables.scss';
+    /*@import '../../../frontend/src/css/_variables';
 
     .task-range-slider {
         margin-bottom: 20px;
@@ -200,5 +202,5 @@ export default {
                 display: block;
             }
         }
-    }
+    }*/
 </style>
