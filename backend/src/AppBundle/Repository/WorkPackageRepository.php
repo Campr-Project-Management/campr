@@ -412,11 +412,11 @@ class WorkPackageRepository extends BaseRepository
         $qBuilder = $this->getQueryBuilderByProjectAndFilters($project, $filters);
 
         if (isset($filters['isGrid'])) {
-            $qBuilder->addSelect('(CASE 
+            $qBuilder->addSelect('(CASE
                     WHEN wp.workPackageStatus = :statusOngoing THEN 0
-                    WHEN wp.workPackageStatus = :statusPending THEN 1 
-                    WHEN wp.workPackageStatus = :statusClosed THEN 2 
-                    ELSE 3 
+                    WHEN wp.workPackageStatus = :statusPending THEN 1
+                    WHEN wp.workPackageStatus = :statusClosed THEN 2
+                    ELSE 3
                 END ) AS  HIDDEN tempFieldForSorting'
             );
             $qBuilder
