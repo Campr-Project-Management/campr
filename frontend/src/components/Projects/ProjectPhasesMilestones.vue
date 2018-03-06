@@ -15,16 +15,17 @@
             </div>
         </modal>
 
+        <template v-if="pmData.length > 0">
+            <!-- /// P&M Header /// -->
+            <div class="header">
+                <h1>{{ translateText('message.phases_milestones') }}</h1>
+            </div>
+            <!-- /// End P&M Header /// -->
 
-        <!-- /// P&M Header /// -->
-        <div class="header">
-            <h1>{{ translateText('message.phases_milestones') }}</h1>
-        </div>
-        <!-- /// End P&M Header /// -->
-
-        <!-- /// P&M Timeline /// -->
-        <vis-timeline :pmData="pmData" :withPhases="true"></vis-timeline>
-        <!-- /// End P&M Timeline /// -->
+            <!-- /// P&M Timeline /// -->
+            <vis-timeline :pm-data="pmData" :with-phases="true" />
+            <!-- /// End P&M Timeline /// -->
+        </template>
 
         <!-- /// Phases Header /// -->
         <div class="header flex flex-space-between margintop30">
@@ -36,7 +37,12 @@
             </div>
         </div>
         <div class="full-filters flex flex-direction-reverse">
-            <phase-filters :clearAllFilters="clearPhaseFilters" :selectStartDate="setPhaseFilterStart" :selectEndDate="setPhaseFilterEnd" :selectResponsible="setPhaseFilterResponsible" :selectStatus="setPhasesFilterStatus"></phase-filters>
+            <phase-filters
+                    :clearAllFilters="clearPhaseFilters"
+                    :selectStartDate="setPhaseFilterStart"
+                    :selectEndDate="setPhaseFilterEnd"
+                    :selectResponsible="setPhaseFilterResponsible"
+                    :selectStatus="setPhasesFilterStatus"/>
         </div>
         <!-- /// End Phases Header /// -->
 
@@ -89,33 +95,33 @@
                                 <th>{{ translateText('table_header_cell.actions') }}</th>
                             </tr>
                         </thead>
-                        <tbody v-if="projectPhases.items && projectPhases.items.length > 0">
+                        <tbody v-if="hasPhases">
                             <tr v-for='phase in projectPhases.items'>
                                 <td>{{ phase.name }}</td>
                                 <td class="no-padding">
                                     <table class="table inner-table">
                                         <tr>
-                                            <td class="text-center">{{ phase.scheduledStartAt }}</td>
-                                            <td class="text-center">{{ phase.scheduledFinishAt }}</td>
-                                            <td class="text-center">{{ phase.scheduledDurationDays > 0 ? phase.scheduledDurationDays : '-' }}</td>
+                                            <td class="text-center">{{ phase.scheduledStartAt | date }}</td>
+                                            <td class="text-center">{{ phase.scheduledFinishAt | date }}</td>
+                                            <td class="text-center">{{ phase.scheduledDurationDays  > 0 ? $formatNumber(phase.scheduledDurationDays) : '-' }}</td>
                                         </tr>
                                     </table>
                                 </td>
                                 <td class="no-padding">
                                     <table class="table inner-table">
                                         <tr>
-                                            <td class="text-center">{{ phase.forecastStartAt }}</td>
-                                            <td class="text-center">{{ phase.forecastFinishAt }}</td>
-                                            <td class="text-center">{{ phase.forecastDurationDays ? phase.forecastDurationDays : '-' }}</td>
+                                            <td class="text-center">{{ phase.forecastStartAt | date }}</td>
+                                            <td class="text-center">{{ phase.forecastFinishAt | date }}</td>
+                                            <td class="text-center">{{ phase.forecastDurationDays ? $formatNumber(phase.forecastDurationDays) : '-' }}</td>
                                         </tr>
                                     </table>
                                 </td>
                                 <td class="no-padding">
                                     <table class="table inner-table">
                                         <tr>
-                                            <td class="text-center">{{ phase.actualStartAt }}</td>
-                                            <td class="text-center">{{ phase.actualFinishAt }}</td>
-                                            <td class="text-center">{{ phase.actualDurationDays ? phase.actualDurationDays : '-' }}</td>
+                                            <td class="text-center">{{ phase.actualStartAt | date }}</td>
+                                            <td class="text-center">{{ phase.actualFinishAt | date }}</td>
+                                            <td class="text-center">{{ phase.actualDurationDays ? $formatNumber(phase.actualDurationDays) : '-' }}</td>
                                         </tr>
                                     </table>
                                 </td>
@@ -136,6 +142,11 @@
                                 </td>
                             </tr>
                         </tbody>
+                        <tbody v-else>
+                            <tr>
+                                <td colspan="7">{{ translate('label.no_data') }}</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </vue-scrollbar>
@@ -154,14 +165,19 @@
         <!-- /// Milestones Header /// -->
         <div class="header flex flex-space-between margintop30">
             <div class="flex">
-                <h1>Project Milestones</h1>
+                <h1>{{ translate('message.project_milestones') }}</h1>
             </div>
             <div class="flex flex-v-center">
                 <router-link :to="{name: 'project-milestones-create-milestone'}" class="btn-rounded btn-auto second-bg">{{ translateText('button.add_new_milestone') }}</router-link>
             </div>
         </div>
         <div class="full-filters flex flex-direction-reverse">
-            <milestone-filters :clearAllFilters="clearMilestoneFilters" :selectDueDate="setMilestonesFilterDueDate" :selectPhase="setMilestonesFilterPhase" :selectResponsible="setMilestonesFilterResponsible" :selectStatus="setMilestonesFilterStatus"></milestone-filters>
+            <milestone-filters
+                    :clearAllFilters="clearMilestoneFilters"
+                    :selectDueDate="setMilestonesFilterDueDate"
+                    :selectPhase="setMilestonesFilterPhase"
+                    :selectResponsible="setMilestonesFilterResponsible"
+                    :selectStatus="setMilestonesFilterStatus"/>
         </div>
         <!-- /// End Milestones Header /// -->
 
@@ -181,12 +197,12 @@
                                 <th>{{ translateText('table_header_cell.actions') }}</th>
                             </tr>
                         </thead>
-                        <tbody v-if="projectMilestones.items && projectMilestones.items.length">
+                        <tbody v-if="hasMilestones">
                             <tr v-for="milestone in projectMilestones.items">
                                 <td>{{ milestone.name }}</td>
-                                <td>{{ milestone.scheduledFinishAt }}</td>
-                                <td>{{ milestone.forecastFinishAt }}</td>
-                                <td>{{ milestone.actualFinishAt }}</td>
+                                <td>{{ milestone.scheduledFinishAt | date }}</td>
+                                <td>{{ milestone.forecastFinishAt | date }}</td>
+                                <td>{{ milestone.actualFinishAt | date }}</td>
                                 <td>{{ translateText(milestone.workPackageStatusName) }}</td>
                                 <td class="small-avatar text-center">
                                     <div class="user-avatar" v-tooltip.top-center="translateText('message.milestone_responsible') + milestone.responsibilityFullName">
@@ -204,11 +220,16 @@
                                 </td>
                             </tr>
                         </tbody>
+                        <tbody v-else>
+                            <tr>
+                                <td colspan="7">{{ translate('label.no_data') }}</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </vue-scrollbar>
 
-            <div v-if="projectMilestones && projectMilestones.items"  class="flex flex-direction-reverse flex-v-center">
+            <div v-if="hasMilestones"  class="flex flex-direction-reverse flex-v-center">
                 <div class="pagination flex flex-center" v-if="projectMilestones && projectMilestones.totalItems > 0">
                     <span v-if="milestonesPages > 1" v-for="page in milestonesPages" v-bind:class="{'active': page == milestoneActivePage}" @click="changeMilestonesPage(page)">{{ page }}</span>
                 </div>
@@ -371,6 +392,12 @@ export default {
             allProjectPhases: 'allProjectPhases',
             validationMessages: 'validationMessages',
         }),
+        hasMilestones() {
+            return this.projectMilestones.items && this.projectMilestones.items.length;
+        },
+        hasPhases() {
+            return this.projectPhases.items && this.projectPhases.items.length > 0;
+        },
         phasesPages: function() {
             return Math.ceil(this.projectPhases.totalItems / this.phasesPerPage);
         },
@@ -474,32 +501,26 @@ function renderTooltip(item, type) {
                     <tbody>
                         <tr>
                             <td>`+ Vue.translate('table_header_cell.base') +`</td>` +
-                            (type === 'phase' ? `<td>` + (item.scheduledStartAt ? item.scheduledStartAt : '-') + `</td>` : '') +
-                            `<td>` + (item.scheduledFinishAt ? item.scheduledFinishAt : '-') + `</td>` +
+                            (type === 'phase' ? `<td>` + Vue.formatDate(item.scheduledStartAt) + `</td>` : '') +
+                            `<td>` + Vue.formatDate(item.scheduledFinishAt) + `</td>` +
                              (type === 'phase'
-                                ? `<td>` + (!isNaN(moment(item.scheduledFinishAt).diff(moment(item.scheduledStartAt), 'days'))
-                                    ? moment(item.scheduledFinishAt).diff(moment(item.scheduledStartAt), 'days')
-                                    : '-') + `</td>`
+                                ? `<td>` + (item.scheduledDurationDays > 0 ? Vue.formatNumber(item.scheduledDurationDays) : '-') + `</td>`
                                 : '') +
                         `</tr>
                         <tr class="` + forecastColorClass +`">
                             <td>` + Vue.translate('table_header_cell.forecast') +`</td>` +
-                            (type === 'phase' ? `<td>` + (item.forecastStartAt ? item.forecastStartAt : '-') + `</td>` : '') +
-                            `<td>` + (item.forecastFinishAt ? item.forecastFinishAt: '-') + `</td>` +
+                            (type === 'phase' ? `<td>` + Vue.formatDate(item.forecastStartAt) + `</td>` : '') +
+                            `<td>` + Vue.formatDate(item.forecastFinishAt) + `</td>` +
                             (type === 'phase'
-                                ? `<td>` + (!isNaN(moment(item.forecastFinishAt).diff(moment(item.forecastStartAt), 'days'))
-                                    ? moment(item.forecastFinishAt).diff(moment(item.forecastStartAt), 'days')
-                                    : '-') + `</td>`
+                                ? `<td>` + (item.forecastDurationDays > 0 ? Vue.formatNumber(item.forecastDurationDays) : '-') + `</td>`
                                 : '') +
                         `</tr>` +
                         (type === 'phase'
                             ? `<tr class="` + actualColorClass + `">
                                 <td>` + Vue.translate('table_header_cell.actual') + `</td>
-                                <td>` + (item.actualStartAt ? item.actualStartAt : '-') + `</td>
-                                <td>` + (item.actualFinishAt ? item.actualFinishAt : '-') + `</td>
-                                <td>` + (!isNaN(moment(item.actualFinishAt).diff(moment(item.actualStartAt), 'days'))
-                                    ? moment(item.actualFinishAt).diff(moment(item.actualStartAt), 'days')
-                                    : '-') + `</td>`
+                                <td>` + Vue.formatDate(item.actualStartAt) + `</td>
+                                <td>` + Vue.formatDate(item.actualFinishAt) + `</td>
+                                <td>` + (item.actualDurationDays > 0 ? Vue.formatNumber(item.actualDurationDays) : '-') + `</td>`
                             : ``) +
                         `</tr>
                     </tbody>
