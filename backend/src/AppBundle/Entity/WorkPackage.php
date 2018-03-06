@@ -644,7 +644,11 @@ class WorkPackage
     {
         $start = $this->getScheduledStartAt();
         $end = $this->getScheduledFinishAt();
-        if (!$start || !$end || $start > $end) {
+        if (!$end) {
+            $end = new \DateTime();
+        }
+
+        if (!$start || $start > $end) {
             return 0;
         }
 
@@ -715,7 +719,11 @@ class WorkPackage
     {
         $start = $this->getForecastStartAt();
         $end = $this->getForecastFinishAt();
-        if (!$start || !$end || $start > $end) {
+        if (!$end) {
+            $end = new \DateTime();
+        }
+
+        if (!$start || $start > $end) {
             return 0;
         }
 
@@ -786,7 +794,11 @@ class WorkPackage
     {
         $start = $this->getActualStartAt();
         $end = $this->getActualFinishAt();
-        if (!$start || !$end || $start > $end) {
+        if (!$end) {
+            $end = new \DateTime();
+        }
+
+        if (!$start || $start > $end) {
             return 0;
         }
 
