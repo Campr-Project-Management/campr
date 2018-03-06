@@ -1,72 +1,44 @@
 <template>
     <div class="column">
         <div class="column-header flex flex-v-center flex-space-between">
-            <span>{{ translateText(status.name) }}</span>
+            <span>{{ translate(status.name) }}</span>
             <div class="flex">
-                <span class="notification-balloon">{{ tasksByStatuses[status.id].totalItems }}</span>
+                <span class="notification-balloon">{{ totalCount }}</span>
                 <span class="notification-balloon second-bg">+</span>
             </div>
         </div>
-        <div class="tasks-scroll" infinite-wrapper>
+        <div class="tasks-scroll">
             <div>
-                <small-task-box v-if="tasksByStatuses[status.id]"
-                    v-bind:task="task"
-                    v-for="(task, index) in tasksByStatuses[status.id].items"
-                    :key="index"></small-task-box>
-                <infinite-loading :status="status.id" :on-infinite="onInfinite" v-bind:ref="'infiniteLoading' + status.id"></infinite-loading>
+                <small-task-box
+                        v-bind:task="task"
+                        v-for="task in tasks"
+                        :key="task.id"/>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex';
 import SmallTaskBox from '../../Dashboard/SmallTaskBox';
-import InfiniteLoading from 'vue-infinite-loading';
 
 export default {
-    props: ['status'],
+    props: {
+        status: {
+            type: Object,
+            required: true,
+        },
+        tasks: {
+            type: Array,
+            required: true,
+        },
+        totalCount: {
+            type: Number,
+            required: true,
+            default: 0,
+        },
+    },
     components: {
         SmallTaskBox,
-        InfiniteLoading,
-    },
-    computed: {
-        ...mapGetters({
-            tasksByStatuses: 'tasksByStatuses',
-        }),
-    },
-    mounted() {
-    },
-    methods: {
-        ...mapActions(['getTasksByStatus']),
-        onInfinite() {
-            const infiniteLoadingRef = 'infiniteLoading' + this.status.id;
-            this.page++;
-            this.getTasksByStatus({
-                project: this.project,
-                status: this.status.name,
-                statusId: this.status.id,
-                page: this.page,
-                callback: () => {
-                    if (this.$refs[infiniteLoadingRef]) {
-                        this.$refs[infiniteLoadingRef].$emit('$InfiniteLoading:loaded');
-                        if (this.tasksByStatuses[this.status.id].items.length >= this.tasksByStatuses[this.status.id].totalItems) {
-                            // every task has been loaded in the store (length of array equals to totalItems)
-                            this.$refs[infiniteLoadingRef].$emit('$InfiniteLoading:complete');
-                        }
-                    }
-                },
-            });
-        },
-        translateText(text) {
-            return this.translate(text);
-        },
-    },
-    data: function() {
-        return {
-            page: 1,
-            project: this.$route.params.id,
-        };
     },
 };
 </script>

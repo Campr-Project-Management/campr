@@ -13,6 +13,7 @@ use Doctrine\ORM\QueryBuilder;
 use AppBundle\Repository\Traits\WorkPackageSortingTrait;
 use AppBundle\Repository\Traits\WorkPackageCategorySortingTrait;
 use AppBundle\Repository\Traits\UserSortingTrait;
+use Pagerfanta\Pagerfanta;
 
 class WorkPackageRepository extends BaseRepository
 {
@@ -26,12 +27,12 @@ class WorkPackageRepository extends BaseRepository
      * Return all user workpackages filtered.
      *
      * @param User       $user
-     * @param array      $filters
+     * @param array      $criteria
      * @param null|mixed $select
      *
-     * @return array
+     * @return QueryBuilder
      */
-    public function findUserFiltered(User $user, $filters = [], $select = null)
+    public function findUserFiltered(User $user, $criteria = [], $select = null)
     {
         $qb = $this
             ->createQueryBuilder('wp')
@@ -43,14 +44,14 @@ class WorkPackageRepository extends BaseRepository
             $qb->select($select);
         }
 
-        if (isset($filters['type'])) {
+        if (isset($criteria['type'])) {
             $qb
                 ->andWhere('wp.type = :type')
-                ->setParameter('type', $filters['type'])
+                ->setParameter('type', $criteria['type'])
             ;
         }
 
-        if (isset($filters['recent'])) {
+        if (isset($criteria['recent'])) {
             $startDate = new \DateTime('first day of this month');
             $endDate = new \DateTime('last day of this month');
             $qb
@@ -61,30 +62,30 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
-        if (isset($filters['project'])) {
+        if (isset($criteria['project'])) {
             $qb
                 ->andWhere('wp.project = :project')
-                ->setParameter('project', $filters['project'])
+                ->setParameter('project', $criteria['project'])
             ;
         }
 
-        if (isset($filters['status'])) {
+        if (isset($criteria['status'])) {
             $qb
                 ->andWhere('wp.colorStatus = :status')
-                ->setParameter('status', $filters['status'])
+                ->setParameter('status', $criteria['status'])
             ;
         }
 
-        if (isset($filters['milestone'])) {
+        if (isset($criteria['milestone'])) {
             $qb
                 ->andWhere('wp.isKeyMilestone = :milestone')
-                ->setParameter('milestone', $filters['milestone'])
+                ->setParameter('milestone', $criteria['milestone'])
             ;
         }
-        if (isset($filters['pageSize']) && isset($filters['page'])) {
+        if (isset($criteria['pageSize']) && isset($criteria['page'])) {
             $qb
-                ->setFirstResult($filters['pageSize'] * ($filters['page'] - 1))
-                ->setMaxResults($filters['pageSize'])
+                ->setFirstResult($criteria['pageSize'] * ($criteria['page'] - 1))
+                ->setMaxResults($criteria['pageSize'])
             ;
         }
 
@@ -94,15 +95,18 @@ class WorkPackageRepository extends BaseRepository
     /**
      * Counts the filtered projects.
      *
-     * @param Project $project
-     * @param array   $filters
+     * @param User  $user
+     * @param array $criteria
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      *
      * @return int
      */
-    public function countTotalByUserAndFilters(User $user, $filters = [])
+    public function countTotalByUserAndFilters(User $user, $criteria = [])
     {
         return (int) $this
-            ->findUserFiltered($user, $filters, 'COUNT(DISTINCT wp.id)')
+            ->findUserFiltered($user, $criteria, 'COUNT(DISTINCT wp.id)')
             ->setFirstResult(0)
             ->setMaxResults(1)
             ->getQuery()
@@ -114,12 +118,12 @@ class WorkPackageRepository extends BaseRepository
      * Return all project workpackages filtered.
      *
      * @param Project           $project
-     * @param array             $filters
+     * @param array             $criteria
      * @param WorkPackageStatus $workPackageStatus
      *
-     * @return array
+     * @return Query
      */
-    public function findByProject(Project $project, $filters = [], WorkPackageStatus $workPackageStatus = null)
+    public function findByProject(Project $project, $criteria = [], WorkPackageStatus $workPackageStatus = null)
     {
         $qb = $this
             ->createQueryBuilder('wp')
@@ -135,25 +139,25 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
-        if (isset($filters['status'])) {
+        if (isset($criteria['status'])) {
             $qb
                 ->innerJoin('wp.workPackageStatus', 'wps')
                 ->andWhere('wps.name = :statusName')
-                ->setParameter('statusName', $filters['status'])
+                ->setParameter('statusName', $criteria['status'])
             ;
         }
 
-        if (isset($filters['type'])) {
+        if (isset($criteria['type'])) {
             $qb
                 ->andWhere('wp.type = :type')
-                ->setParameter('type', $filters['type'])
+                ->setParameter('type', $criteria['type'])
             ;
         }
 
-        if (isset($filters['milestone'])) {
+        if (isset($criteria['milestone'])) {
             $qb
                 ->andWhere('wp.isKeyMilestone = :milestone')
-                ->setParameter('milestone', $filters['milestone'])
+                ->setParameter('milestone', $criteria['milestone'])
             ;
         }
 
@@ -161,7 +165,10 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
+     * @param Project|null     $project
      * @param WorkPackage|null $workPackage
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
      *
      * @return WorkPackage|null
      */
@@ -403,15 +410,15 @@ class WorkPackageRepository extends BaseRepository
      * Return all project workpackages filtered and sorted in a custom order of the status.
      *
      * @param Project $project
-     * @param array   $filters
+     * @param array   $criteria
      *
      * @return Query
      */
-    public function getQueryByProjectAndFiltersSortedByStatus(Project $project, $filters = [])
+    public function getQueryByProjectAndFiltersSortedByStatus(Project $project, $criteria = [])
     {
-        $qBuilder = $this->getQueryBuilderByProjectAndFilters($project, $filters);
+        $qBuilder = $this->getQueryBuilderByProjectAndFilters($project, $criteria);
 
-        if (isset($filters['isGrid'])) {
+        if (isset($criteria['isGrid'])) {
             $qBuilder->addSelect('(CASE
                     WHEN wp.workPackageStatus = :statusOngoing THEN 0
                     WHEN wp.workPackageStatus = :statusPending THEN 1
@@ -433,18 +440,78 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
+     * @param Project $project
+     * @param array   $sorting
+     * @param array   $criteria
+     *
+     * @return Pagerfanta
+     */
+    public function createGridViewPaginator(Project $project, array $criteria = [], array $sorting = []): Pagerfanta
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $this
+            ->addNotSubtaskWhere($qb)
+            ->innerJoin('o.project', 'p')
+            ->andWhere('p.id = :project')
+            ->setParameter('project', $project)
+            ->addSelect(
+                '(CASE
+                    WHEN o.workPackageStatus = :statusOngoing THEN 0
+                    WHEN o.workPackageStatus = :statusPending THEN 1
+                    WHEN o.workPackageStatus = :statusClosed THEN 2
+                    ELSE 3
+                END) AS HIDDEN tempFieldForSorting'
+            )
+            ->setParameter('statusOngoing', WorkPackageStatus::ONGOING)
+            ->setParameter('statusPending', WorkPackageStatus::PENDING)
+            ->setParameter('statusClosed', WorkPackageStatus::CLOSED)
+            ->addOrderBy('tempFieldForSorting', 'ASC')
+        ;
+
+        $this->applyCriteria($qb, $criteria);
+        $this->applySorting($qb, array_merge($sorting, ['actualStartAt' => 'asc']));
+
+        return $this->getPaginator($qb);
+    }
+
+    /**
+     * @param Project $project
+     * @param array   $criteria
+     * @param array   $sorting
+     *
+     * @return Pagerfanta
+     */
+    public function createBoardViewPaginator(Project $project, array $criteria = [], array $sorting = []): Pagerfanta
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $this
+            ->addNotSubtaskWhere($qb)
+            ->innerJoin('o.project', 'p')
+            ->andWhere('p.id = :project')
+            ->setParameter('project', $project)
+        ;
+
+        $this->applyCriteria($qb, $criteria);
+        $this->applySorting($qb, $sorting);
+
+        return $this->getPaginator($qb);
+    }
+
+    /**
      * Return all project workpackages filtered.
      *
      * @param Project $project
-     * @param array   $filters
+     * @param array   $criteria
      * @param array   $select
      *
      * @return Query
      */
-    public function getQueryByProjectAndFilters(Project $project, $filters = [], $select = null)
+    public function getQueryByProjectAndFilters(Project $project, $criteria = [], $select = null)
     {
         return $this
-            ->getQueryBuilderByProjectAndFilters($project, $filters, $select)
+            ->getQueryBuilderByProjectAndFilters($project, $criteria, $select)
             ->getQuery()
         ;
     }
@@ -453,14 +520,14 @@ class WorkPackageRepository extends BaseRepository
      * counts the filtered workpackages.
      *
      * @param Project $project
-     * @param array   $filters
+     * @param array   $criteria
      *
      * @return int
      */
-    public function countTotalByProjectAndFilters(Project $project, $filters = [])
+    public function countTotalByProjectAndFilters(Project $project, $criteria = [])
     {
         return (int) $this
-            ->getQueryBuilderByProjectAndFilters($project, $filters, 'COUNT(DISTINCT wp.id)')
+            ->getQueryBuilderByProjectAndFilters($project, $criteria, 'COUNT(DISTINCT wp.id)')
             ->setFirstResult(0)
             ->setMaxResults(1)
             ->getQuery()
@@ -472,14 +539,14 @@ class WorkPackageRepository extends BaseRepository
      * Average progress value.
      *
      * @param Project $project
-     * @param array   $filters
+     * @param array   $criteria
      *
      * @return int
      */
-    public function averageProgressByProjectAndFilters(Project $project, $filters = [])
+    public function averageProgressByProjectAndFilters(Project $project, $criteria = [])
     {
         return (float) $this
-            ->getQueryBuilderByProjectAndFilters($project, $filters, 'AVG(wp.progress)')
+            ->getQueryBuilderByProjectAndFilters($project, $criteria, 'AVG(wp.progress)')
             ->setFirstResult(0)
             ->setMaxResults(1)
             ->getQuery()
@@ -491,12 +558,12 @@ class WorkPackageRepository extends BaseRepository
      * Return the query builder for all project workpackages filtered.
      *
      * @param Project    $project
-     * @param array      $filters
+     * @param array      $criteria
      * @param null|mixed $select
      *
      * @return QueryBuilder
      */
-    public function getQueryBuilderByProjectAndFilters(Project $project, $filters = [], $select = null)
+    public function getQueryBuilderByProjectAndFilters(Project $project, $criteria = [], $select = null)
     {
         $qb = $this
             ->createQueryBuilder('wp')
@@ -509,92 +576,92 @@ class WorkPackageRepository extends BaseRepository
             $qb->select($select);
         }
 
-        if (isset($filters['phase'])) {
+        if (isset($criteria['phase'])) {
             $qb
                 ->andWhere('wp.phase = :phase')
-                ->setParameter('phase', $filters['phase'])
+                ->setParameter('phase', $criteria['phase'])
             ;
         }
 
-        if (isset($filters['status'])) {
+        if (isset($criteria['status'])) {
             $qb
                 ->andWhere('wp.workPackageStatus = :workPackageStatus')
-                ->setParameter('workPackageStatus', $filters['status'])
+                ->setParameter('workPackageStatus', $criteria['status'])
             ;
         }
 
-        if (isset($filters['searchString'])) {
+        if (isset($criteria['searchString'])) {
             $qb
                 ->andWhere('wp.name LIKE :searchString')
-                ->setParameter('searchString', '%'.$filters['searchString'].'%')
+                ->setParameter('searchString', '%'.$criteria['searchString'].'%')
             ;
         }
 
-        if (isset($filters['type'])) {
-            if (WorkPackage::TYPE_TASK == $filters['type']) {
+        if (isset($criteria['type'])) {
+            if (WorkPackage::TYPE_TASK == $criteria['type']) {
                 $qb
                     ->andWhere('wp.type IN (:type)')
-                    ->setParameter('type', [$filters['type'], WorkPackage::TYPE_TUTORIAL])
+                    ->setParameter('type', [$criteria['type'], WorkPackage::TYPE_TUTORIAL])
                 ;
             } else {
                 $qb
                     ->andWhere('wp.type = :type')
-                    ->setParameter('type', $filters['type'])
+                    ->setParameter('type', $criteria['type'])
                 ;
             }
         }
 
-        if (isset($filters['projectUser'])) {
+        if (isset($criteria['projectUser'])) {
             $qb
                 ->andWhere('wp.responsibility = :projectUser')
-                ->setParameter('projectUser', $filters['projectUser'])
+                ->setParameter('projectUser', $criteria['projectUser'])
             ;
         }
 
-        if (isset($filters['colorStatus'])) {
+        if (isset($criteria['colorStatus'])) {
             $qb
                 ->andWhere('wp.colorStatus = :colorStatus')
-                ->setParameter('colorStatus', $filters['colorStatus'])
+                ->setParameter('colorStatus', $criteria['colorStatus'])
             ;
         }
 
-        if (isset($filters['isKeyMilestone'])) {
-            $qb->andWhere($qb->expr()->eq('wp.isKeyMilestone', $filters['isKeyMilestone']));
+        if (isset($criteria['isKeyMilestone'])) {
+            $qb->andWhere($qb->expr()->eq('wp.isKeyMilestone', $criteria['isKeyMilestone']));
         }
 
-        if (isset($filters['startDate'])) {
+        if (isset($criteria['startDate'])) {
             $qb
                 ->andWhere('wp.scheduledStartAt >= :startDate')
-                ->setParameter('startDate', $filters['startDate'])
+                ->setParameter('startDate', $criteria['startDate'])
             ;
         }
 
-        if (isset($filters['endDate'])) {
+        if (isset($criteria['endDate'])) {
             $qb
                 ->andWhere('wp.scheduledFinishAt <= :endDate')
-                ->setParameter('endDate', $filters['endDate'])
+                ->setParameter('endDate', $criteria['endDate'])
             ;
         }
 
-        if (isset($filters['dueDate'])) {
+        if (isset($criteria['dueDate'])) {
             $qb
                 ->andWhere('wp.scheduledFinishAt = :dueDate')
-                ->setParameter('dueDate', $filters['dueDate'])
+                ->setParameter('dueDate', $criteria['dueDate'])
             ;
         }
 
-        if (isset($filters['orderBy']) && isset($filters['order'])) {
-            $qb->orderBy('wp.'.$filters['orderBy'], $filters['order']);
+        if (isset($criteria['orderBy']) && isset($criteria['order'])) {
+            $qb->orderBy('wp.'.$criteria['orderBy'], $criteria['order']);
 
-            if (isset($filters['excludeNullValuesFromOrderBy']) && true === $filters['excludeNullValuesFromOrderBy']) {
-                $qb->andWhere('wp.'.$filters['orderBy'].' is NOT NULL');
+            if (isset($criteria['excludeNullValuesFromOrderBy']) && true === $criteria['excludeNullValuesFromOrderBy']) {
+                $qb->andWhere('wp.'.$criteria['orderBy'].' is NOT NULL');
             }
         }
 
-        if (isset($filters['pageSize']) && isset($filters['page'])) {
+        if (isset($criteria['pageSize']) && isset($criteria['page'])) {
             $qb
-                ->setFirstResult($filters['pageSize'] * ($filters['page'] - 1))
-                ->setMaxResults($filters['pageSize']);
+                ->setFirstResult($criteria['pageSize'] * ($criteria['page'] - 1))
+                ->setMaxResults($criteria['pageSize']);
         }
 
         return $qb;
@@ -782,5 +849,107 @@ class WorkPackageRepository extends BaseRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     * @param array        $criteria
+     */
+    private function applyCriteria(QueryBuilder $qb, array $criteria = []): void
+    {
+        if (isset($criteria['phase'])) {
+            $qb
+                ->andWhere('o.phase = :phase')
+                ->setParameter('phase', $criteria['phase'])
+            ;
+        }
+
+        if (isset($criteria['status'])) {
+            $qb
+                ->andWhere('o.workPackageStatus = :workPackageStatus')
+                ->setParameter('workPackageStatus', $criteria['status'])
+            ;
+        }
+
+        if (isset($criteria['searchString'])) {
+            $qb
+                ->andWhere('o.name LIKE :searchString')
+                ->setParameter('searchString', '%'.$criteria['searchString'].'%')
+            ;
+        }
+
+        if (isset($criteria['type'])) {
+            if (WorkPackage::TYPE_TASK == $criteria['type']) {
+                $qb
+                    ->andWhere('o.type IN (:type)')
+                    ->setParameter('type', [$criteria['type'], WorkPackage::TYPE_TUTORIAL])
+                ;
+            } else {
+                $qb
+                    ->andWhere('o.type = :type')
+                    ->setParameter('type', $criteria['type'])
+                ;
+            }
+        }
+
+        if (isset($criteria['projectUser'])) {
+            $qb
+                ->andWhere('o.responsibility = :projectUser')
+                ->setParameter('projectUser', $criteria['projectUser'])
+            ;
+        }
+
+        if (isset($criteria['colorStatus'])) {
+            $qb
+                ->andWhere('o.colorStatus = :colorStatus')
+                ->setParameter('colorStatus', $criteria['colorStatus'])
+            ;
+        }
+
+        if (isset($criteria['isKeyMilestone'])) {
+            $qb->andWhere($qb->expr()->eq('wp.isKeyMilestone', $criteria['isKeyMilestone']));
+        }
+
+        if (isset($criteria['startDate'])) {
+            $qb
+                ->andWhere('o.scheduledStartAt >= :startDate')
+                ->setParameter('startDate', $criteria['startDate'])
+            ;
+        }
+
+        if (isset($criteria['endDate'])) {
+            $qb
+                ->andWhere('o.scheduledFinishAt <= :endDate')
+                ->setParameter('endDate', $criteria['endDate'])
+            ;
+        }
+
+        if (isset($criteria['dueDate'])) {
+            $qb
+                ->andWhere('o.scheduledFinishAt = :dueDate')
+                ->setParameter('dueDate', $criteria['dueDate'])
+            ;
+        }
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
+     */
+    private function addNotSubtaskWhere(QueryBuilder $qb): QueryBuilder
+    {
+        $expr = $qb->expr();
+        $qb->andWhere(
+            $expr->orX(
+                $expr->neq('o.type', WorkPackage::TYPE_TASK),
+                $expr->andX(
+                    $expr->eq('o.type', WorkPackage::TYPE_TASK),
+                    $expr->isNull('o.parent')
+                )
+            )
+        );
+
+        return $qb;
     }
 }
