@@ -41,12 +41,12 @@
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
                                 <span class="title">
-                                    <b>{{ translateText('message.start_date') }}: {{ actualStartAt|moment('DD.MM.YYYY') }}</b>
+                                    <b>{{ translateText('message.start_date') }}: {{ phase.actualStartAt | date }}</b>
                                 </span>
                             </div>
                             <div class="col-md-6">
                                 <span class="title">
-                                    <b> {{ translateText('message.finish_date') }}: {{ actualFinishAt|moment('DD.MM.YYYY') }}</b>
+                                    <b> {{ translateText('message.finish_date') }}: {{ phase.actualFinishAt | date }}</b>
                                 </span>
                             </div>
                         </div>
@@ -230,8 +230,6 @@ export default {
         phase(value) {
             this.name = this.phase.name;
             this.$refs.content.setContent(this.phase.content);
-            this.actualStartAt = new Date(this.phase.actualStartAt);
-            this.actualFinishAt = new Date(this.phase.actualFinishAt);
             this.schedule.baseStartDate = new Date(this.phase.scheduledStartAt);
             this.schedule.baseEndDate = new Date(this.phase.scheduledFinishAt);
             this.schedule.forecastStartDate = new Date(this.phase.forecastStartAt);
@@ -262,8 +260,6 @@ export default {
         return {
             name: '',
             content: '',
-            actualStartAt: new Date(),
-            actualFinistAt: new Date(),
             schedule: {
                 baseStartDate: new Date(),
                 baseEndDate: new Date(),
