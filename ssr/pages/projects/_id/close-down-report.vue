@@ -124,29 +124,29 @@
                         <table class="table table-striped table-responsive" v-if="closeDownActions.items && closeDownActions.items.length > 0">
                             <tbody>
                                 <template v-for="action in closeDownActions.items">
-                                    <tr>
+                                    <tr :key="`action-hr-${action.id}`">
                                         <td colspan="2">
                                             <hr>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr :key="`action-due-date-${action.id}`">
                                         <th>{{ translateText('table_header_cell.due_date') }}</th>
                                         <td>{{ action.dueDate|moment('DD.MM.YYYY') }}</td>
                                     </tr>
-                                    <tr></tr>
-                                    <tr>
+                                    <tr :key="`action-empty-0-${action.id}`"></tr>
+                                    <tr :key="`action-title-${action.id}`">
                                         <th>{{ translateText('table_header_cell.topic') }}</th>
                                         <td>{{ action.title }}</td>
                                     </tr>
-                                    <tr></tr>
-                                    <tr>
+                                    <tr :key="`action-empty-1-${action.id}`"></tr>
+                                    <tr :key="`action-action-description-${action.id}`">
                                         <th>{{ translateText('table_header_cell.description') }}</th>
                                         <td>
                                             <p class="action-description" v-html="action.description"></p>
                                         </td>
                                     </tr>
-                                    <tr></tr>
-                                    <tr>
+                                    <tr :key="`action-empty-2-${action.id}`"></tr>
+                                    <tr :key="`action-responsibility-full-name-${action.id}`">
                                         <th>{{ translateText('table_header_cell.responsible') }}</th>
                                         <td>
                                             {{ action.responsibilityFullName }}
