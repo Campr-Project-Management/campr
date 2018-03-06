@@ -24,7 +24,7 @@
     "jquery-match-height": "^0.7.2",
     "less": "^3.0.1",
     "less-loader": "^4.0.5",
-    "moment": "^2.20.1",
+    "moment": "^2.21.0",
     "node-sass": "^4.7.2",
     "nuxt": "^1.0.0",
     "nuxt-sass-resources-loader": "^1.1.1",
