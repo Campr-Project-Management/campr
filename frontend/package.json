@@ -56,7 +56,7 @@
     "vue-typeahead": "2.3.1",
     "vue2-dragula": "2.4.4",
     "vue2-scrollbar": "github:dilibau/vue2-scrollbar",
-    "vue2-timepicker": "0.1.4",
+    "vue2-timepicker": "github:dilibau/vue2-timepicker",
     "vueditor": "0.2.4",
     "vuejs-datepicker": "0.6.5",
     "vuex": "2.3.1",
