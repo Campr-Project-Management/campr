@@ -3,7 +3,6 @@
 namespace AppBundle\Tests\Controller\API;
 
 use MainBundle\Tests\Controller\BaseController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class WorkPackageControllerTest extends BaseController
