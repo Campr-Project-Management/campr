@@ -38,7 +38,7 @@
     "tether-tooltip": "^1.2.0",
     "v-tooltip": "1.1.6",
     "vee-validate": "2.0.0-beta.25",
-    "vis": "4.19.1",
+    "vis": "^4.21.0",
     "vue": "2.2.6",
     "vue-charts": "0.2.1",
     "vue-color": "2.0.7",
