@@ -23,8 +23,10 @@ const actions = {
         Vue.http
             .get(Routing.generate('app_api_projects_workpackages', {'id': project}), {
                 params: {
-                    'type': 2,
-                    'pageSize': 1,
+                    criteria: {
+                        type: 2,
+                    },
+                    pageSize: 8,
                 },
             })
             .then((response) => {

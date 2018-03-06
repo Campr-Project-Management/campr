@@ -4,6 +4,8 @@ namespace AppBundle\Repository;
 
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Sortable\Entity\Repository\SortableRepository;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
@@ -31,7 +33,7 @@ abstract class BaseRepository extends SortableRepository
                 continue;
             }
 
-            if ($key === 'findIn') {
+            if ('findIn' === $key) {
                 foreach ($criteria[$key] as $column => $vals) {
                     $qb
                         ->andWhere($qb->expr()->in('q.'.$column, ':vals'))
@@ -90,7 +92,7 @@ abstract class BaseRepository extends SortableRepository
     {
         $out = $filters->getInt($param, $default);
 
-        if ($forceMinimum !== null && $out < $forceMinimum) {
+        if (null !== $forceMinimum && $out < $forceMinimum) {
             $out = $forceMinimum;
         }
 
@@ -108,5 +110,45 @@ abstract class BaseRepository extends SortableRepository
                 $qb->orderBy('q.'.$key, $value);
             }
         }
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     *
+     * @return Pagerfanta
+     */
+    protected function getPaginator(QueryBuilder $queryBuilder): Pagerfanta
+    {
+        return new Pagerfanta(new DoctrineORMAdapter($queryBuilder, false, false));
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param array        $sorting
+     */
+    protected function applySorting(QueryBuilder $queryBuilder, array $sorting = []): void
+    {
+        foreach ($sorting as $property => $order) {
+            if (!in_array($property, array_merge($this->_class->getAssociationNames(), $this->_class->getFieldNames()), true)) {
+                continue;
+            }
+            if (!empty($order)) {
+                $queryBuilder->addOrderBy($this->getPropertyName($property), $order);
+            }
+        }
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
+    protected function getPropertyName(string $name): string
+    {
+        if (false === strpos($name, '.')) {
+            return 'o'.'.'.$name;
+        }
+
+        return $name;
     }
 }
