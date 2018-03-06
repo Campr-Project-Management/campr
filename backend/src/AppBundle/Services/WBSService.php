@@ -28,24 +28,27 @@ class WBSService
         ];
     }
 
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
     private function getProjectChildren(Project $project)
     {
         return $project
             ->getWorkPackages()
-            ->filter(function (WorkPackage $wp) {
-                return $wp->getType() === WorkPackage::TYPE_PHASE && !$wp->getParent() ||
-                    $wp->getType() === WorkPackage::TYPE_TUTORIAL ||
-                    (
-                        $wp->getType() === WorkPackage::TYPE_TASK &&
-                        !$wp->getPhase() &&
-                        !$wp->getMilestone() &&
-                        !$wp->getParent()
-                    )
-                ;
-            })
-            ->map(function (WorkPackage $wp) {
-                return $this->getChildren($wp);
-            })
+            ->filter(
+                function (WorkPackage $wp) {
+                    return $wp->isPhase() && !$wp->getParent() ||
+                        $wp->isTutorial() ||
+                        ($wp->isTask() && !$wp->getPhase() && !$wp->getMilestone() && !$wp->getParent());
+                }
+            )
+            ->map(
+                function (WorkPackage $wp) {
+                    return $this->getChildren($wp);
+                }
+            )
             ->getValues()
         ;
     }
@@ -104,8 +107,8 @@ class WBSService
                     ->getProject()
                     ->getWorkPackages()
                     ->filter(function (WorkPackage $package) use ($wp) {
-                        return ($package->getType() === WorkPackage::TYPE_PHASE && $package->getParent() === $wp)
-                            || ($package->getType() === WorkPackage::TYPE_MILESTONE && $package->getPhase() === $wp && !$package->getParent())
+                        return (WorkPackage::TYPE_PHASE === $package->getType() && $package->getParent() === $wp)
+                            || (WorkPackage::TYPE_MILESTONE === $package->getType() && $package->getPhase() === $wp && !$package->getParent())
                         ;
                     })
                     ->map(function (WorkPackage $wp) {
@@ -119,8 +122,8 @@ class WBSService
                     ->getProject()
                     ->getWorkPackages()
                     ->filter(function (WorkPackage $package) use ($wp) {
-                        return ($package->getType() === WorkPackage::TYPE_MILESTONE && $package->getParent() === $wp)
-                            || ($package->getType() === WorkPackage::TYPE_TASK && $package->getMilestone() === $wp && !$package->getParent())
+                        return (WorkPackage::TYPE_MILESTONE === $package->getType() && $package->getParent() === $wp)
+                            || (WorkPackage::TYPE_TASK === $package->getType() && $package->getMilestone() === $wp && !$package->getParent())
                         ;
                     })
                     ->map(function (WorkPackage $wp) {
@@ -134,7 +137,7 @@ class WBSService
                     ->getProject()
                     ->getWorkPackages()
                     ->filter(function (WorkPackage $package) use ($wp) {
-                        return $package->getType() === WorkPackage::TYPE_TASK && $package->getParent() === $wp;
+                        return !$package->isSubtask() && $package->isTask() && $package->getParent() === $wp;
                     })
                     ->map(function (WorkPackage $wp) {
                         return $this->getChildren($wp);
