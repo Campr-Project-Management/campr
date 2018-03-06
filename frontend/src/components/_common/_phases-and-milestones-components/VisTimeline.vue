@@ -5,9 +5,30 @@
 <script>
 import vis from 'vis';
 import VisTimelineTooltip from './VisTimelineTooltip';
+import _ from 'lodash';
 
 export default {
-    props: ['pmData', 'withPhases'],
+    props: {
+        pmData: {
+            type: Array,
+            required: true,
+        },
+        withPhases: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+        startHour: {
+            type: String,
+            required: false,
+            default: '08:00:00',
+        },
+        endHour: {
+            type: String,
+            required: false,
+            default: '18:00:00',
+        },
+    },
     components: {
         vis,
         VisTimelineTooltip,
@@ -23,130 +44,25 @@ export default {
 
         return {
             groups: groups,
-            items: [
-                {
-                    id: 0,
-                    group: 0,
-                    content: 'Phase 1',
-                    value: '100',
-                    start: new Date(2017, 0, 1),
-                    end: new Date(2017, 1, 28),
-                    title: `<div class="task-box box">
-                                <div class="box-header">
-                                    <div class="user-info flex flex-v-center">
-                                        <img class="user-avatar" src="http://dev.campr.biz/uploads/avatars/60.jpg" alt="Phase responsable: Sandy Fanning-Choi"/>
-                                        <p class="caps">Sandy Fanning-Choi</p>
-                                    </div>
-                                    <h2 class="simple-link">Phase 1</h2>
-                                    <p class="task-id">#1</p>
-                                </div>
-                                <div class="content">
-                                    <table class="table table-small">
-                                        <thead>
-                                            <tr>
-                                                <th>Schedule</th>
-                                                <th>Start</th>
-                                                <th>Finish</th>
-                                                <th>Duration</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Base</td>
-                                                <td>01.01.2017</td>
-                                                <td>28.02.2017</td>
-                                                <td>59</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Forecast</td>
-                                                <td>01.01.2017</td>
-                                                <td>28.02.2017</td>
-                                                <td>59</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Actual</td>
-                                                <td>01.01.2017</td>
-                                                <td>28.02.2017</td>
-                                                <td>59</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="status">
-                                    <p><span>Status:</span> Finished</p>
-                                    <bar-chart position="right" :percentage="85" :color="Green" v-bind:title-right="green"></bar-chart>
-                                </div>
-                            </div>`,
-                },
-                {
-                    id: 8,
-                    group: 1,
-                    content: 'Milestone 1',
-                    start: new Date(2017, 1, 15),
-                    className: 'reached',
-                    title: `<div class="task-box box">
-                                <div class="box-header">
-                                    <div class="user-info flex flex-v-center">
-                                        <img class="user-avatar" src="http://dev.campr.biz/uploads/avatars/60.jpg" alt="Phase responsable: Sandy Fanning-Choi"/>
-                                        <p class="caps">Sandy Fanning-Choi</p>
-                                    </div>
-                                    <h2 class="simple-link">Phase 1</h2>
-                                    <p class="task-id">#1</p>
-                                </div>
-                                <div class="content">
-                                    <table class="table table-small">
-                                        <thead>
-                                            <tr>
-                                                <th>Schedule</th>
-                                                <th>Due Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Base</td>
-                                                <td>15.02.2017</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Forecast</td>
-                                                <td>15.02.2017</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Actual</td>
-                                                <td>15.02.2017</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="status">
-                                    <p><span>Status:</span> Reached</p>
-                                    <bar-chart position="right" :percentage="85" :color="Green" v-bind:title-right="green"></bar-chart>
-                                </div>
-                            </div>`,
-                },
-            ],
             container: '',
             timeline: null,
         };
     },
     computed: {
+        hiddenDates() {
+            return [
+                {start: '2018-01-06 00:00:00', end: '2018-01-08 00:00:00', repeat: 'weekly'},
+                {start: '2018-01-03 00:00:00', end: `2018-01-03 ${this.startHour}`, repeat: 'daily'},
+                {start: `2018-01-03 ${this.endHour}`, end: '2018-01-04 00:00:00', repeat: 'daily'},
+            ];
+        },
         visOptions: function() {
-            let min = new Date();
-            let max = new Date(0);
-            if (this.pmData) {
-                this.pmData.map((item) => {
-                    if (min > item.start) {
-                        min = new Date(item.start);
-                    }
-                    if (max < item.start) {
-                        max = new Date(item.start);
-                    }
-                    if (max < item.end) {
-                        max = new Date(item.end);
-                    }
-                });
-            }
+            let min = new Date(_.minBy(this.pmData, 'start'));
+            let max = new Date(_.minBy(this.pmData, 'end'));
+
             min.setFullYear(min.getFullYear() - 2);
             max.setFullYear(max.getFullYear() + 1);
+
             return {
                 width: '100%',
                 horizontalScroll: true,
@@ -158,7 +74,8 @@ export default {
                 },
                 hiddenDates: [
                     {start: '2018-01-06 00:00:00', end: '2018-01-08 00:00:00', repeat: 'weekly'},
-                    {start: '2018-01-03 18:00:00', end: '2018-01-04 08:00:00', repeat: 'daily'},
+                    {start: '2018-01-03 00:00:00', end: '2018-01-03 08:00:00', repeat: 'daily'},
+                    {start: '2018-01-03 18:00:00', end: '2018-01-04 00:00:00', repeat: 'daily'},
                 ],
                 min: min,
                 max: max,
