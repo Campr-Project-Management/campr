@@ -54,7 +54,7 @@
                             <div class="col-md-4">
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.start_time') }}</label>
-                                    <vue-timepicker v-model="schedule.startTime" hide-clear-button></vue-timepicker>
+                                    <timepicker v-model="schedule.startTime" hide-clear-button />
                                     <error
                                         v-if="validationMessages.start && validationMessages.start.length"
                                         v-for="(message, index) in validationMessages.start"
@@ -65,7 +65,7 @@
                             <div class="col-md-4">
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.finish_time') }}</label>
-                                    <vue-timepicker v-model="schedule.endTime" hide-clear-button></vue-timepicker>
+                                    <timepicker v-model="schedule.endTime" hide-clear-button />
                                     <error
                                         v-if="validationMessages.end && validationMessages.end.length"
                                         v-for="(message, index) in validationMessages.end"
@@ -142,7 +142,7 @@
                                 <div class="col-md-4">
                                     <div class="input-holder right">
                                         <label class="active">{{ translateText('label.start_time') }}</label>
-                                        <vue-timepicker v-model="agenda.startTime" hide-clear-button></vue-timepicker>
+                                        <timepicker v-model="agenda.startTime" hide-clear-button />
                                         <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
                                         <error
                                             v-if="validationMessages.meetingAgendas[index.toString()].start && validationMessages.meetingAgendas[index.toString()].start.length"
@@ -155,7 +155,7 @@
                                 <div class="col-md-4">
                                     <div class="input-holder right">
                                         <label class="active">{{ translateText('label.finish_time') }}</label>
-                                        <vue-timepicker v-model="agenda.endTime" hide-clear-button></vue-timepicker>
+                                        <timepicker v-model="agenda.endTime" hide-clear-button />
                                         <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
                                         <error
                                             v-if="validationMessages.meetingAgendas[index.toString()].end && validationMessages.meetingAgendas[index.toString()].end.length"
@@ -399,7 +399,7 @@ import datepicker from '../../_common/_form-components/Datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
 import MeetingAttachments from './MeetingAttachments';
-import VueTimepicker from '../../_common/_form-components/Timepicker';
+import Timepicker from '../../_common/_form-components/Timepicker';
 import {createFormData} from '../../../helpers/meeting';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import AlertModal from '../../_common/AlertModal.vue';
@@ -416,7 +416,7 @@ export default {
         CalendarIcon,
         MemberSearch,
         MeetingAttachments,
-        VueTimepicker,
+        Timepicker,
         MultiSelectField,
         AlertModal,
         Error,
