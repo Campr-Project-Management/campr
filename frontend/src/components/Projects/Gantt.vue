@@ -53,8 +53,8 @@ import {mapActions, mapGetters} from 'vuex';
 import router from '../../router';
 import * as d3 from 'd3';
 import $ from 'jquery';
+import moment from 'moment';
 
-const DAY_IN_MILISECONDS = 86400000;
 const MONTH_IN_MILISECONDS = 2592000000;
 
 export default {
@@ -295,185 +295,186 @@ export default {
         },
     },
     mounted() {
+        gantt.config.auto_scheduling_descendant_links = false;
+        gantt.config.columns = [
+            {name: 'text', tree: true, width: '*', resize: true},
+            {
+                name: 'start_date',
+                align: 'center',
+                resize: true,
+                width: 90,
+                template: (obj) => {
+                    if (obj.unscheduled) {
+                        return '';
+                    }
+
+                    return this.$formatDate(obj.start_date);
+                },
+            },
+            {
+                name: 'duration',
+                align: 'center',
+                width: 70,
+                template: (obj) => {
+                    if (obj.unscheduled) {
+                        return '';
+                    }
+
+                    return this.$formatNumber(obj.duration);
+                },
+            },
+        ];
+        gantt.config.drag_links = false;
+        gantt.config.show_unscheduled = true;
+        gantt.config.scale_unit = 'day';
+        gantt.config.date_scale = '%j %M %y';
         gantt.init(this.$refs.gantt_chart);
     },
     watch: {
         ganttData(value) {
-            if (value && value.length) {
-                // config
-                const startDate = new Date(this.ganttStartDate);
-                const endDate = new Date();
-                const realEndDate = new Date(this.ganttEndDate);
-                const now = new Date();
+            if (!value || !value.length) {
+                return;
+            }
 
-                if (realEndDate.getTime() > now.getTime()) {
-                    endDate.setTime(realEndDate.getTime() + MONTH_IN_MILISECONDS);
-                } else {
-                    endDate.setTime(now.getTime() + MONTH_IN_MILISECONDS);
-                }
+            // config
+            const startDate = new Date(this.ganttStartDate);
+            const endDate = new Date();
+            const realEndDate = new Date(this.ganttEndDate);
+            const now = new Date();
 
-                startDate.setTime(startDate.getTime() - MONTH_IN_MILISECONDS);
+            if (realEndDate.getTime() > now.getTime()) {
+                endDate.setTime(realEndDate.getTime() + MONTH_IN_MILISECONDS);
+            } else {
+                endDate.setTime(now.getTime() + MONTH_IN_MILISECONDS);
+            }
 
-                gantt.config.auto_scheduling_descendant_links = false;
-                gantt.config.columns = [
-                    {name: 'text', tree: true, width: '*', resize: true},
-                    {name: 'start_date', align: 'center', resize: true, width: 90},
-                    {name: 'duration', align: 'center', width: 70},
-                ];
-                gantt.config.drag_links = false;
-                gantt.config.show_unscheduled = true;
-                gantt.config.start_date = startDate;
-                gantt.config.end_date = endDate;
+            startDate.setTime(startDate.getTime() - MONTH_IN_MILISECONDS);
 
-                // init!
-                gantt.init(this.$refs.gantt_chart);
-                gantt.parse({
-                    data: this.ganttDataFormatted,
-                    links: this.ganttDataLinks,
-                });
+            gantt.config.start_date = startDate;
+            gantt.config.end_date = endDate;
 
-                this.removeAllEvents();
-                // disable link double clicks
-                this
-                    .ganttEvents
-                    .push(
-                        gantt
-                            .attachEvent('onLinkDblClick', (id, e) => false)
-                    )
-                ;
+            // init!
+            gantt.init(this.$refs.gantt_chart);
+            gantt.parse({
+                data: this.ganttDataFormatted,
+                links: this.ganttDataLinks,
+            });
 
-                // instead of opening default edit, confirm if user wants to go to the edit page
-                this
-                    .ganttEvents
-                    .push(
-                        gantt.attachEvent('onTaskDblClick', (id, e) => {
-                            id = parseInt(id, 10);
-                            const task = this.ganttData.filter(item => item.id === id)[0];
-                            const types = [
-                                'phase',
-                                'milestone',
-                                'task',
-                            ];
+            this.removeAllEvents();
+            // disable link double clicks
+            this.ganttEvents.push(
+                gantt.attachEvent('onLinkDblClick', (id, e) => false),
+            );
 
-                            gantt.confirm(this.translate('message.edit_' + types[task.type]) + ' <strong>' + task.name + '</strong>?', answer => {
-                                if (answer) {
-                                    router.push({
-                                        name: 'project-task-management-edit',
-                                        params: {
-                                            'projectId': task.name,
-                                            'taskId': id,
-                                        },
-                                    });
-                                }
+            // instead of opening default edit, confirm if user wants to go to the edit page
+            this.ganttEvents.push(
+                gantt.attachEvent('onTaskDblClick', (id, e) => {
+                    id = parseInt(id, 10);
+                    const task = this.ganttData.filter(item => item.id === id)[0];
+                    const types = [
+                        'phase',
+                        'milestone',
+                        'task',
+                    ];
+
+                    gantt.confirm(this.translate('message.edit_' + types[task.type]) + ' <strong>' + task.name +
+                        '</strong>?', answer => {
+                        if (answer) {
+                            router.push({
+                                name: 'project-task-management-edit',
+                                params: {
+                                    'projectId': task.name,
+                                    'taskId': id,
+                                },
                             });
+                        }
+                    });
 
-                            return false;
-                        })
-                    )
-                ;
+                    return false;
+                }),
+            );
 
-                this
-                    .ganttEvents
-                    .push(
-                        gantt.attachEvent('onBeforeTaskChanged', (id, mode, oldEvent) => {
-                            const task = gantt.getTask(id);
-                            const progress = parseInt(task.progress * 100, 10);
-                            const convert = gantt.date.date_to_str('%d-%m-%Y');
-                            const params = {progress};
+            this.ganttEvents.push(
+                gantt.attachEvent('onBeforeTaskChanged', (id, mode, oldEvent) => {
+                    const task = gantt.getTask(id);
+                    const progress = parseInt(task.progress * 100, 10);
+                    const convert = gantt.date.date_to_str('%d-%m-%Y');
+                    const params = {progress};
 
-                            params[this.currentDate + 'StartAt'] = convert(task.start_date);
-                            params[this.currentDate + 'FinishAt'] = convert(task.end_date);
+                    params[this.currentDate + 'StartAt'] = convert(task.start_date);
+                    params[this.currentDate + 'FinishAt'] = convert(task.end_date);
 
-                            this
-                                .$http
-                                .patch(
-                                    Routing.generate('app_api_workpackage_edit', {id}),
-                                    params
-                                )
-                                .then(
-                                    (response) => {
-                                        gantt.message(this.translate('message.saved'));
-                                        let {x, y} = gantt.getScrollState();
-
-                                        this
-                                            .getGanttData(this.$route.params.id)
-                                            .then(
-                                                () => {
-                                                    gantt.scrollTo(x, y);
-                                                },
-                                                () => {
-                                                    gantt.scrollTo(x, y);
-                                                }
-                                            );
-                                        ;
-                                    },
-                                    (response) => {
-                                        if (response.status === 202) {
-                                            gantt.message(this.translate('message.saved'));
-                                        } else {
-                                            task.progress = oldEvent.progress;
-                                            gantt.updateTask(id);
-                                            gantt.message({
-                                                'type': 'error',
-                                                'message': this.translate('message.unable_to_save'),
-                                            });
-                                        }
-                                        let {x, y} = gantt.getScrollState();
-
-                                        this
-                                            .getGanttData(this.$route.params.id)
-                                            .then(
-                                                () => {
-                                                    gantt.scrollTo(x, y);
-                                                },
-                                                () => {
-                                                    gantt.scrollTo(x, y);
-                                                }
-                                            );
-                                        ;
-                                    }
-                                )
-                            ;
-
-                            return true;
-                        })
-                    )
-                ;
-
-                this
-                    .ganttEvents
-                    .push(
-                        gantt.attachEvent('onGanttScroll', (left, top) => {
-                            if (this.dragScroll) {
-                                return;
-                            }
-
-                            let svgWidth = parseInt(this.svg.attr('width'), 10);
-                            let svgHeight = parseInt(this.svg.attr('height'), 10);
-
-                            // there's some border or padding here
-                            let scrollableAreaY = $('.gantt_ver_scroll > div').height() - $('.gantt_data_area').height() - 2;
-                            let scrollableAreaX = $('.gantt_data_area').width() - $('.gantt_task').width();
-
+                    this.$http.patch(
+                        Routing.generate('app_api_workpackage_edit', {id}),
+                        params,
+                    ).then(
+                        (response) => {
+                            gantt.message(this.translate('message.saved'));
                             let {x, y} = gantt.getScrollState();
 
-                            this
-                                .rect
-                                .attr('x', (d) => {
-                                    return (svgWidth * 0.8 / 100)
-                                        * (x / scrollableAreaX * 100);
-                                })
-                                .attr('y', (d) => {
-                                    return (svgHeight * 0.8 / 100)
-                                        * (y / scrollableAreaY * 100);
-                                })
-                            ;
-                        })
-                    )
-                ;
+                            this.getGanttData(this.$route.params.id).then(
+                                () => {
+                                    gantt.scrollTo(x, y);
+                                },
+                                () => {
+                                    gantt.scrollTo(x, y);
+                                },
+                            );
+                        },
+                        (response) => {
+                            if (response.status === 202) {
+                                gantt.message(this.translate('message.saved'));
+                            } else {
+                                task.progress = oldEvent.progress;
+                                gantt.updateTask(id);
+                                gantt.message({
+                                    'type': 'error',
+                                    'message': this.translate('message.unable_to_save'),
+                                });
+                            }
+                            let {x, y} = gantt.getScrollState();
 
-                this.initGanttMap();
-            }
+                            this.getGanttData(this.$route.params.id).then(
+                                () => {
+                                    gantt.scrollTo(x, y);
+                                },
+                                () => {
+                                    gantt.scrollTo(x, y);
+                                },
+                            );
+                        },
+                    );
+
+                    return true;
+                }),
+            );
+
+            this.ganttEvents.push(
+                gantt.attachEvent('onGanttScroll', (left, top) => {
+                    if (this.dragScroll) {
+                        return;
+                    }
+
+                    let svgWidth = parseInt(this.svg.attr('width'), 10);
+                    let svgHeight = parseInt(this.svg.attr('height'), 10);
+
+                    // there's some border or padding here
+                    let scrollableAreaY = $('.gantt_ver_scroll > div').height() - $('.gantt_data_area').height() - 2;
+                    let scrollableAreaX = $('.gantt_data_area').width() - $('.gantt_task').width();
+
+                    let {x, y} = gantt.getScrollState();
+
+                    this.rect.attr('x', (d) => {
+                        return (svgWidth * 0.8 / 100)
+                            * (x / scrollableAreaX * 100);
+                    }).attr('y', (d) => {
+                        return (svgHeight * 0.8 / 100)
+                            * (y / scrollableAreaY * 100);
+                    });
+                }),
+            );
+
+            this.initGanttMap();
         },
     },
     computed: {
@@ -483,13 +484,13 @@ export default {
         },
         ganttStartDate() {
             const key = this.currentDate + 'StartAt';
-
-            return this
+            const data = this
                 .ganttData
                 .map(item => item[key] || item.createdAt)
                 .filter(item => item !== null)
-                .reduce((a, b) => a < b ? a : b)
             ;
+
+            return _.min(data);
         },
         ganttEndDate() {
             const key = this.currentDate + 'FinishAt';
@@ -499,7 +500,7 @@ export default {
                 .filter(item => item !== null)
             ;
 
-            return data.length ? data.reduce((a, b) => a > b ? a : b) : null;
+            return _.max(data);
         },
         ganttDataLinks() {
             // {"id":"10","source":"11","target":"12","type":"1"}
@@ -531,7 +532,7 @@ export default {
             return this
                 .ganttData
                 .map(item => {
-                    let out = {
+                    let task = {
                         id: item.id,
                         text: item.name,
                         progress: item.progress
@@ -539,45 +540,36 @@ export default {
                             : 0,
                         open: true,
                         type: ganttType2WorkPackageType[item.type],
+                        unscheduled: true,
+                        start_date: '',
+                        duration: '',
                     };
 
                     let start = item[this.currentDate + 'StartAt'];
-                    let end = item[this.currentDate + 'FinishAt'];
+                    let duration = item[this.currentDate + 'DurationDays'];
 
-                    if (start && end) {
-                        let dtStart = new Date(start);
-                        let dtEnd = new Date(end);
-                        out.start_date = start.split('-').reverse().join('-');
-                        out.duration = ((dtEnd.getTime() - dtStart.getTime()) / DAY_IN_MILISECONDS);
-                    } else if (item.createdAt && item.createdAt.match(/^(\d{4}-\d{2}-\d{2})/)) {
-                        out.start_date = item
-                            .createdAt
-                            .match(/^(\d{4}-\d{2}-\d{2})/)[0]
-                            .split('-')
-                            .reverse()
-                            .join('-')
-                        ;
-                        out.duration = 1;
-                    } else {
-                        out.unscheduled = true;
+                    if (start) {
+                        task.start_date = moment(start).format('DD-MM-YYYY');
+                        task.duration = duration;
+                        task.unscheduled = false;
                     }
 
                     switch (item.type) {
                     case 0: // phase
-                        out.parent = item.parent;
+                        task.parent = item.parent;
                         break;
                     case 1: // milestone
-                        out.parent = item.parent || item.phase;
+                        task.parent = item.parent || item.phase;
                         break;
                     case 2: // task
-                        out.parent = item.parent || item.milestone || item.phase;
+                        task.parent = item.parent || item.milestone || item.phase;
                         break;
                     }
 
-                    if (!out.parent) {
-                        delete out.parent;
+                    if (!task.parent) {
+                        delete task.parent;
                     }
-                    return out;
+                    return task;
                 })
                 // this has to be sorted so gantt doesn't cry
                 .sort((a, b) => {

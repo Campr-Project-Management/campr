@@ -68,100 +68,119 @@ const routes = [
         path: '/dashboard',
         name: 'dashboard',
         component: Dashboard,
-        meta: {requiresAuth: true},
+        meta: {requiresAuth: true, title: 'Dashboard'},
     },
     {
         path: '/projects',
         name: 'projects',
         component: Projects,
+        meta: {title: 'Projects'},
     },
     {
         path: '/projects/create/step/1',
         name: 'projects-create-1',
         component: ProjectCreateStep1,
+        meta: {title: 'Project Create Step 1'},
     },
     {
         path: '/projects/create/step/2',
         name: 'projects-create-2',
         component: ProjectCreateStep2,
+        meta: {title: 'Project Create Step 2'},
     },
     {
         path: '/projects/create/step/3',
         name: 'projects-create-3',
         component: ProjectCreateStep3,
+        meta: {title: 'Project Create Step 3'},
     },
     {
         path: '/projects/:id',
         component: ViewProject,
+        meta: {title: 'View Project'},
         children: [
             {
                 path: 'dashboard',
                 component: ProjectDashboard,
                 name: 'project-dashboard',
+                meta: {title: 'Project Dashboard'},
             },
             {
                 path: 'contract',
                 component: ProjectContract,
                 name: 'project-contract',
+                meta: {title: 'Project Contract'},
             },
             {
                 path: 'organization',
                 component: ProjectOrganization,
                 name: 'project-organization',
+                meta: {title: 'Project Organization'},
             },
             {
                 path: 'organization/view-member/:userId',
                 component: ViewMember,
                 name: 'project-organization-view-member',
+                meta: {title: 'Project View Member'},
             },
             {
                 path: 'organization/edit',
                 component: EditOrganization,
                 name: 'project-organization-edit',
+                meta: {title: 'Project Edit Organization'},
             },
             {
                 path: 'task-management',
                 component: TaskManagement,
+                meta: {title: 'Project Task Management'},
                 children: [
                     {
                         path: 'list',
                         component: List,
                         name: 'project-task-management-list',
+                        meta: {title: 'Project Task Management List'},
                     },
                     {
                         path: 'list/grid',
                         component: ListGrid,
                         name: 'project-task-management-list-grid',
+                        meta: {title: 'Project Task Management Grid'},
                     },
                     {
                         path: 'view/:taskId',
                         component: View,
                         name: 'project-task-management-view',
+                        meta: {title: 'Project Task Management View Task'},
                     },
                     {
                         path: 'add',
                         component: Create,
                         name: 'project-task-management-create',
+                        meta: {title: 'Project Task Management Create'},
                     },
                     {
                         path: 'edit/:taskId',
                         component: Create,
                         name: 'project-task-management-edit',
+                        meta: {title: 'Project Task Management Edit'},
                     },
                     {
                         path: 'add-label',
                         component: AddLabel,
                         name: 'project-task-management-add-label',
+                        meta: {title: 'Project Task Management Add Label'},
                     },
                     {
                         path: 'edit-label/:labelId',
                         component: AddLabel,
                         name: 'project-task-management-edit-label',
+                        meta: {title: 'Project Task Management Edit Label'},
                     },
                     {
                         path: 'edit-labels',
                         component: EditLabels,
                         name: 'project-task-management-edit-labels',
+                        meta: {title: 'Project Task Management Edit Labels'},
                     },
                 ],
             },
@@ -169,146 +188,175 @@ const routes = [
                 path: 'phases-and-milestones',
                 component: ProjectPhasesMilestones,
                 name: 'project-phases-and-milestones',
+                meta: {title: 'Phases and Milestones'},
             },
             {
                 path: 'phases-and-milestones/create-phase',
                 component: PhaseCreate,
                 name: 'project-phases-create-phase',
+                meta: {title: 'Create Phase'},
             },
             {
                 path: 'phases-and-milestones/edit-phase/:phaseId',
                 component: PhaseCreate,
                 name: 'project-phases-edit-phase',
+                meta: {title: 'Edit Phase'},
             },
             {
                 path: 'phases-and-milestones/phase/:phaseId',
                 component: PhaseView,
                 name: 'project-phases-view-phase',
+                meta: {title: 'View Phase'},
             },
             {
                 path: 'phases-and-milestones/create-milestone',
                 component: MilestoneCreate,
                 name: 'project-milestones-create-milestone',
+                meta: {title: 'Create Milestone'},
             },
             {
                 path: 'phases-and-milestones/edit-milestone/:milestoneId',
                 component: MilestoneCreate,
                 name: 'project-milestones-edit-milestone',
+                meta: {title: 'Edit Milestone'},
             },
             {
                 path: 'phases-and-milestones/milestone/:milestoneId',
                 component: MilestoneView,
                 name: 'project-phases-view-milestone',
+                meta: {title: 'View Milestone'},
             },
             {
                 path: 'risks-and-opportunities',
                 component: ProjectRisksOpportunities,
                 name: 'project-risks-and-opportunities',
+                meta: {title: 'Risk & Opportunities'},
             },
             {
                 path: 'risks-and-opportunities/create-risk',
                 component: RiskCreate,
                 name: 'project-risks-create-risk',
+                meta: {title: 'Create Risk'},
             },
             {
                 path: 'risks-and-opportunities/risk/:riskId',
                 component: RiskView,
                 name: 'project-risks-view-risk',
+                meta: {title: 'View Risk'},
             },
             {
                 path: 'risks-and-opportunities/edit-risk/:riskId',
                 component: RiskCreate,
                 name: 'project-risks-edit-risk',
+                meta: {title: 'Edit Risk'},
             },
             {
                 path: 'risks-and-opportunities/create-opportunity',
                 component: OpportunityCreate,
                 name: 'project-opportunities-create-opportunity',
+                meta: {title: 'Create Opportunity'},
             },
             {
                 path: 'risks-and-opportunities/opportunity/:opportunityId',
                 component: OpportunityView,
                 name: 'project-opportunities-view-opportunity',
+                meta: {title: 'View Opportunity'},
             },
             {
                 path: 'risks-and-opportunities/edit-opportunity/:opportunityId',
                 component: OpportunityCreate,
                 name: 'project-opportunities-edit-opportunity',
+                meta: {title: 'Edit Opportunity'},
             },
             {
                 path: 'meetings',
                 component: ProjectMeetings,
                 name: 'project-meetings',
+                meta: {title: 'Project Meetings'},
             },
             {
                 path: 'meetings/create-meeting',
                 component: MeetingCreate,
                 name: 'project-meetings-create-meeting',
+                meta: {title: 'Create Meeting'},
             },
             {
                 path: 'meetings/edit-meeting/:meetingId',
                 component: EditMeeting,
                 name: 'project-meetings-edit-meeting',
+                meta: {title: 'Edit Meeting'},
             },
             {
                 path: 'meetings/view-meeting/:meetingId',
                 component: ViewMeeting,
                 name: 'project-meetings-view-meeting',
+                meta: {title: 'View Meeting'},
             },
             {
                 path: 'gantt-chart',
                 component: Gantt,
                 name: 'project-gantt-chart',
+                meta: {title: 'Gantt Chart'},
             },
             {
                 path: 'todos',
                 component: ProjectTodos,
                 name: 'project-todos',
+                meta: {title: 'Todos'},
             },
             {
                 path: 'todos/create-todo',
                 component: TodoCreate,
                 name: 'project-todos-create-todo',
+                meta: {title: 'Create Todo'},
             },
             {
                 path: 'todos/edit-todo/:todoId',
                 component: TodoCreate,
                 name: 'project-todos-edit-todo',
+                meta: {title: 'Edit Todo'},
             },
             {
                 path: 'todos/view-todo/:todoId',
                 component: ViewTodo,
                 name: 'project-todos-view-todo',
+                meta: {title: 'View Todo'},
             },
             {
                 path: 'external-costs',
                 component: ExternalCosts,
                 name: 'project-external-costs',
+                meta: {title: 'External Costs'},
             },
             {
                 path: 'internal-costs',
                 component: InternalCosts,
                 name: 'project-internal-costs',
+                meta: {title: 'Internal Costs'},
             },
             {
                 path: 'infos',
                 component: ProjectInfos,
                 name: 'project-infos',
+                meta: {title: 'Project Infos'},
             },
             {
                 path: 'infos/new',
                 component: InfoCreate,
                 name: 'project-infos-new',
+                meta: {title: 'Create Info'},
             },
             {
                 path: 'infos/edit/:infoId',
                 component: InfoCreate,
                 name: 'project-infos-edit',
+                meta: {title: 'Edit Info'},
             },
             {
                 path: 'infos/view/:infoId',
                 component: ViewInfo,
                 name: 'project-infos-view',
+                meta: {title: 'View Info'},
             },
             {
                 path: 'decisions',
@@ -384,6 +432,16 @@ const routes = [
     },
 ];
 
-export default new VueRouter({
+const router = new VueRouter({
     routes,
 });
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.title) {
+        document.title = to.meta.title;
+    }
+
+    next();
+});
+
+export default router;
