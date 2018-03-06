@@ -5,11 +5,11 @@
             <div class="flex">
                 <div v-for="taskStatus in taskStatuses"
                      :key="taskStatus.id"
-                     v-if="taskStatuses && tasksByStatuses && taskStatus && tasksByStatuses[taskStatus.id]">
-                    <board-tasks-column v-bind:tasks="tasksByStatuses[taskStatus.id].items"
-                                        v-bind:tasksNumber="tasksByStatuses[taskStatus.id].totalItems"
-                                        v-bind:status="taskStatus">
-                    </board-tasks-column>
+                     v-if="tasksByStatuses[taskStatus.id]">
+                    <board-tasks-column
+                            :tasks="tasksByStatuses[taskStatus.id].items"
+                            :totalCount="tasksByStatuses[taskStatus.id].totalItems"
+                            :status="taskStatus"/>
                 </div>
             </div>
         </div>
