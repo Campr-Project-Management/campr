@@ -562,6 +562,7 @@ export default {
     @import '../../../css/_variables';
     @import '../../../css/_mixins';
     @import '../../../css/page-section';
+    @import '../../../css/common';
 
     .team-list {
         overflow: hidden;
