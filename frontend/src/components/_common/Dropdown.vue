@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import $ from 'jquery';
 import 'jquery.nicescroll/jquery.nicescroll.js';
 
 export default {
@@ -44,8 +45,8 @@ export default {
     mounted() {
         this.dropdownItemHeight = this.$refs['btn-dropdown'].clientHeight;
         $(this.$el).find('.dropdown-menu').css('height', (3 * this.dropdownItemHeight) + 'px');
-        window.$(document).ready(function() {
-            window.$('.nicescroll').niceScroll({
+        $(document).ready(function() {
+            $('.nicescroll').niceScroll({
                 autohidemode: false,
             });
         });
