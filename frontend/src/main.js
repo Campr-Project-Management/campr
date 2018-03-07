@@ -12,6 +12,7 @@ import App from './App';
 import VueResource from 'vue-resource';
 import {Vue2Dragula} from 'vue2-dragula';
 import Vueditor from 'vueditor';
+import VueditorLang from 'vueditor/dist/language/lang.en';
 import './css/vueditor.css';
 import VueCookie from 'vue-cookie';
 import VeeValidate from 'vee-validate';
@@ -53,7 +54,7 @@ let config = {
     emoji: ['1f600', '1f601', '1f602', '1f923', '1f603'],
 
     // default is Chinese, to set to English use lang: 'en'
-    lang: 'en',
+    lang: VueditorLang,
 
     // mode options: default | iframe
     mode: 'default',
