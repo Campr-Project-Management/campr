@@ -117,7 +117,7 @@ abstract class BaseRepository extends SortableRepository
      *
      * @return Pagerfanta
      */
-    protected function getPaginator(QueryBuilder $queryBuilder): Pagerfanta
+    protected function getPaginator(QueryBuilder $queryBuilder)
     {
         return new Pagerfanta(new DoctrineORMAdapter($queryBuilder, false, false));
     }
@@ -126,7 +126,7 @@ abstract class BaseRepository extends SortableRepository
      * @param QueryBuilder $queryBuilder
      * @param array        $sorting
      */
-    protected function applySorting(QueryBuilder $queryBuilder, array $sorting = []): void
+    protected function applySorting(QueryBuilder $queryBuilder, array $sorting = [])
     {
         foreach ($sorting as $property => $order) {
             if (!in_array($property, array_merge($this->_class->getAssociationNames(), $this->_class->getFieldNames()), true)) {
@@ -143,7 +143,7 @@ abstract class BaseRepository extends SortableRepository
      *
      * @return string
      */
-    protected function getPropertyName(string $name): string
+    protected function getPropertyName(string $name)
     {
         if (false === strpos($name, '.')) {
             return 'o'.'.'.$name;
