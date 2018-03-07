@@ -482,7 +482,7 @@ class WorkPackageRepository extends BaseRepository
      *
      * @return Pagerfanta
      */
-    public function createBoardViewPaginator(Project $project, array $criteria = [], array $sorting = [])
+    public function createBoardViewPaginator(Project $project, array $criteria = [], array $sorting = []): Pagerfanta
     {
         $qb = $this->createQueryBuilder('o');
 
@@ -855,7 +855,7 @@ class WorkPackageRepository extends BaseRepository
      * @param QueryBuilder $qb
      * @param array        $criteria
      */
-    private function applyCriteria(QueryBuilder $qb, array $criteria = []): void
+    private function applyCriteria(QueryBuilder $qb, array $criteria = [])
     {
         if (isset($criteria['phase'])) {
             $qb
@@ -937,7 +937,7 @@ class WorkPackageRepository extends BaseRepository
      *
      * @return QueryBuilder
      */
-    private function addNotSubtaskWhere(QueryBuilder $qb): QueryBuilder
+    private function addNotSubtaskWhere(QueryBuilder $qb)
     {
         $expr = $qb->expr();
         $qb->andWhere(
