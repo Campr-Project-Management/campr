@@ -302,7 +302,8 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../css/_variables.scss';
+    @import '../../css/_variables';
+    @import '../../css/common';
 
     .task-range-slider {
         margin: 1em 0;
@@ -466,16 +467,30 @@
 </style>
 
 <style lang="scss">
-    @import '../../css/_variables.scss';
+    @import '../../css/_variables';
+    @import '../../css/common';
 
     .task-schedule-bar {
         &.overall-tooltip {
-            max-width: 440px;
+            max-width: none;
             padding: 0;
+            display: inline-block;
+
+            table {
+                width: 440px;
+                thead {
+                    tr {
+                        th {
+                            height: 4em;
+                            padding: 0 3em;
+                        }
+                    }
+                }
+            }
 
             .tooltip-content {
                 background-color: $mainColor;
-                box-shadow: 0 0 8px -2px #000;
+                box-shadow: 0 0 30px -5px #000;
                 color: $lighterColor;
                 padding: 5px 0;
                 text-align: left;
@@ -484,14 +499,16 @@
             &.tooltip-target-attached-top {
                 &:after {
                     border-color: transparent transparent $mainColor transparent;
-                    top: -5px;
+                    top: -7px;
+                    border-width: 0 12px 12px 12px;
                 }
             }
 
             &.tooltip-target-attached-bottom {
                 &:after {
                     border-color: transparent transparent $mainColor transparent;
-                    top: -5px;
+                    top: -7px;
+                    border-width: 0 12px 12px 12px;
                 }
             }
         }

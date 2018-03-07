@@ -97,7 +97,6 @@
 <script>
 import BarChart from '../_common/_charts/BarChart';
 import $ from 'jquery';
-import 'jquery.nicescroll/jquery.nicescroll.js';
 import moment from 'moment';
 import TaskScheduleBar from './TaskScheduleBar.vue';
 import TaskCostBar from './TaskCostBar.vue';

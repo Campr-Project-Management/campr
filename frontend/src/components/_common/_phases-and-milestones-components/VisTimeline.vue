@@ -1,15 +1,25 @@
 <template>
-    <div id="vis"></div>
+    <div>
+        <div id="vis" ref="timeline"></div>
+
+        <template>
+            <div v-for="item in items" :key="item.id" :class="'tooltip' + item.id" v-show="false">
+                <tooltip :item="item.data" :type="getType(item)"/>
+            </div>
+        </template>
+    </div>
 </template>
 
 <script>
 import vis from 'vis';
-import VisTimelineTooltip from './VisTimelineTooltip';
+import Tooltip from '../../Projects/PhasesAndMilestones/Tooltip.vue';
 import _ from 'lodash';
+
+const TYPE_PHASE = 0;
 
 export default {
     props: {
-        pmData: {
+        items: {
             type: Array,
             required: true,
         },
@@ -31,7 +41,7 @@ export default {
     },
     components: {
         vis,
-        VisTimelineTooltip,
+        Tooltip,
     },
     data: function() {
         let groups = [];
@@ -44,9 +54,21 @@ export default {
 
         return {
             groups: groups,
-            container: '',
             timeline: null,
+            tooltips: {},
         };
+    },
+    methods: {
+        isPhase(item) {
+            return item.data.type === TYPE_PHASE;
+        },
+        getType(item) {
+            if (this.isPhase(item)) {
+                return 'phase';
+            }
+
+            return 'milestone';
+        },
     },
     computed: {
         hiddenDates() {
@@ -57,8 +79,8 @@ export default {
             ];
         },
         visOptions: function() {
-            let min = new Date(_.minBy(this.pmData, 'start'));
-            let max = new Date(_.minBy(this.pmData, 'end'));
+            let min = new Date(_.minBy(this.items, 'start'));
+            let max = new Date(_.minBy(this.items, 'end'));
 
             min.setFullYear(min.getFullYear() - 2);
             max.setFullYear(max.getFullYear() + 1);
@@ -95,18 +117,29 @@ export default {
                 },
             };
         },
+        visItems() {
+            return this.items.map((item) => {
+                let $tooltip = document.getElementsByClassName('tooltip' + item.id)[0];
+                item.title = $tooltip ? $tooltip.innerHTML : item.title;
+                return item;
+            });
+        },
     },
     watch: {
-        pmData: function() {
-            if (this.timeline) {
-                this.timeline.destroy();
-            }
-            this.timeline = new vis.Timeline(this.container, this.pmData, this.groups, this.visOptions);
+        items: function() {
+            this.$nextTick(() => {
+                if (this.timeline) {
+                    this.timeline.destroy();
+                }
+
+                this.timeline = new vis.Timeline(this.$refs.timeline, this.visItems, this.groups, this.visOptions);
+            });
         },
     },
     mounted() {
-        this.container = document.getElementById('vis');
-        this.timeline = new vis.Timeline(this.container, this.pmData, this.groups, this.visOptions);
+        this.$nextTick(() => {
+            this.timeline = new vis.Timeline(this.$refs.timeline, this.visItems, this.groups, this.visOptions);
+        });
     },
 };
 </script>
@@ -118,6 +151,7 @@ export default {
     @import '../../../../node_modules/vis/dist/vis-timeline-graph2d.min.css';
     @import '../../../css/box';
     @import '../../../css/box-task';
+    @import '../../../css/common';
 
     .vis-timeline,
     .vis-panel.vis-bottom,
@@ -276,7 +310,7 @@ export default {
         border: none;
         @include box-shadow(0, 0, 30px, $darkColor);
         pointer-events: auto;
-        width: 420px;
+        display: inline-block;
 
         .box {
             margin: 0;
