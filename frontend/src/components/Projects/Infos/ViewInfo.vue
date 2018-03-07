@@ -109,7 +109,6 @@ export default {
     },
     created() {
         this.getInfo(this.$route.params.infoId);
-        console.log('aaa', this.info);
     },
     methods: {
         ...mapActions(['getInfo', 'deleteInfo']),
