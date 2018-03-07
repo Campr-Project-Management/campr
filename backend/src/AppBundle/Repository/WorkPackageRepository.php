@@ -482,7 +482,7 @@ class WorkPackageRepository extends BaseRepository
      *
      * @return Pagerfanta
      */
-    public function createBoardViewPaginator(Project $project, array $criteria = [], array $sorting = []): Pagerfanta
+    public function createBoardViewPaginator(Project $project, array $criteria = [], array $sorting = [])
     {
         $qb = $this->createQueryBuilder('o');
 
