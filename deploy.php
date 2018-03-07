@@ -64,8 +64,8 @@ set('cron_domain', function () {
 set('bin/mysql', function () {
     return '`which mysql` -u{{mysql_user}}{{mysql_password_usage}} {{mysql_database}}';
 });
-set('mysql_password_usage', function() {
-   return empty(get('mysql_password')) ? '' : ' -p{{mysql_password}}';
+set('mysql_password_usage', function () {
+    return empty(get('mysql_password')) ? '' : ' -p{{mysql_password}}';
 });
 set('bin/mysqldump', function () {
     return '`which mysqldump` -u{{mysql_user}}{{mysql_password_usage}} --routines --databases `mysql -u{{mysql_user}}{{mysql_password_usage}} -Bse "show databases like \'{{mysql_database}}%\'"`';
@@ -232,10 +232,10 @@ task('server:provision', function () {
     }
 });
 task('project:build:frontend', function () {
-    run('cd {{release_path}}/frontend && npm install && npm run build');
+    run('cd {{release_path}}/frontend && npm install --no-package-lock && npm run build');
 });
 task('project:build:ssr', function () {
-    run('cd {{release_path}}/ssr && npm install && npm run build');
+    run('cd {{release_path}}/ssr && npm install --no-package-lock && npm run build');
 });
 task('hivebot:deploy-whois', function () {
     set('localUser', sprintf(
