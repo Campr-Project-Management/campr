@@ -96,6 +96,7 @@
 
 <script>
 import BarChart from '../_common/_charts/BarChart';
+import $ from 'jquery';
 import 'jquery.nicescroll/jquery.nicescroll.js';
 import moment from 'moment';
 import TaskScheduleBar from './TaskScheduleBar.vue';
@@ -109,8 +110,8 @@ export default {
         TaskCostBar,
     },
     created() {
-        window.$(document).ready(function() {
-            window.$('.nicescroll').niceScroll({
+        $(document).ready(function() {
+            $('.nicescroll').niceScroll({
                 autohidemode: false,
             });
         });

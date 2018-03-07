@@ -15,17 +15,17 @@ export default {
         RecentTasks,
     },
     created() {
-//        window.$(document).ready(function() {
-//            const progressBar = window.$('.filled');
+//        $(document).ready(function() {
+//            const progressBar = $('.filled');
 //            let speed = 1000;
 //
 //            progressBar.each(function(i, elem) {
-//                const $this = window.$(elem);
+//                const $this = $(elem);
 //                const $percentageNumber = $this.parents('.box').find('.number');
 //
 //                $this.animate({'width': $this.data('number') + '%'}, speed);
 //
-//                window.$({Counter: 0})
+//                $({Counter: 0})
 //                .animate({Counter: $this.data('number')}, {
 //                    duration: speed,
 //                    step: function() {

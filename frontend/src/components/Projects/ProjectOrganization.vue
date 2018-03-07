@@ -123,7 +123,11 @@
                                     <div class="user-avatar-wrapper"><img :src="item.userAvatar" /></div>
                                 </td>
                                 <td class="text-center switchers">
-                                    <switches @click.native="updateUserOption(item, 'resource')" v-model="showInResources" :selected="item.showInResources"></switches>
+                                    <switches
+                                        @click.native="updateUserOption(item, 'resource')"
+                                        emit-on-mount="false"
+                                        v-model="showInResources"
+                                        :selected="item.showInResources" />
                                 </td>
                                 <td v-if="item.company">{{ item.company }}</td><td v-else>-</td>
                                 <td>{{ item.userFullName }}</td>
@@ -348,9 +352,17 @@ export default {
             validationMessages: 'validationMessages',
         }),
         pages: function() {
+            if (!this.projectUsers || !this.projectUsers.totalItems) {
+                return 1;
+            }
+
             return Math.ceil(this.projectUsers.totalItems / this.perPage);
         },
         perPage: function() {
+            if (!this.projectUsers || !this.projectUsers.pageSize) {
+                return 1;
+            }
+
             return this.projectUsers.pageSize;
         },
     },
@@ -365,7 +377,6 @@ export default {
             showInOrg: '',
             showInResources: '',
             inDistribution: '',
-            pages: 0,
             activePage: 1,
             showTeam: {},
             showModal: false,
@@ -375,9 +386,6 @@ export default {
         };
     },
     watch: {
-        projectUsers(value) {
-            this.pages = Math.ceil(this.projectUsers.totalItems / this.perPage);
-        },
         gridList(value) {
             this.getProjectUsers({id: this.$route.params.id, page: this.activePage, users: this.gridList});
         },
@@ -397,7 +405,6 @@ export default {
 
 <style lang="scss">
     @import '../../css/page-section';
-    @import '../../css/_variables';
 
     .modal .modal-inner {
         width: 600px;
@@ -410,8 +417,9 @@ export default {
 </style>
 
 <style scoped lang="scss">
-    @import '../../css/_variables';
-    @import '../../css/_mixins';
+    @import '../../css/common';
+    @import '../../css/variables';
+    @import '../../css/mixins';
 
     .modal {
         .modal-title {

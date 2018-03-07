@@ -23,7 +23,9 @@
 </template>
 
 <script>
+import $ from 'jquery';
 import 'jquery.nicescroll/jquery.nicescroll.js';
+
 export default {
     props: ['title', 'options', 'selectedOptions'],
     computed: {
@@ -61,8 +63,8 @@ export default {
             $(this.$el).find('.multiselect-content').css('height', 3*this.multiSelectItemHeight + 'px');
         },
         addNiceSCrollEvent() {
-            window.$(document).ready(() => {
-                window.$('.nicescroll').niceScroll({
+            $(document).ready(() => {
+                $('.nicescroll').niceScroll({
                     autohidemode: false,
                 });
             });

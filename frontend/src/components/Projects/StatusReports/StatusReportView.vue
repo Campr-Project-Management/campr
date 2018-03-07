@@ -441,6 +441,7 @@ import {mapGetters, mapActions} from 'vuex';
 import VisTimeline from '../../_common/_phases-and-milestones-components/VisTimeline';
 import Vue from 'vue';
 import moment from 'moment';
+import $ from 'jquery';
 import 'jquery-match-height/jquery.matchHeight.js';
 import VueScrollbar from 'vue2-scrollbar';
 import TaskRangeSlider from '../../_common/_task-components/TaskRangeSlider';
@@ -488,7 +489,7 @@ export default {
             return !isNaN(diff) ? diff : '-';
         },
         onResizeSameHeightDiv: function() {
-            window.$('.same-height').matchHeight();
+            $('.same-height').matchHeight();
         },
         translateText: function(text) {
             return this.translate(text);

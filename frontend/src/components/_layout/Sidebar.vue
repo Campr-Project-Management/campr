@@ -97,7 +97,7 @@
 <script>
 import Vue from 'vue';
 import {mapActions, mapGetters} from 'vuex';
-import 'jquery.nicescroll/jquery.nicescroll.js';
+import $ from 'jquery';
 
 export default {
     name: 'sidebar',
@@ -112,8 +112,8 @@ export default {
     },
     mounted() {
         // nicescroll
-        window.$(document).ready(function() {
-            window.$('.nicescroll-side').niceScroll({
+        $(document).ready(function() {
+            $('.nicescroll-side').niceScroll({
                 autohidemode: false,
             });
         });

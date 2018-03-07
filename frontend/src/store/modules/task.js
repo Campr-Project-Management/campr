@@ -376,7 +376,6 @@ const actions = {
 };
 
 const mutations = {
-    mutations,
     /**
      * Sets tasks to state
      * @param {Object} state
