@@ -726,6 +726,7 @@ hr {
         text-align: center;
         line-height: 32px;
         cursor: pointer;
+        display: inline-block;
         @include transition(background-color, 0.2s, ease-in);
 
         &:hover {
@@ -873,6 +874,7 @@ hr {
 .scroll-wrapper {
     display: inline-block;
     white-space: nowrap;
+    padding-bottom: 1em;
 
     .table {
         width: auto;

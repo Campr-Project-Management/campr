@@ -180,6 +180,7 @@ export default {
 
 <style scoped lang="scss">
     @import '../../../css/page-section';
+    @import '../../../css/common';
 
     .btn-rounded {
         margin-left: 20px;

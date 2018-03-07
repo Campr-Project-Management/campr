@@ -166,6 +166,7 @@ import Error from '../../_common/_messages/Error.vue';
 import MemberSearch from '../../_common/MemberSearch';
 
 export default {
+    name: 'project-phase-create',
     components: {
         InputField,
         SelectField,
@@ -179,9 +180,6 @@ export default {
             'getProjectUsers', 'getWorkPackageStatuses', 'getProjectPhases',
             'createProjectPhase', 'getProjectPhase', 'editProjectPhase', 'emptyValidationMessages',
         ]),
-        visibleSubphase: function() {
-            this.visibleSubphase = !this.visibleSubphase;
-        },
         translateText: function(text) {
             return this.translate(text);
         },
@@ -213,7 +211,7 @@ export default {
                 forecastFinishAt: moment(this.schedule.forecastEndDate).format('DD-MM-YYYY'),
                 responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
                 workPackageStatus: this.details.status ? this.details.status.key: null,
-                parent: this.visibleSubphase ? this.details.parent ? this.details.parent.key : null : null,
+                parent: !this.visibleSubphase ? this.details.parent ? this.details.parent.key : null : null,
             };
             this.editProjectPhase(data);
         },
@@ -282,6 +280,7 @@ export default {
 <style scoped lang="scss">
     @import '../../../css/_mixins';
     @import '../../../css/_variables';
+    @import '../../../css/common';
 
     .title {
         position: relative;
