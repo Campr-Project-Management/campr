@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import store from './store';
-import Vuex from 'vuex';
 import router from './router';
 import {sync} from 'vuex-router-sync';
 import VueCharts from 'vue-charts';
@@ -41,7 +40,6 @@ sync(store, router);
 Vue.use(require('vue-moment'));
 Vue.use(VueCharts);
 Vue.use(VueCookie);
-Vue.use(Vuex);
 
 Vue.http.headers.common['Authorization'] = 'Bearer ' + window.user.api_token;
 // This is required for Symfony to actually be able to respond properly to Request::isXmlHttpRequest()
