@@ -17,7 +17,7 @@
 .vueditor-header {
     position: absolute;
     color: #8794C4;
-    top: 16px;
+    top: 10px;
     left: 20px;
     z-index: 2;
     font-size: 11px;
@@ -30,9 +30,10 @@
     border: none !important;
     background: #191E37;
     margin-top: 20px;
-    padding: 0 20px 10px;
+    /*padding: 0 20px 10px;*/
     min-height: 220px;
 }
+
 .ve-toolbar {
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -44,6 +45,7 @@
     border-bottom: 1px solid #646EA0;
     display: block;
     text-align: right;
+    background: none !important;
 }
 .ve-toolbar>div {
     position: relative;
@@ -271,7 +273,10 @@
 .ve-design iframe {
     width: 100%;
     height: 100%;
-    display: block
+    display: block;
+}
+.ve-design iframe body {
+    color: #8794C4 !important;
 }
 .ve-code {
     position: relative;

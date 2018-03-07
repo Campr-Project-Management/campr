@@ -11,6 +11,7 @@
 </template>
 
 <script>
+    import $ from 'jquery';
     import 'ion-rangeslider/js/ion.rangeSlider.js';
     import 'ion-rangeslider/css/ion.rangeSlider.css';
     import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
@@ -19,7 +20,7 @@
     export default {
         props: ['message', 'min', 'max', 'from', 'to', 'type'],
         mounted() {
-            const $this = window.$('#slider' + this._uid);
+            const $this = $('#slider' + this._uid);
             $this.ionRangeSlider({
                 type: this.type,
                 min: +moment(this.min, 'YYYY-MM-DD'),

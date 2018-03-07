@@ -53,6 +53,7 @@
 <script>
 import VueTypeahead from 'vue-typeahead';
 import {mapActions, mapGetters} from 'vuex';
+import $ from 'jquery';
 import 'jquery.nicescroll/jquery.nicescroll.js';
 import _ from 'lodash';
 
@@ -212,8 +213,8 @@ export default {
         }
 
         // nicescroll
-        window.$(document).ready(function() {
-            window.$('.nicescroll').niceScroll({
+        $(document).ready(function() {
+            $('.nicescroll').niceScroll({
                 autohidemode: false,
             });
         });
