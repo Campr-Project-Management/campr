@@ -15,6 +15,7 @@
 </template>
 
 <script>
+    import $ from 'jquery';
     import 'ion-rangeslider/js/ion.rangeSlider.js';
     import 'ion-rangeslider/css/ion.rangeSlider.css';
     import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
@@ -81,7 +82,7 @@
                     return;
                 }
 
-                let $el = window.$(this.$refs.base);
+                let $el = $(this.$refs.base);
                 let options = {
                     type: 'single',
                     min: 0,
@@ -104,7 +105,7 @@
                     return;
                 }
 
-                let $el = window.$(this.$refs.forecast);
+                let $el = $(this.$refs.forecast);
                 let options = {
                     type: 'single',
                     min: 0,
@@ -127,7 +128,7 @@
                     return;
                 }
 
-                let $el = window.$(this.$refs.actual);
+                let $el = $(this.$refs.actual);
                 let options = {
                     type: 'single',
                     min: 0,

@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import $ from 'jquery';
 import 'jquery.nicescroll/jquery.nicescroll.js';
 import _ from 'lodash';
 
