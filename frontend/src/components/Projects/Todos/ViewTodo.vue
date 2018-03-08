@@ -59,9 +59,7 @@
                     <!-- /// End Header /// -->
                 </div>
 
-                <div class="entry-body">
-                    {{todo.description}}
-                </div>
+                <div class="entry-body" v-html="todo.description"></div>
             </div>
             <div class="col-md-6">
                 <div class="create-meeting page-section">
