@@ -1,23 +1,13 @@
 <template>
     <div class="page-section">
-        <div class="row">
-            <div class="header flex flex-space-between">
-                <div class="flex">
-                    <h1>{{ translateText('message.external_costs') }}</h1>
-                </div>
+        <div class="header flex flex-space-between">
+            <div class="flex">
+                <h1>{{ translateText('message.external_costs') }}</h1>
             </div>
         </div>
-        <div class="row">
-            <chart
-                title="message.by_phase"
-                :data="externalCostsGraphData.byPhase"/>
-        </div>
+        <chart title="message.by_phase" :data="externalCostsGraphData.byPhase"/>
         <hr class="double">
-        <div class="row">
-            <chart
-                    title="message.by_department"
-                    :data="externalCostsGraphData.byDepartment"/>
-        </div>
+        <chart title="message.by_department" :data="externalCostsGraphData.byDepartment"/>
     </div>
 </template>
 
