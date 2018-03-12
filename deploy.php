@@ -123,6 +123,27 @@ server('qa', '195.201.29.2')
     ->set('mysql_password', 'campr')
     ->set('mysql_database', 'campr')
 ;
+localServer('qa-local')
+    ->user('root')
+    ->stage('qa-local')
+    ->set('env', 'qa')
+    ->set('branch', 'master')
+    ->set('domain', 'qa.campr.biz')
+    ->set('mysql_user', 'root')
+    ->set('mysql_password', 'campr')
+    ->set('mysql_database', 'campr')
+;
+localServer('prod-local')
+    ->user('root')
+    ->stage('prod-local')
+    ->set('env', 'prod')
+    ->set('branch', 'production')
+    ->set('domain', 'campr.biz')
+    ->set('mysql_user', 'root')
+    ->set('mysql_password', 'campr')
+    ->set('mysql_database', 'campr')
+;
+
 
 // Set tasks
 task('pemFile', function () {
