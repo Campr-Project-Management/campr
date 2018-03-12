@@ -248,6 +248,7 @@ export default {
 <style scoped lang="scss">
     @import '../../../css/_mixins';
     @import '../../../css/_variables';
+    @import '../../../css/common';
 
     .disabledpicker {
         pointer-events: none;

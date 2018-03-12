@@ -58,6 +58,9 @@ export default {
         label: 'label',
         validationMessages: 'validationMessages',
     }),
+    beforeDestroy() {
+        this.emptyValidationMessages();
+    },
     watch: {
         label(value) {
             this.title = this.label.title;

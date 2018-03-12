@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>{{ message.attachments }}</h3>
+        <h3>{{ message.attachments }}aa</h3>
         <input
             id="attachments"
             type="file"
@@ -102,7 +102,7 @@ export default {
 <style lang="scss">
     @import '../../../../css/_variables';
     @import '../../../../css/_mixins';
-    
+
     .attachments {
         margin: 0 0 20px;
     }

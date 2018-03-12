@@ -644,7 +644,11 @@ class WorkPackage
     {
         $start = $this->getScheduledStartAt();
         $end = $this->getScheduledFinishAt();
-        if (!$start || !$end || $start > $end) {
+        if (!$end) {
+            $end = new \DateTime();
+        }
+
+        if (!$start || $start > $end) {
             return 0;
         }
 
@@ -715,7 +719,11 @@ class WorkPackage
     {
         $start = $this->getForecastStartAt();
         $end = $this->getForecastFinishAt();
-        if (!$start || !$end || $start > $end) {
+        if (!$end) {
+            $end = new \DateTime();
+        }
+
+        if (!$start || $start > $end) {
             return 0;
         }
 
@@ -786,7 +794,11 @@ class WorkPackage
     {
         $start = $this->getActualStartAt();
         $end = $this->getActualFinishAt();
-        if (!$start || !$end || $start > $end) {
+        if (!$end) {
+            $end = new \DateTime();
+        }
+
+        if (!$start || $start > $end) {
             return 0;
         }
 
@@ -2284,5 +2296,37 @@ class WorkPackage
         }
 
         return $totalChildrenDuration;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTask(): bool
+    {
+        return $this->getType() === self::TYPE_TASK;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPhase(): bool
+    {
+        return $this->getType() === self::TYPE_PHASE;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTutorial(): bool
+    {
+        return $this->getType() === self::TYPE_TUTORIAL;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSubtask(): bool
+    {
+        return $this->getParent() && $this->isTask();
     }
 }

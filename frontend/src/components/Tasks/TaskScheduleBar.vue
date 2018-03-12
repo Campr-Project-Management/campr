@@ -50,6 +50,7 @@
 </template>
 
 <script>
+    import $ from 'jquery';
     import 'ion-rangeslider/js/ion.rangeSlider.js';
     import 'ion-rangeslider/css/ion.rangeSlider.css';
     import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
@@ -191,7 +192,7 @@
                     return;
                 }
 
-                let $el = window.$(this.$refs.base);
+                let $el = $(this.$refs.base);
                 let options = {
                     type: 'double',
                     min: this.min,
@@ -216,7 +217,7 @@
                     return;
                 }
 
-                let $el = window.$(this.$refs.forecast);
+                let $el = $(this.$refs.forecast);
                 let options = {
                     type: 'double',
                     min: this.min,
@@ -241,7 +242,7 @@
                     return;
                 }
 
-                let $el = window.$(this.$refs.actual);
+                let $el = $(this.$refs.actual);
                 let options = {
                     type: 'double',
                     min: this.min,
@@ -301,7 +302,8 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../css/_variables.scss';
+    @import '../../css/_variables';
+    @import '../../css/common';
 
     .task-range-slider {
         margin: 1em 0;
@@ -465,16 +467,30 @@
 </style>
 
 <style lang="scss">
-    @import '../../css/_variables.scss';
+    @import '../../css/_variables';
+    @import '../../css/common';
 
     .task-schedule-bar {
         &.overall-tooltip {
-            max-width: 440px;
+            max-width: none;
             padding: 0;
+            display: inline-block;
+
+            table {
+                width: 440px;
+                thead {
+                    tr {
+                        th {
+                            height: 4em;
+                            padding: 0 3em;
+                        }
+                    }
+                }
+            }
 
             .tooltip-content {
                 background-color: $mainColor;
-                box-shadow: 0 0 8px -2px #000;
+                box-shadow: 0 0 30px -5px #000;
                 color: $lighterColor;
                 padding: 5px 0;
                 text-align: left;
@@ -483,14 +499,16 @@
             &.tooltip-target-attached-top {
                 &:after {
                     border-color: transparent transparent $mainColor transparent;
-                    top: -5px;
+                    top: -7px;
+                    border-width: 0 12px 12px 12px;
                 }
             }
 
             &.tooltip-target-attached-bottom {
                 &:after {
                     border-color: transparent transparent $mainColor transparent;
-                    top: -5px;
+                    top: -7px;
+                    border-width: 0 12px 12px 12px;
                 }
             }
         }
