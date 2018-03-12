@@ -256,7 +256,7 @@ task('server:provision', function () {
     }
 });
 task('project:build:frontend_and_ssr', function () {
-    run("echo -ne '>cd {{release_path}}/frontend && yarn install && yarn run build>cd {{release_path}}/ssr && yarn install && yarn run build' | {{bin/rush}} -D '>' {}");
+    run("echo -ne '>cd {{release_path}}/frontend && yarn install && yarn run build>cd {{release_path}}/ssr && yarn install && yarn run build' | {{bin/rush}} -D '>' {} -e");
 });
 task('hivebot:deploy-whois', function () {
     set('localUser', sprintf(
