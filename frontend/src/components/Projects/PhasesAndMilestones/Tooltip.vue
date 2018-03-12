@@ -95,7 +95,7 @@
                 }
 
                 if (moment(this.item.actualFinishAt).diff(moment(this.item.forecastFinishAt), 'days') > 0 &&
-                    isMilestone()) {
+                    this.isMilestone()) {
                     klass = 'column-alert';
                 }
 
