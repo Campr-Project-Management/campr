@@ -310,16 +310,6 @@
             </div>
         </modal>
         <!-- /// Internal costs Modal /// -->
-        <!-- /// Edit Schedule Modal /// -->
-        <modal v-if="showEditScheduleModal" @close="showEditScheduleModal = false; $emit('input', showEditScheduleModal);">
-            <p class="modal-title">{{ translateText('title.schedule.edit') }}</p>
-            <schedule v-model="editScheduleObj" v-bind:editSchedule="editScheduleObj" />
-            <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditScheduleModal = false; $emit('input', showEditScheduleModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="changeSchedule()" class="btn-rounded">{{ translateText('button.edit_schedule') }} +</a>
-            </div>
-        </modal>
-        <!-- /// Edit Schedule Modal /// -->
         <!-- /// Close task Modal /// -->
         <modal v-if="showCloseTaskModal" @close="showCloseTaskModal = false; $emit('input', showCloseTaskModal);">
             <p class="modal-title">{{ translateText('message.confirm_close_task') }}</p>
@@ -554,6 +544,9 @@ export default {
                 taskId: this.$route.params.taskId,
             })
                 .then(response => this.successHandler(this.showEditScheduleModal, response.body.error));
+        },
+        onCancel() {
+            showEditScheduleModal = false; $emit('input', showEditScheduleModal);
         },
         closeTask() {
             let data = {

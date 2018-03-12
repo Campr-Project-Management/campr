@@ -141,7 +141,7 @@ class WorkPackageController extends ApiController
             ->getProject()
             ->getFileSystems()
             ->filter(function (FileSystem $fs) {
-                return $fs->getDriver() === FileSystem::LOCAL_ADAPTER;
+                return FileSystem::LOCAL_ADAPTER === $fs->getDriver();
             })
             ->first()
         ;
@@ -167,6 +167,9 @@ class WorkPackageController extends ApiController
 
         try {
             if ($form->isValid()) {
+                /** @var WorkPackage $wp */
+                $wp = $form->getData();
+                dump($wp);
 
                 /** @var Cost $originalCost */
                 foreach ($originalCosts as $originalCost) {
