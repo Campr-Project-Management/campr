@@ -31,8 +31,6 @@ class RiskControllerTest extends BaseController
         $this->assertContains('name="admin[impact]"', $crawler->html());
         $this->assertContains('id="admin_cost"', $crawler->html());
         $this->assertContains('name="admin[cost]"', $crawler->html());
-        $this->assertContains('id="admin_budget"', $crawler->html());
-        $this->assertContains('name="admin[budget]"', $crawler->html());
         $this->assertContains('id="admin_delay"', $crawler->html());
         $this->assertContains('name="admin[delay]"', $crawler->html());
         $this->assertContains('id="admin_priority"', $crawler->html());
@@ -68,7 +66,6 @@ class RiskControllerTest extends BaseController
         $this->assertContains('The title field should not be blank', $crawler->html());
         $this->assertContains('The description field should not be blank', $crawler->html());
         $this->assertContains('The cost field should not be blank', $crawler->html());
-        $this->assertContains('The budget field should not be blank', $crawler->html());
         $this->assertContains('The delay field should not be blank', $crawler->html());
         $this->assertContains('The priority field should not be blank', $crawler->html());
     }
@@ -94,7 +91,6 @@ class RiskControllerTest extends BaseController
         $form['admin[description]'] = 'risk-description';
         $form['admin[cost]'] = 1;
         $form['admin[currency]'] = 'USD';
-        $form['admin[budget]'] = 1;
         $form['admin[delay]'] = 1;
         $form['admin[delayUnit]'] = 'choices.days';
         $form['admin[priority]'] = 'risk-priority';
@@ -143,7 +139,6 @@ class RiskControllerTest extends BaseController
             ->setDescription('risk-description')
             ->setCost(1)
             ->setCurrency('USD')
-            ->setBudget(1)
             ->setDelay(1)
             ->setDelayUnit('days')
             ->setPriority('risk-priority')
@@ -192,8 +187,6 @@ class RiskControllerTest extends BaseController
         $this->assertContains('name="admin[impact]"', $crawler->html());
         $this->assertContains('id="admin_cost"', $crawler->html());
         $this->assertContains('name="admin[cost]"', $crawler->html());
-        $this->assertContains('id="admin_budget"', $crawler->html());
-        $this->assertContains('name="admin[budget]"', $crawler->html());
         $this->assertContains('id="admin_delay"', $crawler->html());
         $this->assertContains('name="admin[delay]"', $crawler->html());
         $this->assertContains('id="admin_priority"', $crawler->html());
@@ -227,7 +220,6 @@ class RiskControllerTest extends BaseController
         $form['admin[title]'] = '';
         $form['admin[description]'] = '';
         $form['admin[cost]'] = '';
-        $form['admin[budget]'] = '';
         $form['admin[delay]'] = '';
         $form['admin[priority]'] = '';
 
@@ -236,7 +228,6 @@ class RiskControllerTest extends BaseController
         $this->assertContains('The title field should not be blank', $crawler->html());
         $this->assertContains('The description field should not be blank', $crawler->html());
         $this->assertContains('The cost field should not be blank', $crawler->html());
-        $this->assertContains('The budget field should not be blank', $crawler->html());
         $this->assertContains('The delay field should not be blank', $crawler->html());
         $this->assertContains('The priority field should not be blank', $crawler->html());
 

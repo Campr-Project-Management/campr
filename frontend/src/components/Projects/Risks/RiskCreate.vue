@@ -120,9 +120,10 @@
                         <div class="form-group">
                             <div class="col-md-4">
                                 <input-field
-                                    type="text"
-                                    v-model="cost" v-bind:content="cost"
-                                    v-bind:label="translateText('placeholder.potential_cost')" />
+                                    type="number"
+                                    v-model.number="cost"
+                                    :content="cost"
+                                    :label="translateText('placeholder.potential_cost')" />
                                 <error
                                     v-if="validationMessages.cost && validationMessages.cost.length"
                                     v-for="message in validationMessages.cost"
@@ -130,10 +131,10 @@
                             </div>
                             <div class="col-md-2">
                                 <select-field
-                                    v-bind:title="translateText('label.currency')"
-                                    v-bind:options="currencyLabel"
+                                    :title="translateText('label.currency')"
+                                    :options="currencyLabel"
                                     v-model="details.currency"
-                                    v-bind:currentOption="details.currency" />
+                                    :currentOption="details.currency" />
                                 <error
                                     v-if="validationMessages.currency && validationMessages.currency.length"
                                     v-for="message in validationMessages.currency"
@@ -142,9 +143,10 @@
                             <div class="col-md-4">
                                 <input-field
                                     class="time-delay"
-                                    type="text"
-                                    v-model="timeDelay" v-bind:content="timeDelay"
-                                    v-bind:label="translateText('placeholder.potential_time_delay')" />
+                                    type="number"
+                                    v-model.number="timeDelay"
+                                    :content="timeDelay"
+                                    :label="translateText('placeholder.potential_time_delay')" />
                                 <error
                                     v-if="validationMessages.delay && validationMessages.delay.length"
                                     v-for="message in validationMessages.delay"
@@ -167,15 +169,18 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <h4 class="light-color">
-                                    {{ translateText('message.budget' )}}: <b>{{ calculatedBudget }}</b>
-                                    <button type="button" class="btn btn-icon" v-tooltip.right-start="translateText('message.budget_calculation_risk')">
+                                    {{ translateText('message.budget' )}}:
+                                    <b>{{ potentialCost | money({symbol: currencySymbol}) }}</b>
+                                    <button type="button" class="btn btn-icon"
+                                            v-tooltip.right-start="translateText('message.budget_calculation_risk')">
                                         <tooltip-icon fill="light-fill"></tooltip-icon>
                                     </button>
                                 </h4>
                             </div>
                             <div class="col-md-6">
                                 <h4 class="light-color">
-                                    {{ translateText('message.delay') }}: <b>{{ calculatedTime }}</b>
+                                    {{ translateText('message.delay') }}:
+                                    <b>{{ potentialDelay | formatNumber }} {{ timeUnit }}</b>
                                     <button type="button" class="btn btn-icon" v-tooltip.right-start="translateText('message.time_calculation_risk')">
                                         <tooltip-icon fill="light-fill"></tooltip-icon>
                                     </button>
@@ -348,25 +353,23 @@ export default {
                     title: item.title,
                 });
             });
-            let data = {
+
+            return {
                 title: this.title,
                 description: this.$refs.description.getContent(),
                 impact: this.riskImpact,
                 probability: this.riskProbability,
-                budget: this.calculateBudget(),
                 cost: this.cost,
                 currency: this.details.currency && this.details.currency.key ? this.details.currency.key : '',
                 delay: this.timeDelay,
                 delayUnit: this.details.time && this.details.time.key ? this.details.time.key : '',
                 priority: this.priority ? this.priority.value : null,
                 riskStrategy: this.details.strategy ? this.details.strategy.key : null,
-                status: this.details.status ? this.details.status.key : null,
+                riskStatus: this.details.status ? this.details.status.key : null,
                 dueDate: moment(this.schedule.dueDate).format('DD-MM-YYYY'),
                 responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
                 measures: measuresTmp,
             };
-
-            return data;
         },
         saveRisk: function() {
             let data = this.getFormData();
@@ -377,20 +380,6 @@ export default {
             let data = this.getFormData();
             data.id = this.$route.params.riskId;
             this.editProjectRisk(data);
-        },
-        calculateBudget: function() {
-            let currency = this.details.currency && this.details.currency.key ? this.details.currency.label : '';
-            let riskVal = parseInt(this.riskProbability ? this.riskProbability : 0);
-            let costVal = parseFloat(this.cost ? this.cost : 0);
-            this.calculatedBudget = currency + ' ' + (riskVal * costVal).toFixed(2);
-
-            return (riskVal * costVal).toFixed(2);
-        },
-        calculateTime: function() {
-            let unit = this.details.time && this.details.time.key ? this.details.time.label : '';
-            let riskVal = parseInt(this.riskProbability ? this.riskProbability : 0);
-            let timeVal = parseFloat(this.timeDelay ? this.timeDelay : 0);
-            this.calculatedTime = (riskVal * timeVal).toFixed(2) + ' ' + unit;
         },
         updateGridView() {
             let index = 0;
@@ -460,6 +449,24 @@ export default {
             risk: 'currentRisk',
             validationMessages: 'validationMessages',
         }),
+        currencySymbol() {
+            return this.details.currency && this.details.currency.key ? this.details.currency.label : null;
+        },
+        probability() {
+            let value = parseFloat(this.riskProbability);
+            return isNaN(value) ? 0 : value;
+        },
+        potentialCost: function() {
+            let cost = parseFloat(this.cost);
+            return (this.probability / 100) * (isNaN(cost) ? 0 : cost);
+        },
+        timeUnit() {
+            return this.details.time && this.details.time.key ? this.details.time.label : null;
+        },
+        potentialDelay() {
+            let delay = parseFloat(this.timeDelay);
+            return (this.probability / 100) * (isNaN(delay) ? 0 : delay);
+        },
     },
     created() {
         this.getProjectRiskAndOpportunitiesStats(this.$route.params.id);
@@ -479,12 +486,10 @@ export default {
     data: function() {
         return {
             priority: null,
-            calculatedBudget: '0.00',
-            calculatedTime: '0.00',
             title: '',
             description: '',
-            cost: '',
-            timeDelay: '',
+            cost: 0,
+            timeDelay: 0,
             days: '',
             measureCost: '',
             schedule: {
@@ -524,19 +529,6 @@ export default {
         };
     },
     watch: {
-        cost(value) {
-            this.calculateBudget();
-        },
-        timeDelay(value) {
-            this.calculateTime();
-        },
-        details: {
-            handler: function(value) {
-                this.calculateBudget();
-                this.calculateTime();
-            },
-            deep: true,
-        },
         risk(value) {
             this.title = this.risk.title;
             this.$refs.description.setContent(this.risk.description);
@@ -577,13 +569,6 @@ export default {
                     return val;
                 });
             }
-        },
-        riskProbability: function(value) {
-            this.calculateBudget();
-            this.calculateTime();
-            this.updateGridView();
-            this.riskProbability = value;
-            return value;
         },
         riskImpact: function(value) {
             this.updateGridView();
