@@ -32,16 +32,16 @@
                     <td>{{ translate('table_header_cell.base') }}</td>
                     <td v-if="isPhase">{{ item.scheduledStartAt | date }}</td>
                     <td>{{ item.scheduledFinishAt | date }}</td>
-                    <td v-if="isPhase">{{ item.scheduledDurationDays > 0 ? $formatNumber(item.scheduledDurationDays) :
-                        '-' }}
+                    <td v-if="isPhase">
+                        {{ item.scheduledDurationDays > 0 ? $formatNumber(item.scheduledDurationDays) : '-' }}
                     </td>
                 </tr>
                 <tr :class="forecastColorClass">
                     <td>{{ translate('table_header_cell.forecast') }}</td>
                     <td v-if="isPhase">{{ item.forecastStartAt | date }}</td>
                     <td>{{ item.forecastFinishAt | date }}</td>
-                    <td v-if="isPhase">{{ item.forecastDurationDays > 0 ? $formatNumber(item.forecastDurationDays) : '-'
-                        }}
+                    <td v-if="isPhase">
+                        {{ item.forecastDurationDays > 0 ? $formatNumber(item.forecastDurationDays) : '-' }}
                     </td>
                 </tr>
                 <tr :class="actualColorClass" v-if="isPhase">
