@@ -120,8 +120,8 @@
                         </div>
 
                         <div class="ro-info">
-                            <p>{{ translateText('message.budget_saved') }}: <b>{{ risk.currency }} {{ risk.budget }}</b></p>
-                            <p>{{ translateText('message.time_saved') }}: <b>{{ risk.delay }} {{ translateText(risk.delayUnit) }}</b></p>
+                            <p>{{ translateText('message.potential_cost') }}: <b>{{ risk.potentialCost | money({symbol: risk.currency}) }}</b></p>
+                            <p>{{ translateText('message.time_saved') }}: <b>{{ risk.potentialDelay | formatNumber }} {{ translateText(risk.delayUnit) }}</b></p>
                             <p>{{ translateText('message.due_date') }}: <b>{{ risk.dueDate | moment('DD.MM.YYYY') }}</b></p>
                         </div>
 

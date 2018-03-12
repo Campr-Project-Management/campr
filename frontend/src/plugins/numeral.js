@@ -1,68 +1,129 @@
-import num from 'numeral';
+import num from 'accounting';
 
 export default {
     install(Vue) {
+        num.settings = settings.en;
+
         if (typeof window.user === 'object' &&
-            typeof window.user.locale === 'string') {
-            num.locale(window.user.locale);
+            typeof window.user.locale === 'string' &&
+            settings[window.user.locale]) {
+            num.settings = settings[window.user.locale];
         }
 
-        Vue.formatMoney = (amount) => {
-            return formatMoney(amount);
+        Vue.formatMoney = (amount, options) => {
+            return formatMoney(amount, options);
         };
 
-        Vue.formatNumber = (amount) => {
-            return formatNumber(amount);
+        Vue.formatNumber = (amount, options) => {
+            return formatNumber(amount, options);
         };
 
-        Vue.prototype.$formatMoney = function(amount) {
-            return formatMoney(amount);
+        Vue.prototype.$formatMoney = function(amount, options) {
+            return formatMoney(amount, options);
         };
 
-        Vue.prototype.$formatNumber = function(value) {
-            return formatNumber(value);
+        Vue.prototype.$formatNumber = function(value, options) {
+            return formatNumber(value, options);
         };
 
         Vue.mixin({
             filters: {
-                formatMoney(amount) {
-                    return formatMoney(amount);
+                formatMoney(amount, options = {}) {
+                    return formatMoney(amount, options);
                 },
-                formatNumber(value) {
-                    return formatNumber(value);
+                money(amount, options) {
+                    return formatMoney(amount, options);
+                },
+                formatNumber(value, options) {
+                    return formatNumber(value, options);
                 },
             },
         });
     },
 };
 
+const currencyCodeToSymbolMap = {
+    USD: '$',
+    EUR: '€',
+    GBP: '£',
+};
+
+const settings = {
+    en: {
+        currency: {
+            symbol: '$',   // default currency symbol is '$'
+            format: '%s%v', // controls output: %s = symbol, %v = value/number (can be object: see below)
+            decimal: '.',  // decimal point separator
+            thousand: ',',  // thousands separator
+            precision: 2,   // decimal places
+        },
+        number: {
+            precision: 0,  // default precision on numbers is 0
+            thousand: ',',
+            decimal: '.',
+        },
+    },
+    de: {
+        currency: {
+            symbol: '€',   // default currency symbol is '$'
+            format: '%s%v', // controls output: %s = symbol, %v = value/number (can be object: see below)
+            decimal: '.',  // decimal point separator
+            thousand: ',',  // thousands separator
+            precision: 2,   // decimal places
+        },
+        number: {
+            precision: 0,  // default precision on numbers is 0
+            thousand: ',',
+            decimal: '.',
+        },
+    },
+};
+
+/**
+ * Convert currency code to currency symbol
+ * @param {string} code
+ * @return {string}
+ */
+function currencyCodeToSymbol(code) {
+    if (Object.values(currencyCodeToSymbolMap).indexOf(code) >= 0) {
+        return code;
+    }
+
+    if (!code || !currencyCodeToSymbolMap[code]) {
+        code = 'USD';
+    }
+
+    return currencyCodeToSymbolMap[code];
+}
+
 /**
  * Format money
  * @param {number} amount
+ * @param {object} options
  * @return {string}
  */
-function formatMoney(amount) {
+function formatMoney(amount, options = {}) {
     if (amount == null || isNaN(amount)) {
         return '';
     }
 
-    let format = '$0,0.00';
-    if (Math.ceil(amount) === amount) {
-        format = '$0,0';
+    if (options.symbol) {
+        options.symbol = currencyCodeToSymbol(options.symbol);
     }
 
-    return num(amount).format(format);
+    return num.formatMoney(amount, options);
 }
 
 /**
  * Format number
  * @param {number} value
+ * @param {object} options
  * @return {string}
  */
-function formatNumber(value) {
+function formatNumber(value, options = {}) {
     if (value == null || isNaN(value)) {
         return value;
     }
 
-    return num(value).format();
+    return num.formatNumber(value, options);
 }
