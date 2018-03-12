@@ -11,8 +11,6 @@ set('shared_dirs', [
     'var/logs',
     'backend/vendor',
     'web/uploads',
-//    'frontend/node_modules',
-//    'ssr/node_modules',
     'var/profiler',
 ]);
 set('writable_dirs', ['var/cache', '../../shared/var/logs', '../../shared/web/uploads', '../../shared/var/profiler']);
