@@ -2,24 +2,24 @@
     <div class="input-holder">
         <template v-if="type === 'textarea'">
             <textarea
-                    v-on:input="updateValue($event.target.value)"
+                    @input="onInput($event.target.value)"
                     class="float-label"
                     :id="'input' + _uid"
-                    :value="content"
+                    :value="value"
                     :disabled="disabled">
             </textarea>
         </template>
         <template v-else>
             <input
-                    v-on:input="updateValue($event.target.value)"
+                    @input="onInput($event.target.value)"
                     :type="type"
                     class="float-label"
                     :id="'input' + _uid"
-                    :value="content"
+                    :value="value"
                     :disabled="disabled"
                     :style="css"/>
         </template>
-        <label v-bind:class="{ 'active': content }">{{ label }}</label>
+        <label v-bind:class="{ 'active': value }">{{ label }}</label>
     </div>
 </template>
 
@@ -89,7 +89,7 @@
             $('select').next().removeClass();
         },
         methods: {
-            updateValue: function(value) {
+            onInput(value) {
                 this.$emit('input', value);
             },
         },
