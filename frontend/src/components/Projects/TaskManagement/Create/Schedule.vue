@@ -9,29 +9,32 @@
                         id="manual-schedule"
                         name="schedule-planning"
                         type="radio"
-                        value="manual"
-                        v-on:click="toggleManualSchedule"
-                        v-bind:checked="visibleManualSchedule">
+                        @click="toggleAutomaticSchedule"
+                        :checked="!value.automatic">
                     <label for="manual-schedule">{{ message.manual_schedule }}</label>
+
                     <input
                         id="automatic-schedule"
-                        type="radio"
                         name="schedule-planning"
-                        v-on:click="toggleAutomaticSchedule"
-                        v-bind:checked="visibleAutomaticSchedule">
+                        type="radio"
+                        @click="toggleAutomaticSchedule"
+                        :checked="value.automatic">
                     <label for="automatic-schedule">{{ message.automatic_schedule }}</label>
                 </div>
             </div>
         </div>
 
-        <div v-show="visibleManualSchedule">
+        <div v-if="!value.automatic">
             <span class="note">{{ message.manual_schedule_note }}</span>
             <div class="row">
                 <div class="form-group">
                     <div class="col-md-6">
                         <div class="input-holder right">
                             <label class="active">{{ label.base_start_date }}</label>
-                            <datepicker v-model="schedule.baseStartDate" format="dd-MM-yyyy" />
+                            <datepicker
+                                    :value="value.baseStartDate"
+                                    format="dd-MM-yyyy"
+                                    @input="onInput('baseStartDate', $event)"/>
                             <calendar-icon fill="middle-fill"/>
                         </div>
                         <error
@@ -42,7 +45,10 @@
                     <div class="col-md-6">
                         <div class="input-holder right">
                             <label class="active">{{ label.base_end_date }}</label>
-                            <datepicker v-model="schedule.baseEndDate" format="dd-MM-yyyy" />
+                            <datepicker
+                                    :value="value.baseEndDate"
+                                    format="dd-MM-yyyy"
+                                    @input="onInput('baseEndDate', $event)"/>
                             <calendar-icon fill="middle-fill"/>
                         </div>
                         <error
@@ -57,7 +63,10 @@
                     <div class="col-md-6">
                         <div class="input-holder right">
                             <label class="active">{{ label.forecast_start_date }}</label>
-                            <datepicker v-model="schedule.forecastStartDate" format="dd-MM-yyyy" />
+                            <datepicker
+                                    :value="value.forecastStartDate"
+                                    format="dd-MM-yyyy"
+                                    @input="onInput('forecastStartDate', $event)"/>
                             <calendar-icon fill="middle-fill"/>
                         </div>
                         <error
@@ -68,7 +77,10 @@
                     <div class="col-md-6">
                         <div class="input-holder right">
                             <label class="active">{{ label.forecast_end_date }}</label>
-                            <datepicker v-model="schedule.forecastEndDate" format="dd-MM-yyyy" />
+                            <datepicker
+                                    :value="value.forecastEndDate"
+                                    format="dd-MM-yyyy"
+                                    @input="onInput('forecastEndDate', $event)"/>
                             <calendar-icon fill="middle-fill"/>
                         </div>
                         <error
@@ -80,31 +92,33 @@
             </div>
         </div>           
 
-        <div v-show="visibleAutomaticSchedule">
+        <div v-if="value.automatic">
             <span class="note">{{ message.automatic_schedule_note }}</span>
             <div>
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-4">
                             <multi-select-field
-                                v-bind:title="label.select_predecessors"
-                                v-bind:options="predecessorsForSelect"
-                                v-bind:selectedOptions="schedule.predecessors"
-                                v-model="schedule.predecessors" />
+                                :title="label.select_predecessors"
+                                :options="predecessorsForSelect"
+                                :selectedOptions="value.predecessors"
+                                :value="value.predecessors"
+                                @input="onInput('predecessors', $event)"/>
                         </div>
                         <div class="col-md-4">
                             <multi-select-field
-                                v-bind:title="label.select_successors"
-                                v-bind:options="successorsForSelect"
-                                v-bind:selectedOptions="schedule.successors"
-                                v-model="schedule.successors" />
+                                :title="label.select_successors"
+                                :options="successorsForSelect"
+                                :selectedOptions="value.successors"
+                                :value="value.successors"
+                                @input="onInput('successors', $event)"/>
                         </div>
                         <div class="col-md-4">
                             <input-field
-                                type="text"
-                                v-bind:label="label.duration_in_days"
-                                v-bind:content="schedule.durationInDays"
-                                v-model="schedule.durationInDays" />
+                                type="number"
+                                :label="label.duration_in_days"
+                                :value="value.duration"
+                                @input="onInput('duration', $event)"/>
                             <error
                                 v-if="validationMessages.duration && validationMessages.duration.length"
                                 v-for="message in validationMessages.duration"
@@ -118,7 +132,10 @@
                         <div class="col-md-6">
                             <div class="input-holder right">
                                 <label class="active">{{ label.forecast_start_date }}</label>
-                                <datepicker v-model="schedule.forecastStartDate" format="dd-MM-yyyy" />
+                                <datepicker
+                                        :value="value.forecastStartDate"
+                                        format="dd-MM-yyyy"
+                                        @input="onInput('forecastStartDate', $event)"/>
                                 <calendar-icon fill="middle-fill"/>
                             </div>
                             <error
@@ -129,7 +146,10 @@
                         <div class="col-md-6">
                             <div class="input-holder right">
                                 <label class="active">{{ label.forecast_end_date }}</label>
-                                <datepicker v-model="schedule.forecastEndDate" format="dd-MM-yyyy" />
+                                <datepicker
+                                        :value="value.forecastEndDate"
+                                        format="dd-MM-yyyy"
+                                        @input="onInput('forecastEndDate', $event)"/>
                                 <calendar-icon fill="middle-fill"/>
                             </div>
                             <error
@@ -154,7 +174,12 @@ import Switches from '../../../3rdparty/vue-switches';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
-    props: ['editSchedule'],
+    props: {
+        value: {
+            type: Object,
+            required: true,
+        },
+    },
     components: {
         InputField,
         MultiSelectField,
@@ -165,43 +190,15 @@ export default {
     },
     methods: {
         ...mapActions(['getWorkPackages']),
-        toggleManualSchedule: function() {
-            this.visibleManualSchedule = !this.visibleManualSchedule;
-            this.visibleAutomaticSchedule = !this.visibleManualSchedule;
-            this.schedule.automatic = this.visibleAutomaticSchedule;
+        toggleAutomaticSchedule() {
+            this.$emit('input', Object.assign(this.value, {automatic: !this.value.automatic}));
         },
-        toggleAutomaticSchedule: function() {
-            this.visibleAutomaticSchedule = !this.visibleAutomaticSchedule;
-            this.visibleManualSchedule = !this.visibleAutomaticSchedule;
-            this.schedule.automatic = this.visibleAutomaticSchedule;
-        },
-        togglePredecessor: function() {
-            this.visiblePredecessor = !this.visiblePredecessor;
-            this.visibleSuccessor = !this.visibleSuccessor;
-        },
-        toggleSuccessor: function() {
-            this.visibleSuccessor = !this.visibleSuccessor;
-            this.visiblePredecessor = !this.visiblePredecessor;
-        },
-    },
-    watch: {
-        schedule: {
-            handler: function(value) {
-                this.$emit('input', value);
-            },
-            deep: true,
-        },
-        editSchedule(value) {
-            this.schedule = this.editSchedule;
-            this.visibleAutomaticSchedule = this.schedule.automatic;
-            this.visibleManualSchedule = !this.schedule.automatic;
+        onInput(field, value) {
+            this.$emit('input', Object.assign(this.value, {[field]: value}));
         },
     },
     created() {
         this.getWorkPackages(this.$route.params.id);
-        this.schedule = this.editSchedule;
-        this.visibleAutomaticSchedule = this.schedule.automatic;
-        this.visibleManualSchedule = !this.schedule.automatic;
     },
     computed: {
         ...mapGetters({
@@ -210,19 +207,19 @@ export default {
             validationMessages: 'validationMessages',
         }),
         predecessorsForSelect: function() {
-            if (!this.schedule.successors || !this.schedule.successors.length) {
+            if (!this.value.successors || !this.value.successors.length) {
                 return this.tasksForSelect;
             }
 
-            let successors = new Set(this.schedule.successors);
+            let successors = new Set(this.value.successors);
             return [...new Set([...this.tasksForSelect].filter(item => !successors.has(item)))];
         },
         successorsForSelect: function() {
-            if (!this.schedule.predecessors || !this.schedule.predecessors.length) {
+            if (!this.value.predecessors || !this.value.predecessors.length) {
                 return this.tasksForSelect;
             }
 
-            let predecessors = new Set(this.schedule.predecessors);
+            let predecessors = new Set(this.value.predecessors);
             return [...new Set([...this.tasksForSelect].filter(item => !predecessors.has(item)))];
         },
     },
@@ -247,20 +244,6 @@ export default {
                 duration_in_days: this.translate('label.duration_in_days'),
                 has_predecessor: this.translate('label.has_predecessor'),
                 has_successor: this.translate('label.has_successor'),
-            },
-            visibleManualSchedule: true,
-            visibleAutomaticSchedule: false,
-            visiblePredecessor: true,
-            visibleSuccessor: false,
-            schedule: {
-                baseStartDate: new Date(),
-                baseEndDate: new Date(),
-                forecastStartDate: new Date(),
-                forecastEndDate: new Date(),
-                automatic: false,
-                successors: [],
-                predecessors: [],
-                durationInDays: 0,
             },
         };
     },
