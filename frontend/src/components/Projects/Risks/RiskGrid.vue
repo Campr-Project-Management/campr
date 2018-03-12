@@ -10,7 +10,11 @@
             </div>
         </div>
         <div class="ro-grid-items clearfix">
-            <div @click="clickable ? updateItems(item) : null" v-for="item in gridData" v-bind:style="{cursor: !clickable ? 'default' : ''}" class="ro-grid-item" :class="[{active: item.isActive}, item.type]"><span>{{ item.number ? item.number : '' }}</span></div>
+            <div
+                    @click="clickable ? updateItems(item) : null"
+                    v-for="item in gridData"
+                    v-bind:style="{cursor: !clickable ? 'default' : ''}" class="ro-grid-item"
+                    :class="[{active: item.isActive}, item.type]"><span>{{ item.number ? item.number : '' }}</span></div>
         </div>
         <div class="ro-grid-header horizontal-axis-header">
             <div class="small-headers clearfix">
