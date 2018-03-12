@@ -165,6 +165,7 @@ export default {
 <style scoped lang="scss">
     @import '../../css/_variables';
     @import '../../css/_mixins';
+    @import '../../css/common';
 
     .full-filters {
         margin: 20px 0;

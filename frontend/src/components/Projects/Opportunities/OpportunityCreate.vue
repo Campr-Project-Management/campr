@@ -590,6 +590,7 @@ export default {
 <style scoped lang="scss">
     @import '../../../css/_variables';
     @import '../../../css/_mixins';
+    @import '../../../css/common';
     @import '../../../css/risks-and-opportunities/create';
 
     .ro-summary {

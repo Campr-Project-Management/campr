@@ -9,7 +9,7 @@
     };
 
     export default {
-        name: 'VueTimepicker',
+        name: 'Timepicker',
 
         components: {
             Clock,
@@ -431,5 +431,4 @@
 
 <style scoped>
   @import '../../../css/vue2-timepicker.css';
-
 </style>
