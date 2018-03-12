@@ -73,6 +73,9 @@ set('bin/mysqldump', function () {
 set('bin/mc', function () {
     return '{{release_path}}/bin/mc --config-folder={{release_path}}/config/minio/';
 });
+set('bin/rush', function () {
+    return '{{release_path}}/bin/rush';
+});
 set('database_backup_path', function () {
     return sprintf('campr/{{domain}}/%s/%s/%s/release_{{release_name}}/{{domain}}_%s_release_{{release_name}}.sql', date('Y'), date('m'), date('d'), date('YmdHis'));
 });
@@ -231,11 +234,8 @@ task('server:provision', function () {
         writeln('<info>Skipping...</info>');
     }
 });
-task('project:build:frontend', function () {
-    run('cd {{release_path}}/frontend && yarn install && yarn run build');
-});
-task('project:build:ssr', function () {
-    run('cd {{release_path}}/ssr && yarn install && yarn run build');
+task('project:build:frontend_and_ssr', function () {
+    run("echo -ne '>cd {{release_path}}/frontend && yarn install && yarn run build>cd {{release_path}}/ssr && yarn install && yarn run build' | {{bin/rush}} -D '>' {}");
 });
 task('hivebot:deploy-whois', function () {
     set('localUser', sprintf(
@@ -288,8 +288,7 @@ task('deploy', [
     'deploy:writable',
     'deploy:symlink',
     'project:front-static',
-    'project:build:frontend',
-    'project:build:ssr',
+    'project:build:frontend_and_ssr',
     'deploy:cache:warmup',
     'database:cleanup',
     'database:migrate',
