@@ -30,7 +30,7 @@
     "nuxt-sass-resources-loader": "^1.1.1",
     "sass-loader": "^6.0.6",
     "vis": "^4.19.1",
-    "vue": "2.5.13",
+    "vue": "2.5.15",
     "vue-charts": "0.2.1",
     "vue-loader": "^14.1.1",
     "vue-moment": "^2.0.2",
