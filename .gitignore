@@ -34,3 +34,5 @@ npm-debug.log
 
 ssr/.nuxt
 ssr/node_modules
+
+ssr/package-lock.json

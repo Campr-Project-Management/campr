@@ -155,6 +155,10 @@ body {
 
 	&.body-hidden {
 		overflow: hidden;
+
+		.sign-up-section {
+			z-index: 1040;
+		}
 	}
 
 	@media (max-width: 991px) {
@@ -177,7 +181,7 @@ body {
 	.transition(all 0.3s ease);
 }
 
-h1, h2 {
+h1, .h1, h2, .h2 {
 	text-transform: uppercase;
 	letter-spacing: 0.15em;
 	font-size: 3.75em;
@@ -194,7 +198,7 @@ h1, h2 {
 	}
 }
 
-h3 {
+h3, .h3 {
 	text-transform: uppercase;
 	font-weight: 700;
 	font-size: 1.25em;
@@ -213,7 +217,7 @@ h3 {
 	}
 }
 
-h4 {
+h4, .h4 {
 	text-transform: uppercase;
 	font-size: 1.5em;
 	font-weight: 300;
@@ -2164,7 +2168,7 @@ SIGN UP SECTION
 
 	&:hover,
 	&:focus,
-	&.input--filled {
+	&.input.input--filled {
 		background-color: @middleColor;
 	}
 
@@ -2178,21 +2182,47 @@ SIGN UP SECTION
 }
 
 .input__field:focus + .input__label .input__label-content,
-.input--filled .input__label-content {
+.input.input--filled .input__label-content {
 	.opacity(0);
 	.translate(30px, 0);
 }
 
 .input__field:focus + .input__label .input__label-content,
-.input--filled .input__label-content {
+.input.input--filled .input__label-content {
 	-webkit-transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
 	transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
 }
 
 .input__field:focus + .input__label .icon,
-.input--filled .icon {
+.input.input--filled .icon {
 	-webkit-transform: translate3d(0, 0, 0);
 	transform: translate3d(0, 0, 0);
+}
+
+.alert-full-width {
+	position: fixed;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+	background-color: fade(@blackColor, 50%);
+	padding: 20% 0;
+	text-align: center;
+	.border-radius(0);
+
+	.alert-content {
+		background-color: @mainColor;
+		width: 60%;
+		margin:0 auto;
+	}
+
+	&.alert-success {
+		.alert-content {
+			color: @secondColor;
+		}
+	}
 }
 
 /*////////////////////////////////////////////
@@ -2843,6 +2873,25 @@ h4.partner-title {
 .partner-description {
 	font-size: 0.875em;
 	text-align: left;
+}
+
+/*////////////////////////////////////////////
+ALERTS
+////////////////////////////////////////////*/
+.alert {
+	border: none;
+	padding: 15px;
+	.border-radius(0);
+
+	&.alert-success {
+		background-color: @secondColor;
+		color: @whiteColor;
+	}
+
+	&.alert-danger {
+		background-color: @dangerColor;
+		color: @grayColor;
+	}
 }
 
 /*////////////////////////////////////////////

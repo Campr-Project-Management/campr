@@ -277,6 +277,7 @@ export default {
     @import '../../css/_mixins';
     @import '../../css/_variables';
     @import '../../css/page-section';
+    @import '../../css/common';
 
     .widget-grid {
         display: flex;
