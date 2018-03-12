@@ -57,7 +57,7 @@
                     <hr>
 
                     <!-- /// Task Schedule /// -->
-                    <schedule v-model="schedule" v-bind:editSchedule="schedule" />
+                    <schedule v-model="schedule" />
                     <!-- /// End Task Schedule /// -->
 
                     <hr class="double">
@@ -412,7 +412,7 @@ export default {
                         label: item.name,
                     };
                 }),
-                durationInDays: this.task.duration,
+                duration: this.task.duration,
             };
             this.statusColor = {
                 id: this.task.colorStatus,
@@ -569,7 +569,7 @@ export default {
                 automatic: false,
                 successors: [],
                 predecessors: [],
-                durationInDays: 0,
+                duration: 0,
             },
             title: '',
             internalCosts: {
