@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>{{ message.attachments }}aa</h3>
+        <h3>{{ message.attachments }}</h3>
         <input
             id="attachments"
             type="file"
