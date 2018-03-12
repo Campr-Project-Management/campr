@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import $ from 'jquery';
 import 'ion-rangeslider/js/ion.rangeSlider.js';
 import 'ion-rangeslider/css/ion.rangeSlider.css';
 import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
@@ -140,7 +141,7 @@ export default {
     },
     methods: {
         slider() {
-            return window.$(this.$refs.slider);
+            return $(this.$refs.slider);
         },
         onChange(frm, to) {
             this.currentValue = this.outputValue(this.indexToValue(frm), this.indexToValue(to));

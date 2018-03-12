@@ -1471,10 +1471,11 @@ export default {
     }
 </style>
 
-<style scoped lang="scss">
+<style lang="scss">
     @import '../../../css/page-section';
     @import '../../../css/_variables';
     @import '../../../css/_mixins';
+    @import '../../../css/common';
 
     .btn-rounded {
         margin-left: 10px;

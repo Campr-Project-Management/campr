@@ -1,16 +1,47 @@
 <template>
-    <div id="vis"></div>
+    <div>
+        <div id="vis" ref="timeline"></div>
+
+        <template>
+            <div v-for="item in items" :key="item.id" :class="'tooltip' + item.id" v-show="false">
+                <tooltip :item="item.data" :type="getType(item)"/>
+            </div>
+        </template>
+    </div>
 </template>
 
 <script>
 import vis from 'vis';
-import VisTimelineTooltip from './VisTimelineTooltip';
+import Tooltip from '../../Projects/PhasesAndMilestones/Tooltip.vue';
+import _ from 'lodash';
+
+const TYPE_PHASE = 0;
 
 export default {
-    props: ['pmData', 'withPhases'],
+    props: {
+        items: {
+            type: Array,
+            required: true,
+        },
+        withPhases: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+        startHour: {
+            type: String,
+            required: false,
+            default: '08:00:00',
+        },
+        endHour: {
+            type: String,
+            required: false,
+            default: '18:00:00',
+        },
+    },
     components: {
         vis,
-        VisTimelineTooltip,
+        Tooltip,
     },
     data: function() {
         let groups = [];
@@ -23,130 +54,37 @@ export default {
 
         return {
             groups: groups,
-            items: [
-                {
-                    id: 0,
-                    group: 0,
-                    content: 'Phase 1',
-                    value: '100',
-                    start: new Date(2017, 0, 1),
-                    end: new Date(2017, 1, 28),
-                    title: `<div class="task-box box">
-                                <div class="box-header">
-                                    <div class="user-info flex flex-v-center">
-                                        <img class="user-avatar" src="http://dev.campr.biz/uploads/avatars/60.jpg" alt="Phase responsable: Sandy Fanning-Choi"/>
-                                        <p class="caps">Sandy Fanning-Choi</p>
-                                    </div>
-                                    <h2 class="simple-link">Phase 1</h2>
-                                    <p class="task-id">#1</p>
-                                </div>
-                                <div class="content">
-                                    <table class="table table-small">
-                                        <thead>
-                                            <tr>
-                                                <th>Schedule</th>
-                                                <th>Start</th>
-                                                <th>Finish</th>
-                                                <th>Duration</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Base</td>
-                                                <td>01.01.2017</td>
-                                                <td>28.02.2017</td>
-                                                <td>59</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Forecast</td>
-                                                <td>01.01.2017</td>
-                                                <td>28.02.2017</td>
-                                                <td>59</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Actual</td>
-                                                <td>01.01.2017</td>
-                                                <td>28.02.2017</td>
-                                                <td>59</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="status">
-                                    <p><span>Status:</span> Finished</p>
-                                    <bar-chart position="right" :percentage="85" :color="Green" v-bind:title-right="green"></bar-chart>
-                                </div>
-                            </div>`,
-                },
-                {
-                    id: 8,
-                    group: 1,
-                    content: 'Milestone 1',
-                    start: new Date(2017, 1, 15),
-                    className: 'reached',
-                    title: `<div class="task-box box">
-                                <div class="box-header">
-                                    <div class="user-info flex flex-v-center">
-                                        <img class="user-avatar" src="http://dev.campr.biz/uploads/avatars/60.jpg" alt="Phase responsable: Sandy Fanning-Choi"/>
-                                        <p class="caps">Sandy Fanning-Choi</p>
-                                    </div>
-                                    <h2 class="simple-link">Phase 1</h2>
-                                    <p class="task-id">#1</p>
-                                </div>
-                                <div class="content">
-                                    <table class="table table-small">
-                                        <thead>
-                                            <tr>
-                                                <th>Schedule</th>
-                                                <th>Due Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Base</td>
-                                                <td>15.02.2017</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Forecast</td>
-                                                <td>15.02.2017</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Actual</td>
-                                                <td>15.02.2017</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="status">
-                                    <p><span>Status:</span> Reached</p>
-                                    <bar-chart position="right" :percentage="85" :color="Green" v-bind:title-right="green"></bar-chart>
-                                </div>
-                            </div>`,
-                },
-            ],
-            container: '',
             timeline: null,
+            tooltips: {},
         };
     },
-    computed: {
-        visOptions: function() {
-            let min = new Date();
-            let max = new Date(0);
-            if (this.pmData) {
-                this.pmData.map((item) => {
-                    if (min > item.start) {
-                        min = new Date(item.start);
-                    }
-                    if (max < item.start) {
-                        max = new Date(item.start);
-                    }
-                    if (max < item.end) {
-                        max = new Date(item.end);
-                    }
-                });
+    methods: {
+        isPhase(item) {
+            return item.data.type === TYPE_PHASE;
+        },
+        getType(item) {
+            if (this.isPhase(item)) {
+                return 'phase';
             }
+
+            return 'milestone';
+        },
+    },
+    computed: {
+        hiddenDates() {
+            return [
+                {start: '2018-01-06 00:00:00', end: '2018-01-08 00:00:00', repeat: 'weekly'},
+                {start: '2018-01-03 00:00:00', end: `2018-01-03 ${this.startHour}`, repeat: 'daily'},
+                {start: `2018-01-03 ${this.endHour}`, end: '2018-01-04 00:00:00', repeat: 'daily'},
+            ];
+        },
+        visOptions: function() {
+            let min = new Date(_.minBy(this.items, 'start'));
+            let max = new Date(_.minBy(this.items, 'end'));
+
             min.setFullYear(min.getFullYear() - 2);
             max.setFullYear(max.getFullYear() + 1);
+
             return {
                 width: '100%',
                 horizontalScroll: true,
@@ -158,7 +96,8 @@ export default {
                 },
                 hiddenDates: [
                     {start: '2018-01-06 00:00:00', end: '2018-01-08 00:00:00', repeat: 'weekly'},
-                    {start: '2018-01-03 18:00:00', end: '2018-01-04 08:00:00', repeat: 'daily'},
+                    {start: '2018-01-03 00:00:00', end: '2018-01-03 08:00:00', repeat: 'daily'},
+                    {start: '2018-01-03 18:00:00', end: '2018-01-04 00:00:00', repeat: 'daily'},
                 ],
                 min: min,
                 max: max,
@@ -178,18 +117,29 @@ export default {
                 },
             };
         },
+        visItems() {
+            return this.items.map((item) => {
+                let $tooltip = document.getElementsByClassName('tooltip' + item.id)[0];
+                item.title = $tooltip ? $tooltip.innerHTML : item.title;
+                return item;
+            });
+        },
     },
     watch: {
-        pmData: function() {
-            if (this.timeline) {
-                this.timeline.destroy();
-            }
-            this.timeline = new vis.Timeline(this.container, this.pmData, this.groups, this.visOptions);
+        items: function() {
+            this.$nextTick(() => {
+                if (this.timeline) {
+                    this.timeline.destroy();
+                }
+
+                this.timeline = new vis.Timeline(this.$refs.timeline, this.visItems, this.groups, this.visOptions);
+            });
         },
     },
     mounted() {
-        this.container = document.getElementById('vis');
-        this.timeline = new vis.Timeline(this.container, this.pmData, this.groups, this.visOptions);
+        this.$nextTick(() => {
+            this.timeline = new vis.Timeline(this.$refs.timeline, this.visItems, this.groups, this.visOptions);
+        });
     },
 };
 </script>
@@ -201,6 +151,7 @@ export default {
     @import '../../../../node_modules/vis/dist/vis-timeline-graph2d.min.css';
     @import '../../../css/box';
     @import '../../../css/box-task';
+    @import '../../../css/common';
 
     .vis-timeline,
     .vis-panel.vis-bottom,
@@ -359,7 +310,7 @@ export default {
         border: none;
         @include box-shadow(0, 0, 30px, $darkColor);
         pointer-events: auto;
-        width: 420px;
+        display: inline-block;
 
         .box {
             margin: 0;

@@ -24,6 +24,8 @@
 </template>
 
 <script>
+    import $ from 'jquery';
+
     export default {
         name: 'input-field',
         props: {
@@ -53,7 +55,7 @@
             },
         },
         mounted() {
-            const $this = window.$('#input' + this._uid);
+            const $this = $('#input' + this._uid);
 
             let textValue = $this.val();
             let $label = $this.next();

@@ -206,8 +206,9 @@ message:
     first_task: First Task
     last_task: Last Task
     project_phases: Project Phases
-    phase_responsible: Phase Responsble:
-    milestone_responsible: Milestone Responsble:
+    project_milestones: Project Milestones
+    phase_responsible: Phase Responsible:
+    milestone_responsible: Milestone Responsible:
     edit_organization: Edit Organization
     project_roles: Project Roles
     delete_subteam: Delete Subteam

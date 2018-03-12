@@ -67,7 +67,6 @@ use AppBundle\Repository\RiskRepository;
 use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\ProjectVoter;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -1547,8 +1546,10 @@ class ProjectController extends ApiController
      */
     public function workPackagesAction(Request $request, Project $project)
     {
-        $filters = $request->query->all();
-        $pageSize = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+        $criteria = $request->query->get('criteria', []);
+        $pageSize = $request->query->get('pageSize', $this->getParameter('front.per_page'));
+        $page = $request->query->get('page', 1);
+        $isGrid = $request->query->get('isGrid', false);
 
         /** @var WorkPackageRepository $wpRepo */
         $wpRepo = $this
@@ -1556,44 +1557,45 @@ class ProjectController extends ApiController
             ->getRepository(WorkPackage::class)
         ;
 
-        if (isset($filters['status']) || isset($filters['isGrid'])) {
-            $paginator = new Paginator($wpRepo->getQueryByProjectAndFiltersSortedByStatus($project, $filters));
+        if ($isGrid) {
+            $paginator = $wpRepo->createGridViewPaginator($project, $criteria);
+            $paginator->setMaxPerPage($pageSize);
+            $paginator->setCurrentPage($page);
 
-            $responseArray['totalItems'] = $paginator->count();
-            $responseArray['items'] = $wpRepo->getQueryByProjectAndFiltersSortedByStatus($project, $filters)->getResult();
-        } else {
-            $workPackageStatuses = $this
-                ->getDoctrine()
-                ->getRepository(WorkPackageStatus::class)
-                ->findBy([
-                    'project' => null,
-                ])
-            ;
-
-            /** @var WorkPackageStatus $workPackageStatus */
-            foreach ($workPackageStatuses as $workPackageStatus) {
-                $filters['status'] = $workPackageStatus;
-                $wpQuery = $wpRepo->getQueryByProjectAndFilters($project, $filters);
-
-                $currentPage = 1;
-                $paginator = new Paginator($wpQuery);
-                $paginator->getQuery()
-                    ->setFirstResult($pageSize * ($currentPage - 1))
-                    ->setMaxResults($pageSize)
-                ;
-                $responseArray[$workPackageStatus->getId()] = [
-                    'totalItems' => count($paginator),
-                    'items' => $paginator->getIterator()->getArrayCopy(),
-                ];
-            }
+            return $this->createApiResponse(
+                [
+                    'totalItems' => $paginator->getNbResults(),
+                    'items' => iterator_to_array($paginator->getCurrentPageResults()),
+                ]
+            );
         }
 
-        return $this->createApiResponse($responseArray);
+        $data = [];
+        foreach ($this->getWorkPackageStatuses() as $status) {
+            $paginator = $wpRepo->createBoardViewPaginator(
+                $project,
+                array_merge(['status' => $status->getId()], $criteria)
+            );
+            $paginator->setMaxPerPage($pageSize);
+            $paginator->setCurrentPage($page);
+
+            $data[$status->getId()] = [
+                'totalItems' => $paginator->getNbResults(),
+                'items' => iterator_to_array($paginator->getCurrentPageResults()),
+            ];
+        }
+
+        return $this->createApiResponse($data);
     }
 
     /**
      * @Route("/{id}/subteams", name="app_api_project_subteams", options={"expose"=true})
      * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
      */
     public function subteamsAction(Request $request, Project $project)
     {
@@ -2341,6 +2343,10 @@ class ProjectController extends ApiController
     /**
      * @Route("/{id}/rasci", name="app_api_project_rasci_get", options={"expose"=true})
      * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
      */
     public function getRasciAction(Project $project)
     {
@@ -2455,6 +2461,10 @@ class ProjectController extends ApiController
     /**
      * @Route("/{id}/wbs", name="app_api_project_wbs", options={"expose"=true})
      * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
      */
     public function getWBSAction(Project $project)
     {
@@ -2480,5 +2490,17 @@ class ProjectController extends ApiController
         ;
 
         return $this->createApiResponse($roles);
+    }
+
+    /**
+     * @return WorkPackageStatus[]
+     */
+    private function getWorkPackageStatuses(): array
+    {
+        return $this
+            ->getDoctrine()
+            ->getRepository(WorkPackageStatus::class)
+            ->findAll()
+        ;
     }
 }

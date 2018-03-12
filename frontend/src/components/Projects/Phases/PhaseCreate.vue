@@ -41,12 +41,12 @@
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
                                 <span class="title">
-                                    <b>{{ translateText('message.start_date') }}: {{ actualStartAt|moment('DD.MM.YYYY') }}</b>
+                                    <b>{{ translateText('message.start_date') }}: {{ phase.actualStartAt | date }}</b>
                                 </span>
                             </div>
                             <div class="col-md-6">
                                 <span class="title">
-                                    <b> {{ translateText('message.finish_date') }}: {{ actualFinishAt|moment('DD.MM.YYYY') }}</b>
+                                    <b> {{ translateText('message.finish_date') }}: {{ phase.actualFinishAt | date }}</b>
                                 </span>
                             </div>
                         </div>
@@ -166,6 +166,7 @@ import Error from '../../_common/_messages/Error.vue';
 import MemberSearch from '../../_common/MemberSearch';
 
 export default {
+    name: 'project-phase-create',
     components: {
         InputField,
         SelectField,
@@ -179,9 +180,6 @@ export default {
             'getProjectUsers', 'getWorkPackageStatuses', 'getProjectPhases',
             'createProjectPhase', 'getProjectPhase', 'editProjectPhase', 'emptyValidationMessages',
         ]),
-        visibleSubphase: function() {
-            this.visibleSubphase = !this.visibleSubphase;
-        },
         translateText: function(text) {
             return this.translate(text);
         },
@@ -213,7 +211,7 @@ export default {
                 forecastFinishAt: moment(this.schedule.forecastEndDate).format('DD-MM-YYYY'),
                 responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
                 workPackageStatus: this.details.status ? this.details.status.key: null,
-                parent: this.visibleSubphase ? this.details.parent ? this.details.parent.key : null : null,
+                parent: !this.visibleSubphase ? this.details.parent ? this.details.parent.key : null : null,
             };
             this.editProjectPhase(data);
         },
@@ -230,8 +228,6 @@ export default {
         phase(value) {
             this.name = this.phase.name;
             this.$refs.content.setContent(this.phase.content);
-            this.actualStartAt = new Date(this.phase.actualStartAt);
-            this.actualFinishAt = new Date(this.phase.actualFinishAt);
             this.schedule.baseStartDate = new Date(this.phase.scheduledStartAt);
             this.schedule.baseEndDate = new Date(this.phase.scheduledFinishAt);
             this.schedule.forecastStartDate = new Date(this.phase.forecastStartAt);
@@ -262,8 +258,6 @@ export default {
         return {
             name: '',
             content: '',
-            actualStartAt: new Date(),
-            actualFinistAt: new Date(),
             schedule: {
                 baseStartDate: new Date(),
                 baseEndDate: new Date(),
@@ -286,6 +280,7 @@ export default {
 <style scoped lang="scss">
     @import '../../../css/_mixins';
     @import '../../../css/_variables';
+    @import '../../../css/common';
 
     .title {
         position: relative;
