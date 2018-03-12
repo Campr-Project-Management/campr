@@ -36,7 +36,7 @@
     "vue-moment": "^2.0.2",
     "vue-resize-directive": "^1.0.0",
     "vue-style-loader": "^4.0.2",
-    "vue-template-compiler": "^2.5.13",
+    "vue-template-compiler": "2.5.13",
     "vue2-dragula": "2.4.4",
     "vuejs-datepicker": "^0.9.26"
   },
