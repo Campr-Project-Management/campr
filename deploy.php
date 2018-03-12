@@ -232,10 +232,10 @@ task('server:provision', function () {
     }
 });
 task('project:build:frontend', function () {
-    run('cd {{release_path}}/frontend && npm install --no-package-lock && npm run build');
+    run('cd {{release_path}}/frontend && npm install && npm run build');
 });
 task('project:build:ssr', function () {
-    run('cd {{release_path}}/ssr && npm install --no-package-lock && npm run build');
+    run('cd {{release_path}}/ssr && npm install && npm run build');
 });
 task('hivebot:deploy-whois', function () {
     set('localUser', sprintf(
