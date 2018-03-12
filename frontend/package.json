@@ -13,6 +13,7 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
+    "accounting": "^0.4.1",
     "bazinga-translator": "2.6.4",
     "bootstrap": "3.3.7",
     "d3": "4.10.0",
@@ -33,7 +34,6 @@
     "lodash": "4.17.4",
     "moment": "^2.21.0",
     "normalise.scss": "1.0.1",
-    "numeral": "^2.0.6",
     "perfect-scrollbar": "0.7.0",
     "reset-css": "2.2.0",
     "tether-tooltip": "^1.2.0",
