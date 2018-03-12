@@ -36,8 +36,6 @@
             v-bind:editInternalForecastCostModal="showEditInternalForecastCostModal"
             v-bind:editInternalActualCostModal="showEditInternalActualCostModal"
             v-bind:internalCostObj="editInternalCostObj"
-            v-bind:editScheduleModal="showEditScheduleModal"
-            v-bind:scheduleObj="editScheduleObj"
             v-bind:taskObj="task"
             v-bind:closeTaskModal="showCloseTaskModal"
             v-bind:openTaskModal="showOpenTaskModal"
@@ -387,7 +385,7 @@
                     <div class="flex flex-space-between flex-v-center margintop20">
                         <div></div>
                         <button
-                            @click="initChangeScheduleModal()"
+                            @click="onChangeScheduleModal()"
                             data-target="#edit-schedule-module"
                             data-toggle="modal"
                             class="btn-rounded btn-md btn-empty btn-auto"
@@ -712,6 +710,10 @@
             </div>
         </div>
         <alert-modal v-if="showFileUploadFailed" @close="showFileUploadFailed = false" :body="fileUploadErrorMessage" />
+        <edit-schedule-modal
+                v-model="showEditScheduleModal"
+                :schedule="editableData.schedule"
+                @save="onSaveSchedule"/>
     </div>
 </template>
 
@@ -731,6 +733,7 @@ import Modal from '../../_common/Modal';
 import AlertModal from '../../_common/AlertModal.vue';
 import router from '../../../router';
 import Condition from './Create/Condition';
+import EditScheduleModal from './View/EditScheduleModal';
 import moment from 'moment';
 import {createFormData} from '../../../helpers/task';
 import Vue from 'vue';
@@ -755,6 +758,7 @@ export default {
         Condition,
         moment,
         AlertModal,
+        EditScheduleModal,
     },
     created() {
         if (this.$route.params.taskId) {
@@ -908,7 +912,7 @@ export default {
                         label: item.name,
                     };
                 }),
-                durationInDays: this.task.duration,
+                duration: this.task.duration,
             };
 
             this.editableData.label = this.task.label
@@ -1192,9 +1196,35 @@ export default {
 
             this.showEditStatusModal = false;
         },
-        initChangeScheduleModal() {
-            this.editScheduleObj = this.editableData.schedule;
+        onChangeScheduleModal() {
             this.showEditScheduleModal = true;
+        },
+        onSaveSchedule(schedule) {
+            let data = {
+                scheduledStartAt: moment(schedule.baseStartDate).format('DD-MM-YYYY'),
+                scheduledFinishAt: moment(schedule.baseEndDate).format('DD-MM-YYYY'),
+                forecastStartAt: moment(schedule.forecastStartDate).format('DD-MM-YYYY'),
+                forecastFinishAt: moment(schedule.forecastEndDate).format('DD-MM-YYYY'),
+                automaticSchedule: schedule.automatic,
+                duration: schedule.duration,
+                dependants: schedule.successors.map((item) => {
+                    return item.key;
+                }),
+                dependencies: schedule.predecessors.map((item) => {
+                    return item.key;
+                }),
+            };
+
+            this.patchTask({
+                data: data,
+                taskId: this.$route.params.taskId,
+            }).then(({body}) => {
+                if (body.error) {
+                    return;
+                }
+
+                this.showEditScheduleModal = false;
+            });
         },
         initEditExternalCostModal(externalCost) {
             let externalCostObj = {
@@ -1429,23 +1459,13 @@ export default {
                     automatic: false,
                     successors: [],
                     predecessors: [],
-                    durationInDays: 0,
+                    duration: 0,
                 },
                 internalCosts: [],
                 externalCosts: [],
             },
             editExternalCostObj: {},
             editInternalCostObj: {},
-            editScheduleObj: {
-                baseStartDate: new Date(),
-                baseEndDate: new Date(),
-                forecastStartDate: new Date(),
-                forecastEndDate: new Date(),
-                automatic: false,
-                successors: [],
-                predecessors: [],
-                durationInDays: 0,
-            },
             completedSubtasksIds: [],
         };
     },
