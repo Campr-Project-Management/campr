@@ -63,26 +63,26 @@ const actions = {
      * @return {Object}
      */
     editTaskCost({commit}, data) {
-        return Vue.http
-            .patch(
-                Routing.generate('app_api_cost_edit', {id: data.costId}),
-                data.data
-            ).then(
-                (response) => {
-                    if (response.body && response.body.error && response.body.messages) {
-                        const {messages} = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    } else {
-                        let cost = response.data;
-                        commit(types.SET_TASK_COST, {cost});
-                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    }
-                    return response;
-                },
-                (response) => {
-                    return response;
+        return Vue.http.patch(
+            Routing.generate('app_api_cost_edit', {id: data.costId}),
+            data.data,
+        ).then(
+            (response) => {
+                if (response.body && response.body.error &&
+                    response.body.messages) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    let cost = response.data;
+                    commit(types.SET_TASK_COST, {cost});
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                 }
-            );
+                return response;
+            },
+            (response) => {
+                return response;
+            },
+        );
     },
 };
 
