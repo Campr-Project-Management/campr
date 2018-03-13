@@ -99,9 +99,10 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
     @import '../../../../css/_variables';
     @import '../../../../css/_mixins';
+    @import '../../../../css/_common';
 
     .attachments {
         margin: 0 0 20px;

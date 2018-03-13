@@ -41,14 +41,13 @@
                             :message="message" />
                     </div>
                     <div class="form-group">
-                        <div class="vueditor-holder">
-                            <div class="vueditor-header">{{ translateText('placeholder.decision_description') }}</div>
-                            <Vueditor ref="description" />
-                            <error
-                                v-if="validationMessages.description && validationMessages.description.length"
-                                v-for="message in validationMessages.description"
-                                :message="message" />
-                        </div>
+                        <editor
+                            v-model="description"
+                            :label="'placeholder.decision_description'"/>
+                        <error
+                            v-if="validationMessages.description && validationMessages.description.length"
+                            v-for="message in validationMessages.description"
+                            :message="message" />
                     </div>
                     <!-- /// End Todo Title and Description /// -->
 
@@ -111,6 +110,7 @@ import MemberSearch from '../../_common/MemberSearch';
 import {mapGetters, mapActions} from 'vuex';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
+import Editor from '../../_common/Editor';
 
 export default {
     components: {
@@ -121,6 +121,7 @@ export default {
         MemberSearch,
         moment,
         Error,
+        Editor,
     },
     methods: {
         ...mapActions([
@@ -142,7 +143,7 @@ export default {
                     responsibility: (this.responsibility && this.responsibility.length > 0) ? this.responsibility[0] : null,
                     dueDate: moment(this.dueDate).format('DD-MM-YYYY'),
                     date: moment(this.date).format('DD-MM-YYYY'),
-                    description: this.$refs.description.getContent(),
+                    description: this.description,
                     status: this.todoStatus ? this.todoStatus.key : null,
                     todoCategory: this.todoCategory ? this.todoCategory.key : null,
                 },
@@ -156,7 +157,7 @@ export default {
                 responsibility: (this.responsibility && this.responsibility.length > 0) ? this.responsibility[0] : null,
                 dueDate: moment(this.dueDate).format('DD-MM-YYYY'),
                 date: moment(this.date).format('DD-MM-YYYY'),
-                description: this.$refs.description.getContent(),
+                description: this.description,
                 status: this.todoStatus.key,
                 todoCategory: this.todoCategory.key,
             };
@@ -178,9 +179,6 @@ export default {
             todoCategoriesForSelect: 'todoCategoriesForSelect',
         }),
     },
-    mounted() {
-        this.$refs.description.setContent('');
-    },
     beforeDestroy() {
         this.emptyValidationMessages();
     },
@@ -188,7 +186,7 @@ export default {
         todo(val) {
             this.todoStatus = {key: this.todo.todoStatus, label: this.translateText(this.todo.statusName)};
             this.title = this.todo.title;
-            this.$refs.description.setContent(this.todo.description);
+            this.description = this.todo.description;
             this.dueDate = this.todo.dueDate;
             this.date = this.todo.date;
             this.responsibility = [this.todo.responsibility];
@@ -201,6 +199,7 @@ export default {
             isEdit: this.$route.params.todoId,
             todoStatus: null,
             title: '',
+            description: '',
             dueDate: new Date(),
             date: new Date(),
             responsibility: [],
