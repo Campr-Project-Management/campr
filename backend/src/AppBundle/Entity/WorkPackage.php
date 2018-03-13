@@ -813,6 +813,28 @@ class WorkPackage
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return string
+     */
+    public function getActualCostColor(): string
+    {
+        $actual = $this->getTotalActualCosts();
+        $forecast = $this->getTotalForecastCosts();
+        $base = $this->getTotalCosts();
+
+        return $this->computeCostColor($base, $forecast, $actual);
+    }
+
+    /**
+     * @return float
+     */
+    public function getActualCost(): float
+    {
+        return (float) ($this->getExternalActualCost() + $this->getInternalActualCost());
+    }
+
+    /**
      * Set content.
      *
      * @param string $content
@@ -2303,7 +2325,7 @@ class WorkPackage
      */
     public function isTask(): bool
     {
-        return $this->getType() === self::TYPE_TASK;
+        return self::TYPE_TASK === $this->getType();
     }
 
     /**
@@ -2311,7 +2333,7 @@ class WorkPackage
      */
     public function isPhase(): bool
     {
-        return $this->getType() === self::TYPE_PHASE;
+        return self::TYPE_PHASE === $this->getType();
     }
 
     /**
@@ -2319,7 +2341,7 @@ class WorkPackage
      */
     public function isTutorial(): bool
     {
-        return $this->getType() === self::TYPE_TUTORIAL;
+        return self::TYPE_TUTORIAL === $this->getType();
     }
 
     /**
@@ -2328,5 +2350,29 @@ class WorkPackage
     public function isSubtask(): bool
     {
         return $this->getParent() && $this->isTask();
+    }
+
+    /**
+     * @param float $base
+     * @param float $forecast
+     * @param float $actual
+     *
+     * @return string
+     */
+    private function computeCostColor(float $base, float $forecast, float $actual): string
+    {
+        if ($actual > $forecast) {
+            if ($actual < $base) {
+                return 'yellow';
+            }
+
+            return 'red';
+        }
+
+        if ($actual > $base) {
+            return 'yellow';
+        }
+
+        return 'green';
     }
 }
