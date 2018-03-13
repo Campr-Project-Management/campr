@@ -320,7 +320,7 @@
 
                     <!-- /// Task Schedule /// -->
                     <h3>{{ translateText('message.task_schedule') }}</h3>
-                    <vue-scrollbar class="table-wrapper">
+                    <vue-perfect-scrollbar class="table-wrapper">
                         <table class="table table-small">
                             <thead>
                                 <tr>
@@ -369,7 +369,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </vue-scrollbar>
+                    </vue-perfect-scrollbar>
                     <div v-for="(dependancy, index) in task.dependencies"
                          :key="index"
                          class="flex flex-space-between flex-v-center margintop20">
@@ -398,7 +398,7 @@
 
                     <!-- /// Task Internal Costs /// -->
                     <h3>{{ translateText('message.internal_costs') }}</h3>
-                    <vue-scrollbar class="table-wrapper">
+                    <vue-perfect-scrollbar class="table-wrapper">
                         <table class="table table-small">
                             <thead>
                                 <tr>
@@ -430,25 +430,25 @@
 
                                 <tr>
                                     <td colspan="4" class="text-right"><b>{{ translateText('label.internal_costs_total') }}</b></td>
-                                    <td colspan="2"><b>{{ internalBaseTotal | formatMoney }}</b></td>
+                                    <td colspan="2"><b>{{ task.internalCostTotal | money }}</b></td>
                                 </tr>
                                 <tr class="column-warning">
                                     <td colspan="4" class="text-right"><b>{{ translateText('label.forecast_total') }}</b></td>
-                                    <td><b>{{ task.internalForecastCost | formatMoney }}</b></td>
+                                    <td><b>{{ task.internalForecastCost | money }}</b></td>
                                     <td>
                                         <button @click="initEditInternalForecastCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="4" class="text-right"><b>{{ translateText('label.actual_total') }}</b></td>
-                                    <td><b>{{ task.internalActualCost | formatMoney }}</b></td>
+                                    <td><b>{{ task.internalActualCost | money }}</b></td>
                                     <td>
                                         <button @click="initEditInternalActualCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                    </vue-scrollbar>
+                    </vue-perfect-scrollbar>
                     <div class="flex flex-space-between flex-v-center margintop20">
                         <div></div>
                         <button
@@ -466,7 +466,7 @@
 
                     <!-- /// Task External Costs /// -->
                     <h3>{{ translateText('message.external_costs') }}</h3>
-                    <vue-scrollbar class="table-wrapper">
+                    <vue-perfect-scrollbar class="table-wrapper">
                         <table class="table table-small">
                             <thead>
                                 <tr>
@@ -481,11 +481,17 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(cost, index) in editableData.externalCosts" :key="index">
-                                    <td>{{cost.name}}</td>
+                                    <td>{{cost.name}} </td>
                                     <td>{{cost.quantity}}</td>
                                     <td>{{cost.unit}}</td>
                                     <td><i class="fa fa-dollar"></i> {{cost.rate}}</td>
-                                    <td><switches @click.native="updateCostType(cost)" v-model="cost.expenseType" v-bind:selected="cost.capex === 1"></switches></td>
+                                    <td>
+                                        <switch-field
+                                                @input="onUpdateCostExpenseType(cost)"
+                                                :true-value="0"
+                                                :false-value="1"
+                                                v-model.number="cost.expenseType" />
+                                    </td>
                                     <td><b>{{ itemTotal(cost) | formatMoney }}</b></td>
                                     <td>
                                         <button @click="initEditExternalCostModal(cost)" data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill" ></edit-icon></button>
@@ -501,33 +507,33 @@
                                 </tr>
                                 <tr>
                                     <td colspan="5" class="text-right"><b>{{ translateText('message.capex_subtotal') }}</b></td>
-                                    <td colspan="2">{{ totalCapex | formatMoney }}</td>
+                                    <td colspan="2">{{ task.externalCostCAPEXTotal | money }}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="5" class="text-right"><b>{{ translateText('message.opex_subtotal') }}</b></td>
-                                    <td colspan="2">{{ totalOpex | formatMoney }}</td>
+                                    <td colspan="2">{{ task.externalCostOPEXTotal | money }}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="5" class="text-right"><b>{{ translateText('label.external_cost_total') }}</b></td>
-                                    <td colspan="2"><b> {{ externalBaseTotal | formatMoney }}</b></td>
+                                    <td colspan="2"><b> {{ task.externalCostTotal | money }}</b></td>
                                 </tr>
                                 <tr class="column-warning">
                                     <td colspan="5" class="text-right"><b>{{ translateText('label.forecast_total') }}</b></td>
-                                    <td><b>{{ task.externalForecastCost | formatMoney }}</b></td>
+                                    <td><b>{{ task.externalForecastCost | money }}</b></td>
                                     <td>
                                         <button @click="initEditExternalForecastCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
                                 </tr>
                                 <tr class="column-alert">
                                     <td colspan="5" class="text-right"><b>{{ translateText('label.actual_total') }}</b></td>
-                                    <td><b>{{ task.externalActualCost | formatMoney }}</b></td>
+                                    <td><b>{{ task.externalActualCost | money }}</b></td>
                                     <td>
                                         <button data-toggle="modal" @click="initEditExternalActualCostModal()" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                    </vue-scrollbar>
+                    </vue-perfect-scrollbar>
                     <div class="flex flex-space-between flex-v-center margintop20">
                         <div></div>
                         <button
@@ -724,7 +730,6 @@ import AttachIcon from '../../_common/_icons/AttachIcon';
 import TaskModals from './View/TaskModals';
 import Attachments from './Create/Attachments';
 import Switches from '../../3rdparty/vue-switches';
-import VueScrollbar from 'vue2-scrollbar';
 import SelectField from '../../_common/_form-components/SelectField';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import RangeSlider from '../../_common/_form-components/RangeSlider';
@@ -737,6 +742,8 @@ import EditScheduleModal from './View/EditScheduleModal';
 import moment from 'moment';
 import {createFormData} from '../../../helpers/task';
 import Vue from 'vue';
+import SwitchField from '../../_common/_form-components/SwitchField';
+import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
 const TASK_STATUS_CLOSED = 5;
 const TASK_STATUS_COMPLETED = 4;
@@ -749,7 +756,6 @@ export default {
         TaskModals,
         Attachments,
         Switches,
-        VueScrollbar,
         SelectField,
         MultiSelectField,
         RangeSlider,
@@ -758,8 +764,10 @@ export default {
         Condition,
         moment,
         AlertModal,
+        SwitchField,
         EditScheduleModal,
         Editor,
+        VuePerfectScrollbar,
     },
     created() {
         if (this.$route.params.taskId) {
@@ -786,36 +794,6 @@ export default {
         }),
         isClosed() {
             return this.task.workPackageStatus === TASK_STATUS_CLOSED;
-        },
-        internalBaseTotal() {
-            return this.editableData.internalCosts.reduce((prev, next) => {
-                return prev + next.total;
-            }, 0);
-        },
-        externalBaseTotal() {
-            return this.editableData.externalCosts.reduce((prev, next) => {
-                return prev + next.total;
-            }, 0);
-        },
-        totalOpex() {
-            let totalOpexCost = 0;
-            // remove and replace with coputed prop
-            for (let cost of this.editableData.externalCosts) {
-                if (cost.opex === 1) {
-                    totalOpexCost += cost.total;
-                }
-            }
-            return totalOpexCost;
-        },
-        totalCapex() {
-            let totalCapexCost = 0;
-
-            for (let cost of this.editableData.externalCosts) {
-                if (cost.capex === 1) {
-                    totalCapexCost += cost.total;
-                }
-            }
-            return totalCapexCost;
         },
         responsibilityObj() {
             for (let user of this.projectUsersForSelect) {
@@ -928,7 +906,7 @@ export default {
             let itemTotal = this.itemTotal;
 
             this.task.costs.map(cost => {
-                if (cost.type === 0) {
+                if (cost.internal) {
                     internal.push({
                         id: cost.id,
                         resourceName: cost.resourceName,
@@ -938,21 +916,20 @@ export default {
                         duration: cost.duration,
                         total: itemTotal(cost),
                     });
-                } else {
-                    external.push({
-                        id: cost.id,
-                        rate: cost.rate,
-                        name: cost.name,
-                        quantity: cost.quantity,
+
+                    return;
+                }
+
+                external.push(
+                    Object.assign({}, cost, {
                         selectedUnit: cost.unit && cost.unit.id ? cost.unit.id.toString() : null,
                         unit: cost.unit && cost.unit.id ? cost.unit.name : '',
-                        capex: cost.expenseType === 1 ? 1 : 0,
-                        opex: cost.expenseType !== 1 ? 1 : 0,
                         total: itemTotal(cost),
                         customUnit: '',
-                    });
-                }
+                    }),
+                );
             });
+
             this.editableData.internalCosts = internal;
             this.editableData.externalCosts = external;
 
@@ -1255,12 +1232,14 @@ export default {
             this.showDeleteExternalCostModal = true;
             this.editExternalCostObj = externalCost;
         },
-        updateCostType(cost) {
+        onUpdateCostExpenseType(cost) {
             let data = {
                 expenseType: cost.expenseType,
             };
-            this.editTaskCost({costId: cost.id, data: data});
-            this.getTaskById(this.$route.params.taskId);
+
+            this.editTaskCost({costId: cost.id, data: data}).then(() => {
+                this.getTaskById(this.$route.params.taskId);
+            });
         },
         initEditExternalForecastCostModal() {
             this.showEditExternalForecastCostModal = true;

@@ -1861,6 +1861,60 @@ class WorkPackage
     }
 
     /**
+     * @return Cost[]|ArrayCollection
+     */
+    public function getExternalCosts()
+    {
+        return $this->getCosts()->filter(
+            function (Cost $cost) {
+                return $cost->isExternal();
+            }
+        );
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return float
+     */
+    public function getExternalCostTotal(): float
+    {
+        $total = 0;
+        foreach ($this->getExternalCosts() as $cost) {
+            $total += (float) $cost->getActualValue();
+        }
+
+        return $total;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return float
+     */
+    public function getInternalCostTotal(): float
+    {
+        $total = 0;
+        foreach ($this->getInternalCosts() as $cost) {
+            $total += (float) $cost->getActualValue();
+        }
+
+        return $total;
+    }
+
+    /**
+     * @return Cost[]|ArrayCollection
+     */
+    public function getInternalCosts()
+    {
+        return $this->getCosts()->filter(
+            function (Cost $cost) {
+                return $cost->isInternal();
+            }
+        );
+    }
+
+    /**
      * Add Comment.
      *
      * @param Comment $comment
@@ -2380,5 +2434,55 @@ class WorkPackage
         }
 
         return 'green';
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return float
+     */
+    public function getExternalCostOPEXTotal(): float
+    {
+        $total = 0;
+        $costs = $this
+            ->getExternalCosts()
+            ->filter(
+                function (Cost $cost) {
+                    return $cost->isOPEX();
+                }
+            )
+        ;
+
+        /** @var Cost $cost */
+        foreach ($costs as $cost) {
+            $total += (float) $cost->getActualValue();
+        }
+
+        return $total;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return float
+     */
+    public function getExternalCostCAPEXTotal(): float
+    {
+        $total = 0;
+        $costs = $this
+            ->getExternalCosts()
+            ->filter(
+                function (Cost $cost) {
+                    return $cost->isCAPEX();
+                }
+            )
+        ;
+
+        /** @var Cost $cost */
+        foreach ($costs as $cost) {
+            $total += (float) $cost->getActualValue();
+        }
+
+        return $total;
     }
 }
