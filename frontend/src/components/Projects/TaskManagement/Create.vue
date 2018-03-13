@@ -41,7 +41,9 @@
                     <!-- /// Task Description /// -->
                     <div class="vueditor-holder">
                         <div class="vueditor-header">{{ label.task_description }}</div>
-                        <Vueditor ref="description" />
+                        <editor
+                            v-model="description"
+                            :label="label.task_description"/>
                         <div cass="vueditor-footer clearfix">
                             <div class="pull-right"></div>
                         </div>
@@ -147,6 +149,7 @@ import TaskDetails from './Create/Details';
 import Attachments from './Create/Attachments';
 import datepicker from '../../_common/_form-components/Datepicker';
 import Switches from '../../3rdparty/vue-switches';
+import Editor from '../../_common/Editor.vue';
 import Error from '../../_common/_messages/Error.vue';
 import AlertModal from '../../_common/AlertModal.vue';
 import {mapGetters, mapActions} from 'vuex';
@@ -170,6 +173,7 @@ export default {
         Condition,
         TaskDetails,
         Attachments,
+        Editor,
         Error,
         AlertModal,
     },
@@ -189,7 +193,7 @@ export default {
                 project: this.$route.params.id,
                 name: this.title,
                 type: 2,
-                description: this.$refs.description.getContent(),
+                description: this.description,
                 schedule: this.schedule,
                 internalCosts: this.internalCosts,
                 externalCosts: this.externalCosts,
@@ -225,7 +229,7 @@ export default {
                 project: this.$route.params.id,
                 name: this.title,
                 type: 2,
-                description: this.$refs.description.getContent(),
+                description: this.description,
                 schedule: this.schedule,
                 internalCosts: this.internalCosts,
                 externalCosts: this.externalCosts,
@@ -393,7 +397,7 @@ export default {
         },
         task(value) {
             this.title = this.task.name;
-            this.$refs.description.setContent(this.task.content);
+            this.description = this.task.content;
             this.schedule = {
                 baseStartDate: this.task.scheduledStartAt ? new Date(this.task.scheduledStartAt) : new Date(),
                 baseEndDate: this.task.scheduledFinishAt ? new Date(this.task.scheduledFinishAt) : new Date(),
@@ -572,6 +576,7 @@ export default {
                 duration: 0,
             },
             title: '',
+            description: '',
             internalCosts: {
                 items: [],
                 forecast: 0,
@@ -604,6 +609,8 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+    @import '../../../css/_common';
+    @import '../../../css/page-section';
+    @import '../../../css/_variables';
 </style>

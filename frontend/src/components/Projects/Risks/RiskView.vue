@@ -20,14 +20,16 @@
             </div>
             <div class="form-group">
                 <div class="col-md-12">
-                    <div class="vueditor-holder measure-vueditor-holder">
-                        <div class="vueditor-header">{{ translateText('placeholder.measure_description') }}</div>
-                        <Vueditor :id="'selectedMeasure'+selectedMeasure.id" :ref="'selectedMeasureDescription'" />
-                        <error
-                            v-if="editMeasureValidationMessages.description && editMeasureValidationMessages.description.length"
-                            v-for="message in editMeasureValidationMessages.description"
-                            :message="message" />
-                    </div>
+                    <editor
+                        height="200px"
+                        class="measure-vueditor-holder"
+                        id="selectedMeasure"
+                        v-model="selectedMeasure.description"
+                        :label="'placeholder.measure_description'" />
+                    <error
+                        v-if="editMeasureValidationMessages.description && editMeasureValidationMessages.description.length"
+                        v-for="message in editMeasureValidationMessages.description"
+                        :message="message" />
                 </div>
             </div>
             <div class="form-group last-form-group">
@@ -258,14 +260,16 @@
                         <!-- /// New Comment /// -->
                         <div class="new-comment collapse" :id="'measure-'+measure.id+'-new-comment'">
                             <div class="new-comment-body">
-                                <div class="vueditor-holder">
-                                    <div class="vueditor-header">{{ translateText('message.new_comment') }}</div>
-                                    <Vueditor :id="'comment'+measure.id" :ref="'comment'+measure.id" />
-                                    <error
-                                        v-if="measureCommentValidationMessages.description && measureCommentValidationMessages.description.length"
-                                        v-for="message in measureCommentValidationMessages.description"
-                                        :message="message" />
-                                </div>
+                                <editor
+                                    height="200px"
+                                    class="measure-vueditor-holder"
+                                    :id="`measure-${measure.id}-new-comment`"
+                                    v-model="newComments[measure.id]"
+                                    :label="'message.new_comment'" />
+                                <error
+                                    v-if="measureCommentValidationMessages.description && measureCommentValidationMessages.description.length"
+                                    v-for="message in measureCommentValidationMessages.description"
+                                    :message="message" />
                                 <div class="footer-buttons flex flex-space-between">
                                     <button @click="addMeasureComment(measure.id)" type="button" :data-target="'#measure-'+measure.id+'-new-comment'" :data-parent="'#measure-'+measure.id" aria-expanded="false" class="btn-rounded btn-auto btn-md second-bg">{{ translateText('message.add_comment') }}</button>
                                     <button type="button" :data-target="'#measure-'+measure.id+'-new-comment'" class="btn btn-rounded btn-empty btn-auto btn-md" data-toggle="collapse" :data-parent="'#measure-'+measure.id" aria-expanded="false">{{ translateText('message.close') }}</button>
@@ -292,8 +296,12 @@
                     <div class="form-group">
                         <div class="col-md-12">
                             <div class="vueditor-holder measure-vueditor-holder">
-                                <div class="vueditor-header">{{ translateText('placeholder.new_measure') }}</div>
-                                <Vueditor id="measureDescription" ref="measureDescription" />
+                                <editor
+                                    height="200px"
+                                    class="measure-vueditor-holder"
+                                    id="measureDescription"
+                                    v-model="measureDescription"
+                                    :label="'placeholder.new_measure'" />
                                 <error
                                     v-if="validationMessages.description && validationMessages.description.length"
                                     v-for="message in validationMessages.description"
@@ -333,8 +341,7 @@ import {mapGetters, mapActions} from 'vuex';
 import moment from 'moment';
 import Modal from '../../_common/Modal';
 import Error from '../../_common/_messages/Error.vue';
-import {createEditor} from 'vueditor';
-import vueditorConfig from '../../_common/vueditorConfig';
+import Editor from '../../_common/Editor';
 
 export default {
     components: {
@@ -346,6 +353,7 @@ export default {
         RangeSlider,
         Modal,
         Error,
+        Editor,
     },
     methods: {
         ...mapActions([
@@ -364,8 +372,11 @@ export default {
         addMeasureComment: function(measureId) {
             let data = {
                 measure: measureId,
-                description: this.newCommentsRefs['comment'+measureId].getContent(),
+                description: this.newComments[measureId],
             };
+
+            this.newComments[measureId] = '';
+
             this
                 .createMeasureComment(data)
                 .then(
@@ -373,23 +384,17 @@ export default {
                         if (response.body && response.body.error) {
                             const {messages} = response.body;
                             this.measureCommentValidationMessages = messages;
-                        } else {
-                            if (this.risk.measures) {
-                                let measureComment = response.body;
-                                this.risk.measures.map(item => {
-                                    if (item.id === measureComment.measure) {
-                                        item.comments.push(measureComment);
-                                    }
-                                });
-                            }
                         }
-                    });
+                    },
+                    () => {}
+                )
+            ;
         },
         addMeasure: function() {
             let data = {
                 risk: this.$route.params.riskId,
                 title: this.measureTitle,
-                description: this.$refs['measureDescription'].getContent(),
+                description: this.measureDescription,
                 cost: this.measureCost,
                 responsibility: this.risk.responsibility,
             };
@@ -406,15 +411,8 @@ export default {
                 description: measure.description,
                 cost: measure.cost,
             };
-            setTimeout(() => {
-                const thisRef = 'selectedMeasure'+measure.id;
-                this.selectedMeasure.editor = createEditor(document.getElementById(thisRef), {...vueditorConfig, id: thisRef});
-                this.selectedMeasure.editor.setContent(measure.description);
-            }, 1000);
         },
         editSelectedMeasure: function() {
-            this.selectedMeasure.description = this.selectedMeasure.editor.getContent();
-            delete this.selectedMeasure.editor;
             this
                 .editMeasure(this.selectedMeasure)
                 .then(
@@ -422,21 +420,17 @@ export default {
                         if (response.body && response.body.error) {
                             const {messages} = response.body;
                             this.editMeasureValidationMessages = messages;
-                        } else {
-                            if (this.risk.measures) {
-                                let data = response.body;
-                                this.risk.measures.map(item => {
-                                    if (item.id === data.id) {
-                                        item.title = data.title;
-                                        item.description = data.description;
-                                        item.cost = data.cost;
-                                    }
-                                });
-                            }
-                            this.editMeasureValidationMessages = {};
-                            this.showEditMeasureModal = false;
                         }
-                    });
+
+                        this.editMeasureValidationMessages = {};
+                        this.showEditMeasureModal = false;
+                    },
+                    () => {
+                        this.editMeasureValidationMessages = {};
+                        this.showEditMeasureModal = false;
+                    }
+                )
+            ;
         },
         updateGridView() {
             let index = 0;
@@ -522,7 +516,7 @@ export default {
             ],
             editMeasureValidationMessages: {},
             measureCommentValidationMessages: {},
-            newCommentsRefs: {},
+            newComments: {},
         };
     },
     watch: {
@@ -530,18 +524,10 @@ export default {
             this.currentRiskImpact = this.risk.impact;
             this.currentRiskProbability = this.risk.probability;
             this.updateGridView();
-
-            setTimeout(() => {
-                this.risk.measures.forEach(measure => {
-                    const ref = 'comment' + measure.id;
-                    const elm = createEditor(document.getElementById(ref), {...vueditorConfig, id: ref});
-                    this.newCommentsRefs[ref] = elm;
-                });
-            }, 1000);
         },
         measures(value) {
-            this.$refs['measureDescription'].setContent('');
             this.measureTitle = '';
+            this.measureDescription = '';
             this.measureCost = '';
         },
     },

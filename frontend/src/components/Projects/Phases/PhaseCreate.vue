@@ -25,10 +25,9 @@
                     <!-- /// End Phase Name /// -->
 
                     <!-- /// Phase Description /// -->
-                    <div class="vueditor-holder">
-                        <div class="vueditor-header">{{ translateText('placeholder.phase_description') }}</div>
-                        <Vueditor ref="content" />
-                    </div>
+                    <editor
+                        v-model="content"
+                        :label="'placeholder.phase_description'"/>
                     <!-- /// End Phase Description /// -->
 
                     <hr class="double">
@@ -163,6 +162,7 @@ import datepicker from '../../_common/_form-components/Datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
+import Editor from '../../_common/Editor';
 import MemberSearch from '../../_common/MemberSearch';
 
 export default {
@@ -173,6 +173,7 @@ export default {
         datepicker,
         CalendarIcon,
         Error,
+        Editor,
         MemberSearch,
     },
     methods: {
@@ -188,7 +189,7 @@ export default {
                 project: this.$route.params.id,
                 name: this.name,
                 type: 0,
-                content: this.$refs.content.getContent(),
+                content: this.content,
                 scheduledStartAt: moment(this.schedule.baseStartDate).format('DD-MM-YYYY'),
                 scheduledFinishAt: moment(this.schedule.baseEndDate).format('DD-MM-YYYY'),
                 forecastStartAt: moment(this.schedule.forecastStartDate).format('DD-MM-YYYY'),
@@ -204,7 +205,7 @@ export default {
                 id: this.$route.params.phaseId,
                 name: this.name,
                 type: 0,
-                content: this.$refs.content.getContent(),
+                content: this.content,
                 scheduledStartAt: moment(this.schedule.baseStartDate).format('DD-MM-YYYY'),
                 scheduledFinishAt: moment(this.schedule.baseEndDate).format('DD-MM-YYYY'),
                 forecastStartAt: moment(this.schedule.forecastStartDate).format('DD-MM-YYYY'),
@@ -227,7 +228,7 @@ export default {
     watch: {
         phase(value) {
             this.name = this.phase.name;
-            this.$refs.content.setContent(this.phase.content);
+            this.content = this.phase.content;
             this.schedule.baseStartDate = new Date(this.phase.scheduledStartAt);
             this.schedule.baseEndDate = new Date(this.phase.scheduledFinishAt);
             this.schedule.forecastStartDate = new Date(this.phase.forecastStartAt);

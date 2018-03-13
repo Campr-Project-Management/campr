@@ -256,10 +256,11 @@
                         v-for="message in validationMessages.title"
                         :message="message" />
                     <div class="form-group">
-                        <div class="vueditor-holder">
-                            <div class="vueditor-header">{{ translateText('placeholder.decision_description') }}</div>
-                            <div id="decisionDescription" ref="decisionDescription"></div>
-                        </div>
+                        <editor
+                            id="decision-description"
+                            height="200px"
+                            label="placeholder.decision_description"
+                            v-model="decision.description" />
                     </div>
                     <error
                         v-if="validationOrigin==DECISION_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
@@ -327,11 +328,11 @@
                         v-for="message in validationMessages.title"
                         :message="message" />
                     <div class="form-group">
-                        <div class="vueditor-holder">
-                            <div class="vueditor-header">{{ translateText('placeholder.action') }}</div>
-                            <div id="todoDescription" ref="todoDescription">
-                            </div>
-                        </div>
+                        <editor
+                            id="todo-description"
+                            height="200px"
+                            label="placeholder.todo_description"
+                            v-model="todo.description" />
                     </div>
                     <error
                         v-if="validationOrigin==TODO_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
@@ -412,10 +413,11 @@
                         v-for="message in validationMessages.topic"
                         :message="message" />
                     <div class="form-group">
-                        <div class="vueditor-holder">
-                            <div class="vueditor-header">{{ translateText('placeholder.info_description') }}</div>
-                            <div id="infoDescription" ref="infoDescription"></div>
-                        </div>
+                        <editor
+                            id="info-description"
+                            height="200px"
+                            label="placeholder.info_description"
+                            v-model="info.description" />
                     </div>
                     <error
                         v-if="validationOrigin==INFO_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
@@ -455,8 +457,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group last-form-group">
-                            <div class="col-md-6">
-                            </div>
+                            <div class="col-md-6"></div>
                             <div class="col-md-6">
                                 <div class="flex flex-direction-reverse">
                                     <a @click="addInfo()" class="btn-rounded btn-auto">{{ translateText('message.add_new_info') }}</a>
@@ -524,14 +525,14 @@ import {createFormData} from '../../../helpers/meeting';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import MeetingModals from './MeetingModals';
 import MeetingParticipants from './MeetingParticipants';
-import {createEditor} from 'vueditor';
-import vueditorConfig from '../../_common/vueditorConfig';
 import Error from '../../_common/_messages/Error.vue';
 import AlertModal from '../../_common/AlertModal.vue';
 import router from '../../../router';
+import Editor from '../../_common/Editor';
 
 export default {
     components: {
+        Editor,
         InputField,
         SelectField,
         datepicker,
@@ -650,29 +651,26 @@ export default {
             this.createMeetingDecision({
                 id: this.$route.params.meetingId,
                 title: this.decision.title,
-                description: this.decisionDescriptionEditor.getContent(),
+                description: this.decision.description,
                 responsibility: this.decision.responsibility.length > 0 ? this.decision.responsibility[0] : null,
                 dueDate: moment(this.decision.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 status: this.decision.status ? this.decision.status.key : null,
             });
             this.decision.responsibility = [];
             this.decision.title = null;
-            this.initVueEditors();
         },
         initEditDecision: function(decision) {
             this.showEditDecisionModal = true;
             this.editDecisionObject = {
                 id: decision.id,
                 title: decision.title,
+                description: decision.description,
                 responsibility: [decision.responsibility],
                 responsibilityFullName: decision.responsibilityFullName,
                 dueDate: decision.dueDate ? new Date(decision.dueDate) : new Date(),
                 status: {key: decision.status, label: decision.statusName},
                 meeting: this.$route.params.meetingId,
             };
-            setTimeout(() => {
-                this.$refs.meetingmodal.$refs.editDecisionDescription.setContent(decision.description);
-            }, 100);
         },
         initDeleteDecision: function(decision) {
             this.showDeleteDecisionModal = true;
@@ -682,29 +680,26 @@ export default {
             this.createMeetingTodo({
                 id: this.$route.params.meetingId,
                 title: this.todo.title,
-                description: this.todoDescriptionEditor.getContent(),
+                description: this.todo.description,
                 responsibility: this.todo.responsibility.length > 0 ? this.todo.responsibility[0] : null,
                 dueDate: moment(this.todo.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 status: this.todo.status ? this.todo.status.key : null,
             });
             this.todo.responsibility = [];
             this.todo.title = null;
-            this.initVueEditors();
         },
         initEditTodo: function(todo) {
             this.showEditTodoModal = true;
             this.editTodoObject = {
                 id: todo.id,
                 title: todo.title,
+                description: todo.description,
                 responsibility: [todo.responsibility],
                 responsibilityFullName: todo.responsibilityFullName,
                 dueDate: todo.dueDate ? new Date(todo.dueDate) : new Date(),
                 status: {key: todo.status, label: this.translateText(todo.statusName)},
                 meeting: this.$route.params.meetingId,
             };
-            setTimeout(() => {
-                this.$refs.meetingmodal.$refs.editTodoDescription.setContent(todo.description);
-            }, 100);
         },
         initDeleteTodo: function(todo) {
             this.showDeleteTodoModal = true;
@@ -714,7 +709,7 @@ export default {
             const data = {
                 // id: this.$route.params.meetingId,
                 topic: this.info.topic,
-                description: this.infoDescriptionEditor.getContent(),
+                description: this.info.description,
                 responsibility: this.info.responsibility.length ? this.info.responsibility[0] : null,
                 dueDate: moment(this.info.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 infoStatus: this.info.infoStatus ? this.info.infoStatus.key : null,
@@ -725,13 +720,13 @@ export default {
             this.createInfo({projectId, data});
             this.info.topic = null;
             this.info.responsibility = [];
-            this.initVueEditors();
         },
         initEditInfo: function(info) {
             this.showEditInfoModal = true;
             this.editInfoObject = {
                 id: info.id,
                 topic: info.topic,
+                description: info.description,
                 responsibility: [info.responsibility],
                 responsibilityFullName: info.responsibilityFullName,
                 dueDate: info.dueDate ? new Date(info.dueDate) : new Date(),
@@ -739,10 +734,6 @@ export default {
                 infoCategory: {key: info.infoCategory, label: info.infoCategoryName},
                 meeting: this.$route.params.meetingId,
             };
-
-            setTimeout(() => {
-                this.$refs.meetingmodal.$refs.editInfoDescription.setContent(info.description);
-            }, 100);
         },
         initDeleteInfo: function(info) {
             this.showDeleteInfoModal = true;
@@ -778,13 +769,6 @@ export default {
                     }
                 )
             ;
-        },
-        initVueEditors: function() {
-            setTimeout(() => {
-                this.decisionDescriptionEditor = createEditor(document.getElementById('decisionDescription'), {...vueditorConfig, id: 'decisionDescription'});
-                this.todoDescriptionEditor = createEditor(document.getElementById('todoDescription'), {...vueditorConfig, id: 'todoDescription'});
-                this.infoDescriptionEditor = createEditor(document.getElementById('infoDescription'), {...vueditorConfig, id: 'infoDescription'});
-            }, 100);
         },
     },
     computed: {
@@ -823,9 +807,6 @@ export default {
             },
         });
     },
-    mounted() {
-        this.initVueEditors();
-    },
     data() {
         return {
             showSaved: false,
@@ -860,18 +841,21 @@ export default {
             },
             decision: {
                 title: null,
+                description: null,
                 responsibility: [],
                 dueDate: new Date(),
                 status: null,
             },
             todo: {
                 title: null,
+                description: null,
                 responsibility: [],
                 dueDate: new Date(),
                 status: null,
             },
             info: {
                 topic: null,
+                description: null,
                 responsibility: [],
                 dueDate: new Date(),
                 infoStatus: null,
@@ -993,7 +977,6 @@ export default {
                     'path': item.path,
                 };
             });
-            this.initVueEditors();
         },
         showSaved(value) {
             if (value === false) {
