@@ -42,14 +42,13 @@
                             :message="message" />
                     </div>
                     <div class="form-group">
-                        <div class="vueditor-holder">
-                            <div class="vueditor-header">{{ translateText('placeholder.info_description') }}</div>
-                            <Vueditor ref="descriptionEditor" />
-                            <error
-                                v-if="validationMessages.description && validationMessages.description.length"
-                                v-for="message in validationMessages.description"
-                                :message="message" />
-                        </div>
+                        <editor
+                            v-model="description"
+                            :label="'placeholder.info_description'"/>
+                        <error
+                            v-if="validationMessages.description && validationMessages.description.length"
+                            v-for="message in validationMessages.description"
+                            :message="message" />
                     </div>
                     <!-- /// End Info Title and Description /// -->
 
@@ -119,6 +118,7 @@ import datepicker from '../../_common/_form-components/Datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
 import Error from '../../_common/_messages/Error.vue';
+import Editor from '../../_common/Editor';
 import AlertModal from '../../_common/AlertModal.vue';
 import router from '../../../router';
 import {mapActions, mapGetters} from 'vuex';
@@ -131,6 +131,7 @@ export default {
         CalendarIcon,
         MemberSearch,
         Error,
+        Editor,
         AlertModal,
     },
     methods: {
@@ -149,7 +150,7 @@ export default {
         doSave() {
             const data = {
                 topic: this.topic,
-                description: this.$refs.descriptionEditor.getContent(),
+                description: this.description,
                 dueDate: this.dueDate,
                 infoCategory: this.infoCategory && this.infoCategory.key
                     ? this.infoCategory.key
@@ -201,7 +202,7 @@ export default {
         info(val) {
             if (val) {
                 this.topic = val.topic;
-                this.$refs.descriptionEditor.setContent(val.description || '');
+                this.description = val.description;
                 this.dueDate = val.dueDate;
                 this.infoCategory = {
                     key: val.infoCategory,
@@ -224,9 +225,6 @@ export default {
         if (this.$route.params.infoId) {
             this.getInfo(this.$route.params.infoId);
         }
-    },
-    mounted() {
-        this.$refs.descriptionEditor.setContent('');
     },
     beforeDestroy() {
         this.emptyValidationMessages();

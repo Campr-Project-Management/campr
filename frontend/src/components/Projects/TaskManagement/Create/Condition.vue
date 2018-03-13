@@ -46,6 +46,7 @@ export default {
 
 <style scoped lang="scss">
     @import '../../../../css/_variables';
+    @import '../../../../css/_common';
 
     .condition-info {
         font-weight: 300;

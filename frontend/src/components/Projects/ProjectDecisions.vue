@@ -130,10 +130,7 @@ export default {
         },
     },
     computed: {
-        ...mapGetters({
-            decisions: 'decisions',
-            decisionsCount: 'decisionsCount',
-        }),
+        ...mapGetters(['decisions']),
         pages: function() {
             return Math.ceil(this.decisions.totalItems / this.perPage);
         },

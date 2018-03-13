@@ -71,10 +71,9 @@
                         <div class="form">
                             <!-- /// Project Status Comment /// -->
                             <div class="form-group last-form-group">
-                                <div class="vueditor-holder">
-                                    <div class="vueditor-header">{{ translateText('placeholder.comment') }}</div>
-                                    <Vueditor ref="comment" />
-                                </div>
+                                <editor
+                                    v-model="comment"
+                                    :label="'placeholder.comment'" />
                             </div>
                             <!-- /// End Project Staus Comment /// -->
                         </div>
@@ -243,7 +242,7 @@
                             <div class="status-box" v-bind:style="{background: project.overallStatus === 0 ? '#c87369' : '', cursor: 'default'}"></div>
                         </div>
 
-                        <vis-timeline :pmData="pmData" :withPhases="false"></vis-timeline>
+                        <vis-timeline :items="pmData" :withPhases="false" />
                     </div>
                 </div>
 
@@ -390,7 +389,7 @@
                             <tr v-for="decision in decisions.items">
                                 <td>{{ decision.dueDate | moment('DD.MM.YYYY') }}</td>
                                 <td class="cell-wrap">{{ decision.title }}</td>
-                                <td class="cell-wrap cell-large">{{ decision.description }}</td>
+                                <td class="cell-wrap cell-large" v-html="decision.description"></td>
                                 <td>
                                     <div class="avatar" v-tooltip.top-center="decision.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatar + ')' }"></div>
                                 </td>
@@ -433,6 +432,7 @@ import RiskSummary from '../Risks/RiskSummary';
 import OpportunitySummary from '../Opportunities/OpportunitySummary';
 import DownloadIcon from '../../_common/_icons/DownloadIcon';
 import AtIcon from '../../_common/_icons/AtIcon';
+import Editor from '../../_common/Editor';
 import resize from 'vue-resize-directive';
 
 export default {
@@ -449,6 +449,7 @@ export default {
         DownloadIcon,
         AtIcon,
         Chart,
+        Editor,
     },
     directives: {
         resize,
@@ -553,7 +554,7 @@ export default {
                     projectTasksStatus: this.projectTasksStatus,
                     actionNeeded: this.actionNeeded,
                     projectTrend: this.trendRows,
-                    comment: this.$refs.comment.getContent(),
+                    comment: this.comment,
                     tasksForSchedule: this.tasksForSchedule,
                     progresses: this.progresses,
                     projectMilestones: this.projectMilestones,
@@ -566,9 +567,8 @@ export default {
                     decisions: this.decisions,
                 },
             };
-            console.info(data);
             // this needs to be fixed
-            // this.createStatusReport(data);
+            this.createStatusReport(data);
         },
         onResizeSameHeightDiv: function() {
             $('.same-height').matchHeight();
@@ -695,7 +695,7 @@ export default {
             projectId: this.$route.params.id,
             actionNeeded: null,
             today: new Date(),
-            comment: null,
+            comment: '',
             forecastColorClass: null,
             actualColorClass: null,
             milestoneColorClass: '#5FC3A5',
