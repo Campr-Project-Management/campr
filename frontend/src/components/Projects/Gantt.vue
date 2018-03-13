@@ -5,21 +5,21 @@
         </div>
 
         <div class="right-sided">
-            <input
-                id="importXmlFile"
-                type="file"
-                name="importXmlFile"
-                style="display: none;"
-                v-on:change="uploadImportTaskFile" />
+            <!--<input-->
+                <!--id="importXmlFile"-->
+                <!--type="file"-->
+                <!--name="importXmlFile"-->
+                <!--style="display: none;"-->
+                <!--v-on:change="uploadImportTaskFile" />-->
 
-            <a class="btn-rounded btn-auto btn-empty flex" v-on:click="openFileSelection">
-                <span>{{ translateText('message.import_tasks') }}</span>
-                <upload-icon></upload-icon>
-            </a>
+            <!--<a class="btn-rounded btn-auto btn-empty flex" v-on:click="openFileSelection">-->
+                <!--<span>{{ translateText('message.import_tasks') }}</span>-->
+                <!--<upload-icon></upload-icon>-->
+            <!--</a>-->
 
-            <a v-if="project && project.id" :href="exportProjectURL" class="btn-rounded btn-auto btn-empty flex" id="export_project_button">
-                {{ translateText('message.export_project') }}
-            </a>
+            <!--<a v-if="project && project.id" :href="exportProjectURL" class="btn-rounded btn-auto btn-empty flex" id="export_project_button">-->
+                <!--{{ translateText('message.export_project') }}-->
+            <!--</a>-->
 
             <input
                 type="button"
@@ -30,8 +30,8 @@
         </div>
 
         <ul class="gantt-tabs">
-            <li role="presentation" v-for="availableDate in availableDates" :class="{active: availableDate === currentDate}">
-                <button v-on:click="setCurrentDate(availableDate)">{{ availableDate }}</button>
+            <li role="presentation" v-for="(label, availableDate) in availableDates" :class="{active: availableDate === currentDate}">
+                <button v-on:click="setCurrentDate(availableDate)">{{ translateText(label) }}</button>
             </li>
         </ul>
         <div ref="gantt_chart" id="gantt_chart" class="gantt-chart">
@@ -585,7 +585,11 @@ export default {
     data() {
         return {
             currentDate: 'scheduled',
-            availableDates: ['scheduled', 'actual', 'forecast'],
+            availableDates: {
+                scheduled: 'label.base',
+                forecast: 'label.forecast',
+                actual: 'label.actual',
+            },
             showSaved: false,
             showFailed: false,
             showMinimap: true,
