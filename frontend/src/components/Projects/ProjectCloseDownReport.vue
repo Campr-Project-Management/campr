@@ -40,10 +40,12 @@
             <div class="row">
                 <!-- /// Overall Impression /// -->
                 <div class="col-md-6 col-md-offset-3">
-                    <div class="vueditor-holder" :class="{disabledpicker: projectCloseDown.frozen }">
-                        <div class="vueditor-header">{{ translateText('message.overall_impression') }}</div>
-                        <Vueditor id="overallImpression" ref="overallImpression" />
-                    </div>
+                    <editor
+                        height="200px"
+                        :class="{disabledpicker: projectCloseDown.frozen}"
+                        id="overallImpression"
+                        v-model="overallImpression"
+                        :label="'placeholder.overall_impression'" />
                 </div>
                 <!-- End Overall Impression -->
             </div>
@@ -98,27 +100,33 @@
                 <!-- /// Reflection: Performance / Schedule /// -->
                 <div class="col-md-4">
                     <h4>{{ translateText('message.reflection') }}: {{ translateText('message.performance_schedule') }}</h4>
-                    <div class="vueditor-holder" :class="{disabledpicker: projectCloseDown.frozen }">
-                        <Vueditor id="performanceSchedule" ref="performanceSchedule" />
-                    </div>
+                    <editor
+                        height="200px"
+                        :class="{disabledpicker: projectCloseDown.frozen}"
+                        id="performanceSchedule"
+                        v-model="performanceSchedule" />
                 </div>
                 <!-- /// End Reflection: Performance / Schedule /// -->
 
                 <!-- /// Reflection: Organization / Context /// -->
                 <div class="col-md-4">
                     <h4>{{ translateText('message.reflection') }}: {{ translateText('message.organization_context') }}</h4>
-                    <div class="vueditor-holder" :class="{disabledpicker: projectCloseDown.frozen }">
-                        <Vueditor id="organizationContext" ref="organizationContext" />
-                    </div>
+                    <editor
+                        height="200px"
+                        :class="{disabledpicker: projectCloseDown.frozen}"
+                        id="organizationContext"
+                        v-model="organizationContext" />
                 </div>
                 <!-- /// End Reflection: Organization / Context /// -->
 
                 <!-- /// Reflection: Project Management /// -->
                 <div class="col-md-4">
                     <h4>{{ translateText('message.reflection') }}: {{ translateText('message.project_management') }}</h4>
-                    <div class="vueditor-holder" :class="{disabledpicker: projectCloseDown.frozen }">
-                        <Vueditor id="projectManagement" ref="projectManagement" />
-                    </div>
+                    <editor
+                        height="200px"
+                        :class="{disabledpicker: projectCloseDown.frozen}"
+                        id="projectManagement"
+                        v-model="projectManagement" />
                 </div>
                 <!-- /// End Reflection: Project Management /// -->
             </div>
@@ -193,10 +201,12 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="vueditor-holder">
-                                <div class="vueditor-header">{{ translateText('placeholder.description') }}</div>
-                                <Vueditor id="actionDescription" ref="actionDescription" />
-                            </div>
+                            <editor
+                                height="200px"
+                                :class="{disabledpicker: projectCloseDown.frozen}"
+                                id="actionDescription"
+                                v-model="actionDescription"
+                                :label="'placeholder.description'" />
                         </div>
                         <!-- /// End Title and Description /// -->
 
@@ -302,11 +312,10 @@ import ViewIcon from '../_common/_icons/ViewIcon';
 import EditIcon from '../_common/_icons/EditIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
 import MemberSearch from '../_common/MemberSearch';
-import {createEditor} from 'vueditor';
-import vueditorConfig from '../_common/vueditorConfig';
 import Error from '../_common/_messages/Error.vue';
 import AlertModal from '../_common/AlertModal.vue';
 import Modal from '../_common/Modal';
+import Editor from '../_common/Editor';
 
 export default {
     components: {
@@ -323,9 +332,7 @@ export default {
         Error,
         AlertModal,
         Modal,
-    },
-    mounted() {
-        this.initVueEditors();
+        Editor,
     },
     methods: {
         ...mapActions([
@@ -337,15 +344,6 @@ export default {
         ]),
         translateText: function(text) {
             return this.translate(text);
-        },
-        initVueEditors: function() {
-            setTimeout(() => {
-                this.overallImpressionEditor = createEditor(document.getElementById('overallImpression'), {...vueditorConfig, id: 'overallImpression'});
-                this.performanceScheduleEditor = createEditor(document.getElementById('performanceSchedule'), {...vueditorConfig, id: 'performanceSchedule'});
-                this.organizationContextEditor = createEditor(document.getElementById('organizationContext'), {...vueditorConfig, id: 'organizationContext'});
-                this.projectManagementEditor = createEditor(document.getElementById('projectManagement'), {...vueditorConfig, id: 'projectManagement'});
-                this.actionDescription = createEditor(document.getElementById('actionDescription'), {...vueditorConfig, id: 'actionDescription'});
-            }, 100);
         },
         changePage: function(page) {
             this.activePage = page;
@@ -379,10 +377,10 @@ export default {
         saveCloseDown: function() {
             let data = {
                 id: this.projectCloseDown.id,
-                overallImpression: this.overallImpressionEditor.getContent(),
-                performanceSchedule: this.performanceScheduleEditor.getContent(),
-                organizationContext: this.organizationContextEditor.getContent(),
-                projectManagement: this.projectManagementEditor.getContent(),
+                overallImpression: this.overallImpression,
+                performanceSchedule: this.performanceSchedule,
+                organizationContext: this.organizationContext,
+                projectManagement: this.projectManagement,
                 frozen: true,
             };
             this.editProjectCloseDown(data);
@@ -413,7 +411,7 @@ export default {
             let data = {
                 closeDownId: this.projectCloseDown.id,
                 title: this.actionTitle,
-                description: this.actionDescription.getContent(),
+                description: this.actionDescription,
                 responsibility: this.actionResponsible.length > 0 ? this.actionResponsible[0] : null,
                 dueDate: moment(this.actionDueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
             };
@@ -421,7 +419,7 @@ export default {
                 .then(
                     (response) => {
                         this.actionTitle = null;
-                        this.actionDescription.setContent('');
+                        this.actionDescription = '';
                         this.actionResponsible = [];
                         this.dueDate = new Date();
                     },
@@ -503,10 +501,10 @@ export default {
             if (!this.projectCloseDown.id) {
                 this.createProjectCloseDown({projectId: this.$route.params.id});
             } else {
-                this.overallImpressionEditor.setContent(this.projectCloseDown.overallImpression);
-                this.performanceScheduleEditor.setContent(this.projectCloseDown.performanceSchedule);
-                this.organizationContextEditor.setContent(this.projectCloseDown.organizationContext);
-                this.projectManagementEditor.setContent(this.projectCloseDown.projectManagement);
+                this.overallImpression = this.projectCloseDown.overallImpression;
+                this.performanceSchedule = this.projectCloseDown.performanceSchedule;
+                this.organizationContext = this.projectCloseDown.organizationContext;
+                this.projectManagement = this.projectCloseDown.projectManagement;
                 this.getCloseDownActions({
                     closeDownId: this.projectCloseDown.id,
                     queryParams: {
@@ -521,11 +519,11 @@ export default {
             actionTitle: '',
             actionResponsible: [],
             actionDueDate: new Date(),
-            overallImpressionEditor: null,
-            performanceScheduleEditor: null,
-            organizationContextEditor: null,
-            projectManagementEditor: null,
-            actionDescription: null,
+            overallImpression: '',
+            performanceSchedule: '',
+            organizationContext: '',
+            projectManagement: '',
+            actionDescription: '',
             evaluationObjective: null,
             lesson: null,
             showSavedComponent: false,
@@ -543,6 +541,7 @@ export default {
     @import '../../css/page-section';
     @import '../../css/_variables';
     @import '../../css/_mixins';
+    @import '../../css/common';
 
     .page-section {
         .header {

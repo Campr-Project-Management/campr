@@ -69,14 +69,14 @@
                     <!-- /// End Risk /// -->
 
                     <!-- /// Risk Description /// -->
-                    <div class="vueditor-holder">
-                        <div class="vueditor-header">{{ translateText('placeholder.risk_description') }}</div>
-                        <Vueditor ref="description" />
-                        <error
-                            v-if="validationMessages.description && validationMessages.description.length"
-                            v-for="message in validationMessages.description"
-                            :message="message" />
-                    </div>
+                    <editor
+                        id="risk-description"
+                        v-model="description"
+                        :label="'placeholder.risk_description'"/>
+                    <error
+                        v-if="validationMessages.description && validationMessages.description.length"
+                        v-for="message in validationMessages.description"
+                        :message="message" />
                     <!-- /// End Risk Description /// -->
 
                     <hr class="double">
@@ -240,16 +240,17 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
-                                <div class="vueditor-holder measure-vueditor-holder">
-                                    <div class="vueditor-header">{{ translateText('placeholder.new_measure') }}</div>
-                                    <Vueditor :id="'measure.description'+index" :ref="'measure.description'+index" />
-                                    <span v-if="validationMessages.measures && validationMessages.measures[index]">
-                                        <error
-                                            v-if="validationMessages.measures[index].description.length"
-                                            v-for="message in validationMessages.measures[index].description"
-                                            :message="message" />
-                                    </span>
-                                </div>
+                                <editor
+                                    class="measure-vueditor-holder"
+                                    :id="`measure-${index}`"
+                                    v-model="measure.description"
+                                    :label="'placeholder.new_measure'"/>
+                                <span v-if="validationMessages.measures && validationMessages.measures[index]">
+                                    <error
+                                        v-if="validationMessages.measures[index].description.length"
+                                        v-for="message in validationMessages.measures[index].description"
+                                        :message="message" />
+                                </span>
                             </div>
                         </div>
                         <div class="form-group last-form-group">
@@ -303,8 +304,7 @@ import datepicker from '../../_common/_form-components/Datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
-import {createEditor} from 'vueditor';
-import vueditorConfig from '../../_common/vueditorConfig';
+import Editor from '../../_common/Editor';
 
 export default {
     components: {
@@ -318,6 +318,7 @@ export default {
         CalendarIcon,
         moment,
         Error,
+        Editor,
     },
     methods: {
         ...mapActions([
@@ -330,33 +331,24 @@ export default {
         addMeasure: function() {
             let measure = {
                 title: '',
-                description: this.$refs['measure.description'+this.measures.length],
+                description: '',
                 cost: '',
                 responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
             };
 
-            let thisRef = 'measure.description'+this.measures.length;
-            setTimeout(() => {
-                measure.element = createEditor(document.getElementById(thisRef), {...vueditorConfig, id: thisRef});
-            }, 1000);
             this.measures.push(measure);
         },
         getFormData: function() {
-            let measuresTmp = [];
-            this.measures.map((item, index) => {
-                item.description = item.element.getContent();
-                item.responsibility = this.memberList.length > 0 ? this.memberList[0] : null;
-                measuresTmp.push({
-                    cost: item.cost,
-                    description: item.description,
-                    responsibility: item.responsibility,
-                    title: item.title,
-                });
-            });
+            let measures = this.measures.map((item) => ({
+                cost: item.cost,
+                description: item.description,
+                responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
+                title: item.title,
+            }));
 
             return {
                 title: this.title,
-                description: this.$refs.description.getContent(),
+                description: this.description,
                 impact: this.riskImpact,
                 probability: this.riskProbability,
                 cost: this.cost,
@@ -368,7 +360,7 @@ export default {
                 riskStatus: this.details.status ? this.details.status.key : null,
                 dueDate: moment(this.schedule.dueDate).format('DD-MM-YYYY'),
                 responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
-                measures: measuresTmp,
+                measures,
             };
         },
         saveRisk: function() {
@@ -531,7 +523,7 @@ export default {
     watch: {
         risk(value) {
             this.title = this.risk.title;
-            this.$refs.description.setContent(this.risk.description);
+            this.description = this.risk.description;
             this.riskImpact = this.risk.impact;
             this.riskProbability = this.risk.probability;
             this.cost = this.risk.cost;
@@ -554,20 +546,9 @@ export default {
             ;
             this.memberList.push(this.risk.responsibility);
             if (this.risk.measures.length > 0) {
-                this.measures = this.risk.measures.map((item, index) => {
-                    let val = {
-                        title: item.title,
-                        description: item.description,
-                        cost: item.cost,
-                    };
-                    setTimeout(() => {
-                        const thisRef = 'measure.description'+index;
-                        val.element = createEditor(document.getElementById(thisRef), {...vueditorConfig, id: thisRef});
-                        val.element.setContent(item.description);
-                    }, 1000);
-
-                    return val;
-                });
+                this.measures = this.risk.measures;
+            } else {
+                this.measures = [];
             }
         },
         riskImpact: function(value) {

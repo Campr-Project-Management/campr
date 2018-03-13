@@ -14,9 +14,9 @@
                     v-bind:editTodoModal="showEditTodoModal"
                     v-bind:deleteTodoModal="showDeleteTodoModal"
                     v-bind:todoObject="editTodoObject"
-                    v-bind:editNoteModal="showEditNoteModal"
-                    v-bind:deleteNoteModal="showDeleteNoteModal"
-                    v-bind:noteObject="editNoteObject"
+                    v-bind:editInfoModal="showEditInfoModal"
+                    v-bind:deleteInfoModal="showDeleteInfoModal"
+                    v-bind:infoObject="editInfoObject"
                     v-on:input="setModals"
             >
             </meeting-modals>
@@ -242,28 +242,31 @@
                 <!-- /// Infos /// -->
                 <h3>{{ translateText('message.infos') }}</h3>
 
-                <div class="entries-wrapper" v-if="meeting.notes">
+                <div class="entries-wrapper" v-if="meeting.infos">
                     <!-- /// Info /// -->
-                    <div class="entry" v-for="note in meeting.notes">
+                    <div class="entry" v-for="info in meeting.infos">
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
-                                <h4>{{ note.title }}</h4> | {{ translateText('message.due_date') }}: <b>{{ note.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.status') }}: <b v-if="note.status">{{ note.statusName }}</b><b v-else>-</b>
+                                <h4>{{ info.topic }}</h4> |
+                                {{ translateText('message.due_date') }}: <b>{{ info.dueDate | moment('DD.MM.YYYY') }}</b> |
+                                {{ translateText('message.status') }}: <b v-if="info.infoStatus">{{ translateText(info.infoStatusName) }}</b><b v-else>-</b>
+                                {{ translateText('message.category') }}: <b v-if="info.infoCategory">{{ translateText(info.infoCategoryName) }}</b><b v-else>-</b>
                             </div>
                             <div class="entry-buttons">
-                                <button @click="initEditNote(note)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
-                                <button @click="initDeleteNote(note)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
+                                <button @click="initEditInfo(info)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
+                                <button @click="initDeleteInfo(info)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
                             <div class="user-avatar">
-                                <img :src="note.responsibilityAvatar" :alt="note.responsibilityFullName"/>
+                                <img :src="info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar" :alt="info.responsibilityFullName"/>
                             </div>
                             <div>
                                 {{ translateText('message.responsible') }}:
-                                <b>{{ note.responsibilityFullName }}</b>
+                                <b>{{ info.responsibilityFullName }}</b>
                             </div>
                         </div>
-                        <div class="entry-body" v-html="note.description"></div>
+                        <div class="entry-body" v-html="info.description"></div>
                     </div>
                     <!-- /// End Info /// -->
                 </div>
@@ -296,12 +299,10 @@
                     </div>
 
                     <meeting-participants
-                            v-bind:meetingParticipants="displayedParticipants"
-                            v-bind:participants="participants"
-                            v-bind:participantsPages="participantsPages"
-                            v-bind:participantsPerPage="participantsPerPage"
-                    >
-                    </meeting-participants>
+                        v-bind:meetingParticipants="displayedParticipants"
+                        v-bind:participants="participants"
+                        v-bind:participantsPages="participantsPages"
+                        v-bind:participantsPerPage="participantsPerPage" />
                 </div>
             </div>
         </div>
@@ -336,10 +337,9 @@ import moment from 'moment';
 import MeetingModals from './MeetingModals';
 import MeetingParticipants from './MeetingParticipants';
 import Modal from '../../_common/Modal';
+import Editor from '../../_common/Editor';
 import VueTimepicker from 'vue2-timepicker';
 import datepicker from '../../_common/_form-components/Datepicker';
-import {createEditor} from 'vueditor';
-import vueditorConfig from '../../_common/vueditorConfig';
 
 export default {
     components: {
@@ -352,6 +352,7 @@ export default {
         MeetingModals,
         MeetingParticipants,
         Modal,
+        Editor,
         VueTimepicker,
         datepicker,
     },
@@ -378,8 +379,8 @@ export default {
             this.showDeleteDecisionModal = value;
             this.showEditTodoModal = value;
             this.showDeleteTodoModal = value;
-            this.showEditNoteModal = value;
-            this.showDeleteNoteModal = value;
+            this.showEditInfoModal = value;
+            this.showDeleteInfoModal = value;
         },
         initEditObjective: function(objective) {
             this.showEditObjectiveModal = true;
@@ -417,14 +418,13 @@ export default {
             this.editDecisionObject = {
                 id: decision.id,
                 title: decision.title,
+                description: decision.description,
                 responsibility: [decision.responsibility],
                 responsibilityFullName: decision.responsibilityFullName,
                 dueDate: decision.dueDate ? new Date(decision.dueDate) : new Date(),
+                status: {key: decision.status, label: decision.statusName},
                 meeting: this.$route.params.meetingId,
             };
-            setTimeout(() => {
-                this.$refs.meetingmodal.$refs.editDecisionDescription.setContent(decision.description);
-            }, 100);
         },
         initDeleteDecision: function(decision) {
             this.showDeleteDecisionModal = true;
@@ -435,40 +435,37 @@ export default {
             this.editTodoObject = {
                 id: todo.id,
                 title: todo.title,
+                description: todo.description,
                 responsibility: [todo.responsibility],
                 responsibilityFullName: todo.responsibilityFullName,
                 dueDate: todo.dueDate ? new Date(todo.dueDate) : new Date(),
-                status: {key: todo.status, label: todo.statusName},
+                status: {key: todo.status, label: this.translateText(todo.statusName)},
                 meeting: this.$route.params.meetingId,
             };
-            setTimeout(() => {
-                this.$refs.meetingmodal.$refs.editTodoDescription.setContent(todo.description);
-            }, 100);
         },
         initDeleteTodo: function(todo) {
             this.showDeleteTodoModal = true;
             this.editTodoObject = {id: todo.id, meeting: this.$route.params.meetingId};
         },
-        initEditNote: function(note) {
-            this.showEditNoteModal = true;
-            this.editNoteObject = {
-                id: note.id,
-                title: note.title,
-                responsibility: [note.responsibility],
-                responsibilityFullName: note.responsibilityFullName,
-                dueDate: note.dueDate ? new Date(note.dueDate) : new Date(),
-                status: {key: note.status, label: note.statusName},
+        initEditInfo: function(info) {
+            this.showEditInfoModal = true;
+            this.editInfoObject = {
+                id: info.id,
+                topic: info.topic,
+                description: info.description,
+                responsibility: [info.responsibility],
+                responsibilityFullName: info.responsibilityFullName,
+                dueDate: info.dueDate ? new Date(info.dueDate) : new Date(),
+                infoStatus: {key: info.infoStatus, label: info.infoStatusName},
+                infoCategory: {key: info.infoCategory, label: info.infoCategoryName},
                 meeting: this.$route.params.meetingId,
             };
-            setTimeout(() => {
-                this.$refs.meetingmodal.$refs.editNoteDescription.setContent(note.description);
-            }, 100);
         },
-        initDeleteNote: function(note) {
-            this.showDeleteNoteModal = true;
-            this.editNoteObject = {id: note.id, meeting: this.$route.params.meetingId};
+        initDeleteInfo: function(info) {
+            this.showDeleteInfoModal = true;
+            this.editInfoObject = {id: info.id, meeting: this.$route.params.meetingId};
         },
-        deleteMeeting: function(note) {
+        deleteMeeting: function(info) {
             this.deleteMeetingModal = false;
             this.deleteProjectMeeting(this.$route.params.meetingId);
         },
@@ -488,13 +485,6 @@ export default {
         },
         downloadMedia: function(media) {
             return Routing.generate('app_media_download', {id: media.id});
-        },
-        initVueEditors: function() {
-            setTimeout(() => {
-                this.decisionDescriptionEditor = createEditor(document.getElementById('decisionDescription'), {...vueditorConfig, id: 'decisionDescription'});
-                this.todoDescriptionEditor = createEditor(document.getElementById('todoDescription'), {...vueditorConfig, id: 'todoDescription'});
-                this.noteDescriptionEditor = createEditor(document.getElementById('noteDescription'), {...vueditorConfig, id: 'noteDescription'});
-            }, 100);
         },
     },
     computed: {
@@ -516,9 +506,6 @@ export default {
         });
         this.getMeetingParticipants({id: this.$route.params.meetingId});
     },
-    mounted() {
-        this.initVueEditors();
-    },
     data() {
         return {
             projectId: this.$route.params.id,
@@ -539,9 +526,9 @@ export default {
             showEditTodoModal: false,
             showDeleteTodoModal: false,
             editTodoObject: {},
-            showEditNoteModal: false,
-            showDeleteNoteModal: false,
-            editNoteObject: {},
+            showEditInfoModal: false,
+            showDeleteInfoModal: false,
+            editInfoObject: {},
             deleteMeetingModal: false,
             rescheduleModal: false,
             date: new Date(),
