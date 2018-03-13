@@ -5,7 +5,9 @@
                 <span class="text-right">{{ translateText('message.total_potential_cost') }}:</span>
                 <span class="text-left">
                     <span v-if="summaryData.risk_data.costs && summaryData.risk_data.costs.length > 0">
-                        <b v-for="(item, index) in summaryData.risk_data.costs">{{ translateText(item.currency) }} {{ item.totalCost }}<span v-if="index < summaryData.risk_data.costs.length - 1">, </span></b>
+                        <b v-for="(item, index) in summaryData.risk_data.costs">
+                            {{ item.totalCost | money({symbol: item.currency}) }}<span v-if="index < summaryData.risk_data.costs.length - 1">, </span>
+                        </b>
                     </span>
                     <span v-else>-</span>
                 </span>
@@ -43,6 +45,11 @@ export default {
     methods: {
         translateText: function(text) {
             return this.translate(text);
+        },
+        potentialCostMoneyOptions(item) {
+            return {
+                symbol: item.currency,
+            };
         },
     },
 };

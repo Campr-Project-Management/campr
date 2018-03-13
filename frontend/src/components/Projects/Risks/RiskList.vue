@@ -5,11 +5,11 @@
             <router-link :to="{name: 'project-risks-view-risk', params:{riskId: item.id}}">
                 {{ item.title }}
             </router-link>
-            <p>{{ translateText('message.potential_cost') }}: <b v-if="item.cost">{{ translateText(item.currency) }} {{ item.cost }}</b><b v-else>-</b></p>
+            <p>{{ translateText('message.potential_cost') }}: <b v-if="item.cost">{{ item.potentialCost | money(potentialCostMoneyOptions(item)) }}</b><b v-else>-</b></p>
             <p>{{ translateText('message.potential_time_delay') }}: <b v-if="item.delay">{{ item.potentialDelayHours | humanizeHours({ units: ['d', 'h'] }) }}</b><b v-else>-</b></p>
             <p>{{ translateText('message.priority') }}: <b v-if="item.priority">{{ item.priority }}</b><b v-else>-</b></p>
             <p>{{ translateText('message.strategy') }}: <b v-if="item.riskStrategyName">{{ item.riskStrategyName }}</b><b v-else>-</b></p>
-            <p>{{ translateText('message.status') }}: <b v-if="item.riskStatusName">{{ item.riskStatusName }}</b><b v-else>-</b></p>
+            <p>{{ translateText('message.status') }}: <b>{{ item.statusName ? translate(item.statusName) : '-' }}</b></p>
         </div>
     </div>
 </template>
@@ -20,6 +20,11 @@ export default {
     methods: {
         translateText: function(text) {
             return this.translate(text);
+        },
+        potentialCostMoneyOptions(item) {
+            return {
+                symbol: item.currency,
+            };
         },
     },
 };
