@@ -67,10 +67,11 @@
             <p class="modal-title">{{ translateText('message.edit_decision') }}</p>
             <input-field type="text" v-bind:label="translateText('placeholder.decision_title')" v-model="editDecisionObject.title" v-bind:content="editDecisionObject.title" />
             <div class="form-group">
-                <div class="vueditor-holder">
-                    <div class="vueditor-header">{{ translateText('placeholder.decision_description') }}</div>
-                    <Vueditor ref="editDecisionDescription" />
-                </div>
+                <editor
+                    height="200px"
+                    :id="`editDecisionObject-${editDecisionObject.id}`"
+                    label="placeholder.decision_description"
+                    v-model="editDecisionObject.description" />
             </div>
             <div class="row">
                 <div class="form-group">
@@ -104,10 +105,11 @@
             <p class="modal-title">{{ translateText('message.edit_todo') }}</p>
             <input-field type="text" v-bind:label="translateText('placeholder.todo_topic')" v-model="editTodoObject.title" v-bind:content="editTodoObject.title" />
             <div class="form-group">
-                <div class="vueditor-holder">
-                    <div class="vueditor-header">{{ translateText('placeholder.todo_description') }}</div>
-                    <Vueditor ref="editTodoDescription" />
-                </div>
+                <editor
+                    height="200px"
+                    :id="`editTodoObject-${editTodoObject.id}`"
+                    label="placeholder.todo_description"
+                    v-model="editTodoObject.description" />
             </div>
             <div class="row">
                 <div class="form-group">
@@ -155,10 +157,11 @@
                 v-model="editInfoObject.topic"
                 v-bind:content="editInfoObject.topic" />
             <div class="form-group">
-                <div class="vueditor-holder">
-                    <div class="vueditor-header">{{ translateText('placeholder.info_description') }}</div>
-                    <Vueditor ref="editInfoDescription" />
-                </div>
+                <editor
+                    height="200px"
+                    :id="`editInfoObject-${editInfoObject.id}`"
+                    label="placeholder.info_description"
+                    v-model="editInfoObject.description" />
             </div>
             <div class="row">
                 <div class="form-group">
@@ -224,6 +227,7 @@ import {mapGetters, mapActions} from 'vuex';
 import VueTimepicker from 'vue2-timepicker';
 import moment from 'moment';
 import Modal from '../../_common/Modal';
+import Editor from '../../_common/Editor';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 
 export default {
@@ -244,6 +248,7 @@ export default {
         VueTimepicker,
         moment,
         Modal,
+        Editor,
         MultiSelectField,
     },
     watch: {
@@ -325,7 +330,7 @@ export default {
             this.$emit('input', this.showDeleteAgendaModal);
         },
         saveDecision: function() {
-            this.editDecisionObject.description = this.$refs.editDecisionDescription.getContent();
+            // this.editDecisionObject.description = this.$refs.editDecisionDescription.getContent();
             this.editDecisionObject.dueDate = moment(this.editDecisionObject.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY');
             this.editDecisionObject.status = this.editDecisionObject.status.key;
             this.editDecisionObject.responsibility = this.editDecisionObject.responsibility.length > 0 ? this.editDecisionObject.responsibility[0] : null,
@@ -339,7 +344,7 @@ export default {
             this.$emit('input', this.showDeleteDecisionModal);
         },
         saveTodo: function() {
-            this.editTodoObject.description = this.$refs.editTodoDescription.getContent();
+            // this.editTodoObject.description = this.$refs.editTodoDescription.getContent();
             this.editTodoObject.dueDate = moment(this.editTodoObject.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY');
             this.editTodoObject.status = this.editTodoObject.status.key;
             this.editTodoObject.responsibility = this.editTodoObject.responsibility.length > 0 ? this.editTodoObject.responsibility[0] : null;
@@ -353,10 +358,16 @@ export default {
             this.$emit('input', this.showDeleteTodoModal);
         },
         saveInfo: function() {
-            this.editInfoObject.description = this.$refs.editInfoDescription.getContent();
+            // this.editInfoObject.description = this.$refs.editInfoDescription.getContent();
             this.editInfoObject.dueDate = moment(this.editInfoObject.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY');
-            this.editInfoObject.infoStatus = this.editInfoObject.infoStatus.key;
-            this.editInfoObject.infoCategory = this.editInfoObject.infoCategory.key;
+            this.editInfoObject.infoStatus = this.editInfoObject.infoStatus
+                ? this.editInfoObject.infoStatus.key
+                : null
+            ;
+            this.editInfoObject.infoCategory = this.editInfoObject.infoCategory
+                ? this.editInfoObject.infoCategory.key
+                : null
+            ;
             this.editInfoObject.responsibility = this.editInfoObject.responsibility.length > 0 ? this.editInfoObject.responsibility[0] : null;
 
             const data = this.editInfoObject;
