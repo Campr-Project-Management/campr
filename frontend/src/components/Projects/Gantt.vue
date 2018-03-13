@@ -366,28 +366,30 @@ export default {
                 gantt.attachEvent('onLinkDblClick', (id, e) => false),
             );
 
+            this.ganttEvents.push(
+                gantt.attachEvent('onTaskClosed', (id) => {
+                    this.initGanttMap();
+                })
+            );
+
+            this.ganttEvents.push(
+                gantt.attachEvent('onTaskOpened', (id) => {
+                    this.initGanttMap();
+                })
+            );
+
             // instead of opening default edit, confirm if user wants to go to the edit page
             this.ganttEvents.push(
-                gantt.attachEvent('onTaskDblClick', (id, e) => {
+                gantt.attachEvent('onTaskDblClick', (id) => {
                     id = parseInt(id, 10);
                     const task = this.ganttData.filter(item => item.id === id)[0];
-                    const types = [
-                        'phase',
-                        'milestone',
-                        'task',
-                    ];
 
-                    gantt.confirm(this.translate('message.edit_' + types[task.type]) + ' <strong>' + task.name +
-                        '</strong>?', answer => {
-                        if (answer) {
-                            router.push({
-                                name: 'project-task-management-edit',
-                                params: {
-                                    'projectId': task.name,
-                                    'taskId': id,
-                                },
-                            });
-                        }
+                    router.push({
+                        name: 'project-task-management-view',
+                        params: {
+                            'projectId': task.name,
+                            'taskId': id,
+                        },
                     });
 
                     return false;
