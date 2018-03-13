@@ -185,36 +185,36 @@
                     <div class="col-md-12">
                         <div class="task-range-slider big-range-slider">
                             <!--TODO: determine the values for min and max for the bars-->
-                            <task-range-slider v-if="currentStatusReport.information.tasksForSchedule.base_start && currentStatusReport.information.tasksForSchedule.base_finish"
-                                    class="base dark-range-slider"
-                                    id="scheduleBase"
-                                    :message="translateText('table_header_cell.base')"
-                                    min="2017-01-01"
-                                    max="2018-01-01"
-                                    v-bind:from="currentStatusReport.information.tasksForSchedule.base_start.scheduledStartAt"
-                                    v-bind:to="currentStatusReport.information.tasksForSchedule.base_finish.scheduledFinishAt"
-                                    type="double">
-                            </task-range-slider>
-                            <task-range-slider v-if="currentStatusReport.information.tasksForSchedule.forecast_start && currentStatusReport.information.tasksForSchedule.forecast_finish"
-                                    class="forecast warning"
-                                    id="translateText('table_header_cell.forecast')"
-                                    message="Forecast"
-                                    min="2017-01-01"
-                                    max="2018-01-01"
-                                    v-bind:from="currentStatusReport.information.tasksForSchedule.forecast_start.forecastStartAt"
-                                    v-bind:to="currentStatusReport.information.tasksForSchedule.forecast_finish.forecastFinishAt "
-                                    type="double">
-                            </task-range-slider>
-                            <task-range-slider v-if="currentStatusReport.information.tasksForSchedule.actual_start && currentStatusReport.information.tasksForSchedule.actual_finish"
-                                    class="actual"
-                                    id="translateText('table_header_cell.actual')"
-                                    message="Actual"
-                                    min="2017-01-01"
-                                    max="2018-01-01"
-                                    v-bind:from="currentStatusReport.information.tasksForSchedule.actual_start.actualStartAt"
-                                    v-bind:to="currentStatusReport.information.tasksForSchedule.actual_finish.actualFinishAt"
-                                    type="double">
-                            </task-range-slider>
+                            <!--<task-range-slider v-if="currentStatusReport.information.tasksForSchedule.base_start && currentStatusReport.information.tasksForSchedule.base_finish"-->
+                                    <!--class="base dark-range-slider"-->
+                                    <!--id="scheduleBase"-->
+                                    <!--:message="translateText('table_header_cell.base')"-->
+                                    <!--min="2017-01-01"-->
+                                    <!--max="2018-01-01"-->
+                                    <!--v-bind:from="currentStatusReport.information.tasksForSchedule.base_start.scheduledStartAt"-->
+                                    <!--v-bind:to="currentStatusReport.information.tasksForSchedule.base_finish.scheduledFinishAt"-->
+                                    <!--type="double">-->
+                            <!--</task-range-slider>-->
+                            <!--<task-range-slider v-if="currentStatusReport.information.tasksForSchedule.forecast_start && currentStatusReport.information.tasksForSchedule.forecast_finish"-->
+                                    <!--class="forecast warning"-->
+                                    <!--id="translateText('table_header_cell.forecast')"-->
+                                    <!--message="Forecast"-->
+                                    <!--min="2017-01-01"-->
+                                    <!--max="2018-01-01"-->
+                                    <!--v-bind:from="currentStatusReport.information.tasksForSchedule.forecast_start.forecastStartAt"-->
+                                    <!--v-bind:to="currentStatusReport.information.tasksForSchedule.forecast_finish.forecastFinishAt "-->
+                                    <!--type="double">-->
+                            <!--</task-range-slider>-->
+                            <!--<task-range-slider v-if="currentStatusReport.information.tasksForSchedule.actual_start && currentStatusReport.information.tasksForSchedule.actual_finish"-->
+                                    <!--class="actual"-->
+                                    <!--id="translateText('table_header_cell.actual')"-->
+                                    <!--message="Actual"-->
+                                    <!--min="2017-01-01"-->
+                                    <!--max="2018-01-01"-->
+                                    <!--v-bind:from="currentStatusReport.information.tasksForSchedule.actual_start.actualStartAt"-->
+                                    <!--v-bind:to="currentStatusReport.information.tasksForSchedule.actual_finish.actualFinishAt"-->
+                                    <!--type="double">-->
+                            <!--</task-range-slider>-->
                         </div>
                     </div>
                 </div>
@@ -444,7 +444,7 @@ import moment from 'moment';
 import $ from 'jquery';
 import 'jquery-match-height/jquery.matchHeight.js';
 import VueScrollbar from 'vue2-scrollbar';
-import TaskRangeSlider from '../../_common/_task-components/TaskRangeSlider';
+// import TaskRangeSlider from '../../_common/_task-components/TaskRangeSlider';
 import CircleChart from '../../_common/_charts/CircleChart';
 import RiskGrid from '../Risks/RiskGrid';
 import RiskList from '../Risks/RiskList';
@@ -461,7 +461,7 @@ export default {
     components: {
         VisTimeline,
         VueScrollbar,
-        TaskRangeSlider,
+        // TaskRangeSlider,
         CircleChart,
         RiskGrid,
         RiskList,
