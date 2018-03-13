@@ -19,11 +19,8 @@ import VTooltip from 'v-tooltip';
 import HumanizeDuration from './plugins/humanize-duration';
 import Numeral from './plugins/numeral';
 import DateFormat from './plugins/date-format';
-import {install} from 'vueditor';
-// import './css/vueditor.css';
-import VueditorConfig from 'components/_common/vueditorConfig';
 
-// jquery - probabil should be optimized somehow
+// jquery - probably should be optimized somehow
 import $ from 'jquery';
 import jqns from './plugins/jquery.nicescroll';
 jqns($);
@@ -45,8 +42,6 @@ Vue.use(VueCookie);
 Vue.http.headers.common['Authorization'] = 'Bearer ' + window.user.api_token;
 // This is required for Symfony to actually be able to respond properly to Request::isXmlHttpRequest()
 Vue.http.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-install(Vue, VueditorConfig);
 
 new Vue({
     router,

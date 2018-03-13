@@ -232,10 +232,9 @@
                         <img :src="task.responsibilityAvatar" :alt="responsibilityFullName"/>
                     </div>
                     <div class="new-comment-body">
-                        <div class="vueditor-holder">
-                            <div class="vueditor-header">{{ translateText('message.new_comment') }}</div>
-                            <Vueditor ref="newCommentBody" />
-                        </div>
+                        <editor
+                            v-model="newComment"
+                            :label="'message.new_comment'"/>
                         <div class="footer-buttons">
                             <a href="javascript:void(0)" class="btn-rounded btn-auto" @click="createNewComment()" >{{ translateText('button.comment') }}</a>
                             <router-link to="" v-if="isStarted" class="btn-rounded btn-auto danger-bg">{{ translateText('message.close_task') }}</router-link>
@@ -731,6 +730,7 @@ import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import RangeSlider from '../../_common/_form-components/RangeSlider';
 import Modal from '../../_common/Modal';
 import AlertModal from '../../_common/AlertModal.vue';
+import Editor from '../../_common/Editor';
 import router from '../../../router';
 import Condition from './Create/Condition';
 import EditScheduleModal from './View/EditScheduleModal';
@@ -759,6 +759,7 @@ export default {
         moment,
         AlertModal,
         EditScheduleModal,
+        Editor,
     },
     created() {
         if (this.$route.params.taskId) {
@@ -1057,11 +1058,11 @@ export default {
             let data = {
                 task: this.task,
                 payload: {
-                    body: this.$refs['newCommentBody'].getContent(),
+                    body: this.newComment,
                     author: authorId,
                 },
             };
-            this.$refs['newCommentBody'].setContent('');
+            this.newComment = '';
             this.addTaskComment(data);
         },
         itemTotal(item) {
@@ -1467,6 +1468,7 @@ export default {
             editExternalCostObj: {},
             editInternalCostObj: {},
             completedSubtasksIds: [],
+            newComment: '',
         };
     },
 };

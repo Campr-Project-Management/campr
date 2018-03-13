@@ -36,11 +36,7 @@
                     <!-- /// End Header /// -->
                 </div>
 
-                <div class="entry-body">
-                    <p v-if="info.description" v-for="line in info.description.split('\n')">
-                        <span v-html="line"></span>
-                    </p>
-                </div>
+                <div class="entry-body" v-html="info.description"></div>
             </div>
             <div class="col-md-6">
                 <div class="create-meeting page-section">
