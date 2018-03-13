@@ -1442,42 +1442,48 @@ class WorkPackage
     }
 
     /**
-     * @return null|int
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("label")
+     *
+     * @return int
      */
-    public function getLabelId()
+    public function getLabelId(): int
     {
-        return $this->labels && $this->labels->count()
-            ? $this->labels->first()->getId()
-            : null
-        ;
+        $label = $this->getFirstLabel();
+
+        return $label ? $label->getId() : 0;
     }
 
     /**
-     * @return string
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("labelName")
+     * @return Label|null
      */
-    public function getLabelName()
+    public function getFirstLabel()
     {
-        return $this->labels && $this->labels->count()
-            ? (string) $this->labels->first()
-            : null
-        ;
+        return $this->labels->first();
     }
 
     /**
-     * @return string
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("labelColor")
+     *
+     * @return string
      */
-    public function getLabelColor()
+    public function getLabelName(): string
     {
-        return $this->labels && $this->labels->count()
-            ? $this->labels->first()->getColor()
-            : null
-        ;
+        $label = $this->getFirstLabel();
+
+        return $label ? $label->getTitle() : '';
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return string
+     */
+    public function getLabelColor(): string
+    {
+        $label = $this->getFirstLabel();
+
+        return $label ? $label->getColor() : '';
     }
 
     /**
@@ -2303,7 +2309,7 @@ class WorkPackage
      */
     public function isTask(): bool
     {
-        return $this->getType() === self::TYPE_TASK;
+        return self::TYPE_TASK === $this->getType();
     }
 
     /**
@@ -2311,7 +2317,7 @@ class WorkPackage
      */
     public function isPhase(): bool
     {
-        return $this->getType() === self::TYPE_PHASE;
+        return self::TYPE_PHASE === $this->getType();
     }
 
     /**
@@ -2319,7 +2325,7 @@ class WorkPackage
      */
     public function isTutorial(): bool
     {
-        return $this->getType() === self::TYPE_TUTORIAL;
+        return self::TYPE_TUTORIAL === $this->getType();
     }
 
     /**

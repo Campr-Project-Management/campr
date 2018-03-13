@@ -7,7 +7,9 @@
                     <p>{{ task.responsibilityFullName }}</p>
                 </div>
                 <h2>
-                    <router-link :to="{name: 'project-task-management-view', params: { id: task.project, taskId: task.id }}" class="simple-link">
+                    <router-link
+                            :to="{name: 'project-task-management-view', params: { id: task.project, taskId: task.id }}"
+                            class="simple-link">
                         {{ task.name }}
                     </router-link>
                 </h2>
@@ -29,22 +31,25 @@
                     </router-link>
                     <span v-show="task.phaseName">
                         >
-                        <router-link :to="{name: 'project-phases-view-phase', params: {id: task.project, phaseId: task.phase}}">
+                        <router-link
+                                :to="{name: 'project-phases-view-phase', params: {id: task.project, phaseId: task.phase}}">
                             {{ task.phaseName }}
                         </router-link>
                     </span>
                     <span v-show="task.milestoneName">
                         >
-                        <router-link :to="{name: 'project-phases-view-milestone', params: {id: task.project, milestoneId: task.milestone}}">
+                        <router-link
+                                :to="{name: 'project-phases-view-milestone', params: {id: task.project, milestoneId: task.milestone}}">
                             {{ task.milestoneName }}
                         </router-link>
                     </span>
 
-                    <task-schedule-bar :task="task" title="message.schedule" />
-                    <task-cost-bar :task="task" title="message.cost" />
+                    <task-schedule-bar :task="task" title="message.schedule"/>
+                    <task-cost-bar :task="task" title="message.cost"/>
                 </div>
             </div>
-            <bar-chart :percentage="task.progress" :status="task.colorStatusName" :color="task.colorStatusColor" :title-left="'' + translateText(task.workPackageStatusName)"></bar-chart>
+            <bar-chart :percentage="task.progress" :status="task.colorStatusName" :color="task.colorStatusColor"
+                       :title-left="'' + translateText(task.workPackageStatusName)"></bar-chart>
             <div class="nicescroll" v-html="task.content"></div>
             <div class="info bottom" v-if="task">
                 <div class="icons">
@@ -90,126 +95,136 @@
                     </div>
                 </div>
             </div>
+
+            <task-label-bar
+                    v-if="hasLabel"
+                    :title="task.labelName"
+                    :color="task.labelColor" />
         </div>
     </div>
 </template>
 
 <script>
-import BarChart from '../_common/_charts/BarChart';
-import $ from 'jquery';
-import moment from 'moment';
-import TaskScheduleBar from './TaskScheduleBar.vue';
-import TaskCostBar from './TaskCostBar.vue';
-import _ from 'lodash';
+    import BarChart from '../_common/_charts/BarChart';
+    import $ from 'jquery';
+    import moment from 'moment';
+    import TaskScheduleBar from './TaskScheduleBar.vue';
+    import TaskCostBar from './TaskCostBar.vue';
+    import TaskLabelBar from './TaskLabelBar';
+    import _ from 'lodash';
 
-export default {
-    components: {
-        BarChart,
-        TaskScheduleBar,
-        TaskCostBar,
-    },
-    created() {
-        $(document).ready(function() {
-            $('.nicescroll').niceScroll({
-                autohidemode: false,
+    export default {
+        components: {
+            BarChart,
+            TaskScheduleBar,
+            TaskCostBar,
+            TaskLabelBar,
+        },
+        created() {
+            $(document).ready(function() {
+                $('.nicescroll').niceScroll({
+                    autohidemode: false,
+                });
             });
-        });
-    },
-    computed: {
-        colorStatusTooltip() {
-            let tooltip = '';
-            if (!this.task.colorStatus) {
-                return tooltip;
-            }
+        },
+        computed: {
+            colorStatusTooltip() {
+                let tooltip = '';
+                if (!this.task.colorStatus) {
+                    return tooltip;
+                }
 
-            let colorStatus = _.find(this.colorStatuses, (colorStatus) => {
-                return colorStatus.id === this.task.colorStatus;
-            });
+                let colorStatus = _.find(this.colorStatuses, (colorStatus) => {
+                    return colorStatus.id === this.task.colorStatus;
+                });
 
-            if (!colorStatus) {
-                return tooltip;
-            }
+                if (!colorStatus) {
+                    return tooltip;
+                }
 
-            return this.translate(colorStatus.name);
+                return this.translate(colorStatus.name);
+            },
         },
-    },
-    methods: {
-        duration: function(startDate, endDate) {
-            let start = moment(startDate);
-            let end = moment(endDate);
-            return end.diff(start, 'days');
-        },
-        translateText: function(text) {
-            return this.translate(text);
-        },
-        hasColorStatus(colorStatus) {
-            return !!(this.task.colorStatus && this.task.colorStatus === colorStatus.id);
-        },
-        statusColor(colorStatus) {
-            if (!this.hasColorStatus(colorStatus)) {
-                return false;
-            }
+        methods: {
+            duration: function(startDate, endDate) {
+                let start = moment(startDate);
+                let end = moment(endDate);
+                return end.diff(start, 'days');
+            },
+            translateText: function(text) {
+                return this.translate(text);
+            },
+            hasColorStatus(colorStatus) {
+                return !!(this.task.colorStatus && this.task.colorStatus === colorStatus.id);
+            },
+            statusColor(colorStatus) {
+                if (!this.hasColorStatus(colorStatus)) {
+                    return false;
+                }
 
-            return colorStatus.color;
+                return colorStatus.color;
+            },
+            hasLabel() {
+                return this.task.label && this.task.labelColor;
+            },
         },
-    },
-    props: ['task', 'colorStatuses', 'user'],
-};
+        props: ['task', 'colorStatuses', 'user'],
+    };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-  @import '../../css/_variables';
-  @import '../../css/_mixins';
-  @import '../../css/box';
-  @import '../../css/box-task';
+    @import '../../css/_variables';
+    @import '../../css/_mixins';
+    @import '../../css/box';
+    @import '../../css/box-task';
 
-  .nicescroll-cursors {
-      border: none !important;
-      border-radius: 0 !important;
-      width: 2px !important;
-      background: $middleColor !important;
-  }
-
-  h2 {
-    line-height: 15px;
-  }
-
-  table {
-    margin: 0 -10px;
-    white-space: nowrap;
-
-    td {
-      font-size: 10px;
+    .nicescroll-cursors {
+        border: none !important;
+        border-radius: 0 !important;
+        width: 2px !important;
+        background: $middleColor !important;
     }
 
-    th, td {
-      padding: 3px 9px;
+    h2 {
+        line-height: 15px;
     }
-  }
 
-  .st0 {
-    fill: $middleColor;
-  }
+    table {
+        margin: 0 -10px;
+        white-space: nowrap;
 
-  .progress-line.bar-chart {
-    margin-top: 40px;
-  }
+        td {
+            font-size: 10px;
+        }
 
-  .nicescroll {
-    margin: 20px 0;
-    padding-right: 10px;
-    max-height: 100px;
-    overflow: hidden;
-  }
-
-  .bullets {
-    li {
-      margin-bottom: 19px;
+        th, td {
+            padding: 3px 9px;
+        }
     }
-  }
 
-  .info.bottom {
-    padding-top: 0;
-  }
+    .st0 {
+        fill: $middleColor;
+    }
+
+    .progress-line.bar-chart {
+        margin-top: 40px;
+    }
+
+    .nicescroll {
+        margin: 20px 0;
+        padding-right: 10px;
+        max-height: 100px;
+        overflow: hidden;
+    }
+
+    .bullets {
+        li {
+            margin-bottom: 19px;
+        }
+    }
+
+    .info.bottom {
+        padding-top: 0;
+    }
 </style>
