@@ -126,6 +126,7 @@ class Cost
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->expenseType = self::EXPENSE_TYPE_OPEX;
     }
 
     public function __toString()
@@ -543,5 +544,49 @@ class Cost
                 ->addViolation()
             ;
         }
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("opex")
+     *
+     * @return bool
+     */
+    public function isOPEX(): bool
+    {
+        return self::EXPENSE_TYPE_OPEX === $this->getExpenseType();
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("capex")
+     *
+     * @return bool
+     */
+    public function isCAPEX(): bool
+    {
+        return self::EXPENSE_TYPE_CAPEX === $this->getExpenseType();
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("external")
+     *
+     * @return bool
+     */
+    public function isExternal(): bool
+    {
+        return self::TYPE_EXTERNAL === $this->getType();
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("internal")
+     *
+     * @return bool
+     */
+    public function isInternal(): bool
+    {
+        return self::TYPE_INTERNAL === $this->getType();
     }
 }
