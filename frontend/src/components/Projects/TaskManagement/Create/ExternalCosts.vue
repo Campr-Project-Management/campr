@@ -11,7 +11,7 @@
                             v-bind:label="label.external_cost_description"
                             :value="item.name"
                             v-bind:content="item.name"
-                            v-on:input="onItemUpdate('name', index, $event)" />
+                            v-on:input="onItemUpdate(index, 'name', $event)" />
                     </div>
                     <div class="col-md-2">
                         <input-field
@@ -19,7 +19,7 @@
                             v-bind:label="label.external_cost_qty"
                             :value="item.quantity"
                             v-bind:content="item.quantity"
-                            v-on:input="onItemUpdate('quantity', index, $event)"
+                            v-on:input="onItemUpdate(index, 'quantity', $event)"
                         />
                         <error
                             v-if="getValidationMessages(index, 'quantity').length"
@@ -35,7 +35,7 @@
                             name="units"
                             v-bind:options="projectUnitsForSelect"
                             v-bind:currentOption="(item.unit && item.unit.id) || 'custom'"
-                            v-on:input="onItemUpdate('unit', index, $event)"/>
+                            v-on:input="onItemUpdate(index, 'unit', $event)"/>
                     </div>
                     <div class="col-md-2">
                         <input-field
@@ -44,7 +44,7 @@
                             :value="item.customUnit"
                             v-bind:content="item.customUnit"
                             v-bind:disabled="item.unit && item.unit !== 'custom'"
-                            v-on:input="onItemUpdate('customUnit', index, $event)"/>
+                            v-on:input="onItemUpdate(index, 'customUnit', $event)"/>
                         <error
                             v-if="getValidationMessages(index, 'unit').length"
                             v-for="message in getValidationMessages(index, 'unit')"
@@ -56,7 +56,7 @@
                             v-bind:label="label.external_cost_unit_rate"
                             :value="item.rate"
                             v-bind:content="item.rate"
-                            v-on:input="onItemUpdate('rate', index, $event)"/>
+                            v-on:input="onItemUpdate(index, 'rate', $event)"/>
                         <error
                             v-if="getValidationMessages(index, 'rate').length"
                             v-for="message in getValidationMessages(index, 'rate')"
@@ -68,7 +68,7 @@
                 <div class="form-group last-form-group">
                     <div class="col-md-12">
                         <span class="title">
-                            {{ label.external_cost_total }} <b><i class="fa fa-dollar"></i> {{ baseTotal }}</b>
+                            {{ label.external_cost_total }} <b>{{ itemTotal(item) | money }}</b>
                         </span>
                     </div>
                 </div>
@@ -79,10 +79,11 @@
                 <div class="form-group last-form-group">
                     <div class="col-md-10">
                         <div class="flex flex-v-center">
-                            <switches
-                                    :value="item.capex"
-                                    v-bind:selected="item.capex"
-                                    v-on:input="onItemUpdate('capex', index, $event)"/>
+                            <switch-field
+                                    :true-value="0"
+                                    :false-value="1"
+                                    :value="item.expenseType"
+                                    @input="onItemUpdate(index, 'expenseType', $event)"/>
                             <span class="note no-margin-bottom"><b>{{ message.note }}</b> {{ message.opex_capex_note }}</span>
                         </div>
                     </div>
@@ -101,19 +102,19 @@
             <hr>
         </div>
         <div class="flex flex-direction-reverse">
-            <a v-on:click="add" class="btn-rounded btn-auto">{{ button.add_external_cost }} +</a>
+            <a @click="onAdd" class="btn-rounded btn-auto">{{ button.add_external_cost }} +</a>
         </div>
         <hr>
         <div class="row">
             <div class="form-group">
                 <div class="col-md-4">
                     <span class="title">
-                        {{ message.capex_subtotal }} <b><i class="fa fa-dollar"></i> {{ capexSubtotal }}</b>
+                        {{ message.capex_subtotal }} <b>{{ capexSubtotal | money }}</b>
                     </span>
                 </div>
                 <div class="col-md-4">
                     <span class="title">
-                        {{ message.opex_subtotal }} <b><i class="fa fa-dollar"></i> {{ opexSubtotal }}</b>
+                        {{ message.opex_subtotal }} <b>{{ opexSubtotal | money }}</b>
                     </span>
                 </div>
             </div>
@@ -122,24 +123,24 @@
             <div class="form-group last-form-group">
                 <div class="col-md-4">
                     <span class="title">
-                        {{ message.external_costs_total }} <b><i class="fa fa-dollar"></i> {{ baseTotal }}</b>
+                        {{ message.external_costs_total }} <b>{{ baseTotal | money }}</b>
                     </span>
                 </div>
                 <div class="col-md-4">
                     <input-field
                         type="number"
-                        v-bind:label="label.external_cost_forecast"
-                        v-bind:content="value.forecast"
+                        :label="label.external_cost_forecast"
+                        :content="value.forecast"
                         :value="value.forecast"
-                        v-on:input="onUpdate('forecast', $event)"/>
+                        @input="onUpdate('forecast', $event)"/>
                 </div>
                 <div class="col-md-4">
                     <input-field
                         type="number"
-                        v-bind:label="label.external_cost_actual"
-                        v-bind:content="value.actual"
+                        :label="label.external_cost_actual"
+                        :content="value.actual"
                         :value="value.actual"
-                        v-on:input="onUpdate('actual', $event)"/>
+                        @input="onUpdate('actual', $event)"/>
                 </div>
             </div>
         </div>
@@ -154,6 +155,8 @@ import Switches from '../../../3rdparty/vue-switches';
 import DeleteIcon from '../../../_common/_icons/DeleteIcon';
 import Error from '../../../_common/_messages/Error.vue';
 import {mapActions, mapGetters} from 'vuex';
+import SwitchField from '../../../_common/_form-components/SwitchField';
+import _ from 'lodash';
 
 export default {
     props: {
@@ -174,10 +177,11 @@ export default {
         Switches,
         DeleteIcon,
         Error,
+        SwitchField,
     },
     methods: {
         ...mapActions(['getProjectUnits']),
-        add: function() {
+        onAdd() {
             this.$emit('add');
         },
         onDelete(index) {
@@ -190,7 +194,7 @@ export default {
             this.$emit('input', data);
         },
         itemTotal(item) {
-            return !isNaN(item.rate * item.quantity) ? item.rate * item.quantity : 0;
+            return _.toFinite(item.rate * item.quantity);
         },
         getValidationMessages(index, key) {
             if (this.validationMessages[index] && this.validationMessages[index][key]) {
@@ -198,7 +202,7 @@ export default {
             }
             return [];
         },
-        onItemUpdate(property, index, value) {
+        onItemUpdate(index, property, value) {
             let data = Object.assign({}, this.value);
             data.items[index][property] = value;
 
@@ -210,24 +214,30 @@ export default {
 
             this.$emit('input', data);
         },
+        isOPEX(item) {
+            return item.expenseType === 1;
+        },
+        isCAPEX(item) {
+            return !this.isOPEX(item);
+        },
     },
     computed: {
         ...mapGetters({
             projectUnitsForSelect: 'projectUnitsForSelect',
         }),
         baseTotal: function() {
-            return this.value.items.reduce((prev, next) => {
-                return prev + this.itemTotal(next);
+            return this.value.items.reduce((total, item) => {
+                return total + this.itemTotal(item);
             }, 0);
         },
         opexSubtotal: function() {
-            return this.value.items.reduce((prev, next) => {
-                return next.opex ? prev + next.total : prev;
+            return this.value.items.reduce((total, item) => {
+                return this.isOPEX(item) ? total + this.itemTotal(item) : total;
             }, 0);
         },
         capexSubtotal: function() {
-            return this.value.items.reduce((prev, next) => {
-                return next.capex ? prev + next.total : prev;
+            return this.value.items.reduce((total, item) => {
+                return this.isCAPEX(item) ? total + this.itemTotal(item) : total;
             }, 0);
         },
     },
