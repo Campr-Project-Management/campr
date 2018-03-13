@@ -166,6 +166,7 @@ export default {
 <style scoped lang="scss">
     @import '../../../../css/_variables';
     @import '../../../../css/_mixins';
+    @import '../../../../css/_common';
 
     .btn-primary {
         background: $darkColor;

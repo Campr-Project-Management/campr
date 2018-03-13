@@ -250,7 +250,7 @@
                             <div class="status-box" v-bind:style="{background: currentStatusReport.information.project.overallStatus === 0 ? '#c87369' : '', cursor: 'default'}"></div>
                         </div>
 
-                        <vis-timeline :pmData="pmData"></vis-timeline>
+                        <vis-timeline :items="pmData" />
                     </div>
                 </div>
 
@@ -260,9 +260,10 @@
                     <div class="col-md-12">
                         <h3 class="margintop0">{{ translateText('message.internal_costs') }}</h3>
                         <div class="status-boxes flex flex-v-center marginbottom20">
-                            <div class="status-box" v-bind:style="{background: currentStatusReport.information.costData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>
-                            <div class="status-box" v-bind:style="{background: currentStatusReport.information.costData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>
-                            <div class="status-box" v-bind:style="{background: currentStatusReport.information.costData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>
+                            <!-- needs to be fixed -->
+                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.costData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>-->
+                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.costData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>-->
+                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.costData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>-->
                         </div>
 
                         <vue-chart
@@ -280,9 +281,10 @@
                     <div class="col-md-12">
                         <h3 class="margintop0">{{ translateText('message.external_costs') }}</h3>
                         <div class="status-boxes flex flex-v-center marginbottom20">
-                            <div class="status-box" v-bind:style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>
-                            <div class="status-box" v-bind:style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>
-                            <div class="status-box" v-bind:style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>
+                            <!-- needs to be fixed -->
+                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>-->
+                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>-->
+                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>-->
                         </div>
 
                         <vue-chart
@@ -407,7 +409,7 @@
                                 <tr v-for="decision in currentStatusReport.information.decisions.items">
                                     <td>{{ decision.dueDate | moment('DD.MM.YYYY') }}</td>
                                     <td class="cell-wrap">{{ decision.title }}</td>
-                                    <td class="cell-wrap cell-large">{{ decision.description }}</td>
+                                    <td class="cell-wrap cell-large" v-html="decision.description"></td>
                                     <td>
                                         <div class="avatar" v-tooltip.top-center="decision.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatar + ')' }"></div>
                                     </td>
@@ -560,24 +562,25 @@ export default {
                     }));
                 }
                 this.pmData = items;
-                Object.entries(information.costData.byPhase).map(([key, value]) => {
-                    this.costRowsByPhase.push([
-                        key,
-                        value.base ? parseInt(value.base) : 0,
-                        value.actual ? parseInt(value.actual) : 0,
-                        value.forecast ? parseInt(value.forecast) : 0,
-                        value.base && value.actual ? parseInt(value.base) - parseInt(value.actual) : 0,
-                    ]);
-                });
-                Object.entries(information.resourceData.byPhase).map(([key, value]) => {
-                    this.resourceRowsByPhase.push([
-                        key,
-                        value.base ? parseInt(value.base) : 0,
-                        value.actual ? parseInt(value.actual) : 0,
-                        value.forecast ? parseInt(value.forecast) : 0,
-                        value.base && value.actual ? parseInt(value.base) - parseInt(value.actual) : 0,
-                    ]);
-                });
+                // broken
+                // Object.entries(information.costData.byPhase).map(([key, value]) => {
+                //     this.costRowsByPhase.push([
+                //         key,
+                //         value.base ? parseInt(value.base) : 0,
+                //         value.actual ? parseInt(value.actual) : 0,
+                //         value.forecast ? parseInt(value.forecast) : 0,
+                //         value.base && value.actual ? parseInt(value.base) - parseInt(value.actual) : 0,
+                //     ]);
+                // });
+                // Object.entries(information.resourceData.byPhase).map(([key, value]) => {
+                //     this.resourceRowsByPhase.push([
+                //         key,
+                //         value.base ? parseInt(value.base) : 0,
+                //         value.actual ? parseInt(value.actual) : 0,
+                //         value.forecast ? parseInt(value.forecast) : 0,
+                //         value.base && value.actual ? parseInt(value.base) - parseInt(value.actual) : 0,
+                //     ]);
+                // });
                 let opportunityGridValues = information.risksOpportunitiesStats.opportunities.opportunity_data.gridValues;
                 let riskGridValues = information.risksOpportunitiesStats.risks.risk_data.gridValues;
                 const opportunityTypes = [

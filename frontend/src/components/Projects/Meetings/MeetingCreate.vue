@@ -58,7 +58,7 @@
                                     <error
                                         v-if="validationMessages.start && validationMessages.start.length"
                                         v-for="(message, index) in validationMessages.start"
-                                        :key="index"
+                                        :key="`schedule-schedule-${index}`"
                                         :message="message" />
                                 </div>
                             </div>
@@ -69,7 +69,7 @@
                                     <error
                                         v-if="validationMessages.end && validationMessages.end.length"
                                         v-for="(message, index) in validationMessages.end"
-                                        :key="index"
+                                        :key="`schedule-end-${index}`"
                                         :message="message" />
                                 </div>
                             </div>
@@ -85,7 +85,7 @@
                     <error
                         v-if="validationMessages.location && validationMessages.location.length"
                         v-for="(message, index) in validationMessages.location"
-                        :key="index"
+                        :key="`location-${index}`"
                         :message="message" />
                     <!-- /// End Meeting Location /// -->
 
@@ -101,7 +101,7 @@
                             <error
                                 v-if="validationMessages.meetingObjectives[index.toString()].description && validationMessages.meetingObjectives[index.toString()].description.length"
                                 v-for="(message, index) in validationMessages.meetingObjectives[index.toString()].description"
-                                :key="index"
+                                :key="`objective-description-${index}`"
                                 :message="message" />
                         </div>
                         <hr>
@@ -115,15 +115,14 @@
 
                     <!-- /// Meeting Agenda /// -->
                     <h3>{{ translateText('message.agenda') }}</h3>
-                    <div v-for="(agenda, index) in agendas"
-                        :key="index">
+                    <div v-for="(agenda, index) in agendas" :key="`agenda-${index}`">
                         <div class="form-group">
                             <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="agenda.topic" v-bind:content="agenda.topic" />
                             <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
                                 <error
                                     v-if="validationMessages.meetingAgendas[index.toString()].topic && validationMessages.meetingAgendas[index.toString()].topic.length"
                                     v-for="(message, index) in validationMessages.meetingAgendas[index.toString()].topic"
-                                    :key="index"
+                                    :key="`agenda-topic-${index}`"
                                     :message="message" />
                             </div>
                         </div>
@@ -135,7 +134,7 @@
                                         <error
                                             v-if="validationMessages.meetingAgendas[index.toString()].responsibility && validationMessages.meetingAgendas[index.toString()].responsibility.length"
                                             v-for="(message, index) in validationMessages.meetingAgendas[index.toString()].responsibility"
-                                            :key="index"
+                                            :key="`agenda-responsible-${index}`"
                                             :message="message" />
                                     </div>
                                 </div>
@@ -147,7 +146,7 @@
                                         <error
                                             v-if="validationMessages.meetingAgendas[index.toString()].start && validationMessages.meetingAgendas[index.toString()].start.length"
                                             v-for="(message, index) in validationMessages.meetingAgendas[index.toString()].start"
-                                            :key="index"
+                                            :key="`agenda-startTime-${index}`"
                                             :message="message" />
                                         </div>
                                     </div>
@@ -160,7 +159,7 @@
                                         <error
                                             v-if="validationMessages.meetingAgendas[index.toString()].end && validationMessages.meetingAgendas[index.toString()].end.length"
                                             v-for="(message, index) in validationMessages.meetingAgendas[index.toString()].end"
-                                            :key="index"
+                                            :key="`agenda-endTime-${index}`"
                                             :message="message" />
                                         </div>
                                     </div>
@@ -184,21 +183,21 @@
 
                     <!-- /// Decisions /// -->
                     <h3>{{ translateText('message.decisions') }}</h3>
-                    <div v-for="(decision, index) in decisions"
-                        :key="index">
+                    <div v-for="(decision, index) in decisions" :key="`decision-${index}`">
                         <input-field type="text" v-bind:label="translateText('placeholder.decision_title')" v-model="decision.title" v-bind:content="decision.title" />
                         <div v-if="validationMessages.decisions && validationMessages.decisions[index.toString()]">
                         <error
                             v-if="validationMessages.decisions[index.toString()].title && validationMessages.decisions[index.toString()].title.length"
                             v-for="(message, index) in validationMessages.decisions[index.toString()].title"
-                            :key="index"
+                            :key="`decision-title-${index}`"
                             :message="message" />
                         </div>
                         <div class="form-group">
-                            <div class="vueditor-holder">
-                                <div class="vueditor-header">{{ translateText('placeholder.decision_description') }}</div>
-                                <Vueditor :id="'decision.description'+index" :ref="'decision.description'+index" />
-                            </div>
+                            <editor
+                                :id="`decision-description-${index}`"
+                                height="200px"
+                                label="placeholder.decision_description"
+                                v-model="decision.description" />
                         </div>
                         <div class="row">
                             <div class="form-group">
@@ -208,7 +207,7 @@
                                     <error
                                         v-if="validationMessages.decisions[index.toString()].responsibility && validationMessages.decisions[index.toString()].responsibility.length"
                                         v-for="(message, index) in validationMessages.decisions[index.toString()].responsibility"
-                                        :key="index"
+                                        :key="`decision-responsible-${index}`"
                                         :message="message" />
                                     </div>
                                 </div>
@@ -232,21 +231,21 @@
 
                     <!-- /// ToDos /// -->
                     <h3>{{ translateText('message.todos') }}</h3>
-                    <div v-for="(todo, index) in todos"
-                        :key="index">
+                    <div v-for="(todo, index) in todos" :key="`todo-${index}`">
                         <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="todo.title" v-bind:content="todo.title" />
                         <div v-if="validationMessages.todos && validationMessages.todos[index.toString()]">
                         <error
                             v-if="validationMessages.todos[index.toString()].title && validationMessages.todos[index.toString()].title.length"
                             v-for="(message, index) in validationMessages.todos[index.toString()].title"
-                            :key="index"
+                            :key="`todo-title-${index}`"
                             :message="message" />
                         </div>
                         <div class="form-group">
-                            <div class="vueditor-holder">
-                                <div class="vueditor-header">{{ translateText('placeholder.action') }}</div>
-                                <Vueditor :id="'todo.description'+index" :ref="'todo.description'+index" />
-                            </div>
+                            <editor
+                                :id="`todo-description-${index}`"
+                                height="200px"
+                                label="placeholder.todo_description"
+                                v-model="todo.description" />
                         </div>
                         <div class="row">
                             <div class="form-group">
@@ -256,7 +255,7 @@
                                     <error
                                         v-if="validationMessages.todos[index.toString()].responsibility && validationMessages.todos[index.toString()].responsibility.length"
                                         v-for="(message, index) in validationMessages.todos[index.toString()].responsibility"
-                                        :key="index"
+                                        :key="`todo-responsible-${index}`"
                                         :message="message" />
                                     </div>
                                 </div>
@@ -281,7 +280,7 @@
                                     <error
                                         v-if="validationMessages.todos[index.toString()].status && validationMessages.todos[index.toString()].status.length"
                                         v-for="(message, index) in validationMessages.todos[index.toString()].status"
-                                        :key="index"
+                                        :key="`todo-status-${index}`"
                                         :message="message" />
                                     </div>
                                 </div>
@@ -298,21 +297,21 @@
 
                     <!-- /// Infos /// -->
                     <h3>{{ translateText('message.infos') }}</h3>
-                    <div v-for="(info, index) in infos"
-                        :key="index">
+                    <div v-for="(info, index) in infos" :key="`info-${index}`">
                         <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="info.topic" v-bind:content="info.topic" />
                         <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
                         <error
                             v-if="validationMessages.infos[index.toString()].title && validationMessages.infos[index.toString()].title.length"
                             v-for="(message, index) in validationMessages.infos[index.toString()].title"
-                            :key="index"
+                            :key="`info-topic-${index}`"
                             :message="message" />
                         </div>
                         <div class="form-group">
-                            <div class="vueditor-holder">
-                                <div class="vueditor-header">{{ translateText('placeholder.info_description') }}</div>
-                                <Vueditor :id="'info.description'+index" :ref="'info.description'+index" />
-                            </div>
+                            <editor
+                                :id="`info-description-${index}`"
+                                height="200px"
+                                label="placeholder.info_description"
+                                v-model="info.description" />
                         </div>
                         <div class="row">
                             <div class="form-group">
@@ -322,7 +321,7 @@
                                     <error
                                         v-if="validationMessages.infos[index.toString()].responsibility && validationMessages.infos[index.toString()].responsibility.length"
                                         v-for="(message, index) in validationMessages.infos[index.toString()].responsibility"
-                                        :key="index"
+                                        :key="`info-responsible-${index}`"
                                         :message="message" />
                                     </div>
                                 </div>
@@ -347,7 +346,7 @@
                                         <error
                                             v-if="validationMessages.infos[index.toString()].infoStatus && validationMessages.infos[index.toString()].infoStatus.length"
                                             v-for="(message, index) in validationMessages.infos[index.toString()].infoStatus"
-                                            :key="index"
+                                            :key="`info-infoStatus-${index}`"
                                             :message="message" />
                                     </div>
                                 </div>
@@ -361,7 +360,7 @@
                                         <error
                                             v-if="validationMessages.infos[index.toString()].infoCategory && validationMessages.infos[index.toString()].infoCategory.length"
                                             v-for="(message, index) in validationMessages.infos[index.toString()].infoCategory"
-                                            :key="index"
+                                            :key="`info-infoCategory-${index}`"
                                             :message="message" />
                                     </div>
                                 </div>
@@ -404,9 +403,8 @@ import {createFormData} from '../../../helpers/meeting';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import AlertModal from '../../_common/AlertModal.vue';
 import Error from '../../_common/_messages/Error.vue';
+import Editor from '../../_common/Editor';
 import router from '../../../router';
-import {createEditor} from 'vueditor';
-import vueditorConfig from '../../_common/vueditorConfig';
 
 export default {
     components: {
@@ -420,6 +418,7 @@ export default {
         MultiSelectField,
         AlertModal,
         Error,
+        Editor,
     },
     methods: {
         ...mapActions([
@@ -461,11 +460,6 @@ export default {
                 responsible: [],
                 dueDate: new Date(),
             });
-            setTimeout(() => {
-                this.decisions[this.decisions.length - 1].description =
-                    createEditor(document.getElementById('decision.description' + (this.decisions.length - 1)),
-                    {...vueditorConfig, id: 'decision.description' + (this.decisions.length - 1)});
-            }, 500);
         },
         addTodo() {
             this.todos.push({
@@ -475,11 +469,6 @@ export default {
                 dueDate: new Date(),
                 status: {label: this.translateText('label.select_status')},
             });
-            setTimeout(() => {
-                this.todos[this.todos.length - 1].description =
-                    createEditor(document.getElementById('todo.description' + (this.todos.length - 1)),
-                    {...vueditorConfig, id: 'todo.description' + (this.todos.length - 1)});
-            }, 500);
         },
         addInfo() {
             this.infos.push({
@@ -490,53 +479,6 @@ export default {
                 infoStatus: {label: this.translateText('label.select_status')},
                 infoCategory: {label: this.translateText('label.category')},
             });
-            setTimeout(() => {
-                this.infos[this.infos.length - 1].description =
-                    createEditor(document.getElementById('info.description' + (this.infos.length - 1))
-                            , {...vueditorConfig, id: 'info.description' + (this.infos.length - 1)});
-            }, 500);
-        },
-        getDecisions() {
-            let decisionsTmp = [];
-            for (let i = 0; i < this.decisions.length; i++) {
-                let elemTmp = {
-                    title: this.decisions[i].title,
-                    description: this.decisions[i].description.getContent(),
-                    responsible: this.decisions[i].responsible,
-                    dueDate: this.decisions[i].dueDate,
-                };
-                decisionsTmp.push(elemTmp);
-            }
-            return decisionsTmp;
-        },
-        getTodos() {
-            let todosTmp = [];
-            for (let i = 0; i < this.todos.length; i++) {
-                let elemTmp = {
-                    title: this.todos[i].title,
-                    description: this.todos[i].description.getContent(),
-                    responsible: this.todos[i].responsible,
-                    dueDate: this.todos[i].dueDate,
-                    status: this.todos[i].status,
-                };
-                todosTmp.push(elemTmp);
-            }
-            return todosTmp;
-        },
-        getInfos() {
-            let infosTmp = [];
-            for (let i = 0; i < this.infos.length; i++) {
-                let elemTmp = {
-                    topic: this.infos[i].topic,
-                    description: this.infos[i].description.getContent(),
-                    responsible: this.infos[i].responsible,
-                    dueDate: this.infos[i].dueDate,
-                    infoStatus: this.infos[i].infoStatus,
-                    infoCategory: this.infos[i].infoCategory,
-                };
-                infosTmp.push(elemTmp);
-            }
-            return infosTmp;
         },
         saveMeeting() {
             let data = {
@@ -549,9 +491,9 @@ export default {
                 objectives: this.objectives,
                 agendas: this.agendas,
                 medias: this.medias,
-                decisions: this.getDecisions(),
-                todos: this.getTodos(),
-                infos: this.getInfos(),
+                decisions: this.decisions,
+                todos: this.todos,
+                infos: this.infos,
             };
 
             if (this.details.distributionLists.length > 0) {
@@ -584,7 +526,6 @@ export default {
         ...mapGetters({
             distributionListsForSelect: 'distributionListsForSelect',
             meetingCategoriesForSelect: 'meetingCategoriesForSelect',
-            infoStatusesForSelect: 'infoStatusesForSelect',
             infoCategoriesForDropdown: 'infoCategoriesForDropdown',
             todoStatusesForSelect: 'todoStatusesForSelect',
             validationMessages: 'validationMessages',

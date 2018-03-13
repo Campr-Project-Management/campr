@@ -217,6 +217,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+    @import '../../../../css/_common';
+
     .note {
         padding-left: 10px;
         margin: 0;
