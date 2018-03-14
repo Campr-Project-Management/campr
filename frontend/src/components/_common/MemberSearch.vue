@@ -208,7 +208,6 @@ export default {
             this.query = this.selectedUser;
             this.selectedUsers = this.value;
 
-            console.log('loading users yo!');
             this.getUsers({id: this.value});
         }
 

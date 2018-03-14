@@ -51,10 +51,15 @@
             </div>
             <p v-html="project.shortNote"></p>
             <div v-if="showNoteEditor">
-                <div class="vueditor-holder">
-                    <Vueditor :id="'noteEditor'+project.id" :ref="'note'+project.id" />
-                </div>
+                <editor
+                    height="200px"
+                    :id="`project-${project.id}`"
+                    :toolbar="toolbar"
+                    v-model="shortNote" />
                 <button @click="saveNote()" class="btn-rounded btn-auto">{{ translateText('button.save') }}</button>
+                <button @click="showNoteEditor = false" class="btn-rounded btn-auto btn-danger">
+                    {{ translateText('button.cancel') }}
+                </button>
             </div>
         </div>
     </div>
@@ -65,9 +70,8 @@ import CircleChart from '../_common/_charts/CircleChart';
 import BarChart from '../_common/_charts/BarChart';
 import StarIcon from '../_common/_icons/StarIcon';
 import PencilIcon from '../_common/_icons/PencilIcon';
+import Editor from '../_common/Editor';
 import {mapActions} from 'vuex';
-import {createEditor} from 'vueditor';
-import vueditorConfig from '../_common/vueditorConfig';
 
 export default {
     components: {
@@ -75,30 +79,33 @@ export default {
         BarChart,
         StarIcon,
         PencilIcon,
+        Editor,
     },
     props: ['project'],
+    created() {
+        this.shortNote = this.project.shortNote;
+    },
     methods: {
         ...mapActions(['editProject']),
         showEditor: function() {
             this.showNoteEditor = true;
-            setTimeout(() => {
-                this.noteEditor = createEditor(document.getElementById('noteEditor'+this.project.id), {...vueditorConfig, id: 'noteEditor'});
-                this.noteEditor.setContent(this.project.shortNote);
-            }, 100);
         },
         translateText: function(text) {
             return this.translate(text);
         },
         saveNote: function() {
             this.showNoteEditor = false;
-            this.editProject({projectId: this.project.id, shortNote: this.noteEditor.getContent()});
+            this.editProject({projectId: this.project.id, shortNote: this.shortNote});
         },
     },
     data() {
         return {
             showNoteEditor: false,
-            note: null,
-            noteEditor: null,
+            shortNote: '',
+            toolbar: [
+                ['bold', 'italic', 'underline'],
+                [{'list': 'ordered'}, {'list': 'bullet'}],
+            ],
         };
     },
 };

@@ -264,6 +264,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+    @import '../../../../css/_common';
+
     .title {
         position: relative;
         top: 15px;

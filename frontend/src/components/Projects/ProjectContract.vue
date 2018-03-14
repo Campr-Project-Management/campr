@@ -22,7 +22,7 @@
 
                     <div class="flex buttons flex-center" v-if="contract && contract.id">
                         <a class="btn-rounded flex flex-center download-pdf" :href="downloadPdf">
-                            {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill"></downloadbutton-icon>
+                            {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill" />
                         </a>
                         <button v-if="!frozen" @click="freezeContract()" class="btn-rounded second-bg">{{ translateText('button.freeze_contract') }}</button>
                         <h4 v-else>{{ translateText('message.contract_frozen') }}</h4>
@@ -34,23 +34,19 @@
             <div class="row">
                 <!-- /// Project Description /// -->
                 <div class="col-md-6">
-                    <div class="vueditor-holder">
-                        <div class="vueditor-header">{{ translateText('message.project_description') }}</div>
-                        <div :class="{disabledpicker: frozen }">
-                            <Vueditor id="descriptionEditor" :ref="'contract.description'"/>
-                        </div>
-                    </div>
+                    <editor
+                        id="description"
+                        v-model="description"
+                        :label="'message.project_description'"/>
                 </div>
                 <!-- End Project Description -->
 
                 <!-- /// Project Start Event /// -->
                 <div class="col-md-6">
-                    <div class="vueditor-holder">
-                        <div class="vueditor-header">{{ translateText('message.project_start_event') }}</div>
-                        <div :class="{disabledpicker: frozen }">
-                            <Vueditor id="eventEditor" :ref="'contract.projectStartEvent'"/>
-                        </div>
-                    </div>
+                    <editor
+                        id="projectStartEvent"
+                        v-model="projectStartEvent"
+                        :label="'message.project_start_event'"/>
                 </div>
                 <!-- /// End Project Start Event /// -->
             </div>
@@ -59,39 +55,20 @@
                 <!-- /// Project Schedule /// -->
                 <div class="col-md-6 col-md-offset-3">
                     <h3 class="text-center">{{ translateText('message.schedule') }}</h3>
+                    <br>
                     <div class="flex flex-space-between dates">
                         <div class="input-holder left" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.proposed_start_date') }}</label>
                             <datepicker
-                                :value="proposedStartDate"
-                                format="dd - MM - yyyy"
-                                :disabled-picker="true"/>
+                                v-model="proposedStartDate"
+                                format="dd - MM - yyyy" />
                             <calendar-icon fill="middle-fill"/>
                         </div>
                         <div class="input-holder right" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.proposed_end_date') }}</label>
                             <datepicker
-                                :value="proposedEndDate"
-                                format="dd - MM - yyyy"
-                                :disabled-picker="true"/>
-                            <calendar-icon fill="middle-fill"/>
-                        </div>
-                    </div>
-                    <div class="flex flex-space-between dates right">
-                        <div class="input-holder left" :class="{disabledpicker: frozen }">
-                            <label class="active">{{ translateText('label.forecast_start_date') }}</label>
-                            <datepicker
-                                :value="forecastStartDate"
-                                format="dd - MM - yyyy"
-                                :disabled-picker="true"/>
-                            <calendar-icon fill="middle-fill"/>
-                        </div>
-                        <div class="input-holder right" :class="{disabledpicker: frozen }">
-                            <label class="active">{{ translateText('label.forecast_end_date') }}</label>
-                            <datepicker
-                                :value="forecastEndDate"
-                                format="dd - MM - yyyy"
-                                :disabled-picker="true"/>
+                                v-model="proposedEndDate"
+                                format="dd - MM - yyyy" />
                             <calendar-icon fill="middle-fill"/>
                         </div>
                     </div>
@@ -114,8 +91,8 @@
                         </router-link>
                     </div>
                     <div class="flex flex-row flex-center members-big" v-if="showSponsorsManagers">
-                        <member-badge v-for="item in projectSponsors" v-bind:item="item" size="small"></member-badge>
-                        <member-badge v-for="item in projectManagers" v-bind:item="item" size="small"></member-badge>
+                        <member-badge v-for="item in projectSponsors" v-bind:item="item" size="small" />
+                        <member-badge v-for="item in projectManagers" v-bind:item="item" size="small" />
                         <p v-if="projectSponsors.length === 0 && projectManagers.length === 0">{{ translateText('label.no_data') }}</p>
                     </div>
                 </div>
@@ -128,11 +105,11 @@
                     <h3>{{ translateText('message.project_objectives') }}</h3>
 
                     <div v-dragula="colOne" drake="objectives" v-if="project.projectObjectives && project.projectObjectives.length > 0">
-                        <drag-box :disabled="frozen" v-for="(item, index) in project.projectObjectives" v-bind:item="item" v-bind:index="index" type="objective"></drag-box>
+                        <drag-box :disabled="frozen" v-for="(item, index) in project.projectObjectives" v-bind:item="item" v-bind:index="index" type="objective" />
                     </div>
                     <p class="notice" v-else>{{ translateText('label.no_data') }}</p>
                     <div class="hr small"></div>
-                    <input-field v-if="!frozen" v-model="objectiveTitle" :content="objectiveTitle" type="text" v-bind:label="translateText('message.new_objective_title')"></input-field>
+                    <input-field v-if="!frozen" v-model="objectiveTitle" :content="objectiveTitle" type="text" v-bind:label="translateText('message.new_objective_title')" />
                     <error
                             v-if="validationMessages.createProjectObjectiveForm && validationMessages.title && validationMessages.title.length"
                             v-for="message in validationMessages.title"
@@ -148,11 +125,11 @@
                     <h3>{{ translateText('message.project_limitations') }}</h3>
 
                     <div v-dragula="colOne" drake="limitations" v-if="project.projectLimitations && project.projectLimitations.length > 0">
-                        <drag-box :disabled="frozen" v-for="(item, index) in project.projectLimitations" v-bind:item="item" v-bind:index="index" type="limitation"></drag-box>
+                        <drag-box :disabled="frozen" v-for="(item, index) in project.projectLimitations" v-bind:item="item" v-bind:index="index" type="limitation" />
                     </div>
                     <p class="notice" v-else>{{ translateText('label.no_data') }}</p>
                     <div class="hr small"></div>
-                    <input-field v-if="!frozen" v-model="limitationDescription" :content="limitationDescription" type="text" v-bind:label="translateText('message.new_project_limitation')"></input-field>
+                    <input-field v-if="!frozen" v-model="limitationDescription" :content="limitationDescription" type="text" v-bind:label="translateText('message.new_project_limitation')" />
                     <error
                         v-if="validationMessages.createProjectLimitationForm && validationMessages.description && validationMessages.description.length"
                         v-for="message in validationMessages.description"
@@ -167,11 +144,11 @@
                 <div class="col-md-4">
                     <h3>{{ translateText('message.project_deliverables') }}</h3>
                     <div v-dragula="colOne" drake="deliverables" v-if="project.projectDeliverables && project.projectDeliverables.length > 0">
-                        <drag-box :disabled="frozen" v-for="(item, index) in project.projectDeliverables" v-bind:item="item" v-bind:index="index" type="deliverable"></drag-box>
+                        <drag-box :disabled="frozen" v-for="(item, index) in project.projectDeliverables" v-bind:item="item" v-bind:index="index" type="deliverable" />
                     </div>
                     <p class="notice" v-else>{{ translateText('label.no_data') }}</p>
                     <div class="hr small"></div>
-                    <input-field v-if="!frozen" v-model="deliverableDescription" :content="deliverableDescription" type="text" v-bind:label="translateText('message.new_project_deliverable')"></input-field>
+                    <input-field v-if="!frozen" v-model="deliverableDescription" :content="deliverableDescription" type="text" v-bind:label="translateText('message.new_project_deliverable')" />
                     <error
                         v-if="validationMessages.createProjectDeliverableForm && validationMessages.description && validationMessages.description.length"
                         v-for="message in validationMessages.description"
@@ -207,7 +184,7 @@
                         <a v-if="!frozen" v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
                         <div class="flex">
                             <a v-if="contract && contract.id" class="btn-rounded flex flex-center download-pdf" :href="downloadPdf">
-                                {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill"></downloadbutton-icon>
+                                {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill" />
                             </a>
                             <button v-if="!frozen" @click="freezeContract()" class="btn-rounded second-bg">{{ translateText('button.freeze_contract') }}</button>
                         </div>
@@ -240,8 +217,7 @@ import AlertModal from '../_common/AlertModal.vue';
 import datepicker from '../_common/_form-components/Datepicker';
 import router from '../../router';
 import Error from '../_common/_messages/Error.vue';
-import {createEditor} from 'vueditor';
-import vueditorConfig from '../_common/vueditorConfig';
+import Editor from '../_common/Editor.vue';
 import moment from 'moment';
 
 export default {
@@ -255,6 +231,7 @@ export default {
         MemberBadge,
         AlertModal,
         Error,
+        Editor,
         Chart,
     },
     watch: {
@@ -270,10 +247,16 @@ export default {
         },
         contract(value) {
             this.frozen = this.contract.frozen;
-            setTimeout(() => {
-                this.descriptionEditor.setContent(this.contract.description ? this.contract.description : '');
-                this.eventEditor.setContent(this.contract.projectStartEvent ? this.contract.projectStartEvent : '');
-            }, 1500);
+            this.description = this.contract.description;
+            this.projectStartEvent = this.contract.projectStartEvent;
+            this.proposedStartDate = this.contract.proposedStartDate
+                ? moment(this.contract.proposedStartDate, 'YYYY-MM-DD').format()
+                : null
+            ;
+            this.proposedEndDate = this.contract.proposedEndDate
+                ? moment(this.contract.proposedEndDate, 'YYYY-MM-DD').format()
+                : null
+            ;
         },
     },
     methods: {
@@ -314,12 +297,10 @@ export default {
             let data = {
                 projectId: this.$route.params.id,
                 name: this.project.name + '-contract',
-                description: this.descriptionEditor.getContent(),
-                projectStartEvent: this.eventEditor.getContent(),
-                proposedStartDate: moment(this.project.scheduledStartAt).format('DD-MM-YYYY'),
-                proposedEndDate: moment(this.project.scheduledFinishAt).format('DD-MM-YYYY'),
-                forecastStartDate: moment(this.project.forecastStartAt).format('DD-MM-YYYY'),
-                forecastEndDate: moment(this.project.forecastFinishAt).format('DD-MM-YYYY'),
+                description: this.description,
+                projectStartEvent: this.projectStartEvent,
+                proposedStartDate: moment(this.proposedStartDate).format('DD-MM-YYYY'),
+                proposedEndDate: moment(this.proposedEndDate).format('DD-MM-YYYY'),
             };
 
             if (this.contract.id) {
@@ -481,10 +462,6 @@ export default {
             }
             vm.getProjectById(vm.$route.params.id);
         });
-        setTimeout(() => {
-            this.descriptionEditor = createEditor(document.getElementById('descriptionEditor'), {...vueditorConfig, id: 'descriptionEditor'});
-            this.eventEditor = createEditor(document.getElementById('eventEditor'), {...vueditorConfig, id: 'eventEditor'});
-        }, 1000);
     },
     beforeDestroy() {
         this.emptyValidationMessages();
@@ -504,34 +481,6 @@ export default {
         downloadPdf() {
             return Routing.generate('app_contract_pdf', {id: this.contract.id});
         },
-        proposedStartDate() {
-            if (this.contract.frozen) {
-                return this.contract.proposedStartDate;
-            }
-
-            return this.project.scheduledStartAt;
-        },
-        proposedEndDate() {
-            if (this.contract.frozen) {
-                return this.contract.proposedEndDate;
-            }
-
-            return this.project.scheduledFinishAt;
-        },
-        forecastStartDate() {
-            if (this.contract.frozen) {
-                return this.contract.forecastStartDate;
-            }
-
-            return this.project.forecastStartAt;
-        },
-        forecastEndDate() {
-            if (this.contract.frozen) {
-                return this.contract.forecastEndDate;
-            }
-
-            return this.project.forecastFinishAt;
-        },
     },
     data: function() {
         return {
@@ -545,6 +494,10 @@ export default {
             objectiveDescription: null,
             limitationDescription: null,
             frozen: false,
+            description: '',
+            projectStartEvent: '',
+            proposedStartDate: moment(new Date()).format('DD-MM-YYYY'),
+            proposedEndDate: moment(new Date()).format('DD-MM-YYYY'),
         };
     },
 };

@@ -73,31 +73,8 @@
                         <div class="input-holder right" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.proposed_end_date') }}</label>
                             <no-ssr>
-
                                 <datepicker
                                     :value="proposedEndDate"
-                                    format="dd - MM - yyyy"
-                                    :disabled-picker="true"/>
-                            </no-ssr>
-                            <calendar-icon fill="middle-fill" />
-                        </div>
-                    </div>
-                    <div class="flex flex-space-between dates right">
-                        <div class="input-holder left" :class="{disabledpicker: frozen }">
-                            <label class="active">{{ translateText('label.forecast_start_date') }}</label>
-                            <no-ssr>
-                                <datepicker
-                                    :value="forecastStartDate"
-                                    format="dd - MM - yyyy"
-                                    :disabled-picker="true"/>
-                            </no-ssr>
-                            <calendar-icon fill="middle-fill" />
-                        </div>
-                        <div class="input-holder right" :class="{disabledpicker: frozen }">
-                            <label class="active">{{ translateText('label.forecast_end_date') }}</label>
-                            <no-ssr>
-                                <datepicker
-                                    :value="forecastEndDate"
                                     format="dd - MM - yyyy"
                                     :disabled-picker="true"/>
                             </no-ssr>
@@ -216,6 +193,7 @@ import EyeIcon from '~/components/_icons/EyeIcon.vue';
 import InputField from '~/components/_form-components/InputField.vue';
 import MemberBadge from '~/components/MemberBadge.vue';
 import Vue from 'vue';
+import moment from 'moment';
 
 export default {
     components: {
@@ -239,34 +217,6 @@ export default {
     computed: {
         downloadPdf() {
             return ''; //Routing.generate('app_contract_pdf', {id: this.contract.id});
-        },
-        proposedStartDate() {
-            if (this.contract.frozen) {
-                return this.contract.proposedStartDate;
-            }
-
-            return this.project.scheduledStartAt;
-        },
-        proposedEndDate() {
-            if (this.contract.frozen) {
-                return this.contract.proposedEndDate;
-            }
-
-            return this.project.scheduledFinishAt;
-        },
-        forecastStartDate() {
-            if (this.contract.frozen) {
-                return this.contract.forecastStartDate;
-            }
-
-            return this.project.forecastStartAt;
-        },
-        forecastEndDate() {
-            if (this.contract.frozen) {
-                return this.contract.forecastEndDate;
-            }
-
-            return this.project.forecastFinishAt;
         },
     },
     async asyncData({params, query}) {
@@ -307,9 +257,11 @@ export default {
             ;
         }
 
+        const contract = contracts && contracts.length ? contracts[0] : {};
+
         return {
             project,
-            contract: contracts && contracts.length ? contracts[0] : {},
+            contract,
             externalCostsGraphData,
             internalCostsGraphData,
             projectSponsors,
@@ -330,6 +282,12 @@ export default {
             objectiveDescription: null,
             limitationDescription: null,
             frozen: false,
+            proposedStartDate: contract.proposedStartDate
+                ? moment(contract.proposedStartDate, 'YYYY-MM-DD').format()
+                : null,
+            proposedEndDate: contract.proposedEndDate
+                ? moment(contract.proposedEndDate, 'YYYY-MM-DD').format()
+                : null,
         };
     }
 };
