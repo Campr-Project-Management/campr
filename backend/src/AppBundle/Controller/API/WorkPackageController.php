@@ -169,7 +169,6 @@ class WorkPackageController extends ApiController
             if ($form->isValid()) {
                 /** @var WorkPackage $wp */
                 $wp = $form->getData();
-                dump($wp);
 
                 /** @var Cost $originalCost */
                 foreach ($originalCosts as $originalCost) {
