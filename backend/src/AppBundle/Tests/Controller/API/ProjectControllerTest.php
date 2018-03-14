@@ -3284,6 +3284,7 @@ class ProjectControllerTest extends BaseController
                     'internalForecastCost' => 0,
                     'totalForecastCosts' => 0,
                     'totalActualCosts' => 0,
+                    'actualCostColor' => 'green',
                 ],
             ],
         ];

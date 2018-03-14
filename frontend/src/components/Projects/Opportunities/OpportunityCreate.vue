@@ -69,14 +69,15 @@
                     <!-- /// End Opportunity Name /// -->
 
                     <!-- /// Opportunity Description /// -->
-                    <div class="vueditor-holder">
-                        <div class="vueditor-header">{{ translateText('placeholder.opportunity_description') }}</div>
-                        <Vueditor ref="description" id="description" />
-                        <error
-                            v-if="validationMessages.description && validationMessages.description.length"
-                            v-for="message in validationMessages.description"
-                            :message="message" />
-                    </div>
+
+                    <editor
+                        id="opportunity-description"
+                        v-model="description"
+                        :label="'placeholder.opportunity_description'"/>
+                    <error
+                        v-if="validationMessages.description && validationMessages.description.length"
+                        v-for="message in validationMessages.description"
+                        :message="message" />
                     <!-- /// End Opportunity Description /// -->
 
                     <hr class="double">
@@ -227,16 +228,17 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
-                                <div class="vueditor-holder measure-vueditor-holder">
-                                    <div class="vueditor-header">{{ translateText('placeholder.new_measure') }}</div>
-                                    <Vueditor :id="'measure.description'+index" :ref="'measure.description'+index" />
-                                    <span v-if="validationMessages.measures && validationMessages.measures[index]">
-                                        <error
-                                            v-if="validationMessages.measures[index].description.length"
-                                            v-for="message in validationMessages.measures[index].description"
-                                            :message="message" />
-                                    </span>
-                                </div>
+                                <editor
+                                    class="measure-vueditor-holder"
+                                    :id="`measure-${index}`"
+                                    v-model="measure.description"
+                                    :label="'placeholder.new_measure'"/>
+                                <span v-if="validationMessages.measures && validationMessages.measures[index]">
+                                    <error
+                                        v-if="validationMessages.measures[index].description.length"
+                                        v-for="message in validationMessages.measures[index].description"
+                                        :message="message" />
+                                </span>
                             </div>
                         </div>
                         <div class="form-group last-form-group">
@@ -290,8 +292,7 @@ import datepicker from '../../_common/_form-components/Datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
-import {createEditor} from 'vueditor';
-import vueditorConfig from '../../_common/vueditorConfig';
+import Editor from '../../_common/Editor';
 
 export default {
     components: {
@@ -305,6 +306,7 @@ export default {
         CalendarIcon,
         moment,
         Error,
+        Editor,
     },
     methods: {
         ...mapActions([
@@ -315,28 +317,25 @@ export default {
             return this.translate(text);
         },
         addMeasure: function() {
-            let thisRef = 'measure.description'+this.measures.length;
             let measure = {
                 title: '',
-                description: this.$refs[thisRef],
+                description: '',
                 cost: '',
                 responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
             };
-            setTimeout(() => {
-                measure.element = createEditor(document.getElementById(thisRef), {...vueditorConfig, id: thisRef});
-            }, 1000);
             this.measures.push(measure);
         },
         getFormData: function() {
-            let measures = this.measures.map((item, index) => ({
-                description: item.element.getContent(),
+            let measures = this.measures.map((item) => ({
+                description: item.description,
                 title: item.title,
                 cost: item.cost,
                 responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
             }));
-            let data = {
+
+            return {
                 title: this.title,
-                description: this.$refs.description.getContent(),
+                description: this.description,
                 impact: this.opportunityImpact,
                 probability: this.opportunityProbability,
                 budget: this.calculateBudget(),
@@ -351,8 +350,6 @@ export default {
                 responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
                 measures,
             };
-
-            return data;
         },
         saveOpportunity: function() {
             let data = this.getFormData();
@@ -459,9 +456,6 @@ export default {
             this[valueObj.modelName] = valueObj.value;
         });
     },
-    mounted() {
-        this.$refs.description.id = 1;
-    },
     beforeDestroy() {
         this.emptyValidationMessages();
     },
@@ -489,7 +483,7 @@ export default {
         },
         opportunity(value) {
             this.title = this.opportunity.title;
-            this.$refs.description.setContent(this.opportunity.description);
+            this.description = this.opportunity.description;
             this.opportunityImpact = this.opportunity.impact;
             this.opportunityProbability = this.opportunity.probability;
             this.costSavings = this.opportunity.costSavings;
@@ -512,20 +506,9 @@ export default {
             ;
             this.memberList.push(this.opportunity.responsibility);
             if (this.opportunity.measures.length > 0) {
-                this.measures = this.opportunity.measures.map((item, index) => {
-                    let val = {
-                        title: item.title,
-                        description: item.description,
-                        cost: item.cost,
-                    };
-                    setTimeout(() => {
-                        const thisRef = 'measure.description'+index;
-                        val.element = createEditor(document.getElementById(thisRef), {...vueditorConfig, id: thisRef});
-                        val.element.setContent(item.description);
-                    }, 1000);
-
-                    return val;
-                });
+                this.measures = this.opportunity.measures;
+            } else {
+                this.measures = [];
             }
         },
     },

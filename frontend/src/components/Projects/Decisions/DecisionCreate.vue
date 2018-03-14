@@ -46,14 +46,13 @@
                             :message="message" />
                     </div>
                     <div class="form-group">
-                        <div class="vueditor-holder">
-                            <div class="vueditor-header">{{ translateText('placeholder.decision_description') }}</div>
-                            <Vueditor ref="description" />
-                            <error
-                                v-if="validationMessages.description && validationMessages.description.length"
-                                v-for="message in validationMessages.description"
-                                :message="message" />
-                        </div>
+                        <editor
+                            v-model="description"
+                            :label="'placeholder.decision_description'"/>
+                        <error
+                            v-if="validationMessages.description && validationMessages.description.length"
+                            v-for="message in validationMessages.description"
+                            :message="message" />
                     </div>
                     <!-- /// End Info Title and Description /// -->
 
@@ -97,6 +96,7 @@ import MemberSearch from '../../_common/MemberSearch';
 import {mapActions, mapGetters} from 'vuex';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
+import Editor from '../../_common/Editor.vue';
 
 export default {
     components: {
@@ -107,6 +107,7 @@ export default {
         MemberSearch,
         moment,
         Error,
+        Editor,
     },
     methods: {
         ...mapActions([
@@ -121,7 +122,7 @@ export default {
                 projectId: this.$route.params.id,
                 meeting: this.details.meeting ? this.details.meeting.key : null,
                 title: this.title,
-                description: this.$refs.description.getContent(),
+                description: this.description,
                 decisionCategory: this.details.decisionCategory ? this.details.decisionCategory.key : null,
                 responsibility: this.responsible.length > 0 ? this.responsible[0] : null,
                 dueDate: moment(this.schedule.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
@@ -153,19 +154,11 @@ export default {
             this.getDecision(this.$route.params.decisionId);
         }
     },
-    mounted() {
-        if (this.currentDecision) {
-            this.$refs.description.setContent('');
-            setTimeout(() => {
-                const {description} = this.currentDecision;
-                this.$refs.description.setContent(description || '');
-            }, 256);
-        }
-    },
     data() {
         return {
             title: '',
             responsible: [],
+            description: '',
             schedule: {
                 dueDate: new Date(),
             },
@@ -182,7 +175,7 @@ export default {
     watch: {
         currentDecision(value) {
             this.title = this.currentDecision.title;
-            this.$refs.description.setContent(this.currentDecision.description || '');
+            this.description = this.currentDecision.description;
             this.details.meeting = this.currentDecision.meeting
                 ? {key: this.currentDecision.meeting, label: this.currentDecision.meetingName}
                 : null
