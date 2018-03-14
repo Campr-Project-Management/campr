@@ -383,17 +383,35 @@ export default {
                 gantt.attachEvent('onTaskDblClick', (id) => {
                     id = parseInt(id, 10);
                     const task = this.ganttData.filter(item => item.id === id)[0];
+                    const route = {};
 
-                    router.push({
-                        name: 'project-task-management-view',
-                        params: {
-                            'projectId': task.name,
+                    switch (true) {
+                    case task.type === 0:
+                        route.name = 'project-phases-view-phase';
+                        route.params = {
+                            'id': task.project,
+                            'phaseId': id,
+                        };
+                        break;
+                    case task.type === 1:
+                        route.name = 'project-phases-view-milestone';
+                        route.params = {
+                            'id': task.project,
+                            'milestoneId': id,
+                        };
+                        break;
+                    default:
+                        route.name = 'project-task-management-view';
+                        route.params = {
+                            'id': task.project,
                             'taskId': id,
-                        },
-                    });
+                        };
+                    }
+
+                    router.push(route);
 
                     return false;
-                }),
+                })
             );
 
             this.ganttEvents.push(
