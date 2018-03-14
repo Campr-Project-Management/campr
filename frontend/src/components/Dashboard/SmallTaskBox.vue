@@ -41,20 +41,30 @@
                 <p><span>{{ translate('message.status') }}:</span> {{ translate(task.workPackageStatusName) }}</p>
                 <bar-chart position="right" :percentage="task.progress" :color="task.colorStatusColor" v-bind:title-right="message.progress"></bar-chart>
             </div>
+
+            <task-label-bar
+                    v-if="hasLabel"
+                    :title="task.labelName"
+                    :color="task.labelColor" />
         </div>
     </div>
 </template>
 
 <script>
 import BarChart from '../_common/_charts/BarChart';
+import TaskLabelBar from '../Tasks/TaskLabelBar';
 
 export default {
     components: {
         BarChart,
+        TaskLabelBar,
     },
     methods: {
         translate(text) {
             return window.Translator.trans(text);
+        },
+        hasLabel() {
+            return this.task.label && this.task.labelColor;
         },
     },
     props: ['task', 'colorStatuses'],

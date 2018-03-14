@@ -185,36 +185,36 @@
                     <div class="col-md-12">
                         <div class="task-range-slider big-range-slider">
                             <!--TODO: determine the values for min and max for the bars-->
-                            <task-range-slider v-if="currentStatusReport.information.tasksForSchedule.base_start && currentStatusReport.information.tasksForSchedule.base_finish"
-                                    class="base dark-range-slider"
-                                    id="scheduleBase"
-                                    :message="translateText('table_header_cell.base')"
-                                    min="2017-01-01"
-                                    max="2018-01-01"
-                                    v-bind:from="currentStatusReport.information.tasksForSchedule.base_start.scheduledStartAt"
-                                    v-bind:to="currentStatusReport.information.tasksForSchedule.base_finish.scheduledFinishAt"
-                                    type="double">
-                            </task-range-slider>
-                            <task-range-slider v-if="currentStatusReport.information.tasksForSchedule.forecast_start && currentStatusReport.information.tasksForSchedule.forecast_finish"
-                                    class="forecast warning"
-                                    id="translateText('table_header_cell.forecast')"
-                                    message="Forecast"
-                                    min="2017-01-01"
-                                    max="2018-01-01"
-                                    v-bind:from="currentStatusReport.information.tasksForSchedule.forecast_start.forecastStartAt"
-                                    v-bind:to="currentStatusReport.information.tasksForSchedule.forecast_finish.forecastFinishAt "
-                                    type="double">
-                            </task-range-slider>
-                            <task-range-slider v-if="currentStatusReport.information.tasksForSchedule.actual_start && currentStatusReport.information.tasksForSchedule.actual_finish"
-                                    class="actual"
-                                    id="translateText('table_header_cell.actual')"
-                                    message="Actual"
-                                    min="2017-01-01"
-                                    max="2018-01-01"
-                                    v-bind:from="currentStatusReport.information.tasksForSchedule.actual_start.actualStartAt"
-                                    v-bind:to="currentStatusReport.information.tasksForSchedule.actual_finish.actualFinishAt"
-                                    type="double">
-                            </task-range-slider>
+                            <!--<task-range-slider v-if="currentStatusReport.information.tasksForSchedule.base_start && currentStatusReport.information.tasksForSchedule.base_finish"-->
+                                    <!--class="base dark-range-slider"-->
+                                    <!--id="scheduleBase"-->
+                                    <!--:message="translateText('table_header_cell.base')"-->
+                                    <!--min="2017-01-01"-->
+                                    <!--max="2018-01-01"-->
+                                    <!--v-bind:from="currentStatusReport.information.tasksForSchedule.base_start.scheduledStartAt"-->
+                                    <!--v-bind:to="currentStatusReport.information.tasksForSchedule.base_finish.scheduledFinishAt"-->
+                                    <!--type="double">-->
+                            <!--</task-range-slider>-->
+                            <!--<task-range-slider v-if="currentStatusReport.information.tasksForSchedule.forecast_start && currentStatusReport.information.tasksForSchedule.forecast_finish"-->
+                                    <!--class="forecast warning"-->
+                                    <!--id="translateText('table_header_cell.forecast')"-->
+                                    <!--message="Forecast"-->
+                                    <!--min="2017-01-01"-->
+                                    <!--max="2018-01-01"-->
+                                    <!--v-bind:from="currentStatusReport.information.tasksForSchedule.forecast_start.forecastStartAt"-->
+                                    <!--v-bind:to="currentStatusReport.information.tasksForSchedule.forecast_finish.forecastFinishAt "-->
+                                    <!--type="double">-->
+                            <!--</task-range-slider>-->
+                            <!--<task-range-slider v-if="currentStatusReport.information.tasksForSchedule.actual_start && currentStatusReport.information.tasksForSchedule.actual_finish"-->
+                                    <!--class="actual"-->
+                                    <!--id="translateText('table_header_cell.actual')"-->
+                                    <!--message="Actual"-->
+                                    <!--min="2017-01-01"-->
+                                    <!--max="2018-01-01"-->
+                                    <!--v-bind:from="currentStatusReport.information.tasksForSchedule.actual_start.actualStartAt"-->
+                                    <!--v-bind:to="currentStatusReport.information.tasksForSchedule.actual_finish.actualFinishAt"-->
+                                    <!--type="double">-->
+                            <!--</task-range-slider>-->
                         </div>
                     </div>
                 </div>
@@ -250,7 +250,7 @@
                             <div class="status-box" v-bind:style="{background: currentStatusReport.information.project.overallStatus === 0 ? '#c87369' : '', cursor: 'default'}"></div>
                         </div>
 
-                        <vis-timeline :pmData="pmData"></vis-timeline>
+                        <vis-timeline :items="pmData" />
                     </div>
                 </div>
 
@@ -260,9 +260,10 @@
                     <div class="col-md-12">
                         <h3 class="margintop0">{{ translateText('message.internal_costs') }}</h3>
                         <div class="status-boxes flex flex-v-center marginbottom20">
-                            <div class="status-box" v-bind:style="{background: currentStatusReport.information.costData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>
-                            <div class="status-box" v-bind:style="{background: currentStatusReport.information.costData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>
-                            <div class="status-box" v-bind:style="{background: currentStatusReport.information.costData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>
+                            <!-- needs to be fixed -->
+                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.costData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>-->
+                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.costData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>-->
+                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.costData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>-->
                         </div>
 
                         <vue-chart
@@ -280,9 +281,10 @@
                     <div class="col-md-12">
                         <h3 class="margintop0">{{ translateText('message.external_costs') }}</h3>
                         <div class="status-boxes flex flex-v-center marginbottom20">
-                            <div class="status-box" v-bind:style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>
-                            <div class="status-box" v-bind:style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>
-                            <div class="status-box" v-bind:style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>
+                            <!-- needs to be fixed -->
+                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>-->
+                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>-->
+                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>-->
                         </div>
 
                         <vue-chart
@@ -407,7 +409,7 @@
                                 <tr v-for="decision in currentStatusReport.information.decisions.items">
                                     <td>{{ decision.dueDate | moment('DD.MM.YYYY') }}</td>
                                     <td class="cell-wrap">{{ decision.title }}</td>
-                                    <td class="cell-wrap cell-large">{{ decision.description }}</td>
+                                    <td class="cell-wrap cell-large" v-html="decision.description"></td>
                                     <td>
                                         <div class="avatar" v-tooltip.top-center="decision.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatar + ')' }"></div>
                                     </td>
@@ -444,7 +446,7 @@ import moment from 'moment';
 import $ from 'jquery';
 import 'jquery-match-height/jquery.matchHeight.js';
 import VueScrollbar from 'vue2-scrollbar';
-import TaskRangeSlider from '../../_common/_task-components/TaskRangeSlider';
+// import TaskRangeSlider from '../../_common/_task-components/TaskRangeSlider';
 import CircleChart from '../../_common/_charts/CircleChart';
 import RiskGrid from '../Risks/RiskGrid';
 import RiskList from '../Risks/RiskList';
@@ -461,7 +463,7 @@ export default {
     components: {
         VisTimeline,
         VueScrollbar,
-        TaskRangeSlider,
+        // TaskRangeSlider,
         CircleChart,
         RiskGrid,
         RiskList,
@@ -560,24 +562,25 @@ export default {
                     }));
                 }
                 this.pmData = items;
-                Object.entries(information.costData.byPhase).map(([key, value]) => {
-                    this.costRowsByPhase.push([
-                        key,
-                        value.base ? parseInt(value.base) : 0,
-                        value.actual ? parseInt(value.actual) : 0,
-                        value.forecast ? parseInt(value.forecast) : 0,
-                        value.base && value.actual ? parseInt(value.base) - parseInt(value.actual) : 0,
-                    ]);
-                });
-                Object.entries(information.resourceData.byPhase).map(([key, value]) => {
-                    this.resourceRowsByPhase.push([
-                        key,
-                        value.base ? parseInt(value.base) : 0,
-                        value.actual ? parseInt(value.actual) : 0,
-                        value.forecast ? parseInt(value.forecast) : 0,
-                        value.base && value.actual ? parseInt(value.base) - parseInt(value.actual) : 0,
-                    ]);
-                });
+                // broken
+                // Object.entries(information.costData.byPhase).map(([key, value]) => {
+                //     this.costRowsByPhase.push([
+                //         key,
+                //         value.base ? parseInt(value.base) : 0,
+                //         value.actual ? parseInt(value.actual) : 0,
+                //         value.forecast ? parseInt(value.forecast) : 0,
+                //         value.base && value.actual ? parseInt(value.base) - parseInt(value.actual) : 0,
+                //     ]);
+                // });
+                // Object.entries(information.resourceData.byPhase).map(([key, value]) => {
+                //     this.resourceRowsByPhase.push([
+                //         key,
+                //         value.base ? parseInt(value.base) : 0,
+                //         value.actual ? parseInt(value.actual) : 0,
+                //         value.forecast ? parseInt(value.forecast) : 0,
+                //         value.base && value.actual ? parseInt(value.base) - parseInt(value.actual) : 0,
+                //     ]);
+                // });
                 let opportunityGridValues = information.risksOpportunitiesStats.opportunities.opportunity_data.gridValues;
                 let riskGridValues = information.risksOpportunitiesStats.risks.risk_data.gridValues;
                 const opportunityTypes = [

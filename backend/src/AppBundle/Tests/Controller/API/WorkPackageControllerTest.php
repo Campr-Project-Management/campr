@@ -127,6 +127,7 @@ class WorkPackageControllerTest extends BaseController
                             'responsibilityAvatar' => null,
                             'totalForecastCosts' => 0,
                             'totalActualCosts' => 0,
+                            'actualCostColor' => 'green',
                         ],
                         [
                             'puid' => 4,
@@ -199,6 +200,7 @@ class WorkPackageControllerTest extends BaseController
                             'responsibilityAvatar' => null,
                             'totalForecastCosts' => 0,
                             'totalActualCosts' => 0,
+                            'actualCostColor' => 'green',
                         ],
                     ],
                 ],
@@ -323,6 +325,7 @@ class WorkPackageControllerTest extends BaseController
                     'responsibilityAvatar' => null,
                     'totalForecastCosts' => 0,
                     'totalActualCosts' => 0,
+                    'actualCostColor' => 'green',
                 ],
             ],
         ];
@@ -448,6 +451,7 @@ class WorkPackageControllerTest extends BaseController
                     'internalForecastCost' => 0,
                     'totalForecastCosts' => 0,
                     'totalActualCosts' => 0,
+                    'actualCostColor' => 'green',
                 ],
             ],
         ];
