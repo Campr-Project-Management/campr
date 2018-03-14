@@ -25,10 +25,9 @@
                     <!-- /// End Milestone Name /// -->
 
                     <!-- /// Milestone Description /// -->
-                    <div class="vueditor-holder">
-                        <div class="vueditor-header">{{ translateText('placeholder.milestone_description') }}</div>
-                        <Vueditor id="contentEditor" ref="content" />
-                    </div>
+                    <editor
+                        v-model="content"
+                        :label="'placeholder.milestone_description'"/>
                     <!-- /// End Milestone Description /// -->
 
                     <hr class="double">
@@ -128,9 +127,8 @@ import datepicker from '../../_common/_form-components/Datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
+import Editor from '../../_common/Editor';
 import MemberSearch from '../../_common/MemberSearch';
-import {createEditor} from 'vueditor';
-import vueditorConfig from '../../_common/vueditorConfig';
 
 export default {
     components: {
@@ -139,6 +137,7 @@ export default {
         datepicker,
         CalendarIcon,
         Error,
+        Editor,
         MemberSearch,
     },
     methods: {
@@ -154,7 +153,7 @@ export default {
                 project: this.$route.params.id,
                 name: this.name,
                 type: 1,
-                content: this.contentEditor.getContent(),
+                content: this.content,
                 scheduledFinishAt: moment(this.schedule.baseDueDate).format('DD-MM-YYYY'),
                 forecastFinishAt: moment(this.schedule.forecastDueDate).format('DD-MM-YYYY'),
                 responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
@@ -170,7 +169,7 @@ export default {
                 project: this.$route.params.id,
                 name: this.name,
                 type: 1,
-                content: this.contentEditor.getContent(),
+                content: this.content,
                 scheduledFinishAt: moment(this.schedule.baseDueDate).format('DD-MM-YYYY'),
                 forecastFinishAt: moment(this.schedule.forecastDueDate).format('DD-MM-YYYY'),
                 responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
@@ -204,7 +203,7 @@ export default {
                 : null
             ;
             this.isKeyMilestone = this.milestone.isKeyMilestone;
-            this.contentEditor.setContent(this.milestone.content);
+            this.content = this.milestone.content;
         },
     },
     created() {
@@ -215,11 +214,6 @@ export default {
             this.getProjectMilestone(this.$route.params.milestoneId);
         }
     },
-    mounted() {
-        setTimeout(() => {
-            this.contentEditor = createEditor(document.getElementById('contentEditor'), {...vueditorConfig, id: 'contentEditor'});
-        }, 100);
-    },
     beforeDestroy() {
         this.emptyValidationMessages();
     },
@@ -227,7 +221,6 @@ export default {
         return {
             name: '',
             content: '',
-            contentEditor: null,
             schedule: {
                 baseDueDate: new Date(),
                 forecastDueDate: new Date(),

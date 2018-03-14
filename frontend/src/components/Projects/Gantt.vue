@@ -5,21 +5,21 @@
         </div>
 
         <div class="right-sided">
-            <input
-                id="importXmlFile"
-                type="file"
-                name="importXmlFile"
-                style="display: none;"
-                v-on:change="uploadImportTaskFile" />
+            <!--<input-->
+                <!--id="importXmlFile"-->
+                <!--type="file"-->
+                <!--name="importXmlFile"-->
+                <!--style="display: none;"-->
+                <!--v-on:change="uploadImportTaskFile" />-->
 
-            <a class="btn-rounded btn-auto btn-empty flex" v-on:click="openFileSelection">
-                <span>{{ translateText('message.import_tasks') }}</span>
-                <upload-icon></upload-icon>
-            </a>
+            <!--<a class="btn-rounded btn-auto btn-empty flex" v-on:click="openFileSelection">-->
+                <!--<span>{{ translateText('message.import_tasks') }}</span>-->
+                <!--<upload-icon></upload-icon>-->
+            <!--</a>-->
 
-            <a v-if="project && project.id" :href="exportProjectURL" class="btn-rounded btn-auto btn-empty flex" id="export_project_button">
-                {{ translateText('message.export_project') }}
-            </a>
+            <!--<a v-if="project && project.id" :href="exportProjectURL" class="btn-rounded btn-auto btn-empty flex" id="export_project_button">-->
+                <!--{{ translateText('message.export_project') }}-->
+            <!--</a>-->
 
             <input
                 type="button"
@@ -30,8 +30,8 @@
         </div>
 
         <ul class="gantt-tabs">
-            <li role="presentation" v-for="availableDate in availableDates" :class="{active: availableDate === currentDate}">
-                <button v-on:click="setCurrentDate(availableDate)">{{ availableDate }}</button>
+            <li role="presentation" v-for="(label, availableDate) in availableDates" :class="{active: availableDate === currentDate}">
+                <button v-on:click="setCurrentDate(availableDate)">{{ translateText(label) }}</button>
             </li>
         </ul>
         <div ref="gantt_chart" id="gantt_chart" class="gantt-chart">
@@ -366,32 +366,52 @@ export default {
                 gantt.attachEvent('onLinkDblClick', (id, e) => false),
             );
 
+            this.ganttEvents.push(
+                gantt.attachEvent('onTaskClosed', (id) => {
+                    this.initGanttMap();
+                })
+            );
+
+            this.ganttEvents.push(
+                gantt.attachEvent('onTaskOpened', (id) => {
+                    this.initGanttMap();
+                })
+            );
+
             // instead of opening default edit, confirm if user wants to go to the edit page
             this.ganttEvents.push(
-                gantt.attachEvent('onTaskDblClick', (id, e) => {
+                gantt.attachEvent('onTaskDblClick', (id) => {
                     id = parseInt(id, 10);
                     const task = this.ganttData.filter(item => item.id === id)[0];
-                    const types = [
-                        'phase',
-                        'milestone',
-                        'task',
-                    ];
+                    const route = {};
 
-                    gantt.confirm(this.translate('message.edit_' + types[task.type]) + ' <strong>' + task.name +
-                        '</strong>?', answer => {
-                        if (answer) {
-                            router.push({
-                                name: 'project-task-management-edit',
-                                params: {
-                                    'projectId': task.name,
-                                    'taskId': id,
-                                },
-                            });
-                        }
-                    });
+                    switch (true) {
+                    case task.type === 0:
+                        route.name = 'project-phases-view-phase';
+                        route.params = {
+                            'id': task.project,
+                            'phaseId': id,
+                        };
+                        break;
+                    case task.type === 1:
+                        route.name = 'project-phases-view-milestone';
+                        route.params = {
+                            'id': task.project,
+                            'milestoneId': id,
+                        };
+                        break;
+                    default:
+                        route.name = 'project-task-management-view';
+                        route.params = {
+                            'id': task.project,
+                            'taskId': id,
+                        };
+                    }
+
+                    router.push(route);
 
                     return false;
-                }),
+                })
             );
 
             this.ganttEvents.push(
@@ -583,7 +603,11 @@ export default {
     data() {
         return {
             currentDate: 'scheduled',
-            availableDates: ['scheduled', 'actual', 'forecast'],
+            availableDates: {
+                scheduled: 'label.base',
+                forecast: 'label.forecast',
+                actual: 'label.actual',
+            },
             showSaved: false,
             showFailed: false,
             showMinimap: true,

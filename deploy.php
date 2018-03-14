@@ -11,8 +11,8 @@ set('shared_dirs', [
     'var/logs',
     'backend/vendor',
     'web/uploads',
-//    'frontend/node_modules',
-//    'ssr/node_modules',
+    'frontend/node_modules',
+    'ssr/node_modules',
     'var/profiler',
 ]);
 set('writable_dirs', ['var/cache', '../../shared/var/logs', '../../shared/web/uploads', '../../shared/var/profiler']);
@@ -73,6 +73,9 @@ set('bin/mysqldump', function () {
 set('bin/mc', function () {
     return '{{release_path}}/bin/mc --config-folder={{release_path}}/config/minio/';
 });
+set('bin/rush', function () {
+    return '{{release_path}}/bin/rush';
+});
 set('database_backup_path', function () {
     return sprintf('campr/{{domain}}/%s/%s/%s/release_{{release_name}}/{{domain}}_%s_release_{{release_name}}.sql', date('Y'), date('m'), date('d'), date('YmdHis'));
 });
@@ -120,6 +123,27 @@ server('qa', '195.201.29.2')
     ->set('mysql_password', 'campr')
     ->set('mysql_database', 'campr')
 ;
+localServer('qa-local')
+    ->user('root')
+    ->stage('qa-local')
+    ->set('env', 'qa')
+    ->set('branch', 'master')
+    ->set('domain', 'qa.campr.biz')
+    ->set('mysql_user', 'root')
+    ->set('mysql_password', 'campr')
+    ->set('mysql_database', 'campr')
+;
+localServer('prod-local')
+    ->user('root')
+    ->stage('prod-local')
+    ->set('env', 'prod')
+    ->set('branch', 'production')
+    ->set('domain', 'campr.biz')
+    ->set('mysql_user', 'root')
+    ->set('mysql_password', 'campr')
+    ->set('mysql_database', 'campr')
+;
+
 
 // Set tasks
 task('pemFile', function () {
@@ -231,11 +255,8 @@ task('server:provision', function () {
         writeln('<info>Skipping...</info>');
     }
 });
-task('project:build:frontend', function () {
-    run('cd {{release_path}}/frontend && npm install --no-package-lock && npm run build');
-});
-task('project:build:ssr', function () {
-    run('cd {{release_path}}/ssr && npm install --no-package-lock && npm run build');
+task('project:build:frontend_and_ssr', function () {
+    run("echo -ne '>cd {{release_path}}/frontend && yarn install && yarn run build>cd {{release_path}}/ssr && yarn install && yarn run build' | {{bin/rush}} -D '>' {} -e");
 });
 task('hivebot:deploy-whois', function () {
     set('localUser', sprintf(
@@ -288,8 +309,7 @@ task('deploy', [
     'deploy:writable',
     'deploy:symlink',
     'project:front-static',
-    'project:build:frontend',
-    'project:build:ssr',
+    'project:build:frontend_and_ssr',
     'deploy:cache:warmup',
     'database:cleanup',
     'database:migrate',

@@ -102,6 +102,8 @@
                 } else {
                     $(this.$el).find('.calendar').removeClass('bottom-up');
                 }
+
+                return this.showDayView || this.showMonthView || this.showYearView;
             },
             onClick() {
                 if (this.disabledPicker) {

@@ -25,10 +25,9 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="vueditor-holder">
-                            <div class="vueditor-header">{{ translateText('placeholder.description') }}</div>
-                            <Vueditor id="descriptionEditor" ref="description" />
-                        </div>
+                        <editor
+                            v-model="description"
+                            :label="'placeholder.description'"/>
                     </div>
                     <!-- /// Title and Description /// -->
 
@@ -70,9 +69,8 @@ import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
 import moment from 'moment';
 import {mapActions, mapGetters} from 'vuex';
-import {createEditor} from 'vueditor';
-import vueditorConfig from '../../_common/vueditorConfig';
 import Error from '../../_common/_messages/Error.vue';
+import Editor from '../../_common/Editor';
 import router from '../../../router';
 
 export default {
@@ -83,6 +81,7 @@ export default {
         MemberSearch,
         moment,
         Error,
+        Editor,
     },
     methods: {
         ...mapActions(['getCloseDownAction', 'editCloseDownAction']),
@@ -93,7 +92,7 @@ export default {
             this.editCloseDownAction({
                 id: this.currentCloseDownAction.id,
                 title: this.title,
-                description: this.descriptionEditor.getContent(),
+                description: this.description,
                 responsibility: this.responsible.length > 0 ? this.responsible[0] : null,
                 dueDate: moment(this.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
             }).then(
@@ -117,14 +116,11 @@ export default {
         if (this.$route.params.actionId) {
             this.getCloseDownAction(this.$route.params.actionId);
         }
-        setTimeout(() => {
-            this.descriptionEditor = createEditor(document.getElementById('descriptionEditor'), {...vueditorConfig, id: 'descriptionEditor'});
-        }, 100);
     },
     watch: {
         currentCloseDownAction(value) {
             this.title = this.currentCloseDownAction.title;
-            this.descriptionEditor.setContent(this.currentCloseDownAction.description);
+            this.description = this.currentCloseDownAction.description;
             this.responsible.push(this.currentCloseDownAction.responsibility);
             this.dueDate = new Date(this.currentCloseDownAction.dueDate);
         },
@@ -134,7 +130,7 @@ export default {
             title: '',
             responsible: [],
             dueDate: new Date(),
-            descriptionEditor: null,
+            description: '',
         };
     },
 };
