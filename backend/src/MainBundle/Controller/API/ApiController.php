@@ -5,6 +5,8 @@ namespace MainBundle\Controller\API;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use MainBundle\Controller\BaseController;
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,5 +90,24 @@ abstract class ApiController extends BaseController
         }
 
         $form->submit($data, $clearMissing);
+    }
+
+    /**
+     * @return EventDispatcherInterface
+     */
+    protected function getEventDispatcher(): EventDispatcherInterface
+    {
+        return $this->get('event_dispatcher');
+    }
+
+    /**
+     * @param string $name
+     * @param Event  $event
+     *
+     * @return Event
+     */
+    protected function dispatchEvent(string $name, Event $event): Event
+    {
+        return $this->getEventDispatcher()->dispatch($name, $event);
     }
 }
