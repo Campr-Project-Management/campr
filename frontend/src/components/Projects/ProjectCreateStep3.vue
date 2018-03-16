@@ -253,10 +253,9 @@ export default {
     }
 
     p {
-        font-size: 10px;
-        letter-spacing: 1.5px;
-        margin-left: 38px;
-        color: $lighterColor;
+        letter-spacing: 0.1em;
+        text-align: center;
+        color: $lightColor;
         margin-bottom: 18px;
     }
 
