@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use Component\Repository\RepositoryInterface;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Sortable\Entity\Repository\SortableRepository;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  * Class BaseRepository
  * Represents the base class for all repository classes.
  */
-abstract class BaseRepository extends SortableRepository
+abstract class BaseRepository extends SortableRepository implements RepositoryInterface
 {
     /**
      * Finds entities based on criteria, order and limit.
@@ -150,5 +151,25 @@ abstract class BaseRepository extends SortableRepository
         }
 
         return $name;
+    }
+
+    /**
+     * @param object $entity
+     */
+    public function add($entity)
+    {
+        $this->_em->persist($entity);
+        $this->_em->flush();
+    }
+
+    /**
+     * @param object $entity
+     */
+    public function remove($entity)
+    {
+        if (null !== $this->find($entity->getId())) {
+            $this->_em->remove($entity);
+            $this->_em->flush();
+        }
     }
 }

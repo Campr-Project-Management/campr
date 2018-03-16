@@ -613,7 +613,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
                 $this->lastName = array_pop($parts);
                 $this->firstName = implode(' ', $parts);
                 break;
-            case count($parts) == 1:
+            case 1 == count($parts):
                 $this->lastName = $fullName;
                 break;
         }
@@ -1723,6 +1723,24 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function getProjectUsers()
     {
         return $this->projectUsers;
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return ProjectUser
+     */
+    public function getProjectUser(Project $project)
+    {
+        return $this
+            ->getProjectUsers()
+            ->filter(
+                function (ProjectUser $projectUser) use ($project) {
+                    return $projectUser->getProject()->getId() === $project->getId();
+                }
+            )
+            ->first()
+        ;
     }
 
     public function addSubteam(Subteam $subteam)
