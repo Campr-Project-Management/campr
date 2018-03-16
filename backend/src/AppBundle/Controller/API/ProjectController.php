@@ -39,6 +39,7 @@ use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\Unit;
 use AppBundle\Entity\WorkPackageProjectWorkCostType;
 use AppBundle\Entity\WorkPackageStatus;
+use AppBundle\Event\RasciEvent;
 use AppBundle\Form\Info\ApiCreateType as InfoType;
 use AppBundle\Form\Label\BaseLabelType;
 use AppBundle\Form\Project\ApiType;
@@ -65,9 +66,11 @@ use AppBundle\Repository\CostRepository;
 use AppBundle\Repository\MeasureRepository;
 use AppBundle\Repository\MeetingRepository;
 use AppBundle\Repository\OpportunityRepository;
+use AppBundle\Repository\RasciRepository;
 use AppBundle\Repository\RiskRepository;
 use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\ProjectVoter;
+use Component\Rasci\RasciEvents;
 use Doctrine\ORM\EntityManager;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use MainBundle\Controller\API\ApiController;
@@ -2367,6 +2370,13 @@ class ProjectController extends ApiController
      * @ParamConverter("workPackage", class="AppBundle\Entity\WorkPackage", options={"id"="workPackage"})
      * @ParamConverter("user", class="AppBundle\Entity\User", options={"id"="user"})
      * @Method({"PUT"})
+     *
+     * @param Request     $request
+     * @param Project     $project
+     * @param WorkPackage $workPackage
+     * @param User        $user
+     *
+     * @return JsonResponse
      */
     public function putRasciAction(Request $request, Project $project, WorkPackage $workPackage, User $user)
     {
@@ -2378,9 +2388,8 @@ class ProjectController extends ApiController
             );
         }
 
-        if (!$project->getProjectUsers()->map(function (ProjectUser $projectUser) {
-            return $projectUser->getUser();
-        })->contains($user)) {
+        $projectUser = $user->getProjectUser($project);
+        if (!$project->hasProjectUser($projectUser)) {
             throw $this->createAccessDeniedException(
                 $this
                     ->get('translator')
@@ -2388,20 +2397,37 @@ class ProjectController extends ApiController
             );
         }
 
-        $rasci = $this
-            ->getDoctrine()
-            ->getRepository(Rasci::class)
-            ->findOrCreateOneByWorkPackageAndUser($workPackage, $user)
-        ;
-        $isNew = !$rasci->getId();
-        $form = $this->createForm(RasciDataType::class, $rasci, ['method' => Request::METHOD_PUT, 'csrf_protection' => false]);
+        /** @var RasciRepository $rasciRepo */
+        $rasciRepo = $this->get('app.repository.rasci');
+        $rasci = $rasciRepo->findOneBy(['workPackage' => $workPackage, 'user' => $user]);
+        $isNew = false;
+        if (!$rasci) {
+            $isNew = true;
+            $rasci = new Rasci();
+            $rasci->setWorkPackage($workPackage);
+            $rasci->setUser($user);
+        }
+
+        $form = $this->createForm(
+            RasciDataType::class,
+            $rasci,
+            ['method' => Request::METHOD_PUT, 'csrf_protection' => false]
+        );
 
         $this->processForm($request, $form, false);
 
         if ($form->isValid()) {
-            $em = $this->get('doctrine.orm.entity_manager');
-            $em->persist($rasci);
-            $em->flush();
+            $preEventName = RasciEvents::PRE_UPDATE;
+            $postEventName = RasciEvents::POST_UPDATE;
+            $event = new RasciEvent($rasci);
+            if ($isNew) {
+                $preEventName = RasciEvents::PRE_CREATE;
+                $postEventName = RasciEvents::POST_CREATE;
+            }
+
+            $this->dispatchEvent($preEventName, $event);
+            $rasciRepo->add($rasci);
+            $this->dispatchEvent($postEventName, $event);
 
             return $this->createApiResponse($rasci, $isNew ? Response::HTTP_CREATED : Response::HTTP_ACCEPTED);
         }
