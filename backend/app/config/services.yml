@@ -139,6 +139,17 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
+### REPOSITORIES ###
+    app.repository.work_package:
+        class: AppBundle\Repository\WorkPackageRepository
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\WorkPackage }
+
+    app.repository.rasci:
+        class: AppBundle\Repository\RasciRepository
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Rasci }
+
 ### MENU BUILDER ###
     app.admin.menu.builder:
         class: AppBundle\Menu\MenuBuilder
@@ -281,6 +292,21 @@ services:
         arguments:
             - '@security.token_storage'
             - '@translator'
+
+    app.subscriber.work_package:
+        class: AppBundle\EventListener\WorkPackageSubscriber
+        arguments:
+            - '@app.repository.rasci'
+            - '@app.repository.work_package'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    app.subscriber.rasci:
+        class: AppBundle\EventListener\RasciSubscriber
+        arguments:
+            - '@app.repository.work_package'
+        tags:
+            - { name: kernel.event_subscriber }
 
 ### EXTENSIONS ###
     app.app_extension:
