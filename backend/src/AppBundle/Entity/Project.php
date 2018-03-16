@@ -151,6 +151,8 @@ class Project
     /**
      * @var ArrayCollection|Info[]
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Info", mappedBy="project")
      */
     private $infos;
@@ -158,12 +160,16 @@ class Project
     /**
      * @var ArrayCollection|Todo[]
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Todo", mappedBy="project")
      */
     private $todos;
 
     /**
      * @var ArrayCollection|DistributionList[]
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\DistributionList", mappedBy="project", cascade={"all"})
      */
@@ -183,7 +189,7 @@ class Project
      *
      * @Serializer\Exclude()
      *
-     ** @ORM\OneToMany(targetEntity="AppBundle\Entity\Message", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Message", mappedBy="project")
      */
     private $messages;
 
@@ -400,6 +406,8 @@ class Project
     /**
      * @var ArrayCollection|ProjectTeam[]
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Risk", mappedBy="project")
      */
     private $risks;
@@ -407,12 +415,16 @@ class Project
     /**
      * @var ArrayCollection|ProjectTeam[]
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Opportunity", mappedBy="project")
      */
     private $opportunities;
 
     /**
      * @var ArrayCollection|Decision[]
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Decision", mappedBy="project")
      */
@@ -463,6 +475,8 @@ class Project
     /**
      * @var ArrayCollection|StatusReport[]
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\StatusReport", mappedBy="project")
      */
     private $statusReports;
@@ -476,6 +490,8 @@ class Project
 
     /**
      * @var ArrayCollection|ProjectCloseDown[]
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectCloseDown", mappedBy="project")
      */
@@ -493,6 +509,7 @@ class Project
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectRole", mappedBy="project",  cascade={"all"})
      */
     private $projectRoles;
+
     /**
      * Project constructor.
      */
@@ -2881,5 +2898,30 @@ class Project
     public function getActualDuration()
     {
         return $this->getDatesFromTasksDiff('getActualStartAt', 'getActualFinishAt');
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("distributionLists")
+     */
+    public function getDistributionListsSimple()
+    {
+        return $this
+            ->distributionLists
+            ->map(function (DistributionList $dl) {
+                return [
+                    'id' => $dl->getId(),
+                    'name' => $dl->getName(),
+                    'sequence' => $dl->getSequence(),
+                    'users' => $dl
+                        ->getUsers()
+                        ->map(function (User $user) {
+                            return [
+                                'id' => $user->getId(),
+                            ];
+                        }),
+                ];
+            })
+        ;
     }
 }
