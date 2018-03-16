@@ -86,7 +86,7 @@
 
                 <div v-if="currentTab === 'members'">
                     <div class="team-list">
-                        <!--<vue-scrollbar class="table-wrapper" ref="projectOrganizationMembers">-->
+                        <vue-perfect-scrollbar>
                             <div class="scroll-wrapper">
                                 <table class="table table-striped table-responsive">
                                     <thead>
@@ -126,14 +126,14 @@
                                     </tfoot>
                                 </table>
                             </div>
-                        <!--</vue-scrollbar>-->
+                        </vue-perfect-scrollbar>
                     </div>
                 </div>
 
                 <div v-if="currentTab === 'departments'">
                     <!-- /// Departments /// -->
                     <h3>{{ translateText('title.departments') }}</h3>
-                    <vue-scrollbar class="table-wrapper">
+                    <vue-perfect-scrollbar>
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -165,7 +165,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </vue-scrollbar>
+                    </vue-perfect-scrollbar>
                     <div class="flex flex-direction-reverse">
                         <div class="pagination flex flex-center" v-if="departmentPages > 1">
                             <span v-for="page in departmentPages" :class="{'active': page == activeDepartmentPage}" @click="changeDepartmentPage(page)">{{ page }}</span>
@@ -200,7 +200,7 @@
                 <div v-if="currentTab === 'subteams'">
                     <!-- /// Subteams /// -->
                     <h3>{{ translateText('title.subteams') }}</h3>
-                    <vue-scrollbar class="table-wrapper">
+                    <vue-perfect-scrollbar>
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -230,7 +230,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </vue-scrollbar>
+                    </vue-perfect-scrollbar>
                     <div class="flex flex-direction-reverse">
                         <div class="pagination flex flex-center" v-if="subteamPages > 1">
                             <span v-for="page in subteamPages" :class="{'active': page == activeSubteamPage}" @click="changeSubteamPage(page)">{{ page }}</span>
@@ -267,7 +267,6 @@ import ViewIcon from '../../_common/_icons/ViewIcon';
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import VTooltip from 'v-tooltip';
-import VueScrollbar from 'vue2-scrollbar';
 import moment from 'moment';
 import Modal from '../../_common/Modal';
 import SelectField from '../../_common/_form-components/SelectField';
@@ -277,6 +276,7 @@ import AlertModal from '../../_common/AlertModal.vue';
 import Error from '../../_common/_messages/Error.vue';
 import Switches from '../../3rdparty/vue-switches';
 import Pagination from '../../_common/Pagination';
+import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
 export default {
     components: {
@@ -285,7 +285,7 @@ export default {
         EditIcon,
         DeleteIcon,
         VTooltip,
-        VueScrollbar,
+        VuePerfectScrollbar,
         Modal,
         SelectField,
         MultiSelectField,
