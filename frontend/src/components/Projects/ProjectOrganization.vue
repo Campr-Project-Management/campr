@@ -40,7 +40,7 @@
         </div>
 
         <div class="team-graph">
-            <vue-scrollbar class="team-graph-wrapper" ref="projectOrganizationChart">
+            <vue-perfect-scrollbar ref="projectOrganizationChart">
                 <div class="scroll-wrapper">
                     <member-badge v-for="(item, index) in projectSponsors" v-bind:item="item" size="big first-member-badge"></member-badge>
                     <div :class="['subteams-container', subteams.items.length > 1 ? 'multiple-teams' : '']"  v-if="countSubteamsToShow() > 0">
@@ -77,7 +77,7 @@
                         </div>
                     </div>
                 </div>
-            </vue-scrollbar>
+            </vue-perfect-scrollbar>
         </div>
         <div class="flex flex-space-between actions">
             <member-search ref="gridMemberSearch" v-model="gridList" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
@@ -90,7 +90,7 @@
             </div>
         </div>
         <div class="team-list">
-            <vue-scrollbar class="table-wrapper" ref="projectOrganizationMembers">
+            <vue-perfect-scrollbar ref="projectOrganizationMembers">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive">
                         <thead>
@@ -168,7 +168,7 @@
                         </tbody>
                     </table>
                 </div>
-            </vue-scrollbar>
+            </vue-perfect-scrollbar>
 
             <div class="flex flex-direction-reverse flex-v-center">
                 <div class="pagination" v-if="pages > 1">
@@ -192,7 +192,6 @@ import SocialLinks from '../_common/SocialLinks';
 import InputField from '../_common/_form-components/InputField';
 import MemberSearch from '../_common/MemberSearch';
 import Switches from '../3rdparty/vue-switches';
-import VueScrollbar from 'vue2-scrollbar';
 import Modal from '../_common/Modal';
 import EditIcon from '../_common/_icons/EditIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
@@ -200,6 +199,7 @@ import ViewIcon from '../_common/_icons/ViewIcon';
 import AlertModal from '../_common/AlertModal.vue';
 import Error from '../_common/_messages/Error.vue';
 import WorkspaceMemberInviteModal from './Organization/WorkspaceMemberInviteModal.vue';
+import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
 export default {
     components: {
@@ -208,7 +208,7 @@ export default {
         InputField,
         Switches,
         Modal,
-        VueScrollbar,
+        VuePerfectScrollbar,
         MemberSearch,
         EditIcon,
         DeleteIcon,
