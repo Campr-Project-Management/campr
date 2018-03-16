@@ -2078,7 +2078,7 @@ class WorkPackage
     /**
      * @return float
      */
-    public function getExternalActualCost()
+    public function getExternalActualCost(): float
     {
         return (float) $this->externalActualCost;
     }
@@ -2098,7 +2098,7 @@ class WorkPackage
     /**
      * @return float
      */
-    public function getExternalForecastCost()
+    public function getExternalForecastCost(): float
     {
         return (float) $this->externalForecastCost;
     }
@@ -2118,7 +2118,7 @@ class WorkPackage
     /**
      * @return float
      */
-    public function getInternalActualCost()
+    public function getInternalActualCost(): float
     {
         return (float) $this->internalActualCost;
     }
@@ -2138,7 +2138,7 @@ class WorkPackage
     /**
      * @return float
      */
-    public function getInternalForecastCost()
+    public function getInternalForecastCost(): float
     {
         return (float) $this->internalForecastCost;
     }
