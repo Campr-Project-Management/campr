@@ -841,6 +841,7 @@ class Project
 
         return null;
     }
+
     /**
      * Returns project sponsor's name.
      *
@@ -1352,6 +1353,16 @@ class Project
     public function getProjectUsers()
     {
         return $this->projectUsers;
+    }
+
+    /**
+     * @param ProjectUser $projectUser
+     *
+     * @return bool
+     */
+    public function hasProjectUser(ProjectUser $projectUser): bool
+    {
+        return $this->getProjectUsers()->contains($projectUser);
     }
 
     /**
@@ -2656,9 +2667,9 @@ class Project
         foreach ($this->workPackages as $wp) {
             $colorStatus = $wp->getColorStatus();
             if ($colorStatus) {
-                if ($colorStatus->getName() === ColorStatus::STATUS_IN_PROGRESS) {
+                if (ColorStatus::STATUS_IN_PROGRESS === $colorStatus->getName()) {
                     $status = self::STATUS_YELLOW;
-                } elseif ($colorStatus->getName() === ColorStatus::STATUS_NOT_STARTED) {
+                } elseif (ColorStatus::STATUS_NOT_STARTED === $colorStatus->getName()) {
                     $status = self::STATUS_RED;
                     break;
                 }
@@ -2703,6 +2714,7 @@ class Project
 
         return $this;
     }
+
     /**
      * Add projectRole.
      *
@@ -2735,6 +2747,7 @@ class Project
      * Remove projectRole.
      *
      * @param ProjectRole[] $projectRole
+     * @param mixed         $projectRoles
      *
      * @return Project;
      */
@@ -2766,7 +2779,7 @@ class Project
         $out = $this
             ->workPackages
             ->filter(function (WorkPackage $workPackage) {
-                return $workPackage->getType() === WorkPackage::TYPE_TASK;
+                return WorkPackage::TYPE_TASK === $workPackage->getType();
             })
             ->map(function (WorkPackage $workPackage) use ($propertyMethod) {
                 return $workPackage->{$propertyMethod}();
@@ -2777,7 +2790,7 @@ class Project
             $out->toArray(),
             function ($item, $carry) use ($mode) {
                 if ($item instanceof \DateTime && $carry instanceof \DateTime) {
-                    if ($mode === 1) {
+                    if (1 === $mode) {
                         return $carry > $item ? $carry : $item;
                     } else {
                         return $carry < $item ? $carry : $item;
@@ -2795,7 +2808,7 @@ class Project
             null
         );
 
-        if (!$out && stripos($propertyMethod, 'start') !== false) {
+        if (!$out && false !== stripos($propertyMethod, 'start')) {
             $out = $this->createdAt;
         }
 
@@ -2901,6 +2914,16 @@ class Project
     public function getActualDuration()
     {
         return $this->getDatesFromTasksDiff('getActualStartAt', 'getActualFinishAt');
+    }
+
+    /**
+     * @param string $module
+     *
+     * @return bool
+     */
+    public function hasProjectModule(string $module): bool
+    {
+        return in_array($module, $this->getProjectModulesList(), true);
     }
 
     /**
