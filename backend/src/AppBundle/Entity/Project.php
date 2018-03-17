@@ -399,6 +399,9 @@ class Project
 
     /**
      * @var Subteam[]|ArrayCollection
+     *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Subteam", mappedBy="project", orphanRemoval=true, cascade={"all"})
      */
     private $subteams;
