@@ -24,6 +24,9 @@
             value: {
                 type: String,
                 required: false,
+                default() {
+                    return '';
+                },
             },
             label: {
                 type: String,
