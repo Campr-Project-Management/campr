@@ -1460,11 +1460,6 @@ export default {
             margin-bottom: 20px;
         }
 
-        ul {
-            margin-left: 20px;
-            list-style-type: disc;
-        }
-
         ol {
             margin-left: 20px;
             list-style-type: decimal;
