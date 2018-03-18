@@ -178,6 +178,12 @@ export default {
 <style scoped lang="scss">
   @import '../../css/_variables';
 
+  ul {
+      list-style-type: none;
+      padding: 0;
+      text-align: left;
+  }
+
   .separator {
       height: 1px;
       background: $mainColor;
