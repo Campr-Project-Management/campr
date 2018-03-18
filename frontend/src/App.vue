@@ -70,9 +70,8 @@ export default {
     }
 
     ul {
-        list-style-type: none;
-        padding: 0;
-        text-align: left;
+        margin-left: 20px;
+        list-style-type: disc;
     }
 
     p {
