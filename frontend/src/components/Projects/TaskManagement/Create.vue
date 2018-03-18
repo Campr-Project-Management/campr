@@ -39,15 +39,11 @@
                     <!-- /// End Task Name /// -->
 
                     <!-- /// Task Description /// -->
-                    <div class="vueditor-holder">
-                        <div class="vueditor-header">{{ label.task_description }}</div>
-                        <editor
-                            v-model="description"
-                            :label="label.task_description"/>
-                        <div cass="vueditor-footer clearfix">
-                            <div class="pull-right"></div>
-                        </div>
-                    </div>
+                    <editor
+                        height="200px"
+                        id="task_description"
+                        v-model="description"
+                        :label="label.task_description"/>
                     <!-- /// End Task Description /// -->
 
                     <hr class="double">
