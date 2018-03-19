@@ -1360,7 +1360,7 @@ class Project
      *
      * @return bool
      */
-    public function hasProjectUser(ProjectUser $projectUser): bool
+    public function hasProjectUser(ProjectUser $projectUser)
     {
         return $this->getProjectUsers()->contains($projectUser);
     }
@@ -2921,7 +2921,7 @@ class Project
      *
      * @return bool
      */
-    public function hasProjectModule(string $module): bool
+    public function hasProjectModule(string $module)
     {
         return in_array($module, $this->getProjectModulesList(), true);
     }
