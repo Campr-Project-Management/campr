@@ -42,8 +42,18 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            WorkPackageEvents::POST_CREATE => 'onPostCreate',
             WorkPackageEvents::POST_UPDATE => 'onPostUpdate',
         ];
+    }
+
+    /**
+     * @param WorkPackageEvent $event
+     */
+    public function onPostCreate(WorkPackageEvent $event)
+    {
+        $wp = $event->getWorkPackage();
+        $this->updateResponsibleUserInRasci($wp);
     }
 
     /**
