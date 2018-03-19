@@ -385,11 +385,6 @@ export default {
             if (!this.isEdit && value === false) {
                 router.push({
                     name: 'project-task-management-list',
-//                    name: 'project-task-management-edit',
-//                    params: {
-//                        id: this.$route.params.id,
-//                        taskId: this.task.id,
-//                    },
                 });
             }
         },
@@ -401,19 +396,6 @@ export default {
                 baseEndDate: this.task.scheduledFinishAt ? new Date(this.task.scheduledFinishAt) : new Date(),
                 forecastStartDate: this.task.forecastStartAt ? new Date(this.task.forecastStartAt) : new Date(),
                 forecastEndDate: this.task.forecastFinishAt ? new Date(this.task.forecastFinishAt) : new Date(),
-                automatic: this.task.automaticSchedule,
-                successors: this.task.dependants.map((item) => {
-                    return {
-                        key: item.id,
-                        label: item.name,
-                    };
-                }),
-                predecessors: this.task.dependencies.map((item) => {
-                    return {
-                        key: item.id,
-                        label: item.name,
-                    };
-                }),
                 duration: this.task.duration,
             };
             this.statusColor = {
@@ -566,9 +548,6 @@ export default {
                 baseEndDate: new Date(),
                 forecastStartDate: new Date(),
                 forecastEndDate: new Date(),
-                automatic: false,
-                successors: [],
-                predecessors: [],
                 duration: 0,
             },
             title: '',
