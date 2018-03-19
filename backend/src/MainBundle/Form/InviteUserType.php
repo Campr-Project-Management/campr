@@ -16,26 +16,31 @@ class InviteUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $constraints = [
+            new Email([
+                'message' => 'invalid.email',
+            ]),
+            new NotBlank([
+                'message' => 'not_blank.email',
+            ]),
+            new SelfInvite([
+                'user' => $options['user'],
+            ]),
+        ];
+
+        if ($options['team']) {
+            $constraints[] = new UserInvited([
+                'team' => $options['team'],
+            ]);
+            $constraints[] = new ActiveMember([
+                'team' => $options['team'],
+                'user' => $options['user'],
+            ]);
+        }
+
         $builder
             ->add('email', EmailType::class, [
-                'constraints' => [
-                    new Email([
-                        'message' => 'invalid.email',
-                    ]),
-                    new NotBlank([
-                        'message' => 'not_blank.email',
-                    ]),
-                    new UserInvited([
-                        'team' => $options['team'],
-                    ]),
-                    new SelfInvite([
-                        'user' => $options['user'],
-                    ]),
-                    new ActiveMember([
-                        'team' => $options['team'],
-                        'user' => $options['user'],
-                    ]),
-                ],
+                'constraints' => $constraints,
             ])
         ;
     }

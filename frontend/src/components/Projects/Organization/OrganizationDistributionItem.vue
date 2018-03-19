@@ -27,11 +27,11 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../../css/_variables';
-@import '../../../css/_mixins';
-@import '../../../css/page-section';
+    @import '../../../css/_variables';
+    @import '../../../css/_mixins';
+    @import '../../../css/page-section';
 
-ul.roles-hierarchy {
+    ul.roles-hierarchy {
         margin: 0;
         padding: 0;
         list-style: none;
@@ -70,5 +70,5 @@ ul.roles-hierarchy {
                 }
             }
         }
-}
+    }
 </style>
