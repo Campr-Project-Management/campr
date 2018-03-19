@@ -35,7 +35,7 @@
         },
         computed: {
             show() {
-                return this.showActual || this.showForecast || this.showBase;
+                return !this.task.isTutorial && (this.showActual || this.showForecast || this.showBase);
             },
             showActual() {
                 return this.actualCost > 0;
