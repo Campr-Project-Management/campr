@@ -8,12 +8,14 @@ use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\Log;
 use AppBundle\Entity\Comment;
+use AppBundle\Event\WorkPackageEvent;
 use AppBundle\Form\WorkPackage\ApiCreateType;
 use AppBundle\Form\WorkPackage\MilestoneType;
 use AppBundle\Form\WorkPackage\PhaseType;
 use AppBundle\Security\WorkPackageVoter;
 use AppBundle\Form\Assignment\BaseCreateType as AssignmentCreateType;
 use AppBundle\Form\Comment\CreateType as CommentCreateType;
+use Component\WorkPackage\WorkPackageEvents;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use MainBundle\Controller\API\ApiController;
@@ -180,8 +182,13 @@ class WorkPackageController extends ApiController
                 foreach ($wp->getMedias() as $media) {
                     $media->setFileSystem($fileSystem);
                 }
+
+                $this->dispatchEvent(WorkPackageEvents::PRE_UPDATE, new WorkPackageEvent($wp));
+
                 $em->persist($wp);
                 $em->flush();
+
+                $this->dispatchEvent(WorkPackageEvents::POST_UPDATE, new WorkPackageEvent($wp));
 
                 return $this->createApiResponse(
                     $wp,
