@@ -29,7 +29,7 @@ class TeamInvite
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team", inversedBy="teamInvites")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="team_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
+     *     @ORM\JoinColumn(name="team_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $team;
@@ -68,6 +68,16 @@ class TeamInvite
     private $createdAt;
 
     /**
+     * @var Project|null
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project")
+     * @ORM\JoinColumns({
+     *     @ORM\JoinColumn(name="project_id")
+     * })
+     */
+    private $project;
+
+    /**
      * @var \DateTime
      * @ORM\Column(name="accepted_at", type="datetime", nullable=true)
      */
@@ -76,6 +86,7 @@ class TeamInvite
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->token = uniqid(rand(1000, 9999), true);
     }
 
     /**
@@ -224,6 +235,26 @@ class TeamInvite
     public function setAcceptedAt(\DateTime $acceptedAt = null)
     {
         $this->acceptedAt = $acceptedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Project|null
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * @param Project|null $project
+     *
+     * @return self
+     */
+    public function setProject(Project $project = null)
+    {
+        $this->project = $project;
 
         return $this;
     }
