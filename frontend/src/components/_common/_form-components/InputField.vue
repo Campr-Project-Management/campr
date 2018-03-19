@@ -6,7 +6,10 @@
                     class="float-label"
                     :id="'input' + _uid"
                     :value="value"
-                    :disabled="disabled">
+                    :disabled="disabled"
+                    :style="css"
+                    @focusin="onFocus"
+                    @focusout="onBlur">
             </textarea>
         </template>
         <template v-else>
@@ -17,7 +20,9 @@
                     :id="'input' + _uid"
                     :value="value"
                     :disabled="disabled"
-                    :style="css"/>
+                    :style="css"
+                    @focusin="onFocus"
+                    @focusout="onBlur"/>
         </template>
         <label v-bind:class="{ 'active': value }">{{ label }}</label>
     </div>
@@ -91,6 +96,12 @@
         methods: {
             onInput(value) {
                 this.$emit('input', value);
+            },
+            onFocus() {
+                this.$emit('focus');
+            },
+            onBlur() {
+                this.$emit('blur');
             },
         },
     };
