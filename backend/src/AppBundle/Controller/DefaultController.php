@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\ProjectUser;
+use AppBundle\Entity\TeamInvite;
 use AppBundle\Entity\User;
 use MainBundle\Security\TeamVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -176,6 +178,33 @@ class DefaultController extends Controller
 
         $em->persist($user);
         $em->flush();
+
+        // check invites
+        $teamInvites = $em
+            ->getRepository(TeamInvite::class)
+            ->findPendingInvitesForUser($user)
+        ;
+
+        foreach ($teamInvites as $teamInvite) {
+            $teamInvite->setUser($user);
+            $teamInvite->setAcceptedAt(new \DateTime());
+            $em->persist($teamInvite);
+
+            $projectUser = $em
+                ->getRepository(ProjectUser::class)
+                ->findOneBy([
+                    'user' => $user,
+                    'project' => $teamInvite->getProject(),
+                ])
+            ;
+            if (!$projectUser) {
+                $projectUser = new ProjectUser();
+                $projectUser->setUser($user);
+                $projectUser->setProject($teamInvite->getProject());
+                $em->persist($projectUser);
+            }
+            $em->flush();
+        }
 
         $upt = new UsernamePasswordToken(
             $user,

@@ -111,23 +111,23 @@ class ProjectUser
     /**
      * @var bool
      *
-     * @ORM\Column(name="show_in_resources", type="boolean", nullable=false, options={"default": 1})
+     * @ORM\Column(name="show_in_resources", type="boolean", nullable=false, options={"default"=1})
      */
     private $showInResources = true;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="show_in_rasci", type="boolean", nullable=true)
+     * @ORM\Column(name="show_in_rasci", type="boolean", nullable=true, options={"default"=1})
      */
-    private $showInRasci;
+    private $showInRasci = true;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="show_in_org", type="boolean", nullable=true)
+     * @ORM\Column(name="show_in_org", type="boolean", nullable=true, options={"default"=1})
      */
-    private $showInOrg;
+    private $showInOrg = true;
 
     /**
      * @var string
