@@ -78,6 +78,7 @@ class ContractControllerTest extends BaseController
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
                     'frozen' => false,
+                    'approvedAt' => null,
                 ],
             ],
         ];
@@ -321,6 +322,7 @@ class ContractControllerTest extends BaseController
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
                     'frozen' => false,
+                    'approvedAt' => null,
                 ],
             ],
         ];

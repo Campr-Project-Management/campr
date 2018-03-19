@@ -233,6 +233,8 @@
                     </div>
                     <div class="new-comment-body">
                         <editor
+                            height="200px"
+                            id="newComment"
                             v-model="newComment"
                             :label="'message.new_comment'"/>
                         <div class="footer-buttons">

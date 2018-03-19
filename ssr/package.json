@@ -16,6 +16,7 @@
     "bootstrap": "3.3.7",
     "css-loader": "^0.28.10",
     "d3": "^4.10.0",
+    "es6-promise": "^4.2.4",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-html": "^4.0.2",
     "ion-rangeslider": "^2.1.7",
