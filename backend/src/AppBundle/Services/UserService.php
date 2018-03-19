@@ -43,6 +43,33 @@ class UserService extends BaseClientService
         return substr(md5(microtime()), rand(0, 26), 6);
     }
 
+    public function inviteUserToWorkspace(User $inviter, string $team, string $email)
+    {
+        $request = $this->httpClient->post(
+            sprintf('workspaces/%s/invite-member', $team),
+            [
+                'headers' => [
+                    'Authorization' => 'Bearer '.$inviter->getApiToken(),
+                ],
+                'form_params' => [
+                    'email' => $email,
+                ],
+            ]
+        );
+
+        if ($request->getStatusCode() !== 200) {
+            throw new NotFoundHttpException();
+        }
+
+        $body = $request->getBody();
+        $data = '';
+        while (!$body->eof()) {
+            $data .= $body->read(1024);
+        }
+
+        return json_decode($data, true);
+    }
+
     /**
      * Synchronize user from main site with user from secondary website.
      *
