@@ -3,6 +3,8 @@ ROLE_ADMIN: Admin
 ROLE_USER: User
 
 message:
+    user_invited_to_project: User has been invited to the project. The next time when they login they will have access to the project.
+    user_added_to_project: User has been added to the project.
     user_blocked: User blocked
     member: member
     members: members
@@ -863,6 +865,8 @@ subtitle:
     risk_status: List of Risk Statuses
 
 label:
+    clear: Clear
+    not_approved: Not approved
     invite_workspace_member: Invite member to workspace
     status_report_distribution: Status Report Distribution
     edit_topic: Edit topic
@@ -1180,7 +1184,6 @@ label:
     # opportunity status
     not_taken: Not Taken
     taken: Taken
-
 
 button:
     edit_member: Edit Member
@@ -1757,10 +1760,12 @@ site:
     disabled: Site disabled.
 
 exception:
+    cannot_invite_yourself: You cannot invite yourself.
     workpackage_must_belong_to_project: Workpackage must belong to the project.
     user_must_be_part_of_the_project: User must be part of the project.
     user:
         already_member_of_workspace: This user is already a part of this team.
+        already_member_of_project: This user is already a part of this project.
         unable_to_create: Unable to create user.
     add:
         team: Please add one team as option parameter

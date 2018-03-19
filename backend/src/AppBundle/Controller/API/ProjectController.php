@@ -32,6 +32,8 @@ use AppBundle\Entity\RiskStatus;
 use AppBundle\Entity\StatusReport;
 use AppBundle\Entity\StatusReportConfig;
 use AppBundle\Entity\Subteam;
+use AppBundle\Entity\Team;
+use AppBundle\Entity\TeamInvite;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\Unit;
@@ -69,6 +71,7 @@ use AppBundle\Security\ProjectVoter;
 use Doctrine\ORM\EntityManager;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use MainBundle\Controller\API\ApiController;
+use MainBundle\Form\InviteUserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -2490,6 +2493,105 @@ class ProjectController extends ApiController
         ;
 
         return $this->createApiResponse($roles);
+    }
+
+    /**
+     * @Route("/{id}/invite", name="app_api_project_invite", options={"expose"=true})
+     */
+    public function inviteAction(Request $request, Project $project)
+    {
+        $form = $this->createForm(
+            InviteUserType::class,
+            null,
+            [
+                'user' => $this->getUser(),
+                'csrf_protection' => false,
+            ]
+        );
+        $form->submit($request->request->all());
+
+        if (!$form->isSubmitted()) {
+            throw $this->createNotFoundException();
+        }
+
+        if (!$form->isValid()) {
+            return $this->createApiResponse([
+                'errors' => $this->getFormErrors($form),
+            ]);
+        }
+
+        $email = $request->request->get('email');
+        $em = $this->getDoctrine()->getManager();
+        $translator = $this->get('translator');
+        $out = [];
+        $status = Response::HTTP_OK;
+
+        /** @var User $user */
+        $user = $em->getRepository(User::class)->findOneBy(['email' => $email]);
+        if ($user) {
+            $projectUser = $user
+                ->getProjectUsers()
+                ->filter(function (ProjectUser $pu) use ($project) {
+                    return $pu->getProject() === $project;
+                })
+                ->first()
+            ;
+            if ($projectUser) {
+                $out = [
+                    'messages' => [
+                        $translator->trans('exception.user.already_member_of_project', [], 'messages'),
+                    ],
+                ];
+                $status = Response::HTTP_BAD_REQUEST;
+            } else {
+                $projectUser = new ProjectUser();
+                $projectUser->setUser($user);
+                $projectUser->setProject($project);
+                $em->persist($projectUser);
+                $em->flush();
+
+                $out = [
+                    'messages' => [
+                        $translator->trans('message.user_added_to_project', [], 'messages'),
+                    ],
+                ];
+                $status = Response::HTTP_CREATED;
+            }
+        } else {
+            $teamInvite = $em
+                ->getRepository(TeamInvite::class)
+                ->findOneBy([
+                    'project' => $project,
+                    'email' => $email,
+                ])
+            ;
+
+            if (!$teamInvite) {
+                $teamInvite = new TeamInvite();
+                $teamInvite->setEmail($email);
+                $teamInvite->setProject($project);
+                $em->persist($teamInvite);
+                $em->flush();
+            }
+
+            $this
+                ->get('app.service.user')
+                ->inviteUserToWorkspace(
+                    $this->getUser(),
+                    $this->getParameter('kernel.team_slug'),
+                    $email
+                )
+            ;
+
+            $out = [
+                'messages' => [
+                    $translator->trans('message.user_invited_to_project', [], 'messages'),
+                ],
+            ];
+            $status = Response::HTTP_CREATED;
+        }
+
+        return $this->createApiResponse($out, $status);
     }
 
     /**

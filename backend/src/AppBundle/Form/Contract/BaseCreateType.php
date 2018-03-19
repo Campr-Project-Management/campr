@@ -5,6 +5,7 @@ namespace AppBundle\Form\Contract;
 use AppBundle\Entity\Contract;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -56,6 +57,11 @@ class BaseCreateType extends AbstractType
                 'format' => 'dd-MM-yyyy',
             ])
             ->add('frozen', CheckboxType::class)
+            ->add('approvedAt', DateTimeType::class, [
+                'required' => false,
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd HH:mm:ss',
+            ])
         ;
     }
 

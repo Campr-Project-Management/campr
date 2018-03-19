@@ -18,6 +18,8 @@
                         <span>{{ translateText('message.scope') }}: {{ project.projectScopeName || '-' }}</span>
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                         <span>{{ translateText('message.category') }}: {{ project.projectCategoryName || '-' }}</span>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <span>{{ translateText('message.approved_on') }}: {{ contract.approvedAt || '-' }}</span>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
@@ -217,6 +219,11 @@ export default {
     computed: {
         downloadPdf() {
             return ''; //Routing.generate('app_contract_pdf', {id: this.contract.id});
+        },
+        isApproved: {
+            get() {
+                return (this.contract.approvedAt !== '');
+            },
         },
     },
     async asyncData({params, query}) {
