@@ -360,10 +360,11 @@ message:
     wait: Please wait...
     edit_task_labels: Edit Task Labels
     new_label: New Label
+    edit_label: Edit Label
     open_tasks: Open Tasks
     view_grid: View Grid
     view_board: View Board
-    label_note: Note':' the Label text color is white so pick a background color that makes it easy to read the white text above it.
+    label_note: 'Note: the Label text color is white so pick a background color that makes it easy to read the white text above it.'
     create_new_task: Create New Task
     import_task: Import Task
     import_tasks: Import Tasks
