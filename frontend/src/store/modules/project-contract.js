@@ -14,18 +14,26 @@ const actions = {
      * Create project contract
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     createContract({commit}, data) {
-        Vue.http
+        return Vue
+            .http
             .post(
                 Routing.generate('app_api_project_create_contract', {'id': data.projectId}),
                 JSON.stringify(data)
-            ).then((response) => {
-            }, (response) => {
-                if (response.status === 400) {
-                    // implement system to display errors
-                }
-            });
+            )
+            .then(
+                (response) => {
+                    if (response.body && response.body.error) {
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: response.body.messages});
+                    }
+
+                    return response;
+                },
+                (response) => {}
+            )
+        ;
     },
     /**
      * Edit contract
@@ -40,6 +48,16 @@ const actions = {
             .patch(
                 Routing.generate('app_api_contract_edit', {'id': data.id}),
                 JSON.stringify(data)
+            )
+            .then(
+                (response) => {
+                    if (response.body && response.body.error) {
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: response.body.messages});
+                    }
+
+                    return response;
+                },
+                () => {},
             )
         ;
     },
