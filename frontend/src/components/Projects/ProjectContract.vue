@@ -63,6 +63,10 @@
                                 v-model="proposedStartDate"
                                 format="dd - MM - yyyy" />
                             <calendar-icon fill="middle-fill"/>
+                            <error
+                                v-if="validationMessages.proposedStartDate && validationMessages.proposedStartDate.length"
+                                v-for="message in validationMessages.proposedStartDate"
+                                :message="message" />
                         </div>
                         <div class="input-holder right" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.proposed_end_date') }}</label>
@@ -70,6 +74,10 @@
                                 v-model="proposedEndDate"
                                 format="dd - MM - yyyy" />
                             <calendar-icon fill="middle-fill"/>
+                            <error
+                                v-if="validationMessages.proposedEndDate && validationMessages.proposedEndDate.length"
+                                v-for="message in validationMessages.proposedEndDate"
+                                :message="message" />
                         </div>
                     </div>
                 </div>
@@ -111,9 +119,9 @@
                     <div class="hr small"></div>
                     <input-field v-if="!frozen" v-model="objectiveTitle" :content="objectiveTitle" type="text" v-bind:label="translateText('message.new_objective_title')" />
                     <error
-                            v-if="validationMessages.createProjectObjectiveForm && validationMessages.title && validationMessages.title.length"
-                            v-for="message in validationMessages.title"
-                            :message="message" />
+                        v-if="validationMessages.createProjectObjectiveForm && validationMessages.title && validationMessages.title.length"
+                        v-for="message in validationMessages.title"
+                        :message="message" />
                     <div v-if="!frozen" class="flex flex-direction-reverse">
                         <a v-on:click="createProjectObjective()" class="btn-rounded btn-auto">{{ translateText('message.add_objective') }} +</a>
                     </div>
@@ -340,8 +348,12 @@ export default {
                 this
                     .createContract(data)
                     .then(
-                        (reponse) => {
-                            this.showSaved = true;
+                        (response) => {
+                            if (response.body && response.body.error) {
+                                this.showFailed = true;
+                            } else {
+                                this.showSaved = true;
+                            }
                         },
                         (reponse) => {
                             this.showFailed = true;
