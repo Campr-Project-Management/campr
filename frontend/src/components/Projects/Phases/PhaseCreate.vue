@@ -34,26 +34,8 @@
 
                     <!-- /// Phase Schedule /// -->
                     <h3>{{ translateText('message.schedule') }}</h3>
-                    <h4>{{ translateText('message.automatic_schedule') }}</h4>
-                    <span class="note">{{ translateText('message.automatic_phase_schedule_note') }}</span>
-                    <div class="row">
-                        <div class="form-group last-form-group">
-                            <div class="col-md-6">
-                                <span class="title">
-                                    <b>{{ translateText('message.start_date') }}: {{ phase.actualStartAt | date }}</b>
-                                </span>
-                            </div>
-                            <div class="col-md-6">
-                                <span class="title">
-                                    <b> {{ translateText('message.finish_date') }}: {{ phase.actualFinishAt | date }}</b>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
                     <hr>
 
-                    <h4>{{ translateText('message.manual_schedule') }}</h4>
                     <span class="note no-margin-bottom">{{ translateText('message.manual_phase_schedule_note_first') }}</span>
                     <span class="note"><b>{{ translateText('message.note') }}:</b> {{ translateText('message.manual_phase_schedule_note_second') }}</span>
                     <div class="row">
