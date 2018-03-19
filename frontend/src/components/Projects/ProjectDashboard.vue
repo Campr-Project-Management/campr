@@ -48,7 +48,7 @@
                             </li>
                             <li>
                                 <span>{{ translateText('message.approved_on') }}:</span>
-                                <b v-if="project.approvedAt">{{ project.approvedAt }}</b>
+                                <b v-if="contract && contract.approvedAt">{{ contract.approvedAt }}</b>
                                 <b v-else>-</b>
                             </li>
                             <li>
@@ -120,7 +120,12 @@
                         </div>
                         <hr v-if="colorStatuses && colorStatuses.length">
 
-                        <a class="btn-rounded btn-md btn-empty btn-auto" :href="downloadPdf">{{ translateText('button.print_project_contract') }}</a>
+                        <a
+                            class="btn-rounded btn-md btn-empty btn-auto"
+                            v-if="contract && contract.id"
+                            :href="downloadPdf">
+                            {{ translateText('button.print_project_contract') }}
+                        </a>
                     </div>
                 </div>
                 <!-- /// End Project Summary Widget /// -->
@@ -189,6 +194,7 @@ export default {
     methods: {
         ...mapActions([
             'getProjectById',
+            'getContractByProjectId',
             'getRecentTasksByProject',
             'getProjectUsers',
             'getTasksForSchedule',
@@ -231,6 +237,7 @@ export default {
         this.getProjectUsers({id: this.$route.params.id});
         this.getTasksStatus(this.$route.params.id);
         this.getRecentTasksByProject(this.$route.params.id);
+        this.getContractByProjectId(this.$route.params.id);
         if (!this.$store.state.colorStatus || (this.$store.state.colorStatus.colorStatuses && this.$store.state.colorStatus.colorStatuses.length === 0)) {
             this.getColorStatuses();
         }
@@ -244,17 +251,20 @@ export default {
             projectManagers: 'projectManagers',
             tasksForSchedule: 'tasksForSchedule',
             projectTasksStatus: 'projectTasksStatus',
+            contract: 'currentContract',
         }),
         projectContractId() {
-            if (this.project.contracts && this.project.contracts.length) {
-                return this.project.contracts[0].id;
+            if (this.contract && this.contract.id) {
+                return this.contract.id;
             }
+
             return null;
         },
         projectContract() {
-            if (this.project.contracts && this.project.contracts.length) {
-                return this.project.contracts[0];
+            if (this.contract && this.contract.id) {
+                return this.contract;
             }
+
             return null;
         },
         downloadPdf() {

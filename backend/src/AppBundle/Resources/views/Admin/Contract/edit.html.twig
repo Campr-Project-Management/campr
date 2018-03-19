@@ -132,6 +132,16 @@
                                 'label': 'label.frozen'|trans
                             }
                         ) }}
+                        {{ form_widget(
+                            form.approvedAt,
+                            {
+                                'attr': {
+                                    'class': 'form-control datetime-picker',
+                                    'addon_front': 'calendar',
+                                },
+                                'label': 'label.forecast_end_date'|trans
+                            }
+                        ) }}
 
                         {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
                         with {
@@ -146,4 +156,10 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% include '@App/Admin/Contract/_clear_approved_at.html.twig' with {form: form} %}
 {% endblock %}
