@@ -89,14 +89,6 @@
                                     {% endif %}
                                 </tr>
                                 <tr>
-                                    <th>{{ 'table_header_cell.created_at'|trans }}</th>
-                                    <td>{{ contract.createdAt|date('d/m/Y') }}</td>
-                                </tr>
-                                <tr>
-                                    <th>{{ 'table_header_cell.updated_at'|trans }}</th>
-                                    <td>{{ contract.updatedAt|date('d/m/Y')}}</td>
-                                </tr>
-                                <tr>
                                     <th>{{ 'table_header_cell.frozen'|trans }}</th>
                                     <td>
                                         {% if contract.frozen %}
@@ -105,6 +97,22 @@
                                             <span class="c-red">{{ 'message.no'|trans }}</span>
                                         {% endif %}
                                     </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'table_header_cell.approved_at'|trans }}</th>
+                                    {% if contract.approvedAt %}
+                                        <td>{{ contract.approvedAt|date('d/m/Y') }}</td>
+                                    {% else %}
+                                        <td>-</td>
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <th>{{ 'table_header_cell.created_at'|trans }}</th>
+                                    <td>{{ contract.createdAt|date('d/m/Y') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'table_header_cell.updated_at'|trans }}</th>
+                                    <td>{{ contract.updatedAt|date('d/m/Y')}}</td>
                                 </tr>
                             </tbody>
                         </table>

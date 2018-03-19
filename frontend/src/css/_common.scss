@@ -934,13 +934,10 @@ hr {
     > thead {
         > tr {
             > th {
-                border-bottom: none;
                 background: $darkColor;
                 text-transform: uppercase;
                 vertical-align: middle;
-                height: 60px;
-                padding: 0 30px;
-                padding-bottom: 0;
+                padding: 10px 30px !important;
                 font-weight: 400;
                 border: none;
 

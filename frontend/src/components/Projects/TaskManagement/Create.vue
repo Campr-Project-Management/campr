@@ -39,15 +39,11 @@
                     <!-- /// End Task Name /// -->
 
                     <!-- /// Task Description /// -->
-                    <div class="vueditor-holder">
-                        <div class="vueditor-header">{{ label.task_description }}</div>
-                        <editor
-                            v-model="description"
-                            :label="label.task_description"/>
-                        <div cass="vueditor-footer clearfix">
-                            <div class="pull-right"></div>
-                        </div>
-                    </div>
+                    <editor
+                        height="200px"
+                        id="task_description"
+                        v-model="description"
+                        :label="label.task_description"/>
                     <!-- /// End Task Description /// -->
 
                     <hr class="double">
@@ -73,12 +69,13 @@
 
                     <hr class="double">
 
-                    <!-- /// Task External Costs /// -->
+                    <!--&lt;!&ndash; /// Task External Costs /// &ndash;&gt;-->
                     <external-costs
                         v-model="externalCosts"
                         :validationMessages="externalValidationMessages"
+                        @input="onExternalCostChanged"
                         @add="onExternalCostAdded"/>
-                    <!-- /// End Task External Costs /// -->
+                    <!--&lt;!&ndash; /// End Task External Costs /// &ndash;&gt;-->
 
                     <hr class="double">
 
@@ -310,9 +307,10 @@ export default {
                 description: '',
                 quantity: 0,
                 rate: 0,
-                capex: 0,
-                opex: 1,
+                capex: false,
+                opex: true,
                 customUnit: '',
+                expenseType: 1,
                 unit: null,
             });
         },
@@ -525,8 +523,6 @@ export default {
                         cost,
                         {
                             selectedUnit: cost.unit && cost.unit.id ? cost.unit.id.toString() : null,
-                            capex: cost.expenseType === 0 ? 1 : 0,
-                            opex: cost.expenseType === 1 ? 1 : 0,
                             customUnit: '',
                             project: this.$route.params.id ? this.$route.params.id: null,
                             workPackage: this.$route.params.taskId ? this.$route.params.taskId : null,
@@ -610,7 +606,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    @import '../../../css/_common';
     @import '../../../css/page-section';
-    @import '../../../css/_variables';
 </style>
