@@ -3,6 +3,22 @@ import Vue from 'vue';
 const state = {};
 const getters = {};
 const actions = {
+    inviteMemberToProject({commit}, {id, email}) {
+        return Vue
+            .http
+            .post(
+                Routing.generate('app_api_project_invite', {id}),
+                {email}
+            )
+            .then((response) => {
+                let {data} = response;
+
+                return data;
+            }, (response) => {
+                return false;
+            })
+        ;
+    },
     inviteMemberToWorkspace({commit}, email) {
         return Vue
             .http
