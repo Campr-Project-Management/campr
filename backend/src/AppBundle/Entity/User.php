@@ -311,6 +311,8 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     /**
      * @var ArrayCollection|DistributionList[]
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\DistributionList", mappedBy="createdBy")
      */
     private $ownedDistributionLists;
@@ -327,12 +329,16 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     /**
      * @var ArrayCollection|Contract[]
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Contract", mappedBy="createdBy")
      */
     private $contracts;
 
     /**
      * @var ArrayCollection|Meeting[]
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Meeting", mappedBy="createdBy")
      */
@@ -363,6 +369,9 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
 
     /**
      * @var SubteamMember[]|ArrayCollection
+     *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\SubteamMember", mappedBy="user", cascade={"all"}, orphanRemoval=true)
      */
     private $subteamMembers;
@@ -375,6 +384,9 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
 
     /**
      * @var StatusReport[]|ArrayCollection
+     *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\StatusReport", mappedBy="createdBy")
      */
     private $statusReports;

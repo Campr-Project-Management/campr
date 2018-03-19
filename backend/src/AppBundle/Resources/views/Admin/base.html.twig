@@ -97,7 +97,12 @@
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip();
             });
-            $('.date-picker').datetimepicker({format : "DD-MM-YYYY"});
+            $('.date-picker').datetimepicker({
+                format: 'DD-MM-YYYY'
+            });
+            $('.datetime-picker').datetimepicker({
+                format: 'DD-MM-YYYY HH:mm:SS'
+            });
         </script>
     {% endblock %}
     </body>
