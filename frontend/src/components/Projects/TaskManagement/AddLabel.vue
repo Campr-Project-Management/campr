@@ -1,7 +1,9 @@
 <template>
     <div class="add-label page-section">
         <div class="header">
-            <h1>{{ message.add_new_label }}</h1>
+            <h1 v-if="isEdit">{{ translate('message.edit_label') }}</h1>
+            <h1 v-else>{{ translate('message.new_label') }}</h1>
+
             <div class="flex flex-v-center">
                 <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{ message.view_grid }}</router-link>
                 <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{ message.view_board }}</router-link>
@@ -9,20 +11,27 @@
             </div>
         </div>
         <div class="form">
-            <input-field v-model="title" type="text" v-bind:content="title" v-bind:label="message.label_title"></input-field>
+            <input-field
+                    v-model="title"
+                    type="text"
+                    :content="title"
+                    :label="message.label_title"/>
             <error
                 v-if="validationMessages.title && validationMessages.title.length"
                 v-for="message in validationMessages.title"
                 :message="message" />
-            <input-field v-model="description" type="textarea" v-bind:content="description" v-bind:label="message.label_description"></input-field>
-            <div class="color">
-                <input-field @click.native="toggleSketch" v-model="color" type="text" v-bind:label="message.label_color" :content="color" :css="css"></input-field>
-                <error
+            <input-field
+                    v-model="description"
+                    type="textarea"
+                    :content="description"
+                    :label="message.label_description"/>
+            <color-field
+                    v-model="color"
+                    :label="message.label_color" />
+            <error
                     v-if="validationMessages.color && validationMessages.color.length"
                     v-for="message in validationMessages.color"
-                    :message="message" />
-                <sketch-picker v-show="showSketch" v-model="colors" @change-color="onChange"></sketch-picker>
-            </div>
+                    :message="message"/>
             <p class="note">{{ message.label_note }}</p>
             <div class="flex flex-space-between actions">
                 <router-link :to="{name: 'project-task-management-edit-labels'}" class="btn-rounded btn-auto disable-bg">{{  button.cancel }}</router-link>
@@ -38,16 +47,18 @@
 
 <script>
 import InputField from '../../_common/_form-components/InputField';
-import {Sketch} from 'vue-color';
+import ColorField from '../../_common/_form-components/ColorField';
 import {mapGetters, mapActions} from 'vuex';
 import Error from '../../_common/_messages/Error.vue';
 import AlertModal from '../../_common/AlertModal';
 import router from '../../../router';
 
 export default {
+    name: 'add-label',
+
     components: {
         InputField,
-        'sketch-picker': Sketch,
+        ColorField,
         Error,
         AlertModal,
     },
@@ -66,8 +77,6 @@ export default {
             this.title = this.label.title;
             this.description = this.label.description;
             this.color = this.label.color;
-            this.colors.hex = this.label.color;
-            this.css = 'background: ' + this.label.color;
         },
         showSaved(value) {
             if (value === false) {
@@ -82,13 +91,6 @@ export default {
     },
     methods: {
         ...mapActions(['createProjectLabel', 'getProjectLabel', 'editProjectLabel', 'emptyValidationMessages']),
-        onChange(color) {
-            this.color = color.hex;
-            this.css = 'background: ' + color.hex;
-        },
-        toggleSketch() {
-            this.showSketch = !this.showSketch;
-        },
         createLabel: function() {
             let data = {
                 projectId: this.$route.params.id,
@@ -143,10 +145,7 @@ export default {
             color: '',
             title: '',
             description: '',
-            showSketch: false,
             message: {
-                add_new_label: this.translate('add.label'),
-                new_label: this.translate('message.new_label'),
                 view_grid: this.translate('message.view_grid'),
                 view_board: this.translate('message.view_board'),
                 new_task: this.translate('message.new_task'),
@@ -161,29 +160,6 @@ export default {
                 edit_label: this.translate('button.edit_label'),
             },
             isEdit: this.$route.params.labelId,
-            css: 'background: #194D33',
-            colors: {
-                hex: '#194d33',
-                hsl: {
-                    h: 150,
-                    s: 0.5,
-                    l: 0.2,
-                    a: 1,
-                },
-                hsv: {
-                    h: 150,
-                    s: 0.66,
-                    v: 0.30,
-                    a: 1,
-                },
-                rgba: {
-                    r: 25,
-                    g: 77,
-                    b: 51,
-                    a: 1,
-                },
-                a: 1,
-            },
         };
     },
 };
@@ -201,7 +177,6 @@ export default {
 
 <style scoped lang="scss">
     @import '../../../css/page-section';
-    @import '../../../css/_variables';
 
     .form {
         max-width: 820px;
@@ -212,17 +187,6 @@ export default {
     }
 
     .header .btn-rounded {
-        margin-left: 10px;
-    }
-
-    .color {
-        position: relative;
-    }
-
-    .vue-color__sketch {
-        position: absolute;
-        left: 100%;
-        bottom: 0;
         margin-left: 10px;
     }
 
