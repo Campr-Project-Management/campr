@@ -1730,7 +1730,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      *
      * @return ProjectUser
      */
-    public function getProjectUser(Project $project): ProjectUser
+    public function getProjectUser(Project $project)
     {
         return $this
             ->getProjectUsers()
