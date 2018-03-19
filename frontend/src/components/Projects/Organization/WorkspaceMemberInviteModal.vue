@@ -53,15 +53,21 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     name: 'workspace-member-invite-modal',
+    computed: {
+        ...mapGetters(['project']),
+    },
     methods: {
-        ...mapActions(['inviteMemberToWorkspace']),
+        ...mapActions(['inviteMemberToProject']),
         inviteMember() {
             this
-                .inviteMemberToWorkspace(this.email)
+                .inviteMemberToProject({
+                    id: this.project.id,
+                    email: this.email,
+                })
                 .then(
                     (data) => {
                         if (data && data.messages && data.messages.length) {

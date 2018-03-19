@@ -155,6 +155,15 @@ class Contract
     private $frozen = false;
 
     /**
+     * @var \DateTime|null
+     *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     *
+     * @ORM\Column(name="approved_at", type="datetime", nullable=true)
+     */
+    private $approvedAt;
+
+    /**
      * Contract constructor.
      */
     public function __construct()
@@ -609,10 +618,32 @@ class Contract
 
     /**
      * @param bool $frozen
+     *
+     * @return self
      */
     public function setFrozen($frozen)
     {
         $this->frozen = $frozen;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getApprovedAt()
+    {
+        return $this->approvedAt;
+    }
+
+    /**
+     * @param \DateTime|null $approvedAt
+     *
+     * @return self
+     */
+    public function setApprovedAt(\DateTime $approvedAt = null)
+    {
+        $this->approvedAt = $approvedAt;
 
         return $this;
     }

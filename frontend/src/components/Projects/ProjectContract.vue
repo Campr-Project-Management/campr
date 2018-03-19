@@ -181,7 +181,19 @@
                 <div class="col-md-12">
                     <div class="hr"></div>
                     <div class="flex flex-space-between buttons">
-                        <a v-if="!frozen" v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
+                        <div class="flex">
+                            <a v-if="!frozen" v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
+
+                            <switches
+                                :disabled="frozen"
+                                v-model="isApproved"
+                                :selected="isApproved"
+                                :emit-on-mount="true" />
+
+                            <div v-if="isApproved" class="toggle-approved">{{ approvedAt }}</div>
+                            <div v-else class="toggle-approved">{{ translateText('label.not_approved') }}</div>
+                        </div>
+
                         <div class="flex">
                             <a v-if="contract && contract.id" class="btn-rounded flex flex-center download-pdf" :href="downloadPdf">
                                 {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill" />
@@ -219,6 +231,7 @@ import router from '../../router';
 import Error from '../_common/_messages/Error.vue';
 import Editor from '../_common/Editor.vue';
 import moment from 'moment';
+import Switches from '../3rdparty/vue-switches';
 
 export default {
     components: {
@@ -233,6 +246,7 @@ export default {
         Error,
         Editor,
         Chart,
+        Switches,
     },
     watch: {
         showSaved(value) {
@@ -257,6 +271,7 @@ export default {
                 ? moment(this.contract.proposedEndDate, 'YYYY-MM-DD').format()
                 : null
             ;
+            this.approvedAt = this.contract.approvedAt || '';
         },
     },
     methods: {
@@ -301,6 +316,7 @@ export default {
                 projectStartEvent: this.projectStartEvent,
                 proposedStartDate: moment(this.proposedStartDate).format('DD-MM-YYYY'),
                 proposedEndDate: moment(this.proposedEndDate).format('DD-MM-YYYY'),
+                approvedAt: this.approvedAt,
             };
 
             if (this.contract.id) {
@@ -308,8 +324,12 @@ export default {
                 this
                     .updateContract(data)
                     .then(
-                        () => {
-                            this.showSaved = true;
+                        (response) => {
+                            if (response.body && response.body.error) {
+                                this.showFailed = true;
+                            } else {
+                                this.showSaved = true;
+                            }
                         },
                         (response) => {
                             this.showFailed = response.status === 200;
@@ -481,8 +501,22 @@ export default {
         downloadPdf() {
             return Routing.generate('app_contract_pdf', {id: this.contract.id});
         },
+        isApproved: {
+            set(value) {
+                if (value) {
+                    if (this.approvedAt === '') {
+                        this.approvedAt = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+                    }
+                } else {
+                    this.approvedAt = '';
+                }
+            },
+            get() {
+                return (this.approvedAt !== '');
+            },
+        },
     },
-    data: function() {
+    data() {
         return {
             descriptionEditor: null,
             eventEditor: null,
@@ -496,6 +530,7 @@ export default {
             frozen: false,
             description: '',
             projectStartEvent: '',
+            approvedAt: '',
             proposedStartDate: moment(new Date()).format('DD-MM-YYYY'),
             proposedEndDate: moment(new Date()).format('DD-MM-YYYY'),
         };
@@ -510,6 +545,11 @@ export default {
 
 <style scoped lang="scss">
     @import '../../css/page-section';
+
+    .toggle-approved {
+        line-height: 3em;
+        margin-left: 1em;
+    }
 
     .page-section {
         .header {
