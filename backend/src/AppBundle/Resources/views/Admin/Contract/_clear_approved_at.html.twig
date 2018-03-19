@@ -1,0 +1,17 @@
+<script type="text/javascript">
+    $(function () {
+        var $element = $({{ ('#' ~ form.approvedAt.vars.id)|json_encode|raw }}),
+            $clear = $('<a href="#">{{ 'label.clear'|trans }}</a>');
+
+        $clear.click(function (e) {
+            e.preventDefault();
+
+            $element
+                .val('')
+                .trigger('blur')
+            ;
+        });
+
+        $clear.appendTo($element.parent());
+    });
+</script>

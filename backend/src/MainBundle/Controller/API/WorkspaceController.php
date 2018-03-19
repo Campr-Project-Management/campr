@@ -68,6 +68,7 @@ class WorkspaceController extends ApiController
 
             $token = uniqid(rand(1000, 9999), true);
             $teamInvite->setToken($token);
+            $teamInvite->setCreatedAt(new \DateTime());
 
             $em->persist($teamInvite);
             $em->flush();
