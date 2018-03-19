@@ -87,7 +87,7 @@ set('assets_backup_path', function () {
 });
 
 // Configure servers
-server('prod', '94.130.224.105')
+server('prod', '195.201.102.226')
     ->user('root')
     ->stage('prod')
     ->pemFile(null)
@@ -256,7 +256,7 @@ task('server:provision', function () {
     }
 });
 task('project:build:frontend_and_ssr', function () {
-    run("echo -ne '>cd {{release_path}}/frontend && yarn install && yarn run build>cd {{release_path}}/ssr && yarn install && yarn run build' | {{bin/rush}} -D '>' {} -e");
+    run("echo -ne '>cd {{release_path}}/frontend && yarn install --check-files && yarn run build>cd {{release_path}}/ssr && yarn install --check-files && yarn run build' | {{bin/rush}} -D '>' {} -e");
 });
 task('hivebot:deploy-whois', function () {
     set('localUser', sprintf(
