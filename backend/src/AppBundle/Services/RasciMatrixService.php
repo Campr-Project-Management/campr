@@ -7,6 +7,8 @@ use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Rasci;
 use AppBundle\Entity\User;
 use AppBundle\Entity\WorkPackage;
+use AppBundle\Repository\RasciRepository;
+use AppBundle\Repository\WorkPackageRepository;
 use Doctrine\ORM\EntityManager;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
@@ -52,20 +54,22 @@ class RasciMatrixService
             })
         ;
 
-        $workPackages = $this
+        /** @var WorkPackageRepository $workPackageRepo */
+        $workPackageRepo = $this
             ->entityManager
             ->getRepository(WorkPackage::class)
-            ->findBy([
-                'project' => $project->getId(),
-            ])
         ;
 
-        $rascis = $this
+        /** @var WorkPackage[] $workPackages */
+        $workPackages = $workPackageRepo->getRasciList($project);
+
+        /** @var RasciRepository $rasciRepo */
+        $rasciRepo = $this
             ->entityManager
             ->getRepository(Rasci::class)
-            ->findByProject($project)
         ;
 
+        $rascis = $rasciRepo->findByProject($project);
         $out = [];
 
         foreach ($workPackages as $workPackage) {
@@ -82,42 +86,50 @@ class RasciMatrixService
                 $rasci = array_filter($rascis, function (Rasci $rasci) use ($user, $workPackage) {
                     return $rasci->getUser() === $user && $rasci->getWorkPackage() === $workPackage;
                 });
-                if ($rasci) {
-                    $rasci = reset($rasci);
-                    $row['rasci'][] = [
-                        'id' => $rasci->getId(),
-                        'user' => $user->getId(),
-                        'userFullName' => $user->getFullName(),
-                        'data' => $rasci->getData(),
-                    ];
-                } else {
-                    $row['rasci'][] = [
-                        'id' => null,
-                        'user' => $user->getId(),
-                        'userFullName' => $user->getFullName(),
-                        'data' => null,
-                    ];
+
+                $data = [
+                    'id' => null,
+                    'user' => $user->getId(),
+                    'userFullName' => $user->getFullName(),
+                    'data' => null,
+                ];
+
+                if (!empty($rasci)) {
+                    $rasci = array_pop($rasci);
+                    $data = array_merge(
+                        $data,
+                        [
+                            'id' => $rasci->getId(),
+                            'data' => $rasci->getData(),
+                        ]
+                    );
                 }
+
+                $row['rasci'][] = $data;
             }
+
             $out[] = $row;
         }
 
         $phases = array_filter($out, function (array $row) {
-            return $row['type'] === WorkPackage::TYPE_PHASE;
+            return WorkPackage::TYPE_PHASE === $row['type'];
         });
         $workPackages = [];
 
         foreach ($phases as $phase) {
-            $workPackages[] = $phase;
-            $workPackages = array_merge(
-                $workPackages,
-                array_filter(
-                    $out,
-                    function (array $row) use ($phase) {
-                        return $row['phase'] === $phase['id'];
-                    }
-                )
+            $phaseWorkPackages = array_filter(
+                $out,
+                function (array $row) use ($phase) {
+                    return $row['phase'] === $phase['id'];
+                }
             );
+
+            if (empty($phaseWorkPackages)) {
+                continue;
+            }
+
+            $workPackages[] = $phase;
+            $workPackages = array_merge($workPackages, $phaseWorkPackages);
         }
 
         return [
