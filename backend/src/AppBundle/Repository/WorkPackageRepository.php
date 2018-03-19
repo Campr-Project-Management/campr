@@ -852,6 +852,25 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
+     * @param Project $project
+     *
+     * @return array
+     */
+    public function getRasciList(Project $project)
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $this->addNotSubtaskWhere($qb);
+
+        return $qb
+            ->andWhere('o.project = :project')
+            ->setParameter('project', $project->getId())
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * @param QueryBuilder $qb
      * @param array        $criteria
      */

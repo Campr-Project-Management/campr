@@ -52,6 +52,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="(workPackage, rasciIndex) in rasci.workPackages"
+                            :key="workPackage.id"
                             :class="{'active-row': activeRow === rasciIndex}"
                             v-on:mouseover="activeRow = rasciIndex"
                             v-on:mouseout="activeRow = null">
