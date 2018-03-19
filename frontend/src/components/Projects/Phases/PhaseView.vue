@@ -47,12 +47,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-if="phase.automaticSchedule">
-                                    <td>{{ translateText('table_header_cell.automatic') }}</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                </tr>
                                 <tr>
                                     <td>{{ translateText('table_header_cell.base') }}</td>
                                     <td>{{ phase.scheduledStartAt }}</td>
