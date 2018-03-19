@@ -335,10 +335,8 @@ import InputField from '../../../_common/_form-components/InputField';
 import RadioField from '../../../_common/_form-components/RadioField';
 import SelectField from '../../../_common/_form-components/SelectField';
 import Error from '../../../_common/_messages/Error.vue';
-import Schedule from '../Create/Schedule';
 import Modal from '../../../_common/Modal';
 import {mapActions, mapGetters} from 'vuex';
-import moment from 'moment';
 
 export default {
     props: [
@@ -352,8 +350,6 @@ export default {
         'internalCostObj',
         'editInternalForecastCostModal',
         'editInternalActualCostModal',
-        'editScheduleModal',
-        'scheduleObj',
         'taskObj',
         'closeTaskModal',
         'openTaskModal',
@@ -362,7 +358,6 @@ export default {
         InputField,
         RadioField,
         SelectField,
-        Schedule,
         Modal,
         Error,
     },
@@ -402,12 +397,6 @@ export default {
         editInternalActualCostModal(value) {
             this.showEditInternalActualCostModal = this.editInternalActualCostModal;
             this.internalActualCost = this.taskObj.internalActualCost;
-        },
-        editScheduleModal(value) {
-            this.showEditScheduleModal = this.editScheduleModal;
-        },
-        scheduleObj(value) {
-            this.editScheduleObj = this.scheduleObj;
         },
         closeTaskModal(value) {
             this.showCloseTaskModal = this.closeTaskModal;
@@ -523,31 +512,6 @@ export default {
             })
                 .then(response => this.successHandler(this.showEditInternalActualCostModal, response.body.error));
         },
-        changeSchedule() {
-            let data = {
-                scheduledStartAt: moment(this.editScheduleObj.baseStartDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
-                scheduledFinishAt: moment(this.editScheduleObj.baseEndDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
-                forecastStartAt: moment(this.editScheduleObj.forecastStartDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
-                forecastFinishAt: moment(this.editScheduleObj.forecastEndDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
-                automaticSchedule: this.editScheduleObj.automatic,
-                duration: this.editScheduleObj.durationInDays,
-                dependants: this.editScheduleObj.successors.map((item) => {
-                    return item.key;
-                }),
-                dependencies: this.editScheduleObj.predecessors.map((item) => {
-                    return item.key;
-                }),
-            };
-
-            this.patchTask({
-                data: data,
-                taskId: this.$route.params.taskId,
-            })
-                .then(response => this.successHandler(this.showEditScheduleModal, response.body.error));
-        },
-        onCancel() {
-            showEditScheduleModal = false; $emit('input', showEditScheduleModal);
-        },
         closeTask() {
             let data = {
                 workPackageStatus: 5,
@@ -608,8 +572,6 @@ export default {
             internalForecastCost: 0,
             showEditInternalActualCostModal: false,
             internalActualCost: 0,
-            showEditScheduleModal: false,
-            editScheduleObj: {},
             showCloseTaskModal: false,
             showOpenTaskModal: false,
         };
