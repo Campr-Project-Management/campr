@@ -101,12 +101,7 @@ export const createFormData = (data) => {
     formData.append('scheduledFinishAt', moment(data.schedule.baseEndDate).format('DD-MM-YYYY'));
     formData.append('forecastStartAt', moment(data.schedule.forecastStartDate).format('DD-MM-YYYY'));
     formData.append('forecastFinishAt', moment(data.schedule.forecastEndDate).format('DD-MM-YYYY'));
-    data.schedule.successors.map(successor => formData.append('dependants[]', successor.key));
-    data.schedule.predecessors.map(predecessor => formData.append('dependencies[]', predecessor.key));
     formData.append('duration', data.schedule.duration);
-    if (data.schedule.automatic) {
-        formData.append('automaticSchedule', 1);
-    }
 
     // Subtasks
     for (let i = 0; i < data.subtasks.length; i++) {
