@@ -40,6 +40,7 @@ use AppBundle\Entity\Unit;
 use AppBundle\Entity\WorkPackageProjectWorkCostType;
 use AppBundle\Entity\WorkPackageStatus;
 use AppBundle\Event\RasciEvent;
+use AppBundle\Event\WorkPackageEvent;
 use AppBundle\Form\Info\ApiCreateType as InfoType;
 use AppBundle\Form\Label\BaseLabelType;
 use AppBundle\Form\Project\ApiType;
@@ -71,6 +72,7 @@ use AppBundle\Repository\RiskRepository;
 use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\ProjectVoter;
 use Component\Rasci\RasciEvents;
+use Component\WorkPackage\WorkPackageEvents;
 use Doctrine\ORM\EntityManager;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use MainBundle\Controller\API\ApiController;
@@ -1360,28 +1362,34 @@ class ProjectController extends ApiController
     public function createTaskAction(Request $request, Project $project)
     {
         $wp = new WorkPackage();
-        $form = $this->createForm(ApiCreateType::class, $wp, [
-            'entity_manager' => $this->getDoctrine()->getManager(),
-        ]);
+        $form = $this->createForm(
+            ApiCreateType::class,
+            $wp,
+            [
+                'entity_manager' => $this->getDoctrine()->getManager(),
+            ]
+        );
         $this->processForm($request, $form);
 
         // @TODO: Make filesystem selection dynamic
         $em = $this->getDoctrine()->getManager();
         $fileSystem = $project
             ->getFileSystems()
-            ->filter(function (FileSystem $fs) {
-                return FileSystem::LOCAL_ADAPTER === $fs->getDriver();
-            })
-            ->first()
-        ;
+            ->filter(
+                function (FileSystem $fs) {
+                    return FileSystem::LOCAL_ADAPTER === $fs->getDriver();
+                }
+            )
+            ->first();
 
         if (!$fileSystem) {
             $fileSystem = $em
                 ->getRepository(FileSystem::class)
-                ->findOneBy([
-                    'driver' => FileSystem::LOCAL_ADAPTER,
-                ])
-            ;
+                ->findOneBy(
+                    [
+                        'driver' => FileSystem::LOCAL_ADAPTER,
+                    ]
+                );
             if (!$fileSystem) {
                 return $this->createApiResponse(
                     [
@@ -1402,7 +1410,9 @@ class ProjectController extends ApiController
 
             try {
                 $wp->setProject($project);
+                $this->dispatchEvent(WorkPackageEvents::PRE_CREATE, new WorkPackageEvent($wp));
                 $this->persistAndFlush($wp);
+                $this->dispatchEvent(WorkPackageEvents::POST_CREATE, new WorkPackageEvent($wp));
                 $this->refreshEntity($wp);
 
                 return $this->createApiResponse($wp, Response::HTTP_CREATED);
