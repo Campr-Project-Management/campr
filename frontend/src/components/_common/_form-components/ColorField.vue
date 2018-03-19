@@ -71,7 +71,7 @@
         position: relative;
     }
 
-    .vue-color__sketch {
+    .vc-sketch {
         position: absolute;
         left: 100%;
         bottom: 0;
