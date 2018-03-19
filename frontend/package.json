@@ -42,7 +42,7 @@
     "vis": "^4.21.0",
     "vue": "2.5.13",
     "vue-charts": "0.2.1",
-    "vue-color": "2.0.7",
+    "vue-color": "^2.4.5",
     "vue-cookie": "1.1.4",
     "vue-infinite-loading": "2.1.2",
     "vue-masonry": "0.10.1",
