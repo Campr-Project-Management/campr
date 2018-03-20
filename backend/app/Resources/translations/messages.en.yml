@@ -3,6 +3,7 @@ ROLE_ADMIN: Admin
 ROLE_USER: User
 
 message:
+    access_denied: Access Denied
     user_invited_to_project: User has been invited to the project. The next time when they login they will have access to the project.
     user_added_to_project: User has been added to the project.
     user_blocked: User blocked
