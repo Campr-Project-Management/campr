@@ -2381,6 +2381,8 @@ class WorkPackage
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     *
      * @return bool
      */
     public function isTask(): bool
@@ -2389,6 +2391,8 @@ class WorkPackage
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     *
      * @return bool
      */
     public function isPhase(): bool
@@ -2397,6 +2401,8 @@ class WorkPackage
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     *
      * @return bool
      */
     public function isTutorial(): bool
@@ -2405,6 +2411,8 @@ class WorkPackage
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     *
      * @return bool
      */
     public function isSubtask(): bool
