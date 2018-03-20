@@ -423,28 +423,28 @@ class WorkPackage
      *
      * @ORM\Column(name="external_actual_cost", type="decimal", precision=9, scale=2, nullable=true)
      */
-    private $externalActualCost;
+    private $externalActualCost = 0;
 
     /**
      * @var float
      *
      * @ORM\Column(name="external_forecast_cost", type="decimal", precision=9, scale=2, nullable=true)
      */
-    private $externalForecastCost;
+    private $externalForecastCost = 0;
 
     /**
      * @var float
      *
      * @ORM\Column(name="internal_actual_cost", type="decimal", precision=9, scale=2, nullable=true)
      */
-    private $internalActualCost;
+    private $internalActualCost = 0;
 
     /**
      * @var float
      *
      * @ORM\Column(name="internal_forecast_cost", type="decimal", precision=9, scale=2, nullable=true)
      */
-    private $internalForecastCost;
+    private $internalForecastCost = 0;
 
     /**
      * WorkPackage constructor.
@@ -2385,9 +2385,9 @@ class WorkPackage
      *
      * @return bool
      */
-    public function isTask(): bool
+    public function isPhase(): bool
     {
-        return self::TYPE_TASK === $this->getType();
+        return self::TYPE_PHASE === $this->getType();
     }
 
     /**
@@ -2395,9 +2395,19 @@ class WorkPackage
      *
      * @return bool
      */
-    public function isPhase(): bool
+    public function isMilestone(): bool
     {
-        return self::TYPE_PHASE === $this->getType();
+        return self::TYPE_MILESTONE === $this->getType();
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return bool
+     */
+    public function isTask(): bool
+    {
+        return self::TYPE_TASK === $this->getType();
     }
 
     /**
