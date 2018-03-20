@@ -124,7 +124,7 @@ class ProjectVoter extends Voter
         ;
 
         return $projectUser
-            && $projectUser->hasProjectRole(ProjectRole::ROLE_SPONSOR)
+            && $projectUser->hasProjectRole(ProjectRole::ROLE_MANAGER)
         ;
     }
 
