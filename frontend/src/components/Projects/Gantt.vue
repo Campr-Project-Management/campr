@@ -297,7 +297,12 @@ export default {
     mounted() {
         gantt.config.auto_scheduling_descendant_links = false;
         gantt.config.columns = [
-            {name: 'text', tree: true, width: '*', resize: true},
+            {
+                name: 'text',
+                tree: true,
+                width: '*',
+                resize: true,
+            },
             {
                 name: 'start_date',
                 align: 'center',
@@ -337,9 +342,9 @@ export default {
             }
 
             // config
-            const startDate = new Date(this.ganttStartDate);
+            const startDate = moment(this.ganttStartDate).toDate();
             const endDate = new Date();
-            const realEndDate = new Date(this.ganttEndDate);
+            const realEndDate = moment(this.ganttEndDate).toDate();
             const now = new Date();
 
             if (realEndDate.getTime() > now.getTime()) {
@@ -559,7 +564,7 @@ export default {
                             ? item.progress / 100
                             : 0,
                         open: true,
-                        type: ganttType2WorkPackageType[item.type],
+                        type: ganttType2WorkPackageType[item.type] || gantt.config.types.task,
                         unscheduled: true,
                         start_date: '',
                         duration: '',
