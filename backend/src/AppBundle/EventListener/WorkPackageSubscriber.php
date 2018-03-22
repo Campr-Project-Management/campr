@@ -9,6 +9,7 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Event\WorkPackageEvent;
 use Component\Repository\RepositoryInterface;
+use Component\WorkPackage\Calculator\DateRangeCalculatorInterface;
 use Component\WorkPackage\WorkPackageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -25,15 +26,33 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     private $projectUserRepository;
 
     /**
+     * @var DateRangeCalculatorInterface
+     */
+    private $phaseActualDatesCalculator;
+
+    /**
+     * @var RepositoryInterface
+     */
+    private $workPackageRepository;
+
+    /**
      * WorkPackageSubscriber constructor.
      *
-     * @param RepositoryInterface $rasciRepository
-     * @param RepositoryInterface $projectUserRepository
+     * @param RepositoryInterface          $rasciRepository
+     * @param RepositoryInterface          $projectUserRepository
+     * @param RepositoryInterface          $workPackageRepository
+     * @param DateRangeCalculatorInterface $phaseActualDatesCalculator
      */
-    public function __construct(RepositoryInterface $rasciRepository, RepositoryInterface $projectUserRepository)
-    {
+    public function __construct(
+        RepositoryInterface $rasciRepository,
+        RepositoryInterface $projectUserRepository,
+        RepositoryInterface $workPackageRepository,
+        DateRangeCalculatorInterface $phaseActualDatesCalculator
+    ) {
         $this->rasciRepository = $rasciRepository;
         $this->projectUserRepository = $projectUserRepository;
+        $this->phaseActualDatesCalculator = $phaseActualDatesCalculator;
+        $this->workPackageRepository = $workPackageRepository;
     }
 
     /**
@@ -63,6 +82,7 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     {
         $wp = $event->getWorkPackage();
         $this->updateResponsibleUserInRasci($wp);
+        $this->updatePhaseActualDates($wp);
     }
 
     /**
@@ -140,5 +160,23 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         );
 
         return $rasci;
+    }
+
+    /**
+     * @param WorkPackage $wp
+     */
+    private function updatePhaseActualDates(WorkPackage $wp)
+    {
+        $phase = $wp->getPhase();
+        if (!$phase) {
+            return;
+        }
+
+        list($startAt, $finishAt) = $this->phaseActualDatesCalculator->calculate($phase);
+
+        $phase->setActualStartAt($startAt);
+        $phase->setActualFinishAt($finishAt);
+
+        $this->workPackageRepository->add($phase);
     }
 }

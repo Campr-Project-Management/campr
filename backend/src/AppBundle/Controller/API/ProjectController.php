@@ -2540,6 +2540,11 @@ class ProjectController extends ApiController
 
     /**
      * @Route("/{id}/invite", name="app_api_project_invite", options={"expose"=true})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
      */
     public function inviteAction(Request $request, Project $project)
     {

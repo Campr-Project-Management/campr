@@ -978,6 +978,14 @@ class WorkPackage
     }
 
     /**
+     * @return bool
+     */
+    public function hasPhase()
+    {
+        return (bool) $this->getPhase();
+    }
+
+    /**
      * @return int|null
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("phase")
