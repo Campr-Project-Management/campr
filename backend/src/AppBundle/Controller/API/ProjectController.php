@@ -1413,6 +1413,9 @@ class ProjectController extends ApiController
             }
 
             try {
+                $wp->setForecastStartAt($wp->getScheduledStartAt());
+                $wp->setForecastFinishAt($wp->getScheduledFinishAt());
+
                 $wp->setProject($project);
                 $this->dispatchEvent(WorkPackageEvents::PRE_CREATE, new WorkPackageEvent($wp));
                 $this->persistAndFlush($wp);
