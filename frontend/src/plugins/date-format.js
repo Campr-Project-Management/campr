@@ -17,10 +17,23 @@ export default {
                 date(date, options) {
                     return formatDate(date, options);
                 },
+
+                humanizeDate(date) {
+                    return humanizeDate(date);
+                },
             },
         });
     },
 };
+
+/**
+ * Humanize a date
+ * @param {string} date
+ * @return {string}
+ */
+function humanizeDate(date) {
+    return moment(date).from(new Date(), false);
+}
 
 /**
  * Format date date
