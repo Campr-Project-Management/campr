@@ -53,9 +53,12 @@
                     <!-- /// End Task Planning /// -->
 
                     <hr>
-
                     <!-- /// Task Schedule /// -->
-                    <schedule v-model="schedule" />
+                    <schedule
+                            v-model="schedule"
+                            :editable-base="!isEdit"
+                            :editable-forecast="isEdit"
+                    />
                     <!-- /// End Task Schedule /// -->
 
                     <hr class="double">
@@ -379,6 +382,9 @@ export default {
             }
             return {};
         },
+        isEdit() {
+            return !!this.$route.params.taskId;
+        },
     },
     watch: {
         showSaved(value) {
@@ -527,7 +533,6 @@ export default {
         return {
             showSaved: false,
             showFailed: false,
-            isEdit: this.$route.params.taskId,
             message: {
                 create_new_task: this.translate('message.create_new_task'),
                 edit_task: this.translate('message.edit_task'),
