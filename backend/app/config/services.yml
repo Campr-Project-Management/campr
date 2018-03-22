@@ -139,16 +139,29 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
+    app.calculator.phase_actual_dates:
+        class: Component\WorkPackage\Calculator\PhaseActualDatesCalculator
+        arguments:
+            - '@app.repository.work_package'
+
 ### REPOSITORIES ###
     app.repository.work_package:
         class: AppBundle\Repository\WorkPackageRepository
+        arguments: ~
         tags:
             - { name: app.repository, class: AppBundle\Entity\WorkPackage }
 
     app.repository.rasci:
         class: AppBundle\Repository\RasciRepository
+        arguments: ~
         tags:
             - { name: app.repository, class: AppBundle\Entity\Rasci }
+
+    app.repository.project_user:
+        class: AppBundle\Repository\ProjectUserRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\ProjectUser }
 
 ### MENU BUILDER ###
     app.admin.menu.builder:
@@ -297,7 +310,9 @@ services:
         class: AppBundle\EventListener\WorkPackageSubscriber
         arguments:
             - '@app.repository.rasci'
+            - '@app.repository.project_user'
             - '@app.repository.work_package'
+            - '@app.calculator.phase_actual_dates'
         tags:
             - { name: kernel.event_subscriber }
 
