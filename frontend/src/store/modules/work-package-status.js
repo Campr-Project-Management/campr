@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import _ from 'lodash';
 
 const state = {
     workPackageStatuses: [],
@@ -29,6 +30,11 @@ const getters = {
         key: item.id,
         label: Vue.translate(item.name),
     })),
+    workPackageStatusById: ({workPackageStatuses}) => (id) => {
+        return _.find(workPackageStatuses, (workPackageStatus) => {
+            return workPackageStatus.id === id;
+        });
+    },
     workPackageStatusesCount: state => state.workPackageStatuses.totalItems,
 };
 
