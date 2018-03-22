@@ -1,7 +1,11 @@
 <template>
     <modal @close="onCancel" v-if="value">
         <p class="modal-title">{{ translate('title.schedule.edit') }}</p>
-        <schedule v-model="scheduleModel" />
+        <schedule
+                v-model="scheduleModel"
+                :editable-base="false"
+                :editable-forecast="true"/>
+
         <div class="flex flex-space-between">
             <a
                     href="javascript:void(0)"
