@@ -117,6 +117,7 @@ class ProjectVoter extends Voter
      */
     private function canEdit(Project $project, User $user)
     {
+        /** @var ProjectUser $projectUser */
         $projectUser = $this
             ->em
             ->getRepository(ProjectUser::class)
