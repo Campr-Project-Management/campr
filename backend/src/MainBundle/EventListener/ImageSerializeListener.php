@@ -5,6 +5,7 @@ namespace MainBundle\EventListener;
 use AppBundle\Entity\CloseDownAction;
 use AppBundle\Entity\Decision;
 use AppBundle\Entity\DistributionList;
+use AppBundle\Entity\Log;
 use AppBundle\Entity\Measure;
 use AppBundle\Entity\MeasureComment;
 use AppBundle\Entity\MeetingAgenda;
@@ -70,6 +71,15 @@ class ImageSerializeListener
             case $object instanceof ProjectUser:
             case $object instanceof SubteamMember:
             case $object instanceof MeetingParticipant:
+                if ($object->getUser() instanceof User) {
+                    if ($object->getUser()->getAvatar()) {
+                        $visitor->addData('userAvatar', $this->getUri($object->getUser(), 'avatarFile'));
+                    } else {
+                        $visitor->addData('userAvatar', $object->getUser()->getGravatar());
+                    }
+                }
+                break;
+            case $object instanceof Log:
                 if ($object->getUser() instanceof User) {
                     if ($object->getUser()->getAvatar()) {
                         $visitor->addData('userAvatar', $this->getUri($object->getUser(), 'avatarFile'));
