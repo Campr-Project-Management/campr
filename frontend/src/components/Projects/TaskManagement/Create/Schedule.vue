@@ -3,7 +3,8 @@
         <h3 class="with-label">{{ message.task_schedule }}</h3>
 
         <span class="note">{{ message.manual_schedule_note }}</span>
-        <div class="row">
+
+        <div class="row" v-if="editableBase">
             <div class="form-group">
                 <div class="col-md-6">
                     <div class="input-holder right">
@@ -35,7 +36,8 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+
+        <div class="row" v-if="editableForecast">
             <div class="form-group last-form-group">
                 <div class="col-md-6">
                     <div class="input-holder right">
@@ -79,10 +81,21 @@
     import {mapActions, mapGetters} from 'vuex';
 
     export default {
+        name: 'schedule',
         props: {
             value: {
                 type: Object,
                 required: true,
+            },
+            editableBase: {
+                type: Boolean,
+                required: false,
+                default: true,
+            },
+            editableForecast: {
+                type: Boolean,
+                required: false,
+                default: true,
             },
         },
         components: {
@@ -132,7 +145,3 @@
         },
     };
 </script>
-
-<style scoped lang="scss">
-    @import '../../../../css/_common';
-</style>
