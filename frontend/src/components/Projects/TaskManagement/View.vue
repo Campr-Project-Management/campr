@@ -128,103 +128,7 @@
 
                 <hr class="double">
 
-                <!-- /// Task History /// -->
-                <div class="task-history">
-                    <div v-for="(item, index) in taskHistory" :key="index">
-
-                        <!-- /// Task assignement /// -->
-                        <div v-if="item.isResponsibilityAdded">
-                            <div class="comment">
-                                <div class="comment-header">
-                                    <div class="user-avatar">
-                                        <img :src="item.userGravatar" :alt="item.userFullName"/>
-                                        <b>{{item.userFullName}}</b>
-                                    </div>
-                                    <router-link
-                                        :to="{name: 'project-organization-view-member', params: {userId: item.userId} }"
-                                        class="simple-link">
-                                        @{{ item.userUsername }}
-                                    </router-link>
-                                    {{ translateText('message.assigned_to') }}
-                                     <router-link
-                                        :to="{name: 'project-organization-view-member', params: {userId: item.newValue.responsibility[1]} }"
-                                        class="simple-link">
-                                        @{{getResponsibityUsername(item.newValue.responsibility[1])}}
-                                    </router-link>
-                                    {{ getHumanTimeDiff(item.createdAt) }}
-                                </div>
-                            </div>
-                            <hr class="double">
-                        </div>
-                        <!-- /// End Task Assignement /// -->
-
-                        <!-- /// Task Comment /// -->
-                        <div v-else-if="item.isCommentAdded">
-                            <div class="comment">
-                                <div class="comment-header">
-                                    <div class="user-avatar">
-                                        <img :src="item.userGravatar" :alt="item.userFullName"/>
-                                        <b>{{item.userFullName}}</b>
-                                    </div>
-                                    <router-link
-                                        :to="{name: 'project-organization-view-member', params: {userId: item.userId} }"
-                                        class="simple-link">
-                                        @{{ item.userUsername }}
-                                    </router-link>
-                                    {{ translateText('message.has_commented_task') }} {{ getHumanTimeDiff(item.createdAt) }}
-                                </div>
-                                <div class="comment-body" v-html="item.newValue.comment">
-                                </div>
-                            </div>
-                            <hr class="double">
-                        </div>
-                        <!-- /// End Task Comment /// -->
-
-                        <!-- /// Task Label added /// -->
-                        <div v-else-if="item.isLabelAdded">
-                            <div class="comment">
-                                <div class="comment-header">
-                                    <div class="user-avatar">
-                                        <img :src="item.userGravatar" :alt="item.userFullName"/>
-                                        <b>{{item.userFullName}}</b>
-                                    </div>
-                                    <router-link
-                                        :to="{name: 'project-organization-view-member', params: {userId: item.userId} }"
-                                        class="simple-link">
-                                        @{{ item.userUsername }}
-                                    </router-link>
-                                    <div class="task-label" :style="'background-color:#e04fcc'">
-                                        High Priority
-                                    </div>
-                                    {{ getHumanTimeDiff(item.createdAt) }}
-                                </div>
-                            </div>
-                            <hr class="double">
-                        </div>
-                        <!-- /// End Task Label Added /// -->
-
-                        <!-- /// Task Edited /// -->
-                        <div v-else-if="item.isFieldEdited" >
-                            <div class="comment">
-                                <div class="comment-header">
-                                    <div class="user-avatar">
-                                        <img :src="item.userGravatar" :alt="item.userFullName"/>
-                                        <b>{{item.userFullName}}</b>
-                                    </div>
-                                    <router-link
-                                        :to="{name: 'project-organization-view-member', params: {userId: item.userId} }"
-                                        class="simple-link">
-                                        @{{ item.userUsername }}
-                                    </router-link>
-                                    {{ translateText('message.has_edited_task') }} {{ getHumanTimeDiff(item.createdAt) }}
-                                </div>
-                            </div>
-                            <hr class="double">
-                        </div>
-                        <!-- /// End Task Edited /// -->
-                    </div>
-                </div>
-                <!-- /// End Task History /// -->
+                <task-history :history="taskHistory" />
 
                 <!-- /// New Task Description /// -->
                 <div class="new-comment">
@@ -739,6 +643,7 @@ import Editor from '../../_common/Editor';
 import router from '../../../router';
 import Condition from './Create/Condition';
 import EditScheduleModal from './View/EditScheduleModal';
+import TaskHistory from './View/TaskHistory';
 import moment from 'moment';
 import {createFormData} from '../../../helpers/task';
 import Vue from 'vue';
@@ -770,6 +675,7 @@ export default {
         EditScheduleModal,
         Editor,
         VuePerfectScrollbar,
+        TaskHistory,
     },
     created() {
         if (this.$route.params.taskId) {
@@ -1013,9 +919,6 @@ export default {
             let start = moment(startDate);
 
             return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') + 1 : '-';
-        },
-        getHumanTimeDiff(date) {
-            return moment(date).from(new Date(), false);
         },
         getSubtaskSummary() {
             return Translator.trans(
@@ -1372,17 +1275,6 @@ export default {
         },
         initOpenTaskModal() {
             this.showOpenTaskModal = true;
-        },
-        getResponsibityUsername(userId) {
-            let users = this.projectUsers.items;
-            if(users != undefined) {
-                for (let i = 0; i < users.length; i++) {
-                    if (users[i].user == userId) {
-                        return users[i].userFullName;
-                    };
-                }
-            }
-            return '-';
         },
         getXmlFile() {
             Vue.http
