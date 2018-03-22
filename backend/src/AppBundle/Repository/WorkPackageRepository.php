@@ -871,6 +871,48 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
+     * @param WorkPackage $workPackage
+     *
+     * @return \DateTime|null
+     */
+    public function getPhaseActualStartDate(WorkPackage $workPackage)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        return $qb
+            ->select('MIN(o.actualStartAt)')
+            ->andWhere('o.phase = :phase and o.type = :type')
+            ->andWhere($expr->isNotNull('o.actualStartAt'))
+            ->setParameter('phase', $workPackage->getId())
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * @param WorkPackage $workPackage
+     *
+     * @return \DateTime|null
+     */
+    public function getPhaseActualFinishDate(WorkPackage $workPackage)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        return $qb
+            ->select('MIN(o.actualFinishAt)')
+            ->andWhere('o.phase = :phase and o.type = :type')
+            ->andWhere($expr->isNotNull('o.actualStartAt'))
+            ->setParameter('phase', $workPackage->getId())
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
      * @param QueryBuilder $qb
      * @param array        $criteria
      */
