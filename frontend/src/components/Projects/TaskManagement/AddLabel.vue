@@ -1,8 +1,7 @@
 <template>
     <div class="add-label page-section">
         <div class="header">
-            <h1 v-if="isEdit">{{ translate('message.edit_label') }}</h1>
-            <h1 v-else>{{ translate('message.new_label') }}</h1>
+            <h1>{{ isEdit ? translate('message.edit_label') : translate('message.new_label')  }}</h1>
 
             <div class="flex flex-v-center">
                 <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{ message.view_grid }}</router-link>
@@ -65,10 +64,15 @@ export default {
     created() {
         if (this.$route.params.labelId) this.getProjectLabel(this.$route.params.labelId);
     },
-    computed: mapGetters({
-        label: 'label',
-        validationMessages: 'validationMessages',
-    }),
+    computed: {
+        ...mapGetters({
+            label: 'label',
+            validationMessages: 'validationMessages',
+        }),
+        isEdit() {
+            return !!this.$route.params.labelId;
+        },
+    },
     beforeDestroy() {
         this.emptyValidationMessages();
     },
@@ -159,7 +163,6 @@ export default {
                 create_label: this.translate('button.create_label'),
                 edit_label: this.translate('button.edit_label'),
             },
-            isEdit: this.$route.params.labelId,
         };
     },
 };
