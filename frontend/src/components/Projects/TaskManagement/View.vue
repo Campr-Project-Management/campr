@@ -335,10 +335,10 @@
                             <tbody>
                                 <tr>
                                     <td>{{ translateText('label.base') }}</td>
-                                    <td v-if="task.scheduledStartAt">{{ task.scheduledStartAt|moment('DD.MM.YYYY') }}</td>
+                                    <td v-if="task.scheduledStartAt">{{ task.scheduledStartAt|date }}</td>
                                     <td v-else>-</td>
 
-                                    <td v-if="task.scheduledFinishAt">{{ task.scheduledFinishAt|moment('DD.MM.YYYY') }}</td>
+                                    <td v-if="task.scheduledFinishAt">{{ task.scheduledFinishAt|date }}</td>
                                     <td v-else>-</td>
 
                                     <td>
@@ -347,10 +347,10 @@
                                 </tr>
                                 <tr class="column-warning">
                                     <td>{{ translateText('label.forecast') }}</td>
-                                    <td v-if="task.forecastStartAt">{{ task.forecastStartAt|moment('DD.MM.YYYY') }}</td>
+                                    <td v-if="task.forecastStartAt">{{ task.forecastStartAt|date }}</td>
                                     <td v-else>-</td>
 
-                                    <td v-if="task.forecastFinishAt">{{ task.forecastFinishAt|moment('DD.MM.YYYY') }}</td>
+                                    <td v-if="task.forecastFinishAt">{{ task.forecastFinishAt|date }}</td>
                                     <td v-else>-</td>
 
                                     <td>
@@ -359,10 +359,10 @@
                                 </tr>
                                 <tr>
                                     <td>{{ translateText('label.actual') }}</td>
-                                    <td v-if="task.actualStartAt" >{{ task.actualStartAt|moment('DD.MM.YYYY') }}</td>
+                                    <td v-if="task.actualStartAt" >{{ task.actualStartAt|date }}</td>
                                     <td v-else>-</td>
 
-                                    <td v-if="task.actualFinishAt">{{ task.actualFinishAt|moment('DD.MM.YYYY') }}</td>
+                                    <td v-if="task.actualFinishAt">{{ task.actualFinishAt|date }}</td>
                                     <td v-else>-</td>
 
                                     <td>
@@ -415,10 +415,10 @@
                             <tbody>
                                 <tr v-for="(item, index) in editableData.internalCosts" :key="index">
                                     <td>{{ item.resourceName }}</td>
-                                    <td>{{ item.rate | formatMoney }}</td>
-                                    <td>{{item.quantity}}</td>
-                                    <td>{{item.duration}}</td>
-                                    <td><b>{{ item.total | formatMoney }}</b></td>
+                                    <td>{{ item.rate | money }}</td>
+                                    <td>{{ item.quantity | formatNumber }}</td>
+                                    <td>{{ item.duration | formatNumber }}</td>
+                                    <td><b>{{ item.total | money }}</b></td>
                                     <td>
                                         <button @click="initEditInternalCostModal(item)" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                         <button
@@ -483,9 +483,9 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(cost, index) in editableData.externalCosts" :key="index">
-                                    <td>{{cost.name}} </td>
-                                    <td>{{cost.quantity}}</td>
-                                    <td>{{cost.unit}}</td>
+                                    <td>{{ cost.name }} </td>
+                                    <td>{{ cost.quantity | formatNumber }}</td>
+                                    <td>{{ cost.unit }}</td>
                                     <td><i class="fa fa-dollar"></i> {{cost.rate}}</td>
                                     <td>
                                         <switch-field
@@ -646,7 +646,7 @@
                                     minSuffix=" %"
                                     :step="25"
                                     :disabled="taskProgressEditIsDisabled"
-                                    @input="updateTaskStatusProgress"
+                                    @input="onUpdateTaskStatusProgress"
                                     :value="task.progress"/>
                         </div>
                          <div class="col-md-8" v-if="editableData.workPackageStatus">
@@ -654,12 +654,10 @@
                         </div>
                         <div class="col-md-4">
                             <select-field
-                                v-bind:title="translateText('message.change_status')"
-                                v-bind:options="workPackageStatusesForSelect"
+                                :title="translateText('message.change_status')"
+                                :options="workPackageStatusesForSelect"
                                 v-model="editableData.workPackageStatus"
-                                v-bind:currentOption="editableData.workPackageStatus"
-                                v-on:input="changeStatus"
-                                ref="projectStatus" />
+                                @input="onChangeStatus" />
                         </div>
                     </div>
                     <!-- /// End Task Completion /// -->
@@ -747,6 +745,8 @@ import Vue from 'vue';
 import SwitchField from '../../_common/_form-components/SwitchField';
 import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
+const TASK_STATUS_OPEN = 1;
+const TASK_STATUS_ONGOING = 3;
 const TASK_STATUS_CLOSED = 5;
 const TASK_STATUS_COMPLETED = 4;
 
@@ -794,6 +794,9 @@ export default {
             projectUsers: 'projectUsers',
             currentUser: 'user',
         }),
+        ...mapGetters([
+            'workPackageStatusById',
+        ]),
         isClosed() {
             return this.task.workPackageStatus === TASK_STATUS_CLOSED;
         },
@@ -1116,63 +1119,53 @@ export default {
                 )
             ;
         },
-        totalCostsForType(costType) {
-            let totalCostForType = 0;
-            // to be removed and replace with a computed prop
-            for (let cost of this.task.costs) {
-                if (cost.type === 1) {
-                    totalCostForType += this.itemTotal(cost);
-                }
-            }
-            return totalCostForType;
-        },
-        transformToString(value) {
-            return value ? value.toString() : '';
-        },
         translateText(text) {
             return this.translate(text);
         },
-        updateTaskStatusProgress(progress) {
-            let params = {
+        onUpdateTaskStatusProgress(progress) {
+            let workPackageStatus = this.workPackageStatusById(TASK_STATUS_OPEN);
+            let actualStartAt = null;
+            let actualFinishAt = null;
+
+            if (progress > 0) {
+                workPackageStatus = this.workPackageStatusById(TASK_STATUS_ONGOING);
+
+                actualStartAt = moment().format('D-MM-YYYY');
+                if (this.task.actualStartAt) {
+                    actualStartAt = moment(this.task.actualStartAt).format('D-MM-YYYY');
+                }
+
+                if (progress === 100) {
+                    workPackageStatus = this.workPackageStatusById(TASK_STATUS_COMPLETED);
+                    actualFinishAt = moment().format('D-MM-YYYY');
+                }
+            }
+
+            this.patchTask({
                 taskId: this.task.id,
                 data: {
                     progress,
+                    workPackageStatus: workPackageStatus.id,
+                    actualStartAt,
+                    actualFinishAt,
                 },
-            };
-
-            if (progress === 100) {
-                // set workPackageStatus to 'Completed'
-                this.editableData.workPackageStatus = this.$refs.projectStatus.options.filter(item => item.key === 4)[0];
-                params.data.workPackageStatus = this.editableData.workPackageStatus.key;
-            } else if (progress > 0) {
-                // set workPackageStatus to 'Ongoing'
-                this.editableData.workPackageStatus = this.$refs.projectStatus.options.filter(item => item.key === 3)[0];
-                params.data.workPackageStatus = this.editableData.workPackageStatus.key;
-            }
-
-            if (this.editableData.workPackageStatus.key === 4) {
-                // status 'Completed'
-                params.data.actualFinishAt = moment().format('D-MM-YYYY');
-            } else if (this.editableData.workPackageStatus.key === 3) {
-                // status 'Ongoing'
-                params.data.actualStartAt = moment().format('D-MM-YYYY');
-                params.data.actualFinishAt = '';
-            }
-
-            this.patchTask(params);
+            });
         },
         initChangeStatusModal() {
             this.showEditStatusModal = true;
         },
-        changeStatus() {
-            let data = {
+        onChangeStatus(value) {
+            let workPackageStatus = value;
+            if (value && typeof value === 'object' && value.key) {
+                workPackageStatus = value.key;
+            }
+
+            this.patchTask({
                 taskId: this.task.id,
                 data: {
-                    workPackageStatus: this.editableData.workPackageStatus.key,
+                    workPackageStatus,
                 },
-            };
-
-            this.patchTask(data);
+            });
 
             this.showEditStatusModal = false;
         },
@@ -1424,7 +1417,7 @@ export default {
             showCloseTaskModal: false,
             showOpenTaskModal: false,
             editableData: {
-                workPackageStatus: false,
+                workPackageStatus: null,
                 assignee: null,
                 accountable: null,
                 supportUsers: [],
