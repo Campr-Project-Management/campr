@@ -1118,3 +1118,11 @@ hr {
         padding: 8px 0 0 !important;
     }
 }
+
+.access-denied-message {
+    font-size: 12px;
+    background-color: $dangerDarkColor;
+    color: $lighterColor;
+    font-weight: bold;
+    padding: 1em;
+}
