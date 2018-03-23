@@ -104,7 +104,7 @@ class ProjectVoter extends Voter
             ->findOneBy(['user' => $user, 'project' => $project])
         ;
 
-        return $projectUser !== null;
+        return null !== $projectUser;
     }
 
     /**
@@ -125,7 +125,7 @@ class ProjectVoter extends Voter
         ;
 
         return $projectUser
-            && $projectUser->hasProjectRole(ProjectRole::ROLE_MANAGER)
+            && $projectUser->hasProjectRole(ProjectRole::ROLE_MANAGER, ProjectRole::ROLE_SPONSOR)
         ;
     }
 

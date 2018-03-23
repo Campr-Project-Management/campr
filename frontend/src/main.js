@@ -19,6 +19,7 @@ import VTooltip from 'v-tooltip';
 import HumanizeDuration from './plugins/humanize-duration';
 import Numeral from './plugins/numeral';
 import DateFormat from './plugins/date-format';
+import Rbac from './plugins/rbac';
 
 // jquery - probably should be optimized somehow
 import $ from 'jquery';
@@ -38,6 +39,14 @@ sync(store, router);
 Vue.use(require('vue-moment'));
 Vue.use(VueCharts);
 Vue.use(VueCookie);
+Vue.use(
+    Rbac,
+    {
+        user(store) {
+            return store.getters.localUser;
+        },
+    }
+);
 
 Vue.http.headers.common['Authorization'] = 'Bearer ' + window.user.api_token;
 // This is required for Symfony to actually be able to respond properly to Request::isXmlHttpRequest()
