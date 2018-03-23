@@ -1,5 +1,5 @@
 <template>
-    <VuePerfectScrollbar class="categories-scroll">
+    <vue-perfect-scrollbar class="categories-scroll">
         <div class="board-view">
             {{ tasksByStatus }}
             <div class="flex">
@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-    </VuePerfectScrollbar>
+    </vue-perfect-scrollbar>
 </template>
 
 <script>
