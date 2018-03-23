@@ -21,7 +21,10 @@
             </div>
             <div class="flex flex-v-center">
                 <router-link :to="{name: 'project-task-management-list-grid'}" class="btn-rounded btn-auto">{{ translateText('message.view_grid') }}</router-link>
-                <router-link :to="{name: 'project-task-management-edit-labels'}" class="btn-rounded btn-auto">{{ translateText('message.edit_labels') }}</router-link>
+                <router-link
+                        v-if="$can('roles.project_manager|roles.project_sponsor', project)"
+                        :to="{name: 'project-task-management-edit-labels'}"
+                        class="btn-rounded btn-auto">{{ translateText('message.edit_labels') }}</router-link>
                 <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">{{ translateText('message.new_task') }}</router-link>
             </div>
         </div>
@@ -82,10 +85,11 @@ export default {
         this.getConditions();
     },
     computed: {
-        ...mapGetters({
-            taskStatuses: 'taskStatuses',
-        }),
-        statusesLabel: function() {
+        ...mapGetters([
+            'taskStatuses',
+            'project',
+        ]),
+        statusesLabel() {
             let statuses = this.taskStatuses.map(item => ({label: this.translate(item.name), key: item.id}));
             statuses.unshift({label: 'Status', key: null});
             return statuses;
