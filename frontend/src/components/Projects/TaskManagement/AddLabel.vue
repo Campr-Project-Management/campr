@@ -1,47 +1,57 @@
 <template>
-    <div class="add-label page-section">
-        <div class="header">
-            <h1>{{ isEdit ? translate('message.edit_label') : translate('message.new_label')  }}</h1>
+    <can role="roles.project_manager|roles.project_sponsor" :subject="project">
+        <div class="add-label page-section">
+            <div class="header">
+                <h1>{{ isEdit ? translate('message.edit_label') : translate('message.new_label') }}</h1>
 
-            <div class="flex flex-v-center">
-                <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{ message.view_grid }}</router-link>
-                <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{ message.view_board }}</router-link>
-                <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">{{ message.new_task }}</router-link>
+                <div class="flex flex-v-center">
+                    <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{
+                        message.view_grid }}
+                    </router-link>
+                    <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{
+                        message.view_board }}
+                    </router-link>
+                    <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">
+                        {{ message.new_task }}
+                    </router-link>
+                </div>
             </div>
-        </div>
-        <div class="form">
-            <input-field
-                    v-model="title"
-                    type="text"
-                    :content="title"
-                    :label="message.label_title"/>
-            <error
-                v-if="validationMessages.title && validationMessages.title.length"
-                v-for="message in validationMessages.title"
-                :message="message" />
-            <input-field
-                    v-model="description"
-                    type="textarea"
-                    :content="description"
-                    :label="message.label_description"/>
-            <color-field
-                    v-model="color"
-                    :label="message.label_color" />
-            <error
-                    v-if="validationMessages.color && validationMessages.color.length"
-                    v-for="message in validationMessages.color"
-                    :message="message"/>
-            <p class="note">{{ message.label_note }}</p>
-            <div class="flex flex-space-between actions">
-                <router-link :to="{name: 'project-task-management-edit-labels'}" class="btn-rounded btn-auto disable-bg">{{  button.cancel }}</router-link>
-                <a v-if="!isEdit" @click="createLabel" class="btn-rounded btn-auto">{{ button.create_label }}</a>
-                <a v-if="isEdit" @click="editLabel" class="btn-rounded btn-auto">{{ button.edit_label }}</a>
+            <div class="form">
+                <input-field
+                        v-model="title"
+                        type="text"
+                        :content="title"
+                        :label="message.label_title"/>
+                <error
+                        v-if="validationMessages.title && validationMessages.title.length"
+                        v-for="message in validationMessages.title"
+                        :message="message"/>
+                <input-field
+                        v-model="description"
+                        type="textarea"
+                        :content="description"
+                        :label="message.label_description"/>
+                <color-field
+                        v-model="color"
+                        :label="message.label_color"/>
+                <error
+                        v-if="validationMessages.color && validationMessages.color.length"
+                        v-for="message in validationMessages.color"
+                        :message="message"/>
+                <p class="note">{{ message.label_note }}</p>
+                <div class="flex flex-space-between actions">
+                    <router-link :to="{name: 'project-task-management-edit-labels'}"
+                                 class="btn-rounded btn-auto disable-bg">{{ button.cancel }}
+                    </router-link>
+                    <a v-if="!isEdit" @click="createLabel" class="btn-rounded btn-auto">{{ button.create_label }}</a>
+                    <a v-if="isEdit" @click="editLabel" class="btn-rounded btn-auto">{{ button.edit_label }}</a>
+                </div>
             </div>
-        </div>
 
-        <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved" />
-        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
-    </div>
+            <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved"/>
+            <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save"/>
+        </div>
+    </can>
 </template>
 
 <script>
@@ -65,10 +75,11 @@ export default {
         if (this.$route.params.labelId) this.getProjectLabel(this.$route.params.labelId);
     },
     computed: {
-        ...mapGetters({
-            label: 'label',
-            validationMessages: 'validationMessages',
-        }),
+        ...mapGetters([
+            'label',
+            'validationMessages',
+            'project',
+        ]),
         isEdit() {
             return !!this.$route.params.labelId;
         },
