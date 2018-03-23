@@ -162,25 +162,33 @@ const routes = [
                         path: 'edit/:taskId',
                         component: Create,
                         name: 'project-task-management-edit',
-                        meta: {title: 'Project Task Management Edit'},
+                        meta: {
+                            title: 'Project Task Management Edit',
+                        },
                     },
                     {
                         path: 'add-label',
                         component: AddLabel,
                         name: 'project-task-management-add-label',
-                        meta: {title: 'Project Task Management Add Label'},
+                        meta: {
+                            title: 'Project Task Management Add Label',
+                        },
                     },
                     {
                         path: 'edit-label/:labelId',
                         component: AddLabel,
                         name: 'project-task-management-edit-label',
-                        meta: {title: 'Project Task Management Edit Label'},
+                        meta: {
+                            title: 'Project Task Management Edit Label',
+                        },
                     },
                     {
                         path: 'edit-labels',
                         component: EditLabels,
                         name: 'project-task-management-edit-labels',
-                        meta: {title: 'Project Task Management Edit Labels'},
+                        meta: {
+                            title: 'Project Task Management Edit Labels',
+                        },
                     },
                 ],
             },
