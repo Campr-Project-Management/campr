@@ -284,15 +284,6 @@ class Log
 
     /**
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("userGravatar")
-     */
-    public function getUserGravatar()
-    {
-        return $this->user->getGravatar();
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("isCommentAdded")
      */
     public function isCommentAdded()
