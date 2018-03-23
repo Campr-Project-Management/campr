@@ -17,35 +17,35 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex';
-import BoardTasksColumn from './BoardTasksColumn';
-import VuePerfectScrollbar from 'vue-perfect-scrollbar';
+    import {mapActions, mapGetters} from 'vuex';
+    import BoardTasksColumn from './BoardTasksColumn';
+    import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
-export default {
-    components: {
-        BoardTasksColumn,
-        VuePerfectScrollbar,
-    },
-    created() {
-        let project = this.$route.params.id;
-        this.getTasksByStatuses(project);
+    export default {
+        components: {
+            BoardTasksColumn,
+            VuePerfectScrollbar,
+        },
+        created() {
+            let project = this.$route.params.id;
+            this.getTasksByStatuses(project);
 
-        if (!this.$store.state.task.taskStatuses || this.$store.state.task.taskStatuses.length === 0) {
-            this.getTaskStatuses();
-        }
-    },
-    mounted() {
-    },
-    computed: {
-        ...mapGetters({
-            tasksByStatuses: 'tasksByStatuses',
-            taskStatuses: 'taskStatuses',
-        }),
-    },
-    methods: {
-        ...mapActions(['getTaskStatuses', 'getTasksByStatuses']),
-    },
-};
+            if (!this.$store.state.task.taskStatuses || this.$store.state.task.taskStatuses.length === 0) {
+                this.getTaskStatuses();
+            }
+        },
+        mounted() {
+        },
+        computed: {
+            ...mapGetters({
+                tasksByStatuses: 'tasksByStatuses',
+                taskStatuses: 'taskStatuses',
+            }),
+        },
+        methods: {
+            ...mapActions(['getTaskStatuses', 'getTasksByStatuses']),
+        },
+    };
 </script>
 
 <style scoped lang="scss">
