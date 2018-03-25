@@ -40,7 +40,7 @@
         </div>
 
         <div class="team-graph">
-            <vue-perfect-scrollbar ref="projectOrganizationChart">
+            <scrollbar>
                 <div class="scroll-wrapper">
                     <member-badge v-for="(item, index) in projectSponsors" v-bind:item="item" size="big first-member-badge"></member-badge>
                     <div :class="['subteams-container', subteams.items.length > 1 ? 'multiple-teams' : '']"  v-if="countSubteamsToShow() > 0">
@@ -77,7 +77,7 @@
                         </div>
                     </div>
                 </div>
-            </vue-perfect-scrollbar>
+            </scrollbar>
         </div>
         <div class="flex flex-space-between actions">
             <member-search ref="gridMemberSearch" v-model="gridList" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
@@ -90,7 +90,7 @@
             </div>
         </div>
         <div class="team-list">
-            <vue-perfect-scrollbar ref="projectOrganizationMembers">
+            <scrollbar>
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive">
                         <thead>
@@ -168,7 +168,7 @@
                         </tbody>
                     </table>
                 </div>
-            </vue-perfect-scrollbar>
+            </scrollbar>
 
             <div class="flex flex-direction-reverse flex-v-center">
                 <div class="pagination" v-if="pages > 1">
@@ -199,7 +199,6 @@ import ViewIcon from '../_common/_icons/ViewIcon';
 import AlertModal from '../_common/AlertModal.vue';
 import Error from '../_common/_messages/Error.vue';
 import WorkspaceMemberInviteModal from './Organization/WorkspaceMemberInviteModal.vue';
-import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
 export default {
     components: {
@@ -208,7 +207,6 @@ export default {
         InputField,
         Switches,
         Modal,
-        VuePerfectScrollbar,
         MemberSearch,
         EditIcon,
         DeleteIcon,
@@ -338,10 +336,6 @@ export default {
         this.getProjectById(this.$route.params.id);
         this.getProjectUsers({id: this.$route.params.id, page: this.activePage});
         this.getSubteams({project: this.$route.params.id, parent: false});
-    },
-    beforeDestroy() {
-        this.$refs.projectOrganizationChart.getSize = () => [0, 0];
-        this.$refs.projectOrganizationMembers.getSize = () => [0, 0];
     },
     computed: {
         ...mapGetters({
