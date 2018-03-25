@@ -20,11 +20,7 @@ import HumanizeDuration from './plugins/humanize-duration';
 import Numeral from './plugins/numeral';
 import DateFormat from './plugins/date-format';
 import Rbac from './plugins/rbac';
-
-// jquery - probably should be optimized somehow
-import $ from 'jquery';
-import jqns from './plugins/jquery.nicescroll';
-jqns($);
+import Scrollbar from './components/_common/Scrollbar';
 
 Vue.use(VueResource);
 Vue.use(Vue2Dragula);
@@ -34,6 +30,7 @@ Vue.use(Translator);
 Vue.use(HumanizeDuration);
 Vue.use(Numeral);
 Vue.use(DateFormat);
+Vue.component(Scrollbar.name, Scrollbar);
 
 sync(store, router);
 Vue.use(require('vue-moment'));
