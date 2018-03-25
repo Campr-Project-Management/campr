@@ -19,7 +19,7 @@
         </div>
 
         <div class="meetings-list">
-            <vue-scrollbar class="table-wrapper" ref="projectInfos">
+            <scrollbar class="table-wrapper">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive table-fixed">
                         <thead>
@@ -68,7 +68,7 @@
                         </tbody>
                     </table>
                 </div>
-            </vue-scrollbar>
+            </scrollbar>
 
             <pagination
                 :current-page="infosFilters.currentPage"
@@ -80,7 +80,6 @@
 
 <script>
 import InfosFilters from '../_common/_infos-components/InfosFilters';
-import VueScrollbar from 'vue2-scrollbar';
 import ViewIcon from '../_common/_icons/ViewIcon';
 import EditIcon from '../_common/_icons/EditIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
@@ -91,7 +90,6 @@ import _ from 'lodash';
 export default {
     components: {
         InfosFilters,
-        VueScrollbar,
         ViewIcon,
         EditIcon,
         DeleteIcon,
@@ -181,9 +179,6 @@ export default {
                 ;
             }
         },
-    },
-    beforeDestroy() {
-        this.$refs.projectInfos.getSize = () => [0, 0];
     },
     computed: {
         ...mapGetters(['infos', 'infosFilters']),

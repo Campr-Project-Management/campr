@@ -54,7 +54,7 @@
 
         <!-- /// Phases List /// -->
         <div class="phases-list margintop20">
-            <VuePerfectScrollbar>
+            <scrollbar>
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive">
                         <thead>
@@ -175,7 +175,7 @@
                         </tbody>
                     </table>
                 </div>
-            </VuePerfectScrollbar>
+            </scrollbar>
 
             <div v-if="projectPhases && projectPhases.items" class="flex flex-direction-reverse flex-v-center">
                 <div class="pagination flex flex-center" v-if="projectPhases && projectPhases.totalItems > 0">
@@ -213,7 +213,7 @@
 
         <!-- /// Milestones List /// -->
         <div class="phases-list margintop20">
-            <VuePerfectScrollbar>
+            <scrollbar>
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive">
                         <thead>
@@ -265,7 +265,7 @@
                         </tbody>
                     </table>
                 </div>
-            </VuePerfectScrollbar>
+            </scrollbar>
 
             <div v-if="hasMilestones" class="flex flex-direction-reverse flex-v-center">
                 <div class="pagination flex flex-center" v-if="projectMilestones && projectMilestones.totalItems > 0">
@@ -294,7 +294,6 @@
     import moment from 'moment';
     import Modal from '../_common/Modal';
     import AlertModal from '../_common/AlertModal.vue';
-    import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
     export default {
         components: {
@@ -306,7 +305,6 @@
             ViewIcon,
             Modal,
             AlertModal,
-            VuePerfectScrollbar,
         },
         watch: {
             validationMessages(value) {
