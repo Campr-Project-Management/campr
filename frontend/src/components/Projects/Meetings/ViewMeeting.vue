@@ -114,7 +114,7 @@
                 <!-- /// Meeting Agenda /// -->
                 <h3>{{ translateText('message.agenda') }}</h3>
                 <div class="overflow-hidden">
-                    <vue-scrollbar class="table-wrapper">
+                    <scrollbar class="table-wrapper">
                         <div class="scroll-wrapper">
                             <table class="table table-striped table-responsive">
                                 <thead>
@@ -150,7 +150,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    </vue-scrollbar>
+                    </scrollbar>
                 </div>
                 <div v-if="meetingAgendas && meetingAgendas.items" class="flex flex-direction-reverse flex-v-center">
                     <div class="pagination flex flex-center" v-if="meetingAgendas && meetingAgendas.totalItems > 0">
@@ -328,7 +328,6 @@
 <script>
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
-import VueScrollbar from 'vue2-scrollbar';
 import Switches from '../../3rdparty/vue-switches';
 import RescheduleIcon from '../../_common/_icons/RescheduleIcon';
 import DownloadbuttonIcon from '../../_common/_icons/DownloadbuttonIcon';
@@ -345,7 +344,6 @@ export default {
     components: {
         EditIcon,
         DeleteIcon,
-        VueScrollbar,
         Switches,
         RescheduleIcon,
         DownloadbuttonIcon,
