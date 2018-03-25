@@ -50,7 +50,11 @@
             </div>
             <bar-chart :percentage="task.progress" :status="task.colorStatusName" :color="task.colorStatusColor"
                        :title-left="'' + translateText(task.workPackageStatusName)"></bar-chart>
-            <div class="nicescroll" v-html="task.content"></div>
+            <scrollbar class="task-content">
+                <div v-html="task.content"></div>
+            </scrollbar>
+
+
             <div class="info bottom" v-if="task">
                 <div class="icons">
                     <div class="icon-holder">
@@ -106,7 +110,6 @@
 
 <script>
     import BarChart from '../_common/_charts/BarChart';
-    import $ from 'jquery';
     import moment from 'moment';
     import TaskScheduleBar from './TaskScheduleBar.vue';
     import TaskCostBar from './TaskCostBar.vue';
@@ -119,13 +122,6 @@
             TaskScheduleBar,
             TaskCostBar,
             TaskLabelBar,
-        },
-        created() {
-            $(document).ready(function() {
-                $('.nicescroll').niceScroll({
-                    autohidemode: false,
-                });
-            });
         },
         computed: {
             colorStatusTooltip() {
@@ -179,11 +175,15 @@
     @import '../../css/box';
     @import '../../css/box-task';
 
-    .nicescroll-cursors {
-        border: none !important;
-        border-radius: 0 !important;
-        width: 2px !important;
-        background: $middleColor !important;
+    .task-box-wrapper {
+        .ps__scrollbar-y-rail {
+            width: 8px !important;
+
+            .ps__scrollbar-y {
+                width: 4px !important;
+                background: $middleColor !important;
+            }
+        }
     }
 
     h2 {
@@ -211,7 +211,7 @@
         margin-top: 40px;
     }
 
-    .nicescroll {
+    .task-content {
         margin: 20px 0;
         padding-right: 10px;
         max-height: 100px;
