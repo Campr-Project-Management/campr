@@ -21,7 +21,7 @@
         </div>
 
         <div class="meetings-list">
-            <vue-scrollbar class="table-wrapper" ref="projectTodos">
+            <scrollbar class="table-wrapper">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive table-fixed">
                         <thead>
@@ -60,7 +60,7 @@
                         </tbody>
                     </table>
                 </div>
-            </vue-scrollbar>
+            </scrollbar>
 
             <div class="flex flex-direction-reverse flex-v-center" v-if="pages > 1">
                 <div class="pagination">
@@ -76,7 +76,6 @@
 
 <script>
 import TodosFilters from '../_common/_todos-components/TodosFilters';
-import VueScrollbar from 'vue2-scrollbar';
 import ViewIcon from '../_common/_icons/ViewIcon';
 import EditIcon from '../_common/_icons/EditIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
@@ -87,7 +86,6 @@ import Modal from '../_common/Modal';
 export default {
     components: {
         TodosFilters,
-        VueScrollbar,
         ViewIcon,
         EditIcon,
         DeleteIcon,
@@ -146,9 +144,6 @@ export default {
     },
     created() {
         this.getData();
-    },
-    beforeDestroy() {
-        this.$refs.projectTodos.getSize = () => [0, 0];
     },
     data: function() {
         return {

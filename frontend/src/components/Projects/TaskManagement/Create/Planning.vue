@@ -5,21 +5,29 @@
             <div class="col-md-12">
                 <div class="form-group last-form-group">
                     <div class="dropdown">
-                        <button ref="btn-dropdown" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" @click="dropdownToggle()">
+                        <button
+                            ref="btn-dropdown"
+                            class="btn btn-primary dropdown-toggle"
+                            type="button"
+                            data-toggle="dropdown"
+                            @click="updateScrollbarTop()"
+                        >
                             {{ phaseOrMilestoneLabel }}
                             <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-right nicescroll" ref="dropdown-menu-planning">
-                            <li v-for="item in dropdownData">
-                                <a
-                                    href="javascript:void(0)"
-                                    v-on:click="updatePlanning(item)"
-                                    :style="{paddingLeft: ((item.level+1) * 10) + 'px'}"
-                                >
-                                    {{ item.name }}
-                                </a>
-                            </li>
-                        </ul>
+                        <scrollbar :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}" class="dropdown-menu dropdown-menu-right">
+                            <ul ref="ul">
+                                <li v-for="item in dropdownData">
+                                    <a
+                                        href="javascript:void(0)"
+                                        v-on:click="updatePlanning(item)"
+                                        :style="{paddingLeft: ((item.level+1) * 10) + 'px'}"
+                                    >
+                                        {{ item.name }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </scrollbar>
                     </div>
                 </div>
             </div>
@@ -30,16 +38,21 @@
 <script>
 import {mapActions, mapGetters} from 'vuex';
 import $ from 'jquery';
-import 'jquery.nicescroll/jquery.nicescroll.js';
 
 export default {
-    props: ['editPlanning'],
+    props: {
+        editPlanning: {},
+        maxItems: {
+            type: Number,
+            default: 5,
+        },
+    },
     methods: {
         ...mapActions(['getWBSByProjectID']),
         translateText(text) {
             return this.translate(text);
         },
-        updatePlanning: function(wp) {
+        updatePlanning(wp) {
             switch (wp.type) {
             case 0:
                 this.planning = {
@@ -82,24 +95,23 @@ export default {
                 break;
             }
         },
-        clearPhaseMilestone: function() {
+        clearPhaseMilestone() {
             this.planning = {
                 phase: null,
                 milestone: null,
                 parent: null,
             };
         },
-        dropdownToggle: function() {
+        updateScrollbarTop() {
             let scrollTop = $(window).scrollTop();
             let elementOffset = $(this.$el).offset().top;
             let currentElementOffset = (elementOffset - scrollTop);
-
             let windowInnerHeight = window.innerHeight;
 
-            if (windowInnerHeight - currentElementOffset < 279) {
-                $(this.$el).find('.dropdown-menu').css('top', -5*this.dropdownItemHeight + 'px');
+            if (windowInnerHeight - currentElementOffset < (this.scrollbarHeight + this.itemHeight)) {
+                this.scrollbarTop = -1 * this.scrollbarHeight;
             } else {
-                $(this.$el).find('.dropdown-menu').css('top', this.dropdownItemHeight + 'px');
+                this.scrollbarTop = this.itemHeight;
             }
         },
     },
@@ -109,18 +121,19 @@ export default {
         this.planning = this.editPlanning;
     },
     mounted() {
-        this.dropdownItemHeight = this.$refs['btn-dropdown'].clientHeight;
-        $(this.$el).find('.dropdown-menu').css('height', 5*this.dropdownItemHeight + 'px');
-        $(document).ready(function() {
-            $('.nicescroll').niceScroll({
-                autohidemode: false,
-            });
-        });
+        let $ul = $(this.$refs.ul);
+
+        this.itemHeight = $(this.$el).find('button').height() || 40;
+        this.marginTop = parseInt($ul.css('margin-top'), 10);
+        this.marginBottom = parseInt($ul.css('margin-bottom'), 10);
+        this.paddingTop = parseInt($ul.css('padding-top'), 10);
+        this.paddingBottom = parseInt($ul.css('padding-bottom'), 10);
+        this.scrollbarTop = this.itemHeight;
     },
     computed: {
         // ...mapGetters(['allProjectPhases']),
         ...mapGetters(['wbsPhasesAndMilestones']),
-        phaseOrMilestoneLabel: function() {
+        phaseOrMilestoneLabel() {
             const out = [];
 
             if (this.planning.phase) {
@@ -135,27 +148,42 @@ export default {
 
             return out.length ? out.join(' > ') : this.translateText('message.select_phase_milestone');
         },
-        dropdownData: function() {
+        dropdownData() {
             return this
                 .wbsPhasesAndMilestones
                 .filter(wp => wp.id != this.$route.params.id)
             ;
         },
+        scrollbarHeight() {
+            const itemsToShow = this.dropdownData.length < this.maxItems
+                ? this.dropdownData.length
+                : this.maxItems
+            ;
+
+            return (itemsToShow * this.itemHeight)
+                + (this.marginBottom + this.marginTop)
+                + (this.paddingBottom + this.paddingTop);
+        },
     },
     watch: {
         planning: {
-            handler: function(value) {
+            handler(value) {
                 this.$emit('input', value);
             },
             deep: true,
         },
     },
-    data: function() {
+    data() {
         return {
             planning: {
                 phase: null,
                 milestone: null,
-                dropdownItemHeight: null,
+                itemHeight: 0,
+                paddingTop: 0,
+                paddingBottom: 0,
+                marginTop: 0,
+                marginBottom: 0,
+                scrollbarTop: 0,
             },
         };
     },
@@ -167,6 +195,18 @@ export default {
     @import '../../../../css/_variables';
     @import '../../../../css/_mixins';
     @import '../../../../css/_common';
+
+    .dropdown {
+        .dropdown-menu {
+            position: absolute;
+
+            ul {
+                list-style: none;
+                margin: 0;
+                padding: 5px;
+            }
+        }
+    }
 
     .btn-primary {
         background: $darkColor;
@@ -203,12 +243,6 @@ export default {
             outline: 0;
         }
 
-    }
-
-    .dropdown-menu{
-        &.nicescroll{
-             max-height : 210px;
-        }
     }
 
     .btn-primary.active, .btn-primary:active, .open > .dropdown-toggle.btn-primary {

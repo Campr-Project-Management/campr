@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="overflow-hidden">
-            <vue-scrollbar class="table-wrapper">
+            <scrollbar class="table-wrapper">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive">
                         <thead>
@@ -31,7 +31,7 @@
                         </tbody>
                     </table>
                 </div>
-            </vue-scrollbar>
+            </scrollbar>
         </div>
 
         <div v-if="participants && participants.length > 0" class="flex flex-direction-reverse flex-v-center">
@@ -45,14 +45,12 @@
     </div>
 </template>
 <script>
-import VueScrollbar from 'vue2-scrollbar';
 import Switches from '../../3rdparty/vue-switches';
 import {mapActions} from 'vuex';
 
 export default {
     props: ['meetingParticipants', 'participants', 'participantsPerPage', 'participantsPages'],
     components: {
-        VueScrollbar,
         Switches,
     },
     watch: {
