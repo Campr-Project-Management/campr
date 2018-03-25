@@ -22,7 +22,7 @@
         </div>
 
         <div class="meetings-list">
-            <vue-scrollbar class="table-wrapper" ref="projectDecisions">
+            <scrollbar class="table-wrapper">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive table-fixed">
                         <thead>
@@ -61,7 +61,7 @@
                         </tbody>
                     </table>
                 </div>
-            </vue-scrollbar>
+            </scrollbar>
 
             <div class="flex flex-direction-reverse flex-v-center" v-if="pages > 1">
                 <div class="pagination">
@@ -77,7 +77,6 @@
 
 <script>
 import DecisionsFilters from '../_common/_decisions-components/DecisionsFilters';
-import VueScrollbar from 'vue2-scrollbar';
 import ViewIcon from '../_common/_icons/ViewIcon';
 import EditIcon from '../_common/_icons/EditIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
@@ -87,7 +86,6 @@ import Modal from '../_common/Modal';
 export default {
     components: {
         DecisionsFilters,
-        VueScrollbar,
         ViewIcon,
         EditIcon,
         DeleteIcon,
@@ -140,9 +138,6 @@ export default {
     },
     created() {
         this.getData();
-    },
-    beforeDestroy() {
-        this.$refs.projectDecisions.getSize = () => [0, 0];
     },
     data: function() {
         return {
