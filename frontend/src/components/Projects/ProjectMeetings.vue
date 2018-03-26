@@ -60,7 +60,7 @@
         </div>
 
         <div class="meetings-list">
-            <vue-scrollbar class="table-wrapper">
+            <scrollbar class="table-wrapper">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive">
                         <thead>
@@ -112,7 +112,7 @@
                         </tbody>
                     </table>
                 </div>
-            </vue-scrollbar>
+            </scrollbar>
 
             <div v-if="projectMeetings && projectMeetings.items" class="flex flex-direction-reverse flex-v-center">
                 <div class="pagination flex flex-center" v-if="projectMeetings && projectMeetings.totalItems > 0">
@@ -135,7 +135,6 @@
 <script>
 import {mapGetters, mapActions} from 'vuex';
 import MeetingsFilters from '../_common/_meetings-components/MeetingsFilters';
-import VueScrollbar from 'vue2-scrollbar';
 import ViewIcon from '../_common/_icons/ViewIcon';
 import EditIcon from '../_common/_icons/EditIcon';
 import PrintIcon from '../_common/_icons/PrintIcon';
@@ -150,7 +149,6 @@ import VueTimepicker from 'vue2-timepicker';
 export default {
     components: {
         MeetingsFilters,
-        VueScrollbar,
         ViewIcon,
         EditIcon,
         PrintIcon,

@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import Dropdown from '../Dropdown2';
 import {mapActions, mapGetters} from 'vuex';
 import datepicker from '../_form-components/Datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
@@ -41,7 +40,6 @@ export default {
         this.getProjectUsers({id: this.$route.params.id});
     },
     components: {
-        Dropdown,
         datepicker,
         CalendarIcon,
         SelectField,
@@ -51,34 +49,32 @@ export default {
             taskStatuses: 'taskStatuses',
             projectUsersForSelect: 'projectUsersForSelect',
         }),
-        statusesLabel: function() {
-            let statuses = this.taskStatuses.map(item => ({label: this.translate(item.name), key: item.id}));
-            return statuses;
+        statusesLabel() {
+            return this.taskStatuses.map(item => ({label: this.translate(item.name), key: item.id}));
         },
     },
     methods: {
         ...mapActions(['getTaskStatuses', 'getProjectUsers']),
-        selectedStatusValue: function(value) {
+        selectedStatusValue(value) {
             this.selectStatus(value);
         },
-        selectedResponsible: function(value) {
+        selectedResponsible(value) {
             this.selectResponsible(value);
         },
-        translateText: function(text) {
+        translateText(text) {
             return this.translate(text);
         },
-        clearStart: function() {
+        clearStart() {
             this.startDate = null;
         },
-        clearEnd: function() {
+        clearEnd() {
             this.endDate = null;
         },
-        clearFilters: function() {
+        clearFilters() {
             this.clearStart();
             this.clearEnd();
             this.statusModel = null;
             this.responsibleModel = null;
-            this.$refs.responsibles.resetCustomTitle();
             this.clearAllFilters(true);
         },
     },
@@ -91,22 +87,22 @@ export default {
         };
     },
     watch: {
-        startDate: function(value) {
+        startDate(value) {
             this.selectStartDate(value);
             this.startDate = value;
         },
-        endDate: function(value) {
+        endDate(value) {
             this.selectEndDate(value);
             this.endDate = value;
         },
-        statusModel: function(value) {
+        statusModel(value) {
             if (this.statusModel !== null) {
                 this.selectStatus(value.key);
             } else {
                 this.selectStatus(null);
             }
         },
-        responsibleModel: function(value) {
+        responsibleModel(value) {
             if (this.responsibleModel !== null) {
                 this.selectResponsible(value.key);
             } else {

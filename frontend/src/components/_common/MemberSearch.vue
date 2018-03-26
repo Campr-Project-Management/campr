@@ -4,6 +4,7 @@
             <input type="text"
                 class="float-label"
                 :id="'input' + _uid"
+                :ref="`input${_uid}`"
                 autocomplete="off"
                 v-model="query"
                 @keydown.down="down"
@@ -13,11 +14,11 @@
                 @focus="focused = true"
                 @blur="focused = false"
                 @input="update" />
-            <label :class="{ 'active': isActive }">{{ placeholder }}</label>
+            <label :class="{ 'active': isActive }" @click="focusInput()">{{ placeholder }}</label>
         </div>
         <i class="member-search-clear-button" @click="clearValue">×</i>
         <div class="results team" v-show="hasItems">
-            <div class="members nicescroll">
+            <scrollbar class="members">
                 <div class="member flex flex-v-center" v-for="item in items">
                     <div class="checkbox-input clearfix" :class="{'inactive': !item.checked}">
                         <input v-if="singleSelect" :id="'mid_' + item.id"  type="radio" :name="item.userFullName" :checked="item.checked" @click="toogleRadioButton(item)">
@@ -30,7 +31,7 @@
                         <p class="description"><span v-for="roleName in item.projectRoleNames">{{ translateText(roleName) }}, </span></p>
                     </div>
                 </div>
-            </div>
+            </scrollbar>
             <div class="footer">
                 <p v-show="!singleSelect">Selected: <span v-for="item in items"><span v-if="item.checked">{{ item.userFullName }}, </span></span></p>
                 <div class="flex flex-space-between">
@@ -54,7 +55,6 @@
 import VueTypeahead from 'vue-typeahead';
 import {mapActions, mapGetters} from 'vuex';
 import $ from 'jquery';
-import 'jquery.nicescroll/jquery.nicescroll.js';
 import _ from 'lodash';
 
 export default {
@@ -188,6 +188,9 @@ export default {
             }
             return true;
         },
+        focusInput() {
+            $(this.$refs[`input${this._uid}`]).focus();
+        },
     },
     data() {
         return {
@@ -210,13 +213,6 @@ export default {
 
             this.getUsers({id: this.value});
         }
-
-        // nicescroll
-        $(document).ready(function() {
-            $('.nicescroll').niceScroll({
-                autohidemode: false,
-            });
-        });
     },
 };
 </script>
@@ -260,14 +256,14 @@ export default {
 
         .results {
             width: 600px;
-            .members.nicescroll{
+            .members {
                 max-height: 265px;
             }
         }
     }
 
     .results {
-        .members.nicescroll{
+        .members {
             max-height: 265px;
         }
     }
