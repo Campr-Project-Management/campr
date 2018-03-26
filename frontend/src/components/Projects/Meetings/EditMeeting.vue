@@ -127,7 +127,7 @@
                     <!-- /// Meeting Agenda /// -->
                     <h3>{{ translateText('message.agenda') }}</h3>
                     <div class="overflow-hidden">
-                        <vue-scrollbar class="table-wrapper">
+                        <scrollbar class="table-wrapper">
                             <div class="scroll-wrapper">
                                 <table class="table table-striped table-responsive">
                                     <thead>
@@ -163,7 +163,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </vue-scrollbar>
+                        </scrollbar>
                     </div>
                     <div v-if="meetingAgendas && meetingAgendas.items" class="flex flex-direction-reverse flex-v-center">
                         <div class="pagination flex flex-center" v-if="meetingAgendas && meetingAgendas.totalItems > 0">
@@ -517,7 +517,6 @@ import MemberSearch from '../../_common/MemberSearch';
 import MeetingAttachments from './MeetingAttachments';
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
-import VueScrollbar from 'vue2-scrollbar';
 import {mapGetters, mapActions} from 'vuex';
 import VueTimepicker from 'vue2-timepicker';
 import moment from 'moment';
@@ -541,7 +540,6 @@ export default {
         MeetingAttachments,
         EditIcon,
         DeleteIcon,
-        VueScrollbar,
         VueTimepicker,
         moment,
         MultiSelectField,

@@ -1,5 +1,5 @@
 <template>
-    <vue-perfect-scrollbar class="categories-scroll">
+    <scrollbar class="categories-scroll">
         <div class="board-view">
             {{ tasksByStatus }}
             <div class="flex">
@@ -13,18 +13,16 @@
                 </div>
             </div>
         </div>
-    </vue-perfect-scrollbar>
+    </scrollbar>
 </template>
 
 <script>
 import {mapActions, mapGetters} from 'vuex';
 import BoardTasksColumn from './BoardTasksColumn';
-import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
 export default {
     components: {
         BoardTasksColumn,
-        VuePerfectScrollbar,
     },
     created() {
         let project = this.$route.params.id;
