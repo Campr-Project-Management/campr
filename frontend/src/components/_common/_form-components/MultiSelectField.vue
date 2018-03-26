@@ -11,7 +11,7 @@
                 {{ title }}
                 <span class="caret"></span>
             </button>
-            <scrollbar v-if="processedOptions.length !== 0" :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}" class="dropdown-menu dropdown-menu-right">
+            <scrollbar v-show="processedOptions.length !== 0" :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}" class="dropdown-menu dropdown-menu-right">
                 <ul ref="ul">
                     <li v-for="(option, index) in processedOptions" :key="index">
                         <a href="javascript:void(0)" @click="updateValue(option)">
