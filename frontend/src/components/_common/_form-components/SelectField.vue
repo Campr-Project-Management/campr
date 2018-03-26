@@ -12,7 +12,7 @@
             {{ placeholder }}
             <span class="caret"></span>
         </button>
-        <scrollbar v-if="options.length > 0" :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}" class="dropdown-menu dropdown-menu-right">
+        <scrollbar v-show="options.length > 0" :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}" class="dropdown-menu dropdown-menu-right">
             <ul ref="ul">
                 <li v-for="option in options" :style="{height: itemHeight + 'px'}">
                     <a href="javascript:void(0)" v-on:click="updateValue(option)">{{ translateText(option.label) }}</a>
