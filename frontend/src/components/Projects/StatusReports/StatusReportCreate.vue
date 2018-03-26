@@ -87,7 +87,7 @@
                         <h3 class="margintop0">{{ translateText('message.schedule') }}</h3>
                     </div>
                     <div class="col-md-8">
-                        <vue-scrollbar class="table-wrapper">
+                        <scrollbar class="table-wrapper">
                             <table class="table table-small">
                                 <thead>
                                 <tr>
@@ -145,7 +145,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                        </vue-scrollbar>
+                        </scrollbar>
                     </div>
                     <div class="col-md-4">
                         <div class="range-slider-legend">
@@ -421,7 +421,6 @@ import Vue from 'vue';
 import moment from 'moment';
 import $ from 'jquery';
 import 'jquery-match-height/jquery.matchHeight.js';
-import VueScrollbar from 'vue2-scrollbar';
 // import TaskRangeSlider from '../../_common/_task-components/TaskRangeSlider';
 import CircleChart from '../../_common/_charts/CircleChart';
 import Chart from './../Charts/CostsChart.vue';
@@ -438,7 +437,6 @@ import resize from 'vue-resize-directive';
 export default {
     components: {
         VisTimeline,
-        VueScrollbar,
         // TaskRangeSlider,
         CircleChart,
         RiskGrid,

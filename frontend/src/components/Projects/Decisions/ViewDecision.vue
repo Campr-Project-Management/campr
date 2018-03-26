@@ -103,7 +103,6 @@
 <script>
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
-import VueScrollbar from 'vue2-scrollbar';
 import Switches from '../../3rdparty/vue-switches';
 import RescheduleIcon from '../../_common/_icons/RescheduleIcon';
 import {mapActions, mapGetters} from 'vuex';
@@ -116,7 +115,6 @@ export default {
     components: {
         EditIcon,
         DeleteIcon,
-        VueScrollbar,
         Switches,
         RescheduleIcon,
         Modal,

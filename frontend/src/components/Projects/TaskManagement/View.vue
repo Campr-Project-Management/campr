@@ -226,7 +226,7 @@
 
                     <!-- /// Task Schedule /// -->
                     <h3>{{ translateText('message.task_schedule') }}</h3>
-                    <vue-perfect-scrollbar class="table-wrapper">
+                    <scrollbar class="table-wrapper">
                         <table class="table table-small">
                             <thead>
                                 <tr>
@@ -275,7 +275,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </vue-perfect-scrollbar>
+                    </scrollbar>
                     <div v-for="(dependancy, index) in task.dependencies"
                          :key="index"
                          class="flex flex-space-between flex-v-center margintop20">
@@ -304,7 +304,7 @@
 
                     <!-- /// Task Internal Costs /// -->
                     <h3>{{ translateText('message.internal_costs') }}</h3>
-                    <vue-perfect-scrollbar class="table-wrapper">
+                    <scrollbar class="table-wrapper">
                         <table class="table table-small">
                             <thead>
                                 <tr>
@@ -354,7 +354,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </vue-perfect-scrollbar>
+                    </scrollbar>
                     <div class="flex flex-space-between flex-v-center margintop20">
                         <div></div>
                         <button
@@ -372,7 +372,7 @@
 
                     <!-- /// Task External Costs /// -->
                     <h3>{{ translateText('message.external_costs') }}</h3>
-                    <vue-perfect-scrollbar class="table-wrapper">
+                    <scrollbar class="table-wrapper">
                         <table class="table table-small">
                             <thead>
                                 <tr>
@@ -439,7 +439,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </vue-perfect-scrollbar>
+                    </scrollbar>
                     <div class="flex flex-space-between flex-v-center margintop20">
                         <div></div>
                         <button
@@ -648,7 +648,6 @@ import moment from 'moment';
 import {createFormData} from '../../../helpers/task';
 import Vue from 'vue';
 import SwitchField from '../../_common/_form-components/SwitchField';
-import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
 const TASK_STATUS_OPEN = 1;
 const TASK_STATUS_ONGOING = 3;
@@ -674,7 +673,6 @@ export default {
         SwitchField,
         EditScheduleModal,
         Editor,
-        VuePerfectScrollbar,
         TaskHistory,
     },
     created() {
