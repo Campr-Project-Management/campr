@@ -570,7 +570,6 @@ class Cost
 
     /**
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("external")
      *
      * @return bool
      */
@@ -581,7 +580,6 @@ class Cost
 
     /**
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("internal")
      *
      * @return bool
      */
