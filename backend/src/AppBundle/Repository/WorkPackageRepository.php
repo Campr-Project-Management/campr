@@ -898,15 +898,33 @@ class WorkPackageRepository extends BaseRepository
      */
     public function getPhaseActualFinishDate(WorkPackage $workPackage)
     {
-        $qb = $this->createQueryBuilder('o');
+        $createQueryBuilder = function () use ($workPackage) {
+            $qb = $this->createQueryBuilder('o');
+
+            return $qb
+                ->andWhere('o.phase = :phase and o.type = :type')
+                ->setParameter('phase', $workPackage->getId())
+                ->setParameter('type', WorkPackage::TYPE_TASK)
+            ;
+        };
+
+        $qb = $createQueryBuilder();
         $expr = $qb->expr();
 
-        return $qb
-            ->select('MIN(o.actualFinishAt)')
-            ->andWhere('o.phase = :phase and o.type = :type')
-            ->andWhere($expr->isNotNull('o.actualStartAt'))
-            ->setParameter('phase', $workPackage->getId())
-            ->setParameter('type', WorkPackage::TYPE_TASK)
+        $found = $createQueryBuilder()
+            ->select('COUNT(o)')
+            ->andWhere($expr->isNull('o.actualFinishAt'))
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        if ($found > 0) {
+            return null;
+        }
+
+        return $createQueryBuilder()
+            ->select('MAX(o.actualFinishAt)')
             ->getQuery()
             ->getSingleScalarResult()
         ;
