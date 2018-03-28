@@ -1,24 +1,33 @@
 <template>
-    <div class="edit-labels page-section">
-        <div class="header">
-            <h1>{{ message.edit_task_labels }}</h1>
-            <div class="flex flex-v-center">
-                <router-link :to="{name: 'project-task-management-list'}" href="javascript:void(0)" class="btn-rounded btn-auto">{{ message.view_grid }}</router-link>
-                <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{ message.view_board }}</router-link>
-                <router-link :to="{name: 'project-task-management-add-label'}" class="btn-rounded btn-auto second-bg">{{ message.new_label }}</router-link>
-                <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">{{ message.new_task }}</router-link>
-            </div>
-        </div>
-        <div class="label-list">
-            <div v-for="label in labels" class="flex flex-space-between label-row">
-                <div class="flex">
-                    <div class="label-icon" :style="{ background: label.color }">{{ label.title }}</div>
-                    <div class="description">{{ label.description }}</div>
-                    <div class="tasks">{{ label.openWorkPackagesNumber }} {{ message.open_tasks }}</div>
+    <can role="roles.project_manager|roles.project_sponsor" :subject="project">
+        <div class="edit-labels page-section">
+            <div class="header">
+                <h1>{{ message.edit_task_labels }}</h1>
+                <div class="flex flex-v-center">
+                    <router-link :to="{name: 'project-task-management-list'}" href="javascript:void(0)"
+                                 class="btn-rounded btn-auto">{{ message.view_grid }}
+                    </router-link>
+                    <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{ message.view_board }}
+                    </router-link>
+                    <router-link :to="{name: 'project-task-management-add-label'}"
+                                 class="btn-rounded btn-auto second-bg">{{ message.new_label }}
+                    </router-link>
+                    <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">
+                        {{ message.new_task }}
+                    </router-link>
                 </div>
-                <div class="actions">
-                    <router-link :to="{name: 'project-task-management-edit-label', params: { id: label.project, labelId: label.id }}">
-                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            </div>
+            <div class="label-list">
+                <div v-for="label in labels" class="flex flex-space-between label-row">
+                    <div class="flex">
+                        <div class="label-icon" :style="{ background: label.color }">{{ label.title }}</div>
+                        <div class="description">{{ label.description }}</div>
+                        <div class="tasks">{{ label.openWorkPackagesNumber }} {{ message.open_tasks }}</div>
+                    </div>
+                    <div class="actions">
+                        <router-link
+                                :to="{name: 'project-task-management-edit-label', params: { id: label.project, labelId: label.id }}">
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         viewBox="0 0 28.5 29.8" style="enable-background:new 0 0 28.5 29.8;" xml:space="preserve">
                             <g id="XMLID_1677_">
                               <path id="XMLID_1681_" class="second-fill" d="M5.5,22.8c0,0.1,0,0.3,0.1,0.4c0.1,0.1,0.2,0.1,0.4,0.1c0,0,5-1.2,5-1.2l-4.3-4.3
@@ -31,9 +40,9 @@
                                 c-0.5,0-1,0.2-1.3,0.6l-0.3,0.3L22.7,10.4z"/>
                             </g>
                         </svg>
-                    </router-link>
-                    <a @click="deleteLabel(label.id)">
-                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        </router-link>
+                        <a @click="deleteLabel(label.id)">
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                            viewBox="0 0 28.5 29.8" style="enable-background:new 0 0 28.5 29.8;" xml:space="preserve">
                             <g id="XMLID_1682_">
                               <path id="XMLID_1685_" class="danger-fill" d="M22.8,7.6h-5.3V5.8c0-0.2-0.2-0.4-0.4-0.4h-6c-0.2,0-0.4,0.2-0.4,0.4v1.9H6.3
@@ -43,11 +52,12 @@
                                 s0.4,0.2,0.4,0.4V19.3z M17.5,19.3c0,0.2-0.2,0.4-0.4,0.4s-0.4-0.2-0.4-0.4V11c0-0.2,0.2-0.4,0.4-0.4s0.4,0.2,0.4,0.4V19.3z"/>
                             </g>
                         </svg>
-                    </a>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </can>
 </template>
 
 <script>
@@ -64,9 +74,10 @@ export default {
     created() {
         this.getProjectLabels(this.$route.params.id);
     },
-    computed: mapGetters({
-        labels: 'labels',
-    }),
+    computed: mapGetters([
+        'labels',
+        'project',
+    ]),
     data() {
         return {
             message: {

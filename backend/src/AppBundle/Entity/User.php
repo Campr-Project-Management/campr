@@ -1497,9 +1497,9 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     }
 
     /**
-     * Remove contract.
-     *
      * @param Contract $contract
+     *
+     * @return $this
      */
     public function removeContract(Contract $contract)
     {
