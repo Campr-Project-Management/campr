@@ -26,6 +26,7 @@ import 'jquery.nicescroll/jquery.nicescroll.js';
 import _ from 'lodash';
 
 export default {
+    name: 'select-field',
     props: {
         value: {
             required: false,
@@ -49,8 +50,8 @@ export default {
         placeholder() {
             let option = this.currentOption;
             if (this.value) {
-                option = _.find(this.options, (option) => {
-                    return option.key === this.value.key;
+                option = _.find(this.options, (o) => {
+                    return o.key === this.value.key;
                 });
             }
 
