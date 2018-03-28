@@ -484,39 +484,36 @@ export default {
             let internal = [];
             let external = [];
             this.task.costs.map((cost) => {
-                if (cost.type === 0) {
-                    internal.push(_.merge(
+                if (cost.isInternal) {
+                    cost = _.merge(
                         {},
                         cost,
                         {
                             resource: cost.resource
                                 ? {
                                     label: cost.resourceName,
-                                    key: cost.resource.toString(),
-                                }
-                                : null,
-                            selectedResource: cost.resource
-                                ? {
-                                    label: cost.resourceName,
-                                    key: cost.resource.toString(),
+                                    key: cost.resource,
                                 }
                                 : null,
                             project: this.$route.params.id ? this.$route.params.id: null,
                             workPackage: this.$route.params.taskId ? this.$route.params.taskId : null,
                         }
-                    ));
-                } else {
-                    external.push(_.merge(
-                        {},
-                        cost,
-                        {
-                            selectedUnit: cost.unit && cost.unit.id ? cost.unit.id.toString() : null,
-                            customUnit: '',
-                            project: this.$route.params.id ? this.$route.params.id: null,
-                            workPackage: this.$route.params.taskId ? this.$route.params.taskId : null,
-                        }
-                    ));
+                    );
+
+                    internal.push(cost);
+                    return;
                 }
+
+                external.push(_.merge(
+                    {},
+                    cost,
+                    {
+                        selectedUnit: cost.unit && cost.unit.id ? cost.unit.id.toString() : null,
+                        customUnit: '',
+                        project: this.$route.params.id ? this.$route.params.id : null,
+                        workPackage: this.$route.params.taskId ? this.$route.params.taskId : null,
+                    },
+                ));
             });
             this.internalCosts.items = internal;
             this.internalCosts.forecast = this.task.internalForecastCost;
