@@ -3,6 +3,8 @@
 {% extends 'MainBundle::base.html.twig' %}
 
 {% block body_content %}
+    {% set hideSignUp = app.environment == 'prod' %}
+
     <!-- Small Landing Section Start -->
     <section>
         <div class="full-width">
@@ -47,7 +49,11 @@
                             <b class="block">Enterprise Edition coming soon with a lot of neat features.</b>
                         </p>
                         <div class="buttons buttons-center">
-                            <a href="#signup" class="button">Sign up now</a>
+                            {% if not hideSignUp %}
+                                <a href="#signup" class="button">Sign up now</a>
+                            {% else %}
+                                <a href="javascript:void(0)" class="button">Coming soon!</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -147,7 +153,11 @@
                     </div>
 
                     <div class="buttons text-right mt-30">
-                        <a href="#signup" class="button button-white-border">Sign up now</a>
+                        {% if not hideSignUp %}
+                            <a href="#signup" class="button button-white-border">Sign up now</a>
+                        {% else %}
+                            <a href="javascript:void(0)" class="button button-white-border">Coming soon!</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -156,230 +166,9 @@
     <!-- All Features Section End -->
 
     <!-- Signup Start -->
-    <section id="signup" class="section sign-up-section">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <h2 class="text-center">
-                        Sign up for CAMPR
-                    </h2>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-8 mr-md-auto ml-md-auto">
-                    <p class="subtitle text-center">
-                        The project settings below are optional, but they can give us a very good insight on how Campr
-                        might help you. Based on your selections, we will send you an email with the list of modules you
-                        should use in your project.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-10 col-sm-12 ml-lg-auto mr-lg-auto">
-                    {% include '@Main/Default/_registration_form.html.twig' with {'signUpForm': signUpForm} %}
-                    {#<a name="registration_success"></a>
-                    {% for message in app.session.flashBag.get('registration_success') %}
-                        <div class="registration_success">{{ message|trans }}</div>
-                    {% endfor %}
-
-                    {{ form_errors(signUpForm) }}
-
-                    {{ form_start(signUpForm, {attr: {class: 'form login-form'}}) }}
-                    <div class="slider-holder" id="slider_holder_1" data-min="0" data-max="36" data-step="1"
-                         data-type="single">
-                        <div class="heading flex flex-space-between">
-                            <span class="title">Project Duration</span>
-                            <span class="value">
-                                <span id="slider_from_1" class="number"></span>
-                                <span class="text">Months</span>
-                            </span>
-                        </div>
-                        {{ form_widget(
-                            signUpForm.projectDuration,
-                            {
-                                id: 'slider_1',
-                                attr: {
-                                class: 'range-slider',
-                                'data-from': 'slider_from_1'
-                            }
-                            }
-                        ) }}
-                    </div>
-
-                    <div class="slider-holder" id="slider_holder_2" data-min="0" data-max="3000000" data-step="10000"
-                         data-type="single">
-                        <div class="heading flex flex-space-between">
-                            <span class="title">Project Budget</span>
-                            <span class="value">
-                            <span class="text">$</span>
-                            <span id="slider_from_2" class="number"></span>
-                        </span>
-                        </div>
-                        {{ form_widget(
-                            signUpForm.projectBudget,
-                            {
-                                id: 'slider_2',
-                                attr: {
-                                class: 'range-slider',
-                                'data-from': 'slider_from_2'
-                            }
-                            }
-                        ) }}
-                    </div>
-
-                    <div class="slider-holder" id="slider_holder_3" data-min="1" data-max="20" data-step="1"
-                         data-type="double">
-                        <div class="heading flex flex-space-between">
-                            <span class="title">People Involved</span>
-                            <span class="value">
-                                <span id="slider_from_3" class="number"></span>
-                                <span class="text"> - </span>
-                                <span id="slider_to_3" class="number"></span>
-                            </span>
-                        </div>
-                        {{ form_widget(
-                            signUpForm.peopleInvolved,
-                            {
-                                id: 'slider_3',
-                                attr: {
-                                class: 'range-slider',
-                                'data-from': 'slider_from_3',
-                                'data-to': 'slider_from_3'
-                            }
-                            }
-                        ) }}
-                    </div>
-
-                    <div class="slider-holder" id="slider_holder_4" data-min="1" data-max="20" data-step="1"
-                         data-type="double">
-                        <div class="heading flex flex-space-between">
-                            <span class="title">Departments Involved</span>
-                            <span class="value">
-                                <span id="slider_from_4" class="number"></span>
-                                <span class="text"> - </span>
-                                <span id="slider_to_4" class="number"></span>
-                            </span>
-                        </div>
-                        {{ form_widget(
-                            signUpForm.departmentsInvolved,
-                            {
-                                id: 'slider_4',
-                                attr: {
-                                class: 'range-slider',
-                                'data-from': 'slider_from_4',
-                                'data-to': 'slider_to_4'
-                            }
-                            }
-                        ) }}
-                    </div>
-
-                    <div class="slider-holder" id="slider_holder_5" data-type="single"
-                         data-values="Very Low, Low, Medium, High, Very High">
-                        <div class="heading flex flex-space-between">
-                            <span class="title">Strategical Meaning</span>
-                            <span class="value">
-                                        <span id="slider_from_5" class="number"></span>
-                                    </span>
-                        </div>
-                        {{ form_widget(
-                            signUpForm.strategicalMeaning,
-                            {
-                                id: 'slider_5',
-                                attr: {
-                                class: 'range-slider',
-                                'data-from': 'slider_from_5',
-                                'data-to': 'slider_from_5'
-                            }
-                            }
-                        ) }}
-                    </div>
-
-                    <div class="slider-holder" id="slider_holder_6" data-type="single"
-                         data-values="Very Few, Few, Many, Very Many">
-                        <div class="heading flex flex-space-between">
-                            <span class="title">Risks</span>
-                            <span class="value">
-                            <span id="slider_from_6" class="number"></span>
-                        </span>
-                        </div>
-                        {{ form_widget(
-                            signUpForm.risks,
-                            {
-                                id: 'slider_6',
-                                attr: {
-                                class: 'range-slider',
-                                'data-from': 'slider_from_6'
-                            }
-                            }
-                        ) }}
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-4">
-                        <span class="input">
-                            {{ form_widget(
-                                signUpForm.email,
-                                {
-                                    id: 'input-29',
-                                    attr: {
-                                    class: 'input__field'
-                                }
-                                }
-                            ) }}
-                            <label class="input__label" for="input-29">
-                                <span class="icon">
-                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                         xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
-                                        <g>
-                                            <path class="st0"
-                                                  d="M22,20H2c-1.1,0-2-0.9-2-2V6c0-1.1,0.9-2,2-2h20c1.1,0,2,0.9,2,2v12C24,19.1,23.1,20,22,20z M2,5 C1.4,5,1,5.4,1,6v12c0,0.6,0.4,1,1,1h20c0.6,0,1-0.4,1-1V6c0-0.6-0.4-1-1-1H2z"/>
-                                            <path class="st0"
-                                                  d="M12,14.5c-0.1,0-0.2,0-0.3-0.1L3.2,8.9C3,8.8,2.9,8.5,3.1,8.2s0.5-0.3,0.7-0.1l8.2,5.3l8.2-5.3 c0.2-0.1,0.5-0.1,0.7,0.1c0.1,0.2,0.1,0.5-0.1,0.7l-8.5,5.5C12.2,14.5,12.1,14.5,12,14.5z"/>
-                                            <path class="st0"
-                                                  d="M3.5,16.5c-0.2,0-0.3-0.1-0.4-0.3C2.9,16,3,15.7,3.3,15.6l3.5-2c0.2-0.1,0.5-0.1,0.7,0.2s0.1,0.5-0.2,0.7 l-3.5,2C3.7,16.5,3.6,16.5,3.5,16.5z"/>
-                                            <path class="st0"
-                                                  d="M20.5,16.5c-0.1,0-0.2,0-0.2-0.1l-3.5-2c-0.2-0.1-0.3-0.4-0.2-0.7c0.1-0.2,0.4-0.3,0.7-0.2l3.5,2 c0.2,0.1,0.3,0.4,0.2,0.7C20.8,16.4,20.7,16.5,20.5,16.5z"/>
-                                        </g>
-                                    </svg>
-                                </span>
-                                <span class="input__label-content input__label">Email</span>
-                            </label>
-                        </span>
-                        </div>
-                        <div class="col-md-4">
-                            <span class="input">
-                                {{ form_widget(
-                                    signUpForm.fullName,
-                                    {
-                                        id: 'input-30',
-                                        attr: {
-                                        class: 'input__field'
-                                    }
-                                    }
-                                ) }}
-                                <label class="input__label" for="input-30">
-                                    <span class="icon">
-                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                             xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
-                                            <g>
-                                                <path d="M23.5,24h-23C0.2,24,0,23.8,0,23.5c0-0.1,0-2.2,1.1-4.3c0.7-1.5,3.2-2.4,6.7-3.7c0.4-0.1,0.8-0.3,1.2-0.5 v-2.4c-0.4-0.4-1.4-1.3-1.5-2.9C7.3,9.6,7.1,9.2,7,8.8C6.8,8.1,6.9,7.2,7.4,6.7c0,0,0-0.1-0.1-0.2C7,5.5,6.4,3.4,7.3,2.2 c0.3-0.4,0.8-0.7,1.4-0.7C9.3,0.3,11.3,0,12.9,0c1.9,0,4.2,0.7,4.6,2.3c0.3,1.4-0.4,3.2-0.8,4.2c0,0.1-0.1,0.2-0.1,0.2 c0.5,0.5,0.6,1.3,0.4,2c-0.1,0.4-0.3,0.8-0.5,1c-0.1,1.6-1,2.6-1.5,2.9v2.4c0.4,0.2,0.8,0.3,1.2,0.5c3.5,1.3,6,2.2,6.7,3.7 c1,2.1,1.1,4.2,1.1,4.3C24,23.8,23.8,24,23.5,24z M1,23H23c-0.1-0.7-0.3-2-0.9-3.3c-0.6-1.1-3.2-2.1-6.2-3.2 c-0.5-0.2-1-0.4-1.6-0.6c-0.2-0.1-0.3-0.3-0.3-0.5v-3c0-0.2,0.1-0.3,0.2-0.4c0,0,1.3-0.9,1.3-2.6c0-0.2,0.2-0.4,0.4-0.5 c0.1-0.1,0.3-0.6,0.2-1.1c0-0.3-0.1-0.4-0.3-0.5c-0.2-0.1-0.3-0.3-0.3-0.4c0-0.2,0.1-0.4,0.2-0.8c0.3-0.9,1-2.5,0.8-3.6 C16.3,1.7,14.9,1,12.9,1C11,1,9.6,1.5,9.5,2.1C9.4,2.3,9.2,2.4,9,2.4c-0.4,0-0.7,0.1-0.9,0.4c-0.6,0.8,0,2.7,0.3,3.5 c0.1,0.4,0.2,0.5,0.2,0.7c0,0.2-0.1,0.4-0.3,0.4C8.1,7.5,8,7.6,7.9,7.9C7.9,8.3,8,8.8,8.1,9C8.3,9,8.5,9.2,8.5,9.4 c0,1.7,1.3,2.6,1.3,2.6c0.1,0.1,0.2,0.2,0.2,0.4v3c0,0.2-0.1,0.4-0.3,0.5c-0.5,0.2-1.1,0.4-1.6,0.6c-3,1.1-5.6,2.1-6.2,3.2 C1.3,21,1.1,22.3,1,23z"/>
-                                            </g>
-                                        </svg>
-                                    </span>
-                                    <span class="input__label-content input__label">Name</span>
-                                </label>
-                            </span>
-                        </div>
-                        <div class="col-md-4">
-                            <button class="button button-block" type="submit">Sign up</button>
-                        </div>
-                    </div>
-                    {{ form_end(signUpForm) }}#}
-                </div>
-            </div>
-        </div>
-    </section>
+    {% if not hideSignUp %}
+        {% include "@Main/Default/Register/_signup.html.twig" %}
+    {% endif %}
     <!-- Signup End -->
 {% endblock %}
 
