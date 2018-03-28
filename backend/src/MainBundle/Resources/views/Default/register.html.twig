@@ -3,7 +3,7 @@
 {% extends 'MainBundle::base.html.twig' %}
 
 {% block body_content %}
-    {% set hideSignUp = app.environment == 'qa' %}
+    {% set hideSignUp = app.environment == 'prod' %}
 
     <!-- Small Landing Section Start -->
     <section>
