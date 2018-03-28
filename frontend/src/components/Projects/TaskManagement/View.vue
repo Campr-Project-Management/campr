@@ -815,7 +815,7 @@ export default {
             let itemTotal = this.itemTotal;
 
             this.task.costs.map(cost => {
-                if (cost.internal) {
+                if (cost.isInternal) {
                     internal.push({
                         id: cost.id,
                         resourceName: cost.resourceName,
