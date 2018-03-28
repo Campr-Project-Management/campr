@@ -3,12 +3,12 @@
         <!-- /// Tasks List Grid Header /// -->
         <div class="header flex flex-space-between">
             <div class="flex">
-                <h1>{{  translateText('message.project_tasks') }}</h1>
+                <h1>{{  translate('message.project_tasks') }}</h1>
             </div>
             <div class="flex flex-v-center">
-                <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{ translateText('message.view_board') }}</router-link>
-                <router-link :to="{name: 'project-task-management-edit-labels'}" class="btn-rounded btn-auto">{{ translateText('message.edit_labels') }}</router-link>
-                <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">{{ translateText('message.new_task') }}</router-link>
+                <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{ translate('message.view_board') }}</router-link>
+                <router-link :to="{name: 'project-task-management-edit-labels'}" class="btn-rounded btn-auto">{{ translate('message.edit_labels') }}</router-link>
+                <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">{{ translate('message.new_task') }}</router-link>
             </div>
         </div>
         <!-- /// End Tasks List Header /// -->
@@ -16,34 +16,46 @@
         <!-- /// Tasks Filters /// -->
         <div class="flex">
             <input-field
-                    v-model="searchString"
-                    :content="searchString"
+                    v-model="criteria.searchString"
                     type="text"
-                    v-bind:label="translateText('label.search_for_tasks')"
+                    :label="translate('label.search_for_tasks')"
                     class="search"/>
             <dropdown
                     ref="assignee"
                     :selectedValue="selectAssignee"
-                    :title="translateText('message.asignee')"
-                    :options="users"/>
+                    :title="translate('message.assignee')"
+                    :options="projectUsersForSelect"/>
             <dropdown
                     ref="statuses"
                     :selectedValue="selectStatus"
-                    :title="translateText('label.status')"
-                    :options="statusesLabel"/>
+                    :title="translate('label.status')"
+                    :options="statusesOptions"/>
             <dropdown
-                    ref="conditions"
-                    :selectedValue="selectCondition"
-                    :title="translateText('message.condition')"
-                    :options="conditions"/>
-            <a @click="filterTasks" class="btn-rounded btn-auto">{{ translateText('button.show_results') }}</a>
-            <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
+                    ref="colorStatuses"
+                    :selectedValue="selectColorStatus"
+                    :title="translate('message.condition')"
+                    :options="colorStatusesOptions"/>
+            <a @click="filterTasks" class="btn-rounded btn-auto">{{ translate('button.show_results') }}</a>
+            <a @click="clearFilters" class="btn-rounded btn-auto second-bg">{{ translate('button.clear_filters') }}</a>
         </div>
         <!-- /// End Tasks Filters /// -->
 
         <!-- /// Tasks List /// -->
         <div class="tasks">
-            <GridView></GridView>
+            <div class="grid-view">
+                <task-box
+                        user="user"
+                        :color-statuses="colorStatuses"
+                        v-for="task in tasks.items"
+                        :task="task"
+                        :key="task.id">
+                </task-box>
+            </div>
+            <pagination
+                    v-model.number="page"
+                    :number-of-pages="numberOfPages"
+                    :show-description="false"
+                    @input="onPageChange"/>
         </div>
         <!-- /// End Tasks List /// -->
     </div>
@@ -52,111 +64,109 @@
 <script>
 import InputField from '../../_common/_form-components/InputField';
 import Dropdown from '../../_common/Dropdown';
-import GridView from './GridView';
 import {mapActions, mapGetters} from 'vuex';
-import Vue from 'vue';
+import TaskBox from '../../Tasks/TaskBox';
+import Pagination from '../../_common/Pagination';
 
 export default {
+    name: 'list-grid',
     components: {
         InputField,
         Dropdown,
-        GridView,
+        TaskBox,
+        Pagination,
     },
     created() {
-        if (!this.$store.state.task.taskStatuses || this.$store.state.task.taskStatuses.length === 0) {
+        this.setFilters({clear: true});
+
+        if (!this.taskStatuses || !this.taskStatuses.length) {
             this.getTaskStatuses();
         }
+
         let project = this.$route.params.id;
-        this.getUsers(project);
-        this.getConditions();
+        this.getProjectUsers({id: project});
+        this.getColorStatuses();
+        this.getAllTasksGrid({project, page: 1});
     },
     computed: {
-        ...mapGetters({
-            taskStatuses: 'taskStatuses',
-        }),
-        statusesLabel: function() {
+        ...mapGetters([
+            'taskStatuses',
+            'allTasks',
+            'projectUsersForSelect',
+            'colorStatusesForSelect',
+            'colorStatuses',
+        ]),
+        colorStatusesOptions() {
+            return this.colorStatusesForSelect.filter((status) => status.key);
+        },
+        statusesOptions() {
             return this.taskStatuses.map(item => ({label: this.translate(item.name), key: item.id}));
+        },
+        tasks() {
+            if (_.isArray(this.allTasks)) {
+                return {
+                    totalItems: 0,
+                };
+            }
+
+            return this.allTasks;
+        },
+        numberOfPages: function() {
+            return Math.ceil(this.tasks.totalItems / this.tasksPerPage);
         },
     },
     methods: {
-        ...mapActions(['getTaskStatuses', 'getTasksByStatus', 'setFilters', 'resetTasks', 'getAllTasksGrid']),
-        translateText(text) {
-            return this.translate(text);
+        ...mapActions([
+            'getTaskStatuses',
+            'setFilters',
+            'getAllTasksGrid',
+            'getProjectUsers',
+            'getColorStatuses',
+        ]),
+        selectColorStatus(colorStatus) {
+            this.criteria.colorStatus = colorStatus;
         },
-        getUsers: function(statusId) {
-            Vue.http.get(Routing.generate('app_api_project_project_users', {id: statusId})).then((response) => {
-                this.users = response.data.items.map((item) => ({label: item.userFullName, key: item.user}));
-            }, (response) => {
-            });
+        selectAssignee(assignee) {
+            this.criteria.assignee = assignee;
         },
-        getConditions: function() {
-            Vue.http
-            .get(Routing.generate('app_api_color_status_list')).then((response) => {
-                if (response.status === 200) {
-                    this.conditions = response.data.map((item) => ({label: item.name, key: item.id}));
-                }
-            }, (response) => {
-            });
-        },
-        selectCondition: function(condition) {
-            this.conditionFilter = condition;
-        },
-        selectAssignee: function(assignee) {
-            this.assigneeFilter = assignee;
-        },
-        selectStatus: function(status) {
-            this.statusFilter = status;
+        selectStatus(status) {
+            this.criteria.status = status;
         },
         filterTasks: function() {
             const project = this.$route.params.id;
 
-            const filters = {
-                condition: this.conditionFilter ? this.conditionFilter : undefined,
-                assignee: this.assigneeFilter ? this.assigneeFilter : undefined,
-                searchString: this.searchString ? this.searchString : undefined,
-                status: this.statusFilter ? this.statusFilter : undefined,
-            };
-
-            this.setFilters(filters);
-            this.resetTasks(project);
-            this.getAllTasksGrid({project, page: 1});
+            this.page = 1;
+            this.setFilters(this.criteria);
+            this.getAllTasksGrid({project, page: this.page});
         },
         clearFilters: function() {
             const project = this.$route.params.id;
-            this.searchString = null;
-            this.conditionFilter = null;
-            this.assigneeFilter = null;
-            this.statusFilter = null;
+            this.criteria = {};
             this.$refs.assignee.resetCustomTitle();
             if (this.$refs.statuses) {
                 this.$refs.statuses.resetCustomTitle();
             }
-            this.$refs.conditions.resetCustomTitle();
+            this.page = 1;
+            this.$refs.colorStatuses.resetCustomTitle();
             this.setFilters({clear: true});
-            this.resetTasks(project);
             this.getAllTasksGrid({project, page: 1});
+        },
+        onPageChange() {
+            let project = this.$route.params.id;
+            this.getAllTasksGrid({project, page: this.page});
         },
     },
     data() {
         return {
-            count: 2,
-            users: [],
-            conditions: [],
-            conditionFilter: null,
-            asigneeFilter: null,
-            statusFilter: null,
-            searchString: null,
+            criteria: {},
+            tasksPerPage: 8,
+            page: 1,
         };
     },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-    @import '../../../css/_common';
-    @import '../../../css/page-section';
-    @import '../../../css/_variables';
-
     .vue-scrollbar__scrollbar-vertical {
         padding: 30px 10px !important;
         width: 30px !important;
