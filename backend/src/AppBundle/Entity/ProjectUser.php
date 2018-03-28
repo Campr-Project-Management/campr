@@ -709,16 +709,14 @@ class ProjectUser
     }
 
     /**
-     * Has role.
-     *
-     * @param $role
+     * @param array ...$roles
      *
      * @return bool
      */
-    public function hasProjectRole($role)
+    public function hasProjectRole(...$roles)
     {
         foreach ($this->projectRoles as $projectRole) {
-            if ($projectRole->getName() === $role) {
+            if (in_array($projectRole->getName(), $roles)) {
                 return true;
             }
         }
@@ -741,9 +739,9 @@ class ProjectUser
     }
 
     /**
-     * Remove projectDepartment.
-     *
      * @param ProjectDepartment $projectDepartment
+     *
+     * @return $this
      */
     public function removeProjectDepartment(ProjectDepartment $projectDepartment)
     {
