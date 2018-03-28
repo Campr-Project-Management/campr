@@ -270,39 +270,53 @@ const actions = {
     },
 
     getAllTasksGrid({commit}, {project, page}) {
-        let paramObject = {
+        let data = {
             params: {
                 criteria: {
                     type: 2,
                 },
                 page: page,
                 pageSize: 8,
-                isGrid: true,
             },
         };
 
-        if (state.taskFilters && state.taskFilters.status) {
-            paramObject.params.criteria.status = state.taskFilters.status;
-        }
-        if (state.taskFilters && state.taskFilters.assignee) {
-            paramObject.params.criteria.projectUser = state.taskFilters.assignee;
-        }
-        if (state.taskFilters && state.taskFilters.condition) {
-            paramObject.params.criteria.colorStatus = state.taskFilters.condition;
-        }
-        if (state.taskFilters && state.taskFilters.searchString) {
-            paramObject.params.criteria.searchString = state.taskFilters.searchString;
-        }
+        data.params.criteria = Object.assign(data.params.criteria, state.taskFilters);
+
         Vue.http
-            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), paramObject)
+            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), data)
             .then((response) => {
                 if (response.status === 200) {
                     let tasks = response.data;
                     commit(types.SET_ALL_TASKS, {tasks});
-                    // commit(types.TOGGLE_LOADER, false);
+                    commit(types.TOGGLE_LOADER, false);
                 }
             }, (response) => {
-            });
+            })
+        ;
+    },
+    getAllTasksBoard({commit}, {project, page}) {
+        let data = {
+            params: {
+                criteria: {
+                    type: 2,
+                },
+                page: page,
+                pageSize: 8,
+            },
+        };
+
+        data.params.criteria = Object.assign(data.params.criteria, state.taskFilters);
+
+        Vue.http
+            .get(Routing.generate('app_api_projects_workpackages_board', {'id': project}), data)
+            .then((response) => {
+                if (response.status === 200) {
+                    let tasks = response.data;
+                    commit(types.SET_ALL_TASKS, {tasks});
+                }
+            }, (response) => {
+            })
+        ;
     },
     /**
      * Delete subtask

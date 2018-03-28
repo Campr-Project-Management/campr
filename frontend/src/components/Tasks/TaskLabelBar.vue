@@ -25,7 +25,7 @@
     @import '../../css/_variables';
 
     .task-label-bar {
-        z-index: 99;
+        z-index: 1;
         height: 5px;
         position: absolute;
         width: 100%;
