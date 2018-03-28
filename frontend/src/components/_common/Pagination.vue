@@ -1,15 +1,21 @@
 <template>
-    <div class="flex flex-direction-reverse flex-v-center">
+    <div class="flex flex-direction-reverse flex-v-center" v-if="showDescription || numberOfPages > 1">
         <div class="pagination" v-if="numberOfPages > 1">
             <span
-                v-for="page in pagesToShow()"
-                :class="{active: (page == currentPage)}"
-                v-on:click="page && $emit('change-page', page)">
+                    v-for="page in pagesToShow()"
+                    :key="page"
+                    :class="{active: isActive(page)}"
+                    @click="onChange(page)">
                 {{ page ? page : '...' }}
             </span>
         </div>
-        <div>
-            <span class="pagination-info">{{ translateText('message.displaying') }} {{ currentPage }} {{ translateText('message.results_out_of') }} {{ numberOfPages }}</span>
+        <div v-if="showDescription">
+            <span class="pagination-info">
+                {{ translate('message.displaying') }}
+                {{ currPage }}
+                {{ translate('message.results_out_of') }}
+                {{ numberOfPages || 1 }}
+            </span>
         </div>
     </div>
 </template>
@@ -17,8 +23,14 @@
 <script>
 export default {
     props: {
+        value: {
+            type: Number,
+            required: false,
+            default: 1,
+        },
         numberOfPages: {
             type: Number,
+            default: 1,
         },
         currentPage: {
             type: Number,
@@ -29,26 +41,36 @@ export default {
                 return 5;
             },
         },
+        showDescription: {
+            type: Boolean,
+            required: false,
+            default: true,
+        },
+    },
+    computed: {
+        currPage() {
+            return Number(this.value || this.currentPage);
+        },
     },
     methods: {
-        translateText: function(text) {
-            return this.translate(text);
+        isActive(page) {
+            return this.value === Number(page);
         },
         pagesToShow() {
             const out = [];
             const half = Math.floor(this.showPages / 2);
             if (this.showPages < this.numberOfPages) {
-                if (this.currentPage === 1) {
+                if (this.currPage === 1) {
                     for (let c = 1; c <= this.showPages; c++) {
                         out.push(c);
                     }
-                } else if (this.currentPage === this.numberOfPages) {
-                    for (let c = this.currentPage; c >= (this.currentPage - this.showPages + 1); c--) {
+                } else if (this.currPage === this.numberOfPages) {
+                    for (let c = this.currPage; c >= (this.currPage - this.showPages + 1); c--) {
                         out.unshift(c);
                     }
                 } else {
-                    let start = this.currentPage - half;
-                    let end = this.currentPage + half;
+                    let start = this.currPage - half;
+                    let end = this.currPage + half;
 
                     if (end < this.showPages) {
                         start = 1;
@@ -70,7 +92,6 @@ export default {
                 }
             }
 
-
             if (this.numberOfPages && out.indexOf(1) === -1) {
                 if (out[0] > half) {
                     out.unshift(null);
@@ -87,9 +108,15 @@ export default {
 
             return out;
         },
-    },
-    created() {
-        //
+        onChange(page) {
+            page = Number(page);
+            if (page === this.currPage) {
+                return;
+            }
+
+            this.$emit('change-page', page);
+            this.$emit('input', page);
+        },
     },
     data() {
         return {

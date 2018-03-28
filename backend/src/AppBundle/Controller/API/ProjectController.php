@@ -32,7 +32,6 @@ use AppBundle\Entity\RiskStatus;
 use AppBundle\Entity\StatusReport;
 use AppBundle\Entity\StatusReportConfig;
 use AppBundle\Entity\Subteam;
-use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamInvite;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\WorkPackage;
@@ -1557,61 +1556,6 @@ class ProjectController extends ApiController
     }
 
     /**
-     * All project work packages.
-     *
-     * @Route("/{id}/work-packages", name="app_api_projects_workpackages", options={"expose"=true})
-     * @Method({"GET"})
-     *
-     * @param Request $request
-     * @param Project $project
-     *
-     * @return JsonResponse
-     */
-    public function workPackagesAction(Request $request, Project $project)
-    {
-        $criteria = $request->query->get('criteria', []);
-        $pageSize = $request->query->get('pageSize', $this->getParameter('front.per_page'));
-        $page = $request->query->get('page', 1);
-        $isGrid = $request->query->get('isGrid', false);
-
-        /** @var WorkPackageRepository $wpRepo */
-        $wpRepo = $this
-            ->getDoctrine()
-            ->getRepository(WorkPackage::class)
-        ;
-
-        if ($isGrid) {
-            $paginator = $wpRepo->createGridViewPaginator($project, $criteria);
-            $paginator->setMaxPerPage($pageSize);
-            $paginator->setCurrentPage($page);
-
-            return $this->createApiResponse(
-                [
-                    'totalItems' => $paginator->getNbResults(),
-                    'items' => iterator_to_array($paginator->getCurrentPageResults()),
-                ]
-            );
-        }
-
-        $data = [];
-        foreach ($this->getWorkPackageStatuses() as $status) {
-            $paginator = $wpRepo->createBoardViewPaginator(
-                $project,
-                array_merge(['status' => $status->getId()], $criteria)
-            );
-            $paginator->setMaxPerPage($pageSize);
-            $paginator->setCurrentPage($page);
-
-            $data[$status->getId()] = [
-                'totalItems' => $paginator->getNbResults(),
-                'items' => iterator_to_array($paginator->getCurrentPageResults()),
-            ];
-        }
-
-        return $this->createApiResponse($data);
-    }
-
-    /**
      * @Route("/{id}/subteams", name="app_api_project_subteams", options={"expose"=true})
      * @Method({"GET"})
      *
@@ -2640,17 +2584,5 @@ class ProjectController extends ApiController
         }
 
         return $this->createApiResponse($out, $status);
-    }
-
-    /**
-     * @return WorkPackageStatus[]
-     */
-    private function getWorkPackageStatuses(): array
-    {
-        return $this
-            ->getDoctrine()
-            ->getRepository(WorkPackageStatus::class)
-            ->findAll()
-        ;
     }
 }
