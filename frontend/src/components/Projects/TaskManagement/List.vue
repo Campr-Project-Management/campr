@@ -3,7 +3,7 @@
         <!-- /// Tasks List Header /// -->
         <div class="header flex flex-space-between">
             <div class="flex">
-                <h1>{{ translateText('message.project_tasks') }}</h1>
+                <h1>{{ translate('message.project_tasks') }}</h1>
                 <!--<div class="flex flex-v-center" v-if="!boardView">
                     <a class="btn-rounded btn-auto btn-empty btn-notification active">
                         <span>Open</span>
@@ -20,12 +20,12 @@
                 </div>-->
             </div>
             <div class="flex flex-v-center">
-                <router-link :to="{name: 'project-task-management-list-grid'}" class="btn-rounded btn-auto">{{ translateText('message.view_grid') }}</router-link>
+                <router-link :to="{name: 'project-task-management-list-grid'}" class="btn-rounded btn-auto">{{ translate('message.view_grid') }}</router-link>
                 <router-link
                         v-if="$can('roles.project_manager|roles.project_sponsor', project)"
                         :to="{name: 'project-task-management-edit-labels'}"
-                        class="btn-rounded btn-auto">{{ translateText('message.edit_labels') }}</router-link>
-                <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">{{ translateText('message.new_task') }}</router-link>
+                        class="btn-rounded btn-auto">{{ translate('message.edit_labels') }}</router-link>
+                <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">{{ translate('message.new_task') }}</router-link>
             </div>
         </div>
         <!-- /// End Tasks List Header /// -->
@@ -33,31 +33,44 @@
         <!-- /// Tasks Filters /// -->
         <div class="flex">
             <input-field
-                    v-model="searchString"
+                    v-model="criteria.searchString"
                     :content="searchString"
                     type="text"
-                    v-bind:label="translateText('label.search_for_tasks')"
+                    :label="translate('label.search_for_tasks')"
                     class="search"/>
             <dropdown
                     ref="assignee"
                     :selectedValue="selectAssignee"
-                    :title="translateText('message.asignee')"
-                    :options="users"/>
+                    :title="translate('message.assignee')"
+                    :options="projectUsersForSelect"/>
             <dropdown
-                    ref="conditions"
-                    :selectedValue="selectCondition"
-                    :title="translateText('message.condition')"
-                    :options="conditions"/>
+                    ref="colorStatus"
+                    :selectedValue="selectColorStatus"
+                    :title="translate('message.condition')"
+                    :options="colorStatusesOptions"/>
             <!--To be added after disscusion about milestones-->
             <!--<dropdown title="Milestone" options=""></dropdown>-->
-            <a @click="filterTasks" class="btn-rounded btn-auto">{{ translateText('button.show_results') }}</a>
-            <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
+            <a @click="filterTasks" class="btn-rounded btn-auto">{{ translate('button.show_results') }}</a>
+            <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translate('button.clear_filters') }}</a>
         </div>
         <!-- /// End Tasks Filters /// -->
 
         <!-- /// Tasks List /// -->
         <div class="tasks">
-            <BoardView></BoardView>
+            <vue-perfect-scrollbar class="categories-scroll">
+                <div class="board-view">
+                    {{ tasksByStatus }}
+                    <div class="flex">
+                        <div v-for="status in taskStatuses"
+                             :key="status.id">
+                            <board-tasks-column
+                                    :tasks="tasks[status.id] ? tasks[status.id].items : []"
+                                    :count="tasks[status.id] ? tasks[status.id].totalItems : 0"
+                                    :status="status"/>
+                        </div>
+                    </div>
+                </div>
+            </vue-perfect-scrollbar>
         </div>
         <!-- /// End Tasks List /// -->
     </div>
@@ -66,114 +79,98 @@
 <script>
 import InputField from '../../_common/_form-components/InputField';
 import Dropdown from '../../_common/Dropdown';
-import BoardView from './BoardView';
 import {mapActions, mapGetters} from 'vuex';
-import Vue from 'vue';
+import BoardTasksColumn from './BoardTasksColumn';
+import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
 export default {
+    name: 'board',
     components: {
         InputField,
         Dropdown,
-        BoardView,
+        BoardTasksColumn,
+        VuePerfectScrollbar,
     },
     created() {
-        if (!this.$store.state.task.taskStatuses || this.$store.state.task.taskStatuses.length === 0) {
+        this.setFilters({clear: true});
+
+        if (!this.taskStatuses || !this.taskStatuses.length) {
             this.getTaskStatuses();
         }
+
         let project = this.$route.params.id;
-        this.getUsers(project);
-        this.getConditions();
+        this.getProjectUsers({id: project});
+        this.getColorStatuses();
+        this.getAllTasksBoard({project, page: 1});
     },
     computed: {
         ...mapGetters([
             'taskStatuses',
-            'project',
+            'allTasks',
+            'projectUsersForSelect',
+            'colorStatusesForSelect',
+            'colorStatuses',
         ]),
-        statusesLabel() {
-            let statuses = this.taskStatuses.map(item => ({label: this.translate(item.name), key: item.id}));
-            statuses.unshift({label: 'Status', key: null});
-            return statuses;
+        colorStatusesOptions() {
+            return this.colorStatusesForSelect.filter((status) => status.key);
+        },
+        tasks() {
+            if (_.isArray(this.allTasks)) {
+                return {};
+            }
+
+            return this.allTasks;
         },
     },
     methods: {
-        ...mapActions(['getTaskStatuses', 'getTasksByStatus', 'setFilters', 'resetTasks', 'getAllTasksGrid']),
-        translateText(text) {
-            return this.translate(text);
-        },
-        getUsers: function(statusId) {
-            Vue.http
-            .get(Routing.generate('app_api_project_project_users', {id: statusId})).then((response) => {
-                if (response.status === 200) {
-                    this.users = response.data.items.map((item) => ({label: item.userFullName, key: item.user}));
-                }
-            }, (response) => {
-            });
-        },
-        getConditions: function() {
-            Vue.http
-            .get(Routing.generate('app_api_color_status_list')).then((response) => {
-                if (response.status === 200) {
-                    this.conditions = response.data.map((item) => ({label: item.name, key: item.id}));
-                }
-            }, (response) => {
-            });
-        },
-        selectCondition: function(condition) {
-            this.conditionFilter = condition;
+        ...mapActions([
+            'getTaskStatuses',
+            'setFilters',
+            'resetTasks',
+            'getAllTasksBoard',
+            'getProjectUsers',
+            'getColorStatuses',
+        ]),
+        selectColorStatus: function(colorStatus) {
+            this.criteria.colorStatus = colorStatus;
         },
         selectAssignee: function(assignee) {
-            this.assigneeFilter = assignee;
+            this.criteria.assignee = assignee;
         },
         selectStatus: function(status) {
-            this.statusFilter = status;
+            this.criteria.status = status;
         },
         filterTasks: function() {
             const project = this.$route.params.id;
 
-            const filters = {
-                condition: this.conditionFilter ? this.conditionFilter : undefined,
-                assignee: this.assigneeFilter ? this.assigneeFilter : undefined,
-                searchString: this.searchString ? this.searchString : undefined,
-                status: this.statusFilter ? this.statusFilter : undefined,
-            };
-            this.setFilters(filters);
-            this.resetTasks(project);
-            this.getAllTasksGrid({project, page: 1});
+            this.setFilters(Object.assign({}, this.criteria));
+            // this.resetTasks(project);
+            this.getAllTasksBoard({project, page: 1});
         },
         clearFilters: function() {
             const project = this.$route.params.id;
-            this.searchString = null;
-            this.conditionFilter = null;
-            this.assigneeFilter = null;
-            this.statusFilter = null;
+            this.criteria = {};
             this.$refs.assignee.resetCustomTitle();
             if (this.$refs.statuses) {
                 this.$refs.statuses.resetCustomTitle();
             }
-            this.$refs.conditions.resetCustomTitle();
+            this.$refs.colorStatus.resetCustomTitle();
             this.setFilters({clear: true});
-            this.resetTasks(project);
-            this.getAllTasksGrid({project, page: 1});
+            this.getAllTasksBoard({project, page: 1});
         },
     },
     data() {
         return {
             count: 2,
             users: [],
-            conditions: [],
-            conditionFilter: null,
-            asigneeFilter: null,
-            statusFilter: null,
-            searchString: null,
+            criteria: {
+            },
         };
     },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-    @import '../../../css/_common';
-    @import '../../../css/page-section';
     @import '../../../css/_variables';
 
     .vue-scrollbar__scrollbar-vertical {
@@ -225,6 +222,53 @@ export default {
     @media (max-width:1500px) {
         .search {
             width: auto;
+        }
+    }
+
+    .board-view {
+        padding-top: 20px;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .column {
+        margin-right: 10px;
+        width: 434px;
+    }
+
+    .column-header {
+        background: $darkColor;
+        padding: 20px;
+        margin-bottom: 10px;
+    }
+
+    .tasks-scroll {
+        margin-bottom: 10px;
+    }
+
+    .notification-balloon {
+        display: inline-block;
+        position: static;
+        margin-left: 10px;
+    }
+
+    .header .notification-balloon {
+        margin-top: 5px
+    }
+
+    .categories-scroll {
+        width: 100%;
+        padding-bottom: 30px;
+        position: relative;
+        overflow: auto;
+    }
+</style>
+
+<style lang="scss">
+    .categories-scroll {
+        .ps__scrollbar-x-rail {
+            bottom: auto !important;
+            top: 0;
         }
     }
 </style>
