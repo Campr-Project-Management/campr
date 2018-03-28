@@ -1051,32 +1051,35 @@
     </section>
     <!-- About Section End -->
 
-    <!-- Signup Section Start -->
-    <section id="signup" class="section sign-up-section">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <h2 class="text-center">
-                        Sign up for CAMPR
-                    </h2>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-8 mr-md-auto ml-md-auto">                        
-                    <p class="subtitle text-center">
-                        The project settings below are optional, but they can give us a very good insight on how Campr might help you. Based on your selections, we will send you an email with the list of modules you should use in your project.
-                    </p>
-                </div>
-            </div>
-        </div>
-    
-        <div class="container">
-            <div class="row">                    
-                <div class="col-lg-10 col-sm-12 ml-lg-auto mr-lg-auto">
-                    {{ render(url('main_register_form')) }}
+    {% set hideSignUp = app.environment == 'prod' %}
+    {% if not hideSignUp %}
+        <!-- Signup Section Start -->
+        <section id="signup" class="section sign-up-section">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center">
+                            Sign up for CAMPR
+                        </h2>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-8 mr-md-auto ml-md-auto">
+                        <p class="subtitle text-center">
+                            The project settings below are optional, but they can give us a very good insight on how Campr might help you. Based on your selections, we will send you an email with the list of modules you should use in your project.
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <!-- Signup Section End -->
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 col-sm-12 ml-lg-auto mr-lg-auto">
+                        {{ render(url('main_register_form')) }}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Signup Section End -->
+    {% endif %}
     {% endif %}
 {% endblock %}
 
