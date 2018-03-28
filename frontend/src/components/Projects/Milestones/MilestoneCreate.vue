@@ -86,11 +86,10 @@
                     <h3>{{ translateText('message.planning') }}</h3>
                     <div class="row">
                     	<div class="form-group last-form-group">
-                        	<div class="col-md-6">                            
+                        	<div class="col-md-6">
                                 <select-field
                                     v-bind:title="translateText('label.select_phase')"
                                     v-bind:options="projectPhasesForSelect"
-                                    v-if="projectPhases.items && projectPhases.items.length > 0"
                                     v-model="details.phase"
                                     v-bind:currentOption="details.phase" />
                             </div>
