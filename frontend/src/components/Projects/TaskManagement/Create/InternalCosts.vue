@@ -7,11 +7,10 @@
                 <div class="form-group">
                     <div class="col-md-6">
                         <select-field
-                            v-bind:title="label.resource"
-                            v-bind:options="resourcesForSelect"
+                            :title="label.resource"
+                            :options="resourcesForSelect"
                             :value="item.resource"
-                            v-bind:currentOption="item.selectedResource"
-                            v-on:input="onItemUpdate('resource', index, $event)" />
+                            @input="onItemUpdate('resource', index, $event)" />
                         <error
                             v-if="getValidationMessages(index, 'resource').length"
                             v-for="message in getValidationMessages(index, 'resource')"
@@ -47,7 +46,7 @@
                 <div class="form-group last-form-group">
                     <div class="col-md-6">
                         <span class="title">
-                            {{ label.internal_cost_subtotal }} <b><i class="fa fa-dollar"></i> {{ itemTotal(item) }}</b>
+                            {{ label.internal_cost_subtotal }} <b>{{ itemTotal(item) | money }}</b>
                         </span>
                     </div>
                     <div class="col-md-6">
@@ -76,7 +75,7 @@
         <div class="row">
             <div class="form-group last-form-group">                
                 <div class="col-md-4">
-                    <span class="title">{{ message.base_total }} <b><i class="fa fa-dollar"></i> {{ baseTotal }}</b></span>        
+                    <span class="title">{{ message.base_total }} <b>{{ baseTotal | money }}</b></span>
                 </div>
                 <div class="col-md-4">
                     <input-field
