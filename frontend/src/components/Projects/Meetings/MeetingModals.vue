@@ -222,7 +222,6 @@ import SelectField from '../../_common/_form-components/SelectField';
 import datepicker from '../../_common/_form-components/Datepicker';
 import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
-import VueScrollbar from 'vue2-scrollbar';
 import {mapGetters, mapActions} from 'vuex';
 import VueTimepicker from 'vue2-timepicker';
 import moment from 'moment';
@@ -244,7 +243,6 @@ export default {
         datepicker,
         CalendarIcon,
         MemberSearch,
-        VueScrollbar,
         VueTimepicker,
         moment,
         Modal,

@@ -1,7 +1,7 @@
 <template>
     <div id="app" v-bind:class="{ bg: bgRoutes.indexOf(this.$route.name) >= 0 }">
         <pulse-loader :loading="loading" :color="color" :size="size" v-show="loader"></pulse-loader>
-        <sidebar></sidebar>
+        <sidebar />
         <div class="page">
             <navigation v-bind:user="localUser"></navigation>
             <router-view></router-view>

@@ -1,65 +1,105 @@
 <template>
     <div class="dropdown">
-        <button ref="btn-dropdown" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" @click="dropdownToggle()">{{ translateText(activeTitle) }}
+        <button
+            class="btn btn-primary dropdown-toggle"
+            type="button"
+            data-toggle="dropdown"
+            @click="updateScrollbarTop()"
+        >
+            {{ translateText(activeTitle) }}
             <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu dropdown-menu-right nicescroll">
-            <li v-for="option in options">
-                <a
-                    href="javascript:void(0)"
-                    v-on:click="customTitle = option.label, selectedValue(option.key)">
-                    {{ translateText(option.label) }}
-                </a>
-            </li>
-        </ul>
+        <scrollbar v-show="options.length > 0" :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}" class="dropdown-menu dropdown-menu-right">
+            <ul ref="ul">
+                <li v-for="option in options">
+                    <a
+                        href="javascript:void(0)"
+                        v-on:click="customTitle = option.label, selectedValue(option.key)">
+                        {{ translateText(option.label) }}
+                    </a>
+                </li>
+            </ul>
+        </scrollbar>
     </div>
 </template>
 
 <script>
 import $ from 'jquery';
-import 'jquery.nicescroll/jquery.nicescroll.js';
 
 export default {
-    props: ['title', 'filter', 'options', 'item', 'selectedValue'],
+    props: {
+        title: {
+            type: String,
+            required: false,
+            default: null,
+        },
+        filter: {},
+        options: {
+            type: Array,
+            required: true,
+            default: [],
+        },
+        item: {},
+        selectedValue: {},
+        maxItems: {
+            type: Number,
+            default: 3,
+        },
+    },
     methods: {
-        translateText: function(text) {
+        translateText(text) {
             return this.translate(text);
         },
-        resetCustomTitle: function() {
+        resetCustomTitle() {
             this.customTitle = null;
         },
-        dropdownToggle: function() {
+        updateScrollbarTop() {
             let scrollTop = $(window).scrollTop();
             let elementOffset = $(this.$el).offset().top;
             let currentElementOffset = (elementOffset - scrollTop);
-
             let windowInnerHeight = window.innerHeight;
 
-            if ((windowInnerHeight - currentElementOffset) < (3 * this.dropdownItemHeight)) {
-                $(this.$el).find('.dropdown-menu').css('top', (-3 * this.dropdownItemHeight) + 'px');
+            if (windowInnerHeight - currentElementOffset < (this.scrollbarHeight + this.itemHeight)) {
+                this.scrollbarTop = -1 * this.scrollbarHeight;
             } else {
-                $(this.$el).find('.dropdown-menu').css('top', this.dropdownItemHeight + 'px');
+                this.scrollbarTop = this.itemHeight;
             }
         },
     },
     mounted() {
-        this.dropdownItemHeight = this.$refs['btn-dropdown'].clientHeight;
-        $(this.$el).find('.dropdown-menu').css('height', (3 * this.dropdownItemHeight) + 'px');
-        $(document).ready(function() {
-            $('.nicescroll').niceScroll({
-                autohidemode: false,
-            });
-        });
+        let $ul = $(this.$refs.ul);
+
+        this.itemHeight = $(this.$el).height();
+        this.marginTop = parseInt($ul.css('margin-top'), 10);
+        this.marginBottom = parseInt($ul.css('margin-bottom'), 10);
+        this.paddingTop = parseInt($ul.css('padding-top'), 10);
+        this.paddingBottom = parseInt($ul.css('padding-bottom'), 10);
+        this.scrollbarTop = this.itemHeight;
     },
-    data: function() {
+    data() {
         return {
             customTitle: null,
-            dropdownItemHeight: null,
+            itemHeight: 0,
+            paddingTop: 0,
+            paddingBottom: 0,
+            marginTop: 0,
+            marginBottom: 0,
+            scrollbarTop: 0,
         };
     },
     computed: {
-        activeTitle: function() {
+        activeTitle() {
             return this.customTitle ? this.customTitle : this.title;
+        },
+        scrollbarHeight() {
+            const itemsToShow = this.options.length < this.maxItems
+                ? this.options.length
+                : this.maxItems
+            ;
+
+            return (itemsToShow * this.itemHeight)
+                + (this.marginBottom + this.marginTop)
+                + (this.paddingBottom + this.paddingTop);
         },
     },
 };
@@ -70,10 +110,16 @@ export default {
   @import '../../css/_variables';
   @import '../../css/_mixins';
 
-  .dropdown-menu{
-      &.nicescroll{
-           max-height : 200px;
-       }
+  .dropdown {
+      .dropdown-menu {
+          position: absolute;
+
+          ul {
+              list-style: none;
+              margin: 0;
+              padding: 5px;
+          }
+      }
   }
 
   .btn-primary {
