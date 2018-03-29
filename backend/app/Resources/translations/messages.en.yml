@@ -401,6 +401,7 @@ message:
     project_currency: Project Currency
     external_costs: External Costs
     asignee: Asignee
+    assignee: Assignee
     note: Note:
     opex_capex_note: If an External Cost is not set up as CAPEX,it will automatically be set up as OPEX.
     capex: Capex
