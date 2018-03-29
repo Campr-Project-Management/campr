@@ -76,7 +76,7 @@ export default {
         },
         localUserIsAdmin() {
             return !! (this.localUser && this.localUser.roles && (
-                this.localUser.roles.indexOf('ROLE_SUPER_ADMIN') !== -1 ||
+                this.localUser.roles.indexOf('ROLE_ADMIN') !== -1 ||
                 this.localUser.roles.indexOf('ROLE_SUPER_ADMIN') !== -1
             ));
         },

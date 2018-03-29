@@ -93,6 +93,9 @@
                             <span v-bind:class="module.icon"></span>
                         </router-link>
                     </li>
+                    <li v-if="user.isAdmin" class="admin-link">
+                        <a :href="adminRoute">Admin</a>
+                    </li>
                 </ul>
             </nav>
         </scrollbar>
@@ -105,6 +108,7 @@
 
     export default {
         name: 'sidebar',
+        props: ['user'],
         created() {
             this.getSidebarInformation();
             if (!this.modules || !this.modules.length) {
@@ -165,6 +169,7 @@
                     projects: this.translate('message.projects'),
                     tasks: this.translate('message.tasks'),
                 },
+                adminRoute: Routing.generate('app_admin_dashboard'),
             };
         },
     };
@@ -259,6 +264,18 @@
                 li {
                     padding: 2px 0;
                     position: relative;
+
+                    &.admin-link {
+                        a {
+                            background: red;
+                            color: $whiteColor;
+
+                            &:hover {
+                                background: $dangerDarkColor;
+                                color: $whiteColor;
+                            }
+                        }
+                    }
 
                     .notification-balloon {
                         right: 5px;
