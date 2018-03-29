@@ -7,22 +7,23 @@
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
-            @click="dropdownToggle()"
+            @click="updateScrollbarTop()"
         >
             {{ placeholder }}
             <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu dropdown-menu-right nicescroll">
-            <li v-for="option in options">
-                <a href="javascript:void(0)" v-on:click="updateValue(option)">{{ translateText(option.label) }}</a>
-            </li>
-        </ul>
+        <scrollbar v-show="options.length > 0" :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}" class="dropdown-menu dropdown-menu-right">
+            <ul ref="ul">
+                <li v-for="option in options" :style="{height: itemHeight + 'px'}">
+                    <a href="javascript:void(0)" v-on:click="updateValue(option)">{{ translateText(option.label) }}</a>
+                </li>
+            </ul>
+        </scrollbar>
     </div>
 </template>
 
 <script>
 import $ from 'jquery';
-import 'jquery.nicescroll/jquery.nicescroll.js';
 import _ from 'lodash';
 
 export default {
@@ -45,6 +46,10 @@ export default {
         currentOption: {
             required: false,
         },
+        maxItems: {
+            type: Number,
+            default: 3,
+        },
     },
     computed: {
         placeholder() {
@@ -61,38 +66,55 @@ export default {
 
             return this.title;
         },
+        scrollbarHeight() {
+            const itemsToShow = this.options.length < this.maxItems
+                ? this.options.length
+                : this.maxItems
+            ;
+
+            return (itemsToShow * this.itemHeight)
+                + (this.marginBottom + this.marginTop)
+                + (this.paddingBottom + this.paddingTop);
+        },
     },
     methods: {
-        updateValue: function(value) {
+        updateValue(value) {
             this.$emit('input', value);
-        },
-        dropdownToggle: function() {
-            let scrollTop = $(window).scrollTop();
-            let elementOffset = $(this.$el).offset().top;
-            let currentElementOffset = (elementOffset - scrollTop);
-
-            let windowInnerHeight = window.innerHeight;
-
-            if (windowInnerHeight - currentElementOffset < 3 * this.dropdownItemHeight) {
-                $(this.$el).find('.dropdown-menu').css('top', -3 * this.dropdownItemHeight + 'px');
-            } else {
-                $(this.$el).find('.dropdown-menu').css('top', this.dropdownItemHeight + 'px');
-            }
         },
         translateText(text) {
             return this.translate(text);
         },
+        updateScrollbarTop() {
+            let scrollTop = $(window).scrollTop();
+            let elementOffset = $(this.$el).offset().top;
+            let currentElementOffset = (elementOffset - scrollTop);
+            let windowInnerHeight = window.innerHeight;
+
+            if (windowInnerHeight - currentElementOffset < (this.scrollbarHeight + this.itemHeight)) {
+                this.scrollbarTop = -1 * this.scrollbarHeight;
+            } else {
+                this.scrollbarTop = this.itemHeight;
+            }
+        },
     },
     mounted() {
-        this.dropdownItemHeight = this.$refs['btn-dropdown'].clientHeight;
-        $(this.$el).find('.dropdown-menu').css('height', 3 * this.dropdownItemHeight + 'px');
-        $(this.$el).find('.nicescroll').niceScroll({
-            autohidemode: false,
-        });
+        let $ul = $(this.$refs.ul);
+
+        this.itemHeight = $(this.$el).height();
+        this.marginTop = parseInt($ul.css('margin-top'), 10);
+        this.marginBottom = parseInt($ul.css('margin-bottom'), 10);
+        this.paddingTop = parseInt($ul.css('padding-top'), 10);
+        this.paddingBottom = parseInt($ul.css('padding-bottom'), 10);
+        this.scrollbarTop = this.itemHeight;
     },
     data() {
         return {
-            dropdownItemHeight: null,
+            itemHeight: 0,
+            paddingTop: 0,
+            paddingBottom: 0,
+            marginTop: 0,
+            marginBottom: 0,
+            scrollbarTop: 0,
         };
     },
 };
@@ -103,10 +125,16 @@ export default {
     @import '../../../css/_variables.scss';
     @import '../../../css/_mixins.scss';
 
-    .dropdown-menu{
-        &.nicescroll{
-            max-height : 200px;
-         }
+    .dropdown {
+        .dropdown-menu {
+            position: absolute;
+
+            ul {
+                list-style: none;
+                margin: 0;
+                padding: 5px;
+            }
+        }
     }
 
     .btn-primary {
