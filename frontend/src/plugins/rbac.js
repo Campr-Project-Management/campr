@@ -95,7 +95,7 @@ function isGranted(role, user, subject) {
         return false;
     }
 
-    if (user.roles.indexOf('ROLE_SUPER_ADMIN') >= 0) {
+    if (user.roles.indexOf('ROLE_SUPER_ADMIN') >= 0 || user.roles.indexOf('ROLE_ADMIN') >= 0) {
         return true;
     }
 
