@@ -71,12 +71,11 @@ class ProjectVoter extends Voter
             return false;
         }
 
+        if (count(array_intersect([User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN], $user->getRoles()))) {
+            return true;
+        }
+
         switch ($attribute) {
-            case self::CREATE:
-                return 0 < count(array_intersect(
-                    [User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN],
-                    $user->getRoles()
-                ));
             case self::VIEW:
                 return $this->canView($subject, $user);
             case self::EDIT:
