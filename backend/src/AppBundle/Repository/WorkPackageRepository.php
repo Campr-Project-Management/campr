@@ -936,6 +936,7 @@ class WorkPackageRepository extends BaseRepository
      */
     private function applyCriteria(QueryBuilder $qb, array $criteria = [])
     {
+        $expr = $qb->expr();
         if (isset($criteria['phase'])) {
             $qb
                 ->andWhere('o.phase = :phase')
@@ -950,11 +951,8 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
-        if (isset($criteria['searchString'])) {
-            $qb
-                ->andWhere('o.name LIKE :searchString')
-                ->setParameter('searchString', '%'.$criteria['searchString'].'%')
-            ;
+        if (!empty($criteria['searchString'])) {
+            $qb->andWhere($expr->like('o.name', $expr->literal(sprintf('%%%s%%', $criteria['searchString']))));
         }
 
         if (isset($criteria['type'])) {
@@ -971,14 +969,14 @@ class WorkPackageRepository extends BaseRepository
             }
         }
 
-        if (isset($criteria['projectUser'])) {
+        if (isset($criteria['assignee'])) {
             $qb
-                ->andWhere('o.responsibility = :projectUser')
-                ->setParameter('projectUser', $criteria['projectUser'])
+                ->andWhere('o.responsibility = :assignee')
+                ->setParameter('assignee', $criteria['assignee'])
             ;
         }
 
-        if (isset($criteria['colorStatus'])) {
+        if (!empty($criteria['colorStatus'])) {
             $qb
                 ->andWhere('o.colorStatus = :colorStatus')
                 ->setParameter('colorStatus', $criteria['colorStatus'])

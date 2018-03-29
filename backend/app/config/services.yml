@@ -151,6 +151,12 @@ services:
         tags:
             - { name: app.repository, class: AppBundle\Entity\WorkPackage }
 
+    app.repository.work_package_status:
+        class: AppBundle\Repository\WorkPackageStatusRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\WorkPackageStatus }
+
     app.repository.rasci:
         class: AppBundle\Repository\RasciRepository
         arguments: ~
