@@ -324,7 +324,7 @@ class ProjectController extends ApiController
         $contract->setProject($project);
 
         if (!$this->isGranted(ProjectVoter::EDIT, $project)) {
-            return $this->createApiAccessDeniedResponse();
+            throw $this->createAccessDeniedException();
         }
 
         $form = $this->createForm(ContractCreateType::class, $contract, ['csrf_protection' => false]);
