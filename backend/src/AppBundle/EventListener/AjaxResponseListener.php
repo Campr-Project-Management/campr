@@ -20,6 +20,7 @@ class AjaxResponseListener
                 Response::HTTP_NO_CONTENT,
                 Response::HTTP_BAD_REQUEST,
                 Response::HTTP_UNAUTHORIZED,
+                Response::HTTP_FORBIDDEN,
             ];
             if ($range2xx || in_array($response->getStatusCode(), $miscAllowed, true)) {
                 if ($response instanceof JsonResponse) {
