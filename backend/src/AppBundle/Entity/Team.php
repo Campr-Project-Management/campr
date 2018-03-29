@@ -175,7 +175,7 @@ class Team
      *
      * @return Team
      */
-    public function setId($id): Team
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -195,7 +195,7 @@ class Team
      *
      * @return Team
      */
-    public function setUser(User $user = null): Team
+    public function setUser(User $user = null): self
     {
         $this->user = $user;
 
@@ -209,7 +209,7 @@ class Team
      *
      * @return Team
      */
-    public function setName($name): Team
+    public function setName($name): self
     {
         $this->name = $name;
 
@@ -233,7 +233,7 @@ class Team
      *
      * @return Team
      */
-    public function setSlug($slug): Team
+    public function setSlug($slug): self
     {
         $this->slug = $slug;
 
@@ -263,7 +263,7 @@ class Team
      *
      * @return Team
      */
-    public function setDescription($description): Team
+    public function setDescription($description): self
     {
         $this->description = $description;
 
@@ -337,7 +337,7 @@ class Team
      *
      * @return Team
      */
-    public function setCreatedAt(\DateTime $createdAt): Team
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
 
@@ -361,7 +361,7 @@ class Team
      *
      * @return Team
      */
-    public function addTeamMember(TeamMember $teamMember): Team
+    public function addTeamMember(TeamMember $teamMember): self
     {
         $this->teamMembers[] = $teamMember;
 
@@ -375,7 +375,7 @@ class Team
      *
      * @return Team
      */
-    public function removeTeamMember(TeamMember $teamMember): Team
+    public function removeTeamMember(TeamMember $teamMember): self
     {
         $this->teamMembers->removeElement($teamMember);
 
@@ -469,7 +469,7 @@ class Team
      *
      * @return Team
      */
-    public function setUpdatedAt(\DateTime $updatedAt = null): Team
+    public function setUpdatedAt(\DateTime $updatedAt = null): self
     {
         $this->updatedAt = $updatedAt;
 
@@ -570,11 +570,21 @@ class Team
 
     /**
      * @param bool $available
+     *
+     * @return $this
      */
     public function setAvailable($available)
     {
         $this->available = $available;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEnvName(): string
+    {
+        return str_replace('-', '_', $this->getSlug());
     }
 }
