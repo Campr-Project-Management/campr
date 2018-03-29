@@ -87,6 +87,7 @@ export default {
     components: {
         InputField,
         Dropdown,
+        BoardTasksColumn,
     },
     created() {
         this.setFilters({clear: true});
