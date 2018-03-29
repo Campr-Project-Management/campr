@@ -12,6 +12,7 @@ use AppBundle\Event\WorkPackageEvent;
 use AppBundle\Form\WorkPackage\ApiCreateType;
 use AppBundle\Form\WorkPackage\MilestoneType;
 use AppBundle\Form\WorkPackage\PhaseType;
+use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\WorkPackageVoter;
 use AppBundle\Form\Assignment\BaseCreateType as AssignmentCreateType;
 use AppBundle\Form\Comment\CreateType as CommentCreateType;
@@ -45,7 +46,9 @@ class WorkPackageController extends ApiController
     {
         $filters = $request->query->all();
         $user = $this->getUser();
-        $wpRepo = $this->getDoctrine()->getManager()->getRepository(WorkPackage::class);
+
+        /** @var WorkPackageRepository $wpRepo */
+        $wpRepo = $this->get('app.repository.work_package');
 
         if (isset($filters['page'])) {
             $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
