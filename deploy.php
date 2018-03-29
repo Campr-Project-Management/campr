@@ -259,14 +259,21 @@ task('hivebot:deploy-whois', function () {
         runLocally('git config --get user.name')
     ));
 });
+task('hivebot:branch', function () {
+    if (!empty(input()->getOption('revision'))) {
+        set('hivebotBranch', input()->getOption('revision'));
+    } else {
+        set('hivebotBranch', get('branch'));
+    }
+});
 task('hivebot:deploy-start', function () {
-    run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"started\", \"env\":\"{{env}}\", \"branch\":\"{{branch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\"}" https://hive.trisoft.ro/api/deploy');
+    run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"started\", \"env\":\"{{env}}\", \"branch\":\"{{hivebotBranch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\"}" https://hive.trisoft.ro/api/deploy');
 });
 task('hivebot:deploy-failed', function () {
-    run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"failed\", \"env\":\"{{env}}\", \"branch\":\"{{branch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\"}" https://hive.trisoft.ro/api/deploy');
+    run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"failed\", \"env\":\"{{env}}\", \"branch\":\"{{hivebotBranch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\"}" https://hive.trisoft.ro/api/deploy');
 });
 task('hivebot:deploy-success', function () {
-    run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"success\", \"env\":\"{{env}}\", \"branch\":\"{{branch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\", \"in\":\"{{runTime}}\"}" https://hive.trisoft.ro/api/deploy');
+    run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"success\", \"env\":\"{{env}}\", \"branch\":\"{{hivebotBranch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\", \"in\":\"{{runTime}}\"}" https://hive.trisoft.ro/api/deploy');
 });
 task('run:start-time', function () {
     set('startTime', time());
@@ -288,6 +295,7 @@ task('onEnd', function () {
 // Set flows
 task('deploy', [
     'hivebot:deploy-whois',
+    'hivebot:branch',
     'hivebot:deploy-start',
     'deploy:prepare',
     'server:provision',
