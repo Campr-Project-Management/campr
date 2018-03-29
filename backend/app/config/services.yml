@@ -169,6 +169,12 @@ services:
         tags:
             - { name: app.repository, class: AppBundle\Entity\ProjectUser }
 
+    app.repository.team:
+        class: AppBundle\Repository\TeamRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Team }
+
 ### MENU BUILDER ###
     app.admin.menu.builder:
         class: AppBundle\Menu\MenuBuilder
