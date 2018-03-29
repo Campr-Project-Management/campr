@@ -1,33 +1,62 @@
 <template>
     <div>
         <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" @click="dropdownToggle()" ref="btn-dropdown">
+            <button
+                class="btn btn-primary dropdown-toggle"
+                type="button"
+                data-toggle="dropdown"
+                @click="updateScrollbarTop()"
+                ref="btn-dropdown"
+            >
                 {{ title }}
                 <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu dropdown-menu-right nicescroll">
-                <li v-for="(option, index) in processedOptions" :key="index">
-                    <a href="javascript:void(0)" @click="updateValue(option)">
-                        {{ option.label }}
-                    </a>
-                </li>
-            </ul>
+            <scrollbar v-show="processedOptions.length !== 0" :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}" class="dropdown-menu dropdown-menu-right">
+                <ul ref="ul">
+                    <li v-for="(option, index) in processedOptions" :key="index">
+                        <a href="javascript:void(0)" @click="updateValue(option)">
+                            {{ option.label }}
+                        </a>
+                    </li>
+                </ul>
+            </scrollbar>
         </div>
-        <div class="multiselect-content nicescroll" ref="multiselect-content">
-            <p v-for="(option, index) in selectedOptions" :key="index" class="multiselect-option">
-                {{ option.label }}
-                <a @click="removeSelectedOption(option)"> <i class="fa fa-times"></i></a>
-            </p>
-        </div>
+        <scrollbar :style="{height: (3 * itemHeight) + 'px'}" class="multiselect-content">
+            <div>
+                <p v-for="(option, index) in selectedOptions" :key="index" class="multiselect-option">
+                    {{ option.label }}
+                    <a @click="removeSelectedOption(option)"> <i class="fa fa-times"></i></a>
+                </p>
+            </div>
+        </scrollbar>
     </div>
 </template>
 
 <script>
 import $ from 'jquery';
-import 'jquery.nicescroll/jquery.nicescroll.js';
 
 export default {
-    props: ['title', 'options', 'selectedOptions'],
+    props: {
+        title: {
+            type: String,
+            required: false,
+            default: null,
+        },
+        options: {
+            type: Array,
+            required: true,
+            default: [],
+        },
+        selectedOptions: {
+            type: Array,
+            required: true,
+            default: [],
+        },
+        maxItems: {
+            type: Number,
+            default: 3,
+        },
+    },
     computed: {
         processedOptions() {
             if (!this.selectedOptions || !this.options.length) {
@@ -37,6 +66,16 @@ export default {
             let selectedOptions = new Set(this.selectedOptions);
             return [...new Set([...this.options].filter(option => !selectedOptions.has(option)))];
         },
+        scrollbarHeight() {
+            const itemsToShow = this.processedOptions.length < this.maxItems
+                ? this.processedOptions.length
+                : this.maxItems
+            ;
+
+            return (itemsToShow * this.itemHeight)
+                + (this.marginBottom + this.marginTop)
+                + (this.paddingBottom + this.paddingTop);
+        },
     },
     methods: {
         updateValue(value) {
@@ -45,39 +84,37 @@ export default {
         removeSelectedOption(value) {
             this.$emit('input', this.selectedOptions.filter(option => option.key !== value.key));
         },
-        dropdownToggle() {
+        updateScrollbarTop() {
             let scrollTop = $(window).scrollTop();
             let elementOffset = $(this.$el).offset().top;
             let currentElementOffset = (elementOffset - scrollTop);
-
             let windowInnerHeight = window.innerHeight;
 
-            if (windowInnerHeight - currentElementOffset < 3*this.dropdownItemHeight) {
-                $(this.$el).find('.dropdown-menu').css('top', -3*this.dropdownItemHeight + 'px');
+            if (windowInnerHeight - currentElementOffset < (this.scrollbarHeight + this.itemHeight)) {
+                this.scrollbarTop = -1 * this.scrollbarHeight;
             } else {
-                $(this.$el).find('.dropdown-menu').css('top', this.dropdownItemHeight + 'px');
+                this.scrollbarTop = this.itemHeight;
             }
-        },
-        setDropdownMenuHeight() {
-            $(this.$el).find('.dropdown-menu').css('height', 3*this.dropdownItemHeight + 'px');
-            $(this.$el).find('.multiselect-content').css('height', 3*this.multiSelectItemHeight + 'px');
-        },
-        addNiceSCrollEvent() {
-            $(document).ready(() => {
-                $('.nicescroll').niceScroll({
-                    autohidemode: false,
-                });
-            });
         },
     },
     mounted() {
-        this.setDropdownMenuHeight();
-        this.addNiceSCrollEvent();
+        let $ul = $(this.$refs.ul);
+
+        this.itemHeight = $(this.$el).height();
+        this.marginTop = parseInt($ul.css('margin-top'), 10);
+        this.marginBottom = parseInt($ul.css('margin-bottom'), 10);
+        this.paddingTop = parseInt($ul.css('padding-top'), 10);
+        this.paddingBottom = parseInt($ul.css('padding-bottom'), 10);
+        this.scrollbarTop = this.itemHeight;
     },
     data() {
         return {
-            dropdownItemHeight: 42,
-            multiSelectItemHeight: 42,
+            itemHeight: 0,
+            paddingTop: 0,
+            paddingBottom: 0,
+            marginTop: 0,
+            marginBottom: 0,
+            scrollbarTop: 0,
         };
     },
 };
@@ -88,16 +125,16 @@ export default {
     @import '../../../css/_variables.scss';
     @import '../../../css/_mixins.scss';
 
-    .dropdown-menu{
-        &.nicescroll{
-             max-height : 200px;
-         }
-    }
+    .dropdown {
+        .dropdown-menu {
+            position: absolute;
 
-    .multiselect-content{
-        &.nicescroll{
-             max-height : 200px;
-         }
+            ul {
+                list-style: none;
+                margin: 0;
+                padding: 5px;
+            }
+        }
     }
 
     .btn-primary {
