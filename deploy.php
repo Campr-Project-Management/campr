@@ -204,12 +204,7 @@ task('deploy:assetic:dump', function () {
     run('{{symfony_console}} assetic:dump {{symfony_console_options}}');
 })->desc('Dump assets');
 task('project:supervisor:restart', function () {
-    run('sudo service supervisor stop');
-    run('sudo systemctl daemon-reload');
-    // Sometimes supervisor can have a mind of it's own for some reason, and therefore have to murder it!
-    run('ps aux | grep supervisord | awk \'{{ print $2 }}\' | xargs -l1 sudo kill -9');
-    sleep(2);
-    run('sudo service supervisor start');
+    run('if [ ! "`sudo supervisorctl status | grep \'no\'`" ]; then sudo supervisorctl update; sudo supervisorctl status; else sudo service supervisor start; sudo supervisorctl status; fi');
 });
 task('project:apache:restart', function () {
     run('sudo service apache2 restart');
