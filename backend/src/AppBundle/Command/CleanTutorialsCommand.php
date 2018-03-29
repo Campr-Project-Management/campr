@@ -69,7 +69,7 @@ class CleanTutorialsCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
         foreach ($tutorials as $tutorial) {
             $em->remove($tutorial);
-            //            $em->flush();
+            $em->flush();
 
             $progress->advance(1);
         }
