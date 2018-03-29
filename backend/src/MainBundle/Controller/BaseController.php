@@ -65,17 +65,4 @@ abstract class BaseController extends Controller
 
         return new JsonResponse($serializedData, $statusCode);
     }
-
-    protected function createApiAccessDeniedResponse(array $messages = [])
-    {
-        if (!$messages) {
-            $messages = [
-                $this
-                    ->get('translator')
-                    ->trans('message.access_denied', [], 'messages'),
-            ];
-        }
-
-        return $this->createApiResponse($messages, Response::HTTP_FORBIDDEN);
-    }
 }
