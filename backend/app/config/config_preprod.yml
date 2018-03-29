@@ -2,14 +2,16 @@ imports:
     - { resource: config.yml }
     - { resource: bundles/nelmio_cors.yml }
 
+parameters:
+    database_name: campr_preprod
+    database_password: campr
+    domain: preprod.campr.biz
+
 #framework:
 #    validation:
 #        cache: validator.mapping.cache.doctrine.apc
 #    serializer:
 #        cache: serializer.mapping.cache.doctrine.apc
-
-parameters:
-    database_password: campr
 
 doctrine:
     orm:

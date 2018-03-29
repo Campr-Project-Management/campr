@@ -1,6 +1,9 @@
 imports:
     - { resource: config_dev.yml }
-    - { resource: parameters_test.yml }
+
+parameters:
+    database_password: campr
+    domain: test.campr.biz
 
 framework:
     router:

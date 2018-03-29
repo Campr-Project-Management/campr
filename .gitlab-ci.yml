@@ -6,9 +6,9 @@ test:phpunit:
   stage: test
   script:
     - export SYMFONY_ENV=test
+    - export SYMFONY__DATABASE_NAME=$CI_RUNNER_ID
     - rm -rf var/cache/*
     - wget https://getcomposer.org/composer.phar
-    - cp backend/app/config/parameters_test.yml.dist backend/app/config/parameters_test.yml
     - php composer.phar install --quiet --prefer-dist --no-interaction
     - cp phpunit.xml.dist phpunit.xml
     - rm -rf web/uploads/tests
@@ -21,13 +21,14 @@ test:phpunit:
     - bin/console cache:clear --env=test
     - backend/vendor/bin/phpunit -c . backend/src
     - rm -rf backend/src/AppBundle/Tests/Resources/files/
+    - bin/console doctrine:database:drop --if-exists --force --env=test
 
 deploy_qa:
   stage: deploy
   script:
-    - bin/dep deploy qa-local --revision=$CI_COMMIT_REF_NAME -vvv
+    - bin/dep deploy qa-local --revision=$CI_COMMIT_SHA -vvv
   environment:
-    name: qa/$CI_COMMIT_REF_NAME
+    name: qa/$CI_COMMIT_SHA
     url: https://qa.campr.biz
   when: manual
   #only:
