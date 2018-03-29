@@ -1,6 +1,9 @@
 imports:
     - { resource: config.yml }
 
+parameters:
+    database_name: campr
+
 framework:
     router:
         resource: "%kernel.root_dir%/config/routing_dev.yml"
