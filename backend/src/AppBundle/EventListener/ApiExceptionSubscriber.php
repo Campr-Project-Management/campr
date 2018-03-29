@@ -16,12 +16,9 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
 {
     private $container;
 
-    private $debug;
-
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->debug = $container->getParameter('kernel.debug');
     }
 
     public function onKernelException(GetResponseForExceptionEvent $event)
@@ -57,11 +54,6 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
             return;
         }
 
-        // on api calls we want to see the errors during development
-        if ($this->debug) {
-            return;
-        }
-
         /** @var HttpExceptionInterface $e */
         $exception = $event->getException();
 
@@ -74,13 +66,14 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
         } else {
             $errorCode = 500;
             $errorMessage = 'Something went terribly wrong.';
-            $errorMessage = $exception->getTraceAsString();
         }
 
         $data = [
-            'messages' => isset(Response::$statusTexts[$errorCode])
-                ? Response::$statusTexts[$errorCode]
-                : ($errorMessage ?? 'Unknown status code'),
+            'messages' => [
+                isset(Response::$statusTexts[$errorCode])
+                    ? Response::$statusTexts[$errorCode]
+                    : ($errorMessage ?? 'Unknown status code'),
+            ],
         ];
 
         $response = new JsonResponse(
