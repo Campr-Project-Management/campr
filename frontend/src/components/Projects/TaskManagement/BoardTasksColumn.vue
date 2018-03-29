@@ -3,7 +3,7 @@
         <div class="column-header flex flex-v-center flex-space-between">
             <span>{{ translate(status.name) }}</span>
             <div class="flex">
-                <span class="notification-balloon">{{ totalCount }}</span>
+                <span class="notification-balloon">{{ count }}</span>
                 <span class="notification-balloon second-bg">+</span>
             </div>
         </div>
@@ -31,7 +31,7 @@ export default {
             type: Array,
             required: true,
         },
-        totalCount: {
+        count: {
             type: Number,
             required: true,
             default: 0,
@@ -44,7 +44,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    @import '../../../css/_common';
     @import '../../../css/page-section';
     @import '../../../css/_variables';
 
