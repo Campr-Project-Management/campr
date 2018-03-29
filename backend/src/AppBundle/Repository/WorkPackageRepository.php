@@ -931,6 +931,25 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
+     * @param \DateTime $date
+     *
+     * @return array
+     */
+    public function findAllCreatedBefore(\DateTime $date)
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb = $qb
+            ->where('o.type = :type and o.createdAt <= :createdAt')
+            ->setParameter('type', WorkPackage::TYPE_TUTORIAL)
+            ->setParameter('createdAt', $date)
+            ->getQuery()
+        ;
+
+        return $qb->getResult();
+    }
+
+    /**
      * @param QueryBuilder $qb
      * @param array        $criteria
      */

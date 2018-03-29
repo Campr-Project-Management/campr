@@ -5,4 +5,5 @@ MAILTO=""
 # cron for root user
 #
 */1 * * * * root /usr/bin/php /var/www/qa.campr.biz/current/bin/console automailer:spool:send >> /var/www/qa.campr.biz/current/var/logs/automailer.log
+0 */1 * * * root /usr/bin/php /var/www/qa.campr.biz/current/bin/console app:workspace:clean:tutorial --days=5 --master >> /var/www/qa.campr.biz/current/var/logs/clean_tutorials.log
 0 */12 * * * root /usr/bin/php /var/www/qa.campr.biz/current/bin/dep --file=/var/www/qa.campr.biz/current/deploy.php project:backup qa-local -vvv >> /var/www/qa.campr.biz/current/var/logs/project_backup.log
