@@ -2,15 +2,18 @@ imports:
     - { resource: config.yml }
     - { resource: bundles/nelmio_cors.yml }
 
+parameters:
+    database_name: campr
+    database_password: campr
+    domain: campr.biz
+    router.request_context.scheme: https
+    show_tracking_code: true
+
 #framework:
 #    validation:
 #        cache: validator.mapping.cache.doctrine.apc
 #    serializer:
 #        cache: serializer.mapping.cache.doctrine.apc
-
-parameters:
-    database_password: campr
-    show_tracking_code: true
 
 doctrine:
     orm:
