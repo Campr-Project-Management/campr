@@ -6,9 +6,9 @@ test:phpunit:
   stage: test
   script:
     - export SYMFONY_ENV=test
+    - export SYMFONY__DATABASE_NAME=campr_runner_$CI_RUNNER_ID
     - rm -rf var/cache/*
     - wget https://getcomposer.org/composer.phar
-    - cp backend/app/config/parameters_test.yml.dist backend/app/config/parameters_test.yml
     - php composer.phar install --quiet --prefer-dist --no-interaction
     - cp phpunit.xml.dist phpunit.xml
     - rm -rf web/uploads/tests
@@ -21,20 +21,15 @@ test:phpunit:
     - bin/console cache:clear --env=test
     - backend/vendor/bin/phpunit -c . backend/src
     - rm -rf backend/src/AppBundle/Tests/Resources/files/
+    - bin/console doctrine:database:drop --if-exists --force --env=test
 
-deploy_review:
+deploy_qa:
   stage: deploy
   script:
-    - echo "Deploy a review app"
-    - export SYMFONY_ENV=qa
-    - wget https://getcomposer.org/composer.phar
-    - cp backend/app/config/parameters_qa.yml.dist backend/app/config/parameters_qa.yml
-    - php composer.phar install --quiet --prefer-dist --no-interaction
-    - bin/console cache:clear --env=qa
-    - cp -r . /var/www/$CI_COMMIT_REF_SLUG.qa.campr.biz/current
+    - sudo bin/dep deploy qa-local --revision=$CI_COMMIT_SHA -vvv
   environment:
-    name: review/$CI_COMMIT_REF_NAME
-    url: https://$CI_ENVIRONMENT_SLUG.qa.campr.biz
+    name: qa/$CI_COMMIT_SHA
+    url: https://qa.campr.biz
   when: manual
   #only:
   #  - branches

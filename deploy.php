@@ -204,12 +204,7 @@ task('deploy:assetic:dump', function () {
     run('{{symfony_console}} assetic:dump {{symfony_console_options}}');
 })->desc('Dump assets');
 task('project:supervisor:restart', function () {
-    run('sudo service supervisor stop');
-    run('sudo systemctl daemon-reload');
-    // Sometimes supervisor can have a mind of it's own for some reason, and therefore have to murder it!
-    run('ps aux | grep supervisord | awk \'{{ print $2 }}\' | xargs -l1 sudo kill -9');
-    sleep(2);
-    run('sudo service supervisor start');
+    run('if [ ! "`sudo supervisorctl status | grep \'no\'`" ]; then sudo supervisorctl update; sudo supervisorctl status; else sudo service supervisor start; sudo supervisorctl status; fi');
 });
 task('project:apache:restart', function () {
     run('sudo service apache2 restart');
@@ -225,7 +220,7 @@ task('project:ln-console-env', function () {
     run('cd {{release_path}}/backend && rm -rf app/env.php && ln -s env/env_{{env}}.php app/env.php');
 });
 task('project:copy-parameters', function () {
-    run('cp {{release_path}}/backend/app/config/parameters_{{env}}.yml.dist {{release_path}}/backend/app/config/parameters.yml');
+    run('cp {{release_path}}/backend/app/config/parameters.yml.dist {{release_path}}/backend/app/config/parameters.yml');
 });
 task('project:enable-cron', function () {
     run('sudo rm -rf /etc/cron.d/{{cron_domain}} && sudo cp {{release_path}}/config/cron/{{env}} /etc/cron.d/{{cron_domain}} && sudo service cron restart');
@@ -256,7 +251,7 @@ task('server:provision', function () {
     }
 });
 task('project:build:frontend_and_ssr', function () {
-    run("echo -ne '>cd {{release_path}}/frontend && yarn install --check-files && yarn run build>cd {{release_path}}/ssr && yarn install --check-files && yarn run build' | {{bin/rush}} -D '>' {} -e");
+    run("echo '>cd {{release_path}}/frontend && yarn install --check-files && yarn run build>cd {{release_path}}/ssr && yarn install --check-files && yarn run build' | {{bin/rush}} -D '>' {} -e");
 });
 task('hivebot:deploy-whois', function () {
     set('localUser', sprintf(
@@ -264,14 +259,21 @@ task('hivebot:deploy-whois', function () {
         runLocally('git config --get user.name')
     ));
 });
+task('hivebot:branch', function () {
+    if (!empty(input()->getOption('revision'))) {
+        set('hivebotBranch', input()->getOption('revision'));
+    } else {
+        set('hivebotBranch', get('branch'));
+    }
+});
 task('hivebot:deploy-start', function () {
-    run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"started\", \"env\":\"{{env}}\", \"branch\":\"{{branch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\"}" https://hive.trisoft.ro/api/deploy');
+    run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"started\", \"env\":\"{{env}}\", \"branch\":\"{{hivebotBranch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\"}" https://hive.trisoft.ro/api/deploy');
 });
 task('hivebot:deploy-failed', function () {
-    run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"failed\", \"env\":\"{{env}}\", \"branch\":\"{{branch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\"}" https://hive.trisoft.ro/api/deploy');
+    run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"failed\", \"env\":\"{{env}}\", \"branch\":\"{{hivebotBranch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\"}" https://hive.trisoft.ro/api/deploy');
 });
 task('hivebot:deploy-success', function () {
-    run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"success\", \"env\":\"{{env}}\", \"branch\":\"{{branch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\", \"in\":\"{{runTime}}\"}" https://hive.trisoft.ro/api/deploy');
+    run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"success\", \"env\":\"{{env}}\", \"branch\":\"{{hivebotBranch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\", \"in\":\"{{runTime}}\"}" https://hive.trisoft.ro/api/deploy');
 });
 task('run:start-time', function () {
     set('startTime', time());
@@ -293,6 +295,7 @@ task('onEnd', function () {
 // Set flows
 task('deploy', [
     'hivebot:deploy-whois',
+    'hivebot:branch',
     'hivebot:deploy-start',
     'deploy:prepare',
     'server:provision',

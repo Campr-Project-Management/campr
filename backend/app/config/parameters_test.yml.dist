@@ -1,5 +1,0 @@
-parameters:
-    database_name:      testcampr
-    database_user:      root
-    database_password:  campr
-    domain: test.campr.biz
