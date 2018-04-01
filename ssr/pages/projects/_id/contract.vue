@@ -182,6 +182,19 @@
                 </div>
                 <!-- /// End Project External Costs /// -->
             </div>
+
+            <div class="hr small"></div>
+
+            <div class="row margintop40">
+                <div class="half half-left">
+                    <h3>{{ translateText('message.project_manager') }}</h3>
+                </div>
+                <div class="half half-right">
+                    <h3>{{ translateText('message.project_sponsor') }}</h3>
+                </div>
+
+                <div class="clear-fix"></div>
+            </div>
         </div>
     </div>
 </template>
@@ -308,6 +321,28 @@ export default {
 
 <style scoped lang="scss">
     @import '../../../../frontend/src/css/page-section';
+
+    .half-left {
+        float: left;
+    }
+    .half-right {
+        float: right;
+    }
+    .half {
+        width: 45%;
+        text-align: center;
+        height: 160px;
+        line-height: 40px;
+        border-bottom: 1px solid #191E37;
+
+        h3 {
+            height: 40px;
+            line-height: 40px;
+            margin-top: 0;
+            margin-bottom: 0;
+            border-bottom: 1px solid #191E37;
+        }
+    }
 
     .page-section {
         .header {
