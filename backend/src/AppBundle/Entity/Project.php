@@ -2002,7 +2002,7 @@ class Project
     /**
      * Get projectModules.
      *
-     * @return ArrayCollection
+     * @return ArrayCollection|ProjectModule[]
      */
     public function getProjectModules()
     {
@@ -2019,6 +2019,9 @@ class Project
     {
         return $this
             ->projectModules
+            ->filter(function (ProjectModule $projectModule) {
+                return $projectModule->getIsEnabled();
+            })
             ->map(function (ProjectModule $projectModule) {
                 return $projectModule->getModule();
             })
