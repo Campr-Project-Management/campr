@@ -22,6 +22,7 @@
 import SmallTaskBox from '../../Dashboard/SmallTaskBox';
 
 export default {
+    name: 'board-tasks-column',
     props: {
         status: {
             type: Object,

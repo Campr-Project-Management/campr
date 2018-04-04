@@ -688,8 +688,7 @@ hr {
     .task-box-wrapper,
     .project-box-wrapper {
         width: 25%;
-        padding-right: 15px;
-        padding-left: 15px;
+        padding: 15px;
     }
 
     @media (max-width: 1500px) {
@@ -1125,4 +1124,8 @@ hr {
     color: $lighterColor;
     font-weight: bold;
     padding: 1em;
+}
+
+.no-results {
+    color: $grayColor;
 }

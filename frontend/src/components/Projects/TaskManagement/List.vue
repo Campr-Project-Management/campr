@@ -57,20 +57,27 @@
 
         <!-- /// Tasks List /// -->
         <div class="tasks">
-            <scrollbar class="categories-scroll">
+            <scrollbar class="categories-scroll" v-if="tasks.nbItems > 0">
                 <div class="board-view">
                     {{ tasksByStatus }}
                     <div class="flex">
                         <div v-for="status in taskStatuses"
                              :key="status.id">
                             <board-tasks-column
-                                    :tasks="tasks[status.id] ? tasks[status.id].items : []"
-                                    :count="tasks[status.id] ? tasks[status.id].totalItems : 0"
+                                    :tasks="tasks.items[status.id].items"
+                                    :count="tasks.items[status.id].nbItems"
+                                    v-if="tasks.items && tasks.items[status.id] && tasks.items[status.id].items && tasks.items[status.id].items.length > 0"
                                     :status="status"/>
                         </div>
                     </div>
                 </div>
+                <pagination
+                        v-model.number="page"
+                        :number-of-pages="numberOfPages"
+                        :show-description="false"
+                        @input="onPageChange"/>
             </scrollbar>
+            <div class="no-results" v-else-if="tasks.nbItems != null">{{ translate('message.no_results') }}</div>
         </div>
         <!-- /// End Tasks List /// -->
     </div>
@@ -81,6 +88,7 @@ import InputField from '../../_common/_form-components/InputField';
 import Dropdown from '../../_common/Dropdown';
 import {mapActions, mapGetters} from 'vuex';
 import BoardTasksColumn from './BoardTasksColumn';
+import Pagination from '../../_common/Pagination';
 
 export default {
     name: 'board',
@@ -88,6 +96,7 @@ export default {
         InputField,
         Dropdown,
         BoardTasksColumn,
+        Pagination,
     },
     created() {
         this.setFilters({clear: true});
@@ -119,6 +128,9 @@ export default {
 
             return this.allTasks;
         },
+        numberOfPages: function() {
+            return this.tasks.nbPages;
+        },
     },
     methods: {
         ...mapActions([
@@ -142,7 +154,6 @@ export default {
             const project = this.$route.params.id;
 
             this.setFilters(Object.assign({}, this.criteria));
-            // this.resetTasks(project);
             this.getAllTasksBoard({project, page: 1});
         },
         clearFilters: function() {
@@ -156,12 +167,18 @@ export default {
             this.setFilters({clear: true});
             this.getAllTasksBoard({project, page: 1});
         },
+        onPageChange() {
+            let project = this.$route.params.id;
+            this.getAllTasksBoard({project, page: this.page});
+        },
     },
     data() {
         return {
             count: 2,
             users: [],
             criteria: {},
+            page: 1,
+            tasksPerPage: 8,
         };
     },
 };
