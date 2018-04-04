@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export SYMFONY__DATABASE_NAME=campr_test
+export SYMFONY__DATABASE_PASSWORD=root
 rm -rf web/uploads/tests
 mkdir -p backend/src/AppBundle/Tests/Resources/files/ && touch backend/src/AppBundle/Tests/Resources/files/file.txt
 bin/console doctrine:database:drop --if-exists --force --env=test
