@@ -7,7 +7,10 @@
             </div>
             <div class="flex flex-v-center">
                 <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{ translate('message.view_board') }}</router-link>
-                <router-link :to="{name: 'project-task-management-edit-labels'}" class="btn-rounded btn-auto">{{ translate('message.edit_labels') }}</router-link>
+                <router-link
+                        v-if="$can('roles.project_manager|roles.project_sponsor', project)"
+                        :to="{name: 'project-task-management-edit-labels'}"
+                        class="btn-rounded btn-auto">{{ translate('message.edit_labels') }}</router-link>
                 <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">{{ translate('message.new_task') }}</router-link>
             </div>
         </div>
@@ -42,20 +45,23 @@
 
         <!-- /// Tasks List /// -->
         <div class="tasks">
-            <div class="grid-view">
-                <task-box
-                        user="user"
-                        :color-statuses="colorStatuses"
-                        v-for="task in tasks.items"
-                        :task="task"
-                        :key="task.id">
-                </task-box>
-            </div>
-            <pagination
-                    v-model.number="page"
-                    :number-of-pages="numberOfPages"
-                    :show-description="false"
-                    @input="onPageChange"/>
+            <template v-if="tasks.nbItems > 0">
+                <div class="grid-view">
+                    <task-box
+                            user="user"
+                            :color-statuses="colorStatuses"
+                            v-for="task in tasks.items"
+                            :task="task"
+                            :key="task.id">
+                    </task-box>
+                </div>
+                <pagination
+                        v-model.number="page"
+                        :number-of-pages="tasks.nbPages"
+                        :show-description="false"
+                        @input="onPageChange"/>
+            </template>
+            <div class="no-results" v-else-if="tasks.nbItems != null">{{ translate('message.no_results') }}</div>
         </div>
         <!-- /// End Tasks List /// -->
     </div>
@@ -110,9 +116,6 @@ export default {
             }
 
             return this.allTasks;
-        },
-        numberOfPages: function() {
-            return Math.ceil(this.tasks.totalItems / this.tasksPerPage);
         },
     },
     methods: {
