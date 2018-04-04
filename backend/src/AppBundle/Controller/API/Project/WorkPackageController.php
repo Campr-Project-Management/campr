@@ -4,6 +4,8 @@ namespace AppBundle\Controller\API\Project;
 
 use AppBundle\Entity\Project;
 use AppBundle\Entity\WorkPackageStatus;
+use AppBundle\Paginator\SerializablePagerfanta;
+use AppBundle\Paginator\SerializablePaginator;
 use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Repository\WorkPackageStatusRepository;
 use MainBundle\Controller\API\ApiController;
@@ -41,12 +43,9 @@ class WorkPackageController extends ApiController
         $paginator->setMaxPerPage($pageSize);
         $paginator->setCurrentPage($page);
 
-        return $this->createApiResponse(
-            [
-                'totalItems' => $paginator->getNbResults(),
-                'items' => iterator_to_array($paginator->getCurrentPageResults()),
-            ]
-        );
+        $paginator = new SerializablePagerfanta($paginator);
+
+        return $this->createApiResponse($paginator);
     }
 
     /**
@@ -67,22 +66,28 @@ class WorkPackageController extends ApiController
         /** @var WorkPackageRepository $wpRepo */
         $wpRepo = $this->get('app.repository.work_package');
 
-        $data = [];
+        $mainPaginator = new SerializablePaginator();
+
+        $items = [];
         foreach ($this->getWorkPackageStatuses() as $status) {
             $paginator = $wpRepo->createBoardViewPaginator(
                 $project,
                 array_merge(['status' => $status->getId()], $criteria)
             );
             $paginator->setMaxPerPage($pageSize);
+            $paginator->setAllowOutOfRangePages(true);
             $paginator->setCurrentPage($page);
 
-            $data[$status->getId()] = [
-                'totalItems' => $paginator->getNbResults(),
-                'items' => iterator_to_array($paginator->getCurrentPageResults()),
-            ];
+            $mainPaginator->setNbPages(max($mainPaginator->getNbPages(), $paginator->getNbPages()));
+            $mainPaginator->setNbItems($mainPaginator->getNbItems() + $paginator->getNbResults());
+
+            $paginator = new SerializablePagerfanta($paginator);
+            $items[$status->getId()] = $paginator;
         }
 
-        return $this->createApiResponse($data);
+        $mainPaginator->setItems($items);
+
+        return $this->createApiResponse($mainPaginator);
     }
 
     /**

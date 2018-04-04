@@ -101,7 +101,7 @@
             </div>
 
             <task-label-bar
-                    v-if="hasLabel"
+                    v-if="hasLabel()"
                     :title="task.labelName"
                     :color="task.labelColor" />
         </div>
@@ -161,15 +161,23 @@
                 return colorStatus.color;
             },
             hasLabel() {
-                return this.task.label && this.task.labelColor;
+                return this.task.label && this.task.labelName && this.task.labelColor;
             },
         },
-        props: ['task', 'colorStatuses', 'user'],
+        props: {
+            task: {
+                type: Object,
+                required: true,
+            },
+            colorStatuses: {
+                type: Array,
+                required: true,
+            },
+        },
     };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
+<style lang="scss" scoped="scoped">
     @import '../../css/_variables';
     @import '../../css/_mixins';
     @import '../../css/box';
