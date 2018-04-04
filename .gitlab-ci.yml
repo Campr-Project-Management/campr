@@ -7,6 +7,7 @@ test:phpunit:
   script:
     - export SYMFONY_ENV=test
     - export SYMFONY__DATABASE_NAME=campr_runner_$CI_RUNNER_ID
+    - export SYMFONY__DATABASE_PASSWORD=campr
     - rm -rf var/cache/*
     - wget https://getcomposer.org/composer.phar
     - php composer.phar install --quiet --prefer-dist --no-interaction
