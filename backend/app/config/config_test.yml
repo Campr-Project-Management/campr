@@ -2,7 +2,6 @@ imports:
     - { resource: config.yml }
 
 parameters:
-    database_password: campr
     domain: test.campr.biz
 
 framework:
