@@ -3,7 +3,6 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: bundles/gos_web_socket.yml }
-    - { resource: bundles/ambta_doctrine_encrypt.yml }
     - { resource: bundles/vich_uploader.yml }
     - { resource: bundles/scheb_two_factor.yml }
     - { resource: "@MainBundle/Resources/config/services.yml" }

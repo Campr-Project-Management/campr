@@ -50,7 +50,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
 
         $project = $this
             ->em
@@ -122,6 +122,8 @@ class ProjectControllerTest extends BaseController
                     'projectLimitations' => [],
                     'projectDeliverables' => [],
                     'logo' => null,
+                    'isClosed' => false,
+                    'isCompleted' => false,
                 ],
             ],
         ];
@@ -159,7 +161,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -215,7 +217,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -336,7 +338,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -472,9 +474,10 @@ class ProjectControllerTest extends BaseController
 
         $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -574,7 +577,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -641,7 +644,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -739,7 +742,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
 
         $contract = $this
             ->em
@@ -983,7 +986,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
 
         $distributionList = $this
             ->em
@@ -1056,7 +1059,7 @@ class ProjectControllerTest extends BaseController
         $response = $this->client->getResponse();
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -1128,7 +1131,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -1198,7 +1201,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -1448,7 +1451,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -1525,7 +1528,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -1619,7 +1622,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -1709,7 +1712,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
 
         $this->em->remove($project);
         $this->em->flush();
@@ -1777,7 +1780,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -1796,7 +1799,6 @@ class ProjectControllerTest extends BaseController
                         'number' => ['The number field should not be blank'],
                         'company' => ['You must select a company'],
                     ],
-
                 ],
             ],
         ];
@@ -1854,7 +1856,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -2177,7 +2179,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -2254,7 +2256,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
 
         $projectTeam = $this
             ->em
@@ -2329,7 +2331,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -2470,7 +2472,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
 
         $projectUser = $this
             ->em
@@ -2559,7 +2561,7 @@ class ProjectControllerTest extends BaseController
         $response = $this->client->getResponse();
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -2576,7 +2578,6 @@ class ProjectControllerTest extends BaseController
                     'messages' => [
                         'user' => ['The name field should not be blank. Choose one user'],
                     ],
-
                 ],
             ],
         ];
@@ -2608,7 +2609,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -2623,7 +2624,6 @@ class ProjectControllerTest extends BaseController
                 Response::HTTP_OK,
                 [
                     [
-
                         'status' => null,
                         'statusName' => null,
                         'meeting' => 1,
@@ -2691,7 +2691,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -2759,7 +2759,7 @@ class ProjectControllerTest extends BaseController
         $response = $this->client->getResponse();
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -2827,6 +2827,7 @@ class ProjectControllerTest extends BaseController
      * @param $isResponseSuccessful
      * @param $responseStatusCode
      * @param $responseContent
+     * @param mixed $responseContentType
      */
     public function testExportCalendarsAction(
         $url,
@@ -2856,7 +2857,7 @@ class ProjectControllerTest extends BaseController
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals($responseContentType, $response->headers->get('Content-Type'));
         if ($isResponseSuccessful) {
-            $this->assertTrue(strpos($content, $responseContent) !== false);
+            $this->assertTrue(false !== strpos($content, $responseContent));
         }
     }
 
@@ -2924,7 +2925,7 @@ class ProjectControllerTest extends BaseController
         $responseContent['puid'] = $task['puid'];
         $responseContent['createdAt'] = $task['createdAt'];
 
-        $this->assertEquals($isResponseSuccessful, $response->getStatusCode() === 201, 'Response is not successfully');
+        $this->assertEquals($isResponseSuccessful, 201 === $response->getStatusCode(), 'Response is not successfully');
         $this->assertEquals($responseStatusCode, $response->getStatusCode(), 'Reponse status code is different');
         $this->assertEquals(
             $responseContent,
@@ -3028,6 +3029,8 @@ class ProjectControllerTest extends BaseController
                     'isTask' => true,
                     'isTutorial' => false,
                     'isSubtask' => false,
+                    'isClosed' => false,
+                    'isCompleted' => false,
                 ],
             ],
         ];

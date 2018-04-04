@@ -71,6 +71,15 @@ class WorkPackageStatus
     private $project;
 
     /**
+     * @var int
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\Column(name="progress", type="integer", options={"default":-1})
+     */
+    private $progress = -1;
+
+    /**
      * @var \DateTime
      *
      * @Serializer\Type("DateTime<'Y-m-d'>")
@@ -292,5 +301,61 @@ class WorkPackageStatus
     public function getProjectName()
     {
         return $this->project ? $this->project->getName() : null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProgress(): int
+    {
+        return (int) $this->progress;
+    }
+
+    /**
+     * @param int $progress
+     */
+    public function setProgress(int $progress)
+    {
+        $this->progress = $progress;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isClosed(): bool
+    {
+        return self::CLOSED === $this->getId();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOpen(): bool
+    {
+        return self::OPEN === $this->getId();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPending(): bool
+    {
+        return self::PENDING === $this->getId();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCompleted(): bool
+    {
+        return self::COMPLETED === $this->getId();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOnGoing(): bool
+    {
+        return self::ONGOING === $this->getId();
     }
 }
