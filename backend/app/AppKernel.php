@@ -77,16 +77,6 @@ class AppKernel extends Kernel
         return __DIR__;
     }
 
-    public function getCacheDir()
-    {
-        return dirname(__DIR__).'/../var/cache/'.$this->getEnvironment();
-    }
-
-    public function getLogDir()
-    {
-        return dirname(__DIR__).'/../var/logs';
-    }
-
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load($this->getRootDir().'/config/config_'.$this->getRealEnvironment().'.yml');
@@ -103,7 +93,7 @@ class AppKernel extends Kernel
     public function getTeamSlug()
     {
         $env = explode('_', $this->getEnvironment());
-        if (count($env) === 1) {
+        if (1 === count($env)) {
             return null;
         }
 
@@ -117,7 +107,7 @@ class AppKernel extends Kernel
         $sfEnv = $this->getEnvironment();
         $sfEnvParts = explode('_', $sfEnv);
         $realEnv = array_pop($sfEnvParts);
-        $scheme = $realEnv === 'prod'
+        $scheme = 'prod' === $realEnv
             ? 'https'
             : 'http'
         ;
@@ -146,5 +136,37 @@ class AppKernel extends Kernel
             ],
             parent::getKernelParameters()
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getCacheDir(): string
+    {
+        if ($this->isVagrantEnvironment()) {
+            return '/dev/shm/campr/cache/'.$this->getEnvironment();
+        }
+
+        return dirname(__DIR__).'/../var/cache/'.$this->getEnvironment();
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogDir(): string
+    {
+        if ($this->isVagrantEnvironment()) {
+            return '/dev/shm/campr/logs';
+        }
+
+        return dirname(__DIR__).'/../var/logs';
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isVagrantEnvironment(): bool
+    {
+        return ('/home/vagrant' === getenv('HOME') || 'VAGRANT' === getenv('VAGRANT')) && is_dir('/dev/shm');
     }
 }

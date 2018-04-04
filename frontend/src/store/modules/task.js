@@ -270,6 +270,8 @@ const actions = {
     },
 
     getAllTasksGrid({commit}, {project, page}) {
+        commit(types.SET_ALL_TASKS, {tasks: {}});
+
         let data = {
             params: {
                 criteria: {
@@ -295,6 +297,8 @@ const actions = {
         ;
     },
     getAllTasksBoard({commit}, {project, page}) {
+        commit(types.SET_ALL_TASKS, {tasks: {}});
+
         let data = {
             params: {
                 criteria: {
