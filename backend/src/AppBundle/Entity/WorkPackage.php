@@ -2511,4 +2511,38 @@ class WorkPackage
 
         return $total;
     }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return bool
+     */
+    public function isClosed(): bool
+    {
+        $status = $this->getWorkPackageStatus();
+
+        return $status && $status->isClosed();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOpen(): bool
+    {
+        $status = $this->getWorkPackageStatus();
+
+        return $status && $status->isOpen();
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return bool
+     */
+    public function isCompleted(): bool
+    {
+        $status = $this->getWorkPackageStatus();
+
+        return $status && $status->isCompleted();
+    }
 }
