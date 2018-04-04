@@ -4,6 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\WorkPackageStatus;
 use AppBundle\Form\WorkPackageStatus\CreateType;
+use AppBundle\Repository\WorkPackageStatusRepository;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -26,12 +27,10 @@ class WorkPackageStatusController extends ApiController
      */
     public function listAction()
     {
-        return $this->createApiResponse(
-            $this
-                ->getDoctrine()
-                ->getRepository(WorkPackageStatus::class)
-                ->findAll()
-        );
+        /** @var WorkPackageStatusRepository $repository */
+        $repository = $this->get('app.repository.work_package_status');
+
+        return $this->createApiResponse($repository->findAllVisible());
     }
 
     /**
