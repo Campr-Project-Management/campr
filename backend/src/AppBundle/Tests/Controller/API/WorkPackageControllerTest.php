@@ -137,6 +137,8 @@ class WorkPackageControllerTest extends BaseController
                             'isTask' => false,
                             'isTutorial' => false,
                             'isSubtask' => false,
+                            'isClosed' => false,
+                            'isCompleted' => false,
                         ],
                         [
                             'puid' => 4,
@@ -219,6 +221,8 @@ class WorkPackageControllerTest extends BaseController
                             'isTask' => false,
                             'isTutorial' => false,
                             'isSubtask' => false,
+                            'isClosed' => false,
+                            'isCompleted' => false,
                         ],
                     ],
                 ],
@@ -353,6 +357,8 @@ class WorkPackageControllerTest extends BaseController
                     'isTask' => false,
                     'isTutorial' => false,
                     'isSubtask' => false,
+                    'isCompleted' => false,
+                    'isClosed' => false,
                 ],
             ],
         ];
@@ -488,6 +494,8 @@ class WorkPackageControllerTest extends BaseController
                     'isTask' => true,
                     'isTutorial' => false,
                     'isSubtask' => false,
+                    'isClosed' => false,
+                    'isCompleted' => false,
                 ],
             ],
         ];

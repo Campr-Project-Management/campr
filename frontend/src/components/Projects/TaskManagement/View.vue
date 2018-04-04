@@ -556,7 +556,7 @@
                          <div class="col-md-8" v-if="editableData.workPackageStatus">
                             <h4>{{editableData.workPackageStatus.label}}</h4>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4" v-if="!task.isClosed">
                             <select-field
                                 :title="translateText('message.change_status')"
                                 :options="workPackageStatusesForSelect"
@@ -754,7 +754,7 @@ export default {
             });
         },
         taskProgressEditIsDisabled() {
-            return this.task.parent == null && this.task.noSubtasks > 0;
+            return (this.task.parent == null && this.task.noSubtasks > 0) || this.task.isClosed;
         },
         completedSubtasksCount() {
             if (!this.task || !this.task.children) {
