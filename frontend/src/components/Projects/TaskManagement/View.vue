@@ -133,7 +133,7 @@
                 <!-- /// New Task Description /// -->
                 <div class="new-comment">
                     <div class="user-avatar">
-                        <img :src="task.responsibilityAvatar" :alt="responsibilityFullName"/>
+                        <img :src="currentUserAvatar" :alt="currentUser.fullName"/>
                     </div>
                     <div class="new-comment-body">
                         <editor
@@ -769,6 +769,13 @@ export default {
             });
 
             return count;
+        },
+        currentUserAvatar: function() {
+            if (this.currentUser.avatar === null) {
+                return this.currentUser.gravatar;
+            }
+
+            return this.currentUser.avatar;
         },
     },
     watch: {
