@@ -324,6 +324,7 @@ services:
             - '@app.repository.rasci'
             - '@app.repository.project_user'
             - '@app.repository.work_package'
+            - '@app.repository.work_package_status'
             - '@app.calculator.phase_actual_dates'
         tags:
             - { name: kernel.event_subscriber }
@@ -343,17 +344,6 @@ services:
             - '%show_tracking_code%'
         tags:
             - { name: twig.extension }
-
-### SUBSCRIBERS ###
-    ambta_doctrine_encrypt.subscriber:
-        class: AppBundle\Subscribers\EncryptSubscriber
-        arguments:
-            - '@annotation_reader'
-            - '%ambta_doctrine_encrypt.encryptor_class_name%'
-            - '%ambta_doctrine_encrypt.secret_key%'
-            - '%kernel.team_slug%'
-        tags:
-            -  { name: doctrine.event_subscriber }
 
 ### VOTERS ###
     app.admin_voter:
