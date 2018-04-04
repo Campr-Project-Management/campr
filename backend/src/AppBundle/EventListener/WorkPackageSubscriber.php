@@ -7,6 +7,7 @@ use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Rasci;
 use AppBundle\Entity\User;
 use AppBundle\Entity\WorkPackage;
+use AppBundle\Entity\WorkPackageStatus;
 use AppBundle\Event\WorkPackageEvent;
 use Component\Repository\RepositoryInterface;
 use Component\WorkPackage\Calculator\DateRangeCalculatorInterface;
@@ -36,23 +37,31 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     private $workPackageRepository;
 
     /**
+     * @var RepositoryInterface
+     */
+    private $workPackageStatusRepository;
+
+    /**
      * WorkPackageSubscriber constructor.
      *
      * @param RepositoryInterface          $rasciRepository
      * @param RepositoryInterface          $projectUserRepository
      * @param RepositoryInterface          $workPackageRepository
+     * @param RepositoryInterface          $workPackageStatusRepository
      * @param DateRangeCalculatorInterface $phaseActualDatesCalculator
      */
     public function __construct(
         RepositoryInterface $rasciRepository,
         RepositoryInterface $projectUserRepository,
         RepositoryInterface $workPackageRepository,
+        RepositoryInterface $workPackageStatusRepository,
         DateRangeCalculatorInterface $phaseActualDatesCalculator
     ) {
         $this->rasciRepository = $rasciRepository;
         $this->projectUserRepository = $projectUserRepository;
         $this->phaseActualDatesCalculator = $phaseActualDatesCalculator;
         $this->workPackageRepository = $workPackageRepository;
+        $this->workPackageStatusRepository = $workPackageStatusRepository;
     }
 
     /**
@@ -63,6 +72,7 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         return [
             WorkPackageEvents::POST_CREATE => 'onPostCreate',
             WorkPackageEvents::POST_UPDATE => 'onPostUpdate',
+            WorkPackageEvents::PRE_UPDATE => 'onPreUpdate',
         ];
     }
 
@@ -83,6 +93,17 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         $wp = $event->getWorkPackage();
         $this->updateResponsibleUserInRasci($wp);
         $this->updatePhaseActualDates($wp);
+    }
+
+    /**
+     * @param WorkPackageEvent $event
+     */
+    public function onPreUpdate(WorkPackageEvent $event)
+    {
+        $wp = $event->getWorkPackage();
+        $this->recalculateProgress($wp);
+        $this->recalculateActualStartAt($wp);
+        $this->recalculateActualFinishAt($wp);
     }
 
     /**
@@ -178,5 +199,83 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         $phase->setActualFinishAt($finishAt);
 
         $this->workPackageRepository->add($phase);
+    }
+
+    /**
+     * @param WorkPackage $wp
+     */
+    private function recalculateActualStartAt(WorkPackage $wp)
+    {
+        $status = $wp->getWorkPackageStatus();
+        $startAt = $wp->getActualStartAt();
+        if ($status->isOnGoing() && !$startAt) {
+            $startAt = new \DateTime();
+        }
+
+        if ($status->isOpen() || $status->isPending()) {
+            $startAt = null;
+        }
+
+        $wp->setActualStartAt($startAt);
+        if (!$wp->getActualStartAt()) {
+            $wp->setActualFinishAt($startAt);
+        }
+    }
+
+    /**
+     * @param WorkPackage $wp
+     */
+    private function recalculateActualFinishAt(WorkPackage $wp)
+    {
+        $status = $wp->getWorkPackageStatus();
+        $finishAt = $wp->getActualFinishAt();
+        if (($status->isCompleted() || $status->isClosed()) && !$finishAt) {
+            $finishAt = new \DateTime();
+        }
+
+        if ($status->isOpen() || $status->isPending() || $status->isOnGoing()) {
+            $finishAt = null;
+        }
+
+        $wp->setActualFinishAt($finishAt);
+        if (!$wp->getActualStartAt()) {
+            $wp->setActualStartAt($finishAt);
+        }
+    }
+
+    /**
+     * @param WorkPackage $wp
+     */
+    private function recalculateProgress(WorkPackage $wp)
+    {
+        $status = $wp->getWorkPackageStatus();
+        if (!$status || $status->getProgress() < 0) {
+            return;
+        }
+
+        $closedStatus = $this->getWorkPackageClosedStatus();
+        if ($status->isOnGoing()
+            && $wp->getProgress() >= $status->getProgress()
+            && $wp->getProgress() < $closedStatus->getProgress()
+        ) {
+            return;
+        }
+
+        $wp->setProgress($status->getProgress());
+    }
+
+    /**
+     * @return WorkPackageStatus
+     */
+    private function getWorkPackageClosedStatus(): WorkPackageStatus
+    {
+        /** @var WorkPackageStatus $status */
+        foreach ($this->workPackageStatusRepository->findAll() as $status) {
+            if ($status->isClosed()) {
+                return $status;
+            }
+        }
+
+        return null;
     }
 }
