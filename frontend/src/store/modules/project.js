@@ -710,6 +710,13 @@ const actions = {
     clearProjects({commit}) {
         commit(types.SET_PROJECTS, {projects: []});
     },
+    /**
+     * Clears current project.
+     * @param {function} commit
+     */
+    clearProject({commit}) {
+        commit(types.SET_PROJECT, {project: {}});
+    },
 };
 
 const mutations = {
