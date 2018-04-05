@@ -5,7 +5,6 @@ parameters:
     database_host: 127.0.0.1
     database_port: ~
     database_user: root
-    database_password: root
 
     #mailer
     mailer_transport: smtp
