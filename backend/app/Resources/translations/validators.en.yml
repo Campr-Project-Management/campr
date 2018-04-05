@@ -146,8 +146,8 @@ greater_than_or_equal:
     cost: The cost field should contain numbers greater than or equal to 0
     impact: The impact field should contain numbers greater than or equal to 0
     probability: The probability field should contain numbers greater than or equal to 0
-    scheduled_finish_at: The Base Start Date shuld be before the Base Finish Date
-    forecast_finish_at: The Forecast Start Date shuld be before the Forecast Finish Date
+    scheduled_finish_at: The Base Start Date should be before the Base Finish Date
+    forecast_finish_at: The Forecast Start Date should be before the Forecast Finish Date
 
 invite:
     yourself: You are already part of the team.
