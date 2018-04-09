@@ -114,24 +114,28 @@
             if (!this.modules || !this.modules.length) {
                 this.getModules();
             }
-            if (this.$route.params.id) {
-                this.getProjectById(this.$route.params.id);
-            }
+        },
+        watch: {
+            projectId(val) {
+                console.log('projectID changed to', val);
+                if (val !== undefined) {
+                    this.getProjectById(val);
+                } else {
+                    this.clearProject();
+                }
+            },
+        },
+        beforeUpdate() {
+            this.projectId = this.$route.params.id;
         },
         computed: {
-            ...mapGetters({
-                modules: 'modules',
-                project: 'project',
-                sidebarStats: 'sidebarStats',
-            }),
-            projectId() {
-                return this.$route.params.id;
-            },
+            ...mapGetters(['modules', 'project', 'sidebarStats']),
         },
         methods: {
             ...mapActions([
                 'getModules',
                 'getProjectById',
+                'clearProject',
                 'getSidebarInformation',
             ]),
             translate(key) {
@@ -146,6 +150,7 @@
         },
         data() {
             return {
+                projectId: null,
                 moduleToRoute: {
                     contract: 'project-contract',
                     organization: 'project-organization',

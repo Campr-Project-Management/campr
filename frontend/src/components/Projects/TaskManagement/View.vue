@@ -688,18 +688,18 @@ export default {
     computed: {
         ...mapGetters({
             task: 'currentTask',
-            taskHistory: 'taskHistory',
-            colorStatuses: 'colorStatuses',
-            colorStatusesForSelect: 'colorStatusesForSelect',
             projectUsersForSelect: 'projectUsersForSelectOnViewTask',
             projectUsersForMultipleSelect: 'projectUsersForSelect',
-            workPackageStatusesForSelect: 'workPackageStatusesForSelect',
             labelsForSelect: 'labelsForChoice',
-            projectUsers: 'projectUsers',
             currentUser: 'user',
         }),
         ...mapGetters([
             'workPackageStatusById',
+            'taskHistory',
+            'colorStatuses',
+            'colorStatusesForSelect',
+            'workPackageStatusesForSelect',
+            'projectUsers',
         ]),
         isClosed() {
             return this.task.workPackageStatus === TASK_STATUS_CLOSED;
