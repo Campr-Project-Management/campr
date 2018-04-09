@@ -1775,7 +1775,7 @@ exception:
         team: Please add one team as option parameter
         user: Please add one user as option parameter
 
-copyright: Copyright &copy; 2015 Material Admin
+copyright: Copyright &copy; %year% Campr
 
 bad_request: Bad request!
 
