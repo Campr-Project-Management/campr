@@ -1,13 +1,12 @@
 {% trans_default_domain 'messages' %}
 
 <footer id="footer">
-    {{ 'copyright'|trans }}
+    {% set year = 'now'|date('Y') %}
+    {{ 'copyright'|trans({'%year%': year})|raw }}
 
     <ul class="f-menu">
-        <li><a href="">{{ 'link.home'|trans }}</a></li>
-        <li><a href="">{{ 'link.dashboad'|trans }}</a></li>
-        <li><a href="">{{ 'link.reports'|trans }}</a></li>
-        <li><a href="">{{ 'link.support'|trans }}</a></li>
-        <li><a href="">{{ 'link.contact'|trans }}</a></li>
+        <li><a href="{{ path('app_homepage') }}">{{ 'link.home'|trans }}</a></li>
+        <li><a href="{{ path('app_admin_dashboard') }}">{{ 'link.dashboad'|trans }}</a></li>
+        <li><a href="{{ path('main_contact') }}">{{ 'link.contact'|trans }}</a></li>
     </ul>
 </footer>
