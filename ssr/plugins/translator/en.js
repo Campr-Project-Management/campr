@@ -198,8 +198,8 @@ module.exports = function (Translator) {
     Translator.add("greater_than_or_equal.cost", "The cost field should contain numbers greater than or equal to 0", "validators", "en");
     Translator.add("greater_than_or_equal.impact", "The impact field should contain numbers greater than or equal to 0", "validators", "en");
     Translator.add("greater_than_or_equal.probability", "The probability field should contain numbers greater than or equal to 0", "validators", "en");
-    Translator.add("greater_than_or_equal.scheduled_finish_at", "The Base Start Date shuld be before the Base Finish Date", "validators", "en");
-    Translator.add("greater_than_or_equal.forecast_finish_at", "The Forecast Start Date shuld be before the Forecast Finish Date", "validators", "en");
+    Translator.add("greater_than_or_equal.scheduled_finish_at", "The Base Start Date should be before the Base Finish Date", "validators", "en");
+    Translator.add("greater_than_or_equal.forecast_finish_at", "The Forecast Start Date should be before the Forecast Finish Date", "validators", "en");
     Translator.add("invite.yourself", "You are already part of the team.", "validators", "en");
     Translator.add("invite.team_member", "User with this email is already part of the team.", "validators", "en");
     Translator.add("invitation.sent", "You already sent an invitation to this email.", "validators", "en");
