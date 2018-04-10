@@ -50,15 +50,18 @@ yarn run build
 
 `yarn install` (install dependencies)
 
-##### Prod
+### Prod
 
 `yarn run build` (build for production with minification)
 
-##### Dev
+### Dev
+
+set local dev env to connect to the api
+`cp config/dev.local.js.dist config/dev.local.js` and edit the file accordingly with adding a token and a subdomain
 
 `yarn run dev` (serve with hot reload at localhost:8080)
 
-##### Tests
+### Tests
 `yarn run unit` (run unit tests)
 
 `yarn run e2e` (run e2e tests)
