@@ -13,6 +13,7 @@ services:
         image: mysql:5.7
         volumes:
             - campr-data:/var/lib/mysql
+            - ./config/docker/mysql/docker.cnf:/etc/mysql/conf.d/docker.cnf
         ports:
             - "3306:3306"
         env_file: config/docker/.env
@@ -22,7 +23,7 @@ services:
         image: redis
         env_file: config/docker/.env
 
-    app:
+    dev.campr.biz:
         container_name: campr_app
         build: config/docker/app
         links:
