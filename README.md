@@ -2,7 +2,7 @@
 
 [![build status](https://lab.trisoft.ro/campr/campr/badges/master/build.svg)](https://lab.trisoft.ro/campr/campr/commits/master)
 
-## Docker DEV (http://dev.legendarydracula.com)
+## Docker DEV (http://dev.campr.biz)
 Linux:
 ```
 cp docker-compose.yml.linux.dist docker-compose.yml
