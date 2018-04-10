@@ -11,6 +11,24 @@
     @import '../../frontend/src/css/_variables.scss';
     @import '../../frontend/src/css/_mixins.scss';
 
+    @media print {
+        @page {
+            margin: 0px;
+            padding: 0px;
+        }
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+        .row {
+            margin-left: 0.5em !important;
+            margin-right: 0.5em !important;
+            padding-left: 0.5em !important;
+            padding-right: 0.5em !important;
+            overflow: hidden;
+        }
+    }
+
     html, body {
         margin: 0;
         min-height: 100vh;

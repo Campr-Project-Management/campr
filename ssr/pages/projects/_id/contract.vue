@@ -163,7 +163,7 @@
                 <!-- /// End Project Deliverables /// -->
             </div>
 
-            <div class="row margintop40">
+            <div class="row margintop40 resources">
                 <!-- /// Project Internal Costs /// -->
                 <div class="col-md-6">
                     <h3>{{ translateText('message.internal_resources') }}</h3>
@@ -321,6 +321,17 @@ export default {
 
 <style scoped lang="scss">
     @import '../../../../frontend/src/css/page-section';
+
+    @media print {
+        .resources {
+            > div {
+                > div {
+                    width: 100% !important;
+                    transform: translate(-60px);
+                }
+            }
+        }
+    }
 
     .half-left {
         float: left;
