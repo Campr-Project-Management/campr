@@ -16,7 +16,9 @@ then
 cp config/docker/.env.dist config/docker/.env
 docker-compose up
 ```
-update `/etc/hosts` with `127.0.0.1 dev.campr.biz *.dev.campr.biz`
+update `/etc/hosts` with `127.0.0.1 dev.campr.biz www.dev.campr.biz qaname.dev.campr.biz`
+
+`qaname.dev.campr.biz` is just a test workspace, you'll need it's db from the team
 
 update `parameters.yml`:
 ```
