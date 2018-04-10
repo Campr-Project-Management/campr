@@ -96,12 +96,10 @@
 import InputField from '../_common/_form-components/InputField';
 import SelectField from '../_common/_form-components/SelectField';
 import UploadPlaceholder from '../_common/_form-components/UploadPlaceholder';
-import {Validator} from 'vee-validate';
 import {mapActions, mapGetters} from 'vuex';
 import {FIRST_STEP_LOCALSTORAGE_KEY} from '../../helpers/project';
 
 export default {
-    validator: null,
     components: {
         InputField,
         SelectField,
@@ -160,9 +158,6 @@ export default {
             this.createProgramme(data);
             this.hideAddProgrammeField();
         },
-        clearFormErrors() {
-            this.errors.clear();
-        },
         openProjectLogoFileSelection() {
             document.getElementById('projectLogo').click();
         },
@@ -188,21 +183,11 @@ export default {
         programmeLoading: 'programmeLoading',
     }),
     created() {
-        this.validator = new Validator({
-            projectName: 'required|alpha|min:3',
-            selectedCompany: 'required',
-        });
-        this.$set(this, 'errors', this.validator.errorBag);
-
         this.getPortfolios();
         this.getProgrammes();
         this.getCustomers();
     },
     watch: {
-        projectName(value) {
-            // TODO: Implement validation
-            // this.validator.validate('projectName', value);
-        },
         portfolios(value) {
             let selectedPortfolio = value.filter((item) => item.label === this.portfolioName);
 
