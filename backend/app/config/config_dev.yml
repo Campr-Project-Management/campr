@@ -2,7 +2,7 @@ imports:
     - { resource: config.yml }
 
 parameters:
-    database_name: campr_dev
+    database_name: campr
     database_password: campr
 
 framework:
