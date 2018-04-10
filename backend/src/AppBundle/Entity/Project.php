@@ -2025,7 +2025,7 @@ class Project
             ->map(function (ProjectModule $projectModule) {
                 return $projectModule->getModule();
             })
-            ->toArray()
+            ->getValues()
         ;
     }
 
