@@ -338,6 +338,37 @@ class MenuBuilder
         ;
 
         $menu
+            ->addChild($this->translator->trans('title.meeting.list', [], 'messages'), [])
+            ->setAttributes([
+                'class' => 'sub-menu main-category',
+                'dropdown' => true,
+            ])
+            ->setLinkAttribute('icon', 'zmdi zmdi-accounts')
+            ->addChild($this->translator->trans('title.meeting.list', [], 'messages'), [
+                'route' => 'app_admin_meeting_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.meeting_category.list', [], 'messages'), [
+                'route' => 'app_admin_meeting_category_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.meeting_objective.list', [], 'messages'), [
+                'route' => 'app_admin_meeting_objective_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.meeting_agenda.list', [], 'messages'), [
+                'route' => 'app_admin_meeting_agenda_list',
+            ])->getParent()
+            ->addChild($this->translator->trans('title.meeting_participant.list', [], 'messages'), [
+                'route' => 'app_admin_meeting_participant_list',
+            ])
+        ;
+
+        $menu
+            ->addChild($this->translator->trans('title.distribution_list.list', [], 'messages'), [
+                'route' => 'app_admin_distribution_list_list',
+            ])
+            ->setLinkAttribute('icon', 'zmdi zmdi-arrow-split')
+        ;
+
+        $menu
             ->addChild($this->translator->trans('title.measure.list', [], 'messages'), [
                 'route' => 'app_admin_measure_list',
             ])
@@ -405,50 +436,11 @@ class MenuBuilder
         ;
 
         $menu
-            ->addChild($this->translator->trans('title.meeting.list', [], 'messages'), [])
-            ->setAttributes([
-                'class' => 'sub-menu main-category',
-                'dropdown' => true,
-            ])
-            ->setLinkAttribute('icon', 'zmdi zmdi-accounts')
-            ->addChild($this->translator->trans('title.meeting.list', [], 'messages'), [
-                'route' => 'app_admin_meeting_list',
-            ])->getParent()
-            ->addChild($this->translator->trans('title.meeting_category.list', [], 'messages'), [
-                'route' => 'app_admin_meeting_category_list',
-            ])->getParent()
-            ->addChild($this->translator->trans('title.meeting_objective.list', [], 'messages'), [
-                'route' => 'app_admin_meeting_objective_list',
-            ])->getParent()
-            ->addChild($this->translator->trans('title.meeting_agenda.list', [], 'messages'), [
-                'route' => 'app_admin_meeting_agenda_list',
-            ])->getParent()
-            ->addChild($this->translator->trans('title.meeting_participant.list', [], 'messages'), [
-                'route' => 'app_admin_meeting_participant_list',
-            ])->getParent()
-        ;
-
-        $menu
             ->addChild($this->translator->trans('title.unit.list', [], 'messages'), [
                 'route' => 'app_admin_unit_list',
             ])
             ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-apps')
-            ->getParent()
-        ;
-
-        $menu
-            ->addChild($this->translator->trans('title.company.list', [], 'messages'), [
-                'route' => 'app_admin_company_list',
-            ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-case')
-            ->getParent()
-            ->addChild($this->translator->trans('title.distribution_list.list', [], 'messages'), [
-                'route' => 'app_admin_distribution_list_list',
-            ])
-            ->setLinkAttribute('icon', 'zmdi zmdi-arrow-split')
-            ->getParent()
         ;
 
         $menu
@@ -457,6 +449,14 @@ class MenuBuilder
             ])
             ->setAttribute('class', 'main-category')
             ->setLinkAttribute('icon', 'zmdi zmdi-cloud-outline')
+        ;
+
+        $menu
+            ->addChild($this->translator->trans('title.company.list', [], 'messages'), [
+                'route' => 'app_admin_company_list',
+            ])
+            ->setAttribute('class', 'main-category')
+            ->setLinkAttribute('icon', 'zmdi zmdi-case')
         ;
 
         $menu
