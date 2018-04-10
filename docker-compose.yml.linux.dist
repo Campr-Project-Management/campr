@@ -1,59 +1,45 @@
-version: "2"
-
-volumes:
-    db-data:
-        external: false
+version: "3"
 
 services:
     mailcatcher:
-        image: dilibau/mailcatcher:0.6.4
+        container_name: campr_mailcatcher
+        image: schickling/mailcatcher
         ports:
-            - 1080:1080
-    db:
+          - "1025:1025"
+          - "1080:1080"
+        env_file: config/docker/.env
+
+    mysql:
         image: mysql:5.7
-        environment:
-            - MYSQL_ROOT_PASSWORD=root
         volumes:
-            - db-data:/var/lib/mysql
-            - ./config/docker/mysql/docker.cnf:/etc/mysql/conf.d/docker.cnf
-    redis:
-        image: redis
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        depends_on:
-            - db
+            - campr-data:/var/lib/mysql
         ports:
-            - 8080:80
-        environment:
-            - MYSQL_ROOT_PASSWORD=root
-    php-fpm:
-#        build: config/docker/php-fpm
-        image: lab.trisoft.ro:4567/trisoft/internal/php-fpm-7.1
-        environment:
-            - SYMFONY_DEBUG=true
-            - SYMFONY_ENV=dev
-        depends_on:
-            - db
+            - "3306:3306"
+        env_file: config/docker/.env
+
+    redis:
+        container_name: campr_redis
+        image: redis
+        env_file: config/docker/.env
+
+    app:
+        container_name: campr_app
+        build: config/docker/app
+        links:
+            - mysql
             - redis
             - mailcatcher
         volumes:
             - .:/app
-        ports:
-            - 2080:8080
-    dev.campr.biz:
-        image: nginx:1.11.10
-        depends_on:
-            - php-fpm
-        volumes:
-            - .:/app
-            - ./config/docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-        ports:
-            - 80:80
-    supervisor:
-#        build: config/docker/supervisor
-        image: lab.trisoft.ro:4567/trisoft/internal/php-supervisor
-        ports:
-            - 3000:3000
-        volumes:
-            - .:/app
+            - ~/.ssh:/root/.ssh
+            - ~/.gitconfig:/root/.gitconfig
             - ./config/supervisor/docker_dev.conf:/etc/supervisor/conf.d/docker_dev.conf
+        shm_size: 1g
+        ports:
+            - "80:80"
+            - "8080:8080"
+            - "443:443"
+        env_file: config/docker/.env
+
+volumes:
+    campr-data:
