@@ -45,13 +45,32 @@ security:
                 target: main_homepage
             provider: our_db_provider
             switch_user: { role: ROLE_ALLOWED_TO_SWITCH }
+            host: '^%domain%$'
+        app:
+            anonymous: ~
+            pattern: ^/
+            form_login:
+                username_parameter: "email"
+                password_parameter: "password"
+                login_path: main_login
+                check_path: main_login
+            logout:
+                path: main_logout
+                target: main_homepage
+            provider: our_db_provider
+            switch_user: { role: ROLE_ALLOWED_TO_SWITCH }
+            host: '^[^\.]+.%domain%$'
     role_hierarchy:
         ROLE_ADMIN:
             - ROLE_USER
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN
     access_control:
-        - { path: ^/api/teams/[\d\w-_]+, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # app specific
+        - { path: ^/login, host: '^[^\.]+.%domain%$', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, host: '^[^\.]+.%domain%$', roles: IS_AUTHENTICATED_FULLY }
+        # general
+        - { path: ^/api/teams/[^/]+/enabled, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
