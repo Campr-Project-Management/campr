@@ -41,4 +41,37 @@ class TeamController extends ApiController
 
         return $this->createApiResponse($team);
     }
+
+    /**
+     * @Route("/{id}/enabled", name="main_api_team_enabled")
+     * @Method({"GET"})
+     *
+     * @param $id
+     *
+     * @return JsonResponse
+     */
+    public function enabledAction($id)
+    {
+        $team = $this
+            ->getDoctrine()
+            ->getRepository(Team::class)
+            ->findOneByIDOrSlug($id)
+        ;
+
+        if (!$team) {
+            return $this->createApiResponse([
+                'message' => $this
+                    ->get('translator')
+                    ->trans('not_found.general', [], 'messages'),
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->createApiResponse([
+            'id' => $team->getId(),
+            'name' => $team->getName(),
+            'slug' => $team->getSlug(),
+            'enabled' => $team->isEnabled(),
+            'available' => $team->isAvailable(),
+        ]);
+    }
 }
