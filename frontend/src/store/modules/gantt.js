@@ -26,11 +26,17 @@ const actions = {
             )
         ;
     },
+    clearGanttData({commit}) {
+        commit(types.CLEAR_GANTT_DATA);
+    },
 };
 
 const mutations = {
     [types.SET_GANTT_DATA](state, {data}) {
         state.ganttData = data;
+    },
+    [types.CLEAR_GANTT_DATA](state) {
+        state.ganttData = [];
     },
 };
 
