@@ -33,7 +33,7 @@ class TeamService extends BaseClientService
             return (bool) $this->redisClient->get($this->requestDomain);
         }
 
-        $req = $this->httpClient->get('teams/'.$slug);
+        $req = $this->httpClient->get('teams/'.$slug.'/enabled');
         if ($req->getStatusCode() !== 200) {
             $this->redisClient->setex($this->requestDomain, 60, false);
         }
