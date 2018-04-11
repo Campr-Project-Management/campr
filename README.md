@@ -44,6 +44,24 @@ yarn install
 yarn run build
 ```
 
+### DEV test DBs
+
+import https://www.dropbox.com/s/p6tvyxs9dqr7wr4/campr.sql?dl=1 into `campr` main db
+
+import https://www.dropbox.com/s/894stinj70u17ci/campr_qaname.sql?dl=1 into `campr_qaname` test workspace db
+
+run these in `docker exec -it campr_mysql_1 mysql -uroot -pcampr`:
+```
+use campr;
+update campr.team set user_id = 8 where slug = 'qaname';
+create database campr_qaname DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+use campr_qaname;
+delete from user where email = "radu.gribincea@trisoft.ro";
+update user set email = "radu.gribincea@trisoft.ro", username = "radu.gribincea@trisoft.ro" where id = 1;
+```
+
+you can then login with `radu.gribincea@trisoft.ro` / `raduG1`, and in `http://qaname.dev.campr.biz` you can see test data
+
 ## Frontend
 
 `cd frontend`
