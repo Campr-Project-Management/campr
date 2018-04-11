@@ -516,51 +516,51 @@ title:
         create: Create new project
         edit: Edit project
     file:
-        list: Project file
+        list: File
         upload: Upload new file
         edit: Edit media file
     project_category:
-        list: Project category
+        list: Category
         create: Create new project category
         edit: Edit project category
     project_complexity:
-        list: Project complexity
+        list: Complexity
         create: Create new project complexity
         edit: Edit project complexity
     project_cost_type:
-        list: Project cost type
+        list: Cost type
         create: Create new project cost type
         edit: Edit project cost type
     project_department:
-        list: Project department
+        list: Department
         create: Create new project department
         edit: Edit project department
     project_module:
-        list: Project module
+        list: Module
         create: Create new project module
         edit: Edit project module
     project_role:
-        list: Project role
+        list: Role
         create: Create new project role
         edit: Edit project role
     project_scope:
-        list: Project scope
+        list: Scope
         create: Create new project scope
         edit: Edit project scope
     project_status:
-        list: Projects status
+        list: Status
         create: Create new project status
         edit: Edit project status
     project_team:
-        list: Project team
+        list: Team
         create: Create new project team
         edit: Edit project team
     project_user:
-        list: Project user
+        list: User
         create: Create new project user
         edit: Edit project user
     project_work_cost_type:
-        list: Project work cost type
+        list: Work cost type
         create: Create new project work cost type
         edit: Edit project work cost type
     color_status:
@@ -721,15 +721,15 @@ title:
         create: Create Programme
         edit: Edit Programme
     project_objective:
-        list: Project Objective
+        list: Objective
         create: Create Project Objective
         edit: Edit Project Objective
     project_limitation:
-        list: Project Limitation
+        list: Limitation
         create: Create Project Limitation
         edit: Edit Project Limitation
     project_deliverable:
-        list: Project Deliverable
+        list: Deliverable
         create: Create Project Deliverable
         edit: Edit Project Deliverable
     resource:
