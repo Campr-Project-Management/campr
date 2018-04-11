@@ -11,6 +11,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 
 class ApiExceptionSubscriber implements EventSubscriberInterface
 {
@@ -56,6 +57,7 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
 
         /** @var HttpExceptionInterface $e */
         $exception = $event->getException();
+        $defaultMessage = 'Something went terribly wrong.';
 
         if ($exception instanceof UndefinedMethodException) {
             $errorCode = $exception->getCode();
@@ -63,16 +65,19 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
         } elseif ($exception instanceof HttpException) {
             $errorCode = $exception->getStatusCode();
             $errorMessage = $exception->getMessage();
+        } elseif ($exception instanceof InsufficientAuthenticationException) {
+            $errorCode = Response::HTTP_UNAUTHORIZED;
+            $errorMessage = $exception->getMessage();
         } else {
             $errorCode = 500;
-            $errorMessage = 'Something went terribly wrong.';
+            $errorMessage = $defaultMessage;
         }
 
         $data = [
             'messages' => [
-                isset(Response::$statusTexts[$errorCode])
-                    ? Response::$statusTexts[$errorCode]
-                    : ($errorMessage ?? 'Unknown status code'),
+                empty($errorMessage)
+                    ? (Response::$statusTexts[$errorCode] ?? $defaultMessage)
+                    : $errorMessage,
             ],
         ];
 

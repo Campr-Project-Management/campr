@@ -100,7 +100,7 @@ class BaseController extends WebTestCase
         if ($this->user) {
             $session = $this->client->getContainer()->get('session');
 
-            $firewall = 'main';
+            $firewall = 'app';
 
             $token = new UsernamePasswordToken($user, null, $firewall, $user->getRoles());
             $session->set(sprintf('_security_%s', $firewall), serialize($token));
@@ -113,7 +113,7 @@ class BaseController extends WebTestCase
 
     public function logout()
     {
-        $this->client->request(Request::METHOD_GET, '\logout');
+        $this->client->request(Request::METHOD_GET, '/logout');
     }
 
     /**
