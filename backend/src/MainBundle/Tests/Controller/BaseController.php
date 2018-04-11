@@ -100,10 +100,13 @@ class BaseController extends WebTestCase
         if ($this->user) {
             $session = $this->client->getContainer()->get('session');
 
-            $firewall = 'app';
+            $firewalls = ['main', 'app'];
 
-            $token = new UsernamePasswordToken($user, null, $firewall, $user->getRoles());
-            $session->set(sprintf('_security_%s', $firewall), serialize($token));
+            foreach ($firewalls as $firewall) {
+                $token = new UsernamePasswordToken($user, null, $firewall, $user->getRoles());
+                $session->set(sprintf('_security_%s', $firewall), serialize($token));
+            }
+
             $session->save();
 
             $cookie = new Cookie($session->getName(), $session->getId());
