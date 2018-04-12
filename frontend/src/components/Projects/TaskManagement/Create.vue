@@ -5,9 +5,16 @@
                 <!-- /// Header /// -->
                 <div class="header flex-v-center">
                     <div>
-                        <router-link :to="{name: 'project-task-management-list'}" class="small-link">
+                        <router-link :to="{name: 'project-task-management-list'}" class="small-link" v-if="!isEdit">
                             <i class="fa fa-angle-left"></i>
                             Back to Task Management
+                        </router-link>
+                        <router-link
+                            v-if="task.id && isEdit"
+                            class="small-link" 
+                            :to="{name: 'project-task-management-view', params: {id: task.project, taskId: task.id}}">
+                            <i class="fa fa-angle-left"></i>
+                            Back to Task View
                         </router-link>
                         <h1 v-if="!isEdit">{{ message.create_new_task }}</h1>
                         <h1 v-if="isEdit">{{ message.edit_task }} - {{ task.name }}</h1>
