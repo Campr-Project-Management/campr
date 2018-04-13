@@ -742,6 +742,14 @@ title:
         list: Cost
         create: Create Cost
         edit: Edit Cost
+    external_cost:
+        list: External Cost
+        create: Create Cost
+        edit: Edit Cost
+    internal_cost:
+        list: Internal Cost
+        create: Create Cost
+        edit: Edit Cost
     dashboard: Dashboard
     subteam:
         list: Subteam
