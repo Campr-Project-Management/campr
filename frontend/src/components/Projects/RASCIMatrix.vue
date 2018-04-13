@@ -61,7 +61,12 @@
                                 <span class="light-color">{{repeat('&nbsp', workPackage.type * 6)}}#{{ workPackage.id }}</span>
                             </td>
                             <td>
-                                <span v-if="workPackage.type === 2">{{ workPackage.name }}</span>
+                                <span v-if="workPackage.type === 2">
+                                     <router-link
+                                            :to="{name: 'project-task-management-view', params: { id: workPackage.project, taskId: workPackage.id }}">
+                                        {{ workPackage.name }}
+                                    </router-link>
+                                </span>
                             </td>
                             <td v-for="(user, userIndex) in workPackage.rasci"
                                 v-on:mouseover="activeCell = workPackage.type === 2 && userIndex"
