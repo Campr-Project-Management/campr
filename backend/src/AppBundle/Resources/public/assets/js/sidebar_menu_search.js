@@ -27,6 +27,8 @@ $(function () {
             $menuChild.find(':icontains("' + searchedString + '")').parents('.main-category').addClass('toggled');
             $menuChild.find(':icontains("' + searchedString + '")').parents('.main-category').find('ul').show();
             $menuChild.find(':icontains("' + searchedString + '")').css('color', '#262626');
+        } else {
+            $menuChild.find('a').css('color', '#8794c4')
         }
     });
 });
