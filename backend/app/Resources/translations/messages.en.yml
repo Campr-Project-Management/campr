@@ -241,8 +241,10 @@ message:
     filter_by: Filter By
     customer: Customer
     project_manager: Project Manager
+    project_manager_signature: Project Manager Signature
     project_managers: Project Manager(s)
     project_sponsor: Sponsor
+    project_sponsor_signature: Project Sponsor Signature
     programme: Programme
     status: Status
     schedule: Schedule
