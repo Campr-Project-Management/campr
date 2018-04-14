@@ -4,7 +4,6 @@
             <span>{{ translate(status.name) }}</span>
             <div class="flex">
                 <span class="notification-balloon">{{ count }}</span>
-                <span class="notification-balloon second-bg">+</span>
             </div>
         </div>
         <div class="tasks-scroll">
