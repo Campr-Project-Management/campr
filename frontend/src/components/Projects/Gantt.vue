@@ -71,9 +71,11 @@ export default {
     },
     beforeDestroy() {
         this.removeAllEvents();
+        this.clearGanttData();
+        gantt.clearAll();
     },
     methods: {
-        ...mapActions(['getGanttData', 'getProjectById', 'importTask']),
+        ...mapActions(['getGanttData', 'clearGanttData', 'getProjectById', 'importTask']),
 
         openFileSelection: function() {
             $('#importXmlFile').click();
