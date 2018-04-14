@@ -163,7 +163,7 @@
                 <!-- /// End Project Deliverables /// -->
             </div>
 
-            <div class="row margintop40">
+            <div class="row margintop40 resources">
                 <!-- /// Project Internal Costs /// -->
                 <div class="col-md-6">
                     <h3>{{ translateText('message.internal_resources') }}</h3>
@@ -187,10 +187,10 @@
 
             <div class="row margintop40">
                 <div class="half half-left">
-                    <h3>{{ translateText('message.project_manager') }}</h3>
+                    <h3>{{ translateText('message.project_manager_signature') }}</h3>
                 </div>
                 <div class="half half-right">
-                    <h3>{{ translateText('message.project_sponsor') }}</h3>
+                    <h3>{{ translateText('message.project_sponsor_signature') }}</h3>
                 </div>
 
                 <div class="clear-fix"></div>
@@ -321,6 +321,17 @@ export default {
 
 <style scoped lang="scss">
     @import '../../../../frontend/src/css/page-section';
+
+    @media print {
+        .resources {
+            > div {
+                > div {
+                    width: 100% !important;
+                    transform: translate(-60px);
+                }
+            }
+        }
+    }
 
     .half-left {
         float: left;
