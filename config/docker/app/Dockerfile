@@ -1,5 +1,10 @@
 FROM ubuntu:16.04
 
+ENV APPLICATION_UID 1000
+ENV APPLICATION_USER application
+ENV APPLICATION_GID 1000
+ENV APPLICATION_GROUP application
+
 RUN apt-get clean && apt-get -y update && apt-get install -y \
     locales \
     curl \
@@ -69,8 +74,11 @@ RUN curl https://getcomposer.org/installer > composer-setup.php \
 RUN composer global require "hirak/prestissimo:^0.3" \
     && pecl install apcu_bc-beta
 
-RUN npm install -g yarn \
-    && npm install -g nuxt
+RUN GOREPLACE_VERSION=1.1.2 \
+    && wget -O /usr/local/bin/go-replace https://github.com/webdevops/go-replace/releases/download/$GOREPLACE_VERSION/gr-64-linux \
+    && chmod +x /usr/local/bin/go-replace
+
+RUN npm install -g yarn nuxt
 
 ADD config/nginx/default.conf /etc/nginx/sites-available/default
 ADD config/php/pool.d/dev.conf /etc/php/7.1/fpm/pool.d/www.conf
@@ -80,6 +88,12 @@ ADD config/php/php.ini /etc/php/7.1/cli/conf.d/99-php.ini
 
 ADD config/supervisor/supervisor.conf /etc/supervisor.conf
 ADD config/supervisor/services.conf /etc/supervisor/conf.d/nginx-php.conf
+
+RUN go-replace --mode=line --regex \
+    -s '^[\s;]*user[\s]*='  -r "user = $APPLICATION_USER" \
+    -s '^[\s;]*group[\s]*=' -r "group = $APPLICATION_GROUP" \
+    --path=/etc/php/7.1/fpm/pool.d/ \
+    --path-pattern='*.conf'
 
 ADD bootstrap.sh /bootstrap.sh
 RUN chmod 700 /bootstrap.sh
@@ -96,4 +110,4 @@ EXPOSE 8080
 WORKDIR /app
 
 RUN /bootstrap.sh
-CMD ["supervisord", "-c", "/etc/supervisor.conf"]
+CMD ["supervisord", "-c", "/etc/supervisor.conf", "--user", "root"]
