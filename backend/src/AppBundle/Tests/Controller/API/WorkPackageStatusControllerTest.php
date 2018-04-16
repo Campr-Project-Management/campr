@@ -28,12 +28,16 @@ class WorkPackageStatusControllerTest extends BaseController
         $content = json_decode($response->getContent(), true);
 
         for ($i = 0; $i < sizeof($responseContent); ++$i) {
+            if (!isset($content[$i])) {
+                continue;
+            }
+
             $responseContent[$i]['createdAt'] = $content[$i]['createdAt'];
         }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -80,15 +84,6 @@ class WorkPackageStatusControllerTest extends BaseController
                         'name' => 'label.completed',
                         'sequence' => 3,
                         'visible' => true,
-                        'createdAt' => null,
-                    ],
-                    [
-                        'project' => null,
-                        'projectName' => null,
-                        'id' => 5,
-                        'name' => 'label.closed',
-                        'sequence' => -1,
-                        'visible' => false,
                         'createdAt' => null,
                     ],
                 ],

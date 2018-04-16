@@ -4,56 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8fbe128650e835e87d476cb801193321",
+    "content-hash": "4a4ecafccc14c8dda5cf425f281bc791",
     "packages": [
-        {
-            "name": "ambta/doctrine-encrypt-bundle",
-            "version": "v2.4.5",
-            "target-dir": "Ambta/DoctrineEncryptBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ambta/DoctrineEncryptBundle.git",
-                "reference": "531d55621aa9f28ee5abe613e19905869ab60558"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ambta/DoctrineEncryptBundle/zipball/531d55621aa9f28ee5abe613e19905869ab60558",
-                "reference": "531d55621aa9f28ee5abe613e19905869ab60558",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/orm": ">=2.5",
-                "ext-mcrypt": "*",
-                "php": ">=5.4",
-                "symfony/framework-bundle": ">=2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Ambta\\DoctrineEncryptBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marcel van Nuil",
-                    "email": "marcel@ambta.com"
-                }
-            ],
-            "description": "Symfony 2 bundle which allows to encrypt data in database with some encrypt algorithm",
-            "keywords": [
-                "Rijndael",
-                "aes256",
-                "decrypt",
-                "doctrine",
-                "encrypt",
-                "symfony"
-            ],
-            "time": "2016-01-18T12:39:27+00:00"
-        },
         {
             "name": "behat/transliterator",
             "version": "v1.1.0",
