@@ -54,7 +54,6 @@
         "knplabs/knp-gaufrette-bundle": "^0.3.0",
         "dropbox-php/dropbox-php": "1.*",
         "gos/web-socket-bundle": "^1.8",
-        "ambta/doctrine-encrypt-bundle": "2.4.*",
         "jms/security-extra-bundle": "^1.6",
         "lcobucci/jwt": "^3.2",
         "stof/doctrine-extensions-bundle": "^1.2",
