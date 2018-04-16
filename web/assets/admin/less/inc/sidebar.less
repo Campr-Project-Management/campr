@@ -99,6 +99,10 @@
     a {
         .transition(color);
         .transition-duration(300ms);
+
+        &.no-transition {
+            transition: none;
+        }
     }
 
     a:hover,
@@ -146,6 +150,12 @@
             right: 15px;
             .transition(all);
             .transition-duration(250ms);
+        }
+
+        &.no-transition {
+            &:before, &:after {
+                transition: none !important;
+            }
         }
 
         &:before {
