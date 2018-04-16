@@ -26,6 +26,8 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
+        $defaultMessage = 'Something went terribly wrong.';
+
         if (strpos($request->getPathInfo(), '/api') !== 0) {
             $exception = $event->getException();
 
@@ -37,7 +39,7 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
                 $errorMessage = $exception->getMessage();
             } else {
                 $errorCode = 500;
-                $errorMessage = 'Something went terribly wrong.';
+                $errorMessage = $exception->getMessage();
             }
 
             $twig = $this->container->get('twig');
@@ -57,7 +59,6 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
 
         /** @var HttpExceptionInterface $e */
         $exception = $event->getException();
-        $defaultMessage = 'Something went terribly wrong.';
 
         if ($exception instanceof UndefinedMethodException) {
             $errorCode = $exception->getCode();
@@ -70,7 +71,7 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
             $errorMessage = $exception->getMessage();
         } else {
             $errorCode = 500;
-            $errorMessage = $defaultMessage;
+            $errorMessage = $exception->getMessage();
         }
 
         $data = [
