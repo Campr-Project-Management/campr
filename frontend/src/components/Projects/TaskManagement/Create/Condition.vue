@@ -11,7 +11,13 @@
                     v-for="status in colorStatuses"
                     v-bind:class="{'status-box': true, 'selected': selectedStatusColor && selectedStatusColor.id === status.id }"
                     v-bind:style="'background-color:' + status.color"
-                    v-on:click="selectColorStatus(status)" />
+                    v-on:click="selectColorStatus(status)" v-if="hasSelectedStatusColor"/>
+
+                <div
+                    v-for="status in colorStatuses"
+                    v-bind:class="{'status-box': true, 'selected': greenColorStatus && greenColorStatus.id === status.id }"
+                    v-bind:style="'background-color:' + status.color"
+                    v-bind:click="selectColorStatus(status)" v-if="!hasSelectedStatusColor"/>
             </div>
             <div v-for="error in errorz">{{ error }}</div>
         </div>
@@ -24,7 +30,7 @@ import {mapActions, mapGetters} from 'vuex';
 export default {
     props: ['selectedStatusColor', 'errorz'],
     methods: {
-        ...mapActions(['getColorStatuses']),
+        ...mapActions(['getColorStatuses', 'getGreenColorStatus']),
         selectColorStatus: function(status) {
             this.$emit('input', status);
         },
@@ -36,10 +42,24 @@ export default {
         if (!this.$store.state.colorStatuses || this.$store.state.colorStatuses.length == 0) {
             this.getColorStatuses();
         }
+
+        if (!this.$store.state.greenColorStatus || this.$store.state.greenColorStatus.length == 0) {
+            this.getGreenColorStatus();
+        }
     },
-    computed: mapGetters({
-        colorStatuses: 'colorStatuses',
-    })
+    computed: {
+        ...mapGetters({
+            colorStatuses: 'colorStatuses',
+            greenColorStatus: 'greenColorStatus',
+        }),
+
+        hasSelectedStatusColor() {
+            if (!(this.selectedStatusColor && this.selectedStatusColor.id)) {
+                return false;
+            }
+            return true;
+        },
+    }
     ,
 };
 </script>
