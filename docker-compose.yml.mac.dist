@@ -47,6 +47,6 @@ volumes:
         driver: local
         driver_opts:
             type: nfs
-            o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
-            device: ":./"
+            o: addr=host.docker.internal,rw,nolock,hard,nointr,async,noatime,actimeo=1,nfsvers=3
+            device: ":/path/to/your/project"
     campr-data:
