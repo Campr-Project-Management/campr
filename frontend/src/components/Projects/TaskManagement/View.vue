@@ -651,7 +651,6 @@ import SwitchField from '../../_common/_form-components/SwitchField';
 
 const TASK_STATUS_OPEN = 1;
 const TASK_STATUS_ONGOING = 3;
-const TASK_STATUS_CLOSED = 5;
 const TASK_STATUS_COMPLETED = 4;
 
 export default {
@@ -702,7 +701,7 @@ export default {
             'projectUsers',
         ]),
         isClosed() {
-            return this.task.workPackageStatus === TASK_STATUS_CLOSED;
+            return this.task.isClosed;
         },
         responsibilityObj() {
             for (let user of this.projectUsersForSelect) {
@@ -913,7 +912,7 @@ export default {
             this.patchSubtask({taskId, data});
         },
         isCompleted(task) {
-            return Number(task.workPackageStatus) === TASK_STATUS_COMPLETED;
+            return task.isCompleted;
         },
         deleteSubtask(subtaskId) {
             this.deleteTaskSubtask(subtaskId);
