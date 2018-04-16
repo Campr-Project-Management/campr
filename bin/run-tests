@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
 
-export SYMFONY__DATABASE_NAME=campr_test
-export SYMFONY__DATABASE_PASSWORD=root
-rm -rf web/uploads/tests
-mkdir -p backend/src/AppBundle/Tests/Resources/files/ && touch backend/src/AppBundle/Tests/Resources/files/file.txt
-bin/console doctrine:database:drop --if-exists --force --env=test
-bin/console doctrine:database:create --env=test
-bin/console doctrine:migrations:migrate --no-interaction --env=test
-bin/console doctrine:fixtures:load --append --fixtures=backend/src/AppBundle/DataFixtures/ORM/ --no-interaction --env=test
-bin/console cache:clear --env=test
-backend/vendor/bin/phpunit -c . backend/src
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+source "$DIR/setup-tests"
+
+bash "$DIR/phpunit" backend/src
+
 rm -rf backend/src/AppBundle/Tests/Resources/files/
