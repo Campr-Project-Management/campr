@@ -349,9 +349,15 @@ class WorkPackageRepository extends BaseRepository
         );
 
         $qb->andWhere(
-            $qb->expr()->eq(
-                'wp.type',
-                WorkPackage::TYPE_TASK
+            $qb->expr()->orX(
+                $qb->expr()->eq(
+                    'wp.type',
+                    WorkPackage::TYPE_TASK
+                ),
+                $qb->expr()->eq(
+                    'wp.type',
+                    WorkPackage::TYPE_TUTORIAL
+                )
             )
         );
 
