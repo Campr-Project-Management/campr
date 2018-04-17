@@ -2,18 +2,13 @@
     <div class="ro-summary">
         <div class="text-center" v-if="summary">
             <p class="clearfix">
-                <span class="text-right">{{ translateText('message.total_potential_savings') }}:</span>
+                <span class="text-right">{{ translate('message.total_potential_savings') }}:</span>
                 <span class="text-left">
-                    <span v-if="summary.opportunity_data.costSavings && summary.opportunity_data.costSavings.length > 0">
-                        <b v-for="(item, index) in summary.opportunity_data.costSavings">{{ translateText(item.currency) }} {{ item.totalCost }}
-                            <span v-if="index < summary.opportunity_data.costSavings.length - 1">, </span>
-                        </b>
-                    </span>
-                    <span v-else>-</span>
+                    <b>{{ summary.opportunity_data.costSavings | money({symbol: projectCurrencySymbol}) }}</b>
                 </span>
             </p>
             <p class="clearfix">                
-                <span class="text-right">{{ translateText('message.total_potential_time_savings') }}:</span>
+                <span class="text-right">{{ translate('message.total_potential_time_savings') }}:</span>
                 <span class="text-left">
                     <span v-if="summary.opportunity_data.timeSaving">
                         <b>{{ summary.opportunity_data.timeSaving | humanizeHours({ units: ['d', 'h'] }) }}</b>
@@ -22,7 +17,7 @@
                 </span>
             </p>
             <p class="clearfix">
-                <span class="text-right">{{ translateText('message.total_number_of_measures') }}:</span>
+                <span class="text-right">{{ translate('message.total_number_of_measures') }}:</span>
                 <span class="text-left">
                     <span v-if="summary.measure_data.measuresNumber">
                         <b>{{ summary.measure_data.measuresNumber }}</b>
@@ -31,10 +26,10 @@
                 </span>
             </p>
             <p class="clearfix">
-                <span class="text-right">{{ translateText('message.total_cost_of_measures') }}:</span>
+                <span class="text-right">{{ translate('message.total_cost_of_measures') }}:</span>
                 <span class="text-left">
                     <span v-if="summary.measure_data.totalCost">
-                        <b>${{ summary.measure_data.totalCost }}</b>
+                        <b>{{ summary.measure_data.totalCost | money({symbol: projectCurrencySymbol}) }}</b>
                     </span>
                     <span v-else>-</span>
                 </span>
@@ -44,12 +39,19 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
+
 export default {
     props: ['summary'],
     methods: {
         translateText: function(text) {
             return this.translate(text);
         },
+    },
+    computed: {
+        ...mapGetters([
+            'projectCurrencySymbol',
+        ]),
     },
 };
 </script>

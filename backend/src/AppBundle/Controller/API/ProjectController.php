@@ -1733,13 +1733,13 @@ class ProjectController extends ApiController
     public function risksOpportunitiesStatsAction(Project $project)
     {
         /** @var RiskRepository $riskRepo */
-        $riskRepo = $this->getDoctrine()->getRepository(Risk::class);
+        $riskRepo = $this->get('app.repository.risk');
 
         /** @var OpportunityRepository $opportunityRepo */
-        $opportunityRepo = $this->getDoctrine()->getRepository(Opportunity::class);
+        $opportunityRepo = $this->get('app.repository.opportunity');
 
         /** @var MeasureRepository $measureRepo */
-        $measureRepo = $this->getDoctrine()->getRepository(Measure::class);
+        $measureRepo = $this->get('app.repository.measure');
 
         return $this->createApiResponse([
             'risks' => [

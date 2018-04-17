@@ -57,7 +57,7 @@
                             </tr>
                             <tr>
                                 <th>{{ 'table_header_cell.cost_savings'|trans }}</th>
-                                <td>{{ opportunity.costSavings|default('-') }}</td>
+                                <td>{{ opportunity.costSavings|app_format_money(opportunity|app_currency_code) }}</td>
                             </tr>
                             <tr>
                                 <th>{{ 'table_header_cell.budget'|trans }}</th>

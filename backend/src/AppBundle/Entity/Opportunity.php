@@ -2,7 +2,8 @@
 
 namespace AppBundle\Entity;
 
-use Component\Currency\CurrencyAwareInterface;
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
 use Component\TimeUnit\TimeUnitAwareInterface;
 use Component\TimeUnit\TimeUnitsConvertor;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,7 +17,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="opportunity")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OpportunityRepository")
  */
-class Opportunity implements TimeUnitAwareInterface, CurrencyAwareInterface
+class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface
 {
     const PRIORITY_VERY_LOW = 0;
     const PRIORITY_LOW = 1;
@@ -77,13 +78,6 @@ class Opportunity implements TimeUnitAwareInterface, CurrencyAwareInterface
      * @ORM\Column(name="cost_savings", type="decimal", precision=9, scale=2, nullable=true)
      */
     private $costSavings;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="currency", type="string", length=255)
-     */
-    private $currency;
 
     /**
      * @var string
@@ -210,11 +204,11 @@ class Opportunity implements TimeUnitAwareInterface, CurrencyAwareInterface
     /**
      * Set project.
      *
-     * @param Project $project
+     * @param ProjectInterface $project
      *
      * @return Opportunity
      */
-    public function setProject(Project $project = null)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 
@@ -224,7 +218,7 @@ class Opportunity implements TimeUnitAwareInterface, CurrencyAwareInterface
     /**
      * Get project.
      *
-     * @return Project
+     * @return ProjectInterface
      */
     public function getProject()
     {
@@ -702,26 +696,6 @@ class Opportunity implements TimeUnitAwareInterface, CurrencyAwareInterface
     public function getMeasures()
     {
         return $this->measures;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCurrency(): string
-    {
-        return (string) $this->currency;
-    }
-
-    /**
-     * @param string|null $currency
-     *
-     * @return $this
-     */
-    public function setCurrency(string $currency = null)
-    {
-        $this->currency = $currency;
-
-        return $this;
     }
 
     /**
