@@ -175,7 +175,6 @@ class RiskControllerTest extends BaseController
             ->setProbability(10)
             ->setDescription('description3')
             ->setCost(3)
-            ->setCurrency('USD')
             ->setBudget(3)
             ->setDelay(3)
             ->setDelayUnit(TimeUnitAwareInterface::DAYS)
