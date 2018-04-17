@@ -26,7 +26,7 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
   },
   watchOptions: {
     aggregateTimeout: 300,
-    poll: 500
+    poll: 500,
   }
 })
 
