@@ -441,6 +441,7 @@ message:
     weeks: Weeks
     months: Months
     no_results: No results
+    currency: Currency
 
 menu:
     users: Users
@@ -1198,6 +1199,7 @@ label:
     # opportunity status
     not_taken: Not Taken
     taken: Taken
+    currency: Currency
 
 button:
     edit_member: Edit Member
@@ -1488,6 +1490,7 @@ placeholder:
     gplus: Google Plus
     category: Choose a category
     todo_category: Todo Category
+    select_currency: Select currency
 
 table_header_cell:
     avatar: Avatar
@@ -1698,6 +1701,7 @@ table_header_cell:
     subteam_parent: Subteam parent
     info_status: Info status
     info_category: Info Category
+    currency: Currency
 
 link:
     home: Home
