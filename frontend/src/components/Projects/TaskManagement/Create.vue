@@ -411,6 +411,7 @@ export default {
                 forecastEndDate: this.task.forecastFinishAt ? new Date(this.task.forecastFinishAt) : new Date(),
                 duration: this.task.duration,
             };
+
             this.statusColor = {
                 id: this.task.colorStatus,
                 name: this.task.colorStatusName,
