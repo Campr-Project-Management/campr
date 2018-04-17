@@ -70,7 +70,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'label.cost'|trans
+                            'label': ('label.cost'|trans ~ ' (' ~ form.vars.value.project|app_currency_symbol ~ ')')
                         }
                     ) }}
                     {{ form_widget(

@@ -119,25 +119,13 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-4">
-                                <input-field
-                                    type="number"
-                                    v-model.number="cost"
-                                    :content="cost"
-                                    :label="translateText('placeholder.potential_cost')" />
+                                <money-field
+                                        v-model.number="cost"
+                                        :label="translateText('placeholder.potential_cost')"
+                                        :currency="projectCurrencySymbol"/>
                                 <error
                                     v-if="validationMessages.cost && validationMessages.cost.length"
                                     v-for="message in validationMessages.cost"
-                                    :message="message" />
-                            </div>
-                            <div class="col-md-2">
-                                <select-field
-                                    :title="translateText('label.currency')"
-                                    :options="currencyLabel"
-                                    v-model="details.currency"
-                                    :currentOption="details.currency" />
-                                <error
-                                    v-if="validationMessages.currency && validationMessages.currency.length"
-                                    v-for="message in validationMessages.currency"
                                     :message="message" />
                             </div>
                             <div class="col-md-4">
@@ -152,7 +140,7 @@
                                     v-for="message in validationMessages.delay"
                                     :message="message" />
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-4">
                                 <select-field
                                     v-bind:title="translateText('label.time')"
                                     v-bind:options="timeLabel"
@@ -170,7 +158,7 @@
                             <div class="col-md-6">
                                 <h4 class="light-color">
                                     {{ translateText('message.budget' )}}:
-                                    <b>{{ potentialCost | money({symbol: currencySymbol}) }}</b>
+                                    <b>{{ potentialCost | money({symbol: projectCurrencySymbol}) }}</b>
                                     <button type="button" class="btn btn-icon"
                                             v-tooltip.right-start="translateText('message.budget_calculation_risk')">
                                         <tooltip-icon fill="light-fill"></tooltip-icon>
@@ -256,7 +244,10 @@
                         <div class="form-group last-form-group">
                             <div class="flex flex-space-between">
                                 <div class="col-md-4">
-                                    <input-field type="text" v-bind:label="translateText('placeholder.measure_cost')" v-model="measure.cost" v-bind:content="measure.cost" />
+                                    <money-field
+                                            :currency="projectCurrencySymbol"
+                                            :label="translate('placeholder.measure_cost')"
+                                            v-model="measure.cost"/>
                                     <span v-if="validationMessages.measures && validationMessages.measures[index]">
                                         <error
                                             v-if="validationMessages.measures[index].cost.length"
@@ -295,6 +286,7 @@
 <script>
 import {mapGetters, mapActions} from 'vuex';
 import InputField from '../../_common/_form-components/InputField';
+import MoneyField from '../../_common/_form-components/MoneyField';
 import RangeSlider from '../../_common/_form-components/RangeSlider';
 import TooltipIcon from '../../_common/_icons/TooltipQuestionMark';
 import IndicatorIcon from '../../_common/_icons/IndicatorIcon';
@@ -319,6 +311,7 @@ export default {
         moment,
         Error,
         Editor,
+        MoneyField,
     },
     methods: {
         ...mapActions([
@@ -440,10 +433,8 @@ export default {
             riskStatusesForSelect: 'riskStatusesForSelect',
             risk: 'currentRisk',
             validationMessages: 'validationMessages',
+            projectCurrencySymbol: 'projectCurrencySymbol',
         }),
-        currencySymbol() {
-            return this.details.currency && this.details.currency.key ? this.details.currency.label : null;
-        },
         probability() {
             let value = parseFloat(this.riskProbability);
             return isNaN(value) ? 0 : value;
@@ -497,11 +488,6 @@ export default {
             measures: [],
             riskImpact: 0,
             riskProbability: 0,
-            currencyLabel: [
-                {label: '$', key: 'USD'},
-                {label: '€', key: 'EUR'},
-                {label: '₤', key: 'GBP'},
-            ],
             timeLabel: [
                 {label: this.translateText('choices.hours'), key: 'choices.hours'},
                 {label: this.translateText('choices.days'), key: 'choices.days'},
@@ -527,10 +513,6 @@ export default {
             this.riskImpact = this.risk.impact;
             this.riskProbability = this.risk.probability;
             this.cost = this.risk.cost;
-            this.details.currency = this.risk.currency
-                ? {key: this.translateText(this.risk.currency), label: this.getCurrencySymbol(this.risk.currency)}
-                : null
-            ;
             this.timeDelay = this.risk.delay;
             this.details.time = this.risk.delayUnit
                 ? {key: this.risk.delayUnit, label: this.translateText(this.risk.delayUnit)}

@@ -122,14 +122,14 @@
                         </div>
 
                         <div class="ro-info">
-                            <p>{{ translateText('message.budget_saved') }}: <b>{{ opportunity.currency }} {{ opportunity.budget }}</b></p>
+                            <p>{{ translateText('message.budget_saved') }}: <b>{{ opportunity.budget|money({symbol: projectCurrencySymbol}) }}</b></p>
                             <p>{{ translateText('message.time_saved') }}: <b>{{ opportunity.timeSavings }} {{ translateText(opportunity.timeUnit) }}</b></p>
                             <p>{{ translateText('message.due_date') }}: <b>{{ opportunity.dueDate | moment('DD.MM.YYYY') }}</b></p>
                         </div>
 
                         <div class="ro-info">
                             <p>{{ translateText('message.measures') }}: <b v-if="opportunity.measures">{{ opportunity.measures.length }}</b></p>
-                            <p>{{ translateText('message.measures_cost') }}: <b v-if="risksOpportunitiesStats.opportunities">{{ opportunity.currency }} {{ risksOpportunitiesStats.opportunities.measure_data.totalCost }}</b></p>
+                            <p>{{ translateText('message.measures_cost') }}: <b v-if="risksOpportunitiesStats.opportunities">{{ risksOpportunitiesStats.opportunities.measure_data.totalCost|money({symbol: projectCurrencySymbol}) }}</b></p>
                         </div>
                     </div>
                 </div>
@@ -221,7 +221,7 @@
                         </div>
                         <div class="comment-body">
                             <b class="title">{{ measure.title }}</b>
-                            <p class="cost">{{ translateText('message.cost') }}: <b>{{opportunity.currency}} {{ measure.cost }}</b></p>
+                            <p class="cost">{{ translateText('message.cost') }}: <b>{{ measure.cost|money({symbol: projectCurrencySymbol}) }}</b></p>
                             <p v-html="measure.description"></p>
                         </div>
                         <div class="comment-footer" v-if="measure.medias.length > 0">
@@ -312,7 +312,10 @@
                     <div class="form-group last-form-group">
                         <div class="flex flex-space-between">
                             <div class="col-md-4">
-                                <input-field type="text" v-bind:label="translateText('placeholder.measure_cost')" v-model="measureCost" v-bind:content="measureCost" />
+                                <money-field
+                                        :currency="projectCurrencySymbol"
+                                        v-model="measureCost"
+                                        :label="translateText('placeholder.measure_cost')" />
                                 <error
                                     v-if="validationMessages.cost && validationMessages.cost.length"
                                     v-for="message in validationMessages.cost"
@@ -342,9 +345,11 @@ import moment from 'moment';
 import Modal from '../../_common/Modal';
 import Error from '../../_common/_messages/Error.vue';
 import Editor from '../../_common/Editor';
+import MoneyField from '../../_common/_form-components/MoneyField';
 
 export default {
     components: {
+        MoneyField,
         EditIcon,
         DeleteIcon,
         AttachIcon,
@@ -489,6 +494,7 @@ export default {
             risksOpportunitiesStats: 'risksOpportunitiesStats',
             validationMessages: 'validationMessages',
             measures: 'currentOpportunityMeasures',
+            projectCurrencySymbol: 'projectCurrencySymbol',
         }),
     },
     created() {
