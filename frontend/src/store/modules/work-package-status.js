@@ -26,10 +26,13 @@ const getters = {
 
         return workPackageStatusesForMilestone;
     },
-    workPackageStatusesForSelect: (state) => state.workPackageStatuses.map((item) => ({
-        key: item.id,
-        label: Vue.translate(item.name),
-    })),
+    workPackageStatusesForSelect: (state) => {
+        return state.workPackageStatuses.filter(item => !!item.visible).
+            map((item) => ({
+                key: item.id,
+                label: Vue.translate(item.name),
+            }));
+    },
     workPackageStatusById: ({workPackageStatuses}) => (id) => {
         return _.find(workPackageStatuses, (workPackageStatus) => {
             return workPackageStatus.id === id;
