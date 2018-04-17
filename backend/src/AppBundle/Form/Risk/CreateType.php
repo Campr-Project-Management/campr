@@ -79,21 +79,6 @@ class CreateType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('currency', ChoiceType::class, [
-                'required' => true,
-                'choices' => [
-                    '$' => 'USD',
-                    '€' => 'EUR',
-                    '₤' => 'GBP',
-                ],
-                'placeholder' => 'placeholder.currency',
-                'translation_domain' => 'messages',
-                'constraints' => [
-                    new NotNull([
-                        'message' => 'not_null.currency',
-                    ]),
-                ],
-            ])
             ->add('delay', TextType::class, [
                 'required' => true,
                 'constraints' => [

@@ -97,16 +97,7 @@
                             'attr': {
                                 'class': 'form-control input-sm',
                             },
-                            'label': 'label.cost'|trans
-                        }
-                    ) }}
-                    {{ form_widget(
-                        form.currency,
-                        {
-                            'attr': {
-                                'class': 'selectpicker',
-                            },
-                            'label': 'label.currency'|trans
+                            'label': ('label.cost'|trans ~ ' (' ~ form.vars.value|app_currency_symbol ~ ')')
                         }
                     ) }}
                     {{ form_widget(

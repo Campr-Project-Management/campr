@@ -28,125 +28,180 @@ class BaseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.title',
-                    ]),
-                ],
-            ])
-            ->add('description', TextareaType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.description',
-                    ]),
-                ],
-            ])
-            ->add('impact', IntegerType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.impact',
-                    ]),
-                    new GreaterThanOrEqual([
-                        'value' => 0,
-                        'message' => 'greater_than_or_equal.impact',
-                    ]),
-                ],
-            ])
-            ->add('probability', IntegerType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.probability',
-                    ]),
-                    new GreaterThanOrEqual([
-                        'value' => 0,
-                        'message' => 'greater_than_or_equal.probability',
-                    ]),
-                ],
-            ])
-            ->add('budget', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.budget',
-                    ]),
-                ],
-            ])
-            ->add('costSavings', TextType::class, [
-                'required' => false,
-            ])
-            ->add('currency', ChoiceType::class, [
-                'required' => true,
-                'choices' => [
-                    '$' => 'USD',
-                    '€' => 'EUR',
-                    '₤' => 'GBP',
-                ],
-                'placeholder' => 'placeholder.currency',
-                'translation_domain' => 'messages',
-                'constraints' => [
-                    new NotNull([
-                        'message' => 'not_null.currency',
-                    ]),
-                ],
-            ])
-            ->add('timeSavings', TextType::class, [
-                'required' => false,
-            ])
-            ->add('timeUnit', ChoiceType::class, [
-                'required' => true,
-                'choices' => [
-                    'choices.hours' => 'choices.hours',
-                    'choices.days' => 'choices.days',
-                    'choices.weeks' => 'choices.weeks',
-                    'choices.months' => 'choices.months',
-                ],
-                'constraints' => [
-                    new NotNull([
-                        'message' => 'not_null.time_unit',
-                    ]),
-                ],
-                'placeholder' => 'placeholder.time_unit',
-                'translation_domain' => 'messages',
-            ])
-            ->add('priority', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.priority',
-                    ]),
-                ],
-            ])
-            ->add('opportunityStrategy', EntityType::class, [
-                'class' => OpportunityStrategy::class,
-                'required' => false,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.name',
-                'translation_domain' => 'messages',
-            ])
-            ->add('opportunityStatus', EntityType::class, [
-                'class' => OpportunityStatus::class,
-                'required' => false,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.name',
-                'translation_domain' => 'messages',
-            ])
-            ->add('dueDate', DateType::class, [
-                'required' => false,
-                'widget' => 'single_text',
-                'format' => 'dd-MM-yyyy',
-            ])
-            ->add('responsibility', EntityType::class, [
-                'class' => User::class,
-                'required' => false,
-                'choice_label' => 'username',
-                'placeholder' => 'placeholder.user',
-                'translation_domain' => 'messages',
-            ])
+            ->add(
+                'title',
+                TextType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.title',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'description',
+                TextareaType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.description',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'impact',
+                IntegerType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.impact',
+                            ]
+                        ),
+                        new GreaterThanOrEqual(
+                            [
+                                'value' => 0,
+                                'message' => 'greater_than_or_equal.impact',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'probability',
+                IntegerType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.probability',
+                            ]
+                        ),
+                        new GreaterThanOrEqual(
+                            [
+                                'value' => 0,
+                                'message' => 'greater_than_or_equal.probability',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'budget',
+                TextType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.budget',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'costSavings',
+                TextType::class,
+                [
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'timeSavings',
+                TextType::class,
+                [
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'timeUnit',
+                ChoiceType::class,
+                [
+                    'required' => true,
+                    'choices' => [
+                        'choices.hours' => 'choices.hours',
+                        'choices.days' => 'choices.days',
+                        'choices.weeks' => 'choices.weeks',
+                        'choices.months' => 'choices.months',
+                    ],
+                    'constraints' => [
+                        new NotNull(
+                            [
+                                'message' => 'not_null.time_unit',
+                            ]
+                        ),
+                    ],
+                    'placeholder' => 'placeholder.time_unit',
+                    'translation_domain' => 'messages',
+                ]
+            )
+            ->add(
+                'priority',
+                TextType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.priority',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'opportunityStrategy',
+                EntityType::class,
+                [
+                    'class' => OpportunityStrategy::class,
+                    'required' => false,
+                    'choice_label' => 'name',
+                    'placeholder' => 'placeholder.name',
+                    'translation_domain' => 'messages',
+                ]
+            )
+            ->add(
+                'opportunityStatus',
+                EntityType::class,
+                [
+                    'class' => OpportunityStatus::class,
+                    'required' => false,
+                    'choice_label' => 'name',
+                    'placeholder' => 'placeholder.name',
+                    'translation_domain' => 'messages',
+                ]
+            )
+            ->add(
+                'dueDate',
+                DateType::class,
+                [
+                    'required' => false,
+                    'widget' => 'single_text',
+                    'format' => 'dd-MM-yyyy',
+                ]
+            )
+            ->add(
+                'responsibility',
+                EntityType::class,
+                [
+                    'class' => User::class,
+                    'required' => false,
+                    'choice_label' => 'username',
+                    'placeholder' => 'placeholder.user',
+                    'translation_domain' => 'messages',
+                ]
+            )
         ;
     }
 

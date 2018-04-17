@@ -5,7 +5,7 @@
             <router-link :to="{name: 'project-risks-view-risk', params:{riskId: item.id}}">
                 {{ item.title }}
             </router-link>
-            <p>{{ translateText('message.potential_cost') }}: <b v-if="item.cost">{{ item.potentialCost | money(potentialCostMoneyOptions(item)) }}</b><b v-else>-</b></p>
+            <p>{{ translateText('message.potential_cost') }}: <b v-if="item.cost">{{ item.potentialCost | money({symbol: projectCurrencySymbol}) }}</b><b v-else>-</b></p>
             <p>{{ translateText('message.potential_time_delay') }}: <b v-if="item.delay">{{ item.potentialDelayHours | humanizeHours({ units: ['d', 'h'] }) }}</b><b v-else>-</b></p>
             <p>{{ translateText('message.priority') }}: <b v-if="item.priority">{{ item.priority }}</b><b v-else>-</b></p>
             <p>{{ translateText('message.strategy') }}: <b v-if="item.riskStrategyName">{{ item.riskStrategyName }}</b><b v-else>-</b></p>
@@ -15,17 +15,19 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
+
 export default {
     props: ['listData'],
     methods: {
         translateText: function(text) {
             return this.translate(text);
         },
-        potentialCostMoneyOptions(item) {
-            return {
-                symbol: item.currency,
-            };
-        },
+    },
+    computed: {
+        ...mapGetters([
+            'projectCurrencySymbol',
+        ]),
     },
 };
 </script>
