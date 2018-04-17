@@ -15,11 +15,13 @@ $(function () {
     $('.sidebar-search').keyup(function () {
         var searchedString = $(this).val();
 
+        $menuChild.find('a').addClass('no-transition');
         $menuChild.show();
         $menuChild.find('ul').hide();
         $menuChild.removeClass('toggled');
-        $('.main-category > a').css('color', '#4C4C4C');
         $('.main-category > ul > li > a').css('color', '#989898');
+
+        $menuChild.find('a').remove('no-transition');
 
         if (searchedString) {
             $menuChild.hide();
@@ -27,6 +29,10 @@ $(function () {
             $menuChild.find(':icontains("' + searchedString + '")').parents('.main-category').addClass('toggled');
             $menuChild.find(':icontains("' + searchedString + '")').parents('.main-category').find('ul').show();
             $menuChild.find(':icontains("' + searchedString + '")').css('color', '#262626');
+
+        } else {
+            $menuChild.find('a').css('color', '#8794c4');
         }
+        $menuChild.find('a').removeClass('no-transition');
     });
 });
