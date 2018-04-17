@@ -13,7 +13,7 @@
                     :title="translateText('message.project_budget')"
                     :max="budgetMaxValue"
                     :values="budgetValues"
-                    minPrefix="€"
+                    :min-prefix="currencySymbol"
                     v-model="projectBudget"/>
             <range-slider
                     :title="translateText('message.team_members_involved')"
@@ -79,7 +79,11 @@
             RangeSlider,
         },
         methods: {
-            ...mapActions(['getProjectCategories', 'getProjectScopes']),
+            ...mapActions([
+                'getProjectCategories',
+                'getProjectScopes',
+                'getCurrencies',
+            ]),
             translateText(text) {
                 return this.translate(text);
             },
@@ -118,6 +122,9 @@
                 }
                 return false;
             },
+            getFirstStepData() {
+                return JSON.parse(localStorage.getItem(FIRST_STEP_LOCALSTORAGE_KEY));
+            },
         },
         computed: {
             ...mapGetters({
@@ -126,7 +133,27 @@
                 projectCategoriesLoading: 'projectCategoriesLoading',
                 projectScopes: 'projectScopesForSelect',
                 projectScopesLoading: 'projectScopesLoading',
+                currencyById: 'currencyById',
+                currencies: 'currencies',
             }),
+            currencySymbol() {
+                const stepData = this.getFirstStepData();
+                if (!stepData) {
+                    return '';
+                }
+
+                let id = stepData.selectedCurrency && stepData.selectedCurrency.key;
+                if (!id) {
+                    return '';
+                }
+
+                let currency = this.currencyById(id);
+                if (!currency) {
+                    return '';
+                }
+
+                return currency.symbol;
+            },
             durationMaxValue: function() {
                 return this.projectHasProgrammeAndPortofolio() ? 36 : 12;
             },
@@ -163,6 +190,10 @@
         created() {
             this.getProjectCategories();
             this.getProjectScopes();
+
+            if (this.currencies.length === 0) {
+                this.getCurrencies();
+            }
         },
         data: function() {
             const stepData = JSON.parse(localStorage.getItem(SECOND_STEP_LOCALSTORAGE_KEY));

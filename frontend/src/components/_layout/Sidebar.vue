@@ -117,7 +117,6 @@
         },
         watch: {
             projectId(val) {
-                console.log('projectID changed to', val);
                 if (val !== undefined) {
                     this.getProjectById(val);
                 } else {
