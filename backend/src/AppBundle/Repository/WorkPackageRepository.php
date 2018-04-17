@@ -326,7 +326,7 @@ class WorkPackageRepository extends BaseRepository
         return $this->findBy(
             [
                 'project' => $project,
-                'type' => WorkPackage::TYPE_TASK,
+                'type' => [WorkPackage::TYPE_TASK, WorkPackage::TYPE_TASK],
             ],
             $orderBy,
             $limit,
