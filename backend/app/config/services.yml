@@ -144,6 +144,15 @@ services:
         arguments:
             - '@app.repository.work_package'
 
+    app.formatter.money:
+        class: AppBundle\Formatter\MoneyFormatter
+
+    app.templating.helper.format_money:
+        class: AppBundle\Templating\Helper\FormatMoneyHelper
+        public: false
+        arguments:
+            - '@app.formatter.money'
+
 ### REPOSITORIES ###
     app.repository.work_package:
         class: AppBundle\Repository\WorkPackageRepository
@@ -174,6 +183,30 @@ services:
         arguments: ~
         tags:
             - { name: app.repository, class: AppBundle\Entity\Team }
+
+    app.repository.currency:
+        class: AppBundle\Repository\CurrencyRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Currency }
+
+    app.repository.risk:
+        class: AppBundle\Repository\RiskRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Risk }
+
+    app.repository.opportunity:
+        class: AppBundle\Repository\OpportunityRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Opportunity }
+
+    app.repository.measure:
+        class: AppBundle\Repository\MeasureRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Measure }
 
 ### MENU BUILDER ###
     app.admin.menu.builder:
@@ -337,11 +370,25 @@ services:
             - { name: kernel.event_subscriber }
 
 ### EXTENSIONS ###
-    app.app_extension:
+    app.twig.extension.app:
         class: AppBundle\Twig\AppExtension
         public: false
         arguments:
             - '%show_tracking_code%'
+        tags:
+            - { name: twig.extension }
+
+    app.twig.extension.currency:
+        class: AppBundle\Twig\CurrencyExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    app.twig.extension.format_money:
+        class: AppBundle\Twig\FormatMoneyExtension
+        public: false
+        arguments:
+            - '@app.templating.helper.format_money'
         tags:
             - { name: twig.extension }
 

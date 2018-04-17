@@ -23,6 +23,7 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
         $projectStatus = $this->getReference('project-status1');
         $portfolio = $this->getReference('portfolio1');
         $company = $this->getReference('company1');
+        $currencyEUR = $this->getReference('currencyEUR');
 
         $project1 = (new Project())
             ->setName('project1')
@@ -35,6 +36,8 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
             ->setCompany($company)
             ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
         ;
+        $project1->setCurrency($currencyEUR);
+
         $manager->persist($project1);
         $this->setReference('project1', $project1);
 
@@ -56,6 +59,7 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
             ->setCompany($company)
             ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
         ;
+        $project2->setCurrency($currencyEUR);
         $manager->persist($project2);
         $this->setReference('project2', $project2);
 

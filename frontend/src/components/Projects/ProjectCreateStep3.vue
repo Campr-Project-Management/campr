@@ -163,6 +163,9 @@ export default {
             if (firstStepData.visibleProgramme) {
                 formData.append('programme', firstStepData.selectedProgramme.key);
             }
+            if (firstStepData.selectedCurrency) {
+                formData.append('currency', firstStepData.selectedCurrency.key);
+            }
 
             if (secondStepData.selectedCategory) {
                 formData.append('projectCategory', secondStepData.selectedCategory.key);

@@ -138,7 +138,6 @@ class RiskControllerTest extends BaseController
             ->setProbability(1)
             ->setDescription('risk-description')
             ->setCost(1)
-            ->setCurrency('USD')
             ->setDelay(1)
             ->setDelayUnit('days')
             ->setPriority('risk-priority')

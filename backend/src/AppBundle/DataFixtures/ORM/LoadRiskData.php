@@ -31,7 +31,6 @@ class LoadRiskData extends AbstractFixture implements OrderedFixtureInterface
                 ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
                 ->setDescription('description'.$i)
                 ->setCost(1)
-                ->setCurrency('USD')
                 ->setBudget(1)
                 ->setDelay(1)
                 ->setDelayUnit(TimeUnitAwareInterface::DAYS)
