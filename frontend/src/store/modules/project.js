@@ -103,8 +103,19 @@ const actions = {
             .patch(Routing.generate('app_api_project_edit', {id: data.projectId}), data)
             .then(
                 (response) => {
-                    let project = response.data;
-                    commit(types.EDIT_PROJECT, project);
+                    if (response.body && response.body.error) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        const project = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                        commit(types.EDIT_PROJECT, {project});
+                        commit(types.SET_PROJECT, {project});
+                    }
+                    return response;
+                },
+                (response) => {
+                    return response;
                 }
             )
         ;
