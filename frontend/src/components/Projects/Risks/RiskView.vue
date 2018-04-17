@@ -122,14 +122,14 @@
                         </div>
 
                         <div class="ro-info">
-                            <p>{{ translateText('message.potential_cost') }}: <b>{{ risk.potentialCost | money({symbol: risk.currency}) }}</b></p>
+                            <p>{{ translateText('message.potential_cost') }}: <b>{{ risk.potentialCost | money({symbol: projectCurrencySymbol}) }}</b></p>
                             <p>{{ translateText('message.time_saved') }}: <b>{{ risk.potentialDelay | formatNumber }} {{ translateText(risk.delayUnit) }}</b></p>
                             <p>{{ translateText('message.due_date') }}: <b>{{ risk.dueDate | moment('DD.MM.YYYY') }}</b></p>
                         </div>
 
                         <div class="ro-info">
                             <p>{{ translateText('message.measures') }}: <b v-if="risk.measures">{{ risk.measures.length }}</b></p>
-                            <p>{{ translateText('message.measures_cost') }}: <b v-if="risksOpportunitiesStats.risks">{{risk.currency}} {{ risksOpportunitiesStats.risks.measure_data.totalCost }}</b></p>
+                            <p>{{ translateText('message.measures_cost') }}: <b v-if="risksOpportunitiesStats.risks">{{ risksOpportunitiesStats.risks.measure_data.totalCost | money({symbol: projectCurrencySymbol}) }}</b></p>
                         </div>
                     </div>
                 </div>
@@ -221,7 +221,7 @@
                         </div>
                         <div class="comment-body">
                             <b class="title">{{ measure.title }}</b>
-                            <p class="cost">{{ translateText('message.cost') }}: <b>{{risk.currency}} {{ measure.cost }}</b></p>
+                            <p class="cost">{{ translateText('message.cost') }}: <b>{{ measure.cost | money({symbol: projectCurrencySymbol}) }}</b></p>
                             <p v-html="measure.description "></p>
                         </div>
                         <div class="comment-footer" v-if="measure.medias.length > 0">
@@ -312,7 +312,10 @@
                     <div class="form-group last-form-group">
                         <div class="flex flex-space-between">
                             <div class="col-md-4">
-                                <input-field type="text" v-bind:label="translateText('placeholder.measure_cost')" v-model="measureCost" v-bind:content="measureCost" />
+                                <money-field
+                                        :label="translate('placeholder.measure_cost')"
+                                        v-model="measureCost"
+                                        :currency="projectCurrencySymbol"/>
                                 <error
                                     v-if="validationMessages.cost && validationMessages.cost.length"
                                     v-for="message in validationMessages.cost"
@@ -335,6 +338,7 @@ import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import AttachIcon from '../../_common/_icons/AttachIcon';
 import InputField from '../../_common/_form-components/InputField';
+import MoneyField from '../../_common/_form-components/MoneyField';
 import IndicatorIcon from '../../_common/_icons/IndicatorIcon';
 import RangeSlider from '../../_common/_form-components/RangeSlider';
 import {mapGetters, mapActions} from 'vuex';
@@ -354,11 +358,16 @@ export default {
         Modal,
         Error,
         Editor,
+        MoneyField,
     },
     methods: {
         ...mapActions([
-            'getProjectRiskAndOpportunitiesStats', 'getProjectRisk', 'createMeasureComment',
-            'createRiskMeasure', 'deleteProjectRisk', 'editMeasure',
+            'getProjectRiskAndOpportunitiesStats',
+            'getProjectRisk',
+            'createMeasureComment',
+            'createRiskMeasure',
+            'deleteProjectRisk',
+            'editMeasure',
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -489,6 +498,7 @@ export default {
             risksOpportunitiesStats: 'risksOpportunitiesStats',
             validationMessages: 'validationMessages',
             measures: 'measures',
+            projectCurrencySymbol: 'projectCurrencySymbol',
         }),
     },
     created() {

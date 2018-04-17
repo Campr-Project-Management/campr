@@ -118,6 +118,13 @@
                                 'label': 'label.portfolio'|trans,
                             }
                         ) }}
+                        {{ form_widget(
+                            form.currency,
+                            {
+                                'attr': {'class': 'selectpicker'},
+                                'label': 'label.currency'|trans,
+                            }
+                        ) }}
 
                         {% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
 
