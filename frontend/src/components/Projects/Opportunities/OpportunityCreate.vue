@@ -359,12 +359,12 @@ export default {
             data.id = this.$route.params.opportunityId;
             this.editProjectOpportunity(data);
         },
-        calculateBudget: function() {
-            let opportunityVal = parseInt(this.opportunityProbability ? this.opportunityProbability : 0);
-            let savingsVal = parseFloat(this.costSavings ? this.costSavings : 0);
-            this.calculatedBudget = (opportunityVal * savingsVal).toFixed(2);
+        calculateBudget() {
+            let probability = parseInt(this.opportunityProbability ? this.opportunityProbability : 0);
+            let costSavings = parseFloat(this.costSavings ? this.costSavings : 0);
+            this.calculatedBudget = (costSavings * (probability / 100)).toFixed(2);
 
-            return (opportunityVal * savingsVal).toFixed(2);
+            return this.calculatedBudget;
         },
         calculateTime: function() {
             let unit = this.details.time && this.details.time.key ? this.details.time.label : '';
