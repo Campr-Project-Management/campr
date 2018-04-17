@@ -13,7 +13,12 @@
                 v-bind:options="customers"
                 v-model="selectedCompany"
                 v-bind:currentOption="selectedCompany" />
-               
+
+            <select-field
+                    :title="translate('message.currency')"
+                    :options="currenciesForSelect"
+                    v-model="selectedCurrency" />
+
             <div v-if="!projectLogo">
                 <upload-placeholder />
             </div>
@@ -106,7 +111,14 @@ export default {
         UploadPlaceholder,
     },
     methods: {
-        ...mapActions(['createPortfolio', 'getPortfolios', 'createProgramme', 'getProgrammes', 'getCustomers']),
+        ...mapActions([
+            'createPortfolio',
+            'getPortfolios',
+            'createProgramme',
+            'getProgrammes',
+            'getCustomers',
+            'getCurrencies',
+        ]),
         translateText(text) {
             return this.translate(text);
         },
@@ -129,7 +141,7 @@ export default {
         },
         saveStepState: function() {
             const stepData = {
-                'portfolioName': this.portfoioName,
+                'portfolioName': this.portfolioName,
                 'programmeName': this.programmeName,
                 'projectName': this.projectName,
                 'projectNumber': this.projectNumber,
@@ -141,6 +153,7 @@ export default {
                 'selectedPortfolio': this.selectedPortfolio,
                 'selectedProgramme': this.selectedProgramme,
                 'selectedCompany': this.selectedCompany,
+                'selectedCurrency': this.selectedCurrency,
             };
             localStorage.setItem(FIRST_STEP_LOCALSTORAGE_KEY, JSON.stringify(stepData));
         },
@@ -181,11 +194,17 @@ export default {
         portfolioLoading: 'portfolioLoading',
         programmes: 'programmesForSelect',
         programmeLoading: 'programmeLoading',
+        currenciesForSelect: 'currenciesForSelect',
+        currencies: 'currencies',
     }),
     created() {
         this.getPortfolios();
         this.getProgrammes();
         this.getCustomers();
+
+        if (this.currencies.length === 0) {
+            this.getCurrencies();
+        }
     },
     watch: {
         portfolios(value) {
@@ -227,6 +246,7 @@ export default {
             selectedPortfolio: stepData ? stepData.selectedPortfolio : '',
             selectedProgramme: stepData ? stepData.selectedProgramme : '',
             selectedCompany: stepData ? stepData.selectedCompany: '',
+            selectedCurrency: stepData ? stepData.selectedCurrency: '',
         };
     },
 };

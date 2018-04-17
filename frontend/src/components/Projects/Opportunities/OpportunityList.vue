@@ -5,7 +5,7 @@
             <router-link :to="{name: 'project-opportunities-view-opportunity', params:{opportunityId: item.id}}">
                 {{ item.title }}
             </router-link>
-            <p>{{ translateText('message.potential_savings') }}: <b v-if="item.costSavings">{{ translateText(item.currency) }} {{ item.potentialCostSavings }}</b><b v-else>-</b></p>
+            <p>{{ translateText('message.potential_savings') }}: <b v-if="item.potentialCostSavings">{{ item.potentialCostSavings | money({symbol: projectCurrencySymbol}) }}</b><b v-else>-</b></p>
             <p>{{ translateText('message.potential_time_savings') }}: <b v-if="item.timeSavings">{{ item.potentialTimeSavingsHours | humanizeHours({ units: ['d', 'h'] }) }}</b><b v-else>-</b></p>
             <p>{{ translateText('message.priority') }}: <b v-if="item.priority">{{ item.priority }}</b><b v-else>-</b></p>
             <p>{{ translateText('message.strategy') }}: <b v-if="item.opportunityStrategyName">{{ item.opportunityStrategyName }}</b><b v-else>-</b></p>
@@ -15,12 +15,19 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
+
 export default {
     props: ['listData'],
     methods: {
         translateText: function(text) {
             return this.translate(text);
         },
+    },
+    computed: {
+        ...mapGetters([
+            'projectCurrencySymbol',
+        ]),
     },
 };
 </script>
