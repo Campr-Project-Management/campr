@@ -115,10 +115,18 @@
                             {{ translateText('message.project_status') }} -
                             <b v-for="(colorStatus, index) in colorStatuses" :key="index" :style="{color: colorStatus.color}"> {{ translateText(colorStatus.name) }} </b>
                         </h4>
-                        <div class="status-boxes flex flex-v-center" v-if="colorStatuses && colorStatuses.length">
-                            <div v-for="(colorStatus, index) in colorStatuses" :key="index" class="status-box" :style="{backgroundColor: (project.colorStatus === colorStatus.id ? colorStatus.color : null)}"></div>
+
+                        <div class="status-boxes flex flex-v-center" v-if="colorStatuses && colorStatuses.length && userIsManager">
+                            <div v-for="(colorStatus, index) in colorStatuses" :key="index" class="status-box" :style="{backgroundColor: (project.status === colorStatus.id ? colorStatus.color : null)}"  v-on:click="updateColorStatus(colorStatus)"></div>
                         </div>
+
+                        <div class="status-boxes flex flex-v-center" v-if="colorStatuses && colorStatuses.length && !userIsManager">
+                            <div v-for="(colorStatus, index) in colorStatuses" :key="index" class="status-box" :style="{backgroundColor: (project.status === colorStatus.id ? colorStatus.color : null)}"></div>
+                        </div>
+
                         <hr v-if="colorStatuses && colorStatuses.length">
+
+                        <!-- /// End Project Condition /// -->
 
                         <a
                             class="btn-rounded btn-md btn-empty btn-auto"
@@ -201,6 +209,7 @@ export default {
             'getColorStatuses',
             'getTasksStatus',
             'closeProject',
+            'editProject',
         ]),
         translateText(text) {
             return this.translate(text);
@@ -211,6 +220,12 @@ export default {
             let diff = end.diff(start, 'days');
 
             return !isNaN(diff) ? diff + 1 : '-';
+        },
+        updateColorStatus(colorStatus) {
+            this.editProject({
+                status: colorStatus.id,
+                projectId: this.$route.params.id,
+            });
         },
         doCloseProject() {
             const {id} = this.project;
@@ -252,7 +267,19 @@ export default {
             tasksForSchedule: 'tasksForSchedule',
             projectTasksStatus: 'projectTasksStatus',
             contract: 'currentContract',
+            localUser: 'localUser',
         }),
+        userIsManager() {
+            let isManager = false;
+
+            this.projectManagers.forEach((item, index) => {
+                if(item.user == this.localUser.id) {
+                    isManager = true;
+                }
+            });
+
+            return isManager;
+        },
         projectContractId() {
             if (this.contract && this.contract.id) {
                 return this.contract.id;
