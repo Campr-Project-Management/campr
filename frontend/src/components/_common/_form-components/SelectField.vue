@@ -41,7 +41,7 @@ export default {
         options: {
             type: Array,
             required: true,
-            default: [],
+            default: () => [],
         },
         currentOption: {
             required: false,
