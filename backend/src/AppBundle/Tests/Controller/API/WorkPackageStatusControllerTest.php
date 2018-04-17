@@ -86,6 +86,15 @@ class WorkPackageStatusControllerTest extends BaseController
                         'visible' => true,
                         'createdAt' => null,
                     ],
+                    [
+                        'project' => null,
+                        'projectName' => null,
+                        'id' => 5,
+                        'name' => 'label.closed',
+                        'sequence' => -1,
+                        'visible' => false,
+                        'createdAt' => null,
+                    ],
                 ],
             ],
         ];
