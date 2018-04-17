@@ -122,8 +122,8 @@
                         </div>
 
                         <div class="ro-info">
-                            <p>{{ translateText('message.budget_saved') }}: <b>{{ opportunity.budget|money({symbol: projectCurrencySymbol}) }}</b></p>
-                            <p>{{ translateText('message.time_saved') }}: <b>{{ opportunity.timeSavings }} {{ translateText(opportunity.timeUnit) }}</b></p>
+                            <p>{{ translateText('message.budget_saved') }}: <b>{{ opportunity.potentialCostSavings|money({symbol: projectCurrencySymbol}) }}</b></p>
+                            <p>{{ translateText('message.time_saved') }}: <b>{{ opportunity.potentialTimeSavings }} {{ translateText(opportunity.timeUnit) }}</b></p>
                             <p>{{ translateText('message.due_date') }}: <b>{{ opportunity.dueDate | moment('DD.MM.YYYY') }}</b></p>
                         </div>
 
