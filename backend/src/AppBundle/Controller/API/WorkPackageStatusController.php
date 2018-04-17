@@ -30,7 +30,7 @@ class WorkPackageStatusController extends ApiController
         /** @var WorkPackageStatusRepository $repository */
         $repository = $this->get('app.repository.work_package_status');
 
-        return $this->createApiResponse($repository->findAllVisible());
+        return $this->createApiResponse($repository->findAll());
     }
 
     /**
