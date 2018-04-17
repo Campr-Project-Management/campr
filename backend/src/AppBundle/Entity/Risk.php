@@ -2,7 +2,8 @@
 
 namespace AppBundle\Entity;
 
-use Component\Currency\CurrencyAwareInterface;
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
 use Component\TimeUnit\TimeUnitAwareInterface;
 use Component\TimeUnit\TimeUnitsConvertor;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,7 +17,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="risk")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RiskRepository")
  */
-class Risk implements TimeUnitAwareInterface, CurrencyAwareInterface
+class Risk implements TimeUnitAwareInterface, ProjectAwareInterface
 {
     const PRIORITY_VERY_LOW = 0;
     const PRIORITY_LOW = 1;
@@ -77,13 +78,6 @@ class Risk implements TimeUnitAwareInterface, CurrencyAwareInterface
      * @ORM\Column(name="cost", type="decimal", precision=25, scale=2, nullable=true)
      */
     private $cost;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="currency", type="string", length=255)
-     */
-    private $currency;
 
     /**
      * @var string
@@ -220,11 +214,11 @@ class Risk implements TimeUnitAwareInterface, CurrencyAwareInterface
     /**
      * Set project.
      *
-     * @param Project $project
+     * @param ProjectInterface $project
      *
      * @return Risk
      */
-    public function setProject(Project $project = null)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 
@@ -234,7 +228,7 @@ class Risk implements TimeUnitAwareInterface, CurrencyAwareInterface
     /**
      * Get project.
      *
-     * @return Project
+     * @return ProjectInterface
      */
     public function getProject()
     {
@@ -767,26 +761,6 @@ class Risk implements TimeUnitAwareInterface, CurrencyAwareInterface
     /**
      * @return string
      */
-    public function getCurrency(): string
-    {
-        return (string) $this->currency;
-    }
-
-    /**
-     * @param string $currency
-     *
-     * @return $this
-     */
-    public function setCurrency(string $currency = null)
-    {
-        $this->currency = $currency;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getDelayUnit()
     {
         return $this->delayUnit;
@@ -904,6 +878,6 @@ class Risk implements TimeUnitAwareInterface, CurrencyAwareInterface
 
         $convertor = new TimeUnitsConvertor($this);
 
-        return $convertor->toHours($amount);
+        return round($convertor->toHours($amount), 4);
     }
 }
