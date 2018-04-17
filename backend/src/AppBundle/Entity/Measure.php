@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Component\Project\ProjectInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -346,11 +347,11 @@ class Measure
     /**
      * Set risk.
      *
-     * @param Risk $risk
+     * @param Risk|null $risk
      *
      * @return Measure
      */
-    public function setRisk(Risk $risk)
+    public function setRisk(Risk $risk = null)
     {
         $this->risk = $risk;
 
@@ -360,7 +361,7 @@ class Measure
     /**
      * Get measure.
      *
-     * @return Measure
+     * @return Risk|null
      */
     public function getRisk()
     {
@@ -370,7 +371,7 @@ class Measure
     /**
      * Set opportunity.
      *
-     * @param Opportunity $opportunity
+     * @param Opportunity|null $opportunity
      *
      * @return Measure
      */
@@ -384,7 +385,7 @@ class Measure
     /**
      * Get opportunity.
      *
-     * @return Measure
+     * @return Opportunity|null
      */
     public function getOpportunity()
     {
@@ -428,5 +429,21 @@ class Measure
     public function getResponsibilityUsername()
     {
         return $this->responsibility ? $this->responsibility->getUsername() : null;
+    }
+
+    /**
+     * @return ProjectInterface|null
+     */
+    public function getProject()
+    {
+        if ($this->getRisk()) {
+            return $this->getRisk()->getProject();
+        }
+
+        if ($this->getOpportunity()) {
+            return $this->getOpportunity()->getProject();
+        }
+
+        return null;
     }
 }
