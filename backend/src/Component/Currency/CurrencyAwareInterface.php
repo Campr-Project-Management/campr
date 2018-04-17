@@ -5,12 +5,12 @@ namespace Component\Currency;
 interface CurrencyAwareInterface
 {
     /**
-     * @param string $currency
+     * @param CurrencyInterface $currency
      */
-    public function setCurrency(string $currency);
+    public function setCurrency(CurrencyInterface $currency);
 
     /**
-     * @return string
+     * @return CurrencyInterface
      */
-    public function getCurrency(): string;
+    public function getCurrency();
 }
