@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\Currency\CurrencyInterface;
+use Component\Project\ProjectInterface;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Project.
@@ -18,7 +21,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @UniqueEntity(fields="number", message="unique.number")
  * @Vich\Uploadable
  */
-class Project
+class Project implements ProjectInterface
 {
     const STATUS_RED = 0;
     const STATUS_YELLOW = 1;
@@ -512,6 +515,15 @@ class Project
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectRole", mappedBy="project",  cascade={"all"})
      */
     private $projectRoles;
+
+    /**
+     * @var CurrencyInterface
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Currency")
+     * @ORM\JoinColumn(name="currency_id")
+     * @Assert\NotBlank(message="not_blank.currency")
+     */
+    private $currency;
 
     /**
      * Project constructor.
@@ -2952,5 +2964,23 @@ class Project
                 ];
             })
         ;
+    }
+
+    /**
+     * @param CurrencyInterface|null $currency
+     */
+    public function setCurrency(CurrencyInterface $currency = null)
+    {
+        $this->currency = $currency;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return CurrencyInterface|null
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
     }
 }
