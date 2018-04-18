@@ -14,7 +14,12 @@
                     :message="message" />
             </div>
             <div class="col-md-1">
-                <span v-on:click="deleteSubtask(index);"><delete-icon /></span>
+                <button 
+                    v-on:click="deleteSubtask(index);" 
+                    type="button"
+                    class="btn-icon">
+                    <delete-icon fill="danger-fill"/>
+                </button>
             </div>
         </div>
         <div class="flex flex-direction-reverse">
