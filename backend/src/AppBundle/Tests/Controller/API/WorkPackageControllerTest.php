@@ -2,6 +2,9 @@
 
 namespace AppBundle\Tests\Controller\API;
 
+use AppBundle\Entity\Assignment;
+use AppBundle\Entity\Comment;
+use AppBundle\Entity\WorkPackage;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -381,24 +384,34 @@ class WorkPackageControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request(
-            'PATCH',
-            '/api/workpackages/5',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
-            json_encode($content)
-        );
-        $response = $this->client->getResponse();
+        $task = clone $this->em->getRepository(WorkPackage::class)->find(4);
+        $this->em->persist($task);
+        $this->em->flush();
 
-        // Remove the 2 lines bellow when WP listener is fixed
-        $task = json_decode($response->getContent(), true);
-        $responseContent['puid'] = $task['puid'];
-        $responseContent['createdAt'] = $task['createdAt'];
+        try {
+            $this->client->request(
+                'PATCH',
+                sprintf('/api/workpackages/%d', $task->getId()),
+                [],
+                [],
+                ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+                json_encode($content)
+            );
+            $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
+            // Remove the 2 lines bellow when WP listener is fixed
+            $actual = json_decode($response->getContent(), true);
+            $responseContent['puid'] = $actual['puid'];
+            $responseContent['createdAt'] = $actual['createdAt'];
+            $responseContent['id'] = $actual['id'];
+
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+            $this->assertEquals($responseContent, $actual);
+        } finally {
+            $this->em->remove($task);
+            $this->em->flush();
+        }
     }
 
     /**
@@ -420,9 +433,10 @@ class WorkPackageControllerTest extends BaseController
                     'phaseName' => null,
                     'milestone' => null,
                     'milestoneName' => null,
-                    'responsibility' => null,
-                    'responsibilityFullName' => null,
-                    'responsibilityEmail' => null,
+                    'responsibility' => 4,
+                    'responsibilityFullName' => 'FirstName4 LastName4',
+                    'responsibilityEmail' => 'user4@trisoft.ro',
+                    'responsibilityAvatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
                     'accountability' => null,
                     'accountabilityFullName' => null,
                     'accountabilityEmail' => null,
@@ -438,8 +452,8 @@ class WorkPackageControllerTest extends BaseController
                     'label' => 0,
                     'labelName' => '',
                     'labelColor' => '',
-                    'workPackageStatus' => 2,
-                    'workPackageStatusName' => 'label.pending',
+                    'workPackageStatus' => null,
+                    'workPackageStatusName' => null,
                     'workPackageCategory' => null,
                     'workPackageCategoryName' => null,
                     'noAttachments' => 0,
@@ -451,22 +465,22 @@ class WorkPackageControllerTest extends BaseController
                     'id' => 5,
                     'name' => 'task123',
                     'children' => [],
-                    'progress' => 0,
-                    'scheduledStartAt' => null,
-                    'scheduledFinishAt' => null,
-                    'scheduledDurationDays' => 0,
+                    'progress' => 100,
+                    'scheduledStartAt' => '2017-01-01',
+                    'scheduledFinishAt' => '2017-01-05',
+                    'scheduledDurationDays' => 5,
                     'forecastStartAt' => null,
                     'forecastFinishAt' => null,
                     'forecastDurationDays' => 0,
                     'actualStartAt' => null,
                     'actualFinishAt' => null,
                     'actualDurationDays' => 0,
-                    'content' => null,
+                    'content' => 'content4',
                     'results' => null,
                     'isKeyMilestone' => false,
                     'assignments' => [],
                     'labels' => [],
-                    'type' => 2,
+                    'type' => 0,
                     'dependencies' => [],
                     'dependants' => [],
                     'medias' => [],
@@ -489,9 +503,9 @@ class WorkPackageControllerTest extends BaseController
                     'internalCostTotal' => 0,
                     'externalCostOPEXTotal' => 0,
                     'externalCostCAPEXTotal' => 0,
-                    'isPhase' => false,
+                    'isPhase' => true,
                     'isMilestone' => false,
-                    'isTask' => true,
+                    'isTask' => false,
                     'isTutorial' => false,
                     'isSubtask' => false,
                     'isClosed' => false,
@@ -514,18 +528,28 @@ class WorkPackageControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request(
-            'DELETE',
-            '/api/workpackages/5',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
-            ''
-        );
-        $response = $this->client->getResponse();
+        $task = new WorkPackage();
+        $task->setType(WorkPackage::TYPE_TASK);
+        $this->em->persist($task);
+        $this->em->flush();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        try {
+            $this->client->request(
+                'DELETE',
+                sprintf('/api/workpackages/%d', $task->getId()),
+                [],
+                [],
+                ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+                ''
+            );
+            $response = $this->client->getResponse();
+
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        } finally {
+            $this->em->persist($task);
+            $this->em->flush();
+        }
     }
 
     /**
@@ -636,10 +660,23 @@ class WorkPackageControllerTest extends BaseController
             ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
             json_encode($content)
         );
+
         $response = $this->client->getResponse();
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
+        $actual = json_decode($response->getContent(), true);
+
+        try {
+            $responseContent['id'] = $actual['id'];
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+            $this->assertEquals($responseContent, $actual);
+        } finally {
+            $assignment = $this->em->getRepository(Assignment::class)->find($actual['id']);
+            if ($assignment) {
+                $this->em->remove($assignment);
+            }
+
+            $this->em->flush();
+        }
     }
 
     /**
@@ -699,17 +736,26 @@ class WorkPackageControllerTest extends BaseController
         );
 
         $response = $this->client->getResponse();
-
-        $comment = json_decode($response->getContent(), true);
+        $actual = json_decode($response->getContent(), true);
 
         if ($isResponseSuccessful) {
-            $responseContent['createdAt'] = $comment['createdAt'];
-            $responseContent['updatedAt'] = $comment['updatedAt'];
+            $responseContent['createdAt'] = $actual['createdAt'];
+            $responseContent['updatedAt'] = $actual['updatedAt'];
+            $responseContent['id'] = $actual['id'];
         }
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
+        try {
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+            $this->assertEquals($responseContent, $actual);
+        } finally {
+            if (!empty($actual['id'])) {
+                $comment = $this->em->find(Comment::class, $actual['id']);
+                $this->em->remove($comment);
+            }
+
+            $this->em->flush();
+        }
     }
 
     /**

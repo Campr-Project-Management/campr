@@ -90,7 +90,6 @@ class RiskControllerTest extends BaseController
         $form['admin[probability]'] = 100;
         $form['admin[description]'] = 'risk-description';
         $form['admin[cost]'] = 1;
-        $form['admin[currency]'] = 'USD';
         $form['admin[delay]'] = 1;
         $form['admin[delayUnit]'] = 'choices.days';
         $form['admin[priority]'] = 'risk-priority';

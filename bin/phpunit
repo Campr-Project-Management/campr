@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+export SYMFONY__DATABASE_NAME=campr_test
+export SYMFONY__DATABASE_PASSWORD=campr
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 php "$DIR/../backend/vendor/bin/phpunit" -c "$DIR/../phpunit.xml" "$@"
