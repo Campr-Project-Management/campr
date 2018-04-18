@@ -2,9 +2,11 @@
 
 namespace AppBundle\Tests\Controller\Admin;
 
+use AppBundle\Entity\Currency;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Company;
+use Component\Currency\CurrencyInterface;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -98,10 +100,13 @@ class ProjectControllerTest extends BaseController
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project/create');
 
+        $currency = $this->findCurrencyByCode('EUR');
+
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[name]'] = 'project3';
         $form['create[number]'] = 'project-number-3';
         $form['create[company]'] = 1;
+        $form['create[currency]'] = $currency->getId();
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -348,6 +353,8 @@ class ProjectControllerTest extends BaseController
 
     /**
      * @dataProvider getDataForTestParticipantsAction
+     *
+     * @param mixed $expected
      */
     public function testParticipantsAction($expected)
     {
@@ -387,5 +394,23 @@ class ProjectControllerTest extends BaseController
                 ],
             ],
         ];
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return CurrencyInterface
+     */
+    private function findCurrencyByCode(string $code): CurrencyInterface
+    {
+        $currency = $this
+            ->em
+            ->getRepository(Currency::class)
+            ->findOneBy(['code' => $code])
+        ;
+
+        $this->assertNotNull($currency, sprintf('Currency "EUR" not found'));
+
+        return $currency;
     }
 }

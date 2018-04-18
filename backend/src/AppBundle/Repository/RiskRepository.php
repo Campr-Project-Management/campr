@@ -157,11 +157,11 @@ class RiskRepository extends BaseRepository
     /**
      * @param Project $project
      *
-     * @return array
+     * @return float
      */
     public function getTotalPotentialCosts(Project $project)
     {
-        $data = [];
+        $total = 0;
         $risks = $this
             ->getQueryBuilderByProject($project)
             ->getQuery()
@@ -170,15 +170,10 @@ class RiskRepository extends BaseRepository
 
         /** @var Risk $risk */
         foreach ($risks as $risk) {
-            $currency = $risk->getCurrency();
-            if (empty($data[$currency])) {
-                $data[$currency] = ['totalCost' => 0, 'currency' => $currency];
-            }
-
-            $data[$currency]['totalCost'] += $risk->getPotentialCost();
+            $total += $risk->getPotentialCost();
         }
 
-        return array_values($data);
+        return $total;
     }
 
     /**
