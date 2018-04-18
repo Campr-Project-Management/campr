@@ -208,12 +208,14 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     {
         $status = $wp->getWorkPackageStatus();
         $startAt = $wp->getActualStartAt();
-        if ($status->isOnGoing() && !$startAt) {
-            $startAt = new \DateTime();
-        }
+        if ($status) {
+            if ($status->isOnGoing() && !$startAt) {
+                $startAt = new \DateTime();
+            }
 
-        if ($status->isOpen() || $status->isPending()) {
-            $startAt = null;
+            if ($status->isOpen() || $status->isPending()) {
+                $startAt = null;
+            }
         }
 
         $wp->setActualStartAt($startAt);
@@ -229,12 +231,14 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     {
         $status = $wp->getWorkPackageStatus();
         $finishAt = $wp->getActualFinishAt();
-        if (($status->isCompleted() || $status->isClosed()) && !$finishAt) {
-            $finishAt = new \DateTime();
-        }
+        if ($status) {
+            if (($status->isCompleted() || $status->isClosed()) && !$finishAt) {
+                $finishAt = new \DateTime();
+            }
 
-        if ($status->isOpen() || $status->isPending() || $status->isOnGoing()) {
-            $finishAt = null;
+            if ($status->isOpen() || $status->isPending() || $status->isOnGoing()) {
+                $finishAt = null;
+            }
         }
 
         $wp->setActualFinishAt($finishAt);
