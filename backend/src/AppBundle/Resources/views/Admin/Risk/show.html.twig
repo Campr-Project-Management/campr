@@ -45,7 +45,13 @@
                             </tr>
                             <tr>
                                 <th>{{ 'table_header_cell.cost'|trans }}</th>
-                                <td>{{ risk.cost|app_format_money(risk|app_currency_code) }}</td>
+                                <td>
+                                    {% if risk.project %}
+                                        {{ risk.cost|app_format_money(risk|app_currency_code) }}
+                                    {% else %}
+                                        {{ risk.cost|number_format(2) }}
+                                    {% endif %}
+                                </td>
                             </tr>
                             <tr>
                                 <th>{{ 'table_header_cell.budget'|trans }}</th>
