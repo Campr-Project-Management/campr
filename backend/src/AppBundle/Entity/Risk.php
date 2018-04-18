@@ -878,6 +878,6 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface
 
         $convertor = new TimeUnitsConvertor($this);
 
-        return $convertor->toHours($amount);
+        return round($convertor->toHours($amount), 4);
     }
 }

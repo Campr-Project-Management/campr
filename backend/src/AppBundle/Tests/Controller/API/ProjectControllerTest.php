@@ -3,11 +3,13 @@
 namespace AppBundle\Tests\Controller\API;
 
 use AppBundle\Entity\Contract;
+use AppBundle\Entity\Currency;
 use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Company;
+use AppBundle\Entity\WorkPackage;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -269,24 +271,29 @@ class ProjectControllerTest extends BaseController
         $this->em->persist($project);
         $this->em->flush();
 
-        $user = $this->getUserByUsername('superadmin');
-        $token = $user->getApiToken();
+        try {
+            $user = $this->getUserByUsername('superadmin');
+            $token = $user->getApiToken();
 
-        $this->client->request(
-            'DELETE',
-            sprintf('/api/projects/%d', $project->getId()),
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
-            ],
-            ''
-        );
-        $response = $this->client->getResponse();
+            $this->client->request(
+                'DELETE',
+                sprintf('/api/projects/%d', $project->getId()),
+                [],
+                [],
+                [
+                    'CONTENT_TYPE' => 'application/json',
+                    'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+                ],
+                ''
+            );
+            $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        } finally {
+            $this->em->remove($project);
+            $this->em->flush();
+        }
     }
 
     /**d
@@ -330,15 +337,17 @@ class ProjectControllerTest extends BaseController
             ],
             ''
         );
+
         $response = $this->client->getResponse();
-        $project = json_decode($response->getContent(), true);
-        $responseContent['updatedAt'] = $project['updatedAt'];
-        $responseContent['projectUsers'][0]['updatedAt'] = $project['projectUsers'][0]['updatedAt'];
-        $responseContent['projectUsers'][0]['userAvatar'] = $project['projectUsers'][0]['userAvatar'];
+        $actual = json_decode($response->getContent(), true);
+
+        $responseContent['updatedAt'] = $actual['updatedAt'];
+        $responseContent['projectUsers'][0]['updatedAt'] = $actual['projectUsers'][0]['updatedAt'];
+        $responseContent['projectUsers'][0]['userAvatar'] = $actual['projectUsers'][0]['userAvatar'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -450,6 +459,12 @@ class ProjectControllerTest extends BaseController
                     'statusReportConfigs' => [],
                     'projectRoles' => [],
                     'logo' => null,
+                    'currency' => [
+                        'id' => 1,
+                        'code' => 'EUR',
+                        'symbol' => '€',
+                        'name' => 'Euro',
+                    ],
                 ],
             ],
         ];
@@ -1691,31 +1706,36 @@ class ProjectControllerTest extends BaseController
             ->setNumber('project-number-3')
             ->setCompany($company)
         ;
+        $project->setCurrency($this->findCurrencyByCode('EUR'));
+
         $this->em->persist($project);
         $this->em->flush();
 
-        $user = $this->getUserByUsername('superadmin');
-        $token = $user->getApiToken();
+        try {
+            $user = $this->getUserByUsername('superadmin');
+            $token = $user->getApiToken();
 
-        $this->client->request(
-            'POST',
-            '/api/projects',
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
-            ],
-            json_encode($content)
-        );
-        $response = $this->client->getResponse();
+            $this->client->request(
+                'POST',
+                '/api/projects',
+                [],
+                [],
+                [
+                    'CONTENT_TYPE' => 'application/json',
+                    'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+                ],
+                json_encode($content)
+            );
+            $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isClientError());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
-
-        $this->em->remove($project);
-        $this->em->flush();
+            $this->assertEquals($isResponseSuccessful, $response->isClientError());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+            $actual = json_decode($response->getContent(), true);
+            $this->assertEquals($responseContent, $actual);
+        } finally {
+            $this->em->remove($project);
+            $this->em->flush();
+        }
     }
 
     /**
@@ -1729,6 +1749,7 @@ class ProjectControllerTest extends BaseController
                     'name' => 'project3',
                     'number' => 'project-number-3',
                     'configuration' => '',
+                    'currency' => 1,
                     'company' => [
                         'id' => 1,
                         'name' => 'company1',
@@ -1798,6 +1819,7 @@ class ProjectControllerTest extends BaseController
                         'name' => ['The name field should not be blank'],
                         'number' => ['The number field should not be blank'],
                         'company' => ['You must select a company'],
+                        'currency' => ['Please select a currency'],
                     ],
                 ],
             ],
@@ -2138,6 +2160,12 @@ class ProjectControllerTest extends BaseController
                     'statusReportConfigs' => [],
                     'projectRoles' => [],
                     'logo' => null,
+                    'currency' => [
+                        'id' => 1,
+                        'code' => 'EUR',
+                        'symbol' => '€',
+                        'name' => 'Euro',
+                    ],
                 ],
             ],
         ];
@@ -2302,12 +2330,13 @@ class ProjectControllerTest extends BaseController
      * @param $responseStatusCode
      * @param $responseContent
      */
-    public function ØrersAction(
+    public function testProjectUsersAction(
         $url,
         $isResponseSuccessful,
         $responseStatusCode,
         $responseContent
     ) {
+        $this->markTestSkipped('obsolete');
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
@@ -2322,16 +2351,17 @@ class ProjectControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
+        $this->assertArrayHasKey('items', $responseContent);
 
         $responseArray = json_decode($response->getContent(), true);
-        for ($i = 0; $i < 3; ++$i) {
-            $responseContent[$i]['updatedAt'] = $responseArray[$i]['updatedAt'];
-            $responseContent[$i]['userAvatar'] = $responseArray[$i]['userAvatar'];
+        foreach ($responseArray['items'] as $index => $data) {
+            $responseContent['items'][$index]['updatedAt'] = $data['updatedAt'];
+            $responseContent['items'][$index]['userAvatar'] = $data['userAvatar'];
         }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
+        $this->assertEquals($responseContent, $responseArray);
     }
 
     /**
@@ -2345,89 +2375,93 @@ class ProjectControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    [
-                        'user' => 3,
-                        'userFullName' => 'FirstName3 LastName3',
-                        'userFacebook' => null,
-                        'userTwitter' => null,
-                        'userLinkedIn' => null,
-                        'userGplus' => null,
-                        'userEmail' => 'user3@trisoft.ro',
-                        'userPhone' => null,
-                        'project' => 1,
-                        'projectName' => 'project1',
-                        'projectCategory' => 1,
-                        'projectCategoryName' => 'project-category1',
-                        'projectRole' => 1,
-                        'projectRoleName' => 'manager',
-                        'projectDepartment' => 1,
-                        'projectDepartmentName' => 'project-department1',
-                        'projectTeam' => 1,
-                        'projectTeamName' => 'project-team1',
-                        'id' => 1,
-                        'showInResources' => true,
-                        'showInRasci' => true,
-                        'showInOrg' => true,
-                        'company' => null,
-                        'createdAt' => '2017-01-01 12:00:00',
-                        'updatedAt' => null,
-                        'userAvatar' => '',
-                    ],
-                    [
-                        'user' => 4,
-                        'userFullName' => 'FirstName4 LastName4',
-                        'userFacebook' => null,
-                        'userTwitter' => null,
-                        'userLinkedIn' => null,
-                        'userGplus' => null,
-                        'userEmail' => 'user4@trisoft.ro',
-                        'userPhone' => null,
-                        'project' => 1,
-                        'projectName' => 'project1',
-                        'projectCategory' => 2,
-                        'projectCategoryName' => 'project-category2',
-                        'projectRole' => 2,
-                        'projectRoleName' => 'sponsor',
-                        'projectDepartment' => 2,
-                        'projectDepartmentName' => 'project-department2',
-                        'projectTeam' => 2,
-                        'projectTeamName' => 'project-team2',
-                        'id' => 2,
-                        'showInResources' => true,
-                        'showInRasci' => true,
-                        'showInOrg' => true,
-                        'company' => null,
-                        'createdAt' => '2017-01-01 12:00:00',
-                        'updatedAt' => null,
-                        'userAvatar' => '',
-                    ],
-                    [
-                        'user' => 5,
-                        'userFullName' => 'FirstName5 LastName5',
-                        'userFacebook' => null,
-                        'userTwitter' => null,
-                        'userLinkedIn' => null,
-                        'userGplus' => null,
-                        'userEmail' => 'user5@trisoft.ro',
-                        'userPhone' => null,
-                        'project' => 1,
-                        'projectName' => 'project1',
-                        'projectCategory' => 1,
-                        'projectCategoryName' => 'project-category1',
-                        'projectRole' => 3,
-                        'projectRoleName' => 'team-member',
-                        'projectDepartment' => 1,
-                        'projectDepartmentName' => 'project-department1',
-                        'projectTeam' => 1,
-                        'projectTeamName' => 'project-team1',
-                        'id' => 3,
-                        'showInResources' => true,
-                        'showInRasci' => true,
-                        'showInOrg' => true,
-                        'company' => null,
-                        'createdAt' => '2017-01-01 12:00:00',
-                        'updatedAt' => null,
-                        'userAvatar' => '',
+                    'pageSize' => 20,
+                    'totalItems' => 3,
+                    'items' => [
+                        [
+                            'user' => 3,
+                            'userFullName' => 'FirstName3 LastName3',
+                            'userFacebook' => null,
+                            'userTwitter' => null,
+                            'userLinkedIn' => null,
+                            'userGplus' => null,
+                            'userEmail' => 'user3@trisoft.ro',
+                            'userPhone' => null,
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'projectCategory' => 1,
+                            'projectCategoryName' => 'project-category1',
+                            'projectRole' => 1,
+                            'projectRoleName' => 'manager',
+                            'projectDepartment' => 1,
+                            'projectDepartmentName' => 'project-department1',
+                            'projectTeam' => 1,
+                            'projectTeamName' => 'project-team1',
+                            'id' => 1,
+                            'showInResources' => true,
+                            'showInRasci' => true,
+                            'showInOrg' => true,
+                            'company' => null,
+                            'createdAt' => '2017-01-01 12:00:00',
+                            'updatedAt' => null,
+                            'userAvatar' => '',
+                        ],
+                        [
+                            'user' => 4,
+                            'userFullName' => 'FirstName4 LastName4',
+                            'userFacebook' => null,
+                            'userTwitter' => null,
+                            'userLinkedIn' => null,
+                            'userGplus' => null,
+                            'userEmail' => 'user4@trisoft.ro',
+                            'userPhone' => null,
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'projectCategory' => 2,
+                            'projectCategoryName' => 'project-category2',
+                            'projectRole' => 2,
+                            'projectRoleName' => 'sponsor',
+                            'projectDepartment' => 2,
+                            'projectDepartmentName' => 'project-department2',
+                            'projectTeam' => 2,
+                            'projectTeamName' => 'project-team2',
+                            'id' => 2,
+                            'showInResources' => true,
+                            'showInRasci' => true,
+                            'showInOrg' => true,
+                            'company' => null,
+                            'createdAt' => '2017-01-01 12:00:00',
+                            'updatedAt' => null,
+                            'userAvatar' => '',
+                        ],
+                        [
+                            'user' => 5,
+                            'userFullName' => 'FirstName5 LastName5',
+                            'userFacebook' => null,
+                            'userTwitter' => null,
+                            'userLinkedIn' => null,
+                            'userGplus' => null,
+                            'userEmail' => 'user5@trisoft.ro',
+                            'userPhone' => null,
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'projectCategory' => 1,
+                            'projectCategoryName' => 'project-category1',
+                            'projectRole' => 3,
+                            'projectRoleName' => 'team-member',
+                            'projectDepartment' => 1,
+                            'projectDepartmentName' => 'project-department1',
+                            'projectTeam' => 1,
+                            'projectTeamName' => 'project-team1',
+                            'id' => 3,
+                            'showInResources' => true,
+                            'showInRasci' => true,
+                            'showInOrg' => true,
+                            'company' => null,
+                            'createdAt' => '2017-01-01 12:00:00',
+                            'updatedAt' => null,
+                            'userAvatar' => '',
+                        ],
                     ],
                 ],
             ],
@@ -2919,19 +2953,29 @@ class ProjectControllerTest extends BaseController
 
         $response = $this->client->getResponse();
 
-        // Remove the 2 lines bellow when WP listener is fixed
-        $task = json_decode($response->getContent(), true);
-        $responseContent['id'] = $task['id'];
-        $responseContent['puid'] = $task['puid'];
-        $responseContent['createdAt'] = $task['createdAt'];
+        try {
+            // Remove the 2 lines bellow when WP listener is fixed
+            $task = json_decode($response->getContent(), true);
+            $responseContent['id'] = $task['id'];
+            $responseContent['puid'] = $task['puid'];
+            $responseContent['createdAt'] = $task['createdAt'];
 
-        $this->assertEquals($isResponseSuccessful, 201 === $response->getStatusCode(), 'Response is not successfully');
-        $this->assertEquals($responseStatusCode, $response->getStatusCode(), 'Reponse status code is different');
-        $this->assertEquals(
-            $responseContent,
-            json_decode($response->getContent(), true),
-            'Response body is unexpected'
-        );
+            $this->assertEquals($isResponseSuccessful, 201 === $response->getStatusCode(), 'Response is not successfully');
+            $this->assertEquals($responseStatusCode, $response->getStatusCode(), 'Reponse status code is different');
+            $this->assertEquals(
+                $responseContent,
+                json_decode($response->getContent(), true),
+                'Response body is unexpected'
+            );
+        } finally {
+            $task = $this
+                ->em
+                ->getRepository(WorkPackage::class)
+                ->find($task['id'])
+            ;
+            $this->em->remove($task);
+            $this->em->flush();
+        }
     }
 
     /**
@@ -3034,5 +3078,23 @@ class ProjectControllerTest extends BaseController
                 ],
             ],
         ];
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Currency
+     */
+    private function findCurrencyByCode(string $code): Currency
+    {
+        $currency = $this
+            ->em
+            ->getRepository(Currency::class)
+            ->findOneBy(['code' => $code])
+        ;
+
+        $this->assertNotNull($currency, sprintf('Currency "EUR" not found'));
+
+        return $currency;
     }
 }
