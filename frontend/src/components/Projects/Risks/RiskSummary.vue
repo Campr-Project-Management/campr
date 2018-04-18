@@ -4,12 +4,7 @@
             <p>
                 <span class="text-right">{{ translateText('message.total_potential_cost') }}:</span>
                 <span class="text-left">
-                    <span v-if="summaryData.risk_data.costs && summaryData.risk_data.costs.length > 0">
-                        <b v-for="(item, index) in summaryData.risk_data.costs">
-                            {{ item.totalCost | money({symbol: item.currency}) }}<span v-if="index < summaryData.risk_data.costs.length - 1">, </span>
-                        </b>
-                    </span>
-                    <span v-else>-</span>
+                    <b>{{ summaryData.risk_data.costs | money({symbol: projectCurrencySymbol}) }}</b>
                 </span>
             </p>
             <p>                
@@ -31,7 +26,7 @@
             <p>
                 <span class="text-right">{{ translateText('message.total_cost_of_measures') }}:</span>
                 <span class="text-left">
-                    <span v-if="summaryData.measure_data.totalCost"><b>${{ summaryData.measure_data.totalCost }}</b></span>
+                    <span v-if="summaryData.measure_data.totalCost"><b>{{ summaryData.measure_data.totalCost | money({symbol: projectCurrencySymbol}) }}</b></span>
                     <span v-else>-</span>
                 </span>
             </p>
@@ -40,17 +35,19 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
+
 export default {
     props: ['summaryData'],
     methods: {
         translateText: function(text) {
             return this.translate(text);
         },
-        potentialCostMoneyOptions(item) {
-            return {
-                symbol: item.currency,
-            };
-        },
+    },
+    computed: {
+        ...mapGetters([
+            'projectCurrencySymbol',
+        ]),
     },
 };
 </script>

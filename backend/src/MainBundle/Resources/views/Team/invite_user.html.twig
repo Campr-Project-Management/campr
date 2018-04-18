@@ -4,59 +4,57 @@
 
 {% block body_content %}
     <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">
-                <p class="text-primary">
-                    {{ 'title.user.invite'|trans }}
-                </p>
-            </h1>
+        <div class="col-lg-6 ml-lg-auto mr-lg-auto">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-md-auto">
+                    <h3 class="page-header">
+                        {{ 'title.user.invite'|trans }}
+                    </h3>
+                </div>
+                <div class="col-md-auto">
+                    <a href="{{ path('main_team_show', {'id': team.id}) }}" class="small-link">< {{ 'button.back_to_workspace'|trans }}</a>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="caption">
-                {% for flash_message in app.session.flashBag.get('success') %}
-                    <div id="general-alert" class="alert alert-success m-t-15">
-                        <strong>{{ flash_message }}</strong>
-                    </div>
-                {% endfor %}
-                {{ form_start(
-                    form,
-                    {
-                        'method': 'POST',
-                        'action': path('main_team_invite_user', {'id': team.id}),
-                        'attr': {
-                            'id': 'invite-form',
-                            'class': 'form-horizontal',
-                            'novalidate': 'novalidate',
-                        },
-                    }
-                ) }}
-                    {% if form.vars.valid == false %}
-                        <div class="alert alert-danger">
-                            {% for field in form.children %}
-                                {{ form_errors(field) }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    {{ form_widget(
-                        form.email,
-                        {
-                            'attr': {
-                                'class': 'form-control input-sm',
-                            },
-                            'label': 'label.email'|trans,
-                        }
-                    ) }}
-                    <div class="form-group m-t-15">
-                        <div class="col-sm-offset-5 col-sm-10">
-                            <button class="btn btn-primary" type="submit">{{ 'button.send_invitation'|trans }}</button>
-                        </div>
-                    </div>
-
-                <span class="hidden">{{ form_row(form._token) }}</span>
-                {{ form_end(form, {'render_rest': false}) }}
+    <div class="row mt-30">
+        <div class="col-lg-6 ml-lg-auto mr-lg-auto">
+            {% for flash_message in app.session.flashBag.get('success') %}
+                <div id="general-alert" class="alert alert-success m-t-15">
+                    <strong>{{ flash_message }}</strong>
+                </div>
+            {% endfor %}
+            {{ form_start(
+                form,
+                {
+                    'method': 'POST',
+                    'action': path('main_team_invite_user', {'id': team.id}),
+                    'attr': {
+                        'id': 'invite-form',
+                        'class': 'form',
+                        'novalidate': 'novalidate',
+                    },
+                }
+            ) }}
+            {% if form.vars.valid == false %}
+                <div class="alert alert-danger">
+                    {% for field in form.children %}
+                        {{ form_errors(field) }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="control-group form-group {% if form_errors(form.email) %}has-error{% endif %}">
+                <div class="input-holder">
+                    {{ form_widget(form.email, {'attr': {'class': 'input-field'}}) }}
+                    <label class="label">{{ 'label.email'|trans }}</label>
+                </div>
             </div>
+            <div class="form-group">
+                <button class="button" type="submit">{{ 'button.send_invitation'|trans }}</button>
+            </div>
+
+            <span class="hidden">{{ form_row(form._token) }}</span>
+            {{ form_end(form, {'render_rest': false}) }}
         </div>
     </div>
 {% endblock %}

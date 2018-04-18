@@ -441,6 +441,7 @@ message:
     weeks: Weeks
     months: Months
     no_results: No results
+    currency: Currency
 
 menu:
     users: Users
@@ -466,6 +467,10 @@ title:
     account_activation: Account activation
     reset: Please enter your email address to reset the account password. An email will be sent with instructions.
     risk_and_opportunities: Risk & Opportunities
+    workspace_member:
+        for: Members of
+        create: Create new member
+        edit: Edit
     status_report:
         list: Status Report
     project_close_down:
@@ -1190,8 +1195,10 @@ label:
     # opportunity status
     not_taken: Not Taken
     taken: Taken
+    currency: Currency
 
 button:
+    back_to_workspace: Back to Workspace
     edit_member: Edit Member
     clear_filters: Clear Filters
     delete_remaining_action: Delete Remaining Action
@@ -1480,6 +1487,7 @@ placeholder:
     gplus: Google Plus
     category: Choose a category
     todo_category: Todo Category
+    select_currency: Select currency
 
 table_header_cell:
     avatar: Avatar
@@ -1690,6 +1698,7 @@ table_header_cell:
     subteam_parent: Subteam parent
     info_status: Info status
     info_category: Info Category
+    currency: Currency
 
 link:
     home: Home

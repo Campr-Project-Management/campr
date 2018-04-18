@@ -25,6 +25,9 @@ const state = {
 
 const getters = {
     project: state => state.currentProject,
+    projectCurrency: (state, getters) => getters.project && state.currentProject.currency,
+    projectCurrencySymbol: (state, getters) => getters.projectCurrency && getters.projectCurrency.symbol,
+    projectCurrencyCode: (state, getters) => getters.projectCurrency && getters.projectCurrency.code,
     projects: state => state.filteredProjects.items,
     projectLoading: state => state.loading,
     labels: state => state.projects,
