@@ -60,8 +60,8 @@ class RiskControllerTest extends BaseController
                 true,
                 Response::HTTP_ACCEPTED,
                 [
-                    'project' => null,
-                    'projectName' => null,
+                    'project' => 1,
+                    'projectName' => 'project1',
                     'riskStrategy' => 5,
                     'riskStrategyName' => 'risk-strategy1',
                     'riskCategory' => 1,
@@ -77,11 +77,10 @@ class RiskControllerTest extends BaseController
                     'description' => 'description1',
                     'impact' => 10,
                     'probability' => 10,
-                    'cost' => 1.00,
+                    'cost' => 1,
                     'potentialCost' => 0.1,
-                    'currency' => 'USD',
-                    'budget' => 1.00,
-                    'delay' => 1.00,
+                    'budget' => 1,
+                    'delay' => 1,
                     'delayUnit' => TimeUnitAwareInterface::DAYS,
                     'potentialDelay' => 0.1,
                     'potentialDelayHours' => round(0.1 * 24, 2),
@@ -175,7 +174,6 @@ class RiskControllerTest extends BaseController
             ->setProbability(10)
             ->setDescription('description3')
             ->setCost(3)
-            ->setCurrency('USD')
             ->setBudget(3)
             ->setDelay(3)
             ->setDelayUnit(TimeUnitAwareInterface::DAYS)
@@ -225,12 +223,8 @@ class RiskControllerTest extends BaseController
      * @param $responseStatusCode
      * @param $responseContent
      */
-    public function testGetAction(
-        $url,
-        $isResponseSuccessful,
-        $responseStatusCode,
-        $responseContent
-    ) {
+    public function testGetAction($url, $isResponseSuccessful, $responseStatusCode, $responseContent)
+    {
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
@@ -266,8 +260,8 @@ class RiskControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'project' => null,
-                    'projectName' => null,
+                    'project' => 1,
+                    'projectName' => 'project1',
                     'riskStrategy' => 6,
                     'riskStrategyName' => 'risk-strategy2',
                     'riskCategory' => 2,
@@ -283,11 +277,10 @@ class RiskControllerTest extends BaseController
                     'description' => 'description2',
                     'impact' => 20,
                     'probability' => 20,
-                    'cost' => 1.00,
+                    'cost' => 1,
                     'potentialCost' => 0.2,
-                    'currency' => 'USD',
-                    'budget' => 1.00,
-                    'delay' => 1.00,
+                    'budget' => 1,
+                    'delay' => 1,
                     'potentialDelay' => 0.2,
                     'potentialDelayHours' => round(0.2 * 24, 2),
                     'delayUnit' => TimeUnitAwareInterface::DAYS,

@@ -92,6 +92,12 @@
                                 </td>
                             </tr>
                             <tr>
+                                <th>{{ 'table_header_cell.currency'|trans }}</th>
+                                <td>
+                                    {{ project.currency.code }} ({{ project.currency.name }})
+                                </td>
+                            </tr>
+                            <tr>
                                 <th>{{ 'table_header_cell.approved_at'|trans }}</th>
                                 <td>
                                     {% if project.approvedAt %}

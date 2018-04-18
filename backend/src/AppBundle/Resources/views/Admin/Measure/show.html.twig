@@ -45,7 +45,13 @@
                             </tr>
                             <tr>
                                 <th>{{ 'table_header_cell.cost'|trans }}</th>
-                                <td>{{ measure.cost|default('-') }}</td>
+                                <td>
+                                    {% if measure.project %}
+                                        {{ measure.cost|app_format_money(measure.project|app_currency_code) }}
+                                    {% else %}
+                                        {{ measure.cost | number_format(2) }}
+                                    {% endif %}
+                                </td>
                             </tr>
                             <tr>
                                 <th>{{ 'table_header_cell.responsible'|trans }}</th>
@@ -56,7 +62,7 @@
                                 {% if measure.comments is not empty %}
                                     <td>
                                         {% for comment in measure.comments %}
-                                            <p><b>{{ comment.responsibility.fullaName }}:</b> {{  comment.description }}</p>
+                                            <p><b>{{ comment.responsibility.fullName }}:</b> {{  comment.description }}</p>
                                         {% endfor %}
                                     </td>
                                 {% else %}

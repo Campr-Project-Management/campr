@@ -69,6 +69,12 @@
                                     <b v-else>-</b>
                                 </div>
                             </li>
+                            <li>
+                                <span>{{ translateText('message.currency') }}:</span>
+                                <div>
+                                    <b v-if="project.currency">{{ project.currency.code }} ({{ project.currency.name }})</b>
+                                </div>
+                            </li>
                         </ul>
                         <h4 class="widget-title">{{ translateText('message.project_schedule') }}</h4>
                         <table class="table table-small">
