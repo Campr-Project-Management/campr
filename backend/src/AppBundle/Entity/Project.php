@@ -809,7 +809,7 @@ class Project
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectManagers")
      *
-     * @return string
+     * @return User[]
      */
     public function getProjectManagers()
     {
@@ -867,7 +867,7 @@ class Project
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectSponsors")
      *
-     * @return string
+     * @return User[]
      */
     public function getProjectSponsors()
     {

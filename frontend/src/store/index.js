@@ -38,6 +38,7 @@ import projectContract from './modules/project-contract';
 import projectDepartment from './modules/project-department';
 import project from './modules/project';
 import projectMilestone from './modules/project-milestone';
+import projectOrganization from './modules/project-organization';
 import projectPhase from './modules/project-phase';
 import projectResources from './modules/project-resources';
 import projectRole from './modules/project-role';
@@ -108,6 +109,7 @@ export default new Vuex.Store({
         projectContract,
         projectDepartment,
         projectMilestone,
+        projectOrganization,
         projectPhase,
         projectResources,
         projectRole,

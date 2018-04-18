@@ -2585,4 +2585,14 @@ class ProjectController extends ApiController
 
         return $this->createApiResponse($out, $status);
     }
+
+    /**
+     * @Route("/{id}/organization-tree", name="app_api_project_organization_tree", options={"expose"=true})
+     */
+    public function organizationTreeAction(Project $project)
+    {
+        $tree = $this->get('app.service.project_organization_tree')->buildTree($project);
+
+        return $this->createApiResponse($tree);
+    }
 }
