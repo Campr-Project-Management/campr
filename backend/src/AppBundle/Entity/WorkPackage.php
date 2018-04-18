@@ -2216,7 +2216,7 @@ class WorkPackage
      */
     public function removeSupportUser(User $user)
     {
-        $this->supportUsers->remove($user);
+        $this->supportUsers->removeElement($user);
 
         return $this;
     }
@@ -2224,7 +2224,7 @@ class WorkPackage
     /**
      * Get support users.
      *
-     * @return ArrayCollection
+     * @return ArrayCollection|User[]
      */
     public function getSupportUsers()
     {
@@ -2254,7 +2254,7 @@ class WorkPackage
      */
     public function removeConsultedUser(User $user)
     {
-        $this->consultedUsers->remove($user);
+        $this->consultedUsers->removeElement($user);
 
         return $this;
     }
@@ -2292,7 +2292,7 @@ class WorkPackage
      */
     public function removeInformedUser(User $user)
     {
-        $this->informedUsers->remove($user);
+        $this->informedUsers->removeElement($user);
 
         return $this;
     }
@@ -2300,7 +2300,7 @@ class WorkPackage
     /**
      * Get informed users.
      *
-     * @return ArrayCollection
+     * @return ArrayCollection|User[]
      */
     public function getInformedUsers()
     {
