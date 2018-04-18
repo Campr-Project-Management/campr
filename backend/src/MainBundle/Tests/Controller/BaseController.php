@@ -6,7 +6,7 @@ use AppBundle\Entity\Subteam;
 use AppBundle\Entity\SubteamMember;
 use AppBundle\Entity\SubteamRole;
 use AppBundle\Entity\User;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
@@ -18,7 +18,7 @@ class BaseController extends WebTestCase
     /** @var Client */
     protected $client;
 
-    /** @var ObjectManager */
+    /** @var EntityManager */
     protected $em;
 
     /** @var User */

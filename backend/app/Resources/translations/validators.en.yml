@@ -78,6 +78,7 @@ not_blank:
     info_category: Category should be empty.
     info_status: Status should be empty.
     expiry_date: Expiry date should not be empty.
+    currency: Please select a currency
 
 not_null:
     driver: You must select a driver
@@ -96,6 +97,8 @@ unique:
     workspace:
         name: Workspace name already used.
         slug: Workspace slug already used.
+    currency:
+        code: Currency code already used
 
 invalid:
     sequence: The sequence field should contain numbers greater than or equal to 0
