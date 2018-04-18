@@ -63,6 +63,7 @@ import wbs from './modules/wbs';
 import workPackage from './modules/work-package';
 import workPackageStatus from './modules/work-package-status';
 import workspace from './modules/workspace';
+import currency from './modules/currency';
 
 Vue.use(Vuex);
 
@@ -133,6 +134,7 @@ export default new Vuex.Store({
         workPackage,
         workPackageStatus,
         workspace,
+        currency,
     },
     strict: debug,
 });

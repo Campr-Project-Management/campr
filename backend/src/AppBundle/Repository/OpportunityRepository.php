@@ -165,11 +165,11 @@ class OpportunityRepository extends BaseRepository
     /**
      * @param Project $project
      *
-     * @return array
+     * @return float
      */
     public function getTotalPotentialCostSavings(Project $project)
     {
-        $data = [];
+        $total = 0;
         $opportunities = $this
             ->getQueryBuilderByProject($project)
             ->getQuery()
@@ -178,15 +178,10 @@ class OpportunityRepository extends BaseRepository
 
         /** @var Opportunity $opportunity */
         foreach ($opportunities as $opportunity) {
-            $currency = $opportunity->getCurrency();
-            if (empty($data[$currency])) {
-                $data[$currency] = ['totalCost' => 0, 'currency' => $currency];
-            }
-
-            $data[$currency]['totalCost'] += $opportunity->getPotentialCostSavings();
+            $total += $opportunity->getPotentialCostSavings();
         }
 
-        return array_values($data);
+        return $total;
     }
 
     /**
