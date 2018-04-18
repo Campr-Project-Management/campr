@@ -120,21 +120,10 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-4">
-                                <input-field
-                                    type="text"
-                                    v-bind:label="translateText('placeholder.potential_savings')"
-                                    v-model="costSavings" v-bind:content="costSavings" />
-                            </div>
-                            <div class="col-md-2">
-                                <select-field 
-                                    v-bind:title="translateText('label.currency')"
-                                    v-bind:options="currencyLabel"
-                                    v-model="details.currency"
-                                    v-bind:currentOption="details.currency" />
-                                <error
-                                    v-if="validationMessages.currency && validationMessages.currency.length"
-                                    v-for="message in validationMessages.currency"
-                                    :message="message" />
+                                <money-field
+                                        :currency="projectCurrencySymbol"
+                                        :label="translateText('placeholder.potential_savings')"
+                                        v-model="costSavings" />
                             </div>
                             <div class="col-md-4">
                                 <input-field
@@ -143,7 +132,7 @@
                                     v-model="timeSavings" v-bind:content="timeSavings"
                                 />
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-4">
                                 <select-field 
                                     v-bind:title="translateText('label.time')"
                                     v-bind:options="timeLabel"
@@ -160,7 +149,7 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <h4 class="light-color">
-                                    {{ translateText('message.budget') }}: <b>{{ calculatedBudget }}</b>
+                                    {{ translateText('message.budget') }}: <b>{{ calculatedBudget|money({symbol: projectCurrencySymbol}) }}</b>
                                     <button type="button" class="btn btn-icon" v-tooltip.right-start="translateText('message.budget_calculation_opportuntiy')">
                                         <tooltip-icon fill="light-fill"></tooltip-icon>
                                     </button>
@@ -244,7 +233,10 @@
                         <div class="form-group last-form-group">
                             <div class="flex flex-space-between">
                                 <div class="col-md-4">
-                                    <input-field type="text" v-bind:label="translateText('placeholder.measure_cost')" v-model="measure.cost" v-bind:content="measure.cost" />
+                                    <money-field
+                                            :currency="projectCurrencySymbol"
+                                            v-model="measure.cost"
+                                            :label="translateText('placeholder.measure_cost')" />
                                     <span v-if="validationMessages.measures && validationMessages.measures[index]">
                                         <error
                                             v-if="validationMessages.measures[index].cost.length"
@@ -283,6 +275,7 @@
 <script>
 import {mapGetters, mapActions} from 'vuex';
 import InputField from '../../_common/_form-components/InputField';
+import MoneyField from '../../_common/_form-components/MoneyField';
 import RangeSlider from '../../_common/_form-components/RangeSlider';
 import TooltipIcon from '../../_common/_icons/TooltipQuestionMark';
 import IndicatorIcon from '../../_common/_icons/IndicatorIcon';
@@ -307,11 +300,17 @@ export default {
         moment,
         Error,
         Editor,
+        MoneyField,
     },
     methods: {
         ...mapActions([
-            'getProjectRiskAndOpportunitiesStats', 'getOpportunityStrategies', 'getOpportunityStatuses',
-            'createProjectOpportunity', 'getProjectOpportunity', 'editProjectOpportunity', 'emptyValidationMessages',
+            'getProjectRiskAndOpportunitiesStats',
+            'getOpportunityStrategies',
+            'getOpportunityStatuses',
+            'createProjectOpportunity',
+            'getProjectOpportunity',
+            'editProjectOpportunity',
+            'emptyValidationMessages',
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -340,7 +339,6 @@ export default {
                 probability: this.opportunityProbability,
                 budget: this.calculateBudget(),
                 costSavings: this.costSavings,
-                currency: this.details.currency && this.details.currency.key ? this.details.currency.key : '',
                 timeSavings: this.timeSavings,
                 timeUnit: this.details.time && this.details.time.key ? this.details.time.key : '',
                 priority: this.priority ? this.priority.value : null,
@@ -361,13 +359,12 @@ export default {
             data.id = this.$route.params.opportunityId;
             this.editProjectOpportunity(data);
         },
-        calculateBudget: function() {
-            let currency = this.details.currency && this.details.currency.key ? this.details.currency.label : '';
-            let opportunityVal = parseInt(this.opportunityProbability ? this.opportunityProbability : 0);
-            let savingsVal = parseFloat(this.costSavings ? this.costSavings : 0);
-            this.calculatedBudget = currency + ' ' + (opportunityVal * savingsVal).toFixed(2);
+        calculateBudget() {
+            let probability = parseInt(this.opportunityProbability ? this.opportunityProbability : 0);
+            let costSavings = parseFloat(this.costSavings ? this.costSavings : 0);
+            this.calculatedBudget = (costSavings * (probability / 100)).toFixed(2);
 
-            return (opportunityVal * savingsVal).toFixed(2);
+            return this.calculatedBudget;
         },
         calculateTime: function() {
             let unit = this.details.time && this.details.time.key ? this.details.time.label : '';
@@ -414,15 +411,6 @@ export default {
             this.activeItem.isActive = true;
             this.setPriority(this.gridData[index].type);
         },
-        getCurrencySymbol: function(label) {
-            let symbols = {
-                'USD': '$',
-                'EUR': '€',
-                'GBP': '₤',
-            };
-
-            return symbols[label];
-        },
         setPriority: function(type) {
             const priorityNames = {
                 'very-low': {name: 'message.very_high', color: 'ro-very-low-priority', value: 0},
@@ -436,12 +424,15 @@ export default {
         },
     },
     computed: {
+        ...mapGetters([
+            'risksOpportunitiesStats',
+            'opportunityStrategiesForSelect',
+            'opportunityStatusesForSelect',
+            'validationMessages',
+            'projectCurrencySymbol',
+        ]),
         ...mapGetters({
-            risksOpportunitiesStats: 'risksOpportunitiesStats',
-            opportunityStrategiesForSelect: 'opportunityStrategiesForSelect',
-            opportunityStatusesForSelect: 'opportunityStatusesForSelect',
             opportunity: 'currentOpportunity',
-            validationMessages: 'validationMessages',
         }),
     },
     created() {
@@ -487,10 +478,6 @@ export default {
             this.opportunityImpact = this.opportunity.impact;
             this.opportunityProbability = this.opportunity.probability;
             this.costSavings = this.opportunity.costSavings;
-            this.details.currency = this.opportunity.currency
-                ? {key: this.translateText(this.opportunity.currency), label: this.getCurrencySymbol(this.opportunity.currency)}
-                : null
-            ;
             this.timeSavings = this.opportunity.timeSavings;
             this.details.time = this.opportunity.timeUnit
                 ? {key: this.opportunity.timeUnit, label: this.translateText(this.opportunity.timeUnit)}
@@ -505,10 +492,12 @@ export default {
                 : null
             ;
             this.memberList.push(this.opportunity.responsibility);
+            this.measures = [];
+
             if (this.opportunity.measures.length > 0) {
-                this.measures = this.opportunity.measures;
-            } else {
-                this.measures = [];
+                this.opportunity.measures.forEach((measure) => {
+                    this.measures.push(Object.assign({}, measure));
+                });
             }
         },
     },
@@ -527,7 +516,6 @@ export default {
             },
             measures: [],
             details: {
-                currency: null,
                 time: null,
                 strategy: null,
                 status: null,
@@ -535,11 +523,6 @@ export default {
             memberList: [],
             opportunityImpact: 0,
             opportunityProbability: 0,
-            currencyLabel: [
-                {label: '$', key: 'USD'},
-                {label: '€', key: 'EUR'},
-                {label: '₤', key: 'GBP'},
-            ],
             timeLabel: [
                 {label: this.translateText('choices.hours'), key: 'choices.hours'},
                 {label: this.translateText('choices.days'), key: 'choices.days'},
