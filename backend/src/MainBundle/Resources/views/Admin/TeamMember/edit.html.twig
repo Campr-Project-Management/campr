@@ -40,13 +40,13 @@
                 </div>
             {% endif %}
             <div class="control-group form-group {% if form_errors(form.user) %}has-error{% endif %}">
-                <div class="input-holder">
+                <div class="input-holder input-filled">
                     {{ form_widget(form.user, {'attr': {'class': 'input-field'}}) }}
                     <label class="label">{{ 'label.user'|trans }}</label>
                 </div>
             </div>
             <div class="control-group form-group {% if form_errors(form.team) %}has-error{% endif %}">
-                <div class="input-holder">
+                <div class="input-holder input-filled">
                     {{ form_widget(form.team, {'attr': {'class': 'input-field'}}) }}
                     <label class="label">{{ 'label.team'|trans }}</label>
                 </div>
