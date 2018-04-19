@@ -8,14 +8,25 @@
             aria-haspopup="true"
             aria-expanded="false"
             @click="updateScrollbarTop()"
-        >
-            {{ placeholder }}
+            :title="title">
+
+            <span class="select-field-placeholder">{{ placeholder }}</span>
+
+            <i
+                    v-if="allowClear && value"
+                    class="fa fa-times select-field-clear"
+                    :title="translate('message.clear_selection')"
+                    @click="onClear"></i>
+
             <span class="caret"></span>
         </button>
-        <scrollbar v-show="options.length > 0" :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}" class="dropdown-menu dropdown-menu-right">
+        <scrollbar
+                v-show="availableOptions.length > 0"
+                :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}"
+                class="dropdown-menu dropdown-menu-right">
             <ul ref="ul">
-                <li v-for="option in options" :style="{height: itemHeight + 'px'}">
-                    <a href="javascript:void(0)" v-on:click="updateValue(option)">{{ translateText(option.label) }}</a>
+                <li v-for="option in availableOptions" :style="{height: itemHeight + 'px'}">
+                    <a href="javascript:void(0)" @click="onChange(option)">{{ translate(option.label) }}</a>
                 </li>
             </ul>
         </scrollbar>
@@ -30,6 +41,7 @@ export default {
     name: 'select-field',
     props: {
         value: {
+            type: Object,
             required: false,
             default: null,
         },
@@ -43,32 +55,37 @@ export default {
             required: true,
             default: () => [],
         },
-        currentOption: {
-            required: false,
-        },
         maxItems: {
             type: Number,
             default: 3,
         },
+        allowClear: {
+            type: Boolean,
+            default: false,
+            required: false,
+        },
     },
     computed: {
+        availableOptions() {
+            return _.uniqBy(this.options, 'key');
+        },
         placeholder() {
-            let option = this.currentOption;
+            let option = null;
             if (this.value) {
-                option = _.find(this.options, (o) => {
+                option = _.find(this.availableOptions, (o) => {
                     return o.key === this.value.key;
                 });
             }
 
             if (option) {
-                return this.translateText(option.label);
+                return this.translate(option.label);
             }
 
             return this.title;
         },
         scrollbarHeight() {
-            const itemsToShow = this.options.length < this.maxItems
-                ? this.options.length
+            const itemsToShow = this.availableOptions.length < this.maxItems
+                ? this.availableOptions.length
                 : this.maxItems
             ;
 
@@ -78,11 +95,12 @@ export default {
         },
     },
     methods: {
-        updateValue(value) {
+        onChange(value) {
             this.$emit('input', value);
         },
-        translateText(text) {
-            return this.translate(text);
+        onClear(event) {
+            event.stopPropagation();
+            this.$emit('input', null);
         },
         updateScrollbarTop() {
             let scrollTop = $(window).scrollTop();
@@ -135,6 +153,27 @@ export default {
                 padding: 5px;
             }
         }
+
+        button {
+            .select-field-clear {
+                position: absolute;
+                right: 3em;
+                top: 1.3em;
+                color: $dangerColor;
+                cursor: pointer;
+                font-style: normal;
+            }
+
+            .select-field-placeholder {
+                display: inline-block;
+                width: 90%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                min-height: 100%;
+                line-height: 3.5em;
+            }
+        }
     }
 
     .btn-primary {
@@ -171,7 +210,6 @@ export default {
             color: $lighterColor;
             outline: 0;
         }
-        
     }
 
     .btn-primary.active, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
