@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-show="show">
         <svg :id="id" />
     </div>
 </template>
@@ -9,14 +9,23 @@ import {mapActions, mapGetters} from 'vuex';
 import * as d3 from 'd3';
 import _ from 'lodash';
 import $ from 'jquery';
+import userHelper from '../../helpers/user';
+import socialIcons from '../../helpers/social-icons';
 
 export default {
     methods: {
         ...mapActions(['getOrganizationTree', 'clearOrganizationTree']),
         initialize() {
+            if (!this.organizationTreeData || !this.organizationTreeData.id) {
+                this.show = false;
+                return;
+            }
+
             if (this.initialized) {
                 return;
             }
+
+            this.show = true;
             this.initialized = true;
 
             this.svg = d3.select('#' + this.id);
@@ -98,6 +107,14 @@ export default {
                 .attr('style', `min-height: ${this.cellHeight}px`)
                 .html(d => this.userTpl(d.data))
                 .on('click', d => {
+                    let element = d3.event.target;
+                    while (element !== this.$el) {
+                        if (element.nodeName.toLowerCase() === 'a') {
+                            return;
+                        }
+                        element = element.parentElement;
+                    }
+
                     if (d.children) {
                         d._children = d.children;
                         d.children = null;
@@ -163,17 +180,38 @@ export default {
             });
         },
         userTpl(user) {
-            const avatar = user.avatar
-                ? '/uploads/avatars/' + user.avatar
-                : user.gravatar
-            ;
             const attributes = this.dataAttributes.join(' ');
+
+            const avatar = userHelper.getUserAvatar(user);
+            const media = userHelper.getSocialMedia(user);
+
+            let mediaData = '';
+            _.forEach(media, (item, key) => {
+                if (!socialIcons[key] || _.isEmpty(item)) {
+                    return;
+                }
+
+                mediaData += `
+                    <a href="${item}" target="_blank">
+                        ${socialIcons[key]}
+                    </a>
+                `;
+            });
+
+            if (mediaData !== '') {
+                mediaData = `
+                    <div class="social-links flex flex-center align">
+                        ${mediaData}
+                    </div>
+                `;
+            }
 
             return `
                 <div class="member-badge big" ${attributes}>
                     <div class="avatar" style="background-image: url('${avatar}');" ${attributes}></div>
                     <div class="name" ${attributes}>${user.fullName}</div>
                     <div class="title" ${attributes}>${user.title||''}</div>
+                    ${mediaData}
                 </div>
             `;
         },
@@ -207,6 +245,7 @@ export default {
     },
     data() {
         return {
+            show: false,
             dataAttributes: [],
             cellWidth: 256,
             cellHeight: 350,
@@ -296,6 +335,62 @@ export default {
             position: absolute;
             top: -40px;
             left: 50%;
+        }
+    }
+
+    .st0 {
+        fill: $secondColor;
+    }
+
+    .social-links {
+        margin-top: 15px;
+
+        a {
+            margin: 0 3px;
+        }
+
+        &.left {
+            justify-content: flex-start;
+
+            a:first-child {
+                margin-left: 0;
+            }
+        }
+    }
+
+    .phone {
+        position: relative;
+        display: block;
+
+        &:hover .link-tooltip {
+            display: block;
+        }
+
+    }
+
+    .link-tooltip {
+        display: none;
+        background: $secondColor;
+        color: $darkColor;
+        position: absolute;
+        padding: 5px 15px;
+        text-align: center;
+        border-radius: 5px;
+        left: 50%;
+        margin-left: -65px;
+        top: -30px;
+        min-width: 130px;
+
+        .caret {
+            border-top: 5px solid $secondColor;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            width: 0;
+            height: 0;
+            bottom: -5px;
+            position: absolute;
+            left: 60px;
+            display: block;
         }
     }
 </style>
