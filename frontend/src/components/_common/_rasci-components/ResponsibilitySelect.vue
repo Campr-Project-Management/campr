@@ -1,80 +1,72 @@
 <template>
-    <ul class="rasci-select" v-bind:class="{
-        default: !responsibilityValue,
-        responsible: responsibilityValue === 'responsible',
-        accountable: responsibilityValue === 'accountable',
-        support: responsibilityValue === 'support',
-        consulted: responsibilityValue === 'consulted',
-        informed: responsibilityValue === 'informed',
+    <ul class="rasci-select" :class="{
+        default: !value,
+        responsible: value === 'responsible',
+        accountable: value === 'accountable',
+        support: value === 'support',
+        consulted: value === 'consulted',
+        informed: value === 'informed',
         disabled: disabled,
         active: active,
-        last: isLast,
-        'second-to-last': isSecondToLast,
+        last: last,
+        'second-to-last': secondToLast,
     }" @click="!disabled && (active = !active)">
         <li class="rasci-default">
             <span></span>
         </li>
-        <li class="rasci-r" @click="responsibilityValue = 'responsible'">
+        <li class="rasci-r" @click="onClick('responsible')">
             <span>R</span>
         </li>
-        <li class="rasci-a" @click="responsibilityValue = 'accountable'">
+        <li class="rasci-a" @click="onClick('accountable')">
             <span>A</span>
         </li>
-        <li class="rasci-s" @click="responsibilityValue = 'support'">
+        <li class="rasci-s" @click="onClick('support')">
             <span>S</span>
         </li>
-        <li class="rasci-c" @click="responsibilityValue = 'consulted'">
+        <li class="rasci-c" @click="onClick('consulted')">
             <span>C</span>
         </li>
-        <li class="rasci-i" @click="responsibilityValue = 'informed'">
+        <li class="rasci-i" @click="onClick('informed')">
             <span>I</span>
         </li>
     </ul>
 </template>
 
 <script>
-import {mapActions} from 'vuex';
-
-export default {
-    props: {
-        isLast: {},
-        isSecondToLast: {},
-        project: {},
-        user: {},
-        workPackage: {},
-        responsibility: {},
-        disabled: {
-            default() {
-                return false;
+    export default {
+        props: {
+            value: {
+                type: String,
+                required: false,
+                default: '',
+            },
+            last: {
+                type: Boolean,
+                required: false,
+                default: false,
+            },
+            secondToLast: {
+                type: Boolean,
+                required: false,
+                default: false,
+            },
+            disabled: {
+                type: Boolean,
+                required: false,
+                default: false,
             },
         },
-    },
-    methods: {
-        ...mapActions(['setRaci']),
-    },
-    computed: {
-        getClass() {
-            return this.responsibility;
+        methods: {
+            onClick(value) {
+                this.$emit('input', value);
+            },
         },
-    },
-    watch: {
-        responsibilityValue(value) {
-            if (value === this.responsibility) {
-                return;
-            }
-            this.$emit('value', value);
+        data() {
+            return {
+                active: false,
+            };
         },
-    },
-    data() {
-        return {
-            active: false,
-            responsibilityValue: null,
-        };
-    },
-    created() {
-        this.responsibilityValue = this.responsibility;
-    },
-};
+    };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -110,7 +102,7 @@ export default {
                 text-transform: uppercase;
                 line-height: 30px;
                 font-size: 16px;
-                background-color: rgba($lightColor,.2);
+                background-color: rgba($lightColor, .2);
                 @include border-radius(50px);
                 cursor: pointer;
                 @include transition(background-color, 0.2s, ease-in);
@@ -178,13 +170,13 @@ export default {
 
             &:hover {
                 span {
-                    background-color: rgba($lightColor,.6);
+                    background-color: rgba($lightColor, .6);
                 }
             }
         }
 
         &.default {
-            li{
+            li {
                 &.rasci-default {
                     @include opacity(1);
                     z-index: 1;
@@ -193,7 +185,7 @@ export default {
         }
 
         &.responsible {
-            li{
+            li {
                 &.rasci-r {
                     @include opacity(1);
                     z-index: 1;
@@ -202,7 +194,7 @@ export default {
         }
 
         &.accountable {
-            li{
+            li {
                 &.rasci-a {
                     @include opacity(1);
                     z-index: 1;
@@ -211,7 +203,7 @@ export default {
         }
 
         &.support {
-            li{
+            li {
                 &.rasci-s {
                     @include opacity(1);
                     z-index: 1;
@@ -220,7 +212,7 @@ export default {
         }
 
         &.consulted {
-            li{
+            li {
                 &.rasci-c {
                     @include opacity(1);
                     z-index: 1;
@@ -229,7 +221,7 @@ export default {
         }
 
         &.informed {
-            li{
+            li {
                 &.rasci-i {
                     @include opacity(1);
                     z-index: 1;
@@ -300,8 +292,8 @@ export default {
                 width: 210px;
                 left: 50%;
                 margin-left: -105px;
-                height: 100%;                
-                background-color: rgba($darkerColor,.8);
+                height: 100%;
+                background-color: rgba($darkerColor, .8);
                 @include border-radius(4px);
             }
         }
