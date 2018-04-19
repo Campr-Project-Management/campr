@@ -40,44 +40,7 @@
         </div>
 
         <div class="team-graph">
-            <scrollbar>
-                <div class="scroll-wrapper">
-                    <member-badge v-for="(item, index) in projectSponsors" v-bind:item="item" size="big first-member-badge"></member-badge>
-                    <div :class="['subteams-container', subteams.items.length > 1 ? 'multiple-teams' : '']"  v-if="countSubteamsToShow() > 0">
-                        <div class="subteam-wrapper" v-for="subteam,index in subteams.items" v-if="subteamHasLeadOrChildren(subteam)" >
-                            <div class="flex flex-center" :data-count="subteam.id">
-                                <div class="member-block">
-                                    <div class="member-badge-wrapper" v-if="subteamHasLead(subteam)">
-                                        <member-badge v-for="subteamMember in subteam.subteamMembers" v-if="subteamMember.isLead" v-bind:item="subteamMember" size="big"></member-badge>
-                                    </div>
-                                    <div class="flex flex-center"  v-if="subteam.children.length > 0">
-                                        <div v-for="child in subteam.children" class="member-block">
-                                            <div class="member-badge-wrapper" v-for="member in child.subteamMembers" v-if="subteamHasLead(child)">
-                                                <member-badge v-if="member.isLead" v-bind:item="member" size="small"></member-badge>
-                                            </div>
-                                            <a href="javascript:void(0)" class="btn-rounded btn-empty btn-small" @click="toggleTeam(child.id)" :class="{'show-team': showTeam[child.id]}">
-                                                {{ translateText('message.view_team') }}
-                                                <i class="fa fa-angle-down" v-show="!showTeam[child.id]"></i>
-                                                <i class="fa fa-angle-up" v-show="showTeam[child.id]"></i>
-                                            </a>
-                                            <div class="team" :team-id="child.id" v-show="showTeam[child.id]">
-                                                <div class="member flex" v-for="user in child.subteamMembers">
-                                                    <div class="avatar" v-bind:style="{ backgroundImage: 'url(' + user.userAvatar + ')' }"></div>
-                                                    <div class="info">
-                                                        <p class="title">{{ user.userFullName }}</p>
-                                                        <p class="description" v-for="role in user.subteamRoleNames">{{ role }}</p>
-                                                        <social-links align="left" size="16px" v-bind:facebook="user.userFacebook" v-bind:twitter="user.userTwitter" v-bind:linkedin="user.userLinkedIn" v-bind:gplus="user.userGplus" v-bind:email="user.userEmail" v-bind:phone="user.userPhone"></social-links>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </scrollbar>
+            <project-organization-tree />
         </div>
         <div class="flex flex-space-between actions">
             <member-search ref="gridMemberSearch" v-model="gridList" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
@@ -199,6 +162,7 @@ import ViewIcon from '../_common/_icons/ViewIcon';
 import AlertModal from '../_common/AlertModal.vue';
 import Error from '../_common/_messages/Error.vue';
 import WorkspaceMemberInviteModal from './Organization/WorkspaceMemberInviteModal.vue';
+import ProjectOrganizationTree from './ProjectOrganizationTree';
 
 export default {
     components: {
@@ -214,11 +178,12 @@ export default {
         AlertModal,
         Error,
         WorkspaceMemberInviteModal,
+        ProjectOrganizationTree,
     },
     methods: {
         ...mapActions([
             'getProjectById', 'createDistribution', 'updateProjectUser', 'deleteTeamMember',
-            'getProjectUsers', 'addToDistribution', 'removeFromDistribution', 'getSubteams',
+            'getProjectUsers', 'addToDistribution', 'removeFromDistribution',
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -307,42 +272,15 @@ export default {
             this.showDeleteMemberModal = false;
             this.memberId = null;
         },
-        subteamHasLead: function(subteam) {
-            for (let i = 0; i < subteam.subteamMembers.length; i++) {
-                if (subteam.subteamMembers[i].isLead) {
-                    return true;
-                }
-            }
-            return false;
-        },
-        subteamHasLeadOrChildren: function(subteam) {
-            return this.subteamHasLead(subteam) || subteam.children.length > 0;
-        },
-        countSubteamsToShow: function() {
-            if (this.subteams.items == undefined) {
-                return 0;
-            }
-
-            let nr = 0;
-            for (let i = 0; i < this.subteams.items.length; i++) {
-                if (this.subteamHasLeadOrChildren(this.subteams.items[i])) {
-                    nr++;
-                }
-            }
-            return nr;
-        },
     },
     created() {
         this.getProjectById(this.$route.params.id);
         this.getProjectUsers({id: this.$route.params.id, page: this.activePage});
-        this.getSubteams({project: this.$route.params.id, parent: false});
     },
     computed: {
         ...mapGetters({
             project: 'project',
             projectUsers: 'projectUsers',
-            projectSponsors: 'projectSponsors',
-            subteams: 'subteams',
             validationMessages: 'validationMessages',
         }),
         pages: function() {
