@@ -326,7 +326,7 @@ class WorkPackageRepository extends BaseRepository
         return $this->findBy(
             [
                 'project' => $project,
-                'type' => WorkPackage::TYPE_TASK,
+                'type' => [WorkPackage::TYPE_TASK, WorkPackage::TYPE_TUTORIAL],
             ],
             $orderBy,
             $limit,
@@ -349,9 +349,15 @@ class WorkPackageRepository extends BaseRepository
         );
 
         $qb->andWhere(
-            $qb->expr()->eq(
-                'wp.type',
-                WorkPackage::TYPE_TASK
+            $qb->expr()->orX(
+                $qb->expr()->eq(
+                    'wp.type',
+                    WorkPackage::TYPE_TASK
+                ),
+                $qb->expr()->eq(
+                    'wp.type',
+                    WorkPackage::TYPE_TUTORIAL
+                )
             )
         );
 
