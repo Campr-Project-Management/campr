@@ -10,20 +10,12 @@
         </modal>
         <!-- /// End Delete Subtask Modal /// -->
 
-        <!-- /// Edit Status Modal /// -->
-        <modal v-if="showEditStatusModal" @close="showEditStatusModal = false">
-            <p class="modal-title">{{ translateText('title.status.edit') }}</p>
-            <select-field
-                    v-bind:title="translateText('title.status.edit')"
-                    v-bind:options="workPackageStatusesForSelect"
-                    v-bind:currentOption="editableData.workPackageStatus"
-                    v-model="editableData.workPackageStatus"/>
-            <br />
-            <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditStatusModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="changeStatus()" class="btn-rounded">{{ translateText('title.status.edit') }} +</a>
-            </div>
-        </modal>
+        <edit-status-modal
+                v-if="showEditStatusModal"
+                :value="editableData.workPackageStatus"
+                @cancel="onEditStatusModalCancel"
+                @input="onChangeStatus"/>
+
         <!-- /// End Edit Status Modal /// -->
         <task-modals
             v-bind:editExternalCostModal="showEditExternalCostModal"
@@ -454,90 +446,11 @@
 
                     <hr class="double">
 
-                    <!-- /// Task Assignee /// -->
-                    <h3>{{ translateText('message.asignee')}}</h3>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="user-avatar flex flex-v-center" v-if="responsibilityObj">
-                                <div><img :src="responsibilityObj.avatar" :alt="responsibilityObj.label"/></div>
-                                <div>
-                                    <b> {{responsibilityObj.label}}</b><br/>
-                                    <router-link
-                                        :to="{name: 'project-organization-view-member', params: {userId: responsibilityObj.key} }"
-                                        class="simple-link">
-                                        {{ responsibilityObj.email }}
-                                    </router-link>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <select-field
-                                v-bind:title="translateText('message.change_assignee')"
-                                v-bind:options="projectUsersForSelect"
-                                v-model="editableData.assignee"
-                                v-bind:currentOption="responsibilityObj"
-                                v-on:input="updateAssignee" />
-                        </div>
-                    </div>
-                    <!-- /// End Task Assignee /// -->
-                    <hr class="double">
-                    <!-- /// Task Accountable /// -->
-                    <h3>{{ translateText('label.accountable')}}</h3>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="user-avatar flex flex-v-center" v-if="accountabilityObj">
-                                <div><img :src="accountabilityObj.avatar" :alt="accountabilityObj.label"/></div>
-                                <div>
-                                    <b> {{accountabilityObj.label}}</b><br/>
-                                    <router-link
-                                        :to="{name: 'project-organization-view-member', params: {userId: accountabilityObj.key} }"
-                                        class="simple-link">
-                                        {{ accountabilityObj.email }}
-                                    </router-link>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <select-field
-                                v-bind:title="translateText('message.change_accountable')"
-                                v-bind:options="projectUsersForSelect"
-                                v-model="editableData.accountable"
-                                v-bind:currentOption="accountabilityObj"
-                                v-on:input="updateAccountable" />
-                        </div>
-                    </div>
-                    <!-- /// End Task Accountable /// -->
-                    <hr class="double">
-                    <!-- /// Task support & informed & consulted users  /// -->
-                    <h3>{{ translateText('label.select_sci_users')}}</h3>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <multi-select-field
-                                v-bind:title="translateText('label.select_support_users')"
-                                v-bind:options="projectUsersForSupportSelect"
-                                v-bind:selectedOptions="editableData.supportUsers"
-                                v-model="editableData.supportUsers"
-                                v-on:input="updateSupportUsers" />
-                        </div>
-                        <div class="col-md-4">
-                            <multi-select-field
-                                v-bind:title="translateText('label.select_consulted_users')"
-                                v-bind:options="projectUsersForConsultedSelect"
-                                v-bind:selectedOptions="editableData.consultedUsers"
-                                v-model="editableData.consultedUsers"
-                                v-on:input="updateConsultedUsers" />
+                    <task-view-assignments
+                            :value="editableData.assignments"
+                            :disabled="this.updatingAssignments"
+                            @input="onUpdateAssignments"/>
 
-                        </div>
-                        <div class="col-md-4">
-                            <multi-select-field
-                                v-bind:title="translateText('label.select_informed_users')"
-                                v-bind:options="projectUsersForInformedSelect"
-                                v-bind:selectedOptions="editableData.informedUsers"
-                                v-model="editableData.informedUsers"
-                                v-on:input="updateInformedUsers" />
-
-                        </div>
-                    </div>
                     <!-- /// End Task support & informed & consulted users /// -->
                     <hr class="double">
 
@@ -558,10 +471,10 @@
                         </div>
                         <div class="col-md-4" v-if="!task.isClosed">
                             <select-field
-                                :title="translateText('message.change_status')"
-                                :options="workPackageStatusesForSelect"
-                                v-model="editableData.workPackageStatus"
-                                @input="onChangeStatus" />
+                                    :title="translateText('message.change_status')"
+                                    :options="workPackageStatusesForSelect"
+                                    :value="editableData.workPackageStatus"
+                                    @input="onChangeStatus"/>
                         </div>
                     </div>
                     <!-- /// End Task Completion /// -->
@@ -602,11 +515,10 @@
                         </div>
                         <div class="col-md-4">
                             <select-field
-                                v-bind:title="'Add Label'"
-                                v-bind:options="labelsForSelect"
-                                v-model="editableData.label"
-                                v-bind:currentOption="editableData.label"
-                                v-on:input="updateLabel" />
+                                    :title="'Add Label'"
+                                    :options="labelsForSelect"
+                                    :value="editableData.label"
+                                    @input="updateLabel"/>
                         </div>
                     </div>
                     <!-- /// End Labels /// -->
@@ -648,6 +560,9 @@ import moment from 'moment';
 import {createFormData} from '../../../helpers/task';
 import Vue from 'vue';
 import SwitchField from '../../_common/_form-components/SwitchField';
+import TaskViewAssignments from './View/Assignments';
+import EditStatusModal from './View/EditStatusModal';
+import DeferredCallbackQueue from 'deferred-callback-queue';
 
 const TASK_STATUS_OPEN = 1;
 const TASK_STATUS_ONGOING = 3;
@@ -655,6 +570,8 @@ const TASK_STATUS_COMPLETED = 4;
 
 export default {
     components: {
+        EditStatusModal,
+        TaskViewAssignments,
         EditIcon,
         DeleteIcon,
         AttachIcon,
@@ -702,55 +619,6 @@ export default {
         ]),
         isClosed() {
             return this.task.isClosed;
-        },
-        responsibilityObj() {
-            for (let user of this.projectUsersForSelect) {
-                if(user.key == this.task.responsibility) {
-                    return user;
-                }
-            }
-        },
-        accountabilityObj() {
-            for (let user of this.projectUsersForSelect) {
-                if(user.key == this.task.accountability) {
-                    return user;
-                }
-            }
-        },
-        projectUsersForSupportSelect() {
-            let usersForSelect = JSON.parse(JSON.stringify(this.projectUsersForMultipleSelect));
-
-            let selectedIds = [];
-            for( let i =0; i< this.editableData.supportUsers.length; i++) {
-                selectedIds.push(this.editableData.supportUsers[i].key);
-            }
-            return usersForSelect.filter((item) => {
-                return selectedIds.indexOf(item.key) === -1;
-            });
-        },
-        projectUsersForConsultedSelect() {
-            let usersForSelect = JSON.parse(JSON.stringify(this.projectUsersForMultipleSelect));
-
-            let selectedIds = [];
-            for( let i =0; i< this.editableData.consultedUsers.length; i++) {
-                selectedIds.push(this.editableData.consultedUsers[i].key);
-            }
-
-            return usersForSelect.filter((item) => {
-                return selectedIds.indexOf(item.key) === -1;
-            });
-        },
-        projectUsersForInformedSelect() {
-            let usersForSelect = JSON.parse(JSON.stringify(this.projectUsersForMultipleSelect));
-
-            let selectedIds = [];
-            for( let i =0; i< this.editableData.informedUsers.length; i++) {
-                selectedIds.push(this.editableData.informedUsers[i].key);
-            }
-
-            return usersForSelect.filter((item) => {
-                return selectedIds.indexOf(item.key) === -1;
-            });
         },
         taskProgressEditIsDisabled() {
             return (this.task.parent == null && this.task.noSubtasks > 0) || this.task.isClosed;
@@ -848,32 +716,23 @@ export default {
             this.editableData.internalCosts = internal;
             this.editableData.externalCosts = external;
 
-            let supportUsers = [];
-            this.task.supportUsers.map(user => {
-                supportUsers.push({
-                    key: user.id,
-                    label: user.firstName + ' ' + user.lastName,
-                });
-            });
-            this.editableData.supportUsers = supportUsers;
+            this.editableData.assignments.responsibility = this.task.responsibility && {key: this.task.responsibility};
+            this.editableData.assignments.accountability = this.task.accountability && {key: this.task.accountability};
 
-            let informedUsers = [];
-            this.task.informedUsers.map(user => {
-                informedUsers.push({
-                    key: user.id,
-                    label: user.firstName + ' ' + user.lastName,
-                });
-            });
-            this.editableData.informedUsers = informedUsers;
+            this.editableData.assignments.supportUsers = this.task.supportUsers.map(user => ({
+                key: user.id,
+                label: user.firstName + ' ' + user.lastName,
+            }));
 
-            let consultedUsers = [];
-            this.task.consultedUsers.map(user => {
-                consultedUsers.push({
-                    key: user.id,
-                    label: user.firstName + ' ' + user.lastName,
-                });
-            });
-            this.editableData.consultedUsers = consultedUsers;
+            this.editableData.assignments.informedUsers = this.task.informedUsers.map(user => ({
+                key: user.id,
+                label: user.firstName + ' ' + user.lastName,
+            }));
+
+            this.editableData.assignments.consultedUsers = this.task.consultedUsers.map(user => ({
+                key: user.id,
+                label: user.firstName + ' ' + user.lastName,
+            }));
 
             this.completedSubtasksIds = [];
             this.task.children.forEach((subtask) => {
@@ -973,9 +832,9 @@ export default {
                     accountable: this.task.accountability
                         ? {key: this.task.accountability, label: this.task.accountabilityFullName}
                         : null,
-                    supportUsers: this.editableData.supportUsers,
-                    consultedUsers: this.editableData.consultedUsers,
-                    informedUsers: this.editableData.informedUsers,
+                    supportUsers: this.editableData.assignments.supportUsers,
+                    consultedUsers: this.editableData.assignments.consultedUsers,
+                    informedUsers: this.editableData.assignments.informedUsers,
                     status: this.task.workPackageStatus
                         ? {key: this.task.workPackageStatus, label: ''}
                         : null,
@@ -1061,16 +920,14 @@ export default {
         initChangeStatusModal() {
             this.showEditStatusModal = true;
         },
+        onEditStatusModalCancel() {
+            this.showEditStatusModal = false;
+        },
         onChangeStatus(value) {
-            let workPackageStatus = value;
-            if (value && typeof value === 'object' && value.key) {
-                workPackageStatus = value.key;
-            }
-
             this.patchTask({
                 taskId: this.task.id,
                 data: {
-                    workPackageStatus,
+                    workPackageStatus: value.key,
                 },
             });
 
@@ -1223,55 +1080,22 @@ export default {
                 taskId: this.$route.params.taskId,
             });
         },
-        updateAssignee() {
+        onUpdateAssignments(value) {
+            this.editableData.assignments = value;
+            this.updatingAssignments = true;
             let data = {
-                responsibility: this.editableData.assignee.key,
+                responsibility: value.responsibility && value.responsibility.key,
+                accountability: value.accountability && value.accountability.key,
+                supportUsers: value.supportUsers.map((u) => u.key),
+                consultedUsers: value.consultedUsers.map((u) => u.key),
+                informedUsers: value.informedUsers.map((u) => u.key),
             };
+
             this.patchTask({
-                data: data,
+                data,
                 taskId: this.$route.params.taskId,
-            });
-        },
-        updateAccountable() {
-            let data = {
-                accountability: this.editableData.accountable.key,
-            };
-            this.patchTask({
-                data: data,
-                taskId: this.$route.params.taskId,
-            });
-        },
-        updateSupportUsers() {
-            let data = {
-                supportUsers: this.editableData.supportUsers.map(item => {
-                    return item.key;
-                }),
-            };
-            this.patchTask({
-                data: data,
-                taskId: this.$route.params.taskId,
-            });
-        },
-        updateConsultedUsers() {
-            let data = {
-                consultedUsers: this.editableData.consultedUsers.map(item => {
-                    return item.key;
-                }),
-            };
-            this.patchTask({
-                data: data,
-                taskId: this.$route.params.taskId,
-            });
-        },
-        updateInformedUsers() {
-            let data = {
-                informedUsers: this.editableData.informedUsers.map(item => {
-                    return item.key;
-                }),
-            };
-            this.patchTask({
-                data: data,
-                taskId: this.$route.params.taskId,
+            }).then(() => {
+                this.updatingAssignments = false;
             });
         },
         initCloseTaskModal() {
@@ -1293,6 +1117,13 @@ export default {
                 }, (response) => {}
             );
         },
+        defer(func, wait) {
+            if (!this.deferredQueue) {
+                this.deferredQueue = new DeferredCallbackQueue(1000, true);
+            }
+
+            this.deferredQueue.addCall(func, wait);
+        },
     },
     data() {
         return {
@@ -1313,12 +1144,14 @@ export default {
             showCloseTaskModal: false,
             showOpenTaskModal: false,
             editableData: {
+                assignments: {
+                    responsibility: null,
+                    accountability: null,
+                    supportUsers: [],
+                    consultedUsers: [],
+                    informedUsers: [],
+                },
                 workPackageStatus: null,
-                assignee: null,
-                accountable: null,
-                supportUsers: [],
-                consultedUsers: [],
-                informedUsers: [],
                 colorStatus: false,
                 label: null,
                 medias: [],
@@ -1339,6 +1172,7 @@ export default {
             editInternalCostObj: {},
             completedSubtasksIds: [],
             newComment: '',
+            updatingAssignments: false,
         };
     },
 };
