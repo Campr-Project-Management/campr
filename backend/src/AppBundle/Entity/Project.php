@@ -821,7 +821,7 @@ class Project implements ProjectInterface
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectManagers")
      *
-     * @return string
+     * @return User[]
      */
     public function getProjectManagers()
     {
@@ -879,7 +879,7 @@ class Project implements ProjectInterface
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectSponsors")
      *
-     * @return string
+     * @return User[]
      */
     public function getProjectSponsors()
     {
