@@ -230,7 +230,6 @@ export default {
                 .on('click', d => {
                     d3.event.stopImmediatePropagation();
                     d3.event.stopPropagation();
-                    console.log(d3.event);
                 })
             ;
 
@@ -596,8 +595,6 @@ export default {
         initialize() {
             this.initialized = true;
 
-            window.d3 = d3;
-
             this.width = $('.page').width();
             this.height = $('.page').height() - $('.page > header').outerHeight() - 20;
 
@@ -609,9 +606,6 @@ export default {
                 .nodeSize([220, 100])
             ;
             this.root = d3.hierarchy(this.wbsData);
-
-            window.root = this.root;
-            window.wbs = this.wbs;
 
             this.root.x0 = this.width / 2;
             this.root.y0 = this.height / 2;
