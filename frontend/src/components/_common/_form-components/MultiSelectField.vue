@@ -7,25 +7,31 @@
                 data-toggle="dropdown"
                 @click="updateScrollbarTop()"
                 ref="btn-dropdown"
-            >
-                {{ title }}
+                :title="title">
+
+                <span class="multi-select-field-title">{{ title }}</span>
                 <span class="caret"></span>
             </button>
-            <scrollbar v-show="processedOptions.length !== 0" :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}" class="dropdown-menu dropdown-menu-right">
+            <scrollbar v-show="availableOptions.length !== 0"
+                       :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}"
+                       class="dropdown-menu dropdown-menu-right">
                 <ul ref="ul">
-                    <li v-for="(option, index) in processedOptions" :key="index">
-                        <a href="javascript:void(0)" @click="updateValue(option)">
-                            {{ option.label }}
-                        </a>
+                    <li v-for="option in availableOptions" :key="option.key">
+                        <a href="javascript:void(0)" @click="onSelect(option)">{{ option.label }}</a>
                     </li>
                 </ul>
             </scrollbar>
         </div>
         <scrollbar :style="{height: (3 * itemHeight) + 'px'}" class="multiselect-content">
             <div>
-                <p v-for="(option, index) in selectedOptions" :key="index" class="multiselect-option">
+                <p
+                        v-for="option in selection"
+                        :key="option.key"
+                        class="multiselect-option">
                     {{ option.label }}
-                    <a @click="removeSelectedOption(option)"> <i class="fa fa-times"></i></a>
+                    <a
+                            @click="onRemove(option)"
+                            :title="translate('message.clear_selection')"> <i class="fa fa-times"></i></a>
                 </p>
             </div>
         </scrollbar>
@@ -34,9 +40,15 @@
 
 <script>
 import $ from 'jquery';
+import _ from 'lodash';
 
 export default {
     props: {
+        value: {
+            type: Array,
+            required: false,
+            default: () => [],
+        },
         title: {
             type: String,
             required: false,
@@ -45,12 +57,7 @@ export default {
         options: {
             type: Array,
             required: true,
-            default: [],
-        },
-        selectedOptions: {
-            type: Array,
-            required: true,
-            default: [],
+            default: () => [],
         },
         maxItems: {
             type: Number,
@@ -58,31 +65,38 @@ export default {
         },
     },
     computed: {
-        processedOptions() {
-            if (!this.selectedOptions || !this.options.length) {
-                return this.options;
+        selection() {
+            if (!this.value) {
+                return [];
             }
 
-            let selectedOptions = new Set(this.selectedOptions);
-            return [...new Set([...this.options].filter(option => !selectedOptions.has(option)))];
+            return _.uniqBy(this.options.filter((o) => _.find(this.value, ['key', o.key])), 'key');
+        },
+        availableOptions() {
+            let options = _.uniqBy(this.options, 'key');
+
+            return options.filter((option) => {
+                return !_.find(this.value, ['key', option.key]);
+            });
         },
         scrollbarHeight() {
-            const itemsToShow = this.processedOptions.length < this.maxItems
-                ? this.processedOptions.length
-                : this.maxItems
-            ;
+            const count = Math.min(this.availableOptions.length, this.maxItems);
 
-            return (itemsToShow * this.itemHeight)
+            return (count * this.itemHeight)
                 + (this.marginBottom + this.marginTop)
                 + (this.paddingBottom + this.paddingTop);
         },
     },
     methods: {
-        updateValue(value) {
-            this.$emit('input', [...this.selectedOptions, value]);
+        onSelect(option) {
+            let value = _.uniqBy([...this.value, option], 'key');
+
+            this.$emit('input', value);
         },
-        removeSelectedOption(value) {
-            this.$emit('input', this.selectedOptions.filter(option => option.key !== value.key));
+        onRemove(option) {
+            let value = this.value.filter((selected) => selected.key !== option.key);
+
+            this.$emit('input', value);
         },
         updateScrollbarTop() {
             let scrollTop = $(window).scrollTop();
@@ -133,6 +147,18 @@ export default {
                 list-style: none;
                 margin: 0;
                 padding: 5px;
+            }
+        }
+
+        button {
+            .multi-select-field-title {
+                display: inline-block;
+                width: 90%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                min-height: 100%;
+                line-height: 2.5em;
             }
         }
     }
@@ -186,6 +212,7 @@ export default {
         margin-top: 3px;
         color: $secondColor;
         position: relative;
+        text-transform: uppercase;
 
         i.fa {
             position: absolute;
