@@ -9,23 +9,23 @@
                             <h1>{{ translateText('message.rasci_matrix') }}</h1>
                             <div class="rasci-legend flex">
                                 <div class="rasci-legend-item">
-                                    <responsibility-select responsibility="responsible" disabled="true" />
+                                    <responsibility-select value="responsible" :disabled="true" />
                                     <span>Responsible</span>
                                 </div>
                                 <div class="rasci-legend-item">
-                                    <responsibility-select responsibility="accountable" disabled=true />
+                                    <responsibility-select value="accountable" :disabled=true />
                                     <span>Accountable</span>
                                 </div>
                                 <div class="rasci-legend-item">
-                                    <responsibility-select responsibility="support" disabled=true />
+                                    <responsibility-select value="support" :disabled=true />
                                     <span>Support</span>
                                 </div>
                                 <div class="rasci-legend-item">
-                                    <responsibility-select responsibility="consulted" disabled=true />
+                                    <responsibility-select value="consulted" :disabled=true />
                                     <span>Consulted</span>
                                 </div>
                                 <div class="rasci-legend-item">
-                                    <responsibility-select responsibility="informed" disabled=true />
+                                    <responsibility-select value="informed" :disabled=true />
                                     <span>Informed</span>
                                 </div>
                             </div>
@@ -40,18 +40,19 @@
                         <tr>
                             <th class="task-number">{{ translateText('table_header_cell.task_number') }}</th>
                             <th>{{ translateText('table_header_cell.task_title') }}</th>
-                            <th v-for="(user, userIndex) in rasci.users"
+                            <th v-for="(user, userIndex) in users"
+                                :key="user.id"
                                 :class="{'rasci-cell': true, 'active-cell': activeCell === userIndex}">
                                 <div
                                     class="avatar"
                                     v-tooltip.top-center="user.firstName + ' ' + user.lastName"
-                                    :style="{backgroundImage: 'url(' + (user.avatar || user.gravatar) + ')'}"></div>
+                                    :style="{backgroundImage: 'url(' + getUserAvatar(user) + ')'}"></div>
                             </th>
                             <th class="rasci-cell last-cell"></th>                                  
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(workPackage, rasciIndex) in rasci.workPackages"
+                        <tr v-for="(workPackage, rasciIndex) in workPackages"
                             :key="workPackage.id"
                             :class="{'active-row': activeRow === rasciIndex}"
                             v-on:mouseover="activeRow = rasciIndex"
@@ -72,14 +73,12 @@
                                 v-on:mouseover="activeCell = workPackage.type === 2 && userIndex"
                                 v-on:mouseout="activeCell = null"
                                 :class="{'rasci-cell': true, 'active-cell': activeCell === userIndex}">
-                                <responsibility-select v-if="workPackage.type === 2"
-                                    :is-last="userIndex + 1 === workPackage.rasci.length"
-                                    :is-second-to-last="userIndex + 2 === workPackage.rasci.length"
-                                    :project="workPackage.project"
-                                    :user="user.id"
-                                    :work-package="workPackage.id"
-                                    :responsibility="user.data"
-                                    v-on:value="setRaciData({project: workPackage.project, user: user.user, workPackage: workPackage.id, data: $event})"/>
+                                <responsibility-select
+                                        v-if="workPackage.type === 2"
+                                        :last="userIndex + 1 === workPackage.rasci.length"
+                                        :second-to-last="userIndex + 2 === workPackage.rasci.length"
+                                        :value="user.data"
+                                        @input="setRaciData({project: workPackage.project, user: user.user, workPackage: workPackage.id, data: $event})"/>
                             </td>
                             <td class="rasci-cell last-cell"></td>
                         </tr>
@@ -104,7 +103,9 @@ export default {
             return this.translate(text);
         },
         setRaciData: function({project, user, workPackage, data}) {
-            this.setRasci({project, user, workPackage, data});
+            this.setRasci({project, user, workPackage, data}).then(() => {
+                this.loadRasci();
+            });
         },
         repeat(str, count) {
             let c = 0;
@@ -114,13 +115,29 @@ export default {
             }
             return out;
         },
+        loadRasci() {
+            const {id} = this.$route.params;
+            this.getRasci({id});
+        },
+        getUserAvatar(user) {
+            if (user.avatar) {
+                return user.avatar;
+            }
+
+            return user.gravatar;
+        },
     },
     computed: {
         ...mapGetters(['rasci', 'currentProject']),
+        workPackages() {
+            return this.rasci.workPackages || [];
+        },
+        users() {
+            return this.rasci.users || [];
+        },
     },
     created() {
-        const {id} = this.$route.params;
-        this.getRasci({id});
+        this.loadRasci();
     },
     data() {
         return {
