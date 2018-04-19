@@ -1,5 +1,5 @@
 <template>
-    <div v-show="show">
+    <div v-show="show" style="width: 100%">
         <svg :id="id" />
     </div>
 </template>
@@ -44,8 +44,10 @@ export default {
                 .nodeSize([this.cellWidth, this.cellHeight])
             ;
             this.root = d3.hierarchy(this.organizationTreeData);
-            this.root.x0 = this.width / 2;
-            this.root.y0 = this.height / 2;
+            this.root.x0 = 0;
+            this.root.y0 = 0;
+
+            this.root = this.collapseNode(this.root, 3);
 
             this.updateTree(this.root);
 
@@ -55,10 +57,30 @@ export default {
                     this.g.attr('transform', d3.event.transform);
                 })
             ;
+
+            const width = $(window).width() / 3;
             this.svg
                 .call(zoom)
-                .call(zoom.transform, d3.zoomIdentity.translate($('#'+this.id).width() / 3, 16).scale(0.4))
+                .call(zoom.transform, d3.zoomIdentity.translate(width, 16).scale(0.4))
             ;
+
+            this.g.attr('transform', `translate(${width}, 16) scale(0.4)`);
+        },
+        collapseNode(node, level) {
+            if (node.children) {
+                node.children = node.children.map((n) => {
+                    this.collapseNode(n, level);
+
+                    return n;
+                });
+            }
+
+            if (node.depth >= level) {
+                node._children = node.children;
+                node.children = null;
+            }
+
+            return node;
         },
         branch(dst, src) {
             const cw = this.cellWidth;
@@ -149,8 +171,8 @@ export default {
                 .attr('class', 'link')
                 .attr('d', d => {
                     const o = {
-                        x: source.x0 || source.x,
-                        y: source.y0 || source.y,
+                        x: source.x0,
+                        y: source.y0,
                     };
 
                     return this.branch(o, o);
@@ -223,7 +245,7 @@ export default {
             }
         },
         organizationTree(val) {
-            this.organizationTreeData = _.clone(this.organizationTree);
+            this.organizationTreeData = _.cloneDeep(this.organizationTree);
             this.initialize();
         },
     },
@@ -247,7 +269,7 @@ export default {
         return {
             show: false,
             dataAttributes: [],
-            cellWidth: 256,
+            cellWidth: 272,
             cellHeight: 350,
             cellSpacing: 50,
             initialized: false,
