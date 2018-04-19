@@ -153,6 +153,18 @@ services:
         arguments:
             - '@app.formatter.money'
 
+    app.service.workpackage_rasci_sync:
+        class: AppBundle\Services\WorkPackageRasciSync
+        arguments:
+             - '@app.repository.rasci'
+             - '@app.repository.project_user'
+
+    app.service.rasci_workpackage_sync:
+        class: AppBundle\Services\RasciWorkPackageSync
+        arguments:
+             - '@app.repository.work_package'
+             - '@app.repository.rasci'
+
 ### REPOSITORIES ###
     app.repository.work_package:
         class: AppBundle\Repository\WorkPackageRepository
@@ -354,8 +366,7 @@ services:
     app.subscriber.work_package:
         class: AppBundle\EventListener\WorkPackageSubscriber
         arguments:
-            - '@app.repository.rasci'
-            - '@app.repository.project_user'
+            - '@app.service.workpackage_rasci_sync'
             - '@app.repository.work_package'
             - '@app.repository.work_package_status'
             - '@app.calculator.phase_actual_dates'
@@ -365,7 +376,7 @@ services:
     app.subscriber.rasci:
         class: AppBundle\EventListener\RasciSubscriber
         arguments:
-            - '@app.repository.work_package'
+            - '@app.service.rasci_workpackage_sync'
         tags:
             - { name: kernel.event_subscriber }
 
