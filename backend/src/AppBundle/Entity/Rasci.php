@@ -179,4 +179,44 @@ class Rasci
     {
         return $this->user ? $this->user->getFullName() : null;
     }
+
+    /**
+     * @return bool
+     */
+    public function isResponsible(): bool
+    {
+        return $this->data === self::DATA_RESPONSIBLE;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAccountable(): bool
+    {
+        return $this->data === self::DATA_ACCOUNTABLE;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupport(): bool
+    {
+        return $this->data === self::DATA_SUPPORT;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isConsulted(): bool
+    {
+        return $this->data === self::DATA_CONSULTED;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInformed(): bool
+    {
+        return $this->data === self::DATA_INFORMED;
+    }
 }
