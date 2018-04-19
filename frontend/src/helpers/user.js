@@ -58,11 +58,11 @@ export default {
     getSocialMedia: (user) => {
         return {
             facebook: generateLink(FACEBOOK_BASE, user.facebook),
-            twitter: generateLink(TWITTER_BASE, user.facebook),
-            instagram: generateLink(INSTAGRAM_BASE, user.facebook),
-            gPlus: generateLink(GPLUS_BASE, user.facebook),
-            linkedIn: generateLink(LINKEDIN_BASE, user.facebook),
-            medium: generateLink(MEDIUM_BASE, user.facebook),
+            twitter: generateLink(TWITTER_BASE, user.twitter),
+            instagram: generateLink(INSTAGRAM_BASE, user.instagram),
+            gPlus: generateLink(GPLUS_BASE, user.gPlus),
+            linkedIn: generateLink(LINKEDIN_BASE, user.linkedIn),
+            medium: generateLink(MEDIUM_BASE, user.medium),
             email: generateLink(EMAIL, user.email),
         };
     },
