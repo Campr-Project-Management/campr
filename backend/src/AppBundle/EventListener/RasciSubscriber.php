@@ -2,27 +2,26 @@
 
 namespace AppBundle\EventListener;
 
-use AppBundle\Entity\Rasci;
 use AppBundle\Event\RasciEvent;
+use AppBundle\Services\RasciWorkPackageSync;
 use Component\Rasci\RasciEvents;
-use Component\Repository\RepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class RasciSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var RepositoryInterface
+     * @var RasciWorkPackageSync
      */
-    private $workPackageRepository;
+    private $rasciWorkPackageSync;
 
     /**
      * RasciSubscriber constructor.
      *
-     * @param RepositoryInterface $workPackageRepository
+     * @param RasciWorkPackageSync $rasciWorkPackageSync
      */
-    public function __construct(RepositoryInterface $workPackageRepository)
+    public function __construct(RasciWorkPackageSync $rasciWorkPackageSync)
     {
-        $this->workPackageRepository = $workPackageRepository;
+        $this->rasciWorkPackageSync = $rasciWorkPackageSync;
     }
 
     /**
@@ -42,7 +41,7 @@ class RasciSubscriber implements EventSubscriberInterface
     public function onPostCreate(RasciEvent $event)
     {
         $rasci = $event->getRasci();
-        $this->updateWorkPackageReponsible($rasci);
+        $this->rasciWorkPackageSync->sync($rasci);
     }
 
     /**
@@ -51,25 +50,6 @@ class RasciSubscriber implements EventSubscriberInterface
     public function onPostUpdate(RasciEvent $event)
     {
         $rasci = $event->getRasci();
-        $this->updateWorkPackageReponsible($rasci);
-    }
-
-    /**
-     * @param Rasci $rasci
-     *
-     * @return bool
-     */
-    private function updateWorkPackageReponsible(Rasci $rasci): bool
-    {
-        if (Rasci::DATA_RESPONSIBLE !== $rasci->getData()) {
-            return false;
-        }
-
-        $wp = $rasci->getWorkPackage();
-        $wp->setResponsibility($rasci->getUser());
-
-        $this->workPackageRepository->add($wp);
-
-        return true;
+        $this->rasciWorkPackageSync->sync($rasci);
     }
 }
