@@ -57,6 +57,9 @@ import moment from 'moment';
 
 const MONTH_IN_MILISECONDS = 2592000000;
 
+const TASK_STATUS_ONGOING = 3;
+const TASK_STATUS_COMPLETED = 4;
+
 export default {
     components: {
         AlertModal,
@@ -428,8 +431,30 @@ export default {
                     const convert = gantt.date.date_to_str('%d-%m-%Y');
                     const params = {progress};
 
-                    params[this.currentDate + 'StartAt'] = convert(task.start_date);
-                    params[this.currentDate + 'FinishAt'] = convert(task.end_date);
+                    if (this.currentDate !== 'actual') {
+                        let actualStartAt = null;
+                        let actualFinishAt = null;
+
+                        if (progress > 0) {
+                            params['workPackageStatus'] = this.workPackageStatusById(TASK_STATUS_ONGOING);
+
+                            actualStartAt = moment().format('D-MM-YYYY');
+                            if (task.actualStartAt) {
+                                actualStartAt = moment(task.actualStartAt).format('D-MM-YYYY');
+                            }
+
+                            if (progress === 100) {
+                                params['workPackageStatus'] = this.workPackageStatusById(TASK_STATUS_COMPLETED);
+                                actualFinishAt = moment().format('D-MM-YYYY');
+                            }
+                        }
+
+                        params['actualStartAt'] = actualStartAt;
+                        params['actualFinishAt'] = actualFinishAt;
+                    } else {
+                        params[this.currentDate + 'StartAt'] = convert(task.start_date);
+                        params[this.currentDate + 'FinishAt'] = convert(task.end_date);
+                    }
 
                     this.$http.patch(
                         Routing.generate('app_api_workpackage_edit', {id}),
@@ -505,7 +530,7 @@ export default {
         },
     },
     computed: {
-        ...mapGetters(['ganttData', 'localUser', 'project']),
+        ...mapGetters(['ganttData', 'localUser', 'project', 'workPackageStatusById']),
         exportProjectURL() {
             return Routing.generate('main_project_xml', {id: this.project.id});
         },
