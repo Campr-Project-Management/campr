@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import {isArray} from 'lodash';
 
 const state = {
     organizationTree: {},
@@ -16,7 +17,12 @@ const actions = {
             .get(Routing.generate('app_api_project_organization_tree', {id}))
             .then(
                 (response) => {
-                    commit(types.SET_PROJECT_ORGANIZATION_TREE, response.body);
+                    let tree = response.body;
+                    if (isArray(tree)) {
+                        tree = {};
+                    }
+
+                    commit(types.SET_PROJECT_ORGANIZATION_TREE, tree);
                 },
                 (response) => {
                     commit(types.SET_PROJECT_ORGANIZATION_TREE, {});
