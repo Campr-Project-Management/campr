@@ -102,6 +102,7 @@ class ProjectOrganizationTreeService
         return array_merge([
             'id' => $user->getId(),
             'fullName' => $user->getFullName(),
+            'email' => $user->getEmail(),
             'avatar' => $user->getAvatar(),
             'gravatar' => $user->getGravatar(),
             'facebook' => $user->getFacebook(),
