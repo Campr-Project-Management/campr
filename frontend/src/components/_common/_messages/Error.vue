@@ -1,34 +1,50 @@
 <template>
-    <div class="error">
-        {{ message }}
+    <div>
+        <template v-if="message">
+            <div class="error">{{ message }}</div>
+        </template>
+        <template v-else-if="atPath">
+            <error
+                    v-for="message in messages"
+                    :message="message"/>
+        </template>
     </div>
 </template>
 
 <script>
-export default {
-    props: {
-        message: {
-            type: String,
+    import {mapGetters} from 'vuex';
+
+    export default {
+        name: 'error',
+        props: {
+            message: {
+                type: String,
+                required: false,
+            },
+            atPath: {
+                type: String,
+                required: false,
+            },
         },
-        // @TODO: add hide button and autohide functionality
-//        hideButton: {
-//            type: Boolean,
-//            default() {
-//                return false;
-//            },
-//        },
-//        autoHide: {
-//            type: Number,
-//            default() {
-//                return 0;
-//            },
-//        },
-    },
-};
+        computed: {
+            ...mapGetters([
+                'validationMessagesFor',
+                'validationMessages',
+            ]),
+            messages() {
+                if (!this.atPath) {
+                    return [];
+                }
+
+                return this.validationMessagesFor(this.atPath);
+            },
+        },
+    };
 </script>
 
 <style scoped lang="scss">
     @import '../../../css/_variables';
+
     .error {
         background: $dangerColor;
         color: $blackColor;

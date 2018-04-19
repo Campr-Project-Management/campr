@@ -49,6 +49,13 @@ class ProjectUserRepository extends BaseRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @param Project $project
+     * @param array   $filters
+     * @param null    $select
+     *
+     * @return QueryBuilder
+     */
     public function getQueryByUserFullName(Project $project, $filters = [], $select = null)
     {
         $qb = $this
