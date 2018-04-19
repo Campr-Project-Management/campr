@@ -142,6 +142,22 @@ class MenuBuilder
         ;
 
         $menu
+            ->addChild($this->translator->trans('title.programme.list', [], 'messages'), [
+                'route' => 'app_admin_programme_list',
+            ])
+            ->setAttribute('class', 'main-category')
+            ->setLinkAttribute('icon', 'zmdi zmdi-dialpad')
+        ;
+
+        $menu
+            ->addChild($this->translator->trans('title.portfolio.list', [], 'messages'), [
+                'route' => 'app_admin_portfolio_list',
+            ])
+            ->setAttribute('class', 'main-category')
+            ->setLinkAttribute('icon', 'zmdi zmdi-laptop-mac')
+        ;
+
+        $menu
             ->addChild($this->translator->trans('title.project.list', [], 'messages'), [])
             ->setAttributes([
                 'class' => 'sub-menu main-category',
@@ -209,30 +225,6 @@ class MenuBuilder
         ;
 
         $menu
-            ->addChild($this->translator->trans('title.programme.list', [], 'messages'), [
-                'route' => 'app_admin_programme_list',
-            ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-dialpad')
-        ;
-
-        $menu
-            ->addChild($this->translator->trans('title.portfolio.list', [], 'messages'), [
-                'route' => 'app_admin_portfolio_list',
-            ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-laptop-mac')
-        ;
-
-        $menu
-            ->addChild($this->translator->trans('title.cost.list', [], 'messages'), [
-                'route' => 'app_admin_cost_list',
-            ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-money')
-        ;
-
-        $menu
             ->addChild($this->translator->trans('title.workpackage.list', [], 'messages'), [])
             ->setAttributes([
                 'class' => 'sub-menu main-category',
@@ -241,31 +233,28 @@ class MenuBuilder
             ->setLinkAttribute('icon', 'zmdi zmdi-group-work')
             ->addChild($this->translator->trans('title.workpackage.list', [], 'messages'), [
                 'route' => 'app_admin_workpackage_list',
-            ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-group-work')
-            ->getParent()
+            ])->getParent()
             ->addChild($this->translator->trans('title.workpackage_status.list', [], 'messages'), [
                 'route' => 'app_admin_workpackage_status_list',
-            ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-tag')
-            ->getParent()
+            ])->getParent()
             ->addChild($this->translator->trans('title.workpackage_category.list', [], 'messages'), [
                 'route' => 'app_admin_workpackage_category_list',
-            ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-present-to-all')
-            ->getParent()
+            ])->getParent()
             ->addChild($this->translator->trans('title.wppcwct.list', [], 'messages'), [
                 'route' => 'app_admin_wppcwct_list',
             ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-tv-list')
         ;
 
         $menu
-            ->addChild($this->translator->trans('title.resource.list', [], 'messages'), [
+            ->addChild($this->translator->trans('title.external_cost.list', [], 'messages'), [
+                'route' => 'app_admin_cost_list',
+            ])
+            ->setAttribute('class', 'main-category')
+            ->setLinkAttribute('icon', 'zmdi zmdi-money')
+        ;
+
+        $menu
+            ->addChild($this->translator->trans('title.internal_cost.list', [], 'messages'), [
                 'route' => 'app_admin_resource_list',
             ])
             ->setAttribute('class', 'main-category')
@@ -287,7 +276,7 @@ class MenuBuilder
             ])->getParent()
             ->addChild($this->translator->trans('title.subteam_member.list', [], 'messages'), [
                 'route' => 'app_admin_subteam_member_list',
-            ])->getParent()
+            ])
         ;
 
         $menu
@@ -299,7 +288,7 @@ class MenuBuilder
         ;
 
         $menu
-            ->addChild($this->translator->trans('title.risk.list', [], 'messages'), [])
+            ->addChild($this->translator->trans('title.risk_and_opportunities', [], 'messages'), [])
             ->setAttributes([
                 'class' => 'sub-menu main-category',
                 'dropdown' => true,
@@ -316,16 +305,7 @@ class MenuBuilder
             ])->getParent()
             ->addChild($this->translator->trans('title.risk_status.list', [], 'messages'), [
                 'route' => 'app_admin_risk_status_list',
-            ])
-        ;
-
-        $menu
-            ->addChild($this->translator->trans('title.opportunity.list', [], 'messages'), [])
-            ->setAttributes([
-                'class' => 'sub-menu main-category',
-                'dropdown' => true,
-            ])
-            ->setLinkAttribute('icon', 'zmdi zmdi-folder-outline')
+            ])->getParent()
             ->addChild($this->translator->trans('title.opportunity.list', [], 'messages'), [
                 'route' => 'app_admin_opportunity_list',
             ])->getParent()
@@ -335,6 +315,9 @@ class MenuBuilder
             ->addChild($this->translator->trans('title.opportunity_status.list', [], 'messages'), [
                 'route' => 'app_admin_opportunity_status_list',
             ])->getParent()
+            ->addChild($this->translator->trans('title.measure.list', [], 'messages'), [
+                'route' => 'app_admin_measure_list',
+            ])
         ;
 
         $menu
@@ -369,14 +352,6 @@ class MenuBuilder
         ;
 
         $menu
-            ->addChild($this->translator->trans('title.measure.list', [], 'messages'), [
-                'route' => 'app_admin_measure_list',
-            ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-apps')
-        ;
-
-        $menu
             ->addChild($this->translator->trans('title.info.list', [], 'messages'), [])
             ->setAttributes([
                 'class' => 'sub-menu main-category',
@@ -385,21 +360,13 @@ class MenuBuilder
             ->setLinkAttribute('icon', 'zmdi zmdi-device-hub')
             ->addChild($this->translator->trans('title.info.list', [], 'messages'), [
                 'route' => 'app_admin_info_list',
-            ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-comment')
-            ->getParent()
+            ])->getParent()
             ->addChild($this->translator->trans('title.info_category.list', [], 'messages'), [
                 'route' => 'app_admin_info_category_list',
-            ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-comment')
-            ->getParent()
+            ])->getParent()
             ->addChild($this->translator->trans('title.info_status.list', [], 'messages'), [
                 'route' => 'app_admin_info_status_list',
             ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-comment')
         ;
 
         $menu
@@ -477,7 +444,7 @@ class MenuBuilder
             ])->getParent()
             ->addChild($this->translator->trans('title.close_down_action.list', [], 'messages'), [
                 'route' => 'app_admin_close_down_action_list',
-            ])->getParent()
+            ])
         ;
 
         $this->filterMenu($menu);
