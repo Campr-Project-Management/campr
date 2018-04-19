@@ -139,6 +139,11 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
+    app.service.project_organization_tree:
+        class: AppBundle\Services\ProjectOrganizationTreeService
+        arguments:
+            - '@translator'
+
     app.calculator.phase_actual_dates:
         class: Component\WorkPackage\Calculator\PhaseActualDatesCalculator
         arguments:
