@@ -100,6 +100,8 @@ const actions = {
                 Routing.generate('app_api_project_users_edit', {'id': data.id}),
                 JSON.stringify(data)
             ).then((response) => {
+                let currentMember = response.data;
+                commit(types.SET_CURRENT_MEMBER, {currentMember});
             }, (response) => {
             });
     },
