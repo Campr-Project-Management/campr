@@ -562,7 +562,6 @@ import Vue from 'vue';
 import SwitchField from '../../_common/_form-components/SwitchField';
 import TaskViewAssignments from './View/Assignments';
 import EditStatusModal from './View/EditStatusModal';
-import DeferredCallbackQueue from 'deferred-callback-queue';
 
 const TASK_STATUS_OPEN = 1;
 const TASK_STATUS_ONGOING = 3;
@@ -1116,13 +1115,6 @@ export default {
                     }
                 }, (response) => {}
             );
-        },
-        defer(func, wait) {
-            if (!this.deferredQueue) {
-                this.deferredQueue = new DeferredCallbackQueue(1000, true);
-            }
-
-            this.deferredQueue.addCall(func, wait);
         },
     },
     data() {
