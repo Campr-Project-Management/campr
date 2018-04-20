@@ -246,6 +246,11 @@
                                 height="200px"
                                 label="placeholder.todo_description"
                                 v-model="todo.description" />
+                            <error
+                                v-if="validationMessages.todos[index.toString()].description && validationMessages.todos[index.toString()].description.length"
+                                v-for="(message, index) in validationMessages.todos[index.toString()].description"
+                                :key="`todo-description-${index}`"
+                                :message="message" />
                         </div>
                         <div class="row">
                             <div class="form-group">
@@ -301,8 +306,8 @@
                         <input-field type="text" :label="translate('placeholder.topic')" v-model="info.topic" :content="info.topic" />
                         <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
                         <error
-                            v-if="validationMessages.infos[index.toString()].title && validationMessages.infos[index.toString()].title.length"
-                            v-for="(message, index) in validationMessages.infos[index.toString()].title"
+                            v-if="validationMessages.infos[index.toString()].topic && validationMessages.infos[index.toString()].topic.length"
+                            v-for="(message, index) in validationMessages.infos[index.toString()].topic"
                             :key="`info-topic-${index}`"
                             :message="message" />
                         </div>
