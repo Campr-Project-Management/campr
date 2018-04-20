@@ -33,8 +33,7 @@
         <!-- /// Tasks Filters /// -->
         <div class="flex">
             <input-field
-                    v-model="criteria.searchString"
-                    :content="searchString"
+                    v-model="filters.searchString"
                     type="text"
                     :label="translate('label.search_for_tasks')"
                     class="search"/>
@@ -51,33 +50,24 @@
             <!--To be added after disscusion about milestones-->
             <!--<dropdown title="Milestone" options=""></dropdown>-->
             <a @click="filterTasks" class="btn-rounded btn-auto">{{ translate('button.show_results') }}</a>
-            <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translate('button.clear_filters') }}</a>
+            <a @click="clearFilters" class="btn-rounded btn-auto second-bg">{{ translate('button.clear_filters') }}</a>
         </div>
         <!-- /// End Tasks Filters /// -->
 
         <!-- /// Tasks List /// -->
         <div class="tasks">
-            <scrollbar class="categories-scroll" v-if="tasks.nbItems > 0">
+            <scrollbar class="categories-scroll" :suppress-scroll-y="true">
                 <div class="board-view">
                     {{ tasksByStatus }}
-                    <div class="flex">
-                        <div v-for="status in taskStatuses"
-                             :key="status.id">
-                            <board-tasks-column
-                                    :tasks="tasks.items[status.id].items"
-                                    :count="tasks.items[status.id].nbItems"
-                                    v-if="tasks.items && tasks.items[status.id] && tasks.items[status.id].items && tasks.items[status.id].items.length > 0"
-                                    :status="status"/>
-                        </div>
+                    <div class="flex" v-if="taskStatuses.length > 0">
+                        <board-tasks-column
+                                v-for="status in taskStatuses"
+                                :key="status.id"
+                                :status="status"
+                                :criteria="criteria"/>
                     </div>
                 </div>
-                <pagination
-                        v-model.number="page"
-                        :number-of-pages="numberOfPages"
-                        :show-description="false"
-                        @input="onPageChange"/>
             </scrollbar>
-            <div class="no-results" v-else-if="tasks.nbItems != null">{{ translate('message.no_results') }}</div>
         </div>
         <!-- /// End Tasks List /// -->
     </div>
@@ -88,15 +78,13 @@ import InputField from '../../_common/_form-components/InputField';
 import Dropdown from '../../_common/Dropdown';
 import {mapActions, mapGetters} from 'vuex';
 import BoardTasksColumn from './BoardTasksColumn';
-import Pagination from '../../_common/Pagination';
 
 export default {
-    name: 'board',
+    name: 'board-view',
     components: {
         InputField,
         Dropdown,
         BoardTasksColumn,
-        Pagination,
     },
     created() {
         this.setFilters({clear: true});
@@ -108,12 +96,10 @@ export default {
         let project = this.$route.params.id;
         this.getProjectUsers({id: project});
         this.getColorStatuses();
-        this.getAllTasksBoard({project, page: 1});
     },
     computed: {
         ...mapGetters([
             'taskStatuses',
-            'allTasks',
             'projectUsersForSelect',
             'colorStatusesForSelect',
             'colorStatuses',
@@ -121,64 +107,51 @@ export default {
         colorStatusesOptions() {
             return this.colorStatusesForSelect.filter((status) => status.key);
         },
-        tasks() {
-            if (_.isArray(this.allTasks)) {
-                return {};
-            }
-
-            return this.allTasks;
-        },
-        numberOfPages: function() {
-            return this.tasks.nbPages;
-        },
     },
     methods: {
         ...mapActions([
             'getTaskStatuses',
             'setFilters',
-            'resetTasks',
-            'getAllTasksBoard',
             'getProjectUsers',
             'getColorStatuses',
         ]),
-        selectColorStatus: function(colorStatus) {
-            this.criteria.colorStatus = colorStatus;
+        selectColorStatus(colorStatus) {
+            this.filters.colorStatus = colorStatus;
         },
-        selectAssignee: function(assignee) {
-            this.criteria.assignee = assignee;
+        selectAssignee(assignee) {
+            this.filters.assignee = assignee;
         },
-        selectStatus: function(status) {
-            this.criteria.status = status;
-        },
-        filterTasks: function() {
-            const project = this.$route.params.id;
+        clearFilters() {
+            this.filters = {
+                colorStatus: null,
+                assignee: null,
+                searchString: null,
+            };
 
-            this.setFilters(Object.assign({}, this.criteria));
-            this.getAllTasksBoard({project, page: 1});
-        },
-        clearFilters: function() {
-            const project = this.$route.params.id;
-            this.criteria = {};
             this.$refs.assignee.resetCustomTitle();
             if (this.$refs.statuses) {
                 this.$refs.statuses.resetCustomTitle();
             }
             this.$refs.colorStatus.resetCustomTitle();
-            this.setFilters({clear: true});
-            this.getAllTasksBoard({project, page: 1});
+            this.criteria = this.filters;
         },
-        onPageChange() {
-            let project = this.$route.params.id;
-            this.getAllTasksBoard({project, page: this.page});
+        filterTasks() {
+            this.criteria = Object.assign({}, this.filters);
         },
     },
     data() {
         return {
-            count: 2,
             users: [],
-            criteria: {},
-            page: 1,
-            tasksPerPage: 8,
+            filters: {
+                colorStatus: null,
+                assignee: null,
+                searchString: null,
+            },
+            criteria: {
+                colorStatus: null,
+                assignee: null,
+                searchString: null,
+            },
         };
     },
 };
@@ -211,6 +184,7 @@ export default {
     .tasks {
         padding-top: 20px;
         overflow: hidden;
+        height: calc(100vh - 222px);
     }
 
     .notification-balloon {
@@ -225,7 +199,9 @@ export default {
 
     .categories-scroll {
         width: 100%;
-        padding-bottom: 30px;
+        height: 100%;
+        padding-top: 20px;
+        overflow-y: hidden !important;
     }
 
     .task-box {
@@ -240,24 +216,9 @@ export default {
     }
 
     .board-view {
-        padding-top: 20px;
         display: inline-block;
         white-space: nowrap;
-    }
-
-    .column {
-        margin-right: 10px;
-        width: 434px;
-    }
-
-    .column-header {
-        background: $darkColor;
-        padding: 20px;
-        margin-bottom: 10px;
-    }
-
-    .tasks-scroll {
-        margin-bottom: 10px;
+        min-height: 100%;
     }
 
     .notification-balloon {
@@ -269,13 +230,6 @@ export default {
     .header .notification-balloon {
         margin-top: 5px
     }
-
-    .categories-scroll {
-        width: 100%;
-        padding-bottom: 30px;
-        position: relative;
-        overflow: auto;
-    }
 </style>
 
 <style lang="scss">
@@ -283,6 +237,9 @@ export default {
         .ps__scrollbar-x-rail {
             bottom: auto !important;
             top: 0;
+        }
+        > .ps__scrollbar-y-rail {
+            visibility: hidden;
         }
     }
 </style>
