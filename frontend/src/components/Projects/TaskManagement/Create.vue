@@ -7,17 +7,17 @@
                     <div>
                         <router-link :to="{name: 'project-task-management-list'}" class="small-link" v-if="!isEdit">
                             <i class="fa fa-angle-left"></i>
-                            Back to Task Management
+                            {{ translate('message.back_to_task_management') }}
                         </router-link>
                         <router-link
                             v-if="task.id && isEdit"
                             class="small-link" 
                             :to="{name: 'project-task-management-view', params: {id: task.project, taskId: task.id}}">
                             <i class="fa fa-angle-left"></i>
-                            Back to Task View
+                            {{ translate('message.back_to_task_view') }}
                         </router-link>
-                        <h1 v-if="!isEdit">{{ message.create_new_task }}</h1>
-                        <h1 v-if="isEdit">{{ message.edit_task }} - {{ task.name }}</h1>
+                        <h1 v-if="!isEdit">{{ translate('message.create_new_task') }}</h1>
+                        <h1 v-if="isEdit">{{ translate('message.edit_task') }} - {{ task.name }}</h1>
                     </div>
                     <input
                         id="importXmlFile"
@@ -26,7 +26,7 @@
                         style="display: none;"
                         v-on:change="uploadImportTaskFile" />
                     <a class="btn-rounded btn-auto btn-empty flex" v-on:click="openFileSelection">
-                        <span>{{ message.import_task }}</span>
+                        <span>{{ translate('message.import_task') }}</span>
                         <upload-icon></upload-icon>
                     </a>
                 </div>
@@ -38,7 +38,7 @@
 
                 <div class="form">
                     <!-- /// Task Name /// -->
-                    <input-field type="text" v-bind:label="label.task_title" v-model="title" v-bind:content="title" />
+                    <input-field type="text" :label="translate('label.task_title')" v-model="title" :content="title" />
                     <error
                         v-if="validationMessages && validationMessages.name && validationMessages.name.length"
                         v-for="message in validationMessages.name"
@@ -50,13 +50,13 @@
                         height="200px"
                         id="task_description"
                         v-model="description"
-                        :label="label.task_description"/>
+                        :label="translate('label.task_description')"/>
                     <!-- /// End Task Description /// -->
 
                     <hr class="double">
 
                     <!-- /// Task Planning /// -->
-                    <planning v-model="planning" v-bind:editPlanning="planning" />
+                    <planning v-model="planning" :editPlanning="planning" />
                     <!-- /// End Task Planning /// -->
 
                     <hr>
@@ -64,17 +64,16 @@
                     <schedule
                             v-model="schedule"
                             :editable-base="!isEdit"
-                            :editable-forecast="isEdit"
-                    />
+                            :editable-forecast="isEdit"/>
                     <!-- /// End Task Schedule /// -->
 
                     <hr class="double">
 
                     <!-- /// Task Internal Costs /// -->
                     <internal-costs
-                        v-model="internalCosts"
-                        :validationMessages="internalValidationMessages"
-                        @add="onInternalCostAdded"/>
+                            v-model="internalCosts"
+                            :validationMessages="internalValidationMessages"
+                            @add="onInternalCostAdded"/>
                     <!-- /// End Task Internal Costs /// -->
 
                     <hr class="double">
@@ -90,7 +89,15 @@
                     <hr class="double">
 
                     <!-- /// Task Details /// -->
-                    <task-details v-model="details" v-bind:editDetails="details" />
+                    <task-assignments
+                            :value="assignments"
+                            @input="onAssignmentsUpdate"/>
+                    <!-- /// End Task Details /// -->
+
+                    <hr class="double">
+
+                    <!-- /// Task Details /// -->
+                    <task-details v-model="details" />
                     <!-- /// End Task Details /// -->
 
                     <hr class="double">
@@ -105,8 +112,8 @@
                     <hr class="double">
 
                     <!-- /// Task Attachments /// -->
-                    <!--<attachments v-model="medias" v-bind:editMedias="medias" />-->
-                    <attachments v-on:input="setMedias" v-bind:editMedias="medias" />
+                    <!--<attachments v-model="medias" :editMedias="medias" />-->
+                    <attachments v-on:input="setMedias" :editMedias="medias" />
                     <error
                         v-if="validationMessages.medias && validationMessages.medias.length"
                         v-for="message in validationMessages.medias"
@@ -116,7 +123,7 @@
                     <hr class="double">
 
                     <!-- /// Task Condition /// -->
-                    <condition v-model="statusColor" v-bind:selectedStatusColor="statusColor" />
+                    <condition v-model="statusColor" :selectedStatusColor="statusColor" />
                     <error
                         v-if="validationMessages.colorStatus && validationMessages.colorStatus.length"
                         v-for="message in validationMessages.colorStatus"
@@ -127,9 +134,9 @@
 
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
-                        <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto disable-bg">{{ button.cancel }}</router-link>
-                        <a v-if="!isEdit" @click="createTask" class="btn-rounded btn-auto second-bg">{{ button.create_task }}</a>
-                        <a v-if="isEdit" @click="editExistingTask" class="btn-rounded btn-auto second-bg">{{ button.edit_task }}</a>
+                        <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto disable-bg">{{ translate('button.cancel') }}</router-link>
+                        <a v-if="!isEdit" @click="createTask" class="btn-rounded btn-auto second-bg">{{ translate('button.create_task') }}</a>
+                        <a v-if="isEdit" @click="editExistingTask" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_task') }}</a>
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
@@ -153,6 +160,7 @@ import Subtasks from './Create/Subtasks';
 import Planning from './Create/Planning';
 import Condition from './Create/Condition';
 import TaskDetails from './Create/Details';
+import TaskAssignments from './Create/Assignments';
 import Attachments from './Create/Attachments';
 import datepicker from '../../_common/_form-components/Datepicker';
 import Switches from '../../3rdparty/vue-switches';
@@ -166,6 +174,7 @@ import _ from 'lodash';
 
 export default {
     components: {
+        TaskAssignments,
         InputField,
         SelectField,
         UploadIcon,
@@ -209,6 +218,7 @@ export default {
                 planning: this.planning,
                 medias: this.medias,
                 details: this.details,
+                assignments: this.assignments,
                 statusColor: this.statusColor,
             };
 
@@ -245,6 +255,7 @@ export default {
                 planning: this.planning,
                 medias: this.medias,
                 details: this.details,
+                assignments: this.assignments,
                 statusColor: this.statusColor,
             };
 
@@ -329,6 +340,9 @@ export default {
             return !!_.find(costs.items, (item) => {
                 return item.customUnit && item.customUnit.length > 0;
             });
+        },
+        onAssignmentsUpdate(value) {
+            this.assignments = Object.assign({}, this.assignments, value);
         },
     },
     created() {
@@ -431,44 +445,21 @@ export default {
                 name: this.task.colorStatusName,
             };
 
-            let supportUsers = [];
-            this.task.supportUsers.map(function(user) {
-                supportUsers.push({
-                    key: user.id,
-                    label: user.firstName + ' ' + user.lastName,
-                });
-            });
-            let consultedUsers = [];
-            this.task.consultedUsers.map(function(user) {
-                consultedUsers.push({
-                    key: user.id,
-                    label: user.firstName + ' ' + user.lastName,
-                });
-            });
-            let informedUsers = [];
-            this.task.informedUsers.map(function(user) {
-                informedUsers.push({
-                    key: user.id,
-                    label: user.firstName + ' ' + user.lastName,
-                });
-            });
-
             this.details = {
-                assignee: this.task.responsibility
-                    ? {key: this.task.responsibility, label: this.task.responsibilityFullName}
-                    : null,
-                accountable: this.task.accountability
-                    ? {key: this.task.accountability, label: this.task.accountabilityFullName}
-                    : null,
-                supportUsers: supportUsers,
-                consultedUsers: consultedUsers,
-                informedUsers: informedUsers,
                 status: this.task.workPackageStatus
                     ? {key: this.task.workPackageStatus, label: this.translate(this.task.workPackageStatusName)}
                     : null,
                 label: this.task.label
                     ? {key: this.task.label, label: this.task.labelName}
                     : null,
+            };
+
+            this.assignments = {
+                responsibility: this.task.responsibility && {key: this.task.responsibility},
+                accountability: this.task.accountability && {key: this.task.accountability},
+                supportUsers: this.task.supportUsers.map(user => ({key: user.id})),
+                consultedUsers: this.task.consultedUsers.map(user => ({key: user.id})),
+                informedUsers: this.task.informedUsers.map(user => ({key: user.id})),
             };
 
             let children = [];
@@ -552,21 +543,6 @@ export default {
         return {
             showSaved: false,
             showFailed: false,
-            message: {
-                create_new_task: this.translate('message.create_new_task'),
-                edit_task: this.translate('message.edit_task'),
-                import_task: this.translate('message.import_task'),
-                task_details: this.translate('message.task_details'),
-            },
-            label: {
-                task_title: this.translate('label.task_title'),
-                task_description: this.translate('label.task_description'),
-            },
-            button: {
-                cancel: this.translate('button.cancel'),
-                create_task: this.translate('button.create_task'),
-                edit_task: this.translate('button.edit_task'),
-            },
             schedule: {
                 baseStartDate: new Date(),
                 baseEndDate: new Date(),
@@ -595,12 +571,14 @@ export default {
             medias: [],
             details: {
                 status: null,
-                assignee: null,
-                accountable: null,
+                label: null,
+            },
+            assignments: {
+                responsibility: null,
+                accountability: null,
                 supportUsers: [],
                 consultedUsers: [],
                 informedUsers: [],
-                label: null,
             },
             statusColor: {},
         };

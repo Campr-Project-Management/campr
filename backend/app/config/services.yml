@@ -493,6 +493,11 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
+    app.validators.workpackage_assignments:
+        class: AppBundle\Validator\Constraints\WorkPackageAssignmentsValidator
+        tags:
+            - { name: validator.constraint_validator }
+
 ### ROUTING ###
     app.routing.loader:
         class: AppBundle\Routing\Loader

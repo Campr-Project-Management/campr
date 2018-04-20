@@ -8,7 +8,6 @@
             <multi-select-field
                     v-bind:title="translateText('label.select_managers')"
                     v-bind:options="managersForSelect"
-                    v-bind:selectedOptions="editDepartmentManagers"
                     v-model="editDepartmentManagers" />
             <br />
             <div class="flex flex-space-between">
@@ -36,7 +35,6 @@
             <multi-select-field
                 v-bind:title="translateText('label.select_users')"
                 v-bind:options="projectUsersForSelect"
-                v-bind:selectedOptions="editSubteamMembers"
                 v-model="editSubteamMembers"
             />
             <br />

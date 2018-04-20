@@ -969,7 +969,7 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
-        if (isset($criteria['status'])) {
+        if (!empty($criteria['status'])) {
             $qb
                 ->andWhere('o.workPackageStatus = :workPackageStatus')
                 ->setParameter('workPackageStatus', $criteria['status'])
@@ -980,7 +980,7 @@ class WorkPackageRepository extends BaseRepository
             $qb->andWhere($expr->like('o.name', $expr->literal(sprintf('%%%s%%', $criteria['searchString']))));
         }
 
-        if (isset($criteria['type'])) {
+        if (!empty($criteria['type'])) {
             if (WorkPackage::TYPE_TASK == $criteria['type']) {
                 $qb
                     ->andWhere('o.type IN (:type)')
@@ -994,7 +994,7 @@ class WorkPackageRepository extends BaseRepository
             }
         }
 
-        if (isset($criteria['assignee'])) {
+        if (!empty($criteria['assignee'])) {
             $qb
                 ->andWhere('o.responsibility = :assignee')
                 ->setParameter('assignee', $criteria['assignee'])
@@ -1008,25 +1008,25 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
-        if (isset($criteria['isKeyMilestone'])) {
+        if (!empty($criteria['isKeyMilestone'])) {
             $qb->andWhere($qb->expr()->eq('wp.isKeyMilestone', $criteria['isKeyMilestone']));
         }
 
-        if (isset($criteria['startDate'])) {
+        if (!empty($criteria['startDate'])) {
             $qb
                 ->andWhere('o.scheduledStartAt >= :startDate')
                 ->setParameter('startDate', $criteria['startDate'])
             ;
         }
 
-        if (isset($criteria['endDate'])) {
+        if (!empty($criteria['endDate'])) {
             $qb
                 ->andWhere('o.scheduledFinishAt <= :endDate')
                 ->setParameter('endDate', $criteria['endDate'])
             ;
         }
 
-        if (isset($criteria['dueDate'])) {
+        if (!empty($criteria['dueDate'])) {
             $qb
                 ->andWhere('o.scheduledFinishAt = :dueDate')
                 ->setParameter('dueDate', $criteria['dueDate'])
