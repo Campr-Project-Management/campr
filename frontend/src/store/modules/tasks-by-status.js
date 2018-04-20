@@ -38,7 +38,7 @@ const actions = {
             params: {
                 criteria,
                 page: page,
-                pageSize: 8,
+                pageSize: 24,
             },
         };
 
