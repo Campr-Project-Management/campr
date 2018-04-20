@@ -38,6 +38,14 @@ const getters = {
     validationMessages: state => {
         return state.validationMessages;
     },
+    validationMessagesFor: (state, getters) => (atPath) => {
+        let messages = getters.validationMessages;
+        if (!messages || !messages[atPath]) {
+            return [];
+        }
+
+        return messages[atPath];
+    },
     allValidationMessages: state => extractValidationMessages(state.validationMessages),
     validationOrigin: state => state.validationOrigin,
 };
