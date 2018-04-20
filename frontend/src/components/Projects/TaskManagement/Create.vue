@@ -202,6 +202,7 @@ export default {
                 'importTask',
                 'emptyValidationMessages',
                 'getProjectUnits',
+                'getGreenColorStatus',
             ]
         ),
         createTask: function() {
@@ -348,6 +349,10 @@ export default {
         if (this.$route.params.taskId) {
             this.getTaskById(this.$route.params.taskId);
         }
+
+        if (!this.$store.state.greenColorStatus || this.$store.state.greenColorStatus.length == 0) {
+            this.getGreenColorStatus();
+        }
     },
     beforeDestroy() {
         this.emptyValidationMessages();
@@ -355,6 +360,7 @@ export default {
     computed: {
         ...mapGetters({
             task: 'currentTask',
+            greenColorStatus: 'greenColorStatus',
             validationMessages: 'validationMessages',
         }),
         internalValidationMessages() {
@@ -413,6 +419,14 @@ export default {
                 router.push({
                     name: 'project-task-management-list',
                 });
+            }
+        },
+        greenColorStatus(value) {
+            if(!this.isEdit) {
+                this.statusColor = {
+                    id: this.greenColorStatus.id,
+                    name: this.greenColorStatus.name,
+                };
             }
         },
         task(value) {
