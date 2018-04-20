@@ -68,7 +68,6 @@
                                 <multi-select-field
                                         v-bind:title="translateText('placeholder.role')"
                                         v-bind:options="projectRolesForMultiSelect"
-                                        v-bind:selectedOptions="selectedRoles"
                                         v-model="selectedRoles" />
                                 <!--<a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_role') }}</a>-->
                             </div>
@@ -88,7 +87,6 @@
                             <multi-select-field
                                         v-bind:title="translateText('placeholder.department')"
                                         v-bind:options="projectDepartmentsForMultiSelect"
-                                        v-bind:selectedOptions="departments"
                                         v-model="departments" />
                             <!--<a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_department') }}</a>-->
                             </div>
@@ -96,7 +94,6 @@
                             <multi-select-field
                                         v-bind:title="translateText('placeholder.subteam')"
                                         v-bind:options="subteamsForSelect"
-                                        v-bind:selectedOptions="subteams"
                                         v-model="subteams" />
                                 <!--<a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_subteam') }}</a>-->
                             </div>
