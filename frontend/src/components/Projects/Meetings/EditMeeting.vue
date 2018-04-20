@@ -42,15 +42,13 @@
                                 <multi-select-field
                                     v-bind:title="translateText('placeholder.distribution_list')"
                                     v-bind:options="distributionListsForSelect"
-                                    v-bind:selectedOptions="details.distributionLists"
                                     v-model="details.distributionLists" />
                             </div>
                             <div class="col-md-6">
                                 <select-field
                                     v-bind:title="translateText('label.category')"
                                     v-bind:options="meetingCategoriesForSelect"
-                                    v-model="details.category"
-                                    v-bind:currentOption="details.category" />
+                                    v-model="details.category"/>
                             </div>
                         </div>
                     </div>

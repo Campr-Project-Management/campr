@@ -16,7 +16,7 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     /**
      * @var WorkPackageRasciSync
      */
-    private $workPackageRasciSyncer;
+    private $workPackageRasciSync;
 
     /**
      * @var DateRangeCalculatorInterface
@@ -36,18 +36,18 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     /**
      * WorkPackageSubscriber constructor.
      *
-     * @param WorkPackageRasciSync         $workPackageRasciSyncher
+     * @param WorkPackageRasciSync         $workPackageRasciSync
      * @param RepositoryInterface          $workPackageRepository
      * @param RepositoryInterface          $workPackageStatusRepository
      * @param DateRangeCalculatorInterface $phaseActualDatesCalculator
      */
     public function __construct(
-        WorkPackageRasciSync $workPackageRasciSyncher,
+        WorkPackageRasciSync $workPackageRasciSync,
         RepositoryInterface $workPackageRepository,
         RepositoryInterface $workPackageStatusRepository,
         DateRangeCalculatorInterface $phaseActualDatesCalculator
     ) {
-        $this->workPackageRasciSyncer = $workPackageRasciSyncher;
+        $this->workPackageRasciSync = $workPackageRasciSync;
         $this->phaseActualDatesCalculator = $phaseActualDatesCalculator;
         $this->workPackageRepository = $workPackageRepository;
         $this->workPackageStatusRepository = $workPackageStatusRepository;
@@ -71,7 +71,7 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     public function onPostCreate(WorkPackageEvent $event)
     {
         $wp = $event->getWorkPackage();
-        $this->workPackageRasciSyncer->sync($wp);
+        $this->workPackageRasciSync->sync($wp);
     }
 
     /**
@@ -80,7 +80,7 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     public function onPostUpdate(WorkPackageEvent $event)
     {
         $wp = $event->getWorkPackage();
-        $this->workPackageRasciSyncer->sync($wp);
+        $this->workPackageRasciSync->sync($wp);
         $this->updatePhaseActualDates($wp);
     }
 

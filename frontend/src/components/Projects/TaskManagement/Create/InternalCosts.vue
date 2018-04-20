@@ -5,11 +5,12 @@
         <div v-for="(item, index) in value.items">
             <div class="row">
                 <div class="form-group">
+                    {{ item.resource }}
                     <div class="col-md-6">
                         <select-field
                             :title="label.resource"
                             :options="resourcesForSelect"
-                            :value="item.resource"
+                            :value="{key: item.resource}"
                             @input="onItemUpdate('resource', index, $event)" />
                         <error
                             v-if="getValidationMessages(index, 'resource').length"
