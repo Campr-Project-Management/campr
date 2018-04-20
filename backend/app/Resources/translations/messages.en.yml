@@ -373,7 +373,9 @@ message:
     import_tasks: Import Tasks
     task_schedule: Task Schedule
     task_details: Task Details
-    back_to_task_management: Back to task management
+    task_assignments: Task Assignments
+    back_to_task_management: Back to Task management
+    back_to_task_view: Back to Task View
     subtasks_summary: '%completed_tasks% of %total_tasks%'
     planning: Planning
     subtasks: Subtasks
@@ -442,6 +444,8 @@ message:
     months: Months
     no_results: No results
     currency: Currency
+    clear_selection: Clear selection
+    loading_more_tasks: Loading more tasks...
 
 menu:
     users: Users
