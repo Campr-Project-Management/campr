@@ -100,7 +100,7 @@
             },
             actualFinishAt() {
                 if (this.task.actualFinishAt) {
-                    return this.task.actualFinishAt;
+                    return moment(this.task.actualFinishAt).unix();
                 }
 
                 return moment().unix();
@@ -238,6 +238,7 @@
                 this.createToTooltip(toHandle, this.forecastFinishAt * 1000, 'Forecast');
             },
             createActual() {
+                console.log(this.showActual);
                 if (!this.showActual) {
                     return;
                 }
@@ -258,7 +259,6 @@
                 let $parent = $el.parent();
                 let fromHandle = $parent.find('.irs-slider.from')[0];
                 let toHandle = $parent.find('.irs-slider.to')[0];
-
                 this.createFromTooltip(fromHandle, this.actualStartAt * 1000, 'Actual');
                 this.createToTooltip(toHandle, this.actualFinishAt * 1000, 'Actual');
             },
@@ -283,8 +283,16 @@
             },
             createToTooltip(el, date, prefix) {
                 let toValue = this.formatDate(date) || 'N/A';
+                if (!this.task.actualFinishAt && prefix === 'Actual') {
+                    toValue = 'N/A';
+                }
+                if (!this.task.baseFinishAt && prefix === 'Base') {
+                    toValue = 'N/A';
+                }
+                if (!this.task.forecastFinishAt && prefix === 'Forecast') {
+                    toValue = 'N/A';
+                }
                 let text = `${prefix} ${this.translate('message.finish')}: ${toValue}`;
-
                 return this.createTooltip(el, text);
             },
             createOverallTooltip(el) {
