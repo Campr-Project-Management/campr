@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div :class="{disabled: disabled}">
         <div class="dropdown">
             <button
                 class="btn btn-primary dropdown-toggle"
                 type="button"
                 data-toggle="dropdown"
-                @click="updateScrollbarTop()"
+                @click="updateScrollbarTop($event)"
                 ref="btn-dropdown"
                 :title="title">
 
@@ -14,6 +14,7 @@
             </button>
             <scrollbar v-show="availableOptions.length !== 0"
                        :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}"
+                       v-if="!disabled"
                        class="dropdown-menu dropdown-menu-right">
                 <ul ref="ul">
                     <li v-for="option in availableOptions" :key="option.key">
@@ -30,6 +31,7 @@
                         class="multiselect-option">
                     {{ option.label }}
                     <a
+                            v-if="!disabled"
                             @click="onRemove(option)"
                             :title="translate('message.clear_selection')"> <i class="fa fa-times"></i></a>
                 </p>
@@ -63,6 +65,11 @@ export default {
             type: Number,
             default: 3,
         },
+        disabled: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
     },
     computed: {
         selection() {
@@ -89,16 +96,29 @@ export default {
     },
     methods: {
         onSelect(option) {
+            if (this.disabled) {
+                return;
+            }
+
             let value = _.uniqBy([...this.value, option], 'key');
 
             this.$emit('input', value);
         },
         onRemove(option) {
+            if (this.disabled) {
+                return;
+            }
+
             let value = this.value.filter((selected) => selected.key !== option.key);
 
             this.$emit('input', value);
         },
-        updateScrollbarTop() {
+        updateScrollbarTop(event) {
+            if (this.disabled) {
+                event.stopPropagation();
+                return;
+            }
+
             let scrollTop = $(window).scrollTop();
             let elementOffset = $(this.$el).offset().top;
             let currentElementOffset = (elementOffset - scrollTop);
@@ -138,6 +158,10 @@ export default {
 <style scoped lang="scss">
     @import '../../../css/_variables.scss';
     @import '../../../css/_mixins.scss';
+
+    .disabled *, .disabled a {
+        cursor: not-allowed;
+    }
 
     .dropdown {
         .dropdown-menu {
