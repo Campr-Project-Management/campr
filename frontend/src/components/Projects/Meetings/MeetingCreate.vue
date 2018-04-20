@@ -22,17 +22,15 @@
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
                                 <multi-select-field
-                                    v-bind:title="translateText('placeholder.distribution_list')"
-                                    v-bind:options="distributionListsForSelect"
-                                    v-bind:selectedOptions="details.distributionLists"
-                                    v-model="details.distributionLists" />
+                                        v-bind:title="translateText('placeholder.distribution_list')"
+                                        v-bind:options="distributionListsForSelect"
+                                        v-model="details.distributionLists"/>
                             </div>
                             <div class="col-md-6">
                                 <select-field
-                                    :title="translateText('placeholder.category')"
-                                    :options="meetingCategoriesForSelect"
-                                    v-model="details.category"
-                                    :currentOption="details.category" />
+                                        :title="translateText('placeholder.category')"
+                                        :options="meetingCategoriesForSelect"
+                                        v-model="details.category"/>
                             </div>
                         </div>
                     </div>

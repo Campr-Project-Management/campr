@@ -82,9 +82,11 @@ const actions = {
      * @param {array} data
      */
     getTasks({commit}, data) {
-        let paramObject = {params: {
-            type: 2,
-        }};
+        let paramObject = {
+            params: {
+                type: 2,
+            },
+        };
         if (data && data.queryParams && data.queryParams.page !== undefined) {
             paramObject.params.page = data.queryParams.page;
         }
@@ -291,32 +293,6 @@ const actions = {
                     let tasks = response.data;
                     commit(types.SET_ALL_TASKS, {tasks});
                     commit(types.TOGGLE_LOADER, false);
-                }
-            }, (response) => {
-            })
-        ;
-    },
-    getAllTasksBoard({commit}, {project, page}) {
-        commit(types.SET_ALL_TASKS, {tasks: {}});
-
-        let data = {
-            params: {
-                criteria: {
-                    type: 2,
-                },
-                page: page,
-                pageSize: 8,
-            },
-        };
-
-        data.params.criteria = Object.assign(data.params.criteria, state.taskFilters);
-
-        Vue.http
-            .get(Routing.generate('app_api_projects_workpackages_board', {'id': project}), data)
-            .then((response) => {
-                if (response.status === 200) {
-                    let tasks = response.data;
-                    commit(types.SET_ALL_TASKS, {tasks});
                 }
             }, (response) => {
             })
