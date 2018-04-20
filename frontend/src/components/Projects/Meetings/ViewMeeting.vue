@@ -419,7 +419,7 @@ export default {
                 description: decision.description,
                 responsibility: [decision.responsibility],
                 responsibilityFullName: decision.responsibilityFullName,
-                dueDate: decision.dueDate ? new Date(decision.dueDate) : new Date(),
+                dueDate: decision.dueDate ? moment(decision.dueDate).toDate() : new Date(),
                 status: {key: decision.status, label: decision.statusName},
                 meeting: this.$route.params.meetingId,
             };
@@ -436,7 +436,7 @@ export default {
                 description: todo.description,
                 responsibility: [todo.responsibility],
                 responsibilityFullName: todo.responsibilityFullName,
-                dueDate: todo.dueDate ? new Date(todo.dueDate) : new Date(),
+                dueDate: todo.dueDate ? moment(todo.dueDate).toDate() : new Date(),
                 status: {key: todo.status, label: this.translateText(todo.statusName)},
                 meeting: this.$route.params.meetingId,
             };
@@ -453,7 +453,7 @@ export default {
                 description: info.description,
                 responsibility: [info.responsibility],
                 responsibilityFullName: info.responsibilityFullName,
-                dueDate: info.dueDate ? new Date(info.dueDate) : new Date(),
+                dueDate: info.dueDate ? moment(info.dueDate).toDate() : new Date(),
                 infoStatus: {key: info.infoStatus, label: info.infoStatusName},
                 infoCategory: {key: info.infoCategory, label: info.infoCategoryName},
                 meeting: this.$route.params.meetingId,
@@ -591,7 +591,7 @@ export default {
             this.participants = users;
             this.displayedParticipants = this.participants.slice(0, this.participantsPerPage);
             this.participantsPages = Math.ceil(this.participants.length / this.participantsPerPage);
-            this.date = new Date(this.meeting.date);
+            this.date = moment(this.meeting.date).toDate();
             this.startTime = {
                 HH: moment(this.meeting.start, 'HH:mm').format('HH'),
                 mm: moment(this.meeting.start, 'HH:mm').format('mm'),
