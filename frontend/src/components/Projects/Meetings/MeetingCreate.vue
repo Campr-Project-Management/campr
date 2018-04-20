@@ -340,7 +340,7 @@
                                         v-bind:options="infoStatusesForDropdown"
                                         v-model="info.infoStatus"
                                         v-bind:currentOption="info.infoStatus" />
-                                    <div v-if="validationMessages.infos && validationMessages.infoStatus[index.toString()]">
+                                    <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
                                         <error
                                             v-if="validationMessages.infos[index.toString()].infoStatus && validationMessages.infos[index.toString()].infoStatus.length"
                                             v-for="(message, index) in validationMessages.infos[index.toString()].infoStatus"
@@ -354,7 +354,7 @@
                                         v-bind:options="infoCategoriesForDropdown"
                                         v-model="info.infoCategory"
                                         v-bind:currentOption="info.infoCategory" />
-                                    <div v-if="validationMessages.infos && validationMessages.infoCategory[index.toString()]">
+                                    <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
                                         <error
                                             v-if="validationMessages.infos[index.toString()].infoCategory && validationMessages.infos[index.toString()].infoCategory.length"
                                             v-for="(message, index) in validationMessages.infos[index.toString()].infoCategory"
