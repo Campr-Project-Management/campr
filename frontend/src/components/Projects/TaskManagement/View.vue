@@ -448,6 +448,7 @@
 
                     <task-view-assignments
                             :value="editableData.assignments"
+                            :disabled="this.updatingAssignments"
                             @input="onUpdateAssignments"/>
 
                     <!-- /// End Task support & informed & consulted users /// -->
@@ -561,6 +562,7 @@ import Vue from 'vue';
 import SwitchField from '../../_common/_form-components/SwitchField';
 import TaskViewAssignments from './View/Assignments';
 import EditStatusModal from './View/EditStatusModal';
+import DeferredCallbackQueue from 'deferred-callback-queue';
 
 const TASK_STATUS_OPEN = 1;
 const TASK_STATUS_ONGOING = 3;
@@ -1080,6 +1082,7 @@ export default {
         },
         onUpdateAssignments(value) {
             this.editableData.assignments = value;
+            this.updatingAssignments = true;
             let data = {
                 responsibility: value.responsibility && value.responsibility.key,
                 accountability: value.accountability && value.accountability.key,
@@ -1091,6 +1094,8 @@ export default {
             this.patchTask({
                 data,
                 taskId: this.$route.params.taskId,
+            }).then(() => {
+                this.updatingAssignments = false;
             });
         },
         initCloseTaskModal() {
@@ -1111,6 +1116,13 @@ export default {
                     }
                 }, (response) => {}
             );
+        },
+        defer(func, wait) {
+            if (!this.deferredQueue) {
+                this.deferredQueue = new DeferredCallbackQueue(1000, true);
+            }
+
+            this.deferredQueue.addCall(func, wait);
         },
     },
     data() {
@@ -1160,6 +1172,7 @@ export default {
             editInternalCostObj: {},
             completedSubtasksIds: [],
             newComment: '',
+            updatingAssignments: false,
         };
     },
 };

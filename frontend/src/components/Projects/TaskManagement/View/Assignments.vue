@@ -21,6 +21,7 @@
                         :title="translate('message.change_assignee')"
                         :options="responsibilityOptions"
                         :value="value.responsibility"
+                        :disabled="disabled"
                         @input="onResponsibilityChange"/>
                 <error at-path="responsibility" />
             </div>
@@ -49,6 +50,7 @@
                         :title="translate('message.change_accountable')"
                         :options="accountabilityOptions"
                         :value="value.accountability"
+                        :disabled="disabled"
                         @input="onAccountabilityChange"/>
                 <error at-path="accountability" />
             </div>
@@ -63,6 +65,7 @@
                         :title="translate('label.select_support_users')"
                         :options="supportUsersOptions"
                         :value="value.supportUsers"
+                        :disabled="disabled"
                         @input="onSupportUsersChange"/>
                 <error at-path="supportUsers" />
             </div>
@@ -71,6 +74,7 @@
                         :title="translate('label.select_consulted_users')"
                         :options="consultedUsersOptions"
                         :value="value.consultedUsers"
+                        :disabled="disabled"
                         @input="onConsultedUsersChange"/>
                 <error at-path="consultedUsers" />
             </div>
@@ -79,6 +83,7 @@
                         :title="translate('label.select_informed_users')"
                         :options="informedUsersOptions"
                         :value="value.informedUsers"
+                        :disabled="disabled"
                         @input="onInformedUsersChange"/>
                 <error at-path="informedUsers" />
             </div>

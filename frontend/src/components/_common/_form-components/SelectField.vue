@@ -1,5 +1,5 @@
 <template>
-    <div class="dropdown">
+    <div class="dropdown" :class="{disabled: disabled}">
         <button
             ref="btn-dropdown"
             class="btn btn-primary dropdown-toggle"
@@ -7,7 +7,7 @@
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
-            @click="updateScrollbarTop()"
+            @click="updateScrollbarTop($event)"
             :title="title">
 
             <span class="select-field-placeholder">{{ placeholder }}</span>
@@ -21,6 +21,7 @@
             <span class="caret"></span>
         </button>
         <scrollbar
+                v-if="!disabled"
                 v-show="availableOptions.length > 0"
                 :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}"
                 class="dropdown-menu dropdown-menu-right">
@@ -64,6 +65,10 @@ export default {
             default: false,
             required: false,
         },
+        disabled: {
+            type: Boolean,
+            required: false,
+        },
     },
     computed: {
         availableOptions() {
@@ -96,13 +101,26 @@ export default {
     },
     methods: {
         onChange(value) {
+            if (this.disabled) {
+                return;
+            }
+
             this.$emit('input', value);
         },
         onClear(event) {
+            if (this.disabled) {
+                return;
+            }
+
             event.stopPropagation();
             this.$emit('input', null);
         },
-        updateScrollbarTop() {
+        updateScrollbarTop(event) {
+            if (this.disabled) {
+                event.stopPropagation();
+                return;
+            }
+
             let scrollTop = $(window).scrollTop();
             let elementOffset = $(this.$el).offset().top;
             let currentElementOffset = (elementOffset - scrollTop);
@@ -142,6 +160,10 @@ export default {
 <style scoped lang="scss">
     @import '../../../css/_variables.scss';
     @import '../../../css/_mixins.scss';
+
+    .disabled *, .disabled a {
+        cursor: not-allowed;
+    }
 
     .dropdown {
         .dropdown-menu {
