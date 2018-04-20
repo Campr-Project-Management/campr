@@ -38,7 +38,7 @@ class BaseCreateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'not_blank.title',
+                        'message' => 'not_blank.topic',
                     ]),
                 ],
             ])
