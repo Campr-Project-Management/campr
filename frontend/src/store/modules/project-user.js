@@ -15,6 +15,11 @@ const state = {
 
 const getters = {
     projectUsers: state => state.projectUsers,
+    projectUserByUserId: (state, getters) => (id) => {
+        return _.find(getters.projectUsers.items, (user) => {
+            return user.user === id;
+        });
+    },
     currentMember: state => state.currentMember,
     projectSponsors: state => state.sponsors,
     projectManagers: state => state.managers,

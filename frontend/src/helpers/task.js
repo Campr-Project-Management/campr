@@ -17,21 +17,19 @@ export const createFormData = (data) => {
     if (data.planning.parent) {
         formData.append('parent', data.planning.parent.key);
     }
-    if (data.details.assignee) {
-        formData.append('responsibility', data.details.assignee.key);
-    }
-    if (data.details.accountable) {
-        formData.append('accountability', data.details.accountable.key);
-    }
-    if (data.details.supportUsers) {
-        data.details.supportUsers.map(user => formData.append('supportUsers[]', user.key));
-    }
-    if (data.details.consultedUsers) {
-        data.details.consultedUsers.map(user => formData.append('consultedUsers[]', user.key));
-    }
-    if (data.details.informedUsers) {
-        data.details.informedUsers.map(user => formData.append('informedUsers[]', user.key));
-    }
+
+    formData.append('responsibility', data.assignments.responsibility &&
+        data.assignments.responsibility.key);
+    formData.append('accountability', data.assignments.accountability &&
+        data.assignments.accountability.key);
+
+    data.assignments.supportUsers.forEach(
+        (o) => formData.append('supportUsers[]', o.key));
+    data.assignments.consultedUsers.forEach(
+        (o) => formData.append('consultedUsers[]', o.key));
+    data.assignments.informedUsers.forEach(
+        (o) => formData.append('informedUsers[]', o.key));
+
     if (data.statusColor) {
         formData.append('colorStatus', data.statusColor.id);
     }
