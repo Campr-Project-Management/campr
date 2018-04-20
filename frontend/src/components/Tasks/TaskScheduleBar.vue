@@ -286,12 +286,6 @@
                 if (!this.task.actualFinishAt && prefix === 'Actual') {
                     toValue = 'N/A';
                 }
-                if (!this.task.baseFinishAt && prefix === 'Base') {
-                    toValue = 'N/A';
-                }
-                if (!this.task.forecastFinishAt && prefix === 'Forecast') {
-                    toValue = 'N/A';
-                }
                 let text = `${prefix} ${this.translate('message.finish')}: ${toValue}`;
                 return this.createTooltip(el, text);
             },
