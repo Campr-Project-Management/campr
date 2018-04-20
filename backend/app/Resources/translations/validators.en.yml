@@ -161,3 +161,7 @@ invitation:
 
 flash:
     registration_success: You have successfuly registered. Please check your email for the activation link.
+
+work_package:
+    assignment:
+        already_used: '%name% already have a role assigned on this task'
