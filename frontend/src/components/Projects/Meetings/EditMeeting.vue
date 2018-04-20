@@ -42,15 +42,13 @@
                                 <multi-select-field
                                     v-bind:title="translateText('placeholder.distribution_list')"
                                     v-bind:options="distributionListsForSelect"
-                                    v-bind:selectedOptions="details.distributionLists"
                                     v-model="details.distributionLists" />
                             </div>
                             <div class="col-md-6">
                                 <select-field
                                     v-bind:title="translateText('label.category')"
                                     v-bind:options="meetingCategoriesForSelect"
-                                    v-model="details.category"
-                                    v-bind:currentOption="details.category" />
+                                    v-model="details.category"/>
                             </div>
                         </div>
                     </div>
@@ -665,7 +663,7 @@ export default {
                 description: decision.description,
                 responsibility: [decision.responsibility],
                 responsibilityFullName: decision.responsibilityFullName,
-                dueDate: decision.dueDate ? new Date(decision.dueDate) : new Date(),
+                dueDate: decision.dueDate ? moment(decision.dueDate).toDate() : new Date(),
                 status: {key: decision.status, label: decision.statusName},
                 meeting: this.$route.params.meetingId,
             };
@@ -694,14 +692,14 @@ export default {
                 description: todo.description,
                 responsibility: [todo.responsibility],
                 responsibilityFullName: todo.responsibilityFullName,
-                dueDate: todo.dueDate ? new Date(todo.dueDate) : new Date(),
+                dueDate: todo.dueDate ? moment(todo.dueDate).toDate() : new Date(),
                 status: {key: todo.status, label: this.translateText(todo.statusName)},
                 meeting: this.$route.params.meetingId,
             };
         },
         initDeleteTodo: function(todo) {
             this.showDeleteTodoModal = true;
-            this.editTodoObject = {id: todo.id, meeting: this.$route.params.meetingId};
+            this.ditTodoObject = {id: todo.id, meeting: this.$route.params.meetingId};
         },
         addInfo: function() {
             const data = {
@@ -727,7 +725,7 @@ export default {
                 description: info.description,
                 responsibility: [info.responsibility],
                 responsibilityFullName: info.responsibilityFullName,
-                dueDate: info.dueDate ? new Date(info.dueDate) : new Date(),
+                dueDate: info.dueDate ? moment(info.dueDate).toDate() : new Date(),
                 infoStatus: {key: info.infoStatus, label: info.infoStatusName},
                 infoCategory: {key: info.infoCategory, label: info.infoCategoryName},
                 meeting: this.$route.params.meetingId,
@@ -960,7 +958,7 @@ export default {
                 ? {key: this.meeting.meetingCategory, label: this.meeting.meetingCategoryName}
                 : null
             ;
-            this.schedule.meetingDate = new Date(this.meeting.date);
+            this.schedule.meetingDate = moment(this.meeting.date).toDate();
             this.schedule.startTime = {
                 HH: moment(this.meeting.start, 'HH:mm').format('HH'),
                 mm: moment(this.meeting.start, 'HH:mm').format('mm'),
