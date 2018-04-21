@@ -180,19 +180,19 @@ export default {
             case 'rasci':
                 this.updateProjectUser({
                     id: item.id,
-                    showInRasci: this.showInRasci,
+                    showInRasci: !this.member.showInRasci,
                 });
                 break;
             case 'org':
                 this.updateProjectUser({
                     id: item.id,
-                    showInOrg: this.showInOrg,
+                    showInOrg: !this.member.showInOrg,
                 });
                 break;
             case 'resource':
                 this.updateProjectUser({
                     id: item.id,
-                    showInResources: this.showInResources,
+                    showInResources: !this.member.showInResources,
                 });
                 break;
             }
@@ -211,6 +211,13 @@ export default {
             this.getProjectUser(this.$route.params.userId);
         }
         this.getDistributionLists({projectId: this.$route.params.id});
+    },
+    watch: {
+        member(value) {
+            this.showInResource = this.member.showInResource;
+            this.showInRasci = this.member.showInRasci;
+            this.showInResources = this.member.showInOrg;
+        },
     },
     computed: {
         ...mapGetters({

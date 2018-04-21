@@ -234,19 +234,19 @@ export default {
             case 'rasci':
                 this.updateProjectUser({
                     id: item.id,
-                    showInRasci: this.showInRasci,
+                    showInRasci: !item.showInRasci,
                 });
                 break;
             case 'org':
                 this.updateProjectUser({
                     id: item.id,
-                    showInOrg: this.showInOrg,
+                    showInOrg: !item.showInOrg,
                 });
                 break;
             case 'resource':
                 this.updateProjectUser({
                     id: item.id,
-                    showInResources: this.showInResources,
+                    showInResources: !item.showInResources,
                 });
                 break;
             }
