@@ -238,7 +238,6 @@
                 this.createToTooltip(toHandle, this.forecastFinishAt * 1000, 'Forecast');
             },
             createActual() {
-                console.log(this.showActual);
                 if (!this.showActual) {
                     return;
                 }
