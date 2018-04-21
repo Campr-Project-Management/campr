@@ -31,4 +31,23 @@ class ColorStatusController extends ApiController
 
         return $this->createApiResponse($colorStatuses);
     }
+
+    /**
+     * Green ColorStatus.
+     *
+     * @Route("/green", name="app_api_color_status_green", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @return JsonResponse
+     */
+    public function greenColorAction()
+    {
+        $colorStatuses = $this
+            ->getDoctrine()
+            ->getRepository(ColorStatus::class)
+            ->findOneByName(ColorStatus::STATUS_FINISHED)
+        ;
+
+        return $this->createApiResponse($colorStatuses);
+    }
 }
