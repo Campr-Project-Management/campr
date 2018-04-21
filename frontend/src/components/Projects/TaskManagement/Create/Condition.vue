@@ -11,7 +11,8 @@
                     v-for="status in colorStatuses"
                     v-bind:class="{'status-box': true, 'selected': selectedStatusColor && selectedStatusColor.id === status.id }"
                     v-bind:style="'background-color:' + status.color"
-                    v-on:click="selectColorStatus(status)" />
+                    v-on:click="selectColorStatus(status)"/>
+
             </div>
             <div v-for="error in errorz">{{ error }}</div>
         </div>
@@ -37,9 +38,18 @@ export default {
             this.getColorStatuses();
         }
     },
-    computed: mapGetters({
-        colorStatuses: 'colorStatuses',
-    })
+    computed: {
+        ...mapGetters({
+            colorStatuses: 'colorStatuses',
+        }),
+
+        hasSelectedStatusColor() {
+            if (!(this.selectedStatusColor && this.selectedStatusColor.id)) {
+                return false;
+            }
+            return true;
+        },
+    }
     ,
 };
 </script>

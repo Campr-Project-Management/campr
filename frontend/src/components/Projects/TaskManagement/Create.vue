@@ -202,6 +202,7 @@ export default {
                 'importTask',
                 'emptyValidationMessages',
                 'getProjectUnits',
+                'getGreenColorStatus',
             ]
         ),
         createTask: function() {
@@ -348,6 +349,10 @@ export default {
         if (this.$route.params.taskId) {
             this.getTaskById(this.$route.params.taskId);
         }
+
+        if (!this.$store.state.greenColorStatus || this.$store.state.greenColorStatus.length == 0) {
+            this.getGreenColorStatus();
+        }
     },
     beforeDestroy() {
         this.emptyValidationMessages();
@@ -355,6 +360,7 @@ export default {
     computed: {
         ...mapGetters({
             task: 'currentTask',
+            greenColorStatus: 'greenColorStatus',
             validationMessages: 'validationMessages',
         }),
         internalValidationMessages() {
@@ -415,6 +421,14 @@ export default {
                 });
             }
         },
+        greenColorStatus(value) {
+            if(!this.isEdit) {
+                this.statusColor = {
+                    id: this.greenColorStatus.id,
+                    name: this.greenColorStatus.name,
+                };
+            }
+        },
         task(value) {
             this.title = this.task.name;
             this.description = this.task.content;
@@ -425,6 +439,7 @@ export default {
                 forecastEndDate: this.task.forecastFinishAt ? new Date(this.task.forecastFinishAt) : new Date(),
                 duration: this.task.duration,
             };
+
             this.statusColor = {
                 id: this.task.colorStatus,
                 name: this.task.colorStatusName,
