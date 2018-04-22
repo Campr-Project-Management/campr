@@ -148,6 +148,9 @@ export default {
         openRasciModal(disabled, index) {
             return !disabled && (this.activeElement = index);
         },
+        closeRasciModal(event) {
+            console.log(event.keyCode);
+        },
     },
     computed: {
         ...mapGetters(['rasci', 'currentProject']),
@@ -161,9 +164,11 @@ export default {
     created() {
         this.loadRasci();
         window.addEventListener('scroll', this.handleScroll);
+        window.addEventListener('keyup', this.closeRasciModal);
     },
     destroyed() {
         window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('keyup', this.closeRasciModal);
     },
     data() {
         return {
