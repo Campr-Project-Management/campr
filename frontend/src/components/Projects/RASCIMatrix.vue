@@ -2,30 +2,35 @@
     <div>
         <div class="row">
             <div class="col-md-12">
-                <div class="rasci-matrix page-section">
+                <div class="rasci-matrix page-section" ref="rasci-matrix">
                     <!-- /// Header /// -->
                     <div class="header flex-v-center">
                         <div>
                             <h1>{{ translateText('message.rasci_matrix') }}</h1>
                             <div class="rasci-legend flex">
                                 <div class="rasci-legend-item">
-                                    <responsibility-select value="responsible" :disabled="true" />
+                                    <responsibility-select value="responsible" :disabled="true" 
+                                        v-on:click="handleClick(true, userIndex)" />
                                     <span>Responsible</span>
                                 </div>
                                 <div class="rasci-legend-item">
-                                    <responsibility-select value="accountable" :disabled=true />
+                                    <responsibility-select value="accountable" :disabled="true"
+                                        v-on:click="handleClick(true, userIndex)"/>
                                     <span>Accountable</span>
                                 </div>
                                 <div class="rasci-legend-item">
-                                    <responsibility-select value="support" :disabled=true />
+                                    <responsibility-select value="support" :disabled="true"
+                                        v-on:click="handleClick(true, userIndex)"/>
                                     <span>Support</span>
                                 </div>
                                 <div class="rasci-legend-item">
-                                    <responsibility-select value="consulted" :disabled=true />
+                                    <responsibility-select value="consulted" :disabled="true"
+                                        v-on:click="handleClick(true, userIndex)"/>
                                     <span>Consulted</span>
                                 </div>
                                 <div class="rasci-legend-item">
-                                    <responsibility-select value="informed" :disabled=true />
+                                    <responsibility-select value="informed" :disabled="true"
+                                        v-on:click="handleClick(true, userIndex)"/>
                                     <span>Informed</span>
                                 </div>
                             </div>
@@ -72,13 +77,17 @@
                             <td v-for="(user, userIndex) in workPackage.rasci"
                                 v-on:mouseover="activeCell = workPackage.type === 2 && userIndex"
                                 v-on:mouseout="activeCell = null"
+                                v-on:keyup.esc="activeElement=''"
                                 :class="{'rasci-cell': true, 'active-cell': activeCell === userIndex}">
                                 <responsibility-select
                                         v-if="workPackage.type === 2"
                                         :last="userIndex + 1 === workPackage.rasci.length"
                                         :second-to-last="userIndex + 2 === workPackage.rasci.length"
                                         :value="user.data"
-                                        @input="setRaciData({project: workPackage.project, user: user.user, workPackage: workPackage.id, data: $event})"/>
+                                        v-bind:activeElem="activeElement"
+                                        :index="workPackage.name + workPackage.id + userIndex"
+                                        @handleClick="openRasciModal(false, $event )"
+                                        @input="setRaciData({project: workPackage.project, user: user.user, workPackage: workPackage.id, userObj:user, data: $event})"/>
                             </td>
                             <td class="rasci-cell last-cell"></td>
                         </tr>
@@ -92,7 +101,6 @@
 <script>
 import ResponsibilitySelect from '../_common/_rasci-components/ResponsibilitySelect.vue';
 import {mapActions, mapGetters} from 'vuex';
-
 export default {
     components: {
         ResponsibilitySelect,
@@ -102,10 +110,13 @@ export default {
         translateText: function(text) {
             return this.translate(text);
         },
-        setRaciData: function({project, user, workPackage, data}) {
+        setRaciData: function({project, user, workPackage, userObj, data}) {
             this.setRasci({project, user, workPackage, data}).then(() => {
                 this.loadRasci();
-            });
+                if(userObj.data != data) {
+                    this.activeElement = '';
+                }
+            }, (userObj, data));
         },
         repeat(str, count) {
             let c = 0;
@@ -126,6 +137,17 @@ export default {
 
             return user.gravatar;
         },
+
+        handleScroll() {
+            if (window.scrollY >= document.getElementsByTagName('header')[0].offsetHeight) {
+                document.getElementsByClassName('rasci-matrix')[0].classList.add('rasci-matrix__fixed');
+            } else {
+                document.getElementsByClassName('rasci-matrix')[0].classList.remove('rasci-matrix__fixed');
+            }
+        },
+        openRasciModal(disabled, index) {
+            return !disabled && (this.activeElement = index);
+        },
     },
     computed: {
         ...mapGetters(['rasci', 'currentProject']),
@@ -136,13 +158,28 @@ export default {
             return this.rasci.users || [];
         },
     },
+    // watch: {
+    //     rasci(oldValue, newValue) {
+    //         if (oldValue.users != newValue.users ) {
+    //             this.activeElement = '';
+    //         }
+    //         console.log(oldValue, newValue);
+    //     },
+    // },
     created() {
         this.loadRasci();
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    destroyed() {
+        window.removeEventListener('scroll', this.handleScroll);
     },
     data() {
         return {
             activeCell: null,
             activeRow: null,
+            scrolled: false,
+            activeElement: '',
+            elementIndex: null,
         };
     },
 };
@@ -154,6 +191,17 @@ export default {
     @import '../../css/_variables';
     @import '../../css/common';
 
+    .rasci-matrix {
+        transition: all 0.2s, ease-in;
+        &.rasci-matrix__fixed {
+            position: fixed;
+            top: 0;
+            z-index: 2;
+            background: #232D4B;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    }
     .rasci-legend {
         .rasci-legend-item {
             display: flex;
