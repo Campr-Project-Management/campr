@@ -10,27 +10,27 @@
                             <div class="rasci-legend flex">
                                 <div class="rasci-legend-item">
                                     <responsibility-select value="responsible" :disabled="true" 
-                                        v-on:click="handleClick(true, userIndex)" />
+                                        v-on:click="openRasciModal(true, null)" />
                                     <span>Responsible</span>
                                 </div>
                                 <div class="rasci-legend-item">
                                     <responsibility-select value="accountable" :disabled="true"
-                                        v-on:click="handleClick(true, userIndex)"/>
+                                        v-on:click="openRasciModal(true, null)"/>
                                     <span>Accountable</span>
                                 </div>
                                 <div class="rasci-legend-item">
                                     <responsibility-select value="support" :disabled="true"
-                                        v-on:click="handleClick(true, userIndex)"/>
+                                        v-on:click="openRasciModal(true, null)"/>
                                     <span>Support</span>
                                 </div>
                                 <div class="rasci-legend-item">
                                     <responsibility-select value="consulted" :disabled="true"
-                                        v-on:click="handleClick(true, userIndex)"/>
+                                        v-on:click="openRasciModal(true, null)"/>
                                     <span>Consulted</span>
                                 </div>
                                 <div class="rasci-legend-item">
                                     <responsibility-select value="informed" :disabled="true"
-                                        v-on:click="handleClick(true, userIndex)"/>
+                                        v-on:click="openRasciModal(true, null)"/>
                                     <span>Informed</span>
                                 </div>
                             </div>
@@ -158,14 +158,6 @@ export default {
             return this.rasci.users || [];
         },
     },
-    // watch: {
-    //     rasci(oldValue, newValue) {
-    //         if (oldValue.users != newValue.users ) {
-    //             this.activeElement = '';
-    //         }
-    //         console.log(oldValue, newValue);
-    //     },
-    // },
     created() {
         this.loadRasci();
         window.addEventListener('scroll', this.handleScroll);
