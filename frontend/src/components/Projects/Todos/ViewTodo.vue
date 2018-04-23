@@ -4,24 +4,24 @@
             <div class="col-md-6">
                 <div class="view-todo page-section">
                     <modal v-if="showDeleteModal" @close="showDeleteModal = false">
-                        <p class="modal-title">{{ translateText('message.delete_todo') }}</p>
+                        <p class="modal-title">{{ translate('message.delete_todo') }}</p>
                         <div class="flex flex-space-between">
-                            <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                            <a href="javascript:void(0)" @click="removeTodo()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                            <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translate('message.no') }}</a>
+                            <a href="javascript:void(0)" @click="removeTodo()" class="btn-rounded">{{ translate('message.yes') }}</a>
                         </div>
                     </modal>
                     <modal v-if="showRescheduleModal" @close="cancelRescheduleModal">
-                        <p class="modal-title">{{ translateText('message.reschedule_todo') }}</p>
+                        <p class="modal-title">{{ translate('message.reschedule_todo') }}</p>
                         <div class="form-group last-form-group">
                             <div class="col-md-4">
                                 <div class="input-holder">
-                                    <label class="active">{{ translateText('label.select_date') }}</label>
+                                    <label class="active">{{ translate('label.select_date') }}</label>
                                     <datepicker :clear-button="false" v-model="rescheduleObj.date" format="dd-MM-yyyy" :value="rescheduleObj.date"></datepicker>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="input-holder">
-                                    <label class="active">{{ translateText('label.select_due_date') }}</label>
+                                    <label class="active">{{ translate('label.select_due_date') }}</label>
                                     <datepicker :clear-button="false" v-model="rescheduleObj.dueDate" format="dd-MM-yyyy" :value="rescheduleObj.dueDate"></datepicker>
                                 </div>
                             </div>
@@ -29,8 +29,8 @@
                         <hr class="double">
 
                         <div class="flex flex-space-between">
-                            <a href="javascript:void(0)" @click="cancelRescheduleModal" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                            <a href="javascript:void(0)" @click="rescheduleTodo" class="btn-rounded">{{ translateText('button.save') }}</a>
+                            <a href="javascript:void(0)" @click="cancelRescheduleModal" class="btn-rounded btn-empty danger-color danger-border">{{ translate('button.cancel') }}</a>
+                            <a href="javascript:void(0)" @click="rescheduleTodo" class="btn-rounded">{{ translate('button.save') }}</a>
                         </div>
                     </modal>
                     <!-- /// Header /// -->
@@ -38,22 +38,22 @@
                         <div>
                             <router-link :to="{name: 'project-todos'}" class="small-link">
                                 <i class="fa fa-angle-left"></i>
-                                {{ translateText('message.back_to_todos') }}
+                                {{ translate('message.back_to_todos') }}
                             </router-link>
                             <h1>{{todo.title}}</h1>
                             <!-- /// to implement this after the categories will be added /// -->
                             <h3 class="category"><b>{{todo.todoCategoryName}}</b></h3>
-                            <h4>{{ translateText('message.created') }}: <b>{{rescheduleObj.date | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.due_date') }}: <b>{{rescheduleObj.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.status') }}: <b>{{todo.statusName}}</b></h4>
+                            <h4>{{ translate('message.created') }}: <b>{{rescheduleObj.date | moment('DD.MM.YYYY') }}</b> | {{ translate('message.due_date') }}: <b>{{rescheduleObj.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b>{{todo.statusName}}</b></h4>
                             <div class="entry-responsible flex flex-v-center">
                                 <div class="user-avatar"> 
                                     <img :src="todo.responsibilityAvatar" :alt="todo.responsibilityFullName"/>
                                 </div>
                                 <div>
-                                    {{ translateText('message.responsible') }}:
+                                    {{ translate('message.responsible') }}:
                                     <b>{{todo.responsibilityFullName}}</b>
                                 </div>
                             </div>
-                            <a ref="#" @click="initRescheduleModal" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.reschedule') }} <reschedule-icon></reschedule-icon></a>
+                            <a @click="initRescheduleModal" class="btn-rounded btn-auto btn-md btn-empty">{{ translate('button.reschedule') }} <reschedule-icon></reschedule-icon></a>
                         </div>
                     </div>
                     <!-- /// End Header /// -->
@@ -67,12 +67,12 @@
                     <div class="margintop20 text-right">
                         <div class="buttons">
                             <router-link class="btn-rounded btn-auto" :to="{name: 'project-todos-edit-todo', params:{todoId: todo.id}}">
-                                {{ translateText('button.edit_todo') }}
+                                {{ translate('button.edit_todo') }}
                             </router-link>    
                             <router-link :to="{name: 'project-todos-create-todo'}" class="btn-rounded btn-auto second-bg">
-                                {{ translateText('button.new_todo') }}
+                                {{ translate('button.new_todo') }}
                             </router-link>
-                            <a ref="#" @click="initDeleteModal" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_todo') }}</a>
+                            <a @click="initDeleteModal" class="btn-rounded btn-auto danger-bg">{{ translate('button.delete_todo') }}</a>
                         </div>
                     </div>
                     <!-- /// End Header /// -->
@@ -85,12 +85,12 @@
                 <div class="text-right footer-buttons">
                     <div class="buttons">
                         <router-link class="btn-rounded btn-auto" :to="{name: 'project-todos-edit-todo', params:{todoId: todo.id}}">
-                            {{ translateText('button.edit_todo') }}
+                            {{ translate('button.edit_todo') }}
                         </router-link> 
                         <router-link :to="{name: 'project-todos-create-todo'}" class="btn-rounded btn-auto second-bg">
-                            {{ translateText('button.new_todo') }}
+                            {{ translate('button.new_todo') }}
                         </router-link>
-                        <a ref="#" @click="initDeleteModal" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_todo') }}</a>
+                        <a @click="initDeleteModal" class="btn-rounded btn-auto danger-bg">{{ translate('button.delete_todo') }}</a>
                     </div>
                 </div>
             </div>
@@ -118,9 +118,6 @@ export default {
             'deleteTodo',
             'editTodo',
         ]),
-        translateText: function(text) {
-            return this.translate(text);
-        },
         initDeleteModal: function(todo) {
             this.showDeleteModal = true;
         },
