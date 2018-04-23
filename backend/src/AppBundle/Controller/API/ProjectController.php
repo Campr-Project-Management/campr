@@ -489,6 +489,7 @@ class ProjectController extends ApiController
      * @Method({"POST"})
      *
      * @param Request $request
+     * @param Project $project
      *
      * @return JsonResponse
      */
