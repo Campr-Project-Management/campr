@@ -7,9 +7,9 @@
                     <div>
                         <router-link :to="{name: 'project-meetings'}" class="small-link">
                             <i class="fa fa-angle-left"></i>
-                            {{ translateText('message.back_to_meetings') }}
+                            {{ translate('message.back_to_meetings') }}
                         </router-link>
-                        <h1>{{ translateText('message.create_new_meeting') }}</h1>
+                        <h1>{{ translate('message.create_new_meeting') }}</h1>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
@@ -22,15 +22,17 @@
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
                                 <multi-select-field
-                                        v-bind:title="translateText('placeholder.distribution_list')"
-                                        v-bind:options="distributionListsForSelect"
+                                        :title="translate('placeholder.distribution_list')"
+                                        :options="distributionListsForSelect"
                                         v-model="details.distributionLists"/>
+                                <error at-path="distributionLists"/>
                             </div>
                             <div class="col-md-6">
                                 <select-field
-                                        :title="translateText('placeholder.category')"
+                                        :title="translate('placeholder.category')"
                                         :options="meetingCategoriesForSelect"
                                         v-model="details.category"/>
+                                <error at-path="meetingCategory"/>
                             </div>
                         </div>
                     </div>
@@ -39,19 +41,19 @@
                     <hr class="double">
 
                     <!-- /// Meeting Schedule /// -->
-                    <h3>{{ translateText('message.schedule') }}</h3>
+                    <h3>{{ translate('message.schedule') }}</h3>
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-4">
                                 <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.select_date') }}</label>
+                                    <label class="active">{{ translate('label.select_date') }}</label>
                                     <datepicker v-model="schedule.meetingDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill"/>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.start_time') }}</label>
+                                    <label class="active">{{ translate('label.start_time') }}</label>
                                     <timepicker v-model="schedule.startTime" hide-clear-button />
                                     <error
                                         v-if="validationMessages.start && validationMessages.start.length"
@@ -62,7 +64,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.finish_time') }}</label>
+                                    <label class="active">{{ translate('label.finish_time') }}</label>
                                     <timepicker v-model="schedule.endTime" hide-clear-button />
                                     <error
                                         v-if="validationMessages.end && validationMessages.end.length"
@@ -78,8 +80,8 @@
                     <hr class="double">
 
                     <!-- /// Meeting Location /// -->
-                    <h3>{{ translateText('message.location') }}</h3>
-                    <input-field type="text" v-bind:label="translateText('placeholder.location')" v-model="location" v-bind:content="location" />
+                    <h3>{{ translate('message.location') }}</h3>
+                    <input-field type="text" :label="translate('placeholder.location')" v-model="location" :content="location" />
                     <error
                         v-if="validationMessages.location && validationMessages.location.length"
                         v-for="(message, index) in validationMessages.location"
@@ -90,11 +92,11 @@
                     <hr class="double">
 
                     <!-- /// Meeting Objectives /// -->
-                    <h3>{{ translateText('message.objectives') }}</h3>
+                    <h3>{{ translate('message.objectives') }}</h3>
                     <div class="form-group"
                         v-for="(objective, index) in objectives"
                         :key="index">
-                        <input-field type="text" v-bind:label="translateText('placeholder.objective')" v-model="objective.description" v-bind:content="objective.description" />
+                        <input-field type="text" :label="translate('placeholder.objective')" v-model="objective.description" :content="objective.description" />
                         <div v-if="validationMessages.meetingObjectives && validationMessages.meetingObjectives[index.toString()]">
                             <error
                                 v-if="validationMessages.meetingObjectives[index.toString()].description && validationMessages.meetingObjectives[index.toString()].description.length"
@@ -105,17 +107,17 @@
                         <hr>
                     </div>
                     <div class="flex flex-direction-reverse">
-                        <a @click="addObjective()" class="btn-rounded btn-auto">{{ translateText('message.add_new_objective') }} +</a>
+                        <a @click="addObjective()" class="btn-rounded btn-auto">{{ translate('message.add_new_objective') }} +</a>
                     </div>
                     <!-- /// End Meeting Objectives /// -->
 
                     <hr class="double">
 
                     <!-- /// Meeting Agenda /// -->
-                    <h3>{{ translateText('message.agenda') }}</h3>
+                    <h3>{{ translate('message.agenda') }}</h3>
                     <div v-for="(agenda, index) in agendas" :key="`agenda-${index}`">
                         <div class="form-group">
-                            <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="agenda.topic" v-bind:content="agenda.topic" />
+                            <input-field type="text" :label="translate('placeholder.topic')" v-model="agenda.topic" :content="agenda.topic" />
                             <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
                                 <error
                                     v-if="validationMessages.meetingAgendas[index.toString()].topic && validationMessages.meetingAgendas[index.toString()].topic.length"
@@ -127,7 +129,7 @@
                         <div class="row">
                             <div class="form-group form-group">
                                 <div class="col-md-4">
-                                    <member-search singleSelect="false" v-model="agenda.responsible" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
+                                    <member-search singleSelect="false" v-model="agenda.responsible" :placeholder="translate('placeholder.search_members')"></member-search>
                                     <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
                                         <error
                                             v-if="validationMessages.meetingAgendas[index.toString()].responsibility && validationMessages.meetingAgendas[index.toString()].responsibility.length"
@@ -138,7 +140,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="input-holder right">
-                                        <label class="active">{{ translateText('label.start_time') }}</label>
+                                        <label class="active">{{ translate('label.start_time') }}</label>
                                         <timepicker v-model="agenda.startTime" hide-clear-button />
                                         <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
                                         <error
@@ -151,7 +153,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="input-holder right">
-                                        <label class="active">{{ translateText('label.finish_time') }}</label>
+                                        <label class="active">{{ translate('label.finish_time') }}</label>
                                         <timepicker v-model="agenda.endTime" hide-clear-button />
                                         <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
                                         <error
@@ -167,22 +169,22 @@
                         <hr>
                     </div>
                     <div class="flex flex-direction-reverse">
-                        <a @click="addAgenda()" class="btn-rounded btn-auto">{{ translateText('message.add_new_topic') }} +</a>
+                        <a @click="addAgenda()" class="btn-rounded btn-auto">{{ translate('message.add_new_topic') }} +</a>
                     </div>
                     <!-- /// End Meeting Objectives /// -->
 
                     <hr class="double">
 
                     <!-- /// Meeting Documents /// -->
-                    <meeting-attachments v-on:input="setMedias" v-bind:editMedias="medias" />
+                    <meeting-attachments v-on:input="setMedias" :editMedias="medias" />
                     <!-- /// End Meeting Documents /// -->
 
                     <hr class="double">
 
                     <!-- /// Decisions /// -->
-                    <h3>{{ translateText('message.decisions') }}</h3>
+                    <h3>{{ translate('message.decisions') }}</h3>
                     <div v-for="(decision, index) in decisions" :key="`decision-${index}`">
-                        <input-field type="text" v-bind:label="translateText('placeholder.decision_title')" v-model="decision.title" v-bind:content="decision.title" />
+                        <input-field type="text" :label="translate('placeholder.decision_title')" v-model="decision.title" :content="decision.title" />
                         <div v-if="validationMessages.decisions && validationMessages.decisions[index.toString()]">
                         <error
                             v-if="validationMessages.decisions[index.toString()].title && validationMessages.decisions[index.toString()].title.length"
@@ -200,7 +202,7 @@
                         <div class="row">
                             <div class="form-group">
                                 <div class="col-md-6">
-                                    <member-search singleSelect="false" v-model="decision.responsible" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
+                                    <member-search singleSelect="false" v-model="decision.responsible" :placeholder="translate('placeholder.search_members')"></member-search>
                                     <div v-if="validationMessages.decisions && validationMessages.decisions[index.toString()]">
                                     <error
                                         v-if="validationMessages.decisions[index.toString()].responsibility && validationMessages.decisions[index.toString()].responsibility.length"
@@ -211,7 +213,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-holder right">
-                                        <label class="active">{{ translateText('label.due_date') }}</label>
+                                        <label class="active">{{ translate('label.due_date') }}</label>
                                         <datepicker v-model="decision.dueDate" format="dd-MM-yyyy" />
                                         <calendar-icon fill="middle-fill"/>
                                     </div>
@@ -221,16 +223,16 @@
                         <hr>
                     </div>
                     <div class="flex flex-direction-reverse">
-                        <a @click="addDecision()" class="btn-rounded btn-auto">{{ translateText('message.add_new_decision') }} +</a>
+                        <a @click="addDecision()" class="btn-rounded btn-auto">{{ translate('message.add_new_decision') }} +</a>
                     </div>
                     <!-- /// End Decisions /// -->
 
                     <hr class="double">
 
                     <!-- /// ToDos /// -->
-                    <h3>{{ translateText('message.todos') }}</h3>
+                    <h3>{{ translate('message.todos') }}</h3>
                     <div v-for="(todo, index) in todos" :key="`todo-${index}`">
-                        <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="todo.title" v-bind:content="todo.title" />
+                        <input-field type="text" :label="translate('placeholder.topic')" v-model="todo.title" :content="todo.title" />
                         <div v-if="validationMessages.todos && validationMessages.todos[index.toString()]">
                         <error
                             v-if="validationMessages.todos[index.toString()].title && validationMessages.todos[index.toString()].title.length"
@@ -248,7 +250,7 @@
                         <div class="row">
                             <div class="form-group">
                                 <div class="col-md-6">
-                                    <member-search singleSelect="false" v-model="todo.responsible" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
+                                    <member-search singleSelect="false" v-model="todo.responsible" :placeholder="translate('placeholder.search_members')"></member-search>
                                     <div v-if="validationMessages.todos && validationMessages.todos[index.toString()]">
                                     <error
                                         v-if="validationMessages.todos[index.toString()].responsibility && validationMessages.todos[index.toString()].responsibility.length"
@@ -259,7 +261,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-holder right">
-                                        <label class="active">{{ translateText('label.due_date') }}</label>
+                                        <label class="active">{{ translate('label.due_date') }}</label>
                                         <datepicker v-model="todo.dueDate" format="dd-MM-yyyy" />
                                         <calendar-icon fill="middle-fill"/>
                                     </div>
@@ -270,10 +272,10 @@
                             <div class="form-group last-form-group">
                                 <div class="col-md-6">
                                     <select-field
-                                        v-bind:title="translateText('label.select_status')"
-                                        v-bind:options="todoStatusesForSelect"
+                                        :title="translate('label.select_status')"
+                                        :options="todoStatusesForSelect"
                                         v-model="todo.status"
-                                        v-bind:currentOption="todo.status" />
+                                        :currentOption="todo.status" />
                                     <div v-if="validationMessages.todos && validationMessages.todos[index.toString()]">
                                     <error
                                         v-if="validationMessages.todos[index.toString()].status && validationMessages.todos[index.toString()].status.length"
@@ -287,16 +289,16 @@
                         <hr>
                     </div>
                     <div class="flex flex-direction-reverse">
-                        <a @click="addTodo()" class="btn-rounded btn-auto">{{ translateText('message.add_new_todo') }} +</a>
+                        <a @click="addTodo()" class="btn-rounded btn-auto">{{ translate('message.add_new_todo') }} +</a>
                     </div>
                     <!-- /// End ToDos /// -->
 
                     <hr class="double">
 
                     <!-- /// Infos /// -->
-                    <h3>{{ translateText('message.infos') }}</h3>
+                    <h3>{{ translate('message.infos') }}</h3>
                     <div v-for="(info, index) in infos" :key="`info-${index}`">
-                        <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="info.topic" v-bind:content="info.topic" />
+                        <input-field type="text" :label="translate('placeholder.topic')" v-model="info.topic" :content="info.topic" />
                         <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
                         <error
                             v-if="validationMessages.infos[index.toString()].title && validationMessages.infos[index.toString()].title.length"
@@ -314,7 +316,7 @@
                         <div class="row">
                             <div class="form-group">
                                 <div class="col-md-6">
-                                    <member-search singleSelect="false" v-model="info.responsible" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
+                                    <member-search singleSelect="false" v-model="info.responsible" :placeholder="translate('placeholder.search_members')"></member-search>
                                     <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
                                     <error
                                         v-if="validationMessages.infos[index.toString()].responsibility && validationMessages.infos[index.toString()].responsibility.length"
@@ -325,7 +327,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-holder right">
-                                        <label class="active">{{ translateText('label.due_date') }}</label>
+                                        <label class="active">{{ translate('label.due_date') }}</label>
                                         <datepicker v-model="info.dueDate" format="dd-MM-yyyy" />
                                         <calendar-icon fill="middle-fill"/>
                                     </div>
@@ -336,10 +338,10 @@
                             <div class="form-group last-form-group">
                                 <div class="col-md-6">
                                     <select-field
-                                        v-bind:title="translateText('label.select_status')"
-                                        v-bind:options="infoStatusesForDropdown"
+                                        :title="translate('label.select_status')"
+                                        :options="infoStatusesForDropdown"
                                         v-model="info.infoStatus"
-                                        v-bind:currentOption="info.infoStatus" />
+                                        :currentOption="info.infoStatus" />
                                     <div v-if="validationMessages.infos && validationMessages.infoStatus[index.toString()]">
                                         <error
                                             v-if="validationMessages.infos[index.toString()].infoStatus && validationMessages.infos[index.toString()].infoStatus.length"
@@ -350,10 +352,10 @@
                                 </div>
                                 <div class="col-md-6">
                                     <select-field
-                                        v-bind:title="'label.category'"
-                                        v-bind:options="infoCategoriesForDropdown"
+                                        :title="'label.category'"
+                                        :options="infoCategoriesForDropdown"
                                         v-model="info.infoCategory"
-                                        v-bind:currentOption="info.infoCategory" />
+                                        :currentOption="info.infoCategory" />
                                     <div v-if="validationMessages.infos && validationMessages.infoCategory[index.toString()]">
                                         <error
                                             v-if="validationMessages.infos[index.toString()].infoCategory && validationMessages.infos[index.toString()].infoCategory.length"
@@ -367,7 +369,7 @@
                         <hr>
                     </div>
                     <div class="flex flex-direction-reverse">
-                        <a @click="addInfo()" class="btn-rounded btn-auto">{{ translateText('message.add_new_info') }} +</a>
+                        <a @click="addInfo()" class="btn-rounded btn-auto">{{ translate('message.add_new_info') }} +</a>
                     </div>
                     <!-- /// End ToDos /// -->
 
@@ -375,8 +377,8 @@
 
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
-                        <router-link :to="{name: 'project-meetings'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
-                        <a @click="saveMeeting()" class="btn-rounded btn-auto btn-auto second-bg">{{ translateText('button.save_meeting') }}</a>
+                        <router-link :to="{name: 'project-meetings'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translate('button.cancel') }}</router-link>
+                        <a @click="saveMeeting()" class="btn-rounded btn-auto btn-auto second-bg">{{ translate('button.save_meeting') }}</a>
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
@@ -428,9 +430,6 @@ export default {
             'createProjectMeeting',
             'emptyValidationMessages',
         ]),
-        translateText(text) {
-            return this.translate(text);
-        },
         setMedias(value) {
             this.medias = value;
         },
@@ -465,7 +464,7 @@ export default {
                 description: '',
                 responsible: [],
                 dueDate: new Date(),
-                status: {label: this.translateText('label.select_status')},
+                status: {label: this.translate('label.select_status')},
             });
         },
         addInfo() {
@@ -474,8 +473,8 @@ export default {
                 description: '',
                 responsible: [],
                 dueDate: new Date(),
-                infoStatus: {label: this.translateText('label.select_status')},
-                infoCategory: {label: this.translateText('label.category')},
+                infoStatus: {label: this.translate('label.select_status')},
+                infoCategory: {label: this.translate('label.category')},
             });
         },
         saveMeeting() {
@@ -514,21 +513,21 @@ export default {
                         this.showSaved = true;
                     }
                 },
-                (response) => {
+                () => {
                     this.showFailed = true;
                 })
             ;
         },
     },
     computed: {
-        ...mapGetters({
-            distributionListsForSelect: 'distributionListsForSelect',
-            meetingCategoriesForSelect: 'meetingCategoriesForSelect',
-            infoCategoriesForDropdown: 'infoCategoriesForDropdown',
-            todoStatusesForSelect: 'todoStatusesForSelect',
-            validationMessages: 'validationMessages',
-            infoStatusesForDropdown: 'infoStatusesForDropdown',
-        }),
+        ...mapGetters([
+            'distributionListsForSelect',
+            'meetingCategoriesForSelect',
+            'infoCategoriesForDropdown',
+            'todoStatusesForSelect',
+            'validationMessages',
+            'infoStatusesForDropdown',
+        ]),
     },
     watch: {
         showSaved(value) {
@@ -556,7 +555,6 @@ export default {
         return {
             showSaved: false,
             showFailed: false,
-            name: '',
             location: '',
             objectives: [],
             agendas: [],
