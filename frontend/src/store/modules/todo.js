@@ -46,32 +46,38 @@ const actions = {
      * Creates a new todo per project
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     createTodo({commit}, data) {
-        Vue.http
-            .post(
-                Routing.generate('app_api_projects_todo_create', {'id': data.projectId}),
-                data.data
-            ).then((response) => {
-                if (response.body && response.body.error) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                } else {
-                    const todo = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    commit(types.SET_TODO, {todo});
-                    router.push({name: 'project-todos'});
-                }
-            }, (response) => {
-            });
+        return Vue.http.post(
+            Routing.generate('app_api_projects_todo_create',
+                {'id': data.projectId}),
+            data.data,
+        ).then((response) => {
+            if (response.body && response.body.error) {
+                const {messages} = response.body;
+                commit(types.SET_VALIDATION_MESSAGES, {messages});
+
+                return response;
+            }
+
+            const todo = response.body;
+            commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+            commit(types.SET_TODO, {todo});
+            router.push({name: 'project-todos'});
+
+            return response;
+        }, (response) => {
+        });
     },
     /**
      * Edit a todo
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     editTodo({commit}, data) {
-        Vue.http
+        return Vue.http
             .patch(
                 Routing.generate('app_api_todos_edit', {'id': data.id}),
                 data
@@ -79,16 +85,20 @@ const actions = {
                 if (response.body && response.body.error) {
                     const {messages} = response.body;
                     commit(types.SET_VALIDATION_MESSAGES, {messages});
-                } else {
-                    const todo = response.body;
-                    if (todo.meeting) {
-                        commit(types.EDIT_MEETING_TODO, {todo});
-                    } else {
-                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                        commit(types.SET_TODO, {todo});
-                        router.push({name: 'project-todos'});
-                    }
+
+                    return response;
                 }
+
+                const todo = response.body;
+                if (todo.meeting) {
+                    commit(types.EDIT_MEETING_TODO, {todo});
+                } else {
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    commit(types.SET_TODO, {todo});
+                    router.push({name: 'project-todos'});
+                }
+
+                return response;
             }, (response) => {
             });
     },

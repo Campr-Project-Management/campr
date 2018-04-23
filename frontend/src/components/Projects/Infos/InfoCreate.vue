@@ -7,9 +7,9 @@
                     <div>
                         <router-link :to="{name: 'project-infos'}" class="small-link">
                             <i class="fa fa-angle-left"></i>
-                            {{ translateText('message.back_to_infos') }}
+                            {{ translate('message.back_to_infos') }}
                         </router-link>
-                        <h1>{{ translateText(info && info.id ? 'message.edit_info' : 'message.create_new_info') }}</h1>
+                        <h1>{{ translate(info && info.id ? 'message.edit_info' : 'message.create_new_info') }}</h1>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
@@ -20,14 +20,10 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <select-field
-                                    v-bind:title="translateText('label.category')"
-                                    v-bind:options="infoCategoriesForDropdown"
-                                    v-model="infoCategory"
-                                    v-bind:currentOption="infoCategory" />
-                                <error
-                                    v-if="validationMessages.infoCategory && validationMessages.infoCategory.length"
-                                    v-for="message in validationMessages.infoCategory"
-                                    :message="message" />
+                                    :title="translate('label.category')"
+                                    :options="infoCategoriesForDropdown"
+                                    v-model="infoCategory"/>
+                                <error at-path="infoCategory"/>
                             </div>
                         </div>
                     </div>
@@ -35,20 +31,14 @@
 
                     <!-- /// Info Title and Description /// -->
                     <div class="form-group">
-                        <input-field type="text" v-bind:label="translateText('placeholder.info_topic')" v-model="topic" v-bind:content="topic" />
-                        <error
-                            v-if="validationMessages.topic && validationMessages.topic.length"
-                            v-for="message in validationMessages.topic"
-                            :message="message" />
+                        <input-field type="text" :label="translate('placeholder.info_topic')" v-model="topic" :content="topic" />
+                        <error at-path="topic"/>
                     </div>
                     <div class="form-group">
                         <editor
                             v-model="description"
                             :label="'placeholder.info_description'"/>
-                        <error
-                            v-if="validationMessages.description && validationMessages.description.length"
-                            v-for="message in validationMessages.description"
-                            :message="message" />
+                        <error at-path="description"/>
                     </div>
                     <!-- /// End Info Title and Description /// -->
 
@@ -56,22 +46,19 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <member-search v-model="responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
-                                <error
-                                    v-if="validationMessages.responsibility && validationMessages.responsibility.length"
-                                    v-for="message in validationMessages.responsibility"
-                                    :message="message" />
+                                <member-search
+                                        v-model="responsibility"
+                                        :placeholder="translate('placeholder.responsible')"
+                                        :singleSelect="true"></member-search>
+                                <error at-path="responsibility"/>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.due_date') }}</label>
+                                    <label class="active">{{ translate('label.due_date') }}</label>
                                     <datepicker v-model="dueDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill"/>
-                                    <error
-                                        v-if="validationMessages.dueDate && validationMessages.dueDate.length"
-                                        v-for="message in validationMessages.dueDate"
-                                        :message="message" />
                                 </div>
+                                <error at-path="dueDate"/>
                             </div>
                         </div>
                     </div>
@@ -80,14 +67,10 @@
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
                                 <select-field
-                                    v-bind:title="translateText('label.select_status')"
-                                    v-bind:options="infoStatusesForDropdown"
-                                    v-model="infoStatus"
-                                    v-bind:currentOption="infoStatus" />
-                                <error
-                                    v-if="validationMessages.infoStatus && validationMessages.infoStatus.length"
-                                    v-for="message in validationMessages.infoStatus"
-                                    :message="message" />
+                                    :title="translate('label.select_status')"
+                                    :options="infoStatusesForDropdown"
+                                    v-model="infoStatus"/>
+                                <error at-path="infoStatus"/>
                             </div>
                         </div>
                     </div>     
@@ -96,9 +79,9 @@
 
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
-                        <router-link :to="{name: 'project-infos'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
-                        <a ref="#" class="btn-rounded btn-auto btn-auto second-bg" @click="doSave">
-                            {{ translateText(info && info.id ? 'button.edit_info' : 'button.create_info') }}
+                        <router-link :to="{name: 'project-infos'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translate('button.cancel') }}</router-link>
+                        <a class="btn-rounded btn-auto btn-auto second-bg" @click="doSave">
+                            {{ translate(info && info.id ? 'button.edit_info' : 'button.create_info') }}
                         </a>
                     </div>
                     <!-- /// End Actions /// -->
@@ -122,6 +105,7 @@ import Editor from '../../_common/Editor';
 import AlertModal from '../../_common/AlertModal.vue';
 import router from '../../../router';
 import {mapActions, mapGetters} from 'vuex';
+import moment from 'moment';
 
 export default {
     components: {
@@ -144,14 +128,11 @@ export default {
             'editInfo',
             'emptyValidationMessages',
         ]),
-        translateText: function(text) {
-            return this.translate(text);
-        },
         doSave() {
             const data = {
                 topic: this.topic,
                 description: this.description,
-                dueDate: this.dueDate,
+                dueDate: this.$formatToSQLDate(this.dueDate),
                 infoCategory: this.infoCategory && this.infoCategory.key
                     ? this.infoCategory.key
                     : null,
@@ -163,26 +144,31 @@ export default {
                     : null,
             };
 
-            let method = 'createInfo';
+            let method = this.createInfo;
             let params = {
                 projectId: this.$route.params.id,
                 data,
             };
 
             if (this.$route.params.infoId) {
-                method = 'editInfo';
+                method = this.editInfo;
                 params.id = this.$route.params.infoId;
                 delete params.projectId;
             }
 
-            this[method](params)
+            method(params)
                 .then(
                     (response) => {
-                        if (response && response.body && !response.body.error) {
-                            this.showSaved = true;
+                        if (response.body && response.body.error && response.body.messages) {
+                            this.showFailed = true;
+                            return;
                         }
+
+                        this.showSaved = true;
                     },
-                    () => {}
+                    () => {
+                        this.showFailed = true;
+                    }
                 )
             ;
         },
@@ -203,7 +189,7 @@ export default {
             if (val) {
                 this.topic = val.topic;
                 this.description = val.description;
-                this.dueDate = val.dueDate;
+                this.dueDate = val.dueDate ? moment(val.dueDate).toDate() : null;
                 this.infoCategory = {
                     key: val.infoCategory,
                     label: this.translate(val.infoCategoryName),
@@ -236,28 +222,11 @@ export default {
             showSaved: false,
             topic: '',
             description: '',
-            dueDate: new Date(),
+            dueDate: null,
             infoCategory: null,
             infoStatus: null,
             responsibility: [],
-//            projectCategories: [{label: 'Production', key: 1}, {label: 'Logistics', key: 2}, {label: 'Quality Management', key: 3},
-//             {label: 'Human Resources', key: 4}, {label: 'Purchasing', key: 5}, {label: 'Maintenance', key: 6},
-//              {label: 'Assembly', key: 7}, {label: 'Tooling', key: 8}, {label: 'Process Engineering', key: 9}, {label: 'Industrialization', key: 10}],
-//            infoStatus: [{label: 'Published', key: 1}, {label: 'Expired', key: 2}],
-//            info_topic: '',
-//            schedule: {
-//                expiryDate: new Date(),
-//            },
-//            details: {
-//                category: null,
-//                infoStatus: null,
-//            },
         };
     },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-    
-</style>
