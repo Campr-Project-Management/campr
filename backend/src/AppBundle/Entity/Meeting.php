@@ -43,6 +43,7 @@ class Meeting
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\MeetingCategory")
      * @ORM\JoinColumn(name="meeting_category_id")
+     * @Assert\NotBlank()
      */
     private $meetingCategory;
 
@@ -142,6 +143,7 @@ class Meeting
      * @var ArrayCollection|DistributionList[]
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\DistributionList", mappedBy="meetings", cascade={"all"})
+     * @Assert\Count(min=1, minMessage="not_blank.distribution_list")
      */
     private $distributionLists;
 
@@ -604,16 +606,16 @@ class Meeting
      */
     public function addDistributionList(DistributionList $distributionList)
     {
-        $this->distributionLists[] = $distributionList;
         $distributionList->addMeeting($this);
+        $this->distributionLists->add($distributionList);
 
         return $this;
     }
 
     /**
-     * Remove distributionList.
-     *
      * @param DistributionList $distributionList
+     *
+     * @return $this
      */
     public function removeDistributionList(DistributionList $distributionList)
     {
