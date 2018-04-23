@@ -1469,7 +1469,6 @@ class ProjectControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
         $actual = json_decode($response->getContent(), true);
-        var_dump($actual);
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
 
