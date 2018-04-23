@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row" v-if="!info">
-            <p>{{ translateText('message.loading') }}</p>
+            <p>{{ translate('message.loading') }}</p>
         </div>
 
         <div class="row" v-if="info">
@@ -12,23 +12,30 @@
                         <div>
                             <router-link :to="{name: 'project-infos'}" class="small-link">
                                 <i class="fa fa-angle-left"></i>
-                                {{ translateText('message.back_to_infos') }}
+                                {{ translate('message.back_to_infos') }}
                             </router-link>
                             <h1>{{ info.topic }}</h1>
-                            <h3 class="category"><b>{{ translateText(info.infoCategoryName) }}</b></h3>
-                            <h4>{{ translateText('message.created') }}: <b>{{ displayDate(info.createdAt) }}</b> | {{ translateText('message.due_date') }}: <b>{{ displayDate(info.dueDate) }}</b> | {{ translateText('message.status') }}: <b :style="{color: info.infoStatusColor}">{{ translateText(info.infoStatusName) }}</b></h4>
+                            <h3 class="category"><b>{{ translate(info.infoCategoryName) }}</b></h3>
+                            <h4>
+                                {{ translate('message.created') }}:
+                                <b>{{ info.createdAt | date }}</b> |
+                                {{ translate('message.due_date') }}:
+
+                                <b>{{ info.dueDate | date }}</b> |
+                                {{ translate('message.status') }}:
+                                <b :style="{color: info.infoStatusColor}">{{ translate(info.infoStatusName) }}</b></h4>
 
                             <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
                                 <div class="user-avatar"> 
                                     <img :src="(info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar)" :alt="info.responsibilityFullName"/>
                                 </div>
                                 <div>
-                                    {{ translateText('message.responsible') }}:
+                                    {{ translate('message.responsible') }}:
                                     <b>{{ info.responsibilityFullName }}</b>
                                 </div>
                             </div>
                             <router-link :to="{name: 'project-infos-edit'}" class="btn-rounded btn-auto btn-md btn-empty">
-                                {{ translateText('button.reschedule') }}
+                                {{ translate('button.reschedule') }}
                                 <reschedule-icon></reschedule-icon>
                             </router-link>
                         </div>
@@ -44,16 +51,16 @@
                     <div class="margintop20 text-right">
                         <div class="buttons">
                             <router-link :to="{name: 'project-infos-edit'}" class="btn-rounded btn-auto">
-                                {{ translateText('button.edit_info') }}
+                                {{ translate('button.edit_info') }}
                                 <reschedule-icon></reschedule-icon>
                             </router-link>
 
                             <router-link :to="{name: 'project-infos-new'}" class="btn-rounded btn-auto second-bg">
-                                {{ translateText('button.new_info') }}
+                                {{ translate('button.new_info') }}
                                 <reschedule-icon></reschedule-icon>
                             </router-link>
                             <a href="javascript:void(0)" @click="tryDeleteInfo(info.id)" class="btn-rounded btn-auto danger-bg">
-                                {{ translateText('button.delete_info') }}
+                                {{ translate('button.delete_info') }}
                             </a>
                         </div>
                     </div>
@@ -67,15 +74,15 @@
                 <div class="text-right footer-buttons">
                     <div class="buttons">
                         <router-link :to="{name: 'project-infos-edit'}" class="btn-rounded btn-auto">
-                            {{ translateText('button.edit_info') }}
+                            {{ translate('button.edit_info') }}
                         </router-link>
 
                         <router-link :to="{name: 'project-infos-new'}" class="btn-rounded btn-auto second-bg">
-                            {{ translateText('button.new_info') }}
+                            {{ translate('button.new_info') }}
                         </router-link>
 
                         <a href="javascript:void(0)" @click="tryDeleteInfo(info.id)" class="btn-rounded btn-auto danger-bg">
-                            {{ translateText('button.delete_info') }}
+                            {{ translate('button.delete_info') }}
                         </a>
                     </div>
                 </div>
@@ -106,34 +113,6 @@ export default {
     },
     methods: {
         ...mapActions(['getInfo', 'deleteInfo']),
-        translateText: function(text) {
-            return this.translate(text);
-        },
-        displayDate(d8) {
-            if (!d8) {
-                return '-';
-            }
-
-            const dt = new Date(d8);
-            if (isNaN(dt.getTime())) {
-                return '-';
-            }
-            const out = [dt.getFullYear()];
-            let month = dt.getMonth() + 1;
-            let day = dt.getDay();
-
-            if (month < 10) {
-                month = '0' + month;
-            }
-            if (day < 10) {
-                day = '0' + day;
-            }
-
-            out.push(month);
-            out.push(day);
-
-            return out.join('-');
-        },
         tryDeleteInfo(id) {
             if (confirm(this.translate('message.delete_info'))) {
                 this
