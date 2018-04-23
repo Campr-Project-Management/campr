@@ -27,9 +27,9 @@
                     <div>
                         <router-link :to="{name: 'project-meetings'}" class="small-link">
                             <i class="fa fa-angle-left"></i>
-                            {{ translateText('message.back_to_meetings') }}
+                            {{ translate('message.back_to_meetings') }}
                         </router-link>
-                        <h1>{{ translateText('message.edit') }} <b>{{ meeting.name }}</b></h1>
+                        <h1>{{ translate('message.edit') }} <b>{{ meeting.name }}</b></h1>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
@@ -40,15 +40,17 @@
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
                                 <multi-select-field
-                                    v-bind:title="translateText('placeholder.distribution_list')"
+                                    v-bind:title="translate('placeholder.distribution_list')"
                                     v-bind:options="distributionListsForSelect"
                                     v-model="details.distributionLists" />
+                                <error at-path="distributionLists"/>
                             </div>
                             <div class="col-md-6">
                                 <select-field
-                                    v-bind:title="translateText('label.category')"
+                                    v-bind:title="translate('label.category')"
                                     v-bind:options="meetingCategoriesForSelect"
                                     v-model="details.category"/>
+                                <error at-path="meetingCategory"/>
                             </div>
                         </div>
                     </div>
@@ -57,85 +59,96 @@
                     <hr class="double">
 
                     <!-- /// Meeting Schedule /// -->
-                    <h3>{{ translateText('message.schedule') }}</h3>
+                    <h3>{{ translate('message.schedule') }}</h3>
                     <div class="row">
                         <div class="form-group form-group">
                             <div class="col-md-4">
                                 <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.select_date') }}</label>
+                                    <label class="active">{{ translate('label.select_date') }}</label>
                                     <datepicker v-model="schedule.meetingDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill"/>
                                 </div>
+                                <error at-path="date"/>
                             </div>
                             <div class="col-md-4">
                                 <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.start_time') }}</label>
+                                    <label class="active">{{ translate('label.start_time') }}</label>
                                     <vue-timepicker v-model="schedule.startTime" hide-clear-button></vue-timepicker>
                                 </div>
+                                <error
+                                        v-if="validationMessages.start && validationMessages.start.length"
+                                        v-for="(message, index) in validationMessages.start"
+                                        :key="`schedule-schedule-${index}`"
+                                        :message="message"/>
                             </div>
                             <div class="col-md-4">
                                 <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.finish_time') }}</label>
+                                    <label class="active">{{ translate('label.finish_time') }}</label>
                                     <vue-timepicker v-model="schedule.endTime" hide-clear-button></vue-timepicker>
                                 </div>
+                                <error
+                                        v-if="validationMessages.end && validationMessages.end.length"
+                                        v-for="(message, index) in validationMessages.end"
+                                        :key="`schedule-schedule-${index}`"
+                                        :message="message"/>
                             </div>
                         </div>
                     </div>
                     <div class="flex flex-direction-reverse">
-                        <a @click="saveSchedule()" class="btn-rounded btn-auto">{{ translateText('message.save_schedule') }}</a>
+                        <a @click="saveSchedule()" class="btn-rounded btn-auto">{{ translate('message.save_schedule') }}</a>
                     </div>
                     <!-- /// End Meeting Schedule /// -->
 
                     <hr class="double">
 
                     <!-- /// Meeting Location /// -->
-                    <h3>{{ translateText('message.location') }}</h3>
-                    <input-field type="text" v-bind:label="translateText('placeholder.location')" v-model="location" v-bind:content="location" />
+                    <h3>{{ translate('message.location') }}</h3>
+                    <input-field type="text" v-bind:label="translate('placeholder.location')" v-model="location" v-bind:content="location" />
                     <!-- /// End Meeting Location /// -->
 
                     <hr class="double">
 
                     <!-- /// Meeting Objectives /// -->
-                    <h3>{{ translateText('message.objectives') }}</h3>
+                    <h3>{{ translate('message.objectives') }}</h3>
                     <ul class="action-list" v-if="meeting.meetingObjectives">
                         <li v-for="objective in meeting.meetingObjectives">
                             <div class="list-item-description">
                                 {{ objective.description }}
                             </div>
                             <div class="list-item-actions">
-                                <a @click="initEditObjective(objective)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_objective')"><edit-icon fill="second-fill"></edit-icon></a>
-                                <a @click="initDeleteObjective(objective)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_objective')"><delete-icon fill="danger-fill"></delete-icon></a>
+                                <a @click="initEditObjective(objective)" class="btn-icon" v-tooltip.top-center="translate('message.edit_objective')"><edit-icon fill="second-fill"></edit-icon></a>
+                                <a @click="initDeleteObjective(objective)" class="btn-icon" v-tooltip.top-center="translate('message.delete_objective')"><delete-icon fill="danger-fill"></delete-icon></a>
                             </div>
                         </li>
                     </ul>
                     <div class="form-group">
-                        <input-field type="text" v-bind:label="translateText('message.new_objective')" v-model="objectiveDescription" :content="objectiveDescription" />
+                        <input-field type="text" v-bind:label="translate('message.new_objective')" v-model="objectiveDescription" :content="objectiveDescription" />
                         <error
                             v-if="validationOrigin==MEETING_OBJECTIVE_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
                             v-for="message in validationMessages.description"
                             :message="message" />
                     </div>
                     <div class="flex flex-direction-reverse">
-                        <a @click="addObjective()" class="btn-rounded btn-auto">{{ translateText('message.add_new_objective') }}</a>
+                        <a @click="addObjective()" class="btn-rounded btn-auto">{{ translate('message.add_new_objective') }}</a>
                     </div>
                     <!-- /// End Meeting Objectives /// -->
 
                     <hr class="double">
 
                     <!-- /// Meeting Agenda /// -->
-                    <h3>{{ translateText('message.agenda') }}</h3>
+                    <h3>{{ translate('message.agenda') }}</h3>
                     <div class="overflow-hidden">
                         <scrollbar class="table-wrapper">
                             <div class="scroll-wrapper">
                                 <table class="table table-striped table-responsive">
                                     <thead>
                                         <tr>
-                                            <th>{{ translateText('table_header_cell.topic') }}</th>
-                                            <th>{{ translateText('table_header_cell.responsible') }}</th>
-                                            <th>{{ translateText('table_header_cell.start') }}</th>
-                                            <th>{{ translateText('table_header_cell.finish') }}</th>
-                                            <th>{{ translateText('table_header_cell.duration') }}</th>
-                                            <th>{{ translateText('table_header_cell.actions') }}</th>
+                                            <th>{{ translate('table_header_cell.topic') }}</th>
+                                            <th>{{ translate('table_header_cell.responsible') }}</th>
+                                            <th>{{ translate('table_header_cell.start') }}</th>
+                                            <th>{{ translate('table_header_cell.finish') }}</th>
+                                            <th>{{ translate('table_header_cell.duration') }}</th>
+                                            <th>{{ translate('table_header_cell.actions') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody v-if="meetingAgendas">
@@ -150,11 +163,11 @@
                                             </td>
                                             <td>{{ agenda.start }}</td>
                                             <td>{{ agenda.end }}</td>
-                                            <td>{{ getDuration(agenda.start, agenda.end) }} {{ translateText('message.min') }}</td>
+                                            <td>{{ getDuration(agenda.start, agenda.end) }} {{ translate('message.min') }}</td>
                                             <td>
                                                 <div class="text-right">
-                                                    <a @click="initEditAgenda(agenda)"  class="btn-icon" v-tooltip.top-center="translateText('label.edit_topic')"><edit-icon fill="second-fill"></edit-icon></a>
-                                                    <a @click="initDeleteAgenda(agenda)" class="btn-icon" v-tooltip.top-center="translateText('label.delete_topic')"><delete-icon fill="danger-fill"></delete-icon></a>
+                                                    <a @click="initEditAgenda(agenda)"  class="btn-icon" v-tooltip.top-center="translate('label.edit_topic')"><edit-icon fill="second-fill"></edit-icon></a>
+                                                    <a @click="initDeleteAgenda(agenda)" class="btn-icon" v-tooltip.top-center="translate('label.delete_topic')"><delete-icon fill="danger-fill"></delete-icon></a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -168,12 +181,12 @@
                             <span v-if="agendasPages > 1" v-for="page in agendasPages" v-bind:class="{'active': page == agendasActivePage}" @click="changeAgendasPage(page)">{{ page }}</span>
                         </div>
                         <div>
-                            <span class="pagination-info">{{ translateText('message.displaying') }} {{ meetingAgendas.items.length }} {{ translateText('message.results_out_of') }} {{ meetingAgendas.totalItems }}</span>
+                            <span class="pagination-info">{{ translate('message.displaying') }} {{ meetingAgendas.items.length }} {{ translate('message.results_out_of') }} {{ meetingAgendas.totalItems }}</span>
                         </div>
                     </div>
                     <hr>
                     <div class="form-group">
-                        <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="agenda.topic" v-bind:content="agenda.topic" />
+                        <input-field type="text" v-bind:label="translate('placeholder.topic')" v-model="agenda.topic" v-bind:content="agenda.topic" />
                         <error
                             v-if="validationMessages.topic && validationMessages.topic.length"
                             v-for="message in validationMessages.topic"
@@ -182,11 +195,11 @@
                     <div class="row">
                         <div class="form-group form-group">
                             <div class="col-md-4">
-                                <member-search v-model="agenda.responsible" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                                <member-search v-model="agenda.responsible" v-bind:placeholder="translate('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                             </div>
                             <div class="col-md-4">
                                 <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.start_time') }}</label>
+                                    <label class="active">{{ translate('label.start_time') }}</label>
                                     <vue-timepicker v-model="agenda.startTime" hide-clear-button></vue-timepicker>
                                     <error
                                         v-if="validationMessages.start && validationMessages.start.length"
@@ -196,7 +209,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.finish_time') }}</label>
+                                    <label class="active">{{ translate('label.finish_time') }}</label>
                                     <vue-timepicker v-model="agenda.endTime" hide-clear-button></vue-timepicker>
                                     <error
                                         v-if="validationMessages.end && validationMessages.end.length"
@@ -207,7 +220,7 @@
                         </div>
                     </div>
                     <div class="flex flex-direction-reverse">
-                        <a @click="addAgenda()" class="btn-rounded btn-auto">{{ translateText('message.add_new_topic') }}</a>
+                        <a @click="addAgenda()" class="btn-rounded btn-auto">{{ translate('message.add_new_topic') }}</a>
                     </div>
                     <!-- /// End Meeting Objectives /// -->
 
@@ -220,18 +233,18 @@
                     <hr class="double">
 
                     <!-- /// Decisions /// -->
-                    <h3>{{ translateText('message.decisions') }}</h3>
+                    <h3>{{ translate('message.decisions') }}</h3>
 
                     <div class="entries-wrapper" v-if="meeting.decisions">
                         <!-- /// Decision /// -->
                         <div class="entry" v-for="decision in meeting.decisions">
                             <div class="entry-header flex flex-space-between flex-v-center">
                                 <div class="entry-title">
-                                    <h4>{{ decision.title }}</h4>  | {{ translateText('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.status') }}: <b v-if="decision.status">{{ decision.statusName }}</b><b v-else>-</b>
+                                    <h4>{{ decision.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="decision.status">{{ decision.statusName }}</b><b v-else>-</b>
                                 </div>
                                 <div class="entry-buttons">
                                     <button @click="initEditDecision(decision)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
-                                    <button @click="initDeleteDecision(decision)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
+                                    <button @click="initDeleteDecision(decision)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translate('message.delete') }}</button>
                                 </div>
                             </div>
                             <div class="entry-responsible flex flex-v-center">
@@ -239,7 +252,7 @@
                                     <img :src="decision.responsibilityAvatar" :alt="decision.responsibilityFullName"/>
                                 </div>
                                 <div>
-                                    {{ translateText('message.responsible') }}:
+                                    {{ translate('message.responsible') }}:
                                     <b>{{ decision.responsibilityFullName }}</b>
                                 </div>
                             </div>
@@ -248,7 +261,7 @@
                         <!-- /// End Decision /// -->
                     </div>
 
-                    <input-field type="text" v-bind:label="translateText('placeholder.decision_title')" v-model="decision.title" :content="decision.title" />
+                    <input-field type="text" v-bind:label="translate('placeholder.decision_title')" v-model="decision.title" :content="decision.title" />
                     <error
                         v-if="validationOrigin==DECISION_VALIDATION_ORIGIN && validationMessages.title && validationMessages.title.length"
                         v-for="message in validationMessages.title"
@@ -267,11 +280,11 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <member-search v-model="decision.responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                                <member-search v-model="decision.responsibility" v-bind:placeholder="translate('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.due_date') }}</label>
+                                    <label class="active">{{ translate('label.due_date') }}</label>
                                     <datepicker v-model="decision.dueDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill"/>
                                 </div>
@@ -282,7 +295,7 @@
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
                                 <div class="flex flex-direction-reverse">
-                                    <a @click="addDecision()" class="btn-rounded btn-auto">{{ translateText('message.add_new_decision') }}</a>
+                                    <a @click="addDecision()" class="btn-rounded btn-auto">{{ translate('message.add_new_decision') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -292,18 +305,18 @@
                     <hr class="double">
 
                     <!-- /// ToDos /// -->
-                    <h3>{{ translateText('message.todos') }}</h3>
+                    <h3>{{ translate('message.todos') }}</h3>
 
                     <div class="entries-wrapper" v-if="meeting.todos">
                         <!-- /// ToDo /// -->
                         <div class="entry" v-for="todo in meeting.todos">
                             <div class="entry-header flex flex-space-between flex-v-center">
                                 <div class="entry-title">
-                                    <h4>{{ todo.title }}</h4>  | {{ translateText('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.status') }}: <b v-if="todo.status">{{ todo.statusName }}</b><b v-else>-</b>
+                                    <h4>{{ todo.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.status">{{ todo.statusName }}</b><b v-else>-</b>
                                 </div>
                                 <div class="entry-buttons">
                                     <button @click="initEditTodo(todo)"  class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
-                                    <button @click="initDeleteTodo(todo)"  type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
+                                    <button @click="initDeleteTodo(todo)"  type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translate('message.delete') }}</button>
                                 </div>
                             </div>
                             <div class="entry-responsible flex flex-v-center">
@@ -311,7 +324,7 @@
                                     <img :src="todo.responsibilityAvatar" :alt="todo.responsibilityFullName"/>
                                 </div>
                                 <div>
-                                    {{ translateText('message.responsible') }}:
+                                    {{ translate('message.responsible') }}:
                                     <b>{{ todo.responsibilityFullName }}</b>
                                 </div>
                             </div>
@@ -320,7 +333,7 @@
                         <!-- /// End ToDo /// -->
                     </div>
 
-                    <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="todo.title" v-bind:content="todo.title" />
+                    <input-field type="text" v-bind:label="translate('placeholder.topic')" v-model="todo.title" v-bind:content="todo.title" />
                     <error
                         v-if="validationOrigin==TODO_VALIDATION_ORIGIN && validationMessages.title && validationMessages.title.length"
                         v-for="message in validationMessages.title"
@@ -339,11 +352,11 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <member-search v-model="todo.responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                                <member-search v-model="todo.responsibility" v-bind:placeholder="translate('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.due_date') }}</label>
+                                    <label class="active">{{ translate('label.due_date') }}</label>
                                     <datepicker v-model="todo.dueDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill"/>
                                 </div>
@@ -354,14 +367,14 @@
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
                                 <select-field
-                                    v-bind:title="translateText('label.select_status')"
+                                    v-bind:title="translate('label.select_status')"
                                     v-bind:options="todoStatusesForSelect"
                                     v-model="todo.status"
                                     v-bind:currentOption="todo.status" />
                             </div>
                             <div class="col-md-6">
                                 <div class="flex flex-direction-reverse">
-                                    <a @click="addTodo()" class="btn-rounded btn-auto">{{ translateText('message.add_new_todo') }}</a>
+                                    <a @click="addTodo()" class="btn-rounded btn-auto">{{ translate('message.add_new_todo') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -371,7 +384,7 @@
                     <hr class="double">
 
                     <!-- /// Infos /// -->
-                    <h3>{{ translateText('message.infos') }}</h3>
+                    <h3>{{ translate('message.infos') }}</h3>
 
                     <div class="entries-wrapper" v-if="meeting.infos">
                         <!-- /// Info /// -->
@@ -379,13 +392,13 @@
                             <div class="entry-header flex flex-space-between flex-v-center">
                                 <div class="entry-title">
                                     <h4>{{ info.topic }}</h4> |
-                                    {{ translateText('message.due_date') }}: <b>{{ info.dueDate | moment('DD.MM.YYYY') }}</b> |
-                                    {{ translateText('message.status') }}: <b v-if="info.infoStatus">{{ translateText(info.infoStatusName) }}</b><b v-else>-</b>
-                                    {{ translateText('message.category') }}: <b v-if="info.infoCategory">{{ translateText(info.infoCategoryName) }}</b><b v-else>-</b>
+                                    {{ translate('message.due_date') }}: <b>{{ info.dueDate | moment('DD.MM.YYYY') }}</b> |
+                                    {{ translate('message.status') }}: <b v-if="info.infoStatus">{{ translate(info.infoStatusName) }}</b><b v-else>-</b>
+                                    {{ translate('message.category') }}: <b v-if="info.infoCategory">{{ translate(info.infoCategoryName) }}</b><b v-else>-</b>
                                 </div>
                                 <div class="entry-buttons">
                                     <button @click="initEditInfo(info)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
-                                    <button @click="initDeleteInfo(info)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
+                                    <button @click="initDeleteInfo(info)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translate('message.delete') }}</button>
                                 </div>
                             </div>
                             <div class="entry-responsible flex flex-v-center">
@@ -393,7 +406,7 @@
                                     <img :src="info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar" :alt="info.responsibilityFullName"/>
                                 </div>
                                 <div>
-                                    {{ translateText('message.responsible') }}:
+                                    {{ translate('message.responsible') }}:
                                     <b>{{ info.responsibilityFullName }}</b>
                                 </div>
                             </div>
@@ -403,7 +416,7 @@
                     </div>
 
                     <input-field type="text"
-                        v-bind:label="translateText('placeholder.topic')"
+                        v-bind:label="translate('placeholder.topic')"
                         v-model="info.topic"
                         v-bind:content="info.topic" />
                     <error
@@ -424,11 +437,11 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <member-search v-model="info.responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                                <member-search v-model="info.responsibility" v-bind:placeholder="translate('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.due_date') }}</label>
+                                    <label class="active">{{ translate('label.due_date') }}</label>
                                     <datepicker v-model="info.dueDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill"/>
                                 </div>
@@ -458,7 +471,7 @@
                             <div class="col-md-6"></div>
                             <div class="col-md-6">
                                 <div class="flex flex-direction-reverse">
-                                    <a @click="addInfo()" class="btn-rounded btn-auto">{{ translateText('message.add_new_info') }}</a>
+                                    <a @click="addInfo()" class="btn-rounded btn-auto">{{ translate('message.add_new_info') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -469,8 +482,8 @@
 
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
-                        <router-link :to="{name: 'project-meetings'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
-                        <a @click="saveMeeting()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save_meeting') }}</a>
+                        <router-link :to="{name: 'project-meetings'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translate('button.cancel') }}</router-link>
+                        <a @click="saveMeeting()" class="btn-rounded btn-auto second-bg">{{ translate('button.save_meeting') }}</a>
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
@@ -480,16 +493,16 @@
             <div class="create-meeting page-section">
                 <!-- /// Header /// -->
                 <div class="margintop20 text-right">
-                    <a @click="saveMeeting()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save_meeting') }}</a>
+                    <a @click="saveMeeting()" class="btn-rounded btn-auto second-bg">{{ translate('button.save_meeting') }}</a>
                 </div>
                 <!-- /// End Header /// -->
 
                 <div class="flex flex-v-center flex-space-between">
                     <div>
-                        <h3>{{ translateText('message.participants') }}</h3>
+                        <h3>{{ translate('message.participants') }}</h3>
                     </div>
                     <!--<div class="buttons">
-                        <router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.edit_distribution_list') }}</router-link>
+                        <router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto btn-md btn-empty">{{ translate('button.edit_distribution_list') }}</router-link>
                     </div>-->
                 </div>
 
@@ -553,9 +566,6 @@ export default {
             'createMeetingAgenda', 'createMeetingDecision', 'createMeetingTodo', 'createInfo', 'getMeetingParticipants',
             'getInfoCategories',
         ]),
-        translateText: function(text) {
-            return this.translate(text);
-        },
         getDuration: function(startDate, endDate) {
             let end = moment(endDate, 'HH:mm');
             let start = moment(startDate, 'HH:mm');
@@ -693,7 +703,7 @@ export default {
                 responsibility: [todo.responsibility],
                 responsibilityFullName: todo.responsibilityFullName,
                 dueDate: todo.dueDate ? moment(todo.dueDate).toDate() : new Date(),
-                status: {key: todo.status, label: this.translateText(todo.statusName)},
+                status: {key: todo.status, label: this.translate(todo.statusName)},
                 meeting: this.$route.params.meetingId,
             };
         },
