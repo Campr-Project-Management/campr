@@ -44,9 +44,10 @@ const actions = {
      * Creates a new meeting per project
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     createDecision({commit}, data) {
-        Vue.http
+        return Vue.http
             .post(
                 Routing.generate('app_api_project_decisions_create', {'id': data.projectId}),
                 data
@@ -58,6 +59,8 @@ const actions = {
                     commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                     router.push({name: 'project-decisions'});
                 }
+
+                return response;
             }, (response) => {
             });
     },
@@ -65,9 +68,10 @@ const actions = {
      * Edit a decision
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     editDecision({commit}, data) {
-        Vue.http
+        return Vue.http
             .patch(
                 Routing.generate('app_api_decisions_edit', {'id': data.id}),
                 data
@@ -85,6 +89,8 @@ const actions = {
                         router.push({name: 'project-decisions'});
                     }
                 }
+
+                return response;
             }, (response) => {
             });
     },
