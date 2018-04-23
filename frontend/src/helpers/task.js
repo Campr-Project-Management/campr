@@ -18,14 +18,12 @@ export const createFormData = (data) => {
         formData.append('parent', data.planning.parent.key);
     }
 
-    if (data.assignments.responsibility ) {
-        formData.append('responsibility', data.assignments.responsibility &&
-            data.assignments.responsibility.key);
+    if (data.assignments.responsibility) {
+        formData.append('responsibility', data.assignments.responsibility.key);
     }
 
     if (data.assignments.accountability) {
-        formData.append('accountability', data.assignments.accountability &&
-            data.assignments.accountability.key);
+        formData.append('accountability', data.assignments.accountability.key);
     }
 
     data.assignments.supportUsers.forEach(
