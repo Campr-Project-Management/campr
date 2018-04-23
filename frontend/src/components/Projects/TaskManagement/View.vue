@@ -81,42 +81,46 @@
                 <div class="task-description" v-html="task.content"></div>
                 <!-- /// End Task Description /// -->
 
-                <hr class="double">
+                <template v-if="task.children && task.children.length > 0">
+                    <hr class="double">
+                    <!-- ///Subtasks /// -->
+                    <h3>{{ translateText('message.subtasks') }} | {{ getSubtaskSummary() }} {{ translateText('label.completed') }}</h3>
+                    <div class="subtasks">
+                        <div
+                                v-for="subtask in task.children"
+                                :key="subtask.id"
+                                class="subtask flex flex-space-between">
+                            <div class="checkbox-input clearfix">
+                                <input
+                                        :id="`subtask-${subtask.id}`"
+                                        type="checkbox"
+                                        :value="subtask.id"
+                                        v-model="completedSubtasksIds"
+                                        @change="onSubtaskStatusChange"/>
+                                <label :for="`subtask-${subtask.id}`">{{ subtask.name }}</label>
+                            </div>
+                            <div>
+                                <div class="text-right">
+                                    <router-link
+                                            :to="{name: 'project-task-management-edit', params: {id: task.project, taskId: subtask.id}}"
+                                            class="btn-icon">
+                                        <edit-icon fill="second-fill"/>
+                                    </router-link>
 
-                <!-- ///Subtasks /// -->
-                <h3>{{ translateText('message.subtasks') }} | {{ getSubtaskSummary() }} {{ translateText('label.completed') }}</h3>
-                <div class="subtasks">
-                    <div v-for="subtask in task.children" :key="subtask.id" class="subtask flex flex-space-between">
-                        <div class="checkbox-input clearfix">
-                            <input
-                                    :id="`subtask-${subtask.id}`"
-                                    type="checkbox"
-                                    :value="subtask.id"
-                                    v-model="completedSubtasksIds"
-                                    @change="onSubtaskStatusChange"/>
-                            <label :for="`subtask-${subtask.id}`">{{ subtask.name }}</label>
-                        </div>
-                        <div>
-                            <div class="text-right">
-                                <router-link
-                                        :to="{name: 'project-task-management-edit', params: {id: task.project, taskId: subtask.id}}"
-                                        class="btn-icon">
-                                    <edit-icon fill="second-fill"/>
-                                </router-link>
-
-                                <button
-                                        @click="showDeleteModal = subtask.id;"
-                                        data-target="#subtask1-delete-modal"
-                                        data-toggle="modal"
-                                        type="button"
-                                        class="btn-icon">
-                                    <delete-icon fill="danger-fill"/>
-                                </button>
+                                    <button
+                                            @click="showDeleteModal = subtask.id;"
+                                            data-target="#subtask1-delete-modal"
+                                            data-toggle="modal"
+                                            type="button"
+                                            class="btn-icon">
+                                        <delete-icon fill="danger-fill"/>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- /// End Subtasks /// -->
+                    <!-- /// End Subtasks /// -->
+                </template>
 
                 <hr class="double">
 
@@ -620,7 +624,7 @@ export default {
             return this.task.isClosed;
         },
         taskProgressEditIsDisabled() {
-            return (this.task.parent == null && this.task.noSubtasks > 0) || this.task.isClosed;
+            return this.task.isClosed;
         },
         completedSubtasksCount() {
             if (!this.task || !this.task.children) {
