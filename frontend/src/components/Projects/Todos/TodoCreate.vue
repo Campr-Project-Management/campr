@@ -7,11 +7,11 @@
                     <div>
                         <router-link :to="{name: 'project-todos'}" class="small-link">
                             <i class="fa fa-angle-left"></i>
-                            {{ translateText('message.back_to_todos') }}
+                            {{ translate('message.back_to_todos') }}
                         </router-link>
                         <h1>
-                            <span v-if="isEdit">{{ translateText('message.edit_todo') }}</span>
-                            <span v-if="!isEdit">{{ translateText('message.create_new_todo') }}</span>
+                            <span v-if="isEdit">{{ translate('message.edit_todo') }}</span>
+                            <span v-if="!isEdit">{{ translate('message.create_new_todo') }}</span>
                         </h1>
                     </div>
                 </div>
@@ -23,10 +23,10 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <select-field
-                                    v-bind:title="translateText('placeholder.category')"
-                                    v-bind:options="todoCategoriesForSelect"
+                                    :title="translate('placeholder.category')"
+                                    :options="todoCategoriesForSelect"
                                     v-model="todoCategory"
-                                    v-bind:currentOption="todoCategory" />
+                                    :currentOption="todoCategory" />
                             </div>
                         </div>
                     </div>
@@ -34,20 +34,14 @@
 
                     <!-- /// Todo Title and Description /// -->
                     <div class="form-group">
-                        <input-field type="text" v-bind:label="translateText('placeholder.todo_topic')" v-model="title" v-bind:content="title" />
-                        <error
-                            v-if="validationMessages.title && validationMessages.title.length"
-                            v-for="message in validationMessages.title"
-                            :message="message" />
+                        <input-field type="text" :label="translate('placeholder.todo_topic')" v-model="title" :content="title" />
+                        <error at-path="title"/>
                     </div>
                     <div class="form-group">
                         <editor
                             v-model="description"
                             :label="'placeholder.decision_description'"/>
-                        <error
-                            v-if="validationMessages.description && validationMessages.description.length"
-                            v-for="message in validationMessages.description"
-                            :message="message" />
+                        <error at-path="description"/>
                     </div>
                     <!-- /// End Todo Title and Description /// -->
 
@@ -56,17 +50,19 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.date') }}</label>
+                                    <label class="active">{{ translate('label.date') }}</label>
                                     <datepicker v-model="date" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill"/>
                                 </div>
+                                <error at-path="date"/>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.due_date') }}</label>
+                                    <label class="active">{{ translate('label.due_date') }}</label>
                                     <datepicker v-model="dueDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill"/>
                                 </div>
+                                <error at-path="dueDate"/>
                             </div>
                         </div>
                     </div>
@@ -74,14 +70,19 @@
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
-                                <member-search v-bind:selectedUser="responsibilityFullName" v-model="responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                                <member-search
+                                        :selectedUser="responsibilityFullName"
+                                        v-model="responsibility"
+                                        :placeholder="translate('placeholder.responsible')"
+                                        :singleSelect="true"></member-search>
+                                <error at-path="responsiblity"/>
                             </div>
                             <div class="col-md-6">
                                 <select-field
-                                    v-bind:title="translateText('placeholder.status')"
-                                    v-bind:options="todoStatusesForSelect"
-                                    v-model="todoStatus"
-                                    v-bind:currentOption="todoStatus" />
+                                    :title="translate('placeholder.status')"
+                                    :options="todoStatusesForSelect"
+                                    v-model="status"/>
+                                <error at-path="status"/>
                             </div>
                         </div>
                     </div>
@@ -90,14 +91,17 @@
 
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
-                        <router-link :to="{name: 'project-todos'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
-                        <a ref="#" v-if="!isEdit" @click="saveTodo" class="btn-rounded btn-auto btn-auto second-bg">{{ translateText('button.create_todo') }}</a>
-                        <a ref="#" v-if="isEdit" @click="updateTodo" class="btn-rounded btn-auto btn-auto second-bg">{{ translateText('button.save_todo') }}</a>
+                        <router-link :to="{name: 'project-todos'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translate('button.cancel') }}</router-link>
+                        <a v-if="!isEdit" @click="saveTodo" class="btn-rounded btn-auto btn-auto second-bg">{{ translate('button.create_todo') }}</a>
+                        <a v-if="isEdit" @click="updateTodo" class="btn-rounded btn-auto btn-auto second-bg">{{ translate('button.save_todo') }}</a>
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
             </div>
         </div>
+
+        <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved" />
+        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
 </template>
 
@@ -111,9 +115,11 @@ import {mapGetters, mapActions} from 'vuex';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
 import Editor from '../../_common/Editor';
+import AlertModal from '../../_common/AlertModal.vue';
 
 export default {
     components: {
+        AlertModal,
         InputField,
         SelectField,
         datepicker,
@@ -132,36 +138,56 @@ export default {
             'getTodoCategories',
             'emptyValidationMessages',
         ]),
-        translateText: function(text) {
-            return this.translate(text);
-        },
         saveTodo: function() {
             let data = {
                 projectId: this.$route.params.id,
                 data: {
                     title: this.title,
                     responsibility: (this.responsibility && this.responsibility.length > 0) ? this.responsibility[0] : null,
-                    dueDate: moment(this.dueDate).format('DD-MM-YYYY'),
-                    date: moment(this.date).format('DD-MM-YYYY'),
+                    dueDate: this.dueDate ? moment(this.dueDate).format('DD-MM-YYYY') : null,
+                    date: this.dueDate ? moment(this.date).format('DD-MM-YYYY') : null,
                     description: this.description,
-                    status: this.todoStatus ? this.todoStatus.key : null,
+                    status: this.status ? this.status.key : null,
                     todoCategory: this.todoCategory ? this.todoCategory.key : null,
                 },
             };
-            this.createTodo(data);
+
+            this.createTodo(data).then((response) => {
+                if (response.body && response.body.error && response.body.messages) {
+                    this.showFailed = true;
+                    return;
+                }
+
+                this.showSaved = true;
+            }, () => {
+
+            });
         },
         updateTodo: function() {
             let data = {
                 id: this.$route.params.todoId,
                 title: this.title,
                 responsibility: (this.responsibility && this.responsibility.length > 0) ? this.responsibility[0] : null,
-                dueDate: moment(this.dueDate).format('DD-MM-YYYY'),
-                date: moment(this.date).format('DD-MM-YYYY'),
+                dueDate: this.dueDate ? moment(this.dueDate).format('DD-MM-YYYY') : null,
+                date: this.dueDate ? moment(this.date).format('DD-MM-YYYY') : null,
                 description: this.description,
-                status: this.todoStatus.key,
+                status: this.status.key,
                 todoCategory: this.todoCategory.key,
             };
-            this.editTodo(data);
+
+            this.editTodo(data).then(
+                (response) => {
+                    if (response.body && response.body.error && response.body.messages) {
+                        this.showFailed = true;
+                        return;
+                    }
+
+                    this.showSaved = true;
+                },
+                () => {
+                    this.showFailed = true;
+                }
+            );
         },
     },
     created() {
@@ -172,23 +198,26 @@ export default {
         this.getTodoCategories();
     },
     computed: {
-        ...mapGetters({
-            todo: 'currentTodo',
-            todoStatusesForSelect: 'todoStatusesForSelect',
-            validationMessages: 'validationMessages',
-            todoCategoriesForSelect: 'todoCategoriesForSelect',
-        }),
+        ...mapGetters([
+            'currentTodo',
+            'todoStatusesForSelect',
+            'validationMessages',
+            'todoCategoriesForSelect',
+        ]),
+        todo() {
+            return this.currentTodo;
+        },
     },
     beforeDestroy() {
         this.emptyValidationMessages();
     },
     watch: {
         todo(val) {
-            this.todoStatus = {key: this.todo.todoStatus, label: this.translateText(this.todo.statusName)};
+            this.status = {key: this.todo.status, label: this.translate(this.todo.statusName)};
             this.title = this.todo.title;
             this.description = this.todo.description;
-            this.dueDate = this.todo.dueDate;
-            this.date = this.todo.date;
+            this.dueDate = this.todo.dueDate ? moment(this.todo.dueDate).toDate() : null;
+            this.date = this.todo.date ? moment(this.todo.date).toDate() : null;
             this.responsibility = [this.todo.responsibility];
             this.responsibilityFullName = this.todo.responsibilityFullName;
             this.todoCategory = {key: this.todo.todoCategory, label: this.todo.todoCategoryName};
@@ -197,14 +226,16 @@ export default {
     data() {
         return {
             isEdit: this.$route.params.todoId,
-            todoStatus: null,
+            status: null,
             title: '',
             description: '',
-            dueDate: new Date(),
-            date: new Date(),
+            dueDate: null,
+            date: null,
             responsibility: [],
             responsibilityFullName: '',
             todoCategory: null,
+            showSaved: false,
+            showFailed: false,
         };
     },
 };
