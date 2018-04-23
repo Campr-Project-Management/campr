@@ -79,6 +79,7 @@ not_blank:
     info_status: Status should be empty.
     expiry_date: Expiry date should not be empty.
     currency: Please select a currency
+    distribution_list: Please select at least one distribution list
 
 not_null:
     driver: You must select a driver
