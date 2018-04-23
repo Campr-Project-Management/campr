@@ -12,6 +12,22 @@ export default {
             return formatDate(date, options);
         };
 
+        Vue.prototype.$formatToSQLDate = function(date) {
+            if (!date) {
+                return null;
+            }
+
+            return moment(date).format('YYYY-MM-DD');
+        };
+
+        Vue.prototype.$formatToSQLDateTime = function(date) {
+            if (!date) {
+                return null;
+            }
+
+            return moment(date).format('YYYY-MM-DD kk:mm:ss');
+        };
+
         Vue.mixin({
             filters: {
                 date(date, options) {
