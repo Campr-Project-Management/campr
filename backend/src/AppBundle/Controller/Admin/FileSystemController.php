@@ -218,7 +218,9 @@ class FileSystemController extends BaseController
 
         if ($request->isXmlHttpRequest()) {
             $message = [
-                'delete' => 'success',
+                'delete' => $fileSystem && $fileSystem->getId()
+                    ? 'not_allowed'
+                    : 'success',
             ];
 
             return new JsonResponse($message);
