@@ -3,8 +3,6 @@
 namespace AppBundle\Form\FileSystem;
 
 use AppBundle\Entity\FileSystem;
-use AppBundle\Entity\Project;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -32,13 +30,6 @@ class CreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('project', EntityType::class, [
-                'class' => Project::class,
-                'required' => false,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.project',
-                'translation_domain' => 'messages',
-            ])
             ->add('driver', ChoiceType::class, [
                 'required' => true,
                 'choices' => $this->adapters,
