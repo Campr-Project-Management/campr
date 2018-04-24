@@ -563,6 +563,9 @@ export default {
         this.getInfoCategories();
         this.getInfoStatuses();
     },
+    mounted() {
+        this.addObjective();
+    },
     beforeDestroy() {
         this.emptyValidationMessages();
     },
