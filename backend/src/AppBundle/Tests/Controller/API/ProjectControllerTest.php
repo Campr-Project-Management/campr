@@ -1937,7 +1937,7 @@ class ProjectControllerTest extends BaseController
                     'label' => null,
                     'labelName' => null,
                     'userFavorites' => [],
-                    'progress' => 100,
+                    'progress' => 0,
                     'programme' => null,
                     'programmeName' => null,
                     'projectModules' => ['project-module1', 'project-module2', 'project-module3'],
