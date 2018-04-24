@@ -31,9 +31,9 @@ class FileSystemService
      *
      * @param FileSystemEntity $fileSystem
      *
-     * @return Filesystem
-     *
      * @throws \Exception
+     *
+     * @return Filesystem
      */
     public function createFileSystem(FileSystemEntity $fileSystem)
     {
@@ -87,9 +87,12 @@ class FileSystemService
      */
     public function saveMediaFile(Media $media, File $file)
     {
+        $path = $this->generateUniqueName($file);
         $fs = $this->getFileSystemMap()->get($media->getFileSystem()->getName());
-        $fs->createFile($media->getPath());
-        $fs->write($media->getPath(), file_get_contents($file->getPathName()));
+        $fs->createFile($path);
+        $fs->write($path, file_get_contents($file->getPathName()));
+
+        $media->setPath($path);
     }
 
     /**
@@ -104,5 +107,22 @@ class FileSystemService
             ->get($media->getFileSystem()->getName())
             ->delete($media->getPath())
         ;
+    }
+
+    /**
+     * @param File $file
+     *
+     * @return string
+     */
+    private function generateUniqueName(File $file): string
+    {
+        $filename = $file->getFilename();
+        $filename = md5(uniqid($filename, true));
+        $ext = $file->guessExtension();
+        if ($ext) {
+            $filename = sprintf('%s.%s', $filename, $ext);
+        }
+
+        return $filename;
     }
 }
