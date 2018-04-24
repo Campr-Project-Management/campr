@@ -2,8 +2,6 @@
     <div>
         <h3 class="with-label">{{ message.task_schedule }}</h3>
 
-        <span class="note">{{ message.manual_schedule_note }}</span>
-
         <div class="row" v-if="editableBase">
             <div class="form-group">
                 <div class="col-md-6">
