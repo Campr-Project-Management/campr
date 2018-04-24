@@ -439,6 +439,7 @@ message:
     condition: Condition
     change_accountable: Change Accountable
     uploading_file_failed: There was an error while uploading the file
+    delete_file_failed: There was an error while deleting the file
     wbs: WBS
     days: Days
     weeks: Weeks
