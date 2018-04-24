@@ -490,7 +490,11 @@
 
                     <!-- /// Task Attachmets /// -->
 
-                    <attachments v-on:input="updateMedias" v-bind:editMedias="editableData.medias" v-model="editableData.medias" />
+                    <attachments
+                            @input="onAddAttachment"
+                            @remove="onRemoveAttachment"
+                            :disabled="disableAttachments"
+                            v-model="editableData.medias"/>
                     <!-- /// End Task Attachments /// -->
                     <hr class="double">
 
@@ -499,7 +503,7 @@
                     <div class="row">
                         <div class="col-md-8">
                             <div class="task-label-holder flex flex-v-center">
-                                <div  v-if="editableData.label">
+                                <div v-if="editableData.label">
                                     <div class="task-label" :style="'background-color:' + editableData.label.color">
                                         {{editableData.label.label}}
                                     </div>
@@ -568,6 +572,7 @@ const TASK_STATUS_ONGOING = 3;
 const TASK_STATUS_COMPLETED = 4;
 
 export default {
+    name: 'task-view',
     components: {
         EditStatusModal,
         TaskViewAssignments,
@@ -754,6 +759,8 @@ export default {
             'getWorkPackageStatusesForSelect',
             'getProjectLabels',
             'patchTask',
+            'uploadAttachmentTask',
+            'removeAttachmentTask',
             'patchSubtask',
             'editTaskCost',
         ]),
@@ -817,72 +824,50 @@ export default {
             let total = item.rate * item.quantity * duration;
             return !isNaN(total) ? total : 0;
         },
-        updateMedias() {
+        onAddAttachment() {
+            this.disableAttachments = true;
             let data = {
-                project: this.$route.params.id,
-                name: this.task.name,
-                type: 2,
-                description: this.task.content,
-                schedule: this.editableData.schedule,
-                details: {
-                    assignee: this.task.responsibility
-                        ? {key: this.task.responsibility, label: this.task.responsibilityFullName}
-                        : null,
-                    accountable: this.task.accountability
-                        ? {key: this.task.accountability, label: this.task.accountabilityFullName}
-                        : null,
-                    supportUsers: this.editableData.assignments.supportUsers,
-                    consultedUsers: this.editableData.assignments.consultedUsers,
-                    informedUsers: this.editableData.assignments.informedUsers,
-                    status: this.task.workPackageStatus
-                        ? {key: this.task.workPackageStatus, label: ''}
-                        : null,
-                    label: this.task.label
-                        ? {key: this.task.label, label: this.task.labelName}
-                        : null,
-                },
-                planning: {
-                    milestone: this.task.milestone
-                        ? {key: this.task.milestone.toString(), label: this.task.milestoneName}
-                        : null,
-                    phase: this.task.phase
-                        ? {key: this.task.phase.toString(), label: this.task.phaseName}
-                        : null,
-                    parent: this.task.parent
-                        ? {key: this.task.parent.toString(), label: this.task.parentName}
-                        : null,
-                },
-                internalCosts: {items: [], actual: 0, forecast: 0},
-                externalCosts: {items: [], actual: 0, forecast: 0},
-                subtasks: [],
                 medias: this.editableData.medias,
-                statusColor: {id: this.task.colorStatus},
             };
 
             this
-                .editTask({
+                .uploadAttachmentTask({
                     data: createFormData(data),
                     taskId: this.$route.params.taskId,
                 })
                 .then(
                     (response) => {
+                        this.disableAttachments = false;
+
                         if (response.body && response.body.error && response.body.messages) {
                             this.fileUploadErrorMessage = response.body.messages.medias;
                             this.showFileUploadFailed = true;
-                            this.editableData.medias.pop();
-                        } else if (response.status == 0) {
+                            return;
+                        }
+
+                        if (response.status === 0) {
                             this.fileUploadErrorMessage = this.translateText('message.uploading_file_failed');
                             this.showFileUploadFailed = true;
-                            this.editableData.medias.pop();
                         }
-                    },
-                    () => {
-                        this.fileUploadErrorMessage = this.translateText('message.uploading_file_failed');
-                        this.showFileUploadFailed = true;
-                        this.editableData.medias.pop();
                     }
                 )
             ;
+        },
+        onRemoveAttachment(media) {
+            this.disableAttachments = true;
+
+            this.removeAttachmentTask({
+                taskId: this.$route.params.taskId,
+                mediaId: media.id,
+            }).then(
+                (response) => {
+                    this.disableAttachments = false;
+                    if (response.status === 0) {
+                        this.fileUploadErrorMessage = this.translateText('message.delete_file_failed');
+                        this.showFileUploadFailed = true;
+                    }
+                },
+            );
         },
         translateText(text) {
             return this.translate(text);
@@ -1165,6 +1150,7 @@ export default {
             completedSubtasksIds: [],
             newComment: '',
             updatingAssignments: false,
+            disableAttachments: false,
         };
     },
 };
