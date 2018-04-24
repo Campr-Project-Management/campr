@@ -5,10 +5,13 @@ namespace AppBundle\Controller\API;
 use AppBundle\Entity\Assignment;
 use AppBundle\Entity\Cost;
 use AppBundle\Entity\FileSystem;
+use AppBundle\Entity\Media;
+use AppBundle\Entity\Project;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\Log;
 use AppBundle\Entity\Comment;
 use AppBundle\Event\WorkPackageEvent;
+use AppBundle\Form\WorkPackage\ApiAttachmentType;
 use AppBundle\Form\WorkPackage\ApiCreateType;
 use AppBundle\Form\WorkPackage\MilestoneType;
 use AppBundle\Form\WorkPackage\PhaseType;
@@ -16,6 +19,7 @@ use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\WorkPackageVoter;
 use AppBundle\Form\Assignment\BaseCreateType as AssignmentCreateType;
 use AppBundle\Form\Comment\CreateType as CommentCreateType;
+use AppBundle\Services\FileSystemResolver;
 use Component\WorkPackage\WorkPackageEvents;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
@@ -109,6 +113,65 @@ class WorkPackageController extends ApiController
     }
 
     /**
+     * Upload attachment.
+     *
+     * @Route("/{id}/attachments", name="app_api_workpackage_attachments", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request     $request
+     * @param WorkPackage $wp
+     *
+     * @return JsonResponse
+     */
+    public function uploadAttachmentAction(Request $request, WorkPackage $wp)
+    {
+        $this->denyAccessUnlessGranted(WorkPackageVoter::EDIT, $wp);
+
+        $form = $this->createForm(
+            ApiAttachmentType::class,
+            $wp,
+            ['csrf_protection' => false, 'method' => $request->getMethod()]
+        );
+
+        $this->processForm($request, $form);
+
+        try {
+            $fs = $this->getFileSystem($wp->getProject());
+
+            if (!$form->isValid()) {
+                return $this->createApiResponse(
+                    [
+                        'messages' => $this->getFormErrors($form),
+                    ],
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
+
+            /** @var WorkPackage $wp */
+            $wp = $form->getData();
+            foreach ($wp->getMedias() as $media) {
+                $media->setFileSystem($fs);
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($wp);
+            $em->flush();
+
+            return $this->createApiResponse($wp);
+        } catch (FileAlreadyExists $ex) {
+            return $this->createApiResponse(
+                ['messages' => ['medias' => [$ex->getMessage()]]],
+                Response::HTTP_BAD_REQUEST
+            );
+        } catch (\Exception $e) {
+            return $this->createApiResponse(
+                ['messages' => [$e->getMessage()]],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    /**
      * Edit a specific WorkPackage.
      *
      * @Route("/{id}", name="app_api_workpackage_edit", options={"expose"=true})
@@ -140,79 +203,44 @@ class WorkPackageController extends ApiController
             in_array($request->getMethod(), [Request::METHOD_PUT, Request::METHOD_POST])
         );
 
-        // @TODO: Make filesystem selection dynamic
+        if (!$form->isValid()) {
+            $errors = $this->getFormErrors($form);
+            $errors = [
+                'messages' => $errors,
+            ];
+
+            return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+        }
+
+        /** @var WorkPackage $wp */
+        $wp = $form->getData();
         $em = $this->getDoctrine()->getManager();
-        $fileSystem = $wp
-            ->getProject()
-            ->getFileSystems()
-            ->filter(function (FileSystem $fs) {
-                return FileSystem::LOCAL_ADAPTER === $fs->getDriver();
-            })
-            ->first()
-        ;
 
-        if (!$fileSystem) {
-            $fileSystem = $em
-                ->getRepository(FileSystem::class)
-                ->findOneBy([
-                    'driver' => FileSystem::LOCAL_ADAPTER,
-                ])
-            ;
-            if (!$fileSystem) {
-                return $this->createApiResponse(
-                    [
-                        'messages' => [
-                            'Filesystem is missing. Please contact us.',
-                        ],
-                    ],
-                    Response::HTTP_INTERNAL_SERVER_ERROR
-                );
+        /** @var Cost $originalCost */
+        foreach ($originalCosts as $originalCost) {
+            if (!$wp->getCosts()->contains($originalCost)) {
+                $em->remove($originalCost);
             }
         }
 
-        try {
-            if ($form->isValid()) {
-                /** @var WorkPackage $wp */
-                $wp = $form->getData();
-
-                /** @var Cost $originalCost */
-                foreach ($originalCosts as $originalCost) {
-                    if (!$wp->getCosts()->contains($originalCost)) {
-                        $em->remove($originalCost);
-                    }
-                }
-
-                foreach ($wp->getMedias() as $media) {
-                    $media->setFileSystem($fileSystem);
-                }
-
-                $this->dispatchEvent(WorkPackageEvents::PRE_UPDATE, new WorkPackageEvent($wp));
-
-                $em->persist($wp);
-                $em->flush();
-
-                $this->dispatchEvent(WorkPackageEvents::POST_UPDATE, new WorkPackageEvent($wp));
-
-                return $this->createApiResponse(
-                    $wp,
-                    $request->isMethod(Request::METHOD_POST)
-                        ? Response::HTTP_OK
-                        : Response::HTTP_ACCEPTED
-                );
-            }
-        } catch (FileAlreadyExists $ex) {
-            return $this->createApiResponse(
-                ['messages' => ['medias' => [$ex->getMessage()]]],
-                Response::HTTP_BAD_REQUEST
-            );
+        $fs = $this->getFileSystem($wp->getProject());
+        foreach ($wp->getMedias() as $media) {
+            $media->setFileSystem($fs);
         }
 
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
+        $this->dispatchEvent(WorkPackageEvents::PRE_UPDATE, new WorkPackageEvent($wp));
 
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+        $em->persist($wp);
+        $em->flush();
+
+        $this->dispatchEvent(WorkPackageEvents::POST_UPDATE, new WorkPackageEvent($wp));
+
+        return $this->createApiResponse(
+            $wp,
+            $request->isMethod(Request::METHOD_POST)
+                ? Response::HTTP_OK
+                : Response::HTTP_ACCEPTED
+        );
     }
 
     /**
@@ -456,5 +484,38 @@ class WorkPackageController extends ApiController
         $xmlTask = $exportService->exportTask($workPackage);
 
         return new Response($xmlTask->asXML());
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return FileSystem
+     */
+    private function getFileSystem(Project $project): FileSystem
+    {
+        /** @var FileSystemResolver $fs */
+        $fsResolver = $this->get('app.fs.resolver');
+        $fs = $fsResolver->resolve($project);
+
+        if ($fs) {
+            return $fs;
+        }
+
+        throw new \Exception('Filesystem is missing. Please contact us.');
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return Media
+     */
+    private function findMediaOr404(int $id): Media
+    {
+        $media = $this->get('app.repository.media')->find($id);
+        if ($media) {
+            return $media;
+        }
+
+        throw $this->createNotFoundException('Media not found');
     }
 }
