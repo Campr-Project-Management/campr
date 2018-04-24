@@ -93,9 +93,15 @@ export default {
                 let windowInnerHeight = window.innerHeight;
 
                 if (windowInnerHeight - currentElementOffset < 260) {
-                    $(this.$el).find('.results.team').css('top', '-340px');
+                    $(this.$el).find('.results.team').css({
+                        'bottom': '41px',
+                        'top': 'auto',
+                    });
                 } else {
-                    $(this.$el).find('.results.team').css('top', '41px');
+                    $(this.$el).find('.results.team').css({
+                        'bottom': 'auto',
+                        'top': '41px',
+                    });
                 }
             }
         },
@@ -284,7 +290,7 @@ export default {
 
             .footer {
                 margin: 0 -20px;
-                padding: 17px 20px 0 20px;
+                padding: 17px 20px;
                 border-top: 1px solid $mainColor;
             }
 
