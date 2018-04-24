@@ -324,6 +324,11 @@ services:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: preRemove }
 
+    app.listener.filesystem:
+        class: AppBundle\EventListener\FilesystemListener
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
     app.listener.db_logger:
         class: AppBundle\EventListener\DBLogger
         tags:
