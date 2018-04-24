@@ -1824,9 +1824,9 @@ roles:
     team_member: Team Member
 
 color_status:
-    not_started: Not Started
-    in_progress: In Progress
-    finished: Finished
+    not_started: Critical
+    in_progress: Warning
+    finished: OK
 
 todo_status:
     initiated: Initiated
