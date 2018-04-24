@@ -309,10 +309,10 @@ class WorkPackage
      * @ORM\JoinTable(
      *     name="work_package_media",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="work_package_id", onDelete="CASCADE")
+     *         @ORM\JoinColumn(name="work_package_id")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="media_id", onDelete="CASCADE")
+     *         @ORM\JoinColumn(name="media_id")
      *     }
      * )
      */
