@@ -32,7 +32,9 @@ class ProjectOrganizationTreeService
         return $this->extractUserData(
             current($project->getProjectSponsors()),
             [
-                'title' => $this->translator->trans('roles.project_sponsor', [], 'messages'),
+                'titles' => [
+                    $this->translator->trans('roles.project_sponsor', [], 'messages'),
+                ],
                 'children' => $this->getManagerData($project),
             ]
         );
@@ -47,7 +49,9 @@ class ProjectOrganizationTreeService
         return [$this->extractUserData(
             current($project->getProjectManagers()),
             [
-                'title' => $this->translator->trans('roles.project_manager', [], 'messages'),
+                'titles' => [
+                    $this->translator->trans('roles.project_manager', [], 'messages'),
+                ],
                 'children' => $this->getDepartmentData($project),
             ]
         )];
@@ -64,7 +68,9 @@ class ProjectOrganizationTreeService
                 return $this->extractUserData(
                     $projectDepartment->getProjectUsers()->first()->getUser(),
                     [
-                        'title' => $projectDepartment->getName(),
+                        'titles' => [
+                            $projectDepartment->getName(),
+                        ],
                         'children' => $this->getSubteamData($projectDepartment),
                     ]
                 );
@@ -84,7 +90,10 @@ class ProjectOrganizationTreeService
                 return $this->extractUserData(
                     $subteam->getSubteamMembers()->first()->getUser(),
                     [
-                        'title' => $subteam->getName(),
+                        'titles' => [
+                            $this->translator->trans('roles.team_leader', [], 'messages'),
+                            $subteam->getName(),
+                        ],
                         'children' => $subteam
                             ->getSubteamMembers()
                             ->map(function (SubteamMember $subteamMember) {
@@ -111,6 +120,9 @@ class ProjectOrganizationTreeService
             'gPlus' => $user->getGplus(),
             'linkedIn' => $user->getLinkedIn(),
             'medium' => $user->getMedium(),
+            'titles' => [
+                $this->translator->trans('roles.team_member', [], 'messages'),
+            ],
         ], $extraData);
     }
 }
