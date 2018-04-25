@@ -408,11 +408,13 @@ export default {
                     let group = d3.select(this);
 
                     if (d.showColorStatusSelector) {
+                        console.log(d);
                         group
                             .append('foreignObject')
                             .attr('class', 'color-status-selector-fo')
                             .attr('x', 220)
-                            .attr('y', 0)
+                            .attr('y', -4)
+                            .attr('height', 102)
                             .append('xhtml:body')
                             .attr('xmlns', 'http://www.w3.org/1999/xhtml')
                             .attr('class', 'color-status-selector')
@@ -486,7 +488,7 @@ export default {
                             .append('foreignObject')
                             .attr('class', 'progress-selector-fo')
                             .attr('x', 220)
-                            .attr('y', 0)
+                            .attr('y', -5)
                             .append('xhtml:body')
                             .attr('xmlns', 'http://www.w3.org/1999/xhtml')
                             .attr('class', 'color-status-selector')
