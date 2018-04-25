@@ -96,12 +96,18 @@
                     return;
                 }
 
-                Vue.http.get(Routing.generate('app_api_media_download', {id: media.id})).then((response) => {
+                const url = Routing.generate('app_api_media_download', {id: media.id});
+                Vue.http.get(url, {responseType: 'blob'}).then((response) => {
                     if (response.status !== 200) {
                         return;
                     }
 
-                    let blob = new Blob([response.body], {type: 'mime/type'});
+                    let options = {};
+                    if (response.headers && response.headers.map && response.headers.map['content-type']) {
+                        options.type = response.headers.map['content-type'][0];
+                    }
+
+                    let blob = new Blob([response.body], options);
                     let link = document.createElement('a');
                     link.href = window.URL.createObjectURL(blob);
                     link.download = media.originalName;
