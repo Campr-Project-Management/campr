@@ -1,6 +1,11 @@
 <template>
     <div v-show="show" style="width: 100%">
-        <svg :id="id" />
+        <svg :id="id" width="100%" :height="height" />
+        <div
+            class="team-list-wrapper"
+            ref="teamList"
+            v-html="teamList"
+            :style="{top: teamListOffsetTop, left: teamListOffsetLeft}" />
     </div>
 </template>
 
@@ -29,17 +34,13 @@ export default {
             this.initialized = true;
 
             this.svg = d3.select('#' + this.id);
-            this.svg
-                .attr('width', '100%')
-                .attr('height', parseInt(1.5 * this.cellHeight, 10))
-            ;
             this.svg.selectAll('g').remove();
 
             this.g = this.svg.append('g');
 
             this.tree = d3.tree()
-                .separation(() => {
-                    return 1.5;
+                .separation((d) => {
+                    return d.depth < this.bigCellLimit ? 1.5 : 1;
                 })
                 .nodeSize([this.cellWidth, this.cellHeight])
             ;
@@ -47,24 +48,32 @@ export default {
             this.root.x0 = 0;
             this.root.y0 = 0;
 
-            this.root = this.collapseNode(this.root, 3);
+            this.root = this.collapseNode(this.root, this.collapsedNodeLevel);
 
             this.updateTree(this.root);
 
             const zoom = d3.zoom()
                 .scaleExtent([0.1, 4])
                 .on('zoom', () => {
-                    this.g.attr('transform', d3.event.transform);
+                    const t = _.clone(d3.event.transform);
+                    this.gTranslateX = t.x; // allows the popup to follow the scroll :]
+                    t.y = 16; // force horizontal scrolling :]
+                    t.k = 1; // force scale of 1
+                    this.g.attr('transform', t);
                 })
             ;
 
-            const width = $(window).width() / 3;
+            const width = this.root.descendants()[0].x;
             this.svg
                 .call(zoom)
-                .call(zoom.transform, d3.zoomIdentity.translate(width, 16).scale(0.4))
+                .call(zoom.transform, d3.zoomIdentity.translate(width, 16))
             ;
 
-            this.g.attr('transform', `translate(${width}, 16) scale(0.4)`);
+            // this.svg.on('click', () => {
+            //     if (this.teamList !== '') {
+            //         this.teamList = '';
+            //     }
+            // });
         },
         collapseNode(node, level) {
             if (node.children) {
@@ -85,14 +94,32 @@ export default {
         branch(dst, src) {
             const cw = this.cellWidth;
             const ch = this.cellHeight;
+            const scw = this.smallCellWidth;
+            const sch = this.smallCellHeight;
 
-            // cornered lines yo!
-            return `
+            switch (true) {
+            case src.depth < (this.bigCellLimit - 1):
+                return `
                 M ${src.x + cw/2} ${src.y + ch}
                 L ${src.x + cw/2} ${src.y + ch + this.cellSpacing/2},
                     ${dst.x + cw/2} ${src.y + ch + this.cellSpacing/2},
                     ${dst.x + cw/2} ${dst.y}
             `;
+            case src.depth === (this.bigCellLimit - 1) && dst.depth === this.bigCellLimit:
+                return `
+                M ${src.x + cw/2} ${src.y + ch}
+                L ${src.x + cw/2} ${src.y + ch + this.cellSpacing/2},
+                    ${dst.x + scw/2} ${src.y + ch + this.cellSpacing/2},
+                    ${dst.x + scw/2} ${dst.y}
+            `;
+            default:
+                return `
+                M ${src.x + scw/2} ${src.y + sch}
+                L ${src.x + scw/2} ${src.y + sch + this.cellSpacing/2},
+                    ${dst.x + scw/2} ${src.y + sch + this.cellSpacing/2},
+                    ${dst.x + scw/2} ${dst.y}
+            `;
+            }
         },
         updateTree(source) {
             let treeData = this.tree(this.root);
@@ -101,7 +128,12 @@ export default {
             let links = treeData.descendants().slice(1);
 
             nodes.forEach(d => {
-                d.y = d.depth * (this.cellHeight + this.cellSpacing);
+                if (d.depth < this.bigCellLimit) {
+                    d.y = d.depth * (this.cellHeight + this.cellSpacing);
+                } else {
+                    d.y = this.bigCellLimit * (this.cellHeight + this.cellSpacing)
+                        + (d.depth - this.bigCellLimit) * (this.smallCellHeight + this.cellSpacing);
+                }
                 d.x += this.cellWidth;
             });
 
@@ -121,31 +153,32 @@ export default {
                 .append('foreignObject')
                 .attr('y', 0)
                 .attr('x', 0)
-                .attr('width', this.cellWidth)
-                .attr('height', this.cellHeight)
+                .attr('width', d => d.depth < 2 ? this.cellWidth : this.smallCellWidth)
+                .attr('height', d => d.depth < 2 ? this.cellHeight : this.smallCellHeight)
                 .attr('externalResourcesRequired', 'true')
                 .append('xhtml:body')
                 .attr('xmlns', 'http://www.w3.org/1999/xhtml')
-                .attr('style', `min-height: ${this.cellHeight}px`)
-                .html(d => this.userTpl(d.data))
+                .attr('style', d => d.depth < 2 ? `min-height: auto; height: ${this.cellHeight}px` : `min-height: ${this.smallCellHeight}px`)
+                .html(d => this.userTpl(d))
                 .on('click', d => {
-                    let element = d3.event.target;
-                    while (element !== this.$el) {
-                        if (element.nodeName.toLowerCase() === 'a') {
+                    if (this.activeTeamNode) {
+                        let shouldReturn = this.activeTeamNode === d;
+                        this.activeTeamNode.showTeam = false;
+                        this.activeTeamNode = null;
+                        this.teamList = '';
+                        this.updateTree(d);
+                        if (shouldReturn) {
                             return;
                         }
-                        element = element.parentElement;
                     }
-
-                    if (d.children) {
-                        d._children = d.children;
-                        d.children = null;
-                    } else {
-                        d.children = d._children;
-                        d._children = null;
+                    if (d.depth === this.collapsedNodeLevel) {
+                        this.activeTeamNode = d;
+                        d.showTeam = ! d.showTeam;
+                        if (d.showTeam) {
+                            this.teamList = this.teamListTpl(d);
+                        }
+                        this.updateTree(d);
                     }
-
-                    this.updateTree(d);
                 })
             ;
 
@@ -173,6 +206,7 @@ export default {
                     const o = {
                         x: source.x0,
                         y: source.y0,
+                        depth: d.depth,
                     };
 
                     return this.branch(o, o);
@@ -190,7 +224,7 @@ export default {
             canvasLinks
                 .exit()
                 .attr('d', d => {
-                    const o = {x: source.x, y: source.y};
+                    const o = {x: source.x, y: source.y, depth: d.depth};
 
                     return this.branch(o, o);
                 })
@@ -201,11 +235,67 @@ export default {
                 d.y0 = d.y;
             });
         },
-        userTpl(user) {
+        teamListTpl(d) {
+            const children = d.children || d._children;
+            if (!children) {
+                return '';
+            }
+
+            const attributes = this.dataAttributes.join(' ');
+            let teamList = `<div class="arrow-up" ${attributes}></div><ul class="team-list" ${attributes}>`;
+
+            children.map(n => {
+                const u = n.data;
+                const avatar = userHelper.getUserAvatar(u);
+                const media = userHelper.getSocialMedia(u);
+
+                let uTitles = '';
+                u.titles.map(title => {
+                    uTitles += `<span class="title" ${attributes}>${title}</span>`;
+                });
+
+                let uMediaData = '';
+                _.forEach(media, (item, key) => {
+                    if (!socialIcons[key] || _.isEmpty(item)) {
+                        return;
+                    }
+
+                    uMediaData += `
+                            <a href="${item}" target="_blank" style="margin: 0 3px;">
+                                ${socialIcons[key]}
+                            </a>
+                        `;
+                });
+
+                if (uMediaData !== '') {
+                    uMediaData = `
+                            <span class="social-links" ${attributes}>
+                                ${uMediaData}
+                            </span>
+                        `;
+                }
+
+                teamList += `
+                        <li ${attributes}>
+                            <img class="avatar" src="${avatar}" alt="${u.fullName}" ${attributes} />
+                            <span class="name" ${attributes}>${u.fullName}</span>
+                            ${uTitles}
+                            ${uMediaData}
+                        </li>
+                    `;
+            });
+            teamList += '</ul>';
+
+            return teamList;
+        },
+        userTpl(d) {
+            const user = d.data;
             const attributes = this.dataAttributes.join(' ');
 
             const avatar = userHelper.getUserAvatar(user);
             const media = userHelper.getSocialMedia(user);
+
+            const isBig = d.depth < this.bigCellLimit;
 
             let mediaData = '';
             _.forEach(media, (item, key) => {
@@ -214,7 +304,7 @@ export default {
                 }
 
                 mediaData += `
-                    <a href="${item}" target="_blank">
+                    <a href="${item}" target="_blank" style="margin: 0 3px;">
                         ${socialIcons[key]}
                     </a>
                 `;
@@ -222,18 +312,39 @@ export default {
 
             if (mediaData !== '') {
                 mediaData = `
-                    <div class="social-links flex flex-center align">
+                    <div class="social-links flex flex-center align" ${attributes}>
                         ${mediaData}
                     </div>
                 `;
             }
 
+            let titles = '';
+            user.titles.map(title => {
+                titles += `<div class="title" ${attributes}>${title}</div>`;
+            });
+
+            let teamButtom = '';
+            const children = d.children || d._children;
+
+            if (d.depth === this.collapsedNodeLevel && children) {
+                let btnText = d.showTeam ? this.translate('message.close_team') : this.translate('message.view_team');
+                let icon = d.showTeam ? '&#xf077;' : '&#xf078;';
+
+                teamButtom = `
+                    <button class="btn-rounded btn-empty ${d.showTeam?'active':''}" ${attributes}>
+                        ${btnText}
+                        <text width="15" height="15" x="0" y="0" style="font-family: FontAwesome;">${icon}</text>
+                    </button>
+                `;
+            }
+
             return `
-                <div class="member-badge big" ${attributes}>
+                <div class="member-badge ${isBig?'big':'small'}" ${attributes}>
                     <div class="avatar" style="background-image: url('${avatar}');" ${attributes}></div>
                     <div class="name" ${attributes}>${user.fullName}</div>
-                    <div class="title" ${attributes}>${user.title||''}</div>
+                    ${titles}
                     ${mediaData}
+                    ${teamButtom}
                 </div>
             `;
         },
@@ -251,6 +362,43 @@ export default {
     },
     computed: {
         ...mapGetters(['project', 'organizationTree']),
+        height: {
+            get() {
+                if (!this.organizationTreeData || !this.root) {
+                    return 0;
+                }
+
+                if (!this.root.descendants() || !this.root.descendants().length) {
+                    return 0;
+                }
+
+                let levels = 0;
+                this.root.descendants().map((item) => {
+                    if (item.depth > levels) {
+                        levels = item.depth;
+                    }
+                });
+
+                return (levels + 1) * this.cellHeight + levels * this.cellSpacing;
+            },
+        },
+        teamListOffsetLeft: {
+            get() {
+                if (!this.activeTeamNode) {
+                    return '-9999px'; // no active no
+                }
+                let out = (this.pageOffsetLeft + this.gTranslateX + this.activeTeamNode.x - 120);
+                if (out < 0) {
+                    out = '-9999'; // hide when it's about to go outside the page
+                }
+                return out + 'px';
+            },
+        },
+        teamListOffsetTop: {
+            get() {
+                return (this.height + 60) + 'px';
+            },
+        },
     },
     mounted() {
         // allows us to use component scoped css on svg foreignObjects!
@@ -261,21 +409,31 @@ export default {
                 this.dataAttributes.push(attributes.item(c).name);
             }
         }
+
+        this.pageOffsetLeft = $('.project-organization.page-section').offset().left;
     },
     beforeDestroy() {
         this.clearOrganizationTree();
     },
     data() {
         return {
+            collapsedNodeLevel: 3,
+            bigCellLimit: 2,
             show: false,
             dataAttributes: [],
-            cellWidth: 272,
-            cellHeight: 350,
+            cellWidth: 222,
+            cellHeight: 300,
+            smallCellWidth: 222, // should be the same as cellWidth to for easy math :]
+            smallCellHeight: 225,
             cellSpacing: 50,
             initialized: false,
             id: 'pot' + this._uid,
             svg: null,
             g: null,
+            pageOffsetLeft: 0,
+            gTranslateX: 0,
+            teamList: '',
+            activeTeamNode: null,
             tree: null,
             root: null,
             organizationTreeData: {},
@@ -288,7 +446,78 @@ export default {
     @import '../../css/_variables';
     @import '../../css/_mixins';
 
+    .team-list-wrapper {
+        position: absolute;
+        z-index: 99999;
+
+        .arrow-up {
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid $darkColor;
+            width: 0;
+            height: 0;
+            margin-left: 220px;
+        }
+
+        ul.team-list {
+            width: 480px;
+            margin: 0;
+            padding: 0;
+            background: $darkColor;
+            box-shadow: 0px 5px 10px 10px $semiDarkColor;
+
+            li {
+                width: 450px;
+                margin: 15px;
+                text-align: left;
+                list-style: none;
+
+                &:not(:last-child) {
+                    border-bottom: 1px solid $secondDarkColor;
+                    padding-bottom: 15px;
+                }
+
+                .avatar {
+                    width: 60px;
+                    height: 60px;
+                    padding: 0;
+                    float: left;
+                }
+
+                .title {
+                    margin: 0 10px;
+                    text-align: left;
+                    width: 350px;
+                    display: inline-block;
+                }
+
+                .name {
+                    margin: 0 10px;
+                    text-align: left;
+                    width: 350px;
+                    display: inline-block;
+                }
+
+                .social-links {
+                    margin: 0 10px;
+                    text-align: left;
+                    width: 350px;
+                    display: inline-block;
+                    justify-content: left;
+                }
+            }
+        }
+    }
+
     .member-badge {
+        .social-links {
+            position: inherit;
+        }
+
+        button.active {
+            background: $middleColor;
+        }
+
         text-align: center;
         display: inline-block;
         margin: 10px;
@@ -326,6 +555,18 @@ export default {
             font-size: 10px;
             margin-top: 3px;
             color: $middleColor;
+            font-family: Poppins,sans-serif;
+        }
+
+        .btn-rounded.btn-empty {
+            padding: 0px 10px;
+            width: 100%;
+            line-height: 30px;
+            height: 30px;
+            font-size: 10px;
+            letter-spacing: 0px;
+            margin: 0;
+            color: $lighterColor;
         }
 
         &.small {
@@ -340,7 +581,7 @@ export default {
         }
 
         &.big {
-            width: 252px;
+            width: 200px;
         }
 
         &.first-member-badge {
@@ -358,10 +599,6 @@ export default {
             top: -40px;
             left: 50%;
         }
-    }
-
-    .st0 {
-        fill: $secondColor;
     }
 
     .social-links {
