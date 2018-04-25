@@ -11,14 +11,16 @@
             <div
                     v-for="(media, index) in inputValue"
                     class="attachment"
+                    v-if="media"
                     :key="index">
                 <view-icon/>
                 <span class="attachment-name">
-                    <a @click="getMediaFile(media)">{{ media.name }}</a>
+                    <a @click="getMediaFile(media)" v-if="media.id">{{ media.name }}</a>
+                    <span v-else>{{ media.name }}</span>
                 </span>
                 <i
                         class="fa fa-times"
-                        @click="onRemove(media)"
+                        @click="onRemove(index)"
                         v-if="!disabled"></i>
             </div>
         </div>
@@ -33,7 +35,6 @@
 <script>
     import ViewIcon from '../../../_common/_icons/ViewIcon';
     import Vue from 'vue';
-    import _ from 'lodash';
 
     export default {
         name: 'task-attachments',
@@ -73,17 +74,22 @@
                 this.$emit('input', this.inputValue);
                 e.target.value = '';
             },
-            onRemove(media) {
+            onRemove(index) {
                 if (this.disabled) {
                     return;
                 }
 
-                let index = _.findIndex(this.inputValue, ['id', media.id]);
+                let inputValue = [];
+                this.inputValue.forEach((value, key) => {
+                    if (key === index) {
+                        return;
+                    }
 
-                console.info(index);
-                Vue.delete(this.inputValue, index);
+                    inputValue[key] = value;
+                });
 
-                this.$emit('remove', media);
+                console.info(inputValue);
+                this.$emit('input', inputValue);
             },
             getMediaFile(media) {
                 if (!media.id) {
