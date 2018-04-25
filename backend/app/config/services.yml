@@ -170,6 +170,11 @@ services:
              - '@app.repository.work_package'
              - '@app.repository.rasci'
 
+    app.fs.resolver:
+        class: AppBundle\Services\FileSystemResolver
+        arguments:
+            - '@app.repository.filesytem'
+
 ### REPOSITORIES ###
     app.repository.work_package:
         class: AppBundle\Repository\WorkPackageRepository
@@ -224,6 +229,18 @@ services:
         arguments: ~
         tags:
             - { name: app.repository, class: AppBundle\Entity\Measure }
+
+    app.repository.filesytem:
+        class: AppBundle\Repository\FileSystemRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\FileSystem }
+
+    app.repository.media:
+        class: AppBundle\Repository\MediaRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Media }
 
 ### MENU BUILDER ###
     app.admin.menu.builder:
@@ -317,12 +334,11 @@ services:
             - { name: doctrine.event_listener, event: onFlush }
 
     app.listener.media:
-        class: AppBundle\EventListener\MediaListener
+        class: AppBundle\EventListener\MediaSubscriber
         arguments:
             - '@app.service.filesystem'
         tags :
-            - { name: doctrine.event_listener, event: prePersist }
-            - { name: doctrine.event_listener, event: preRemove }
+            - { name: doctrine.event_subscriber }
 
     app.listener.filesystem:
         class: AppBundle\EventListener\FilesystemListener
