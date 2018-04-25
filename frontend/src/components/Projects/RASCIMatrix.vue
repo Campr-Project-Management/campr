@@ -157,7 +157,9 @@ export default {
             return !disabled && (this.activeElement = index);
         },
         closeRasciModal(event) {
-            console.log(event.keyCode);
+            if(event.keyCode == 27) {
+                this.activeElement = '';
+            }
         },
     },
     computed: {
