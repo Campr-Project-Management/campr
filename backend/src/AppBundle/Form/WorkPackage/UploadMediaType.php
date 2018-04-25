@@ -9,14 +9,23 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Validator\Constraints\File as FileConstaint;
 
 class UploadMediaType extends AbstractType
 {
+    /**
+     * @var TokenStorage
+     */
     private $tokenStorage;
 
+    /**
+     * UploadMediaType constructor.
+     *
+     * @param TokenStorage $tokenStorage
+     */
     public function __construct(TokenStorage $tokenStorage)
     {
         $this->tokenStorage = $tokenStorage;
@@ -39,14 +48,20 @@ class UploadMediaType extends AbstractType
             ->addEventListener(
                 FormEvents::SUBMIT,
                 function (FormEvent $event) {
+                    /** @var Media $media */
                     $media = $event->getData();
+
+                    /** @var UploadedFile $file */
                     $file = $media->getFile();
-                    if ($file) {
-                        $media->setUser($this->tokenStorage->getToken()->getUser());
-                        $media->setPath($file->getClientOriginalName());
-                        $media->setMimeType($file->getMimeType());
-                        $media->setFileSize($file->getSize());
+                    if (!$file) {
+                        return;
                     }
+
+                    $media->setUser($this->tokenStorage->getToken()->getUser());
+                    $media->setOriginalName($file->getClientOriginalName());
+                    $media->setPath($file->getClientOriginalName());
+                    $media->setMimeType($file->getMimeType());
+                    $media->setFileSize($file->getSize());
                 }
             )
         ;

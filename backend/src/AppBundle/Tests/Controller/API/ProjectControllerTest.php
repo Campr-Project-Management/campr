@@ -1194,30 +1194,37 @@ class ProjectControllerTest extends BaseController
         $this->client->request('GET', '/api/projects/1/meetings', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
         $response = $this->client->getResponse();
 
-        $responseArray = json_decode($response->getContent(), true);
-        $responseContent['items'][0]['createdAt'] = $responseArray['items'][0]['createdAt'];
-        $responseContent['items'][0]['updatedAt'] = $responseArray['items'][0]['updatedAt'];
-        foreach ($responseArray['items'][0]['meetingParticipants'] as $key => $participant) {
+        $actual = json_decode($response->getContent(), true);
+        $responseContent['items'][0]['createdAt'] = $actual['items'][0]['createdAt'];
+        $responseContent['items'][0]['updatedAt'] = $actual['items'][0]['updatedAt'];
+        foreach ($actual['items'][0]['meetingParticipants'] as $key => $participant) {
             $responseContent['items'][0]['meetingParticipants'][$key]['userAvatar'] = $participant['userAvatar'];
         }
-        foreach ($responseArray['items'][0]['meetingAgendas'] as $key => $agenda) {
+        foreach ($actual['items'][0]['meetingAgendas'] as $key => $agenda) {
             $responseContent['items'][0]['meetingAgendas'][$key]['responsibilityAvatar'] = $agenda['responsibilityAvatar'];
         }
-        foreach ($responseArray['items'][0]['decisions'] as $key => $decision) {
+        foreach ($actual['items'][0]['decisions'] as $key => $decision) {
             $responseContent['items'][0]['decisions'][$key]['responsibilityAvatar'] = $decision['responsibilityAvatar'];
         }
-        foreach ($responseArray['items'][0]['todos'] as $key => $todo) {
+        foreach ($actual['items'][0]['todos'] as $key => $todo) {
             $responseContent['items'][0]['todos'][$key]['responsibilityAvatar'] = $todo['responsibilityAvatar'];
         }
-        foreach ($responseArray['items'][0]['infos'] as $key => $info) {
+        foreach ($actual['items'][0]['infos'] as $key => $info) {
             $responseContent['items'][0]['infos'][$key]['createdAt'] = $info['createdAt'];
             $responseContent['items'][0]['infos'][$key]['updatedAt'] = $info['updatedAt'];
             $responseContent['items'][0]['infos'][$key]['responsibilityAvatar'] = $info['responsibilityAvatar'];
         }
 
+        foreach ($actual['items'][0]['medias'] as $key => $info) {
+            $responseContent['items'][0]['medias'][$key]['fileName'] = $info['path'];
+            $responseContent['items'][0]['medias'][$key]['path'] = $info['path'];
+            $responseContent['items'][0]['medias'][$key]['name'] = $info['name'];
+            $responseContent['items'][0]['medias'][$key]['originalName'] = $info['originalName'];
+        }
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -1307,6 +1314,8 @@ class ProjectControllerTest extends BaseController
                                     'mimeType' => 'inode/x-empty',
                                     'fileSize' => 0,
                                     'createdAt' => '2017-01-01 00:00:00',
+                                    'name' => null,
+                                    'originalName' => null,
                                 ],
                             ],
                             'decisions' => [
