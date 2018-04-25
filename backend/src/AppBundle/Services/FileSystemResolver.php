@@ -3,8 +3,8 @@
 namespace AppBundle\Services;
 
 use AppBundle\Entity\FileSystem;
-use AppBundle\Entity\Project;
 use AppBundle\Repository\FileSystemRepository;
+use Component\Model\FileSystemAwareInterface;
 
 class FileSystemResolver
 {
@@ -24,27 +24,27 @@ class FileSystemResolver
     }
 
     /**
-     * @param Project $project
+     * @param FileSystemAwareInterface $object
      *
      * @return FileSystem
      */
-    public function resolve(Project $project)
+    public function resolve(FileSystemAwareInterface $object)
     {
-        $fs = $project
-            ->getFileSystems()
-            ->filter(
-                function (FileSystem $fs) {
-                    return FileSystem::LOCAL_ADAPTER === $fs->getDriver();
-                }
-            )
-            ->first()
-        ;
-
-        if ($fs) {
-            return $fs;
+        $fs = $object->getFileSystem();
+        if (!$fs) {
+            $fs = $this->getDefaultFileSystem();
         }
 
-        return $this
+        return $fs;
+    }
+
+    /**
+     * @return FileSystem
+     */
+    private function getDefaultFileSystem(): FileSystem
+    {
+        /** @var FileSystem $fs */
+        $fs = $this
             ->repository
             ->findOneBy(
                 [
@@ -52,5 +52,7 @@ class FileSystemResolver
                 ]
             )
         ;
+
+        return $fs;
     }
 }

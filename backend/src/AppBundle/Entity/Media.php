@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Component\Model\FileSystemAwareInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -13,7 +14,7 @@ use Symfony\Component\HttpFoundation\File\File;
  * @ORM\Table(name="media")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MediaRepository")
  */
-class Media
+class Media implements FileSystemAwareInterface
 {
     /**
      * @var int
@@ -550,5 +551,13 @@ class Media
         }
 
         return (string) $this->getOriginalName();
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasFileSystem()
+    {
+        return (bool) $this->getFileSystem();
     }
 }
