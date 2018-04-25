@@ -97,7 +97,14 @@ class WorkPackageController extends BaseController
      */
     public function createAction(Request $request)
     {
-        $form = $this->createForm(CreateType::class, new WorkPackage());
+        $form = $this->createForm(
+            CreateType::class,
+            new WorkPackage(),
+            [
+                'validation_groups' => ['Default', 'create'],
+            ]
+        );
+
         $form->handleRequest($request);
 
         if ($request->isXmlHttpRequest()) {
@@ -151,7 +158,12 @@ class WorkPackageController extends BaseController
      */
     public function editAction(Request $request, WorkPackage $workPackage)
     {
-        $form = $this->createForm(CreateType::class, $workPackage);
+        $form = $this->createForm(
+            CreateType::class,
+            $workPackage,
+            ['validation_groups' => ['Default', 'edit']]
+        );
+
         $form->handleRequest($request);
         if ($request->isXmlHttpRequest()) {
             $html = $this->renderView(

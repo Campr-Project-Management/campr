@@ -5,7 +5,6 @@
         <div v-for="(item, index) in value.items">
             <div class="row">
                 <div class="form-group">
-                    {{ item.resource }}
                     <div class="col-md-6">
                         <select-field
                             :title="label.resource"
