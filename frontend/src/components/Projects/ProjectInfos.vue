@@ -41,7 +41,7 @@
                                 <td>{{ info.id }}</td>
                                 <td>{{ translateText(info.infoCategoryName) }}</td>
                                 <td :style="{color: info.infoStatusColor}">{{ translateText(info.infoStatusName) }}</td>
-                                <td>{{ displayDate(info) }}</td>
+                                <td>{{ info.dueDate | date }}</td>
                                 <td class="cell-wrap">{{ info.topic }}</td>
                                 <td>
                                     <div
@@ -111,31 +111,6 @@ export default {
         translateText: function(text) {
             return this.translate(text);
         },
-        displayDate({dueDate}) {
-            if (!dueDate) {
-                return '-';
-            }
-
-            const dt = new Date(dueDate);
-            if (isNaN(dt.getTime())) {
-                return '-';
-            }
-            const out = [dt.getFullYear()];
-            let month = dt.getMonth() + 1;
-            let day = dt.getDay();
-
-            if (month < 10) {
-                month = '0' + month;
-            }
-            if (day < 10) {
-                day = '0' + day;
-            }
-
-            out.push(month);
-            out.push(day);
-
-            return out.join('-');
-        },
         setFiltersUser(val) {
             if (_.isArray(val) && val.length) {
                 this.setInfoFiltersUser({user: val[0]});
@@ -146,10 +121,6 @@ export default {
         },
         setFiltersInfoStatus(infoStatus) {
             this.setInfoFiltersInfoStatus({infoStatus});
-            this.getInfosByProject({id: this.$route.params.id});
-        },
-        setFiltersInfoCategory(infoCategory) {
-            this.setInfoFiltersInfoCategory({infoCategory});
             this.getInfosByProject({id: this.$route.params.id});
         },
         setFiltersInfoCategory(infoCategory) {

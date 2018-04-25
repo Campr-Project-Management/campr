@@ -81,42 +81,46 @@
                 <div class="task-description" v-html="task.content"></div>
                 <!-- /// End Task Description /// -->
 
-                <hr class="double">
+                <template v-if="task.children && task.children.length > 0">
+                    <hr class="double">
+                    <!-- ///Subtasks /// -->
+                    <h3>{{ translateText('message.subtasks') }} | {{ getSubtaskSummary() }} {{ translateText('label.completed') }}</h3>
+                    <div class="subtasks">
+                        <div
+                                v-for="subtask in task.children"
+                                :key="subtask.id"
+                                class="subtask flex flex-space-between">
+                            <div class="checkbox-input clearfix">
+                                <input
+                                        :id="`subtask-${subtask.id}`"
+                                        type="checkbox"
+                                        :value="subtask.id"
+                                        v-model="completedSubtasksIds"
+                                        @change="onSubtaskStatusChange"/>
+                                <label :for="`subtask-${subtask.id}`">{{ subtask.name }}</label>
+                            </div>
+                            <div>
+                                <div class="text-right">
+                                    <router-link
+                                            :to="{name: 'project-task-management-edit', params: {id: task.project, taskId: subtask.id}}"
+                                            class="btn-icon">
+                                        <edit-icon fill="second-fill"/>
+                                    </router-link>
 
-                <!-- ///Subtasks /// -->
-                <h3>{{ translateText('message.subtasks') }} | {{ getSubtaskSummary() }} {{ translateText('label.completed') }}</h3>
-                <div class="subtasks">
-                    <div v-for="subtask in task.children" :key="subtask.id" class="subtask flex flex-space-between">
-                        <div class="checkbox-input clearfix">
-                            <input
-                                    :id="`subtask-${subtask.id}`"
-                                    type="checkbox"
-                                    :value="subtask.id"
-                                    v-model="completedSubtasksIds"
-                                    @change="onSubtaskStatusChange"/>
-                            <label :for="`subtask-${subtask.id}`">{{ subtask.name }}</label>
-                        </div>
-                        <div>
-                            <div class="text-right">
-                                <router-link
-                                        :to="{name: 'project-task-management-edit', params: {id: task.project, taskId: subtask.id}}"
-                                        class="btn-icon">
-                                    <edit-icon fill="second-fill"/>
-                                </router-link>
-
-                                <button
-                                        @click="showDeleteModal = subtask.id;"
-                                        data-target="#subtask1-delete-modal"
-                                        data-toggle="modal"
-                                        type="button"
-                                        class="btn-icon">
-                                    <delete-icon fill="danger-fill"/>
-                                </button>
+                                    <button
+                                            @click="showDeleteModal = subtask.id;"
+                                            data-target="#subtask1-delete-modal"
+                                            data-toggle="modal"
+                                            type="button"
+                                            class="btn-icon">
+                                        <delete-icon fill="danger-fill"/>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- /// End Subtasks /// -->
+                    <!-- /// End Subtasks /// -->
+                </template>
 
                 <hr class="double">
 
@@ -490,7 +494,10 @@
 
                     <!-- /// Task Attachmets /// -->
 
-                    <attachments v-on:input="updateMedias" v-bind:editMedias="editableData.medias" v-model="editableData.medias" />
+                    <attachments
+                            @input="onUpdateAttachments"
+                            :disabled="disableAttachments"
+                            v-model="editableData.medias"/>
                     <!-- /// End Task Attachments /// -->
                     <hr class="double">
 
@@ -499,7 +506,7 @@
                     <div class="row">
                         <div class="col-md-8">
                             <div class="task-label-holder flex flex-v-center">
-                                <div  v-if="editableData.label">
+                                <div v-if="editableData.label">
                                     <div class="task-label" :style="'background-color:' + editableData.label.color">
                                         {{editableData.label.label}}
                                     </div>
@@ -568,6 +575,7 @@ const TASK_STATUS_ONGOING = 3;
 const TASK_STATUS_COMPLETED = 4;
 
 export default {
+    name: 'task-view',
     components: {
         EditStatusModal,
         TaskViewAssignments,
@@ -620,7 +628,7 @@ export default {
             return this.task.isClosed;
         },
         taskProgressEditIsDisabled() {
-            return (this.task.parent == null && this.task.noSubtasks > 0) || this.task.isClosed;
+            return this.task.isClosed;
         },
         completedSubtasksCount() {
             if (!this.task || !this.task.children) {
@@ -754,6 +762,7 @@ export default {
             'getWorkPackageStatusesForSelect',
             'getProjectLabels',
             'patchTask',
+            'uploadAttachmentTask',
             'patchSubtask',
             'editTaskCost',
         ]),
@@ -817,69 +826,31 @@ export default {
             let total = item.rate * item.quantity * duration;
             return !isNaN(total) ? total : 0;
         },
-        updateMedias() {
+        onUpdateAttachments() {
+            this.disableAttachments = true;
             let data = {
-                project: this.$route.params.id,
-                name: this.task.name,
-                type: 2,
-                description: this.task.content,
-                schedule: this.editableData.schedule,
-                details: {
-                    assignee: this.task.responsibility
-                        ? {key: this.task.responsibility, label: this.task.responsibilityFullName}
-                        : null,
-                    accountable: this.task.accountability
-                        ? {key: this.task.accountability, label: this.task.accountabilityFullName}
-                        : null,
-                    supportUsers: this.editableData.assignments.supportUsers,
-                    consultedUsers: this.editableData.assignments.consultedUsers,
-                    informedUsers: this.editableData.assignments.informedUsers,
-                    status: this.task.workPackageStatus
-                        ? {key: this.task.workPackageStatus, label: ''}
-                        : null,
-                    label: this.task.label
-                        ? {key: this.task.label, label: this.task.labelName}
-                        : null,
-                },
-                planning: {
-                    milestone: this.task.milestone
-                        ? {key: this.task.milestone.toString(), label: this.task.milestoneName}
-                        : null,
-                    phase: this.task.phase
-                        ? {key: this.task.phase.toString(), label: this.task.phaseName}
-                        : null,
-                    parent: this.task.parent
-                        ? {key: this.task.parent.toString(), label: this.task.parentName}
-                        : null,
-                },
-                internalCosts: {items: [], actual: 0, forecast: 0},
-                externalCosts: {items: [], actual: 0, forecast: 0},
-                subtasks: [],
                 medias: this.editableData.medias,
-                statusColor: {id: this.task.colorStatus},
             };
 
             this
-                .editTask({
+                .uploadAttachmentTask({
                     data: createFormData(data),
                     taskId: this.$route.params.taskId,
                 })
                 .then(
                     (response) => {
+                        this.disableAttachments = false;
+
                         if (response.body && response.body.error && response.body.messages) {
                             this.fileUploadErrorMessage = response.body.messages.medias;
                             this.showFileUploadFailed = true;
-                            this.editableData.medias.pop();
-                        } else if (response.status == 0) {
+                            return;
+                        }
+
+                        if (response.status === 0) {
                             this.fileUploadErrorMessage = this.translateText('message.uploading_file_failed');
                             this.showFileUploadFailed = true;
-                            this.editableData.medias.pop();
                         }
-                    },
-                    () => {
-                        this.fileUploadErrorMessage = this.translateText('message.uploading_file_failed');
-                        this.showFileUploadFailed = true;
-                        this.editableData.medias.pop();
                     }
                 )
             ;
@@ -1165,6 +1136,7 @@ export default {
             completedSubtasksIds: [],
             newComment: '',
             updatingAssignments: false,
+            disableAttachments: false,
         };
     },
 };
