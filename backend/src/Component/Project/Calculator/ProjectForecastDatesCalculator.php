@@ -1,23 +1,21 @@
 <?php
 
-namespace Component\WorkPackage\Calculator;
+namespace Component\Project\Calculator;
 
-use AppBundle\Entity\WorkPackage;
+use AppBundle\Entity\Project;
 use AppBundle\Repository\WorkPackageRepository;
 use Component\Date\DateRange;
 use Component\Date\DateRangeInterface;
-use Component\Repository\RepositoryInterface;
-use Webmozart\Assert\Assert;
 
-class PhaseActualDatesCalculator implements DateRangeCalculatorInterface
+class ProjectForecastDatesCalculator implements DateRangeCalculatorInterface
 {
     /**
-     * @var RepositoryInterface
+     * @var WorkPackageRepository
      */
     private $workPackageRepository;
 
     /**
-     * PhaseActualDatesCalculator constructor.
+     * ProjectActualDatesCalculator constructor.
      *
      * @param WorkPackageRepository $workPackageRepository
      */
@@ -27,16 +25,14 @@ class PhaseActualDatesCalculator implements DateRangeCalculatorInterface
     }
 
     /**
-     * @param WorkPackage $workPackage
+     * @param Project $project
      *
      * @return DateRangeInterface
      */
-    public function calculate(WorkPackage $workPackage): DateRangeInterface
+    public function calculate(Project $project): DateRangeInterface
     {
-        Assert::true($workPackage->isPhase(), 'Task is not a phase');
-
-        $startAt = $this->workPackageRepository->getPhaseActualStartDate($workPackage);
-        $finishAt = $this->workPackageRepository->getPhaseActualFinishDate($workPackage);
+        $startAt = $this->workPackageRepository->getProjectForecastStartAt($project);
+        $finishAt = $this->workPackageRepository->getProjectForecastFinishAt($project);
 
         if ($startAt) {
             $startAt = new \DateTime($startAt);
