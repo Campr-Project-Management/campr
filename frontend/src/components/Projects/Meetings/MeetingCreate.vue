@@ -346,13 +346,8 @@
                                         :title="translate('label.select_status')"
                                         :options="infoStatusesForDropdown"
                                         v-model="info.infoStatus"
-<<<<<<< HEAD
-                                        :currentOption="info.infoStatus" />
-                                    <div v-if="validationMessages.infos && validationMessages.infoStatus[index.toString()]">
-=======
                                         v-bind:currentOption="info.infoStatus" />
                                     <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
->>>>>>> e81778b... updated create meeting validation
                                         <error
                                             v-if="validationMessages.infos[index.toString()].infoStatus && validationMessages.infos[index.toString()].infoStatus.length"
                                             v-for="(message, index) in validationMessages.infos[index.toString()].infoStatus"
@@ -365,13 +360,8 @@
                                         :title="'label.category'"
                                         :options="infoCategoriesForDropdown"
                                         v-model="info.infoCategory"
-<<<<<<< HEAD
-                                        :currentOption="info.infoCategory" />
-                                    <div v-if="validationMessages.infos && validationMessages.infoCategory[index.toString()]">
-=======
                                         v-bind:currentOption="info.infoCategory" />
                                     <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
->>>>>>> e81778b... updated create meeting validation
                                         <error
                                             v-if="validationMessages.infos[index.toString()].infoCategory && validationMessages.infos[index.toString()].infoCategory.length"
                                             v-for="(message, index) in validationMessages.infos[index.toString()].infoCategory"
