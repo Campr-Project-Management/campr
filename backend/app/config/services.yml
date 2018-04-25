@@ -149,6 +149,21 @@ services:
         arguments:
             - '@app.repository.work_package'
 
+    app.calculator.project_scheduled_dates:
+        class: Component\Project\Calculator\ProjectScheduledDatesCalculator
+        arguments:
+            - '@app.repository.work_package'
+
+    app.calculator.project_forecast_dates:
+        class: Component\Project\Calculator\ProjectForecastDatesCalculator
+        arguments:
+            - '@app.repository.work_package'
+
+    app.calculator.project_actual_dates:
+        class: Component\Project\Calculator\ProjectActualDatesCalculator
+        arguments:
+            - '@app.repository.work_package'
+
     app.formatter.money:
         class: AppBundle\Formatter\MoneyFormatter
 
@@ -224,6 +239,12 @@ services:
         arguments: ~
         tags:
             - { name: app.repository, class: AppBundle\Entity\Measure }
+
+    app.repository.project:
+        class: AppBundle\Repository\ProjectRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Project }
 
 ### MENU BUILDER ###
     app.admin.menu.builder:
@@ -379,7 +400,7 @@ services:
             - '@app.service.workpackage_rasci_sync'
             - '@app.repository.work_package'
             - '@app.repository.work_package_status'
-            - '@app.calculator.phase_actual_dates'
+            - '@event_dispatcher'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -387,6 +408,13 @@ services:
         class: AppBundle\EventListener\RasciSubscriber
         arguments:
             - '@app.service.rasci_workpackage_sync'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    app.subscriber.recalculate_phase_dates:
+        class: AppBundle\EventListener\RecalculatePhaseDatesSubscriber
+        arguments:
+            - '@app.calculator.phase_actual_dates'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -514,3 +542,14 @@ services:
             - '%kernel.environment%'
         tags:
             - { name: routing.loader }
+
+### SERIALIZER ###
+    app.serializer.listener.project:
+        class: AppBundle\Serializer\EventListener\ProjectSubscriber
+        arguments:
+             - '@app.calculator.project_scheduled_dates'
+             - '@app.calculator.project_forecast_dates'
+             - '@app.calculator.project_actual_dates'
+        tags:
+            - { name: jms_serializer.event_subscriber }
+
