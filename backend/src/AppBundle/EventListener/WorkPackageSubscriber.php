@@ -173,9 +173,9 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @return WorkPackageStatus
+     * @return WorkPackageStatus|null
      */
-    private function getWorkPackageClosedStatus(): WorkPackageStatus
+    private function getWorkPackageClosedStatus()
     {
         /** @var WorkPackageStatus $status */
         foreach ($this->workPackageStatusRepository->findAll() as $status) {
