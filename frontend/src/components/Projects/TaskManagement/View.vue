@@ -908,12 +908,8 @@ export default {
         },
         onSaveSchedule(schedule) {
             let data = {
-                scheduledStartAt: moment(schedule.baseStartDate).format('DD-MM-YYYY'),
-                scheduledFinishAt: moment(schedule.baseEndDate).format('DD-MM-YYYY'),
                 forecastStartAt: moment(schedule.forecastStartDate).format('DD-MM-YYYY'),
                 forecastFinishAt: moment(schedule.forecastEndDate).format('DD-MM-YYYY'),
-                automaticSchedule: schedule.automatic,
-                duration: schedule.duration,
                 dependants: schedule.successors.map((item) => {
                     return item.key;
                 }),
