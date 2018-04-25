@@ -1375,7 +1375,6 @@ class ProjectController extends ApiController
         );
         $this->processForm($request, $form);
 
-        // @TODO: Make filesystem selection dynamic
         $em = $this->getDoctrine()->getManager();
         $fileSystem = $project
             ->getFileSystems()
