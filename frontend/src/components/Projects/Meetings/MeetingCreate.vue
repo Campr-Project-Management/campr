@@ -246,11 +246,13 @@
                                 height="200px"
                                 label="placeholder.todo_description"
                                 v-model="todo.description" />
+                            <div v-if="validationMessages.todos && validationMessages.todos[index.toString()]">
                             <error
                                 v-if="validationMessages.todos[index.toString()].description && validationMessages.todos[index.toString()].description.length"
                                 v-for="(message, index) in validationMessages.todos[index.toString()].description"
                                 :key="`todo-description-${index}`"
                                 :message="message" />
+                            </div>
                         </div>
                         <div class="row">
                             <div class="form-group">
