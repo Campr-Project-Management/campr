@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Component\Model\FileSystemAwareInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -13,7 +14,7 @@ use Symfony\Component\HttpFoundation\File\File;
  * @ORM\Table(name="media")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MediaRepository")
  */
-class Media
+class Media implements FileSystemAwareInterface
 {
     /**
      * @var int
@@ -70,6 +71,13 @@ class Media
     private $path;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="original_name", type="string", length=128, nullable=true)
+     */
+    private $originalName;
+
+    /**
      * @var File
      *
      * @Serializer\Exclude()
@@ -105,7 +113,7 @@ class Media
     private $measures;
 
     /**
-     * @var MeasureComments[]|ArrayCollection
+     * @var MeasureComment[]|ArrayCollection
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\MeasureComment", mappedBy="medias")
      * @Serializer\Exclude()
      */
@@ -513,5 +521,43 @@ class Media
     public function getFileName()
     {
         return basename($this->path);
+    }
+
+    /**
+     * @return string
+     */
+    public function getOriginalName()
+    {
+        return (string) $this->originalName;
+    }
+
+    /**
+     * @param string $originalName
+     */
+    public function setOriginalName(string $originalName = null)
+    {
+        $this->originalName = $originalName;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        if (empty($this->getOriginalName())) {
+            return (string) $this->getPath();
+        }
+
+        return (string) $this->getOriginalName();
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasFileSystem()
+    {
+        return (bool) $this->getFileSystem();
     }
 }

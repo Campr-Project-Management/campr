@@ -1,108 +1,143 @@
 <template>
-    <div>
-        <h3>{{ message.attachments }}</h3>
+    <div :class="{disabled: disabled}">
+        <h3>{{ translate('message.attachments') }}</h3>
         <input
-            id="attachments"
-            type="file"
-            name="attachments"
-            style="display: none;"
-            v-on:change="updateMedias" />
+                id="attachments"
+                type="file"
+                name="attachments"
+                style="display: none;"
+                @change="onChange"/>
         <div class="attachments">
-            <div v-for="media, index in medias" class="attachment">
-                <view-icon />
-                <span class="attachment-name"><a @click="getMediaFile(media)">{{ media.name || media.path }}</a></span>
-                <i class="fa fa-times" v-on:click="deleteMedia(index);"></i>
+            <div
+                    v-for="(media, index) in inputValue"
+                    class="attachment"
+                    v-if="media"
+                    :key="index">
+                <view-icon/>
+                <span class="attachment-name">
+                    <a @click="getMediaFile(media)" v-if="media.id">{{ media.name }}</a>
+                    <span v-else>{{ media.name }}</span>
+                </span>
+                <i
+                        class="fa fa-times"
+                        @click="onRemove(index)"
+                        v-if="!disabled"></i>
             </div>
         </div>
         <div class="text-center">
-            <a class="btn-rounded btn-empty btn-md" v-on:click="openFileSelection">{{ button.add_attachment }}</a>
+            <a
+                    class="btn-rounded btn-empty btn-md"
+                    @click="onAdd">{{ translate('button.add_attachment') }}</a>
         </div>
     </div>
 </template>
 
 <script>
-import ViewIcon from '../../../_common/_icons/ViewIcon';
-import Vue from 'vue';
+    import ViewIcon from '../../../_common/_icons/ViewIcon';
+    import Vue from 'vue';
 
-export default {
-    props: {
-        editMedias: {
-            'type': Array,
-            'default': [],
+    export default {
+        name: 'task-attachments',
+        props: {
+            value: {
+                'type': Array,
+                'default': () => [],
+            },
+            disabled: {
+                type: Boolean,
+                required: false,
+                default: false,
+            },
         },
-    },
-    components: {
-        ViewIcon,
-    },
-    methods: {
-        openFileSelection: function() {
-            document.getElementById('attachments').click();
+        components: {
+            ViewIcon,
         },
-        updateMedias: function(e) {
-            let files = e.target.files || e.dataTransfer.files;
-            if (!files.length) {
-                return;
-            }
+        methods: {
+            onAdd() {
+                if (this.disabled) {
+                    return;
+                }
 
-            let newFiles = [];
-            this.medias.map((item) => {
-                newFiles.push(item);
-            });
-            newFiles.push(files[0]);
+                document.getElementById('attachments').click();
+            },
+            onChange(e) {
+                if (this.disabled) {
+                    return;
+                }
 
-            this.$emit('input', newFiles);
-        },
-        deleteMedia: function(index) {
-            let newFiles = [
-                ...this.medias.slice(0, index),
-                ...this.medias.slice(index + 1),
-            ];
+                let files = e.target.files || e.dataTransfer.files;
+                if (!files.length) {
+                    return;
+                }
 
-            this.$emit('input', newFiles);
-        },
-        getMediaFile: function(media) {
-            if(media.id == undefined) {
-                return;
-            }
-            Vue.http
-            .get(Routing.generate('app_api_media_download', {id: media.id})).then((response) => {
-                if (response.status === 200) {
-                    let blob = new Blob([response.body], {type: 'mime/type'});
+                this.inputValue.push(files[0]);
+                this.$emit('input', this.inputValue);
+                e.target.value = '';
+            },
+            onRemove(index) {
+                if (this.disabled) {
+                    return;
+                }
+
+                let inputValue = [];
+                this.inputValue.forEach((value, key) => {
+                    if (key === index) {
+                        return;
+                    }
+
+                    inputValue[key] = value;
+                });
+
+                console.info(inputValue);
+                this.$emit('input', inputValue);
+            },
+            getMediaFile(media) {
+                if (!media.id) {
+                    return;
+                }
+
+                const url = Routing.generate('app_api_media_download', {id: media.id});
+                Vue.http.get(url, {responseType: 'blob'}).then((response) => {
+                    if (response.status !== 200) {
+                        return;
+                    }
+
+                    let options = {};
+                    if (response.headers && response.headers.map && response.headers.map['content-type']) {
+                        options.type = response.headers.map['content-type'][0];
+                    }
+
+                    let blob = new Blob([response.body], options);
                     let link = document.createElement('a');
                     link.href = window.URL.createObjectURL(blob);
-                    link.download = media.fileName;
+                    link.download = media.originalName;
                     link.click();
-                }
-            }, (response) => {
-            });
-        },
-    },
-    created() {
-        this.medias = this.editMedias;
-    },
-    watch: {
-        editMedias(value) {
-            this.medias = this.editMedias;
-        },
-    },
-    data: function() {
-        return {
-            button: {
-                add_attachment: this.translate('button.add_attachment'),
+                });
             },
-            message: {
-                attachments: this.translate('message.attachments'),
+        },
+        watch: {
+            value(value) {
+                this.inputValue = [...value];
             },
-            medias: [],
-        };
-    },
-};
+        },
+        data() {
+            return {
+                inputValue: [],
+            };
+        },
+    };
 </script>
 
 <style scoped lang="scss">
     @import '../../../../css/_variables';
     @import '../../../../css/_mixins';
     @import '../../../../css/_common';
+
+    .disabled {
+        * {
+            cursor: not-allowed !important;
+        }
+    }
 
     .attachments {
         margin: 0 0 20px;
