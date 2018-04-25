@@ -137,7 +137,7 @@ export default {
         },
         cancelRescheduleModal: function() {
             this.showRescheduleModal = false;
-            this.reschedule.date = new Date(this.currentDecision.date);
+            this.reschedule.date = this.currentDecision.date ? moment(this.currentDecision.date).toDate() : null;
             this.reschedule.dueDate = new Date(this.currentDecision.dueDate);
         },
         removeDecision: function() {
@@ -161,14 +161,14 @@ export default {
             showDeleteModal: false,
             showRescheduleModal: false,
             reschedule: {
-                date: new Date(),
-                dueDate: new Date(),
+                date: moment().toDate(),
+                dueDate: moment().toDate(),
             },
         };
     },
     watch: {
         currentDecision(val) {
-            this.reschedule.date = new Date(this.currentDecision.date);
+            this.reschedule.date = this.currentDecision.date ? moment(this.currentDecision.date).toDate() : null;
             this.reschedule.dueDate = new Date(this.currentDecision.dueDate);
         },
     },
