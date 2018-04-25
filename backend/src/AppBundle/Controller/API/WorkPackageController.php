@@ -113,33 +113,6 @@ class WorkPackageController extends ApiController
     }
 
     /**
-     * Delete attachment.
-     *
-     * @Route("/{id}/attachments/{mediaId}", name="app_api_workpackage_attachment_delete", options={"expose"=true})
-     * @Method({"DELETE"})
-     *
-     * @param WorkPackage $wp
-     * @param int         $mediaId
-     *
-     * @return JsonResponse
-     */
-    public function deleteAttachmentAction(WorkPackage $wp, int $mediaId)
-    {
-        $this->denyAccessUnlessGranted(WorkPackageVoter::EDIT, $wp);
-
-        $media = $this->findMediaOr404($mediaId);
-
-        $wp->removeMedia($media);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($media);
-        $em->persist($wp);
-        $em->flush();
-
-        return $this->createApiResponse($wp);
-    }
-
-    /**
      * Upload attachment.
      *
      * @Route("/{id}/attachments", name="app_api_workpackage_attachments", options={"expose"=true})
@@ -248,6 +221,11 @@ class WorkPackageController extends ApiController
             if (!$wp->getCosts()->contains($originalCost)) {
                 $em->remove($originalCost);
             }
+        }
+
+        $fs = $this->getFileSystem($wp->getProject());
+        foreach ($wp->getMedias() as $media) {
+            $media->setFileSystem($fs);
         }
 
         $this->dispatchEvent(WorkPackageEvents::PRE_UPDATE, new WorkPackageEvent($wp));

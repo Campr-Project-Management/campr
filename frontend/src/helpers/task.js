@@ -58,14 +58,14 @@ export const createFormData = (data) => {
 
     // Attachments
     if (data.medias && data.medias.length) {
-        for (let i = 0; i < data.medias.length; i++) {
-            formData.append(
-                'medias[' + i + '][file]',
-                data.medias[i] instanceof window.File
-                    ? data.medias[i]
-                    : ''
-            );
-        }
+        data.medias.forEach((media, index) => {
+            if (!media) {
+                return;
+            }
+
+            formData.append('medias[' + index + '][file]',
+                media instanceof window.File ? media : '');
+        });
     }
 
     if (data.externalCosts) {
