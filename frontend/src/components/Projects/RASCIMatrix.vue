@@ -94,8 +94,8 @@
                                         :second-to-last="userIndex + 2 === workPackage.rasci.length"
                                         :value="user.data"
                                         v-bind:activeElem="activeElement"
-                                        :index="workPackage.name + workPackage.id + userIndex"
-                                        @handleClick="openRasciModal(false, $event )"
+                                        :elementKey="generateElementKey(workPackage.name + workPackage.id + userIndex)"
+                                        @handleClick="openRasciModal(false, generateElementKey(workPackage.name + workPackage.id + userIndex) )"
                                         @input="setRaciData({project: workPackage.project, user: user.user, workPackage: workPackage.id, userObj:user, data: $event})"/>
                             </td>
                             <td class="rasci-cell last-cell"></td>
@@ -146,6 +146,12 @@ export default {
 
             return user.gravatar;
         },
+        generateElementKey(string) {
+            string = string.toLowerCase();
+            string = string.replace(/\s*$/g, '');
+            string = string.replace(/\s+/g, '-');
+            return string;
+        },
         handleScroll() {
             if (window.scrollY >= document.getElementsByTagName('header')[0].offsetHeight) {
                 document.getElementsByClassName('rasci-matrix')[0].classList.add('rasci-matrix__fixed');
@@ -153,8 +159,8 @@ export default {
                 document.getElementsByClassName('rasci-matrix')[0].classList.remove('rasci-matrix__fixed');
             }
         },
-        openRasciModal(disabled, index) {
-            return !disabled && (this.activeElement = index);
+        openRasciModal(disabled, elementHash) {
+            return !disabled && (this.activeElement = elementHash);
         },
         closeRasciModal(event) {
             if(event.keyCode == 27) {
@@ -185,8 +191,7 @@ export default {
             activeCell: null,
             activeRow: null,
             scrolled: false,
-            activeElement: '',
-            elementIndex: null,
+            activeElem: '',
         };
     },
 };
