@@ -215,6 +215,35 @@ const actions = {
                 }
             );
     },
+
+    /**
+     * Upload attachment to an existing task
+     * @param {function} commit
+     * @param {array} data
+     * @return {Object}
+     */
+    uploadAttachmentTask({commit}, data) {
+        return Vue.http.post(
+            Routing.generate('app_api_workpackage_attachments', {'id': data.taskId}),
+            data.data,
+        ).then(
+            (response) => {
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    const task = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    commit(types.SET_TASK, {task});
+                }
+                return response;
+            },
+            (response) => {
+                return response;
+            },
+        );
+    },
+
     /**
      * Patch an subtask
      * @param {function} commit
