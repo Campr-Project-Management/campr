@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class FileSystemServiceTest extends KernelTestCase
 {
+    /**
+     * @var FileSystemService
+     */
     private $fileSystemService;
 
     protected function setUp()
@@ -53,15 +56,16 @@ class FileSystemServiceTest extends KernelTestCase
     {
         $this->fileSystemService->createFileSystem($data['fileSystem']);
         $fs = $this->fileSystemService->getFileSystemMap()->get('Fs1');
-        $this->assertFalse($fs->has($data['file']->getPath()));
+        $this->assertFalse($fs->has($data['file']->getPath()), 'File exists');
 
         $media = (new Media())
             ->setFileSystem($data['fileSystem'])
             ->setPath($data['file']->getPath())
         ;
-        $this->fileSystemService->saveMediaFile($media, $data['file']);
 
-        $this->assertTrue($fs->has($data['file']->getPath()));
+        $path = $this->fileSystemService->saveMediaFile($media, $data['file']);
+
+        $this->assertTrue($fs->has($path), 'File does not exists');
     }
 
     /**

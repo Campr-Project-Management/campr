@@ -2983,4 +2983,28 @@ class Project implements ProjectInterface
     {
         return $this->currency;
     }
+
+    /**
+     * @return FileSystem|null
+     */
+    public function getFileSystem()
+    {
+        return $this
+            ->getFileSystems()
+            ->filter(
+                function (FileSystem $fs) {
+                    return $fs->getIsDefault();
+                }
+            )
+            ->first()
+        ;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasFileSystem(): bool
+    {
+        return (bool) $this->getFileSystem();
+    }
 }
