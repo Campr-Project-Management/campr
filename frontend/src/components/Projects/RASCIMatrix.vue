@@ -146,7 +146,6 @@ export default {
 
             return user.gravatar;
         },
-
         handleScroll() {
             if (window.scrollY >= document.getElementsByTagName('header')[0].offsetHeight) {
                 document.getElementsByClassName('rasci-matrix')[0].classList.add('rasci-matrix__fixed');
