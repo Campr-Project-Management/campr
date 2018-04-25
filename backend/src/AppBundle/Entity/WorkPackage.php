@@ -9,12 +9,16 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints\WorkPackageAssignments;
+use AppBundle\Validator\Constraints\WorkPackageScheduledDates;
+use AppBundle\Validator\Constraints\WorkPackageForecastDates;
 
 /**
  * WorkPackage.
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\WorkPackageRepository")
  * @WorkPackageAssignments()
+ * @WorkPackageScheduledDates(groups={"create"})
+ * @WorkPackageForecastDates(groups={"edit"})
  */
 class WorkPackage
 {
@@ -150,6 +154,7 @@ class WorkPackage
      * @Serializer\Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(name="scheduled_start_at", type="date", nullable=true)
+     * @Assert\NotBlank()
      */
     private $scheduledStartAt;
 
@@ -159,6 +164,7 @@ class WorkPackage
      * @Serializer\Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(name="scheduled_finish_at", type="date", nullable=true)
+     * @Assert\NotBlank()
      */
     private $scheduledFinishAt;
 
@@ -168,6 +174,7 @@ class WorkPackage
      * @Serializer\Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(name="forecast_start_at", type="date", nullable=true)
+     * @Assert\NotBlank()
      */
     private $forecastStartAt;
 
@@ -177,6 +184,7 @@ class WorkPackage
      * @Serializer\Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(name="forecast_finish_at", type="date", nullable=true)
+     * @Assert\NotBlank()
      */
     private $forecastFinishAt;
 
@@ -1055,11 +1063,9 @@ class WorkPackage
     }
 
     /**
-     * Set parent.
+     * @param self|null $parent
      *
-     * @param WorkPackage $parent
-     *
-     * @return WorkPackage
+     * @return $this
      */
     public function setParent(self $parent = null)
     {
@@ -2010,76 +2016,6 @@ class WorkPackage
                     '%duration%' => $this->getDuration(),
                 ])
                 ->atPath('duration')
-                ->addViolation()
-            ;
-        }
-    }
-
-    /**
-     * Validation for task schedule, the dates from the schedule cannot excede the corresponding dates of their parent.
-     *
-     * @Assert\Callback
-     *
-     * @param ExecutionContextInterface $context
-     */
-    public function workPackageScheduleValidator(ExecutionContextInterface $context)
-    {
-        if ($this->getScheduledFinishAt() < $this->getScheduledStartAt()) {
-            $context
-                ->buildViolation('greater_than_or_equal.scheduled_finish_at')
-                ->atPath('scheduledFinishAt')
-                ->addViolation()
-            ;
-        }
-
-        if ($this->getForecastFinishAt() < $this->getForecastStartAt()) {
-            $context
-                ->buildViolation('greater_than_or_equal.forecast_finish_at')
-                ->atPath('forecastFinishAt')
-                ->addViolation()
-            ;
-        }
-
-        if (is_null($this->getParent())) {
-            return;
-        }
-
-        if ($this->getScheduledStartAt() && $this->getScheduledStartAt() < $this->getParent()->getScheduledStartAt()) {
-            $context
-                ->buildViolation('invalid.work_package.scheduled_start_at', [
-                    '%date%' => $this->getScheduledStartAt()->format('Y-m-d'),
-                ])
-                ->atPath('scheduledStartAt')
-                ->addViolation()
-            ;
-        }
-
-        if ($this->getScheduledFinishAt() && $this->getScheduledFinishAt() > $this->getParent()->getScheduledFinishAt()) {
-            $context
-                ->buildViolation('invalid.work_package.scheduled_finish_at', [
-                    '%date%' => $this->getScheduledFinishAt()->format('Y-m-d'),
-                ])
-                ->atPath('scheduledFinishAt')
-                ->addViolation()
-            ;
-        }
-
-        if ($this->getForecastStartAt() && $this->getForecastStartAt() < $this->getParent()->getForecastStartAt()) {
-            $context
-                ->buildViolation('invalid.work_package.forecast_start_at', [
-                    '%date%' => $this->getForecastStartAt()->format('Y-m-d'),
-                ])
-                ->atPath('forecastStartAt')
-                ->addViolation()
-            ;
-        }
-
-        if ($this->getForecastFinishAt() && $this->getForecastFinishAt() > $this->getParent()->getForecastFinishAt()) {
-            $context
-                ->buildViolation('invalid.work_package.forecast_finish_at', [
-                    '%date%' => $this->getForecastFinishAt()->format('Y-m-d'),
-                ])
-                ->atPath('forecastFinishAt')
                 ->addViolation()
             ;
         }
