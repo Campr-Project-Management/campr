@@ -2,19 +2,26 @@
     <div>
         <h3>{{ message.subtasks }}</h3>
         <div class="row" v-for="subtask, index in subtasks">
-            <div class="form-group col-md-11">
-                <input-field
-                    type="text"
-                    v-bind:label="label.subtask_description"
-                    v-model="subtask.description"
-                    v-bind:content="subtask.description" />
-                <error
-                    v-if="validationMessages && validationMessages[index] && validationMessages[index].name && validationMessages[index].name.length"
-                    v-for="message in ((validationMessages && validationMessages[index] && validationMessages[index].name) || [])"
-                    :message="message" />
-            </div>
-            <div class="col-md-1">
-                <span v-on:click="deleteSubtask(index);"><delete-icon /></span>
+            <div class="create-task__subtasks flex flex-v-center">
+                <div class="form-group col-md-11">
+                    <input-field
+                        type="text"
+                        v-bind:label="label.subtask_description"
+                        v-model="subtask.description"
+                        v-bind:content="subtask.description" />
+                    <error
+                        v-if="validationMessages && validationMessages[index] && validationMessages[index].name && validationMessages[index].name.length"
+                        v-for="message in ((validationMessages && validationMessages[index] && validationMessages[index].name) || [])"
+                        :message="message" />
+                </div>
+                <div class="col-md-1">
+                    <button 
+                        v-on:click="deleteSubtask(index);" 
+                        type="button"
+                        class="btn-icon">
+                        <delete-icon fill="danger-fill"/>
+                    </button>
+                </div>
             </div>
         </div>
         <div class="flex flex-direction-reverse">
@@ -75,4 +82,12 @@ export default {
 
 <style scoped lang="scss">
     @import '../../../../css/_common';
+
+    .create-task__subtasks {
+        margin-bottom:20px;
+
+        .form-group {
+            margin-bottom: 0;
+        }
+    }
 </style>

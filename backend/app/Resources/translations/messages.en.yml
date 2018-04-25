@@ -413,6 +413,7 @@ message:
     opex_subtotal: Opex Subtotal
     attachments: Attachments
     view_team: View Team
+    close_team: Close Team
     departments: Departments
     assigned_to: assigned task to
     has_edited_task: has edited task
@@ -438,6 +439,7 @@ message:
     condition: Condition
     change_accountable: Change Accountable
     uploading_file_failed: There was an error while uploading the file
+    delete_file_failed: There was an error while deleting the file
     wbs: WBS
     days: Days
     weeks: Weeks
