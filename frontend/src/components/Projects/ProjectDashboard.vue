@@ -89,21 +89,21 @@
                             <tbody>
                                 <tr>
                                     <td>{{ translateText('table_header_cell.base') }}</td>
-                                    <td>{{ project.scheduledStartAt || '-' }}</td>
-                                    <td>{{ project.scheduledFinishAt || '-' }}</td>
-                                    <td>{{ project.scheduledDuration || '-' }}</td>
+                                    <td>{{ project.scheduledStartAt | date }}</td>
+                                    <td>{{ project.scheduledFinishAt | date }}</td>
+                                    <td>{{ project.scheduledDurationDays | formatNumber }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ translateText('table_header_cell.forecast') }}</td>
-                                    <td>{{ project.forecastStartAt || '-' }}</td>
-                                    <td>{{ project.forecastFinishAt || '-' }}</td>
-                                    <td>{{ project.forecastDuration || '-' }}</td>
+                                    <td>{{ project.forecastStartAt | date }}</td>
+                                    <td>{{ project.forecastFinishAt | date }}</td>
+                                    <td>{{ project.forecastDurationDays | formatNumber }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ translateText('table_header_cell.actual') }}</td>
-                                    <td>{{ project.actualStartAt || '-' }}</td>
-                                    <td>{{ project.actualFinishAt || '-' }}</td>
-                                    <td>{{ project.actualDuration || '-' }}</td>
+                                    <td>{{ project.actualStartAt | date }}</td>
+                                    <td>{{ project.actualFinishAt | date }}</td>
+                                    <td>{{ project.actualDurationDays | formatNumber }}</td>
                                 </tr>
                             </tbody>
                         </table>
