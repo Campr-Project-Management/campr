@@ -108,12 +108,16 @@ class RasciMatrixService
                 $row['rasci'][] = $data;
             }
 
-            $out[] = $row;
+            $out[$row['id']] = $row;
         }
 
-        $phases = array_filter($out, function (array $row) {
-            return WorkPackage::TYPE_PHASE === $row['type'];
-        });
+        $phases = array_filter(
+            $out,
+            function (array $row) {
+                return WorkPackage::TYPE_PHASE === $row['type'];
+            }
+        );
+
         $workPackages = [];
 
         foreach ($phases as $phase) {
@@ -130,7 +134,22 @@ class RasciMatrixService
 
             $workPackages[] = $phase;
             $workPackages = array_merge($workPackages, $phaseWorkPackages);
+
+            $workPackageIds = array_merge(array_column($phaseWorkPackages, 'id'), [$phase['id']]);
+
+            $out = array_filter(
+                $out,
+                function ($row) use ($workPackageIds) {
+                    return !in_array($row['id'], $workPackageIds);
+                }
+            );
         }
+
+        $out = array_filter($out, function ($row) {
+            return $row['isTask'];
+        });
+
+        $workPackages = array_merge($workPackages, $out);
 
         return [
             'workPackages' => $workPackages,

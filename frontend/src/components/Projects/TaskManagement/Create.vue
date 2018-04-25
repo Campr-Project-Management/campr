@@ -112,12 +112,11 @@
                     <hr class="double">
 
                     <!-- /// Task Attachments /// -->
-                    <!--<attachments v-model="medias" :editMedias="medias" />-->
-                    <attachments v-on:input="setMedias" :editMedias="medias" />
+                    <attachments v-model="medias"/>
                     <error
-                        v-if="validationMessages.medias && validationMessages.medias.length"
-                        v-for="message in validationMessages.medias"
-                        :message="message" />
+                            v-if="validationMessages.medias && validationMessages.medias.length"
+                            v-for="message in validationMessages.medias"
+                            :message="message"/>
                     <!-- /// End Task Attachments /// -->
 
                     <hr class="double">

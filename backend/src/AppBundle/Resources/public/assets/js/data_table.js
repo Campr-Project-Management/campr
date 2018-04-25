@@ -12,13 +12,14 @@ $(function () {
         },
         formatters: {
             'commands': function (column, row) {
-                var editLink = $('#data-table-command').data('edit'),
-                    showLink = $('#data-table-command').data('show'),
-                    filesLink = $('#data-table-command').data('files'),
-                    downloadLink = $('#data-table-command').data('download'),
-                    impersonateUserLink = $('#data-table-command').data('impersonate'),
-                    params = $('#data-table-command').data('params'),
-                    url = $('#data-table-command').data('url'),
+                var $grid = $('#data-table-command'),
+                    editLink = $grid.data('edit'),
+                    showLink = $grid.data('show'),
+                    filesLink = $grid.data('files'),
+                    downloadLink = $grid.data('download'),
+                    impersonateUserLink = $grid.data('impersonate'),
+                    params = $grid.data('params'),
+                    url = $grid.data('url'),
                     routeParams = {},
                     commands = '';
 
@@ -49,9 +50,10 @@ $(function () {
             }
         }
     }).on('loaded.rs.jquery.bootgrid', function () {
-        var deleteLink = $('#data-table-command').data('delete'),
-            impersonateUserLink = $('#data-table-command').data('impersonate'),
-            params = $('#data-table-command').data('params'),
+        var $grid = $('#data-table-command'),
+            deleteLink = $grid.data('delete'),
+            impersonateUserLink = $grid.data('impersonate'),
+            params = $grid.data('params'),
             routeParams = {};
 
         if (params) {
@@ -68,34 +70,72 @@ $(function () {
         grid.find('.command-delete').on('click', function () {
             routeParams['id'] = $(this).data('row-id');
 
-            $.ajax({
-                url: Routing.generate(deleteLink, routeParams, true),
-                type: 'get',
-                dataType: 'json',
-                success: function (data) {
-                    if (data.delete === 'success') {
-                        $('#data-table-command').bootgrid('reload');
-                        $('#object-id').html(routeParams['id']);
-                        $('#delete-item-alert').removeClass('hidden');
-                        setTimeout(function () {
-                            $('#delete-item-alert').fadeOut('slow');
-                        }, 2500);
+            swal(
+                {
+                    title: 'Are you sure?',
+                    text: 'You will not be able to recover this item.',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "No, cancel plx!",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                },
+                function (confirmed) {
+                    if (!confirmed) {
+                        return;
                     }
-                    if (data.delete === 'failed') {
-                        if (data.message != 'undefined') {
-                            $('#delete-item-alert-failure').html('<strong>' + data.message + '</strong>');
+
+                    swal('Deleting!', 'Your item is currently being deleted.', 'warning');
+                    $.ajax({
+                        url: Routing.generate(deleteLink, routeParams, true),
+                        type: 'get',
+                        dataType: 'json',
+                        success: function (data) {
+                            switch (data.delete) {
+                                case 'success':
+                                    $grid.bootgrid('reload');
+                                    $('#object-id').html(routeParams['id']);
+                                    swal({
+                                        type: 'success',
+                                        title: 'Deleted!',
+                                        text: $('#object-id').parent().text().replace(/\s+/g, ' '),
+                                        timer: 2500,
+                                        showConfirmButton: false
+                                    });
+                                    break;
+                                case 'failed':
+                                    swal({
+                                        type: 'error',
+                                        title: 'Deleted!',
+                                        text: '<strong>' + data.message + '</strong>',
+                                        timer: 2500,
+                                        showConfirmButton: false
+                                    });
+                                    break;
+                                case 'not_allowed':
+                                    swal({
+                                        type: 'warning',
+                                        title: 'Unable to delete!',
+                                        text: 'You are not allowed to delete this item.',
+                                        timer: 2500,
+                                        showConfirmButton: false
+                                    });
+                                    break;
+                                default:
+                                    swal({
+                                        type: 'error',
+                                        title: 'Unable to delete!',
+                                        text: 'Something went wrong.',
+                                        timer: 2500,
+                                        showConfirmButton: false
+                                    });
+                            }
                         }
-                        $('#delete-item-alert-failure')
-                            .removeClass('hidden')
-                            .show()
-                        ;
-                        $('#object-id').html(routeParams['id']);
-                        setTimeout(function () {
-                            $('#delete-item-alert-failure').fadeOut('slow');
-                        }, 2500);
-                    }
+                    });
                 }
-            });
+            );
         });
     });
 });
