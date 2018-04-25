@@ -22,8 +22,6 @@ class FileSystemControllerTest extends BaseController
 
         $this->assertContains('id="create_name"', $crawler->html());
         $this->assertContains('name="create[name]"', $crawler->html());
-        $this->assertContains('id="create_project"', $crawler->html());
-        $this->assertContains('name="create[project]"', $crawler->html());
         $this->assertContains('id="create_driver"', $crawler->html());
         $this->assertContains('name="create[driver]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
@@ -57,7 +55,6 @@ class FileSystemControllerTest extends BaseController
 
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[name]'] = 'fs1';
-        $form['create[project]'] = '';
         $form['create[driver]'] = 'local_adapter';
         $domDocument = new \DOMDocument();
         $ff = $domDocument->createElement('input');
@@ -117,8 +114,6 @@ class FileSystemControllerTest extends BaseController
 
         $this->assertContains('id="create_name"', $crawler->html());
         $this->assertContains('name="create[name]"', $crawler->html());
-        $this->assertContains('id="create_project"', $crawler->html());
-        $this->assertContains('name="create[project]"', $crawler->html());
         $this->assertContains('id="create_driver"', $crawler->html());
         $this->assertContains('name="create[driver]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
@@ -158,7 +153,6 @@ class FileSystemControllerTest extends BaseController
 
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['create[name]'] = 'fs1-edited';
-        $form['create[project]'] = '';
         $form['create[driver]'] = 'local_adapter';
         $domDocument = new \DOMDocument();
         $ff = $domDocument->createElement('input');
