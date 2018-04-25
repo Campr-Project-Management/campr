@@ -8,4 +8,5 @@ final class WorkPackageEvents
     public const POST_CREATE = 'app.workpackage.post_update';
     public const PRE_UPDATE = 'app.workpackage.pre_update';
     public const POST_UPDATE = 'app.workpackage.post_update';
+    public const RECALCULATE_PHASE_DATES = 'app.workpackage.phase.recalculate.dates';
 }
